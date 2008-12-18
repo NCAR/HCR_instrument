@@ -1,14 +1,16 @@
 # -*- python -*-
 # $Id: SConstruct,v 1.4 2005/08/23 16:22:41 granger Exp $
 
-import os,os.path, sys
+import os
+import os.path
+import sys
+
 sys.path.insert(0, os.path.join(os.getcwd(),'config'))
+
 import eol_scons
 import SCons
 
 options = eol_scons.Pkg_Options()
-#options.Add(BoolOption('PENTEK', 'Build Pentek applications?', 0))
-
 
 def SdrSetup(env):
     env.Require(['QTDIR'])
