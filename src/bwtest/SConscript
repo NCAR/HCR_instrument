@@ -1,0 +1,13 @@
+# -*- python -*-
+
+tools = Split("""
+pentek
+""")
+
+env = Environment(tools = ['default'] + tools)
+
+p = env.Program('bwtest', Split("""
+bwtest.cc
+""" ))
+Default(p)
+
