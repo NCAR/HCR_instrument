@@ -6,8 +6,6 @@ pentek
 
 env = Environment(tools = ['default'] + tools)
 
-p = env.Program('bwtest', Split("""
-bwtest.cc
-""" ))
+p = env.Program('bwtest', 'bwtest.cc')
 Default(p)
 
