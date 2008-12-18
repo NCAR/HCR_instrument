@@ -1,0 +1,11 @@
+# -*- python -*-
+
+tools = Split("""
+pentek
+""")
+
+env = Environment(tools = ['default'] + tools)
+
+p = env.Program('configddc', 'main.cc')
+Default(p)
+
