@@ -16,7 +16,7 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////
 int
-createOutputFile(int curFd, std::string name) 
+createOutputFile(int curFd, std::string name)
 {
 
   if (curFd > -1)
@@ -37,17 +37,17 @@ createOutputFile(int curFd, std::string name)
 int overUnderCount(int deviceFd, std::string& device) {
 
   int count = ioctl(deviceFd, FIOGETOVRCNT);
-  if (count == -1) 
+  if (count == -1)
   {
-    std::cout << "unable to get ovr/under for " 
+    std::cout << "unable to get ovr/under for "
   	<< device << std::endl;
     perror("");
   }
 
   // clear the overrun counter
-  if (ioctl(deviceFd, FIOCLROVRCNT) == -1) 
+  if (ioctl(deviceFd, FIOCLROVRCNT) == -1)
   {
-    std::cout << "unable to clear ovr/under for " 
+    std::cout << "unable to clear ovr/under for "
   	<< device << std::endl;
     perror("");
   }
@@ -56,28 +56,20 @@ int overUnderCount(int deviceFd, std::string& device) {
 }
 
 ///////////////////////////////////////////////////////////
-void 
-configurePentek(int deviceFd, 
-		int decimation,
+void
+configurePentek(int deviceFd,
 		std::string device)
 {
-
-  // set the decimation
-  if (ioctl(deviceFd, FIODECIMSET, decimation) == -1) {
-    std::cout << "unable to set the decimation rate for " 
-  	      << device << std::endl;
-    perror("");
-  }
 
   // set the clock source
   int clockSource;
 
   //  clockSource = CLK_SRC_FRTPAN;
   clockSource = CLK_SRC_INTERN;
-  
-  if (ioctl(deviceFd, FIOCLKSRCSET, clockSource) == -1) 
+
+  if (ioctl(deviceFd, FIOCLKSRCSET, clockSource) == -1)
     {
-      std::cout << "unable to set the clock source for " 
+      std::cout << "unable to set the clock source for "
 		<< device << std::endl;
       perror("");
       exit(1);
@@ -86,25 +78,16 @@ configurePentek(int deviceFd,
   // set the clock sample rate
   double doublearg = 100.0e6;
   if (ioctl(deviceFd, FIOSAMPRATESET, &doublearg) == -1) {
-    std::cout << "unable to set the clock rate for " 
+    std::cout << "unable to set the clock rate for "
 	      << device << std::endl;
     perror("");
     exit(1);
   }
 
-  // set the tuning frequency
-  doublearg = 40000000.0;
-  if (ioctl(deviceFd, FIONCOSET, &doublearg) == -1) 
-    {
-      std::cout << "unable to set the tuning frequency for " 
-		<< device << std::endl;
-      perror("");
-    }
-
   // flush the device read buffers
-  if (ioctl(deviceFd, FIOFLUSH, 0) == -1) 
+  if (ioctl(deviceFd, FIOFLUSH, 0) == -1)
     {
-      std::cout << "unable to flush for " 
+      std::cout << "unable to flush for "
 		<< device << std::endl;
       perror("");
       exit(1);
@@ -152,11 +135,10 @@ double nowTime()
 
 ///////////////////////////////////////////////////////////
 int
-main(int argc, char** argv) 
+main(int argc, char** argv)
 {
 
   std::string device;
-  int decimation;
   std::string outFile;
   int deviceFd;
   int outFd = -1;
@@ -164,17 +146,16 @@ main(int argc, char** argv)
   int bufferSize;
   char* buf;
 
-  if (argc < 5) {
-    std::cout << "usage: " << argv[0] 
-	      << " <channel device> <decimation count> <buffer factor> <output file>\n";
+  if (argc < 4) {
+    std::cout << "usage: " << argv[0]
+	      << " <channel device> <buffer factor> <output file>\n";
     exit (1);
   }
 
   device = argv[1];
-  decimation = atoi(argv[2]);
-  bufferSize = BASICSIZE*atoi(argv[3]);
-  outFile = argv[4];
-  
+  bufferSize = BASICSIZE*atoi(argv[2]);
+  outFile = argv[3];
+
   std::cout << "read buffer size is " << bufferSize << std::endl;
 
   buf = new char[bufferSize];
@@ -192,7 +173,7 @@ main(int argc, char** argv)
   }
 
   // configure the downconversion channel
-  configurePentek(deviceFd, decimation, device);
+  configurePentek(deviceFd, device);
 
   int loopCount = 0;
   double total = 0;
@@ -205,7 +186,7 @@ main(int argc, char** argv)
     int n = read(deviceFd, buf, bufferSize);
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
-      if (n < 0) 
+      if (n < 0)
 	perror("");
       std::cerr << "\n";
     } else {
@@ -222,7 +203,7 @@ main(int argc, char** argv)
 
 	std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 		  << std::setprecision(4) << std::setw(5) << bw
-		  << " MB/s, overruns: " 
+		  << " MB/s, overruns: "
 		  << overruns << "\n";
       }
 
