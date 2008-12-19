@@ -1,0 +1,22 @@
+Release 9.2.03i - xst J.39
+Copyright (c) 1995-2007 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to ./xst/projnav.tmp
+CPU : 0.00 / 0.38 s | Elapsed : 0.00 / 1.00 s
+ 
+--> 
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling vhdl file "C:/GateFlow/7142_sig/VHDL_Source/fifo_en_gen.vhd" in Library work.
+Entity <FIFO_EN_GEN> compiled.
+Entity <FIFO_EN_GEN> (Architecture <BEHAVIOR>) compiled.
+CPU : 0.17 / 0.55 s | Elapsed : 0.00 / 1.00 s
+ 
+--> 
+
+Total memory usage is 87352 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    0 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

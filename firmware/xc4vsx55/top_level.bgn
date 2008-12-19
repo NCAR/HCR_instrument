@@ -1,0 +1,156 @@
+Release 9.2.04i - Bitgen J.40
+Copyright (c) 1995-2007 Xilinx, Inc.  All rights reserved.
+Loading device for application Rf_Device from file '4vsx55.nph' in environment
+C:\Xilinx92i.
+   "TOP_LEVEL" is an NCD, version 3.1, device xc4vsx55, package ff1148, speed
+-10
+This design is using the default stepping level (major silicon revision) for
+this device (1). Unless your design is targeted at devices of this stepping
+level, it is recommended that you explicitly specify the stepping level of the
+parts you will be using. This will allow the tools to take advantage of any
+available performance and functional enhancements for this device. The latest
+stepping level for this device is '2'. Additional information on "stepping
+level" is available at support.xilinx.com.
+Opened constraints file TOP_LEVEL.pcf.
+
+Fri Dec 12 09:04:53 2008
+
+C:\Xilinx92i\bin\nt\bitgen.exe -intstyle ise -w -g DebugBitstream:No -g Binary:yes -g CRC:Enable -g ConfigRate:4 -g CclkPin:PullNone -g M0Pin:PullNone -g M1Pin:PullNone -g M2Pin:PullNone -g ProgPin:PullNone -g DonePin:PullNone -g InitPin:Pullup -g CsPin:Pullup -g DinPin:Pullup -g BusyPin:Pullup -g RdWrPin:Pullup -g TckPin:PullUp -g TdiPin:PullUp -g TdoPin:PullUp -g TmsPin:PullUp -g UnusedPin:PullDown -g UserID:0xFFFFFFFF -g DCIUpdateMode:AsRequired -g StartUpClk:CClk -g DONE_cycle:4 -g GTS_cycle:5 -g GWE_cycle:6 -g LCK_cycle:NoWait -g Match_cycle:Auto -g Security:None -g Persist:No -m -g ReadBack -g DonePipe:No -g DriveDone:Yes -g Encrypt:No TOP_LEVEL.ncd 
+
+WARNING:Bitgen:40 - Replacing "Auto" with "2" for option "Match_cycle".
+Summary of Bitgen Options:
++----------------------+----------------------+
+| Option Name          | Current Setting      |
++----------------------+----------------------+
+| Compress             | (Not Specified)*     |
++----------------------+----------------------+
+| Readback             | (Enabled)            |
++----------------------+----------------------+
+| CRC                  | Enable**             |
++----------------------+----------------------+
+| DebugBitstream       | No**                 |
++----------------------+----------------------+
+| ConfigRate           | 4**                  |
++----------------------+----------------------+
+| StartupClk           | Cclk**               |
++----------------------+----------------------+
+| CclkPin              | Pullnone             |
++----------------------+----------------------+
+| DonePin              | Pullnone             |
++----------------------+----------------------+
+| HswapenPin           | Pullup*              |
++----------------------+----------------------+
+| M0Pin                | Pullnone             |
++----------------------+----------------------+
+| M1Pin                | Pullnone             |
++----------------------+----------------------+
+| M2Pin                | Pullnone             |
++----------------------+----------------------+
+| PowerdownPin         | Pullup*              |
++----------------------+----------------------+
+| ProgPin              | Pullnone             |
++----------------------+----------------------+
+| InitPin              | Pullup**             |
++----------------------+----------------------+
+| CsPin                | Pullup**             |
++----------------------+----------------------+
+| DinPin               | Pullup**             |
++----------------------+----------------------+
+| BusyPin              | Pullup**             |
++----------------------+----------------------+
+| RdWrPin              | Pullup**             |
++----------------------+----------------------+
+| TckPin               | Pullup**             |
++----------------------+----------------------+
+| TdiPin               | Pullup**             |
++----------------------+----------------------+
+| TdoPin               | Pullup**             |
++----------------------+----------------------+
+| TmsPin               | Pullup**             |
++----------------------+----------------------+
+| UnusedPin            | Pulldown**           |
++----------------------+----------------------+
+| GWE_cycle            | 6**                  |
++----------------------+----------------------+
+| GTS_cycle            | 5**                  |
++----------------------+----------------------+
+| LCK_cycle            | NoWait**             |
++----------------------+----------------------+
+| Match_cycle          | 2                    |
++----------------------+----------------------+
+| DONE_cycle           | 4**                  |
++----------------------+----------------------+
+| Persist              | No**                 |
++----------------------+----------------------+
+| DriveDone            | Yes                  |
++----------------------+----------------------+
+| DonePipe             | No**                 |
++----------------------+----------------------+
+| Security             | None**               |
++----------------------+----------------------+
+| UserID               | 0xFFFFFFFF**         |
++----------------------+----------------------+
+| ActivateGclk         | No*                  |
++----------------------+----------------------+
+| ActiveReconfig       | No*                  |
++----------------------+----------------------+
+| PartialMask0         | (Not Specified)*     |
++----------------------+----------------------+
+| PartialMask1         | (Not Specified)*     |
++----------------------+----------------------+
+| PartialMask2         | (Not Specified)*     |
++----------------------+----------------------+
+| PartialGclk          | (Not Specified)*     |
++----------------------+----------------------+
+| PartialLeft          | (Not Specified)*     |
++----------------------+----------------------+
+| PartialRight         | (Not Specified)*     |
++----------------------+----------------------+
+| Encrypt              | No**                 |
++----------------------+----------------------+
+| Key0                 | pick*                |
++----------------------+----------------------+
+| KeyFile              | (Not Specified)*     |
++----------------------+----------------------+
+| StartCBC             | pick*                |
++----------------------+----------------------+
+| DCIUpdateMode        | AsRequired**         |
++----------------------+----------------------+
+| IEEE1532             | No*                  |
++----------------------+----------------------+
+| Binary               | Yes                  |
++----------------------+----------------------+
+ *  Default setting.
+ ** The specified setting matches the default setting.
+
+Running DRC.
+INFO:PhysDesignRules:1240 - BUFG or BUFGCTRL chain detected. Component
+   BUFGMUX_DCM is connected in series with another BUFG or BUFGCRL and placed in
+   the feedback loop. This can result in sizeable clock skew between the outputs
+   of different stages of the chain due to the fact that non-standard routing
+   resources must be used to connect the BUFGs or BUFGCTRLs.
+WARNING:PhysDesignRules:1236 - Unknown DCM_ADV feedback loop. The signal dac_clk
+   on the CLKFB pin of DCM_ADV comp PLL_CLK_DCM_INST_DCM_ADV_INST was driven by
+   an IOB site but the signal loop could not be traced back to the CLK0 pin of
+   comp PLL_CLK_DCM_INST_DCM_ADV_INST. The signal out the CLK0 pin must drive an
+   IOB input pin with programming out to the PAD.
+INFO:PhysDesignRules:1240 - BUFG or BUFGCTRL chain detected. Component
+   BUFGMUX_DCM is connected in series with another BUFG or BUFGCRL and placed in
+   the feedback loop. This can result in sizeable clock skew between the outputs
+   of different stages of the chain due to the fact that non-standard routing
+   resources must be used to connect the BUFGs or BUFGCTRLs.
+WARNING:PhysDesignRules:1236 - Unknown DCM_ADV feedback loop. The signal dac_clk
+   on the CLKFB pin of DCM_ADV comp DAC_CLK_DCM_INST_DCM_ADV_INST was driven by
+   an IOB site but the signal loop could not be traced back to the CLK0 pin of
+   comp DAC_CLK_DCM_INST_DCM_ADV_INST. The signal out the CLK0 pin must drive an
+   IOB input pin with programming out to the PAD.
+DRC detected 0 errors and 2 warnings.
+Creating bit map...
+Saving bit stream in "top_level.bit".
+Saving bit stream in "top_level.bin".
+Saving Readback bit file top_level.rbb.
+Saving Readback golden data file top_level.rbd.
+Saving mask data in "top_level.msd".
+Creating bit mask...
+Saving mask bit stream in "top_level.msk".
+Bitstream generation is complete.

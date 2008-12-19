@@ -1,0 +1,10 @@
+NEWPROJECT "C:/GateFlow/7142_sig/xc4vsx55"
+SETPROJECT "C:/GateFlow/7142_sig/xc4vsx55"
+SET BusFormat = BusFormatAngleBracketNotRipped
+SET devicefamily = virtex4
+SET device = xc4vsx55
+SET package = ff1148
+SET speedgrade = -10
+SET FlowVendor = Foundation_iSE
+SET VerilogSim = True
+SET VHDLSim = True

@@ -1,0 +1,4 @@
+set -tmpdir "./xst/projnav.tmp"
+elaborate
+-ifn ADC_DATA_PATH.prj
+-ifmt mixed

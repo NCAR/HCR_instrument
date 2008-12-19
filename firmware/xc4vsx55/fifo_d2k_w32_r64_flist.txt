@@ -1,0 +1,10 @@
+# Output products list for <fifo_d2k_w32_r64>
+fifo_d2k_w32_r64.ngc
+fifo_d2k_w32_r64.v
+fifo_d2k_w32_r64.veo
+fifo_d2k_w32_r64.vhd
+fifo_d2k_w32_r64.vho
+fifo_d2k_w32_r64.xco
+fifo_d2k_w32_r64_fifo_generator_v3_2_xst_1_vhdl.prj
+fifo_d2k_w32_r64_flist.txt
+fifo_d2k_w32_r64_xmdf.tcl

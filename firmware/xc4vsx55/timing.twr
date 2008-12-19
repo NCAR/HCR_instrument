@@ -1,0 +1,94 @@
+Number of Timing Constraints that were not applied: 9
+
+Asterisk (*) preceding a constraint indicates it was not met.
+   This may be due to a setup or hold violation.
+
+------------------------------------------------------------------------------------------------------
+  Constraint                                |  Check  | Worst Case |  Best Case | Timing |   Timing   
+                                            |         |    Slack   | Achievable | Errors |    Score   
+------------------------------------------------------------------------------------------------------
+* TS_DDC_DCM_ddc_dcm_clk2x = PERIOD TIMEGRP | SETUP   |    -1.237ns|     5.237ns|     193|       80868
+   "DDC_DCM_ddc_dcm_clk2x" TS_ADC_CLKI      | HOLD    |     0.421ns|            |       0|           0
+      / 2 HIGH 50%                          |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+* COMP "LREADY_N" OFFSET = OUT 9 ns AFTER C | MAXDELAY|    -0.422ns|     9.422ns|       1|         422
+  OMP "LCLKI"                               |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf_0 = PE | SETUP   |     0.005ns|     7.995ns|       0|           0
+  RIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_I | HOLD    |     0.228ns|            |       0|           0
+  NST_clk0_buf_0" TS_MEM_CLK_P HIGH 50%     |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_LCLKI = PERIOD TIMEGRP "LCLKI" 14 ns H | SETUP   |     0.106ns|    13.894ns|       0|           0
+  IGH 50%                                   | HOLD    |     0.326ns|            |       0|           0
+------------------------------------------------------------------------------------------------------
+  COMP "LBLAST_N" OFFSET = IN 7 ns BEFORE C | SETUP   |     0.304ns|     6.696ns|       0|           0
+  OMP "LCLKI"                               |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_ADC_CLKI = PERIOD TIMEGRP "ADC_CLKI" 8 | SETUP   |     0.501ns|     7.499ns|       0|           0
+   ns HIGH 50%                              | HOLD    |     0.165ns|            |       0|           0
+------------------------------------------------------------------------------------------------------
+  TS_dac_clk_buf2 = PERIOD TIMEGRP "dac_clk | SETUP   |     0.512ns|     7.488ns|       0|           0
+  _buf2" TS_DAC_CLKI HIGH 50%               | HOLD    |     0.479ns|            |       0|           0
+------------------------------------------------------------------------------------------------------
+  TS_DDC_DCM_ddc_dcm_clk4d = PERIOD TIMEGRP | SETUP   |     0.863ns|    25.096ns|       0|           0
+   "DDC_DCM_ddc_dcm_clk4d" TS_ADC_CLKI      | HOLD    |     0.334ns|            |       0|           0
+      * 4 HIGH 50%                          |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf_0 =  | SETUP   |     1.770ns|     5.640ns|       0|           0
+  PERIOD TIMEGRP         "SDRAM_SYS_CLK_DCM | HOLD    |     0.538ns|            |       0|           0
+  _INST_clk270_buf_0" TS_MEM_CLK_P PHASE 6  |         |            |            |        |            
+  ns HIGH         50%                       |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0 = P | SETUP   |     2.753ns|    20.988ns|       0|           0
+  ERIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_ | HOLD    |     0.005ns|            |       0|           0
+  INST_clkdv_buf_0" TS_MEM_CLK_P * 4 HIGH 5 |         |            |            |        |            
+  0%                                        |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  COMP "LBE0_N" OFFSET = IN 7 ns BEFORE COM | SETUP   |     3.954ns|     3.046ns|       0|           0
+  P "LCLKI"                                 |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  COMP "LBE4_N" OFFSET = IN 7 ns BEFORE COM | SETUP   |     4.142ns|     2.858ns|       0|           0
+  P "LCLKI"                                 |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf_0 =  | N/A     |         N/A|         N/A|     N/A|         N/A
+  PERIOD TIMEGRP         "SDRAM_SYS_CLK_DCM |         |            |            |        |            
+  _INST_clk180_buf_0" TS_MEM_CLK_P PHASE 4  |         |            |            |        |            
+  ns HIGH         50%                       |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf = PER | N/A     |         N/A|         N/A|     N/A|         N/A
+  IOD TIMEGRP         "SDRAM_SYS_CLK_DCM_IN |         |            |            |        |            
+  ST_clkdv_buf" TS_MEM_CLK_N * 4 HIGH 50%   |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf = PE | N/A     |         N/A|         N/A|     N/A|         N/A
+  RIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_I |         |            |            |        |            
+  NST_clk270_buf" TS_MEM_CLK_N PHASE 6 ns H |         |            |            |        |            
+  IGH 50%                                   |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf = PE | N/A     |         N/A|         N/A|     N/A|         N/A
+  RIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_I |         |            |            |        |            
+  NST_clk180_buf" TS_MEM_CLK_N PHASE 4 ns H |         |            |            |        |            
+  IGH 50%                                   |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf = PERI | N/A     |         N/A|         N/A|     N/A|         N/A
+  OD TIMEGRP         "SDRAM_SYS_CLK_DCM_INS |         |            |            |        |            
+  T_clk0_buf" TS_MEM_CLK_N HIGH 50%         |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SYS_CLK = PERIOD TIMEGRP "SYS_CLK" 8 n | N/A     |         N/A|         N/A|     N/A|         N/A
+  s HIGH 50%                                |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" | N/A     |         N/A|         N/A|     N/A|         N/A
+   8 ns HIGH 50%                            |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" | N/A     |         N/A|         N/A|     N/A|         N/A
+   8 ns HIGH 50%                            |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 | N/A     |         N/A|         N/A|     N/A|         N/A
+   ns HIGH 50%                              |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+
+
+2 constraints not met.
+INFO:Timing:2761 - N/A entries in the Constraints list may indicate that the 
+   constraint does not cover any paths or that it has no requested value.
+
+

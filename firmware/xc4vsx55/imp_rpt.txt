@@ -1,0 +1,1998 @@
+NotUpToDate:generated file list is cmd
+ngdbuild -ise "C:/GateFlow/7142_sig/xc4vsx55/7142_vsx55.ise" -intstyle ise -dd _ngo -nt timestamp -uc "C:/GateFlow/7142_sig/VHDL_Source/7142_signal.ucf" -p xc4vsx55-ff1148-10 "TOP_LEVEL.ngc" TOP_LEVEL.ngd is cmd
+
+Command Line: C:\Xilinx\bin\nt\ngdbuild.exe -ise
+C:/GateFlow/7142_sig/xc4vsx55/7142_vsx55.ise -intstyle ise -dd _ngo -nt
+timestamp -uc C:/GateFlow/7142_sig/VHDL_Source/7142_signal.ucf -p
+xc4vsx55-ff1148-10 TOP_LEVEL.ngc TOP_LEVEL.ngd
+
+Reading NGO file "C:/GateFlow/7142_sig/xc4vsx55/TOP_LEVEL.ngc" ...
+Loading design module "C:\GateFlow\7142_sig\xc4vsx55/fifo_d1k_w64_r64.ngc"...
+Launcher: The source netlist for "sdram_ddr2_lb.ngo" was not found; the current
+NGO file will be used and no new NGO description will be compiled.  This
+probably means that the source netlist was moved or deleted.
+Loading design module "C:\GateFlow\7142_sig\xc4vsx55\sdram_ddr2_lb.ngo"...
+Loading design module "C:\GateFlow\7142_sig\xc4vsx55/fifo_d1k_w64_r32.ngc"...
+Loading design module "C:\GateFlow\7142_sig\xc4vsx55/fifo_d2k_w32_r64.ngc"...
+Loading design module "C:\GateFlow\7142_sig\xc4vsx55/fifo_d8k_w64_r32.ngc"...
+
+Applying constraints in "C:/GateFlow/7142_sig/VHDL_Source/7142_signal.ucf" to
+the design...
+
+Checking timing specifications ...
+   CLK0: TS_dac_clk_buf2=PERIOD dac_clk_buf2 TS_DAC_CLKI*1 HIGH 50%
+   CLK0: TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk0_buf TS_MEM_CLK_N*1 HIGH 50%
+   CLK180: TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk180_buf TS_MEM_CLK_N*1 PHASE + 4 nS HIGH 50%
+   CLK270: TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk270_buf TS_MEM_CLK_N*1 PHASE + 6 nS HIGH 50%
+   CLKDV: TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clkdv_buf TS_MEM_CLK_N*4 HIGH 50%
+   CLK0: TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk0_buf_0 TS_MEM_CLK_P*1 HIGH 50%
+   CLK180: TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk180_buf_0 TS_MEM_CLK_P*1 PHASE + 4 nS HIGH 50%
+   CLK270: TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk270_buf_0 TS_MEM_CLK_P*1 PHASE + 6 nS HIGH 50%
+   CLKDV: TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0 TS_MEM_CLK_P*4 HIGH 50%
+Checking Partitions ...
+Checking expanded design ...
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<13>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<13>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<0>' has no driver
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings: 468
+
+Writing NGD file "TOP_LEVEL.ngd" ...
+
+Writing NGDBUILD log file "TOP_LEVEL.bld"...
+
+NGDBUILD done.
+
+Process "Translate" completed successfully
+Using target part "4vsx55ff1148-10".
+Mapping design into LUTs...
+Running directed packing...
+Running delay-based LUT packing...
+Running timing-driven packing...
+
+Phase 1.1
+Phase 1.1 (Checksum:a4fba3) REAL time: 1 mins 14 secs 
+
+Phase 2.7
+Phase 2.7 (Checksum:1312cfe) REAL time: 1 mins 16 secs 
+
+Phase 3.31
+Phase 3.31 (Checksum:1c9c37d) REAL time: 1 mins 16 secs 
+
+Phase 4.2
+
+
+There are 16 clock regions on the target FPGA device:
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y7:                        | CLOCKREGION_X1Y7:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 0 in use      |   2 edge BUFIOs available, 0 in use      |
+|   0 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y6:                        | CLOCKREGION_X1Y6:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 0 in use      |   2 edge BUFIOs available, 0 in use      |
+|   2 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y5:                        | CLOCKREGION_X1Y5:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 0 in use      |   2 edge BUFIOs available, 0 in use      |
+|   2 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y4:                        | CLOCKREGION_X1Y4:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 0 in use      |   2 edge BUFIOs available, 0 in use      |
+|   2 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y3:                        | CLOCKREGION_X1Y3:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 0 in use      |   2 edge BUFIOs available, 0 in use      |
+|   2 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y2:                        | CLOCKREGION_X1Y2:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 1 in use      |   2 edge BUFIOs available, 0 in use      |
+|   2 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y1:                        | CLOCKREGION_X1Y1:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 2 in use      |   2 edge BUFIOs available, 0 in use      |
+|   2 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+| CLOCKREGION_X0Y0:                        | CLOCKREGION_X1Y0:                        |
+|   2 BUFRs available, 0 in use            |   2 BUFRs available, 0 in use            |
+|   2 Regional Clock Spines, 0 in use      |   2 Regional Clock Spines, 0 in use      |
+|   2 edge BUFIOs available, 2 in use      |   2 edge BUFIOs available, 0 in use      |
+|   0 center BUFIOs available, 0 in use    |                                          |
+|                                          |                                          |
+|------------------------------------------|------------------------------------------|
+
+
+Clock-Region: <CLOCKREGION_X0Y1>
+  key resource utilizations (used/available): edge-bufios - 2/2; center-bufios - 0/2; bufrs - 0/2; regional-clock-spines - 0/2
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|       |    clock    | BRAM |     |    |        |        |       |       |       |      |      |     |      |
+|       |    region   | FIFO | DCM | GT | ILOGIC | OLOGIC |   FF  |  LUTM |  LUTL | MULT | EMAC | PPC | PCIe | <- (Types of Resources in Clock Region)
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+|       | Upper Region|  20  |  0  |  0 |   64   |   64   |  3072 |  1536 |  1536 |  32  |   0  |  0  |   0  | <- Available resources in the upper region
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+|       |CurrentRegion|  20  |  1  |  0 |   48   |   48   |  3072 |  1536 |  1536 |  32  |   0  |  0  |   0  | <- Available resources in the current region
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+|       | Lower Region|  20  |  2  |  0 |   32   |   32   |  3072 |  1536 |  1536 |  32  |   0  |  0  |   0  | <- Available resources in the lower region
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+| clock |    region   |                                                                                      -----------------------------------------------
+|  type |  expansion  |                                                                                      | <IO/Regional clock Net Name>
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+| BUFIO |       Lower |   0  |  0  |  0 |    0   |   17   |     0 |     0 |     0 |   0  |   0  |  0  |   0  | "lvds3_rc_in"
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+| BUFIO | Upper/Lower |   0  |  0  |  0 |    5   |    0   |     0 |     0 |     0 |   0  |   0  |  0  |   0  | "lvds4_rc_in"
+|-------|-------------|------|-----|----|--------|--------|-------|-------|-------|------|------|-----|------|----------------------------------------------
+
+
+
+
+######################################################################################
+# REGIONAL CLOCKING RESOURCE DISTRIBUTION UCF REPORT:
+#
+# Number of Regional Clocking Regions in the device: 16  (2 clock spines in each)
+# Number of Regional Clock Networks used in this design: 2 (each network can be
+# composed of up to 3 clock spines and cover up to 3 regional clock regions)
+# 
+######################################################################################
+
+# IO-Clock "lvds3_rc_in" driven by "BUFIO_X0Y2"
+INST "LVDS3_RC_IN_BUFIO" LOC = "BUFIO_X0Y2" ;
+NET "lvds3_rc_in" TNM_NET = "TN_lvds3_rc_in" ;
+TIMEGRP "TN_lvds3_rc_in" AREA_GROUP = "CLKAG_lvds3_rc_in" ;
+AREA_GROUP "CLKAG_lvds3_rc_in" RANGE = CLOCKREGION_X0Y1, CLOCKREGION_X0Y0;
+
+
+# IO-Clock "lvds4_rc_in" driven by "BUFIO_X0Y3"
+INST "LVDS4_RC_IN_BUFIO" LOC = "BUFIO_X0Y3" ;
+NET "lvds4_rc_in" TNM_NET = "TN_lvds4_rc_in" ;
+TIMEGRP "TN_lvds4_rc_in" AREA_GROUP = "CLKAG_lvds4_rc_in" ;
+AREA_GROUP "CLKAG_lvds4_rc_in" RANGE = CLOCKREGION_X0Y1, CLOCKREGION_X0Y2, CLOCKREGION_X0Y0;
+
+
+......
+.........
+Phase 4.2 (Checksum:9ae51f) REAL time: 1 mins 51 secs 
+
+.......................
+Phase 5.30
+
+
+######################################################################################
+# GLOBAL CLOCK NET DISTRIBUTION UCF REPORT:
+#
+# Number of Global Clock Regions : 16
+# Number of Global Clock Networks: 12
+#
+# Clock Region Assignment: SUCCESSFUL
+
+# CLKGEN_sclk driven by BUFGCTRL_X0Y31
+NET "CLKGEN_sclk" TNM_NET = "TN_CLKGEN_sclk" ;
+TIMEGRP "TN_CLKGEN_sclk" AREA_GROUP = "CLKAG_CLKGEN_sclk" ;
+AREA_GROUP "CLKAG_CLKGEN_sclk" RANGE =   CLOCKREGION_X0Y3, CLOCKREGION_X0Y4, CLOCKREGION_X0Y5, CLOCKREGION_X0Y6, CLOCKREGION_X0Y7 ;
+
+# lclk driven by BUFGCTRL_X0Y2
+NET "lclk" TNM_NET = "TN_lclk" ;
+TIMEGRP "TN_lclk" AREA_GROUP = "CLKAG_lclk" ;
+AREA_GROUP "CLKAG_lclk" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# dac_clk driven by BUFGCTRL_X0Y23
+NET "dac_clk" TNM_NET = "TN_dac_clk" ;
+TIMEGRP "TN_dac_clk" AREA_GROUP = "CLKAG_dac_clk" ;
+AREA_GROUP "CLKAG_dac_clk" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# dac_clk_dcm driven by BUFGCTRL_X0Y21
+NET "dac_clk_dcm" TNM_NET = "TN_dac_clk_dcm" ;
+TIMEGRP "TN_dac_clk_dcm" AREA_GROUP = "CLKAG_dac_clk_dcm" ;
+AREA_GROUP "CLKAG_dac_clk_dcm" RANGE =  ;
+
+# ref_clk driven by BUFGCTRL_X0Y27
+NET "ref_clk" TNM_NET = "TN_ref_clk" ;
+TIMEGRP "TN_ref_clk" AREA_GROUP = "CLKAG_ref_clk" ;
+AREA_GROUP "CLKAG_ref_clk" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# lvds1_gcfb driven by BUFGCTRL_X0Y5
+NET "lvds1_gcfb" TNM_NET = "TN_lvds1_gcfb" ;
+TIMEGRP "TN_lvds1_gcfb" AREA_GROUP = "CLKAG_lvds1_gcfb" ;
+AREA_GROUP "CLKAG_lvds1_gcfb" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# sys_clk driven by BUFGCTRL_X0Y16
+NET "sys_clk" TNM_NET = "TN_sys_clk" ;
+TIMEGRP "TN_sys_clk" AREA_GROUP = "CLKAG_sys_clk" ;
+AREA_GROUP "CLKAG_sys_clk" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# wclk driven by BUFGCTRL_X0Y20
+NET "wclk" TNM_NET = "TN_wclk" ;
+TIMEGRP "TN_wclk" AREA_GROUP = "CLKAG_wclk" ;
+AREA_GROUP "CLKAG_wclk" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# lvds2_gcfb driven by BUFGCTRL_X0Y12
+NET "lvds2_gcfb" TNM_NET = "TN_lvds2_gcfb" ;
+TIMEGRP "TN_lvds2_gcfb" AREA_GROUP = "CLKAG_lvds2_gcfb" ;
+AREA_GROUP "CLKAG_lvds2_gcfb" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X0Y1, CLOCKREGION_X0Y2 ;
+
+# dac_clk_nodcm driven by BUFGCTRL_X0Y22
+NET "dac_clk_nodcm" TNM_NET = "TN_dac_clk_nodcm" ;
+TIMEGRP "TN_dac_clk_nodcm" AREA_GROUP = "CLKAG_dac_clk_nodcm" ;
+AREA_GROUP "CLKAG_dac_clk_nodcm" RANGE =  ;
+
+# cal_clk driven by BUFGCTRL_X0Y17
+NET "cal_clk" TNM_NET = "TN_cal_clk" ;
+TIMEGRP "TN_cal_clk" AREA_GROUP = "CLKAG_cal_clk" ;
+AREA_GROUP "CLKAG_cal_clk" RANGE =   CLOCKREGION_X1Y0, CLOCKREGION_X1Y1, CLOCKREGION_X1Y2, CLOCKREGION_X1Y3, CLOCKREGION_X1Y4, CLOCKREGION_X1Y5, CLOCKREGION_X1Y6, CLOCKREGION_X1Y7 ;
+
+# adc_clk driven by BUFGCTRL_X0Y18
+NET "adc_clk" TNM_NET = "TN_adc_clk" ;
+TIMEGRP "TN_adc_clk" AREA_GROUP = "CLKAG_adc_clk" ;
+AREA_GROUP "CLKAG_adc_clk" RANGE =   CLOCKREGION_X0Y0, CLOCKREGION_X1Y0, CLOCKREGION_X0Y1, CLOCKREGION_X1Y1, CLOCKREGION_X0Y2, CLOCKREGION_X1Y2, CLOCKREGION_X0Y3, CLOCKREGION_X1Y3, CLOCKREGION_X0Y4, CLOCKREGION_X1Y4, CLOCKREGION_X0Y5, CLOCKREGION_X1Y5, CLOCKREGION_X0Y6, CLOCKREGION_X1Y6, CLOCKREGION_X0Y7, CLOCKREGION_X1Y7 ;
+
+# NOTE: 
+# This report is provided to help reproduce successful clock-region 
+# assignments. The report provides range constraints for all global 
+# clock networks, in a format that is directly usable in ucf files. 
+#
+#END of Global Clock Net Distribution UCF Constraints
+######################################################################################
+
+
+######################################################################################
+GLOBAL CLOCK NET LOADS DISTRIBUTION REPORT:
+
+Number of Global Clock Regions : 16
+Number of Global Clock Networks: 12
+
+Clock Region Assignment: SUCCESSFUL
+
+Clock-Region: <CLOCKREGION_X0Y0> 
+ key resource utilizations (used/available): global-clocks - 2/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      2 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    301 |sys_clk
+      0 |      0 |      0 |      0 |      0 |      7 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |lvds2_gcfb
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |      0 |      7 |      0 |      0 |      0 |      0 |      0 |      0 |    301 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y0> 
+ key resource utilizations (used/available): global-clocks - 4/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |      9 |     15 |      0 |      0 |      0 |      0 |      0 |      1 |    228 |sys_clk
+      0 |      0 |      0 |      0 |      9 |      0 |      0 |      0 |      0 |      0 |      0 |      6 |    123 |cal_clk
+      0 |      0 |      0 |      0 |      0 |      7 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |     18 |     22 |      0 |      0 |      0 |      0 |      1 |      7 |    352 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y1> 
+ key resource utilizations (used/available): global-clocks - 4/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      1 |      2 |      0 |     48 |     48 |     32 |      0 |      0 |      0 |      2 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      5 |      0 |      0 |      0 |      8 |     11 |      0 |      0 |      0 |      0 |      0 |      0 |    158 |lclk
+      5 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     19 |dac_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    168 |sys_clk
+      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |lvds2_gcfb
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     10 |      0 |      0 |      0 |      8 |     12 |      0 |      0 |      0 |      0 |      0 |      0 |    345 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y1> 
+ key resource utilizations (used/available): global-clocks - 4/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |     19 |      7 |      0 |      0 |      0 |      0 |      0 |      3 |    479 |sys_clk
+      0 |      0 |      0 |      0 |     19 |      0 |      0 |      0 |      0 |      0 |      0 |      3 |    123 |cal_clk
+      0 |      0 |      0 |      0 |      0 |     18 |      0 |      0 |      0 |      0 |      0 |      0 |      3 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |     38 |     25 |      0 |      0 |      0 |      0 |      1 |      6 |    605 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y2> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     64 |     64 |     32 |      0 |      0 |      0 |      2 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      5 |      0 |      0 |      0 |     17 |     23 |      0 |      0 |      0 |      0 |      0 |      0 |    583 |lclk
+      5 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     91 |dac_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     30 |sys_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     37 |adc_clk
+      0 |      0 |      0 |      0 |      0 |      4 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |lvds1_gcfb
+      0 |      0 |      0 |      0 |      0 |     10 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |lvds2_gcfb
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     10 |      0 |      0 |      0 |     17 |     37 |      0 |      0 |      0 |      0 |      0 |      0 |    741 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y2> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      1 |      0 |      0 |      0 |     10 |     14 |      0 |      0 |      0 |      0 |      0 |      1 |    487 |sys_clk
+      1 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     67 |dac_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     95 |lclk
+      0 |      0 |      0 |      0 |     10 |      0 |      0 |      0 |      0 |      0 |      0 |      6 |    121 |cal_clk
+      0 |      0 |      0 |      0 |      0 |      8 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      2 |      0 |      0 |      0 |     20 |     22 |      0 |      0 |      0 |      0 |      1 |      7 |    770 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y3> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     48 |     48 |     32 |      0 |      0 |      0 |      2 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     11 |      0 |      0 |      0 |      7 |      6 |      0 |      0 |      0 |      0 |      0 |      0 |    616 |lclk
+     11 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     97 |dac_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     49 |sys_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |CLKGEN_sclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     88 |adc_clk
+      0 |      0 |      0 |      0 |      0 |     14 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |lvds1_gcfb
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     22 |      0 |      0 |      0 |      7 |     20 |      0 |      0 |      0 |      0 |      0 |      0 |    851 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y3> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      5 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    336 |lclk
+      5 |      0 |      0 |      0 |     19 |      5 |      0 |      0 |      0 |      0 |      0 |      3 |    414 |sys_clk
+      5 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     19 |dac_clk
+      0 |      0 |      0 |      0 |     19 |      0 |      0 |      0 |      0 |      0 |      0 |      3 |    114 |cal_clk
+      0 |      0 |      0 |      0 |      0 |     18 |      0 |      0 |      0 |      0 |      0 |      0 |      4 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     15 |      0 |      0 |      0 |     38 |     23 |      0 |      0 |      0 |      0 |      1 |      6 |    887 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y4> 
+ key resource utilizations (used/available): global-clocks - 5/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     48 |     48 |     32 |      0 |      0 |      0 |      2 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      7 |      0 |      0 |      0 |     15 |     17 |      0 |      0 |      0 |      0 |      0 |      0 |    478 |lclk
+      6 |      0 |      0 |      0 |      2 |     10 |      0 |      0 |      0 |      0 |      0 |      0 |     43 |dac_clk
+      1 |      0 |      0 |      0 |      3 |      2 |      0 |      0 |      0 |      0 |      0 |      0 |     92 |adc_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     20 |CLKGEN_sclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     57 |sys_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     14 |      0 |      0 |      0 |     20 |     29 |      0 |      0 |      0 |      0 |      0 |      0 |    690 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y4> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      9 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    413 |lclk
+      8 |      0 |      0 |      0 |     14 |     10 |      0 |      0 |      0 |      0 |      0 |      2 |    383 |sys_clk
+      2 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     21 |adc_clk
+      0 |      0 |      0 |      0 |     14 |      0 |      0 |      0 |      0 |      0 |      0 |      6 |    144 |cal_clk
+      0 |      0 |      0 |      0 |      0 |     13 |      0 |      0 |      0 |      0 |      0 |      0 |      2 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     19 |      0 |      0 |      0 |     28 |     23 |      0 |      0 |      0 |      0 |      1 |      8 |    963 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y5> 
+ key resource utilizations (used/available): global-clocks - 4/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     64 |     64 |     32 |      0 |      0 |      0 |      2 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      6 |      0 |      0 |      0 |     23 |     23 |      0 |      0 |      0 |      0 |      0 |      0 |    551 |lclk
+      6 |      0 |      0 |      0 |     12 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    294 |adc_clk
+      0 |      0 |      0 |      0 |      0 |     10 |      0 |      0 |      0 |      0 |      0 |      0 |     11 |dac_clk
+      0 |      0 |      0 |      0 |      1 |      1 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |CLKGEN_sclk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     12 |      0 |      0 |      0 |     36 |     34 |      0 |      0 |      0 |      0 |      0 |      0 |    856 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y5> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      2 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    169 |lclk
+      4 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     56 |adc_clk
+      2 |      0 |      0 |      0 |     15 |     12 |      0 |      0 |      0 |      0 |      0 |      0 |    335 |sys_clk
+      0 |      0 |      0 |      0 |     15 |      0 |      0 |      0 |      0 |      0 |      0 |      3 |     96 |cal_clk
+      0 |      0 |      0 |      0 |      0 |     13 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      8 |      0 |      0 |      0 |     30 |     25 |      0 |      0 |      0 |      0 |      1 |      3 |    657 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y6> 
+ key resource utilizations (used/available): global-clocks - 3/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      1 |      2 |      0 |     48 |     48 |     32 |      0 |      0 |      0 |      2 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      5 |      0 |      0 |      0 |     34 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |    217 |adc_clk
+      5 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |    243 |lclk
+      0 |      0 |      0 |      0 |      1 |      4 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |dac_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     10 |      0 |      0 |      0 |     35 |      4 |      0 |      0 |      0 |      0 |      0 |      1 |    460 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y6> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      6 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     39 |adc_clk
+      4 |      0 |      0 |      0 |     15 |     11 |      0 |      0 |      0 |      0 |      0 |      2 |    592 |sys_clk
+      2 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     10 |lclk
+      0 |      0 |      0 |      0 |     15 |      0 |      0 |      0 |      0 |      0 |      0 |      3 |     42 |cal_clk
+      0 |      0 |      0 |      0 |      0 |     14 |      0 |      0 |      0 |      0 |      0 |      0 |      4 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     12 |      0 |      0 |      0 |     30 |     25 |      0 |      0 |      0 |      0 |      1 |      5 |    687 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X0Y7> 
+ key resource utilizations (used/available): global-clocks - 5/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      4 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     19 |lclk
+      0 |      0 |      0 |      0 |     11 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     84 |adc_clk
+      0 |      2 |      0 |      0 |      1 |     11 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |dac_clk
+      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |CLKGEN_sclk
+      0 |      1 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |sys_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      3 |      0 |      0 |     12 |     12 |      0 |      0 |      0 |      0 |      0 |      0 |    103 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+
+Clock-Region: <CLOCKREGION_X1Y7> 
+ key resource utilizations (used/available): global-clocks - 6/8 ;
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+   BRAM |    DCM |   PMCD |     GT | ILOGIC | OLOGIC |   MULT |   EMAC |    PPC |   PCIE | IDLYCT |    LUT |     FF | <- (Types of Resources in this  Region)
+   FIFO |        |        |        |        |        |        |        |        |        |        |        |        |
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+     40 |      0 |      0 |      0 |     32 |     32 |     32 |      0 |      0 |      0 |      1 |   1536 |   3072 | <- (Available Resources in this Region)
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+        |        |        |        |        |        |        |        |        |        |        |        |        | <Global clock Net Name>
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |     13 |     13 |      0 |      0 |      0 |      0 |      0 |      0 |    172 |sys_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |lclk
+      0 |      0 |      0 |      0 |     13 |      0 |      0 |      0 |      0 |      0 |      0 |      6 |    194 |cal_clk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |     62 |adc_clk
+      0 |      0 |      0 |      0 |      0 |     11 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |wclk
+      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      0 |      1 |      0 |      0 |ref_clk
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+      0 |      0 |      0 |      0 |     26 |     24 |      0 |      0 |      0 |      0 |      1 |      6 |    429 | Total 
+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+--------+----------------------------------------
+
+NOTE:
+The above detailed report is the initial placement of the logic after the clock region assignment. The final placement
+may be significantly different because of the various optimization steps which will follow. Specifically, logic blocks
+maybe moved to adjacent clock-regions as long as the "number of clocks per region" constraint is not violated.
+
+
+# END of Global Clock Net Loads Distribution Report:
+######################################################################################
+
+
+Phase 5.30 (Checksum:2faf07b) REAL time: 2 mins 33 secs 
+
+Phase 6.3
+Phase 6.3 (Checksum:39386fa) REAL time: 3 mins 1 secs 
+
+Phase 7.5
+Phase 7.5 (Checksum:42c1d79) REAL time: 3 mins 2 secs 
+
+Phase 8.4
+.........................
+Phase 8.4 (Checksum:4c4b3f8) REAL time: 3 mins 28 secs 
+
+Phase 9.28
+Phase 9.28 (Checksum:55d4a77) REAL time: 3 mins 31 secs 
+
+Phase 10.8
+...................................................
+.....
+.....................................................................
+...............
+...............
+...............
+Phase 10.8 (Checksum:44d5784) REAL time: 9 mins 45 secs 
+
+Phase 11.29
+Phase 11.29 (Checksum:68e7775) REAL time: 9 mins 45 secs 
+
+Phase 12.5
+Phase 12.5 (Checksum:7270df4) REAL time: 9 mins 48 secs 
+
+Phase 14.18
+Phase 14.18 (Checksum:8583af2) REAL time: 24 mins 12 secs 
+
+Phase 15.27
+Phase 15.27 (Checksum:8f0d171) REAL time: 24 mins 32 secs 
+
+Phase 16.5
+Phase 16.5 (Checksum:98967f0) REAL time: 24 mins 35 secs 
+
+Phase 18.34
+Phase 18.34 (Checksum:aba94ee) REAL time: 24 mins 37 secs 
+
+REAL time consumed by placer: 24 mins 45 secs 
+CPU  time consumed by placer: 24 mins 1 secs 
+Inspecting route info ...
+Route info done.
+
+Design Summary:
+Number of errors:      0
+Number of warnings:  680
+Logic Utilization:
+  Number of Slice Flip Flops:       9,697 out of  49,152   19%
+  Number of 4 input LUTs:          11,675 out of  49,152   23%
+Logic Distribution:
+  Number of occupied Slices:                       11,393 out of  24,576   46%
+    Number of Slices containing only related logic:  11,393 out of  11,393  100%
+    Number of Slices containing unrelated logic:          0 out of  11,393    0%
+      *See NOTES below for an explanation of the effects of unrelated logic
+Total Number of 4 input LUTs:         12,857 out of  49,152   26%
+  Number used as logic:             11,675
+  Number used as a route-thru:       1,136
+  Number used as Shift registers:       46
+  Number of bonded IOBs:              591 out of     640   92%
+  Number of BUFG/BUFGCTRLs:            12 out of      32   37%
+    Number used as BUFGs:                9
+    Number used as BUFGCTRLs:            3
+  Number of FIFO16/RAMB16s:            69 out of     320   21%
+    Number used as FIFO16s:              0
+    Number used as RAMB16s:             69
+  Number of DCM_ADVs:                   3 out of       8   37%
+  Number of IDELAYCTRLs:                8 out of      22   36%
+  Number of BUFIOs:                     2 out of      44    4%
+
+Total equivalent gate count for design:  4,702,638
+Additional JTAG gate count for IOBs:  28,368
+Peak Memory Usage:  641 MB
+Total REAL time to MAP completion:  31 mins 4 secs 
+Total CPU time to MAP completion:   30 mins 8 secs 
+
+Mapping completed.
+See MAP report file "TOP_LEVEL_map.mrp" for details.
+
+Process "Map" completed successfully
+
+
+
+Constraints file: TOP_LEVEL.pcf.
+Loading device for application Rf_Device from file '4vsx55.nph' in environment C:\Xilinx.
+   "TOP_LEVEL" is an NCD, version 3.1, device xc4vsx55, package ff1148, speed -10
+This design is using the default stepping level (major silicon revision) for this device (1). Unless your design is
+targeted at devices of this stepping level, it is recommended that you explicitly specify the stepping level of the
+parts you will be using. This will allow the tools to take advantage of any available performance and functional
+enhancements for this device. The latest stepping level for this device is '2'. Additional information on "stepping
+level" is available at support.xilinx.com.
+
+Initializing temperature to 85.000 Celsius. (default - Range: -40.000 to 100.000 Celsius)
+Initializing voltage to 1.140 Volts. (default - Range: 1.140 to 1.260 Volts)
+
+WARNING:Timing:3325 - Timing Constraint 
+   "TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 ns HIGH 50%;"
+    fails the maximum period check for input clock dac_clk_buf to DCM_ADV DAC_CLK_DCM_INST_DCM_ADV_INST because the
+   period constraint value (8000 ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the period of
+   the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock dac_clk_buf2 from DCM_ADV DAC_CLK_DCM_INST_DCM_ADV_INST because the
+   period constraint value (8000 ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the period of
+   the constraint to remove this timing failure.
+WARNING:Timing:3325 - Timing Constraint 
+   "TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" 8 ns HIGH 50%;"
+    fails the maximum period check for input clock mem_clk_buf to DCM_ADV SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because
+   the period constraint value (8000 ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock SDRAM_SYS_CLK_DCM_INST_clk0_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000 ps) exceeds the maximum internal period
+   limit of 6668 ps.   Please reduce the period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock SDRAM_SYS_CLK_DCM_INST_clk270_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000 ps) exceeds the maximum internal period
+   limit of 6668 ps.   Please reduce the period of the constraint to remove this timing failure.
+WARNING:Timing:3325 - Timing Constraint 
+   "TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" 8 ns HIGH 50%;"
+    fails the maximum period check for input clock mem_clk_buf to DCM_ADV SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because
+   the period constraint value (8000 ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock SDRAM_SYS_CLK_DCM_INST_clk0_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000 ps) exceeds the maximum internal period
+   limit of 6668 ps.   Please reduce the period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock SDRAM_SYS_CLK_DCM_INST_clk270_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000 ps) exceeds the maximum internal period
+   limit of 6668 ps.   Please reduce the period of the constraint to remove this timing failure.
+
+Device speed data version:  "PRODUCTION 1.66 2007-08-14".
+
+
+INFO:Par:253 - The Map -timing placement will be retained since it is likely to achieve better performance.
+
+Device Utilization Summary:
+
+   Number of BUFGs                           9 out of 32     28%
+   Number of BUFGCTRLs                       3 out of 32      9%
+   Number of BUFIOs                          2 out of 44      4%
+   Number of DCM_ADVs                        3 out of 8      37%
+   Number of IDELAYCTRLs                     8 out of 22     36%
+   Number of ILOGICs                       254 out of 640    39%
+   Number of External IOBs                 481 out of 640    75%
+      Number of LOCed IOBs                 481 out of 481   100%
+
+   Number of External IOBMs                 55 out of 224    24%
+      Number of LOCed IOBMs                 55 out of 55    100%
+
+   Number of External IOBSs                 55 out of 224    24%
+      Number of LOCed IOBSs                 55 out of 55    100%
+
+   Number of OLOGICs                       368 out of 640    57%
+   Number of RAMB16s                        69 out of 320    21%
+   Number of Slices                      11393 out of 24576  46%
+      Number of SLICEMs                    140 out of 12288   1%
+
+
+
+Overall effort level (-ol):   High 
+Router effort level (-rl):    High 
+
+Starting initial Timing Analysis.  REAL time: 1 mins 17 secs 
+Finished initial Timing Analysis.  REAL time: 1 mins 17 secs 
+
+Starting Router
+
+Phase 1: 72856 unrouted;       REAL time: 1 mins 25 secs 
+
+Phase 2: 61074 unrouted;       REAL time: 1 mins 28 secs 
+
+Phase 3: 18999 unrouted;       REAL time: 2 mins 15 secs 
+
+Phase 4: 18999 unrouted; (522803)      REAL time: 2 mins 20 secs 
+
+Phase 5: 19113 unrouted; (2369)      REAL time: 3 mins 2 secs 
+
+Phase 6: 19127 unrouted; (543)      REAL time: 3 mins 7 secs 
+
+Phase 7: 0 unrouted; (536)      REAL time: 4 mins 29 secs 
+
+Updating file: TOP_LEVEL.ncd with current fully routed design.
+
+Phase 8: 0 unrouted; (536)      REAL time: 6 mins 34 secs 
+
+Phase 9: 0 unrouted; (536)      REAL time: 7 mins 16 secs 
+
+Phase 10: 0 unrouted; (536)      REAL time: 10 mins 46 secs 
+
+Phase 11: 0 unrouted; (536)      REAL time: 10 mins 58 secs 
+
+Phase 12: 0 unrouted; (536)      REAL time: 11 mins 10 secs 
+
+Total REAL time to Router completion: 11 mins 11 secs 
+Total CPU time to Router completion: 10 mins 52 secs 
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Generating "PAR" statistics.
+
+**************************
+Generating Clock Report
+**************************
+
++---------------------+--------------+------+------+------------+-------------+
+|        Clock Net    |   Resource   |Locked|Fanout|Net Skew(ns)|Max Delay(ns)|
++---------------------+--------------+------+------+------------+-------------+
+|                lclk | BUFGCTRL_X0Y2| No   | 3473 |  0.879     |  3.413      |
++---------------------+--------------+------+------+------------+-------------+
+|             ref_clk |BUFGCTRL_X0Y27| No   |    8 |  0.154     |  3.197      |
++---------------------+--------------+------+------+------------+-------------+
+|             sys_clk |BUFGCTRL_X0Y16| No   | 3169 |  0.818     |  3.427      |
++---------------------+--------------+------+------+------------+-------------+
+|             adc_clk |BUFGCTRL_X0Y18| No   |  827 |  0.690     |  3.391      |
++---------------------+--------------+------+------+------------+-------------+
+|             dac_clk |BUFGCTRL_X0Y23| No   |  355 |  0.775     |  3.391      |
++---------------------+--------------+------+------+------------+-------------+
+|         CLKGEN_sclk |BUFGCTRL_X0Y31| No   |   24 |  0.207     |  3.364      |
++---------------------+--------------+------+------+------------+-------------+
+|             cal_clk |BUFGCTRL_X0Y17| No   |  876 |  0.395     |  3.354      |
++---------------------+--------------+------+------+------------+-------------+
+|                wclk |BUFGCTRL_X0Y20| No   |  117 |  0.187     |  3.282      |
++---------------------+--------------+------+------+------------+-------------+
+|          lvds1_gcfb | BUFGCTRL_X0Y5| No   |   18 |  0.056     |  3.300      |
++---------------------+--------------+------+------+------------+-------------+
+|          lvds2_gcfb |BUFGCTRL_X0Y12| No   |   18 |  0.085     |  3.382      |
++---------------------+--------------+------+------+------------+-------------+
+|         lvds3_rc_in |        IO Clk| No   |   17 |  0.012     |  0.726      |
++---------------------+--------------+------+------+------------+-------------+
+|         lvds4_rc_in |        IO Clk| No   |    5 |  0.005     |  0.710      |
++---------------------+--------------+------+------+------------+-------------+
+
+* Net Skew is the difference between the minimum and maximum routing
+only delays for the net. Note this is different from Clock Skew which
+is reported in TRCE timing report. Clock Skew is the difference between
+the minimum and maximum path delays which includes logic delays.
+
+Timing Score: 536
+
+WARNING:Par:62 - Your design did not meet timing.  The following are some suggestions to assist you to meet timing in
+   your design.
+
+      Review the timing report using Timing Analyzer (In ISE select "Post-Place &
+      Route Static Timing Report").  Go to the failing constraint(s) and select
+      the "Timing Improvement Wizard" link for suggestions to correct each problem.
+
+   Run Multi-Pass Place and Route in PAR using at least 5 "PAR Iterations"
+   (ISE process "Multi Pass Place & Route").
+
+   Use the Xilinx "xplorer" script to try special combinations of
+   options known to produce very good results.
+   See http://www.xilinx.com/ise/implementation/Xplorer.htm for details.
+
+   Visit the Xilinx technical support web at http://support.xilinx.com and go to
+   either "Troubleshoot->Tech Tips->Timing & Constraints" or "
+   TechXclusives->Timing Closure" for tips and suggestions for meeting timing
+   in your design.
+
+Number of Timing Constraints that were not applied: 9
+
+Asterisk (*) preceding a constraint indicates it was not met.
+   This may be due to a setup or hold violation.
+
+------------------------------------------------------------------------------------------------------
+  Constraint                                |  Check  | Worst Case |  Best Case | Timing |   Timing   
+                                            |         |    Slack   | Achievable | Errors |    Score   
+------------------------------------------------------------------------------------------------------
+* COMP "LREADY_N" OFFSET = OUT 9 ns AFTER C | MAXDELAY|    -0.536ns|     9.536ns|       1|         536
+  OMP "LCLKI"                               |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf_0 = PE | SETUP   |     0.021ns|     7.979ns|       0|           0
+  RIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_I | HOLD    |     0.284ns|            |       0|           0
+  NST_clk0_buf_0" TS_MEM_CLK_P HIGH 50%     |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_ADC_CLKI = PERIOD TIMEGRP "ADC_CLKI" 8 | SETUP   |     0.129ns|     7.871ns|       0|           0
+   ns HIGH 50%                              | HOLD    |     0.382ns|            |       0|           0
+------------------------------------------------------------------------------------------------------
+  TS_LCLKI = PERIOD TIMEGRP "LCLKI" 14 ns H | SETUP   |     0.134ns|    13.866ns|       0|           0
+  IGH 50%                                   | HOLD    |     0.372ns|            |       0|           0
+------------------------------------------------------------------------------------------------------
+  TS_dac_clk_buf2 = PERIOD TIMEGRP "dac_clk | SETUP   |     0.417ns|     7.583ns|       0|           0
+  _buf2" TS_DAC_CLKI HIGH 50%               | HOLD    |     0.480ns|            |       0|           0
+------------------------------------------------------------------------------------------------------
+  COMP "LBLAST_N" OFFSET = IN 7 ns BEFORE C | SETUP   |     1.984ns|     5.016ns|       0|           0
+  OMP "LCLKI"                               |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0 = P | SETUP   |     2.206ns|    23.176ns|       0|           0
+  ERIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_ | HOLD    |     0.027ns|            |       0|           0
+  INST_clkdv_buf_0" TS_MEM_CLK_P * 4 HIGH 5 |         |            |            |        |            
+  0%                                        |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf_0 =  | SETUP   |     2.528ns|     4.629ns|       0|           0
+  PERIOD TIMEGRP         "SDRAM_SYS_CLK_DCM | HOLD    |     0.904ns|            |       0|           0
+  _INST_clk270_buf_0" TS_MEM_CLK_P PHASE 6  |         |            |            |        |            
+  ns HIGH         50%                       |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  COMP "LBE0_N" OFFSET = IN 7 ns BEFORE COM | SETUP   |     3.900ns|     3.100ns|       0|           0
+  P "LCLKI"                                 |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  COMP "LBE4_N" OFFSET = IN 7 ns BEFORE COM | SETUP   |     4.112ns|     2.888ns|       0|           0
+  P "LCLKI"                                 |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf = PER | N/A     |         N/A|         N/A|     N/A|         N/A
+  IOD TIMEGRP         "SDRAM_SYS_CLK_DCM_IN |         |            |            |        |            
+  ST_clkdv_buf" TS_MEM_CLK_N * 4 HIGH 50%   |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf = PE | N/A     |         N/A|         N/A|     N/A|         N/A
+  RIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_I |         |            |            |        |            
+  NST_clk270_buf" TS_MEM_CLK_N PHASE 6 ns H |         |            |            |        |            
+  IGH 50%                                   |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf_0 =  | N/A     |         N/A|         N/A|     N/A|         N/A
+  PERIOD TIMEGRP         "SDRAM_SYS_CLK_DCM |         |            |            |        |            
+  _INST_clk180_buf_0" TS_MEM_CLK_P PHASE 4  |         |            |            |        |            
+  ns HIGH         50%                       |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf = PE | N/A     |         N/A|         N/A|     N/A|         N/A
+  RIOD TIMEGRP         "SDRAM_SYS_CLK_DCM_I |         |            |            |        |            
+  NST_clk180_buf" TS_MEM_CLK_N PHASE 4 ns H |         |            |            |        |            
+  IGH 50%                                   |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf = PERI | N/A     |         N/A|         N/A|     N/A|         N/A
+  OD TIMEGRP         "SDRAM_SYS_CLK_DCM_INS |         |            |            |        |            
+  T_clk0_buf" TS_MEM_CLK_N HIGH 50%         |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_SYS_CLK = PERIOD TIMEGRP "SYS_CLK" 8 n | N/A     |         N/A|         N/A|     N/A|         N/A
+  s HIGH 50%                                |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" | N/A     |         N/A|         N/A|     N/A|         N/A
+   8 ns HIGH 50%                            |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" | N/A     |         N/A|         N/A|     N/A|         N/A
+   8 ns HIGH 50%                            |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+  TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 | N/A     |         N/A|         N/A|     N/A|         N/A
+   ns HIGH 50%                              |         |            |            |        |            
+------------------------------------------------------------------------------------------------------
+
+
+1 constraint not met.
+INFO:Timing:2761 - N/A entries in the Constraints list may indicate that the 
+   constraint does not cover any paths or that it has no requested value.
+
+
+Generating Pad Report.
+
+All signals are completely routed.
+
+Total REAL time to PAR completion: 11 mins 33 secs 
+Total CPU time to PAR completion: 11 mins 13 secs 
+
+Peak Memory Usage:  611 MB
+
+Placer: Placement generated during map.
+Routing: Completed - No errors found.
+Timing: Completed - 1 errors found.
+
+Number of error messages: 0
+Number of warning messages: 9
+Number of info messages: 1
+
+Writing design to file TOP_LEVEL.ncd
+
+
+
+PAR done!
+
+Process "Place & Route" completed successfully
+
+Started : "Generate Post-Place & Route Static Timing".
+Loading device for application Rf_Device from file '4vsx55.nph' in environment
+C:\Xilinx.
+   "TOP_LEVEL" is an NCD, version 3.1, device xc4vsx55, package ff1148, speed
+-10
+This design is using the default stepping level (major silicon revision) for
+this device (1). Unless your design is targeted at devices of this stepping
+level, it is recommended that you explicitly specify the stepping level of the
+parts you will be using. This will allow the tools to take advantage of any
+available performance and functional enhancements for this device. The latest
+stepping level for this device is '2'. Additional information on "stepping
+level" is available at support.xilinx.com.
+WARNING:Timing:3325 - Timing Constraint 
+   "TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 ns HIGH 50%;"
+    fails the maximum period check for input clock dac_clk_buf to DCM_ADV
+   DAC_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000 ps)
+   exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock dac_clk_buf2 from DCM_ADV
+   DAC_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000 ps)
+   exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3325 - Timing Constraint 
+   "TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" 8 ns HIGH 50%;"
+    fails the maximum period check for input clock mem_clk_buf to DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000
+   ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock
+   SDRAM_SYS_CLK_DCM_INST_clk0_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000
+   ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_N = PERIOD TIMEGRP "MEM_CLK_N" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock
+   SDRAM_SYS_CLK_DCM_INST_clk270_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000
+   ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3325 - Timing Constraint 
+   "TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" 8 ns HIGH 50%;"
+    fails the maximum period check for input clock mem_clk_buf to DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000
+   ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock
+   SDRAM_SYS_CLK_DCM_INST_clk0_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000
+   ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+WARNING:Timing:3326 - Timing Constraint 
+   "TS_MEM_CLK_P = PERIOD TIMEGRP "MEM_CLK_P" 8 ns HIGH 50%;"
+    fails the maximum period check for output clock
+   SDRAM_SYS_CLK_DCM_INST_clk270_buf from DCM_ADV
+   SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST because the period constraint value (8000
+   ps) exceeds the maximum internal period limit of 6668 ps.   Please reduce the
+   period of the constraint to remove this timing failure.
+
+Analysis completed Fri Oct 26 16:30:19 2007
+--------------------------------------------------------------------------------
+
+Generating Report ...
+
+Number of warnings: 8
+Total time: 1 mins 33 secs 
+
+Process "Generate Post-Place & Route Static Timing" completed successfully

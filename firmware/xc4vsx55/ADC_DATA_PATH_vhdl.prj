@@ -1,0 +1,5 @@
+vhdl work "C:\GateFlow\7142_sig\4953_s142\xc4vsx55\fifo_d2k_w32_r64.vhd"
+vhdl work "C:\GateFlow\7142_sig\4953_s142\VHDL_Source\user_block.vhd"
+vhdl work "C:\GateFlow\7142_sig\4953_s142\VHDL_Source\d_intrfc.vhd"
+vhdl work "C:\GateFlow\7142_sig\4953_s142\VHDL_Source\adc_data_router.vhd"
+vhdl work "C:\GateFlow\7142_sig\4953_s142\VHDL_Source\adcdata.vhd"

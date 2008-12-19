@@ -1,0 +1,4 @@
+set -tmpdir "./xst/projnav.tmp"
+elaborate
+-ifn SDRAM_SYS_CLK_DCM.prj
+-ifmt mixed

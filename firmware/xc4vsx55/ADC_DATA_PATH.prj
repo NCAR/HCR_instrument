@@ -1,0 +1,5 @@
+vhdl work "fifo_d2k_w32_r64.vhd"
+vhdl work "../VHDL_Source/user_block.vhd"
+vhdl work "../VHDL_Source/d_intrfc.vhd"
+vhdl work "../VHDL_Source/adc_data_router.vhd"
+vhdl work "../VHDL_Source/adcdata.vhd"

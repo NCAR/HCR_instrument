@@ -1,0 +1,1652 @@
+Release 9.2.04i ngdbuild J.40
+Copyright (c) 1995-2007 Xilinx, Inc.  All rights reserved.
+
+Command Line: C:\Xilinx92i\bin\nt\ngdbuild.exe -ise
+C:/GateFlow/7142_sig/4953_s142/xc4vsx55/7142_vsx55.ise -intstyle ise -dd _ngo
+-nt timestamp -uc C:/GateFlow/7142_sig/4953_s142/vhdl_source/7142_signal.ucf -p
+xc4vsx55-ff1148-10 TOP_LEVEL.ngc TOP_LEVEL.ngd
+
+Reading NGO file "C:/GateFlow/7142_sig/4953_s142/xc4vsx55/TOP_LEVEL.ngc" ...
+Loading design module
+"C:\GateFlow\7142_sig\4953_s142\xc4vsx55/fifo_d1k_w64_r64.ngc"...
+Launcher: The source netlist for "sdram_ddr2_lb.ngo" was not found; the current
+NGO file will be used and no new NGO description will be compiled.  This
+probably means that the source netlist was moved or deleted.
+Loading design module
+"C:\GateFlow\7142_sig\4953_s142\xc4vsx55\sdram_ddr2_lb.ngo"...
+Loading design module
+"C:\GateFlow\7142_sig\4953_s142\xc4vsx55/fifo_d1k_w64_r32.ngc"...
+Loading design module
+"C:\GateFlow\7142_sig\4953_s142\xc4vsx55/fifo_d2k_w32_r64.ngc"...
+Loading design module
+"C:\GateFlow\7142_sig\4953_s142\xc4vsx55/fifo_d8k_w64_r32.ngc"...
+Loading design module
+"C:\GateFlow\7142_sig\4953_s142\xc4vsx55/casc_filter.ngc"...
+
+Applying constraints in
+"C:/GateFlow/7142_sig/4953_s142/vhdl_source/7142_signal.ucf" to the design...
+INFO:NgdBuild:738 - A case sensitive search for the INST, PAD, or NET element
+   referred to by a constraint entry in
+   'C:/GateFlow/7142_sig/4953_s142/vhdl_source/7142_signal.ucf' that accompanies
+   this design has failed, while a case insensitive search is in progress. The
+   result of the case insensitive search will be used, but messages will
+   accompany each and every use of a case insensitive result. Constraints are
+   case sensitive with respect to user-specified identifiers, which includes
+   names of logic elements in a design.
+INFO:NgdBuild:740 - "C:/GateFlow/7142_sig/4953_s142/vhdl_source/7142_signal.ucf"
+   Line 746: Found case insensitive match for NET name 'SYS_CLK'. NET is
+   'sys_clk'.
+
+Checking timing specifications ...
+INFO:XdmHelpers:851 - TNM "DAC_CLKI", used in period specification
+   "TS_DAC_CLKI", was traced into DCM_ADV instance
+   "DAC_CLK_DCM_INST_DCM_ADV_INST". The following new TNM groups and period
+   specifications were generated at the DCM_ADV output(s):
+   CLK0: TS_dac_clk_buf2=PERIOD dac_clk_buf2 TS_DAC_CLKI*1 HIGH 50%
+INFO:XdmHelpers:851 - TNM "MEM_CLK_N", used in period specification
+   "TS_MEM_CLK_N", was traced into DCM_ADV instance
+   "SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST". The following new TNM groups and
+   period specifications were generated at the DCM_ADV output(s):
+   CLK0: TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk0_buf TS_MEM_CLK_N*1 HIGH 50%
+   CLK180: TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk180_buf TS_MEM_CLK_N*1 PHASE + 4 nS HIGH 50%
+   CLK270: TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk270_buf TS_MEM_CLK_N*1 PHASE + 6 nS HIGH 50%
+   CLKDV: TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clkdv_buf TS_MEM_CLK_N*4 HIGH 50%
+INFO:XdmHelpers:851 - TNM "MEM_CLK_P", used in period specification
+   "TS_MEM_CLK_P", was traced into DCM_ADV instance
+   "SDRAM_SYS_CLK_DCM_INST_DCM_ADV_INST". The following new TNM groups and
+   period specifications were generated at the DCM_ADV output(s):
+   CLK0: TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk0_buf_0 TS_MEM_CLK_P*1 HIGH 50%
+   CLK180: TS_SDRAM_SYS_CLK_DCM_INST_clk180_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk180_buf_0 TS_MEM_CLK_P*1 PHASE + 4 nS HIGH 50%
+   CLK270: TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clk270_buf_0 TS_MEM_CLK_P*1 PHASE + 6 nS HIGH 50%
+   CLKDV: TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0=PERIOD
+SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0 TS_MEM_CLK_P*4 HIGH 50%
+INFO:XdmHelpers:851 - TNM "ADC_CLKI", used in period specification
+   "TS_ADC_CLKI", was traced into DCM_ADV instance "DDC_DCM_DCM_ADV_HI_INST".
+   The following new TNM groups and period specifications were generated at the
+   DCM_ADV output(s):
+   CLK2X: TS_DDC_DCM_ddc_dcm_clk2x=PERIOD DDC_DCM_ddc_dcm_clk2x TS_ADC_CLKI/2
+HIGH 50%
+   CLKDV: TS_DDC_DCM_ddc_dcm_clk4d=PERIOD DDC_DCM_ddc_dcm_clk4d TS_ADC_CLKI*4
+HIGH 50%
+Checking Partitions ...
+Checking expanded design ...
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[47].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[46].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[45].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[44].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[43].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[42].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[41].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[40].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[39].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[38].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[37].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[36].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[35].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[34].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[17].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[16].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[15].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[14].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[13].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[12].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[11].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[10].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[9].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[8].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[7].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[6].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[5].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[4].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[3].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[2].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[1].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_accumulate_e613902493/do
+   wn_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[0].fde_
+   used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[47].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[46].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[45].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[44].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[43].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[42].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[41].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[40].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[39].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[38].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[37].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[36].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[35].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[34].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[17].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[16].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[15].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[14].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[13].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[12].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[11].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[10].fd
+   e_used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[9].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[8].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[7].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[6].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[5].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[4].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[3].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[2].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[1].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filter
+   s_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_accumulate_e613902493/d
+   own_sample/latency_gt_0.latency_pipe/partial_one.last_srl17e/reg_array[0].fde
+   _used.u2' has unconnected output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[47].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[46].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[45].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[44].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[43].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[42].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[41].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[40].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[39].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[38].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[37].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[36].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[35].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[34].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[33].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[14].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[13].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[12].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[11].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[10].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[9].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[8].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[7].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[6].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[5].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[4].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[3].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[2].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[1].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/q_accumulator_96611ec7c7/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[0].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[47].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[46].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[45].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[44].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[43].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[42].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[41].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[40].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[39].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[38].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[37].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[36].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[35].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[34].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[33].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[14].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[13].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[12].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[11].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[10].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[9].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[8].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[7].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[6].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[5].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[4].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[3].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[2].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[1].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:440 - FF primitive
+   'ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/polyphase_kaiser_fi
+   r_filter_d332e477e0/i_accumulator_188238f264/down_sample1/latency_gt_0.latenc
+   y_pipe/partial_one.last_srl17e/reg_array[0].fde_used.u2' has unconnected
+   output pin
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_assert<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_assert<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_full_thresh_negate<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<9>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<8>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<7>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<6>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<5>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<4>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<3>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<2>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<1>'
+   has no driver
+WARNING:NgdBuild:452 - logical net 'FIFO_TEST/BU2/prog_empty_thresh_negate<0>'
+   has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_DACM_FIFO/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCBM/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_ADCAM/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMW/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'MEMAPP_FIFO_MEMR/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCB/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT2_FIFO_ADCA/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<13>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<13>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<12>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<11>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'DACDAT_FIFO_A/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCB/BU2/prog_empty_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_assert<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<10>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_full_thresh_negate<0>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<9>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<8>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<7>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<6>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<5>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<4>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<3>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<2>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<1>' has no driver
+WARNING:NgdBuild:452 - logical net
+   'ADCDAT_FIFO_ADCA/BU2/prog_empty_thresh_negate<0>' has no driver
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings: 592
+
+Total memory usage is 166680 kilobytes
+
+Writing NGD file "TOP_LEVEL.ngd" ...
+
+Writing NGDBUILD log file "TOP_LEVEL.bld"...
