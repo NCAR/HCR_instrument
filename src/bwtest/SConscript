@@ -2,6 +2,7 @@
 
 tools = Split("""
 pentek
+ddslib
 """)
 
 env = Environment(tools = ['default'] + tools)

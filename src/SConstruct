@@ -25,6 +25,7 @@ dirs = Split(
 """
    bwtest
    configddc
+   ddslib
 """)
     
 for d in dirs:
