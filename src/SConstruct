@@ -22,6 +22,7 @@ env = Environment(tools = ['default'], GLOBAL_TOOLS = [SdrSetup])
 dirs = Split(
 """
    bwtest
+   ddslib
 """)
 #   cmdline
 #   timer
