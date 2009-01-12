@@ -5,8 +5,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <math.h>
-#include "ptkdrv.h"
-#include "ptkddr.h"
+#include "p7142.h"
 #include <sched.h>
 #include <sys/timeb.h>
 
@@ -33,70 +32,6 @@ createOutputFile(int curFd, std::string name)
   return fd;
 }
 
-///////////////////////////////////////////////////////////
-int overUnderCount(int deviceFd, std::string& device) {
-
-  int count = ioctl(deviceFd, FIOGETOVRCNT);
-  if (count == -1)
-  {
-    std::cout << "unable to get ovr/under for "
-  	<< device << std::endl;
-    perror("");
-  }
-
-  // clear the overrun counter
-  if (ioctl(deviceFd, FIOCLROVRCNT) == -1)
-  {
-    std::cout << "unable to clear ovr/under for "
-  	<< device << std::endl;
-    perror("");
-  }
-
-  return count;
-}
-
-///////////////////////////////////////////////////////////
-void
-configurePentek(int deviceFd,
-		std::string device)
-{
-
-  // set the clock source
-  int clockSource;
-
-  //  clockSource = CLK_SRC_FRTPAN;
-  clockSource = CLK_SRC_INTERN;
-
-  if (ioctl(deviceFd, FIOCLKSRCSET, clockSource) == -1)
-    {
-      std::cout << "unable to set the clock source for "
-		<< device << std::endl;
-      perror("");
-      exit(1);
-    }
-
-  // set the clock sample rate
-  double doublearg = 100.0e6;
-  if (ioctl(deviceFd, FIOSAMPRATESET, &doublearg) == -1) {
-    std::cout << "unable to set the clock rate for "
-	      << device << std::endl;
-    perror("");
-    exit(1);
-  }
-
-  // flush the device read buffers
-  if (ioctl(deviceFd, FIOFLUSH, 0) == -1)
-    {
-      std::cout << "unable to flush for "
-		<< device << std::endl;
-      perror("");
-      exit(1);
-    }
-
-  // clear the overrun counter
-  overUnderCount(deviceFd, device);
-
-}
 
 ///////////////////////////////////////////////////////////
 void
@@ -138,52 +73,43 @@ int
 main(int argc, char** argv)
 {
 
-  std::string device;
-  std::string outFile;
-  int deviceFd;
-  int outFd = -1;
-  double startTime;
-  int bufferSize;
-  char* buf;
-
-  if (argc < 4) {
+  if (argc != 5) {
     std::cout << "usage: " << argv[0]
-	      << " <channel device> <buffer factor> <output file>\n";
+	      << " <device root> <down convertor name (e.g. 0B)> <buffer factor> <output file>\n";
     exit (1);
   }
 
-  device = argv[1];
-  bufferSize = BASICSIZE*atoi(argv[2]);
-  outFile = argv[3];
+  std::string devRoot = argv[1];
+  std::string dnName  = argv[2];
+  int bufferSize      = BASICSIZE*atoi(argv[3]);
+  std::string outFile = argv[4];
 
   std::cout << "read buffer size is " << bufferSize << std::endl;
 
-  buf = new char[bufferSize];
+  char* buf = new char[bufferSize];
 
+  int outFd = -1;
   outFd = createOutputFile(outFd, outFile);
 
   makeRealTime();
 
-  deviceFd = open(device.c_str(), O_RDWR, 0);
+  Pentek::p7142dn downConvertor(devRoot, dnName);
 
-  if (deviceFd < 0) {
-    std::cerr << "cannot access " << device << "\n";
+  if (!downConvertor.ok()) {
+    std::cerr << "cannot access " << devRoot << ", " << dnName << "\n";
     perror("");
     exit(1);
   }
 
-  // configure the downconversion channel
-  configurePentek(deviceFd, device);
-
   int loopCount = 0;
   double total = 0;
 
-  startTime = nowTime();
+  double startTime = nowTime();
 
   int lastMb = 0;
 
   while (1) {
-    int n = read(deviceFd, buf, bufferSize);
+    int n = downConvertor.read(buf, bufferSize);
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
@@ -199,7 +125,7 @@ main(int argc, char** argv)
 	double elapsed = nowTime() - startTime;
 	double bw = (total/elapsed)/1.0e6;
 
-	int overruns = overUnderCount(deviceFd, device);
+	int overruns = downConvertor.overUnderCount();
 
 	std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 		  << std::setprecision(4) << std::setw(5) << bw

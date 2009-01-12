@@ -4,15 +4,13 @@ import os
 PENTEK_ROOT = os.environ['PENTEK_ROOT']
 PENTEK_INCLUDE = PENTEK_ROOT+'/include'
 
-tools = []
+tools = Split("""
+""")
+
 env = Environment(tools = ['default'] + tools)
 
-def pentek(env):
-    env.AppendUnique(CPPPATH   =[PENTEK_INCLUDE,])
-    env.AppendUnique(CPPDEFINES=['PENTEK_LINUX',])
-    env.Require(tools)
-
-Export('pentek')
+env.AppendUnique(CPPPATH   =[PENTEK_INCLUDE,])
+env.AppendUnique(CPPDEFINES=['PENTEK_LINUX',])
 
 libsources = Split("""
 p7142.cpp
@@ -21,3 +19,13 @@ p7142.cpp
 libpentek = env.Library('pentek', libsources)
 
 Default(libpentek)
+
+thisdir = env.Dir('.').srcnode().abspath
+def pentek(env):
+    env.AppendUnique(CPPPATH   =[thisdir, PENTEK_INCLUDE,])
+    env.AppendUnique(CPPDEFINES=['PENTEK_LINUX',])
+    env.AppendUnique(LIBPATH = [thisdir,])
+    env.Require(tools)
+
+Export('pentek')
+

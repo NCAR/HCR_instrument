@@ -7,6 +7,6 @@ ddslib
 
 env = Environment(tools = ['default'] + tools)
 
-p = env.Program('bwtest', 'bwtest.cc')
+p = env.Program('bwtest', 'bwtest.cc', LIBS=['pentek',])
 Default(p)
 
