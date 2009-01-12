@@ -23,7 +23,7 @@ namespace Pentek {
 			virtual ~p7142();
 			/// @return true if the last operation was succesfull,
 			/// false otherwise.
-			bool ok();
+			virtual bool ok();
 			
 		protected:
 			/// Indicated the success of the last operation.
@@ -48,11 +48,11 @@ namespace Pentek {
 			/// @param buf read bytes into this buffer
 			/// @param bufsize The number of bytes tor read.
 			/// @return The actual number of bytes read
-			int read(char* buf, int bufsize);
+			virtual int read(char* buf, int bufsize);
 			/// @return The number of overrun, or underrun samples. Return
 			/// -1 if unable to get this information, and set _ok to false.
 			/// Clear the counter as well.
-			int overUnderCount();
+			virtual int overUnderCount();
 		protected:
 			/// The down convertor device name
 			std::string _dnName;
