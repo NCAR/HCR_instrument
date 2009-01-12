@@ -23,6 +23,7 @@ env = Environment(tools = ['default'], GLOBAL_TOOLS = [SdrSetup])
 
 dirs = Split(
 """
+   pentek
    bwtest
    configddc
    ddslib
