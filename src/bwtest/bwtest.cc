@@ -5,9 +5,14 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <math.h>
-#include "p7142.h"
 #include <sched.h>
 #include <sys/timeb.h>
+
+#include "p7142.h"
+#include "DDSPublisher.h"
+#include "DDSSubscriber.h"
+#include "TSWriter.h"
+#include "TSReader.h"
 
 #define BASICSIZE   1024
 
@@ -88,11 +93,14 @@ main(int argc, char** argv)
 
   char* buf = new char[bufferSize];
 
+  // create the output file
   int outFd = -1;
   outFd = createOutputFile(outFd, outFile);
 
+  // try to change scheduling to real-time
   makeRealTime();
 
+  // creatre the downconvertor
   Pentek::p7142dn downConvertor(devRoot, dnName);
 
   if (!downConvertor.ok()) {
@@ -100,7 +108,16 @@ main(int argc, char** argv)
     perror("");
     exit(1);
   }
+  
+  // create the DDS TSWriter
+  DDSPublisher publisher(argc, argv);
+  TSWriter writer (publisher, "test");
 
+  // create the DDS TSreader
+  DDSSubscriber subscriber(argc, argv);
+  TSReader reader (subscriber, "test");
+
+  // start the loop
   int loopCount = 0;
   double total = 0;
 

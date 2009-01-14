@@ -24,7 +24,7 @@ thisdir = env.Dir('.').srcnode().abspath
 def pentek(env):
     env.AppendUnique(CPPPATH   =[thisdir, PENTEK_INCLUDE,])
     env.AppendUnique(CPPDEFINES=['PENTEK_LINUX',])
-    env.AppendUnique(LIBPATH = [thisdir,])
+    env.AppendLibrary('pentek')
     env.Require(tools)
 
 Export('pentek')

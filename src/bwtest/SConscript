@@ -1,12 +1,27 @@
 # -*- python -*-
 
 tools = Split("""
+ddssvc
+hcrdds
 pentek
-ddslib
 """)
 
 env = Environment(tools = ['default'] + tools)
 
-p = env.Program('bwtest', 'bwtest.cc', LIBS=['pentek',])
+# add external libraries:
+libs = Split("""
+ReliableMulticast 
+SimpleUnreliableDgram 
+SimpleTcp
+OpenDDS_Dcps
+TAO_PortableServer
+TAO_AnyTypeCode
+dl
+rt
+""")
+
+env.Append(LIBS = libs)
+
+p = env.Program('bwtest', 'bwtest.cc')
 Default(p)
 

@@ -12,21 +12,19 @@ import SCons
 
 options = eol_scons.Pkg_Options()
 
-def SdrSetup(env):
+def HcrSetup(env):
     env.Require(['QTDIR'])
     env.AppendUnique (CCFLAGS=['-Wall','-Wno-char-subscripts'])
-    env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor'])
+    env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor',])
     return env
     
-env = Environment(tools = ['default'], GLOBAL_TOOLS = [SdrSetup])
+env = Environment(tools = ['default'], GLOBAL_TOOLS = [HcrSetup])
 
 
 dirs = Split(
 """
-   pentek
    bwtest
    configddc
-   ddslib
 """)
     
 for d in dirs:
