@@ -24,6 +24,7 @@ env = Environment(tools = ['default'], GLOBAL_TOOLS = [HcrSetup])
 dirs = Split(
 """
    bwtest
+   hcrdrx
    configddc
 """)
     
