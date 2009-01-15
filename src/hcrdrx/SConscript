@@ -1,0 +1,15 @@
+# -*- python -*-
+
+tools = Split("""
+hcrdds
+pentek
+qtt_qtconfig
+boost_date_time
+boost_program_options
+""")
+
+env = Environment(tools = ['default'] + tools)
+
+p = env.Program('hcrdrx', 'main.cpp')
+Default(p)
+
