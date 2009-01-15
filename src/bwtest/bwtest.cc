@@ -8,11 +8,8 @@
 #include <sched.h>
 #include <sys/timeb.h>
 
+
 #include "p7142.h"
-#include "DDSPublisher.h"
-#include "DDSSubscriber.h"
-#include "TSWriter.h"
-#include "TSReader.h"
 
 #define BASICSIZE   1024
 
@@ -100,7 +97,7 @@ main(int argc, char** argv)
   // try to change scheduling to real-time
   makeRealTime();
 
-  // creatre the downconvertor
+  // create the downconvertor
   Pentek::p7142dn downConvertor(devRoot, dnName);
 
   if (!downConvertor.ok()) {
@@ -109,14 +106,6 @@ main(int argc, char** argv)
     exit(1);
   }
   
-  // create the DDS TSWriter
-  DDSPublisher publisher(argc, argv);
-  TSWriter writer (publisher, "test");
-
-  // create the DDS TSreader
-  DDSSubscriber subscriber(argc, argv);
-  TSReader reader (subscriber, "test");
-
   // start the loop
   int loopCount = 0;
   double total = 0;
