@@ -3,11 +3,10 @@
 #
 import os
 
-tools = []
+tools = ['ddssvc',]
 env = Environment(tools = ['default'] + tools)
 
 def hcrdds(env):
-#    env.AppendLibrary('hcrdds')
     env.AppendUnique(CPPPATH = ['#/hcrdds',])
     env.Require(tools)
 
