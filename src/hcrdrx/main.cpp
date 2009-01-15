@@ -21,8 +21,6 @@
 #include "TSWriter.h"
 #include "TSReader.h"
 
-#define BASICSIZE   1024
-
 using namespace std;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
@@ -95,7 +93,7 @@ void getConfigParams()
     // depend upon HCRDIR
     std::string orbFile      = HcrDir + "ORBSvc.conf";
     std::string dcpsFile     = HcrDir + "DDSClient.ini";
-    std::string dcpsInfoRepo = "iiop://archiver:50000/DCPSInfoRepo";
+    std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
 
     // get parameters
     _publish      = config.getBool("DDS/Publish", true);
