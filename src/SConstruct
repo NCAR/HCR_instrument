@@ -22,14 +22,8 @@ env = Environment(tools = ['default'], GLOBAL_TOOLS = [SdrSetup])
 dirs = Split(
 """
    bwtest
-   ddslib
+   profilerdrx
 """)
-#   cmdline
-#   timer
-#   rwreg
-#   digital_io
-#   pulse
-#   scope
     
 for d in dirs:
     if os.access (d, os.R_OK):
