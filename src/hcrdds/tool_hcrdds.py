@@ -3,7 +3,7 @@
 #
 import os
 
-tools = ['ddssvc',]
+tools = ['ddssvc','hcrtypes']
 env = Environment(tools = ['default'] + tools)
 
 def hcrdds(env):
