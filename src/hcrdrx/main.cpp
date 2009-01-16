@@ -15,7 +15,7 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
-#include "p7142.h"
+#include "p7140.h"
 #include "DDSPublisher.h"
 #include "DDSSubscriber.h"
 #include "TSWriter.h"
@@ -191,7 +191,7 @@ main(int argc, char** argv)
   createDDSservices();
   
   // create the downconvertor
-  Pentek::p7142dn downConvertor(_devRoot, _dnName);
+  Pentek::p7140dn downConvertor(_devRoot, _dnName);
 
   if (!downConvertor.ok()) {
     std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
