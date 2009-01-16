@@ -15,7 +15,7 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
-//#include "p7142.h"
+#include "p7142.h"
 #include "DDSPublisher.h"
 #include "DDSSubscriber.h"
 #include "TSWriter.h"
@@ -191,13 +191,13 @@ main(int argc, char** argv)
   createDDSservices();
   
   // create the downconvertor
-//  Pentek::p7142dn downConvertor(_devRoot, _dnName);
+  Pentek::p7142dn downConvertor(_devRoot, _dnName);
 
-//  if (!downConvertor.ok()) {
-//    std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
-//    perror("");
-//    exit(1);
-//  }
+  if (!downConvertor.ok()) {
+    std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
+    perror("");
+    exit(1);
+  }
   
   // create the read buffer
   char* buf = new char[_bufferSize];
@@ -214,7 +214,7 @@ main(int argc, char** argv)
   int lastMb = 0;
 
   while (1) {
-    int n = 0; //downConvertor.read(buf, _bufferSize);
+    int n = downConvertor.read(buf, _bufferSize);
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
@@ -230,7 +230,7 @@ main(int argc, char** argv)
 	double elapsed = nowTime() - startTime;
 	double bw = (total/elapsed)/1.0e6;
 
-	int overruns = 0; //downConvertor.overUnderCount();
+	int overruns = downConvertor.overUnderCount();
 
 	std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 		  << std::setprecision(4) << std::setw(5) << bw
