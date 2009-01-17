@@ -8,7 +8,6 @@
 #include <sched.h>
 #include <sys/timeb.h>
 
-
 #include "p7142.h"
 
 #define BASICSIZE   1024
@@ -16,133 +15,122 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////
-int
-createOutputFile(int curFd, std::string name)
-{
+int createOutputFile(int curFd, std::string name) {
 
-  if (curFd > -1)
-    close(curFd);
+	if (curFd > -1)
+		close(curFd);
 
-  int fd = open(name.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	int fd = open(name.c_str(), O_WRONLY| O_CREAT | O_TRUNC, 0666);
 
-  if (fd < 0) {
-    std::cerr << "cannot access " << name << "\n";
-    perror("");
-    exit(1);
-  }
+	if (fd < 0) {
+		std::cerr << "cannot access " << name << "\n";
+		perror("");
+		exit(1);
+	}
 
-  return fd;
-}
-
-
-///////////////////////////////////////////////////////////
-void
-makeRealTime()
-{
-
-
-  uid_t id = getuid();
-
-  // don't even try if we are not root.
-  if (id != 0) {
-    std::cerr << "Not root, unable to change scheduling priority" << std::endl;
-    return;
-  }
-
-  sched_param sparam;
-  sparam.sched_priority = 50;
-
-  if (sched_setscheduler(0, SCHED_RR, &sparam)) {
-    std::cerr << "warning, unable to set scheduler parameters: ";
-    perror("");
-    std::cerr << "\n";
-  }
+	return fd;
 }
 
 ///////////////////////////////////////////////////////////
-double nowTime()
-{
-  struct timeb timeB;
+void makeRealTime() {
 
-  ftime(&timeB);
+	uid_t id = getuid();
 
-  return timeB.time + timeB.millitm/1000.0;
+	// don't even try if we are not root.
+	if (id != 0) {
+		std::cerr << "Not root, unable to change scheduling priority"
+				<< std::endl;
+		return;
+	}
+
+	sched_param sparam;
+	sparam.sched_priority = 50;
+
+	if (sched_setscheduler(0, SCHED_RR, &sparam)) {
+		std::cerr << "warning, unable to set scheduler parameters: ";
+		perror("");
+		std::cerr << "\n";
+	}
+}
+
+///////////////////////////////////////////////////////////
+double nowTime() {
+	struct timeb timeB;
+
+	ftime(&timeB);
+
+	return timeB.time + timeB.millitm / 1000.0;
 
 }
 
 ///////////////////////////////////////////////////////////
-int
-main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 
-  if (argc != 5) {
-    std::cout << "usage: " << argv[0]
-	      << " <device root> <down convertor name (e.g. 0B)> <buffer factor> <output file>\n";
-    exit (1);
-  }
+	if (argc != 5) {
+		std::cout << "usage: " << argv[0]
+				<< " <device root> <down convertor name (e.g. 0B)> <buffer factor> <output file>\n";
+		exit(1);
+	}
 
-  std::string devRoot = argv[1];
-  std::string dnName  = argv[2];
-  int bufferSize      = BASICSIZE*atoi(argv[3]);
-  std::string outFile = argv[4];
+	std::string devRoot = argv[1];
+	std::string dnName = argv[2];
+	int bufferSize = BASICSIZE * atoi(argv[3]);
+	std::string outFile = argv[4];
 
-  std::cout << "read buffer size is " << bufferSize << std::endl;
+	std::cout << "read buffer size is " << bufferSize << std::endl;
 
-  char* buf = new char[bufferSize];
+	char* buf = new char[bufferSize];
 
-  // create the output file
-  int outFd = -1;
-  outFd = createOutputFile(outFd, outFile);
+	// create the output file
+	int outFd = -1;
+	outFd = createOutputFile(outFd, outFile);
 
-  // try to change scheduling to real-time
-  makeRealTime();
+	// try to change scheduling to real-time
+	makeRealTime();
 
-  // create the downconvertor
-  Pentek::p7142dn downConvertor(devRoot, dnName);
+	// create the downconvertor
+	Pentek::p7142dn downConvertor(devRoot, dnName);
 
-  if (!downConvertor.ok()) {
-    std::cerr << "cannot access " << devRoot << ", " << dnName << "\n";
-    perror("");
-    exit(1);
-  }
-  
-  // start the loop
-  int loopCount = 0;
-  double total = 0;
+	if (!downConvertor.ok()) {
+		std::cerr << "cannot access " << devRoot << ", " << dnName << "\n";
+		exit(1);
+	}
 
-  double startTime = nowTime();
+	// start the loop
+	int loopCount = 0;
+	double total = 0;
 
-  int lastMb = 0;
+	double startTime = nowTime();
 
-  while (1) {
-    int n = downConvertor.read(buf, bufferSize);
-    if (n <= 0) {
-      std::cerr << "read returned " << n << " ";
-      if (n < 0)
-	perror("");
-      std::cerr << "\n";
-    } else {
-      write(outFd, buf, n);
-      total += n;
-      loopCount++;
-      int mb = (int)(total/1.0e6);
-      if ((mb % 100) == 0 && mb > lastMb) {
-	lastMb = mb;
-	double elapsed = nowTime() - startTime;
-	double bw = (total/elapsed)/1.0e6;
+	int lastMb = 0;
 
-	int overruns = downConvertor.overUnderCount();
+	while (1) {
+		int n = downConvertor.read(buf, bufferSize);
+		if (n <= 0) {
+			std::cerr << "read returned " << n << " ";
+			if (n < 0)
+				perror("");
+			std::cerr << "\n";
+		} else {
+			write(outFd, buf, n);
+			total += n;
+			loopCount++;
+			int mb = (int) (total / 1.0e8);
+			if (mb > lastMb) {
+				lastMb = mb;
+				double elapsed = nowTime() - startTime;
+				double bw = (total / elapsed) / 1.0e6;
 
-	std::cout << "total " << std::setw(5) << mb << " MB,  BW "
-		  << std::setprecision(4) << std::setw(5) << bw
-		  << " MB/s, overruns: "
-		  << overruns << "\n";
-      }
+				int overruns = downConvertor.overUnderCount();
 
+				std::cout << "total " << std::setw(5) << mb * 100
+						<< " MB,  BW " << std::setprecision(4) << std::setw(5)
+						<< bw << " MB/s, overruns: " << overruns << "\n";
+			}
 
-    }
-    if (total > 2.0e9)
-      break;
-  }
+		}
+		if (total > 2.0e9)
+			break;
+	}
 }
 
