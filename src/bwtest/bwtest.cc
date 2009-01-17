@@ -66,9 +66,9 @@ double nowTime() {
 ///////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	if (argc != 6) {
+	if (argc < 5) {
 		std::cout << "usage: " << argv[0]
-				<< " <device root> <down convertor name (e.g. 0B)> <bypass decimation rate (1-4096)> <buffer factor> <output file>\n";
+				<< " <device root> <down converter name (e.g. 0B)> <bypass decimation rate (1-4096)> <buffer factor> [<output file>]\n";
 		exit(1);
 	}
 
@@ -76,7 +76,10 @@ int main(int argc, char** argv) {
 	std::string dnName = argv[2];
 	int bypdiv = atoi(argv[3]);
 	int bufferSize = BASICSIZE * atoi(argv[4]);
-	std::string outFile = argv[5];
+	std::string outFile;
+	if (argc > 5)
+		 outFile = argv[5];
+
 
 	std::cout << "read buffer size is " << bufferSize << std::endl;
 
@@ -84,7 +87,8 @@ int main(int argc, char** argv) {
 
 	// create the output file
 	int outFd = -1;
-	outFd = createOutputFile(outFd, outFile);
+	if (outFile.size() > 0)
+		outFd = createOutputFile(outFd, outFile);
 
 	// try to change scheduling to real-time
 	makeRealTime();
@@ -113,7 +117,8 @@ int main(int argc, char** argv) {
 				perror("");
 			std::cerr << "\n";
 		} else {
-			write(outFd, buf, n);
+			if (outFd != -1)
+				write(outFd, buf, n);
 			total += n;
 			loopCount++;
 			int mb = (int) (total / 1.0e8);
@@ -130,7 +135,7 @@ int main(int argc, char** argv) {
 			}
 
 		}
-		if (total > 2.0e9)
+		if (total > 2.0e9 && outFd != -1)
 			break;
 	}
 }
