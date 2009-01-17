@@ -66,16 +66,17 @@ double nowTime() {
 ///////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 
-	if (argc != 5) {
+	if (argc != 6) {
 		std::cout << "usage: " << argv[0]
-				<< " <device root> <down convertor name (e.g. 0B)> <buffer factor> <output file>\n";
+				<< " <device root> <down convertor name (e.g. 0B)> <bypass decimation rate (1-4096)> <buffer factor> <output file>\n";
 		exit(1);
 	}
 
 	std::string devRoot = argv[1];
 	std::string dnName = argv[2];
-	int bufferSize = BASICSIZE * atoi(argv[3]);
-	std::string outFile = argv[4];
+	int bypdiv = atoi(argv[3]);
+	int bufferSize = BASICSIZE * atoi(argv[4]);
+	std::string outFile = argv[5];
 
 	std::cout << "read buffer size is " << bufferSize << std::endl;
 
@@ -89,7 +90,7 @@ int main(int argc, char** argv) {
 	makeRealTime();
 
 	// create the downconvertor
-	Pentek::p7142dn downConvertor(devRoot, dnName);
+	Pentek::p7142dn downConvertor(devRoot, dnName, bypdiv);
 
 	if (!downConvertor.ok()) {
 		std::cerr << "cannot access " << devRoot << ", " << dnName << "\n";
