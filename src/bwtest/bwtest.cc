@@ -80,7 +80,6 @@ int main(int argc, char** argv) {
 	if (argc > 5)
 		 outFile = argv[5];
 
-
 	std::cout << "read buffer size is " << bufferSize << std::endl;
 
 	char* buf = new char[bufferSize];
@@ -135,6 +134,8 @@ int main(int argc, char** argv) {
 			}
 
 		}
+
+		// if writing a file, only allow 2 GB collected.
 		if (total > 2.0e9 && outFd != -1)
 			break;
 	}
