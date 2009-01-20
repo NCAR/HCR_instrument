@@ -177,6 +177,22 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
+void
+publish(char* buf, int n) {
+	
+	ProfilerDDS::TimeSeries* ts = _tsWriter->getEmptyItem();
+	
+	ts->tsdata.length(n/2);
+	
+	// bogus data send for the moment.
+	for (int i = 0; i < n; i +=2)
+		ts->tsdata[i/2] = buf[i]*256 + buf[i+1];
+		
+	_tsWriter->publishItem(ts);
+
+}
+
+///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
 {
@@ -205,8 +221,7 @@ main(int argc, char** argv)
   // try to change scheduling to real-time
   makeRealTime();
 
- // start the loop
-  int loopCount = 0;
+  // start the loop
   double total = 0;
 
   double startTime = nowTime();
@@ -221,9 +236,11 @@ main(int argc, char** argv)
 	perror("");
       std::cerr << "\n";
     } else {
-//      write(outFd, buf, n);
       total += n;
-      loopCount++;
+      
+      // publish new data
+      publish(buf, n);
+      
       int mb = (int)(total/1.0e6);
       if ((mb % 100) == 0 && mb > lastMb) {
 	lastMb = mb;
@@ -237,8 +254,6 @@ main(int argc, char** argv)
 		  << " MB/s, overruns: "
 		  << overruns << "\n";
       }
-
-
     }
     if (total > 2.0e9)
       break;
