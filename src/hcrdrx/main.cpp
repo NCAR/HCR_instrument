@@ -148,8 +148,6 @@ void parseOptions(int argc,
 void
 makeRealTime()
 {
-
-
   uid_t id = getuid();
 
   // don't even try if we are not root.
@@ -189,7 +187,6 @@ publish(char* buf, int n) {
 		ts->tsdata[i/2] = buf[i]*256 + buf[i+1];
 		
 	_tsWriter->publishItem(ts);
-
 }
 
 ///////////////////////////////////////////////////////////
@@ -233,7 +230,7 @@ main(int argc, char** argv)
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
-	perror("");
+		perror("");
       std::cerr << "\n";
     } else {
       total += n;
@@ -243,16 +240,16 @@ main(int argc, char** argv)
       
       int mb = (int)(total/1.0e6);
       if ((mb % 100) == 0 && mb > lastMb) {
-	lastMb = mb;
-	double elapsed = nowTime() - startTime;
-	double bw = (total/elapsed)/1.0e6;
-
-	int overruns = downConvertor.overUnderCount();
-
-	std::cout << "total " << std::setw(5) << mb << " MB,  BW "
-		  << std::setprecision(4) << std::setw(5) << bw
-		  << " MB/s, overruns: "
-		  << overruns << "\n";
+		lastMb = mb;
+		double elapsed = nowTime() - startTime;
+		double bw = (total/elapsed)/1.0e6;
+	
+		int overruns = downConvertor.overUnderCount();
+	
+		std::cout << "total " << std::setw(5) << mb << " MB,  BW "
+			  << std::setprecision(4) << std::setw(5) << bw
+			  << " MB/s, overruns: "
+			  << overruns << "\n";
       }
     }
     if (total > 2.0e9)
