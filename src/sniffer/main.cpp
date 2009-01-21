@@ -188,7 +188,7 @@ main(int argc, char** argv)
 
 	// start the loop
 	double total = 0;
-
+	double subTotal = 0;
 	double startTime = nowTime();
 
 	int lastMb = 0;
@@ -203,13 +203,16 @@ main(int argc, char** argv)
 		} else {
 			samples++;
 			total += ts->tsdata.length()*sizeof(ts->tsdata[0]);
+			subTotal += ts->tsdata.length()*sizeof(ts->tsdata[0]);
 			_tsReader->returnItem(ts);
 
 			int mb = (int)(total/1.0e6);
 			if ((mb % 100) == 0 && mb > lastMb) {
 				lastMb = mb;
 				double elapsed = nowTime() - startTime;
-				double bw = (total/elapsed)/1.0e6;
+				double bw = (subTotal/elapsed)/1.0e6;
+				startTime = nowTime();
+				subTotal = 0;
 
 				std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 				<< std::setprecision(4) << std::setw(5) << bw
