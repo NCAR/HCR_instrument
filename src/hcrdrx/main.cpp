@@ -17,9 +17,7 @@
 
 #include "p7140.h"
 #include "DDSPublisher.h"
-#include "DDSSubscriber.h"
 #include "TSWriter.h"
-#include "TSReader.h"
 
 using namespace std;
 using namespace boost::posix_time;
@@ -177,15 +175,21 @@ double nowTime()
 ///////////////////////////////////////////////////////////
 void
 publish(char* buf, int n) {
-	
+
 	ProfilerDDS::TimeSeries* ts = _tsWriter->getEmptyItem();
-	
-	ts->tsdata.length(n/2);
-	
+
+	if (!ts) {
+		return;
+	}
+
+	int len = n;
+
+	ts->tsdata.length(len/2);
+
 	// bogus data send for the moment.
-	for (int i = 0; i < n; i +=2)
+	for (int i = 0; i < len; i +=2)
 		ts->tsdata[i/2] = buf[i]*256 + buf[i+1];
-		
+
 	_tsWriter->publishItem(ts);
 }
 
@@ -224,6 +228,7 @@ main(int argc, char** argv)
   double startTime = nowTime();
 
   int lastMb = 0;
+  int samples = 0;
 
   while (1) {
     int n = downConvertor.read(buf, _bufferSize);
@@ -234,26 +239,25 @@ main(int argc, char** argv)
       std::cerr << "\n";
     } else {
       total += n;
-      
+
       // publish new data
       publish(buf, n);
-      
+      samples++;
+
       int mb = (int)(total/1.0e6);
       if ((mb % 100) == 0 && mb > lastMb) {
 		lastMb = mb;
 		double elapsed = nowTime() - startTime;
 		double bw = (total/elapsed)/1.0e6;
-	
+
 		int overruns = downConvertor.overUnderCount();
-	
+
 		std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 			  << std::setprecision(4) << std::setw(5) << bw
 			  << " MB/s, overruns: "
-			  << overruns << "\n";
+			  << overruns << "   samples: " << samples << std::endl;
       }
     }
-    if (total > 2.0e9)
-      break;
   }
 }
 
