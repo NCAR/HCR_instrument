@@ -1,0 +1,19 @@
+# -*- python -*-
+
+tools = Split("""
+profilerdds
+qtt_qtconfig
+boost_date_time
+boost_program_options
+""")
+
+env = Environment(tools = ['default'] + tools)
+
+sources = Split("""
+main.cpp
+SnifferTSReader.cpp
+""")
+
+p = env.Program('sniffer', sources)
+Default(p)
+
