@@ -23,6 +23,7 @@ dirs = Split(
 """
    bwtest
    profilerdrx
+   sniffer
 """)
     
 for d in dirs:
