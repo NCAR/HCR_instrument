@@ -24,6 +24,7 @@ dirs = Split(
    bwtest
    profilerdrx
    sniffer
+   profilerscope
 """)
     
 for d in dirs:
