@@ -15,7 +15,7 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
-#include "p7142.h"
+#include "p7142hcr.h"
 #include "DDSPublisher.h"
 #include "DDSSubscriber.h"
 #include "TSWriter.h"
@@ -48,9 +48,9 @@ void createDDSservices()
     argv["-ORBSvcConf"] = _ORB;
     argv["-DCPSConfigFile"] = _DCPS;
     argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
-    if (_DCPSDebugLevel > 0) 
+    if (_DCPSDebugLevel > 0)
 	argv["-DCPSDebugLevel"] = _DCPSDebugLevel;
-    if (_DCPSTransportDebugLevel > 0) 
+    if (_DCPSTransportDebugLevel > 0)
 	argv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
 
     // create our DDS publisher
@@ -109,7 +109,7 @@ void getConfigParams()
 
 //////////////////////////////////////////////////////////////////////
 //
-/// Parse the command line options, and also set some options 
+/// Parse the command line options, and also set some options
 /// that are not specified on the command line.
 /// @return The runtime options that can be passed to the
 /// threads that interact with the RR314.
@@ -119,18 +119,18 @@ void parseOptions(int argc,
 
     // get the options
     po::options_description descripts("Options");
-    descripts.add_options() 
-    ("help", "describe options") 
+    descripts.add_options()
+    ("help", "describe options")
     ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
     ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
     ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
     ("nopublish", "do not publish data")
     ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
-    ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel), 
+    ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
      "DCPSTransportDebugLevel ")
     ("bufsize", po::value<int>(&_bufferSize), "Read buffer size (bytes)")
     ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
-    ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0B)")    
+    ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0B)")
      ;
 
     po::variables_map vm;
@@ -183,22 +183,22 @@ main(int argc, char** argv)
 
   // get the configuration parameters from the configuration file
   getConfigParams();
-  
+
   // parse the command line optins, substituting for config params.
   parseOptions(argc, argv);
-  
+
   // create the dds services
   createDDSservices();
-  
+
   // create the downconvertor
-  Pentek::p7142dn downConvertor(_devRoot, _dnName);
+  Pentek::p7142hcrdn downConvertor(_devRoot, _dnName);
 
   if (!downConvertor.ok()) {
     std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
     perror("");
     exit(1);
   }
-  
+
   // create the read buffer
   char* buf = new char[_bufferSize];
 
