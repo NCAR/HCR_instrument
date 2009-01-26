@@ -6,6 +6,7 @@ pentek
 qtt_qtconfig
 boost_date_time
 boost_program_options
+doxygen
 """)
 
 env = Environment(tools = ['default'] + tools)
