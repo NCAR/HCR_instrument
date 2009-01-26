@@ -33,7 +33,7 @@ for d in dirs:
     else:
         print "Skipping %s." % d
 
-#env.ApidocsIndex (source=["mainpage.dox","config/README"])
+env.Alias('apidocs', env.Dir("apidocs"))
 
 options.Update(env)
 Help(options.GenerateHelpText(env))
