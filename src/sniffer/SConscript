@@ -14,6 +14,12 @@ main.cpp
 SnifferTSReader.cpp
 """)
 
-p = env.Program('sniffer', sources)
-Default(p)
+headers = Split("""
+SnifferTSReader.h
+""")
+
+html = env.Apidocs(sources + headers, DOXYFILE_FILE = "#/Doxyfile")
+
+sniffer = env.Program('sniffer', sources)
+Default(sniffer, html)
 
