@@ -9,8 +9,18 @@ boost_program_options
 doxygen
 """)
 
+sources = Split("""
+main.cpp
+""")
+
+headers = Split("""
+""")
+
 env = Environment(tools = ['default'] + tools)
 
-p = env.Program('profilerdrx', 'main.cpp')
-Default(p)
+profilerdrx = env.Program('profilerdrx', sources)
+
+html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
+
+Default(profilerdrx, html)
 
