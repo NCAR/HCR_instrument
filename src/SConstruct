@@ -10,13 +10,13 @@ options = eol_scons.Pkg_Options()
 #options.Add(BoolOption('PENTEK', 'Build Pentek applications?', 0))
 
 
-def SdrSetup(env):
+def ProfilerSetup(env):
     env.Require(['QTDIR'])
     env.AppendUnique (CCFLAGS=['-Wall','-Wno-char-subscripts'])
     env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor'])
     return env
     
-env = Environment(tools = ['default'], GLOBAL_TOOLS = [SdrSetup])
+env = Environment(tools = ['default'], GLOBAL_TOOLS = [ProfilerSetup])
 
 
 dirs = Split(
