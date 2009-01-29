@@ -26,14 +26,16 @@ namespace po = boost::program_options;
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
 std::string _dnName;             ///< Downconvertor name e.g. 0B
-int _bufferSize;                 ///< Buffer size
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
-std::string _rayTopic;           ///< The published ray topic
 std::string _tsTopic;            ///< The published timeseries topic
 int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
+int _gates;                      ///< The number of gates
+int _tsLength;                   ///< The time series length
+int _numChannels;                ///< The number of radar channels
+int _bufferSize;                 ///< Buffer size
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 
@@ -99,10 +101,16 @@ void getConfigParams()
     _DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
     _tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
-    _bufferSize   = config.getInt("Device/BufferSize",     100000);
     _devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
     _dnName       = config.getString("Device/DownName",    "0C");
-    std::cerr << "read DCPSInfoRepo = " << _DCPSInfoRepo << " from config" << std::endl;
+    _gates        = config.getInt("Radar/Gates",           100);
+    _tsLength     = config.getInt("Radar/TsLength",        256);
+    _numChannels  = config.getInt("Radar/Channels",        4);
+
+    /// there will be an I and Q for each channel
+    _bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
+    std::cout << "read buffer size is " << _bufferSize << std::endl;
+
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -126,7 +134,6 @@ void parseOptions(int argc,
     ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
     ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
      "DCPSTransportDebugLevel ")
-    ("bufsize", po::value<int>(&_bufferSize), "Read buffer size (bytes)")
     ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
     ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0C)")
      ;
