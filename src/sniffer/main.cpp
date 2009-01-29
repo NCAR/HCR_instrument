@@ -37,7 +37,6 @@ int _bufferSize;                 ///< Buffer size
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
-std::string _rayTopic;           ///< The published ray topic
 std::string _tsTopic;            ///< The published timeseries topic
 int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
@@ -49,7 +48,7 @@ void createDDSservices()
 {
 	std::cout <<__FILE__ << " creating DDS services" << std::endl;
 
-	ArgvParams argv("eldoradrx");
+	ArgvParams argv("sniffer");
 	argv["-ORBSvcConf"] = _ORB;
 	argv["-DCPSConfigFile"] = _DCPS;
 	argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
@@ -73,7 +72,7 @@ void createDDSservices()
 
 //////////////////////////////////////////////////////////////////////
 ///
-/// get parameters that are spcified in the configuration file.
+/// get parameters that are specified in the configuration file.
 /// These can be overriden by command line specifications.
 void getConfigParams()
 {
