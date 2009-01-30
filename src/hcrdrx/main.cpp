@@ -193,6 +193,10 @@ publish(char* buf, int n) {
 
 	ts->tsdata.length(len/2);
 
+	ts->hskp.gates = _gates;
+	ts->hskp.numChannels = _numChannels;
+	ts->hskp.tsLength = _tsLength;
+
 	// bogus data send for the moment.
 	for (int i = 0; i < len; i +=2)
 		ts->tsdata[i/2] = buf[i]*256 + buf[i+1];
