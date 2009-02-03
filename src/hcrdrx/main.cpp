@@ -38,12 +38,12 @@ int _numChannels;                ///< The number of radar channels
 int _bufferSize;                 ///< Buffer size
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
+bool _simulate;                  ///< Set true for simulate mode
+int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
 
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
 {
-    std::cout <<__FILE__ << " creating DDS services" << std::endl;
-
     ArgvParams argv("profilerdrx");
     argv["-ORBSvcConf"] = _ORB;
     argv["-DCPSConfigFile"] = _DCPS;
@@ -106,11 +106,11 @@ void getConfigParams()
     _gates        = config.getInt("Radar/Gates",           100);
     _tsLength     = config.getInt("Radar/TsLength",        256);
     _numChannels  = config.getInt("Radar/Channels",        4);
+    _simulate     = config.getBool("Simulate",             false);
+    _simPauseMS   = config.getInt("SimPauseMs",            20);  
 
     /// there will be an I and Q for each channel
     _bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
-    std::cout << "read buffer size is " << _bufferSize << std::endl;
-
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -127,6 +127,10 @@ void parseOptions(int argc,
     po::options_description descripts("Options");
     descripts.add_options()
     ("help", "describe options")
+    ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
+    ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0C)")
+    ("simulate", po::value<bool>(&_simulate), "Enable simulation")
+    ("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
     ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
     ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
     ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
@@ -134,8 +138,6 @@ void parseOptions(int argc,
     ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
     ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
      "DCPSTransportDebugLevel ")
-    ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
-    ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0C)")
      ;
 
     po::variables_map vm;
@@ -219,7 +221,7 @@ main(int argc, char** argv)
   createDDSservices();
 
   // create the downconvertor
-  Pentek::p7140dn downConvertor(_devRoot, _dnName);
+  Pentek::p7140dn downConvertor(_devRoot, _dnName, 8, _simulate, _simPauseMS);
 
   if (!downConvertor.ok()) {
     std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
