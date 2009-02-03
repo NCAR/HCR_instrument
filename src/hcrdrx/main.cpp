@@ -44,7 +44,7 @@ void createDDSservices()
 {
     std::cout <<__FILE__ << " creating DDS services" << std::endl;
 
-    ArgvParams argv("eldoradrx");
+    ArgvParams argv("profilerdrx");
     argv["-ORBSvcConf"] = _ORB;
     argv["-DCPSConfigFile"] = _DCPS;
     argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
@@ -77,7 +77,7 @@ void createDDSservices()
 void getConfigParams()
 {
 
-    QtConfig config("NCAR", "ProfilerDrx");
+    QtConfig config("ProfilerDrx", "ProfilerDrx");
 
     // set up the default configuration directory path
     std::string ProfilerDir("/conf/");
