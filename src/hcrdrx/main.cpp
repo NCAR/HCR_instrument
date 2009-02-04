@@ -180,6 +180,9 @@ double nowTime()
 int
 main(int argc, char** argv)
 {
+	int gates, delay, prt, prt2, pulsewidth, stgr_prt;
+	std::string gaussianFile;
+	std::string kaiserFile;
 
   // get the configuration parameters from the configuration file
   getConfigParams();
@@ -190,8 +193,17 @@ main(int argc, char** argv)
   // create the dds services
   createDDSservices();
 
-  // create the downconvertor
-  Pentek::p7142hcrdn downConvertor(_devRoot, _dnName);
+  	// default configuration
+	gates = 500;
+	delay = 0;
+	prt = 2000; // 10 MHz counts
+	prt2 = prt; // no staggered prt
+	pulsewidth = 10; // 10 MHz counts
+	stgr_prt = false;
+
+	// create the downconvertor
+	Pentek::p7142hcrdn downConvertor(devRoot, dnName, gates, delay, prt, prt2,
+			pulsewidth, stgr_prt, gaussianFile, kaiserFile, bypdiv);
 
   if (!downConvertor.ok()) {
     std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
