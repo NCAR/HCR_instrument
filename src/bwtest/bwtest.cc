@@ -8,7 +8,7 @@
 #include <sched.h>
 #include <sys/timeb.h>
 
-#include "p7142.h"
+#include "p7142hcr.h"
 
 #define BASICSIZE   1024
 
@@ -65,6 +65,9 @@ double nowTime() {
 
 ///////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
+int gates, delay, prt, prt2, pulsewidth, stgr_prt;
+std::string gaussianFile;
+std::string kaiserFile;
 
 	if (argc < 5) {
 		std::cout << "usage: " << argv[0]
@@ -92,8 +95,17 @@ int main(int argc, char** argv) {
 	// try to change scheduling to real-time
 	makeRealTime();
 
+	// default configuration
+	gates = 500;
+	delay = 0;
+	prt = 2000; // 10 MHz counts
+	prt2 = prt; // no staggered prt
+	pulsewidth = 10; // 10 MHz counts
+	stgr_prt = false;
+
 	// create the downconvertor
-	Pentek::p7142dn downConvertor(devRoot, dnName, bypdiv);
+	Pentek::p7142hcrdn downConvertor(devRoot, dnName, gates, delay, prt, prt2,
+			pulsewidth, stgr_prt, gaussianFile, kaiserFile, bypdiv);
 
 	if (!downConvertor.ok()) {
 		std::cerr << "cannot access " << devRoot << ", " << dnName << "\n";
