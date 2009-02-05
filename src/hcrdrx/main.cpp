@@ -132,19 +132,17 @@ void parseOptions(int argc,
   po::options_description descripts("Options");
   descripts.add_options()
     ("help", "describe options")
-    ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
+    ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/p7142/0)")
     ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0B)")
-    ("simulate", po::value<bool>(&_simulate), "Enable simulation")
+    ("nopublish", "do not publish data")
+    ("simulate", "Enable simulation")
     ("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
     ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
     ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
     ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
-    ("nopublish", "do not publish data")
     ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
     ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
      "DCPSTransportDebugLevel ")
-    ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
-    ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0B)")
     ;
 
   po::variables_map vm;
@@ -152,6 +150,7 @@ void parseOptions(int argc,
   po::notify(vm);
 
   _publish = vm.count("nopublish") == 0;
+  _simulate = vm.count("simulate") != 0;
   if (vm.count("help")) {
     std::cout << descripts << std::endl;
     exit(1);
@@ -194,6 +193,9 @@ double nowTime()
 void
 publish(char* buf, int n) {
 
+  if (!_publish)
+		return;
+
   HcrDDS::TimeSeries* ts = _tsWriter->getEmptyItem();
 
   if (!ts) {
@@ -222,6 +224,9 @@ main(int argc, char** argv)
   // stick with 1 channel for now
   _numChannels = 1;
 
+  // default to publishing
+  _publish = true;
+
   // get the configuration parameters from the configuration file
   getConfigParams();
 
@@ -242,7 +247,8 @@ main(int argc, char** argv)
   _stgr_prt = false;
 
   // create the downconvertor
-  Pentek::p7142hcrdn downConvertor(
+/**
+   Pentek::p7142hcrdn downConvertor(
 				   _devRoot,
 				   _dnName,
 				   _gates,
@@ -253,6 +259,14 @@ main(int argc, char** argv)
 				   _stgr_prt,
 				   _gaussianFile,
 				   _kaiserFile,
+				   _bypdiv,
+				   _simulate,
+				   _simPauseMS);
+**/
+
+  Pentek::p7142dn downConvertor(
+				   _devRoot,
+				   _dnName,
 				   _bypdiv,
 				   _simulate,
 				   _simPauseMS);
