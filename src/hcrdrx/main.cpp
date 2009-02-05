@@ -233,7 +233,6 @@ main(int argc, char** argv)
   createDDSservices();
 
   // default configuration
-  _gates = 500;
   _delay = 0;
   _prt = 2000; // 10 MHz counts
   _prt2 = _prt; // no staggered prt
