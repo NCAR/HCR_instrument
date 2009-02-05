@@ -16,10 +16,11 @@ def HcrSetup(env):
     env.Require(['QTDIR'])
     env.AppendUnique (CCFLAGS=['-Wall','-Wno-char-subscripts'])
     env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor',])
+    env['DOXYFILE_DICT'] = dict()
+    env['DOXYFILE_DICT'].update({ 'HTML_HEADER' : env.File("#header.html") })
     return env
     
 env = Environment(tools = ['default'], GLOBAL_TOOLS = [HcrSetup])
-
 
 dirs = Split(
 """
@@ -34,7 +35,7 @@ for d in dirs:
     else:
         print "Skipping %s." % d
 
-#env.ApidocsIndex (source=["mainpage.dox","config/README"])
+env.Alias('apidocs', env.Dir("apidocs"))
 
 options.Update(env)
 Help(options.GenerateHelpText(env))

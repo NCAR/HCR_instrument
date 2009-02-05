@@ -1,12 +1,12 @@
 #
 # Rules to build ddslib and export it as a SCons tool
 #
-tools = ['opendds', 'doxygen']
+tools = ['opendds12', 'doxygen']
 env = Environment(tools = ['default'] + tools)
 
 lib, sources, headers = env.DdsLibrary('hcrtypes.idl', env)
 
-html = env.Apidocs(sources + headers, DOXYFILE_FILE = "#/Doxyfile")
+html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
 
 Default([lib, html])
 

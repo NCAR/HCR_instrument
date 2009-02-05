@@ -3,8 +3,8 @@
 
 #include "DDSWriter.h"
 
-#include "TimeSeriesTypeSupportC.h"
-#include "TimeSeriesTypeSupportImpl.h"
+#include "hcrtypesTypeSupportC.h"
+#include "hcrtypesTypeSupportImpl.h"
 
 /// A DDSWriter for the TS data type.
 typedef DDSWriter<WRITERSIG(HcrDDS::TimeSeries)> TSWriter;

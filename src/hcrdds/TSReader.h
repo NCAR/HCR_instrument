@@ -3,8 +3,8 @@
 
 #include "DDSReader.h"
 
-#include "TimeSeriesTypeSupportC.h"
-#include "TimeSeriesTypeSupportImpl.h"
+#include "hcrtypesTypeSupportC.h"
+#include "hcrtypesTypeSupportImpl.h"
 
 /// A DDSReader for the TS data type.
 typedef DDSReader<READERSIG(HcrDDS::TimeSeries)> TSReader;

@@ -4,8 +4,18 @@ tools = Split("""
 pentek
 """)
 
+sources = Split("""
+bwtest.cc
+""")
+
+headers = Split("""
+""")
+
 env = Environment(tools = ['default'] + tools)
 
+html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
+
 p = env.Program('bwtest', 'bwtest.cc')
-Default(p)
+
+Default(p, html)
 
