@@ -16,25 +16,25 @@ env = Environment(tools = ['default'] + tools)
 qt4modules = ['QtCore','QtGui']
 env.EnableQt4Modules(qt4modules)
 
-# This will create ui_ProfilerScope.h
-env.Uic4(['ProfilerScope.ui',])
+# This will create ui_HcrScope.h
+env.Uic4(['HcrScope.ui',])
 
 sources = Split("""
 main.cpp
-ProfilerScope.cpp
+HcrScope.cpp
 PlotInfo.cpp
 """)
 
 headers = Split("""
-ProfilerScope.h
+HcrScope.h
 PlotInfo.h
 """)
 
 html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
 
-profilerscope = env.Program('profilerscope', sources)
+hcrscope = env.Program('hcrscope', sources)
 
-Default(profilerscope, html)
+Default(hcrscope, html)
 
 
 

@@ -38,11 +38,11 @@ void getConfigParams()
 
 	// set up the default configuration directory path
 	std::string HcrDir("/conf/");
-	char* e = getenv("PROFILERDIR");
+	char* e = getenv("HCRDIR");
 	if (e) {
 		HcrDir = e + HcrDir;
 	} else {
-		std::cerr << "Environment variable PROFILERDIR must be set." << std::endl;
+		std::cerr << "Environment variable HCRDIR must be set." << std::endl;
 		exit(1);
 	}
 
@@ -55,7 +55,7 @@ void getConfigParams()
 	// get parameters
 	_ORB          = config.getString("DDS/ORBConfigFile",  orbFile);
 	_DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
-	_tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
+	_tsTopic      = config.getString("DDS/TopicTS",        "HCRTS");
 	_DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 
 	_refreshHz    = config.getDouble("RefreshHz",  50.0);
@@ -104,7 +104,7 @@ main (int argc, char** argv) {
 	// parse the command line optins, substituting for config params.
 	parseOptions(argc, argv);
 
-	ArgvParams newargv("sniffer");
+	ArgvParams newargv("hcrscope");
 	newargv["-ORBSvcConf"] = _ORB;
 	newargv["-DCPSConfigFile"] = _DCPS;
 	newargv["-DCPSInfoRepo"] = _DCPSInfoRepo;

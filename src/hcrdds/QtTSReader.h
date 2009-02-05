@@ -31,12 +31,12 @@ signals:
     /// the desired bandwith specification.
     /// @param pItem A pointer to the item. It must be returned
     /// via returnItem().
-	void newItem(ProfilerDDS::TimeSeries* pItem);
+	void newItem(HcrDDS::TimeSeries* pItem);
 
 public slots:
     /// Use this slot to return an item
     /// @param pItem the item to be returned.
-    void returnItemSlot(ProfilerDDS::TimeSeries* pItem);
+    void returnItemSlot(HcrDDS::TimeSeries* pItem);
 
 protected:
 	/// Re-implmented from super class. This function will be  called

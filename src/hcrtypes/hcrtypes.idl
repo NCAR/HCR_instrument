@@ -5,6 +5,9 @@ module HcrDDS {
     
     typedef struct housekeeping_ {
         long long timetag;
+        long gates;
+        long tsLength;
+        long numChannels;
     } Housekeeping;
 
 #pragma DCPS_DATA_TYPE "HcrDDS::TimeSeries"

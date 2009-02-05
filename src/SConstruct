@@ -26,9 +26,10 @@ dirs = Split(
 """
    bwtest
    hcrdrx
+   hcrscope
    configddc
 """)
-    
+
 for d in dirs:
     if os.access (d, os.R_OK):
         SConscript(dirs = d)

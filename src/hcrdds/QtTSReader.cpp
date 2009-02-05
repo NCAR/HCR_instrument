@@ -8,7 +8,7 @@
 #include "QtTSReader.h"
 #include <QMetaType>
 
-Q_DECLARE_METATYPE(ProfilerDDS::TimeSeries*)
+Q_DECLARE_METATYPE(HcrDDS::TimeSeries*)
 
 QtTSReader::QtTSReader(DDSSubscriber& subscriber,
 		std::string topicName,
@@ -18,7 +18,7 @@ QtTSReader::QtTSReader(DDSSubscriber& subscriber,
 			{
 	// these are required in order to send structured data types
 	// via a qt signal
-	qRegisterMetaType<ProfilerDDS::TimeSeries*>();
+	qRegisterMetaType<HcrDDS::TimeSeries*>();
 }
 
 QtTSReader::~QtTSReader() {
@@ -27,7 +27,7 @@ QtTSReader::~QtTSReader() {
 
 //////////////////////////////////////////////////////////////////////////////
 void
-QtTSReader::returnItemSlot(ProfilerDDS::TimeSeries* pItem) {
+QtTSReader::returnItemSlot(HcrDDS::TimeSeries* pItem) {
 	TSReader::returnItem(pItem);
 }
 
@@ -40,7 +40,7 @@ QtTSReader::returnItemSlot(ProfilerDDS::TimeSeries* pItem) {
 void QtTSReader::notify(){
 	// a DDS data notification has been received.
 	bool sentOne = false;
-	while (ProfilerDDS::TimeSeries* pItem = getNextItem()) {
+	while (HcrDDS::TimeSeries* pItem = getNextItem()) {
 		// send the sample to our clients
 		if (! sentOne && _capture) {
 			emit newItem(pItem);
