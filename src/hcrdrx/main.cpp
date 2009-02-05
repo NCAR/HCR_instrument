@@ -208,9 +208,10 @@ publish(char* buf, int n) {
   ts->hskp.numChannels = _numChannels;
   ts->hskp.tsLength = _tsLength;
 
-  // bogus data send for the moment.
-  for (int i = 0; i < len; i +=2)
-    ts->tsdata[i/2] = buf[i]*256 + buf[i+1];
+  // convert to shorts
+  short* data = (short*)buf;
+  for (int i = 0; i < n/2; i++)
+	 ts->tsdata[i] = data[i];
 
   _tsWriter->publishItem(ts);
 }
