@@ -38,6 +38,15 @@ int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
+int _gates;
+int _delay;
+int _prt;
+int _prt2;
+int _pulsewidth;
+int _stgr_prt;
+int _bypdiv;
+std::string _gaussianFile;
+std::string _kaiserFile;
 
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
@@ -180,10 +189,6 @@ double nowTime()
 int
 main(int argc, char** argv)
 {
-	int gates, delay, prt, prt2, pulsewidth, stgr_prt;
-	std::string gaussianFile;
-	std::string kaiserFile;
-
   // get the configuration parameters from the configuration file
   getConfigParams();
 
@@ -194,16 +199,26 @@ main(int argc, char** argv)
   createDDSservices();
 
   	// default configuration
-	gates = 500;
-	delay = 0;
-	prt = 2000; // 10 MHz counts
-	prt2 = prt; // no staggered prt
-	pulsewidth = 10; // 10 MHz counts
-	stgr_prt = false;
+  	_gates = 500;
+	_delay = 0;
+	_prt = 2000; // 10 MHz counts
+	_prt2 = _prt; // no staggered prt
+	_pulsewidth = 10; // 10 MHz counts
+	_stgr_prt = false;
 
 	// create the downconvertor
-	Pentek::p7142hcrdn downConvertor(devRoot, dnName, gates, delay, prt, prt2,
-			pulsewidth, stgr_prt, gaussianFile, kaiserFile, bypdiv);
+	Pentek::p7142hcrdn downConvertor(
+		_devRoot, 
+		_dnName, 
+		_gates, 
+		_delay, 
+		_prt, 
+		_prt2,
+		_pulsewidth, 
+		_stgr_prt, 
+		_gaussianFile, 
+		_kaiserFile, 
+		_bypdiv);
 
   if (!downConvertor.ok()) {
     std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
