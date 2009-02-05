@@ -107,7 +107,7 @@ void getConfigParams()
     _tsLength     = config.getInt("Radar/TsLength",        256);
     _numChannels  = config.getInt("Radar/Channels",        4);
     _simulate     = config.getBool("Simulate",             false);
-    _simPauseMS   = config.getInt("SimPauseMs",            20);  
+    _simPauseMS   = config.getInt("SimPauseMs",            20);
 
     /// there will be an I and Q for each channel
     _bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
@@ -199,9 +199,10 @@ publish(char* buf, int n) {
 	ts->hskp.numChannels = _numChannels;
 	ts->hskp.tsLength = _tsLength;
 
-	// bogus data send for the moment.
-	for (int i = 0; i < len; i +=2)
-		ts->tsdata[i/2] = buf[i]*256 + buf[i+1];
+	// convert to shorts
+	short* data = (short*)buf;
+	for (int i = 0; i < n/2; i++)
+		ts->tsdata[i] = data[i];
 
 	_tsWriter->publishItem(ts);
 }
