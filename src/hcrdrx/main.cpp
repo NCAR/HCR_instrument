@@ -108,13 +108,14 @@ void getConfigParams()
   _DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
   _tsTopic      = config.getString("DDS/TopicTS",        "HCRTS");
   _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
-  _devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/0");
+  _devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
   _dnName       = config.getString("Device/DownName",    "0B");
   _simulate     = config.getBool("Simulate",             false);
-  _simPauseMS   = config.getInt("SimPauseMs",            100);  
-    
+  _simPauseMS   = config.getInt("SimPauseMs",            100);
+
   _gates        = config.getInt("Radar/Gates",           200);
   _tsLength     = config.getInt("Radar/TsLength",        1024);
+  _bypdiv       = config.getInt("Radar/BypDiv",          125);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -219,7 +220,7 @@ main(int argc, char** argv)
 {
   // stick with 1 channel for now
   _numChannels = 1;
-  
+
   // get the configuration parameters from the configuration file
   getConfigParams();
 
@@ -238,19 +239,19 @@ main(int argc, char** argv)
   _prt2 = _prt; // no staggered prt
   _pulsewidth = 10; // 10 MHz counts
   _stgr_prt = false;
-	
+
   // create the downconvertor
   Pentek::p7142hcrdn downConvertor(
-				   _devRoot, 
-				   _dnName, 
-				   _gates, 
-				   _delay, 
-				   _prt, 
+				   _devRoot,
+				   _dnName,
+				   _gates,
+				   _delay,
+				   _prt,
 				   _prt2,
-				   _pulsewidth, 
-				   _stgr_prt, 
-				   _gaussianFile, 
-				   _kaiserFile, 
+				   _pulsewidth,
+				   _stgr_prt,
+				   _gaussianFile,
+				   _kaiserFile,
 				   _bypdiv,
 				   _simulate,
 				   _simPauseMS);
@@ -260,21 +261,21 @@ main(int argc, char** argv)
     perror("");
     exit(1);
   }
-	
+
   // create the read buffer
   char* buf = new char[_bufferSize];
-	
+
   // try to change scheduling to real-time
   makeRealTime();
-	
+
   // start the loop
   double total = 0;
-	
+
   double startTime = nowTime();
-	
+
   int lastMb = 0;
   int samples = 0;
-	
+
   while (1) {
     int n = downConvertor.read(buf, _bufferSize);
     if (n <= 0) {
