@@ -153,7 +153,9 @@ void parseOptions(int argc,
 	po::notify(vm);
 
 	_publish = vm.count("nopublish") == 0;
-	_simulate = vm.count("simulate") != 0;
+	if (vm.count("simulate") != 0 )
+		_simulate = true;
+
 	if (vm.count("help")) {
 		std::cout << descripts << std::endl;
 		exit(1);
