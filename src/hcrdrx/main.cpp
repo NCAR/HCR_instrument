@@ -1,3 +1,5 @@
+//#define CAPTURE
+
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -222,9 +224,11 @@ publish(char* buf, int n) {
 	short* data = (short*)buf;
 	for (int i = 0; i < n/2; i++) {
 		ts->tsdata[i] = data[i];
-//		if (i % 2)
-//			std::cout << i << "  " << ts->tsdata[i-1]
-//			          << "  " << ts->tsdata[i] << std::endl;
+#ifdef CAPTURE
+		if (i % 2)
+			std::cout << i << "  " << ts->tsdata[i-1]
+			          << "  " << ts->tsdata[i] << std::endl;
+#endif
 	}
 
 	_tsWriter->publishItem(ts);
