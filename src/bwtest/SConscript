@@ -5,7 +5,8 @@ pentek
 """)
 
 sources = Split("""
-bwtest.cc
+bwtest.cpp
+dactest.cpp
 """)
 
 headers = Split("""
@@ -15,7 +16,9 @@ env = Environment(tools = ['default'] + tools)
 
 html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
 
-p = env.Program('bwtest', 'bwtest.cc')
+bwtest = env.Program('bwtest', 'bwtest.cpp')
 
-Default(p, html)
+dactest = env.Program('dactest', 'dactest.cpp')
+
+Default(bwtest, dactest, html)
 
