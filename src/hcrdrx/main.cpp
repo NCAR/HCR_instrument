@@ -263,7 +263,7 @@ main(int argc, char** argv)
 	_stgr_prt = false;
 
 	// create the downconvertor
-	/**
+
    Pentek::p7142hcrdn downConvertor(
 				   _devRoot,
 				   _dnName,
@@ -278,21 +278,22 @@ main(int argc, char** argv)
 				   _bypdiv,
 				   _simulate,
 				   _simPauseMS);
-	 **/
 
 	std::cout << "simulate mode is " << _simulate << std::endl;
-
+// Test in data "pass thru" mode
+/**
 	Pentek::p7142dn downConvertor(
 			_devRoot,
 			_dnName,
 			_bypdiv,
 			_simulate,
 			_simPauseMS);
-
+**/
 	if (!downConvertor.ok()) {
 		std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
 		perror("");
 		exit(1);
+
 	}
 
 	// create the read buffer
