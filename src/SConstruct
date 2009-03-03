@@ -10,7 +10,7 @@ options = eol_scons.Pkg_Options()
 
 def ProfilerSetup(env):
     env.Require(['QTDIR'])
-    env['CCFLAGS'] = '-g'
+#    env['CCFLAGS'] = '-g'
     env.AppendUnique (CCFLAGS=['-Wall','-Wno-char-subscripts'])
     env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor'])  
     env['DOXYFILE_DICT'] = dict()
@@ -21,7 +21,7 @@ env = Environment(tools = ['default'], GLOBAL_TOOLS = [ProfilerSetup])
 
 dirs = Split(
 """
-   bwtest
+   pentek
    profilerdrx
    sniffer
    profilerscope
