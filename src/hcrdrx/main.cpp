@@ -231,24 +231,24 @@ main(int argc, char** argv)
   // create the downconvertor
   Pentek::p7140dn* down7140 = 0;
   Pentek::p7142dn* down7142 = 0;
-  
-  if (_do7140) {
-  	down7140 = new Pentek::p7140dn(_devRoot, _dnName, 8, _simulate, _simPauseMS);
 
+  if (_do7140) {
+	std::cout << "Using p7140 device" << std::endl;
+  	down7140 = new Pentek::p7140dn(_devRoot, _dnName, 8, _simulate, _simPauseMS);
   	if (!down7140->ok()) {
     	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
     	perror("");
     	exit(1);
-  	} 
+  	}
   } else {
+	std::cout << "Using p7142 device" << std::endl;
   	down7142 = new Pentek::p7142dn(_devRoot, _dnName, 8, _simulate, _simPauseMS);
-
   	if (!down7142->ok()) {
     	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
     	perror("");
     	exit(1);
-  	} 
-  }  		
+  	}
+  }
 
   // create the read buffer
   char* buf = new char[_bufferSize];
@@ -270,7 +270,7 @@ main(int argc, char** argv)
     	n = down7140->read(buf, _bufferSize);
       else
     	n = down7142->read(buf, _bufferSize);
-      
+
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
@@ -293,7 +293,7 @@ main(int argc, char** argv)
 		if (_do7140)
 		   overruns = down7140->overUnderCount();
 		else
-		   overruns = down7142->overUnderCount();         
+		   overruns = down7142->overUnderCount();
 
 		std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 			  << std::setprecision(4) << std::setw(5) << bw
