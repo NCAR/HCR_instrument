@@ -150,7 +150,7 @@ void parseOptions(int argc,
 
     _publish = vm.count("nopublish") == 0;
     _simulate = vm.count("simulate") != 0;
-    _do7140 = vm.count("p7140") == 0;
+    _do7140 = vm.count("p7140") != 0;
 
     if (vm.count("help")) {
         std::cout << descripts << std::endl;
