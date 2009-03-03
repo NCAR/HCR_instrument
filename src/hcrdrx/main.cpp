@@ -240,7 +240,7 @@ main(int argc, char** argv)
 
   if (_do7140) {
 	std::cout << "Using p7140 device" << std::endl;
-  	down7140 = new Pentek::p7140dn(_devRoot, _dnName, _decim, _simulate, _simPauseMS);
+  	down7140 = new Pentek::p7140dn(_devRoot, _dnName, 0, _decim, _simulate, _simPauseMS);
   	if (!down7140->ok()) {
     	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
     	perror("");
@@ -248,7 +248,7 @@ main(int argc, char** argv)
   	}
   } else {
 	std::cout << "Using p7142 device" << std::endl;
-  	down7142 = new Pentek::p7142dn(_devRoot, _dnName, _decim, _simulate, _simPauseMS);
+  	down7142 = new Pentek::p7142dn(_devRoot, _dnName, 0, _decim, _simulate, _simPauseMS);
   	if (!down7142->ok()) {
     	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
     	perror("");
