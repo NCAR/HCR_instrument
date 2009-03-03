@@ -16,6 +16,7 @@
 #include <ArgvParams.h>
 
 #include "p7140.h"
+#include "p7142.h"
 #include "DDSPublisher.h"
 #include "TSWriter.h"
 
@@ -40,7 +41,7 @@ DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
-
+bool _do7140 = false;            ///< Set truue if we are using the p7140, false otherwise. Default is false
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
 {
@@ -108,9 +109,8 @@ void getConfigParams()
     _numChannels  = config.getInt("Radar/Channels",        4);
     _simulate     = config.getBool("Simulate",             false);
     _simPauseMS   = config.getInt("SimPauseMs",            20);
+    _do7140      = config.getBool("Use7140",               false);
 
-    /// there will be an I and Q for each channel
-    _bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -129,12 +129,13 @@ void parseOptions(int argc,
     ("help", "describe options")
     ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
     ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0C)")
-    ("simulate", po::value<bool>(&_simulate), "Enable simulation")
+    ("nopublish", "do not publish data")
+    ("p7140", "use p7140 card (otherwise 7142 will be used")
+    ("simulate", "Enable simulation")
     ("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
     ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
     ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
     ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
-    ("nopublish", "do not publish data")
     ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
     ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
      "DCPSTransportDebugLevel ")
@@ -145,6 +146,9 @@ void parseOptions(int argc,
     po::notify(vm);
 
     _publish = vm.count("nopublish") == 0;
+    _simulate = vm.count("simulate") == 0;
+    _do7140 = vm.count("p7140") == 0;
+
     if (vm.count("help")) {
         std::cout << descripts << std::endl;
         exit(1);
@@ -218,17 +222,33 @@ main(int argc, char** argv)
   // parse the command line optins, substituting for config params.
   parseOptions(argc, argv);
 
+  // there will be an I and Q for each channel
+  _bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
+
   // create the dds services
   createDDSservices();
 
   // create the downconvertor
-  Pentek::p7140dn downConvertor(_devRoot, _dnName, 8, _simulate, _simPauseMS);
+  Pentek::p7140dn* down7140 = 0;
+  Pentek::p7142dn* down7142 = 0;
+  
+  if (_do7140) {
+  	down7140 = new Pentek::p7140dn(_devRoot, _dnName, 8, _simulate, _simPauseMS);
 
-  if (!downConvertor.ok()) {
-    std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
-    perror("");
-    exit(1);
-  }
+  	if (!down7140->ok()) {
+    	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
+    	perror("");
+    	exit(1);
+  	} 
+  } else {
+  	down7142 = new Pentek::p7142dn(_devRoot, _dnName, 8, _simulate, _simPauseMS);
+
+  	if (!down7142->ok()) {
+    	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
+    	perror("");
+    	exit(1);
+  	} 
+  }  		
 
   // create the read buffer
   char* buf = new char[_bufferSize];
@@ -245,7 +265,12 @@ main(int argc, char** argv)
   int samples = 0;
 
   while (1) {
-    int n = downConvertor.read(buf, _bufferSize);
+    int n;
+      if (_do7140)
+    	n = down7140->read(buf, _bufferSize);
+      else
+    	n = down7142->read(buf, _bufferSize);
+      
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
@@ -264,7 +289,11 @@ main(int argc, char** argv)
 		double elapsed = nowTime() - startTime;
 		double bw = (total/elapsed)/1.0e6;
 
-		int overruns = downConvertor.overUnderCount();
+		int overruns;
+		if (_do7140)
+		   overruns = down7140->overUnderCount();
+		else
+		   overruns = down7142->overUnderCount();         
 
 		std::cout << "total " << std::setw(5) << mb << " MB,  BW "
 			  << std::setprecision(4) << std::setw(5) << bw
