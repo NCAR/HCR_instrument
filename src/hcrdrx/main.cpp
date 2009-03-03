@@ -267,6 +267,7 @@ main(int argc, char** argv)
    Pentek::p7142hcrdn downConvertor(
 				   _devRoot,
 				   _dnName,
+				   0,
 				   _gates,
 				   _delay,
 				   _prt,
