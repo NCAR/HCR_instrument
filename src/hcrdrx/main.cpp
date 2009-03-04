@@ -26,7 +26,7 @@ namespace po = boost::program_options;
 
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
-std::string _dnName;             ///< Downconvertor name e.g. 0B
+int _chanId;                     ///< Channel number (zero based)
 int _decim;                      ///< Decimation rate
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
@@ -104,7 +104,7 @@ void getConfigParams()
     _tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
     _devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
-    _dnName       = config.getString("Device/DownName",    "0C");
+    _chanId       = config.getInt("Device/Channel",        0);
     _decim        = config.getInt("Device/Decimation",     8);
     _gates        = config.getInt("Radar/Gates",           100);
     _tsLength     = config.getInt("Radar/TsLength",        256);
@@ -129,8 +129,8 @@ void parseOptions(int argc,
     po::options_description descripts("Options");
     descripts.add_options()
     ("help", "describe options")
-    ("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
-    ("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0C)")
+    ("devRoot", po::value<std::string>(&_devRoot), "cevice root (e.g. /dev/pentek/0)")
+    ("chan",  po::value<int>(&_chanId),  "channel number (zero based)")
     ("decimation",  po::value<int>(&_decim),  "GC decimation rate")
     ("nopublish", "do not publish data")
     ("p7140", "use p7140 card (otherwise 7142 will be used")
@@ -239,21 +239,21 @@ main(int argc, char** argv)
 	  std::cout << "*** Operating in simulation mode" << std::endl;
 
   if (_do7140) {
-	std::cout << "Using p7140 device" << std::endl;
-  	down7140 = new Pentek::p7140dn(_devRoot, _dnName, 0, _decim, _simulate, _simPauseMS);
+  	down7140 = new Pentek::p7140dn(_devRoot, _chanId, _decim, _simulate, _simPauseMS);
   	if (!down7140->ok()) {
-    	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
+    	std::cerr << "cannot access " << down7140->dnName() << "\n";
     	perror("");
     	exit(1);
   	}
+	std::cout << "Using p7140 device: "  << down7140->dnName() << std::endl;
   } else {
-	std::cout << "Using p7142 device" << std::endl;
-  	down7142 = new Pentek::p7142dn(_devRoot, _dnName, 0, _decim, _simulate, _simPauseMS);
+  	down7142 = new Pentek::p7142dn(_devRoot, _chanId, _decim, _simulate, _simPauseMS);
   	if (!down7142->ok()) {
-    	std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
+    	std::cerr << "cannot access " << down7142->dnName() << "\n";
     	perror("");
     	exit(1);
   	}
+	std::cout << "Using p7142 device: "  << down7142->dnName() << std::endl;
   }
 
   // create the read buffer
