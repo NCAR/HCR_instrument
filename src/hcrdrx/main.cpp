@@ -27,7 +27,7 @@ namespace po = boost::program_options;
 
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
-std::string _dnName;             ///< Downconvertor name e.g. 0B
+int _chanId;                     ///< Channel id
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
@@ -114,7 +114,7 @@ void getConfigParams()
 	_tsTopic      = config.getString("DDS/TopicTS",        "HCRTS");
 	_DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
-	_dnName       = config.getString("Device/DownName",    "0B");
+	_chanId       = config.getInt("Device/Channel",        0);
 	_simulate     = config.getBool("Simulate",             false);
 	_simPauseMS   = config.getInt("SimPauseMs",            100);
 
@@ -138,7 +138,7 @@ void parseOptions(int argc,
 	descripts.add_options()
 	("help", "describe options")
 	("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/p7142/0)")
-	("dnName",  po::value<std::string>(&_dnName),  "Downconvertor name e.g. (0B)")
+	("channel",  po::value<int>(&_chanId),  "Channel number")
 	("nopublish", "do not publish data")
 	("simulate", "Enable simulation")
 	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
@@ -266,8 +266,7 @@ main(int argc, char** argv)
 
    Pentek::p7142hcrdn downConvertor(
 				   _devRoot,
-				   _dnName,
-				   0,
+				   _chanId,
 				   _gates,
 				   _delay,
 				   _prt,
@@ -291,7 +290,7 @@ main(int argc, char** argv)
 			_simPauseMS);
 **/
 	if (!downConvertor.ok()) {
-		std::cerr << "cannot access " << _devRoot << ", " << _dnName << "\n";
+		std::cerr << "cannot access " << downConvertor.dnName() << "\n";
 		perror("");
 		exit(1);
 
