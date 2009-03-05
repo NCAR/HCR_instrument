@@ -222,7 +222,7 @@ main(int argc, char** argv)
 
   fd_set read_fds;
   FD_ZERO(&read_fds);
-  
+
   // get the configuration parameters from the configuration file
   getConfigParams();
 
@@ -250,11 +250,11 @@ main(int argc, char** argv)
     	FD_SET(fd, &read_fds);
       	down7140[fd] = p;
 	  	if (!down7140[fd]->ok()) {
-	    	std::cerr << "cannot access " << down7140[c]->dnName() << "\n";
+	    	std::cerr << "cannot access " << down7140[fd]->dnName() << "\n";
 	    	perror("");
 	    	exit(1);
 	  	}
-		std::cout << "Using p7140 device: "  << down7140[c]->dnName() << " on fd " << fd << std::endl;
+		std::cout << "Using p7140 device: "  << down7140[fd]->dnName() << " on fd " << fd << std::endl;
     }
   } else {
     for (int c = 0; c < _chans; c++) {
@@ -263,11 +263,11 @@ main(int argc, char** argv)
        FD_SET(fd, &read_fds);
   	   down7142[fd] = p;
   	   if (!down7142[fd]->ok()) {
-    	 std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
+    	 std::cerr << "cannot access " << down7142[fd]->dnName() << "\n";
     	 perror("");
     	 exit(1);
   	   }
-	   std::cout << "Using p7142 device: "  << down7142[c]->dnName() << " on fd " << fd << std::endl;
+	   std::cout << "Using p7142 device: "  << down7142[fd]->dnName() << " on fd " << fd << std::endl;
     }
   }
 
@@ -288,7 +288,7 @@ main(int argc, char** argv)
   while (1) {
   	// wait for data available on one of the devices
   	int fd = pselect(_chans, &read_fds, NULL, NULL, NULL, NULL);
-  	
+
   	// now read it
     int n;
     if (_do7140)
@@ -307,7 +307,7 @@ main(int argc, char** argv)
       // publish new data
       if (_publish)
          publish(buf, n);
-         
+
       samples++;
 
       int mb = (int)(total/1.0e6);
