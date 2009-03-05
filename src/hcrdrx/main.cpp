@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sys/ioctl.h>
+#include <sys/select.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <math.h>
@@ -219,6 +220,9 @@ int
 main(int argc, char** argv)
 {
 
+  fd_set read_fds;
+  FD_ZERO(&read_fds);
+  
   // get the configuration parameters from the configuration file
   getConfigParams();
 
@@ -233,8 +237,8 @@ main(int argc, char** argv)
     createDDSservices();
 
   // create the downconvertor
-  std::vector<Pentek::p7140dn*> down7140;
-  std::vector<Pentek::p7142dn*> down7142;
+  std::map<int, Pentek::p7140dn*> down7140;
+  std::map<int, Pentek::p7142dn*> down7142;
 
   if (_simulate)
 	  std::cout << "*** Operating in simulation mode" << std::endl;
@@ -242,24 +246,28 @@ main(int argc, char** argv)
   if (_do7140) {
     for (int c = 0; c < _chans; c++) {
     	Pentek::p7140dn* p = new Pentek::p7140dn(_devRoot, c, _decim, _simulate, _simPauseMS);
-      	down7140.push_back(p);
-	  	if (!down7140[c]->ok()) {
+    	int fd = p->fd();
+    	FD_SET(fd, &read_fds);
+      	down7140[fd] = p;
+	  	if (!down7140[fd]->ok()) {
 	    	std::cerr << "cannot access " << down7140[c]->dnName() << "\n";
 	    	perror("");
 	    	exit(1);
 	  	}
-		std::cout << "Using p7140 device: "  << down7140[c]->dnName() << std::endl;
+		std::cout << "Using p7140 device: "  << down7140[c]->dnName() << " on fd " << fd << std::endl;
     }
   } else {
     for (int c = 0; c < _chans; c++) {
   	   Pentek::p7142dn* p = new Pentek::p7142dn(_devRoot, c, _decim, _simulate, _simPauseMS);
-  	   down7142.push_back(p);
-  	   if (!down7142[c]->ok()) {
+       int fd = p->fd();
+       FD_SET(fd, &read_fds);
+  	   down7142[fd] = p;
+  	   if (!down7142[fd]->ok()) {
     	 std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
     	 perror("");
     	 exit(1);
   	   }
-	   std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
+	   std::cout << "Using p7142 device: "  << down7142[c]->dnName() << " on fd " << fd << std::endl;
     }
   }
 
@@ -278,53 +286,55 @@ main(int argc, char** argv)
   int samples = 0;
 
   while (1) {
-    for (int c = 0; c < _chans; c++) {
-	    int n;
-	    if (_do7140)
-	      n = down7140[c]->read(buf, _bufferSize);
-	    else
-	      n = down7142[c]->read(buf, _bufferSize);
-	
-	    if (n <= 0) {
-	      std::cerr << "read returned " << n << " ";
-	      if (n < 0)
-			perror("");
-	      std::cerr << "\n";
-	    } else {
-	      total += n;
-	
-	      // publish new data
-	      if (_publish)
-	         publish(buf, n);
-	         
-	      samples++;
-	
-	      int mb = (int)(total/1.0e6);
-	      if ((mb % 100) == 0 && mb > lastMb) {
-			lastMb = mb;
-			double elapsed = nowTime() - startTime;
-			double bw = (total/elapsed)/1.0e6;
-	
-			int overruns[_chans];
-			if (_do7140) {
-			   for (int cc = 0; cc < _chans; cc++)
-			     overruns[cc] = down7140[cc]->overUnderCount();
-			} else {
-			   for (int cc = 0; cc < _chans; cc++)
-			     overruns[cc] = down7142[cc]->overUnderCount();
-			}
-	
-			std::cout << "total " << std::setw(5) << mb << " MB,  BW "
-				  << std::setprecision(4) << std::setw(5) << bw
-				  << " MB/s, "
-				  << "   samples: " << samples
-				  << "  overruns: ";
-            for (int cc = 0; cc < _chans; cc++) {
-            	std::cout << overruns[cc] << "  ";
-            }
-            std::cout << std::endl;
-	      }
-	    }
+  	// wait for data available on one of the devices
+  	int fd = pselect(_chans, &read_fds, NULL, NULL, NULL, NULL);
+  	
+  	// now read it
+    int n;
+    if (_do7140)
+      n = down7140[fd]->read(buf, _bufferSize);
+    else
+      n = down7142[fd]->read(buf, _bufferSize);
+
+    if (n <= 0) {
+      std::cerr << "read returned " << n << " ";
+      if (n < 0)
+		perror("");
+      std::cerr << "\n";
+    } else {
+      total += n;
+
+      // publish new data
+      if (_publish)
+         publish(buf, n);
+         
+      samples++;
+
+      int mb = (int)(total/1.0e6);
+      if ((mb % 100) == 0 && mb > lastMb) {
+		lastMb = mb;
+		double elapsed = nowTime() - startTime;
+		double bw = (total/elapsed)/1.0e6;
+
+		int overruns[_chans];
+		if (_do7140) {
+		   for (int cc = 0; cc < _chans; cc++)
+		     overruns[cc] = down7140[cc]->overUnderCount();
+		} else {
+		   for (int cc = 0; cc < _chans; cc++)
+		     overruns[cc] = down7142[cc]->overUnderCount();
+		}
+
+		std::cout << "total " << std::setw(5) << mb << " MB,  BW "
+			  << std::setprecision(4) << std::setw(5) << bw
+			  << " MB/s, "
+			  << "   samples: " << samples
+			  << "  overruns: ";
+        for (int cc = 0; cc < _chans; cc++) {
+        	std::cout << overruns[cc] << "  ";
+        }
+        std::cout << std::endl;
+      }
     }
   }
 }
