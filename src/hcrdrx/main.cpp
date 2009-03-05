@@ -293,9 +293,13 @@ main(int argc, char** argv)
 
   while (1) {
   	// wait for data available on one of the devices
-	  std::cout << "calling select\n";
-  	int fd = select(maxFd+1, &read_fds, NULL, NULL, NULL);
-  	std::cout << "select returned for " << fd << std::endl;
+	fd_set reads = reads_fds;
+  	int retval = select(maxFd+1, &reads, NULL, NULL, NULL);
+  	if (retval == -1) {
+
+  	}
+
+  	for (int i = 0; i < retval; i++) {
 
   	// now read it
     int n;
