@@ -26,7 +26,7 @@ namespace po = boost::program_options;
 
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
-int _chanId;                     ///< Channel number (zero based)
+int _chans;                      ///< number of channels
 int _decim;                      ///< Decimation rate
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
@@ -104,7 +104,7 @@ void getConfigParams()
     _tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
     _devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
-    _chanId       = config.getInt("Device/Channel",        0);
+    _chans        = config.getInt("Device/Channels",       1);
     _decim        = config.getInt("Device/Decimation",     8);
     _gates        = config.getInt("Radar/Gates",           100);
     _tsLength     = config.getInt("Radar/TsLength",        256);
@@ -130,7 +130,7 @@ void parseOptions(int argc,
     descripts.add_options()
     ("help", "describe options")
     ("devRoot", po::value<std::string>(&_devRoot), "cevice root (e.g. /dev/pentek/0)")
-    ("chan",  po::value<int>(&_chanId),  "channel number (zero based)")
+    ("chans",  po::value<int>(&_chans),  "number of channels")
     ("decimation",  po::value<int>(&_decim),  "GC decimation rate")
     ("nopublish", "do not publish data")
     ("p7140", "use p7140 card (otherwise 7142 will be used")
@@ -229,31 +229,38 @@ main(int argc, char** argv)
   _bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
 
   // create the dds services
-  createDDSservices();
+  if (_publish)
+    createDDSservices();
 
   // create the downconvertor
-  Pentek::p7140dn* down7140 = 0;
-  Pentek::p7142dn* down7142 = 0;
+  std::vector<Pentek::p7140dn*> down7140;
+  std::vector<Pentek::p7142dn*> down7142;
 
   if (_simulate)
 	  std::cout << "*** Operating in simulation mode" << std::endl;
 
   if (_do7140) {
-  	down7140 = new Pentek::p7140dn(_devRoot, _chanId, _decim, _simulate, _simPauseMS);
-  	if (!down7140->ok()) {
-    	std::cerr << "cannot access " << down7140->dnName() << "\n";
-    	perror("");
-    	exit(1);
-  	}
-	std::cout << "Using p7140 device: "  << down7140->dnName() << std::endl;
+    for (int c = 0; c < _chans; c++) {
+    	Pentek::p7140dn* p = new Pentek::p7140dn(_devRoot, c, _decim, _simulate, _simPauseMS);
+      	down7140.push_back(p);
+	  	if (!down7140[c]->ok()) {
+	    	std::cerr << "cannot access " << down7140[c]->dnName() << "\n";
+	    	perror("");
+	    	exit(1);
+	  	}
+		std::cout << "Using p7140 device: "  << down7140[c]->dnName() << std::endl;
+    }
   } else {
-  	down7142 = new Pentek::p7142dn(_devRoot, _chanId, _decim, _simulate, _simPauseMS);
-  	if (!down7142->ok()) {
-    	std::cerr << "cannot access " << down7142->dnName() << "\n";
-    	perror("");
-    	exit(1);
-  	}
-	std::cout << "Using p7142 device: "  << down7142->dnName() << std::endl;
+    for (int c = 0; c < _chans; c++) {
+  	   Pentek::p7142dn* p = new Pentek::p7142dn(_devRoot, c, _decim, _simulate, _simPauseMS);
+  	   down7142.push_back(p);
+  	   if (!down7142[c]->ok()) {
+    	 std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
+    	 perror("");
+    	 exit(1);
+  	   }
+	   std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
+    }
   }
 
   // create the read buffer
@@ -271,41 +278,53 @@ main(int argc, char** argv)
   int samples = 0;
 
   while (1) {
-    int n;
-      if (_do7140)
-    	n = down7140->read(buf, _bufferSize);
-      else
-    	n = down7142->read(buf, _bufferSize);
-
-    if (n <= 0) {
-      std::cerr << "read returned " << n << " ";
-      if (n < 0)
-		perror("");
-      std::cerr << "\n";
-    } else {
-      total += n;
-
-      // publish new data
-      publish(buf, n);
-      samples++;
-
-      int mb = (int)(total/1.0e6);
-      if ((mb % 100) == 0 && mb > lastMb) {
-		lastMb = mb;
-		double elapsed = nowTime() - startTime;
-		double bw = (total/elapsed)/1.0e6;
-
-		int overruns;
-		if (_do7140)
-		   overruns = down7140->overUnderCount();
-		else
-		   overruns = down7142->overUnderCount();
-
-		std::cout << "total " << std::setw(5) << mb << " MB,  BW "
-			  << std::setprecision(4) << std::setw(5) << bw
-			  << " MB/s, overruns: "
-			  << overruns << "   samples: " << samples << std::endl;
-      }
+    for (int c = 0; c < _chans; c++) {
+	    int n;
+	    if (_do7140)
+	      n = down7140[c]->read(buf, _bufferSize);
+	    else
+	      n = down7142[c]->read(buf, _bufferSize);
+	
+	    if (n <= 0) {
+	      std::cerr << "read returned " << n << " ";
+	      if (n < 0)
+			perror("");
+	      std::cerr << "\n";
+	    } else {
+	      total += n;
+	
+	      // publish new data
+	      if (_publish)
+	         publish(buf, n);
+	         
+	      samples++;
+	
+	      int mb = (int)(total/1.0e6);
+	      if ((mb % 100) == 0 && mb > lastMb) {
+			lastMb = mb;
+			double elapsed = nowTime() - startTime;
+			double bw = (total/elapsed)/1.0e6;
+	
+			int overruns[_chans];
+			if (_do7140) {
+			   for (int cc = 0; cc < _chans; cc++)
+			     overruns[cc] = down7140[cc]->overUnderCount();
+			} else {
+			   for (int cc = 0; cc < _chans; cc++)
+			     overruns[cc] = down7142[cc]->overUnderCount();
+			}
+	
+			std::cout << "total " << std::setw(5) << mb << " MB,  BW "
+				  << std::setprecision(4) << std::setw(5) << bw
+				  << " MB/s, "
+				  << "   samples: " << samples
+				  << "  overruns: ";
+            for (int cc = 0; cc < _chans; cc++) {
+            	std::cout << overruns[cc] << "  ";
+            }
+            std::cout << std::endl;
+	      }
+	    }
     }
   }
 }
