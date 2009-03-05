@@ -240,6 +240,8 @@ main(int argc, char** argv)
   std::map<int, Pentek::p7140dn*> down7140;
   std::map<int, Pentek::p7142dn*> down7142;
 
+  int maxFd = 0;
+
   if (_simulate)
 	  std::cout << "*** Operating in simulation mode" << std::endl;
 
@@ -247,6 +249,8 @@ main(int argc, char** argv)
     for (int c = 0; c < _chans; c++) {
     	Pentek::p7140dn* p = new Pentek::p7140dn(_devRoot, c, _decim, _simulate, _simPauseMS);
     	int fd = p->fd();
+    	if (fd > maxFd)
+    		maxFd = fd;
     	FD_SET(fd, &read_fds);
       	down7140[fd] = p;
 	  	if (!down7140[fd]->ok()) {
@@ -260,6 +264,8 @@ main(int argc, char** argv)
     for (int c = 0; c < _chans; c++) {
   	   Pentek::p7142dn* p = new Pentek::p7142dn(_devRoot, c, _decim, _simulate, _simPauseMS);
        int fd = p->fd();
+   	   if (fd > maxFd)
+   		 maxFd = fd;
        FD_SET(fd, &read_fds);
   	   down7142[fd] = p;
   	   if (!down7142[fd]->ok()) {
@@ -287,7 +293,9 @@ main(int argc, char** argv)
 
   while (1) {
   	// wait for data available on one of the devices
-  	int fd = pselect(_chans, &read_fds, NULL, NULL, NULL, NULL);
+	  std::cout << "calling select\n";
+  	int fd = select(maxFd+1, &read_fds, NULL, NULL, NULL);
+  	std::cout << "select returned for " << fd << std::endl;
 
   	// now read it
     int n;
