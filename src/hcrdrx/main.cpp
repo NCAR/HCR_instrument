@@ -16,7 +16,8 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
-#include "p7140.h"
+#include "p7140dnThread.h"
+#include "p7142dnThread.h"
 #include "p7142.h"
 #include "DDSPublisher.h"
 #include "TSWriter.h"
@@ -220,8 +221,8 @@ int
 main(int argc, char** argv)
 {
 
-	fd_set read_fds;
-	FD_ZERO(&read_fds);
+	// try to change scheduling to real-time
+	makeRealTime();
 
 	// get the configuration parameters from the configuration file
 	getConfigParams();
@@ -237,120 +238,51 @@ main(int argc, char** argv)
 		createDDSservices();
 
 	// create the downconvertor
-	std::map<int, Pentek::p7140dn*> down7140;
-	std::map<int, Pentek::p7142dn*> down7142;
-
-	int maxFd = 0;
+	std::vector<p7140dnThread*> down7140;
+	std::vector<p7142dnThread*> down7142;
+	down7140.resize(_chans);
+	down7142.resize(_chans);
 
 	if (_simulate)
 		std::cout << "*** Operating in simulation mode" << std::endl;
 
 	if (_do7140) {
 		for (int c = 0; c < _chans; c++) {
-			Pentek::p7140dn* p = new Pentek::p7140dn(_devRoot, c, _decim, _simulate, _simPauseMS);
-			int fd = p->fd();
-			if (fd > maxFd)
-				maxFd = fd;
-			FD_SET(fd, &read_fds);
-			down7140[fd] = p;
-			if (!down7140[fd]->ok()) {
-				std::cerr << "cannot access " << down7140[fd]->dnName() << "\n";
+			p7140dnThread* p = new p7140dnThread(_gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
+			down7140[c] = p;
+			if (!down7140[c]->ok()) {
+				std::cerr << "cannot access " << down7140[c]->dnName() << "\n";
 				perror("");
 				exit(1);
 			}
-			std::cout << "Using p7140 device: "  << down7140[fd]->dnName() << " on fd " << fd << std::endl;
+			std::cout << "Using p7140 device: "  << down7140[c]->dnName() << std::endl;
 		}
 	} else {
 		for (int c = 0; c < _chans; c++) {
-			Pentek::p7142dn* p = new Pentek::p7142dn(_devRoot, c, _decim, _simulate, _simPauseMS);
-			int fd = p->fd();
-			if (fd > maxFd)
-				maxFd = fd;
-			FD_SET(fd, &read_fds);
-			down7142[fd] = p;
-			if (!down7142[fd]->ok()) {
-				std::cerr << "cannot access " << down7142[fd]->dnName() << "\n";
+			p7142dnThread* p = new p7142dnThread(_gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
+			down7142[c] = p;
+			if (!down7142[c]->ok()) {
+				std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
 				perror("");
 				exit(1);
 			}
-			std::cout << "Using p7142 device: "  << down7142[fd]->dnName() << " on fd " << fd << std::endl;
+			std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
 		}
 	}
-
-	// create the read buffer
-	char* buf = new char[_bufferSize];
-
-	// try to change scheduling to real-time
-	makeRealTime();
-
-	// start the loop
-	double total = 0;
-
-	double startTime = nowTime();
-
-	int lastMb = 0;
-	int samples = 0;
-
+	
+	if (_do7140) {
+		for (int c = 0; c < _chans; c++) {
+			down7140[c]->start();
+		}
+	} else {
+		for (int c = 0; c < _chans; c++) {
+			down7142[c]->start();
+		}
+	}
+	
+	
 	while (1) {
-		// wait for data available on one of the devices
-		fd_set reads = read_fds;
-		int retval = select(maxFd+1, &reads, NULL, NULL, NULL);
-		if (retval == -1) {
-			std::cout << "select returned -1" << std::endl;
-			return(1);
-		}
-
-		for (int fd = 0;fd < maxFd+1; fd++) {
-			if (FD_ISSET(fd, &reads)) {
-				// now read it
-				int n;
-				if (_do7140)
-					n = down7140[fd]->read(buf, _bufferSize);
-				else
-					n = down7142[fd]->read(buf, _bufferSize);
-
-				if (n <= 0) {
-					std::cerr << "read returned " << n << " ";
-					if (n < 0)
-						perror("");
-					std::cerr << "\n";
-				} else {
-					total += n;
-
-					// publish new data
-					if (_publish)
-						publish(buf, n);
-
-					samples++;
-
-					int mb = (int)(total/1.0e6);
-					if ((mb % 100) == 0 && mb > lastMb) {
-						lastMb = mb;
-						double elapsed = nowTime() - startTime;
-						double bw = (total/elapsed)/1.0e6;
-
-						int overruns[_chans];
-						if (_do7140) {
-//							for (int cc = 0; cc < _chans; cc++)
-//								overruns[cc] = down7140[cc]->overUnderCount();
-						} else {
-//							for (int cc = 0; cc < _chans; cc++)
-//								overruns[cc] = down7142[cc]->overUnderCount();
-						}
-
-						std::cout << "total " << std::setw(5) << mb << " MB,  BW "
-						<< std::setprecision(4) << std::setw(5) << bw
-						<< " MB/s, "
-						<< "   samples: " << samples
-						<< "  overruns: ";
-						for (int cc = 0; cc < _chans; cc++) {
-							std::cout << overruns[cc] << "  ";
-						}
-						std::cout << std::endl;
-					}
-				}
-			}
-		}
+		sleep(1);
 	}
 }
 

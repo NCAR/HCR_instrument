@@ -7,10 +7,13 @@ qtt_qtconfig
 boost_date_time
 boost_program_options
 doxygen
+qt4
 """)
 
 sources = Split("""
 main.cpp
+p7140dnThread.cpp
+p7142dnThread.cpp
 """)
 
 headers = Split("""
