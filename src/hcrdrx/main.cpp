@@ -191,32 +191,6 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
-void
-publish(char* buf, int n) {
-
-	ProfilerDDS::TimeSeries* ts = _tsWriter->getEmptyItem();
-
-	if (!ts) {
-		return;
-	}
-
-	int len = n;
-
-	ts->tsdata.length(len/2);
-
-	ts->hskp.gates = _gates;
-	ts->hskp.numChannels = _numChannels;
-	ts->hskp.tsLength = _tsLength;
-
-	// convert to shorts
-	short* data = (short*)buf;
-	for (int i = 0; i < n/2; i++)
-		ts->tsdata[i] = data[i];
-
-	_tsWriter->publishItem(ts);
-}
-
-///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
 {

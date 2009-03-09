@@ -20,6 +20,7 @@ class p7142dnThread: public QThread, public Pentek::p7142dn {
 		int _tsLength;
 		bool _publish;
 		TSWriter* _tsWriter;         ///< The time series writer.
+		int _chan;
 		
 };
 

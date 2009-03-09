@@ -104,7 +104,7 @@ p7142dnThread::publish(char* buf, int n) {
 	ts->tsdata.length(len/2);
 
 	ts->hskp.gates = _gates;
-	ts->hskp.numChannels = 1;
+	ts->hskp.chanId = _chanId;
 	ts->hskp.tsLength = _tsLength;
 
 	// convert to shorts
