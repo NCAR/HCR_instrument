@@ -248,7 +248,7 @@ main(int argc, char** argv)
 
 	if (_do7140) {
 		for (int c = 0; c < _chans; c++) {
-			p7140dnThread* p = new p7140dnThread(_gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
+			p7140dnThread* p = new p7140dnThread(_tsWriter, _publish, _gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
 			down7140[c] = p;
 			if (!down7140[c]->ok()) {
 				std::cerr << "cannot access " << down7140[c]->dnName() << "\n";
@@ -259,7 +259,7 @@ main(int argc, char** argv)
 		}
 	} else {
 		for (int c = 0; c < _chans; c++) {
-			p7142dnThread* p = new p7142dnThread(_gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
+			p7142dnThread* p = new p7142dnThread(_tsWriter, _publish, _gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
 			down7142[c] = p;
 			if (!down7142[c]->ok()) {
 				std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
