@@ -17,7 +17,7 @@
 #include <ArgvParams.h>
 
 #include "p7140dnThread.h"
-#include "p7142dnThread.h"
+#include "p7142hcrdnThread.h"
 #include "p7142.h"
 #include "DDSPublisher.h"
 #include "TSWriter.h"
@@ -29,7 +29,6 @@ namespace po = boost::program_options;
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
 int _chans;                      ///< number of channels
-int _decim;                      ///< Decimation rate
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
@@ -39,7 +38,14 @@ int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 int _gates;                      ///< The number of gates
 int _tsLength;                   ///< The time series length
 int _numChannels;                ///< The number of radar channels
-int _bufferSize;                 ///< Buffer size
+int _delay = 0;
+int _prt = 2000;                 ///< prt in 10 MHz counts
+int _prt2 = 2000;                ///< prt2 in 10 MHz counts, if == prt, then no staggered prt
+int _pulsewidth = 10;            ///< pulsewidth in 10 MHz counts
+bool _stgr_prt = false;          ///< set true for staggered prt
+std::string _gaussianFile = "";  ///< gaussian filter coefficient file
+std::string _kaiserFile = "";    ///< kaiser filter coefficient file
+int _decim;                      ///< Decimation or bypass divider rate
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
@@ -204,16 +210,13 @@ main(int argc, char** argv)
 	// parse the command line optins, substituting for config params.
 	parseOptions(argc, argv);
 
-	// there will be an I and Q for each channel
-	_bufferSize   = _gates*_tsLength*_numChannels*2*sizeof(short);
-
 	// create the dds services
 	if (_publish)
 		createDDSservices();
 
 	// create the downconvertor
 	std::vector<p7140dnThread*> down7140;
-	std::vector<p7142dnThread*> down7142;
+	std::vector<p7142hcrdnThread*> down7142;
 	down7140.resize(_chans);
 	down7142.resize(_chans);
 
@@ -233,7 +236,23 @@ main(int argc, char** argv)
 		}
 	} else {
 		for (int c = 0; c < _chans; c++) {
-			p7142dnThread* p = new p7142dnThread(_tsWriter, _publish, _gates, _tsLength, _devRoot, c, _decim, _simulate, _simPauseMS);
+			p7142hcrdnThread* p = new p7142hcrdnThread(
+					_tsWriter,
+					_publish,
+					_tsLength,
+					_devRoot,
+					c,
+					_gates,
+					_delay,
+					_prt,
+					_prt2,
+					_pulsewidth,
+					_stgr_prt,
+					_gaussianFile,
+					_kaiserFile,
+					_decim,
+					_simulate,
+					_simPauseMS);
 			down7142[c] = p;
 			if (!down7142[c]->ok()) {
 				std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
@@ -243,7 +262,7 @@ main(int argc, char** argv)
 			std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
 		}
 	}
-	
+
 	if (_do7140) {
 		for (int c = 0; c < _chans; c++) {
 			down7140[c]->start();
@@ -253,8 +272,8 @@ main(int argc, char** argv)
 			down7142[c]->start();
 		}
 	}
-	
-	
+
+
 	while (1) {
 		sleep(1);
 	}

@@ -1,20 +1,39 @@
-#include "p7142dnThread.h"
+#include "p7142hcrdnThread.h"
 #include <sys/timeb.h>
 #include <iostream>
 #include <iomanip>
 
 //////////////////////////////////////////////////////////////////////////////////
-p7142dnThread::p7142dnThread(
-	TSWriter* tsWriter,
-	bool publish,
-	int gates,
-	int tsLength,
-	std::string devName,
-	int chanId, int decrate,
-	bool simulate,
-	int simPauseMS):
-p7142dn(devName, chanId, decrate, simulate, simPauseMS),
-_gates(gates),
+p7142hcrdnThread::p7142hcrdnThread(
+		TSWriter* tsWriter,
+		bool publish,
+		int tsLength,
+		std::string devName,
+		int chanId,
+		int gates,
+		int delay,
+		int prt,
+		int prt2,
+		int pulse_width,
+		bool stgr_prt,
+		std::string gaussianFile,
+		std::string kaiserFile,
+		int bypassdivrate,
+		bool simulate,
+		int simPauseMS):
+p7142hcrdn(devName,
+		chanId,
+		gates,
+		delay,
+		prt,
+		prt2,
+		pulse_width,
+		stgr_prt,
+		gaussianFile,
+		kaiserFile,
+		bypassdivrate,
+		simulate,
+		simPauseMS),
 _tsLength(tsLength),
 _publish(publish),
 _tsWriter(tsWriter)
@@ -23,12 +42,12 @@ _tsWriter(tsWriter)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-p7142dnThread::~p7142dnThread() {
+p7142hcrdnThread::~p7142hcrdnThread() {
 
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-void p7142dnThread::run() {
+void p7142hcrdnThread::run() {
 
 		// there will be an I and Q for each channel
 	int _bufferSize   = _gates*_tsLength*2*sizeof(short);
@@ -86,7 +105,7 @@ void p7142dnThread::run() {
 }
 
 ///////////////////////////////////////////////////////////
-double p7142dnThread::nowTime() {
+double p7142hcrdnThread::nowTime() {
 	struct timeb timeB;
 	ftime(&timeB);
 	return timeB.time + timeB.millitm/1000.0;
@@ -94,7 +113,7 @@ double p7142dnThread::nowTime() {
 
 ///////////////////////////////////////////////////////////
 void
-p7142dnThread::publish(char* buf, int n) {
+p7142hcrdnThread::publish(char* buf, int n) {
 
 	ProfilerDDS::TimeSeries* ts = _tsWriter->getEmptyItem();
 
