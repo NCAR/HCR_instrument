@@ -14,10 +14,11 @@ p7142dnThread::p7142dnThread(
 	bool simulate,
 	int simPauseMS):
 p7142dn(devName, chanId, decrate, simulate, simPauseMS),
-_tsWriter(tsWriter),
 _gates(gates),
 _tsLength(tsLength),
-_publish(publish){
+_publish(publish),
+_tsWriter(tsWriter)
+{
 
 }
 
