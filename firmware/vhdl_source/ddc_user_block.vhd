@@ -38,8 +38,6 @@ PORT (
 
     FEN_OUT         : out std_logic;
 	 
-	 CLK_1			  : in std_logic;
-
 	 CLK_12			  : in std_logic;
 
 	 G_ADDR			  : in std_logic_vector(3 downto 0);
@@ -54,7 +52,7 @@ PORT (
 
 	 K_DATA			  : in std_logic_vector(17 downto 0);
 
-	 K_SEL			  : in std_logic_vector(1 downto 0);
+	 K_SEL			  : in std_logic_vector(2 downto 0);
 
 	 K_WR				  : in std_logic;
 
@@ -76,20 +74,16 @@ ARCHITECTURE STRUCTURE of DDC_USER_BLOCK is
 -----------------------------------------------------------------
 
 -- Insert DDC structure here
-COMPONENT casc_filter
+COMPONENT casc_filter_reva
 PORT (
 
     Ce_1				  : in  std_logic;	
-	 
-	 Ce_2				  : in  std_logic;	
-	 
+	 	
 	 Ce_8				  : in  std_logic;	
 	 
 	 CHA_in			  : in std_logic_vector(13 downto 0);
 
 	 Clk_1           : in  std_logic;
-
-	 Clk_2			  : in std_logic;
 
 	 Clk_8			  : in std_logic;
 	 
@@ -105,7 +99,7 @@ PORT (
 
 	 K_data			  : in std_logic_vector(17 downto 0);
 
-	 K_sel			  : in std_logic_vector(1 downto 0);
+	 K_sel			  : in std_logic_vector(2 downto 0);
 
 	 K_wr				  : in std_logic;
 
@@ -129,20 +123,16 @@ BEGIN
 
 -- Instantiate DDC
 
-    DDC_A : casc_filter
+    DDC_A : casc_filter_reva
     PORT MAP(
 
         Ce_1            => '1',
-		  
-		  Ce_2            => '1',
 		  
 		  Ce_8            => '1',
 		  
         CHA_In     	   => Fifo_Dat_In(15 downto 2), -- for now only operates on unpacked data!
 
-		  Clk_1			   => CLK_1,
-
-        Clk_2           => CLK,
+		  Clk_1			   => CLK,
 		  
 		  Clk_8			   => CLK_12,
         		   

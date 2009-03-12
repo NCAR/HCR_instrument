@@ -22,7 +22,7 @@ entity DDC_ADV_DCM is
 		 CLKIN_PERIOD 	  		: real := 8.0;  -- 8.0 nanoseconds
 		 DLL_FREQUENCY_MODE	: string := "LOW" ;
 		 DFS_FREQUENCY_MODE	: string := "LOW" ;
-		 CLKDV_DIVIDE        : real := 4.0;
+		 CLKDV_DIVIDE        : real := 8.0;
 		 CLKFX_MULTIPLY		: integer := 4;
 		 CLKFX_DIVIDE			: integer := 1;
 		 PHASE_SHIFT        	: integer := 0);
@@ -30,7 +30,7 @@ entity DDC_ADV_DCM is
 	PORT (
 			Rst		  	: in std_logic;
 			Adc_clk		: in std_logic;
-			Filter_clk	: out std_logic;
+--			Filter_clk	: out std_logic;
 			Start_clk   : out std_logic;
 			Locked		: out std_logic
 			);			
@@ -41,17 +41,17 @@ architecture BEHAVIORAL of DDC_ADV_DCM is
 	signal ddc_dcm_clk0		: std_logic;
 	signal ddc_dcm_clk2x 	: std_logic;
 	signal ddc_clk_fb			: std_logic;
-	signal ddc_dcm_clk4d    : std_logic;
+	signal ddc_dcm_clk8d    : std_logic;
 	
 begin 
 	ADC_CLK_BUFG_INST 		: BUFG 
 	PORT MAP(I => ddc_dcm_clk0, O => ddc_clk_fb);
 
 	START_CLK_BUFG_INST  	: BUFG 
-	PORT MAP(I => ddc_dcm_clk4d, O => Start_clk);
+	PORT MAP(I => ddc_dcm_clk8d, O => Start_clk);
 	
-	FILTER_CLK_BUFG_INST    : BUFG 
-	PORT MAP(I => ddc_dcm_clk2x, O => Filter_clk);
+--	FILTER_CLK_BUFG_INST    : BUFG 
+--	PORT MAP(I => ddc_dcm_clk2x, O => Filter_clk);
 
 	
 	DCM_ADV_HI_INST : DCM_ADV
@@ -75,10 +75,11 @@ begin
 		   
 		   	LOCKED       =>  Locked,
 				CLK0         =>  ddc_dcm_clk0,
-				CLKDV        =>  ddc_dcm_clk4d,
+				CLKDV        =>  ddc_dcm_clk8d,
 				CLK180       =>  open,
 				CLK270       =>  open,
-				CLK2X        =>  ddc_dcm_clk2x,
+--				CLK2X        =>  ddc_dcm_clk2x,
+				CLK2X        =>  open,
 				CLK2X180     =>  open,
 				CLK90        =>  open,
 				CLKFX        =>  open,

@@ -432,7 +432,7 @@ PORT (
 	 
 	 -- For DDC USER BLOCK	 
 
-	 Clk_1					: in std_logic;
+	 Clk 						: in std_logic;
 	 Clk_12					: in std_logic;
 	 G_addr					: in std_logic_vector(3 downto 0);
 	 G_data					: in std_logic_vector(17 downto 0);
@@ -440,7 +440,7 @@ PORT (
 	 G_wr 					: in std_logic;
 	 K_addr					: in std_logic_vector(3 downto 0);
 	 K_data					: in std_logic_vector(17 downto 0);
-	 K_sel					: in std_logic_vector(1 downto 0);
+	 K_sel					: in std_logic_vector(2 downto 0);
 	 K_wr						: in std_logic;
 	 Stop						: in std_logic;
 	 G_readcoef				: out std_logic_vector(17 downto 0);
@@ -465,7 +465,7 @@ COMPONENT DDC_ADV_DCM
 	PORT (
 			Rst		  	: in std_logic;
 			Adc_clk		: in std_logic;
-			Filter_clk	: out std_logic;
+--			Filter_clk	: out std_logic;
 			Start_clk   : out std_logic;
 			Locked		: out std_logic);
 	END COMPONENT;	
@@ -1943,7 +1943,7 @@ SIGNAL k_readcoef		   : std_logic_vector (17 downto 0);
 SIGNAL g_readcoef		   : std_logic_vector (17 downto 0);
 SIGNAL stop					: std_logic;
 SIGNAL start_clk			: std_logic; -- filter decimation clk (adc_clk/4)
-SIGNAL filter_clk			: std_logic; -- filter clk (adc_clk x 2)
+-- SIGNAL filter_clk			: std_logic; -- filter clk (adc_clk x 2)
 
 -----------------------------------------------------------------
 -- ************** Main Architecture  Definition ************** --
@@ -3868,7 +3868,8 @@ BEGIN
 		  
 	 -- For DDC USER BLOCK	 
 
-		  Clk_1					 => filter_clk,
+--		  Clk						 => filter_clk,
+		  Clk						 => adc_clk,      -- modified filter to run at 125 MHz (adc_clk) 
 		  Clk_12					 => start_clk,
 		  G_addr					 => g_addr(3 downto 0),
 		  G_data					 => g_data,
@@ -3876,7 +3877,7 @@ BEGIN
 		  G_wr 					 => g_wr,
 		  K_addr					 => k_addr(3 downto 0),
 		  K_data					 => k_data,
-		  K_sel					 => k_addr(5 downto 4),
+		  K_sel					 => k_addr(6 downto 4),
 		  K_wr					 => k_wr,
 		  Stop					 => stop,
 		  G_readcoef			 => g_readcoef,
@@ -4016,7 +4017,7 @@ BEGIN
 	 PORT MAP (
 			Rst		  => dcm_rst,
 			Adc_clk	  => adc_clk,
-			Filter_clk => filter_clk,
+-- 		Filter_clk => filter_clk,
 			Start_clk  => start_clk,
 			Locked	  => open       -- for now locked signal is not monitored!
 			);
