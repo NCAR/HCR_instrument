@@ -5,33 +5,33 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 p7140dnThread::p7140dnThread(
-	TSWriter* tsWriter, 
+	TSWriter* tsWriter,
 	bool publish,
-	int gates, 
+	int gates,
 	int tsLength,
-	std::string devName, 
+	std::string devName,
 	int chanId, int decrate,
-	bool simulate, 
+	bool simulate,
 	int simPauseMS):
 p7140dn(devName, chanId, decrate, simulate, simPauseMS),
 _gates(gates),
 _tsLength(tsLength),
 _publish(publish),
 _tsWriter(tsWriter) {
-				
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 p7140dnThread::~p7140dnThread() {
-	
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 void p7140dnThread::run() {
-	
+
 		// there will be an I and Q for each channel
 	int _bufferSize   = _gates*_tsLength*2*sizeof(short);
-	
+
 	// create the read buffer
 	char* buf = new char[_bufferSize];
 
@@ -45,7 +45,7 @@ void p7140dnThread::run() {
 	int incompletes = 0;
 
 	while (1) {
-		int n = p7140dn::read(buf, _bufferSize);	
+		int n = p7140dn::read(buf, _bufferSize);
 		if (n <= 0) {
 			std::cerr << "read returned " << n << " ";
 			if (n < 0)
@@ -53,7 +53,7 @@ void p7140dnThread::run() {
 			std::cerr << "\n";
 		} else {
 			total += n;
-			
+
 	    if (n!= _bufferSize) {
 	    	incompletes++;
 	    }
@@ -62,7 +62,7 @@ void p7140dnThread::run() {
 
 		if (_publish)
 			publish(buf, n);
-			
+
 		int mb = (int)(total/1.0e6);
 		if ((mb % 100) == 0 && mb > lastMb) {
 			lastMb = mb;
@@ -70,15 +70,16 @@ void p7140dnThread::run() {
 			double bw = (total/elapsed)/1.0e6;
 
 			int overruns = overUnderCount();
-			std::cout 
+			std::cout
 			<< dnName() << ": "
 			<< "total " << std::setw(5) << mb << " MB,  BW "
 			<< std::setprecision(4) << std::setw(5) << bw
 			<< " MB/s, "
 			<< "   samples: " << samples
-			<< "  overruns: " << overruns 
+			<< "  overruns: " << overruns
 			<< "  incompletes: " << incompletes
 			<< std::endl;
+			std::cout.flush();
 		}
 		}
 	}
