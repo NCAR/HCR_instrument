@@ -13,25 +13,18 @@ def ProfilerSetup(env):
 #    env['CCFLAGS'] = '-g'
     env.AppendUnique (CCFLAGS=['-Wall','-Wno-char-subscripts'])
     env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor'])  
+    env.AppendUnique (CPPPATH=['#/mapr',])  
     env['DOXYFILE_DICT'] = dict()
     env['DOXYFILE_DICT'].update({ 'HTML_HEADER' : env.File("#header.html") })
     return env
     
 env = Environment(tools = ['default'], GLOBAL_TOOLS = [ProfilerSetup])
 
-dirs = Split(
-"""
-   pentek
-   profilerdrx
-   sniffer
-   profilerscope
-""")
-    
-for d in dirs:
-    if os.access (d, os.R_OK):
-        SConscript(dirs = d)
-    else:
-        print "Skipping %s." % d
+SConscript("pentek/SConscript")
+SConscript("profilerdrx/SConscript")
+SConscript("sniffer/SConscript")
+SConscript("profilerscope/SConscript")
+SConscript("mapr/SConstruct")
 
 env.Alias('apidocs', env.Dir("apidocs"))
 
