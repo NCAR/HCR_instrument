@@ -210,6 +210,9 @@ main(int argc, char** argv)
 	// parse the command line optins, substituting for config params.
 	parseOptions(argc, argv);
 
+	if (_simulate)
+		std::cout << "*** Operating in simulation mode" << std::endl;
+
 	// create the dds services
 	if (_publish)
 		createDDSservices();
@@ -219,9 +222,6 @@ main(int argc, char** argv)
 	std::vector<p7142hcrdnThread*> down7142;
 	down7140.resize(_chans);
 	down7142.resize(_chans);
-
-	if (_simulate)
-		std::cout << "*** Operating in simulation mode" << std::endl;
 
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
