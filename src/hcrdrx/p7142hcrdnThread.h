@@ -27,6 +27,8 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				int simPauseMS=100);
 		virtual ~p7142hcrdnThread();
 		void run();
+		void startFilters();
+
 	protected:
 		double nowTime();
 		void publish(char* buf, int n);

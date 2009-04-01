@@ -105,6 +105,10 @@ void p7142hcrdnThread::run() {
 }
 
 ///////////////////////////////////////////////////////////
+void p7142hcrdnThread::startFilters() {
+	this->startFilters();
+}
+///////////////////////////////////////////////////////////
 double p7142hcrdnThread::nowTime() {
 	struct timeb timeB;
 	ftime(&timeB);
