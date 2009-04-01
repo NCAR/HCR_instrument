@@ -106,7 +106,7 @@ void p7142hcrdnThread::run() {
 
 ///////////////////////////////////////////////////////////
 void p7142hcrdnThread::startFilters() {
-	this->startFilters();
+	p7142hcrdn::startFilters();
 }
 ///////////////////////////////////////////////////////////
 double p7142hcrdnThread::nowTime() {
