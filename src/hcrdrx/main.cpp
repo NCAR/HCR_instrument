@@ -217,16 +217,15 @@ main(int argc, char** argv)
 	if (_publish)
 		createDDSservices();
 
-	// create the downconverter threads
-	std::vector<p7140dnThread*> down7140;
-	std::vector<p7142hcrdnThread*> down7142;
-	down7140.resize(_chans);
-	down7142.resize(_chans);
 
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
+	std::vector<p7140dnThread*> down7140;
+	std::vector<p7142hcrdnThread*> down7142;
+	down7140.resize(_chans);
+	down7142.resize(_chans);
 	if (_do7140) {
 		for (int c = 0; c < _chans; c++) {
 			p7140dnThread* p = new p7140dnThread(
