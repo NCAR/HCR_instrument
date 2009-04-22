@@ -55,7 +55,7 @@ void p7142hcrdnThread::run() {
 	// create the read buffer
 	char* buf = new char[_bufferSize];
 
-	// start the loop
+	// start the loop. The thread will block on the read()
 	while (1) {
 		int n = p7142dn::read(buf, _bufferSize);
 		if (n <= 0) {
@@ -63,16 +63,9 @@ void p7142hcrdnThread::run() {
 			if (n < 0)
 				perror("");
 			std::cerr << "\n";
-		} else {
-			total += n;
+		}
 
-	    if (n!= _bufferSize) {
-	    	incompletes++;
-	    }
-
-		samples++;
-
-		if (_publish)
+		if (_publish) {
 			publish(buf, n);
 		}
 	}
