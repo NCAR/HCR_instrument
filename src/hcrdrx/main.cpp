@@ -294,8 +294,30 @@ main(int argc, char** argv)
 		down7142[0]->startFilters();
 	}
 
+	double startTime = nowTime();
 	while (1) {
-		sleep(1);
+		sleep(10);
+		double currentTime = nowTime();
+		double elapsed = currentTime - startTime;
+		startTime = currentTime;
+
+		if (!_do7140) {
+			std::vector<long> bytes;
+			std::vector<int> overUnder;
+			bytes.resize(_chans);
+			overUnder.resize(_chans);
+			for (int c = 0; c < _chans; c++) {
+				bytes[c] = down7142[c]->bytesRead();
+				overUnder[c] = down7142[c]->overUnderCount();
+			}
+			for (int c = 0; c < _chans; c++) {
+				std::cout << std::setprecision(3) << std::setw(5)
+				          << bytes[c]/1000000.0/elapsed << " MB/s "
+				          << overUnder[c] << " overruns   ";
+			}
+			std::cout << std::endl;
+		}
+
 	}
 }
 
