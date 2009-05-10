@@ -15,6 +15,7 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				std::string devName,
 				int chanId,
 				int gates,
+				int nsum,
 				int delay,
 				int prt,
 				int prt2,

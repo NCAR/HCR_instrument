@@ -36,6 +36,7 @@ std::string _tsTopic;            ///< The published timeseries topic
 int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 int _gates;                      ///< The number of gates
+int _nsum;                       ///< The number of sums
 int _tsLength;                   ///< The time series length
 int _numChannels;                ///< The number of radar channels
 int _delay = 0;
@@ -114,7 +115,8 @@ void getConfigParams()
 	_devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
 	_chans        = config.getInt("Device/Channels",       1);
 	_decim        = config.getInt("Device/Decimation",     8);
-	_gates        = config.getInt("Radar/Gates",           100);
+	_gates        = config.getInt("Radar/Gates",           200);
+	_nsum         = config.getInt("Radar/Nsum",            10);
 	_tsLength     = config.getInt("Radar/TsLength",        256);
 	_numChannels  = config.getInt("Radar/Channels",        4);
 	_simulate     = config.getBool("Simulate",             false);
@@ -255,6 +257,7 @@ main(int argc, char** argv)
 					_devRoot,
 					c,
 					_gates,
+					_nsum,
 					_delay,
 					_prt,
 					_prt2,
