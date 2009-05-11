@@ -128,6 +128,8 @@ p7142hcrdnThread::publish(char* buf, int n) {
   ts->hskp.tsLength = _tsLength;
 
    if (!_doCI) {
+	   // if the cohernet integrator is not used, then we receive
+	   // a straight stream of IQ pairs, as 2 byte shorts.
 	   // convert to shorts
 	   short* data = (short*)buf;
 	   for (int i = 0; i < n/2; i++)
