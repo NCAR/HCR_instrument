@@ -143,6 +143,7 @@ void parseOptions(int argc,
 	("chans",  po::value<int>(&_chans),  "number of channels")
 	("gates",  po::value<int>(&_gates),  "number of gates")
 	("nsum",  po::value<int>(&_nsum),  "number of coherent integrator sums")
+	("decimation",  po::value<int>(&_decim),  "ADC decimation rate")
 	("nopublish", "do not publish data")
 	("p7140", "use p7140 card (otherwise 7142 will be used")
 	("simulate", "Enable simulation")
@@ -212,6 +213,16 @@ main(int argc, char** argv)
 
 	// parse the command line optins, substituting for config params.
 	parseOptions(argc, argv);
+
+	if (_nsum < 0 || (_nsum > 1 && (_nsum%2 != 0))) {
+		std::cerr << "nsum must be greater than 0 and less than 65535. If between 2 and 65535, it must be even." << std::endl;
+		exit(1);
+	}
+
+	if (_gates < 1 || _gates > 511) {
+		std::cerr << "gates must be greater than 0 and less than 512." << std::endl;
+		exit(1);
+	}
 
 	if (_simulate)
 		std::cout << "*** Operating in simulation mode" << std::endl;
