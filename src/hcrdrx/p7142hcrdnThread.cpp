@@ -36,6 +36,8 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     bypassdivrate,
 	     simulate,
 	     simPauseMS),
+  _doCI(_nsum > 1),
+  _nsum(nsum),
   _tsLength(tsLength),
   _publish(publish),
   _tsWriter(tsWriter)
@@ -52,7 +54,17 @@ p7142hcrdnThread::~p7142hcrdnThread() {
 void p7142hcrdnThread::run() {
 
   // there will be an I and Q for each channel
-  int _bufferSize   = _gates*_tsLength*2*sizeof(short);
+  int _bufferSize;
+  if (!_doCI) {
+	  // non-integrated data simply has IQ pairs, as 2 byte shorts,
+	  // for all gates.
+	  _bufferSize = _tsLength*_gates*2*2;
+  } else {
+	  // coherently integrated data has:
+	  // 4 tags followed by even IQ pairs followed by odd IQ pairs,
+	  // for all gates. Tags, I and Q are 4 byte integers.
+	  _bufferSize = _tsLength*(4 + _gates*2*2)*4;
+  }
 
   // create the read buffer
   char* buf = new char[_bufferSize];
@@ -63,8 +75,12 @@ void p7142hcrdnThread::run() {
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
-	perror("");
+    	  perror("");
       std::cerr << "\n";
+    }
+
+    if (n != _bufferSize && n != 0) {
+    	std::cerr << "read returned incorret number of bytes" << std::endl;
     }
 
     // convert to ints and print
@@ -111,10 +127,31 @@ p7142hcrdnThread::publish(char* buf, int n) {
   ts->hskp.chanId = _chanId;
   ts->hskp.tsLength = _tsLength;
 
-  // convert to shorts
-  short* data = (short*)buf;
-  for (int i = 0; i < n/2; i++)
-    ts->tsdata[i] = data[i];
+   if (!_doCI) {
+	   // convert to shorts
+	   short* data = (short*)buf;
+	   for (int i = 0; i < n/2; i++)
+		   ts->tsdata[i] = data[i];
+   } else {
+	   int in = 0;
+	   int out = 0;
+	   int* data = (int*)buf;
+	   for (int t = 0; t < _tsLength; t++) {
+		   for (int tag = 0; tag < 4; tag++) {
+			   in++;
+		   }
+		   for (int g = 0; g < _gates; g++) {
+			   for (int iq = 0; iq < 2; iq++) {
+				   // for now, just add even and odd
+				   double sum = data[in] + data[in+2*_gates];
+				   double result = (sum/_nsum);
+				   ts->tsdata[out] = (short)result;
+				   in++;
+				   out++;
+			   }
+		   }
+	   }
+   }
 
   _tsWriter->publishItem(ts);
 }

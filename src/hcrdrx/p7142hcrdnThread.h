@@ -33,6 +33,10 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 	protected:
 		double nowTime();
 		void publish(char* buf, int n);
+		/// set true if coherent integrator is being used
+		bool _doCI;
+		/// the number of sums in the coherent integration
+		int _nsum;
 		int _tsLength;
 		bool _publish;
 		TSWriter* _tsWriter;         ///< The time series writer.
