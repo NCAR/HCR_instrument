@@ -36,13 +36,13 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     bypassdivrate,
 	     simulate,
 	     simPauseMS),
-  _doCI(_nsum > 1),
+  _doCI(nsum > 1),
   _nsum(nsum),
   _tsLength(tsLength),
   _publish(publish),
   _tsWriter(tsWriter)
 {
-
+std::cout << "_doCI is " << _doCI << " _nsum is " << _nsum << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ void p7142hcrdnThread::run() {
     }
 
     if (n != _bufferSize && n != 0) {
-    	std::cerr << "read returned incorret number of bytes" << std::endl;
+    	std::cerr << "read returned incorrect number of bytes" << std::endl;
     }
 
     // convert to ints and print
@@ -128,20 +128,26 @@ p7142hcrdnThread::publish(char* buf, int n) {
   ts->hskp.tsLength = _tsLength;
 
    if (!_doCI) {
-	   // if the cohernet integrator is not used, then we receive
+	   // if the coherent integrator is not used, then we receive
 	   // a straight stream of IQ pairs, as 2 byte shorts.
 	   // convert to shorts
 	   short* data = (short*)buf;
 	   for (int i = 0; i < n/2; i++)
 		   ts->tsdata[i] = data[i];
    } else {
+	   // decode data from coherent integrator
 	   int in = 0;
 	   int out = 0;
 	   int* data = (int*)buf;
 	   for (int t = 0; t < _tsLength; t++) {
 		   for (int tag = 0; tag < 4; tag++) {
+			   int format = (data[in] >> 28) & 0xf;
+			   int key = (data[in] >> 24) & 0xf;
+			   int sumNum = data[in] & 0xffffff;
+			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
 			   in++;
 		   }
+		   //std::cout << std::dec << std::endl;
 		   for (int g = 0; g < _gates; g++) {
 			   for (int iq = 0; iq < 2; iq++) {
 				   // for now, just add even and odd
@@ -152,6 +158,8 @@ p7142hcrdnThread::publish(char* buf, int n) {
 				   out++;
 			   }
 		   }
+		   // space past the odd I and Qs.
+		   in += 2*_gates;
 	   }
    }
 
