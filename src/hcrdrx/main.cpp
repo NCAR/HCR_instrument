@@ -42,7 +42,7 @@ int _numChannels;                ///< The number of radar channels
 int _delay = 0;
 int _prt = 2000;                 ///< prt in 10 MHz counts
 int _prt2 = 2000;                ///< prt2 in 10 MHz counts, if == prt, then no staggered prt
-int _pulsewidth = 10;            ///< pulsewidth in 10 MHz counts
+int _pulsewidth = 64;            ///< pulsewidth in 62.5 MHz counts
 bool _stgr_prt = false;          ///< set true for staggered prt
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
