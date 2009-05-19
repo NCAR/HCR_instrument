@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.269"
+    ComputedModelVersion    "1.273"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -44,8 +44,8 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "ericloew"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Dec 10 16:42:58 2008"
-  ModelVersionFormat	  "1.%<AutoIncrement:269>"
+  LastModifiedDate	  "Tue Mar 10 13:20:22 2009"
+  ModelVersionFormat	  "1.%<AutoIncrement:273>"
   ConfigurationManager	  "None"
   SimulationMode	  "normal"
   LinearizationMsg	  "none"
@@ -956,8 +956,8 @@ Model {
       SourceType	      "Chirp"
       sweep		      "Linear"
       mode		      "Unidirectional"
-      f0		      "146.25e6"
-      f1		      "166.25e6"
+      f0		      "142.25e6"
+      f1		      "170.25e6"
       t1		      "4096/sampling_freq"
       Tsweep		      "4096/sampling_freq"
       phase		      "pi/4"
@@ -1061,8 +1061,8 @@ Model {
       MaskHideContents	      off
       System {
 	Name			"DDC"
-	Location		[0, 82, 1268, 1000]
-	Open			off
+	Location		[-2, 82, 1266, 1000]
+	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -1155,7 +1155,7 @@ Model {
 	  MaskHideContents	  off
 	  System {
 	    Name		    "Coefficients"
-	    Location		    [2, 82, 1270, 978]
+	    Location		    [0, 82, 1268, 1000]
 	    Open		    off
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
@@ -1249,7 +1249,7 @@ Model {
 	      MaskHideContents	      off
 	      System {
 		Name			"Gaus Coef Mem"
-		Location		[2, 82, 1014, 722]
+		Location		[0, 82, 1016, 774]
 		Open			off
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
@@ -3170,7 +3170,7 @@ Model {
 		  SourceType		  "Xilinx Single Port Random Access Me"
 "mory Block"
 		  depth			  "16"
-		  initVector		  "[h_k(1:4:48),0,0,0,0]"
+		  initVector		  "[h_k(1:4:32),0,0,0,0,0,0,0,0]"
 		  distributed_mem	  "Block RAM"
 		  write_mode		  "No Read On Write"
 		  rst			  off
@@ -3206,7 +3206,7 @@ Model {
 		  SourceType		  "Xilinx Single Port Random Access Me"
 "mory Block"
 		  depth			  "16"
-		  initVector		  "[h_k(2:4:48),0,0,0,0]"
+		  initVector		  "[h_k(2:4:32),0,0,0,0,0,0,0,0]"
 		  distributed_mem	  "Block RAM"
 		  write_mode		  "No Read On Write"
 		  rst			  off
@@ -3242,7 +3242,7 @@ Model {
 		  SourceType		  "Xilinx Single Port Random Access Me"
 "mory Block"
 		  depth			  "16"
-		  initVector		  "[h_k(3:4:48),0,0,0,0]"
+		  initVector		  "[h_k(3:4:32),0,0,0,0,0,0,0,0]"
 		  distributed_mem	  "Block RAM"
 		  write_mode		  "No Read On Write"
 		  rst			  off
@@ -3278,7 +3278,7 @@ Model {
 		  SourceType		  "Xilinx Single Port Random Access Me"
 "mory Block"
 		  depth			  "16"
-		  initVector		  "[h_k(4:4:48),0,0,0,0]"
+		  initVector		  "[h_k(4:4:32),0,0,0,0,0,0,0]"
 		  distributed_mem	  "Block RAM"
 		  write_mode		  "No Read On Write"
 		  rst			  off
@@ -3992,8 +3992,8 @@ Model {
 	  MaskHideContents	  off
 	  System {
 	    Name		    "DDC A"
-	    Location		    [297, 82, 958, 950]
-	    Open		    off
+	    Location		    [295, 82, 960, 970]
+	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
 	    ScreenColor		    "white"
@@ -10388,7 +10388,7 @@ Model {
 	      Overlap		      "64"
 	      inpFftLenInherit	      on
 	      FFTlength		      "1024"
-	      numAvg		      "2"
+	      numAvg		      "1"
 	      DisplayProperties	      off
 	      AxisGrid		      on
 	      Memory		      off
@@ -10408,8 +10408,8 @@ Model {
 	      YUnits		      "dB"
 	      XMax		      "1"
 	      XMin		      "0"
-	      YMin		      "-32.2486267992552"
-	      YMax		      "29.2568274853843"
+	      YMin		      "-102.207326320645"
+	      YMax		      "4.80303751325554"
 	      YLabel		      "Magnitude-squared, dB"
 	      LineProperties	      off
 	      wintypeSpecScope	      "Boxcar"
@@ -10430,7 +10430,7 @@ Model {
 	      System {
 		Name			"Polyphase Kaiser FIR Filter"
 		Location		[105, 130, 1188, 811]
-		Open			off
+		Open			on
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
 		ScreenColor		"white"
@@ -14251,7 +14251,7 @@ Model {
 		    xl_use_area		    off
 		    xl_area		    "[0,0,0,0,0,0,0]"
 		    has_advanced_control    "0"
-		    sggui_pos		    "20,20,356,296"
+		    sggui_pos		    "20,20,368,300"
 		    block_type		    "dsamp"
 		    block_version	    "8.2"
 		    sg_icon_stat	    "45,46,1,1,white,blue,0,e83e9e44"
@@ -15675,7 +15675,7 @@ Model {
       Position		      [25, 220, 55, 250]
       SineType		      "Time based"
       Amplitude		      ".99"
-      Frequency		      "2*pi*156.75e6"
+      Frequency		      "2*pi*158.25e6"
       SampleTime	      "1/sampling_freq"
     }
     Block {
@@ -16486,9 +16486,8 @@ Model {
       DstPort		      2
     }
     Line {
-      SrcBlock		      "Random\nSource"
+      SrcBlock		      "Sine Wave"
       SrcPort		      1
-      Points		      [40, 0; 0, -50]
       DstBlock		      "Switch"
       DstPort		      2
     }

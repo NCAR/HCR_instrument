@@ -375,7 +375,15 @@ PORT (
 	 G_DATA			      : out std_logic_vector (17 downto 0);
 	 G_WR				      : out std_logic;
 	 K_READCOEF				: in std_logic_vector (17 downto 0);
-	 G_READCOEF				: in std_logic_vector (17 downto 0)
+	 G_READCOEF				: in std_logic_vector (17 downto 0);
+
+--  USER Required Ports for Multi-Timers
+	 
+	 MT_ADDR_REG 			: out std_logic_vector(15 downto 0);	--MultiTimer Address Register
+	 MT_DATA_REG 			: out std_logic_vector(15 downto 0);	--MultiTimer Data Register
+	 MT_ADDR_WR  			: out std_logic;								--MultiTimer Address Write
+	 MT_DATA_WR  			: out std_logic								--MultiTimer Data Write
+	 
 
     );
 END CNTRLREG;
@@ -743,24 +751,23 @@ BEGIN
 		--	476: Gaussian Coefficient Write
 		-- 477: Gaussian Coefficient Read Register (LSW)
 		-- 478: Gaussian Coefficient Read Register (MSW)
-
--- Uncomment when instantiate timers		
- --   GEN_TIMER_REGS : for X in 464 to 466 GENERATE
- --       PROCESS (RST, CLK)
- --       BEGIN
+		
+    GEN_TIMER_REGS : for X in 464 to 466 GENERATE
+        PROCESS (RST, CLK)
+        BEGIN
             -- Reset
---            if (RST = '1') then
---                reg(X)  <= (others => '0');
+            if (RST = '1') then
+                reg(X)  <= (others => '0');
             -- Write
---            elsif (rising_edge (CLK)) then
---                if ((WEPLS = '1') AND (REG_SEL = '1')) then
---                    if (addrx = X) then
---                        reg(X)  <= DAT_IN;
---                    end if;
---               end if;
---          end if;
---      END PROCESS;
---  END GENERATE GEN_TIMER_REGS;
+            elsif (rising_edge (CLK)) then
+                if ((WEPLS = '1') AND (REG_SEL = '1')) then
+                    if (addrx = X) then
+                        reg(X)  <= DAT_IN;
+                    end if;
+               end if;
+          end if;
+      END PROCESS;
+  END GENERATE GEN_TIMER_REGS;
 	 
 	 GEN_KAISER_REGS : for X in 467 to 470 GENERATE
         PROCESS (RST, CLK)
@@ -1083,11 +1090,11 @@ BEGIN
 
 				--	Mutitimer Registers
 				when 464 to 466 =>
-					 DAT_OUT <= reg(addrx);
+					 DAT_OUT <= reg(addrx);  -- for now just read back register contents
 
 				-- Kaiser Filter Registers
 				when 467 to 470 =>
-					 DAT_OUT <= reg(addrx);	
+					 DAT_OUT <= reg(addrx);
 
 				-- Kaiser Coefficient Read Registers
 				when 471			 =>
@@ -1389,8 +1396,12 @@ BEGIN
 	 
 	 -- User DDC Signals
 		-- 464: Multitimer Address Register
+	 MT_ADDR_REG             <= reg(464);	
 		-- 465: Multitimer Data Register
+	 MT_DATA_REG				 <= reg(465);
 		-- 466: Multitimer Write Register
+	 MT_ADDR_WR					 <= reg(466)(0);
+	 MT_DATA_WR					 <= reg(466)(1);
 	
 	 K_ADDR			      	 <= reg(467);
 	 K_DATA(17 downto 16)    <= reg(469)(1 downto 0)when (reg(470)(0) = '1');

@@ -1,9 +1,10 @@
 clear;
+Gauss = 1; % if 0 use Kaiser for second stage filter, else use Gaussian
 %----------------------------------
 %Sampling Information
 %----------------------------------
-sampling_freq = 125e6;
-if sampling_freq > 60e6,
+sampling_freq = 125e6;   
+if sampling_freq > 60e6, 
     clk_mult = 1;
     downsample = 8;
 else
@@ -16,16 +17,16 @@ sampling_freq_div2 = sampling_freq/2;
 fs = sampling_freq;          % sampling rate
 T=1/fs;                      % sampling period
 N=1024;                      % N Points for FFT/IFFT
-n=0:1:N-1;                   
+% n=0:1:N-1;                   
 f=-fs/2:fs/(N-1):fs/2;       % frequency range vector
 %---------------------------------------
 % Kaiser Window FIR 127, 95 or 63 Tap
 %---------------------------------------
-wp = 2.5e6;
-ws = 2.75e6;
+wp = 2.0e6;
+ws = 2.25e6;
 error = 0.001;
-
-[n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error], fs);
+error_s = 0.01;
+[n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error_s], fs);
 h_k = fir1(n, Wn, filtype, kaiser(n+1,bta), 'noscale');
 
 if downsample == 8, Coeff_limit = 127; end
@@ -34,7 +35,7 @@ if downsample == 12, Coeff_limit = 95; end
 
 while length(h_k) ~= Coeff_limit,
     ws = ws + 0.01e6;
-    [n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error], fs);
+    [n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error_s], fs);
     h_k = fir1(n, Wn, filtype, kaiser(n+1,bta), 'noscale');
 end
 
@@ -64,6 +65,8 @@ xlabel('Frequency (Hz)');
 ylabel('Magnitude (dB)');
 subplot(3,1,3);
 grpdelay(angle(h_k));
+
+if(Gauss == 1)  % Test if using Gaussian or Kaiser for 2nd stage filter
 %---------------------------------------
 % Gaussian FIR 96 Tap, 72 Tap, or 48 Tap
 %---------------------------------------
@@ -77,7 +80,7 @@ t_g = -23.5:1:23.5; % 48 Coefficents
 
 CF = 2.0122^.5;          % Correction Factor for BW7
 
-PW = 12/12e6;    % Pulse Width
+PW = 15.625/15.625e6;    % Pulse Width
 BW = 1/(2*PW*CF);  % 3dB Bandwidth
 R_BW = 1/(2*PW);    % Real Bandwidth
 alpha = sqrt(log(2))/(sqrt(2)*BW*T);
@@ -92,21 +95,58 @@ for x = 1:length(h_g_dec)
         h_g_dec(x) = h_g_dec(x) + 2^18;
     end
 end
+else
+%---------------------------------------
+% Kaiser FIR 96 Tap, 72 Tap, or 48 Tap
+%---------------------------------------
+wp = 0.5e6;
+ws = 0.6e6;
+error = 0.01;
+error_s = 0.01;
+fs = sampling_freq/8;
+[n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error_s], fs);
+h_g = fir1(n, Wn, filtype, kaiser(n+1,bta), 'noscale');
 
+if downsample == 8, Coeff_limit = 48; end
+
+while length(h_g) ~= Coeff_limit,
+    ws = ws + 0.01e6;
+    [n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error_s], fs);
+    h_g = fir1(n, Wn, filtype, kaiser(n+1,bta), 'noscale');
+end
+
+h_g_dec=round(h_g*2^17);
+
+for x = 1:length(h_g_dec)
+    if h_g_dec(x) < 0 
+        h_g_dec(x) = h_g_dec(x) + 2^18;
+    end
+end
+end
 save('100.gcf','h_g_dec','-ASCII');
 h_g = round(h_g*2^17)/2^17;
 
 figure(2);
 subplot(3,1,1);
 stem(h_g);
-title('Impulse Response of Gaussian FIR');
+if (Gauss == 1)
+    title('Impulse Response of Gaussian FIR');
+else
+    title('Impulse Response of Kaiser FIR');
+end
 xlabel('N Index');
 ylabel('Magnitude');
 H_g = fftshift(fft(h_g,N));
 subplot(3,1,2);
 plot(f, 10*log(abs(H_g)));
-Cutoff = 10*log(abs(H_g(round(N*(R_BW+fs/2)/fs))));
-title('Frequency Response of Gaussian FIR');
+if Gauss == 1
+    Cutoff = 10*log(abs(H_g(round(N*(R_BW+fs/2)/fs))));
+end
+if Gauss == 1
+    title('Frequency Response of Gaussian FIR');
+else 
+    title('Frequency Response of Kaiser FIR');    
+end
 xlabel('Frequency (Hz)');
 ylabel('Magnitude (dB)');
 subplot(3,1,3);

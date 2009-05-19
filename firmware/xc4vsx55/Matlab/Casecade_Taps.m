@@ -21,8 +21,8 @@ f=-fs/2:fs/(N-1):fs/2;       % frequency range vector
 %---------------------------------------
 % Kaiser Window FIR 96 or 64 Tap
 %---------------------------------------
-wp = 5e6;
-ws = 5.25e6;
+wp = 2.5e6;
+ws = 2.7e6;
 error = 0.001;
 
 [n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error], fs);

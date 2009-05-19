@@ -23,14 +23,15 @@ entity DDC_ADV_DCM is
 		 DLL_FREQUENCY_MODE	: string := "LOW" ;
 		 DFS_FREQUENCY_MODE	: string := "LOW" ;
 		 CLKDV_DIVIDE        : real := 8.0;
-		 CLKFX_MULTIPLY		: integer := 4;
-		 CLKFX_DIVIDE			: integer := 1;
+		 CLKFX_MULTIPLY		: integer := 2;
+		 CLKFX_DIVIDE			: integer := 4;
 		 PHASE_SHIFT        	: integer := 0);
 
 	PORT (
 			Rst		  	: in std_logic;
 			Adc_clk		: in std_logic;
 --			Filter_clk	: out std_logic;
+			Timer_clk	: out std_logic;
 			Start_clk   : out std_logic;
 			Locked		: out std_logic
 			);			
@@ -39,7 +40,8 @@ end DDC_ADV_DCM;
 architecture BEHAVIORAL of DDC_ADV_DCM is     		
 
 	signal ddc_dcm_clk0		: std_logic;
-	signal ddc_dcm_clk2x 	: std_logic;
+--	signal ddc_dcm_clk2x 	: std_logic;
+	signal ddc_dcm_clkfx 	: std_logic;
 	signal ddc_clk_fb			: std_logic;
 	signal ddc_dcm_clk8d    : std_logic;
 	
@@ -53,6 +55,10 @@ begin
 --	FILTER_CLK_BUFG_INST    : BUFG 
 --	PORT MAP(I => ddc_dcm_clk2x, O => Filter_clk);
 
+	TIMER_CLK_BUFG_INST  	: BUFG 
+	PORT MAP(I => ddc_dcm_clkfx, O => Timer_clk);
+	
+	
 	
 	DCM_ADV_HI_INST : DCM_ADV
 	    GENERIC MAP (
@@ -82,7 +88,7 @@ begin
 				CLK2X        =>  open,
 				CLK2X180     =>  open,
 				CLK90        =>  open,
-				CLKFX        =>  open,
+				CLKFX        =>  ddc_dcm_clkfx,
 				CLKFX180     =>  open);
         
 end BEHAVIORAL;

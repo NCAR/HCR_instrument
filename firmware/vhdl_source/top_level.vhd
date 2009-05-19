@@ -444,11 +444,29 @@ PORT (
 	 K_wr						: in std_logic;
 	 Stop						: in std_logic;
 	 G_readcoef				: out std_logic_vector(17 downto 0);
-	 K_readcoef				: out std_logic_vector(17 downto 0)
+	 K_readcoef				: out std_logic_vector(17 downto 0);
+	 Rx_gate					: in std_logic            
+	 
     );
 
 END COMPONENT;	 
-
+-----------------------------------------------------------------
+-- Multiple Timers to produce the gating signals for DDC.
+	COMPONENT MULTITIMER 
+   Generic (NTIMERS : integer := 8);
+   PORT ( 
+			Busclk       : in  std_logic;
+         Rst          : in  std_logic;
+         Addrwr       : in  std_logic;
+         Addrin       : in  std_logic_vector(15 downto 0);
+         Datawr       : in  std_logic;
+			Timerclk     : in  std_logic;
+         Onepps       : in  std_logic;         -- not needed for now??
+         Datain       : in  std_logic_vector(15 downto 0);
+         Dataout      : inout std_logic_vector(15 downto 0);
+         Pulseout     : out std_logic_vector(NTIMERS-1 downto 0);
+         Addrout      : out std_logic_vector(15 downto 0));
+	END COMPONENT;
 -----------------------------------------------------------------
 	 -- Filter Start/Stop Latch (User added)	
 COMPONENT FILTER_LATCH
@@ -465,6 +483,7 @@ COMPONENT DDC_ADV_DCM
 	PORT (
 			Rst		  	: in std_logic;
 			Adc_clk		: in std_logic;
+			Timer_clk	: out std_logic;
 --			Filter_clk	: out std_logic;
 			Start_clk   : out std_logic;
 			Locked		: out std_logic);
@@ -853,7 +872,14 @@ PORT (
 	 G_data			      : out std_logic_vector (17 downto 0);
 	 G_wr 			      : out std_logic;
 	 K_readcoef		      : in std_logic_vector (17 downto 0);
-	 G_readcoef		      : in std_logic_vector (17 downto 0)
+	 G_readcoef		      : in std_logic_vector (17 downto 0);
+	 
+	 --  USER Required Ports for Multi-Timers
+	 
+	 MT_addr_reg 			: out std_logic_vector(15 downto 0);	--MultiTimer Address Register
+	 MT_data_reg 			: out std_logic_vector(15 downto 0);	--MultiTimer Data Register
+	 MT_addr_wr  			: out std_logic;								--MultiTimer Address Write
+	 MT_data_wr  			: out std_logic								--MultiTimer Data Write
 
     );
 END COMPONENT;
@@ -1942,8 +1968,18 @@ SIGNAL g_wr 			   : std_logic;
 SIGNAL k_readcoef		   : std_logic_vector (17 downto 0);
 SIGNAL g_readcoef		   : std_logic_vector (17 downto 0);
 SIGNAL stop					: std_logic;
-SIGNAL start_clk			: std_logic; -- filter decimation clk (adc_clk/4)
+SIGNAL start_clk			: std_logic; -- filter decimation clk (adc_clk/8)
+SIGNAL timer_clk			: std_logic; -- multitimer clk (adc_clk/2)
 -- SIGNAL filter_clk			: std_logic; -- filter clk (adc_clk x 2)
+
+--  USER Required Signals for Multi-Timers
+
+SIGNAL mt_addr_reg 		: std_logic_vector(15 downto 0);	--MultiTimer Address Register
+SIGNAL mt_data_reg 		: std_logic_vector(15 downto 0);	--MultiTimer Data Register
+SIGNAL mt_addr_wr  		: std_logic;							--MultiTimer Address Write
+SIGNAL mt_data_wr  		: std_logic;							--MultiTimer Data Write
+SIGNAL pulse_out   		: std_logic_vector(7 downto 0);	--MultiTimer Output Pulses
+	
 
 -----------------------------------------------------------------
 -- ************** Main Architecture  Definition ************** --
@@ -3564,7 +3600,15 @@ BEGIN
 		  G_data			      	  => g_data,
 		  G_wr 			      	  => g_wr,
 		  K_readcoef				  => k_readcoef,
-		  G_readcoef				  => g_readcoef
+		  G_readcoef				  => g_readcoef,
+		  
+-- USER Required Assignments for Multi-Timers
+
+		  MT_addr_reg 				  => mt_addr_reg,
+		  MT_data_reg 				  => mt_data_reg,
+		  MT_addr_wr  			     => mt_addr_wr,
+		  MT_data_wr  				  => mt_data_wr
+		  
         );
 
     -------------------------------------------------------------
@@ -3881,7 +3925,8 @@ BEGIN
 		  K_wr					 => k_wr,
 		  Stop					 => stop,
 		  G_readcoef			 => g_readcoef,
-		  K_readcoef			 => k_readcoef
+		  K_readcoef			 => k_readcoef,
+		  Rx_gate	    	    => pulse_out(0)
 
         );
 
@@ -3939,6 +3984,23 @@ BEGIN
         Wr_En_B             => open
 
         );
+------------------------------------------------------------------		  
+--	************* Multiple Timers Instantiation **************** --
+------------------------------------------------------------------
+
+	GEN_TIMER : MULTITIMER 
+	GENERIC MAP(NTIMERS => 8) PORT MAP (
+		Busclk => lclk,
+		Rst => rst,
+		Addrwr => mt_addr_wr,
+		Addrin => mt_addr_reg,
+		Datawr => mt_data_wr,
+		Timerclk => timer_clk,
+		Onepps => '0',
+		Datain => mt_data_reg,
+		Dataout => open,       -- to read timer registers, this must be connected!
+		Pulseout => pulse_out,
+		Addrout => open);
 
     -------------------------------------------------------------
     -- *************** D/A Converter Interface *************** --
@@ -4018,6 +4080,7 @@ BEGIN
 			Rst		  => dcm_rst,
 			Adc_clk	  => adc_clk,
 -- 		Filter_clk => filter_clk,
+			Timer_clk  => timer_clk, 
 			Start_clk  => start_clk,
 			Locked	  => open       -- for now locked signal is not monitored!
 			);

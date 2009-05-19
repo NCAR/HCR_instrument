@@ -2,10 +2,9 @@
 Release 9.2.04i Trace 
 Copyright (c) 1995-2007 Xilinx, Inc.  All rights reserved.
 
-C:\Xilinx92i\bin\nt\trce.exe -ise
-C:/GateFlow/7142_sig/4953_s142/xc4vsx55/7142_vsx55.ise -intstyle ise -e 3 -s 10
--xml TOP_LEVEL TOP_LEVEL.ncd -o TOP_LEVEL.twr TOP_LEVEL.pcf -ucf
-C:/GateFlow/7142_sig/4953_s142/vhdl_source/7142_signal.ucf
+C:\Xilinx92i\bin\nt\trce.exe -ise C:/hcr/firmware/xc4vsx55/7142_vsx55.ise
+-intstyle ise -e 3 -s 10 -xml TOP_LEVEL TOP_LEVEL.ncd -o TOP_LEVEL.twr
+TOP_LEVEL.pcf -ucf C:/hcr/firmware/vhdl_source/7142_signal.ucf
 
 Design file:              top_level.ncd
 Physical constraint file: top_level.pcf
@@ -92,8 +91,8 @@ INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on
 ================================================================================
 Timing constraint: TS_ADC_CLKI = PERIOD TIMEGRP "ADC_CLKI" 8 ns HIGH 50%;
 
- 33994 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is   7.937ns.
+ 51290 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Minimum period is   7.706ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -105,8 +104,8 @@ Timing constraint: TS_DAC_CLKI = PERIOD TIMEGRP "DAC_CLKI" 8 ns HIGH 50%;
 ================================================================================
 Timing constraint: TS_LCLKI = PERIOD TIMEGRP "LCLKI" 14 ns HIGH 50%;
 
- 122901 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is  13.739ns.
+ 851455 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Minimum period is  13.842ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -132,7 +131,7 @@ Timing constraint: TS_dac_clk_buf2 = PERIOD TIMEGRP "dac_clk_buf2" TS_DAC_CLKI
 HIGH 50%;
 
  6262 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is   7.507ns.
+ Minimum period is   7.110ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -167,8 +166,8 @@ Timing constraint: TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf = PERIOD TIMEGRP
 Timing constraint: TS_SDRAM_SYS_CLK_DCM_INST_clk0_buf_0 = PERIOD TIMEGRP        
  "SDRAM_SYS_CLK_DCM_INST_clk0_buf_0" TS_MEM_CLK_P HIGH 50%;
 
- 258788 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is   7.985ns.
+ 259522 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Minimum period is   7.944ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -185,7 +184,7 @@ Timing constraint: TS_SDRAM_SYS_CLK_DCM_INST_clk270_buf_0 = PERIOD TIMEGRP
 50%;
 
  318 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is   7.034ns.
+ Minimum period is   6.204ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -193,236 +192,23 @@ Timing constraint: TS_SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0 = PERIOD TIMEGRP
   "SDRAM_SYS_CLK_DCM_INST_clkdv_buf_0" TS_MEM_CLK_P * 4 HIGH 50%;
 
  14881 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is  30.748ns.
+ Minimum period is  22.332ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
-Timing constraint: TS_DDC_DCM_ddc_dcm_clk2x = PERIOD TIMEGRP 
-"DDC_DCM_ddc_dcm_clk2x" TS_ADC_CLKI         / 2 HIGH 50%;
+Timing constraint: TS_DDC_DCM_ddc_dcm_clk8d = PERIOD TIMEGRP 
+"DDC_DCM_ddc_dcm_clk8d" TS_ADC_CLKI         * 8 HIGH 50%;
 
- 14710 items analyzed, 102 timing errors detected. (102 setup errors, 0 hold errors)
- Minimum period is   5.381ns.
---------------------------------------------------------------------------------
-Slack:                  -1.381ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114 (FF)
-  Destination:          ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst (DSP)
-  Requirement:          4.000ns
-  Data Path Delay:      5.268ns (Levels of Logic = 10)
-  Clock Path Skew:      -0.053ns
-  Source Clock:         filter_clk rising at 0.000ns
-  Destination Clock:    filter_clk rising at 4.000ns
-  Clock Uncertainty:    0.060ns
-
-  Clock Uncertainty:          0.060ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.000ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.120ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path: ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114 to ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X20Y216.XQ     Tcko                  0.360   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/core_s(18)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114
-    SLICE_X21Y208.F3     net (fanout=3)        0.812   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/core_s(18)
-    SLICE_X21Y208.COUT   Topcyf                0.573   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/register_q_net_x9(3)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_lut(0)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(0)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(1)
-    SLICE_X21Y209.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(1)
-    SLICE_X21Y209.COUT   Tbyp                  0.086   CONTROL_reg_397_0
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(2)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-    SLICE_X21Y210.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-    SLICE_X21Y210.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/register_q_net(6)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(4)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-    SLICE_X21Y211.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-    SLICE_X21Y211.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/register_q_net_x9(13)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(6)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-    SLICE_X21Y212.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-    SLICE_X21Y212.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(8)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-    SLICE_X21Y213.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-    SLICE_X21Y213.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(10)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-    SLICE_X21Y214.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-    SLICE_X21Y214.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/register_q_net(3)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(12)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-    SLICE_X21Y215.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-    SLICE_X21Y215.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register_11cdd40bb0/register_q_net(4)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(14)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-    SLICE_X21Y216.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-    SLICE_X21Y216.YMUX   Tciny                 0.503   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(17)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(16)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_xor(17)
-    SLICE_X21Y217.G1     net (fanout=17)       0.886   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/result9_add0000(17)
-    SLICE_X21Y217.Y      Tilo                  0.194   CONTROL_reg_404_0
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/conv_s(16)1
-    DSP48_X1Y52.A16      net (fanout=1)        1.026   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/addsub_s_net_x10(16)
-    DSP48_X1Y52.CLK      Tdspdck_AA            0.312   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-    -------------------------------------------------  ---------------------------
-    Total                                      5.268ns (2.544ns logic, 2.724ns route)
-                                                       (48.3% logic, 51.7% route)
-
---------------------------------------------------------------------------------
-Slack:                  -1.333ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114 (FF)
-  Destination:          ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_mult_902f1cd253/dsp3/dsp48_inst (DSP)
-  Requirement:          4.000ns
-  Data Path Delay:      5.203ns (Levels of Logic = 10)
-  Clock Path Skew:      -0.070ns
-  Source Clock:         filter_clk rising at 0.000ns
-  Destination Clock:    filter_clk rising at 4.000ns
-  Clock Uncertainty:    0.060ns
-
-  Clock Uncertainty:          0.060ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.000ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.120ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path: ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114 to ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X17Y199.XQ     Tcko                  0.340   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/core_s(18)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114
-    SLICE_X15Y188.F3     net (fanout=3)        1.010   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/core_s(18)
-    SLICE_X15Y188.COUT   Topcyf                0.573   ADCDAT_USER_BLOCKA_DDC_A/N9
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_lut(0)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(0)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(1)
-    SLICE_X15Y189.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(1)
-    SLICE_X15Y189.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(2)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-    SLICE_X15Y190.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-    SLICE_X15Y190.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(4)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-    SLICE_X15Y191.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-    SLICE_X15Y191.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(6)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-    SLICE_X15Y192.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-    SLICE_X15Y192.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(8)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-    SLICE_X15Y193.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-    SLICE_X15Y193.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(10)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-    SLICE_X15Y194.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-    SLICE_X15Y194.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(12)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-    SLICE_X15Y195.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-    SLICE_X15Y195.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(14)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-    SLICE_X15Y196.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-    SLICE_X15Y196.YMUX   Tciny                 0.503   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(17)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(16)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_xor(17)
-    SLICE_X15Y199.F1     net (fanout=17)       0.931   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/result9_add0000(17)
-    SLICE_X15Y199.X      Tilo                  0.194   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/register_q_net_x9(15)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/conv_s(13)1
-    DSP48_X1Y48.A13      net (fanout=1)        0.738   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/addsub_s_net_x10(13)
-    DSP48_X1Y48.CLK      Tdspdck_AA            0.312   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-    -------------------------------------------------  ---------------------------
-    Total                                      5.203ns (2.524ns logic, 2.679ns route)
-                                                       (48.5% logic, 51.5% route)
-
---------------------------------------------------------------------------------
-Slack:                  -1.211ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114 (FF)
-  Destination:          ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst (DSP)
-  Requirement:          4.000ns
-  Data Path Delay:      5.098ns (Levels of Logic = 11)
-  Clock Path Skew:      -0.053ns
-  Source Clock:         filter_clk rising at 0.000ns
-  Destination Clock:    filter_clk rising at 4.000ns
-  Clock Uncertainty:    0.060ns
-
-  Clock Uncertainty:          0.060ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
-    Total System Jitter (TSJ):  0.000ns
-    Total Input Jitter (TIJ):   0.000ns
-    Discrete Jitter (DJ):       0.120ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path: ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114 to ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X20Y216.XQ     Tcko                  0.360   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/core_s(18)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/comp1.core_instance1/BU114
-    SLICE_X21Y208.F3     net (fanout=3)        0.812   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/core_s(18)
-    SLICE_X21Y208.COUT   Topcyf                0.573   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/register_q_net_x9(3)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_lut(0)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(0)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(1)
-    SLICE_X21Y209.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(1)
-    SLICE_X21Y209.COUT   Tbyp                  0.086   CONTROL_reg_397_0
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(2)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-    SLICE_X21Y210.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(3)
-    SLICE_X21Y210.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/register_q_net(6)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(4)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-    SLICE_X21Y211.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(5)
-    SLICE_X21Y211.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/register_q_net_x9(13)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(6)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-    SLICE_X21Y212.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(7)
-    SLICE_X21Y212.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(8)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-    SLICE_X21Y213.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(9)
-    SLICE_X21Y213.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(10)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-    SLICE_X21Y214.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(11)
-    SLICE_X21Y214.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/register_q_net(3)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(12)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-    SLICE_X21Y215.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(13)
-    SLICE_X21Y215.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter1_0ddfbcb136/symmetric_data_flow_806ac29eee/symmetric_shift_register_11cdd40bb0/register_q_net(4)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(14)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-    SLICE_X21Y216.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(15)
-    SLICE_X21Y216.COUT   Tbyp                  0.086   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(17)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(16)
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(17)
-    SLICE_X21Y217.CIN    net (fanout=1)        0.000   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_cy(17)
-    SLICE_X21Y217.XMUX   Tcinx                 0.438   CONTROL_reg_404_0
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/Madd_result9_add0000_xor(18)
-    SLICE_X21Y217.G3     net (fanout=18)       0.695   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/addsub_s_net_x10(17)
-    SLICE_X21Y217.Y      Tilo                  0.194   CONTROL_reg_404_0
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/symmetric_data_flow_806ac29eee/symmetric_shift_register2_a450228c31/addsub/conv_s(16)1
-    DSP48_X1Y52.A16      net (fanout=1)        1.026   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/addsub_s_net_x10(16)
-    DSP48_X1Y52.CLK      Tdspdck_AA            0.312   ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-                                                       ADCDAT_USER_BLOCKA_DDC_A/ddc_793a5b82b8/ddc_a_544a648b1a/gaussian_fir_filters_07e697e8d1/gaussian_fir_filter_aac6f8646b/gaussian_mult_902f1cd253/dsp3/dsp48_inst
-    -------------------------------------------------  ---------------------------
-    Total                                      5.098ns (2.565ns logic, 2.533ns route)
-                                                       (50.3% logic, 49.7% route)
-
+ 801 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Minimum period is  37.136ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
-Timing constraint: TS_DDC_DCM_ddc_dcm_clk4d = PERIOD TIMEGRP 
-"DDC_DCM_ddc_dcm_clk4d" TS_ADC_CLKI         * 4 HIGH 50%;
+Timing constraint: TS_DDC_DCM_ddc_dcm_clkfx = PERIOD TIMEGRP 
+"DDC_DCM_ddc_dcm_clkfx" TS_ADC_CLKI         / 0.5 HIGH 50%;
 
- 632 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum period is  20.160ns.
+ 10389996 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Minimum period is  12.756ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -447,10 +233,10 @@ Slack:                  -0.536ns (requirement - (clock arrival + clock path + da
     AH19.I               Tiopi                 0.933   LCLKI
                                                        LCLKI
                                                        LCLK_IBUF
-    BUFGCTRL_X0Y12.I0    net (fanout=1)        0.842   lclk_buf
-    BUFGCTRL_X0Y12.O     Tbgcko_O              0.900   LCLK_BUFG
+    BUFGCTRL_X0Y13.I0    net (fanout=1)        0.842   lclk_buf
+    BUFGCTRL_X0Y13.O     Tbgcko_O              0.900   LCLK_BUFG
                                                        LCLK_BUFG
-    OLOGIC_X1Y85.CLK     net (fanout=3636)     2.717   lclk
+    OLOGIC_X1Y85.CLK     net (fanout=4641)     2.717   lclk
     -------------------------------------------------  ---------------------------
     Total                                      5.392ns (1.833ns logic, 3.559ns route)
                                                        (34.0% logic, 66.0% route)
@@ -482,7 +268,7 @@ Timing constraint: COMP "LBE0_N" OFFSET = IN 7 ns BEFORE COMP "LCLKI";
 Timing constraint: COMP "LBLAST_N" OFFSET = IN 7 ns BEFORE COMP "LCLKI";
 
  260 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Minimum allowable offset is   4.869ns.
+ Minimum allowable offset is   5.265ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
@@ -493,7 +279,7 @@ Timing constraint: COMP "LBE4_N" OFFSET = IN 7 ns BEFORE COMP "LCLKI";
 --------------------------------------------------------------------------------
 
 
-2 constraints not met.
+1 constraint not met.
 
 
 Data Sheet report:
@@ -505,9 +291,9 @@ Setup/Hold to clock LCLKI
             |  Setup to  |  Hold to   |                  | Clock  |
 Source      | clk (edge) | clk (edge) |Internal Clock(s) | Phase  |
 ------------+------------+------------+------------------+--------+
-LBE0_N      |    3.100(R)|    1.924(R)|lclk              |   0.000|
-LBE4_N      |    2.888(R)|    2.593(R)|lclk              |   0.000|
-LBLAST_N    |    4.869(R)|    2.876(R)|lclk              |   0.000|
+LBE0_N      |    3.100(R)|    1.666(R)|lclk              |   0.000|
+LBE4_N      |    2.888(R)|    2.916(R)|lclk              |   0.000|
+LBLAST_N    |    5.265(R)|    3.923(R)|lclk              |   0.000|
 ------------+------------+------------+------------------+--------+
 
 Clock LCLKI to Pad
@@ -523,7 +309,7 @@ Clock to Setup on destination clock ADC_CLKI
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-ADC_CLKI       |    7.937|         |         |         |
+ADC_CLKI       |   12.756|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 Clock to Setup on destination clock DAC_CLKI
@@ -531,8 +317,8 @@ Clock to Setup on destination clock DAC_CLKI
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-DAC_CLKI       |    7.507|         |         |         |
-DAC_PLLLOCK    |    7.507|         |         |         |
+DAC_CLKI       |    7.110|         |         |         |
+DAC_PLLLOCK    |    7.110|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 Clock to Setup on destination clock DAC_PLLLOCK
@@ -540,8 +326,8 @@ Clock to Setup on destination clock DAC_PLLLOCK
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-DAC_CLKI       |    7.507|         |         |         |
-DAC_PLLLOCK    |    7.507|         |         |         |
+DAC_CLKI       |    7.110|         |         |         |
+DAC_PLLLOCK    |    7.110|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 Clock to Setup on destination clock LCLKI
@@ -549,7 +335,7 @@ Clock to Setup on destination clock LCLKI
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-LCLKI          |   13.739|         |         |         |
+LCLKI          |   13.842|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 Clock to Setup on destination clock MEM_CLK_N
@@ -557,8 +343,8 @@ Clock to Setup on destination clock MEM_CLK_N
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-MEM_CLK_N      |    7.985|         |    3.399|         |
-MEM_CLK_P      |    7.985|         |    3.399|         |
+MEM_CLK_N      |    7.944|         |    3.288|         |
+MEM_CLK_P      |    7.944|         |    3.288|         |
 ---------------+---------+---------+---------+---------+
 
 Clock to Setup on destination clock MEM_CLK_P
@@ -566,8 +352,8 @@ Clock to Setup on destination clock MEM_CLK_P
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-MEM_CLK_N      |    7.985|         |    3.399|         |
-MEM_CLK_P      |    7.985|         |    3.399|         |
+MEM_CLK_N      |    7.944|         |    3.288|         |
+MEM_CLK_P      |    7.944|         |    3.288|         |
 ---------------+---------+---------+---------+---------+
 
 COMP "LREADY_N" OFFSET = OUT 9 ns AFTER COMP "LCLKI";
@@ -582,24 +368,24 @@ LREADY_N                                       |       -0.536|        0.000|
 Timing summary:
 ---------------
 
-Timing errors: 103  Score: 64258
+Timing errors: 1  Score: 536
 
-Constraints cover 452761 paths, 0 nets, and 66966 connections
+Constraints cover 11574800 paths, 0 nets, and 75147 connections
 
 Design statistics:
-   Minimum period:  30.748ns   (Maximum frequency:  32.522MHz)
-   Minimum input required time before clock:   4.869ns
+   Minimum period:  37.136ns   (Maximum frequency:  26.928MHz)
+   Minimum input required time before clock:   5.265ns
    Minimum output required time after clock:   9.536ns
 
 
-Analysis completed Thu Dec 11 13:00:31 2008 
+Analysis completed Mon May 18 13:23:18 2009 
 --------------------------------------------------------------------------------
 
 Trace Settings:
 -------------------------
 Trace Settings 
 
-Peak Memory Usage: 489 MB
+Peak Memory Usage: 520 MB
 
 
 

@@ -111,7 +111,8 @@ PORT (
 	 K_WR						: in std_logic;
 	 STOP						: in std_logic;
 	 G_READCOEF				: out std_logic_vector(17 downto 0);
-	 K_READCOEF				: out std_logic_vector(17 downto 0)
+	 K_READCOEF				: out std_logic_vector(17 downto 0);
+	 RX_GATE					: in std_logic
     );
 
 END ADC_DATA_PATH_USER;
@@ -209,7 +210,9 @@ PORT (
 
 	 G_readcoef		  : out std_logic_vector(17 downto 0);
 
-	 K_readcoef		  : out std_logic_vector(17 downto 0)
+	 K_readcoef		  : out std_logic_vector(17 downto 0);
+	 
+	 Rx_gate			  : in std_logic
 	
     );
 END COMPONENT;
@@ -370,9 +373,12 @@ BEGIN
 	 
 		  G_readcoef		=> G_READCOEF,  
 	 
-		  K_readcoef		=> K_READCOEF  
+		  K_readcoef		=> K_READCOEF,
+			
+		  Rx_gate			=> RX_GATE
 		  
     );
+
 
     -- ADC Channel B
     USER_BLOCKB : USER_BLOCK

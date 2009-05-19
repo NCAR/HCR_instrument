@@ -60,10 +60,13 @@ PORT (
 
 	 G_READCOEF		  : out std_logic_vector(17 downto 0);
 
-	 K_READCOEF		  : out std_logic_vector(17 downto 0)
+	 K_READCOEF		  : out std_logic_vector(17 downto 0);
+	 
+	 RX_GATE			  : in std_logic
     
 	 );
 END DDC_USER_BLOCK;
+
 
 -----------------------------------------------------------------
 
@@ -117,7 +120,7 @@ PORT (
 END COMPONENT;
 
 -- Signal Definitions
-
+SIGNAL ddc_out		  : std_logic_vector(31 downto 0);
 
 BEGIN
 
@@ -154,16 +157,33 @@ BEGIN
 		  
 		  Stop				=> STOP,
 
-        CHA_I_Out	      => FIFO_DAT_OUT(15 downto 0),
+        CHA_I_Out	      => ddc_out(15 downto 0),
 		  
-		  CHA_Q_Out	      => FIFO_DAT_OUT(31 downto 16),
+		  CHA_Q_Out	      => ddc_out(31 downto 16),
 	 
 		  G_readcoef		=> G_READCOEF,  
 	 
 		  K_readcoef		=> K_READCOEF  
 		  
     );
-	 
-    FEN_OUT         <= FEN_IN;
+-- Pipeline FEN_IN to meet timing
+
+PROCESS (CLK, FEN_IN, RX_GATE)
+	BEGIN
+		if (rising_edge(CLK)) then
+			FEN_OUT         <= FEN_IN AND RX_GATE;
+		end if;
+END PROCESS;
+
+-- Re-align DDC DATA with FEN_OUT
+
+PROCESS (CLK, ddc_out)
+	BEGIN
+		if (rising_edge(CLK)) then
+			FIFO_DAT_OUT 				<= ddc_out;
+		end if;
+END PROCESS;
+
+
 
 END STRUCTURE;
