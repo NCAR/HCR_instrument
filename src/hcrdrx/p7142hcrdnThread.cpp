@@ -101,6 +101,8 @@ void p7142hcrdnThread::run() {
 ///////////////////////////////////////////////////////////
 void p7142hcrdnThread::startFilters() {
   p7142hcrdn::startFilters();
+  p7142hcrdn::startInternalTimer();  // this is a hack to test the timers, move to independent function later!
+
 }
 ///////////////////////////////////////////////////////////
 double p7142hcrdnThread::nowTime() {
