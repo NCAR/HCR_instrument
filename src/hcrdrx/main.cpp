@@ -208,6 +208,8 @@ double nowTime()
 int
 main(int argc, char** argv)
 {
+	// a list of channels
+	std::vector<int> channels;
 
 	// try to change scheduling to real-time
 	makeRealTime();
@@ -235,6 +237,10 @@ main(int argc, char** argv)
 	if (_publish)
 		createDDSservices();
 
+	// create the list of channels
+	for (int i = 0; i < _chans; i++) {
+		channels.push_back(i);
+	}
 
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
@@ -242,77 +248,45 @@ main(int argc, char** argv)
 	// they do instantiate the down converters.
 	std::vector<p7140dnThread*> down7140;
 	std::vector<p7142hcrdnThread*> down7142;
-	down7140.resize(_chans);
-	down7142.resize(_chans);
-	if (_do7140) {
-		for (int c = 0; c < _chans; c++) {
-			p7140dnThread* p = new p7140dnThread(
-					_tsWriter,
-					_publish,
-					_gates,
-					_tsLength,
-					_devRoot,
-					c,
-					_decim,
-					_simulate,
-					_simPauseMS);
-			down7140[c] = p;
-			if (!down7140[c]->ok()) {
-				std::cerr << "cannot access " << down7140[c]->dnName() << "\n";
-				perror("");
-				exit(1);
-			}
-			std::cout << "Using p7140 device: "  << down7140[c]->dnName() << std::endl;
+	down7140.resize(channels.size());
+	down7142.resize(channels.size());
+
+	for (int c = 0; c < channels.size(); c++) {
+		p7142hcrdnThread* p = new p7142hcrdnThread(
+				_tsWriter,
+				_publish,
+				_tsLength,
+				_devRoot,
+				channels[c],
+				_gates,
+				_nsum,
+				_delay,
+				_prt,
+				_prt2,
+				_pulsewidth,
+				_stgr_prt,
+				_gaussianFile,
+				_kaiserFile,
+				_decim,
+				_simulate,
+				_simPauseMS,
+				_internalClock);
+		down7142[c] = p;
+		if (!down7142[c]->ok()) {
+			std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
+			perror("");
+			exit(1);
 		}
-	} else {
-		for (int c = 0; c < _chans; c++) {
-			p7142hcrdnThread* p = new p7142hcrdnThread(
-					_tsWriter,
-					_publish,
-					_tsLength,
-					_devRoot,
-					c,
-					_gates,
-					_nsum,
-					_delay,
-					_prt,
-					_prt2,
-					_pulsewidth,
-					_stgr_prt,
-					_gaussianFile,
-					_kaiserFile,
-					_decim,
-					_simulate,
-					_simPauseMS,
-					_internalClock);
-			down7142[c] = p;
-			if (!down7142[c]->ok()) {
-				std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
-				perror("");
-				exit(1);
-			}
-			std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
-		}
+		std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
 	}
 
 	// start the down converter threads.
-	if (_do7140) {
-		for (int c = 0; c < _chans; c++) {
-			down7140[c]->start();
-		}
-	} else {
-		for (int c = 0; c < _chans; c++) {
-			down7142[c]->start();
-		}
+
+	for (int c = 0; c < channels.size(); c++) {
+		down7142[c]->start();
 	}
 
 	sleep(1);
-
-	if (!_do7140) {
-		// all of the filters are started by any call to
-		// start filters(). So just call it for channel 0
-		down7142[0]->startFilters();
-	}
 
 	double startTime = nowTime();
 	while (1) {
@@ -321,22 +295,20 @@ main(int argc, char** argv)
 		double elapsed = currentTime - startTime;
 		startTime = currentTime;
 
-		if (!_do7140) {
-			std::vector<long> bytes;
-			std::vector<int> overUnder;
-			bytes.resize(_chans);
-			overUnder.resize(_chans);
-			for (int c = 0; c < _chans; c++) {
-				bytes[c] = down7142[c]->bytesRead();
-				overUnder[c] = down7142[c]->overUnderCount();
-			}
-			for (int c = 0; c < _chans; c++) {
-				std::cout << std::setprecision(3) << std::setw(5)
-				          << bytes[c]/1000000.0/elapsed << " MB/s "
-				          << overUnder[c] << " overruns   ";
-			}
-			std::cout << std::endl;
+		std::vector<long> bytes;
+		std::vector<int> overUnder;
+		bytes.resize(channels.size());
+		overUnder.resize(channels.size());
+		for (int c = 0; c < channels.size(); c++) {
+			bytes[c] = down7142[c]->bytesRead();
+			overUnder[c] = down7142[c]->overUnderCount();
 		}
+		for (int c = 0; c < channels.size(); c++) {
+			std::cout << std::setprecision(3) << std::setw(5)
+					  << bytes[c]/1000000.0/elapsed << " MB/s "
+					  << overUnder[c] << " overruns   ";
+		}
+		std::cout << std::endl;
 
 	}
 }
