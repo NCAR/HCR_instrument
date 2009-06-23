@@ -8,10 +8,15 @@
 class p7140dnThread: public QThread, public Pentek::p7140dn {
 	Q_OBJECT
 	public:
-		p7140dnThread(TSWriter* tsWriter, bool publish, 
-		int gates, int tsLength,
-		std::string devName, int chanId, int decrate=8,
-			bool simulate=false, int simPauseMS=100);
+		p7140dnThread(
+				TSWriter* tsWriter,
+				bool publish,
+				int gates, int tsLength,
+				std::string devName,
+				int chanId,
+				int decrate=8,
+				bool simulate=false,
+				int simPauseMS=100);
 		virtual ~p7140dnThread();
 		void run();
 	protected:
@@ -21,7 +26,7 @@ class p7140dnThread: public QThread, public Pentek::p7140dn {
 		int _tsLength;
 		bool _publish;
 		TSWriter* _tsWriter;         ///< The time series writer.
-		
+
 };
 
 

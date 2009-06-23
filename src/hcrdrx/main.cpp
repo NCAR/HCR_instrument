@@ -51,7 +51,8 @@ DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
-bool _do7140 = false;            ///< Set truue if we are using the p7140, false otherwise. Default is false
+bool _do7140 = false;            ///< Set true if we are using the p7140, false otherwise. Default is false
+bool _internalClock = false;     ///< set true to use the internal clock, false otherwise
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
 {
@@ -107,21 +108,22 @@ void getConfigParams()
 	std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
 
 	// get parameters
-	_publish      = config.getBool("DDS/Publish", true);
-	_ORB          = config.getString("DDS/ORBConfigFile",  orbFile);
-	_DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
-	_tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
-	_DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
-	_devRoot      = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
-	_chans        = config.getInt("Device/Channels",       1);
-	_decim        = config.getInt("Device/Decimation",     8);
-	_gates        = config.getInt("Radar/Gates",           200);
-	_nsum         = config.getInt("Radar/Nsum",            10);
-	_tsLength     = config.getInt("Radar/TsLength",        256);
-	_numChannels  = config.getInt("Radar/Channels",        4);
-	_simulate     = config.getBool("Simulate",             false);
-	_simPauseMS   = config.getInt("SimPauseMs",            20);
-	_do7140      = config.getBool("Use7140",               false);
+	_publish       = config.getBool("DDS/Publish", true);
+	_ORB           = config.getString("DDS/ORBConfigFile",  orbFile);
+	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
+	_tsTopic       = config.getString("DDS/TopicTS",        "PROFILERTS");
+	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
+	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
+	_chans         = config.getInt("Device/Channels",       1);
+	_decim         = config.getInt("Device/Decimation",     8);
+	_gates         = config.getInt("Radar/Gates",           200);
+	_nsum          = config.getInt("Radar/Nsum",            10);
+	_tsLength      = config.getInt("Radar/TsLength",        256);
+	_numChannels   = config.getInt("Radar/Channels",        4);
+	_simulate      = config.getBool("Simulate",             false);
+	_simPauseMS    = config.getInt("SimPauseMs",            20);
+	_do7140        = config.getBool("Use7140",              false);
+	_internalClock = config.getBool("InternalClock",        false);
 
 }
 
@@ -138,16 +140,17 @@ void parseOptions(int argc,
 	// get the options
 	po::options_description descripts("Options");
 	descripts.add_options()
-	("help", "describe options")
-	("devRoot", po::value<std::string>(&_devRoot), "cevice root (e.g. /dev/pentek/0)")
-	("chans",  po::value<int>(&_chans),  "number of channels")
-	("gates",  po::value<int>(&_gates),  "number of gates")
-	("nsum",  po::value<int>(&_nsum),  "number of coherent integrator sums")
+	("help", "Describe options")
+	("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
+	("chans",  po::value<int>(&_chans),  "Number of channels")
+	("gates",  po::value<int>(&_gates),  "Number of gates")
+	("nsum",  po::value<int>(&_nsum),  "Number of coherent integrator sums")
 	("decimation",  po::value<int>(&_decim),  "ADC decimation rate")
-	("nopublish", "do not publish data")
-	("p7140", "use p7140 card (otherwise 7142 will be used")
+	("nopublish", "Do not publish data")
+	("p7140", "Use p7140 card (otherwise 7142 will be used")
 	("simulate", "Enable simulation")
 	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
+    ("internalClock", "Use the internal clock instead of the front panel clock")
 	("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
 	("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
 	("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
@@ -160,9 +163,10 @@ void parseOptions(int argc,
 	po::store(po::parse_command_line(argc, argv, descripts), vm);
 	po::notify(vm);
 
-	_publish = vm.count("nopublish") == 0;
-	_simulate = vm.count("simulate") != 0;
-	_do7140 = vm.count("p7140") != 0;
+	_publish       = vm.count("nopublish") == 0;
+	_simulate      = vm.count("simulate") != 0;
+	_do7140        = vm.count("p7140") != 0;
+	_internalClock = vm.count("internalClock") != 0;
 
 	if (vm.count("help")) {
 		std::cout << descripts << std::endl;
@@ -279,7 +283,8 @@ main(int argc, char** argv)
 					_kaiserFile,
 					_decim,
 					_simulate,
-					_simPauseMS);
+					_simPauseMS,
+					_internalClock);
 			down7142[c] = p;
 			if (!down7142[c]->ok()) {
 				std::cerr << "cannot access " << down7142[c]->dnName() << "\n";

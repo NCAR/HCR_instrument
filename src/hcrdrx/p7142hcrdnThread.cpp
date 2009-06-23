@@ -21,7 +21,8 @@ p7142hcrdnThread::p7142hcrdnThread(
 				   std::string kaiserFile,
 				   int bypassdivrate,
 				   bool simulate,
-				   int simPauseMS):
+				   int simPauseMS,
+				   bool internalClock):
   p7142hcrdn(devName,
 	     chanId,
 	     gates,
@@ -35,7 +36,8 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     kaiserFile,
 	     bypassdivrate,
 	     simulate,
-	     simPauseMS),
+	     simPauseMS,
+	     internalClock),
   _doCI(nsum > 1),
   _nsum(nsum),
   _tsLength(tsLength),

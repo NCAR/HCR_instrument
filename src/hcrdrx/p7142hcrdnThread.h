@@ -25,7 +25,8 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				std::string kaiserFile,
 				int bypassdivrate=8,
 				bool simulate=false,
-				int simPauseMS=100);
+				int simPauseMS=100,
+				bool internalClock=false);
 		virtual ~p7142hcrdnThread();
 		void run();
 		void startFilters();
