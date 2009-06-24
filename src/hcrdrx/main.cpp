@@ -275,13 +275,12 @@ main(int argc, char** argv)
 			perror("");
 			exit(1);
 		}
-		std::cout << "Using p7142 device: "  << down7142[c]->dnName() << std::endl;
 	}
 
 	// start the down converter threads.
 
 	for (int c = 0; c < channels.size(); c++) {
-		std::cout << "starting " << down7142[c]->dnName() << std::endl;
+		std::cout << "processing enabled on " << down7142[c]->dnName() << std::endl;
 		down7142[c]->start();
 	}
 
@@ -290,6 +289,7 @@ main(int argc, char** argv)
     // all of the filters are started by any call to
     // start filters(). So just call it for channel 0
     down7142[0]->startFilters();
+    std::cout << "filters enabled" << std::endl;
 
 
 	double startTime = nowTime();
