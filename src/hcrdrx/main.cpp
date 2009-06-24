@@ -246,9 +246,7 @@ main(int argc, char** argv)
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
-	std::vector<p7140dnThread*> down7140;
 	std::vector<p7142hcrdnThread*> down7142;
-	down7140.resize(channels.size());
 	down7142.resize(channels.size());
 
 	for (int c = 0; c < channels.size(); c++) {
@@ -283,10 +281,16 @@ main(int argc, char** argv)
 	// start the down converter threads.
 
 	for (int c = 0; c < channels.size(); c++) {
+		std::cout << "starting " << down7142[c]->dnName() << std::endl;
 		down7142[c]->start();
 	}
 
 	sleep(1);
+
+    // all of the filters are started by any call to
+    // start filters(). So just call it for channel 0
+    down7142[0]->startFilters();
+
 
 	double startTime = nowTime();
 	while (1) {
