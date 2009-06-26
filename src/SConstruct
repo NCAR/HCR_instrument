@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(os.getcwd(),'config'))
 import eol_scons
 import SCons
 
-options = eol_scons.Pkg_Options()
+options = eol_scons.GlobalVariables()
 
 def HcrSetup(env):
     env.Require(['QTDIR'])
