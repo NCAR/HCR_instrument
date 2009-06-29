@@ -145,10 +145,10 @@ p7142hcrdnThread::publish(char* buf, int n) {
 	   int* data = (int*)buf;
 	   for (int t = 0; t < _tsLength; t++) {
 		   for (int tag = 0; tag < 4; tag++) {
-			   int format = (data[in] >> 28) & 0xf;
-			   int key = (data[in] >> 24) & 0xf;
-			   int sumNum = data[in] & 0xffffff;
-			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
+//			   int format = (data[in] >> 28) & 0xf;
+//			   int key = (data[in] >> 24) & 0xf;
+//			   int sumNum = data[in] & 0xffffff;
+//			   std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
 			   in++;
 		   }
 		   //std::cout << std::dec << std::endl;
