@@ -249,7 +249,7 @@ main(int argc, char** argv)
 	std::vector<p7142hcrdnThread*> down7142;
 	down7142.resize(channels.size());
 
-	for (int c = 0; c < channels.size(); c++) {
+	for (unsigned int c = 0; c < channels.size(); c++) {
 		p7142hcrdnThread* p = new p7142hcrdnThread(
 				_tsWriter,
 				_publish,
@@ -279,7 +279,7 @@ main(int argc, char** argv)
 
 	// start the down converter threads.
 
-	for (int c = 0; c < channels.size(); c++) {
+	for (unsigned int c = 0; c < channels.size(); c++) {
 		std::cout << "processing enabled on " << down7142[c]->dnName() << std::endl;
 		down7142[c]->start();
 	}
@@ -303,11 +303,11 @@ main(int argc, char** argv)
 		std::vector<int> overUnder;
 		bytes.resize(channels.size());
 		overUnder.resize(channels.size());
-		for (int c = 0; c < channels.size(); c++) {
+		for (unsigned int c = 0; c < channels.size(); c++) {
 			bytes[c] = down7142[c]->bytesRead();
 			overUnder[c] = down7142[c]->overUnderCount();
 		}
-		for (int c = 0; c < channels.size(); c++) {
+		for (unsigned int c = 0; c < channels.size(); c++) {
 			std::cout << std::setprecision(3) << std::setw(5)
 					  << bytes[c]/1000000.0/elapsed << " MB/s "
 					  << overUnder[c] << " overruns   ";
