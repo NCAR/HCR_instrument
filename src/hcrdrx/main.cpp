@@ -149,24 +149,31 @@ void parseOptions(int argc,
 	("nopublish", "Do not publish data")
 	("p7140", "Use p7140 card (otherwise 7142 will be used")
 	("simulate", "Enable simulation")
-	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
+	("simPauseMS",  po::value<int>(&_simPauseMS), "Simulation pause interval (ms)")
     ("internalClock", "Use the internal clock instead of the front panel clock")
-	("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
-	("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
-	("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
-	("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
+	("ORB", po::value<std::string>(&_ORB), 
+	        "ORB service configuration file (Corba ORBSvcConf arg)")
+	("DCPS", po::value<std::string>(&_DCPS), 
+	        "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
+	("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), 
+	        "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
+	("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel")
 	("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
-			"DCPSTransportDebugLevel ")
+			"DCPSTransportDebugLevel")
 			;
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, descripts), vm);
 	po::notify(vm);
 
-	_publish       = vm.count("nopublish") == 0;
-	_simulate      = vm.count("simulate") != 0;
-	_do7140        = vm.count("p7140") != 0;
-	_internalClock = vm.count("internalClock") != 0;
+	if (vm.count("nopublish"))
+	    _publish = false;
+	if (vm.count("simulate"))
+	    _simulate = true;
+	if (vm.count("p7140"))
+	    _do7140 = true;
+	if (vm.count("internalClock"))
+	    _internalClock = true;   
 
 	if (vm.count("help")) {
 		std::cout << descripts << std::endl;
