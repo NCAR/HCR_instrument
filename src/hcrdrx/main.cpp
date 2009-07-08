@@ -57,13 +57,17 @@ bool _internalClock = false;     ///< set true to use the internal clock, false 
 void createDDSservices()
 {
 	ArgvParams argv("profilerdrx");
-	argv["-ORBSvcConf"] = _ORB;
-	argv["-DCPSConfigFile"] = _DCPS;
 	argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
+	argv["-DCPSConfigFile"] = _DCPS;
 	if (_DCPSDebugLevel > 0)
 		argv["-DCPSDebugLevel"] = _DCPSDebugLevel;
 	if (_DCPSTransportDebugLevel > 0)
 		argv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
+	argv["-ORBSvcConf"] = _ORB;
+
+	for (int i = 0; i < argv.argc(); i++) {
+		std::cout << "DDS arg<" << argv.argv()[i] << ">" << std::endl;
+	}
 
 	// create our DDS publisher
 #ifdef ORIG
