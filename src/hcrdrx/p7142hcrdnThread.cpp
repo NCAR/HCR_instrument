@@ -27,6 +27,7 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     chanId,
 	     gates,
 	     nsum,
+	     tsLength,
 	     delay,
 	     prt,
 	     prt2,
