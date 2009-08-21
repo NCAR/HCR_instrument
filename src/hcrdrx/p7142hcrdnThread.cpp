@@ -43,7 +43,8 @@ p7142hcrdnThread::p7142hcrdnThread(
   _nsum(nsum),
   _tsLength(tsLength),
   _publish(publish),
-  _tsWriter(tsWriter)
+  _tsWriter(tsWriter),
+  _tsDiscards(0)
 {
 std::cout << "_doCI is " << _doCI << " _nsum is " << _nsum << std::endl;
 }
@@ -118,10 +119,11 @@ double p7142hcrdnThread::nowTime() {
 void
 p7142hcrdnThread::publish(char* buf, int n) {
 
-  ProfilerDDS::TimeSeries* ts = _tsWriter->getEmptyItem();
-
+  ProfilerDDS::TimeSeries* ts;
+  ts = _tsWriter->getEmptyItem();
   if (!ts) {
-    return;
+	  _tsDiscards++;
+	  return;
   }
 
   int len = n;
@@ -169,5 +171,13 @@ p7142hcrdnThread::publish(char* buf, int n) {
    }
 
   _tsWriter->publishItem(ts);
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+unsigned long
+p7142hcrdnThread::tsDiscards() {
+	unsigned long retval = _tsDiscards;
+	_tsDiscards = 0;
+	return retval;
 }
 

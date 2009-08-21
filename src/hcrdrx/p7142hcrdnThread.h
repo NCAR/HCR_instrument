@@ -30,6 +30,9 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 		virtual ~p7142hcrdnThread();
 		void run();
 		void startFilters();
+		/// @return The number of timeseries blocks that have been discarded
+		/// since the last time this function was called.
+		unsigned long tsDiscards();
 
 	protected:
 		double nowTime();
@@ -38,9 +41,19 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 		bool _doCI;
 		/// the number of sums in the coherent integration
 		int _nsum;
+		/// The number of pulses in one time series block.
+		/// If coherent integration is on, there will actually be
+		/// 2 times this number of pulses in the block; one for even pulses
+		/// and one for odd pulses.
 		int _tsLength;
+		/// Set true if we are going to publish the data
 		bool _publish;
-		TSWriter* _tsWriter;         ///< The time series writer.
+		/// The time series writer.
+		TSWriter* _tsWriter;
+		/// The number of unpublished blocks, due to no
+		/// empty items being available from DDS. It is
+		/// reset to zero whenever tsDiscards() is called.
+		unsigned long _tsDiscards;
 
 };
 
