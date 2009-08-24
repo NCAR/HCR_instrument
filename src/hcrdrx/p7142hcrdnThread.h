@@ -23,6 +23,7 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				bool stgr_prt,
 				std::string gaussianFile,
 				std::string kaiserFile,
+				Pentek::p7142hcrdn::DDCDECIMATETYPE decimateType,
 				int bypassdivrate=8,
 				bool simulate=false,
 				int simPauseMS=100,
