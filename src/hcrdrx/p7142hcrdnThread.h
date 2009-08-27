@@ -37,7 +37,26 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 
 	protected:
 		double nowTime();
+		/// Publish the data to the dds. A complete timeseries, of
+		/// length _tsLength, with all gates, is packed into
+		/// a DDS buffer and published to the dds.
+		/// @param buf The raw buffer of data from the downconverter
+		/// channel. It contains all Is and Qs, plus the tagging
+		/// information.
+		/// @param n The length of the buffer. This is redundant
+		/// information, since the buffer size better match the required
+		/// size based on _gates, _tsLength, and whether coherent integration
+		/// is in effect or not.
 		void publish(char* buf, int n);
+		/// Decode the tag information in a buffer.
+		/// @param buf The raw buffer of data from the downconverter
+		/// channel. It contains all Is and Qs, plus the tagging
+		/// information.
+		/// @param n The length of the buffer. This is redundant
+		/// information, since the buffer size better match the required
+		/// size based on _gates, _tsLength, and whether coherent integration
+		/// is in effect or not.
+		void decodeBuf(char* buf, int n);
 		/// set true if coherent integrator is being used
 		bool _doCI;
 		/// the number of sums in the coherent integration

@@ -89,15 +89,10 @@ void p7142hcrdnThread::run() {
     	std::cerr << "read returned incorrect number of bytes" << std::endl;
     }
 
-    // convert to ints and print
-    /**
-    unsigned int* datai = (unsigned int*)buf;
-    for (int i = 0; i < n/4; i++) {
-      std::cout << std::dec << i
-		<< std::hex << "  0x" << datai[i] << std::endl;
-    }
-    **/
+    // examine the tags
+    decodeBuf(buf, n);
 
+    // publish the data
     if (_publish) {
       publish(buf, n);
     }
@@ -149,17 +144,12 @@ p7142hcrdnThread::publish(char* buf, int n) {
 	   int out = 0;
 	   int* data = (int*)buf;
 	   for (int t = 0; t < _tsLength; t++) {
-		   for (int tag = 0; tag < 4; tag++) {
-//			   int format = (data[in] >> 28) & 0xf;
-//			   int key = (data[in] >> 24) & 0xf;
-//			   int sumNum = data[in] & 0xffffff;
-//			   std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
-			   in++;
-		   }
-		   //std::cout << std::dec << std::endl;
+		   // skip the tag
+		   in += 4;
 		   for (int g = 0; g < _gates; g++) {
 			   for (int iq = 0; iq < 2; iq++) {
-				   // for now, just add even and odd
+				   // for now, just add even and odd. The pulse
+				   // decoding will eventually happen here.
 				   double sum = data[in] + data[in+2*_gates];
 				   double result = (sum/_nsum);
 				   ts->tsdata[out] = (short)result;
@@ -172,7 +162,66 @@ p7142hcrdnThread::publish(char* buf, int n) {
 	   }
    }
 
+   // publish it
   _tsWriter->publishItem(ts);
+}
+
+///////////////////////////////////////////////////////////
+void
+p7142hcrdnThread::decodeBuf(char* buf, int n) {
+
+  /// @todo Make the decodeBuf routine do something useful, rather than just
+  /// counting through the data arrays. Right now we use it by uncommenting
+  /// diagnostic prints.
+
+  // we assume that buf contains all of the data for a complete time series
+  // of length _tsLength. If it doesn't, we are in trouble
+  int len = n;
+   if (!_doCI) {
+	   // if the coherent integrator is not used, then we receive
+	   // a straight stream of IQ pairs, as 2 byte shorts.
+	   // convert to shorts
+	   short* data = (short*)buf;
+	   for (int i = 0; i < n/2; i++) {
+		   // place holder
+	   }
+   } else {
+	   // decode data from coherent integrator. It is packed as follows:
+	   // <TAG_I_EVEN><TAG_Q_EVEN><TAG_I_ODD><TAG_Q_ODD><IQpairs,even pulse><IQpairs,odd pulse>
+	   //
+	   // The tags are formatted as:
+	   //   bits 31:28  Format number 0-256 (4 bits)
+	   //   bits 27:26  Channel number  0-3 (2 bits)
+	   //   bits    25  0=even, 1=odd   0-1 (1 bit)
+	   //   bit     24  0=I, 1=Q        0-1 (1 bit)
+	   //   bits 23:00  Sequence number     (24 bits)
+	   int in = 0;
+	   int out = 0;
+	   int* data = (int*)buf;
+	   for (int t = 0; t < _tsLength; t++) {
+		   // decode the leading four tags
+		   for (int tag = 0; tag < 4; tag++) {
+			   int format = (data[in] >> 28) & 0xf;
+			   int key = (data[in] >> 24) & 0xf;
+			   int sumNum = data[in] & 0xffffff;
+			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
+			   in++;
+		   }
+		   //std::cout << std::dec << std::endl;
+		   for (int g = 0; g < _gates; g++) {
+			   for (int iq = 0; iq < 2; iq++) {
+				   // logic below just shows where even and odd Is and Qs are located
+				   double even = data[in];
+				   double odd = data[in+2*_gates];
+				   in++;
+				   out++;
+			   }
+		   }
+		   // we have advanced the in pointer to the end of the even Is and Qs.
+		   // Now space past the odd Is and Qs.
+		   in += 2*_gates;
+	   }
+   }
 }
 
 //////////////////////////////////////////////////////////////////////////////////
