@@ -56,7 +56,8 @@ xlabel('N Index');
 ylabel('Magnitude');
 subplot(3,1,2);
 H_k = fftshift(fft(h_k,N));
-plot(f, 10*log(abs(H_k)));
+% plot(f, 10*log(abs(H_k))); incorrectly used ln and factor 10*
+plot(f, 20*log10(abs(H_k))); % fixed above
 title('Frequency Response of Kaiser Window FIR');
 xlabel('Frequency (Hz)');
 ylabel('Magnitude (dB)');
@@ -100,8 +101,10 @@ xlabel('N Index');
 ylabel('Magnitude');
 H_g = fftshift(fft(h_g,N));
 subplot(3,1,2);
-plot(f, 10*log(abs(H_g)));
-Cutoff = 10*log(abs(H_g(round(N*(R_BW+fs/2)/fs))));
+% plot(f, 10*log(abs(H_g))); incorrectly used ln and factor 10*
+plot(f, 20*log10(abs(H_g)));
+% Cutoff = 10*log(abs(H_g(round(N*(R_BW+fs/2)/fs))));
+Cutoff = 20*log10(abs(H_g(round(N*(R_BW+fs/2)/fs)))); %fixed above
 title('Frequency Response of Gaussian FIR');
 xlabel('Frequency (Hz)');
 ylabel('Magnitude (dB)');

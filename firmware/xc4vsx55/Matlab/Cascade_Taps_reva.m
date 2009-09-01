@@ -17,7 +17,7 @@ sampling_freq_div2 = sampling_freq/2;
 fs = sampling_freq;          % sampling rate
 T=1/fs;                      % sampling period
 N=1024;                      % N Points for FFT/IFFT
-% n=0:1:N-1;                   
+%n=0:1:N-1;                   
 f=-fs/2:fs/(N-1):fs/2;       % frequency range vector
 %---------------------------------------
 % Kaiser Window FIR 127, 95 or 63 Tap
@@ -26,7 +26,8 @@ wp = 2.0e6;
 ws = 2.25e6;
 error = 0.001;
 error_s = 0.01;
-[n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error_s], fs);
+
+[n,Wn,bta,filtype] = kaiserord( [wp ws], [1 0], [error error], fs);
 h_k = fir1(n, Wn, filtype, kaiser(n+1,bta), 'noscale');
 
 if downsample == 8, Coeff_limit = 127; end
@@ -59,7 +60,9 @@ xlabel('N Index');
 ylabel('Magnitude');
 subplot(3,1,2);
 H_k = fftshift(fft(h_k,N));
-plot(f, 10*log(abs(H_k)));
+% plot(f, 10*log(abs(H_k))); original code incorrectly used log base e, and
+% factor of 10*
+plot(f,20*log10(abs(H_k))); % corrected above!
 title('Frequency Response of Kaiser Window FIR');
 xlabel('Frequency (Hz)');
 ylabel('Magnitude (dB)');
@@ -138,9 +141,12 @@ xlabel('N Index');
 ylabel('Magnitude');
 H_g = fftshift(fft(h_g,N));
 subplot(3,1,2);
-plot(f, 10*log(abs(H_g)));
+% plot(f, 10*log(abs(H_g))); original code incorrectly used log base e, and
+% factor 10*
+plot(f,20*log(abs(H_g)));
 if Gauss == 1
-    Cutoff = 10*log(abs(H_g(round(N*(R_BW+fs/2)/fs))));
+%    Cutoff = 10*log(abs(H_g(round(N*(R_BW+fs/2)/fs))));
+    Cutoff = 20*log10(abs(H_g(round(N*(R_BW+fs/2)/fs)))); %fixed above
 end
 if Gauss == 1
     title('Frequency Response of Gaussian FIR');
