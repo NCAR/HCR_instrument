@@ -182,8 +182,8 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	   // a straight stream of IQ pairs, as 2 byte shorts.
 	   // convert to shorts
 	   short* data = (short*)buf;
-	   for (int i = 0; i < n/2; i++) {
-		   // place holder
+	   for (int i = 0; i < n/2; i = i + 2) {
+		   //std::cout << i << ": " << data[i] << " " << data[i+1] << std::endl;
 	   }
    } else {
 	   // decode data from coherent integrator. It is packed as follows:
