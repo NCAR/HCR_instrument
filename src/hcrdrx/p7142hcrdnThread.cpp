@@ -59,6 +59,8 @@ p7142hcrdnThread::~p7142hcrdnThread() {
 //////////////////////////////////////////////////////////////////////////////////
 void p7142hcrdnThread::run() {
 
+  static unsigned short int ttl_toggle = 0;
+
   // there will be an I and Q for each channel
   int _bufferSize;
   if (!_doCI) {
@@ -78,6 +80,9 @@ void p7142hcrdnThread::run() {
   // start the loop. The thread will block on the read()
   while (1) {
     int n = p7142dn::read(buf, _bufferSize);
+    ttl_toggle = ~ttl_toggle;
+    setTtlOut(ttl_toggle);
+
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
       if (n < 0)
