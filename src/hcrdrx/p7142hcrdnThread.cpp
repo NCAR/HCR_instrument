@@ -80,8 +80,9 @@ void p7142hcrdnThread::run() {
   // start the loop. The thread will block on the read()
   while (1) {
     int n = p7142dn::read(buf, _bufferSize);
+
     ttl_toggle = ~ttl_toggle;
-    setTtlOut(ttl_toggle);
+    TTLOut(ttl_toggle);
 
     if (n <= 0) {
       std::cerr << "read returned " << n << " ";
