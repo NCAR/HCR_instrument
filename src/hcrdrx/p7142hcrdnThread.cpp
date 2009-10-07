@@ -143,8 +143,10 @@ p7142hcrdnThread::publish(char* buf, int n) {
 	   // a straight stream of IQ pairs, as 2 byte shorts.
 	   // convert to shorts
 	   short* data = (short*)buf;
-	   for (int i = 0; i < n/2; i++)
+	   for (int i = 0; i < n/2; i++) {
 		   ts->tsdata[i] = data[i];
+		   //std::cout << i << "  " << ts->tsdata[i] << std::endl;
+	   }
    } else {
 	   // decode data from coherent integrator
 	   int in = 0;
@@ -183,8 +185,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 
   // we assume that buf contains all of the data for a complete time series
   // of length _tsLength. If it doesn't, we are in trouble
-  int len = n;
-   if (!_doCI) {
+  if (!_doCI) {
 	   // if the coherent integrator is not used, then we receive
 	   // a straight stream of IQ pairs, as 2 byte shorts.
 	   // convert to shorts
