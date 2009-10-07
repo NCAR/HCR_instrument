@@ -48,7 +48,8 @@ p7142hcrdnThread::p7142hcrdnThread(
   _tsWriter(tsWriter),
   _tsDiscards(0)
 {
-std::cout << "_doCI is " << _doCI << " _nsum is " << _nsum << std::endl;
+   std::cout << "coherent integration is " <<
+      (_doCI ? "enabled" : "disabled") << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
