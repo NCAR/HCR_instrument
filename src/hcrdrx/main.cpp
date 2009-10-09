@@ -67,24 +67,15 @@ void createDDSservices()
 		argv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
 	argv["-ORBSvcConf"] = _ORB;
 
-	for (int i = 0; i < argv.argc(); i++) {
-		std::cout << "DDS arg<" << argv.argv()[i] << ">" << std::endl;
-	}
-
 	// create our DDS publisher
-#ifdef ORIG
-	_publisher = new DDSPublisher(argv.argc(), argv.argv());
-#else
 	char **theArgv = argv.argv();
-	//    std::cerr << "theArgv[0] = " << theArgv[0] << std::endl;
 	_publisher = new DDSPublisher(argv.argc(), theArgv);
-#endif
 	if (_publisher->status()) {
 		std::cerr << "Unable to create a publisher, exiting." << std::endl;
 		exit(1);
 	}
 
-	// create the time series writer
+	// create the DDS time series writer
 	_tsWriter = new TSWriter(*_publisher, _tsTopic.c_str());
 }
 
