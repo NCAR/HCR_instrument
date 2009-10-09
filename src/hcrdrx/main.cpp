@@ -265,6 +265,9 @@ main(int argc, char** argv)
 		decimateType = Pentek::p7142hcrdn::DDC4DECIMATE;
 	}
 	for (unsigned int c = 0; c < channels.size(); c++) {
+
+		std::cout << "*** Channel " << channels[c] << " ***" << std::endl;
+
 		p7142hcrdnThread* p = new p7142hcrdnThread(
 				_tsWriter,
 				_publish,

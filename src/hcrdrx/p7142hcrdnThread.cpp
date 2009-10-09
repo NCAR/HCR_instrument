@@ -48,8 +48,6 @@ p7142hcrdnThread::p7142hcrdnThread(
   _tsWriter(tsWriter),
   _tsDiscards(0)
 {
-   std::cout << "coherent integration is " <<
-      (_doCI ? "enabled" : "disabled") << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
