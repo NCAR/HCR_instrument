@@ -31,7 +31,7 @@ namespace po = boost::program_options;
 void getConfigParams()
 {
 
-    QtConfig config("ProfilerScope", "ProfilerScope");
+    QtConfig config("ProfilerProd", "ProfilerProd");
 
     // set up the default configuration directory path
     std::string ProfilerDir("/conf/");
