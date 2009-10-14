@@ -6,9 +6,11 @@
  */
 
 #include "ProductGenerator.h"
+#include <iostream>
 
 ProductGenerator::ProductGenerator(QtTSReader *source) : 
-    _source(source) {
+    _source(source),
+    _count(0) {
 }
 
 ProductGenerator::~ProductGenerator() {
@@ -26,5 +28,8 @@ ProductGenerator::run() {
 
 void 
 ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
+    if (!(_count++ % 100)) {
+        std::cerr << "I've gotten " << _count << " TS items!" << std::endl;
+    }
     emit returnItem(tsItem);
 }

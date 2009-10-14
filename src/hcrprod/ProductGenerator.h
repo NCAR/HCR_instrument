@@ -28,6 +28,7 @@ signals:
     
 private:
     QtTSReader *_source;
+    int _count;
 };
 
 #endif /* PRODUCTGENERATOR_H_ */
