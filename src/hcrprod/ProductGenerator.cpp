@@ -17,7 +17,7 @@ ProductGenerator::~ProductGenerator() {
 
 void 
 ProductGenerator::run() {
-    connect(_source, SIGNAL(newTSItem(ProfilerDDS::TimeSeries*)), 
+    connect(_source, SIGNAL(newItem(ProfilerDDS::TimeSeries*)), 
             this, SLOT(handleItem(ProfilerDDS::TimeSeries*)));
     connect(this, SIGNAL(returnItem(ProfilerDDS::TimeSeries*)),
             _source, SLOT(returnItemSlot(ProfilerDDS::TimeSeries*)));
