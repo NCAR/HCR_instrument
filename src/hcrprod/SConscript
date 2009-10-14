@@ -1,0 +1,32 @@
+# -*- python -*-
+
+tools = Split("""
+qt4
+qtt_qtconfig
+profilerdds
+doxygen
+boost_program_options
+""")
+
+env = Environment(tools = ['default'] + tools)
+
+qt4modules = ['QtCore', 'QtGui']
+env.EnableQt4Modules(qt4modules)
+
+sources = Split("""
+profilerprod.cpp
+ProductGenerator.cpp
+""")
+
+headers = Split("""
+ProductGenerator.h
+""")
+
+html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
+
+profilerprod = env.Program('profilerprod', sources)
+
+Default(profilerprod, html)
+
+
+
