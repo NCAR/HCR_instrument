@@ -26,6 +26,7 @@ SConscript("profilerscope/SConscript")
 SConscript("mapr/SConstruct")
 SConscript("sniffer/SConscript")
 SConscript("bscan/SConscript")
+SConscript("profilerprod/SConscript")
 
 env.Alias('apidocs', env.Dir("apidocs"))
 
