@@ -119,8 +119,8 @@ main (int argc, char** argv) {
     // create the data source reader
     QtTSReader *tsReader = new QtTSReader(subscriber, _tsTopic);
 
-    // create the scope
-    ProductGenerator generator(tsReader);
+    // create the products generator thread and run it
+    ProductGenerator generator(tsReader, 64);
     generator.run();
 
     return app.exec();
