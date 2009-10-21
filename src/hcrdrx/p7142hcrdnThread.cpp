@@ -130,7 +130,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
 
   int len = n;
 
-  ts->tsdata.length(len/2);
+  ts->data.length(len/2);
 
   ts->hskp.gates = _gates;
   ts->hskp.chanId = _chanId;
@@ -142,7 +142,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
 	   // convert to shorts
 	   short* data = (short*)buf;
 	   for (int i = 0; i < n/2; i++) {
-		   ts->tsdata[i] = data[i];
+		   ts->data[i] = data[i];
 		   //std::cout << i << "  " << ts->tsdata[i] << std::endl;
 	   }
    } else {
@@ -159,7 +159,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
 				   // decoding will eventually happen here.
 				   double sum = data[in] + data[in+2*_gates];
 				   double result = (sum/_nsum);
-				   ts->tsdata[out] = (short)result;
+				   ts->data[out] = (short)result;
 				   in++;
 				   out++;
 			   }
