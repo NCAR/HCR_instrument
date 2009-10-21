@@ -201,8 +201,8 @@ main(int argc, char** argv)
 			usleep(1);
 		} else {
 			samples++;
-			total += ts->tsdata.length()*sizeof(ts->tsdata[0]);
-			subTotal += ts->tsdata.length()*sizeof(ts->tsdata[0]);
+			total += ts->data.length()*sizeof(ts->data[0]);
+			subTotal += ts->data.length()*sizeof(ts->data[0]);
 			_tsReader->returnItem(ts);
 
 			int mb = (int)(total/1.0e6);
