@@ -120,7 +120,7 @@ main (int argc, char** argv) {
     QtTSReader *tsReader = new QtTSReader(subscriber, _tsTopic);
 
     // create the products generator thread and run it
-    ProductGenerator generator(tsReader, 64);
+    ProductGenerator generator(tsReader, 64, 1.0e-3, 3.0e-3, 0.0, 0.015);
     generator.run();
 
     return app.exec();

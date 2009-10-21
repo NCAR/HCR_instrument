@@ -18,7 +18,9 @@ class ProductGenerator : public QThread {
     Q_OBJECT
     
 public:
-    ProductGenerator(QtTSReader *source, int nSamples);
+    ProductGenerator(QtTSReader *source, int nSamples, double prtSeconds, 
+            double wavelengthMeters, double startRangeKm, 
+            double gateSpacingKm);
     virtual ~ProductGenerator();
     void run();
     /**

@@ -11,11 +11,15 @@
 
 const int ProductGenerator::PRODGEN_MAX_GATES = 2048;
 
-ProductGenerator::ProductGenerator(QtTSReader *source, int nSamples) : 
+ProductGenerator::ProductGenerator(QtTSReader *source, int nSamples,
+        double prtSeconds, double wavelengthMeters, double startRangeKm, 
+        double gateSpacingKm) : 
     _source(source),
     _nSamples(nSamples),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
     _samplesInDwell(0) {
+    _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
+            gateSpacingKm);
     _momentsCalc.setNSamples(int(_nSamples));
     //
     // Allocate our dwell-in-progress: _dwell[PRODGEN_MAX_GATES][_nSamples]
@@ -48,7 +52,7 @@ static unsigned int DwellCount = 0;
 
 void 
 ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
-    ProfilerDDS::Housekeeping *hskp = &(tsItem->hskp);
+    ProfilerDDS::TSHousekeeping *hskp = &(tsItem->hskp);
     int nGates = hskp->gates;
     bool ok = true;
     
@@ -79,12 +83,14 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
             int offset = 2 * (samp * nGates + gate);
             // Put the I and Q into the dwell-in-progress
             _dwell[gate][_samplesInDwell].re = 
-                tsItem->tsdata[offset] / 32768.0; // real part = I / 32768.0
+                tsItem->data[offset] / 32768.0; // real part = I / 32768.0
             _dwell[gate][_samplesInDwell].im = 
-                tsItem->tsdata[offset + 1] / 32768.0; // imaginary part = Q / 32768.0
+                tsItem->data[offset + 1] / 32768.0; // imaginary part = Q / 32768.0
         }
         _samplesInDwell++;
-        
+        /*
+         * If this sample created a complete dwell, publish it
+         */
         if (_samplesInDwell == _nSamples) {
             DwellCount++;
             
@@ -92,7 +98,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
             // Calculate products for our dwell, gate by gate
             for (int gate = 0; gate < hskp->gates; gate++)
                 _momentsCalc.singlePol(_dwell[gate], gate, false, fields);
-            // TODO publish the dwell
+            // TODO actually publish the dwell here...
             // Start a new dwell-in-progress
             _samplesInDwell = 0;
         }
