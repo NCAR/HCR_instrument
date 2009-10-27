@@ -4,6 +4,7 @@
 #include <QThread>
 #include "p7142hcr.h"
 #include "TSWriter.h"
+#include "SingleMutex.h"
 
 class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 	Q_OBJECT
@@ -68,12 +69,16 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 		int _tsLength;
 		/// Set true if we are going to publish the data
 		bool _publish;
-		/// The time series writer.
+		/// The DDS time series writer
 		TSWriter* _tsWriter;
 		/// The number of unpublished blocks, due to no
 		/// empty items being available from DDS. It is
 		/// reset to zero whenever tsDiscards() is called.
 		unsigned long _tsDiscards;
+		/// A singleton mutex to insure that _tsWriter->publishItem() is not called
+		/// simultaneously from different threads.
+		/// Doesn't seem to help
+		SingleMutex _publishMutex;
 
 };
 

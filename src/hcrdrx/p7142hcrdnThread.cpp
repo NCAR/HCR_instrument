@@ -5,7 +5,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////
 p7142hcrdnThread::p7142hcrdnThread(
-				   TSWriter* tsWriter,
+		           TSWriter* tsWriter,
 				   bool publish,
 				   int tsLength,
 				   std::string devName,
@@ -48,6 +48,8 @@ p7142hcrdnThread::p7142hcrdnThread(
   _tsWriter(tsWriter),
   _tsDiscards(0)
 {
+	  // create the publish mutex
+	  //_publishMutex.create();
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +172,9 @@ p7142hcrdnThread::publish(char* buf, int n) {
    }
 
    // publish it
+   //_publishMutex.lock();
   _tsWriter->publishItem(ts);
+   //_publishMutex.unlock();
 }
 
 ///////////////////////////////////////////////////////////
