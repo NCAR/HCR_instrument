@@ -56,6 +56,7 @@ void getConfigParams()
     _ORB          = config.getString("DDS/ORBConfigFile",  orbFile);
     _DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
     _tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
+    _prodTopic    = config.getString("DDS/TopicProduct",   "PROFILERPROD");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 }
 
@@ -100,10 +101,14 @@ main (int argc, char** argv) {
     // parse the command line options, substituting for config params.
     parseOptions(argc, argv);
 
-    ArgvParams newargv("sniffer");
+    ArgvParams newargv("profilerprod");
     newargv["-ORBSvcConf"] = _ORB;
     newargv["-DCPSConfigFile"] = _DCPS;
     newargv["-DCPSInfoRepo"] = _DCPSInfoRepo;
+    
+    std::cout << "ORB service configuration: " << _ORB << std::endl;
+    std::cout << "DCPS configuration: " << _DCPS << std::endl;
+    std::cout << "DCPSInfoRepo: " << _DCPSInfoRepo << std::endl;
     if (_DCPSDebugLevel > 0)
         newargv["-DCPSDebugLevel"] = _DCPSDebugLevel;
     if (_DCPSTransportDebugLevel > 0)
