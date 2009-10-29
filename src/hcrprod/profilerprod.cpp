@@ -37,10 +37,10 @@ void getConfigParams()
     QtConfig config("ProfilerProd", "ProfilerProd");
 
     // set up the default configuration directory path
-    std::string ProfilerDir("/conf/");
+    std::string ProfilerDir;
     char* e = getenv("PROFILERDIR");
     if (e) {
-        ProfilerDir = e + ProfilerDir;
+        ProfilerDir = std::string(e) + "/conf/";
     } else {
         std::cerr << "Environment variable PROFILERDIR must be set." << std::endl;
         exit(1);
