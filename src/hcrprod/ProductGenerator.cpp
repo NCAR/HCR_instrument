@@ -157,7 +157,7 @@ ProductGenerator::publish(const MomentsFields *moments, long long timetag,
     product->offset = -50.0;
     product->scale = 200.0 / 65536;
     for (int g = 0; g < nGates; g++)
-        product->data[g] = (moments[g].dbm - product->offset) / product->scale;
+        product->data[g] = short((moments[g].dbm - product->offset) / product->scale);
     
     product->name = "Reflectivity";
     product->data.length(nGates);
@@ -165,7 +165,7 @@ ProductGenerator::publish(const MomentsFields *moments, long long timetag,
     product->offset = 0.0;
     product->scale = 200.0 / 65536;
     for (int g = 0; g < nGates; g++)
-        product->data[g] = (moments[g].dbz - product->offset) / product->scale;
+        product->data[g] = short((moments[g].dbz - product->offset) / product->scale);
     
     // publish it
    _writer->publishItem(productSet);
