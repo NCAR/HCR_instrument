@@ -14,6 +14,7 @@ const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
         int nSamples) : 
     _reader(source),
+    _writer(sink),
     _nSamples(nSamples),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
     _samplesCached(0),
