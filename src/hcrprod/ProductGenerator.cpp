@@ -73,7 +73,8 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
     
     if (!(ItemCount++ % 100)) {
         std::cerr << ItemCount << " tsItem-s received, " << DwellCount <<
-            " product rays published" << std::endl;
+            " product rays published, " << _productDiscards <<
+            " discarded" << std::endl;
     }
 
     // Channel number sanity check
@@ -138,9 +139,6 @@ ProductGenerator::publish(const MomentsFields *moments, long long timetag,
     ProfilerDDS::Product *product;
     productSet = _writer->getEmptyItem();
     if (!productSet) {
-        std::cerr << "ProductGenerator::publish(): " <<
-            "unable to get a free item from the writer for time " <<
-            timetag << std::endl;
         _productDiscards++;
         return;
     }
