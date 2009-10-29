@@ -11,6 +11,7 @@
 #include <vector>
 #include <QThread>
 #include <QtTSReader.h>
+#include <ProductWriter.h>
 #include <radar/RadarMoments.hh>
 
 class ProductGenerator : public QThread {
@@ -18,9 +19,7 @@ class ProductGenerator : public QThread {
     Q_OBJECT
     
 public:
-    ProductGenerator(QtTSReader *source, int nSamples, double prtSeconds, 
-            double wavelengthMeters, double startRangeKm, 
-            double gateSpacingKm);
+    ProductGenerator(QtTSReader *source, ProductWriter *sink, int nSamples);
     virtual ~ProductGenerator();
     void run();
     /**
@@ -45,9 +44,17 @@ signals:
     
 private:
     /**
+     * Publish a ray of data
+     */
+    void publish(const MomentsFields *moments, long long timetag, int nGates);
+    /**
      * QtTSReader source of time series data
      */
-    QtTSReader *_source;
+    QtTSReader *_reader;
+    /**
+     * ProductWriter sink for our products
+     */
+    ProductWriter *_writer;
     /**
      * Number of samples to integrate when generating products
      */
@@ -58,12 +65,16 @@ private:
     RadarMoments _momentsCalc;
     /**
      * Accumulated time series IQ data for a dwell in progress.
-     * This is sized to hold _nSamples x _nGates sets of I and Q.
-     * The ordering is _dwell[gate][sample], which provides works
-     * easily with RadarMoments methods.
+     * This is sized to hold _nSamples * _nGates sets of I and Q.
+     * The ordering is _dwell[gate][sample], which allows easy use
+     * of RadarMoments methods.
      */
     RadarComplex_t **_dwell;
-    int _samplesInDwell;
+    int _samplesCached;
+    /**
+     * Keep track of how many product rays we are unable to publish.
+     */
+    int _productDiscards;
 };
 
 #endif /* PRODUCTGENERATOR_H_ */

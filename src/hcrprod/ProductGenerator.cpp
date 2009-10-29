@@ -9,17 +9,31 @@
 
 #include <iostream>
 
-const int ProductGenerator::PRODGEN_MAX_GATES = 2048;
+const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
-ProductGenerator::ProductGenerator(QtTSReader *source, int nSamples,
-        double prtSeconds, double wavelengthMeters, double startRangeKm, 
-        double gateSpacingKm) : 
-    _source(source),
+ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
+        int nSamples) : 
+    _reader(source),
     _nSamples(nSamples),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
-    _samplesInDwell(0) {
+    _samplesCached(0),
+    _productDiscards(0) {
+    // Fake radar parameters for now
+    // @todo put in real radar parameters
+    double prtSeconds = 1.0e-3;
+    double wavelengthMeters = 3.0e-3;
+    double startRangeKm = 0.0;
+    double gateSpacingKm = 0.015;
     _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
             gateSpacingKm);
+    // Fixed bogus calibration (for now)
+    // @todo supply real calibration info
+    DsRadarCalib calib;
+    calib.setReceiverGainDbHc(30.0);
+    calib.setNoiseDbmHc(-100.0);
+    calib.setBaseDbz1kmHc(-20.0);
+    _momentsCalc.setCalib(calib);
+    // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
     //
     // Allocate our dwell-in-progress: _dwell[PRODGEN_MAX_GATES][_nSamples]
@@ -39,10 +53,10 @@ void
 ProductGenerator::run() {
     // Accept data via newItem() signals from our source, and free the
     // data pointers by sending returnItem() signals back.
-    connect(_source, SIGNAL(newItem(ProfilerDDS::TimeSeries*)), 
+    connect(_reader, SIGNAL(newItem(ProfilerDDS::TimeSeries*)), 
             this, SLOT(handleItem(ProfilerDDS::TimeSeries*)));
     connect(this, SIGNAL(returnItem(ProfilerDDS::TimeSeries*)),
-            _source, SLOT(returnItemSlot(ProfilerDDS::TimeSeries*)));
+            _reader, SLOT(returnItemSlot(ProfilerDDS::TimeSeries*)));
     exec();
 }
 
@@ -82,25 +96,27 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
             // (sample/gate)'s I and Q data values
             int offset = 2 * (samp * nGates + gate);
             // Put the I and Q into the dwell-in-progress
-            _dwell[gate][_samplesInDwell].re = 
+            _dwell[gate][_samplesCached].re = 
                 tsItem->data[offset] / 32768.0; // real part = I / 32768.0
-            _dwell[gate][_samplesInDwell].im = 
+            _dwell[gate][_samplesCached].im = 
                 tsItem->data[offset + 1] / 32768.0; // imaginary part = Q / 32768.0
         }
-        _samplesInDwell++;
+        _samplesCached++;
         /*
          * If this sample created a complete dwell, publish it
          */
-        if (_samplesInDwell == _nSamples) {
+        if (_samplesCached == _nSamples) {
             DwellCount++;
             
-            MomentsFields fields;
+            MomentsFields moments[hskp->gates];
             // Calculate products for our dwell, gate by gate
             for (int gate = 0; gate < hskp->gates; gate++)
-                _momentsCalc.singlePol(_dwell[gate], gate, false, fields);
-            // TODO actually publish the dwell here...
+                _momentsCalc.singlePol(_dwell[gate], gate, false, moments[gate]);
+            publish(moments, hskp->timetag, hskp->gates);
+            // Stuff the resulting products into 
+            // @todo actually publish the dwell here...
             // Start a new dwell-in-progress
-            _samplesInDwell = 0;
+            _samplesCached = 0;
         }
     }
     
@@ -112,4 +128,45 @@ done:
         return;
     else
         exit(1);
+}
+
+void
+ProductGenerator::publish(const MomentsFields *moments, long long timetag,
+        int nGates) {
+    ProfilerDDS::ProductSet *productSet;
+    ProfilerDDS::Product *product;
+    productSet = _writer->getEmptyItem();
+    if (!productSet) {
+        std::cerr << "ProductGenerator::publish(): " <<
+            "unable to get a free item from the writer for time " <<
+            timetag << std::endl;
+        _productDiscards++;
+        return;
+    }
+
+    productSet->timestamp = timetag;
+    productSet->radarId = 0;
+    productSet->products.length(2);
+    
+    int varNum = 0;
+    
+    product = &(productSet->products[varNum++]);
+    product->data.length(nGates);
+    product->name = "Coherent Power";
+    product->units = "dBm";
+    product->offset = -50.0;
+    product->scale = 200.0 / 65536;
+    for (int g = 0; g < nGates; g++)
+        product->data[g] = (moments[g].dbm - product->offset) / product->scale;
+    
+    product->name = "Reflectivity";
+    product->data.length(nGates);
+    product->units = "dBZ";
+    product->offset = 0.0;
+    product->scale = 200.0 / 65536;
+    for (int g = 0; g < nGates; g++)
+        product->data[g] = (moments[g].dbz - product->offset) / product->scale;
+    
+    // publish it
+   _writer->publishItem(productSet);
 }

@@ -11,14 +11,17 @@
 #include <QtConfig.h>
 #include <ArgvParams.h>
 
+#include "DDSPublisher.h"
 #include "DDSSubscriber.h"
-#include "QtTSReader.h"
 #include "ProductGenerator.h"
+#include "QtTSReader.h"
+#include "ProductWriter.h"
 
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
-std::string _tsTopic;            ///< The published timeseries topic
+std::string _tsTopic;            ///< topic for (incoming) time-series
+std::string _prodTopic;          ///< topic for (outgoing) products
 int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 
@@ -69,13 +72,13 @@ void parseOptions(int argc,
     // get the options
     po::options_description descripts("Options");
     descripts.add_options()
-    ("help", "describe options")
-    ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
-    ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
-    ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
-    ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
-    ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel), "DCPSTransportDebugLevel ")
-            ;
+        ("help", "describe options")
+        ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
+        ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
+        ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
+        ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
+        ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel), "DCPSTransportDebugLevel ")
+        ;
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, descripts), vm);
@@ -106,21 +109,30 @@ main (int argc, char** argv) {
     if (_DCPSTransportDebugLevel > 0)
         newargv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
 
-    // create our DDS subscriber
+    // create our DDS subscriber for incoming time-series data
     char **theArgv = newargv.argv();
     DDSSubscriber subscriber(newargv.argc(), theArgv);
     if (subscriber.status()) {
         std::cerr << "Unable to create a subscriber, exiting." << std::endl;
         exit(1);
     }
+    // create our DDS publisher for outgoing products
+    DDSPublisher publisher(newargv.argc(), theArgv);
+    if (publisher.status()) {
+        std::cerr << "Unable to create a publisher, exiting." << std::endl;
+        exit(1);
+    }
 
     QApplication app(argc, argv);
 
-    // create the data source reader
+    // create the DDS reader for incoming time-series data
     QtTSReader *tsReader = new QtTSReader(subscriber, _tsTopic);
 
+    // create the DDS writer for outgoing products
+    ProductWriter *productWriter = new ProductWriter(publisher, _prodTopic);
+
     // create the products generator thread and run it
-    ProductGenerator generator(tsReader, 64, 1.0e-3, 3.0e-3, 0.0, 0.015);
+    ProductGenerator generator(tsReader, productWriter, 64);
     generator.run();
 
     return app.exec();
