@@ -115,8 +115,8 @@ void getConfigParams()
 	_decim         = config.getInt("Device/Decimation",     8);
 	_ddcDecimation = config.getInt("Device/DdcDecimation",  8);
 	_gates         = config.getInt("Radar/Gates",           200);
-	_prt		   = config.getInt("Radar/Gates", 			12544);
-	_pulsewidth   = config.getInt("Radar/Gates", 			64);
+	_prt		   = config.getInt("Radar/PRT", 			12544);
+	_pulsewidth    = config.getInt("Radar/PulseWidth", 		64);
 	_nsum          = config.getInt("Radar/Nsum",            10);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
 	_numChannels   = config.getInt("Radar/Channels",        4);
