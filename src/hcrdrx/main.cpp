@@ -39,10 +39,10 @@ int _gates;                      ///< The number of gates
 int _nsum;                       ///< The number of sums
 int _tsLength;                   ///< The time series length
 int _numChannels;                ///< The number of radar channels
-int _delay = 0;
-int _prt = 2000;                 ///< prt in 10 MHz counts
-int _prt2 = 2000;                ///< prt2 in 10 MHz counts, if == prt, then no staggered prt
-int _pulsewidth = 64;            ///< pulsewidth in 62.5 MHz counts
+int _delay = 0;					 ///< delay in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
+int _prt = 12544;                ///< prt in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
+int _prt2 = 12544;               ///< prt2 in ADC_Clk/2 counts, if == prt, then no staggered prt
+int _pulsewidth = 64;            ///< pulsewidth in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
 bool _stgr_prt = false;          ///< set true for staggered prt
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
@@ -108,13 +108,15 @@ void getConfigParams()
 	_publish       = config.getBool("DDS/Publish", true);
 	_ORB           = config.getString("DDS/ORBConfigFile",  orbFile);
 	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
-	_tsTopic       = config.getString("DDS/TopicTS",        "PROFILERTS");
+	_tsTopic       = config.getString("DDS/TopicTS",    "PROFILERTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
 	_chans         = config.getInt("Device/Channels",       1);
 	_decim         = config.getInt("Device/Decimation",     8);
 	_ddcDecimation = config.getInt("Device/DdcDecimation",  8);
 	_gates         = config.getInt("Radar/Gates",           200);
+	_prt		   = config.getInt("Radar/Gates", 			12544);
+	_pulsewidth   = config.getInt("Radar/Gates", 			64);
 	_nsum          = config.getInt("Radar/Nsum",            10);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
 	_numChannels   = config.getInt("Radar/Channels",        4);
@@ -142,6 +144,8 @@ void parseOptions(int argc,
 	("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
 	("chans",  po::value<int>(&_chans),            "Number of channels")
 	("gates",  po::value<int>(&_gates),            "Number of gates")
+	("prt",  po::value<int>(&_prt),                "PRT in ADC_Clk/2 counts")
+	("pulsewidth",  po::value<int>(&_pulsewidth),  "Pulsewidth in ADC_Clk/2 counts")
 	("nsum",  po::value<int>(&_nsum),              "Number of coherent integrator sums")
 	("decimation",  po::value<int>(&_decim),       "ADC decimation rate")
 	("ddc",  po::value<int>(&_ddcDecimation),      "DDC decimation rate (8 or 4; must match pentek firmware")
