@@ -75,11 +75,6 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 		/// empty items being available from DDS. It is
 		/// reset to zero whenever tsDiscards() is called.
 		unsigned long _tsDiscards;
-		/// A singleton mutex to insure that _tsWriter->publishItem() is not called
-		/// simultaneously from different threads.
-		/// Doesn't seem to help
-		SingleMutex _publishMutex;
-
 };
 
 #endif /*P7142DNTHREAD_H_*/
