@@ -16,7 +16,6 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
-#include "p7140dnThread.h"
 #include "p7142hcrdnThread.h"
 #include "p7142.h"
 #include "DDSPublisher.h"
@@ -51,7 +50,6 @@ DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
-bool _do7140 = false;            ///< Set true if we are using the p7140, false otherwise. Default is false
 bool _internalClock = false;     ///< set true to use the internal clock, false otherwise
 int _ddcType;                    ///< The ddc type in the pentek core. Must be 4 or 8.
 
@@ -110,7 +108,7 @@ void getConfigParams()
 	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
 	_tsTopic       = config.getString("DDS/TopicTS",        "PROFILERTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
-	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
+	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
 	_chans         = config.getInt("Device/Channels",       1);
 	_decim         = config.getInt("Device/Decimation",     8);
 	_ddcType       = config.getInt("Device/DdcType",        8);
@@ -122,7 +120,6 @@ void getConfigParams()
 	_numChannels   = config.getInt("Radar/Channels",        4);
 	_simulate      = config.getBool("Simulate",             false);
 	_simPauseMS    = config.getInt("SimPauseMs",            20);
-	_do7140        = config.getBool("Use7140",              false);
 	_internalClock = config.getBool("InternalClock",        false);
 
 }
@@ -150,7 +147,6 @@ void parseOptions(int argc,
 	("decimation",  po::value<int>(&_decim),       "ADC decimation rate")
 	("ddc",  po::value<int>(&_ddcType),            "DDC type (8 or 4; must match pentek firmware")
 	("nopublish",                                  "Do not publish data")
-	("p7140",                                      "Use p7140 card (otherwise 7142 will be used")
 	("simulate",                                   "Enable simulation")
 	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
     ("internalClock",                              "Use the internal clock instead of the front panel clock")
@@ -171,8 +167,6 @@ void parseOptions(int argc,
 	    _publish = false;
 	if (vm.count("simulate"))
 	    _simulate = true;
-	if (vm.count("p7140"))
-	    _do7140 = true;
 	if (vm.count("internalClock"))
 	    _internalClock = true;
 
