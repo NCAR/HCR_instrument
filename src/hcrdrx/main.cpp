@@ -53,7 +53,7 @@ bool _simulate;                  ///< Set true for simulate mode
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
 bool _do7140 = false;            ///< Set true if we are using the p7140, false otherwise. Default is false
 bool _internalClock = false;     ///< set true to use the internal clock, false otherwise
-int _ddcDecimation;              ///< The ddc decimation performed in the pentek core. Must be 4 or 8.
+int _ddcType;                    ///< The ddc type in the pentek core. Must be 4 or 8.
 
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
@@ -108,12 +108,12 @@ void getConfigParams()
 	_publish       = config.getBool("DDS/Publish", true);
 	_ORB           = config.getString("DDS/ORBConfigFile",  orbFile);
 	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
-	_tsTopic       = config.getString("DDS/TopicTS",    "PROFILERTS");
+	_tsTopic       = config.getString("DDS/TopicTS",        "PROFILERTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7140/0");
 	_chans         = config.getInt("Device/Channels",       1);
 	_decim         = config.getInt("Device/Decimation",     8);
-	_ddcDecimation = config.getInt("Device/DdcDecimation",  8);
+	_ddcType       = config.getInt("Device/DdcType",        8);
 	_gates         = config.getInt("Radar/Gates",           200);
 	_prt		   = config.getInt("Radar/PRT", 			12544);
 	_pulsewidth    = config.getInt("Radar/PulseWidth", 		64);
@@ -148,7 +148,7 @@ void parseOptions(int argc,
 	("pulsewidth",  po::value<int>(&_pulsewidth),  "Pulsewidth in ADC_Clk/2 counts")
 	("nsum",  po::value<int>(&_nsum),              "Number of coherent integrator sums")
 	("decimation",  po::value<int>(&_decim),       "ADC decimation rate")
-	("ddc",  po::value<int>(&_ddcDecimation),      "DDC decimation rate (8 or 4; must match pentek firmware")
+	("ddc",  po::value<int>(&_ddcType),            "DDC type (8 or 4; must match pentek firmware")
 	("nopublish",                                  "Do not publish data")
 	("p7140",                                      "Use p7140 card (otherwise 7142 will be used")
 	("simulate",                                   "Enable simulation")
@@ -177,7 +177,7 @@ void parseOptions(int argc,
 	    _internalClock = true;
 
 	if (vm.count("ddc")) {
-		if (_ddcDecimation != 4 && _ddcDecimation != 8) {
+		if (_ddcType != 4 && _ddcType != 8) {
 			std::cout << "ddc must be 4 or 8"  << std::endl;
 			exit(1);
 		}
@@ -264,9 +264,9 @@ main(int argc, char** argv)
 	std::vector<p7142hcrdnThread*> down7142;
 	down7142.resize(channels.size());
 
-	Pentek::p7142hcrdn::DDCDECIMATETYPE decimateType = Pentek::p7142hcrdn::DDC8DECIMATE;
-	if (_ddcDecimation == 4) {
-		decimateType = Pentek::p7142hcrdn::DDC4DECIMATE;
+	Pentek::p7142hcrdn::DDCDECIMATETYPE ddcType = Pentek::p7142hcrdn::DDC8DECIMATE;
+	if (_ddcType == 4) {
+		ddcType = Pentek::p7142hcrdn::DDC4DECIMATE;
 	}
 	for (unsigned int c = 0; c < channels.size(); c++) {
 
@@ -287,7 +287,7 @@ main(int argc, char** argv)
 				_stgr_prt,
 				_gaussianFile,
 				_kaiserFile,
-				decimateType,
+				ddcType,
 				_decim,
 				_simulate,
 				_simPauseMS,
