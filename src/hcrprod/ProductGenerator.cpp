@@ -8,6 +8,7 @@
 #include "ProductGenerator.h"
 
 #include <iostream>
+#include <ctime>
 
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
@@ -124,7 +125,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeries* tsItem) {
     
 done:
     // Tell our source we're done with this item
-    returnItem(tsItem);
+    emit returnItem(tsItem);
     
     if (ok)
         return;
@@ -135,36 +136,93 @@ done:
 void
 ProductGenerator::publish(const MomentsFields *moments, long long timetag,
         int nGates) {
-    ProfilerDDS::ProductSet *productSet;
-    ProfilerDDS::Product *product;
+    RadarDDS::ProductSet *productSet;
+    float dwellPeriod = 0.1;  // @todo get a real value here!
+    
     productSet = _writer->getEmptyItem();
     if (!productSet) {
         _productDiscards++;
         return;
     }
-
-    productSet->timestamp = timetag;
+    // We ignore the timetag for now, just stuffing in current system time
+    // @todo use the given time (when it's good)
+    struct timeval now;
+    gettimeofday(&now, 0);
+    timetag = 1000000LL * now.tv_sec + now.tv_usec; // usecs since epoch
+    
     productSet->radarId = 0;
-    productSet->products.length(2);
     
-    int varNum = 0;
+    productSet->products.length(5);
+    RadarDDS::Product *product = productSet->products.get_buffer();
     
-    product = &(productSet->products[varNum++]);
-    product->data.length(nGates);
-    product->name = "Coherent Power";
+    product->hskp.timetag = timetag;
+    product->hskp.dwellPeriod = dwellPeriod;
+    product->name = "DM";
+    product->description = "coherent power";
     product->units = "dBm";
     product->offset = -50.0;
-    product->scale = 200.0 / 65536;
-    for (int g = 0; g < nGates; g++)
-        product->data[g] = short((moments[g].dbm - product->offset) / product->scale);
-    
-    product->name = "Reflectivity";
+    product->scale = 100.0 / 32768;
     product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
+        product->data[g] = 
+            short((moments[g].dbm - product->offset) / product->scale);
+    }
+    
+    product++;
+    product->hskp.timetag = timetag;
+    product->hskp.dwellPeriod = dwellPeriod;
+    product->name = "DZ";
+    product->description = "reflectivity";
     product->units = "dBZ";
     product->offset = 0.0;
-    product->scale = 200.0 / 65536;
-    for (int g = 0; g < nGates; g++)
-        product->data[g] = short((moments[g].dbz - product->offset) / product->scale);
+    product->scale = 100.0 / 32768;
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
+        product->data[g] = 
+            short((moments[g].dbz - product->offset) / product->scale);
+    }
+    
+    product++;
+    product->hskp.timetag = timetag;
+    product->hskp.dwellPeriod = dwellPeriod;
+    product->name = "VE";
+    product->description = "radial velocity";
+    product->units = "m s-1";
+    product->offset = 0.0;
+    product->scale = 100.0 / 32768;
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
+        product->data[g] = 
+            short((moments[g].vel - product->offset) / product->scale);
+    }
+    
+    product++;
+    product->hskp.timetag = timetag;
+    product->hskp.dwellPeriod = dwellPeriod;
+    product->name = "SW";
+    product->description = "spectrum width";
+    product->units = "m s-1";
+    product->offset = 0.0;
+    product->scale = 50.0 / 32768;
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
+        product->data[g] = 
+            short((moments[g].width - product->offset) / product->scale);
+    }
+    
+    product++;
+    product->hskp.timetag = timetag;
+    product->hskp.dwellPeriod = dwellPeriod;
+    product->name = "SNR";
+    product->description = "signal-to-noise ratio";
+    product->units = "dB";
+    product->offset = 0.0;
+    product->scale = 100.0 / 32768;
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
+        product->data[g] = 
+            short((moments[g].snr - product->offset) / product->scale);
+    }
     
     // publish it
    _writer->publishItem(productSet);
