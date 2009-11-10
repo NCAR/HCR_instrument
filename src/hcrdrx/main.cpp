@@ -41,7 +41,7 @@ int _numChannels;                ///< The number of radar channels
 int _delay = 0;					 ///< delay in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
 int _prt = 12544;                ///< prt in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
 int _prt2 = 12544;               ///< prt2 in ADC_Clk/2 counts, if == prt, then no staggered prt
-int _pulsewidth = 64;            ///< pulsewidth in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
+int _pulseWidth = 64;            ///< pulsewidth in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
 bool _stgr_prt = false;          ///< set true for staggered prt
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
@@ -110,11 +110,10 @@ void getConfigParams()
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
 	_chans         = config.getInt("Device/Channels",       1);
-	_decim         = config.getInt("Device/Decimation",     8);
 	_ddcType       = config.getInt("Device/DdcType",        8);
 	_gates         = config.getInt("Radar/Gates",           200);
 	_prt		   = config.getInt("Radar/PRT", 			12544);
-	_pulsewidth    = config.getInt("Radar/PulseWidth", 		64);
+	_pulseWidth    = config.getInt("Radar/PulseWidth", 		64);
 	_nsum          = config.getInt("Radar/Nsum",            10);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
 	_numChannels   = config.getInt("Radar/Channels",        4);
@@ -142,10 +141,9 @@ void parseOptions(int argc,
 	("chans",  po::value<int>(&_chans),            "Number of channels")
 	("gates",  po::value<int>(&_gates),            "Number of gates")
 	("prt",  po::value<int>(&_prt),                "PRT in ADC_Clk/2 counts")
-	("pulsewidth",  po::value<int>(&_pulsewidth),  "Pulsewidth in ADC_Clk/2 counts")
+	("pulsewidth",  po::value<int>(&_pulseWidth),  "Pulsewidth in ADC_Clk/2 counts")
 	("nsum",  po::value<int>(&_nsum),              "Number of coherent integrator sums")
-	("decimation",  po::value<int>(&_decim),       "ADC decimation rate")
-	("ddc",  po::value<int>(&_ddcType),            "DDC type (8 or 4; must match pentek firmware")
+	("ddc",  po::value<int>(&_ddcType),            "DDC type (8 or 4; must match pentek firmware)")
 	("nopublish",                                  "Do not publish data")
 	("simulate",                                   "Enable simulation")
 	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
@@ -277,12 +275,12 @@ main(int argc, char** argv)
 				_delay,
 				_prt,
 				_prt2,
-				_pulsewidth,
+				_pulseWidth,
 				_stgr_prt,
 				_gaussianFile,
 				_kaiserFile,
 				ddcType,
-				_decim,
+				2*_pulseWidth,
 				_simulate,
 				_simPauseMS,
 				_internalClock);
