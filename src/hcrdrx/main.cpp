@@ -52,6 +52,7 @@ bool _simulate;                  ///< Set true for simulate mode
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
 bool _internalClock = false;     ///< set true to use the internal clock, false otherwise
 int _ddcType;                    ///< The ddc type in the pentek core. Must be 4 or 8.
+bool _freeRun = false;           ///< If set true, the prf gating of the downconversion is disabled.
 
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
@@ -117,6 +118,7 @@ void getConfigParams()
 	_nsum          = config.getInt("Radar/Nsum",            10);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
 	_numChannels   = config.getInt("Radar/Channels",        4);
+	_freeRun       = config.getBool("Radar/FreeRunning",    false);
 	_simulate      = config.getBool("Simulate",             false);
 	_simPauseMS    = config.getInt("SimPauseMs",            20);
 	_internalClock = config.getBool("InternalClock",        false);
@@ -141,9 +143,10 @@ void parseOptions(int argc,
 	("chans",  po::value<int>(&_chans),            "Number of channels")
 	("gates",  po::value<int>(&_gates),            "Number of gates")
 	("prt",  po::value<int>(&_prt),                "PRT in ADC_Clk/2 counts")
-	("pulsewidth",  po::value<int>(&_pulseWidth),  "Pulsewidth in ADC_Clk/2 counts")
+	("pulseWidth",  po::value<int>(&_pulseWidth),  "Pulsewidth in ADC_Clk/2 counts")
 	("nsum",  po::value<int>(&_nsum),              "Number of coherent integrator sums")
 	("ddc",  po::value<int>(&_ddcType),            "DDC type (8 or 4; must match pentek firmware)")
+	("freeRun",                                    "Free running mode, PRT gating is disabled")
 	("nopublish",                                  "Do not publish data")
 	("simulate",                                   "Enable simulation")
 	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
@@ -167,6 +170,8 @@ void parseOptions(int argc,
 	    _simulate = true;
 	if (vm.count("internalClock"))
 	    _internalClock = true;
+	if (vm.count("freeRun"))
+		_freeRun = true;
 
 	if (vm.count("ddc")) {
 		if (_ddcType != 4 && _ddcType != 8) {
@@ -212,6 +217,29 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
+void argumentCheck() {
+
+	if (_nsum < 0 || (_nsum > 1 && (_nsum%2 != 0))) {
+		std::cerr << "nsum must be greater than 0 and less than 65535. If between 2 and 65535, it must be even." << std::endl;
+		exit(1);
+	}
+
+	if (_gates < 1 || _gates > 511) {
+		std::cerr << "gates must be greater than 0 and less than 512." << std::endl;
+		exit(1);
+	}
+
+	if (_prt % _pulseWidth) {
+		std::cerr << "PRT must be an integral number of pulse widths." << std::endl;
+		exit(1);
+	}
+
+	if (_simulate)
+		std::cout << "*** Operating in simulation mode" << std::endl;
+
+}
+
+///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
 {
@@ -227,18 +255,8 @@ main(int argc, char** argv)
 	// parse the command line optins, substituting for config params.
 	parseOptions(argc, argv);
 
-	if (_nsum < 0 || (_nsum > 1 && (_nsum%2 != 0))) {
-		std::cerr << "nsum must be greater than 0 and less than 65535. If between 2 and 65535, it must be even." << std::endl;
-		exit(1);
-	}
-
-	if (_gates < 1 || _gates > 511) {
-		std::cerr << "gates must be greater than 0 and less than 512." << std::endl;
-		exit(1);
-	}
-
-	if (_simulate)
-		std::cout << "*** Operating in simulation mode" << std::endl;
+    // make sure that the specified arguments are compatible
+	argumentCheck();
 
 	// create the dds services
 	if (_publish)
@@ -277,6 +295,7 @@ main(int argc, char** argv)
 				_prt2,
 				_pulseWidth,
 				_stgr_prt,
+				_freeRun,
 				_gaussianFile,
 				_kaiserFile,
 				ddcType,

@@ -22,6 +22,7 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				int prt2,
 				int pulse_width,
 				bool stgr_prt,
+				bool freeRun,
 				std::string gaussianFile,
 				std::string kaiserFile,
 				Pentek::p7142hcrdn::DDCDECIMATETYPE decimateType,

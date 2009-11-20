@@ -17,6 +17,7 @@ p7142hcrdnThread::p7142hcrdnThread(
 				   int prt2,
 				   int pulse_width,
 				   bool stgr_prt,
+				   bool freeRun,
 				   std::string gaussianFile,
 				   std::string kaiserFile,
 				   Pentek::p7142hcrdn::DDCDECIMATETYPE decimateType,
@@ -34,6 +35,7 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     prt2,
 	     pulse_width,
 	     stgr_prt,
+	     freeRun,
 	     gaussianFile,
 	     kaiserFile,
 	     decimateType,
@@ -108,8 +110,11 @@ void p7142hcrdnThread::run() {
 
 ///////////////////////////////////////////////////////////
 void p7142hcrdnThread::startFilters() {
+
   p7142hcrdn::startFilters();
-  p7142hcrdn::startInternalTimer();  // this is a hack to test the timers, move to independent function later!
+
+  /// @todo This is a hack to test the timers, move to independent function later!
+  p7142hcrdn::startTimers();
 
 }
 ///////////////////////////////////////////////////////////
