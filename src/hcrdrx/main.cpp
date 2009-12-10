@@ -234,6 +234,11 @@ void argumentCheck() {
 		exit(1);
 	}
 
+	if (_prt <= (_gates+1)*_pulseWidth) {
+		std::cerr << "PRT must be greater than (gates+1)*(pulse width)," << std::endl;
+		exit(1);
+	}
+
 	if (_simulate)
 		std::cout << "*** Operating in simulation mode" << std::endl;
 
@@ -311,20 +316,37 @@ main(int argc, char** argv)
 		}
 	}
 
-	// start the down converter threads.
-
-	for (unsigned int c = 0; c < channels.size(); c++) {
-		std::cout << "processing enabled on " << down7142[c]->dnName() << std::endl;
-		down7142[c]->start();
-	}
-
-	sleep(1);
-
+	// stop the timers and filters
     // all of the filters are started by any call to
     // start filters(). So just call it for channel 0
-    down7142[0]->startFilters();
-    std::cout << "filters enabled" << std::endl;
+    down7142[0]->stopFilters();
+    down7142[0]->timersStartStop(false);
 
+
+	for (unsigned int c = 0; c < channels.size(); c++) {
+		// now flush the fifos
+		down7142[c]->flush();
+		// run the downconverter thread. This will cause the
+		// thread code to call the run() method, which will
+		// start reading data, but should block on the first
+		// read since the timers and filters are not running yet.
+		down7142[c]->start();
+		std::cout << "processing enabled on " << down7142[c]->dnName() << std::endl;
+	}
+
+	// wait awhile, so that the threads can all get to the first read.
+	// At this point the timers have been turned off, and the filters
+	// have been turned off, and the fifos have been flushed. When the timers are
+	// started, there should be fresh data delivered.
+	sleep(5);
+
+    // start the data flowing by enabling the timers and the
+	// filters.
+	//
+	// all of the filters are started by any call to
+    // start filters(). So just call it for channel 0
+    down7142[0]->startFilters();
+    down7142[0]->timersStartStop(true);
 
 	double startTime = nowTime();
 	while (1) {
@@ -336,19 +358,26 @@ main(int argc, char** argv)
 		std::vector<long> bytes;
 		std::vector<int> overUnder;
 		std::vector<unsigned long> discards;
+		std::vector<unsigned long> droppedPulses;
+		std::vector<unsigned long> syncErrors;
 		bytes.resize(channels.size());
 		overUnder.resize(channels.size());
 		discards.resize(channels.size());
+		droppedPulses.resize(channels.size());
+		syncErrors.resize(channels.size());
 		for (unsigned int c = 0; c < channels.size(); c++) {
 			bytes[c] = down7142[c]->bytesRead();
 			overUnder[c] = down7142[c]->overUnderCount();
 			discards[c] = down7142[c]->tsDiscards();
+			droppedPulses[c] = down7142[c]->droppedPulses();
 		}
 		for (unsigned int c = 0; c < channels.size(); c++) {
 			std::cout << std::setprecision(3) << std::setw(5)
 					  << bytes[c]/1000000.0/elapsed << " MB/s "
-					  << overUnder[c] << " overruns   "
-					  << discards[c] << " discards   ";
+					  << " ovr:" << overUnder[c]
+					  << " discards:"<< discards[c]
+					  << " drops:" << droppedPulses[c]
+	                  << " sync:" << syncErrors[c];
 		}
 		std::cout << std::endl;
 

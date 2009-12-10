@@ -4,7 +4,6 @@
 #include <QThread>
 #include "p7142hcr.h"
 #include "TSWriter.h"
-#include "SingleMutex.h"
 
 class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 	Q_OBJECT
@@ -32,10 +31,13 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				bool internalClock=false);
 		virtual ~p7142hcrdnThread();
 		void run();
-		void startFilters();
 		/// @return The number of timeseries blocks that have been discarded
 		/// since the last time this function was called.
 		unsigned long tsDiscards();
+		/// @return The cummulative number of dropped pulses
+		unsigned long droppedPulses();
+		/// @return the number of synchronization errors detected.
+		unsigned long syncErrors();
 
 	protected:
 		double nowTime();
@@ -76,6 +78,22 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 		/// empty items being available from DDS. It is
 		/// reset to zero whenever tsDiscards() is called.
 		unsigned long _tsDiscards;
+		/// The last pulse sequence number that we received. Used to keep
+		/// track of dropped pulses. Only used in coherent
+		/// integration mode.
+		int _lastPulseSeq;
+		/// An estimate of dropped pulses. It may be in error
+		/// if the pulse tag rolls over by more than the 14 bit
+		/// total that it can hold. This test is only made if the
+		/// channel number passes the validity test.
+		unsigned long _droppedPulses;
+		/// The number of times that an incorrect channel number was received,
+		/// which indicates a synchronization error. If there is a sync error,
+		/// then the sequence number check is not performed.
+		unsigned long _syncErrors;
+		/// Set true at startup, false after the first pulse
+		/// has been received.
+		bool _firstPulse;
 };
 
 #endif /*P7142DNTHREAD_H_*/

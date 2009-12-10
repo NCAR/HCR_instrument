@@ -48,10 +48,12 @@ p7142hcrdnThread::p7142hcrdnThread(
   _tsLength(tsLength),
   _publish(publish),
   _tsWriter(tsWriter),
-  _tsDiscards(0)
+  _tsDiscards(0),
+  _lastPulseSeq(0),
+  _droppedPulses(0),
+  _syncErrors(0),
+  _firstPulse(true)
 {
-	  // create the publish mutex
-	  //_publishMutex.create();
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -68,20 +70,30 @@ void p7142hcrdnThread::run() {
   int _bufferSize;
   if (!_doCI) {
 	  // non-integrated data simply has IQ pairs, as 2 byte shorts,
-	  // for all gates.
-	  _bufferSize = _tsLength*_gates*2*2;
+	  // for all gates. In free run mode, there is no tagging.
+	  // In normal mode, there is pulse tagging.
+	  if (_freeRun) {
+		  _bufferSize = _tsLength*_gates*2*2;
+	  } else {
+		  // if not in free run mode, there will also be a four byte pulse tag
+		  // at the beginning of each pulse which looks like an additional gate
+		  _bufferSize = _tsLength*(_gates+1)*2*2;
+	  }
   } else {
-	  // coherently integrated data has:
-	  // 4 tags followed by even IQ pairs followed by odd IQ pairs,
-	  // for all gates. Tags, I and Q are 4 byte integers.
-	  _bufferSize = _tsLength*(4 + _gates*2*2)*4;
+      // coherently integrated data has:
+	// 4 tags followed by even IQ pairs followed by odd IQ pairs,
+	// for all gates. Tags, I and Q are 4 byte integers.
+	 _bufferSize = _tsLength*(4 + _gates*2*2)*4;
   }
 
   // create the read buffer
   char* buf = new char[_bufferSize];
 
-  // start the loop. The thread will block on the read()
+  std::cout << "waiting for data..." << std::endl;
+
+	  // start the loop. The thread will block on the read()
   while (1) {
+
     int n = p7142dn::read(buf, _bufferSize);
 
     ttl_toggle = ~ttl_toggle;
@@ -109,15 +121,6 @@ void p7142hcrdnThread::run() {
 }
 
 ///////////////////////////////////////////////////////////
-void p7142hcrdnThread::startFilters() {
-
-  p7142hcrdn::startFilters();
-
-  /// @todo This is a hack to test the timers, move to independent function later!
-  p7142hcrdn::startTimers();
-
-}
-///////////////////////////////////////////////////////////
 double p7142hcrdnThread::nowTime() {
   struct timeb timeB;
   ftime(&timeB);
@@ -137,7 +140,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
 
   int len = n;
 
-  ts->data.length(len/2);
+  ts->data.length(_tsLength*_gates*2);
 
   ts->hskp.gates = _gates;
   ts->hskp.chanId = _chanId;
@@ -145,12 +148,26 @@ p7142hcrdnThread::publish(char* buf, int n) {
 
    if (!_doCI) {
 	   // if the coherent integrator is not used, then we receive
-	   // a straight stream of IQ pairs, as 2 byte shorts.
+	   // a straight stream of IQ pairs, as 2 byte shorts. If not
+	   // in free run mode, there will be a 4 byte pulse tag
+	   // at the beginning.
 	   // convert to shorts
+	   int in = 0;
+	   int out = 0;
 	   short* data = (short*)buf;
-	   for (int i = 0; i < n/2; i++) {
-		   ts->data[i] = data[i];
-		   //std::cout << i << "  " << ts->data[i] << std::endl;
+	   for (int t = 0; t < _tsLength; t++) {
+		   // skip the tag
+		   if (!_freeRun) {
+			   in += 2;
+		   }
+		   for (int g = 0; g < _gates; g++) {
+			   for (int iq = 0; iq < 2; iq++) {
+				   // copy from read buffer to DDS array
+				   ts->data[out] = data[in];
+				   in++;
+				   out++;
+			   }
+		   }
 	   }
    } else {
 	   // decode data from coherent integrator
@@ -177,9 +194,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
    }
 
    // publish it
-   //_publishMutex.lock();
   _tsWriter->publishItem(ts);
-   //_publishMutex.unlock();
 }
 
 ///////////////////////////////////////////////////////////
@@ -196,9 +211,49 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	   // if the coherent integrator is not used, then we receive
 	   // a straight stream of IQ pairs, as 2 byte shorts.
 	   // convert to shorts
-	   short* data = (short*)buf;
-	   for (int i = 0; i < n/2; i = i + 2) {
-		   //std::cout << i << ": " << data[i] << " " << data[i+1] << std::endl;
+	  //std::cout << "n is " << n << std::endl;
+	   int in = 0;
+	   int out = 0;
+	   unsigned short* data = (unsigned short*)buf;
+	   for (int t = 0; t < _tsLength; t++) {
+		   // handle the tag, if there is one
+		   if (!_freeRun) {
+			   unsigned int chan = (data[in+1] >> 14) & 0x3;
+			   if (chan != _chanId) {
+				   _syncErrors++;
+			   } else {
+			   int seq = ((data[in+1] & 0x3fff) << 16)  + data[in];
+			   //std::cout << "pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
+
+			   // update the dropped pulse count
+			   if (_firstPulse) {
+				   _lastPulseSeq = seq - 1;
+				   _firstPulse = false;
+			   }
+			   if (seq > _lastPulseSeq) {
+				   _droppedPulses += (seq - _lastPulseSeq) -1;
+				} else {
+					if (seq < _lastPulseSeq) {
+						// wrap around
+						// sequence numbers are thirty bits
+						 std::cout << "dropped pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
+						_droppedPulses += (0x3fffffff - _lastPulseSeq) + seq;
+					} else {
+						std::cerr << "warning: pulse number is not incrementing" << std::endl;
+					}
+				}
+			   _lastPulseSeq = seq;
+			   }
+
+			   in += 2;
+		   }
+		   for (int g = 0; g < _gates; g++) {
+			   for (int iq = 0; iq < 2; iq++) {
+				   // do something here
+				   in++;
+				   out++;
+			   }
+		   }
 	   }
    } else {
 	   // decode data from coherent integrator. It is packed as follows:
@@ -219,10 +274,10 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 			   int format = (data[in] >> 28) & 0xf;
 			   int key = (data[in] >> 24) & 0xf;
 			   int sumNum = data[in] & 0xffffff;
-			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
+			   std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
 			   in++;
 		   }
-		   //std::cout << std::dec << std::endl;
+		   std::cout << std::dec << std::endl;
 		   for (int g = 0; g < _gates; g++) {
 			   for (int iq = 0; iq < 2; iq++) {
 				   // logic below just shows where even and odd Is and Qs are located
@@ -244,6 +299,20 @@ unsigned long
 p7142hcrdnThread::tsDiscards() {
 	unsigned long retval = _tsDiscards;
 	_tsDiscards = 0;
+	return retval;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+unsigned long
+p7142hcrdnThread::droppedPulses() {
+	unsigned long retval = _droppedPulses;
+	return retval;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+unsigned long
+p7142hcrdnThread::syncErrors() {
+	unsigned long retval = _syncErrors;
 	return retval;
 }
 
