@@ -273,11 +273,14 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 		   for (int tag = 0; tag < 4; tag++) {
 			   int format = (data[in] >> 28) & 0xf;
 			   int key = (data[in] >> 24) & 0xf;
-			   int sumNum = data[in] & 0xffffff;
-			   std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << sumNum << "   ";
+			   int seq = data[in] & 0xffffff;
+			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << seq << "   ";
+			   if (key != (_chanId<<2 + tag)) {
+				   _syncErrors++;
+			   }
 			   in++;
 		   }
-		   std::cout << std::dec << std::endl;
+		   //std::cout << std::dec << std::endl;
 		   for (int g = 0; g < _gates; g++) {
 			   for (int iq = 0; iq < 2; iq++) {
 				   // logic below just shows where even and odd Is and Qs are located
