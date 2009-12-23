@@ -204,17 +204,17 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
   /// @todo Make the decodeBuf routine do something useful, rather than just
   /// counting through the data arrays. Right now we use it by uncommenting
   /// diagnostic prints.
-	std::cout << "n is " << n << ", tsLength is " << _tsLength << std::endl;
-	int delta = _gates + 1;
-	for (int i = 0; i < n/4; i++) {
-		if (!(i%delta)) {
-			std::cout << std::endl << setw(10) << i << ":  ";
-		}
-		std::cout << setw(2) << (unsigned int)((unsigned int*)buf)[i] << " ";
-	}
-	if ((n-1) % delta) {
-		std::cout << std::endl;
-	}
+	//std::cout << "n is " << n << ", tsLength is " << _tsLength << std::endl;
+	//int delta = _gates + 1;
+	//for (int i = 0; i < n/4; i++) {
+	//	if (!(i%delta)) {
+	//		std::cout << std::endl << setw(10) << i << ":  ";
+	//	}
+	//	std::cout << setw(2) << (unsigned int)((unsigned int*)buf)[i] << " ";
+	//}
+	//if ((n-1) % delta) {
+	//	std::cout << std::endl;
+	//}
 
   // we assume that buf contains all of the data for a complete time series
   // of length _tsLength. If it doesn't, we are in trouble
