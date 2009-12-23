@@ -10,6 +10,7 @@
 #include <sys/timeb.h>
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <csignal>
 
 // For configuration management
 #include <QtConfig.h>
@@ -53,6 +54,13 @@ int _simPauseMS;                 ///< The number of millisecnds to pause when re
 bool _internalClock = false;     ///< set true to use the internal clock, false otherwise
 int _ddcType;                    ///< The ddc type in the pentek core. Must be 4 or 8.
 bool _freeRun = false;           ///< If set true, the prf gating of the downconversion is disabled.
+
+bool _terminate = false;         ///< set true to signal the main loop to terminate
+
+/////////////////////////////////////////////////////////////////////
+void sigHandler(int sig) {
+    _terminate = true;
+}
 
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
@@ -316,16 +324,10 @@ main(int argc, char** argv)
 		}
 	}
 
-	// stop the timers and filters
-    // all of the filters are started by any call to
-    // start filters(). So just call it for channel 0
-    down7142[0]->stopFilters();
-    down7142[0]->timersStartStop(false);
-
+    // catch a control-C
+    signal(SIGINT, sigHandler);
 
 	for (unsigned int c = 0; c < channels.size(); c++) {
-		// now flush the fifos
-		down7142[c]->flush();
 		// run the downconverter thread. This will cause the
 		// thread code to call the run() method, which will
 		// start reading data, but should block on the first
@@ -335,22 +337,30 @@ main(int argc, char** argv)
 	}
 
 	// wait awhile, so that the threads can all get to the first read.
-	// At this point the timers have been turned off, and the filters
-	// have been turned off, and the fifos have been flushed. When the timers are
-	// started, there should be fresh data delivered.
-	sleep(5);
+	sleep(1);
 
-    // start the data flowing by enabling the timers and the
-	// filters.
-	//
 	// all of the filters are started by any call to
     // start filters(). So just call it for channel 0
     down7142[0]->startFilters();
+
+	// start the timers, which will allow data to flow
+    // they are also all started by calling timerStartStop for
+    // any channel
     down7142[0]->timersStartStop(true);
 
 	double startTime = nowTime();
 	while (1) {
-		sleep(10);
+		for (int i = 0; i < 100; i++) {
+			// check for the termination request
+			if (_terminate) {
+				break;
+			}
+			usleep(100000);
+		}
+		if (_terminate) {
+			break;
+		}
+
 		double currentTime = nowTime();
 		double elapsed = currentTime - startTime;
 		startTime = currentTime;
@@ -380,7 +390,15 @@ main(int argc, char** argv)
 	                  << " sync:" << syncErrors[c];
 		}
 		std::cout << std::endl;
-
 	}
+
+	// stop the timers
+    down7142[0]->timersStartStop(false);
+    // flush the channels
+//	for (unsigned int c = 0; c < channels.size(); c++) {
+//		down7142[c]->flush();
+//	}
+
+	std::cout << "terminated on command" << std::endl;
 }
 

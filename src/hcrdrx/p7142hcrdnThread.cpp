@@ -89,7 +89,7 @@ void p7142hcrdnThread::run() {
   // create the read buffer
   char* buf = new char[_bufferSize];
 
-  std::cout << "waiting for data..." << std::endl;
+  std::cout << "block size is " << _bufferSize << ", waiting for data..." << std::endl;
 
 	  // start the loop. The thread will block on the read()
   while (1) {
@@ -204,6 +204,17 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
   /// @todo Make the decodeBuf routine do something useful, rather than just
   /// counting through the data arrays. Right now we use it by uncommenting
   /// diagnostic prints.
+	std::cout << "n is " << n << ", tsLength is " << _tsLength << std::endl;
+	int delta = _gates + 1;
+	for (int i = 0; i < n/4; i++) {
+		if (!(i%delta)) {
+			std::cout << std::endl << setw(10) << i << ":  ";
+		}
+		std::cout << setw(2) << (unsigned int)((unsigned int*)buf)[i] << " ";
+	}
+	if ((n-1) % delta) {
+		std::cout << std::endl;
+	}
 
   // we assume that buf contains all of the data for a complete time series
   // of length _tsLength. If it doesn't, we are in trouble
@@ -223,7 +234,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 				   _syncErrors++;
 			   } else {
 			   int seq = ((data[in+1] & 0x3fff) << 16)  + data[in];
-			   //std::cout << "pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
+			   //std::cout << "pulse " << t << "  chan " << chan << "  seq " << seq << std::endl;
 
 			   // update the dropped pulse count
 			   if (_firstPulse) {
@@ -236,10 +247,12 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 					if (seq < _lastPulseSeq) {
 						// wrap around
 						// sequence numbers are thirty bits
-						 std::cout << "dropped pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
+						 //std::cout << "dropped pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
 						_droppedPulses += (0x3fffffff - _lastPulseSeq) + seq;
 					} else {
-						std::cerr << "warning: pulse number is not incrementing" << std::endl;
+						/// @todo Should this be a sync error, or something else?
+						_syncErrors++;
+						//std::cerr << "warning: pulse number is not incrementing" << std::endl;
 					}
 				}
 			   _lastPulseSeq = seq;
