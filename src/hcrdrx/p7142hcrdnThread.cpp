@@ -299,6 +299,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 				   // logic below just shows where even and odd Is and Qs are located
 				   double even = data[in];
 				   double odd = data[in+2*_gates];
+				   //std::cout << g << "  " << data[in] << "  " << data[in+2*_gates] << std::endl;
 				   in++;
 				   out++;
 			   }
