@@ -32,7 +32,7 @@ protected slots:
      * products becomes available after handling, it will be published.
      * @param item pointer to the new ProfilerDDS::TimeSeries item
      */
-    virtual void handleItem(ProfilerDDS::TimeSeries *item);
+    virtual void handleItem(ProfilerDDS::TimeSeriesSequence *item);
     
 signals:
     /**
@@ -40,13 +40,15 @@ signals:
      * from our source.
      * @param item pointer to the ProfilerDDS::TimeSeries item being returned
      */
-    void returnItem(ProfilerDDS::TimeSeries *item);
+    void returnItem(ProfilerDDS::TimeSeriesSequence *item);
     
 private:
     /**
      * Publish a ray of data
      */
-    void publish(const MomentsFields *moments, long long timetag, int nGates);
+    void publish_(const MomentsFields *moments);
+    void addProductHousekeeping_(RadarDDS::Product & p);
+            
     /**
      * QtTSReader source of time series data
      */
@@ -70,11 +72,17 @@ private:
      * of RadarMoments methods.
      */
     RadarComplex_t **_dwell;
-    int _samplesCached;
+    long long _dwellStart;  // dwell start time in us since 1970-01-01 00:00 UTC
+    int _dwellGates;        // gate count for the dwell
+    float _dwellPrf;        // PRF from the first sample of the dwell
+    int _samplesCached;     // samples in the dwell so far
     /**
      * Keep track of how many product rays we are unable to publish.
      */
-    int _productDiscards;
+    int _itemCount;         // TimeSeriesSequence-s received
+    int _wrongChannelCount; // TSS-s with the wrong channel
+    int _dwellCount;        // dwells built
+    int _dwellDiscardCount;   // dwells that could not be published
 };
 
 #endif /* PRODUCTGENERATOR_H_ */
