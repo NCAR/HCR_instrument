@@ -70,19 +70,19 @@ void
 ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
     bool ok = true;
     
+    // Report occasionally
+    if (!(_itemCount % 100)) {
+        std::cerr << _itemCount << " tsSequence-s received, " << 
+            _wrongChannelCount << " were wrong channel, " <<
+            _dwellCount << " product rays generated, " << 
+            _dwellDiscardCount << " rays could not be published" << std::endl;
+    }
     _itemCount++;
     
     // We currently generate products only for channel zero
     if (tsSequence->chanId != 0) {
         _wrongChannelCount++;
         goto done;
-    }
-    
-    if (!(_itemCount % 100)) {
-        std::cerr << _itemCount << " tsSequence-s received, " << 
-            _wrongChannelCount << " were wrong channel, " <<
-            _dwellCount << " product rays generated, " << 
-            _dwellDiscardCount << " rays could not be published" << std::endl;
     }
 
     // Run through the samples in the item
