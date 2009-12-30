@@ -61,15 +61,22 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 		/// size based on _gates, _tsLength, and whether coherent integration
 		/// is in effect or not.
 		void decodeBuf(char* buf, int n);
+        /// Decode the pulse number from tag information in a buffer.
+        /// @param buf The raw buffer of data from the downconverter
+        /// channel. It contains all Is and Qs, plus the tagging
+        /// information.
+		/// @return the pulse number, in range 0 to (2^30 - 1).  If 
+		/// free-running, the pulse number is always zero.
+        long unpackPulseNum(const char* buf) const;
+        /// Decode the channel number from tag information in a buffer.
+        /// @param buf The raw buffer of data from the downconverter
+        /// channel. It contains all Is and Qs, plus the tagging
+        /// information.
+        /// @return the channel number, in range 0 to 3.  If free-running,
+        /// the channel number is always zero.
+        long unpackChannelNum(const char* buf) const;
 		/// set true if coherent integrator is being used
 		bool _doCI;
-		/// the number of sums in the coherent integration
-		int _nsum;
-		/// The number of pulses in one time series block.
-		/// If coherent integration is on, there will actually be
-		/// 2 times this number of pulses in the block; one for even pulses
-		/// and one for odd pulses.
-		int _tsLength;
 		/// Set true if we are going to publish the data
 		bool _publish;
 		/// The DDS time series writer

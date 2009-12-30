@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
+using namespace boost::posix_time;
+
 //////////////////////////////////////////////////////////////////////////////////
 p7142hcrdnThread::p7142hcrdnThread(
 		           TSWriter* tsWriter,
@@ -43,9 +45,7 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     simulate,
 	     simPauseMS,
 	     internalClock),
-  _doCI(nsum > 1),
-  _nsum(nsum),
-  _tsLength(tsLength),
+  _doCI(_nsum > 1), // check against _nsum, since nsum may be tweaked by p7142hcrdn
   _publish(publish),
   _tsWriter(tsWriter),
   _tsDiscards(0),
@@ -77,7 +77,7 @@ void p7142hcrdnThread::run() {
 	  } else {
 		  // if not in free run mode, there will also be a four byte pulse tag
 		  // at the beginning of each pulse which looks like an additional gate
-		  _bufferSize = _tsLength*(_gates+1)*2*2;
+		  _bufferSize = _tsLength*(4 + _gates*2*2);
 	  }
   } else {
       // coherently integrated data has:
@@ -91,10 +91,10 @@ void p7142hcrdnThread::run() {
 
   std::cout << "block size is " << _bufferSize << ", waiting for data..." << std::endl;
 
-	  // start the loop. The thread will block on the read()
+  // start the loop. The thread will block on the read()
   while (1) {
 
-    int n = p7142dn::read(buf, _bufferSize);
+    int n = read(buf, _bufferSize);
 
     ttl_toggle = ~ttl_toggle;
     TTLOut(ttl_toggle);
@@ -131,70 +131,75 @@ double p7142hcrdnThread::nowTime() {
 void
 p7142hcrdnThread::publish(char* buf, int n) {
 
-  ProfilerDDS::TimeSeries* ts;
-  ts = _tsWriter->getEmptyItem();
-  if (!ts) {
+  ptime epoch(boost::gregorian::date(1970, 1, 1), time_duration(0, 0, 0)); // 1970-01-01 00:00:00
+  ProfilerDDS::TimeSeriesSequence* tss;
+  tss = _tsWriter->getEmptyItem();
+  if (!tss) {
 	  _tsDiscards++;
 	  return;
   }
 
-  int len = n;
+  tss->chanId = _chanId;
+  tss->tsList.length(_tsLength);
+  
+  int in = 0;
+  int* data = (int*)buf;
+  short* sdata = (short*)buf;
+  
+  for (int t = 0; t < _tsLength; t++) {
+      ProfilerDDS::TimeSeries &ts = tss->tsList[t];
+      ts.data.length(_gates * 2);   // I and Q for each gate
+      ts.hskp.gates = _gates;
+      ts.hskp.chanId = _chanId;
+      ts.hskp.prf = 1.0e7 / _prt;   // Hz
+      if (!_doCI) {
+          // if the coherent integrator is not used, then we receive
+          // a straight stream of IQ pairs, as 2 byte shorts. If not
+          // in free run mode, there will be a 4 byte pulse tag
+          // at the beginning.
+          unsigned long pulseNum = 0;
+          unsigned long channel = 0;
+          // Get stuff from the tag if we're not free-running
+          if (!_freeRun) {
+              pulseNum = unpackPulseNum((const char*)(sdata + in));
+              channel = unpackChannelNum((const char*)(sdata + in));
+              // skip past the tag
+              in += 2;
+          }
 
-  ts->data.length(_tsLength*_gates*2);
+          time_duration timeFromEpoch = timeOfPulse(pulseNum) - epoch;
+          // Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
+          ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
+              (timeFromEpoch.fractional_seconds() * 1000000LL) / 
+              time_duration::ticks_per_second();  // usecs since epoch
+          // Finally, pull the per-gate data
+          for (int g = 0; g < _gates; g++) {
+              // copy from read buffer to DDS array
+              ts.data[2 * g] = sdata[in++];
+              ts.data[2 * g + 1] = sdata[in++];
+          }
+      } else {
+          // decode data from coherent integrator
 
-  ts->hskp.gates = _gates;
-  ts->hskp.chanId = _chanId;
-  ts->hskp.tsLength = _tsLength;
-
-   if (!_doCI) {
-	   // if the coherent integrator is not used, then we receive
-	   // a straight stream of IQ pairs, as 2 byte shorts. If not
-	   // in free run mode, there will be a 4 byte pulse tag
-	   // at the beginning.
-	   // convert to shorts
-	   int in = 0;
-	   int out = 0;
-	   short* data = (short*)buf;
-	   for (int t = 0; t < _tsLength; t++) {
-		   // skip the tag
-		   if (!_freeRun) {
-			   in += 2;
-		   }
-		   for (int g = 0; g < _gates; g++) {
-			   for (int iq = 0; iq < 2; iq++) {
-				   // copy from read buffer to DDS array
-				   ts->data[out] = data[in];
-				   in++;
-				   out++;
-			   }
-		   }
-	   }
-   } else {
-	   // decode data from coherent integrator
-	   int in = 0;
-	   int out = 0;
-	   int* data = (int*)buf;
-	   for (int t = 0; t < _tsLength; t++) {
-		   // skip the tag
-		   in += 4;
-		   for (int g = 0; g < _gates; g++) {
-			   for (int iq = 0; iq < 2; iq++) {
-				   // for now, just add even and odd. The pulse
-				   // decoding will eventually happen here.
-				   double sum = data[in] + data[in+2*_gates];
-				   double result = (sum/_nsum);
-				   ts->data[out] = (short)result;
-				   in++;
-				   out++;
-			   }
-		   }
-		   // space past the odd I and Qs.
-		   in += 2*_gates;
-	   }
-   }
+          // skip the tag
+          in += 4;
+          for (int g = 0; g < _gates; g++) {
+              for (int iq = 0; iq < 2; iq++) {
+                  // for now, just add even and odd. The pulse
+                  // decoding will eventually happen here.
+                  double sum = data[in] + data[in+2*_gates];
+                  double result = (sum/_nsum);
+                  ts.data[2 * g] = (short)result;
+                  in++;
+              }
+          }
+          // space past the odd I and Qs.
+          in += 2*_gates;
+      }
+  }
 
    // publish it
-  _tsWriter->publishItem(ts);
+  _tsWriter->publishItem(tss);
 }
 
 ///////////////////////////////////////////////////////////
@@ -227,40 +232,46 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	   int out = 0;
 	   unsigned short* data = (unsigned short*)buf;
 	   for (int t = 0; t < _tsLength; t++) {
-		   // handle the tag, if there is one
-		   if (!_freeRun) {
-			   unsigned int chan = (data[in+1] >> 14) & 0x3;
-			   if (chan != _chanId) {
-				   _syncErrors++;
-			   } else {
-			   int seq = ((data[in+1] & 0x3fff) << 16)  + data[in];
-			   //std::cout << "pulse " << t << "  chan " << chan << "  seq " << seq << std::endl;
+	       if (!_freeRun) {
+	           long chan = unpackChannelNum((const char*)(data + in));
+	           long seq = unpackPulseNum((const char*)(data + in));
+	           // Now that we've gotten stuff from the 4-byte tag, point
+	           // past it.
+	           in += 2;
+	           
+	           if (chan != _chanId) {
+	               _syncErrors++;
+	           } else {
+	               //std::cout << "pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
 
-			   // update the dropped pulse count
-			   if (_firstPulse) {
-				   _lastPulseSeq = seq - 1;
-				   _firstPulse = false;
-			   }
-			   if (seq > _lastPulseSeq) {
-				   _droppedPulses += (seq - _lastPulseSeq) -1;
-				} else {
-					if (seq < _lastPulseSeq) {
-						// wrap around
-						// sequence numbers are thirty bits
-						 //std::cout << "dropped pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
-						_droppedPulses += (0x3fffffff - _lastPulseSeq) + seq;
-					} else {
-						/// @todo Should this be a sync error, or something else?
-						_syncErrors++;
-						//std::cerr << "warning: pulse number is not incrementing" << std::endl;
-					}
-				}
-			   _lastPulseSeq = seq;
-			   }
+	               // update the dropped pulse count
+	               if (_firstPulse) {
+	                   _lastPulseSeq = seq - 1;
+	                   _firstPulse = false;
+	               }
+	               
+	               int delta = seq - _lastPulseSeq;
+	               if (delta == 1) {
+	                   /// cool!
+	               } else if (delta > 1) {
+	                   _droppedPulses += (seq - _lastPulseSeq) -1;
+	               } else if (delta < 0) {
+	                   // wrap around
+	                   // sequence numbers are thirty bits
+	                   std::cout << "dropped pulse " << t << "  chan " << 
+	                   chan << "  seq " << seq << " " << 
+	                   _lastPulseSeq << std::endl;
+	                   _droppedPulses += (0x3fffffff - _lastPulseSeq) + seq;
+	               } else {
+                       /// @todo Should this be a sync error, or something else?
+                       _syncErrors++;
+//	                   std::cerr << "warning: pulse number is not incrementing" << std::endl;
+	               }
+	               _lastPulseSeq = seq;
+	           }
+	       }
 
-			   in += 2;
-		   }
-		   for (int g = 0; g < _gates; g++) {
+	       for (int g = 0; g < _gates; g++) {
 			   for (int iq = 0; iq < 2; iq++) {
 				   // do something here
 				   in++;
@@ -288,7 +299,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 			   int key = (data[in] >> 24) & 0xf;
 			   int seq = data[in] & 0xffffff;
 			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << seq << "   ";
-			   if (key != (_chanId<<2 + tag)) {
+			   if (key != ((_chanId << 2) + tag)) {
 				   _syncErrors++;
 			   }
 			   in++;
@@ -331,5 +342,30 @@ unsigned long
 p7142hcrdnThread::syncErrors() {
 	unsigned long retval = _syncErrors;
 	return retval;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+long
+p7142hcrdnThread::unpackChannelNum(const char* buf) const {
+    if (_freeRun)
+        return 0;
+    // Channel number is the upper two bits of the first 32-bit chunk, which 
+    // is stored in little-endian byte order
+    const unsigned char *ubuf = (const unsigned char*)buf;
+    unsigned int chan = (ubuf[3] >> 6) & 0x3;
+    return chan;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+long
+p7142hcrdnThread::unpackPulseNum(const char* buf) const {
+    if (_freeRun)
+        return 0;
+    // Pulse number is the lower 30 bits of the first 32-bit chunk, which is 
+    // stored in little-endian byte order
+    const unsigned char *ubuf = (const unsigned char*)buf;
+    unsigned long pulseNum = (ubuf[3] & 0x3f) << 24 |
+        ubuf[2] << 16 | ubuf[1] << 8 | ubuf[0];
+    return pulseNum;
 }
 
