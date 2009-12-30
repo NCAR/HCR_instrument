@@ -22,7 +22,7 @@ public:
 	/// Block until the next time series is available
 	/// @return The next time series. It must be returned
 	/// with returnItem();
-	TimeSeries* nextTS();
+	TimeSeriesSequence* nextTSS();
 
 	/// Called when one or more items have become available.
 	/// Signal to nextTS() via the condition variable that
@@ -30,8 +30,8 @@ public:
 	virtual void notify();
 
 protected:
-	std::deque<TimeSeries*> _series;
-	pthread_mutex_t _seriesMutex;
+	std::deque<TimeSeriesSequence*> _sequences;
+	pthread_mutex_t _sequencesMutex;
 };
 
 #endif /* SNIFFERTSREADER_H_ */

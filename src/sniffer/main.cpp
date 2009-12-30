@@ -195,15 +195,19 @@ main(int argc, char** argv)
 
 	while (1) {
 
-		TimeSeries* ts = _tsReader->nextTS();
+		TimeSeriesSequence* tss = _tsReader->nextTSS();
 
-		if (!ts) {
-			usleep(1);
+		if (!tss) {
+			usleep(1000);    // 1 ms polling should be fine...
 		} else {
 			samples++;
-			total += ts->data.length()*sizeof(ts->data[0]);
-			subTotal += ts->data.length()*sizeof(ts->data[0]);
-			_tsReader->returnItem(ts);
+			// sum data sizes from all of the pulses in this sequence
+			for (unsigned int p = 0; p < tss->tsList.length(); p++) {
+			    const TimeSeries &ts = tss->tsList[p];
+			    total += ts.data.length() * sizeof(ts.data[0]);
+			    subTotal += ts.data.length() * sizeof(ts.data[0]);
+			}
+			_tsReader->returnItem(tss);
 
 			int mb = (int)(total/1.0e6);
 			if ((mb % 100) == 0 && mb > lastMb) {

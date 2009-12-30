@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////
 SnifferTSReader::SnifferTSReader(DDSSubscriber& subscriber, std::string topicName):
 TSReader(subscriber, topicName){
-	pthread_mutex_init(&_seriesMutex, 0);
+	pthread_mutex_init(&_sequencesMutex, 0);
 }
 
 //////////////////////////////////////////////////////////////
@@ -19,29 +19,29 @@ SnifferTSReader::~SnifferTSReader() {
 }
 
 //////////////////////////////////////////////////////////////
-TimeSeries*
-SnifferTSReader::nextTS() {
+TimeSeriesSequence*
+SnifferTSReader::nextTSS() {
 
-	pthread_mutex_lock(&_seriesMutex);
+	pthread_mutex_lock(&_sequencesMutex);
 
-	TimeSeries* ts = 0;
-	if (_series.size()) {
-		ts = _series[0];
-		_series.pop_front();
+	TimeSeriesSequence* tss = 0;
+	if (_sequences.size()) {
+		tss = _sequences[0];
+		_sequences.pop_front();
 	}
 
-	pthread_mutex_unlock(&_seriesMutex);
-	return ts;
+	pthread_mutex_unlock(&_sequencesMutex);
+	return tss;
 
 }
 
 //////////////////////////////////////////////////////////////
 void
 SnifferTSReader::notify() {
-	TimeSeries* ts;
-	while ((ts = getNextItem())) {
-		pthread_mutex_lock(&_seriesMutex);
-		_series.push_back(ts);
-		pthread_mutex_unlock(&_seriesMutex);
+	TimeSeriesSequence* tss;
+	while ((tss = getNextItem())) {
+		pthread_mutex_lock(&_sequencesMutex);
+		_sequences.push_back(tss);
+		pthread_mutex_unlock(&_sequencesMutex);
 	}
 }
