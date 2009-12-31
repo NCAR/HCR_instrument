@@ -141,11 +141,11 @@ p7142hcrdnThread::publish(char* buf, int n) {
 
   tss->chanId = _chanId;
   tss->tsList.length(_tsLength);
-  
+
   int in = 0;
   int* data = (int*)buf;
   short* sdata = (short*)buf;
-  
+
   for (int t = 0; t < _tsLength; t++) {
       ProfilerDDS::TimeSeries &ts = tss->tsList[t];
       ts.data.length(_gates * 2);   // I and Q for each gate
@@ -170,7 +170,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
           time_duration timeFromEpoch = timeOfPulse(pulseNum) - epoch;
           // Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
           ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
-              (timeFromEpoch.fractional_seconds() * 1000000LL) / 
+              (timeFromEpoch.fractional_seconds() * 1000000LL) /
               time_duration::ticks_per_second();  // usecs since epoch
           // Finally, pull the per-gate data
           for (int g = 0; g < _gates; g++) {
@@ -189,7 +189,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
                   // decoding will eventually happen here.
                   double sum = data[in] + data[in+2*_gates];
                   double result = (sum/_nsum);
-                  ts.data[2 * g] = (short)result;
+                  ts.data[2*g+iq] = (short)result;
                   in++;
               }
           }
@@ -238,7 +238,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	           // Now that we've gotten stuff from the 4-byte tag, point
 	           // past it.
 	           in += 2;
-	           
+
 	           if (chan != _chanId) {
 	               _syncErrors++;
 	           } else {
@@ -249,7 +249,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	                   _lastPulseSeq = seq - 1;
 	                   _firstPulse = false;
 	               }
-	               
+
 	               int delta = seq - _lastPulseSeq;
 	               if (delta == 1) {
 	                   /// cool!
@@ -258,8 +258,8 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	               } else if (delta < 0) {
 	                   // wrap around
 	                   // sequence numbers are thirty bits
-	                   std::cout << "dropped pulse " << t << "  chan " << 
-	                   chan << "  seq " << seq << " " << 
+	                   std::cout << "dropped pulse " << t << "  chan " <<
+	                   chan << "  seq " << seq << " " <<
 	                   _lastPulseSeq << std::endl;
 	                   _droppedPulses += (0x3fffffff - _lastPulseSeq) + seq;
 	               } else {
@@ -349,7 +349,7 @@ long
 p7142hcrdnThread::unpackChannelNum(const char* buf) const {
     if (_freeRun)
         return 0;
-    // Channel number is the upper two bits of the first 32-bit chunk, which 
+    // Channel number is the upper two bits of the first 32-bit chunk, which
     // is stored in little-endian byte order
     const unsigned char *ubuf = (const unsigned char*)buf;
     unsigned int chan = (ubuf[3] >> 6) & 0x3;
@@ -361,7 +361,7 @@ long
 p7142hcrdnThread::unpackPulseNum(const char* buf) const {
     if (_freeRun)
         return 0;
-    // Pulse number is the lower 30 bits of the first 32-bit chunk, which is 
+    // Pulse number is the lower 30 bits of the first 32-bit chunk, which is
     // stored in little-endian byte order
     const unsigned char *ubuf = (const unsigned char*)buf;
     unsigned long pulseNum = (ubuf[3] & 0x3f) << 24 |
