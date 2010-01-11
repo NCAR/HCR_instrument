@@ -102,14 +102,15 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
             std::cerr << "ProductGenerator::handleItem: Got " << _dwellGates << 
                 " gates; PRODGEN_MAX_GATES is " << PRODGEN_MAX_GATES << std::endl;
             ok = false;
-            break;
         }
         if (_dwellGates != ts.hskp.gates) {
+            // Gate count changed.  Forget the dwell in progress and start 
+            // a new dwell.
             std::cerr << "ProductGenerator::handleItem: Gate count changed " <<
                 "from " << _dwellGates << " to " << ts.hskp.gates << 
-                " in the middle of a dwell. Sample dropped." << std::endl;
-            ok = false;
-            break;
+                " in the middle of a dwell. Dwell-in-progress abandoned." << 
+                std::endl;
+            _samplesCached = 0;
         }
         
         // Put the Is and Qs for this sample into the dwell-in-progress
