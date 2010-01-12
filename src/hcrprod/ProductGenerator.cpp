@@ -25,8 +25,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _dwellDiscardCount(0) {
     // Fake radar parameters for now
     // @todo put in real radar parameters
-    double prtSeconds = 1.0e-3;
-    double wavelengthMeters = 3.0e-3;
+    double prtSeconds = 2.0e-4;
+    double wavelengthMeters = 3.2e-4;
     double startRangeKm = 0.0;
     double gateSpacingKm = 0.015;
     _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
