@@ -120,10 +120,10 @@ void getConfigParams()
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
 	_chans         = config.getInt("Device/Channels",       1);
 	_ddcType       = config.getInt("Device/DdcType",        8);
-	_gates         = config.getInt("Radar/Gates",           200);
-	_prt		   = config.getInt("Radar/PRT", 			12544);
-	_pulseWidth    = config.getInt("Radar/PulseWidth", 		64);
-	_nsum          = config.getInt("Radar/Nsum",            10);
+	_gates         = config.getInt("Radar/Gates",           50);
+	_prt		   = config.getInt("Radar/PRT", 			1200);
+	_pulseWidth    = config.getInt("Radar/PulseWidth", 		16);
+	_nsum          = config.getInt("Radar/Nsum",            1);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
 	_numChannels   = config.getInt("Radar/Channels",        4);
 	_freeRun       = config.getBool("Radar/FreeRunning",    false);
