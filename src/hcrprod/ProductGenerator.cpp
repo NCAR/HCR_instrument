@@ -13,11 +13,12 @@
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-        float rcvrGain, float rcvrNoise, int nSamples) : 
+        float rfRcvrGain, float pentek7142Gain, float rcvrNoise, int nSamples) : 
     _reader(source),
     _writer(sink),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
-    _rcvrGain(rcvrGain),
+    _rfRcvrGain(rfRcvrGain),
+    _pentek7142Gain(pentek7142Gain),
     _rcvrNoise(rcvrNoise),
     _nSamples(nSamples),
     _samplesCached(0),
@@ -30,13 +31,14 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     double prtSeconds = 2.0e-4;
     double wavelengthMeters = 3.2e-3;
     double startRangeKm = 0.0;
-    double gateSpacingKm = 0.015;
+    double gateSpacingKm = 0.075;
+    float rcvrGain = _rfRcvrGain + _pentek7142Gain;
     _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
             gateSpacingKm);
     // Fixed bogus calibration (for now)
     // @todo supply real calibration info
     DsRadarCalib calib;
-    calib.setReceiverGainDbHc(_rcvrGain);
+    calib.setReceiverGainDbHc(rcvrGain);
     calib.setNoiseDbmHc(_rcvrNoise);
     calib.setBaseDbz1kmHc(-20.0);
     _momentsCalc.setCalib(calib);
@@ -208,9 +210,10 @@ ProductGenerator::publish_(const MomentsFields *moments) {
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
+    float rcvrGain = _rfRcvrGain + _pentek7142Gain;
     for (int g = 0; g < _dwellGates; g++) {
     	// add back in the receiver gain
-    	double rawDbm = moments[g].dbm + dbmCorr + _rcvrGain;
+    	double rawDbm = moments[g].dbm + dbmCorr + (rcvrGain - _pentek7142Gain);
         product->data[g] = 
             short((rawDbm - product->offset) / product->scale);
     }

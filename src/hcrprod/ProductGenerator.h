@@ -27,8 +27,8 @@ public:
 	 * @param rcvrNoise the noise value for the receiver, in dBm
 	 * int nSamples the number of pulses to use per dwell
 	 */
-    ProductGenerator(QtTSReader *source, ProductWriter *sink, float rcvrGain, 
-    		float rcvrNoise, int nSamples);
+    ProductGenerator(QtTSReader *source, ProductWriter *sink, float rfRcvrGain, 
+    		float pentek7142Gain, float rcvrNoise, int nSamples);
     virtual ~ProductGenerator();
     void run();
     /**
@@ -71,9 +71,13 @@ private:
      */
     RadarMoments _momentsCalc;
     /**
-     * Receiver gain, in dB
+     * Receiver gain from LNA to input of Pentek 7142, in dB
      */
-    float _rcvrGain;
+    float _rfRcvrGain;
+   /**
+    * Gain input of Pentek 7142 to output of DDC, in dB
+    */
+   float _pentek7142Gain;
     /**
      * Receiver noise power, in dBm
      */
