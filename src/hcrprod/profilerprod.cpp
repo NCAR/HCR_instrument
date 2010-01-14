@@ -137,7 +137,7 @@ main (int argc, char** argv) {
     ProductWriter *productWriter = new ProductWriter(publisher, _prodTopic);
 
     // create the products generator thread and run it
-    ProductGenerator generator(tsReader, productWriter, 64);
+    ProductGenerator generator(tsReader, productWriter, 40.0, -110.0, 64);
     generator.run();
 
     return app.exec();

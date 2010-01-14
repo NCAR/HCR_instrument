@@ -19,7 +19,16 @@ class ProductGenerator : public QThread {
     Q_OBJECT
     
 public:
-    ProductGenerator(QtTSReader *source, ProductWriter *sink, int nSamples);
+	/**
+	 * Constructor.
+	 * @param source the QtTSReader source for time series data
+	 * @param sink the ProductWriter sink for resulting products
+	 * @param rcvrGain the gain of the receiver, in dB
+	 * @param rcvrNoise the noise value for the receiver, in dBm
+	 * int nSamples the number of pulses to use per dwell
+	 */
+    ProductGenerator(QtTSReader *source, ProductWriter *sink, float rcvrGain, 
+    		float rcvrNoise, int nSamples);
     virtual ~ProductGenerator();
     void run();
     /**
@@ -49,7 +58,7 @@ private:
     void publish_(const MomentsFields *moments);
     void addProductHousekeeping_(RadarDDS::Product & p);
             
-    /**
+    /**	// dB
      * QtTSReader source of time series data
      */
     QtTSReader *_reader;
@@ -58,13 +67,21 @@ private:
      */
     ProductWriter *_writer;
     /**
-     * Number of samples to integrate when generating products
-     */
-    int _nSamples;
-    /**
      * The RAP radar moments calculator
      */
     RadarMoments _momentsCalc;
+    /**
+     * Receiver gain, in dB
+     */
+    float _rcvrGain;
+    /**
+     * Receiver noise power, in dBm
+     */
+    float _rcvrNoise;
+    /**
+     * Number of samples to integrate when generating products
+     */
+    int _nSamples;
     /**
      * Accumulated time series IQ data for a dwell in progress.
      * This is sized to hold _nSamples * _nGates sets of I and Q.

@@ -13,11 +13,13 @@
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-        int nSamples) : 
+        float rcvrGain, float rcvrNoise, int nSamples) : 
     _reader(source),
     _writer(sink),
-    _nSamples(nSamples),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
+    _rcvrGain(rcvrGain),
+    _rcvrNoise(rcvrNoise),
+    _nSamples(nSamples),
     _samplesCached(0),
     _itemCount(0),
     _wrongChannelCount(0),
@@ -26,7 +28,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     // Fake radar parameters for now
     // @todo put in real radar parameters
     double prtSeconds = 2.0e-4;
-    double wavelengthMeters = 3.2e-4;
+    double wavelengthMeters = 3.2e-3;
     double startRangeKm = 0.0;
     double gateSpacingKm = 0.015;
     _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
@@ -34,8 +36,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     // Fixed bogus calibration (for now)
     // @todo supply real calibration info
     DsRadarCalib calib;
-    calib.setReceiverGainDbHc(30.0);
-    calib.setNoiseDbmHc(-100.0);
+    calib.setReceiverGainDbHc(_rcvrGain);
+    calib.setNoiseDbmHc(_rcvrNoise);
     calib.setBaseDbz1kmHc(-20.0);
     _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
@@ -113,12 +115,19 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
             _samplesCached = 0;
         }
         
-        // Put the Is and Qs for this sample into the dwell-in-progress
+        // Put the Is and Qs for this sample into the dwell-in-progress.
+        double sqrtTwo = sqrt(2.0);
+        double vMax = 1.0;	// Max signal voltage for HCR.  @todo make this changeable!
+        
         for (int gate = 0; gate < _dwellGates; gate++) {
-            _dwell[gate][_samplesCached].re = 
-                ts.data[2 * gate] / 32768.0; // real part = I / 32768.0
-            _dwell[gate][_samplesCached].im = 
-                ts.data[2 * gate + 1] / 32768.0; // imaginary part = Q / 32768.0
+        	// Real part I, in volts = (I      /32768) * vMax / sqrt(2)
+        	//                           counts      
+            _dwell[gate][_samplesCached].re = vMax * (ts.data[2 * gate] / 32768.0) /
+            	sqrtTwo;
+        	// Imaginary part Q, in volts = (Q      /32768) * vMax / sqrt(2)
+        	//                                counts
+            _dwell[gate][_samplesCached].im = vMax * (ts.data[2 * gate + 1] / 32768.0) /
+            	sqrtTwo;
         }
         _samplesCached++;     
         /*
@@ -159,9 +168,25 @@ ProductGenerator::publish_(const MomentsFields *moments) {
 
     productSet->radarId = 0;
     
-    productSet->products.length(5);
+    productSet->products.length(6);
     RadarDDS::Product *product = productSet->products.get_buffer();
     
+    // RAL moments "dbm" is really:
+    //
+    //            ngates
+    //            ----
+    //             \   2    2
+    //  1/ngates *  | I  + Q
+    //             /   g    g
+    //            ----
+    //            g = 1
+    //
+    // To convert to units of dBm, we need to account for the input
+    // impedance, and convert from dB(W) to dB(mW).
+    double rcvrInputImpedance = 50.0;
+    double dbmCorr = -10.0 * log10(rcvrInputImpedance);
+    dbmCorr += 30.0; // dB(W) -> dB(mW)
+          
     addProductHousekeeping_(*product);
     product->name = "DM";
     product->description = "coherent power";
@@ -170,8 +195,24 @@ ProductGenerator::publish_(const MomentsFields *moments) {
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
+    	double dbm = moments[g].dbm + dbmCorr;
         product->data[g] = 
-            short((moments[g].dbm - product->offset) / product->scale);
+            short((dbm - product->offset) / product->scale);
+    }
+    
+    product++;
+    addProductHousekeeping_(*product);
+    product->name = "DMRAW";
+    product->description = "coherent power (including rcvr gain)";
+    product->units = "dBm";
+    product->offset = 0.0;
+    product->scale = 100.0 / 32768;
+    product->data.length(_dwellGates);
+    for (int g = 0; g < _dwellGates; g++) {
+    	// add back in the receiver gain
+    	double rawDbm = moments[g].dbm + dbmCorr + _rcvrGain;
+        product->data[g] = 
+            short((rawDbm - product->offset) / product->scale);
     }
     
     product++;
