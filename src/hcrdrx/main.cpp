@@ -195,6 +195,7 @@ void parseOptions(int argc,
 }
 
 ///////////////////////////////////////////////////////////
+/// If the user has root privileges, make the process real-time.
 void
 makeRealTime()
 {
@@ -217,6 +218,7 @@ makeRealTime()
 }
 
 ///////////////////////////////////////////////////////////
+/// @return The current time, in seconds since Jan. 1, 1970.
 double nowTime()
 {
 	struct timeb timeB;
@@ -225,6 +227,9 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
+/// Make sure that the configuration parameters are self consist. 
+/// Print an error message and exit the process if not.
+
 void argumentCheck() {
 
 	if (_nsum < 0 || (_nsum > 1 && (_nsum%2 != 0))) {
@@ -249,6 +254,24 @@ void argumentCheck() {
 
 	if (_simulate)
 		std::cout << "*** Operating in simulation mode" << std::endl;
+
+}
+
+///////////////////////////////////////////////////////////
+void startUpConverter(Pentek::p7142up& upConverter) {
+
+	// create the signal
+	unsigned int n = _pulseWidth*2;
+	long IQ[n];
+	for (unsigned int i = 0; i < n; i++) {
+		IQ[i]   = 0x8000 << 16 | 0x8000;
+	}
+
+	// load mem2
+	upConverter.write(IQ, n);
+
+	// start the upconverter
+	upConverter.startDAC();
 
 }
 
@@ -280,6 +303,28 @@ main(int argc, char** argv)
 		channels.push_back(i);
 	}
 
+	// create the upconvertor. Use coarse mixer mode = ?, as specified in X4L FMIX CMIX
+	/// @todo Need reference that explains which cm_mode to specify here.
+	double sampleClock;
+	double ncoFreq = sampleClock*2;
+	if (_ddcType == 4) {
+		sampleClock = 48.0e6;
+		ncoFreq = 12.0e6;
+	} else {
+		sampleClock = 125.0e6;
+		ncoFreq = 31.25e6;
+	}
+	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 5);
+
+	if (!upConverter.ok()) {
+		std::cerr << "cannot access " << upConverter.upName() << "\n";
+		exit(1);
+	}
+
+	// configure the upconverter and start the DAC. Recall that there won't be
+	// output from the DAC until the timers are started.
+	startUpConverter(upConverter);
+	
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
@@ -392,12 +437,11 @@ main(int argc, char** argv)
 		std::cout << std::endl;
 	}
 
+	// stop the DAC
+	upConverter.stopDAC();
+	
 	// stop the timers
     down7142[0]->timersStartStop(false);
-    // flush the channels
-//	for (unsigned int c = 0; c < channels.size(); c++) {
-//		down7142[c]->flush();
-//	}
 
 	std::cout << "terminated on command" << std::endl;
 }
