@@ -22,6 +22,8 @@
 #include "DDSPublisher.h"
 #include "TSWriter.h"
 
+#define UPCONVERTER
+
 using namespace std;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
@@ -305,14 +307,15 @@ main(int argc, char** argv)
 
 	// create the upconvertor. Use coarse mixer mode = ?, as specified in X4L FMIX CMIX
 	/// @todo Need reference that explains which cm_mode to specify here.
-	double sampleClock;
-	double ncoFreq = sampleClock*2;
+#ifdef UPCONVERTER
+	double sampleClock = 0;
+	double ncoFreq = 0; 
 	if (_ddcType == 4) {
 		sampleClock = 48.0e6;
-		ncoFreq = 12.0e6;
+		ncoFreq = 60.0e6;
 	} else {
 		sampleClock = 125.0e6;
-		ncoFreq = 31.25e6;
+		ncoFreq = 156.25e6;
 	}
 	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 5);
 
@@ -320,10 +323,11 @@ main(int argc, char** argv)
 		std::cerr << "cannot access " << upConverter.upName() << "\n";
 		exit(1);
 	}
-
+	
 	// configure the upconverter and start the DAC. Recall that there won't be
 	// output from the DAC until the timers are started.
 	startUpConverter(upConverter);
+#endif
 	
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
@@ -437,8 +441,10 @@ main(int argc, char** argv)
 		std::cout << std::endl;
 	}
 
+#ifdef UPCONVERTER
 	// stop the DAC
 	upConverter.stopDAC();
+#endif
 	
 	// stop the timers
     down7142[0]->timersStartStop(false);
