@@ -35,5 +35,5 @@ SConscript("tsArchiver/SConscript")
 env.Alias('apidocs', env.Dir("apidocs"))
 
 options.Update(env)
-Help(options.GenerateHelpText(env))
+env.SetHelp(options.GenerateHelpText(env))
 
