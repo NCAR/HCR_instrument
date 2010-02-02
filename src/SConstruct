@@ -18,7 +18,8 @@ def ProfilerSetup(env):
     env['DOXYFILE_DICT'].update({ 'HTML_HEADER' : env.File("#header.html") })
     return env
     
-env = Environment(tools = ['default'], GLOBAL_TOOLS = [ProfilerSetup])
+env = Environment(tools = ['default'], 
+                  GLOBAL_TOOLS = ["prefixoptions", "buildmode", ProfilerSetup])
 
 SConscript("acex/SConscript")
 SConscript("rtfcommon/SConscript")
