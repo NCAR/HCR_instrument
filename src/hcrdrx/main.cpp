@@ -229,7 +229,7 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
-/// Make sure that the configuration parameters are self consist. 
+/// Make sure that the configuration parameters are self consist.
 /// Print an error message and exit the process if not.
 
 void argumentCheck() {
@@ -263,12 +263,19 @@ void argumentCheck() {
 void startUpConverter(Pentek::p7142up& upConverter) {
 
 	// create the signal
+//	unsigned int n = _pulseWidth*2;
 	unsigned int n = _pulseWidth*2;
 	long IQ[n];
-	for (unsigned int i = 0; i < n; i++) {
+
+	for (unsigned int i = 0; i < n/4; i++) {
 		IQ[i]   = 0x8000 << 16 | 0x8000;
 	}
-
+	for (unsigned int i = n/4; i < n/2; i++) {
+		IQ[i]   = 0x8000 << 16 | 0x8000;
+	}
+	for (unsigned int i = n/2; i < n; i++) {
+		IQ[i]   = 0x0000 << 16 | 0x7FFF;
+	}
 	// load mem2
 	upConverter.write(IQ, n);
 
@@ -309,7 +316,7 @@ main(int argc, char** argv)
 	/// @todo Need reference that explains which cm_mode to specify here.
 #ifdef UPCONVERTER
 	double sampleClock = 0;
-	double ncoFreq = 0; 
+	double ncoFreq = 0;
 	if (_ddcType == 4) {
 		sampleClock = 48.0e6;
 		ncoFreq = 60.0e6;
@@ -318,17 +325,18 @@ main(int argc, char** argv)
 		ncoFreq = 156.25e6;
 	}
 	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 5);
+//	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 7);
 
 	if (!upConverter.ok()) {
 		std::cerr << "cannot access " << upConverter.upName() << "\n";
 		exit(1);
 	}
-	
+
 	// configure the upconverter and start the DAC. Recall that there won't be
 	// output from the DAC until the timers are started.
 	startUpConverter(upConverter);
 #endif
-	
+
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
@@ -445,7 +453,7 @@ main(int argc, char** argv)
 	// stop the DAC
 	upConverter.stopDAC();
 #endif
-	
+
 	// stop the timers
     down7142[0]->timersStartStop(false);
 
