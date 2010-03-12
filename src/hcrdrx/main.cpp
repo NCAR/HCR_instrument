@@ -274,7 +274,7 @@ void startUpConverter(Pentek::p7142up& upConverter) {
 		IQ[i]   = 0x8000 << 16 | 0x8000;
 	}
 	for (unsigned int i = n/2; i < n; i++) {
-		IQ[i]   = 0x0000 << 16 | 0x7FFF;
+		IQ[i]   = 0x8000 << 16 | 0x8000;
 	}
 	// load mem2
 	upConverter.write(IQ, n);
@@ -322,10 +322,11 @@ main(int argc, char** argv)
 		ncoFreq = 60.0e6;
 	} else {
 		sampleClock = 125.0e6;
-		ncoFreq = 156.25e6;
+//		ncoFreq = 156.25e6;
+		ncoFreq = 31.25e6;
 	}
-	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 5);
-//	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 7);
+//	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 5); // CMIX by fDAC/2
+	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 9); // CMIX by fDAC/4
 
 	if (!upConverter.ok()) {
 		std::cerr << "cannot access " << upConverter.upName() << "\n";
