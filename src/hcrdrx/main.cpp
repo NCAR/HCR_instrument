@@ -319,7 +319,8 @@ main(int argc, char** argv)
 	double ncoFreq = 0;
 	if (_ddcType == 4) {
 		sampleClock = 48.0e6;
-		ncoFreq = 60.0e6;
+//		ncoFreq = 60.0e6;
+		ncoFreq = 12.0e6;
 	} else {
 		sampleClock = 125.0e6;
 //		ncoFreq = 156.25e6;
