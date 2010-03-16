@@ -22,8 +22,6 @@
 #include "DDSPublisher.h"
 #include "TSWriter.h"
 
-#define UPCONVERTER
-
 using namespace std;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
@@ -267,14 +265,11 @@ void startUpConverter(Pentek::p7142up& upConverter) {
 	unsigned int n = _pulseWidth*2;
 	long IQ[n];
 
-	for (unsigned int i = 0; i < n/4; i++) {
-		IQ[i]   = 0x8000 << 16 | 0x8000;
-	}
-	for (unsigned int i = n/4; i < n/2; i++) {
+	for (unsigned int i = 0; i < n/2; i++) {
 		IQ[i]   = 0x8000 << 16 | 0x8000;
 	}
 	for (unsigned int i = n/2; i < n; i++) {
-		IQ[i]   = 0x8000 << 16 | 0x8000;
+		IQ[i]   = 0x1000 << 16 | 0x1000;
 	}
 	// load mem2
 	upConverter.write(IQ, n);
@@ -314,30 +309,24 @@ main(int argc, char** argv)
 
 	// create the upconvertor. Use coarse mixer mode = ?, as specified in X4L FMIX CMIX
 	/// @todo Need reference that explains which cm_mode to specify here.
-#ifdef UPCONVERTER
 	double sampleClock = 0;
 	double ncoFreq = 0;
 	if (_ddcType == 4) {
 		sampleClock = 48.0e6;
-//		ncoFreq = 60.0e6;
-		ncoFreq = 12.0e6;
+		ncoFreq     = 12.0e6;
 	} else {
 		sampleClock = 125.0e6;
-//		ncoFreq = 156.25e6;
-		ncoFreq = 31.25e6;
+		ncoFreq     = 31.25e6;
 	}
-//	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 5); // CMIX by fDAC/2
-	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 9); // CMIX by fDAC/4
+	
+	// Create the upConverter.
+	// Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
+	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 9); 
 
 	if (!upConverter.ok()) {
 		std::cerr << "cannot access " << upConverter.upName() << "\n";
 		exit(1);
 	}
-
-	// configure the upconverter and start the DAC. Recall that there won't be
-	// output from the DAC until the timers are started.
-	startUpConverter(upConverter);
-#endif
 
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
@@ -402,9 +391,13 @@ main(int argc, char** argv)
     // start filters(). So just call it for channel 0
     down7142[0]->startFilters();
 
-	// start the timers, which will allow data to flow
-    // they are also all started by calling timerStartStop for
-    // any channel
+	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
+	// DAC memory counters. This must take place before the timers are started.
+	startUpConverter(upConverter);
+
+	// Start the timers, which will allow data to flow.
+    // All timers are started by calling timerStartStop for
+    // any one channel.
     down7142[0]->timersStartStop(true);
 
 	double startTime = nowTime();
@@ -451,10 +444,8 @@ main(int argc, char** argv)
 		std::cout << std::endl;
 	}
 
-#ifdef UPCONVERTER
 	// stop the DAC
 	upConverter.stopDAC();
-#endif
 
 	// stop the timers
     down7142[0]->timersStartStop(false);
