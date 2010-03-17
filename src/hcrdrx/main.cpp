@@ -8,6 +8,9 @@
 #include <math.h>
 #include <sched.h>
 #include <sys/timeb.h>
+#include <ctime>
+#include <cerrno>
+#include <cstdlib>
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <csignal>
@@ -385,7 +388,17 @@ main(int argc, char** argv)
 	}
 
 	// wait awhile, so that the threads can all get to the first read.
-	sleep(1);
+	struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
+	while (nanosleep(&sleepTime, &sleepTime)) {
+	    if (errno != EINTR) {
+	        std::cerr << "Error " << errno << " from nanosleep().  Aborting." <<
+                std::endl;
+	        abort();
+	    } else {
+	        // We were interrupted. Return to sleeping until the interval is done.
+	        continue;
+	    }
+	}
 
 	// all of the filters are started by any call to
     // start filters(). So just call it for channel 0
