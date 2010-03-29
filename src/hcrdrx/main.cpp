@@ -324,7 +324,7 @@ main(int argc, char** argv)
 	
 	// Create the upConverter.
 	// Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
-	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 9); 
+	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 9, _simulate); 
 
 	if (!upConverter.ok()) {
 		std::cerr << "cannot access " << upConverter.upName() << "\n";
