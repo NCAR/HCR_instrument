@@ -128,10 +128,13 @@ double p7142hcrdnThread::nowTime() {
 }
 
 ///////////////////////////////////////////////////////////
+
+// 1970-01-01 00:00:00 UTC
+static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0, 0, 0));
+
 void
 p7142hcrdnThread::publish(char* buf, int n) {
 
-  ptime epoch(boost::gregorian::date(1970, 1, 1), time_duration(0, 0, 0)); // 1970-01-01 00:00:00
   ProfilerDDS::TimeSeriesSequence* tss;
   tss = _tsWriter->getEmptyItem();
   if (!tss) {
@@ -167,7 +170,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
               in += 2;
           }
 
-          time_duration timeFromEpoch = timeOfPulse(pulseNum) - epoch;
+          time_duration timeFromEpoch = timeOfPulse(pulseNum) - Epoch1970;
           // Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
           ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
               (timeFromEpoch.fractional_seconds() * 1000000LL) /
@@ -295,10 +298,10 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	   for (int t = 0; t < _tsLength; t++) {
 		   // decode the leading four tags
 		   for (int tag = 0; tag < 4; tag++) {
-			   int format = (data[in] >> 28) & 0xf;
-			   int key = (data[in] >> 24) & 0xf;
-			   int seq = data[in] & 0xffffff;
+			   //int format = (data[in] >> 28) & 0xf;
+			   //int seq = data[in] & 0xffffff;
 			   //std::cout << std::dec << format << " 0x" << std::hex <<  key << " " << std::dec << seq << "   ";
+               int key = (data[in] >> 24) & 0xf;
 			   if (key != ((_chanId << 2) + tag)) {
 				   _syncErrors++;
 			   }
