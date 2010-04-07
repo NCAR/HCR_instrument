@@ -42,6 +42,10 @@ protected slots:
      * @param item pointer to the new ProfilerDDS::TimeSeries item
      */
     virtual void handleItem(ProfilerDDS::TimeSeriesSequence *item);
+    /**
+     * Show information.
+     */
+    void showInfo();
     
 signals:
     /**

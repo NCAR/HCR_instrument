@@ -60,6 +60,10 @@ ProductGenerator::~ProductGenerator() {
 
 void 
 ProductGenerator::run() {
+    // Set an ongoing timer so that we print info on a regular basis.
+    QTimer timer(this);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(showInfo()));
+    timer.start(5000);  // every 5 seconds
     // Accept data via newItem() signals from our source, and free the
     // data pointers by sending returnItem() signals back.
     connect(_reader, SIGNAL(newItem(ProfilerDDS::TimeSeriesSequence*)), 
@@ -69,18 +73,18 @@ ProductGenerator::run() {
     exec();
 }
 
+void
+ProductGenerator::showInfo() {
+    std::cerr << "showInfo(): " << _itemCount << " tsSequence-s received, " << 
+        _wrongChannelCount << " were wrong channel. " <<
+        _dwellCount << " product rays generated and " << 
+        _dwellDiscardCount << " could not be published" << std::endl;
+}
 
 void 
 ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
     bool ok = true;
     
-    // Report occasionally
-    if (!(_itemCount % 100)) {
-        std::cerr << _itemCount << " tsSequence-s received, " << 
-            _wrongChannelCount << " were wrong channel, " <<
-            _dwellCount << " product rays generated, " << 
-            _dwellDiscardCount << " rays could not be published" << std::endl;
-    }
     _itemCount++;
     
     // We currently generate products only for channel zero
