@@ -28,7 +28,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _dwellDiscardCount(0) {
     // Fake radar parameters for now
     // @todo put in real radar parameters
-    double prtSeconds = 2.0e-4;
+    double prtSeconds = 1.0e-4;
     double wavelengthMeters = 3.2e-3;
     double startRangeKm = 0.0;
     double gateSpacingKm = 0.075;
@@ -40,7 +40,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     DsRadarCalib calib;
     calib.setReceiverGainDbHc(rcvrGain);
     calib.setNoiseDbmHc(_rcvrNoise);
-    calib.setBaseDbz1kmHc(-20.0);
+    calib.setBaseDbz1kmHc(-103.0 + 71.0); // MDS (0 db SNR) @ 1km
     _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
