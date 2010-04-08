@@ -40,7 +40,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     DsRadarCalib calib;
     calib.setReceiverGainDbHc(rcvrGain);
     calib.setNoiseDbmHc(_rcvrNoise);
-    calib.setBaseDbz1kmHc(-103.0 + 71.0); // MDS (0 db SNR) @ 1km
+    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
     _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
