@@ -272,7 +272,7 @@ void startUpConverter(Pentek::p7142up& upConverter) {
 		IQ[i]   = 0x8000 << 16 | 0x8000;
 	}
 	for (unsigned int i = n/2; i < n; i++) {
-		IQ[i]   = 0x7FFF << 16 | 0x7FFF;
+		IQ[i]   = 0x8000 << 16 | 0x8000;
 	}
 	// load mem2
 	upConverter.write(IQ, n);
