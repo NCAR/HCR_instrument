@@ -21,6 +21,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _pentek7142Gain(pentek7142Gain),
     _rcvrNoise(rcvrNoise),
     _nSamples(nSamples),
+    _fft(nSamples),
+    _regFilter(),
     _samplesCached(0),
     _itemCount(0),
     _wrongChannelCount(0),
@@ -44,18 +46,25 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
+    // Set the number of samples for the regression filter
+    _regFilter.setup(_nSamples);
     //
-    // Allocate our dwell-in-progress: _dwell[PRODGEN_MAX_GATES][_nSamples]
+    // Allocate our dwell-in-progress: _dwellIQ[PRODGEN_MAX_GATES][_nSamples]
     //
-    _dwell = new RadarComplex_t*[PRODGEN_MAX_GATES];
-    for (int g = 0; g < PRODGEN_MAX_GATES; g++)
-        _dwell[g] = new RadarComplex_t[_nSamples];
+    _dwellIQ = new RadarComplex_t*[PRODGEN_MAX_GATES];
+    for (int g = 0; g < PRODGEN_MAX_GATES; g++) {
+        _dwellIQ[g] = new RadarComplex_t[_nSamples];
+    }
+    // Work space to hold a dwell of filtered IQ data for one gate
+    _filteredGateIQ = new RadarComplex_t[_nSamples];
 }
 
 ProductGenerator::~ProductGenerator() {
-    for (int gate = 0; gate < PRODGEN_MAX_GATES; gate++)
-        delete _dwell[gate];
-    delete _dwell;
+    for (int gate = 0; gate < PRODGEN_MAX_GATES; gate++) {
+        delete _dwellIQ[gate];
+    }
+    delete _dwellIQ;
+    delete _filteredGateIQ;
 }
 
 void 
@@ -128,12 +137,12 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
         for (int gate = 0; gate < _dwellGates; gate++) {
         	// Real part I, in volts = (I      /32768) * vMax / sqrt(2)
         	//                           counts      
-            _dwell[gate][_samplesCached].re = vMax * (ts.data[2 * gate] / 32768.0) /
-            	sqrtTwo;
+            _dwellIQ[gate][_samplesCached].re = 
+                vMax * (ts.data[2 * gate] / 32768.0) / sqrtTwo;
         	// Imaginary part Q, in volts = (Q      /32768) * vMax / sqrt(2)
         	//                                counts
-            _dwell[gate][_samplesCached].im = vMax * (ts.data[2 * gate + 1] / 32768.0) /
-            	sqrtTwo;
+            _dwellIQ[gate][_samplesCached].im = 
+                vMax * (ts.data[2 * gate + 1] / 32768.0) / sqrtTwo;
         }
         _samplesCached++;     
         /*
@@ -142,11 +151,24 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
         if (_samplesCached == _nSamples) {
             _dwellCount++;
             MomentsFields moments[_dwellGates];
+            MomentsFields filteredMoments[_dwellGates];
             // Calculate products for our dwell, gate by gate
-            for (int gate = 0; gate < _dwellGates; gate++)
-                _momentsCalc.singlePol(_dwell[gate], gate, false, moments[gate]);
+            for (int gate = 0; gate < _dwellGates; gate++) {
+                // First calculate moments from the unfiltered IQ data
+                _momentsCalc.singlePol(_dwellIQ[gate], gate, false, moments[gate]);
+                // Filter IQ data for this gate
+                double filterRatio;
+                double spectralNoise;
+                double spectralSnr;
+                _momentsCalc.applyRegressionFilter(_nSamples, _fft, _regFilter, 
+                    _dwellIQ[gate], _rcvrNoise, true, _filteredGateIQ, 
+                    filterRatio, spectralNoise, spectralSnr);
+                // Calculate moments from the filtered IQ
+                _momentsCalc.singlePol(_filteredGateIQ, gate, false, 
+                    filteredMoments[gate]);
+            }
             // Publish the dwell
-            publish_(moments);
+            publish_(moments, filteredMoments);
             // Start a new dwell-in-progress
             _samplesCached = 0;
         }
@@ -163,7 +185,8 @@ done:
 }
 
 void
-ProductGenerator::publish_(const MomentsFields *moments) {
+ProductGenerator::publish_(const MomentsFields *moments,
+        const MomentsFields *filteredMoments) {
     RadarDDS::ProductSet *productSet;
 
     productSet = _writer->getEmptyItem();
@@ -173,11 +196,12 @@ ProductGenerator::publish_(const MomentsFields *moments) {
     }
 
     productSet->radarId = 0;
-    
-    productSet->products.length(6);
+    // The number of products is currently fixed at 7: DM, DMRAW, DZ, VE,
+    // SW, SNR, DZ_F
+    productSet->products.length(7);
     RadarDDS::Product *product = productSet->products.get_buffer();
     
-    // RAL moments "dbm" is really:
+    // RAP moments "dbm" is really:
     //
     //            ngates
     //            ----
@@ -192,7 +216,8 @@ ProductGenerator::publish_(const MomentsFields *moments) {
     double rcvrInputImpedance = 50.0;
     double dbmCorr = -10.0 * log10(rcvrInputImpedance);
     dbmCorr += 30.0; // dB(W) -> dB(mW)
-          
+    
+    // DM: coherent power
     addProductHousekeeping_(*product);
     product->name = "DM";
     product->description = "coherent power";
@@ -205,7 +230,7 @@ ProductGenerator::publish_(const MomentsFields *moments) {
         product->data[g] = 
             short((dbm - product->offset) / product->scale);
     }
-    
+    // DMRAW: coherent power (including receiver gain)
     product++;
     addProductHousekeeping_(*product);
     product->name = "DMRAW";
@@ -221,7 +246,7 @@ ProductGenerator::publish_(const MomentsFields *moments) {
         product->data[g] = 
             short((rawDbm - product->offset) / product->scale);
     }
-    
+    // DZ: reflectivity
     product++;
     addProductHousekeeping_(*product);
     product->name = "DZ";
@@ -234,7 +259,7 @@ ProductGenerator::publish_(const MomentsFields *moments) {
         product->data[g] = 
             short((moments[g].dbz - product->offset) / product->scale);
     }
-    
+    // VE: radial velocity
     product++;
     addProductHousekeeping_(*product);
     product->name = "VE";
@@ -247,7 +272,7 @@ ProductGenerator::publish_(const MomentsFields *moments) {
         product->data[g] = 
             short((moments[g].vel - product->offset) / product->scale);
     }
-    
+    // SW: spectrum width
     product++;
     addProductHousekeeping_(*product);
     product->name = "SW";
@@ -260,7 +285,7 @@ ProductGenerator::publish_(const MomentsFields *moments) {
         product->data[g] = 
             short((moments[g].width - product->offset) / product->scale);
     }
-    
+    // SNR: signal-to-noise ratio
     product++;
     addProductHousekeeping_(*product);
     product->name = "SNR";
@@ -272,6 +297,19 @@ ProductGenerator::publish_(const MomentsFields *moments) {
     for (int g = 0; g < _dwellGates; g++) {
         product->data[g] = 
             short((moments[g].snr - product->offset) / product->scale);
+    }
+    // DZ_F: filtered reflectivity
+    product++;
+    addProductHousekeeping_(*product);
+    product->name = "DZ_F";
+    product->description = "filtered reflectivity";
+    product->units = "dBZ";
+    product->offset = 0.0;
+    product->scale = 100.0 / 32768;
+    product->data.length(_dwellGates);
+    for (int g = 0; g < _dwellGates; g++) {
+        product->data[g] = 
+            short((filteredMoments[g].dbz - product->offset) / product->scale);
     }
     
     // publish it

@@ -59,7 +59,7 @@ private:
     /**
      * Publish a ray of data
      */
-    void publish_(const MomentsFields *moments);
+    void publish_(const MomentsFields *moments, const MomentsFields *filteredMoments);
     void addProductHousekeeping_(RadarDDS::Product & p);
             
     /**	// dB
@@ -91,12 +91,21 @@ private:
      */
     int _nSamples;
     /**
+     * RadarFft object to be used in filtering.
+     */
+    RadarFft _fft;
+    /**
+     * RegressionFilter object to be used in filtering.
+     */
+    RegressionFilter _regFilter;
+    /**
      * Accumulated time series IQ data for a dwell in progress.
      * This is sized to hold _nSamples * _nGates sets of I and Q.
      * The ordering is _dwell[gate][sample], which allows easy use
      * of RadarMoments methods.
      */
-    RadarComplex_t **_dwell;
+    RadarComplex_t **_dwellIQ;
+    RadarComplex_t *_filteredGateIQ;    // work space to hold filtered IQ data for one gate
     long long _dwellStart;  // dwell start time in us since 1970-01-01 00:00 UTC
     int _dwellGates;        // gate count for the dwell
     float _dwellPrf;        // PRF from the first sample of the dwell
