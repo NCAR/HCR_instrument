@@ -164,7 +164,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
                     _dwellIQ[gate], _rcvrNoise, true, _filteredGateIQ, 
                     filterRatio, spectralNoise, spectralSnr);
                 // Calculate moments from the filtered IQ
-                _momentsCalc.singlePol(_filteredGateIQ, gate, false, 
+                _momentsCalc.singlePol(_filteredGateIQ, gate, true, 
                     filteredMoments[gate]);
             }
             // Publish the dwell
@@ -196,9 +196,9 @@ ProductGenerator::publish_(const MomentsFields *moments,
     }
 
     productSet->radarId = 0;
-    // The number of products is currently fixed at 7: DM, DMRAW, DZ, VE,
-    // SW, SNR, DZ_F
-    productSet->products.length(7);
+    // The number of products is currently fixed at 8: DM, DMRAW, DZ, VE,
+    // SW, SNR, DZ_F, VE_F
+    productSet->products.length(8);
     RadarDDS::Product *product = productSet->products.get_buffer();
     
     // RAP moments "dbm" is really:
@@ -310,6 +310,19 @@ ProductGenerator::publish_(const MomentsFields *moments,
     for (int g = 0; g < _dwellGates; g++) {
         product->data[g] = 
             short((filteredMoments[g].dbz - product->offset) / product->scale);
+    }
+    // VE_F: filtered radial velocity
+    product++;
+    addProductHousekeeping_(*product);
+    product->name = "VE_F";
+    product->description = "filtered radial velocity";
+    product->units = "m s-1";
+    product->offset = 0.0;
+    product->scale = 100.0 / 32768;
+    product->data.length(_dwellGates);
+    for (int g = 0; g < _dwellGates; g++) {
+        product->data[g] = 
+            short((filteredMoments[g].vel - product->offset) / product->scale);
     }
     
     // publish it
