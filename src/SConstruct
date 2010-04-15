@@ -9,11 +9,9 @@ import SCons
 options = eol_scons.GlobalOptions()
 
 def ProfilerSetup(env):
-    env.Require(['QTDIR'])
-#    env['CCFLAGS'] = '-g'
-    env.AppendUnique (CCFLAGS=['-Wall','-Wno-char-subscripts'])
-    env.AppendUnique (CXXFLAGS=['-Wno-non-virtual-dtor'])  
-    env.AppendUnique (CPPPATH=['#/mapr',])  
+    env.AppendUnique(CCFLAGS = ['-g'])
+    env.AppendUnique(CCFLAGS=['-Wall','-Wno-char-subscripts'])
+    env.AppendUnique(CXXFLAGS=['-Wno-non-virtual-dtor'])  
     env['DOXYFILE_DICT'] = dict()
     env['DOXYFILE_DICT'].update({ 'HTML_HEADER' : env.File("#header.html") })
     return env
@@ -26,14 +24,12 @@ SConscript("rtfcommon/SConscript")
 SConscript("pentek/SConscript")
 SConscript("profilerdrx/SConscript")
 SConscript("profilerscope/SConscript")
-#SConscript("mapr/SConstruct")
+SConscript("mapr/SConstruct")
 SConscript("sniffer/SConscript")
 SConscript("bscan/SConscript")
 SConscript("profilerprod/SConscript")
-# The next two are commented out for now because the drx machine TAO
-# build does not have $ACE_ROOT/lib/libTAO_FtRtEvent.so
-#SConscript("radd/SConscript")
-#SConscript("tsArchiver/SConscript")
+SConscript("radd/SConscript")
+SConscript("tsArchiver/SConscript")
 
 env.Alias('apidocs', env.Dir("apidocs"))
 
