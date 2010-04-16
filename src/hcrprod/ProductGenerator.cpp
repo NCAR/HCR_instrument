@@ -13,7 +13,7 @@
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-        float rfRcvrGain, float pentek7142Gain, float rcvrNoise, int nSamples) : 
+        float rfRcvrGain, float pentek7142Gain, float rcvrNoise, int nSamples) :
     _reader(source),
     _writer(sink),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
@@ -67,7 +67,7 @@ ProductGenerator::~ProductGenerator() {
     delete _filteredGateIQ;
 }
 
-void 
+void
 ProductGenerator::run() {
     // Set an ongoing timer so that we print info on a regular basis.
     QTimer timer(this);
@@ -75,7 +75,7 @@ ProductGenerator::run() {
     timer.start(5000);  // every 5 seconds
     // Accept data via newItem() signals from our source, and free the
     // data pointers by sending returnItem() signals back.
-    connect(_reader, SIGNAL(newItem(ProfilerDDS::TimeSeriesSequence*)), 
+    connect(_reader, SIGNAL(newItem(ProfilerDDS::TimeSeriesSequence*)),
             this, SLOT(handleItem(ProfilerDDS::TimeSeriesSequence*)));
     connect(this, SIGNAL(returnItem(ProfilerDDS::TimeSeriesSequence*)),
             _reader, SLOT(returnItemSlot(ProfilerDDS::TimeSeriesSequence*)));
@@ -84,18 +84,18 @@ ProductGenerator::run() {
 
 void
 ProductGenerator::showInfo() {
-    std::cerr << "showInfo(): " << _itemCount << " tsSequence-s received, " << 
+    std::cerr << "showInfo(): " << _itemCount << " tsSequence-s received, " <<
         _wrongChannelCount << " were wrong channel. " <<
-        _dwellCount << " product rays generated and " << 
+        _dwellCount << " product rays generated and " <<
         _dwellDiscardCount << " could not be published" << std::endl;
 }
 
-void 
+void
 ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
     bool ok = true;
-    
+
     _itemCount++;
-    
+
     // We currently generate products only for channel zero
     if (tsSequence->chanId != 0) {
         _wrongChannelCount++;
@@ -110,41 +110,41 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
          */
         if (_samplesCached == 0) {
             _dwellStart = ts.hskp.timetag;
-            _dwellPrf = ts.hskp.prf;
+            _dwellPrf = ts.hskp.prt1;
             _dwellGates = ts.hskp.gates;
         }
-        
+
         // Gate count sanity check
         if (_dwellGates > PRODGEN_MAX_GATES) {
-            std::cerr << "ProductGenerator::handleItem: Got " << _dwellGates << 
+            std::cerr << "ProductGenerator::handleItem: Got " << _dwellGates <<
                 " gates; PRODGEN_MAX_GATES is " << PRODGEN_MAX_GATES << std::endl;
             ok = false;
         }
         if (_dwellGates != ts.hskp.gates) {
-            // Gate count changed.  Forget the dwell in progress and start 
+            // Gate count changed.  Forget the dwell in progress and start
             // a new dwell.
             std::cerr << "ProductGenerator::handleItem: Gate count changed " <<
-                "from " << _dwellGates << " to " << ts.hskp.gates << 
-                " in the middle of a dwell. Dwell-in-progress abandoned." << 
+                "from " << _dwellGates << " to " << ts.hskp.gates <<
+                " in the middle of a dwell. Dwell-in-progress abandoned." <<
                 std::endl;
             _samplesCached = 0;
         }
-        
+
         // Put the Is and Qs for this sample into the dwell-in-progress.
         double sqrtTwo = sqrt(2.0);
         double vMax = 1.0;	// Max signal voltage for HCR.  @todo make this changeable!
-        
+
         for (int gate = 0; gate < _dwellGates; gate++) {
         	// Real part I, in volts = (I      /32768) * vMax / sqrt(2)
-        	//                           counts      
-            _dwellIQ[gate][_samplesCached].re = 
+        	//                           counts
+            _dwellIQ[gate][_samplesCached].re =
                 vMax * (ts.data[2 * gate] / 32768.0) / sqrtTwo;
         	// Imaginary part Q, in volts = (Q      /32768) * vMax / sqrt(2)
         	//                                counts
-            _dwellIQ[gate][_samplesCached].im = 
+            _dwellIQ[gate][_samplesCached].im =
                 vMax * (ts.data[2 * gate + 1] / 32768.0) / sqrtTwo;
         }
-        _samplesCached++;     
+        _samplesCached++;
         /*
          * If this sample created a complete dwell, publish it
          */
@@ -160,11 +160,11 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
                 double filterRatio;
                 double spectralNoise;
                 double spectralSnr;
-                _momentsCalc.applyRegressionFilter(_nSamples, _fft, _regFilter, 
-                    _dwellIQ[gate], _rcvrNoise, true, _filteredGateIQ, 
+                _momentsCalc.applyRegressionFilter(_nSamples, _fft, _regFilter,
+                    _dwellIQ[gate], _rcvrNoise, true, _filteredGateIQ,
                     filterRatio, spectralNoise, spectralSnr);
                 // Calculate moments from the filtered IQ
-                _momentsCalc.singlePol(_filteredGateIQ, gate, true, 
+                _momentsCalc.singlePol(_filteredGateIQ, gate, true,
                     filteredMoments[gate]);
             }
             // Publish the dwell
@@ -173,11 +173,11 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
             _samplesCached = 0;
         }
     }
-    
+
 done:
     // Tell our source we're done with this item
     emit returnItem(tsSequence);
-    
+
     if (ok)
         return;
     else
@@ -200,7 +200,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     // SW, SNR, DZ_F, VE_F
     productSet->products.length(8);
     RadarDDS::Product *product = productSet->products.get_buffer();
-    
+
     // RAP moments "dbm" is really:
     //
     //            ngates
@@ -216,7 +216,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     double rcvrInputImpedance = 50.0;
     double dbmCorr = -10.0 * log10(rcvrInputImpedance);
     dbmCorr += 30.0; // dB(W) -> dB(mW)
-    
+
     // DM: coherent power
     addProductHousekeeping_(*product);
     product->name = "DM";
@@ -227,7 +227,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
     	double dbm = moments[g].dbm + dbmCorr;
-        product->data[g] = 
+        product->data[g] =
             short((dbm - product->offset) / product->scale);
     }
     // DMRAW: coherent power (including receiver gain)
@@ -243,7 +243,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     for (int g = 0; g < _dwellGates; g++) {
     	// add back in the receiver gain
     	double rawDbm = moments[g].dbm + dbmCorr + (rcvrGain - _pentek7142Gain);
-        product->data[g] = 
+        product->data[g] =
             short((rawDbm - product->offset) / product->scale);
     }
     // DZ: reflectivity
@@ -256,7 +256,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
-        product->data[g] = 
+        product->data[g] =
             short((moments[g].dbz - product->offset) / product->scale);
     }
     // VE: radial velocity
@@ -269,7 +269,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
-        product->data[g] = 
+        product->data[g] =
             short((moments[g].vel - product->offset) / product->scale);
     }
     // SW: spectrum width
@@ -282,7 +282,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->scale = 50.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
-        product->data[g] = 
+        product->data[g] =
             short((moments[g].width - product->offset) / product->scale);
     }
     // SNR: signal-to-noise ratio
@@ -295,7 +295,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
-        product->data[g] = 
+        product->data[g] =
             short((moments[g].snr - product->offset) / product->scale);
     }
     // DZ_F: filtered reflectivity
@@ -308,7 +308,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
-        product->data[g] = 
+        product->data[g] =
             short((filteredMoments[g].dbz - product->offset) / product->scale);
     }
     // VE_F: filtered radial velocity
@@ -321,10 +321,10 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->scale = 100.0 / 32768;
     product->data.length(_dwellGates);
     for (int g = 0; g < _dwellGates; g++) {
-        product->data[g] = 
+        product->data[g] =
             short((filteredMoments[g].vel - product->offset) / product->scale);
     }
-    
+
     // publish it
    _writer->publishItem(productSet);
 }
