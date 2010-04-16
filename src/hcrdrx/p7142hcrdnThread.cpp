@@ -154,7 +154,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
       ts.data.length(_gates * 2);   // I and Q for each gate
       ts.hskp.gates = _gates;
       ts.hskp.chanId = _chanId;
-      ts.hskp.prf = _prf;
+      ts.hskp.prt1 = 1.0 / _prf;
       if (!_doCI) {
           // if the coherent integrator is not used, then we receive
           // a straight stream of IQ pairs, as 2 byte shorts. If not
