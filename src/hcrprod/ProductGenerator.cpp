@@ -110,7 +110,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
          */
         if (_samplesCached == 0) {
             _dwellStart = ts.hskp.timetag;
-            _dwellPrf = ts.hskp.prt1;
+            _dwellPrf = 1.0 / ts.hskp.prt1;
             _dwellGates = ts.hskp.gates;
         }
 
