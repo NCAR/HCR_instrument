@@ -257,18 +257,14 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 	               if (delta == 1) {
 	                   /// cool!
 	               } else if (delta > 1) {
-	                   _droppedPulses += (seq - _lastPulseSeq) -1;
+	                   _droppedPulses++;
 	               } else if (delta < 0) {
 	                   // wrap around
 	                   // sequence numbers are thirty bits
-	                   std::cout << "dropped pulse " << t << "  chan " <<
-	                   chan << "  seq " << seq << " " <<
-	                   _lastPulseSeq << std::endl;
-	                   _droppedPulses += (0x3fffffff - _lastPulseSeq) + seq;
+	                   _droppedPulses++;;
 	               } else {
                        /// @todo Should this be a sync error, or something else?
                        _syncErrors++;
-//	                   std::cerr << "warning: pulse number is not incrementing" << std::endl;
 	               }
 	               _lastPulseSeq = seq;
 	           }

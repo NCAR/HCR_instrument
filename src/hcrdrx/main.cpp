@@ -450,8 +450,8 @@ main(int argc, char** argv)
 			std::cout << std::setprecision(3) << std::setw(5)
 					  << bytes[c]/1000000.0/elapsed << " MB/s "
 					  << " ovr:" << overUnder[c]
-					  << " discards:"<< discards[c]
-					  << " drops:" << droppedPulses[c]
+					  << " nopub:"<< discards[c]
+					  << " tags:" << droppedPulses[c]
 	                  << " sync:" << syncErrors[c];
 		}
 		std::cout << std::endl;
