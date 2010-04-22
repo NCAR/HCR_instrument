@@ -137,9 +137,10 @@ main (int argc, char** argv) {
     ProductWriter *productWriter = new ProductWriter(publisher, _prodTopic);
 
     // create the products generator thread and run it
-    float rfRcvrGain = 36.5;
+    float rfRcvrGain = 39.3;
     float pentek7142Gain = -2.67;
-    ProductGenerator generator(tsReader, productWriter, rfRcvrGain, pentek7142Gain, -102.6, 1024);
+//    ProductGenerator generator(tsReader, productWriter, rfRcvrGain, pentek7142Gain, -104.1, 2048); // 0.5 microsecond pulse
+    ProductGenerator generator(tsReader, productWriter, rfRcvrGain, pentek7142Gain, -108.8, 2048); // 1.0 microsecond pulse
     generator.run();
 
     return app.exec();

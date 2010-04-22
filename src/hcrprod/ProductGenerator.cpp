@@ -30,10 +30,12 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _dwellDiscardCount(0) {
     // Fake radar parameters for now
     // @todo put in real radar parameters
-    double prtSeconds = 1.0e-4;
+//    double prtSeconds = 1.0e-4; //10 KHz prf
+    double prtSeconds = 1.43e-4; // 7 KHz prf
     double wavelengthMeters = 3.2e-3;
     double startRangeKm = 0.0;
-    double gateSpacingKm = 0.075;
+//    double gateSpacingKm = 0.075;
+    double gateSpacingKm = 0.15;
     float rcvrGain = _rfRcvrGain + _pentek7142Gain;
     _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
             gateSpacingKm);
@@ -41,8 +43,11 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     // @todo supply real calibration info
     DsRadarCalib calib;
     calib.setReceiverGainDbHc(rcvrGain);
-    calib.setNoiseDbmHc(_rcvrNoise);
-    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
+    float noisedbm = _rcvrNoise + rcvrGain - 10.0*log10(sqrt(_nSamples));
+    calib.setNoiseDbmHc(noisedbm); // noise power at output of DRX including processing gain!
+    std::cout << "noise pwr is" <<  noisedbm << std::endl;
+//    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
+     calib.setBaseDbz1kmHc(_rcvrNoise + 68.6); // MDS (0 db SNR) @ 1km
     _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
@@ -156,16 +161,16 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
             for (int gate = 0; gate < _dwellGates; gate++) {
                 // First calculate moments from the unfiltered IQ data
                 _momentsCalc.singlePol(_dwellIQ[gate], gate, false, moments[gate]);
-                // Filter IQ data for this gate
-                double filterRatio;
-                double spectralNoise;
-                double spectralSnr;
-                _momentsCalc.applyRegressionFilter(_nSamples, _fft, _regFilter,
-                    _dwellIQ[gate], _rcvrNoise, true, _filteredGateIQ,
-                    filterRatio, spectralNoise, spectralSnr);
-                // Calculate moments from the filtered IQ
-                _momentsCalc.singlePol(_filteredGateIQ, gate, true,
-                    filteredMoments[gate]);
+//                // Filter IQ data for this gate
+//                double filterRatio;
+//                double spectralNoise;
+//                double spectralSnr;
+//                _momentsCalc.applyRegressionFilter(_nSamples, _fft, _regFilter,
+//                    _dwellIQ[gate], _rcvrNoise, true, _filteredGateIQ,
+//                    filterRatio, spectralNoise, spectralSnr);
+//                // Calculate moments from the filtered IQ
+//                _momentsCalc.singlePol(_filteredGateIQ, gate, true,
+//                    filteredMoments[gate]);
             }
             // Publish the dwell
             publish_(moments, filteredMoments);
