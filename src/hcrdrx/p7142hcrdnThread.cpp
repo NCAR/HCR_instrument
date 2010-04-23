@@ -155,6 +155,8 @@ p7142hcrdnThread::publish(char* buf, int n) {
       ts.hskp.gates = _gates;
       ts.hskp.chanId = _chanId;
       ts.hskp.prt1 = 1.0 / _prf;
+      ts.hskp.rcvr_pulse_width = rcvrPulseWidth();
+      ts.hskp.rcvr_gate0_delay = rcvrFirstGateDelay();
       if (!_doCI) {
           // if the coherent integrator is not used, then we receive
           // a straight stream of IQ pairs, as 2 byte shorts. If not
@@ -306,10 +308,10 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 		   //std::cout << std::dec << std::endl;
 		   for (int g = 0; g < _gates; g++) {
 			   for (int iq = 0; iq < 2; iq++) {
-				   // logic below just shows where even and odd Is and Qs are located
-				   double even = data[in];
-				   double odd = data[in+2*_gates];
-				   //std::cout << g << "  " << data[in] << "  " << data[in+2*_gates] << std::endl;
+				   // logic below shows where even and odd Is and Qs are located:
+				   //     double even = data[in];
+				   //     double odd = data[in+2*_gates];
+//				   std::cout << g << "  " << data[in] << "  " << data[in+2*_gates] << std::endl;
 				   in++;
 				   out++;
 			   }
