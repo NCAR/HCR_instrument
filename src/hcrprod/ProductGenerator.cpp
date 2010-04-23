@@ -43,7 +43,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     float noisedbm = _rcvrNoise + rcvrGain - 10.0*log10(sqrt(_nSamples));
     calib.setReceiverGainDbHc(rcvrGain);
     calib.setNoiseDbmHc(noisedbm); // noise power at output of DRX including processing gain!
-    std::cout << "noise pwr is" <<  noisedbm << std::endl;
+    std::cout << "noise pwr is " <<  noisedbm << " dBm" << std::endl;
 //    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
      calib.setBaseDbz1kmHc(_rcvrNoise + 68.6); // MDS (0 db SNR) @ 1km
     _momentsCalc.setCalib(calib);
@@ -115,6 +115,16 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
             ts.hskp.rcvr_pulse_width;   // m
         float rangeToFirstGate = 0.5 * SPEED_OF_LIGHT * 
             ts.hskp.rcvr_gate0_delay;   // m
+            
+       	/*
+       	 * XXXXX REMOVE THIS SOME TIME SOON!
+       	 * Temporary KLUGE for pre-2010/04/23 archived data without 
+       	 * rcvr_pulse_width and rcvr_gate0_delay metadata...
+       	 */
+       	 if (gateSpacing == 0.0) {
+       	 	gateSpacing = 150.0;
+       	 	rangeToFirstGate = 0.0;
+       	 }
         
         /*
          * At the start of a dwell, initialize the moments calculator.
