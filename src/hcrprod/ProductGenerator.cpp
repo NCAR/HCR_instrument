@@ -12,38 +12,36 @@
 
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
+static const double SPEED_OF_LIGHT = 2.99792458e8; // m s-1
+
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-        float rfRcvrGain, float pentek7142Gain, float rcvrNoise, int nSamples) :
+        float rfRcvrGain, float pentek7142Gain, float rcvrNoise, 
+        float wavelength, int nSamples) :
     _reader(source),
     _writer(sink),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
     _rfRcvrGain(rfRcvrGain),
     _pentek7142Gain(pentek7142Gain),
     _rcvrNoise(rcvrNoise),
+    _wavelength(wavelength),
     _nSamples(nSamples),
     _fft(nSamples),
     _regFilter(),
+    _nGates(0),
+    _prf(0),
+    _rangeToFirstGate(0.0),
+    _gateSpacing(0.0),
     _samplesCached(0),
     _itemCount(0),
     _wrongChannelCount(0),
     _dwellCount(0),
     _dwellDiscardCount(0) {
-    // Fake radar parameters for now
-    // @todo put in real radar parameters
-//    double prtSeconds = 1.0e-4; //10 KHz prf
-    double prtSeconds = 1.43e-4; // 7 KHz prf
-    double wavelengthMeters = 3.2e-3;
-    double startRangeKm = 0.0;
-//    double gateSpacingKm = 0.075;
-    double gateSpacingKm = 0.15;
-    float rcvrGain = _rfRcvrGain + _pentek7142Gain;
-    _momentsCalc.init(prtSeconds, wavelengthMeters, startRangeKm,
-            gateSpacingKm);
     // Fixed bogus calibration (for now)
     // @todo supply real calibration info
     DsRadarCalib calib;
-    calib.setReceiverGainDbHc(rcvrGain);
+    float rcvrGain = _rfRcvrGain + _pentek7142Gain;
     float noisedbm = _rcvrNoise + rcvrGain - 10.0*log10(sqrt(_nSamples));
+    calib.setReceiverGainDbHc(rcvrGain);
     calib.setNoiseDbmHc(noisedbm); // noise power at output of DRX including processing gain!
     std::cout << "noise pwr is" <<  noisedbm << std::endl;
 //    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
@@ -110,36 +108,70 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
     // Run through the samples in the item
     for (unsigned int samp = 0; samp < tsSequence->tsList.length(); samp++) {
         ProfilerDDS::TimeSeries &ts = tsSequence->tsList[samp];
+        
+        float prt = ts.hskp.prt1;   // s
+        float prf = 1.0 / prt;      // Hz
+        float gateSpacing = 0.5 * SPEED_OF_LIGHT * 
+            ts.hskp.rcvr_pulse_width;   // m
+        float rangeToFirstGate = 0.5 * SPEED_OF_LIGHT * 
+            ts.hskp.rcvr_gate0_delay;   // m
+        
         /*
-         * Keep the dwell start time, gates, & PRF
+         * At the start of a dwell, initialize the moments calculator.
+         * 
+         * Do the same (and complain) if PRF, gate spacing, range to first 
+         * gate, or gate count change in mid-dwell.
          */
-        if (_samplesCached == 0) {
+        if (_samplesCached == 0 ||
+                _prf != prf || _gateSpacing != gateSpacing ||
+                _rangeToFirstGate != rangeToFirstGate || 
+                _nGates != ts.hskp.gates) {
+            if (_samplesCached) {
+                std::cerr << "ProductGenerator::handleItem: @ " << ts.hskp.timetag <<
+                    std::endl;
+                std::cerr << "Gate count, PRF, range to first gate, or gate " <<
+                    "spacing changed in mid-dwell. Dwell-in-progress abandoned." << 
+                    std::endl;
+                _samplesCached = 0;
+            }
+            _momentsCalc.init(prt, _wavelength, 
+                    rangeToFirstGate * 0.001 /* km */,
+                    gateSpacing * 0.001 /* km */);
+            
             _dwellStart = ts.hskp.timetag;
-            _dwellPrf = 1.0 / ts.hskp.prt1;
-            _dwellGates = ts.hskp.gates;
+            _prf = prf;
+            _gateSpacing = gateSpacing;
+            _rangeToFirstGate = rangeToFirstGate;
+            _nGates = ts.hskp.gates;
         }
 
         // Gate count sanity check
-        if (_dwellGates > PRODGEN_MAX_GATES) {
-            std::cerr << "ProductGenerator::handleItem: Got " << _dwellGates <<
+        if (_nGates > PRODGEN_MAX_GATES) {
+            std::cerr << "ProductGenerator::handleItem: Got " << _nGates <<
                 " gates; PRODGEN_MAX_GATES is " << PRODGEN_MAX_GATES << std::endl;
             ok = false;
         }
-        if (_dwellGates != ts.hskp.gates) {
-            // Gate count changed.  Forget the dwell in progress and start
-            // a new dwell.
-            std::cerr << "ProductGenerator::handleItem: Gate count changed " <<
-                "from " << _dwellGates << " to " << ts.hskp.gates <<
-                " in the middle of a dwell. Dwell-in-progress abandoned." <<
+        
+        // Make sure gate count and PRF haven't changed in the dwell..
+        if (_prf != prf || _gateSpacing != gateSpacing ||
+                _rangeToFirstGate != rangeToFirstGate || 
+                _nGates != ts.hskp.gates) {
+            std::cerr << "ProductGenerator::handleItem: @ " << ts.hskp.timetag <<
+                std::endl;
+            std::cerr << "Gate count, PRF, range to first gate, or gate " <<
+                "spacing changed in mid-dwell. Dwell-in-progress abandoned." << 
                 std::endl;
             _samplesCached = 0;
+            _momentsCalc.init(prt, _wavelength, 
+                    rangeToFirstGate * 0.001 /* km */,
+                    gateSpacing * 0.001 /* km */);
         }
 
         // Put the Is and Qs for this sample into the dwell-in-progress.
         double sqrtTwo = sqrt(2.0);
         double vMax = 1.0;	// Max signal voltage for HCR.  @todo make this changeable!
 
-        for (int gate = 0; gate < _dwellGates; gate++) {
+        for (int gate = 0; gate < _nGates; gate++) {
         	// Real part I, in volts = (I      /32768) * vMax / sqrt(2)
         	//                           counts
             _dwellIQ[gate][_samplesCached].re =
@@ -155,10 +187,10 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
          */
         if (_samplesCached == _nSamples) {
             _dwellCount++;
-            MomentsFields moments[_dwellGates];
-            MomentsFields filteredMoments[_dwellGates];
+            MomentsFields moments[_nGates];
+            MomentsFields filteredMoments[_nGates];
             // Calculate products for our dwell, gate by gate
-            for (int gate = 0; gate < _dwellGates; gate++) {
+            for (int gate = 0; gate < _nGates; gate++) {
                 // First calculate moments from the unfiltered IQ data
                 _momentsCalc.singlePol(_dwellIQ[gate], gate, false, moments[gate]);
 //                // Filter IQ data for this gate
@@ -229,8 +261,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBm";
     product->offset = -50.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
     	double dbm = moments[g].dbm + dbmCorr;
         product->data[g] =
             short((dbm - product->offset) / product->scale);
@@ -243,9 +275,9 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBm";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
+    product->data.length(_nGates);
     float rcvrGain = _rfRcvrGain + _pentek7142Gain;
-    for (int g = 0; g < _dwellGates; g++) {
+    for (int g = 0; g < _nGates; g++) {
     	// add back in the receiver gain
     	double rawDbm = moments[g].dbm + dbmCorr + (rcvrGain - _pentek7142Gain);
         product->data[g] =
@@ -259,8 +291,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBZ";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
         product->data[g] =
             short((moments[g].dbz - product->offset) / product->scale);
     }
@@ -272,8 +304,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "m s-1";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
         product->data[g] =
             short((moments[g].vel - product->offset) / product->scale);
     }
@@ -285,8 +317,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "m s-1";
     product->offset = 0.0;
     product->scale = 50.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
         product->data[g] =
             short((moments[g].width - product->offset) / product->scale);
     }
@@ -298,8 +330,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dB";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
         product->data[g] =
             short((moments[g].snr - product->offset) / product->scale);
     }
@@ -311,8 +343,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBZ";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
         product->data[g] =
             short((filteredMoments[g].dbz - product->offset) / product->scale);
     }
@@ -324,8 +356,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "m s-1";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
-    product->data.length(_dwellGates);
-    for (int g = 0; g < _dwellGates; g++) {
+    product->data.length(_nGates);
+    for (int g = 0; g < _nGates; g++) {
         product->data[g] =
             short((filteredMoments[g].vel - product->offset) / product->scale);
     }
@@ -337,7 +369,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
 void
 ProductGenerator::addProductHousekeeping_(RadarDDS::Product & p) {
     p.hskp.timetag = _dwellStart;
-    p.hskp.prf = _dwellPrf;
+    p.hskp.prf = _prf;
     p.hskp.samples = _nSamples;
-    p.hskp.dwellPeriod = _nSamples / _dwellPrf;
+    p.hskp.dwellPeriod = _nSamples / _prf;
 }
