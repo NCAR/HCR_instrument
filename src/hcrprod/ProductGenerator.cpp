@@ -40,7 +40,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     // @todo supply real calibration info
     DsRadarCalib calib;
     float rcvrGain = _rfRcvrGain + _pentek7142Gain;
-    float noisedbm = _rcvrNoise + rcvrGain - 10.0*log10(sqrt(_nSamples));
+    float noisedbm = _rcvrNoise + rcvrGain - 13.35;
     calib.setReceiverGainDbHc(rcvrGain);
     calib.setNoiseDbmHc(noisedbm); // noise power at output of DRX including processing gain!
     std::cout << "noise pwr is " <<  noisedbm << " dBm" << std::endl;

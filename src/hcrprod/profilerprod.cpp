@@ -144,7 +144,7 @@ main (int argc, char** argv) {
     float wavelength = 3.2e-3;      // m
 
     ProductGenerator generator(tsReader, productWriter, rfRcvrGain, 
-            pentek7142Gain, rcvrNoise, wavelength, 2048);
+            pentek7142Gain, rcvrNoise, wavelength, 1024);
     generator.run();
 
     return app.exec();
