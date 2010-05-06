@@ -128,7 +128,7 @@ main (int argc, char** argv) {
         exit(1);
     }
 
-    QApplication app(argc, argv);
+    QApplication app(argc, argv, false);
 
     // create the DDS reader for incoming time-series data
     QtTSReader *tsReader = new QtTSReader(subscriber, _tsTopic);
