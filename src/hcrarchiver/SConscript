@@ -1,0 +1,73 @@
+import os
+tools = Split("""
+boost_program_options
+ddssvc
+profilerdds
+qtt_qtconfig
+radd_archiver
+rapradar
+rapradx
+""")
+env = Environment(tools = ['default'] + tools)
+
+sources = []
+
+tsarchiverSources = Split('''
+TsArchiver.cpp
+TsArchiverMain.cpp
+''')
+sources += tsarchiverSources
+
+tsplaybackSources = Split('''
+IwrfTsFilesReader.cpp
+TsPlayback.cpp
+TsPlaybackMain.cpp
+''')
+sources += tsplaybackSources
+
+ts2peifileSources = Split('''
+IwrfTsFilesReader.cpp
+Ts2PeiFile.cpp
+''')
+sources += ts2peifileSources
+
+productarchiverSources = Split('''
+ProductArchiver.cpp
+ProductArchiverMain.cpp
+''')
+sources += productarchiverSources
+
+headers = Split('''
+IwrfTsFilesReader.h
+TsArchiver.h
+TsPlayback.h
+ProductArchiver.h
+''')
+
+inst = []
+# build tsarchiver
+tsarchiver = env.Program('tsarchiver', tsarchiverSources)
+inst += env.InstallProgram(tsarchiver)
+env.Default(tsarchiver)
+
+# build tsplayback
+tsplayback = env.Program('tsplayback', tsplaybackSources)
+inst += env.InstallProgram(tsplayback)
+env.Default(tsplayback)
+
+# build ts2peifile
+ts2peifile = env.Program('ts2peifile', ts2peifileSources)
+inst += env.InstallProgram(ts2peifile)
+env.Default(ts2peifile)
+
+# build productarchiver
+productarchiver = env.Program('productarchiver', productarchiverSources)
+inst += env.InstallProgram(productarchiver)
+env.Default(productarchiver)
+
+# documentation
+html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
+env.AppendDoxref('tsArchiver')
+env.Default(html)
+
+env.Alias('install', inst)
