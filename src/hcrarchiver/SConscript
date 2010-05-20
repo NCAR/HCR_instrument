@@ -1,14 +1,4 @@
 import os
-tools = Split("""
-boost_program_options
-ddssvc
-profilerdds
-qtt_qtconfig
-radd_archiver
-rapradar
-rapradx
-""")
-env = Environment(tools = ['default'] + tools)
 
 sources = []
 
@@ -45,29 +35,54 @@ ProductArchiver.h
 ''')
 
 inst = []
+
+
+tstools = Split("""
+boost_program_options
+ddssvc
+profilerdds
+qtt_qtconfig
+radd_archiver
+rapradar
+""")
+tsenv = Environment(tools = ['default'] + tstools)
+
 # build tsarchiver
-tsarchiver = env.Program('tsarchiver', tsarchiverSources)
-inst += env.InstallProgram(tsarchiver)
-env.Default(tsarchiver)
+tsarchiver = tsenv.Program('tsarchiver', tsarchiverSources)
+inst += tsenv.InstallProgram(tsarchiver)
+tsenv.Default(tsarchiver)
 
 # build tsplayback
-tsplayback = env.Program('tsplayback', tsplaybackSources)
-inst += env.InstallProgram(tsplayback)
-env.Default(tsplayback)
+tsplayback = tsenv.Program('tsplayback', tsplaybackSources)
+inst += tsenv.InstallProgram(tsplayback)
+tsenv.Default(tsplayback)
 
 # build ts2peifile
-ts2peifile = env.Program('ts2peifile', ts2peifileSources)
-inst += env.InstallProgram(ts2peifile)
-env.Default(ts2peifile)
-
-# build productarchiver
-productarchiver = env.Program('productarchiver', productarchiverSources)
-inst += env.InstallProgram(productarchiver)
-env.Default(productarchiver)
+ts2peifile = tsenv.Program('ts2peifile', ts2peifileSources)
+inst += tsenv.InstallProgram(ts2peifile)
+tsenv.Default(ts2peifile)
 
 # documentation
-html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
-env.AppendDoxref('tsArchiver')
-env.Default(html)
+html = tsenv.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
+tsenv.AppendDoxref('tsArchiver')
+tsenv.Default(html)
 
-env.Alias('install', inst)
+
+
+
+producttools = Split("""
+boost_program_options
+ddssvc
+profilerdds
+qtt_qtconfig
+rapradx
+xmlrpc
+""")
+productenv = Environment(tools = ['default'] + producttools)
+
+# build productarchiver
+productarchiver = productenv.Program('productarchiver', productarchiverSources)
+inst += productenv.InstallProgram(productarchiver)
+productenv.Default(productarchiver)
+
+productenv.Alias('install', inst)
