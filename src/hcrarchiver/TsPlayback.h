@@ -41,14 +41,6 @@ protected slots:
     
 private:
     /**
-     * Convert an IwrfTsPulse to ProfilerDDS::TimeSeries form
-     * @param iwrfPulse(in) the incoming IwrfTsPulse
-     * @param ddsPulse(out) the outgoing ProfilerDDS::TimeSeries pulse
-     */
-    void _convertIwrfPulseToDDS(IwrfTsPulse& iwrfPulse, 
-            ProfilerDDS::TimeSeries& ddsPulse);
-    
-    /**
      * Our reader for IWRF time series files
      */
     IwrfTsFilesReader _reader;

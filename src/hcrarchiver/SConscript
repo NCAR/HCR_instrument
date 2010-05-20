@@ -5,6 +5,7 @@ sources = []
 tsarchiverSources = Split('''
 TsArchiver.cpp
 TsArchiverMain.cpp
+TimeSeriesAdapter.cpp
 ''')
 sources += tsarchiverSources
 
@@ -12,6 +13,7 @@ tsplaybackSources = Split('''
 IwrfTsFilesReader.cpp
 TsPlayback.cpp
 TsPlaybackMain.cpp
+TimeSeriesAdapter.cpp
 ''')
 sources += tsplaybackSources
 
@@ -29,6 +31,7 @@ sources += productarchiverSources
 
 headers = Split('''
 IwrfTsFilesReader.h
+TimeSeriesAdapter.h
 TsArchiver.h
 TsPlayback.h
 ProductArchiver.h

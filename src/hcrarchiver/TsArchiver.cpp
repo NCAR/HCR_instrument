@@ -20,6 +20,7 @@
 
 #include <boost/date_time/posix_time/ptime.hpp>
 
+#include "TimeSeriesAdapter.h"
 #include "TsArchiver.h"
 
 using std::string;
@@ -27,8 +28,6 @@ using std::string;
 using namespace archiver;
 
 typedef NameResolver<PortableServer::POA, InitResolver> POAResolver;
-
-static const double SPEED_OF_LIGHT = 2.99792458e8; // m s-1
 
 // Pointer to our singleton instance
 TsArchiver* TsArchiver::_theArchiver = 0;
@@ -118,47 +117,7 @@ TsArchiver::_assembleIwrfPulse(const ProfilerDDS::TimeSeries & ddsPulse) {
         _iwrfInfo.setRadarInfoActive(true);
     }
 
-    // Populate our IwrfTsPulse object
-    const ProfilerDDS::TSHousekeeping& hskp = ddsPulse.hskp;
-    int sec = hskp.timetag / 1000000; // secs since 1970-01-01 00:00:00 UTC
-    int nanosec = (hskp.timetag % 1000000) * 1000; // usecs -> nanosecs
-
-    _iwrfPulse.setTime(sec, nanosec);
-    _iwrfPulse.set_pulse_seq_num(++_pktSeqNum);
-    _iwrfPulse.set_scan_mode(IWRF_SCAN_MODE_POINTING);
-    _iwrfPulse.set_follow_mode(IWRF_FOLLOW_MODE_NOT_SET);
-    _iwrfPulse.set_volume_num(1);
-    _iwrfPulse.set_sweep_num(1);    // @TODO
-    _iwrfPulse.set_fixed_el(0.0);
-    _iwrfPulse.set_fixed_az(0.0);
-    _iwrfPulse.set_elevation(0.0);
-    _iwrfPulse.set_azimuth(0.0);    // @TODO this should probably be radar rotation angle
-    double prt = ddsPulse.hskp.prt1;
-    _iwrfPulse.set_prt(prt);
-    _iwrfPulse.set_prt_next(prt);
-    // Note that pulse_width_us and gate_spacing are redundant! If you change 
-    // one, make sure you make the appropriate change to the other!
-    _iwrfPulse.set_pulse_width_us(hskp.rcvr_pulse_width * 1.0e6);
-    _iwrfPulse.set_gate_spacing_m(0.5 * SPEED_OF_LIGHT * hskp.rcvr_pulse_width);
-    _iwrfPulse.set_start_range_m(0.5 * SPEED_OF_LIGHT * hskp.rcvr_gate0_delay);
-    _iwrfPulse.set_n_gates(ddsPulse.hskp.gates);
-    _iwrfPulse.set_n_channels(1);   // @TODO need real channel count
-    
-    // Make certain that ddsPulse.data.get_buffer() contains 2-byte values, 
-    // since we count on it when passing it to setIqPacked() below...
-    assert(sizeof(ddsPulse.data[0]) == sizeof(si16));
-    
-    // Our IQ data are already scaled 16-bit signed ints, and in the same
-    // order that IwrfTsPulse wants. So we stuff them directly into _iwrfPulse.
-    
-    // The scale factor used by ProfilerDDS::TimeSeries is:
-    //     I      = I       * iqScale + iqOffset
-    //      volts    counts
-    // Same formula for Q.
-    float iqScale = 1.0 / (32768 * sqrt(2.0));
-    float iqOffset = 0.0;
-    _iwrfPulse.setIqPacked(ddsPulse.hskp.gates, 1, IWRF_IQ_ENCODING_SCALED_SI16,
-            ddsPulse.data.get_buffer(), iqScale, iqOffset);
+    TimeSeriesAdapter::DDSToIwrf(ddsPulse, _iwrfPulse, ++_pktSeqNum);
 }
 
 void
