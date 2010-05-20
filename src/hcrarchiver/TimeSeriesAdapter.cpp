@@ -82,6 +82,7 @@ TimeSeriesAdapter::IwrfToDDS(const IwrfTsPulse& iwrfPulse,
         // get a pointer to the data. Keep around the copy until we're done
         // with its data.
         iwrfPulseCopy = new IwrfTsPulse(iwrfPulse);
+        iwrfPulseCopy->convertToFL32();
         iwrfIq = iwrfPulseCopy->getIq0();
     }
     
