@@ -4,6 +4,7 @@
 #include <DDSSubscriber.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "svnInfo.h"
 #include "ProductArchiver.h"
 
 
@@ -70,6 +71,8 @@ main(int argc, char *argv[])
         exit(1);
     }
 
+    std::cout << "productarchiver rev " << SVNREVISION << " from " <<
+        SVNURL << std::endl;
     std::cout << "My PID is " << getpid() << std::endl;
 
     // Configuration

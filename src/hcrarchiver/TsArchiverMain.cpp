@@ -5,6 +5,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "TsArchiver.h"
+#include "svnInfo.h"
 
 
 // Current write rate, in rays/second
@@ -66,6 +67,8 @@ main(int argc, char *argv[])
         exit(1);
     }
 
+    std::cout << "tsarchiver rev " << SVNREVISION << " from " <<
+        SVNURL << std::endl;
     std::cout << "My PID is " << getpid() << std::endl;
 
     // Configuration
