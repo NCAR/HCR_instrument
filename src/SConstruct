@@ -17,7 +17,8 @@ def ProfilerSetup(env):
     return env
     
 env = Environment(tools = ['default'], 
-                  GLOBAL_TOOLS = ["prefixoptions", "buildmode", ProfilerSetup])
+                  GLOBAL_TOOLS = ['prefixoptions', 'buildmode', 'svninfo', ProfilerSetup])
+svnInfo = env.SvnInfo('svnInfo.h', '#')
 
 SConscript("acex/SConscript")
 SConscript("rtfcommon/SConscript")
