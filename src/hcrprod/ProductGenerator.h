@@ -115,7 +115,7 @@ private:
     RadarComplex_t *_filteredGateIQ;    // work space to hold filtered IQ data for one gate
     long long _dwellStart;      // dwell start time in us since 1970-01-01 00:00 UTC
     int _nGates;                // gate count for the dwell
-    float _prf;                 // PRF for the dwell
+    float _prt;                 // PRT for the dwell
     float _rangeToFirstGate;    // range to leading edge of first gate, m
     float _gateSpacing;         // gate spacing, m
     int _samplesCached;         // samples in the dwell so far

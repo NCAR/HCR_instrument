@@ -28,7 +28,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _fft(nSamples),
     _regFilter(),
     _nGates(0),
-    _prf(0),
+    _prt(0),
     _rangeToFirstGate(0.0),
     _gateSpacing(0.0),
     _samplesCached(0),
@@ -110,7 +110,6 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
         ProfilerDDS::TimeSeries &ts = tsSequence->tsList[samp];
         
         float prt = ts.hskp.prt1;   // s
-        float prf = 1.0 / prt;      // Hz
         float gateSpacing = 0.5 * SPEED_OF_LIGHT * 
             ts.hskp.rcvr_pulse_width;   // m
         float rangeToFirstGate = 0.5 * SPEED_OF_LIGHT * 
@@ -133,7 +132,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
          * gate, or gate count change in mid-dwell.
          */
         if (_samplesCached == 0 ||
-                _prf != prf || _gateSpacing != gateSpacing ||
+                _prt != prt || _gateSpacing != gateSpacing ||
                 _rangeToFirstGate != rangeToFirstGate || 
                 _nGates != ts.hskp.gates) {
             if (_samplesCached) {
@@ -149,7 +148,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
                     gateSpacing * 0.001 /* km */);
             
             _dwellStart = ts.hskp.timetag;
-            _prf = prf;
+            _prt = prt;
             _gateSpacing = gateSpacing;
             _rangeToFirstGate = rangeToFirstGate;
             _nGates = ts.hskp.gates;
@@ -163,7 +162,7 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
         }
         
         // Make sure gate count and PRF haven't changed in the dwell..
-        if (_prf != prf || _gateSpacing != gateSpacing ||
+        if (_prt != prt || _gateSpacing != gateSpacing ||
                 _rangeToFirstGate != rangeToFirstGate || 
                 _nGates != ts.hskp.gates) {
             std::cerr << "ProductGenerator::handleItem: @ " << ts.hskp.timetag <<
@@ -379,7 +378,13 @@ ProductGenerator::publish_(const MomentsFields *moments,
 void
 ProductGenerator::addProductHousekeeping_(RadarDDS::Product & p) {
     p.hskp.timetag = _dwellStart;
-    p.hskp.prf = _prf;
+//    p.hskp.az = 0.0;
+//    p.hskp.el = 0.0;
     p.hskp.samples = _nSamples;
-    p.hskp.dwellPeriod = _nSamples / _prf;
+    // Single-PRT at this point
+    p.hskp.staggered_prt = false;
+    p.hskp.prt1 = _prt;
+    p.hskp.prt2 = 0.0;
+    p.hskp.rcvr_pulse_width = (2 * _gateSpacing) / SPEED_OF_LIGHT;
+    p.hskp.tx_cntr_freq = SPEED_OF_LIGHT / _wavelength;
 }
