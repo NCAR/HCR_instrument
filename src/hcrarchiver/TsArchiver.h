@@ -49,6 +49,9 @@ private:
     // Maximum number of gates we're prepared to handle...
     static const int TSARCHIVER_MAX_GATES = 4096;
     
+    // Are we ready to accept notify() calls yet?
+    bool _acceptNotify;
+    
     // Pointer to the singleton archiver instance
     static TsArchiver* _theArchiver;
 

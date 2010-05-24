@@ -35,6 +35,7 @@ TsArchiver* TsArchiver::_theArchiver = 0;
 TsArchiver::TsArchiver(DDSSubscriber& subscriber, 
         std::string topicName, std::string dataDir) : 
             TSReader(subscriber, topicName), 
+            _acceptNotify(false),
             _iwrfInfo(),
             _iwrfPulse(_iwrfInfo),
             _scratchBlock(SCRATCH_BLOCK_SIZE),
@@ -71,6 +72,9 @@ TsArchiver::TsArchiver(DDSSubscriber& subscriber,
             strerror(errno) << std::endl;
         exit(1);
     }
+    
+    // We can finally accept notify() calls...
+    _acceptNotify = true;
 }
 
 TsArchiver::~TsArchiver() {
@@ -83,6 +87,9 @@ TsArchiver::~TsArchiver() {
 // new pulse data arrive.
 void
 TsArchiver::notify() {
+    if (! _acceptNotify)
+        return;
+    
     while (TimeSeriesSequence* pItem = getNextItem()) {
         int nPulses = pItem->tsList.length();
         for (int pulse = 0; pulse < nPulses; pulse++) {
