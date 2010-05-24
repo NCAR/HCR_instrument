@@ -162,7 +162,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
           // a straight stream of IQ pairs, as 2 byte shorts. If not
           // in free run mode, there will be a 4 byte pulse tag
           // at the beginning.
-          unsigned long pulseNum = 0;
+          long pulseNum = 0;
           unsigned long channel = 0;
           // Get stuff from the tag if we're not free-running
           if (!_freeRun) {
@@ -172,6 +172,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
               in += 2;
           }
 
+          ts.hskp.pulseNum = pulseNum;
           time_duration timeFromEpoch = timeOfPulse(pulseNum) - Epoch1970;
           // Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
           ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
