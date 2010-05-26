@@ -75,6 +75,9 @@ private:
     // A FILE* which allows us to write to our scratch block as a file.
     FILE* _scratchBlockAsFile;
     
+    // last pulse number we received
+    long _lastPulseRcvd;
+    
     // Our incrementing pulse counter (may disappear if a pulse number is
     // added to the time series data)
     si64 _pktSeqNum;

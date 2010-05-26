@@ -39,6 +39,7 @@ TsArchiver::TsArchiver(DDSSubscriber& subscriber,
             _iwrfInfo(),
             _iwrfPulse(_iwrfInfo),
             _scratchBlock(SCRATCH_BLOCK_SIZE),
+            _lastPulseRcvd(-1),
             _pktSeqNum(0),
             _lastSeqWritten(0),
             _bytesWritten(0) {
@@ -94,6 +95,12 @@ TsArchiver::notify() {
         int nPulses = pItem->tsList.length();
         for (int pulse = 0; pulse < nPulses; pulse++) {
             const ProfilerDDS::TimeSeries & ts = pItem->tsList[pulse];
+            long pulseNum = ts.hskp.pulseNum;
+            if (_lastPulseRcvd > 0 && (pulseNum != _lastPulseRcvd + 1)) {
+                std::cerr << "Got pulse " << pulseNum << " when expecting " <<
+                    _lastPulseRcvd + 1 << std::endl;
+            }
+            _lastPulseRcvd = pulseNum;
             _assembleIwrfPulse(ts);
             _writeIwrfPulse();
         }
@@ -153,7 +160,10 @@ TsArchiver::_writeIwrfPulse() {
     }
     _scratchBlock.length(ftell(_scratchBlockAsFile));
     fflush(_scratchBlockAsFile);
-    _archiverServant->sendBlock(_scratchBlock);
+    // We don't use the status returned by sendBlock(), but we *are*
+    // responsible for deleting it...
+    archiver::ArchiverStatus *status = _archiverServant->sendBlock(_scratchBlock);
+    delete(status);
     _bytesWritten += _scratchBlock.length();
     
     _lastSeqWritten = _iwrfPulse.getSeqNum();
