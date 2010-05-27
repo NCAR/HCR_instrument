@@ -136,6 +136,8 @@ TsArchiver::_assembleIwrfPulse(const ProfilerDDS::TimeSeries & ddsPulse) {
 
 void
 TsArchiver::_writeIwrfPulse() {
+	archiver::ArchiverStatus *status;
+	
     // Encode and write out IWRF packets for any metadata newer than 
     // _lastSeqWritten
     rewind(_scratchBlockAsFile);
@@ -148,7 +150,8 @@ TsArchiver::_writeIwrfPulse() {
     // block to disk.
     if (_scratchBlock.length()) {
         fflush(_scratchBlockAsFile);
-        _archiverServant->sendBlock(_scratchBlock);
+        status = _archiverServant->sendBlock(_scratchBlock);
+        delete(status);
         _bytesWritten += _scratchBlock.length();
     }
     
@@ -160,9 +163,7 @@ TsArchiver::_writeIwrfPulse() {
     }
     _scratchBlock.length(ftell(_scratchBlockAsFile));
     fflush(_scratchBlockAsFile);
-    // We don't use the status returned by sendBlock(), but we *are*
-    // responsible for deleting it...
-    archiver::ArchiverStatus *status = _archiverServant->sendBlock(_scratchBlock);
+    status = _archiverServant->sendBlock(_scratchBlock);
     delete(status);
     _bytesWritten += _scratchBlock.length();
     
