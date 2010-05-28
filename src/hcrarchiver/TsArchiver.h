@@ -35,6 +35,12 @@ public:
     /// Return the number of bytes written by this archiver.
     /// @return the number of bytes written by this archiver.
     int bytesWritten() const { return _bytesWritten; }
+    
+    int ddsDrops() { 
+    	int drops = _ddsDrops;
+    	_ddsDrops = 0;
+    	return drops;
+    }
 
 protected:
     TsArchiver(DDSSubscriber& subscriber, std::string topicName,
@@ -84,6 +90,8 @@ private:
     si64 _lastSeqWritten;
     // How many bytes have we written?
     int _bytesWritten;
+    // How many full DDS packets have we missed?
+    int _ddsDrops;
 };
 
 #endif /*TSARCHIVER_H_*/

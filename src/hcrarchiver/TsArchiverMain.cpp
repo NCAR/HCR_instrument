@@ -142,7 +142,8 @@ main(int argc, char *argv[])
         boost::posix_time::time_duration timeDiff = now - lastCheckTime;
         WriteRate = byteDiff / (1.0e-6 * timeDiff.total_microseconds()); // B/s
         WriteRate /= (1024 * 1024);  // MB/s
-        std::cerr << "Write rate: " << WriteRate << " MB/s" << std::endl;;
+        std::cerr << "Write rate: " << WriteRate << " MB/s, DDS drops: " << 
+        	theArchiver->ddsDrops() << std::endl;;
 
         // Save current numbers for next go-round
         prevBytesWritten = bytesWritten;

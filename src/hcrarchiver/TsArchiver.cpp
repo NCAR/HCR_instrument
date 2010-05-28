@@ -88,17 +88,28 @@ TsArchiver::~TsArchiver() {
 // new pulse data arrive.
 void
 TsArchiver::notify() {
-    if (! _acceptNotify)
+    if (! _acceptNotify) {
+    	std::cerr << "notify() call before construction complete!" << std::endl;
         return;
+    }
     
     while (TimeSeriesSequence* pItem = getNextItem()) {
         int nPulses = pItem->tsList.length();
         for (int pulse = 0; pulse < nPulses; pulse++) {
             const ProfilerDDS::TimeSeries & ts = pItem->tsList[pulse];
             long pulseNum = ts.hskp.pulseNum;
-            if (_lastPulseRcvd > 0 && (pulseNum != _lastPulseRcvd + 1)) {
-                std::cerr << "Got pulse " << pulseNum << " when expecting " <<
-                    _lastPulseRcvd + 1 << std::endl;
+            long delta = pulseNum - _lastPulseRcvd;
+            if (_lastPulseRcvd > 0 && (delta != 1)) {
+            	// If it's the first pulse of a sequence and the number of
+            	// dropped pulses is a multiple of the pulse collection size,
+            	// we dropped one or more whole DDS packets.
+            	if (pulse == 0 && !((delta - 1) % nPulses))
+            		_ddsDrops += ((delta - 1) / nPulses);
+            	else {
+            		std::cerr << "Pulse out of sequence! Got pulse " << 
+            			pulseNum << " after pulse " << _lastPulseRcvd << std::endl;
+            		exit(1);
+            	}
             }
             _lastPulseRcvd = pulseNum;
             _assembleIwrfPulse(ts);
