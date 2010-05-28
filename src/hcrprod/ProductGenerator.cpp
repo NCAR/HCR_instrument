@@ -8,6 +8,7 @@
 #include "ProductGenerator.h"
 
 #include <iostream>
+#include <cstdlib>
 #include <ctime>
 
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
@@ -35,7 +36,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _itemCount(0),
     _wrongChannelCount(0),
     _dwellCount(0),
-    _dwellDiscardCount(0) {
+    _dwellDiscardCount(0),
+    _lastPulseRcvd(-1) {
     // Fixed bogus calibration (for now)
     // @todo supply real calibration info
     DsRadarCalib calib;
@@ -87,10 +89,16 @@ ProductGenerator::run() {
 
 void
 ProductGenerator::showInfo() {
-    std::cerr << "showInfo(): " << _itemCount << " tsSequence-s received, " <<
-        _wrongChannelCount << " were wrong channel. " <<
-        _dwellCount << " product rays generated and " <<
-        _dwellDiscardCount << " could not be published" << std::endl;
+    std::cerr << _itemCount << " pkts rcvd, " <<
+    	_ddsDrops << " pkts missed, " <<
+        _wrongChannelCount << " wrong channel, " <<
+        _dwellCount << " rays generated and " <<
+        _dwellDiscardCount << " could not be pub'd, " << std::endl;
+    _itemCount = 0;
+    _ddsDrops = 0;
+    _wrongChannelCount = 0;
+    _dwellCount = 0;
+    _dwellDiscardCount = 0;
 }
 
 void
@@ -98,6 +106,8 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
     bool ok = true;
 
     _itemCount++;
+    
+    unsigned int nPulses = tsSequence->tsList.length();
 
     // We currently generate products only for channel zero
     if (tsSequence->chanId != 0) {
@@ -106,8 +116,31 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
     }
 
     // Run through the samples in the item
-    for (unsigned int samp = 0; samp < tsSequence->tsList.length(); samp++) {
+    for (unsigned int samp = 0; samp < nPulses; samp++) {
         ProfilerDDS::TimeSeries &ts = tsSequence->tsList[samp];
+        // Check pulse number
+        long pulseNum = ts.hskp.pulseNum;
+        long delta = pulseNum - _lastPulseRcvd;
+        if (_lastPulseRcvd > 0 && (delta != 1)) {
+        	// If it's the first pulse of a sequence and the number of
+        	// dropped pulses is a multiple of the pulse collection size,
+        	// we dropped one or more whole DDS packets.
+        	if (samp == 0 && !((delta - 1) % nPulses)) {
+        		_ddsDrops += ((delta - 1) / nPulses);
+	            if (_samplesCached) {
+	                std::cerr << "ProductGenerator::handleItem: @ pulse " << 
+	                	pulseNum << ": pulses missed in mid-dwell; " <<
+	                	"dwell-in-progress abandoned." << std::endl;
+	                _samplesCached = 0;
+	            }
+        	}
+        	else {
+        		std::cerr << "Pulse out of sequence! Got pulse " << 
+        			pulseNum << " after pulse " << _lastPulseRcvd << std::endl;
+        		exit(1);
+        	}
+        }
+        _lastPulseRcvd = pulseNum;
         
         float prt = ts.hskp.prt1;   // s
         float gateSpacing = 0.5 * SPEED_OF_LIGHT * 

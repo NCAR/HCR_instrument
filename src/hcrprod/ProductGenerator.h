@@ -119,13 +119,12 @@ private:
     float _rangeToFirstGate;    // range to leading edge of first gate, m
     float _gateSpacing;         // gate spacing, m
     int _samplesCached;         // samples in the dwell so far
-    /**
-     * Keep track of how many product rays we are unable to publish.
-     */
-    int _itemCount;         // TimeSeriesSequence-s received
-    int _wrongChannelCount; // TSS-s with the wrong channel
-    int _dwellCount;        // dwells built
-    int _dwellDiscardCount;   // dwells that could not be published
+    int _itemCount;         	// TimeSeriesSequence-s received
+    int _wrongChannelCount; 	// TSS-s with the wrong channel
+    int _dwellCount;        	// dwells built
+    int _dwellDiscardCount;		// dwells that could not be published
+    long _lastPulseRcvd;		// last pulse number we received
+    int _ddsDrops;				// how many DDS packets have we lost?
 };
 
 #endif /* PRODUCTGENERATOR_H_ */
