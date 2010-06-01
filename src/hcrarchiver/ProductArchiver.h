@@ -10,6 +10,10 @@
 
 #include <ProductReader.h>
 
+#include <Radx/RadxFile.hh>
+#include <Radx/RadxVol.hh>
+
+
 // Singleton ProductArchiver class
 class ProductArchiver : public ProductReader {
 public:
@@ -40,6 +44,16 @@ protected:
 private:
     // Pointer to the singleton archiver instance
     static ProductArchiver* _theArchiver;
+    
+    // volume counter
+    int _volNum;
+    
+    // Our RadxFile object, for writing output files
+    RadxFile _radxFile;
+    
+    // Our RadxVolume and its start time
+    RadxVol _radxVol;
+    double _volStartTime;    // secs since 1970-01-01 00:00:00 UTC
 
     // How many bytes have we written?
     int _bytesWritten;
