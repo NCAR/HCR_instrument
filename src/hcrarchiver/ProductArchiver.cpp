@@ -47,12 +47,15 @@ ProductArchiver::notify() {
         long long timetagUsecs = firstProduct.hskp.timetag;
         
         // Start a new volume after 1 minute
-        if ((timetag - _volStartTime) > 60.0) {
+        if (_radxVol.getNRays() > 0 && (timetag - _volStartTime) > 60.0) {
             std::ostringstream history;
             history << boost::posix_time::microsec_clock::universal_time() <<
                 ": written by ProductArchiver rev. " << SVNREVISION;
             _radxVol.setHistory(history.str());
             _radxVol.loadVolFieldsFromRays(false);
+            
+        	std::cerr << "writing a volume with " << _radxVol.getNRays() <<
+                " rays" << std::endl;
             _radxFile.writeToPath(_radxVol, "/data_first");
             
             // clear out our RadxVol
@@ -92,8 +95,9 @@ ProductArchiver::notify() {
         int nProducts = ps->products.length();
         for (int p = 0; p < nProducts; p++) {
             RadarDDS::Product& product = ps->products[p];
-            radxRay->addField(product.name.out(), product.units.out(), 
-                    product.data.length(), (Radx::si16)product.bad_value, 
+            radxRay->addField(std::string(product.name), 
+                    std::string(product.units), product.data.length(), 
+                    (Radx::si16)product.bad_value, 
                     (Radx::si16*)product.data.get_buffer(),
                     product.scale, product.offset, true);
         }
