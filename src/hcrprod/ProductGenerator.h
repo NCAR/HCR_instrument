@@ -38,6 +38,12 @@ public:
      * Maximum number of gates which can be handled
      */
     static const int PRODGEN_MAX_GATES;
+    
+    /**
+     * Bad value flag
+     */
+    static const short PRODUCT_BAD_VALUE = -32768;
+    
 protected slots:
     /**
      * Handle one TimeSeries item from our source.  If a complete ray of

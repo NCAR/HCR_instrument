@@ -303,8 +303,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBm";
     product->offset = -50.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].dbm == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
     	double dbm = moments[g].dbm + dbmCorr;
         product->data[g] =
             short((dbm - product->offset) / product->scale);
@@ -317,9 +323,15 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBm";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     float rcvrGain = _rfRcvrGain + _pentek7142Gain;
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].dbm == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
     	// add back in the receiver gain
     	double rawDbm = moments[g].dbm + dbmCorr + (rcvrGain - _pentek7142Gain);
         product->data[g] =
@@ -333,8 +345,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBZ";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].dbz == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
         product->data[g] =
             short((moments[g].dbz - product->offset) / product->scale);
     }
@@ -346,8 +364,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "m s-1";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].vel == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
         product->data[g] =
             short((moments[g].vel - product->offset) / product->scale);
     }
@@ -359,8 +383,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "m s-1";
     product->offset = 0.0;
     product->scale = 50.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].width == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
         product->data[g] =
             short((moments[g].width - product->offset) / product->scale);
     }
@@ -372,8 +402,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dB";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].snr == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
         product->data[g] =
             short((moments[g].snr - product->offset) / product->scale);
     }
@@ -385,8 +421,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "dBZ";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].dbz == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
         product->data[g] =
             short((filteredMoments[g].dbz - product->offset) / product->scale);
     }
@@ -398,8 +440,14 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->units = "m s-1";
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
+    product->bad_value = PRODUCT_BAD_VALUE;
     product->data.length(_nGates);
     for (int g = 0; g < _nGates; g++) {
+        // Catch and flag bad values now
+        if (moments[g].vel == MomentsFields::missingDouble) {
+            product->data[g] = PRODUCT_BAD_VALUE;
+            continue;
+        }
         product->data[g] =
             short((filteredMoments[g].vel - product->offset) / product->scale);
     }
