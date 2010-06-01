@@ -18,8 +18,6 @@
 
 #include <dds/DCPS/Service_Participant.h>    // for TheServiceParticipant
 
-#include <boost/date_time/posix_time/ptime.hpp>
-
 #include "TimeSeriesAdapter.h"
 #include "TsArchiver.h"
 
