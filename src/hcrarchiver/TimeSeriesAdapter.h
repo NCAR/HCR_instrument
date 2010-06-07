@@ -11,7 +11,6 @@
 #define TIMESERIESADAPTER_H_
 
 // ProfilerDDS::TimeSeries class
-//#include "profilertypesTypeSupportC.h"
 #include "profilertypesTypeSupportImpl.h"
 
 // RAL IwrfTsPulse class
