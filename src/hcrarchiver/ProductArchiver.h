@@ -14,36 +14,50 @@
 #include <Radx/RadxVol.hh>
 
 
-// Singleton ProductArchiver class
+/// ProductArchiver class
+/// Collect incoming product data via the given DDSSubscriber and write 
+/// CFRadial netCDF files containing the product data.
 class ProductArchiver : public ProductReader {
 public:
-    // Get the singleton instance, creating it if necessary.
-    static ProductArchiver* TheArchiver(DDSSubscriber& subscriber,
-            std::string topicName, std::string dataDir) {
-        if (! _theArchiver)
-            _theArchiver = new ProductArchiver(subscriber, topicName, dataDir);
-        return _theArchiver;
-    }
-    // Get the singleton instance or NULL
-    static ProductArchiver* TheArchiver() { return _theArchiver; }
+    /// ProductArchiver constructor
+    /// @param subscriber the associated DDSSubscriber
+    /// @param topicName the DDS topic name for incoming product data
+    /// @param dataDir the destination directory for output files
+    /// @param raysPerFile the desired ray count for output files
+    /// @param fileFormat the Radx::file_format_t file format for output files,
+    ///     e.g., RadxFile::FILE_FORMAT_CFRADIAL (see Radx/RadxFile.hh)
+    ProductArchiver(DDSSubscriber& subscriber, std::string topicName,
+            std::string dataDir, uint raysPerFile,
+            RadxFile::file_format_t fileFormat);
+    virtual ~ProductArchiver();
 
     /// Implement DDSReader::notify(), which will be called
     /// whenever new samples are added to the DDSReader available
     /// queue. Process the samples here.
     virtual void notify();
 
-    /// Return the number of bytes written by this archiver.
-    /// @return the number of bytes written by this archiver.
+    /// Return the number of bytes written
+    /// @return the number of bytes written
     int bytesWritten() const { return _bytesWritten; }
-
-protected:
-    ProductArchiver(DDSSubscriber& subscriber, std::string topicName,
-            std::string dataDir);
-    virtual ~ProductArchiver();
     
+    /// Return the number of rays read
+    /// @return the number of rays read
+    int raysRead() const { return _raysRead; }
+    
+    /// Return the number of rays written
+    /// @return the number of rays written
+    int raysWritten() const { return _raysWritten; }
+
 private:
-    // Pointer to the singleton archiver instance
-    static ProductArchiver* _theArchiver;
+    // Write out the volume stored in _radxVol, clear _radxVol, and
+    // increment the volume counter
+    void _writeCurrentVolume();
+    
+    // destination directory
+    std::string _dataDir;
+    
+    // number of rays to write per file
+    uint _raysPerFile;
     
     // volume counter
     int _volNum;
@@ -51,12 +65,20 @@ private:
     // Our RadxFile object, for writing output files
     RadxFile _radxFile;
     
-    // Our RadxVolume and its start time
+    // Our RadxVolume
     RadxVol _radxVol;
-    double _volStartTime;    // secs since 1970-01-01 00:00:00 UTC
+    
+    // How many rays have we read?
+    int _raysRead;
 
+    // How many rays have we written?
+    int _raysWritten;
+    
     // How many bytes have we written?
     int _bytesWritten;
+    
+    // Mutex for thread-safe access to our members
+    ACE_Recursive_Thread_Mutex _mutex;
 };
 
 #endif /* PRODUCTARCHIVER_H_ */

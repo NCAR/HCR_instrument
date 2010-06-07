@@ -26,15 +26,17 @@ sources += ts2peifileSources
 productarchiverSources = Split('''
 ProductArchiver.cpp
 ProductArchiverMain.cpp
+ProductAdapter.cpp
 ''')
 sources += productarchiverSources
 
 headers = Split('''
 IwrfTsFilesReader.h
+ProductAdapter.h
+ProductArchiver.h
 TimeSeriesAdapter.h
 TsArchiver.h
 TsPlayback.h
-ProductArchiver.h
 ''')
 
 inst = []

@@ -1,3 +1,6 @@
+#include <iostream>
+#include <csignal>
+
 #include <ArgvParams.h>
 #include <QtConfig.h>
 #include <XmlRpc.h>
@@ -61,6 +64,15 @@ public:
 } statusMethod(&RpcSvr);
 
 
+// Time to quit?
+bool Quit = false;
+
+// Signal handler for SIGINT provides a clean shutdown on ^C
+void
+signalHandler(int signum) {
+    Quit = 1;
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -98,8 +110,12 @@ main(int argc, char *argv[])
         eaConfig.getString("TopicProduct", "PROFILERPROD");
     std::string dataDir =
         eaConfig.getString("DataDir", "/data_first");
-    int rpcPort =
+    int rpcPort = 
         eaConfig.getInt("RpcPort", DefaultRPCPort);
+    uint raysPerFile = 
+        uint(eaConfig.getInt("RaysPerFile", 10000));
+    std::cout << "Breaking files every " << raysPerFile << " rays" <<
+        std::endl;
 
     // Override dataDir and rpcPort if we got command line args
     if (argc > 1) {
@@ -108,7 +124,22 @@ main(int argc, char *argv[])
         std::cout << "Using RPC port from command line: " << argv[2] << std::endl;
         rpcPort = atoi(argv[2]);
     }
-
+    
+    // Call signalHandler() if we get SIGINT (^C from the keyboard) or
+    // SIGTERM (e.g., default for the 'kill' command)
+    struct sigaction sa;
+    sa.sa_handler = signalHandler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    if (sigaction(SIGINT, &sa, 0) != 0) {
+        perror("Failed to change action for SIGINT");
+        exit(1);
+    }    
+    if (sigaction(SIGTERM, &sa, 0) != 0) {
+        perror("Failed to change action for SIGTERM");
+        exit(1);
+    }    
+    
     // create the subscriber
     ArgvParams subParams(argv[0]);
     subParams["-ORBSvcConf"] = orbConfigFile;
@@ -122,35 +153,32 @@ main(int argc, char *argv[])
         exit(subStatus);
     }
 
-    // Instantiate the singleton archiver
-    ProductArchiver* theArchiver =
-        ProductArchiver::TheArchiver(subscriber, productsTopic, dataDir);
+    // Instantiate our netCDF CFRadial archiver
+    ProductArchiver* archiver = new ProductArchiver(subscriber, 
+            productsTopic, dataDir, raysPerFile, RadxFile::FILE_FORMAT_CFRADIAL);
 
     // Initialize our RPC server
     RpcSvr.bindAndListen(rpcPort);
     RpcSvr.enableIntrospection(true);
 
-    int prevBytesWritten = theArchiver->bytesWritten();
-    boost::posix_time::ptime lastCheckTime =
-        boost::posix_time::microsec_clock::universal_time();
-
-    while (1) {
+    while (! Quit) {
+        // How much have we written?
+        std::cerr << archiver->raysRead() << " rays read, " <<
+            archiver->raysWritten() << " rays written, " << 
+            std::setprecision(2) << 
+            float(archiver->bytesWritten()) / (1024*1024) << " MB written" << 
+            std::endl;
+        
         // Listen for RPC commands for a bit
         RpcSvr.work(5.0);   // 5 seconds
-
-        // Calculate write rate
-        boost::posix_time::ptime now =
-            boost::posix_time::microsec_clock::universal_time();
-        int bytesWritten = theArchiver->bytesWritten();
-        int byteDiff = bytesWritten - prevBytesWritten;
-        boost::posix_time::time_duration timeDiff = now - lastCheckTime;
-        WriteRate = byteDiff / (1.0e-6 * timeDiff.total_microseconds()); // B/s
-        WriteRate /= (1024 * 1024);  // MB/s
-        std::cerr << "Write rate: " << WriteRate << " MB/s" << std::endl;;
-
-        // Save current numbers for next go-round
-        prevBytesWritten = bytesWritten;
-        lastCheckTime = now;
     }
-
+    RpcSvr.shutdown();
+    
+    // Delete our archiver, which will write out any unwritten data.
+    delete(archiver);
+    
+    // XXX KLUGE! Just call exit(0) now to avoid a call to our DDSSubscriber's
+    // destructor.  It causes a segfault, and there's no time at the moment to 
+    // track it down...  (cb 4 Jun 2010)
+    exit(0);
 }

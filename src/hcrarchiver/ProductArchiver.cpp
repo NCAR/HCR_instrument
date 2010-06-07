@@ -5,110 +5,139 @@
  *      Author: burghart
  */
 #include "ProductArchiver.h"
+#include "ProductAdapter.h"
+
 #include <svnInfo.h>
 
 #include <sstream>
-
-#include <Radx/RadxRay.hh>
+#include <sys/stat.h>
+#include <cerrno>
+#include <cstring>
 
 #include <dds/DCPS/Service_Participant.h>    // for TheServiceParticipant
 #include <boost/date_time/posix_time/posix_time.hpp>
-
-// Pointer to our singleton instance
-ProductArchiver* ProductArchiver::_theArchiver = 0;
 
 static const double SPEED_OF_LIGHT = 2.99792458e8; // m s-1
 
 
 ProductArchiver::ProductArchiver(DDSSubscriber& subscriber, 
-        std::string topicName, std::string dataDir) :
+        std::string topicName, std::string dataDir, uint raysPerFile,
+        RadxFile::file_format_t fileFormat) :
             ProductReader(subscriber, topicName),
-            _volNum(-1),
+            _dataDir(dataDir),
+            _raysPerFile(raysPerFile),
+            _volNum(0),
             _radxFile(),
-            _radxVol() {
-    // Write files in CfRadial (netCDF) format, using the volume start time
+            _radxVol(),
+            _raysRead(0),
+            _raysWritten(0),
+            _bytesWritten(0) {
+    ACE_Guard<ACE_Recursive_Thread_Mutex> guard(_mutex);
+    
+    // Make sure our destination directory has a trailing slash
+    if (_dataDir[_dataDir.length() - 1] != '/')
+        _dataDir += "/";
+    // Write files in the selected format, using the volume start time
     // to names files.
-    _radxFile.setFileFormat(RadxFile::FILE_FORMAT_CFRADIAL);
+    _radxFile.setFileFormat(fileFormat);
     _radxFile.setWriteUsingEndTime(false);
 }
 
 ProductArchiver::~ProductArchiver() {
-    // TODO Auto-generated destructor stub
+    ACE_Guard<ACE_Recursive_Thread_Mutex> guard(_mutex);
+    
+    std::string filetype = _radxFile.getFileFormatAsString();
+    // Write out any unwritten data
+    _writeCurrentVolume();
+    // Final tally
+    std::cout << _radxFile.getFileFormatAsString() << " archiver exit: " << 
+        _raysRead << " rays read, " << 
+        _raysWritten << " rays written, " << 
+        _bytesWritten << " bytes written." << std::endl;
 }
 
 void
 ProductArchiver::notify() {
+    ACE_Guard<ACE_Recursive_Thread_Mutex> guard(_mutex);
+    
     while (RadarDDS::ProductSet* ps = getNextItem()) {
-        // Get the ray housekeeping from the first product in the ProductSet
-        RadarDDS::Product &firstProduct = ps->products[0];
-        
-        // get the time tag, in microseconds since 1970-01-01 00:00:00 UTC
-        double timetag = 1.0e-6 * firstProduct.hskp.timetag;
-        long long timetagUsecs = firstProduct.hskp.timetag;
-        
-        // Start a new volume after 1 minute
-        if (_radxVol.getNRays() > 0 && (timetag - _volStartTime) > 60.0) {
-            std::ostringstream history;
-            history << boost::posix_time::microsec_clock::universal_time() <<
-                ": written by ProductArchiver rev. " << SVNREVISION;
-            _radxVol.setHistory(history.str());
-            _radxVol.loadVolFieldsFromRays(false);
-            
-        	std::cerr << "writing a volume with " << _radxVol.getNRays() <<
-                " rays" << std::endl;
-            _radxFile.writeToPath(_radxVol, "/data_first");
-            
-            // clear out our RadxVol
-            _radxVol.clear();
-            // increment to the next volume number
-            _volNum++;
-        }
-        
-        // Now build the RadxRay from the ProductSet
+        _raysRead++;
+
+        // Build a new RadxRay from the ProductSet
         RadxRay* radxRay = new RadxRay();
+        ProductAdapter::DDSToRadxRay(*ps, *radxRay, _volNum);
         
-        time_t rayTimeSecs = timetagUsecs / 1000000;
-        int rayTimeNanos = (timetagUsecs % 1000000) * 1000;
-        radxRay->setTime(rayTimeSecs, rayTimeNanos);
-        radxRay->setVolumeNumber(_volNum);
-        radxRay->setSweepNumber(0);
-        radxRay->setCalibIndex(0);
-        radxRay->setSweepMode(Radx::SWEEP_MODE_POINTING);    // HCR is pointing only (for now)
-        radxRay->setPolarizationMode(Radx::POL_MODE_HORIZONTAL);
-        radxRay->setPrfMode(Radx::PRF_MODE_FIXED);
-        radxRay->setFollowMode(Radx::FOLLOW_MODE_NONE);
-//        radxRay->setAzimuthDeg(az);
-//        radxRay->setElevationDeg(el);
-//        radxRay->setFixedAngleDeg(fixedAng);
-        radxRay->setIsIndexed(false);
-        radxRay->setAntennaTransition(false);
-        radxRay->setNSamples(firstProduct.hskp.samples);
-        radxRay->setPulseWidthUsec(1.0e6 * firstProduct.hskp.rcvr_pulse_width);
-        radxRay->setPrtSec(firstProduct.hskp.prt1);
-        radxRay->setPrt2Sec(0.0);
-        radxRay->setUnambigRange(); // calculate unambiguous range from PRT
-        float wavelength = SPEED_OF_LIGHT / firstProduct.hskp.tx_cntr_freq;
-        float prf = 1.0 / firstProduct.hskp.prt1;   // Hz
-        float nyquist = (prf * wavelength) / 4;     // Nyquist max speed
-        radxRay->setNyquistMps(nyquist);
+        // Add the new ray to our current volume.  RadxVol is now responsible
+        // for deleting the RadxRay object.
+        _radxVol.addRay(radxRay);
         
-        int nProducts = ps->products.length();
-        for (int p = 0; p < nProducts; p++) {
-            RadarDDS::Product& product = ps->products[p];
-            radxRay->addField(std::string(product.name), 
-                    std::string(product.units), product.data.length(), 
-                    (Radx::si16)product.bad_value, 
-                    (Radx::si16*)product.data.get_buffer(),
-                    product.scale, product.offset, true);
+        // If we started a new volume, set per-RadxVol parameters
+        if (_radxVol.getNRays() == 1) {
+            // Use the xmit frequency from the first product of the ray to set 
+            // xmit wavelength of our RadxVol.
+            _radxVol.setWavelengthMeters(SPEED_OF_LIGHT / 
+                    ps->products[0].hskp.tx_cntr_freq);
+            _radxVol.setInstrumentName("HCR");
+            _radxVol.setPlatformType(Radx::PLATFORM_TYPE_FIXED);
         }
         
-        // save the start time of the new volume
-        if (_radxVol.getNRays() == 0)
-            _volStartTime = timetag;
-        // Add the new ray to our current volume
-        _radxVol.addRay(radxRay);
+        // Write the volume at _raysPerFile rays
+        if (uint(_radxVol.getNRays()) == _raysPerFile)
+            _writeCurrentVolume();
         
         // Return the item to the DDSReader
         returnItem(ps);
     }
+}
+
+void
+ProductArchiver::_writeCurrentVolume() {
+    ACE_Guard<ACE_Recursive_Thread_Mutex> guard(_mutex);
+    
+    // Bail out if there's nothing to write
+    if (_radxVol.getNRays() == 0)
+        return;
+    
+    // Write the archiver name and revision to the volume's history
+    std::ostringstream history;
+    history << boost::posix_time::second_clock::universal_time() <<
+        ": written by ProductArchiver rev " << SVNREVISION;
+    _radxVol.setHistory(history.str());
+    
+    // Set up volume info from the rays we added. Note that this 
+    // might remove rays which do not match the 'predominant geometry',
+    // so we get a ray count before and after to see if any rays
+    // were dropped.
+    int raysBefore = _radxVol.getNRays();
+
+    _radxVol.loadVolFieldsFromRays(false);
+
+    int raysDropped = _radxVol.getNRays() - raysBefore;
+    if (raysDropped)
+        std::cerr << "Dropped " << raysDropped << 
+            " rays which did not match the 'predominant geometry'" << std::endl;
+
+
+    if (_radxFile.writeToDir(_radxVol, _dataDir, false, false) == 0) {
+        // Increment our count of rays written
+        _raysWritten += _radxVol.getNRays();
+        // Increment our count of bytes written
+        struct stat finfo;
+        if (stat(_radxFile.getPathInUse().c_str(), &finfo) == 0) {
+            _bytesWritten += finfo.st_size;
+            std::cerr << "Wrote " << finfo.st_size << " bytes to " <<
+                _radxFile.getPathInUse() << std::endl;
+        } else {
+            std::cerr << "Error getting size of '" << 
+                _radxFile.getPathInUse() << "': " << strerror(errno) << std::endl;
+        }
+    } else {
+        std::cerr << "Failed to write '" << _radxFile.getPathInUse() << 
+            "': " << _radxFile.getErrStr() << std::endl;
+    }
+    
+    // Clear out our RadxVol
+    _radxVol.clear();
+    // Increment to the next volume number
+    _volNum++;
 }
