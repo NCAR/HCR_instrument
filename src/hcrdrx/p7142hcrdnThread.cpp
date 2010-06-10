@@ -135,7 +135,7 @@ static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0
 void
 p7142hcrdnThread::publish(char* buf, int n) {
 
-  ProfilerDDS::TimeSeriesSequence* tss;
+  RadarDDS::TimeSeriesSequence* tss;
   tss = _tsWriter->getEmptyItem();
   if (!tss) {
 	  _tsDiscards++;
@@ -150,11 +150,13 @@ p7142hcrdnThread::publish(char* buf, int n) {
   short* sdata = (short*)buf;
 
   for (int t = 0; t < _tsLength; t++) {
-      ProfilerDDS::TimeSeries &ts = tss->tsList[t];
+      RadarDDS::TimeSeries &ts = tss->tsList[t];
       ts.data.length(_gates * 2);   // I and Q for each gate
       ts.hskp.gates = _gates;
       ts.hskp.chanId = _chanId;
       ts.hskp.prt1 = 1.0 / _prf;
+      ts.hskp.prt2 = 0.0;
+      ts.prt_seq_num = 1;   // single-PRT only for now
       ts.hskp.rcvr_pulse_width = rcvrPulseWidth();
       ts.hskp.rcvr_gate0_delay = rcvrFirstGateDelay();
       if (!_doCI) {
@@ -172,7 +174,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
               in += 2;
           }
 
-          ts.hskp.pulseNum = pulseNum;
+          ts.pulseNum = pulseNum;
           time_duration timeFromEpoch = timeOfPulse(pulseNum) - Epoch1970;
           // Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
           ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
@@ -186,7 +188,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
           }
       } else {
           // decode data from coherent integrator
-
+          ts.pulseNum = 0;  // BOGUS
           // skip the tag
           in += 4;
           for (int g = 0; g < _gates; g++) {
