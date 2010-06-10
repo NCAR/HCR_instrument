@@ -12,7 +12,7 @@
 #include "TSReader.h"
 #include <pthread.h>
 
-using namespace ProfilerDDS;
+using namespace RadarDDS;
 
 class SnifferTSReader: public TSReader {
 public:

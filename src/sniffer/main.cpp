@@ -28,7 +28,7 @@
 using namespace std;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
-using namespace ProfilerDDS;
+using namespace RadarDDS;
 
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
