@@ -48,9 +48,9 @@ protected slots:
     /**
      * Handle one TimeSeries item from our source.  If a complete ray of
      * products becomes available after handling, it will be published.
-     * @param item pointer to the new ProfilerDDS::TimeSeries item
+     * @param item pointer to the new RadarDDS::TimeSeries item
      */
-    virtual void handleItem(ProfilerDDS::TimeSeriesSequence *item);
+    virtual void handleItem(RadarDDS::TimeSeriesSequence *item);
     /**
      * Show information.
      */
@@ -60,9 +60,9 @@ signals:
     /**
      * This signal is emitted when we are finished with an item received
      * from our source.
-     * @param item pointer to the ProfilerDDS::TimeSeries item being returned
+     * @param item pointer to the RadarDDS::TimeSeries item being returned
      */
-    void returnItem(ProfilerDDS::TimeSeriesSequence *item);
+    void returnItem(RadarDDS::TimeSeriesSequence *item);
     
 private:
     /**

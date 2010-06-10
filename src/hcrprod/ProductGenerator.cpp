@@ -80,10 +80,10 @@ ProductGenerator::run() {
     timer.start(5000);  // every 5 seconds
     // Accept data via newItem() signals from our source, and free the
     // data pointers by sending returnItem() signals back.
-    connect(_reader, SIGNAL(newItem(ProfilerDDS::TimeSeriesSequence*)),
-            this, SLOT(handleItem(ProfilerDDS::TimeSeriesSequence*)));
-    connect(this, SIGNAL(returnItem(ProfilerDDS::TimeSeriesSequence*)),
-            _reader, SLOT(returnItemSlot(ProfilerDDS::TimeSeriesSequence*)));
+    connect(_reader, SIGNAL(newItem(RadarDDS::TimeSeriesSequence*)),
+            this, SLOT(handleItem(RadarDDS::TimeSeriesSequence*)));
+    connect(this, SIGNAL(returnItem(RadarDDS::TimeSeriesSequence*)),
+            _reader, SLOT(returnItemSlot(RadarDDS::TimeSeriesSequence*)));
     exec();
 }
 
@@ -102,7 +102,7 @@ ProductGenerator::showInfo() {
 }
 
 void
-ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
+ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
     bool ok = true;
 
     _itemCount++;
@@ -117,9 +117,9 @@ ProductGenerator::handleItem(ProfilerDDS::TimeSeriesSequence* tsSequence) {
 
     // Run through the samples in the item
     for (unsigned int samp = 0; samp < nPulses; samp++) {
-        ProfilerDDS::TimeSeries &ts = tsSequence->tsList[samp];
+        RadarDDS::TimeSeries &ts = tsSequence->tsList[samp];
         // Check pulse number
-        long pulseNum = ts.hskp.pulseNum;
+        long pulseNum = ts.pulseNum;
         long delta = pulseNum - _lastPulseRcvd;
         if (_lastPulseRcvd > 0 && (delta != 1)) {
         	// If it's the first pulse of a sequence and the number of
@@ -461,7 +461,7 @@ ProductGenerator::addProductHousekeeping_(RadarDDS::Product & p) {
     p.hskp.timetag = _dwellStart;
 //    p.hskp.az = 0.0;
 //    p.hskp.el = 0.0;
-    p.hskp.samples = _nSamples;
+    p.samples = _nSamples;
     // Single-PRT at this point
     p.hskp.staggered_prt = false;
     p.hskp.prt1 = _prt;
