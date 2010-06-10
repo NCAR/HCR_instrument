@@ -11,8 +11,6 @@
 // RAL IwrfTsPulse class
 #include <radar/IwrfTsPulse.hh>
 
-using namespace ProfilerDDS;
-
 
 // Singleton TsArchiver class
 class TsArchiver : public TSReader {
@@ -47,7 +45,7 @@ protected:
     		std::string dataDir);
     virtual ~TsArchiver();
     
-    void _assembleIwrfPulse(const ProfilerDDS::TimeSeries& ddsPulse);
+    void _assembleIwrfPulse(const RadarDDS::TimeSeries& ddsPulse);
     
     void _writeIwrfPulse();
     

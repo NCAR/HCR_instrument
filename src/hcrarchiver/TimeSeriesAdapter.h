@@ -1,7 +1,7 @@
 /*
  * TimeSeriesAdapter.h
  * 
- * Adapter class for ProfilerDDS::TimeSeries <-> IwrfTsPulse translations.
+ * Adapter class for RadarDDS::TimeSeries <-> IwrfTsPulse translations.
  *
  *  Created on: May 20, 2010
  *      Author: burghart
@@ -10,7 +10,7 @@
 #ifndef TIMESERIESADAPTER_H_
 #define TIMESERIESADAPTER_H_
 
-// ProfilerDDS::TimeSeries class
+// RadarDDS::TimeSeries class
 #include "profilertypesTypeSupportImpl.h"
 
 // RAL IwrfTsPulse class
@@ -20,20 +20,20 @@
 class TimeSeriesAdapter {
 public:
     /**
-     * Convert from IwrfTsPulse to ProfilerDDS::TimeSeries.
+     * Convert from IwrfTsPulse to RadarDDS::TimeSeries.
      * @param iwrfPulse the IwrfTsPulse to be converted
-     * @param ddsPulse the destination ProfilerDDS::TimeSeries
+     * @param ddsPulse the destination RadarDDS::TimeSeries
      */
     static void IwrfToDDS(const IwrfTsPulse& iwrfPulse, 
-            ProfilerDDS::TimeSeries& ddsPulse);
+            RadarDDS::TimeSeries& ddsPulse);
     /**
-     * Convert from ProfilerDDS::TimeSeries to IwrfTsPulse.
-     * @param ddsPulse the ProfilerDDS::TimeSeries to be converted
+     * Convert from RadarDDS::TimeSeries to IwrfTsPulse.
+     * @param ddsPulse the RadarDDS::TimeSeries to be converted
      * @param iwrfPulse the destination IwrfTsPulse
      * @param packetSequenceNum the packet sequence number to assign to the
      *     IwrfTsPulse
      */
-    static void DDSToIwrf(const ProfilerDDS::TimeSeries& ddsPulse,
+    static void DDSToIwrf(const RadarDDS::TimeSeries& ddsPulse,
             IwrfTsPulse& iwrfPulse, si64 packetSequenceNum);
 };
 

@@ -30,7 +30,7 @@ TsPlayback::~TsPlayback() {
 void 
 TsPlayback::run() {
     bool channelCountWarned = false;
-    ProfilerDDS::TimeSeriesSequence *tsSequence;
+    RadarDDS::TimeSeriesSequence *tsSequence;
 
     while (1) {
         tsSequence = _writer->getEmptyItem();
@@ -53,7 +53,7 @@ TsPlayback::run() {
                 " but only channel zero will be published!" << std::endl;
                 channelCountWarned = true;
             }
-            ProfilerDDS::TimeSeries & ddsPulse = tsSequence->tsList[pulse];
+            RadarDDS::TimeSeries & ddsPulse = tsSequence->tsList[pulse];
             TimeSeriesAdapter::IwrfToDDS(iwrfPulse, ddsPulse);
         }
         // Figure out total time contained in this sequence, and how long 

@@ -91,11 +91,11 @@ TsArchiver::notify() {
         return;
     }
     
-    while (TimeSeriesSequence* pItem = getNextItem()) {
+    while (RadarDDS::TimeSeriesSequence* pItem = getNextItem()) {
         int nPulses = pItem->tsList.length();
         for (int pulse = 0; pulse < nPulses; pulse++) {
-            const ProfilerDDS::TimeSeries & ts = pItem->tsList[pulse];
-            long pulseNum = ts.hskp.pulseNum;
+            const RadarDDS::TimeSeries & ts = pItem->tsList[pulse];
+            long pulseNum = ts.pulseNum;
             long delta = pulseNum - _lastPulseRcvd;
             if (_lastPulseRcvd > 0 && (delta != 1)) {
             	// If it's the first pulse of a sequence and the number of
@@ -118,7 +118,7 @@ TsArchiver::notify() {
 }
 
 void
-TsArchiver::_assembleIwrfPulse(const ProfilerDDS::TimeSeries & ddsPulse) {
+TsArchiver::_assembleIwrfPulse(const RadarDDS::TimeSeries & ddsPulse) {
     // Radar info
     if (! (_pktSeqNum % 100)) {
         iwrf_radar_info_t radarInfo;

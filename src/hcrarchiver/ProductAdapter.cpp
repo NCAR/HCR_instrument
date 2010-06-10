@@ -46,7 +46,6 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay,
         product[p].hskp.prt1 = prt1;
         product[p].hskp.prt2 = prt2;
         product[p].hskp.rcvr_pulse_width = rcvrPulseWidth;
-        product[p].hskp.samples = nSamples;
         product[p].hskp.staggered_prt = false;  // single PRT for now!
         product[p].hskp.tx_cntr_freq = txFrequency;
         
@@ -65,6 +64,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay,
         product[p].offset = radxField->getOffset();
         product[p].scale = radxField->getScale();
         product[p].bad_value = radxField->getMissingSi16();
+        product[p].samples = nSamples;
         
         // Copy the 16-bit data from radxField into this RadarDDS::Product
         int nGates = radxField->getNGates();
@@ -99,7 +99,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     radxRay.setFixedAngleDeg(0.0); // @TODO
     radxRay.setIsIndexed(false);
     radxRay.setAntennaTransition(false);
-    radxRay.setNSamples(firstProduct.hskp.samples);
+    radxRay.setNSamples(firstProduct.samples);
     radxRay.setPrtSec(firstProduct.hskp.prt1);
     radxRay.setPrt2Sec(firstProduct.hskp.prt2);
     radxRay.setUnambigRange(); // calculate unambiguous range from PRT

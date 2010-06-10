@@ -12,10 +12,10 @@
 static const double SPEED_OF_LIGHT = 2.99792458e8; // m s-1
 
 void
-TimeSeriesAdapter::DDSToIwrf(const ProfilerDDS::TimeSeries& ddsPulse,
+TimeSeriesAdapter::DDSToIwrf(const RadarDDS::TimeSeries& ddsPulse,
         IwrfTsPulse& iwrfPulse, si64 packetSequenceNum) {
     // Populate our IwrfTsPulse object
-    const ProfilerDDS::TSHousekeeping& hskp = ddsPulse.hskp;
+    const RadarDDS::SysHousekeeping& hskp = ddsPulse.hskp;
     int sec = hskp.timetag / 1000000; // secs since 1970-01-01 00:00:00 UTC
     int nanosec = (hskp.timetag % 1000000) * 1000; // usecs -> nanosecs
 
@@ -47,7 +47,7 @@ TimeSeriesAdapter::DDSToIwrf(const ProfilerDDS::TimeSeries& ddsPulse,
     // Our IQ data are already scaled 16-bit signed ints, and in the same
     // order that IwrfTsPulse wants. So we stuff them directly into iwrfPulse.
     
-    // The scale factor used by ProfilerDDS::TimeSeries is:
+    // The scale factor used by RadarDDS::TimeSeries is:
     //     I      = I       * iqScale + iqOffset
     //      volts    counts
     // Same formula for Q.
@@ -60,7 +60,7 @@ TimeSeriesAdapter::DDSToIwrf(const ProfilerDDS::TimeSeries& ddsPulse,
 
 void
 TimeSeriesAdapter::IwrfToDDS(const IwrfTsPulse& iwrfPulse,
-        ProfilerDDS::TimeSeries& ddsPulse) {
+        RadarDDS::TimeSeries& ddsPulse) {
     // We may need to make a copy of iwrfPulse for non-const operations
     IwrfTsPulse *iwrfPulseCopy = 0;
     // Copy metadata from iwrfPulse to ddsPulse
@@ -89,7 +89,7 @@ TimeSeriesAdapter::IwrfToDDS(const IwrfTsPulse& iwrfPulse,
     // set data space in ddsPulse for the right number of gates
     ddsPulse.data.length(2 * nGates);
     
-    // The scale factor used by ProfilerDDS::TimeSeries is:
+    // The scale factor used by RadarDDS::TimeSeries is:
     //     I       = (I      - ddsOffset) / ddsScale
     //      counts     volts
     // Similar formula for Q.
