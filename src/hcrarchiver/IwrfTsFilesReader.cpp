@@ -6,6 +6,7 @@
  */
 
 #include <cstdlib>
+#include <cmath>
 #include "IwrfTsFilesReader.h"
 
 IwrfTsFilesReader::IwrfTsFilesReader(const QStringList& fileNames, 
@@ -104,14 +105,18 @@ IwrfTsFilesReader::getNextIwrfPulse(IwrfTsPulse& pulse) {
                 std::endl;
             exit(1);
         }
-        // KLUGE -- REMOVE ME SOON!
-        // Pre-2010/04/23 archive files have iq_encoding unset, when
-        // the encoding is actually scaled 16-bit IQ data. There is only 
-        // a small handful of such files, and they will be irrelevant soon.
-        // But not quite yet!
-        if (pulse.get_iq_encoding() == 0)
-            pulse.set_iq_encoding(IWRF_IQ_ENCODING_SCALED_SI16);
-        
+        //
+        // Big KLUGE: In setFromBuffer() above, if it finds a start_range_m
+        // of zero in the incoming data, it will attempt to set the value from
+        // another source, and end up setting start_range_m to NaN. So if we
+        // see a NaN come back, we cheat and look directly at the value we
+        // passed in.  If it's zero, we force start_range_m to zero in the pulse.
+        //
+        if (isnan(pulse.get_start_range_m())) {
+            iwrf_pulse_header_t* pulseHdr = (iwrf_pulse_header_t*)packetBuf;
+            if (pulseHdr->start_range_m == 0.0)
+                pulse.set_start_range_m(0.0);
+        }
         return true;
     } else {
         // Unpack this non-pulse packet's metadata into our IwrfTsPulse's
