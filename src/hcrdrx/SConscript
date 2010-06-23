@@ -20,9 +20,9 @@ headers = Split("""
 
 env = Environment(tools = ['default'] + tools)
 
-profilerdrx = env.Program('profilerdrx', sources)
+hcrdrx = env.Program('hcrdrx', sources)
 
 html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
 
-Default(profilerdrx, html)
+Default(hcrdrx, html)
 
