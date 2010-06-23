@@ -124,11 +124,11 @@ void getConfigParams()
 	_chans         = config.getInt("Device/Channels",       1);
 	_ddcType       = config.getInt("Device/DdcType",        8);
 	_gates         = config.getInt("Radar/Gates",           50);
-	_prt		   = config.getInt("Radar/PRT", 			1200);
-	_pulseWidth    = config.getInt("Radar/PulseWidth", 		16);
+	_prt		   = config.getInt("Radar/PRT", 			12544);
+	_pulseWidth    = config.getInt("Radar/PulseWidth", 		64);
 	_nsum          = config.getInt("Radar/Nsum",            1);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
-	_numChannels   = config.getInt("Radar/Channels",        4);
+	_numChannels   = config.getInt("Radar/Channels",        1);
 	_freeRun       = config.getBool("Radar/FreeRunning",    false);
 	_simulate      = config.getBool("Simulate",             false);
 	_simPauseMS    = config.getInt("SimPauseMs",            20);
