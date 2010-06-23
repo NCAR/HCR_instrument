@@ -132,11 +132,11 @@ main (int argc, char** argv) {
 	scope.show();
 
 	// connect the reader to the scope to receive new DDS data
-	scope.connect(&reader, SIGNAL(newItem(AScope:::TimeSeries)),
-			&scope, SLOT(newTSItemSlot(AScope:::TimeSeries)));
+	scope.connect(&reader, SIGNAL(newItem(AScope::TimeSeries)),
+			&scope, SLOT(newTSItemSlot(AScope::TimeSeries)));
 	// connect the scope to the reader to return used DDS data
-	scope.connect(&scope, SIGNAL(returnTSItem(AScope:::TimeSeries)),
-			&reader, SLOT(returnItemSlot(AScope:::TimeSeries)));
+	scope.connect(&scope, SIGNAL(returnTSItem(AScope::TimeSeries)),
+			&reader, SLOT(returnItemSlot(AScope::TimeSeries)));
 
 	return app.exec();
 }

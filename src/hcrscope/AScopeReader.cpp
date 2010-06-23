@@ -43,8 +43,12 @@ void AScopeReader::notify(){
 			AScope::TimeSeries pItem;
 			pItem.gates    = ddsItem->tsList[0].hskp.gates;
 			pItem.chanId   = ddsItem->chanId;
-			pItem.data     = &ddsItem->tsList[0].data[0];
-			pItem.tsLength = ddsItem->tsList.length();
+			int tsLength   = ddsItem->tsList.length();
+			pItem.IQbeams.resize(tsLength);
+			for (int i = 0; i < tsLength; i++) {
+				pItem.IQbeams[i] = &ddsItem->tsList[i].data[0];
+			}
+			pItem.handle     = (void*) ddsItem;
 			emit newItem(pItem);
 			sentOne = true;
 		} else {
