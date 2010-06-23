@@ -1,4 +1,0 @@
-set -tmpdir "./xst/projnav.tmp"
-elaborate
--ifn DDC_ADV_DCM.prj
--ifmt mixed

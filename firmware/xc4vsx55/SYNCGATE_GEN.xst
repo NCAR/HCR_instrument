@@ -1,4 +1,0 @@
-set -tmpdir "./xst/projnav.tmp"
-elaborate
--ifn SYNCGATE_GEN.prj
--ifmt mixed
