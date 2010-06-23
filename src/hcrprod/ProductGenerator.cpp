@@ -147,35 +147,51 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
             ts.hskp.rcvr_pulse_width;   // m
         float rangeToFirstGate = 0.5 * SPEED_OF_LIGHT * 
             ts.hskp.rcvr_gate0_delay;   // m
+        int nGates = ts.hskp.gates;
             
-       	/*
-       	 * XXXXX REMOVE THIS SOME TIME SOON!
-       	 * Temporary KLUGE for pre-2010/04/23 archived data without 
-       	 * rcvr_pulse_width and rcvr_gate0_delay metadata...
-       	 */
-       	 if (gateSpacing == 0.0) {
-       	 	gateSpacing = 150.0;
-       	 	rangeToFirstGate = 0.0;
-       	 }
+        /*
+         * If PRF, gate spacing, range to first gate, or gate count change in
+         * mid-dwell, abandon the dwell-in-progress and start a new one.
+         */
+        if (_samplesCached > 0) {
+            bool hskpChanged = false;
+
+            if (_prt != prt) {
+                std::cerr << "Mid-dwell PRT change from " << _prt <<
+                        " to " << prt <<
+                        " @ " << ts.hskp.timetag << std::endl;
+                hskpChanged = true;
+            }
+            if (_gateSpacing != gateSpacing) {
+                std::cerr << "Mid-dwell gate spacing change from " << _gateSpacing <<
+                        " to " << gateSpacing <<
+                        " @ " << ts.hskp.timetag << std::endl;
+                hskpChanged = true;
+            }
+            if (_rangeToFirstGate != rangeToFirstGate) {
+                std::cerr << "Mid-dwell range-to-first-gate change from " <<
+                        _rangeToFirstGate << " to " << rangeToFirstGate <<
+                        " @ " << ts.hskp.timetag << std::endl;
+                hskpChanged = true;
+            }
+            if (_nGates != nGates) {
+                std::cerr << "Mid-dwell ngates change from " << _nGates <<
+                        " to " << nGates <<
+                        " @ " << ts.hskp.timetag << std::endl;
+                hskpChanged = true;
+            }
+            if (hskpChanged) {
+                _samplesCached = 0;
+                std::cerr << "Dwell-in-progress abandoned" << std::endl;
+            }
+        }
         
         /*
-         * At the start of a dwell, initialize the moments calculator.
-         * 
-         * Do the same (and complain) if PRF, gate spacing, range to first 
-         * gate, or gate count change in mid-dwell.
+         * At the start of a dwell, initialize the moments calculator and
+         * save the housekeeping which should remain unchanged through the
+         * dwell.
          */
-        if (_samplesCached == 0 ||
-                _prt != prt || _gateSpacing != gateSpacing ||
-                _rangeToFirstGate != rangeToFirstGate || 
-                _nGates != ts.hskp.gates) {
-            if (_samplesCached) {
-                std::cerr << "ProductGenerator::handleItem: @ " << ts.hskp.timetag <<
-                    std::endl;
-                std::cerr << "Gate count, PRF, range to first gate, or gate " <<
-                    "spacing changed in mid-dwell. Dwell-in-progress abandoned." << 
-                    std::endl;
-                _samplesCached = 0;
-            }
+        if (_samplesCached == 0) {
             _momentsCalc.init(prt, _wavelength, 
                     rangeToFirstGate * 0.001 /* km */,
                     gateSpacing * 0.001 /* km */);
@@ -184,7 +200,7 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
             _prt = prt;
             _gateSpacing = gateSpacing;
             _rangeToFirstGate = rangeToFirstGate;
-            _nGates = ts.hskp.gates;
+            _nGates = nGates;
         }
 
         // Gate count sanity check
@@ -194,21 +210,6 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
             ok = false;
         }
         
-        // Make sure gate count and PRF haven't changed in the dwell..
-        if (_prt != prt || _gateSpacing != gateSpacing ||
-                _rangeToFirstGate != rangeToFirstGate || 
-                _nGates != ts.hskp.gates) {
-            std::cerr << "ProductGenerator::handleItem: @ " << ts.hskp.timetag <<
-                std::endl;
-            std::cerr << "Gate count, PRF, range to first gate, or gate " <<
-                "spacing changed in mid-dwell. Dwell-in-progress abandoned." << 
-                std::endl;
-            _samplesCached = 0;
-            _momentsCalc.init(prt, _wavelength, 
-                    rangeToFirstGate * 0.001 /* km */,
-                    gateSpacing * 0.001 /* km */);
-        }
-
         // Put the Is and Qs for this sample into the dwell-in-progress.
         double sqrtTwo = sqrt(2.0);
         double vMax = 1.0;	// Max signal voltage for HCR.  @todo make this changeable!
