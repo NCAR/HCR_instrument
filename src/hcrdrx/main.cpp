@@ -68,7 +68,7 @@ void sigHandler(int sig) {
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
 {
-	ArgvParams argv("profilerdrx");
+	ArgvParams argv("hcrdrx");
 	argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
 	argv["-DCPSConfigFile"] = _DCPS;
 	if (_DCPSDebugLevel > 0)
@@ -96,29 +96,29 @@ void createDDSservices()
 void getConfigParams()
 {
 
-	QtConfig config("ProfilerDrx", "ProfilerDrx");
+	QtConfig config("HcrDrx", "HcrDrx");
 
 	// set up the default configuration directory path
-	std::string ProfilerDir("/conf/");
-	char* e = getenv("PROFILERDIR");
+	std::string HcrDir("/conf/");
+	char* e = getenv("HCRDIR");
 	if (e) {
-		ProfilerDir = e + ProfilerDir;
+		HcrDir = e + HcrDir;
 	} else {
-		std::cerr << "Environment variable PROFILERDIR must be set." << std::endl;
+		std::cerr << "Environment variable HCRDIR must be set." << std::endl;
 		exit(1);
 	}
 
 	// and create the default DDS configuration file paths, since these
 	// depend upon HCRDIR
-	std::string orbFile      = ProfilerDir + "ORBSvc.conf";
-	std::string dcpsFile     = ProfilerDir + "DDSClient.ini";
+	std::string orbFile      = HcrDir + "ORBSvc.conf";
+	std::string dcpsFile     = HcrDir + "DDSClient.ini";
 	std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
 
 	// get parameters
 	_publish       = config.getBool("DDS/Publish", true);
 	_ORB           = config.getString("DDS/ORBConfigFile",  orbFile);
 	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
-	_tsTopic       = config.getString("DDS/TopicTS",        "PROFILERTS");
+	_tsTopic       = config.getString("DDS/TopicTS",        "HCRTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
 	_chans         = config.getInt("Device/Channels",       1);
