@@ -44,7 +44,7 @@ inst = []
 
 tstools = Split("""
 boost_program_options
-profilerdds
+hcrdds
 qtt_qtconfig
 radd_archiver
 rapradar
@@ -76,7 +76,7 @@ tsenv.Default(html)
 
 producttools = Split("""
 boost_program_options
-profilerdds
+hcrdds
 qtt_qtconfig
 rapradx
 xmlrpc

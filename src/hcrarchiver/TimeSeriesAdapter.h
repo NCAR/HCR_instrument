@@ -11,7 +11,7 @@
 #define TIMESERIESADAPTER_H_
 
 // RadarDDS::TimeSeries class
-#include "profilerddsTypeSupportImpl.h"
+#include "hcrddsTypeSupportImpl.h"
 
 // RAL IwrfTsPulse class
 #include <radar/IwrfTsPulse.hh>

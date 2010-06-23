@@ -3,7 +3,7 @@
 tools = Split("""
 qt4
 qtt_qtconfig
-profilerdds
+hcrdds
 doxygen
 boost_program_options
 rapradar

@@ -11,7 +11,7 @@
 #define PRODUCTADAPTER_H_
 
 // RadarrDDS::ProductSet class
-#include "profilerddsTypeSupportImpl.h"
+#include "hcrddsTypeSupportImpl.h"
 
 // RAL RadxRay class
 #include <Radx/RadxRay.hh>

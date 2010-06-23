@@ -7,7 +7,7 @@ qtt_qtconfig
 doxygen
 fftw
 boost_program_options
-profilerdds
+hcrdds
 """)
 
 env = Environment(tools = ['default'] + tools)

@@ -1,7 +1,7 @@
 # -*- python -*-
 
 tools = Split("""
-profilerdds
+hcrdds
 pentek
 qtt_qtconfig
 boost_date_time
