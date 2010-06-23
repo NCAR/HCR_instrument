@@ -1,5 +1,5 @@
 /*
- * profilerprod.cpp
+ * hcrprod.cpp
  *
  *  Created on: Oct 14, 2009
  *      Author: burghart
@@ -34,29 +34,29 @@ namespace po = boost::program_options;
 void getConfigParams()
 {
 
-    QtConfig config("ProfilerProd", "ProfilerProd");
+    QtConfig config("HcrProd", "HcrProd");
 
     // set up the default configuration directory path
-    std::string ProfilerDir;
-    char* e = getenv("PROFILERDIR");
+    std::string HcrDir;
+    char* e = getenv("HCRDIR");
     if (e) {
-        ProfilerDir = std::string(e) + "/conf/";
+        HcrDir = std::string(e) + "/conf/";
     } else {
-        std::cerr << "Environment variable PROFILERDIR must be set." << std::endl;
+        std::cerr << "Environment variable HCRDIR must be set." << std::endl;
         exit(1);
     }
 
     // and create the default DDS configuration file paths, since these
     // depend upon HCRDIR
-    std::string orbFile      = ProfilerDir + "ORBSvc.conf";
-    std::string dcpsFile     = ProfilerDir + "DDSClient.ini";
+    std::string orbFile      = HcrDir + "ORBSvc.conf";
+    std::string dcpsFile     = HcrDir + "DDSClient.ini";
     std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
 
     // get parameters
     _ORB          = config.getString("DDS/ORBConfigFile",  orbFile);
     _DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
-    _tsTopic      = config.getString("DDS/TopicTS",        "PROFILERTS");
-    _prodTopic    = config.getString("DDS/TopicProduct",   "PROFILERPROD");
+    _tsTopic      = config.getString("DDS/TopicTS",        "HCRTS");
+    _prodTopic    = config.getString("DDS/TopicProduct",   "HCRPROD");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 }
 
@@ -101,7 +101,7 @@ main (int argc, char** argv) {
     // parse the command line options, substituting for config params.
     parseOptions(argc, argv);
 
-    ArgvParams newargv("profilerprod");
+    ArgvParams newargv("hcrprod");
     newargv["-ORBSvcConf"] = _ORB;
     newargv["-DCPSConfigFile"] = _DCPS;
     newargv["-DCPSInfoRepo"] = _DCPSInfoRepo;
