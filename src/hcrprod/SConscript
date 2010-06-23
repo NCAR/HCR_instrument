@@ -15,7 +15,7 @@ qt4modules = ['QtCore', 'QtGui']
 env.EnableQt4Modules(qt4modules)
 
 sources = Split("""
-profilerprod.cpp
+hcrprod.cpp
 ProductGenerator.cpp
 """)
 
@@ -25,9 +25,9 @@ ProductGenerator.h
 
 html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
 
-profilerprod = env.Program('profilerprod', sources)
+hcrprod = env.Program('hcrprod', sources)
 
-Default(profilerprod, html)
+Default(hcrprod, html)
 
 
 
