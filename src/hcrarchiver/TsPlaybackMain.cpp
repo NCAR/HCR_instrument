@@ -11,8 +11,8 @@ namespace po = boost::program_options;
 // Current write rate, in MB/s
 float WriteRate = 0.0;
 
-// The profiler configuration directory ($PROFILERDIR/conf)
-std::string ProfilerConfigDir;
+// The HCR configuration directory ($HCRDIR/conf)
+std::string HcrConfigDir;
 std::string DCPSInfoRepo;
 std::string OrbConfigFile;
 std::string DCPSConfigFile;
@@ -84,22 +84,22 @@ main(int argc, char *argv[])
     // get the configuration
     QtConfig config("TsPlayback", "TsPlayback");
 
-    // set up the configuration directory path: $PROFILERDIR/conf/
-    char* e = getenv("PROFILERDIR");
+    // set up the configuration directory path: $HCRDIR/conf/
+    char* e = getenv("HCRDIR");
     if (!e) {
-        std::cerr << "Environment variable PROFILERDIR must be set." << std::endl;
+        std::cerr << "Environment variable HCRDIR must be set." << std::endl;
         exit(1);
     }
     
     DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo", 
             "iiop://localhost:50000/DCPSInfoRepo");
     
-    ProfilerConfigDir = std::string(e) + "/conf/";
+    HcrConfigDir = std::string(e) + "/conf/";
     OrbConfigFile = config.getString("DDS/ORBConfigFile", 
-            ProfilerConfigDir + "ORBSvc.conf");
+            HcrConfigDir + "ORBSvc.conf");
     DCPSConfigFile = config.getString("DDS/DCPSConfigFile", 
-            ProfilerConfigDir + "DDSClient.ini");
-    std::string tsTopic = config.getString("TopicTS", "PROFILERTS");
+            HcrConfigDir + "DDSClient.ini");
+    std::string tsTopic = config.getString("TopicTS", "HCRTS");
     
     parseCommandLine(argc, argv);
 

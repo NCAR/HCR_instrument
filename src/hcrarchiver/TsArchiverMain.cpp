@@ -76,22 +76,22 @@ main(int argc, char *argv[])
     // get the configuration
     QtConfig eaConfig("TsArchiver", "TsArchiver");
 
-    // set up the configuration directory path: $PROFILERDIR/conf/
-    char* e = getenv("PROFILERDIR");
+    // set up the configuration directory path: $HCRDIR/conf/
+    char* e = getenv("HCRDIR");
     if (!e) {
-        std::cerr << "Environment variable PROFILERDIR must be set." << std::endl;
+        std::cerr << "Environment variable HCRDIR must be set." << std::endl;
         exit(1);
     }
-    std::string profilerConfigDir = std::string(e) + "/conf/";
+    std::string hcrConfigDir = std::string(e) + "/conf/";
 
     std::string orbConfigFile =
-        eaConfig.getString("DDS/ORBConfigFile", profilerConfigDir + "ORBSvc.conf");
+        eaConfig.getString("DDS/ORBConfigFile", hcrConfigDir + "ORBSvc.conf");
     std::string dcpsConfigFile =
-        eaConfig.getString("DDS/DCPSConfigFile", profilerConfigDir + "DDSClient.ini");
+        eaConfig.getString("DDS/DCPSConfigFile", hcrConfigDir + "DDSClient.ini");
     std::string dcpsInfoRepo =
         eaConfig.getString("DDS/DCPSInfoRepo", "iiop://localhost:50000/DCPSInfoRepo");
     std::string productsTopic =
-        eaConfig.getString("TopicTS", "PROFILERTS");
+        eaConfig.getString("TopicTS", "HCRTS");
     std::string dataDir =
         eaConfig.getString("DataDir", "/data_first");
     int rpcPort =
