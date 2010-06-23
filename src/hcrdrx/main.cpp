@@ -20,7 +20,7 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
-#include "p7142hcrdnThread.h"
+#include "p7142sd3cdnThread.h"
 #include "p7142.h"
 #include "DDSPublisher.h"
 #include "TSWriter.h"
@@ -68,7 +68,7 @@ void sigHandler(int sig) {
 /////////////////////////////////////////////////////////////////////
 void createDDSservices()
 {
-	ArgvParams argv("hcrdrx");
+	ArgvParams argv("sd3cdrx");
 	argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
 	argv["-DCPSConfigFile"] = _DCPS;
 	if (_DCPSDebugLevel > 0)
@@ -335,18 +335,18 @@ main(int argc, char** argv)
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
-	std::vector<p7142hcrdnThread*> down7142;
+	std::vector<p7142sd3cdnThread*> down7142;
 	down7142.resize(channels.size());
 
-	Pentek::p7142hcrdn::DDCDECIMATETYPE ddcType = Pentek::p7142hcrdn::DDC8DECIMATE;
+	Pentek::p7142sd3cdn::DDCDECIMATETYPE ddcType = Pentek::p7142sd3cdn::DDC8DECIMATE;
 	if (_ddcType == 4) {
-		ddcType = Pentek::p7142hcrdn::DDC4DECIMATE;
+		ddcType = Pentek::p7142sd3cdn::DDC4DECIMATE;
 	}
 	for (unsigned int c = 0; c < channels.size(); c++) {
 
 		std::cout << "*** Channel " << channels[c] << " ***" << std::endl;
 
-		p7142hcrdnThread* p = new p7142hcrdnThread(
+		p7142sd3cdnThread* p = new p7142sd3cdnThread(
 				_tsWriter,
 				_publish,
 				_tsLength,

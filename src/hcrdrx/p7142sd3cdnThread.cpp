@@ -1,4 +1,4 @@
-#include "p7142hcrdnThread.h"
+#include "p7142sd3cdnThread.h"
 #include <sys/timeb.h>
 #include <iostream>
 #include <iomanip>
@@ -6,7 +6,7 @@
 using namespace boost::posix_time;
 
 //////////////////////////////////////////////////////////////////////////////////
-p7142hcrdnThread::p7142hcrdnThread(
+p7142sd3cdnThread::p7142sd3cdnThread(
 		           TSWriter* tsWriter,
 				   bool publish,
 				   int tsLength,
@@ -22,12 +22,12 @@ p7142hcrdnThread::p7142hcrdnThread(
 				   bool freeRun,
 				   std::string gaussianFile,
 				   std::string kaiserFile,
-				   Pentek::p7142hcrdn::DDCDECIMATETYPE decimateType,
+				   Pentek::p7142sd3cdn::DDCDECIMATETYPE decimateType,
 				   int bypassdivrate,
 				   bool simulate,
 				   int simPauseMS,
 				   bool internalClock):
-  p7142hcrdn(devName,
+  p7142sd3cdn(devName,
 	     chanId,
 	     gates,
 	     nsum,
@@ -45,7 +45,7 @@ p7142hcrdnThread::p7142hcrdnThread(
 	     simulate,
 	     simPauseMS,
 	     internalClock),
-  _doCI(_nsum > 1), // check against _nsum, since nsum may be tweaked by p7142hcrdn
+  _doCI(_nsum > 1), // check against _nsum, since nsum may be tweaked by p7142sd3cdn
   _publish(publish),
   _tsWriter(tsWriter),
   _tsDiscards(0),
@@ -57,12 +57,12 @@ p7142hcrdnThread::p7142hcrdnThread(
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-p7142hcrdnThread::~p7142hcrdnThread() {
+p7142sd3cdnThread::~p7142sd3cdnThread() {
 
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-void p7142hcrdnThread::run() {
+void p7142sd3cdnThread::run() {
 
   static unsigned short int ttl_toggle = 0;
 
@@ -121,7 +121,7 @@ void p7142hcrdnThread::run() {
 }
 
 ///////////////////////////////////////////////////////////
-double p7142hcrdnThread::nowTime() {
+double p7142sd3cdnThread::nowTime() {
   struct timeb timeB;
   ftime(&timeB);
   return timeB.time + timeB.millitm/1000.0;
@@ -133,7 +133,7 @@ double p7142hcrdnThread::nowTime() {
 static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0, 0, 0));
 
 void
-p7142hcrdnThread::publish(char* buf, int n) {
+p7142sd3cdnThread::publish(char* buf, int n) {
 
   RadarDDS::TimeSeriesSequence* tss;
   tss = _tsWriter->getEmptyItem();
@@ -212,7 +212,7 @@ p7142hcrdnThread::publish(char* buf, int n) {
 
 ///////////////////////////////////////////////////////////
 void
-p7142hcrdnThread::decodeBuf(char* buf, int n) {
+p7142sd3cdnThread::decodeBuf(char* buf, int n) {
 
   /// @todo Make the decodeBuf routine do something useful, rather than just
   /// counting through the data arrays. Right now we use it by uncommenting
@@ -328,7 +328,7 @@ p7142hcrdnThread::decodeBuf(char* buf, int n) {
 
 //////////////////////////////////////////////////////////////////////////////////
 unsigned long
-p7142hcrdnThread::tsDiscards() {
+p7142sd3cdnThread::tsDiscards() {
 	unsigned long retval = _tsDiscards;
 	_tsDiscards = 0;
 	return retval;
@@ -336,21 +336,21 @@ p7142hcrdnThread::tsDiscards() {
 
 //////////////////////////////////////////////////////////////////////////////////
 unsigned long
-p7142hcrdnThread::droppedPulses() {
+p7142sd3cdnThread::droppedPulses() {
 	unsigned long retval = _droppedPulses;
 	return retval;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 unsigned long
-p7142hcrdnThread::syncErrors() {
+p7142sd3cdnThread::syncErrors() {
 	unsigned long retval = _syncErrors;
 	return retval;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 long
-p7142hcrdnThread::unpackChannelNum(const char* buf) const {
+p7142sd3cdnThread::unpackChannelNum(const char* buf) const {
     if (_freeRun)
         return 0;
     // Channel number is the upper two bits of the first 32-bit chunk, which
@@ -362,7 +362,7 @@ p7142hcrdnThread::unpackChannelNum(const char* buf) const {
 
 //////////////////////////////////////////////////////////////////////////////////
 long
-p7142hcrdnThread::unpackPulseNum(const char* buf) const {
+p7142sd3cdnThread::unpackPulseNum(const char* buf) const {
     if (_freeRun)
         return 0;
     // Pulse number is the lower 30 bits of the first 32-bit chunk, which is

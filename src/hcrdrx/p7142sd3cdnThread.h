@@ -2,13 +2,13 @@
 #define P7142DNTHREAD_H_
 
 #include <QThread>
-#include "p7142hcr.h"
+#include "p7142sd3c.h"
 #include "TSWriter.h"
 
-class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
+class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
 	Q_OBJECT
 	public:
-		p7142hcrdnThread(
+		p7142sd3cdnThread(
 				TSWriter* tsWriter,
 				bool publish,
 				int tsLength,
@@ -24,12 +24,12 @@ class p7142hcrdnThread: public QThread, public Pentek::p7142hcrdn {
 				bool freeRun,
 				std::string gaussianFile,
 				std::string kaiserFile,
-				Pentek::p7142hcrdn::DDCDECIMATETYPE decimateType,
+				Pentek::p7142sd3cdn::DDCDECIMATETYPE decimateType,
 				int bypassdivrate=8,
 				bool simulate=false,
 				int simPauseMS=100,
 				bool internalClock=false);
-		virtual ~p7142hcrdnThread();
+		virtual ~p7142sd3cdnThread();
 		void run();
 		/// @return The number of timeseries blocks that have been discarded
 		/// since the last time this function was called.

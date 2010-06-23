@@ -12,7 +12,7 @@ qt4
 
 sources = Split("""
 main.cpp
-p7142hcrdnThread.cpp
+p7142sd3cdnThread.cpp
 """)
 
 headers = Split("""
