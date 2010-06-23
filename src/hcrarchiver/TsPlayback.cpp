@@ -49,8 +49,8 @@ TsPlayback::run() {
                 return;
             if (! channelCountWarned && iwrfPulse.get_n_channels() != 1) {
                 std::cerr << "IWRF data contains " << 
-                iwrfPulse.get_n_channels() << 
-                " but only channel zero will be published!" << std::endl;
+                        iwrfPulse.get_n_channels() <<
+                        " but only channel zero will be published!" << std::endl;
                 channelCountWarned = true;
             }
             RadarDDS::TimeSeries & ddsPulse = tsSequence->tsList[pulse];
