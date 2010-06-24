@@ -120,25 +120,25 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
         RadarDDS::TimeSeries &ts = tsSequence->tsList[samp];
         // Check pulse number
         long pulseNum = ts.pulseNum;
-        long delta = pulseNum - _lastPulseRcvd;
-        if (_lastPulseRcvd > 0 && (delta != 1)) {
+        long nMissed = pulseNum - _lastPulseRcvd - 1;
+        if (_lastPulseRcvd > 0 && nMissed) {
         	// If it's the first pulse of a sequence and the number of
         	// dropped pulses is a multiple of the pulse collection size,
         	// we dropped one or more whole DDS packets.
-        	if (samp == 0 && !((delta - 1) % nPulses)) {
-        		_ddsDrops += ((delta - 1) / nPulses);
-	            if (_samplesCached) {
-	                std::cerr << "ProductGenerator::handleItem: @ pulse " << 
-	                	pulseNum << ": pulses missed in mid-dwell; " <<
-	                	"dwell-in-progress abandoned." << std::endl;
-	                _samplesCached = 0;
-	            }
+        	if (samp == 0 && !(nMissed % nPulses)) {
+        		_ddsDrops += (nMissed / nPulses);
         	}
-        	else {
-        		std::cerr << "Pulse out of sequence! Got pulse " << 
-        			pulseNum << " after pulse " << _lastPulseRcvd << std::endl;
-        		exit(1);
-        	}
+        	
+        	// Tell about missed pulses, and force starting a new dwell.
+        	std::cerr << __FUNCTION__ << ": after pulse " << _lastPulseRcvd <<
+				": " << nMissed << " pulses missed";
+            if (_samplesCached) {
+                 std::cerr << " in mid-dwell; dwell-in-progress abandoned." <<
+					 std::endl;
+                _samplesCached = 0;
+            } else {
+            	std::cerr << "." << std::endl;
+            }
         }
         _lastPulseRcvd = pulseNum;
         
