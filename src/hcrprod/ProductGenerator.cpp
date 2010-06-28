@@ -283,16 +283,17 @@ ProductGenerator::publish_(const MomentsFields *moments,
 
     // RAP moments "dbm" is really:
     //
-    //            ngates
-    //            ----
-    //             \   2    2
-    //  1/ngates *  | I  + Q
-    //             /   g    g
-    //            ----
-    //            g = 1
+    //                        ngates
+    //                        ----
+    //                         \   2    2
+    //  10 * log10( 1/ngates *  | I  + Q  )
+    //                         /   g    g
+    //                        ----
+    //                        g = 1
     //
-    // To convert to units of dBm, we need to account for the input
-    // impedance, and convert from dB(W) to dB(mW).
+    // where I and Q are values in volts. To convert from dB(volts^2) to 
+    // dBm [i.e., dB(mW)], we need to account for the input impedance to get 
+    // to db(W), and then convert from dB(W) to dB(mW).
     double rcvrInputImpedance = 50.0;
     double dbmCorr = -10.0 * log10(rcvrInputImpedance);
     dbmCorr += 30.0; // dB(W) -> dB(mW)
