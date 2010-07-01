@@ -41,7 +41,6 @@ int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 int _gates;                      ///< The number of gates
 int _nsum;                       ///< The number of sums
 int _tsLength;                   ///< The time series length
-int _numChannels;                ///< The number of radar channels
 int _delay = 0;					 ///< delay in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
 int _prt = 12544;                ///< prt in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
 int _prt2 = 12544;               ///< prt2 in ADC_Clk/2 counts, if == prt, then no staggered prt
@@ -128,7 +127,6 @@ void getConfigParams()
 	_pulseWidth    = config.getInt("Radar/PulseWidth", 		64);
 	_nsum          = config.getInt("Radar/Nsum",            1);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
-	_numChannels   = config.getInt("Radar/Channels",        1);
 	_freeRun       = config.getBool("Radar/FreeRunning",    false);
 	_simulate      = config.getBool("Simulate",             false);
 	_simPauseMS    = config.getInt("SimPauseMs",            20);
