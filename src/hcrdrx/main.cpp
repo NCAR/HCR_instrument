@@ -284,9 +284,6 @@ void startUpConverter(Pentek::p7142up& upConverter) {
 int
 main(int argc, char** argv)
 {
-	// a list of channels
-	std::vector<int> channels;
-
 	// try to change scheduling to real-time
 	makeRealTime();
 
@@ -302,11 +299,6 @@ main(int argc, char** argv)
 	// create the dds services
 	if (_publish)
 		createDDSservices();
-
-	// create the list of channels
-	for (int i = 0; i < _chans; i++) {
-		channels.push_back(i);
-	}
 
 	// create the upconvertor. Use coarse mixer mode = ?, as specified in X4L FMIX CMIX
 	/// @todo Need reference that explains which cm_mode to specify here.
@@ -333,23 +325,22 @@ main(int argc, char** argv)
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
-	std::vector<p7142sd3cdnThread*> down7142;
-	down7142.resize(channels.size());
+	std::vector<p7142sd3cdnThread*> down7142(_chans);
 
 	Pentek::p7142sd3cdn::DDCDECIMATETYPE ddcType = Pentek::p7142sd3cdn::DDC8DECIMATE;
 	if (_ddcType == 4) {
 		ddcType = Pentek::p7142sd3cdn::DDC4DECIMATE;
 	}
-	for (unsigned int c = 0; c < channels.size(); c++) {
+	for (int c = 0; c < _chans; c++) {
 
-		std::cout << "*** Channel " << channels[c] << " ***" << std::endl;
+		std::cout << "*** Channel " << c << " ***" << std::endl;
 
 		p7142sd3cdnThread* p = new p7142sd3cdnThread(
 				_tsWriter,
 				_publish,
 				_tsLength,
 				_devRoot,
-				channels[c],
+				c,
 				_gates,
 				_nsum,
 				_delay,
@@ -376,7 +367,7 @@ main(int argc, char** argv)
     // catch a control-C
     signal(SIGINT, sigHandler);
 
-	for (unsigned int c = 0; c < channels.size(); c++) {
+	for (int c = 0; c < _chans; c++) {
 		// run the downconverter thread. This will cause the
 		// thread code to call the run() method, which will
 		// start reading data, but should block on the first
@@ -428,23 +419,20 @@ main(int argc, char** argv)
 		double elapsed = currentTime - startTime;
 		startTime = currentTime;
 
-		std::vector<long> bytes;
-		std::vector<int> overUnder;
-		std::vector<unsigned long> discards;
-		std::vector<unsigned long> droppedPulses;
-		std::vector<unsigned long> syncErrors;
-		bytes.resize(channels.size());
-		overUnder.resize(channels.size());
-		discards.resize(channels.size());
-		droppedPulses.resize(channels.size());
-		syncErrors.resize(channels.size());
-		for (unsigned int c = 0; c < channels.size(); c++) {
+		std::vector<long> bytes(_chans);
+		std::vector<int> overUnder(_chans);
+		std::vector<unsigned long> discards(_chans);
+		std::vector<unsigned long> droppedPulses(_chans);
+		std::vector<unsigned long> syncErrors(_chans);
+		
+		for (int c = 0; c < _chans; c++) {
 			bytes[c] = down7142[c]->bytesRead();
 			overUnder[c] = down7142[c]->overUnderCount();
 			discards[c] = down7142[c]->tsDiscards();
 			droppedPulses[c] = down7142[c]->droppedPulses();
 		}
-		for (unsigned int c = 0; c < channels.size(); c++) {
+		
+		for (int c = 0; c < _chans; c++) {
 			std::cout << std::setprecision(3) << std::setw(5)
 					  << bytes[c]/1000000.0/elapsed << " MB/s "
 					  << " ovr:" << overUnder[c]
