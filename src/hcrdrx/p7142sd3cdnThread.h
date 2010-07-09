@@ -101,6 +101,9 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
 		/// Set true at startup, false after the first pulse
 		/// has been received.
 		bool _firstPulse;
+		/// The DDS sample number; increment when a sample is published.
+		long _sampleNumber;
+		
 };
 
 #endif /*P7142DNTHREAD_H_*/

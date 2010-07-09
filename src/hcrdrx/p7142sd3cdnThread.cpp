@@ -52,7 +52,8 @@ p7142sd3cdnThread::p7142sd3cdnThread(
   _lastPulseSeq(0),
   _droppedPulses(0),
   _syncErrors(0),
-  _firstPulse(true)
+  _firstPulse(true),
+  _sampleNumber(0)
 {
 }
 
@@ -142,6 +143,7 @@ p7142sd3cdnThread::publish(char* buf, int n) {
 	  return;
   }
 
+  tss->sampleNumber = _sampleNumber++;
   tss->chanId = _chanId;
   tss->tsList.length(_tsLength);
 
