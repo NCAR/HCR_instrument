@@ -40,7 +40,8 @@ TsArchiver::TsArchiver(DDSSubscriber& subscriber,
             _lastPulseRcvd(-1),
             _pktSeqNum(0),
             _lastSeqWritten(0),
-            _bytesWritten(0) {
+            _bytesWritten(0),
+            _lastDDSsample(-1) {
     std::cout << "Writing to data dir: " << dataDir << std::endl;
     
     // Create the archiver servant
@@ -92,22 +93,33 @@ TsArchiver::notify() {
     }
     
     while (RadarDDS::TimeSeriesSequence* pItem = getNextItem()) {
+    	
+		// check for dropped samples by examining the DDS sample counter
+		int ddsSample = pItem->sampleNumber;
+		int delta = ddsSample - _lastDDSsample;
+
+		if (_lastDDSsample != -1) {
+			if (delta != 1) {
+				if (delta > 1) {
+					_ddsDrops += delta-1;
+				} else {
+					if (delta > -INT_MAX) {
+						_ddsDrops += INT_MAX + delta;
+					}
+				}
+			}
+		}
+		_lastDDSsample = ddsSample;
+
         int nPulses = pItem->tsList.length();
         for (int pulse = 0; pulse < nPulses; pulse++) {
             const RadarDDS::TimeSeries & ts = pItem->tsList[pulse];
             long pulseNum = ts.pulseNum;
             long delta = pulseNum - _lastPulseRcvd;
-            if (_lastPulseRcvd > 0 && (delta != 1)) {
-            	// If it's the first pulse of a sequence and the number of
-            	// dropped pulses is a multiple of the pulse collection size,
-            	// we dropped one or more whole DDS packets.
-            	if (pulse == 0 && !((delta - 1) % nPulses))
-            		_ddsDrops += ((delta - 1) / nPulses);
-            	else {
+            if (_lastPulseRcvd > 0 && (delta != 1) && pulse != 0) {
             		std::cerr << "Pulse out of sequence! Got pulse " << 
             			pulseNum << " after pulse " << _lastPulseRcvd << std::endl;
             		exit(1);
-            	}
             }
             _lastPulseRcvd = pulseNum;
             _assembleIwrfPulse(ts);
