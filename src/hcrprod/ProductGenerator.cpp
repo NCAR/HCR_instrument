@@ -47,7 +47,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     calib.setNoiseDbmHc(noisedbm); // noise power at output of DRX including processing gain!
     std::cout << "noise pwr is " <<  noisedbm << " dBm" << std::endl;
 //    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
-     calib.setBaseDbz1kmHc(_rcvrNoise + 68.6); // MDS (0 db SNR) @ 1km
+    // use radar constant to 85.3 for UMASS antenna dataset
+     calib.setBaseDbz1kmHc(_rcvrNoise + 65.6); // MDS (0 db SNR) @ 1km
     _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
@@ -89,8 +90,8 @@ ProductGenerator::run() {
 
 void
 ProductGenerator::showInfo() {
-    std::cerr << _itemCount << " pkts rcvd, " <<
-    	_ddsDrops << " pkts missed, " <<
+    std::cerr << _itemCount << " samples rcvd, " <<
+    	_ddsDrops << " samples missed, " <<
         _wrongChannelCount << " wrong channel, " <<
         _dwellCount << " rays generated and " <<
         _dwellDiscardCount << " could not be pub'd, " << std::endl;
@@ -130,14 +131,14 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
         	}
         	
         	// Tell about missed pulses, and force starting a new dwell.
-        	std::cerr << __FUNCTION__ << ": after pulse " << _lastPulseRcvd <<
-				": " << nMissed << " pulses missed";
+        	//std::cerr << __FUNCTION__ << ": after pulse " << _lastPulseRcvd <<
+			//	": " << nMissed << " pulses missed";
             if (_samplesCached) {
-                 std::cerr << " in mid-dwell; dwell-in-progress abandoned." <<
-					 std::endl;
+                 //std::cerr << " in mid-dwell; dwell-in-progress abandoned." <<
+					// std::endl;
                 _samplesCached = 0;
             } else {
-            	std::cerr << "." << std::endl;
+            	//std::cerr << "." << std::endl;
             }
         }
         _lastPulseRcvd = pulseNum;
