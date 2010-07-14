@@ -237,3 +237,85 @@ HcrDrxConfig::fillDdsSysHousekeeping(RadarDDS::SysHousekeeping& hskp) const {
     else
         hskp.staggered_prt = false; // default to false if unset
 }
+
+bool
+HcrDrxConfig::isValid(bool verbose) const {
+    bool valid = true;
+    if (gates() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'gates' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (ant_gain() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'ant_gain' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (ant_hbeam_width() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'ant_hbeam_width' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (ant_vbeam_width() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'ant_vbeam_width' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (staggered_prt() == UNSET_BOOL) {
+        if (verbose)
+            std::cerr << "'staggered_prt' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (prt1() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'prt1' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_digital_gain() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'rcvr_digital_gain' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_filter_mismatch() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'rcvr_filter_mismatch' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_gate0_delay() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'rcvr_gate0_delay' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_noise_figure() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'rcvr_noise_figure' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_pulse_width() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'rcvr_pulse_width' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_rf_gain() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'rcvr_rf_gain' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (tx_cntr_freq() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'tx_cntr_freq' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (tx_peak_power() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'tx_peak_power' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (tx_pulse_width() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'tx_pulse_width' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    
+    return valid;
+}

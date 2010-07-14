@@ -127,6 +127,14 @@ public:
     void fillDdsSysHousekeeping(RadarDDS::SysHousekeeping& hskp) const;
     
     /**
+     * Validate that all metadata values required for product generation 
+     * have been set.
+     * @return true iff metadata values required for product generation have
+     * all been set
+     */
+    bool isValid(bool verbose = true) const;  
+    
+    /**
      * Value returned when an unset double item is requested.
      */
     static const double UNSET_FLOAT;
