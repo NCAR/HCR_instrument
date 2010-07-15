@@ -25,37 +25,29 @@
 #include "DDSPublisher.h"
 #include "TSWriter.h"
 
+#include "HcrDrxConfig.h"
+
 using namespace std;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
 
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
-int _chans;                      ///< number of channels
+std::string _drxConfig;          ///< DRX configuration file
+int _chans = 1;                  ///< number of channels
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
 std::string _tsTopic;            ///< The published timeseries topic
-int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
-int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
-int _gates;                      ///< The number of gates
-int _nsum;                       ///< The number of sums
+int _DCPSDebugLevel = 0;         ///< the DCPSDebugLevel
+int _DCPSTransportDebugLevel = 0;///< the DCPSTransportDebugLevel
 int _tsLength;                   ///< The time series length
-int _delay = 0;					 ///< delay in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
-int _prt = 12544;                ///< prt in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
-int _prt2 = 12544;               ///< prt2 in ADC_Clk/2 counts, if == prt, then no staggered prt
-int _pulseWidth = 64;            ///< pulsewidth in ADC_Clk/2 counts (24 MHz for ddc4, 62.5 MHz for ddc8)
-bool _stgr_prt = false;          ///< set true for staggered prt
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
-int _decim;                      ///< Decimation or bypass divider rate
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
-bool _internalClock = false;     ///< set true to use the internal clock, false otherwise
-int _ddcType;                    ///< The ddc type in the pentek core. Must be 4 or 8.
-bool _freeRun = false;           ///< If set true, the prf gating of the downconversion is disabled.
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -90,8 +82,8 @@ void createDDSservices()
 
 //////////////////////////////////////////////////////////////////////
 ///
-/// get parameters that are spcified in the configuration file.
-/// These can be overriden by command line specifications.
+/// get parameters that are specified in the Qt configuration file.
+/// These can be overridden by command line specifications.
 void getConfigParams()
 {
 
@@ -120,17 +112,9 @@ void getConfigParams()
 	_tsTopic       = config.getString("DDS/TopicTS",        "HCRTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
-	_chans         = config.getInt("Device/Channels",       1);
-	_ddcType       = config.getInt("Device/DdcType",        8);
-	_gates         = config.getInt("Radar/Gates",           50);
-	_prt		   = config.getInt("Radar/PRT", 			12544);
-	_pulseWidth    = config.getInt("Radar/PulseWidth", 		64);
-	_nsum          = config.getInt("Radar/Nsum",            1);
 	_tsLength      = config.getInt("Radar/TsLength",        256);
-	_freeRun       = config.getBool("Radar/FreeRunning",    false);
 	_simulate      = config.getBool("Simulate",             false);
 	_simPauseMS    = config.getInt("SimPauseMs",            20);
-	_internalClock = config.getBool("InternalClock",        false);
 
 }
 
@@ -149,17 +133,10 @@ void parseOptions(int argc,
 	descripts.add_options()
 	("help", "Describe options")
 	("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
-	("chans",  po::value<int>(&_chans),            "Number of channels")
-	("gates",  po::value<int>(&_gates),            "Number of gates")
-	("prt",  po::value<int>(&_prt),                "PRT in ADC_Clk/2 counts")
-	("pulseWidth",  po::value<int>(&_pulseWidth),  "Pulsewidth in ADC_Clk/2 counts")
-	("nsum",  po::value<int>(&_nsum),              "Number of coherent integrator sums")
-	("ddc",  po::value<int>(&_ddcType),            "DDC type (8 or 4; must match pentek firmware)")
-	("freeRun",                                    "Free running mode, PRT gating is disabled")
+	("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
 	("nopublish",                                  "Do not publish data")
 	("simulate",                                   "Enable simulation")
 	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
-    ("internalClock",                              "Use the internal clock instead of the front panel clock")
 	("ORB", po::value<std::string>(&_ORB),         "ORB service configuration file (Corba ORBSvcConf arg)")
 	("DCPS", po::value<std::string>(&_DCPS),       "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
 	("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo),
@@ -168,30 +145,29 @@ void parseOptions(int argc,
 	("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
 			                                       "DCPSTransportDebugLevel")
 			;
-
+	// If we get an option on the command line with no option name, it
+	// is treated like --drxConfig=<option> was given.
+	po::positional_options_description pd;
+	pd.add("drxConfig", 1);
+	
 	po::variables_map vm;
-	po::store(po::parse_command_line(argc, argv, descripts), vm);
+	po::store(po:: command_line_parser(argc, argv).options(descripts).positional(pd).run(), vm);
 	po::notify(vm);
+
+	if (vm.count("help")) {
+		std::cout << "Usage: " << argv[0] << 
+			" [OPTION]... [--drxConfig] <configFile>" << std::endl;
+		std::cout << descripts << std::endl;
+		exit(0);
+	}
 
 	if (vm.count("nopublish"))
 	    _publish = false;
 	if (vm.count("simulate"))
 	    _simulate = true;
-	if (vm.count("internalClock"))
-	    _internalClock = true;
-	if (vm.count("freeRun"))
-		_freeRun = true;
-
-	if (vm.count("ddc")) {
-		if (_ddcType != 4 && _ddcType != 8) {
-			std::cout << "ddc must be 4 or 8"  << std::endl;
-			exit(1);
-		}
-	}
-
-	if (vm.count("help")) {
-		std::cout << descripts << std::endl;
-		exit(1);
+	if (vm.count("drxConfig") != 1) {
+	    std::cerr << "Exactly one DRX configuration file must be given!" << std::endl;
+	    exit(1);
 	}
 }
 
@@ -228,42 +204,11 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
-/// Make sure that the configuration parameters are self consist.
-/// Print an error message and exit the process if not.
-
-void argumentCheck() {
-
-	if (_nsum < 0 || (_nsum > 1 && (_nsum%2 != 0))) {
-		std::cerr << "nsum must be greater than 0 and less than 65535. If between 2 and 65535, it must be even." << std::endl;
-		exit(1);
-	}
-
-	if (_gates < 1 || _gates > 511) {
-		std::cerr << "gates must be greater than 0 and less than 512." << std::endl;
-		exit(1);
-	}
-
-	if (_prt % _pulseWidth) {
-		std::cerr << "PRT must be an integral number of pulse widths." << std::endl;
-		exit(1);
-	}
-
-	if (_prt <= (_gates+1)*_pulseWidth) {
-		std::cerr << "PRT must be greater than (gates+1)*(pulse width)," << std::endl;
-		exit(1);
-	}
-
-	if (_simulate)
-		std::cout << "*** Operating in simulation mode" << std::endl;
-
-}
-
-///////////////////////////////////////////////////////////
-void startUpConverter(Pentek::p7142up& upConverter) {
+void startUpConverter(Pentek::p7142up& upConverter, 
+        unsigned int pulsewidth_counts) {
 
 	// create the signal
-//	unsigned int n = _pulseWidth*2;
-	unsigned int n = _pulseWidth*2;
+	unsigned int n = pulsewidth_counts * 2;
 	long IQ[n];
 
 	for (unsigned int i = 0; i < n/2; i++) {
@@ -290,79 +235,61 @@ main(int argc, char** argv)
 	// get the configuration parameters from the configuration file
 	getConfigParams();
 
-	// parse the command line optins, substituting for config params.
+	// parse the command line options, substituting for config params.
 	parseOptions(argc, argv);
 
-    // make sure that the specified arguments are compatible
-	argumentCheck();
+	// Read the HCR configuration file
+    HcrDrxConfig hcrConfig(_drxConfig);
+    if (! hcrConfig.isValid()) {
+        std::cerr << "Exiting on incomplete configuration!" << std::endl;
+        exit(1);
+    }
+    std::cout << "radar: " << hcrConfig.radar_id() << ", prt: " <<
+            hcrConfig.prt1() << ", gates: " << hcrConfig.gates() << std::endl;
+
+    if (_simulate)
+        std::cout << "*** Operating in simulation mode" << std::endl;
 
 	// create the dds services
 	if (_publish)
 		createDDSservices();
-
-	// create the upconvertor. Use coarse mixer mode = ?, as specified in X4L FMIX CMIX
-	/// @todo Need reference that explains which cm_mode to specify here.
-	double sampleClock = 0;
-	double ncoFreq = 0;
-	if (_ddcType == 4) {
-		sampleClock = 48.0e6;
-		ncoFreq     = 12.0e6;
-	} else {
-		sampleClock = 125.0e6;
-		ncoFreq     = 31.25e6;
-	}
 	
-	// Create the upConverter.
-	// Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
-	Pentek::p7142up upConverter(_devRoot, "0C", sampleClock, ncoFreq, 9, _simulate); 
-
-	if (!upConverter.ok()) {
-		std::cerr << "cannot access " << upConverter.upName() << "\n";
-		exit(1);
-	}
-
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
 	std::vector<p7142sd3cdnThread*> down7142(_chans);
 
-	Pentek::p7142sd3cdn::DDCDECIMATETYPE ddcType = Pentek::p7142sd3cdn::DDC8DECIMATE;
-	if (_ddcType == 4) {
-		ddcType = Pentek::p7142sd3cdn::DDC4DECIMATE;
-	}
 	for (int c = 0; c < _chans; c++) {
 
 		std::cout << "*** Channel " << c << " ***" << std::endl;
-
-		p7142sd3cdnThread* p = new p7142sd3cdnThread(
-				_tsWriter,
-				_publish,
-				_tsLength,
-				_devRoot,
-				c,
-				_gates,
-				_nsum,
-				_delay,
-				_prt,
-				_prt2,
-				_pulseWidth,
-				_stgr_prt,
-				_freeRun,
-				_gaussianFile,
-				_kaiserFile,
-				ddcType,
-				2*_pulseWidth,
-				_simulate,
-				_simPauseMS,
-				_internalClock);
-		down7142[c] = p;
+		down7142[c] = new p7142sd3cdnThread(
+                hcrConfig,
+                _tsWriter,
+                _publish,
+                _tsLength,
+                _devRoot,
+                c,
+                _gaussianFile,
+                _kaiserFile,
+                _simulate,
+                _simPauseMS);
 		if (!down7142[c]->ok()) {
 			std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
 			perror("");
 			exit(1);
 		}
 	}
+
+    // Create the upConverter.
+    // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
+    Pentek::p7142up upConverter(_devRoot, "0C", down7142[0]->adcFrequency(), 
+            down7142[0]->adcFrequency() / 4, 9, _simulate); 
+
+    if (!upConverter.ok()) {
+        std::cerr << "cannot access " << upConverter.upName() << "\n";
+        exit(1);
+    }
 
     // catch a control-C
     signal(SIGINT, sigHandler);
@@ -376,7 +303,7 @@ main(int argc, char** argv)
 		std::cout << "processing enabled on " << down7142[c]->dnName() << std::endl;
 	}
 
-	// wait awhile, so that the threads can all get to the first read.
+    // wait awhile, so that the threads can all get to the first read.
 	struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
 	while (nanosleep(&sleepTime, &sleepTime)) {
 	    if (errno != EINTR) {
@@ -395,7 +322,9 @@ main(int argc, char** argv)
 
 	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
 	// DAC memory counters. This must take place before the timers are started.
-	startUpConverter(upConverter);
+    unsigned int pulsewidth_counts = (unsigned int)
+      (down7142[0]->rcvrPulseWidth() * down7142[0]->adcFrequency());
+	startUpConverter(upConverter, pulsewidth_counts);
 
 	// Start the timers, which will allow data to flow.
     // All timers are started by calling timerStartStop for
