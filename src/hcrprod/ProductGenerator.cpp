@@ -13,43 +13,20 @@
 
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
-static const double SPEED_OF_LIGHT = 2.99792458e8; // m s-1
-
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-        float rfRcvrGain, float pentek7142Gain, float rcvrNoise, 
-        float wavelength, int nSamples) :
+        int nSamples) :
     _reader(source),
     _writer(sink),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
-    _rfRcvrGain(rfRcvrGain),
-    _pentek7142Gain(pentek7142Gain),
-    _rcvrNoise(rcvrNoise),
-    _wavelength(wavelength),
     _nSamples(nSamples),
     _fft(nSamples),
     _regFilter(),
-    _nGates(0),
-    _prt(0),
-    _rangeToFirstGate(0.0),
-    _gateSpacing(0.0),
     _samplesCached(0),
     _itemCount(0),
     _wrongChannelCount(0),
     _dwellCount(0),
     _dwellDiscardCount(0),
     _lastPulseRcvd(-1) {
-    // Fixed bogus calibration (for now)
-    // @todo supply real calibration info
-    DsRadarCalib calib;
-    float rcvrGain = _rfRcvrGain + _pentek7142Gain;
-    float noisedbm = _rcvrNoise + rcvrGain - 13.35;
-    calib.setReceiverGainDbHc(rcvrGain);
-    calib.setNoiseDbmHc(noisedbm); // noise power at output of DRX including processing gain!
-    std::cout << "noise pwr is " <<  noisedbm << " dBm" << std::endl;
-//    calib.setBaseDbz1kmHc(-102.6 + 71.0); // MDS (0 db SNR) @ 1km
-    // use radar constant to 85.3 for UMASS antenna dataset
-     calib.setBaseDbz1kmHc(_rcvrNoise + 65.6); // MDS (0 db SNR) @ 1km
-    _momentsCalc.setCalib(calib);
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
     // Set the number of samples for the regression filter
@@ -119,6 +96,11 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
     // Run through the samples in the item
     for (unsigned int samp = 0; samp < nPulses; samp++) {
         RadarDDS::TimeSeries &ts = tsSequence->tsList[samp];
+        // Get the housekeeping as a class which gives us access to derived
+        // values (like radar constant, gate spacing, etc.) in addition to the 
+        // raw metadata members.
+        hcrddsSysHskp hskp(ts.hskp);
+        
         // Check pulse number
         long pulseNum = ts.pulseNum;
         long nMissed = pulseNum - _lastPulseRcvd - 1;
@@ -143,13 +125,6 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
         }
         _lastPulseRcvd = pulseNum;
         
-        float prt = ts.hskp.prt1;   // s
-        float gateSpacing = 0.5 * SPEED_OF_LIGHT * 
-            ts.hskp.rcvr_pulse_width;   // m
-        float rangeToFirstGate = 0.5 * SPEED_OF_LIGHT * 
-            ts.hskp.rcvr_gate0_delay;   // m
-        int nGates = ts.hskp.gates;
-            
         /*
          * If PRF, gate spacing, range to first gate, or gate count change in
          * mid-dwell, abandon the dwell-in-progress and start a new one.
@@ -157,28 +132,29 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
         if (_samplesCached > 0) {
             bool hskpChanged = false;
 
-            if (_prt != prt) {
-                std::cerr << "Mid-dwell PRT change from " << _prt <<
-                        " to " << prt <<
-                        " @ " << ts.hskp.timetag << std::endl;
+            if (_dwellHskp.prt1 != hskp.prt1) {
+                std::cerr << "Mid-dwell PRT change from " << 
+                        _dwellHskp.prt1 << " to " << hskp.prt1 <<
+                        " @ " << hskp.timetag << std::endl;
                 hskpChanged = true;
             }
-            if (_gateSpacing != gateSpacing) {
-                std::cerr << "Mid-dwell gate spacing change from " << _gateSpacing <<
-                        " to " << gateSpacing <<
-                        " @ " << ts.hskp.timetag << std::endl;
+            if (_dwellHskp.gate_spacing() != hskp.gate_spacing()) {
+                std::cerr << "Mid-dwell gate spacing change from " << 
+                        _dwellHskp.gate_spacing() << " to " << 
+                        hskp.gate_spacing() << " @ " << hskp.timetag << std::endl;
                 hskpChanged = true;
             }
-            if (_rangeToFirstGate != rangeToFirstGate) {
+            if (_dwellHskp.range_to_first_gate() != hskp.range_to_first_gate()) {
                 std::cerr << "Mid-dwell range-to-first-gate change from " <<
-                        _rangeToFirstGate << " to " << rangeToFirstGate <<
-                        " @ " << ts.hskp.timetag << std::endl;
+                        _dwellHskp.range_to_first_gate() << " to " << 
+                        hskp.range_to_first_gate() << " @ " << hskp.timetag << 
+                        std::endl;
                 hskpChanged = true;
             }
-            if (_nGates != nGates) {
-                std::cerr << "Mid-dwell ngates change from " << _nGates <<
-                        " to " << nGates <<
-                        " @ " << ts.hskp.timetag << std::endl;
+            if (_dwellHskp.gates != hskp.gates) {
+                std::cerr << "Mid-dwell ngates change from " << 
+                        _dwellHskp.gates << " to " << hskp.gates <<
+                        " @ " << hskp.timetag << std::endl;
                 hskpChanged = true;
             }
             if (hskpChanged) {
@@ -193,20 +169,33 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
          * dwell.
          */
         if (_samplesCached == 0) {
-            _momentsCalc.init(prt, _wavelength, 
-                    rangeToFirstGate * 0.001 /* km */,
-                    gateSpacing * 0.001 /* km */);
+            // Calibrate using values from the first pulse of the dwell
+            DsRadarCalib calib;
+            calib.setReceiverGainDbHc(hskp.rcvr_gain());
+            calib.setNoiseDbmHc(hskp.rcvr_noise_power() + 
+                    hskp.rcvr_gain()); // we include receiver gain here
+            calib.setBaseDbz1kmHc(hskp.rcvr_noise_power() + hskp.radar_constant_water());
+            _momentsCalc.setCalib(calib);
             
-            _dwellStart = ts.hskp.timetag;
-            _prt = prt;
-            _gateSpacing = gateSpacing;
-            _rangeToFirstGate = rangeToFirstGate;
-            _nGates = nGates;
+            _momentsCalc.init(hskp.prt1, hskp.tx_wavelength(), 
+                    hskp.range_to_first_gate() * 0.001 /* km */,
+                    hskp.gate_spacing() * 0.001 /* km */);
+            
+            _dwellHskp = hskp;
+        }
+        /*
+         * Save the azimuth and elevation from mid-dwell
+         */
+        if (_samplesCached == (_nSamples / 2)) {
+            _dwellAz = hskp.az;
+            _dwellEl = hskp.el;
         }
 
         // Gate count sanity check
-        if (_nGates > PRODGEN_MAX_GATES) {
-            std::cerr << "ProductGenerator::handleItem: Got " << _nGates <<
+        int nGates = hskp.gates;
+        
+        if (nGates > PRODGEN_MAX_GATES) {
+            std::cerr << "ProductGenerator::handleItem: Got " << nGates <<
                 " gates; PRODGEN_MAX_GATES is " << PRODGEN_MAX_GATES << std::endl;
             ok = false;
         }
@@ -215,7 +204,7 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
         double sqrtTwo = sqrt(2.0);
         double vMax = 1.0;	// Max signal voltage for HCR.  @todo make this changeable!
 
-        for (int gate = 0; gate < _nGates; gate++) {
+        for (int gate = 0; gate < nGates; gate++) {
         	// Real part I, in volts = (I      /32768) * vMax / sqrt(2)
         	//                           counts
             _dwellIQ[gate][_samplesCached].re =
@@ -231,10 +220,10 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
          */
         if (_samplesCached == _nSamples) {
             _dwellCount++;
-            MomentsFields moments[_nGates];
-            MomentsFields filteredMoments[_nGates];
+            MomentsFields moments[nGates];
+            MomentsFields filteredMoments[nGates];
             // Calculate products for our dwell, gate by gate
-            for (int gate = 0; gate < _nGates; gate++) {
+            for (int gate = 0; gate < nGates; gate++) {
                 // First calculate moments from the unfiltered IQ data
                 _momentsCalc.singlePol(_dwellIQ[gate], gate, false, moments[gate]);
 //                // Filter IQ data for this gate
@@ -269,6 +258,7 @@ void
 ProductGenerator::publish_(const MomentsFields *moments,
         const MomentsFields *filteredMoments) {
     RadarDDS::ProductSet *productSet;
+    int nGates = _dwellHskp.gates;
 
     productSet = _writer->getEmptyItem();
     if (! productSet) {
@@ -307,8 +297,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = -50.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].dbm == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -327,16 +317,15 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    float rcvrGain = _rfRcvrGain + _pentek7142Gain;
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].dbm == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
             continue;
         }
-    	// add back in the receiver gain
-    	double rawDbm = moments[g].dbm + dbmCorr + (rcvrGain - _pentek7142Gain);
+    	// add back in the RF receiver gain
+    	double rawDbm = moments[g].dbm + dbmCorr + _dwellHskp.rcvr_rf_gain;
         product->data[g] =
             short((rawDbm - product->offset) / product->scale);
     }
@@ -349,8 +338,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].dbz == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -368,8 +357,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].vel == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -387,8 +376,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 50.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].width == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -406,8 +395,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].snr == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -425,8 +414,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].dbz == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -444,8 +433,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
     product->offset = 0.0;
     product->scale = 100.0 / 32768;
     product->bad_value = PRODUCT_BAD_VALUE;
-    product->data.length(_nGates);
-    for (int g = 0; g < _nGates; g++) {
+    product->data.length(nGates);
+    for (int g = 0; g < nGates; g++) {
         // Catch and flag bad values now
         if (moments[g].vel == MomentsFields::missingDouble) {
             product->data[g] = PRODUCT_BAD_VALUE;
@@ -461,14 +450,15 @@ ProductGenerator::publish_(const MomentsFields *moments,
 
 void
 ProductGenerator::addProductHousekeeping_(RadarDDS::Product & p) {
-    p.hskp.timetag = _dwellStart;
-//    p.hskp.az = 0.0;
-//    p.hskp.el = 0.0;
+    // Timetag from the beginning of the dwell
+    p.hskp.timetag = _dwellHskp.timetag;
+    p.hskp.az = _dwellAz;   // saved from mid-dwell housekeeping
+    p.hskp.el = _dwellEl;   // saved from mid-dwell housekeeping
     p.samples = _nSamples;
-    // Single-PRT at this point
-    p.hskp.staggered_prt = false;
-    p.hskp.prt1 = _prt;
-    p.hskp.prt2 = 0.0;
-    p.hskp.rcvr_pulse_width = (2 * _gateSpacing) / SPEED_OF_LIGHT;
-    p.hskp.tx_cntr_freq = SPEED_OF_LIGHT / _wavelength;
+    p.hskp.staggered_prt = _dwellHskp.staggered_prt;
+    p.hskp.prt1 = _dwellHskp.prt1;
+    p.hskp.prt2 = _dwellHskp.prt2;
+    p.hskp.rcvr_pulse_width = _dwellHskp.rcvr_pulse_width;
+    p.hskp.tx_cntr_freq = _dwellHskp.tx_cntr_freq;
+    // @TODO add much more metadata here...
 }

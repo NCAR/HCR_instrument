@@ -13,6 +13,7 @@
 #include <QtTSReader.h>
 #include <ProductWriter.h>
 #include <radar/RadarMoments.hh>
+#include <hcrddsSysHskp.h>
 
 class ProductGenerator : public QThread {
     
@@ -23,15 +24,9 @@ public:
 	 * Constructor.
 	 * @param source the QtTSReader source for time series data
 	 * @param sink the ProductWriter sink for resulting products
-	 * @param rfRcvrGain the gain of the RF receiver, in dB
-	 * @param pentek7142Gain the gain in the Pentek card, in dB
-	 * @param rcvrNoise the noise value for the receiver, in dBm
-	 * @param wavelength radar wavelength, m
 	 * int nSamples the number of pulses to use per dwell
 	 */
-    ProductGenerator(QtTSReader *source, ProductWriter *sink, float rfRcvrGain, 
-    		float pentek7142Gain, float rcvrNoise, float wavelength, 
-    		int nSamples);
+    ProductGenerator(QtTSReader *source, ProductWriter *sink, int nSamples);
     virtual ~ProductGenerator();
     void run();
     /**
@@ -84,22 +79,6 @@ private:
      */
     RadarMoments _momentsCalc;
     /**
-     * Receiver gain from LNA to input of Pentek 7142, in dB
-     */
-    float _rfRcvrGain;
-    /**
-     * Gain input of Pentek 7142 to output of DDC, in dB
-     */
-    float _pentek7142Gain;
-    /**
-     * Receiver noise power, in dBm
-     */
-    float _rcvrNoise;
-    /**
-     * Radar wavelength, m
-     */
-    float _wavelength;
-    /**
      * Number of samples to integrate when generating products
      */
     int _nSamples;
@@ -119,11 +98,9 @@ private:
      */
     RadarComplex_t **_dwellIQ;
     RadarComplex_t *_filteredGateIQ;    // work space to hold filtered IQ data for one gate
-    long long _dwellStart;      // dwell start time in us since 1970-01-01 00:00 UTC
-    int _nGates;                // gate count for the dwell
-    float _prt;                 // PRT for the dwell
-    float _rangeToFirstGate;    // range to leading edge of first gate, m
-    float _gateSpacing;         // gate spacing, m
+    hcrddsSysHskp _dwellHskp;       // housekeeping from first pulse of dwell
+    double _dwellAz;
+    double _dwellEl;
     int _samplesCached;         // samples in the dwell so far
     int _itemCount;         	// TimeSeriesSequence-s received
     int _wrongChannelCount; 	// TSS-s with the wrong channel
