@@ -17,7 +17,7 @@ rcvr_noise_figure       8.9     # dB
 rcvr_pulse_width        5.12e-7 # s
 rcvr_rf_gain            39.48   # dB
 
-tx_cntr_freq            9.37e10 # Hz
+tx_cntr_freq            9.44065e10 # Hz
 tx_peak_power           58.78   # dBm
 tx_pulse_width          5.12e-7 # s
 
