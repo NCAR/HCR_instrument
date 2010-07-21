@@ -125,13 +125,11 @@ p7142sd3cdnThread::p7142sd3cdnThread(
     _baseDdsHskp.ant_vbeam_width = 0.68;
     _baseDdsHskp.rcvr_digital_gain = -2.67;
     _baseDdsHskp.rcvr_filter_mismatch = 1.1;
-    _baseDdsHskp.rcvr_gate0_delay = 0.0;
     _baseDdsHskp.rcvr_noise_figure = 8.9;
-    _baseDdsHskp.rcvr_pulse_width = 5.0e-7;
     _baseDdsHskp.rcvr_rf_gain = 39.48;
-    _baseDdsHskp.tx_cntr_freq = 9.37e10;
+    _baseDdsHskp.tx_cntr_freq = 9.44065e10;
     _baseDdsHskp.tx_peak_power = 58.78;
-    _baseDdsHskp.tx_pulse_width = 1.0e-6;
+    _baseDdsHskp.tx_pulse_width = _baseDdsHskp.rcvr_pulse_width;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
