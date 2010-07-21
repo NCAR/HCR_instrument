@@ -450,15 +450,11 @@ ProductGenerator::publish_(const MomentsFields *moments,
 
 void
 ProductGenerator::addProductHousekeeping_(RadarDDS::Product & p) {
-    // Timetag from the beginning of the dwell
-    p.hskp.timetag = _dwellHskp.timetag;
+    // Copy housekeeping from the first pulse of the dwell
+    p.hskp = _dwellHskp;
+    // replace az and el with values from mid-dwell
     p.hskp.az = _dwellAz;   // saved from mid-dwell housekeeping
     p.hskp.el = _dwellEl;   // saved from mid-dwell housekeeping
+    // Insert the sample count
     p.samples = _nSamples;
-    p.hskp.staggered_prt = _dwellHskp.staggered_prt;
-    p.hskp.prt1 = _dwellHskp.prt1;
-    p.hskp.prt2 = _dwellHskp.prt2;
-    p.hskp.rcvr_pulse_width = _dwellHskp.rcvr_pulse_width;
-    p.hskp.tx_cntr_freq = _dwellHskp.tx_cntr_freq;
-    // @TODO add much more metadata here...
 }
