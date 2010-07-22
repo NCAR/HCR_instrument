@@ -42,6 +42,7 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("ant_H_plane_angle");
     keys.insert("ant_encoder_up");
     keys.insert("ant_pitch_up");
+    keys.insert("rcvr_bandwidth");
     keys.insert("rcvr_cntr_freq");
     keys.insert("rcvr_digital_gain");
     keys.insert("rcvr_filter_mismatch");
@@ -269,6 +270,11 @@ HcrDrxConfig::isValid(bool verbose) const {
     if (prt1() == UNSET_FLOAT) {
         if (verbose)
             std::cerr << "'prt1' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (rcvr_bandwidth() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'rcvr_bandwidth' unset in DRX configuration" << std::endl;
         valid = false;
     }
     if (rcvr_digital_gain() == UNSET_FLOAT) {

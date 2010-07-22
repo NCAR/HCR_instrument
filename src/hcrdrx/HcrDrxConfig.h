@@ -84,6 +84,7 @@ public:
     double ant_pitch_up() const { return _getDoubleVal("ant_pitch_up"); }            /// degrees
 
     int actual_num_rcvrs() const { return _getIntVal("actual_num_rcvrs"); }     /// number of channels
+    double rcvr_bandwidth() const { return _getDoubleVal("rcvr_bandwidth"); }   /// Hz
     double rcvr_cntr_freq() const { return _getDoubleVal("rcvr_cntr_freq"); }        /// Hz
     double rcvr_pulse_width() const { return _getDoubleVal("rcvr_pulse_width"); }    /// seconds
     double rcvr_switching_network_loss() const { return _getDoubleVal("rcvr_switching_network_loss"); }  /// dB
@@ -98,24 +99,6 @@ public:
     double latitude() const { return _getDoubleVal("latitude"); }    /// degrees
     double longitude() const { return _getDoubleVal("longitude"); }  /// degrees
     double altitude() const { return _getDoubleVal("altitude"); }    /// meters MSL
-    
-    /**
-     * Effective receiver temperature, K
-     * @return effective receiver temperature, K
-     */
-    double rcvr_effective_temp() const;
-    
-    /**
-     * Receiver noise power, dBm
-     * @return receiver noise power, dBm
-     */
-    double rcvr_noise_power() const;
-    
-    /**
-     * Receiver bandwidth, Hz
-     * @return receiver bandwidth, Hz
-     */
-    double rcvr_bandwidth() const;
     
     int ddcType() const { return _getIntVal("ddc_type"); } /// 4 or 8
     
