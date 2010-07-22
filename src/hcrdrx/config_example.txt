@@ -10,6 +10,7 @@ ant_vbeam_width         0.68    # deg
 staggered_prt           0
 prt1                    1.00352e-4  # s
 
+rcvr_bandwidth          1.37e6  # Hz
 rcvr_digital_gain       -2.67   # dB
 rcvr_filter_mismatch    1.1     # dB
 rcvr_gate0_delay        0.0     # s
