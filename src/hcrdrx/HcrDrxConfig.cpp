@@ -194,7 +194,7 @@ HcrDrxConfig::fillDdsSysHousekeeping(RadarDDS::SysHousekeeping& hskp) const {
     // The non-bool values are easy, since we have special values to indicate
     // the ones which weren't set.
     hskp.actual_num_rcvrs = actual_num_rcvrs();
-    hskp.altitute = altitude();
+    hskp.altitude = altitude();
     hskp.ant_E_plane_angle = ant_E_plane_angle();
     hskp.ant_H_plane_angle = ant_H_plane_angle();
     hskp.ant_encoder_up = ant_encoder_up();
