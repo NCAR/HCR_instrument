@@ -20,6 +20,10 @@
 // Proxy argc/argv
 #include <ArgvParams.h>
 
+// This is required for some tests below which try to work around issues
+// with OpenDDS 2.0/2.1
+#include <dds/Version.h>
+
 #include "p7142sd3cdnThread.h"
 #include "p7142.h"
 #include "DDSPublisher.h"
@@ -244,8 +248,28 @@ main(int argc, char** argv)
         std::cerr << "Exiting on incomplete configuration!" << std::endl;
         exit(1);
     }
-    std::cout << "radar: " << hcrConfig.radar_id() << ", prt: " <<
-            hcrConfig.prt1() << ", gates: " << hcrConfig.gates() << std::endl;
+    
+    // KLUGE: For OpenDDS 2.0 and 2.1, keep the published sample size less than ~64 KB,
+    // since larger samples seem to lock things up...
+    if (DDS_MAJOR_VERSION == 2 && DDS_MINOR_VERSION < 2) {
+        // this is just an approximation...
+        int onePulseSize = sizeof(RadarDDS::SysHousekeeping) + hcrConfig.gates() * 4;
+        int maxTsLength = 65000 / onePulseSize;
+        if (! maxTsLength) {
+            std::cerr << "Cannot adjust tsLength to meet OpenDDS 2.0/2.1 " <<
+                    "max sample size of 2^16 bytes" << std::endl;
+            exit(1);
+        } else if (_tsLength > maxTsLength) {
+            int oldTsLength = _tsLength;
+            // Set _tsLength to the greatest power of 2 which is <= maxTsLength
+            _tsLength = 1;
+            while ((_tsLength * 2) <= maxTsLength)
+                _tsLength *= 2;
+            std::cerr << "Adjusted tsLength from " << oldTsLength << " to " <<
+                    _tsLength << " to stay under OpenDDS 2.0/2.1 64 KB sample size limit." <<
+                    std::endl;
+        }
+    }
 
     if (_simulate)
         std::cout << "*** Operating in simulation mode" << std::endl;
