@@ -319,7 +319,7 @@ p7142sd3cdnThread::decodeBuf(char* buf, int n) {
 	   unsigned short* data = (unsigned short*)buf;
 	   for (int t = 0; t < _tsLength; t++) {
 	       if (!_freeRun) {
-               int sync = ((int*)(data))[0];
+               int sync = *((int*)(data+in));
                // uncomment the following to convince yourself that the sync word is working
                //std::cout << std::hex << sync << std::dec << std::endl;
                if (sync != SD3C_SYNCWORD) {
