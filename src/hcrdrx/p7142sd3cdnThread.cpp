@@ -151,9 +151,9 @@ void p7142sd3cdnThread::run() {
 	  if (_freeRun) {
 		  _bufferSize = _tsLength*_gates*2*2;
 	  } else {
-		  // if not in free run mode, there will also be a four byte pulse tag
+		  // if not in free run mode, there will also be a sync word and a four byte pulse tag
 		  // at the beginning of each pulse which looks like an additional gate
-		  _bufferSize = _tsLength*(4 + _gates*2*2);
+		  _bufferSize = _tsLength*(4 + 4 + _gates*2*2);
 	  }
   } else {
       // coherently integrated data has:
@@ -243,6 +243,9 @@ p7142sd3cdnThread::publish(char* buf, int n) {
           unsigned long channel = 0;
           // Get stuff from the tag if we're not free-running
           if (!_freeRun) {
+              // skip the sync word
+              in += 2;
+              // get the pulse number and the channel id
               pulseNum = unpackPulseNum((const char*)(sdata + in));
               channel = unpackChannelNum((const char*)(sdata + in));
               // skip past the tag
@@ -316,6 +319,15 @@ p7142sd3cdnThread::decodeBuf(char* buf, int n) {
 	   unsigned short* data = (unsigned short*)buf;
 	   for (int t = 0; t < _tsLength; t++) {
 	       if (!_freeRun) {
+               int sync = ((int*)(data))[0];
+               // uncomment the following to convince yourself that the sync word is working
+               //std::cout << std::hex << sync << std::dec << std::endl;
+               if (sync != SD3C_SYNCWORD) {
+                    _syncErrors++;
+               }
+               // step past the sync word
+               in += 2;
+               // unpack the channel id and pulse number
 	           long chan = unpackChannelNum((const char*)(data + in));
 	           long seq = unpackPulseNum((const char*)(data + in));
 	           // Now that we've gotten stuff from the 4-byte tag, point
@@ -323,7 +335,7 @@ p7142sd3cdnThread::decodeBuf(char* buf, int n) {
 	           in += 2;
 
 	           if (chan != _chanId) {
-	               _syncErrors++;
+                  // should we do anything here?
 	           } else {
 	               //std::cout << "pulse " << t << "  chan " << chan << "  seq " << seq << " " << _lastPulseSeq << std::endl;
 
