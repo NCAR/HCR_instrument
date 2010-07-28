@@ -40,63 +40,8 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
                 bool simulate,
                 int simPauseMS);
         
-        /**
-         * Constructor.
-         * @deprecated This constructor requires that the user know some
-         *     internal info, like the Pentek's ADC clock rate, to use it.
-         *     The new constructor which takes a HcrDrxConfig object is now
-         *     preferred.
-         * @param tsWriter the time series DDS writer to be used.
-         * @param publish should we publish data via DDS?
-         * @param tsLength the number of time series pulses to be sent when
-         *     we publish
-         * @param devName the root device name (e.g., "/dev/pentek/p7140/0")
-         * @param chanId the receiver channel of this downconverter
-         * @param gates the number of gates to sample
-         * @param nsum the number of pulses to sum for coherent integration
-         * @param delay the delay time between the start of the transmit pulse
-         *     and the beginning of receiver sampling, in units of (adc_clock / 2)
-         * @param prt the first PRT, in units of (adc_clock / 2)
-         * @param prt2 the second PRT, if using staggered PRTs, in units of
-         *     (adc_clock / 2)
-         * @param pulse_width the receiver pulse width, in units of (adc_clock / 2)
-         * @param stgr_prt are we using staggered PRTs?
-         * @param freeRun are we using free running mode?
-         * @param gaussianFile Name of the file containing the Gaussian
-         *     filter parameters
-         * @param kaiserFile Name of the file containing the Kaiser
-         *     filter parameters
-         * @param decimateType the DDC type of the card's firmware, either
-         *     p7142dn::DDC4DECIMATE or p7142dn::DDC8DECIMATE
-         * @param bypassdivrate the bypass divider factor
-         * @param simulate generate simulated data? (no Pentek card is used
-         *     if simulate is true)
-         * @param simPauseMS The number of milliseconds to wait before returning
-         *     simulated data when calling read()
-         * @param internalClock use the Pentek card's internal clock?
-         */
-		p7142sd3cdnThread(
-				TSWriter* tsWriter,
-				bool publish,
-				int tsLength,
-				std::string devName,
-				int chanId,
-				int gates,
-				int nsum,
-				int delay,
-				int prt,
-				int prt2,
-				int pulse_width,
-				bool stgr_prt,
-				bool freeRun,
-				std::string gaussianFile,
-				std::string kaiserFile,
-				Pentek::p7142sd3cdn::DDCDECIMATETYPE decimateType,
-				int bypassdivrate=8,
-				bool simulate=false,
-				int simPauseMS=100,
-				bool internalClock=false);
-		virtual ~p7142sd3cdnThread();
+		/// Destructor
+        virtual ~p7142sd3cdnThread();
 		void run();
 		/// @return The number of timeseries blocks that have been discarded
 		/// since the last time this function was called.
