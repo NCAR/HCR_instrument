@@ -53,6 +53,7 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("rcvr_rf_gain");
     keys.insert("rcvr_switching_network_loss");
     keys.insert("rcvr_waveguide_loss");
+    keys.insert("tx_delay");
     keys.insert("latitude");
     keys.insert("longitude");
     keys.insert("altitude");
@@ -328,6 +329,39 @@ HcrDrxConfig::isValid(bool verbose) const {
     			"'tx_pulse_width' for HCR" << std::endl;
     		valid = false;
     }
+    if (tx_delay() == UNSET_FLOAT) {
+        if (verbose)
+            std::cerr << "'tx_delay' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
     
     return valid;
+}
+
+std::vector<double> 
+HcrDrxConfig::timer_delays() const {
+    std::vector<double> result;
+    // The first of the extra timers (TIMER4) is used in HCR for ?.
+    // This value was taken from the hardwired value originally in p7142sd3cdn
+    result.push_back(rcvr_gate0_delay() + 5*2/125.0e6);
+    result.push_back(0);
+    result.push_back(0);
+    result.push_back(0);
+    result.push_back(0);
+    
+    return result;
+}
+std::vector<double> 
+HcrDrxConfig::timer_widths() const {
+
+    // The first of the extra timers (TIMER4) is used in HCR for ?.
+    // This value was taken from the hardwired value originally in p7142sd3cdn
+    std::vector<double> result;
+    result.push_back(rcvr_pulse_width() + 16*2/125.0e6 );
+    result.push_back(0);
+    result.push_back(0);
+    result.push_back(0);
+    result.push_back(0);
+    
+    return result;
 }

@@ -13,6 +13,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <vector>
 #include <cstdlib>
 #include <iostream>
 #include <hcrddsC.h>
@@ -95,6 +96,15 @@ public:
     double rcvr_if_gain() const { return _getDoubleVal("rcvr_if_gain"); }            /// dB
     double rcvr_digital_gain() const { return _getDoubleVal("rcvr_digital_gain"); }  /// dB
     double rcvr_gate0_delay() const { return _getDoubleVal("rcvr_gate0_delay"); }    /// seconds
+    double tx_delay() const { return _getDoubleVal("tx_delay"); }    /// seconds
+    /// Five delay values for the extra timers in the sd3c firmware.
+    /// The firt one is hardwired to an HCR specific value. The remaining
+    /// ones are zero.
+    std::vector<double> timer_delays() const; 
+    /// Five width values for the extra timers in the sd3c firmware.
+    /// The firt one is hardwired to an HCR specific value. The remaining
+    /// ones are zero.
+    std::vector<double> timer_widths() const; 
 
     double latitude() const { return _getDoubleVal("latitude"); }    /// degrees
     double longitude() const { return _getDoubleVal("longitude"); }  /// degrees

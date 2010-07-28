@@ -24,10 +24,13 @@ p7142sd3cdnThread::p7142sd3cdnThread(
              1,
              tsLength,
              config.rcvr_gate0_delay(),
+             config.tx_delay(),
              config.prt1(),
              config.prt2(),
              config.rcvr_pulse_width(),
              (config.staggered_prt() == HcrDrxConfig::UNSET_BOOL) ? false : config.staggered_prt(),
+             config.timer_delays(),
+             config.timer_widths(),
              false,
              gaussianFile,
              kaiserFile,
@@ -48,7 +51,7 @@ p7142sd3cdnThread::p7142sd3cdnThread(
         abort();
     /// HCR Pentek firmware requires that bypass divider value be set to
     /// 2 * (pulse width in adc_frequency counts).
-    setBypassDivider(2 * _pulseWidth);
+    setBypassDivider(2 * _timer_widths[2]);
     std::cout << "p7142sd3cdnThread decimation:    " << bypassDivider()      << " adc_clock counts"     << std::endl;
 
     // Fill our DDS base housekeeping values from the configuration
@@ -394,15 +397,15 @@ p7142sd3cdnThread::_configIsValid() const {
         valid = false;
     }
     // PRT must be a multiple of the pulse width
-    if (_prt % _pulseWidth) {
+    if (_prt % _timer_widths[2]) {
         std::cerr << "PRT is " << _prt * 2 / adcFrequency() << " (" << _prt <<
-            ") and pulse width is " << _pulseWidth * 2 / adcFrequency() << 
-            " (" << _pulseWidth << 
+            ") and pulse width is " << _timer_widths[2] * 2 / adcFrequency() << 
+            " (" << _timer_widths[2] << 
             "): PRT must be an integral number of pulse widths." << std::endl;
         valid = false;
     }
     // PRT must be longer than (gates + 1) * pulse width
-    if (_prt <= ((_gates + 1) * _pulseWidth)) {
+    if (_prt <= ((_gates + 1) * _timer_widths[2])) {
         std::cerr << 
             "PRT must be greater than (gates+1)*(pulse width)." << std::endl;
         valid = false;

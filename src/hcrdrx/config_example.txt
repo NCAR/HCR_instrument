@@ -21,7 +21,7 @@ rcvr_rf_gain            39.48   # dB
 tx_cntr_freq            9.44065e10 # Hz
 tx_peak_power           58.78   # dBm
 tx_pulse_width          5.12e-7 # s
-
+tx_delay                0.0     # s
 
 # FL1 location
 latitude            40.03794
