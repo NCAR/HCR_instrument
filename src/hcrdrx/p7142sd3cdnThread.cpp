@@ -49,10 +49,6 @@ p7142sd3cdnThread::p7142sd3cdnThread(
     // Bail out if we're not configured legally.
     if (! _configIsValid())
         abort();
-    /// HCR Pentek firmware requires that bypass divider value be set to
-    /// 2 * (pulse width in adc_frequency counts).
-    setBypassDivider(2 * _timer_widths[2]);
-    std::cout << "p7142sd3cdnThread decimation:    " << bypassDivider()      << " adc_clock counts"     << std::endl;
 
     // Fill our DDS base housekeeping values from the configuration
     config.fillDdsSysHousekeeping(_baseDdsHskp);
