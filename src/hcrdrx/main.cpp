@@ -249,14 +249,14 @@ main(int argc, char** argv)
         exit(1);
     }
     
-    // KLUGE: For OpenDDS 2.0 and 2.1, keep the published sample size less than ~64 KB,
-    // since larger samples seem to lock things up...
-    if (DDS_MAJOR_VERSION == 2 && DDS_MINOR_VERSION < 2) {
+    // For OpenDDS 2.1, keep the published sample size less than ~64 KB,
+    // since larger samples are a problem...
+    if (DDS_MAJOR_VERSION == 2 && DDS_MINOR_VERSION == 1) {
         // this is just an approximation...
         int onePulseSize = sizeof(RadarDDS::SysHousekeeping) + hcrConfig.gates() * 4;
         int maxTsLength = 65000 / onePulseSize;
         if (! maxTsLength) {
-            std::cerr << "Cannot adjust tsLength to meet OpenDDS 2.0/2.1 " <<
+            std::cerr << "Cannot adjust tsLength to meet OpenDDS 2.1 " <<
                     "max sample size of 2^16 bytes" << std::endl;
             exit(1);
         } else if (_tsLength > maxTsLength) {
@@ -266,7 +266,7 @@ main(int argc, char** argv)
             while ((_tsLength * 2) <= maxTsLength)
                 _tsLength *= 2;
             std::cerr << "Adjusted tsLength from " << oldTsLength << " to " <<
-                    _tsLength << " to stay under OpenDDS 2.0/2.1 64 KB sample size limit." <<
+                    _tsLength << " to stay under OpenDDS 2.1 64 KB sample size limit." <<
                     std::endl;
         }
     }
