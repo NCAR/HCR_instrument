@@ -180,12 +180,10 @@ p7142sd3cdnThread::publish(char* buf, int n) {
           ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
               (timeFromEpoch.fractional_seconds() * 1000000LL) /
               time_duration::ticks_per_second();
-          // Finally, pull the per-gate data
-          for (int g = 0; g < _gates; g++) {
-              // copy from read buffer to DDS array
-              ts.data[2 * g] = sdata[in++];
-              ts.data[2 * g + 1] = sdata[in++];
-          }
+          // Copy the per-gate data from the incoming buffer to the DDS 
+          // sample data space.
+          memmove(ts.data.get_buffer(), sdata + in, ts.data.length() * 2);
+          in += 2 * _gates;
       } else {
           // decode data from coherent integrator
           ts.pulseNum = 0;  // BOGUS
@@ -275,7 +273,7 @@ p7142sd3cdnThread::decodeBuf(char* buf, int n) {
 	               } else if (delta < 0) {
 	                   // wrap around
 	                   // sequence numbers are thirty bits
-	                   _droppedPulses++;;
+	                   _droppedPulses++;
 	               } else {
                        /// @todo Should this be a sync error, or something else?
                        _syncErrors++;
