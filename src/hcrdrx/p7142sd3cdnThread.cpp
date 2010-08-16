@@ -90,7 +90,8 @@ void p7142sd3cdnThread::run() {
   // create the read buffer
   char* buf = new char[bufferSize];
 
-  std::cout << "block size is " << bufferSize << ", waiting for data..." << std::endl;
+  std::cout << "Channel " << _chanId << " block size is " << bufferSize << 
+    ", waiting for data..." << std::endl;
 
   // How many unprocessed data bytes are at the head of buf?
   int nInBuf = 0;
@@ -217,7 +218,7 @@ p7142sd3cdnThread::_decodeAndPublishRaw(char* buf, int buflen) {
             int syncPos = indexOfNextSync(bufPos, endOfBuf - bufPos);
             if (syncPos != 0) {
                 _syncErrors++;
-                std::cerr << "Skipped " << syncPos << 
+                std::cerr << "Channel " << _chanId << ": skipped " << syncPos << 
                     " bytes to find sync after pulse " << _lastPulse << std::endl;
                 if (syncPos < 0) {
                     // A sync word was not found. Save the last 3 bytes (in case
@@ -259,15 +260,17 @@ p7142sd3cdnThread::_decodeAndPublishRaw(char* buf, int buflen) {
                 delta += (MAX_PULSE_NUM + 1); // pulse number wrapped
 
             if (delta == 0) {
-                std::cerr << "p7142sd3cdnThread got repeat of pulse " <<
+                std::cerr << "Channel " << _chanId << ": got repeat of pulse " <<
                         pulseNum << "!" << std::endl;
                 abort();
             } else if (delta != 1) {
                 std::cerr << _lastPulse << "->" << pulseNum << ": ";
                 if (delta < 0) {
-                    std::cerr << "went BACKWARD " << -delta << " pulses" << std::endl;
+                    std::cerr << "Channel " << _chanId << " went BACKWARD " << 
+                        -delta << " pulses" << std::endl;
                 } else {
-                    std::cerr << "dropped " << delta - 1 << " pulses" << std::endl;
+                    std::cerr << "Channel " << _chanId << " dropped " << 
+                        delta - 1 << " pulses" << std::endl;
                 }
             }
             _droppedPulses += (delta - 1);
@@ -288,7 +291,8 @@ p7142sd3cdnThread::_decodeAndPublishRaw(char* buf, int buflen) {
                 // If no sample was available, discard everything we have and
                 // return.
                 if (! _ddsSampleInProgress) {
-                    std::cerr << "Dropped data with no DDS samples available!" << std::endl;
+                    std::cerr << "Channel " << _chanId << 
+                        " dropped data with no DDS samples available!" << std::endl;
                     _tsDiscards++;
                     return 0;
                 }
