@@ -383,14 +383,16 @@ main(int argc, char** argv)
 			overUnder[c] = down7142[c]->overUnderCount();
 			discards[c] = down7142[c]->tsDiscards();
 			droppedPulses[c] = down7142[c]->droppedPulses();
+            syncErrors[c] = down7142[c]->syncErrors();
 		}
 		
 		for (int c = 0; c < _chans; c++) {
 			std::cout << std::setprecision(3) << std::setw(5)
-					  << bytes[c]/1000000.0/elapsed << " MB/s "
+                      << "chan " << c << " -- "
+                      << bytes[c]/1000000.0/elapsed << " MB/s "
 					  << " ovr:" << overUnder[c]
 					  << " nopub:"<< discards[c]
-					  << " tags:" << droppedPulses[c]
+					  << " drop:" << droppedPulses[c]
 	                  << " sync:" << syncErrors[c];
 		}
 		std::cout << std::endl;
