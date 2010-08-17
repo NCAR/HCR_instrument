@@ -40,7 +40,7 @@ void AScopeReader::notify(){
 	while (RadarDDS::TimeSeriesSequence* ddsItem = getNextItem()) {
 		// send the sample to our clients
 		if (! sentOne && _capture) {
-			AScope::TimeSeries pItem;
+			AScope::ShortTimeSeries pItem;
 			pItem.gates    = ddsItem->tsList[0].hskp.gates;
 			pItem.chanId   = ddsItem->chanId;
 			int tsLength   = ddsItem->tsList.length();
