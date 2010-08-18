@@ -17,6 +17,14 @@ TimeSeriesAdapter.cpp
 ''')
 sources += tsplaybackSources
 
+productplaybackSources = Split('''
+CfRadialFilesReader.cpp
+ProductPlayback.cpp
+ProductPlaybackMain.cpp
+ProductAdapter.cpp
+''')
+sources += productplaybackSources
+
 ts2peifileSources = Split('''
 IwrfTsFilesReader.cpp
 Ts2PeiFile.cpp
@@ -31,9 +39,11 @@ ProductAdapter.cpp
 sources += productarchiverSources
 
 headers = Split('''
+CfRadialFilesReader.h
 IwrfTsFilesReader.h
 ProductAdapter.h
 ProductArchiver.h
+ProductPlayback.h
 TimeSeriesAdapter.h
 TsArchiver.h
 TsPlayback.h
@@ -87,5 +97,10 @@ productenv = Environment(tools = ['default'] + producttools)
 productarchiver = productenv.Program('productarchiver', productarchiverSources)
 inst += productenv.InstallProgram(productarchiver)
 productenv.Default(productarchiver)
+
+# build productplayback
+productplayback = productenv.Program('productplayback', productplaybackSources)
+inst += productenv.InstallProgram(productplayback)
+productenv.Default(productplayback)
 
 productenv.Alias('install', inst)
