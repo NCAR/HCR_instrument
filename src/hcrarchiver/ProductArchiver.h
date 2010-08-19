@@ -53,14 +53,14 @@ private:
     // increment the volume counter
     void _writeCurrentVolume();
     
+    // Initialize our volume
+    void _initVolume();
+    
     // destination directory
     std::string _dataDir;
     
     // number of rays to write per file
     uint _raysPerFile;
-    
-    // volume counter
-    int _volNum;
     
     // Our RadxFile object, for writing output files
     RadxFile _radxFile;

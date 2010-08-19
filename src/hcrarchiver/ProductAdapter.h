@@ -13,29 +13,39 @@
 // RadarrDDS::ProductSet class
 #include "hcrddsTypeSupportImpl.h"
 
-// RAL RadxRay class
+// RAL Radx classes
 #include <Radx/RadxRay.hh>
+#include <Radx/RadxVol.hh>
+#include <Radx/RadxRcalib.hh>
 
 
 class ProductAdapter {
 public:
     /**
-     * Convert from RadxRay (+ RadxVol) to a RadarDDS::ProductSet ray.
+     * Convert from RadxRay (+ its RadxVol) to a RadarDDS::ProductSet ray.
      * @param radxRay the RadxRay to be converted
+     * @param radxVol the RadxVol associated with radxRay
      * @param productSet the destination RadarDDS::ProductSet
-     * @param txFrequency the transmit center frequency, in Hz, to be assigned
-     *    to productSet
      */
-    static void RadxRayToDDS(const RadxRay& radxRay, 
-            RadarDDS::ProductSet& productSet, float txFrequency);
+    static void RadxRayToDDS(const RadxRay& radxRay, const RadxVol& RadxVol,
+            RadarDDS::ProductSet& productSet);
     /**
-     * Convert a RadarDDS::ProductSet ray to a RadxRay.
+     * Convert a RadarDDS::ProductSet ray to a RadxRay/RadxVol/RadxRcalib
+     * combination. Note that the three Radx objects will be populated, but
+     * no association will be set between them. I.e., insertion of the RadxRay
+     * into the RadxVol and association of the RadxRcalib with the RadxVol
+     * and RadxRay must happen elsewhere (either before or after this
+     * method is called). The platform type should be set in the RadxVol
+     * before calling this function.
      * @param productSet the RadarDDS::ProductSet ray to be converted
      * @param radxRay the destination RadxRay
-     * @param volNum the volume number to assign to the new RadxRay.
+     * @param radxVol the RadxVol to hold volume information extracted from
+     *     productSet
+     * @param radxRcalib the RadxRcalib to hold calibration information 
+     *     extracted from productSet.
      */
     static void DDSToRadxRay(const RadarDDS::ProductSet& productSet,
-            RadxRay& radxRay, int volNum);
+            RadxRay& radxRay, RadxVol& radxVol, RadxRcalib& radxRcalib);
 };
 
 #endif /* PRODUCTADAPTER_H_ */

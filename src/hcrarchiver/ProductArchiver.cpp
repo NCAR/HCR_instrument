@@ -17,8 +17,9 @@
 #include <dds/DCPS/Service_Participant.h>    // for TheServiceParticipant
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-static const double SPEED_OF_LIGHT = 2.99792458e8; // m s-1
+#include <hcrddsSysHskp.h>
 
+#include <Radx/RadxRcalib.hh>
 
 ProductArchiver::ProductArchiver(DDSSubscriber& subscriber, 
         std::string topicName, std::string dataDir, uint raysPerFile,
@@ -26,7 +27,6 @@ ProductArchiver::ProductArchiver(DDSSubscriber& subscriber,
             ProductReader(subscriber, topicName),
             _dataDir(dataDir),
             _raysPerFile(raysPerFile),
-            _volNum(0),
             _radxFile(),
             _radxVol(),
             _raysRead(0),
@@ -41,6 +41,9 @@ ProductArchiver::ProductArchiver(DDSSubscriber& subscriber,
     // to names files.
     _radxFile.setFileFormat(fileFormat);
     _radxFile.setWriteUsingEndTime(false);
+    
+    // Do basic initialization for _radxVol
+    _initVolume();
 }
 
 ProductArchiver::~ProductArchiver() {
@@ -65,25 +68,19 @@ ProductArchiver::notify() {
 
         // Build a new RadxRay from the ProductSet
         RadxRay* radxRay = new RadxRay();
-        ProductAdapter::DDSToRadxRay(*ps, *radxRay, _volNum);
+        ProductAdapter::DDSToRadxRay(*ps, *radxRay, _radxVol, 
+            *(_radxVol.getCalibs()[0]));
         
         // Add the new ray to our current volume.  RadxVol is now responsible
         // for deleting the RadxRay object.
         _radxVol.addRay(radxRay);
         
-        // If we started a new volume, set per-RadxVol parameters
-        if (_radxVol.getNRays() == 1) {
-            // Use the xmit frequency from the first product of the ray to set 
-            // xmit wavelength of our RadxVol.
-            _radxVol.setWavelengthMeters(SPEED_OF_LIGHT / 
-                    ps->products[0].hskp.tx_cntr_freq);
-            _radxVol.setInstrumentName("HCR");
-            _radxVol.setPlatformType(Radx::PLATFORM_TYPE_FIXED);
-        }
-        
         // Write the volume at _raysPerFile rays
-        if (uint(_radxVol.getNRays()) == _raysPerFile)
-            _writeCurrentVolume();
+        if (uint(_radxVol.getNRays()) == _raysPerFile) {
+            _writeCurrentVolume();  
+            // Reinitialize our volume
+            _initVolume();
+        }
         
         // Return the item to the DDSReader
         returnItem(ps);
@@ -135,9 +132,14 @@ ProductArchiver::_writeCurrentVolume() {
         std::cerr << "Failed to write '" << _radxFile.getPathInUse() << 
             "': " << _radxFile.getErrStr() << std::endl;
     }
-    
-    // Clear out our RadxVol
+}
+
+void
+ProductArchiver::_initVolume() {
+    // Clean up, getting rid of any existing rays and calibrations.
     _radxVol.clear();
-    // Increment to the next volume number
-    _volNum++;
+    // Give the volume a new (empty) calibration
+    _radxVol.addCalib(new RadxRcalib());
+    // Fixed platform only at this point!
+    _radxVol.setPlatformType(Radx::PLATFORM_TYPE_FIXED);
 }
