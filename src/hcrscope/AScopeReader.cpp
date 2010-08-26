@@ -5,9 +5,8 @@
 Q_DECLARE_METATYPE(AScope::TimeSeries)
 
 AScopeReader::AScopeReader(DDSSubscriber& subscriber,
-		std::string topicName,
-		double outputRate):
-		QtTSReader(subscriber, topicName, outputRate)
+		std::string topicName):
+		QtTSReader(subscriber, topicName, 0)
 {
 	// this are required in order to send structured data types
 	// via a qt signal

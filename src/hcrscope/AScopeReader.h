@@ -15,11 +15,8 @@ public:
 	/// Constructor
 	/// @param subscriber The DDS subscriber
 	/// @param topicName The DDS topic name
-	/// @param outputRate The desired maximum sample output rate, in Hz,
-    ///    or 0 for no throttling
 	AScopeReader(DDSSubscriber& subscriber,
-			std::string topicName,
-			double outputRate = 0);
+			std::string topicName);
 
 	/// Destructor
 	virtual ~AScopeReader();

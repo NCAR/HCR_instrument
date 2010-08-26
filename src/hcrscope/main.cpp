@@ -26,6 +26,9 @@ int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 
 double _refreshHz;               ///< The scope refresh rate in Hz
 
+std::string _title;              ///< The scope window title
+std::string _saveDir;            ///< The image save directory
+
 namespace po = boost::program_options;
 
 //////////////////////////////////////////////////////////////////////
@@ -36,6 +39,9 @@ void getConfigParams()
 {
 
 	QtConfig config("HcrScope", "HcrScope");
+
+	_saveDir = config.getString("SaveDir", ".");
+	_title = config.getString("Title", "HCRScope");
 
 	// set up the default configuration directory path
 	std::string HcrDir("/conf/");
@@ -125,10 +131,11 @@ main (int argc, char** argv) {
 	QApplication app(argc, argv);
 
 	// create the data source reader
-	AScopeReader reader(subscriber, _tsTopic, _refreshHz);
+	AScopeReader reader(subscriber, _tsTopic);
 
  	// create the scope
-	AScope scope;
+	AScope scope(_refreshHz, _saveDir);
+	scope.setWindowTitle(QString(_title.c_str()));
 	scope.show();
 
 	// connect the reader to the scope to receive new DDS data
