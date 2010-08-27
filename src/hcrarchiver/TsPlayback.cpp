@@ -31,6 +31,9 @@ void
 TsPlayback::run() {
     bool channelCountWarned = false;
     RadarDDS::TimeSeriesSequence *tsSequence;
+    
+    // Have we warned about our receiver bandwidth kluge yet?
+    bool warnedOnRxBandwidth = false;
 
     while (1) {
         tsSequence = _writer->getEmptyItem();
@@ -55,6 +58,17 @@ TsPlayback::run() {
             }
             RadarDDS::TimeSeries & ddsPulse = tsSequence->tsList[pulse];
             TimeSeriesAdapter::IwrfToDDS(iwrfPulse, ddsPulse);
+            // IwrfTsPulse has no metadata for receiver bandwidth, so 
+            // rcvr_bandwidth in our RadarDDS::TimeSeries is currently unset.
+            // Fix that now. Note that the 0.7 is only a nominal factor which 
+            // applies to HCR as of about July 2010.
+            // @TODO: find a better solution to this problem...
+            ddsPulse.hskp.rcvr_bandwidth = 0.7 / ddsPulse.hskp.rcvr_pulse_width;
+            if (! warnedOnRxBandwidth) {
+                std::cout << "WARNING: Using 0.7 * 1/(receiver pulse width) " <<
+                        "as the receiver bandwidth!" << std::endl;
+                warnedOnRxBandwidth = true;
+            }
         }
         // Figure out total time contained in this sequence, and how long 
         // until we can publish this set, given the requested playback speed.  
