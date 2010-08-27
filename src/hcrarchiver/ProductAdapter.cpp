@@ -92,11 +92,10 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         // SysHousekeeping.tx_pulse_width
         hskp.tx_pulse_width = calib.getPulseWidthUsec() * 1.0e-6; // s
         
-        // SysHousekeeping.tx_switching_network_loss: horizontal only!
-        hskp.tx_switching_network_loss = calib.getCouplerForwardLossDbH();
+        // SysHousekeeping.tx_switching_network_loss: no match in Radx metadata
         
         // SysHousekeeping.tx_waveguide_loss: horizontal only!
-        // Note that we halve the two-way waveguide loss to get the tx-side
+        // NOTE: We halve the two-way waveguide loss to get the tx-side
         // loss (assuming that the waveguide rx & tx losses are the same...)
         hskp.tx_waveguide_loss = calib.getTwoWayWaveguideLossDbH() / 2;
         
@@ -153,7 +152,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         hskp.rcvr_filter_mismatch = calib.getReceiverMismatchLossDb();
         
         // SysHousekeeping.rcvr_rf_gain
-        // XXX Since Radx only has total receiver gain, put it all into 
+        // NOTE: Since Radx only has total receiver gain, put it all into 
         // RF gain, and set IF gain and digital gain to zero.
         hskp.rcvr_rf_gain = calib.getReceiverGainDbHc();
         
@@ -271,11 +270,11 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     // SysHousekeeping.tx_pulse_width
     radxRcalib.setPulseWidthUsec(1.0e6 * hskp.tx_pulse_width);
 
-    // SysHousekeeping.tx_switching_network_loss: horizontal only!
-    radxRcalib.setCouplerForwardLossDbH(hskp.tx_switching_network_loss);
+    // SysHousekeeping.tx_switching_network_loss: no match in Radx metadata
     
     // SysHousekeeping.tx_waveguide_loss: horizontal only!
-    // Note that we double the tx_waveguide_loss to get two-way loss
+    // NOTE: We double the tx_waveguide_loss to get two-way loss, which
+    // makes the dangerous assumption that tx loss and rx loss are equal.
     radxRcalib.setTwoWayWaveguideLossDbH(2 * hskp.tx_waveguide_loss);
     
     // SysHousekeeping.tx_peak_pwr_coupling: no match in Radx metadata
@@ -336,7 +335,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     radxRcalib.setReceiverMismatchLossDb(hskp.rcvr_filter_mismatch);
 
     // SysHousekeeping.rcvr_rf_gain
-    // XXX Radx only has total receiver gain, which is (hskp.rcvr_rf_gain + 
+    // NOTE: Radx only has total receiver gain, which is set to (hskp.rcvr_rf_gain + 
     // hskp.rcvr_digital_gain)
     radxRcalib.setReceiverGainDbHc(hskp.rcvr_rf_gain + hskp.rcvr_digital_gain);
 
