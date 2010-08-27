@@ -21,8 +21,8 @@ class TimeSeriesAdapter {
 public:
     /**
      * Convert from IwrfTsPulse to RadarDDS::TimeSeries.
-     * @param iwrfPulse the IwrfTsPulse to be converted
-     * @param ddsPulse the destination RadarDDS::TimeSeries
+     * @param[in] iwrfPulse the IwrfTsPulse to be converted
+     * @param[out] ddsPulse the destination RadarDDS::TimeSeries
      */
     static void IwrfToDDS(const IwrfTsPulse& iwrfPulse, 
             RadarDDS::TimeSeries& ddsPulse);
