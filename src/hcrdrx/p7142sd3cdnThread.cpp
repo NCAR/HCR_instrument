@@ -17,7 +17,8 @@ p7142sd3cdnThread::p7142sd3cdnThread(
                 std::string gaussianFile,
                 std::string kaiserFile,
                 bool simulate,
-                int simPauseMS) :
+                int simPauseMS,
+                int simWavelength) :
     p7142sd3cdn(devName,
              chanId,
              config.gates(),
@@ -36,6 +37,7 @@ p7142sd3cdnThread::p7142sd3cdnThread(
              kaiserFile,
              simulate,
              simPauseMS,
+             simWavelength,
              false),
      _doCI(false),
      _publish(publish),

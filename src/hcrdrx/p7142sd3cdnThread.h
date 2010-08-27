@@ -26,6 +26,8 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
          *     if simulate is true)
          * @param simPauseMS The number of milliseconds to wait before returning
          *     simulated data when calling read()
+         * @param simWavelength The wavelength of a simulated signal. Thw wavelength
+         *     is in sample counts.
          */
         p7142sd3cdnThread(
                 const HcrDrxConfig& config,
@@ -37,6 +39,7 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
                 std::string gaussianFile,
                 std::string kaiserFile,
                 bool simulate,
+                int simWavelength,
                 int simPauseMS);
         
 		/// Destructor

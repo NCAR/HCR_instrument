@@ -51,6 +51,7 @@ std::string _kaiserFile = "";    ///< kaiser filter coefficient file
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
+int _simWaveLength;              ///< The simulated data wavelength, in samples
 int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
@@ -110,15 +111,16 @@ void getConfigParams()
 	std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
 
 	// get parameters
-	_publish       = config.getBool("DDS/Publish", true);
+	_publish       = config.getBool  ("DDS/Publish",        true);
 	_ORB           = config.getString("DDS/ORBConfigFile",  orbFile);
 	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
 	_tsTopic       = config.getString("DDS/TopicTS",        "HCRTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
-	_tsLength      = config.getInt("Radar/TsLength",        256);
-	_simulate      = config.getBool("Simulate",             false);
-	_simPauseMS    = config.getInt("SimPauseMs",            20);
+	_tsLength      = config.getInt   ("Radar/TsLength",     256);
+	_simulate      = config.getBool  ("Simulate",           false);
+	_simPauseMS    = config.getInt   ("SimPauseMs",         20);
+	_simWaveLength = config.getInt   ("SimWavelength",      5000);
 
 }
 
@@ -297,7 +299,8 @@ main(int argc, char** argv)
                 _gaussianFile,
                 _kaiserFile,
                 _simulate,
-                _simPauseMS);
+                _simPauseMS,
+                _simWaveLength);
 		if (!down7142[c]->ok()) {
 			std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
 			perror("");
