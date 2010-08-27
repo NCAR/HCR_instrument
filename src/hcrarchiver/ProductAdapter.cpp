@@ -96,7 +96,8 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         
         // SysHousekeeping.tx_waveguide_loss: horizontal only!
         // NOTE: We halve the two-way waveguide loss to get the tx-side
-        // loss (assuming that the waveguide rx & tx losses are the same...)
+        // loss, making the (dangerous) assumption that the waveguide rx & tx 
+        // losses are the same...
         hskp.tx_waveguide_loss = calib.getTwoWayWaveguideLossDbH() / 2;
         
         // SysHousekeeping.tx_peak_pwr_coupling: no match in Radx metadata
@@ -144,7 +145,12 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         
         // SysHousekeeping.rcvr_switching_network_loss = @TODO;
         
-        // SysHousekeeping.rcvr_waveguide_loss = @TODO;
+        // SysHousekeeping.rcvr_waveguide_loss
+        // NOTE: We halve the two-way waveguide loss to get the rx-side
+        // loss, making the (dangerous) assumption that the waveguide rx & tx 
+        // losses are the same...
+        hskp.rcvr_waveguide_loss = calib.getTwoWayWaveguideLossDbH() / 2;
+        
         
         // SysHousekeeping.rcvr_noise_figure: no match in Radx metadata
         
@@ -273,9 +279,9 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     // SysHousekeeping.tx_switching_network_loss: no match in Radx metadata
     
     // SysHousekeeping.tx_waveguide_loss: horizontal only!
-    // NOTE: We double the tx_waveguide_loss to get two-way loss, which
-    // makes the dangerous assumption that tx loss and rx loss are equal.
-    radxRcalib.setTwoWayWaveguideLossDbH(2 * hskp.tx_waveguide_loss);
+    // We add the tx_waveguide_loss and rcvr_waveguide_loss to get two-way loss.
+    radxRcalib.setTwoWayWaveguideLossDbH(hskp.tx_waveguide_loss + 
+            hskp.rcvr_waveguide_loss);
     
     // SysHousekeeping.tx_peak_pwr_coupling: no match in Radx metadata
     
@@ -327,7 +333,9 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     
     // SysHousekeeping.rcvr_switching_network_loss = @TODO;
     
-    // SysHousekeeping.rcvr_waveguide_loss = @TODO;
+    // SysHousekeeping.rcvr_waveguide_loss
+    // We add the tx_waveguide_loss and rcvr_waveguide_loss to get two-way loss.
+    // See tx_waveguide_loss above.
     
     // SysHousekeeping.rcvr_noise_figure: no match in Radx metadata
     
