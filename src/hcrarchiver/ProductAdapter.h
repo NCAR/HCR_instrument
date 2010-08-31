@@ -27,7 +27,7 @@ public:
      * @param radxVol the RadxVol associated with radxRay
      * @param productSet the destination RadarDDS::ProductSet
      */
-    static void RadxRayToDDS(const RadxRay& radxRay, const RadxVol& RadxVol,
+    static void RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol,
             RadarDDS::ProductSet& productSet);
     /**
      * Convert a RadarDDS::ProductSet ray to a RadxRay/RadxVol/RadxRcalib
