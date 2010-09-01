@@ -40,7 +40,6 @@ HcrDrxPub::HcrDrxPub(
              simPauseMS,
              simWavelength,
              false),
-     _doCI(false),
      _publish(publish),
      _tsWriter(tsWriter),
      _tsDiscards(0),

@@ -76,8 +76,6 @@ class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
          * @return true iff the current configuration is valid.
          */
         bool _configIsValid() const;
-		/// set true if coherent integrator is being used
-		bool _doCI;
 		/// Set true if we are going to publish the data
 		bool _publish;
 		/// The DDS time series writer
