@@ -52,7 +52,8 @@ DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
 bool _simulate;                  ///< Set true for simulate mode
 int _simWaveLength;              ///< The simulated data wavelength, in samples
-int _simPauseMS;                 ///< The number of millisecnds to pause when reading in simulate mode.
+double _simPauseMS;              ///< The number of millisecnds to pause when reading in simulate mode.
+bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -119,8 +120,9 @@ void getConfigParams()
 	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
 	_tsLength      = config.getInt   ("Radar/TsLength",     256);
 	_simulate      = config.getBool  ("Simulate",           false);
-	_simPauseMS    = config.getInt   ("SimPauseMs",         20);
+	_simPauseMS    = config.getDouble("SimPauseMs",         0.1);
 	_simWaveLength = config.getInt   ("SimWavelength",      5000);
+	_freeRun       = config.getBool  ("FreeRun",            false);
 
 }
 
@@ -142,7 +144,7 @@ void parseOptions(int argc,
 	("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
 	("nopublish",                                  "Do not publish data")
 	("simulate",                                   "Enable simulation")
-	("simPauseMS",  po::value<int>(&_simPauseMS),  "Simulation pause interval (ms)")
+	("simPauseMS",  po::value<double>(&_simPauseMS),  "Simulation pause interval between beams (ms)")
 	("ORB", po::value<std::string>(&_ORB),         "ORB service configuration file (Corba ORBSvcConf arg)")
 	("DCPS", po::value<std::string>(&_DCPS),       "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
 	("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo),
@@ -298,6 +300,7 @@ main(int argc, char** argv)
                 c,
                 _gaussianFile,
                 _kaiserFile,
+                _freeRun,
                 _simulate,
                 _simPauseMS,
                 _simWaveLength);
@@ -359,6 +362,9 @@ main(int argc, char** argv)
     down7142[0]->timersStartStop(true);
 
 	double startTime = nowTime();
+	//while(1) {
+	//	usleep(100000);
+	//}
 	while (1) {
 		for (int i = 0; i < 100; i++) {
 			// check for the termination request

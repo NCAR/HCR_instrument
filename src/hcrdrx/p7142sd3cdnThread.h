@@ -22,11 +22,12 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
          *     filter parameters
          * @param kaiserFile Name of the file containing the Kaiser
          *     filter parameters
+         * @param freeRun Set true to operate the SD3c in free running mode
          * @param simulate generate simulated data? (no Pentek card is used
          *     if simulate is true)
          * @param simPauseMS The number of milliseconds to wait before returning
          *     simulated data when calling read()
-         * @param simWavelength The wavelength of a simulated signal. Thw wavelength
+         * @param simWavelength The wavelength of a simulated signal. The wavelength
          *     is in sample counts.
          */
         p7142sd3cdnThread(
@@ -38,9 +39,10 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
                 int chanId,
                 std::string gaussianFile,
                 std::string kaiserFile,
+                bool freeRun,
                 bool simulate,
-                int simWavelength,
-                int simPauseMS);
+                double simPauseMS,
+                int simWavelength);
         
 		/// Destructor
         virtual ~p7142sd3cdnThread();
@@ -48,10 +50,6 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
 		/// @return The number of timeseries blocks that have been discarded
 		/// since the last time this function was called.
 		unsigned long tsDiscards();
-		/// @return The cummulative number of dropped pulses
-		unsigned long droppedPulses();
-		/// @return the number of synchronization errors detected.
-		unsigned long syncErrors();
 
 	private:
 		/// Return the current time in seconds since 1970/01/01 00:00:00 UTC.
@@ -62,35 +60,9 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
         /// received from the P7142.   The number of unprocessed bytes (which 
         /// will be < _pentekPulseLen) is returned.
         /// @param buf The raw buffer of data from the downconverter
-        /// channel. It contains all Is and Qs, plus the tagging
-        /// information.
-        /// @param n The length of the buffer. This is redundant
-        /// information, since the buffer size better match the required
-        /// size based on _gates, _tsLength, and whether coherent integration
-        /// is in effect or not.
-		/// @return the number of unprocessed bytes in the buffer, which
-		/// will always be less than _pentekPulseLen
-        int _decodeAndPublishRaw(char* buf, int n);
-        /// Decode the information in a buffer of coherently integrated data
-        /// received from the P7142.  The number of unprocessed bytes (which 
-        /// will be < _pentekPulseLen) is returned.
-        /// @param buf The raw buffer of CI data from the downconverter
-        /// channel. It contains all Is and Qs, plus the tagging
-        /// information.
-        /// @param n The length of the buffer. This is redundant
-        /// information, since the buffer size better match the required
-        /// size based on _gates, _tsLength, and whether coherent integration
-        /// is in effect or not.
-        /// @return the number of unprocessed bytes in the buffer, which
-        /// will always be less than _pentekPulseLen
-        int _decodeAndPublishCI(char* buf, int n);
-        /// Decode the channel/pulse number word.
-        /// @param buf a pointer to the channel/pulse number word
-        /// @param chan return argument for the unpacked channel number
-        /// @param pulseNum return argument for the unpacked pulse number
-        static void _unpackChannelAndPulse(const char* buf, unsigned int & chan,
-                unsigned int & pulseNum);
-        static const int MAX_PULSE_NUM = 1073741823;    // 2^30 - 1
+        /// channel. It contains all Is and Qs
+		/// @param pulsenum The pulse number. Will be zero for raw data.
+        void _decodeAndPublishRaw(char* buf, unsigned int pulsenum);
         /**
          * Return true iff the current configuration is valid.
          * @return true iff the current configuration is valid.
@@ -115,22 +87,6 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
 		/// empty items being available from DDS. It is reset to zero whenever 
 		/// tsDiscards() is called.
 		unsigned long _tsDiscards;
-		/// How many bytes in a single pulse of data from the Pentek?
-		int _pentekPulseLen;
-		/// The last pulse sequence number that we received. Used to keep
-		/// track of dropped pulses.
-		int _lastPulse;
-		/// An estimate of dropped pulses. It may be in error
-		/// if the pulse tag rolls over by more than the 14 bit
-		/// total that it can hold. This test is only made if the
-		/// channel number passes the validity test.
-		unsigned long _droppedPulses;
-		/// The number of times that an incorrect channel number was received,
-		/// which indicates a synchronization error. If there is a sync error,
-		/// then the sequence number check is not performed.
-		unsigned long _syncErrors;
-		/// Set false at startup, true after the first pulse has been received.
-		bool _gotFirstPulse;
 		/// How many pulses are we putting in each published sample?
 		int _ddsSamplePulses;
         /// The DDS time series sequence we're filling. Once it has 
