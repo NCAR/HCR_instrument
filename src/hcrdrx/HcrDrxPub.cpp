@@ -45,7 +45,7 @@ HcrDrxPub::HcrDrxPub(
      _tsWriter(tsWriter),
      _tsDiscards(0),
      _ddsSamplePulses(tsLength),    // for now, set to the # of pulses we get from the 7142
-     _ddsSampleInProgress(0),
+     _ddsSeqInProgress(0),
      _ndxInDdsSample(0)
 {
     // Bail out if we're not configured legally.
@@ -80,7 +80,7 @@ void HcrDrxPub::run() {
     ttl_toggle = ~ttl_toggle;
     TTLOut(ttl_toggle);
 
-    _decodeAndPublishRaw(buf, pulsenum);
+    publishDDS(buf, pulsenum);
     
   }
 }
@@ -99,7 +99,7 @@ static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0
 
 ///////////////////////////////////////////////////////////
 void
-HcrDrxPub::_decodeAndPublishRaw(char* buf, unsigned int pulsenum) {
+HcrDrxPub::publishDDS(char* buf, unsigned int pulsenum) {
     
 
 	// bufPos is now pointing to the pulse data
@@ -110,27 +110,27 @@ HcrDrxPub::_decodeAndPublishRaw(char* buf, unsigned int pulsenum) {
 	// and publish it when it's full.
 	if (_publish) {
 		// Make sure we have a DDS sample to fill
-		if (! _ddsSampleInProgress) {
+		if (! _ddsSeqInProgress) {
 			// Get a free sample
-			_ddsSampleInProgress = _tsWriter->getEmptyItem();
+			_ddsSeqInProgress = _tsWriter->getEmptyItem();
 			// If no sample was available, discard everything we have and
 			// return.
-			if (! _ddsSampleInProgress) {
+			if (! _ddsSeqInProgress) {
 				std::cerr << "Channel " << _chanId <<
 					" dropped data with no DDS samples available!" << std::endl;
 				_tsDiscards++;
 				return;
 			}
-			_ddsSampleInProgress->sampleNumber = _sampleNumber++;
-			_ddsSampleInProgress->chanId = _chanId;
-			_ddsSampleInProgress->tsList.length(_ddsSamplePulses);
+			_ddsSeqInProgress->sampleNumber = _sampleNumber++;
+			_ddsSeqInProgress->chanId = _chanId;
+			_ddsSeqInProgress->tsList.length(_ddsSamplePulses);
 			_ndxInDdsSample = 0;
 		}
 
 		//
 		// Copy this pulse into our DDS sample in progress
 		//
-		RadarDDS::TimeSeries & ts = _ddsSampleInProgress->tsList[_ndxInDdsSample++];
+		RadarDDS::TimeSeries & ts = _ddsSeqInProgress->tsList[_ndxInDdsSample++];
 		// Copy our fixed metadata into this pulse
 		ts.hskp = _baseDdsHskp;
 		// Then fill the non-fixed metadata
@@ -147,11 +147,11 @@ HcrDrxPub::_decodeAndPublishRaw(char* buf, unsigned int pulsenum) {
 		// sample data space.
 		memmove(ts.data.get_buffer(), buf, datalen);
 
-		// Publish _ddsSampleInProgress if it's full
+		// Publish _ddsSeqInProgress if it's full
 		if (_ndxInDdsSample == _ddsSamplePulses) {
 			// publish it
-			_tsWriter->publishItem(_ddsSampleInProgress);
-			_ddsSampleInProgress = 0;
+			_tsWriter->publishItem(_ddsSeqInProgress);
+			_ddsSeqInProgress = 0;
 		}
 	}
 }

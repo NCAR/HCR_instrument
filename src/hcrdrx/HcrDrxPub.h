@@ -65,13 +65,12 @@ class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
 		/// Returned value has 1 ms precision.
 		/// @return the current time in seconds since 1970/01/01 00:00:00 UTC
 		double _nowTime();
-        /// Decode the information in a raw (no coherent integration) buffer 
-        /// received from the P7142.   The number of unprocessed bytes (which 
-        /// will be < _pentekPulseLen) is returned.
+        /// Publish a beam. A DDS sample is built and put into _ddsSeqInProgress.
+		/// When all of the samples have been filled in _ddsSeqInProgress, it is published.
         /// @param buf The raw buffer of data from the downconverter
         /// channel. It contains all Is and Qs
 		/// @param pulsenum The pulse number. Will be zero for raw data.
-        void _decodeAndPublishRaw(char* buf, unsigned int pulsenum);
+        void publishDDS(char* buf, unsigned int pulsenum);
         /**
          * Return true iff the current configuration is valid.
          * @return true iff the current configuration is valid.
@@ -91,8 +90,8 @@ class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
 		int _ddsSamplePulses;
         /// The DDS time series sequence we're filling. Once it has 
 		/// _ddsSamplePulses pulses in it, we publish it.
-        RadarDDS::TimeSeriesSequence *_ddsSampleInProgress;
-        /// Where are we in _ddsSampleInProgress?
+        RadarDDS::TimeSeriesSequence *_ddsSeqInProgress;
+        /// Where are we in _ddsSeqInProgress?
         int _ndxInDdsSample;
 		/// The DDS sample number; increment when a sample is published.
 		long _sampleNumber;
