@@ -6,7 +6,16 @@
 #include <TSWriter.h>
 #include "HcrDrxConfig.h"
 
-class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
+/// HcrDrxPub combines a downconverter and a data publisher. p7142sd3cdn
+/// is inherited and provides access to the downconverter configuration
+/// and operation. A TSWriter is passed in by the user, and is used for
+/// data publishing.
+///
+/// HcrDrxPub provides a separate thread for performing
+/// the data processing. It is initiated by calling the start() method,
+/// which then invokdes the run() method. run() simple loops, reading beams
+/// from p7142sd3cdn and publishing them via the TSWriter.
+class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
 	Q_OBJECT
 	public:
         /**
@@ -30,7 +39,7 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
          * @param simWavelength The wavelength of a simulated signal. The wavelength
          *     is in sample counts.
          */
-        p7142sd3cdnThread(
+        HcrDrxPub(
                 const HcrDrxConfig& config,
                 TSWriter* tsWriter,
                 bool publish,
@@ -45,7 +54,7 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
                 int simWavelength);
         
 		/// Destructor
-        virtual ~p7142sd3cdnThread();
+        virtual ~HcrDrxPub();
 		void run();
 		/// @return The number of timeseries blocks that have been discarded
 		/// since the last time this function was called.
@@ -68,15 +77,6 @@ class p7142sd3cdnThread: public QThread, public Pentek::p7142sd3cdn {
          * @return true iff the current configuration is valid.
          */
         bool _configIsValid() const;
-        /**
-         * Search through buf to find the index of the next occurrence of 
-         * the sync word. If not found, return -1.
-         * @param buf the buffer to search for the sync word
-         * @param buflen the number of bytes available in buf
-         * @return the index of the next sync word in buf, or -1 if the sync
-         * word is not found.
-         */
-        static int _indexOfNextSync(const char* buf, int buflen);
 		/// set true if coherent integrator is being used
 		bool _doCI;
 		/// Set true if we are going to publish the data

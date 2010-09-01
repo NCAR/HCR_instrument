@@ -1,4 +1,4 @@
-#include "p7142sd3cdnThread.h"
+#include "HcrDrxPub.h"
 #include <sys/timeb.h>
 #include <cstdlib>
 #include <iostream>
@@ -7,7 +7,7 @@
 using namespace boost::posix_time;
 
 //////////////////////////////////////////////////////////////////////////////////
-p7142sd3cdnThread::p7142sd3cdnThread(
+HcrDrxPub::HcrDrxPub(
                 const HcrDrxConfig& config,
                 TSWriter* tsWriter,
                 bool publish,
@@ -57,12 +57,12 @@ p7142sd3cdnThread::p7142sd3cdnThread(
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-p7142sd3cdnThread::~p7142sd3cdnThread() {
+HcrDrxPub::~HcrDrxPub() {
 
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-void p7142sd3cdnThread::run() {
+void HcrDrxPub::run() {
 
   static unsigned short int ttl_toggle = 0;
 
@@ -86,7 +86,7 @@ void p7142sd3cdnThread::run() {
 }
 
 ///////////////////////////////////////////////////////////
-double p7142sd3cdnThread::_nowTime() {
+double HcrDrxPub::_nowTime() {
   struct timeb timeB;
   ftime(&timeB);
   return timeB.time + timeB.millitm/1000.0;
@@ -99,7 +99,7 @@ static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0
 
 ///////////////////////////////////////////////////////////
 void
-p7142sd3cdnThread::_decodeAndPublishRaw(char* buf, unsigned int pulsenum) {
+HcrDrxPub::_decodeAndPublishRaw(char* buf, unsigned int pulsenum) {
     
 
 	// bufPos is now pointing to the pulse data
@@ -158,7 +158,7 @@ p7142sd3cdnThread::_decodeAndPublishRaw(char* buf, unsigned int pulsenum) {
 
 //////////////////////////////////////////////////////////////////////////////////
 unsigned long
-p7142sd3cdnThread::tsDiscards() {
+HcrDrxPub::tsDiscards() {
 	unsigned long retval = _tsDiscards;
 	_tsDiscards = 0;
 	return retval;
@@ -166,7 +166,7 @@ p7142sd3cdnThread::tsDiscards() {
 
 //////////////////////////////////////////////////////////////////////////////////
 bool
-p7142sd3cdnThread::_configIsValid() const {
+HcrDrxPub::_configIsValid() const {
     bool valid = true;
     // gate count must be in the interval [1,511]
     if (_gates < 1 || _gates > 511) {

@@ -12,13 +12,13 @@ qt4
 
 sources = Split("""
 HcrDrxConfig.cpp
+HcrDrxPub.cpp
 main.cpp
-p7142sd3cdnThread.cpp
 """)
 
 headers = Split("""
 HcrDrxConfig.h
-p7142sd3cdnThread.h
+HcrDrxPub.h
 """)
 
 env = Environment(tools = ['default'] + tools)

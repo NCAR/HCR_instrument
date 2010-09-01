@@ -24,7 +24,7 @@
 // with OpenDDS 2.0/2.1
 #include <dds/Version.h>
 
-#include "p7142sd3cdnThread.h"
+#include "HcrDrxPub.h"
 #include "p7142.h"
 #include "DDSPublisher.h"
 #include "TSWriter.h"
@@ -286,12 +286,12 @@ main(int argc, char** argv)
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
-	std::vector<p7142sd3cdnThread*> down7142(_chans);
+	std::vector<HcrDrxPub*> down7142(_chans);
 
 	for (int c = 0; c < _chans; c++) {
 
 		std::cout << "*** Channel " << c << " ***" << std::endl;
-		down7142[c] = new p7142sd3cdnThread(
+		down7142[c] = new HcrDrxPub(
                 hcrConfig,
                 _tsWriter,
                 _publish,
