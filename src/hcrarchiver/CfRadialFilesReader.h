@@ -30,7 +30,7 @@ public:
      * @param ray the RadxRay to be filled
      * @return true iff we return a good ray
      */
-    bool getNextRay(RadxRay & ray);
+    bool getNextRay(const RadxRay* & radxRay, const RadxVol* & radxVol);
     
 private:
     /**
@@ -60,9 +60,10 @@ private:
     RadxFile _radxFile;
     
     /**
-     * Volume read from the current file
+     * Volume read from the current file and next ray to deliver from the volume
      */
     RadxVol _radxVol;
+    int _nextRayNum;
     
     /**
      * If _verbose is true, we print a message to std::cout each time we open 
