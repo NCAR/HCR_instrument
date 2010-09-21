@@ -188,9 +188,9 @@ HcrDrxPub::_configIsValid() const {
         valid = false;
     }
     // DDC type must be 8
-    if (ddc_type() != DDC8DECIMATE) {
+    if (_ddcType != DDC8DECIMATE) {
         std::cerr << "The Pentek FPGA is using DDC type " << 
-                ddcTypeName(ddc_type()) << 
+                ddcTypeName(_ddcType) << 
                 ", but HCR requires that it be DDC8DECIMATE." << std::endl;
         valid = false;
     }
