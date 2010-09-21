@@ -187,5 +187,12 @@ HcrDrxPub::_configIsValid() const {
             "PRT must be greater than (gates+1)*(pulse width)." << std::endl;
         valid = false;
     }
+    // DDC type must be 8
+    if (ddc_type() != DDC8DECIMATE) {
+        std::cerr << "The Pentek FPGA is using DDC type " << 
+                ddcTypeName(ddc_type()) << 
+                ", but HCR requires that it be DDC8DECIMATE." << std::endl;
+        valid = false;
+    }
     return valid;
 }
