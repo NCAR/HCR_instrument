@@ -108,14 +108,6 @@ public:
     double rcvr_if_gain() const { return _getDoubleVal("rcvr_if_gain"); }            /// dB
     double rcvr_digital_gain() const { return _getDoubleVal("rcvr_digital_gain"); }  /// dB
     double rcvr_gate0_delay() const { return _getDoubleVal("rcvr_gate0_delay"); }    /// seconds
-    /// Five delay values for the general purpose timers in the sd3c firmware.
-    /// The first GP timer is used for tx pulse modulation, and the rest are
-    /// unused.
-    std::vector<double> gp_timer_delays() const; 
-    /// Five width values for the general purpose timers in the sd3c firmware.
-    /// The first GP timer is used for tx pulse modulation, and the rest are
-    /// unused.
-    std::vector<double> gp_timer_widths() const; 
 
     double latitude() const { return _getDoubleVal("latitude"); }    /// degrees
     double longitude() const { return _getDoubleVal("longitude"); }  /// degrees

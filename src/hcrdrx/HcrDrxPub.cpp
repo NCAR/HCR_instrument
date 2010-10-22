@@ -8,38 +8,21 @@ using namespace boost::posix_time;
 
 //////////////////////////////////////////////////////////////////////////////////
 HcrDrxPub::HcrDrxPub(
+                Pentek::p7142sd3c& sd3c,
+                int chanId,
                 const HcrDrxConfig& config,
                 TSWriter* tsWriter,
                 bool publish,
                 int tsLength,
-                std::string devName,
-                int chanId,
                 std::string gaussianFile,
                 std::string kaiserFile,
-                bool freeRun,
-                bool simulate,
                 double simPauseMS,
                 int simWavelength) :
-    p7142sd3cdn(devName,
-             chanId,
-             config.gates(),
-             1,
-             tsLength,
-             config.rcvr_gate0_delay(),
-             config.tx_delay(),
-             config.prt1(),
-             config.prt2(),
-             config.rcvr_pulse_width(),
-             (config.staggered_prt() == HcrDrxConfig::UNSET_BOOL) ? false : config.staggered_prt(),
-             config.gp_timer_delays(),
-             config.gp_timer_widths(),
-             freeRun,
-             gaussianFile,
-             kaiserFile,
-             simulate,
-             simPauseMS,
-             simWavelength,
-             false),
+     QThread(),
+     _sd3c(sd3c),
+     _chanId(chanId),
+     _down(0),
+     _gates(config.gates()),
      _publish(publish),
      _tsWriter(tsWriter),
      _tsDiscards(0),
@@ -50,6 +33,11 @@ HcrDrxPub::HcrDrxPub(
     // Bail out if we're not configured legally.
     if (! _configIsValid())
         abort();
+
+    // Create our associated downconverter.
+    _down = sd3c.addDownconverter(_chanId, _gates, 1, tsLength,
+        config.rcvr_gate0_delay(), config.rcvr_pulse_width(), gaussianFile, 
+        kaiserFile, simPauseMS, simWavelength);
 
     // Fill our DDS base housekeeping values from the configuration
     config.fillDdsSysHousekeeping(_baseDdsHskp);
@@ -62,25 +50,16 @@ HcrDrxPub::~HcrDrxPub() {
 
 //////////////////////////////////////////////////////////////////////////////////
 void HcrDrxPub::run() {
-
-  static unsigned short int ttl_toggle = 0;
-
-  int bl = beamLength();
+  int bl = _down->beamLength();
   
   std::cout << "Channel " << _chanId << " beam length is " << bl <<
     ", waiting for data..." << std::endl;
 
   // start the loop. The thread will block on getBeam()
   while (1) {
-
 	unsigned int pulsenum;
-	char* buf = getBeam(pulsenum);
-
-    ttl_toggle = ~ttl_toggle;
-    TTLOut(ttl_toggle);
-
+	char* buf = _down->getBeam(pulsenum);
     publishDDS(buf, pulsenum);
-    
   }
 }
 
@@ -137,7 +116,7 @@ HcrDrxPub::publishDDS(char* buf, unsigned int pulsenum) {
 		ts.hskp.chanId = _chanId;
 		ts.prt_seq_num = 1;   // single-PRT only for now
 		ts.pulseNum = pulsenum;
-		time_duration timeFromEpoch = timeOfPulse(pulsenum) - Epoch1970;
+		time_duration timeFromEpoch = _down->timeOfPulse(pulsenum) - Epoch1970;
 		// Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
 		ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
 				(timeFromEpoch.fractional_seconds() * 1000000LL) /
@@ -174,23 +153,24 @@ HcrDrxPub::_configIsValid() const {
         valid = false;
     }
     // PRT must be a multiple of the pulse width
-    if (_prt % _timer_widths[2]) {
-        std::cerr << "PRT is " << _prt * 2 / adcFrequency() << " (" << _prt <<
-            ") and pulse width is " << _timer_widths[2] * 2 / adcFrequency() << 
-            " (" << _timer_widths[2] << 
+    if (_sd3c.prtCounts() % _sd3c.txPulseWidthCounts()) {
+        std::cerr << "PRT is " << _sd3c.prt() << " (" << 
+            _sd3c.prtCounts() << ") and pulse width is " << 
+            _sd3c.txPulseWidth() << 
+            " (" << _sd3c.txPulseWidthCounts() << 
             "): PRT must be an integral number of pulse widths." << std::endl;
         valid = false;
     }
     // PRT must be longer than (gates + 1) * pulse width
-    if (_prt <= ((_gates + 1) * _timer_widths[2])) {
-        std::cerr << 
-            "PRT must be greater than (gates+1)*(pulse width)." << std::endl;
+    if (_sd3c.prtCounts() <= ((_gates + 1) * _sd3c.txPulseWidthCounts())) {
+        std::cerr << "PRT must be greater than (gates+1)*(pulse width)." <<
+                std::endl;
         valid = false;
     }
     // DDC type must be 8
-    if (_ddcType != DDC8DECIMATE) {
+    if (_sd3c.ddcType() != Pentek::p7142sd3c::DDC8DECIMATE) {
         std::cerr << "The Pentek FPGA is using DDC type " << 
-                ddcTypeName(_ddcType) << 
+                _sd3c.ddcTypeName() << 
                 ", but HCR requires that it be DDC8DECIMATE." << std::endl;
         valid = false;
     }

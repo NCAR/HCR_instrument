@@ -6,50 +6,50 @@
 #include <TSWriter.h>
 #include "HcrDrxConfig.h"
 
-/// HcrDrxPub combines a downconverter and a data publisher. p7142sd3cdn
-/// is inherited and provides access to the downconverter configuration
-/// and operation. A TSWriter is passed in by the user, and is used for
+/// @brief HcrDrxPub publishes data from a p7142sd3c receive channel via DDS.
+///
+/// HcrDrxPub moves data from a downconverter to a data publisher. The 
+/// downconverter is created for one receive channel via the associated 
+/// p7142sd3c object. A TSWriter is passed in by the user, and is used for
 /// data publishing.
 ///
 /// HcrDrxPub provides a separate thread for performing
 /// the data processing. It is initiated by calling the start() method,
-/// which then invokdes the run() method. run() simple loops, reading beams
-/// from p7142sd3cdn and publishing them via the TSWriter.
-class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
+/// which then invokes the run() method. run() simple loops, reading beams
+/// from p7142sd3cDn and publishing them via the TSWriter.
+///
+/// Since HcrDrxPub does not use a Qt event loop at this point, the thread
+/// should be stopped by calling its terminate() method.
+class HcrDrxPub : public QThread {
 	Q_OBJECT
 	public:
         /**
          * Constructor.
+         * @param sd3c reference to the p7142sd3c object for our P7142 card
+         * @param chanId the P7142 channel this thread will read
          * @param config HcrDrxConfig defining the desired configuration.
          * @param tsWriter the time series DDS writer to be used.
          * @param publish should we publish data via DDS?
          * @param tsLength the number of time series pulses to be sent when
          *     we publish
-         * @param devName the root device name (e.g., "/dev/pentek/p7140/0")
-         * @param chanId the receiver channel of this downconverter
          * @param gaussianFile Name of the file containing the Gaussian
          *     filter parameters
          * @param kaiserFile Name of the file containing the Kaiser
          *     filter parameters
-         * @param freeRun Set true to operate the SD3c in free running mode
-         * @param simulate generate simulated data? (no Pentek card is used
-         *     if simulate is true)
          * @param simPauseMS The number of milliseconds to wait before returning
          *     simulated data when calling read()
          * @param simWavelength The wavelength of a simulated signal. The wavelength
          *     is in sample counts.
          */
         HcrDrxPub(
+                Pentek::p7142sd3c & sd3c,
+                int chanId,
                 const HcrDrxConfig& config,
                 TSWriter* tsWriter,
                 bool publish,
                 int tsLength,
-                std::string devName,
-                int chanId,
                 std::string gaussianFile,
                 std::string kaiserFile,
-                bool freeRun,
-                bool simulate,
                 double simPauseMS,
                 int simWavelength);
         
@@ -59,6 +59,9 @@ class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
 		/// @return The number of timeseries blocks that have been discarded
 		/// since the last time this function was called.
 		unsigned long tsDiscards();
+
+        /// @ return a pointer to our downconverter object
+        Pentek::p7142sd3cDn* downconverter() { return _down; }
 
 	private:
 		/// Return the current time in seconds since 1970/01/01 00:00:00 UTC.
@@ -76,6 +79,21 @@ class HcrDrxPub: public QThread, public Pentek::p7142sd3cdn {
          * @return true iff the current configuration is valid.
          */
         bool _configIsValid() const;
+        
+        /// Our associated p7142sd3c
+        Pentek::p7142sd3c& _sd3c;
+        
+        /// Receiver channel
+        unsigned int _chanId;
+        
+        /// Our associated Pentek downconverter
+        Pentek::p7142sd3cDn* _down;
+
+        /**
+         * The number of gates being collected by the downconverter
+         */
+        unsigned int _gates;
+        
 		/// Set true if we are going to publish the data
 		bool _publish;
 		/// The DDS time series writer

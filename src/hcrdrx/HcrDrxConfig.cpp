@@ -349,32 +349,3 @@ HcrDrxConfig::isValid(bool verbose) const {
     
     return valid;
 }
-
-std::vector<double> 
-HcrDrxConfig::gp_timer_delays() const {
-    std::vector<double> delays;
-    // The first of the general purpose timers (TIMER3) is used in HCR for 
-    // transmit pulse modulation.
-    delays.push_back(tx_pulse_mod_delay());
-    // The other GP timers are unused
-    delays.push_back(0);
-    delays.push_back(0);
-    delays.push_back(0);
-    delays.push_back(0);
-    
-    return delays;
-}
-std::vector<double> 
-HcrDrxConfig::gp_timer_widths() const {
-    std::vector<double> widths;
-    // The first of the general purpose timers (TIMER3) is used in HCR for 
-    // transmit pulse modulation.
-    widths.push_back(tx_pulse_mod_width());
-    // The other GP timers are unused
-    widths.push_back(0);
-    widths.push_back(0);
-    widths.push_back(0);
-    widths.push_back(0);
-    
-    return widths;
-}

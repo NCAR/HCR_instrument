@@ -25,7 +25,8 @@
 #include <dds/Version.h>
 
 #include "HcrDrxPub.h"
-#include "p7142.h"
+#include "p7142sd3c.h"
+#include "p7142Up.h"
 #include "DDSPublisher.h"
 #include "TSWriter.h"
 
@@ -84,6 +85,13 @@ void createDDSservices()
 
 	// create the DDS time series writer
 	_tsWriter = new TSWriter(*_publisher, _tsTopic.c_str());
+}
+
+/////////////////////////////////////////////////////////////////////
+void stopDDSservices()
+{
+    delete _tsWriter;
+    delete _publisher;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -212,7 +220,7 @@ double nowTime()
 }
 
 ///////////////////////////////////////////////////////////
-void startUpConverter(Pentek::p7142up& upConverter, 
+void startUpConverter(Pentek::p7142Up& upConverter, 
         unsigned int pulsewidth_counts) {
 
 	// create the signal
@@ -282,44 +290,34 @@ main(int argc, char** argv)
 	if (_publish)
 		createDDSservices();
 	
+    // Instantiate our p7142sd3c, with appropriate tx timing
+    Pentek::p7142sd3c sd3c(_devRoot, _simulate, hcrConfig.tx_delay(),
+        hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
+        hcrConfig.staggered_prt(), _freeRun);
+    
+    // We use SD3C's first general purpose timer for transmit pulse modulation
+    sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
+    
+    // Create (but don't yet start) the downconversion threads.
+    
 	// create the down converter threads. Remember that
 	// these are multiply inherited from the down converters
 	// and QThread. The threads are not run at creation, but
 	// they do instantiate the down converters.
-	std::vector<HcrDrxPub*> down7142(_chans);
+	std::vector<HcrDrxPub*> downThreads(_chans);
 
 	for (int c = 0; c < _chans; c++) {
 
 		std::cout << "*** Channel " << c << " ***" << std::endl;
-		down7142[c] = new HcrDrxPub(
-                hcrConfig,
-                _tsWriter,
-                _publish,
-                _tsLength,
-                _devRoot,
-                c,
-                _gaussianFile,
-                _kaiserFile,
-                _freeRun,
-                _simulate,
-                _simPauseMS,
-                _simWaveLength);
-		if (!down7142[c]->ok()) {
-			std::cerr << "cannot access " << down7142[c]->dnName() << "\n";
-			perror("");
-			exit(1);
-		}
+		downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _tsWriter, _publish,
+		        _tsLength, _gaussianFile, _kaiserFile, _simPauseMS, 
+		        _simWaveLength);
 	}
 
     // Create the upConverter.
     // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
-    Pentek::p7142up upConverter(_devRoot, "0C", down7142[0]->adcFrequency(), 
-            down7142[0]->adcFrequency() / 4, 9, _simulate); 
-
-    if (!upConverter.ok()) {
-        std::cerr << "cannot access " << upConverter.upName() << "\n";
-        exit(1);
-    }
+	Pentek::p7142Up & upConverter = *sd3c.addUpconverter("0C", 
+	        sd3c.adcFrequency(), sd3c.adcFrequency() / 4, 9);
 
     // catch a control-C
     signal(SIGINT, sigHandler);
@@ -329,8 +327,8 @@ main(int argc, char** argv)
 		// thread code to call the run() method, which will
 		// start reading data, but should block on the first
 		// read since the timers and filters are not running yet.
-		down7142[c]->start();
-		std::cout << "processing enabled on " << down7142[c]->dnName() << std::endl;
+		downThreads[c]->start();
+		std::cout << "processing enabled on channel " << c << std::endl;
 	}
 
     // wait awhile, so that the threads can all get to the first read.
@@ -348,23 +346,19 @@ main(int argc, char** argv)
 
 	// all of the filters are started by any call to
     // start filters(). So just call it for channel 0
-    down7142[0]->startFilters();
+    sd3c.startFilters();
 
 	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
 	// DAC memory counters. This must take place before the timers are started.
-    unsigned int pulsewidth_counts = (unsigned int)
-      (down7142[0]->rcvrPulseWidth() * down7142[0]->adcFrequency());
-	startUpConverter(upConverter, pulsewidth_counts);
+	startUpConverter(upConverter, sd3c.txPulseWidthCounts());
 
 	// Start the timers, which will allow data to flow.
     // All timers are started by calling timerStartStop for
     // any one channel.
-    down7142[0]->timersStartStop(true);
+    sd3c.timersStartStop(true);
 
 	double startTime = nowTime();
-	//while(1) {
-	//	usleep(100000);
-	//}
+
 	while (1) {
 		for (int i = 0; i < 100; i++) {
 			// check for the termination request
@@ -388,11 +382,12 @@ main(int argc, char** argv)
 		std::vector<unsigned long> syncErrors(_chans);
 		
 		for (int c = 0; c < _chans; c++) {
-			bytes[c] = down7142[c]->bytesRead();
-			overUnder[c] = down7142[c]->overUnderCount();
-			discards[c] = down7142[c]->tsDiscards();
-			droppedPulses[c] = down7142[c]->droppedPulses();
-            syncErrors[c] = down7142[c]->syncErrors();
+		    Pentek::p7142sd3cDn * down = downThreads[c]->downconverter();
+			bytes[c] = down->bytesRead();
+			overUnder[c] = down->overUnderCount();
+			discards[c] = downThreads[c]->tsDiscards();
+			droppedPulses[c] = down->droppedPulses();
+            syncErrors[c] = down->syncErrors();
 		}
 		
 		for (int c = 0; c < _chans; c++) {
@@ -406,13 +401,23 @@ main(int argc, char** argv)
 		}
 		std::cout << std::endl;
 	}
+	
+    std::cout << "Shutting down..." << std::endl;
+    
+	// Stop the downconverter threads
+	for (int c = 0; c < _chans; c++) {
+	    std::cout << "Stopping thread for channel " << c << std::endl;
+	    downThreads[c]->terminate();
+	    downThreads[c]->wait(1000);    // wait up to a second for termination
+	}
 
 	// stop the DAC
 	upConverter.stopDAC();
 
 	// stop the timers
-    down7142[0]->timersStartStop(false);
-
-	std::cout << "terminated on command" << std::endl;
+    sd3c.timersStartStop(false);
+    
+    // Stop DDS services
+    stopDDSservices();
 }
 
