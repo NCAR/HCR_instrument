@@ -22,6 +22,7 @@ HcrDrxPub::HcrDrxPub(
      _sd3c(sd3c),
      _chanId(chanId),
      _down(0),
+     _gates(sd3c.gates()),
      _publish(publish),
      _tsWriter(tsWriter),
      _tsDiscards(0),
