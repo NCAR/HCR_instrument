@@ -22,7 +22,6 @@ HcrDrxPub::HcrDrxPub(
      _sd3c(sd3c),
      _chanId(chanId),
      _down(0),
-     _gates(config.gates()),
      _publish(publish),
      _tsWriter(tsWriter),
      _tsDiscards(0),
@@ -35,7 +34,7 @@ HcrDrxPub::HcrDrxPub(
         abort();
 
     // Create our associated downconverter.
-    _down = sd3c.addDownconverter(_chanId, _gates, 1, tsLength,
+    _down = sd3c.addDownconverter(_chanId, false, tsLength,
         config.rcvr_gate0_delay(), config.rcvr_pulse_width(), gaussianFile, 
         kaiserFile, simPauseMS, simWavelength);
 

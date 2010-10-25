@@ -290,10 +290,11 @@ main(int argc, char** argv)
 	if (_publish)
 		createDDSservices();
 	
-    // Instantiate our p7142sd3c, with appropriate tx timing
+    // Instantiate our p7142sd3c
     Pentek::p7142sd3c sd3c(_devRoot, _simulate, hcrConfig.tx_delay(),
         hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
-        hcrConfig.staggered_prt(), _freeRun);
+        hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
+        Pentek::p7142sd3c::DDC8DECIMATE);
     
     // We use SD3C's first general purpose timer for transmit pulse modulation
     sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
