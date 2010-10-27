@@ -90,7 +90,7 @@ void createDDSservices()
 /////////////////////////////////////////////////////////////////////
 void stopDDSservices()
 {
-    delete _tsWriter;
+//    delete _tsWriter;
     delete _publisher;
 }
 
