@@ -72,9 +72,9 @@ void createDDSservices()
 	argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
 	argv["-DCPSConfigFile"] = _DCPS;
 	if (_DCPSDebugLevel > 0)
-		argv["-DCPSDebugLevel"] = _DCPSDebugLevel;
+		argv["-DCPSDebugLevel"] = QString("%1").arg(_DCPSDebugLevel).toStdString().c_str();
 	if (_DCPSTransportDebugLevel > 0)
-		argv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
+		argv["-DCPSTransportDebugLevel"] = QString("%1").arg(_DCPSTransportDebugLevel).toStdString().c_str();
 	argv["-ORBSvcConf"] = _ORB;
 
 	// create our DDS publisher

@@ -116,9 +116,9 @@ main (int argc, char** argv) {
 	newargv["-DCPSConfigFile"] = _DCPS;
 	newargv["-DCPSInfoRepo"] = _DCPSInfoRepo;
 	if (_DCPSDebugLevel > 0)
-		newargv["-DCPSDebugLevel"] = _DCPSDebugLevel;
+		newargv["-DCPSDebugLevel"] = QString("%1").arg(_DCPSDebugLevel).toStdString().c_str();
 	if (_DCPSTransportDebugLevel > 0)
-		newargv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
+		newargv["-DCPSTransportDebugLevel"] = QString("%1").arg(_DCPSTransportDebugLevel).toStdString().c_str();
 
 	// create our DDS subscriber
 	char **theArgv = newargv.argv();

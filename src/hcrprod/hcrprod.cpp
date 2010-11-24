@@ -110,9 +110,9 @@ main (int argc, char** argv) {
     std::cout << "DCPS configuration: " << _DCPS << std::endl;
     std::cout << "DCPSInfoRepo: " << _DCPSInfoRepo << std::endl;
     if (_DCPSDebugLevel > 0)
-        newargv["-DCPSDebugLevel"] = _DCPSDebugLevel;
+        newargv["-DCPSDebugLevel"] = QString("%1").arg(_DCPSDebugLevel).toStdString().c_str();
     if (_DCPSTransportDebugLevel > 0)
-        newargv["-DCPSTransportDebugLevel"] = _DCPSTransportDebugLevel;
+        newargv["-DCPSTransportDebugLevel"] = QString("%1").arg(_DCPSTransportDebugLevel).toStdString().c_str();
 
     // create our DDS subscriber for incoming time-series data
     char **theArgv = newargv.argv();
