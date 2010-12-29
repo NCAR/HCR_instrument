@@ -73,7 +73,7 @@ class HcrDrxPub : public QThread {
         /// @param buf The raw buffer of data from the downconverter
         /// channel. It contains all Is and Qs
 		/// @param pulsenum The pulse number. Will be zero for raw data.
-        void publishDDS(char* buf, unsigned int pulsenum);
+        void publishDDS(char* buf, long long pulsenum);
         /**
          * Return true iff the current configuration is valid.
          * @return true iff the current configuration is valid.
