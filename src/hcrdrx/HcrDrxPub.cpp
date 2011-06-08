@@ -116,7 +116,7 @@ HcrDrxPub::publishDDS(char* buf, long long pulsenum) {
 		ts.hskp.chanId = _chanId;
 		ts.prt_seq_num = 1;   // single-PRT only for now
 		ts.pulseNum = pulsenum;
-		time_duration timeFromEpoch = _down->timeOfPulse(pulsenum) - Epoch1970;
+		time_duration timeFromEpoch = _sd3c.timeOfPulse(pulsenum) - Epoch1970;
 		// Calculate the timetag, which is usecs since 1970-01-01 00:00:00 UTC
 		ts.hskp.timetag = timeFromEpoch.total_seconds() * 1000000LL +
 				(timeFromEpoch.fractional_seconds() * 1000000LL) /
