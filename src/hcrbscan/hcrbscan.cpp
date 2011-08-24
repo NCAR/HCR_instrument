@@ -101,9 +101,6 @@ int main(int argc, char *argv[]) {
     newargv["-DCPSConfigFile"] = _DCPS;
     newargv["-DCPSInfoRepo"] = _DCPSInfoRepo;
     
-    std::cout << "ORB service configuration: " << _ORB << std::endl;
-    std::cout << "DCPS configuration: " << _DCPS << std::endl;
-    std::cout << "DCPSInfoRepo: " << _DCPSInfoRepo << std::endl;
     if (_DCPSDebugLevel > 0) {
     	std::cout << "setting DCPSDebugLevel to " << _DCPSDebugLevel << std::endl;
     	std::ostringstream oss;
