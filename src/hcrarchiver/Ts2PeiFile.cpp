@@ -67,4 +67,5 @@ main(int argc, char* argv[]) {
             std::cout.write((char*)&(iqData[2 * g]), 4);
         }
     }
+    return 0;
 }
