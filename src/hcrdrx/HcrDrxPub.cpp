@@ -57,7 +57,7 @@ void HcrDrxPub::run() {
 
   // start the loop. The thread will block on getBeam()
   while (1) {
-	long long pulsenum;
+	int64_t pulsenum;
 	char* buf = _down->getBeam(pulsenum);
     publishDDS(buf, pulsenum);
   }
@@ -77,7 +77,7 @@ static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0
 
 ///////////////////////////////////////////////////////////
 void
-HcrDrxPub::publishDDS(char* buf, long long pulsenum) {
+HcrDrxPub::publishDDS(char* buf, int64_t pulsenum) {
     
 
 	// bufPos is now pointing to the pulse data
