@@ -55,7 +55,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         hskp.timetag = timetagUsecs;
         
         // SysHousekeeping.gates
-        int nGates = radxField.getNGates();
+        int nGates = radxRay.getNGates();
         hskp.gates = nGates;
         
         // SysHousekeeping.chanId: no match in Radx metadata
@@ -64,7 +64,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         hskp.radar_id = radxVol.getInstrumentName().c_str();
         
         // SysHousekeeping.staggered_prt: single PRT mode only for now!
-        if (radxRay.getPrfMode() != Radx::PRF_MODE_FIXED) {
+        if (radxRay.getPrtMode() != Radx::PRT_MODE_FIXED) {
             std::cerr << __FUNCTION__ << ": at data time " << 
                 std::setprecision(6) << 1.0e-6 * timetagUsecs << 
                 ", PRF mode is not fixed!" << std::endl;
@@ -79,13 +79,13 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         hskp.prt1 = radxRay.getPrtSec();
         
         // SysHousekeeping.prt2
-        hskp.prt2 = radxRay.getPrt2Sec();
+        hskp.prt2 = radxRay.getPrtRatio() * hskp.prt1;
         
         // SysHousekeeping.tx_peak_power: horizontal only for now!
         hskp.tx_peak_power = calib.getXmitPowerDbmH();
         
         // SysHousekeeping.tx_cntr_freq
-        hskp.tx_cntr_freq = radxVol.getWavelengthMeters() / SPEED_OF_LIGHT;
+        hskp.tx_cntr_freq = radxVol.getWavelengthM() / SPEED_OF_LIGHT;
         
         // SysHousekeeping.tx_chirp_bandwidth: no match in Radx metadata
         
@@ -183,7 +183,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         hskp.longitude = georef ? georef->getLongitude() : radxVol.getLongitudeDeg();
         
         // SysHousekeeping.altitude
-        hskp.altitude = georef ? georef->getAltitudeMsl() : radxVol.getAltitudeKm() * 1.0e3;
+        hskp.altitude = georef ? georef->getAltitudeKmMsl() : radxVol.getAltitudeKm() * 1.0e3;
         
         // SysHousekeeping.supply_voltage_ok:  no match in Radx metadata
         
@@ -241,7 +241,9 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     
     // SysHousekeeping.gates
     int nGates = hskp.gates;
-    
+    radxRay.setNGates(nGates);
+    radxRay.setNGatesConstant();
+
     // SysHousekeeping.chanId: no match in Radx metadata
     
     // SysHousekeeping.radar_id
@@ -254,14 +256,14 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
                 ": cannot handle DDS data with staggered PRT!" << std::endl;
         exit(1);
     }
-    radxRay.setPrfMode(Radx::PRF_MODE_FIXED);
+    radxRay.setPrtMode(Radx::PRT_MODE_FIXED);
     
     // SysHousekeeping.pdpp: @TODO ...not sure how to handle this one
     
     // SysHousekeeping.prt1
     // SysHousekeeping.prt2
     radxRay.setPrtSec(hskp.prt1);
-    radxRay.setPrt2Sec(hskp.prt2);
+    radxRay.setPrtRatio(hskp.prt2 / hskp.prt1);
     radxRay.setUnambigRange(); // calculate unambiguous range from PRT
     
     // SysHousekeeping.tx_peak_power: horizontal only for now!
@@ -269,7 +271,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     
     // SysHousekeeping.tx_cntr_freq
     if (firstRayInVol)
-        radxVol.setWavelengthMeters(hskp.tx_wavelength());
+        radxVol.addWavelengthM(hskp.tx_wavelength());
     
     // SysHousekeeping.tx_chirp_bandwidth: no match in Radx metadata
     
@@ -353,12 +355,12 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     
     // SysHousekeeping.rcvr_gate0_delay
     // Translate receiver delay to range to start of gate0, then set the
-    // fixed gate ranges for the RadxRay. Note that RadxRay.setConstantGeom()
+    // fixed gate ranges for the RadxRay. Note that RadxRay.setRangeGeom()
     // takes its ranges in km, and expects the start value to be to the *center*
     // of the first gate.
     double gate0Start = 0.5 * hskp.rcvr_gate0_delay * SPEED_OF_LIGHT; // m
-    radxRay.setConstantGeom(nGates, 1.0e-3 * (gate0Start + 0.5 * gateSpacing), 
-            1.0e-3 * gateSpacing); // ranges in km!
+    radxRay.setRangeGeom(1.0e-3 * (gate0Start + 0.5 * gateSpacing),
+    		1.0e-3 * gateSpacing); // ranges in km!
 
     // SysHousekeeping.rcvr_bandwidth
     if (firstRayInVol)
@@ -370,7 +372,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     if (georef) {
         georef->setLatitude(hskp.latitude);
         georef->setLongitude(hskp.longitude);
-        georef->setAltitudeMsl(hskp.altitude);
+        georef->setAltitudeKmMsl(hskp.altitude);
     }
     
     if (firstRayInVol) {
@@ -411,7 +413,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     radxRay.setAntennaTransition(false);
     radxRay.setNSamples(firstProduct.samples);
     
-    float wavelength = radxVol.getWavelengthMeters();
+    float wavelength = radxVol.getWavelengthM();
     float prf = 1.0 / radxRay.getPrtSec();  // Hz
     float nyquist = (prf * wavelength) / 4;     // Nyquist max speed
     radxRay.setNyquistMps(nyquist);
