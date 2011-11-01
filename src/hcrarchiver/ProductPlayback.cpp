@@ -29,7 +29,7 @@ ProductPlayback::~ProductPlayback() {
 
 void 
 ProductPlayback::run() {
-    bool channelCountWarned = false;
+//    bool channelCountWarned = false;
     RadarDDS::ProductSet *productSet;
 
     while (1) {
