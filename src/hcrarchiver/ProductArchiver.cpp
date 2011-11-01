@@ -107,8 +107,6 @@ ProductArchiver::_writeCurrentVolume() {
     // were dropped.
     int raysBefore = _radxVol.getNRays();
 
-    _radxVol.loadVolFieldsFromRays(false);
-
     int raysDropped = _radxVol.getNRays() - raysBefore;
     if (raysDropped)
         std::cerr << "Dropped " << raysDropped << 
