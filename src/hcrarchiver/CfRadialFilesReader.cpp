@@ -26,7 +26,7 @@ bool
 CfRadialFilesReader::getNextRay(const RadxRay* & radxRay, 
         const RadxVol* & radxVol) {
     // Open the next file if necessary
-    if (_nextRayNum == _radxVol.getNRays() && ! _openNextFile())
+  if (_nextRayNum == (int) _radxVol.getNRays() && ! _openNextFile())
             return false;
     
     radxRay = _radxVol.getRays()[_nextRayNum];
