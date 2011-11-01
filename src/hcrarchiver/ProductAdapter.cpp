@@ -67,7 +67,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         if (radxRay.getPrtMode() != Radx::PRT_MODE_FIXED) {
             std::cerr << __FUNCTION__ << ": at data time " << 
                 std::setprecision(6) << 1.0e-6 * timetagUsecs << 
-                ", PRF mode is not fixed!" << std::endl;
+                ", PRT mode is not fixed!" << std::endl;
             exit(1);
         } else {
             hskp.staggered_prt = false;
@@ -79,7 +79,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
         hskp.prt1 = radxRay.getPrtSec();
         
         // SysHousekeeping.prt2
-        hskp.prt2 = radxRay.getPrtRatio() * hskp.prt1;
+        hskp.prt2 = radxRay.getPrtSec() * radxRay.getPrtRatio();
         
         // SysHousekeeping.tx_peak_power: horizontal only for now!
         hskp.tx_peak_power = calib.getXmitPowerDbmH();
@@ -263,7 +263,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     // SysHousekeeping.prt1
     // SysHousekeeping.prt2
     radxRay.setPrtSec(hskp.prt1);
-    radxRay.setPrtRatio(hskp.prt2 / hskp.prt1);
+    radxRay.setPrtRatio((double) hskp.prt2 / (double) hskp.prt1);
     radxRay.setUnambigRange(); // calculate unambiguous range from PRT
     
     // SysHousekeeping.tx_peak_power: horizontal only for now!
@@ -271,7 +271,7 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     
     // SysHousekeeping.tx_cntr_freq
     if (firstRayInVol)
-        radxVol.addWavelengthM(hskp.tx_wavelength());
+      radxVol.addWavelengthM(hskp.tx_wavelength());
     
     // SysHousekeeping.tx_chirp_bandwidth: no match in Radx metadata
     
@@ -359,8 +359,9 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     // takes its ranges in km, and expects the start value to be to the *center*
     // of the first gate.
     double gate0Start = 0.5 * hskp.rcvr_gate0_delay * SPEED_OF_LIGHT; // m
-    radxRay.setRangeGeom(1.0e-3 * (gate0Start + 0.5 * gateSpacing),
-    		1.0e-3 * gateSpacing); // ranges in km!
+    radxRay.setNGates(nGates);
+    radxRay.setRangeGeom(1.0e-3 * (gate0Start + 0.5 * gateSpacing), 
+                         1.0e-3 * gateSpacing); // ranges in km!
 
     // SysHousekeeping.rcvr_bandwidth
     if (firstRayInVol)
