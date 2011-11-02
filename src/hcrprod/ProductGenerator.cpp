@@ -14,7 +14,7 @@
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-        int nSamples) :
+                                   int nSamples, const string &calFilePath) :
     _reader(source),
     _writer(sink),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
@@ -26,7 +26,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _wrongChannelCount(0),
     _dwellCount(0),
     _dwellDiscardCount(0),
-    _lastPulseRcvd(-1) {
+    _lastPulseRcvd(-1),
+    _calFilePath(calFilePath) {
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
     // Set the number of samples for the regression filter
@@ -40,6 +41,8 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     }
     // Work space to hold a dwell of filtered IQ data for one gate
     _filteredGateIQ = new RadarComplex_t[_nSamples];
+    // read in calibration file
+    _readCalFile();
 }
 
 ProductGenerator::~ProductGenerator() {
@@ -169,20 +172,17 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
          * dwell.
          */
         if (_samplesCached == 0) {
-            // Calibrate using values from the first pulse of the dwell
-            DsRadarCalib calib;
-            calib.setReceiverGainDbHc(hskp.rcvr_gain());
-            calib.setNoiseDbmHc(hskp.rcvr_noise_power() + 
-                    hskp.rcvr_gain()); // we include receiver gain here
-            calib.setBaseDbz1kmHc(hskp.rcvr_noise_power() + hskp.radar_constant_water());
-            _momentsCalc.setCalib(calib);
-            
-            _momentsCalc.init(hskp.prt1, hskp.tx_wavelength(), 
-                    hskp.range_to_first_gate() * 0.001 /* km */,
-                    hskp.gate_spacing() * 0.001 /* km */);
-            
-            _dwellHskp = hskp;
+
+          _momentsCalc.setCalib(_calib);
+          
+          _momentsCalc.init(hskp.prt1, hskp.tx_wavelength(), 
+                            hskp.range_to_first_gate() * 0.001 /* km */,
+                            hskp.gate_spacing() * 0.001 /* km */);
+          
+          _dwellHskp = hskp;
+
         }
+
         /*
          * Save the azimuth and elevation from mid-dwell
          */
@@ -458,3 +458,36 @@ ProductGenerator::addProductHousekeeping_(RadarDDS::Product & p) {
     // Insert the sample count
     p.samples = _nSamples;
 }
+
+void
+ProductGenerator::_readCalFile() {
+  std::string errStr;
+  if (_calib.readFromXmlFile(_calFilePath, errStr)) {
+
+    std::cerr << "WARNING: error reading cal file: " << _calFilePath << endl;
+    std::cerr << errStr << endl;
+    std::cerr << "Will use default calibration parameters" << endl;
+
+    _calib.setRadarName("HCR");
+    _calib.setCalibTime(time(NULL));
+    _calib.setWavelengthCm(0.31758);
+    _calib.setBeamWidthDegH(0.75);
+    _calib.setBeamWidthDegV(0.68);
+    _calib.setAntGainDbH(46.2);
+    _calib.setPulseWidthUs(0.512);
+    _calib.setXmitPowerDbmH(58.78);
+    _calib.setTwoWayWaveguideLossDbH(0.0);
+    _calib.setTwoWayRadomeLossDbH(0.0);
+    _calib.setReceiverMismatchLossDb(1.1);
+    _calib.setRadarConstH(70.0948);
+    _calib.setNoiseDbmHc(-64.0);
+    _calib.setI0DbmHc(-103.5);
+    _calib.setReceiverGainDbHc(39.5);
+    _calib.setReceiverSlopeDbHc(1.0);
+    _calib.setBaseDbz1kmHc(-40.0);
+    _calib.setDynamicRangeDbHc(70.0);
+    
+  }
+
+}
+

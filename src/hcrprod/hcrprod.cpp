@@ -24,6 +24,7 @@ std::string _tsTopic;            ///< topic for (incoming) time-series
 std::string _prodTopic;          ///< topic for (outgoing) products
 int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
+std::string _calFilePath;        ///< calibration file path - XML
 
 namespace po = boost::program_options;
 
@@ -58,6 +59,7 @@ void getConfigParams()
     _tsTopic      = config.getString("DDS/TopicTS",        "HCRTS");
     _prodTopic    = config.getString("DDS/TopicProduct",   "HCRPROD");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
+    _calFilePath  = config.getString("CalFilePath", "./hcr_cal.xml");
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -77,8 +79,9 @@ void parseOptions(int argc,
         ("ORB", po::value<std::string>(&_ORB), "ORB service configuration file (Corba ORBSvcConf arg)")
         ("DCPS", po::value<std::string>(&_DCPS), "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
         ("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo), "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
-        ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel ")
-        ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel), "DCPSTransportDebugLevel ")
+        ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPS debug level")
+        ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel), "DCPS transport debug level ")
+        ("CalibFilePath", po::value<std::string>(&_calFilePath), "path to calibration XML file")
         ;
 
     po::variables_map vm;
@@ -137,7 +140,7 @@ main (int argc, char** argv) {
     ProductWriter *productWriter = new ProductWriter(publisher, _prodTopic);
 
     // create the products generator thread and run it
-    ProductGenerator generator(tsReader, productWriter, 1024);
+    ProductGenerator generator(tsReader, productWriter, 1024, _calFilePath);
     generator.run();
 
     return app.exec();

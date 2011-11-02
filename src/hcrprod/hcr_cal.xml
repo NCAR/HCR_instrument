@@ -1,0 +1,21 @@
+<DsRadarCalib>
+  <radarName>HCR</radarName>
+  <calibTime>2011-11-02T12:00:00</calibTime>
+  <wavelengthCm>0.31758</wavelengthCm>
+  <beamWidthDegH>0.75</beamWidthDegH>
+  <beamWidthDegV>0.68</beamWidthDegV>
+  <antGainDbH>46.2</antGainDbH>
+  <antGainDbV>46.2</antGainDbV>
+  <pulseWidthUs>0.512</pulseWidthUs>
+  <xmitPowerDbmH>58.78</xmitPowerDbmH>
+  <twoWayWaveguideLossDbH>0.0</twoWayWaveguideLossDbH>
+  <twoWayRadomeLossDbH>0.0</twoWayRadomeLossDbH>
+  <receiverMismatchLossDb>1.1</receiverMismatchLossDb>
+  <radarConstH>70.0948</radarConstH>
+  <noiseDbmHc>-64.0</noiseDbmHc>
+  <i0DbmHc>-103.5</i0DbmHc>
+  <receiverGainDbHc>39.5</receiverGainDbHc>
+  <receiverSlopeDbHc>1.0</receiverSlopeDbHc>
+  <dynamicRangeDbHc>70</dynamicRangeDbHc>
+  <baseDbz1kmHc>-40.0</baseDbz1kmHc>
+</DsRadarCalib>
