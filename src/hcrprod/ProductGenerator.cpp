@@ -484,7 +484,7 @@ ProductGenerator::_readCalFile() {
     _calib.setI0DbmHc(-103.5);
     _calib.setReceiverGainDbHc(39.5);
     _calib.setReceiverSlopeDbHc(1.0);
-    _calib.setBaseDbz1kmHc(-40.0);
+    _calib.setBaseDbz1kmHc(-35.6);
     _calib.setDynamicRangeDbHc(70.0);
     
   }

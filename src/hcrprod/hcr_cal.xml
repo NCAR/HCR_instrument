@@ -17,5 +17,5 @@
   <receiverGainDbHc>39.5</receiverGainDbHc>
   <receiverSlopeDbHc>1.0</receiverSlopeDbHc>
   <dynamicRangeDbHc>70</dynamicRangeDbHc>
-  <baseDbz1kmHc>-40.0</baseDbz1kmHc>
+  <baseDbz1kmHc>-35.6</baseDbz1kmHc>
 </DsRadarCalib>
