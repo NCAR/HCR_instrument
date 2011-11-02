@@ -6,10 +6,24 @@
 #include <XmlRpc.h>
 #include <DDSSubscriber.h>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/program_options.hpp>
 
 #include "svnInfo.h"
 #include "ProductArchiver.h"
 
+namespace po = boost::program_options;
+
+// command line args - file scope
+
+static std::string _dataDirDefault = "/data_first";
+static int _rpcPortDefault = 60003;
+static int _raysPerFileDefault = 1000;
+static std::string _calFilePathDefault = "../hcrprod/hcr_cal.xml";
+
+static std::string _dataDir;
+static int _rpcPort;
+static int _raysPerFile;
+static std::string _calFilePath;
 
 // Current write rate, in rays/second
 float WriteRate = 0.0;
@@ -73,15 +87,49 @@ signalHandler(int signum) {
     Quit = 1;
 }
 
+//////////////////////////////////////////////////////////////////////
+/// Parse the command line options
+
+void parseOptions(int argc, char** argv)
+
+{
+
+  // get the options
+  po::options_description descripts("Options");
+  char outputDirHelp[1024];
+  sprintf(outputDirHelp, "output data dir, default: '%s'",
+          _dataDirDefault.c_str());
+  char rpcPortHelp[1024];
+  sprintf(rpcPortHelp, "XML RPC port, default: %d",
+          _rpcPortDefault);
+  char raysPerFileHelp[1024];
+  sprintf(raysPerFileHelp, "Num rays per CfRadial file, default: %d",
+          _raysPerFileDefault);
+  char calFilePathHelp[1024];
+  sprintf(calFilePathHelp, "path to cal file, default: '%s'",
+          _calFilePathDefault.c_str());
+  descripts.add_options()
+    ("help", "describe options")
+    ("DataDir", po::value<std::string>(&_dataDir), outputDirHelp)
+    ("RpcPort", po::value<int>(&_rpcPort), rpcPortHelp)
+    ("RaysPerFile", po::value<int>(&_raysPerFile), raysPerFileHelp)
+    ("CalibFilePath", po::value<std::string>(&_calFilePath), calFilePathHelp)
+    ;
+
+  po::variables_map vm;
+  po::store(po::parse_command_line(argc, argv, descripts), vm);
+  po::notify(vm);
+  
+  if (vm.count("help")) {
+    std::cout << descripts << std::endl;
+    exit(1);
+  }
+
+}
+
 int
 main(int argc, char *argv[])
 {
-    const int DefaultRPCPort = 60003;
-    if (argc != 1 && argc != 3)
-    {
-        std::cerr << "Usage: " << argv[0] << " [<data_dir> <rpc_port>]" << std::endl;
-        exit(1);
-    }
 
     std::cout << "productarchiver rev " << SVNREVISION << " from " <<
         SVNURL << std::endl;
@@ -108,22 +156,20 @@ main(int argc, char *argv[])
         eaConfig.getString("DDS/DCPSInfoRepo", "iiop://localhost:50000/DCPSInfoRepo");
     std::string productsTopic =
         eaConfig.getString("TopicProduct", "HCRPROD");
-    std::string dataDir =
-        eaConfig.getString("DataDir", "/data_first");
-    int rpcPort = 
-        eaConfig.getInt("RpcPort", DefaultRPCPort);
-    uint raysPerFile = 
-        uint(eaConfig.getInt("RaysPerFile", 10000));
-    std::cout << "Breaking files every " << raysPerFile << " rays" <<
-        std::endl;
 
-    // Override dataDir and rpcPort if we got command line args
-    if (argc > 1) {
-        std::cout << "Using data dir from command line: " << argv[1] << std::endl;
-        dataDir = std::string(argv[1]);
-        std::cout << "Using RPC port from command line: " << argv[2] << std::endl;
-        rpcPort = atoi(argv[2]);
-    }
+    _dataDir = eaConfig.getString("DataDir", _dataDirDefault);
+    _rpcPort = eaConfig.getInt("RpcPort", _rpcPortDefault);
+    _raysPerFile = eaConfig.getInt("RaysPerFile", _raysPerFileDefault);
+    _calFilePath = eaConfig.getString("CalFilePath", _calFilePathDefault);
+
+    // Override options from command line
+
+    parseOptions(argc, argv);
+
+    std::cout << "Writing data to dir: " << _dataDir << std::endl;
+    std::cout << "Rpc port: " << _rpcPort << std::endl;
+    std::cout << "Rays per file: " << _raysPerFile << std::endl;
+    std::cout << "Cal file path: " << _calFilePath << std::endl;
     
     // Call signalHandler() if we get SIGINT (^C from the keyboard) or
     // SIGTERM (e.g., default for the 'kill' command)
@@ -154,11 +200,16 @@ main(int argc, char *argv[])
     }
 
     // Instantiate our netCDF CFRadial archiver
-    ProductArchiver* archiver = new ProductArchiver(subscriber, 
-            productsTopic, dataDir, raysPerFile, RadxFile::FILE_FORMAT_CFRADIAL);
+    ProductArchiver* archiver =
+      new ProductArchiver(subscriber, 
+                          productsTopic,
+                          _dataDir,
+                          _raysPerFile,
+                          RadxFile::FILE_FORMAT_CFRADIAL,
+                          _calFilePath);
 
     // Initialize our RPC server
-    RpcSvr.bindAndListen(rpcPort);
+    RpcSvr.bindAndListen(_rpcPort);
     RpcSvr.enableIntrospection(true);
 
     while (! Quit) {
@@ -182,3 +233,4 @@ main(int argc, char *argv[])
     // track it down...  (cb 4 Jun 2010)
     exit(0);
 }
+

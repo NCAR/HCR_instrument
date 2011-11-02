@@ -212,7 +212,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
 }
 
 void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet, 
-        RadxRay& radxRay, RadxVol& radxVol, RadxRcalib& radxRcalib) {
+        RadxRay& radxRay, RadxVol& radxVol) {
     // Will this be the first ray added to RadxVol?
     bool firstRayInVol = (radxVol.getNRays() == 0);
     
@@ -266,45 +266,28 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     radxRay.setPrtRatio((double) hskp.prt2 / (double) hskp.prt1);
     radxRay.setUnambigRange(); // calculate unambiguous range from PRT
     
-    // SysHousekeeping.tx_peak_power: horizontal only for now!
-    radxRcalib.setXmitPowerDbmH(hskp.tx_peak_power);
-    
     // SysHousekeeping.tx_cntr_freq
     if (firstRayInVol)
       radxVol.addWavelengthM(hskp.tx_wavelength());
     
     // SysHousekeeping.tx_chirp_bandwidth: no match in Radx metadata
     
-    // SysHousekeeping.tx_pulse_width
-    radxRcalib.setPulseWidthUsec(1.0e6 * hskp.tx_pulse_width);
-
     // SysHousekeeping.tx_switching_network_loss: no match in Radx metadata
     
-    // SysHousekeeping.tx_waveguide_loss: horizontal only!
-    // We add the tx_waveguide_loss and rcvr_waveguide_loss to get two-way loss.
-    radxRcalib.setTwoWayWaveguideLossDbH(hskp.tx_waveguide_loss + 
-            hskp.rcvr_waveguide_loss);
-    
     // SysHousekeeping.tx_peak_pwr_coupling: no match in Radx metadata
-    
     // SysHousekeeping.tx_turn_on_time: no match in Radx metadata
-    
     // SysHousekeeping.tx_turn_off_time: no match in Radx metadata
-    
     // SysHousekeeping.tx_upconverter_latency: no match in Radx metadata
     
-    // SysHousekeeping.ant_gain: horizontal polarization only for now!
-    if (firstRayInVol)
-        radxVol.setRadarAntennaGainDbH(hskp.ant_gain);
+    if (firstRayInVol) {
+      // SysHousekeeping.ant_gain: horizontal polarization only for now!
+      radxVol.setRadarAntennaGainDbH(hskp.ant_gain);
+      // SysHousekeeping.ant_hbeam_width
+      radxVol.setRadarBeamWidthDegH(hskp.ant_hbeam_width);
+      // SysHousekeeping.ant_vbeam_width
+      radxVol.setRadarBeamWidthDegV(hskp.ant_vbeam_width);
+    }
     
-    // SysHousekeeping.ant_hbeam_width
-    if (firstRayInVol)
-        radxVol.setRadarBeamWidthDegH(hskp.ant_hbeam_width);
-    
-    // SysHousekeeping.ant_vbeam_width
-    if (firstRayInVol)
-        radxVol.setRadarBeamWidthDegV(hskp.ant_vbeam_width);
-
     // SysHousekeeping.ant_E_plane_angle: no match in Radx metadata
     
     // SysHousekeeping.ant_H_plane_angle: no match in Radx metadata
@@ -341,16 +324,8 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     
     // SysHousekeeping.rcvr_noise_figure: no match in Radx metadata
     
-    // SysHousekeeping.rcvr_filter_mismatch
-    radxRcalib.setReceiverMismatchLossDb(hskp.rcvr_filter_mismatch);
-
     // SysHousekeeping.rcvr_rf_gain
-    // NOTE: Radx only has total receiver gain, which is set to (hskp.rcvr_rf_gain + 
-    // hskp.rcvr_digital_gain)
-    radxRcalib.setReceiverGainDbHc(hskp.rcvr_rf_gain + hskp.rcvr_digital_gain);
-
     // SysHousekeeping.rcvr_if_gain: see rcvr_rf_gain above!
-
     // SysHousekeeping.rcvr_digital_gain: see rcvr_rf_gain above!
     
     // SysHousekeeping.rcvr_gate0_delay
@@ -360,8 +335,9 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
     // of the first gate.
     double gate0Start = 0.5 * hskp.rcvr_gate0_delay * SPEED_OF_LIGHT; // m
     radxRay.setNGates(nGates);
-    radxRay.setRangeGeom(1.0e-3 * (gate0Start + 0.5 * gateSpacing), 
-                         1.0e-3 * gateSpacing); // ranges in km!
+    double startRangeKm = 1.0e-3 * (gate0Start + 0.5 * gateSpacing);
+    double gateSpacingKm = 1.0e-3 * gateSpacing;
+    radxRay.setRangeGeom(startRangeKm, gateSpacingKm);
 
     // SysHousekeeping.rcvr_bandwidth
     if (firstRayInVol)
@@ -396,11 +372,6 @@ void ProductAdapter::DDSToRadxRay(const RadarDDS::ProductSet& productSet,
 
     // SysHousekeeping.tx_pulse_width
     radxRay.setPulseWidthUsec(1.0e6 * hskp.tx_pulse_width);
-    
-    // Set a couple of things which come from SysHousekeeping derived
-    // value methods.
-    radxRcalib.setBaseDbz1kmHc(hskp.rcvr_noise_power() + hskp.radar_constant_water());
-    radxRcalib.setNoiseDbmHc(hskp.rcvr_noise_power());
     
     // Set values we can't get from the SysHousekeeping
     radxRay.setVolumeNumber(radxVol.getVolumeNumber());

@@ -89,6 +89,7 @@ boost_program_options
 hcrdds
 qtt_qtconfig
 rapradx
+rapradar
 xmlrpc
 """)
 productenv = Environment(tools = ['default'] + producttools)

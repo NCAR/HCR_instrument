@@ -6,7 +6,6 @@
  */
 
 #include "ProductPlayback.h"
-#include "ProductAdapter.h"
 
 #include <iostream>
 #include <cstdlib>

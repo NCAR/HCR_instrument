@@ -18,7 +18,6 @@
 #include <Radx/RadxVol.hh>
 #include <Radx/RadxRcalib.hh>
 
-
 class ProductAdapter {
 public:
     /**
@@ -45,7 +44,7 @@ public:
      *     extracted from productSet.
      */
     static void DDSToRadxRay(const RadarDDS::ProductSet& productSet,
-            RadxRay& radxRay, RadxVol& radxVol, RadxRcalib& radxRcalib);
+            RadxRay& radxRay, RadxVol& radxVol);
 };
 
 #endif /* PRODUCTADAPTER_H_ */

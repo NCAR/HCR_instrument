@@ -12,6 +12,7 @@
 
 #include <Radx/RadxFile.hh>
 #include <Radx/RadxVol.hh>
+#include <rapformats/DsRadarCalib.hh>
 
 
 /// ProductArchiver class
@@ -27,8 +28,9 @@ public:
     /// @param fileFormat the Radx::file_format_t file format for output files,
     ///     e.g., RadxFile::FILE_FORMAT_CFRADIAL (see Radx/RadxFile.hh)
     ProductArchiver(DDSSubscriber& subscriber, std::string topicName,
-            std::string dataDir, uint raysPerFile,
-            RadxFile::file_format_t fileFormat);
+                    std::string dataDir, uint raysPerFile,
+                    RadxFile::file_format_t fileFormat,
+                    const string &calFilePath);
     virtual ~ProductArchiver();
 
     /// Implement DDSReader::notify(), which will be called
@@ -49,6 +51,7 @@ public:
     int raysWritten() const { return _raysWritten; }
 
 private:
+
     // Write out the volume stored in _radxVol, clear _radxVol, and
     // increment the volume counter
     void _writeCurrentVolume();
@@ -56,6 +59,12 @@ private:
     // Initialize our volume
     void _initVolume();
     
+    // Read in calibration file
+    void _readCalFile();
+
+    // load up calib for Radx object, from the dsCalib object
+    void _loadRadxRcalib(RadxRcalib *radxCal);
+  
     // destination directory
     std::string _dataDir;
     
@@ -79,6 +88,11 @@ private:
     
     // Mutex for thread-safe access to our members
     ACE_Recursive_Thread_Mutex _mutex;
+
+    // radar calibration
+    string _calFilePath;
+    DsRadarCalib _dsCalib;
+
 };
 
 #endif /* PRODUCTARCHIVER_H_ */
