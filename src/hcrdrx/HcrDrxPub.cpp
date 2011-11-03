@@ -36,7 +36,7 @@ HcrDrxPub::HcrDrxPub(
 
     // scaling between A2D counts and volts
 
-    _iqScaleForMw = _config.iqcount_scale_for_mw();
+    _iqScaleForMw = config.iqcount_scale_for_mw();
 
     // Create our associated downconverter.
     _down = sd3c.addDownconverter(_chanId, false, tsLength,

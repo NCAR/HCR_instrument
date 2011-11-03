@@ -301,6 +301,9 @@ main(int argc, char** argv)
     // We use SD3C's first general purpose timer for transmit pulse modulation
     sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
     
+    // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing
+    sd3c.setGPTimer1(0.0, 1.312e-6);
+    
     // Create (but don't yet start) the downconversion threads.
     
 	// create the down converter threads. Remember that
