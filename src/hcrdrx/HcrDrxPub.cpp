@@ -34,6 +34,10 @@ HcrDrxPub::HcrDrxPub(
     if (! _configIsValid())
         abort();
 
+    // scaling between A2D counts and volts
+
+    _iqScaleForMw = _config.iqcount_scale_for_mw();
+
     // Create our associated downconverter.
     _down = sd3c.addDownconverter(_chanId, false, tsLength,
         config.rcvr_gate0_delay(), config.rcvr_pulse_width(), gaussianFile, 

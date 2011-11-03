@@ -89,6 +89,11 @@ class HcrDrxPub : public QThread {
         /// Our associated Pentek downconverter
         Pentek::p7142sd3cDn* _down;
 
+        /// I and Q count scaling factor to get power in mW easily:
+        /// mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
+
+        double _iqScaleForMw;
+
         /**
          * The number of gates being collected by the downconverter
          */

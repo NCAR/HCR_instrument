@@ -115,6 +115,17 @@ public:
     
     int ddcType() const { return _getIntVal("ddc_type"); } /// 4 or 8
     
+    // iqcount_scale_for_mw: count scaling factor to easily get power in mW from
+    // I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
+    // mW is:
+    //
+    //      (I / iqcount_scale_for_mw)^2 + (Q / iqcount_scale_for_mw)^2
+    //
+    // This value is determined empirically.
+    double iqcount_scale_for_mw() const {
+        return _getDoubleVal("iqcount_scale_for_mw");
+    }
+
     /**
      * Fill the given RadarDDS::SysHousekeeping struct from contents of the
      * configuration. Some or all existing contents may be overwritten.

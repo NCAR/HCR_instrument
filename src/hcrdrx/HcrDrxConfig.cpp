@@ -59,6 +59,7 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("latitude");
     keys.insert("longitude");
     keys.insert("altitude");
+    keys.insert("iqcount_scale_for_mw");
     return keys;
 }
 
@@ -344,6 +345,11 @@ HcrDrxConfig::isValid(bool verbose) const {
     if (tx_pulse_mod_width() == UNSET_DOUBLE) {
         if (verbose)
             std::cerr << "'tx_pulse_mod_width' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (iqcount_scale_for_mw() == UNSET_DOUBLE) {
+        if (verbose)
+            std::cerr << "'iqcount_scale_for_mw' unset in DRX configuration" << std::endl;
         valid = false;
     }
     
