@@ -1,0 +1,3 @@
+#! /bin/csh
+
+./hcrdrx config_example_test.txt >& /tmp/hcrdrx.log &
