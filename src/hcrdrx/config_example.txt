@@ -25,6 +25,15 @@ tx_pulse_mod_delay      8.0e-8  # s
 tx_pulse_mod_width      7.68e-7 # s
 tx_delay                0.0     # s
 
+# iqcount_scale_for_mw: count scaling factor to easily get power in mW from
+# I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
+# mW is:
+#
+#      (I / iqcount_scale_for_mw)^2 + (Q / iqcount_scale_for_mw)^2
+#
+# This value is determined empirically.
+iqcount_scale_for_mw    9465
+
 # FL1 location
 latitude            40.03794
 longitude           -105.24127
