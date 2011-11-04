@@ -82,6 +82,23 @@ public:
     double tx_pulse_mod_width() const {
         return _getDoubleVal("tx_pulse_mod_width");
     }
+
+    ///////////////////////////////////////////////////
+    /// IWRF TCP output
+
+    /// size of queue buffers for pulse merging for IWRF
+    int merge_queue_size() const {
+        return _getIntVal("merge_queue_size");
+    }
+    /// TCP port for IWRF data server
+    int iwrf_server_tcp_port() const {
+        return _getIntVal("iwrf_server_tcp_port");
+    }
+    /// How often do we send IWRF meta data?
+    int pulse_interval_per_iwrf_meta_data() const {
+      return _getIntVal("pulse_interval_per_iwrf_meta_data");
+    }
+
     // @TODO End-of-line comments below are not working correctly in doxygen. Change to pre-comments.
     double tx_switching_network_loss() const { return _getDoubleVal("tx_switching_network_loss"); }  /// dB
     double tx_waveguide_loss() const { return _getDoubleVal("tx_waveguide_loss"); }      /// dB

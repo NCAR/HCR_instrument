@@ -70,6 +70,9 @@ std::set<std::string> HcrDrxConfig::_createIntLegalKeys() {
     keys.insert("gates");
     keys.insert("actual_num_rcvrs");
     keys.insert("ddc_type");
+    keys.insert("merge_queue_size");
+    keys.insert("iwrf_server_tcp_port");
+    keys.insert("pulse_interval_per_iwrf_meta_data");
     return keys;
 }
 
@@ -353,5 +356,21 @@ HcrDrxConfig::isValid(bool verbose) const {
         valid = false;
     }
     
+    if (merge_queue_size() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'merge_queue_size' not set" << std::endl;
+        valid = false;
+    }
+    if (iwrf_server_tcp_port() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'iwrf_server_tcp_port' not set" << std::endl;
+        valid = false;
+    }
+    if (pulse_interval_per_iwrf_meta_data() == UNSET_INT) {
+        if (verbose)
+            std::cerr << "'pulse_interval_per_iwrf_meta_data' not set" << std::endl;
+        valid = false;
+    }
+
     return valid;
 }
