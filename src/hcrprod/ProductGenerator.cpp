@@ -14,7 +14,9 @@
 const int ProductGenerator::PRODGEN_MAX_GATES = 4096;
 
 ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
-                                   int nSamples, const string &calFilePath) :
+                                   int nSamples,
+                                   double iqCountScaleForMw,
+                                   const string &calFilePath) :
     _reader(source),
     _writer(sink),
     _momentsCalc(PRODGEN_MAX_GATES, false, false),
@@ -27,6 +29,7 @@ ProductGenerator::ProductGenerator(QtTSReader *source, ProductWriter *sink,
     _dwellCount(0),
     _dwellDiscardCount(0),
     _lastPulseRcvd(-1),
+    _iqCountScaleForMw(iqCountScaleForMw),
     _calFilePath(calFilePath) {
     // Set the number of samples per dwell
     _momentsCalc.setNSamples(int(_nSamples));
@@ -173,11 +176,12 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
          */
         if (_samplesCached == 0) {
 
+          double startRangeKm = hskp.range_to_first_gate() * 0.001;
+          double gateSpacingKm = hskp.gate_spacing() * 0.001;
+
           _momentsCalc.setCalib(_calib);
-          
           _momentsCalc.init(hskp.prt1, hskp.tx_wavelength(), 
-                            hskp.range_to_first_gate() * 0.001 /* km */,
-                            hskp.gate_spacing() * 0.001 /* km */);
+                            startRangeKm, gateSpacingKm);
           
           _dwellHskp = hskp;
 
@@ -201,18 +205,11 @@ ProductGenerator::handleItem(RadarDDS::TimeSeriesSequence* tsSequence) {
         }
         
         // Put the Is and Qs for this sample into the dwell-in-progress.
-        double sqrtTwo = sqrt(2.0);
-        double vMax = 1.0;	// Max signal voltage for HCR.  @todo make this changeable!
-
+        // Scsle them so that we can compute dBm directly from them
+        double scale = 1.0 / _iqCountScaleForMw;
         for (int gate = 0; gate < nGates; gate++) {
-        	// Real part I, in volts = (I      /32768) * vMax / sqrt(2)
-        	//                           counts
-            _dwellIQ[gate][_samplesCached].re =
-                vMax * (ts.data[2 * gate] / 32768.0) / sqrtTwo;
-        	// Imaginary part Q, in volts = (Q      /32768) * vMax / sqrt(2)
-        	//                                counts
-            _dwellIQ[gate][_samplesCached].im =
-                vMax * (ts.data[2 * gate + 1] / 32768.0) / sqrtTwo;
+          _dwellIQ[gate][_samplesCached].re = ts.data[2 * gate] * scale;
+          _dwellIQ[gate][_samplesCached].im = ts.data[2 * gate + 1] * scale;
         }
         _samplesCached++;
         /*
@@ -282,12 +279,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
     //                        ----
     //                        g = 1
     //
-    // where I and Q are values in volts. To convert from dB(volts^2) to 
-    // dBm [i.e., dB(mW)], we need to account for the input impedance to get 
-    // to db(W), and then convert from dB(W) to dB(mW).
-    double rcvrInputImpedance = 50.0;
-    double dbmCorr = -10.0 * log10(rcvrInputImpedance);
-    dbmCorr += 30.0; // dB(W) -> dB(mW)
+    // The I and Q values have been scaled so that this computation results in mW
 
     // DM: coherent power
     addProductHousekeeping_(*product);
@@ -304,7 +296,7 @@ ProductGenerator::publish_(const MomentsFields *moments,
             product->data[g] = PRODUCT_BAD_VALUE;
             continue;
         }
-    	double dbm = moments[g].dbm + dbmCorr;
+    	double dbm = moments[g].dbm;
         product->data[g] =
             short((dbm - product->offset) / product->scale);
     }
@@ -324,8 +316,8 @@ ProductGenerator::publish_(const MomentsFields *moments,
             product->data[g] = PRODUCT_BAD_VALUE;
             continue;
         }
-    	// add back in the RF receiver gain
-    	double rawDbm = moments[g].dbm + dbmCorr + _dwellHskp.rcvr_rf_gain;
+    	// add the RF receiver gain
+    	double rawDbm = moments[g].dbm + _calib.getReceiverGainDbHc();
         product->data[g] =
             short((rawDbm - product->offset) / product->scale);
     }

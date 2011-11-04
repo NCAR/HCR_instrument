@@ -27,7 +27,9 @@ public:
 	 * int nSamples the number of pulses to use per dwell
 	 */
       ProductGenerator(QtTSReader *source, ProductWriter *sink,
-                       int nSamples, const string &calFilePath);
+                       int nSamples,
+                       double iqCountScaleForMw,
+                       const string &calFilePath);
     virtual ~ProductGenerator();
     void run();
     /**
@@ -113,6 +115,7 @@ private:
     int _dwellDiscardCount;		// dwells that could not be published
     long _lastPulseRcvd;		// last pulse number we received
     int _ddsDrops;				// how many DDS packets have we lost?
+    double _iqCountScaleForMw;  ///< scaling counts into val suitable to compute mW
     string _calFilePath;
     DsRadarCalib _calib;
 };

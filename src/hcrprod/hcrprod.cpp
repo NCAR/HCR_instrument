@@ -25,6 +25,7 @@ std::string _prodTopic;          ///< topic for (outgoing) products
 int _DCPSDebugLevel=0;           ///< the DCPSDebugLevel
 int _DCPSTransportDebugLevel=0;  ///< the DCPSTransportDebugLevel
 std::string _calFilePath;        ///< calibration file path - XML
+double _iqCountScaleForMw=9465.0;  ///< scaling counts into val suitable to compute mW
 
 namespace po = boost::program_options;
 
@@ -60,6 +61,7 @@ void getConfigParams()
     _prodTopic    = config.getString("DDS/TopicProduct",   "HCRPROD");
     _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
     _calFilePath  = config.getString("CalFilePath", "./hcr_cal.xml");
+    _iqCountScaleForMw  = config.getDouble("IqCountScaleForMw", 9465.0);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -82,6 +84,7 @@ void parseOptions(int argc,
         ("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPS debug level")
         ("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel), "DCPS transport debug level ")
         ("CalibFilePath", po::value<std::string>(&_calFilePath), "path to calibration XML file")
+        ("IqCountScaleForMw", po::value<double>(&_iqCountScaleForMw), "Scaling counts to compute dBm")
         ;
 
     po::variables_map vm;
@@ -140,7 +143,8 @@ main (int argc, char** argv) {
     ProductWriter *productWriter = new ProductWriter(publisher, _prodTopic);
 
     // create the products generator thread and run it
-    ProductGenerator generator(tsReader, productWriter, 1024, _calFilePath);
+    ProductGenerator generator(tsReader, productWriter,
+                               1024, _iqCountScaleForMw, _calFilePath);
     generator.run();
 
     return app.exec();
