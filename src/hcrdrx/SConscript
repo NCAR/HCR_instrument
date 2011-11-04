@@ -7,18 +7,26 @@ qtt_qtconfig
 boost_date_time
 boost_program_options
 doxygen
+pmc730
+rapradar
 qt4
 """)
 
 sources = Split("""
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
+HcrMonitor.cpp
+HcrPmc730.cpp
+IwrfPub.cpp
 main.cpp
 """)
 
 headers = Split("""
 HcrDrxConfig.h
 HcrDrxPub.h
+HcrMonitor.h
+HcrPmc730.h
+IwrfPub.h
 """)
 
 env = Environment(tools = ['default'] + tools)
