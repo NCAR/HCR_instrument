@@ -63,6 +63,9 @@ int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of millisecnds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
+std::string _xmitdHost("hcrdrx"); ///< The host on which xmitd is running
+int _xmitdPort = 8080;           ///< The port on which xmitd is listening
+
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
 /////////////////////////////////////////////////////////////////////
@@ -271,6 +274,21 @@ main(int argc, char** argv)
         exit(1);
     }
     
+    // Make sure our KaPmc730 is created in simulation mode if requested
+    // HcrPmc730::doSimulate(hcrConfig.simulate_pmc730());
+    
+    // set to ignore SIGPIPE errors which occur when sockets
+    // are broken between client and server
+
+    signal(SIGPIPE, SIG_IGN);
+
+    // Start our status monitoring thread.
+    HcrMonitor hcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
+    hcrMonitor.start();
+
+    // create the export object
+    _exporter = new IwrfExport(hcrConfig, hcrMonitor);
+
     // For OpenDDS 2.1, keep the published sample size less than ~64 KB,
     // since larger samples are a problem...
     if (DDS_MAJOR_VERSION == 2 && DDS_MINOR_VERSION == 1) {
@@ -366,6 +384,10 @@ main(int argc, char** argv)
 	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
 	// DAC memory counters. This must take place before the timers are started.
 	startUpConverter(upConverter, sd3c.txPulseWidthCounts());
+
+    // start the IWRF export
+    PMU_auto_register("start export");
+    _exporter->start();
 
 	// Start the timers, which will allow data to flow.
     // All timers are started by calling timerStartStop for

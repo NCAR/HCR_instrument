@@ -252,9 +252,9 @@ void IwrfExport::run()
     // determine number of gates
 
     int nGates = _pulseH->getNGates();
-    if (nGates < _pulseV->getNGates()) {
-      nGates = _pulseV->getNGates();
-    }
+    //     if (nGates < _pulseV->getNGates()) {
+    //       nGates = _pulseV->getNGates();
+    //     }
     
     // should we send meta-data?
     
@@ -273,17 +273,17 @@ void IwrfExport::run()
     
     // cohere the IQ data to the burst phase
     
-    if (_cohereIqToBurst) {
-      _cohereIqToBurstPhase();
-    }
+    //     if (_cohereIqToBurst) {
+    //       _cohereIqToBurstPhase();
+    //     }
     
     // assemble the IWRF burst packet
     
-    _assembleIwrfBurstPacket();
+    // _assembleIwrfBurstPacket();
     
     // send out the IWRF burst packet
     
-    _sendIwrfBurstPacket();
+    // _sendIwrfBurstPacket();
     
     // assemble the IWRF pulse packet
     
@@ -317,13 +317,13 @@ void IwrfExport::_readNextPulse()
   // read next pulse data for each channel
 
   _readNextH();
-  _readNextV();
-  _readNextB();
-
+  //   _readNextV();
+  //   _readNextB();
+  
   // synchronize the pulses and burst to have same sequence number,
   // reading extra puses as required
   
-  _syncPulsesAndBurst();
+  //   _syncPulsesAndBurst();
 
   if (_pulseSeqNum < 0) {
     // first time
@@ -613,18 +613,19 @@ void IwrfExport::_assembleIwrfPulsePacket()
   
   _allocPulseBuf();
 
-  // load up IQ data, H followed by V
+  // load up IQ data, only H for now
 
   memcpy(_iq, _pulseH->getIq(), _pulseH->getNGates() * 2 * sizeof(int16_t));
-  memcpy(_iq + (_nGates * 2),
-         _pulseV->getIq(), _pulseV->getNGates() * 2 * sizeof(int16_t));
-  int nSamples = _burst->getNSamples();
-  if (nSamples > _nGates) nSamples = _nGates;
-  memcpy(_iq + (_nGates * 4),
-         _burst->getIq(), nSamples * 2 * sizeof(int16_t));
 
+  //   memcpy(_iq + (_nGates * 2),
+  //          _pulseV->getIq(), _pulseV->getNGates() * 2 * sizeof(int16_t));
+  //   int nSamples = _burst->getNSamples();
+  //   if (nSamples > _nGates) nSamples = _nGates;
+  //   memcpy(_iq + (_nGates * 4),
+  //          _burst->getIq(), nSamples * 2 * sizeof(int16_t));
+  
   // pulse header
-
+  
   _pulseHdr.packet.len_bytes = _pulseBufLen;
   _pulseHdr.packet.seq_num = _packetSeqNum++;
   _pulseHdr.packet.time_secs_utc = _timeSecs;

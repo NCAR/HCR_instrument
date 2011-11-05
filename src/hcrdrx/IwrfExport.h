@@ -99,7 +99,7 @@ private:
 
   /// IQ data
 
-  static const int NCHANNELS = 3;
+  static const int NCHANNELS = 1; // only H for now
   int _nGates;
   int _nGatesAlloc;
   int _pulseIntervalPerIwrfMetaData;

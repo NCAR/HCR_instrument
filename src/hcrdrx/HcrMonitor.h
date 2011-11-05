@@ -13,6 +13,8 @@
 #include <QThread>
 #include <QMutex>
 
+#include "HcrDrxConfig.h"
+
 // #include <XmitClient.h>
 
 class HcrMonitorPriv;
@@ -26,7 +28,8 @@ public:
      * Construct a HcrMonitor which will get transmitter status from hcr_xmitd
      * running on host xmitdHost/port xmitdPort.
      */
-    HcrMonitor(std::string xmitdHost, int xmitdPort);
+  HcrMonitor(const HcrDrxConfig &config,
+             std::string xmitdHost, int xmitdPort);
     
     ~HcrMonitor();
     
@@ -103,6 +106,10 @@ public:
      */
   // XmitClient::XmitStatus transmitterStatus() const;
 private:
+
+    // run-time configuration
+    const HcrDrxConfig &_config;
+
     /**
      * Convert QEA crystal detector voltage to input power (in dBm), based
      * on a fixed table of calibration measurements.

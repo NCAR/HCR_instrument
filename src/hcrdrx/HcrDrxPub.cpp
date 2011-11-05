@@ -234,7 +234,7 @@ void
     }
 
     // set data in pulse object
-
+    
     _pulseData->set(pulseSeqNum, timeSecs, nanoSecs,
                     _chanId,
                     _nGates, iq);

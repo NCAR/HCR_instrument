@@ -81,8 +81,10 @@ static const float QEA_Cal[][2] = {
 };
 static const int QEA_CalLen = (sizeof(QEA_Cal) / (sizeof(*QEA_Cal)));
 
-HcrMonitor::HcrMonitor(std::string xmitdHost, int xmitdPort) :
+HcrMonitor::HcrMonitor(const HcrDrxConfig &config,
+                       std::string xmitdHost, int xmitdPort) :
     QThread(),
+    _config(config),
     _mutex(QMutex::Recursive) /* ,
     _xmitClient(xmitdHost, xmitdPort) */ {
 }
@@ -207,6 +209,12 @@ HcrMonitor::run() {
 
 void
 HcrMonitor::_getMultiIoValues() {
+
+  if (_config.simulate_pmc730()) {
+    return;
+  }
+
+
     QMutexLocker locker(&_mutex);
 
     HcrPmc730 & pmc730 = HcrPmc730::theHcrPmc730();
