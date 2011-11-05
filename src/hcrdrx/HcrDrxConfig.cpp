@@ -50,6 +50,7 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("rcvr_digital_gain");
     keys.insert("rcvr_filter_mismatch");
     keys.insert("rcvr_gate0_delay");
+    keys.insert("range_to_gate0");
     keys.insert("rcvr_if_gain");
     keys.insert("rcvr_noise_figure");
     keys.insert("rcvr_pulse_width");
@@ -60,6 +61,9 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("longitude");
     keys.insert("altitude");
     keys.insert("iqcount_scale_for_mw");
+    keys.insert("sim_start_elev");
+    keys.insert("sim_delta_elev");
+    keys.insert("sim_az_rate");
     return keys;
 }
 
@@ -73,6 +77,7 @@ std::set<std::string> HcrDrxConfig::_createIntLegalKeys() {
     keys.insert("merge_queue_size");
     keys.insert("iwrf_server_tcp_port");
     keys.insert("pulse_interval_per_iwrf_meta_data");
+    keys.insert("sim_n_elev");
     return keys;
 }
 
@@ -82,6 +87,8 @@ std::set<std::string> HcrDrxConfig::_createBoolLegalKeys() {
     std::set<std::string> keys;
     keys.insert("staggered_prt");
     keys.insert("pdpp");
+    keys.insert("simulate_antenna_angles");
+    keys.insert("simulate_pmc730");
     return keys;
 }
 
@@ -297,6 +304,11 @@ HcrDrxConfig::isValid(bool verbose) const {
     if (rcvr_gate0_delay() == UNSET_DOUBLE) {
         if (verbose)
             std::cerr << "'rcvr_gate0_delay' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (range_to_gate0() == UNSET_DOUBLE) {
+        if (verbose)
+            std::cerr << "'range_to_gate0' unset in DRX configuration" << std::endl;
         valid = false;
     }
     if (rcvr_noise_figure() == UNSET_DOUBLE) {

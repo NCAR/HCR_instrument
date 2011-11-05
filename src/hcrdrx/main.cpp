@@ -14,6 +14,10 @@
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <csignal>
+#include <logx/Logging.h>
+#include <toolsa/pmu.h>
+
+LOGGING("hcrdrx")
 
 // For configuration management
 #include <QtConfig.h>
@@ -31,6 +35,8 @@
 #include "TSWriter.h"
 
 #include "HcrDrxConfig.h"
+#include "IwrfExport.h"
+#include "HcrMonitor.h"
 
 using namespace std;
 using namespace boost::posix_time;
@@ -51,6 +57,7 @@ std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
 DDSPublisher* _publisher = 0;    ///< The publisher.
 TSWriter* _tsWriter = 0;         ///< The time series writer.
+IwrfExport* _exporter = 0;       ///< The exporter - IWRF TCP server
 bool _simulate;                  ///< Set true for simulate mode
 int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of millisecnds to pause when reading in simulate mode.
@@ -60,9 +67,8 @@ bool _terminate = false;         ///< set true to signal the main loop to termin
 
 /////////////////////////////////////////////////////////////////////
 void sigHandler(int sig) {
-    std::cout << "Interrupt received...termination may take a few seconds" << 
-        std::endl;
-    _terminate = true;
+  ILOG << "Interrupt received...termination may take a few seconds";
+  _terminate = true;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -81,7 +87,7 @@ void createDDSservices()
 	char **theArgv = argv.argv();
 	_publisher = new DDSPublisher(argv.argc(), theArgv);
 	if (_publisher->status()) {
-		std::cerr << "Unable to create a publisher, exiting." << std::endl;
+		ELOG << "Unable to create a publisher, exiting.";
 		exit(1);
 	}
 
@@ -111,7 +117,7 @@ void getConfigParams()
 	if (e) {
 		HcrDir = e + HcrDir;
 	} else {
-		std::cerr << "Environment variable HCRDIR must be set." << std::endl;
+		ELOG << "Environment variable HCRDIR must be set.";
 		exit(1);
 	}
 
@@ -174,7 +180,7 @@ void parseOptions(int argc,
 
 	if (vm.count("help")) {
 		std::cout << "Usage: " << argv[0] << 
-			" [OPTION]... [--drxConfig] <configFile>" << std::endl;
+                  " [OPTION]... [--drxConfig] <configFile>" << std::endl;
 		std::cout << descripts << std::endl;
 		exit(0);
 	}
@@ -184,7 +190,7 @@ void parseOptions(int argc,
 	if (vm.count("simulate"))
 	    _simulate = true;
 	if (vm.count("drxConfig") != 1) {
-	    std::cerr << "Exactly one DRX configuration file must be given!" << std::endl;
+	    ELOG << "Exactly one DRX configuration file must be given!";
 	    exit(1);
 	}
 }
@@ -198,7 +204,7 @@ makeRealTime()
 
 	// don't even try if we are not root.
 	if (id != 0) {
-		std::cerr << "Not root, unable to change scheduling priority" << std::endl;
+		ELOG << "Not root, unable to change scheduling priority";
 		return;
 	}
 
@@ -206,9 +212,8 @@ makeRealTime()
 	sparam.sched_priority = 50;
 
 	if (sched_setscheduler(0, SCHED_RR, &sparam)) {
-		std::cerr << "warning, unable to set scheduler parameters: ";
-		perror("");
-		std::cerr << "\n";
+		ELOG << "warning, unable to set scheduler parameters: ";
+		ELOG << strerror(errno);
 	}
 }
 
@@ -250,6 +255,9 @@ main(int argc, char** argv)
 	// try to change scheduling to real-time
 	makeRealTime();
 
+    // Let logx get and strip out its arguments
+    logx::ParseLogArgs(argc, argv);
+
 	// get the configuration parameters from the configuration file
 	getConfigParams();
 
@@ -259,7 +267,7 @@ main(int argc, char** argv)
 	// Read the HCR configuration file
     HcrDrxConfig hcrConfig(_drxConfig);
     if (! hcrConfig.isValid()) {
-        std::cerr << "Exiting on incomplete configuration!" << std::endl;
+        ELOG << "Exiting on incomplete configuration!";
         exit(1);
     }
     
@@ -270,8 +278,8 @@ main(int argc, char** argv)
         int onePulseSize = sizeof(RadarDDS::SysHousekeeping) + hcrConfig.gates() * 4;
         int maxTsLength = 65000 / onePulseSize;
         if (! maxTsLength) {
-            std::cerr << "Cannot adjust tsLength to meet OpenDDS 2.1 " <<
-                    "max sample size of 2^16 bytes" << std::endl;
+            ELOG << "Cannot adjust tsLength to meet OpenDDS 2.1 " <<
+                    "max sample size of 2^16 bytes";
             exit(1);
         } else if (_tsLength > maxTsLength) {
             int oldTsLength = _tsLength;
@@ -279,14 +287,14 @@ main(int argc, char** argv)
             _tsLength = 1;
             while ((_tsLength * 2) <= maxTsLength)
                 _tsLength *= 2;
-            std::cerr << "Adjusted tsLength from " << oldTsLength << " to " <<
-                    _tsLength << " to stay under OpenDDS 2.1 64 KB sample size limit." <<
-                    std::endl;
+            ELOG << "Adjusted tsLength from " << oldTsLength << " to "
+                 << _tsLength
+                 << " to stay under OpenDDS 2.1 64 KB sample size limit.";
         }
     }
 
     if (_simulate)
-        std::cout << "*** Operating in simulation mode" << std::endl;
+      ILOG << "*** Operating in simulation mode";
 
 	// create the dds services
 	if (_publish)
@@ -314,10 +322,12 @@ main(int argc, char** argv)
 
 	for (int c = 0; c < _chans; c++) {
 
-		std::cout << "*** Channel " << c << " ***" << std::endl;
-		downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _tsWriter, _publish,
-		        _tsLength, _gaussianFile, _kaiserFile, _simPauseMS, 
-		        _simWaveLength);
+                ILOG << "*** Channel " << c << " ***";
+		downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig,
+                                               _exporter, _tsWriter, _publish,
+                                               _tsLength,
+                                               _gaussianFile, _kaiserFile,
+                                               _simPauseMS, _simWaveLength);
 	}
 
     // Create the upConverter.
@@ -334,15 +344,14 @@ main(int argc, char** argv)
 		// start reading data, but should block on the first
 		// read since the timers and filters are not running yet.
 		downThreads[c]->start();
-		std::cout << "processing enabled on channel " << c << std::endl;
+		ILOG << "processing enabled on channel " << c;
 	}
 
     // wait awhile, so that the threads can all get to the first read.
 	struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
 	while (nanosleep(&sleepTime, &sleepTime)) {
 	    if (errno != EINTR) {
-	        std::cerr << "Error " << errno << " from nanosleep().  Aborting." <<
-                std::endl;
+	        ELOG << "Error " << errno << " from nanosleep().  Aborting.";
 	        abort();
 	    } else {
 	        // We were interrupted. Return to sleeping until the interval is done.
@@ -408,11 +417,11 @@ main(int argc, char** argv)
 		std::cout << std::endl;
 	}
 	
-    std::cout << "Shutting down..." << std::endl;
+        ILOG << "Shutting down...";
     
 	// Stop the downconverter threads
 	for (int c = 0; c < _chans; c++) {
-	    std::cout << "Stopping thread for channel " << c << std::endl;
+            ILOG << "Stopping thread for channel " << c;
 	    downThreads[c]->terminate();
 	    downThreads[c]->wait(1000);    // wait up to a second for termination
 	}

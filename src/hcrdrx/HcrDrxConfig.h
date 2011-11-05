@@ -126,6 +126,12 @@ public:
     double rcvr_digital_gain() const { return _getDoubleVal("rcvr_digital_gain"); }  /// dB
     double rcvr_gate0_delay() const { return _getDoubleVal("rcvr_gate0_delay"); }    /// seconds
 
+    /// Return the range to the center of gate 0, in meters
+    /// @return the range to the center of gate 0, in meters
+    double range_to_gate0() const { return _getDoubleVal("range_to_gate0"); }
+
+    /// location
+
     double latitude() const { return _getDoubleVal("latitude"); }    /// degrees
     double longitude() const { return _getDoubleVal("longitude"); }  /// degrees
     double altitude() const { return _getDoubleVal("altitude"); }    /// meters MSL
@@ -141,6 +147,29 @@ public:
     // This value is determined empirically.
     double iqcount_scale_for_mw() const {
         return _getDoubleVal("iqcount_scale_for_mw");
+    }
+
+    /// simulation of angles
+
+    int simulate_antenna_angles() const {
+      return _getBoolVal("simulate_antenna_angles");
+    }
+    int sim_n_elev() const {
+      return _getIntVal("sim_n_elev");
+    }
+    double sim_start_elev() const {
+      return _getDoubleVal("sim_start_elev"); /// deg
+    }
+    double sim_delta_elev() const {
+      return _getDoubleVal("sim_delta_elev"); /// deg
+    }
+    double sim_az_rate() const {
+      return _getDoubleVal("sim_az_rate"); /// deg/s
+    }
+    
+    // Simulate existence of the PMC-730 multi-IO card?
+    int simulate_pmc730() const {
+    	return _getBoolVal("simulate_pmc730");
     }
 
     /**

@@ -1,6 +1,7 @@
 # -*- python -*-
 
 tools = Split("""
+logx
 hcrdds
 pentek
 qtt_qtconfig
@@ -13,20 +14,24 @@ qt4
 """)
 
 sources = Split("""
+BurstData.cpp
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
 HcrMonitor.cpp
 HcrPmc730.cpp
-IwrfPub.cpp
+IwrfExport.cpp
 main.cpp
+PulseData.cpp
 """)
 
 headers = Split("""
+BurstData.h
 HcrDrxConfig.h
 HcrDrxPub.h
 HcrMonitor.h
 HcrPmc730.h
-IwrfPub.h
+IwrfExport.h
+PulseData.h
 """)
 
 env = Environment(tools = ['default'] + tools)
