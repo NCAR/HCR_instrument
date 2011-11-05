@@ -199,7 +199,7 @@ void
   
 {
 
-  time_duration timeFromEpoch = _down->timeOfPulse(pulseSeqNum) - Epoch1970;
+  time_duration timeFromEpoch = _sd3c.timeOfPulse(pulseSeqNum) - Epoch1970;
   time_t timeSecs = timeFromEpoch.total_seconds();
   int nanoSecs = timeFromEpoch.fractional_seconds() * 
           (1000000000 / time_duration::ticks_per_second());
