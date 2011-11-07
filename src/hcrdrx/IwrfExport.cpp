@@ -51,25 +51,26 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   _nGates = 0;
   _pulseBuf = NULL;
   _iq = NULL;
-  _nGatesAlloc = 0;
   _pulseIntervalPerIwrfMetaData =
     config.pulse_interval_per_iwrf_meta_data();
   _pulseBufLen = 0;
+  _pulseMsgLen = 0;
 
   // burst data
 
   _nSamplesBurst = 0;
-  _nSamplesBurstAlloc = 0;
   _burstIq = NULL;
   _burstBuf = NULL;
   _burstBufLen = 0;
+  _burstMsgLen = 0;
   _cohereIqToBurst = false;
 
   // status xml
 
   _statusBuf = NULL;
   _statusBufLen = 0;
-
+  _statusMsgLen = 0;
+  
   // I and Q count scaling factor to get power in mW easily:
   // mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
   _iqScaleForMw = _config.iqcount_scale_for_mw();
@@ -195,6 +196,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
 
   _serverIsOpen = false;
   _sock = NULL;
+  _newClient = false;
 
 }
 
@@ -243,6 +245,7 @@ void IwrfExport::run()
   
   // start the loop
 
+  bool metaDataInitialized = false;
   while (true) {
 
     // read in next pulse
@@ -256,9 +259,19 @@ void IwrfExport::run()
     //       nGates = _pulseV->getNGates();
     //     }
     
+    // check that we have a client
+    
+    if (_checkClient()) {
+      continue;
+    }
+
     // should we send meta-data?
     
     bool sendMeta = false;
+    if (_newClient) {
+      sendMeta = true;
+      metaDataInitialized = false;
+    }
     if (nGates != _nGates) {
       sendMeta = true;
       _nGates = nGates;
@@ -269,6 +282,7 @@ void IwrfExport::run()
     
     if (sendMeta) {
       _sendIwrfMetaData();
+      metaDataInitialized = true;
     }
     
     // cohere the IQ data to the burst phase
@@ -277,29 +291,30 @@ void IwrfExport::run()
     //       _cohereIqToBurstPhase();
     //     }
     
-    // assemble the IWRF burst packet
+    // assemble and send out the IWRF burst packet
     
-    // _assembleIwrfBurstPacket();
+    if (metaDataInitialized) {
+      // _assembleIwrfBurstPacket();
+      // _sendIwrfBurstPacket();
+    }
     
-    // send out the IWRF burst packet
+    // assemble and send out the IWRF pulse packet
     
-    // _sendIwrfBurstPacket();
-    
-    // assemble the IWRF pulse packet
-    
-    _assembleIwrfPulsePacket();
-    
-    // send out the IWRF pulse packet
-    
-    _sendIwrfPulsePacket();
+    if (metaDataInitialized) {
+      _assembleIwrfPulsePacket();
+      _sendIwrfPulsePacket();
+    }
     
     // If it's been long enough since our last status packet, generate a new
     // one now.
-    time_t now = time(0);
-    if ((now - lastStatusTime) >= StatusInterval) {
+
+    if (metaDataInitialized) {
+      time_t now = time(0);
+      if ((now - lastStatusTime) >= StatusInterval) {
         _assembleStatusPacket();
         _sendIwrfStatusXmlPacket();
         lastStatusTime = now;
+      }
     }
     
   } // while
@@ -503,7 +518,7 @@ void IwrfExport::_readNextB()
 /////////////////////////////////////////////////////////////////////////////
 // send the IWRF meta data
 
-void IwrfExport::_sendIwrfMetaData()
+int IwrfExport::_sendIwrfMetaData()
 {
 
   // set seq num and time in packet headers
@@ -520,12 +535,6 @@ void IwrfExport::_sendIwrfMetaData()
   _calib.packet.time_secs_utc = _timeSecs;
   _calib.packet.time_nano_secs = _nanoSecs;
 
-  // check that socket to client is open
-
-  if (_openSocketToClient()) {
-    return;
-  }
-
   // write individual messages for each struct
 
   if (_sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
@@ -533,7 +542,7 @@ void IwrfExport::_sendIwrfMetaData()
     cerr << "  Writing IWRF_RADAR_INFO" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
     _closeSocketToClient();
-    return;
+    return -1;
   }
   
   if (_sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
@@ -541,7 +550,7 @@ void IwrfExport::_sendIwrfMetaData()
     cerr << "  Writing IWRF_TS_PROCESSING" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
     _closeSocketToClient();
-    return;
+    return -1;
   }
   
   if (_sock->writeBuffer(&_calib, sizeof(_calib))) {
@@ -549,8 +558,10 @@ void IwrfExport::_sendIwrfMetaData()
     cerr << "  Writing IWRF_CALIBRATION" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
     _closeSocketToClient();
-    return;
+    return -1;
   }
+
+  return 0;
 
 }
 
@@ -626,7 +637,7 @@ void IwrfExport::_assembleIwrfPulsePacket()
   
   // pulse header
   
-  _pulseHdr.packet.len_bytes = _pulseBufLen;
+  _pulseHdr.packet.len_bytes = _pulseMsgLen;
   _pulseHdr.packet.seq_num = _packetSeqNum++;
   _pulseHdr.packet.time_secs_utc = _timeSecs;
   _pulseHdr.packet.time_nano_secs = _nanoSecs;
@@ -690,23 +701,19 @@ void IwrfExport::_assembleIwrfPulsePacket()
 /////////////////////////////////////////////////////////////////////////////
 // send out the IWRF pulse packet
 
-void IwrfExport::_sendIwrfPulsePacket()
+int IwrfExport::_sendIwrfPulsePacket()
 {
 
-  // check that socket to client is open
-
-  if (_openSocketToClient()) {
-    return;
-  }
-  
-  if (_sock->writeBuffer(_pulseBuf, _pulseBufLen)) {
+  if (_sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
     cerr << "ERROR - IwrfExport::_sendIwrfPulsePacket()" << endl;
     cerr << "  Writing pulse packet" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
     _closeSocketToClient();
-    return;
+    return -1;
   }
   
+  return 0;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -715,18 +722,18 @@ void IwrfExport::_sendIwrfPulsePacket()
 void IwrfExport::_allocPulseBuf()
 {
 
-  if (_nGates > _nGatesAlloc) {
+  _pulseMsgLen =
+    sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * 2 * sizeof(int16_t));
 
+  if (_pulseMsgLen > _pulseBufLen) {
+    
     if (_pulseBuf) {
       delete[] _pulseBuf;
     }
 
-    _pulseBufLen =
-      sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * 2 * sizeof(int16_t));
+    _pulseBufLen = _pulseMsgLen;
     _pulseBuf = new char[_pulseBufLen];
     _iq = reinterpret_cast<int16_t *>(_pulseBuf + sizeof(iwrf_pulse_header));
-
-    _nGatesAlloc = _nGates;
 
   }
 
@@ -751,7 +758,7 @@ void IwrfExport::_assembleIwrfBurstPacket()
   
   // burst header
 
-  _burstHdr.packet.len_bytes = _burstBufLen;
+  _burstHdr.packet.len_bytes = _burstMsgLen;
   _burstHdr.packet.seq_num = _packetSeqNum++;
   _burstHdr.packet.time_secs_utc = _timeSecs;
   _burstHdr.packet.time_nano_secs = _nanoSecs;
@@ -774,23 +781,19 @@ void IwrfExport::_assembleIwrfBurstPacket()
 /////////////////////////////////////////////////////////////////////////////
 // send out the IWRF burst packet
 
-void IwrfExport::_sendIwrfBurstPacket()
+int IwrfExport::_sendIwrfBurstPacket()
 {
 
-  // check that socket to client is open
-
-  if (_openSocketToClient()) {
-    return;
-  }
-  
-  if (_sock->writeBuffer(_burstBuf, _burstBufLen)) {
+  if (_sock->writeBuffer(_burstBuf, _burstMsgLen)) {
     cerr << "ERROR - IwrfExport::_sendIwrfBurstPacket()" << endl;
     cerr << "  Writing burst packet" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
     _closeSocketToClient();
-    return;
+    return -1;
   }
   
+  return 0;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -799,19 +802,20 @@ void IwrfExport::_sendIwrfBurstPacket()
 void IwrfExport::_allocBurstBuf()
 {
   
-  if (_nSamplesBurst > _nSamplesBurstAlloc) {
+  _burstMsgLen =
+    sizeof(iwrf_burst_header_t) + (_nSamplesBurst * 2 * sizeof(int16_t));
+
+  if (_burstMsgLen > _burstBufLen) {
     
     if (_burstBuf) {
       delete[] _burstBuf;
     }
-
-    _burstBufLen =
-      sizeof(iwrf_burst_header_t) + (_nSamplesBurst * 2 * sizeof(int16_t));
-    _burstBuf = new char[_burstBufLen];
-    _burstIq = reinterpret_cast<int16_t *>(_burstBuf + sizeof(iwrf_burst_header_t));
     
-    _nSamplesBurstAlloc = _nSamplesBurst;
-
+    _burstBufLen = _burstMsgLen;
+    _burstBuf = new char[_burstBufLen];
+    _burstIq =
+      reinterpret_cast<int16_t *>(_burstBuf + sizeof(iwrf_burst_header_t));
+    
   }
 
   memset(_burstIq, 0, _nSamplesBurst * 2 * sizeof(int16_t));
@@ -828,22 +832,26 @@ void IwrfExport::_assembleStatusPacket()
   // assemble the xml
 
   string xmlStr = _assembleStatusXml();
-  int xmlLen = xmlStr.size() + 1; // null terminated
-
+  int n = xmlStr.size() + 1; // null terminated
+  _xmlLen = ((n - 1) / 8) * 8; // round up to 8-bytes
+  
   // allocate buffer
 
-  _allocStatusBuf(xmlLen);
+  _allocStatusBuf();
 
   // set header
 
   iwrf_status_xml_t hdr;
   iwrf_status_xml_init(hdr);
-  hdr.xml_len = xmlLen;
+  hdr.xml_len = _xmlLen;
+  hdr.packet.len_bytes = _statusMsgLen;
 
   // copy data into buffer
-
+  
+  memset(_statusBuf, 0, _statusBufLen);
   memcpy(_statusBuf, &hdr, sizeof(iwrf_status_xml_t));
-  memcpy(_statusBuf + sizeof(iwrf_status_xml_t), xmlStr.c_str(), xmlLen);
+  memcpy(_statusBuf + sizeof(iwrf_status_xml_t),
+         xmlStr.c_str(), xmlStr.size());
 
 }
 
@@ -943,11 +951,11 @@ string IwrfExport::_assembleStatusXml()
 
   // receive block
 
-  const HcrMonitor &mon = _monitor;
-
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
 #ifdef NOTYET
+
+  const HcrMonitor &mon = _monitor;
 
   xml += TaXml::writeDouble
     ("ProcEnclosureTemp", 2, mon.procEnclosureTemp());
@@ -990,38 +998,34 @@ string IwrfExport::_assembleStatusXml()
 /////////////////////////////////////////////////////////////////////////////
 // send out the IWRF status packet
 
-void IwrfExport::_sendIwrfStatusXmlPacket()
+int IwrfExport::_sendIwrfStatusXmlPacket()
 
 {
 
-  // check that socket to client is open
-
-  if (_openSocketToClient()) {
-    return;
-  }
-  
-  if (_sock->writeBuffer(_statusBuf, _statusBufLen)) {
+  if (_sock->writeBuffer(_statusBuf, _statusMsgLen)) {
     cerr << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()" << endl;
     cerr << "  Writing status xml packet" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
     _closeSocketToClient();
-    return;
+    return -1;
   }
+
+  return 0;
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // allocate status buffer
 
-void IwrfExport::_allocStatusBuf(size_t xmlLen)
+void IwrfExport::_allocStatusBuf()
 {
-  int nBytesNeeded = xmlLen + sizeof(iwrf_status_xml);
-  if (nBytesNeeded > _statusBufLen) {
+  _statusMsgLen = _xmlLen + sizeof(iwrf_status_xml);
+  if (_statusMsgLen > _statusBufLen) {
     if (_statusBuf) {
       delete[] _statusBuf;
     }
-    _statusBuf = new char[nBytesNeeded];
-    _statusBufLen = nBytesNeeded;
+    _statusBufLen = _statusMsgLen;
+    _statusBuf = new char[_statusBufLen];
   }
 }
 
@@ -1046,15 +1050,17 @@ int IwrfExport::_openServer()
 
   DLOG << "====>> TCP server opened <<====";
   _serverIsOpen = true;
+  _newClient = false;
+
   return 0;
 
 }
 
 //////////////////////////////////////////////////
-// open socket to client
+// check we have an open socket to client
 // Returns 0 on success, -1 on failure
 
-int IwrfExport::_openSocketToClient()
+int IwrfExport::_checkClient()
 
 {
 
@@ -1065,6 +1071,7 @@ int IwrfExport::_openSocketToClient()
   // check status
 
   if (_sock && _sock->isOpen()) {
+    _newClient = false;
     return 0;
   }
 
@@ -1075,9 +1082,9 @@ int IwrfExport::_openSocketToClient()
   if (_sock == NULL) {
     return -1;
   }
+  _newClient = true;
 
   DLOG << "====>> Connected to client <<====";
-
   return 0;
   
 }

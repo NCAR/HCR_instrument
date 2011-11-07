@@ -45,7 +45,7 @@ public:
     IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor);
   
   /// Destructor
-
+  
   virtual ~IwrfExport();
 
   /// thread run method
@@ -79,6 +79,7 @@ private:
   const HcrDrxConfig &_config;
   
   /// HcrMonitor which will supply status information
+
   const HcrMonitor &_monitor;
 
   /// The queue size - for buffering IQ data
@@ -101,11 +102,11 @@ private:
 
   static const int NCHANNELS = 1; // only H for now
   int _nGates;
-  int _nGatesAlloc;
   int _pulseIntervalPerIwrfMetaData;
   int16_t *_iq;
   char *_pulseBuf;
   int _pulseBufLen;
+  int _pulseMsgLen;
   
   /// I and Q count scaling factor to get power in mW easily:
   /// mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
@@ -114,17 +115,19 @@ private:
   /// Burst IQ
 
   int _nSamplesBurst;
-  int _nSamplesBurstAlloc;
   int16_t *_burstIq;
   char *_burstBuf;
   int _burstBufLen;
+  int _burstMsgLen;
   double _burstSampleFreqHz;
   bool _cohereIqToBurst;
 
   /// Status XML
-
+  
+  int _xmlLen;
   char *_statusBuf;
   int _statusBufLen;
+  int _statusMsgLen;
 
   /// pulse sequence number and times
   
@@ -157,6 +160,7 @@ private:
   ServerSocket _server;
   bool _serverIsOpen;
   Socket *_sock;
+  bool _newClient;
 
   /// simulation of antenna angles
 
@@ -177,26 +181,26 @@ private:
   void _readNextH();
   void _readNextV();
   void _readNextB();
-  void _sendIwrfMetaData();
+  int _sendIwrfMetaData();
   void _cohereIqToBurstPhase();
   void _cohereIqToBurstPhase(PulseData &pulse,
                              const BurstData &burst);
 
   void _assembleIwrfPulsePacket();
-  void _sendIwrfPulsePacket();
+  int _sendIwrfPulsePacket();
   void _allocPulseBuf();
   
   void _assembleIwrfBurstPacket();
-  void _sendIwrfBurstPacket();
+  int _sendIwrfBurstPacket();
   void _allocBurstBuf();
   
   void _assembleStatusPacket();
   string _assembleStatusXml();
-  void _sendIwrfStatusXmlPacket();
-  void _allocStatusBuf(size_t xmlLen);
+  int _sendIwrfStatusXmlPacket();
+  void _allocStatusBuf();
   
   int _openServer();
-  int _openSocketToClient();
+  int _checkClient();
   void _closeSocketToClient();
 
 };
