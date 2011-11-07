@@ -1,7 +1,7 @@
 # Test config file for HCR
 radar_id                HCR
 
-gates                   100
+gates                   150
 
 ant_gain                46.2    # dB
 ant_hbeam_width         0.75    # deg
@@ -57,7 +57,7 @@ simulate_pmc730         1
 
 # simulation of antenna angles
 
-simulate_antenna_angles 0
+simulate_antenna_angles 1
 sim_n_elev              1
 sim_start_elev          90.0    # deg
 sim_delta_elev          0.1     # deg

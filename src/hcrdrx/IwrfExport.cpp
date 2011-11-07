@@ -355,8 +355,8 @@ void IwrfExport::_readNextPulse()
   _timeSecs = _pulseH->getTimeSecs();
   _nanoSecs = _pulseH->getNanoSecs();
   
-  if (! (_pulseSeqNum % 1000)) {
-    DLOG << "got 1000 pulses, seqNum, secs, nanoSecs: "
+  if (! (_pulseSeqNum % 10000)) {
+    DLOG << "got 10000 pulses, seqNum, secs, nanoSecs: "
          << _pulseSeqNum << ", " << _timeSecs << ", " << _nanoSecs;
   }
 
