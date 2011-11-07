@@ -18,7 +18,7 @@ rcvr_noise_figure       8.9     # dB
 rcvr_pulse_width        5.12e-7 # s
 rcvr_rf_gain            39.48   # dB
 
-range_to_gate0          37.5    # m to center of gate
+range_to_gate0          38.4    # m to center of gate
 
 tx_cntr_freq            9.44065e10 # Hz
 tx_peak_power           58.78   # dBm
