@@ -674,6 +674,7 @@ void IwrfExport::_assembleIwrfPulsePacket()
         _simVolNum++;
       }
     }
+    // _pulseHdr.scan_mode = IWRF_SCAN_MODE_VERT;
     _pulseHdr.scan_mode = IWRF_SCAN_MODE_AZ_SUR_360;
     _pulseHdr.volume_num = _simVolNum;
     _pulseHdr.sweep_num = _simSweepNum;
@@ -946,6 +947,8 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
+#ifdef NOTYET
+
   xml += TaXml::writeDouble
     ("ProcEnclosureTemp", 2, mon.procEnclosureTemp());
   xml += TaXml::writeDouble
@@ -973,6 +976,8 @@ string IwrfExport::_assembleStatusXml()
     ("Locked100MHz", 2, mon.locked100MHz());
   xml += TaXml::writeBoolean
     ("GpsTimeServerGood", 2, mon.gpsTimeServerGood());
+
+#endif
   
   xml += TaXml::writeEndTag("HcrReceiverStatus", 1);
 
