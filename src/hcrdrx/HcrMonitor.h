@@ -179,8 +179,9 @@ private:
     bool _gpsTimeServerGood;
     
     /// XML-RPC access to hcr_xmitd for its status
-//     XmitClient _xmitClient;
-//     XmitClient::XmitStatus _xmitStatus;
+    //     XmitClient _xmitClient;
+    //     XmitClient::XmitStatus _xmitStatus;
+
 };
 
 
