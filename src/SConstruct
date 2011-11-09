@@ -28,6 +28,7 @@ SConscript("sniffer/SConscript")
 SConscript("hcrbscan/SConscript")
 SConscript("hcrdrx/SConscript")
 SConscript("hcrscope/SConscript")
+SConscript("tcpscope/SConscript")
 SConscript("hcrprod/SConscript")
 SConscript("hcrarchiver/SConscript")
 
