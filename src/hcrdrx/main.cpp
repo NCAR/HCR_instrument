@@ -45,6 +45,7 @@ namespace po = boost::program_options;
 bool _publish;                   ///< set true if the pentek data should be published to DDS.
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
 std::string _drxConfig;          ///< DRX configuration file
+std::string _instance;           ///< application instance
 int _chans = 1;                  ///< number of channels
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
@@ -161,6 +162,7 @@ void parseOptions(int argc,
 	("help", "Describe options")
 	("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
 	("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
+	("instance", po::value<std::string>(&_instance), "App instance for procmap")
 	("nopublish",                                  "Do not publish data")
 	("simulate",                                   "Enable simulation")
 	("simPauseMS",  po::value<double>(&_simPauseMS),  "Simulation pause interval between beams (ms)")
@@ -282,6 +284,12 @@ main(int argc, char** argv)
 
     signal(SIGPIPE, SIG_IGN);
 
+    // set up registration with procmap if instance is specified
+    if (_instance.size() > 0) {
+      PMU_auto_init("hcrdrx", _instance.c_str(), PROCMAP_REGISTER_INTERVAL);
+      ILOG << "will register with procmap, instance: " << _instance;
+    }
+
     // Start our status monitoring thread.
     HcrMonitor hcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
     hcrMonitor.start();
@@ -328,6 +336,7 @@ main(int argc, char** argv)
     sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
     
     // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing
+    PMU_auto_register("timers enable");
     sd3c.setGPTimer1(0.0, 1.312e-6);
     
     // Create (but don't yet start) the downconversion threads.
@@ -350,6 +359,7 @@ main(int argc, char** argv)
 
     // Create the upConverter.
     // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
+        PMU_auto_register("create upconverter");
 	Pentek::p7142Up & upConverter = *sd3c.addUpconverter("0C", 
 	        sd3c.adcFrequency(), sd3c.adcFrequency() / 4, 9);
 
@@ -378,11 +388,13 @@ main(int argc, char** argv)
 	}
 
 	// all of the filters are started by any call to
-    // start filters(). So just call it for channel 0
-    sd3c.startFilters();
+        // start filters(). So just call it for channel 0
+        PMU_auto_register("starting filters");
+        sd3c.startFilters();
 
 	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
 	// DAC memory counters. This must take place before the timers are started.
+        PMU_auto_register("starting upconverter");
 	startUpConverter(upConverter, sd3c.txPulseWidthCounts());
 
     // start the IWRF export
