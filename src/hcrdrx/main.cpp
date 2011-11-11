@@ -337,7 +337,10 @@ main(int argc, char** argv)
     
     // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing
     PMU_auto_register("timers enable");
-    sd3c.setGPTimer1(0.0, 1.312e-6);
+    // sd3c.setGPTimer1(0.0, 1.312e-6);
+    // increasing receiver protection to 2.0 us in case the pulse is not
+    // aligned with the start of the timer
+    sd3c.setGPTimer1(0.0, 2.0e-6);
     
     // Create (but don't yet start) the downconversion threads.
     
