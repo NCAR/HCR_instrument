@@ -28,6 +28,7 @@ LOGGING("hcrdrx")
 // with OpenDDS 2.0/2.1
 #include <dds/Version.h>
 
+#include "HcrPmc730.h"
 #include "HcrDrxPub.h"
 #include "p7142sd3c.h"
 #include "p7142Up.h"
@@ -46,7 +47,7 @@ bool _publish;                   ///< set true if the pentek data should be publ
 std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
 std::string _drxConfig;          ///< DRX configuration file
 std::string _instance;           ///< application instance
-int _chans = 1;                  ///< number of channels
+int _chans = 2;                  ///< number of channels
 std::string _ORB;                ///< path to the ORB configuration file.
 std::string _DCPS;               ///< path to the DCPS configuration file.
 std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
@@ -277,7 +278,10 @@ main(int argc, char** argv)
     }
     
     // Make sure our KaPmc730 is created in simulation mode if requested
-    // HcrPmc730::doSimulate(hcrConfig.simulate_pmc730());
+    HcrPmc730::doSimulate(hcrConfig.simulate_pmc730());
+    
+    // Just refer to theHcrPmc730() to instantiate the singleton.
+    HcrPmc730::theHcrPmc730();
     
     // set to ignore SIGPIPE errors which occur when sockets
     // are broken between client and server
@@ -291,7 +295,7 @@ main(int argc, char** argv)
     }
 
     // Start our status monitoring thread.
-    HcrMonitor hcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
+    HcrMonitor hcrMonitor(hcrConfig);
     hcrMonitor.start();
 
     // create the export object
@@ -351,18 +355,15 @@ main(int argc, char** argv)
 	std::vector<HcrDrxPub*> downThreads(_chans);
 
 	for (int c = 0; c < _chans; c++) {
-
-                ILOG << "*** Channel " << c << " ***";
-		downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig,
-                                               _exporter, _tsWriter, _publish,
-                                               _tsLength,
-                                               _gaussianFile, _kaiserFile,
-                                               _simPauseMS, _simWaveLength);
+	    ILOG << "*** Channel " << c << " ***";
+	    downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsWriter,
+	            _publish, _tsLength, _gaussianFile, _kaiserFile,
+	            _simPauseMS, _simWaveLength);
 	}
 
     // Create the upConverter.
     // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
-        PMU_auto_register("create upconverter");
+	PMU_auto_register("create upconverter");
 	Pentek::p7142Up & upConverter = *sd3c.addUpconverter("0C", 
 	        sd3c.adcFrequency(), sd3c.adcFrequency() / 4, 9);
 
@@ -391,13 +392,13 @@ main(int argc, char** argv)
 	}
 
 	// all of the filters are started by any call to
-        // start filters(). So just call it for channel 0
-        PMU_auto_register("starting filters");
-        sd3c.startFilters();
+	// start filters(). So just call it for channel 0
+	PMU_auto_register("starting filters");
+	sd3c.startFilters();
 
 	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
 	// DAC memory counters. This must take place before the timers are started.
-        PMU_auto_register("starting upconverter");
+	PMU_auto_register("starting upconverter");
 	startUpConverter(upConverter, sd3c.txPulseWidthCounts());
 
     // start the IWRF export
@@ -458,7 +459,7 @@ main(int argc, char** argv)
     
 	// Stop the downconverter threads
 	for (int c = 0; c < _chans; c++) {
-            ILOG << "Stopping thread for channel " << c;
+	    ILOG << "Stopping thread for channel " << c;
 	    downThreads[c]->terminate();
 	    downThreads[c]->wait(1000);    // wait up to a second for termination
 	}
@@ -471,5 +472,7 @@ main(int argc, char** argv)
     
     // Stop DDS services
     stopDDSservices();
+    
+    return(0);
 }
 
