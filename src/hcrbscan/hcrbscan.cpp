@@ -27,10 +27,10 @@ namespace po = boost::program_options;
 ///
 /// get parameters that are specified in the configuration file.
 /// These can be overridden by command line specifications.
-void getConfigParams()
+QtConfig & getConfigParams()
 {
 
-    QtConfig config("Bscan", "Bscan");
+    QtConfig *config = new QtConfig("Bscan", "Bscan");
 
     // set up the default configuration directory path
     std::string HcrDir;
@@ -48,11 +48,13 @@ void getConfigParams()
     std::string dcpsFile     = HcrDir + "DDSClient.ini";
     std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
 
-    // get parameters
-    _ORB          = config.getString("DDS/ORBConfigFile",  orbFile);
-    _DCPS         = config.getString("DDS/DCPSConfigFile", dcpsFile);
-    _prodTopic    = config.getString("DDS/TopicProduct",   "HCRPROD");
-    _DCPSInfoRepo = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
+    // initialize our global parameters from values in the config file
+    _ORB          = config->getString("DDS/ORBConfigFile",  orbFile);
+    _DCPS         = config->getString("DDS/DCPSConfigFile", dcpsFile);
+    _prodTopic    = config->getString("DDS/TopicProduct",   "HCRPROD");
+    _DCPSInfoRepo = config->getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
+    
+    return(*config);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -91,9 +93,10 @@ void parseOptions(int argc,
 int main(int argc, char *argv[]) {
 
     // get the configuration parameters from the configuration file
-    getConfigParams();
+    QtConfig & config = getConfigParams();
 
-    // parse the command line options, substituting for config params.
+    // parse the command line options, overriding the values of some global
+    // parameters
     parseOptions(argc, argv);
 
     ArgvParams newargv("hcrbscan");
@@ -129,7 +132,7 @@ int main(int argc, char *argv[]) {
     QObject::connect(productReader, SIGNAL(newItem(RadarDDS::ProductSet)),
             bscanRaySource, SLOT(makeBscanRay(RadarDDS::ProductSet)));
     
-    QMainWindow* mainWindow = new BscanMainWindow();
+    QMainWindow* mainWindow = new BscanMainWindow(config);
     mainWindow->setWindowTitle("HCR bscan");
     QObject::connect(bscanRaySource, SIGNAL(newBscanRay(const BscanRay &)),
             mainWindow, SLOT(addRay(const BscanRay &)));
