@@ -8,12 +8,14 @@
 #include "HcrPmc730.h"
 #include <sys/time.h>
 /*
- * Include Acromag headers.
+ * We need direct access to some of the PMC-730 functions provided by
+ * Acromag's API.
  */
 extern "C" {
 #  include "pmccommon/pmcmulticommon.h"
 #  include "pmc730/pmc730.h"
 }
+
 
 #include <logx/Logging.h>
 
@@ -32,33 +34,41 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
 	gettimeofday(&startTv, NULL);
 	_startTimeOfDay = startTv.tv_sec + 1.0e-6 * startTv.tv_usec;
 
-    // For Hcr, DIO lines 0-7 are used for input, 8-15 for output
+    // For HCR, DIO lines 0-7 are used for input, 8-15 for output
     setDioDirection0_7(DIO_INPUT);
     setDioDirection8_15(DIO_OUTPUT);
     // Verify that our defined input DIO lines are all actually set for input
-    if (getDioDirection(_HCR_DIN_COUNTER) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_GPSCLOCK_ALM) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_WGPRES_OK) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_OSC3) != DIO_INPUT) {
+    if (getDioDirection(_HCR_DIN_UNUSED0) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED1) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_COUNTER) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED3) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED4) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED5) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED6) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED7) != DIO_INPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
-                _HCR_DIN_COUNTER << ", " << _HCR_DIN_GPSCLOCK_ALM << ", " <<
-                _HCR_DIN_WGPRES_OK << ", and " << _HCR_DIN_OSC3 <<
+                _HCR_DIN_UNUSED0 << ", " << _HCR_DIN_UNUSED1 << ", " << 
+                _HCR_DIN_COUNTER << ", " << _HCR_DIN_UNUSED3 << ", " <<
+                _HCR_DIN_UNUSED4 << ", " << _HCR_DIN_UNUSED5 << ", " <<
+                _HCR_DIN_UNUSED6 << ", and " << _HCR_DIN_UNUSED7 <<
                 " are not all set for input!";
         abort();
     }
     // Verify that our defined output DIO lines are all actually set for output
-    if (getDioDirection(_HCR_DOUT_CLK_P) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_CLK_N) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_DATA_P) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_DATA_N) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_LE_P) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_LE_N) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_TXENABLE) != DIO_OUTPUT) {
+    if (getDioDirection(_HCR_DOUT_UNUSED0) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED1) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED2) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED3) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED4) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED5) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED6) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_UNUSED7) != DIO_OUTPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
-                _HCR_DOUT_CLK_P << ", " << _HCR_DOUT_CLK_N << ", " <<
-                _HCR_DOUT_DATA_P << ", " << _HCR_DOUT_DATA_N << ", " <<
-                _HCR_DOUT_LE_P << ", " << _HCR_DOUT_LE_N << ", and " <<
-                _HCR_DOUT_TXENABLE << " are not all set for output!";
+                _HCR_DOUT_UNUSED0 << ", " << _HCR_DOUT_UNUSED1 << ", " <<
+                _HCR_DOUT_UNUSED2 << ", " << _HCR_DOUT_UNUSED3 << ", " <<
+                _HCR_DOUT_UNUSED4 << ", " << _HCR_DOUT_UNUSED5 << ", " <<
+                _HCR_DOUT_UNUSED6 << ", and " << _HCR_DOUT_UNUSED7 << 
+                " are not all set for output!";
         abort();
     }
     // Hcr uses the PMC730 pulse counting function, which uses DIO channel 2
