@@ -88,7 +88,6 @@ producttools = Split("""
 boost_program_options
 hcrdds
 qtt_qtconfig
-rapradx
 rapradar
 xmlrpc
 """)
