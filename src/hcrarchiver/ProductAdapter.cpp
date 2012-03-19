@@ -23,7 +23,7 @@ void ProductAdapter::RadxRayToDDS(const RadxRay& radxRay, const RadxVol& radxVol
 
     // Get the RadxRcalib for this ray
     int calibIndex = radxRay.getCalibIndex();
-    const RadxRcalib & calib = *(radxVol.getCalibs()[calibIndex]);
+    const RadxRcalib & calib = *(radxVol.getRcalibs()[calibIndex]);
     
     // Build the RadarDDS::ProductSet product by product
     int nProducts = radxRay.getNFields();
