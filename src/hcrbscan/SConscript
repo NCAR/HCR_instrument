@@ -15,17 +15,15 @@ def Bscan(env):
     return env
 
 tools = Split("""
-qt4
 qtt_qtconfig
 qtt_qtbscan
-hcrdds
+rapradar
 doxygen
 boost_program_options
 """)
 
 env = Environment(tools = ['default'] + tools,
                   GLOBAL_TOOLS = ['svninfo', 'doxygen', Bscan])
-env.EnableQt4Modules(['QtCore', 'QtGui'])
 
 # Enable for profiling
 #env.Append(CCFLAGS = ['-pg'])
@@ -37,10 +35,14 @@ svnversion = env['SVNREVISION']
 
 bscanSources = Split('''
 hcrbscan.cpp
-HcrBscanRaySource.cpp
+RadxBscanRaySource.cpp
+ReaderThread.cpp
 ''')
 
-bscanHeaders = ['HcrBscanRaySource.h']
+bscanHeaders = Split('''
+RadxBscanRaySource.h
+ReaderThread.h
+''')
 
 bscan = env.Program('hcrbscan', bscanSources)
 env.InstallProgram(bscan)
