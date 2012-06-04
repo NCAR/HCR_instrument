@@ -4,14 +4,13 @@
 #include "HcrDrxConfig.h"
 #include "CircBuffer.h"
 #include "PulseData.h"
-#include "BurstData.h"
 #include "HcrMonitor.h"
 #include <radar/iwrf_data.h>
 #include <toolsa/ServerSocket.hh>
 #include <QThread>
 #include <boost/thread/mutex.hpp>
 
-/// IwrfExport merges data from the H and V channels, and the burst channel,
+/// IwrfExport merges data from the H and V channels, 
 /// converts to IWRF time series format and writes the IWRF data to a client
 /// via TCP.
 ///
@@ -64,12 +63,6 @@ public:
   
   PulseData *writePulseV(PulseData *val);
 
-  // write data for next burst
-  // called by HcrDrxPub threads
-  // Returns burst data object for recycling
-
-  BurstData *writeBurst(BurstData *val);
-
   boost::mutex printMutex;
 
 private:
@@ -90,17 +83,15 @@ private:
   
   CircBuffer<PulseData> *_qH;
   CircBuffer<PulseData> *_qV;
-  CircBuffer<BurstData> *_qB;
 
   /// objects for reading the buffered data
   
   PulseData *_pulseH;
   PulseData *_pulseV;
-  BurstData *_burst;
 
   /// IQ data
 
-  static const int NCHANNELS = 1; // only H for now
+  static const int NCHANNELS = 2;
   int _nGates;
   int _pulseIntervalPerIwrfMetaData;
   int16_t *_iq;
@@ -111,16 +102,6 @@ private:
   /// I and Q count scaling factor to get power in mW easily:
   /// mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
   double _iqScaleForMw;
-
-  /// Burst IQ
-
-  int _nSamplesBurst;
-  int16_t *_burstIq;
-  char *_burstBuf;
-  int _burstBufLen;
-  int _burstMsgLen;
-  double _burstSampleFreqHz;
-  bool _cohereIqToBurst;
 
   /// Status XML
   
@@ -152,7 +133,6 @@ private:
   iwrf_calibration_t _calib;
   iwrf_scan_segment_t _simScan;
   iwrf_pulse_header_t _pulseHdr;
-  iwrf_burst_header_t _burstHdr;
 
   /// Server
 
@@ -177,22 +157,14 @@ private:
   /// methods
 
   void _readNextPulse();
-  void _syncPulsesAndBurst();
+  void _syncPulses();
   void _readNextH();
   void _readNextV();
-  void _readNextB();
   int _sendIwrfMetaData();
-  void _cohereIqToBurstPhase();
-  void _cohereIqToBurstPhase(PulseData &pulse,
-                             const BurstData &burst);
 
   void _assembleIwrfPulsePacket();
   int _sendIwrfPulsePacket();
   void _allocPulseBuf();
-  
-  void _assembleIwrfBurstPacket();
-  int _sendIwrfBurstPacket();
-  void _allocBurstBuf();
   
   void _assembleStatusPacket();
   string _assembleStatusXml();

@@ -14,7 +14,6 @@ qt4
 """)
 
 sources = Split("""
-BurstData.cpp
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
 HcrMonitor.cpp
@@ -25,7 +24,6 @@ PulseData.cpp
 """)
 
 headers = Split("""
-BurstData.h
 HcrDrxConfig.h
 HcrDrxPub.h
 HcrMonitor.h

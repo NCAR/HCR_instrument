@@ -1,8 +1,6 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
-#include <sys/ioctl.h>
-#include <sys/select.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <math.h>
@@ -138,7 +136,6 @@ void getConfigParams()
 	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
 	_tsTopic       = config.getString("DDS/TopicTS",        "HCRTS");
 	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
-	_devRoot       = config.getString("Device/DeviceRoot",  "/dev/pentek/p7142/0");
 	_tsLength      = config.getInt   ("Radar/TsLength",     256);
 	_simulate      = config.getBool  ("Simulate",           false);
 	_simPauseMS    = config.getDouble("SimPauseMs",         0.1);
@@ -331,10 +328,15 @@ main(int argc, char** argv)
 		createDDSservices();
 	
     // Instantiate our p7142sd3c
-    Pentek::p7142sd3c sd3c(_devRoot, _simulate, hcrConfig.tx_delay(),
+    Pentek::p7142sd3c sd3c(_simulate, hcrConfig.tx_delay(),
         hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
         hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
-        Pentek::p7142sd3c::DDC8DECIMATE);
+        Pentek::p7142sd3c::DDC8DECIMATE, false, _simPauseMS);
+    
+    if (! sd3c.ok()) {
+        ELOG << "P7142 was not opened successfully!";
+        abort();
+    }
     
     // We use SD3C's first general purpose timer for transmit pulse modulation
     sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
@@ -348,24 +350,22 @@ main(int argc, char** argv)
     
     // Create (but don't yet start) the downconversion threads.
     
-	// create the down converter threads. Remember that
-	// these are multiply inherited from the down converters
-	// and QThread. The threads are not run at creation, but
-	// they do instantiate the down converters.
+	// Create the down converter threads. The threads are not run at creation, 
+    // but they do instantiate the down converters.
 	std::vector<HcrDrxPub*> downThreads(_chans);
 
 	for (int c = 0; c < _chans; c++) {
 	    ILOG << "*** Channel " << c << " ***";
 	    downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsWriter,
 	            _publish, _tsLength, _gaussianFile, _kaiserFile,
-	            _simPauseMS, _simWaveLength);
+	            _simWaveLength);
 	}
 
     // Create the upConverter.
     // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
 	PMU_auto_register("create upconverter");
-	Pentek::p7142Up & upConverter = *sd3c.addUpconverter("0C", 
-	        sd3c.adcFrequency(), sd3c.adcFrequency() / 4, 9);
+	Pentek::p7142Up & upConverter = *sd3c.addUpconverter(sd3c.adcFrequency(), 
+	        sd3c.adcFrequency() / 4, 9);
 
     // catch a control-C
     signal(SIGINT, sigHandler);
@@ -429,7 +429,6 @@ main(int argc, char** argv)
 		startTime = currentTime;
 
 		std::vector<long> bytes(_chans);
-		std::vector<int> overUnder(_chans);
 		std::vector<unsigned long> discards(_chans);
 		std::vector<unsigned long> droppedPulses(_chans);
 		std::vector<unsigned long> syncErrors(_chans);
@@ -437,17 +436,18 @@ main(int argc, char** argv)
 		for (int c = 0; c < _chans; c++) {
 		    Pentek::p7142sd3cDn * down = downThreads[c]->downconverter();
 			bytes[c] = down->bytesRead();
-			overUnder[c] = down->overUnderCount();
 			discards[c] = downThreads[c]->tsDiscards();
 			droppedPulses[c] = down->droppedPulses();
             syncErrors[c] = down->syncErrors();
 		}
 		
 		for (int c = 0; c < _chans; c++) {
+		    if (c != 0) {
+		        std::cout << "  ";
+		    }
 			std::cout << std::setprecision(3) << std::setw(5)
                       << "chan " << c << " -- "
                       << bytes[c]/1000000.0/elapsed << " MB/s "
-					  << " ovr:" << overUnder[c]
 					  << " nopub:"<< discards[c]
 					  << " drop:" << droppedPulses[c]
 	                  << " sync:" << syncErrors[c];

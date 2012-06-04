@@ -38,13 +38,11 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
 
   _qH = new CircBuffer<PulseData>(_queueSize);
   _qV = new CircBuffer<PulseData>(_queueSize);
-  _qB = new CircBuffer<BurstData>(_queueSize);
 
   // pulse and burst data for reading from queues
 
   _pulseH = new PulseData;
   _pulseV = new PulseData;
-  _burst = new BurstData;
 
   // iq data
 
@@ -55,15 +53,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
     config.pulse_interval_per_iwrf_meta_data();
   _pulseBufLen = 0;
   _pulseMsgLen = 0;
-
-  // burst data
-
-  _nSamplesBurst = 0;
-  _burstIq = NULL;
-  _burstBuf = NULL;
-  _burstBufLen = 0;
-  _burstMsgLen = 0;
-  _cohereIqToBurst = false;
 
   // status xml
 
@@ -148,12 +137,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
 
   iwrf_pulse_header_init(_pulseHdr);
 
-  // initialize burst IQ
-
-  iwrf_burst_header_init(_burstHdr);
-  // _burstSampleFreqHz = _config.burst_sample_frequency();
-  _burstSampleFreqHz = 0.0;
-
   /// PRT mode
 
   _staggeredPrt = false;
@@ -209,18 +192,12 @@ IwrfExport::~IwrfExport()
 
   delete _qH;
   delete _qV;
-  delete _qB;
 
   delete _pulseH;
   delete _pulseV;
-  delete _burst;
 
   if (_pulseBuf) {
     delete[] _pulseBuf;
-  }
-
-  if (_burstBuf) {
-    delete[] _burstBuf;
   }
 
 }
@@ -285,19 +262,6 @@ void IwrfExport::run()
       metaDataInitialized = true;
     }
     
-    // cohere the IQ data to the burst phase
-    
-    //     if (_cohereIqToBurst) {
-    //       _cohereIqToBurstPhase();
-    //     }
-    
-    // assemble and send out the IWRF burst packet
-    
-    if (metaDataInitialized) {
-      // _assembleIwrfBurstPacket();
-      // _sendIwrfBurstPacket();
-    }
-    
     // assemble and send out the IWRF pulse packet
     
     if (metaDataInitialized) {
@@ -332,13 +296,13 @@ void IwrfExport::_readNextPulse()
   // read next pulse data for each channel
 
   _readNextH();
-  //   _readNextV();
+  _readNextV();
   //   _readNextB();
   
   // synchronize the pulses and burst to have same sequence number,
-  // reading extra puses as required
+  // reading extra pulses as required
   
-  //   _syncPulsesAndBurst();
+  _syncPulses();
 
   if (_pulseSeqNum < 0) {
     // first time
@@ -372,22 +336,18 @@ void IwrfExport::_readNextPulse()
 
 /////////////////////////////////////////////////////////////////////////////
 // synchronize the pulses and burst to have same sequence number,
-// reading extra puses as required
+// reading extra pulses as required
 
-void IwrfExport::_syncPulsesAndBurst()
+void IwrfExport::_syncPulses()
 {
 
   // compute the max pulse seq num
   
   int64_t seqNumH = _pulseH->getPulseSeqNum();
   int64_t seqNumV = _pulseV->getPulseSeqNum();
-  int64_t seqNumB = _burst->getPulseSeqNum();
   int64_t maxSeqNum = seqNumH;
   if (maxSeqNum < seqNumV) {
     maxSeqNum = seqNumV;
-  }
-  if (maxSeqNum < seqNumB) {
-    maxSeqNum = seqNumB;
   }
 
   // read until all sequence numbers match
@@ -419,17 +379,6 @@ void IwrfExport::_syncPulsesAndBurst()
       }
     }
 
-    // burst channel
-
-    if (seqNumB < maxSeqNum) {
-      _readNextB();
-      seqNumB = _burst->getPulseSeqNum();
-      if (maxSeqNum < seqNumB) {
-        maxSeqNum = seqNumB;
-        done = false;
-      }
-    }
-
   } // while
 
 }
@@ -452,16 +401,6 @@ PulseData *IwrfExport::writePulseH(PulseData *val)
 PulseData *IwrfExport::writePulseV(PulseData *val)
 {
   return _qV->write(val);
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// write data for next burst
-// called by HcrDrxPub threads
-// Returns burst data object for recycling
-
-BurstData *IwrfExport::writeBurst(BurstData *val)
-{
-  return _qB->write(val);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -495,23 +434,6 @@ void IwrfExport::_readNextV()
     }
   }
   _pulseV = tmp;
-
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// read the next burst data
-
-void IwrfExport::_readNextB()
-{
-
-  BurstData *tmp = NULL;
-  while (tmp == NULL) {
-    tmp = _qB->read(_burst);
-    if (tmp == NULL) {
-      usleep(50);
-    }
-  }
-  _burst = tmp;
 
 }
 
@@ -566,55 +488,6 @@ int IwrfExport::_sendIwrfMetaData()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// cohere the IQ data to the burst phase
-
-void IwrfExport::_cohereIqToBurstPhase()
-{
-
-  _cohereIqToBurstPhase(*_pulseH, *_burst);
-  _cohereIqToBurstPhase(*_pulseV, *_burst);
-
-}
-
-void IwrfExport::_cohereIqToBurstPhase(PulseData &pulse,
-                                    const BurstData &burst)
-{
-
-  double g0IvalNorm = burst.getG0IvalNorm();
-  double g0QvalNorm = burst.getG0QvalNorm();
-
-  int nGates = pulse.getNGates();
-  int16_t *II = pulse.getIq();
-  int16_t *QQ = pulse.getIq() + 1;
-  
-  for (int igate = 0; igate < nGates; igate++, II += 2, QQ += 2) {
-    
-    double ival = *II;
-    double qval = *QQ;
-
-    double ivalCohered = ival * g0IvalNorm + qval * g0QvalNorm;
-    double qvalCohered = qval * g0IvalNorm - ival * g0QvalNorm;
-
-    if (ivalCohered < -32767.0) {
-      ivalCohered = -32767.0;
-    } else if (ivalCohered > 32767.0) {
-      ivalCohered = 32767.0;
-    }
-
-    if (qvalCohered < -32767.0) {
-      qvalCohered = -32767.0;
-    } else if (qvalCohered > 32767.0) {
-      qvalCohered = 32767.0;
-    }
-
-    *II = (int16_t) (ivalCohered + 0.5);
-    *QQ = (int16_t) (qvalCohered + 0.5);
-    
-  } // igate
-
-}
-
-/////////////////////////////////////////////////////////////////////////////
 // assemble IWRF pulse packet
 
 void IwrfExport::_assembleIwrfPulsePacket()
@@ -624,16 +497,12 @@ void IwrfExport::_assembleIwrfPulsePacket()
   
   _allocPulseBuf();
 
-  // load up IQ data, only H for now
+  // load up IQ data
 
   memcpy(_iq, _pulseH->getIq(), _pulseH->getNGates() * 2 * sizeof(int16_t));
 
-  //   memcpy(_iq + (_nGates * 2),
-  //          _pulseV->getIq(), _pulseV->getNGates() * 2 * sizeof(int16_t));
-  //   int nSamples = _burst->getNSamples();
-  //   if (nSamples > _nGates) nSamples = _nGates;
-  //   memcpy(_iq + (_nGates * 4),
-  //          _burst->getIq(), nSamples * 2 * sizeof(int16_t));
+  memcpy(_iq + (_nGates * 2),
+         _pulseV->getIq(), _pulseV->getNGates() * 2 * sizeof(int16_t));
   
   // pulse header
   
@@ -662,10 +531,6 @@ void IwrfExport::_assembleIwrfPulsePacket()
   _pulseHdr.iq_offset[0] = 0;
   _pulseHdr.iq_offset[1] = _nGates * 2;
   _pulseHdr.iq_offset[2] = _nGates * 4;
-  _pulseHdr.burst_mag[0] = _burst->getG0Magnitude();
-  _pulseHdr.burst_mag[1] = _burst->getG0Magnitude();
-  _pulseHdr.burst_arg[0] = _burst->getG0PhaseDeg();
-  _pulseHdr.burst_arg[1] = _burst->getG0PhaseDeg();
   _pulseHdr.scale = 1.0 / _iqScaleForMw;
   _pulseHdr.offset = 0.0;
   _pulseHdr.n_gates_burst = 0;
@@ -742,87 +607,6 @@ void IwrfExport::_allocPulseBuf()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// assemble IWRF burst packet
-
-void IwrfExport::_assembleIwrfBurstPacket()
-{
-
-  // allocate space for Burst IQ samples
-
-  _nSamplesBurst = _burst->getNSamples();
-  _allocBurstBuf();
-  
-  // load up IQ data
-  
-  memcpy(_burstIq, _burst->getIq(), _nSamplesBurst * 2 * sizeof(int16_t));
-  
-  // burst header
-
-  _burstHdr.packet.len_bytes = _burstMsgLen;
-  _burstHdr.packet.seq_num = _packetSeqNum++;
-  _burstHdr.packet.time_secs_utc = _timeSecs;
-  _burstHdr.packet.time_nano_secs = _nanoSecs;
-  
-  _burstHdr.pulse_seq_num = _pulseSeqNum;
-  _burstHdr.n_samples = _nSamplesBurst;
-  _burstHdr.channel_id = 0;
-  _burstHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI16;
-  _burstHdr.scale = 1.0 / _iqScaleForMw;
-  _burstHdr.offset = 0.0;
-  _burstHdr.power_dbm = _burst->getG0PowerDbm();
-  _burstHdr.phase_deg = _burst->getG0PhaseDeg();
-  _burstHdr.freq_hz = _burst->getG0FreqHz();
-  _burstHdr.sampling_freq_hz = _burstSampleFreqHz;
-
-  memcpy(_burstBuf, &_burstHdr, sizeof(_burstHdr));
-
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// send out the IWRF burst packet
-
-int IwrfExport::_sendIwrfBurstPacket()
-{
-
-  if (_sock->writeBuffer(_burstBuf, _burstMsgLen)) {
-    cerr << "ERROR - IwrfExport::_sendIwrfBurstPacket()" << endl;
-    cerr << "  Writing burst packet" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
-    _closeSocketToClient();
-    return -1;
-  }
-  
-  return 0;
-
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// allocate burst buffer
-
-void IwrfExport::_allocBurstBuf()
-{
-  
-  _burstMsgLen =
-    sizeof(iwrf_burst_header_t) + (_nSamplesBurst * 2 * sizeof(int16_t));
-
-  if (_burstMsgLen > _burstBufLen) {
-    
-    if (_burstBuf) {
-      delete[] _burstBuf;
-    }
-    
-    _burstBufLen = _burstMsgLen;
-    _burstBuf = new char[_burstBufLen];
-    _burstIq =
-      reinterpret_cast<int16_t *>(_burstBuf + sizeof(iwrf_burst_header_t));
-    
-  }
-
-  memset(_burstIq, 0, _nSamplesBurst * 2 * sizeof(int16_t));
-
-}
-
-/////////////////////////////////////////////////////////////////////////////
 // assemble IWRF status packet
 
 void IwrfExport::_assembleStatusPacket()
@@ -832,8 +616,7 @@ void IwrfExport::_assembleStatusPacket()
   // assemble the xml
 
   string xmlStr = _assembleStatusXml();
-  int n = xmlStr.size() + 1; // null terminated
-  _xmlLen = ((n - 1) / 8) * 8; // round up to 8-bytes
+  _xmlLen = ((xmlStr.size() + 7) / 8) * 8; // round up to 8-bytes
   
   // allocate buffer
 

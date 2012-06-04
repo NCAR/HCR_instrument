@@ -8,7 +8,6 @@
 
 class IwrfExport;
 class PulseData;
-class BurstData;
 
 /// @brief HcrDrxPub publishes data from a p7142sd3c receive channel via DDS.
 ///
@@ -32,13 +31,11 @@ public:
    * Enumerated values for the Hcr receive channels.
    * HCR_H_CHANNEL is the horizontal data channel
    * HCR_V_CHANNEL is the vertical data channel
-   * HCR_BURST_CHANNEL is the transmit pulse sample (burst) channel
    * HCR_N_CHANNELS provides the total count of Hcr channels
    */
     typedef enum {
       HCR_H_CHANNEL,
       HCR_V_CHANNEL,
-      HCR_BURST_CHANNEL,
       HCR_N_CHANNELS
     } HcrChannel;
         
@@ -55,8 +52,6 @@ public:
    *     filter parameters
    * @param kaiserFile Name of the file containing the Kaiser
    *     filter parameters
-   * @param simPauseMS The number of milliseconds to wait before returning
-   *     simulated data when calling read()
    * @param simWavelength The wavelength of a simulated signal. The wavelength
    *     is in sample counts.
    */
@@ -70,7 +65,6 @@ public:
           int tsLength,
           std::string gaussianFile,
           std::string kaiserFile,
-          double simPauseMS,
           int simWavelength);
         
   /// Destructor
@@ -157,27 +151,6 @@ private:
   
   IwrfExport *_exporter;
   PulseData *_pulseData;
-  BurstData *_burstData;
-
-  // Burst tracking
-
-  // Keep numerator and denominator so that our burst frequency 
-  // calculation performs a weighted average over time
-  double _numerator;
-  double _denominator;
-  
-  // burst properties
-  double _g0Magnitude;
-  double _g0PowerDbm;
-  double _g0PhaseDeg;
-  double _g0IvalNorm;
-  double _g0QvalNorm;
-  double _g0FreqHz;
-  double _g0FreqCorrHz;
-  
-  // Burst frequency and phase calculation
-  void _handleBurst(const int16_t *iq_data, int64_t pulseSeqNum);
-  double _argDeg(double ival, double qval);
 
 };
 
