@@ -319,7 +319,7 @@ HcrXmitter::_openTty() {
         exit(1);
     }
 
-    // Make the port 9600 8N1, "raw"
+    // Make the port 19200 8E1, "raw"
     struct termios ios;
     if (tcgetattr(_fd, &ios) == -1) {
         ELOG << __PRETTY_FUNCTION__ << ": error getting " << _ttyDev << 
@@ -327,7 +327,11 @@ HcrXmitter::_openTty() {
         exit(1);
     }
     cfmakeraw(&ios);
-    cfsetspeed(&ios, B9600);
+    cfsetspeed(&ios, B19200);
+    
+    // Even parity
+    ios.c_cflag |= PARENB;  // enable parity
+    ios.c_cflag &= ~PARODD; // use even parity
 
     // Set a 0.2 second timeout for reads
     ios.c_cc[VMIN] = 0;
