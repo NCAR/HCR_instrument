@@ -1,0 +1,60 @@
+# -*- python -*-
+
+xmitdTools = Split("""
+logx
+doxygen
+xmlrpc
+rapradar
+boost_program_options
+pmc730
+""")
+
+xmitdEnv = Environment(tools = ['default'] + xmitdTools)
+
+xmitd_sources = Split("""
+hcr_xmitd.cpp
+HcrXmitter.cpp
+""")
+
+# We need HcrPmc730 from hcrdrx
+hcrPmc730 = xmitdEnv.Object(target='HcrPmc730.o', source='../hcrdrx/HcrPmc730.cpp')
+
+hcr_xmitd = xmitdEnv.Program('hcr_xmitd', xmitd_sources + hcrPmc730)
+Default(hcr_xmitd)
+
+xmitctlTools = Split("""
+logx
+doxygen
+xmitclient
+qt4
+""")
+xmitctlEnv = Environment(tools = ['default'] + xmitctlTools)
+xmitctlEnv.EnableQt4Modules(['QtCore', 'QtGui'])
+
+xmitctl_sources = Split("""
+hcr_xmitctl.cpp
+HcrXmitCtlMainWindow.cpp
+qrc_HcrXmitCtlMainWindow.cc
+""")
+hcr_xmitctl = xmitctlEnv.Program('hcr_xmitctl', xmitctl_sources)
+Default(hcr_xmitctl)
+
+uifiles = Split("""
+HcrXmitCtlMainWindow.ui
+""")
+xmitctlEnv.Uic4(uifiles)
+
+# This generates the rules for *.qrc -> qrc_*.cc
+qrcfiles = Split("""
+HcrXmitCtlMainWindow.qrc
+""")
+xmitctlEnv.Qrc(qrcfiles)
+
+headers = Split("""
+HcrXmitCtlMainWindow.h
+HcrXmitter.h
+""")
+
+html = xmitctlEnv.Apidocs(xmitd_sources + xmitctl_sources + headers, 
+                   DOXYFILE_FILE = "Doxyfile")
+Default(html)
