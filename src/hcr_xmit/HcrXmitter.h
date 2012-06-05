@@ -12,34 +12,45 @@
 
 struct HcrXmitStatus {
     bool serialConnected;
+
+    bool filamentOn;
+    bool highVoltageOn;
+    bool rfOn;
+    bool modPulseExternal;
+    bool syncPulseExternal;
+    bool filamentDelayActive;
+    bool powerValid;
     bool faultSummary;
-    bool hvpsRunup;
-    bool standby;
-    bool heaterWarmup;
-    bool cooldown;
-    bool unitOn;
-    bool magnetronCurrentFault;
-    bool blowerFault;
-    bool hvpsOn;
-    bool remoteEnabled;
-    bool safetyInterlock;
-    bool reversePowerFault;
-    bool pulseInputFault;
-    bool hvpsCurrentFault;
-    bool waveguidePressureFault;
-    bool hvpsUnderVoltage;
-    bool hvpsOverVoltage;
+    bool frontPanelControl;
+    bool rs232Control;
+    bool rdsControl;
+    bool modulatorFault;
+    bool syncFault;
+    bool xmitterTempFault;
+    bool waveguideArcFault;
+    bool collectorCurrentFault;
+    bool bodyCurrentFault;
+    bool filamentLorFault;
+    bool focusElectrodeLorFault;
+    bool cathodeLorFault;
+    bool inverterOverloadFault;
+    bool externalInterlockFault;
+    bool eikInterlockFault;
+    bool badChecksumReceived;
     
-    double hvpsVoltage;        // kV
-    double magnetronCurrent;   // mA
-    double hvpsCurrent;        // mA
-    double temperature;        // C
+    double cathodeVoltage;
+    double bodyCurrent;
+    double collectorCurrent;
+    double xmitterTemp;
+    
+    int panelPulsewidth;    // 0-15
+    int panelPrf;           // 0-15
 };
 
 class HcrXmitter {
 public:
     /**
-     * Construct a HcrXmitter providing access to the HCR transmitter on
+     * @brief Construct a HcrXmitter providing access to the HCR transmitter on
      * the given serial port. If special serial port name HcrXmitter::SIM_DEVICE
      * is used, existence of the transmitter will be simulated.
      * @param ttyDev the name of the serial port connected to the transmitter.
@@ -48,9 +59,30 @@ public:
     virtual ~HcrXmitter();
     
     /**
-     * Get current status values from the transmitter.
+     * @brief Get current status values from the transmitter.
      */
     HcrXmitStatus getStatus(unsigned int recursion = 0);
+    
+    /**
+     * @brief Set filament state.
+     * @param state boolean state: true to turn on filament, false to turn off
+     * filament.
+     */
+    void setFilamentEnabled(bool state);
+    
+    /**
+     * @brief Set high voltage state.
+     * @param state boolean state: true to turn on HV, false to turn off
+     * HV.
+     */
+    void setHvEnabled(bool state);
+    
+    /**
+     * @brief Set RF state.
+     * @param state boolean state: true to enable RF transmit, false to
+     * disable RF transmit.
+     */
+    void setRfState(bool state);
     
     /**
      * Turn on the transmitter unit (does not enable high voltage and actual
@@ -67,7 +99,7 @@ public:
     void powerOff();
     
     /**
-     * Reset all faults conditions.
+     * Reset all fault conditions.
      */
     void faultReset();
     

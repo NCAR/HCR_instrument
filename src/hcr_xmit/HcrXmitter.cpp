@@ -38,8 +38,8 @@ const std::string HcrXmitter::_POWERON_COMMAND = "\x02\x50\x03\x2d";
 // power off command: STX 'p' ETX 0x0d
 const std::string HcrXmitter::_POWEROFF_COMMAND = "\x02\x70\x03\x0d";
 
-// status command: STX 'W' ETX 0x26
-const std::string HcrXmitter::_STATUS_COMMAND = "\x02\x57\x03\x26";
+// @TODO FIX THIS status command
+const std::string HcrXmitter::_STATUS_COMMAND = "\xf0\x06\x00\x00\x00\x00\x06\xff";
 
 
 
@@ -61,119 +61,124 @@ HcrXmitter::~HcrXmitter() {
 
 void
 HcrXmitter::powerOn() {
-    ILOG << "Power On";
-    if (! _simulate) {
-        _sendCommand(_POWERON_COMMAND);
-    } else {
-        _simStatus.unitOn = true;
-        _simStatus.standby = true;
-    }
+    WLOG << "powerOn() not implemented!";
+//    ILOG << "Power On";
+//    if (! _simulate) {
+//        _sendCommand(_POWERON_COMMAND);
+//    } else {
+//        _simStatus.unitOn = true;
+//        _simStatus.standby = true;
+//    }
     return;
 }
 
 void
 HcrXmitter::powerOff() {
-    ILOG << "Power Off";
-    if (! _simulate) {
-        _sendCommand(_POWEROFF_COMMAND);
-    } else {
-        _initSimStatus();
-    }
+    WLOG << "powerOff() not implemented!";
+//    ILOG << "Power Off";
+//    if (! _simulate) {
+//        _sendCommand(_POWEROFF_COMMAND);
+//    } else {
+//        _initSimStatus();
+//    }
     return;
 }
 
 void
 HcrXmitter::faultReset() {
-    ILOG << "Fault Reset";
-    if (! _simulate) {
-        _sendCommand(_RESET_COMMAND);
-    } else {
-        if (! _simStatus.unitOn)
-            return;
-        
-        _simStatus.faultSummary = false;
-        _simStatus.blowerFault = false;
-        _simStatus.hvpsCurrentFault = false;
-        _simStatus.hvpsOverVoltage = false;
-        _simStatus.hvpsUnderVoltage = false;
-        _simStatus.magnetronCurrentFault = false;
-        _simStatus.pulseInputFault = false;
-        _simStatus.reversePowerFault = false;
-        _simStatus.safetyInterlock = false;
-    }
+    WLOG << "faultReset() not implemented!";
+//    ILOG << "Fault Reset";
+//    if (! _simulate) {
+//        _sendCommand(_RESET_COMMAND);
+//    } else {
+//        if (! _simStatus.unitOn)
+//            return;
+//        
+//        _simStatus.faultSummary = false;
+//        _simStatus.blowerFault = false;
+//        _simStatus.hvpsCurrentFault = false;
+//        _simStatus.hvpsOverVoltage = false;
+//        _simStatus.hvpsUnderVoltage = false;
+//        _simStatus.magnetronCurrentFault = false;
+//        _simStatus.pulseInputFault = false;
+//        _simStatus.reversePowerFault = false;
+//        _simStatus.safetyInterlock = false;
+//    }
     return;
 }
 
 void
 HcrXmitter::standby() {
-    ILOG << "Standby";
-    if (! _simulate) {
-        _sendCommand(_STANDBY_COMMAND);
-    } else {
-        if (! _simStatus.unitOn)
-            return;
-        
-        _simStatus.hvpsOn = false;
-        _simStatus.hvpsRunup = false;
-        _simStatus.hvpsVoltage = 0.0;
-        _simStatus.standby = true;
-    }
+    WLOG << "standby() not implemented!";
+//    ILOG << "Standby";
+//    if (! _simulate) {
+//        _sendCommand(_STANDBY_COMMAND);
+//    } else {
+//        if (! _simStatus.unitOn)
+//            return;
+//        
+//        _simStatus.hvpsOn = false;
+//        _simStatus.hvpsRunup = false;
+//        _simStatus.hvpsVoltage = 0.0;
+//        _simStatus.standby = true;
+//    }
     return;
 }
 
 void
 HcrXmitter::operate() {
-    ILOG << "Operate";
-    if (! _simulate) {
-        _sendCommand(_OPERATE_COMMAND);
-    } else {
-        if (! _simStatus.unitOn)
-            return;
-        
-        _simStatus.hvpsOn = true;
-        _simStatus.hvpsRunup = true;
-        _simStatus.hvpsVoltage = 20.0;
-        _simStatus.standby = false;
-    }
+    WLOG << "operate() not implemented!";
+//    ILOG << "Operate";
+//    if (! _simulate) {
+//        _sendCommand(_OPERATE_COMMAND);
+//    } else {
+//        if (! _simStatus.unitOn)
+//            return;
+//        
+//        _simStatus.hvpsOn = true;
+//        _simStatus.hvpsRunup = true;
+//        _simStatus.hvpsVoltage = 20.0;
+//        _simStatus.standby = false;
+//    }
     return;
 }
 #define MAX_GET_STATUS_TRIES 2
 
 HcrXmitStatus
 HcrXmitter::getStatus(unsigned int recursion) {
-    // Special handling if we're simulating...
-    if (_simulate) {
-        _simStatus.magnetronCurrent = 0.1 + (0.2 * random()) / RAND_MAX;
-        _simStatus.hvpsCurrent = 0.2 + (0.2 * random()) / RAND_MAX;
-        _simStatus.temperature = 30 + (2.0 * random()) / RAND_MAX;
-        
-        // If in operate mode, occasionally generate a pulse input fault
-        if (_simStatus.hvpsRunup && (random() / float(RAND_MAX)) < 0.05) {
-            _simStatus.pulseInputFault = true;
-        }
-
-        _simStatus.faultSummary = _simStatus.blowerFault ||
-                _simStatus.hvpsCurrentFault|| _simStatus.hvpsOverVoltage ||
-                _simStatus.hvpsUnderVoltage || _simStatus.magnetronCurrentFault ||
-                _simStatus.pulseInputFault || _simStatus.reversePowerFault ||
-                _simStatus.safetyInterlock;
-        
-        // If we simulated a fault, also simulate leaving operate mode
-        if (_simStatus.faultSummary) {
-            _simStatus.hvpsOn = false;
-            _simStatus.hvpsRunup = false;
-            _simStatus.hvpsVoltage = 0.0;
-            _simStatus.standby = true;
-        }
-        
-        return(_simStatus);
-    }
+//    // Special handling if we're simulating...
+//    if (_simulate) {
+//        _simStatus.magnetronCurrent = 0.1 + (0.2 * random()) / RAND_MAX;
+//        _simStatus.hvpsCurrent = 0.2 + (0.2 * random()) / RAND_MAX;
+//        _simStatus.temperature = 30 + (2.0 * random()) / RAND_MAX;
+//        
+//        // If in operate mode, occasionally generate a pulse input fault
+//        if (_simStatus.hvpsRunup && (random() / float(RAND_MAX)) < 0.05) {
+//            _simStatus.pulseInputFault = true;
+//        }
+//
+//        _simStatus.faultSummary = _simStatus.blowerFault ||
+//                _simStatus.hvpsCurrentFault|| _simStatus.hvpsOverVoltage ||
+//                _simStatus.hvpsUnderVoltage || _simStatus.magnetronCurrentFault ||
+//                _simStatus.pulseInputFault || _simStatus.reversePowerFault ||
+//                _simStatus.safetyInterlock;
+//        
+//        // If we simulated a fault, also simulate leaving operate mode
+//        if (_simStatus.faultSummary) {
+//            _simStatus.hvpsOn = false;
+//            _simStatus.hvpsRunup = false;
+//            _simStatus.hvpsVoltage = 0.0;
+//            _simStatus.standby = true;
+//        }
+//        
+//        return(_simStatus);
+//    }
     
     // This must be the real thing, so get status from the transmitter
     HcrXmitStatus status;
     _clearStatus(status);
     // don't recurse more than 'N' levels in retries
-    if (recursion++ ==MAX_GET_STATUS_TRIES) {
+    if (recursion++ == MAX_GET_STATUS_TRIES) {
        ELOG << __PRETTY_FUNCTION__ << ": Too many getStatus() retries! (giving up)";
        return status;
     }
@@ -205,8 +210,8 @@ HcrXmitter::getStatus(unsigned int recursion) {
         }
     }
     
-    // Read the 21-byte status reply
-    static const int REPLYSIZE = 21;
+    // Read the 20-byte status reply
+    static const int REPLYSIZE = 20;
     char reply[REPLYSIZE];
     int nRead = 0;
     while (nRead < REPLYSIZE) {
@@ -231,73 +236,77 @@ HcrXmitter::getStatus(unsigned int recursion) {
     // Finally, parse the reply
     status.serialConnected = true;
     
-    // Six used bits in the first status byte
-    status.faultSummary = (reply[1] >> 5) & 0x1;
-    status.hvpsRunup = (reply[1] >> 4) & 0x1;
-    status.standby = (reply[1] >> 3) & 0x1;
-    status.heaterWarmup = (reply[1] >> 2) & 0x1;
-    status.cooldown = (reply[1] >> 1) & 0x1;
-    status.unitOn = (reply[1] >> 0) & 0x1;
-    DLOG << "flt summary " << status.faultSummary << 
-        ", runup " << status.hvpsRunup << 
-        ", standby " << status.standby << 
-        ", warmup " << status.heaterWarmup << 
-        ", cooldown " << status.cooldown << 
-        ", unit on " << status.unitOn;
+    // 8 bits of boolean status in byte 3
+    status.filamentOn = (reply[3] >> 0) & 0x1;
+    status.highVoltageOn = (reply[3] >> 1) & 0x1;
+    status.rfOn = (reply[3] >> 2) & 0x1;
+    status.modPulseExternal = (reply[3] >> 3) & 0x1;
+    status.syncPulseExternal = (reply[3] >> 4) & 0x1;
+    status.filamentDelayActive = (reply[3] >> 5) & 0x1;
+    status.powerValid = (reply[3] >> 6) & 0x1;
+    status.faultSummary = (reply[3] >> 7) & 0x1;
+    DLOG << "filament on " << status.filamentOn <<
+            ", HV on " << status.highVoltageOn <<
+            ", RF on " << status.rfOn <<
+            ", external mod pulse " << status.modPulseExternal <<
+            ", external sync pulse " << status.syncPulseExternal <<
+            ", filament delay active " << status.filamentDelayActive <<
+            ", power valid " << status.powerValid <<
+            ", fault summary " << status.faultSummary;
     
-    // Six used bits in the second status byte
-    status.magnetronCurrentFault = (reply[2] >> 5) & 0x1;
-    status.blowerFault = (reply[2] >> 4) & 0x1;
-    status.hvpsOn = (reply[2] >> 3) & 0x1;
-    status.remoteEnabled = (reply[2] >> 2) & 0x1;
-    status.safetyInterlock = (reply[2] >> 1) & 0x1;
-    status.reversePowerFault = (reply[2] >> 0) & 0x1;
-    DLOG << "mag cur flt " << status.magnetronCurrentFault << 
-        ", blower flt " << status.blowerFault << 
-        ", hvpsOn " << status.hvpsOn <<
-        ", remote ena " << status.remoteEnabled << 
-        ", safety " << status.safetyInterlock <<
-        ", reverse pwr flt " << status.reversePowerFault;
-    
-    // Five used bits in the third status byte
-    status.pulseInputFault = (reply[3] >> 5) & 0x1;
-    status.hvpsCurrentFault = (reply[3] >> 3) & 0x1;
-    status.waveguidePressureFault = (reply[3] >> 2) & 0x1;
-    status.hvpsUnderVoltage = (reply[3] >> 1) & 0x1;
-    status.hvpsOverVoltage = (reply[3] >> 0) & 0x1;
-    DLOG << "pulse flt " << status.pulseInputFault << 
-        ", HVPS cur flt " << status.hvpsCurrentFault <<
-        ", wg pres flt " << status.waveguidePressureFault <<
-        ", HVPS underV " << status.hvpsUnderVoltage <<
-        ", HVPS overV " << status.hvpsOverVoltage;
-    
-    // 4-character HVPS voltage starting at character 4, e.g., " 0.0"
-    if (sscanf(reply + 4, "%4lf", &status.hvpsVoltage) != 1) {
-        WLOG << __PRETTY_FUNCTION__ << ": Bad HVPS voltage in status!";
-    } else {
-        DLOG << "HVPS voltage " << status.hvpsVoltage << " kV";
-    }
-        
-    // 4-character magnetron current starting at character 8, e.g., " 0.2"
-    if (sscanf(reply + 8, "%4lf", &status.magnetronCurrent) != 1) {
-        WLOG << "Bad magnetron current in status!";
-    } else {
-        DLOG << "magnetron current " << status.magnetronCurrent << " mA";
-    }
-        
-    // 4-character HVPS current starting at character 12, e.g., " 0.2"
-    if (sscanf(reply + 12, "%4lf", &status.hvpsCurrent) != 1) {
-        WLOG << "Bad HVPS current in status!";
-    } else {
-        DLOG << "HVPS current " << status.hvpsCurrent << " mA";
-    }
-    
-    // 3-character temperature starting at character 16, e.g., "+27."
-    if (sscanf(reply+16, "%4lf", &status.temperature) != 1) {
-        WLOG << "Bad temperature in status!";
-    } else {
-        DLOG << "transmitter temperature " << status.temperature << " C";
-    }
+//    // Six used bits in the second status byte
+//    status.magnetronCurrentFault = (reply[2] >> 5) & 0x1;
+//    status.blowerFault = (reply[2] >> 4) & 0x1;
+//    status.hvpsOn = (reply[2] >> 3) & 0x1;
+//    status.remoteEnabled = (reply[2] >> 2) & 0x1;
+//    status.safetyInterlock = (reply[2] >> 1) & 0x1;
+//    status.reversePowerFault = (reply[2] >> 0) & 0x1;
+//    DLOG << "mag cur flt " << status.magnetronCurrentFault << 
+//        ", blower flt " << status.blowerFault << 
+//        ", hvpsOn " << status.hvpsOn <<
+//        ", remote ena " << status.remoteEnabled << 
+//        ", safety " << status.safetyInterlock <<
+//        ", reverse pwr flt " << status.reversePowerFault;
+//    
+//    // Five used bits in the third status byte
+//    status.pulseInputFault = (reply[3] >> 5) & 0x1;
+//    status.hvpsCurrentFault = (reply[3] >> 3) & 0x1;
+//    status.waveguidePressureFault = (reply[3] >> 2) & 0x1;
+//    status.hvpsUnderVoltage = (reply[3] >> 1) & 0x1;
+//    status.hvpsOverVoltage = (reply[3] >> 0) & 0x1;
+//    DLOG << "pulse flt " << status.pulseInputFault << 
+//        ", HVPS cur flt " << status.hvpsCurrentFault <<
+//        ", wg pres flt " << status.waveguidePressureFault <<
+//        ", HVPS underV " << status.hvpsUnderVoltage <<
+//        ", HVPS overV " << status.hvpsOverVoltage;
+//    
+//    // 4-character HVPS voltage starting at character 4, e.g., " 0.0"
+//    if (sscanf(reply + 4, "%4lf", &status.hvpsVoltage) != 1) {
+//        WLOG << __PRETTY_FUNCTION__ << ": Bad HVPS voltage in status!";
+//    } else {
+//        DLOG << "HVPS voltage " << status.hvpsVoltage << " kV";
+//    }
+//        
+//    // 4-character magnetron current starting at character 8, e.g., " 0.2"
+//    if (sscanf(reply + 8, "%4lf", &status.magnetronCurrent) != 1) {
+//        WLOG << "Bad magnetron current in status!";
+//    } else {
+//        DLOG << "magnetron current " << status.magnetronCurrent << " mA";
+//    }
+//        
+//    // 4-character HVPS current starting at character 12, e.g., " 0.2"
+//    if (sscanf(reply + 12, "%4lf", &status.hvpsCurrent) != 1) {
+//        WLOG << "Bad HVPS current in status!";
+//    } else {
+//        DLOG << "HVPS current " << status.hvpsCurrent << " mA";
+//    }
+//    
+//    // 3-character temperature starting at character 16, e.g., "+27."
+//    if (sscanf(reply+16, "%4lf", &status.temperature) != 1) {
+//        WLOG << "Bad temperature in status!";
+//    } else {
+//        DLOG << "transmitter temperature " << status.temperature << " C";
+//    }
     
     return(status);
 }
@@ -433,7 +442,7 @@ int
 HcrXmitter::_readSelect(unsigned int waitMsecs)
 {
     /*
-     * check only on fd file descriptor
+     * check only on _fd file descriptor
      */
     fd_set readFds;
     FD_ZERO(&readFds);
@@ -461,11 +470,14 @@ HcrXmitter::_readSelect(unsigned int waitMsecs)
             return -2; // select failed
         } 
     }
+    // Oops, shouldn't get here!
+    return -3;
 }
 
 void
 HcrXmitter::_initSimStatus() {
-    _clearStatus(_simStatus);
-    _simStatus.serialConnected = true;
-    _simStatus.remoteEnabled = true;
+    WLOG << "_initSimStatus() not implemented!";
+//    _clearStatus(_simStatus);
+//    _simStatus.serialConnected = true;
+//    _simStatus.remoteEnabled = true;
 }

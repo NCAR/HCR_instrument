@@ -433,78 +433,78 @@ updateStatus() {
     XmitStatus = Xmitter->getStatus();
     time_t now = time(0);
     
-    // Increment fault counters
-    if (XmitStatus.magnetronCurrentFault && ! PrevXmitStatus.magnetronCurrentFault) {
-        WLOG << "Magnetron current fault";
-        MagnetronCurrentFaultCount++;
-        MagnetronCurrentFaultTime = now;
-    }
-    if (XmitStatus.blowerFault && ! PrevXmitStatus.blowerFault) {
-        WLOG << "Blower fault";
-        BlowerFaultCount++;
-        BlowerFaultTime = now;
-    }
-    if (XmitStatus.safetyInterlock && ! PrevXmitStatus.safetyInterlock) {
-        WLOG << "Safety interlock fault";
-        SafetyInterlockFaultCount++;
-        SafetyInterlockFaultTime = now;
-    }
-    if (XmitStatus.reversePowerFault && ! PrevXmitStatus.reversePowerFault) {
-        WLOG << "Reverse power fault";
-        ReversePowerFaultCount++;
-        ReversePowerFaultTime = now;
-    }
-    if (XmitStatus.pulseInputFault && ! PrevXmitStatus.pulseInputFault) {
-        WLOG << "Pulse input fault";
-        PulseInputFaultCount++;
-        PulseInputFaultTime = now;
-    }
-    if (XmitStatus.hvpsCurrentFault && ! PrevXmitStatus.hvpsCurrentFault) {
-        WLOG << "HVPS current fault";
-        HvpsCurrentFaultCount++;
-        HvpsCurrentFaultTime = now;
-    }
-    if (XmitStatus.waveguidePressureFault && ! PrevXmitStatus.waveguidePressureFault) {
-        WLOG << "Waveguide pressure fault";
-        WaveguidePressureFaultFaultCount++;
-        WaveguidePressureFaultFaultTime = now;
-    }
-    if (XmitStatus.hvpsUnderVoltage && ! PrevXmitStatus.hvpsUnderVoltage) {
-        WLOG << "HVPS under-voltage fault";
-        HvpsUnderVoltageCount++;
-        HvpsUnderVoltageTime = now;
-    }
-    if (XmitStatus.hvpsOverVoltage && ! PrevXmitStatus.hvpsOverVoltage) {
-        WLOG << "HVPS over-voltage fault";
-        HvpsOverVoltagetCount++;
-        HvpsOverVoltagetTime = now;
-    }
+//    // Increment fault counters
+//    if (XmitStatus.magnetronCurrentFault && ! PrevXmitStatus.magnetronCurrentFault) {
+//        WLOG << "Magnetron current fault";
+//        MagnetronCurrentFaultCount++;
+//        MagnetronCurrentFaultTime = now;
+//    }
+//    if (XmitStatus.blowerFault && ! PrevXmitStatus.blowerFault) {
+//        WLOG << "Blower fault";
+//        BlowerFaultCount++;
+//        BlowerFaultTime = now;
+//    }
+//    if (XmitStatus.safetyInterlock && ! PrevXmitStatus.safetyInterlock) {
+//        WLOG << "Safety interlock fault";
+//        SafetyInterlockFaultCount++;
+//        SafetyInterlockFaultTime = now;
+//    }
+//    if (XmitStatus.reversePowerFault && ! PrevXmitStatus.reversePowerFault) {
+//        WLOG << "Reverse power fault";
+//        ReversePowerFaultCount++;
+//        ReversePowerFaultTime = now;
+//    }
+//    if (XmitStatus.pulseInputFault && ! PrevXmitStatus.pulseInputFault) {
+//        WLOG << "Pulse input fault";
+//        PulseInputFaultCount++;
+//        PulseInputFaultTime = now;
+//    }
+//    if (XmitStatus.hvpsCurrentFault && ! PrevXmitStatus.hvpsCurrentFault) {
+//        WLOG << "HVPS current fault";
+//        HvpsCurrentFaultCount++;
+//        HvpsCurrentFaultTime = now;
+//    }
+//    if (XmitStatus.waveguidePressureFault && ! PrevXmitStatus.waveguidePressureFault) {
+//        WLOG << "Waveguide pressure fault";
+//        WaveguidePressureFaultFaultCount++;
+//        WaveguidePressureFaultFaultTime = now;
+//    }
+//    if (XmitStatus.hvpsUnderVoltage && ! PrevXmitStatus.hvpsUnderVoltage) {
+//        WLOG << "HVPS under-voltage fault";
+//        HvpsUnderVoltageCount++;
+//        HvpsUnderVoltageTime = now;
+//    }
+//    if (XmitStatus.hvpsOverVoltage && ! PrevXmitStatus.hvpsOverVoltage) {
+//        WLOG << "HVPS over-voltage fault";
+//        HvpsOverVoltagetCount++;
+//        HvpsOverVoltagetTime = now;
+//    }
     
     // Unpack the status from the transmitter into our XML-RPC StatusDict
     StatusDict["serial_connected"] = XmlRpcValue(XmitStatus.serialConnected);
     StatusDict["fault_summary"] = XmlRpcValue(XmitStatus.faultSummary);
-    StatusDict["hvps_runup"] = XmlRpcValue(XmitStatus.hvpsRunup);
-    StatusDict["standby"] = XmlRpcValue(XmitStatus.standby);
-    StatusDict["heater_warmup"] = XmlRpcValue(XmitStatus.heaterWarmup);
-    StatusDict["cooldown"] = XmlRpcValue(XmitStatus.cooldown);
-    StatusDict["unit_on"] = XmlRpcValue(XmitStatus.unitOn);
-    StatusDict["magnetron_current_fault"] = 
-            XmlRpcValue(XmitStatus.magnetronCurrentFault);
-    StatusDict["blower_fault"] = XmlRpcValue(XmitStatus.blowerFault);
-    StatusDict["hvps_on"] = XmlRpcValue(XmitStatus.hvpsOn);
-    StatusDict["remote_enabled"] = XmlRpcValue(XmitStatus.remoteEnabled);
-    StatusDict["safety_interlock"] = XmlRpcValue(XmitStatus.safetyInterlock);
-    StatusDict["reverse_power_fault"] = XmlRpcValue(XmitStatus.reversePowerFault);
-    StatusDict["pulse_input_fault"] = XmlRpcValue(XmitStatus.pulseInputFault);
-    StatusDict["hvps_current_fault"] = XmlRpcValue(XmitStatus.hvpsCurrentFault);
-    StatusDict["waveguide_pressure_fault"] = 
-            XmlRpcValue(XmitStatus.waveguidePressureFault);
-    StatusDict["hvps_under_voltage"] = XmlRpcValue(XmitStatus.hvpsUnderVoltage);
-    StatusDict["hvps_over_voltage"] = XmlRpcValue(XmitStatus.hvpsOverVoltage);
-    StatusDict["hvps_voltage"] = XmlRpcValue(XmitStatus.hvpsVoltage);
-    StatusDict["magnetron_current"] = XmlRpcValue(XmitStatus.magnetronCurrent);
-    StatusDict["hvps_current"] = XmlRpcValue(XmitStatus.hvpsCurrent);
-    StatusDict["temperature"] = XmlRpcValue(XmitStatus.temperature);
+//    StatusDict["hvps_runup"] = XmlRpcValue(XmitStatus.hvpsRunup);
+//    StatusDict["standby"] = XmlRpcValue(XmitStatus.standby);
+//    StatusDict["heater_warmup"] = XmlRpcValue(XmitStatus.heaterWarmup);
+//    StatusDict["cooldown"] = XmlRpcValue(XmitStatus.cooldown);
+//    StatusDict["unit_on"] = XmlRpcValue(XmitStatus.unitOn);
+//    StatusDict["magnetron_current_fault"] = 
+//            XmlRpcValue(XmitStatus.magnetronCurrentFault);
+//    StatusDict["blower_fault"] = XmlRpcValue(XmitStatus.blowerFault);
+//    StatusDict["hvps_on"] = XmlRpcValue(XmitStatus.hvpsOn);
+//    StatusDict["remote_enabled"] = XmlRpcValue(XmitStatus.remoteEnabled);
+//    StatusDict["safety_interlock"] = XmlRpcValue(XmitStatus.safetyInterlock);
+//    StatusDict["reverse_power_fault"] = XmlRpcValue(XmitStatus.reversePowerFault);
+//    StatusDict["pulse_input_fault"] = XmlRpcValue(XmitStatus.pulseInputFault);
+//    StatusDict["hvps_current_fault"] = XmlRpcValue(XmitStatus.hvpsCurrentFault);
+//    StatusDict["waveguide_pressure_fault"] = 
+//            XmlRpcValue(XmitStatus.waveguidePressureFault);
+//    StatusDict["hvps_under_voltage"] = XmlRpcValue(XmitStatus.hvpsUnderVoltage);
+//    StatusDict["hvps_over_voltage"] = XmlRpcValue(XmitStatus.hvpsOverVoltage);
+//    StatusDict["hvps_voltage"] = XmlRpcValue(XmitStatus.hvpsVoltage);
+//    StatusDict["magnetron_current"] = XmlRpcValue(XmitStatus.magnetronCurrent);
+//    StatusDict["hvps_current"] = XmlRpcValue(XmitStatus.hvpsCurrent);
+//    StatusDict["temperature"] = XmlRpcValue(XmitStatus.temperature);
     
     // And add our fault history counts
     StatusDict["auto_pulse_fault_resets"] = XmlRpcValue(AutoResetCount);
@@ -534,7 +534,7 @@ updateStatus() {
     StatusDict["hvps_over_voltage_time"] = XmlRpcValue(int(HvpsOverVoltagetTime));
     
     // If we're operating (hvps_runup is true), update LastOperateTime to now
-    if (XmitStatus.hvpsRunup)
+    if (XmitStatus.rfOn)
         LastOperateTime = time(0);
 }
 
@@ -609,7 +609,7 @@ handlePulseInputFault() {
             usleep(100000);
             updateStatus();
             // Exit the loop if the transmitter is now operating
-            if (XmitStatus.hvpsRunup) {
+            if (XmitStatus.rfOn) {
                 ILOG << "Succeeded after " << tries + 1 << " tries";
                 break;
             }
@@ -775,9 +775,9 @@ main(int argc, char *argv[]) {
         // Get current transmitter status
         updateStatus();
         
-        // If we got a pulse input fault, try to handle it
-        if (XmitStatus.pulseInputFault)
-            handlePulseInputFault();
+//        // If we got a pulse input fault, try to handle it
+//        if (XmitStatus.pulseInputFault)
+//            handlePulseInputFault();
         
         // Listen for XML-RPC commands.
         // Note that work() mostly goes for 2x the given time, but sometimes
