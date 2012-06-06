@@ -9,6 +9,7 @@
 #define HCRXMITTER_H_
 
 #include <string>
+#include <stdint.h>
 
 struct HcrXmitStatus {
     bool serialConnected;
@@ -134,7 +135,7 @@ private:
     /**
      * Send a command to the transmitter.
      */
-    void _sendCommand(std::string cmd);
+    void _sendCommand(uint8_t desiredState);
     
     /**
      * Is the argument string (command or reply) valid?
@@ -171,6 +172,10 @@ private:
     
     // Are we simulating?
     bool _simulate;
+    
+    // Counter which is incremented every time we send a command to the
+    // transmitter.
+    uint8_t _aliveCounter;
     
     // Keep a local status struct to use when simulating.
     HcrXmitStatus _simStatus;

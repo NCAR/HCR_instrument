@@ -192,8 +192,8 @@ HcrXmitter::getStatus(unsigned int recursion) {
     // Try up to five times so send a status command and wait for *something*
     // to come back
     for (int attempt = 0; ; attempt++) {
-        // Send the status command
-        _sendCommand(_STATUS_COMMAND);
+        // Send the currently desired state to elicit a status response
+        _sendCommand(0);
     
         // Wait up to a quarter second for reply to be ready
         if (_readSelect(250) == 0) {
@@ -360,27 +360,48 @@ HcrXmitter::_clearStatus(HcrXmitStatus & status) {
 }
 
 void
-HcrXmitter::_sendCommand(std::string cmd) {
+HcrXmitter::_sendCommand(uint8_t desiredState) {
     if (_simulate)
         return;
     
-    // Sanity check on command
-    if (! _argValid(cmd)) {
-        abort();
+//    // Sanity check on command
+//    if (! _argValid(cmd)) {
+//        abort();
+//    }
+    
+    // Build the actual command containing the desired state
+    std::vector<uint8_t> cmd;
+    cmd.push_back(uint8_t(0xf0));   // command start byte
+    cmd.push_back(6);               // byte count (without start and end)
+    cmd.push_back(_aliveCounter++); // alive counter
+    cmd.push_back(desiredState);    // transmitter state
+    cmd.push_back(0);
+    cmd.push_back(0);
+  
+    // Checksum is XOR of bytes 1-5 of the command
+    int8_t chksum = 0;
+    for (int i = 1; i < 6; i++) {
+        chksum ^= cmd[i];
     }
+    
+    cmd.push_back(chksum);          // checksum
+    cmd.push_back(uint8_t(0xff));   // end byte
     
     // Try up to five times to send all of the chars out
     int nSent = 0;
-    int nToSend = cmd.length();
+    int nToSend = cmd.size();
+    WLOG << "Sending " << nToSend << " bytes with chksum " << chksum;
     for (int attempt = 0; attempt < 5; attempt++) {
         if (attempt > 0) {
             ILOG << __PRETTY_FUNCTION__ << ": Attempt " << attempt + 1 << 
-                    " to send '" << cmd[1] << "' command.";
+                    " to send xmitter state 0x" << std::hex << cmd[3] << 
+                    std::dec;
         }
-        int result = write(_fd, cmd.c_str() + nSent, nToSend);
+        int result = write(_fd, cmd.data() + nSent, nToSend);
         if (result == -1) {
             WLOG << __PRETTY_FUNCTION__ << ": Error (" << strerror(errno) <<
-                    ") sending '" << cmd[1] << "' command.";
+                    ") sending xmitter state 0x" << std::hex << cmd[3] << 
+                    std::dec;
         } else {
             nToSend -= result;
             nSent += result;
@@ -391,49 +412,50 @@ HcrXmitter::_sendCommand(std::string cmd) {
     }
     // Exit if we fail to get the command through after many attempts...
     ELOG << __PRETTY_FUNCTION__ << ": Repeated Errors (" << strerror(errno) <<
-                    ") sending '" << cmd[1] << "' command - exiting.";
+                    ") sending xmitter state 0x" << std::hex << cmd[3] << 
+                    std::dec << ": exiting";
     exit(1);
 }
 
 bool
 HcrXmitter::_argValid(std::string arg) {
-    // Create an external representation of the argument, e.g.,
-    // "0x02 0x57 0x03 0x26". We'll use this for error messages.
-    std::ostringstream ss;
-    ss << std::setfill('0') << std::setw(2) << std::hex;
-    for (unsigned int i = 0; i < arg.length(); i++) {
-        if (i > 0)
-            ss << " ";
-        ss << "0x" << arg[i];
-    }
-    // Arg must be at least 4 characters long
-    if (arg.length() < 4) {
-        
-        DLOG << __PRETTY_FUNCTION__ << ": arg '" << ss.str() << 
-                "' too short; it must be at least 4 characters long";
-        return false;
-    }
-    // First character of arg must be STX
-    if (arg[0] != '\x02') {
-        DLOG << __PRETTY_FUNCTION__ << ": first character of arg '" << 
-                ss.str() << "' is not STX (0x02)";
-        return false;
-    }
-    // Next-to-last character of arg must be ETX
-    if (arg[arg.length() - 2] != '\x03') {
-        DLOG << __PRETTY_FUNCTION__ << ": last character before checksum in" <<
-                " arg '" << ss.str() << "' is not ETX (0x03)";
-    }
-    // Sum of bytes after STX must be zero (in lowest 7 bits)
-    int cksum = 0;
-    for (unsigned int i = 1; i < arg.length(); i++) {
-        cksum += arg[i];
-    }
-    if ((cksum & 0x7f) != 0) {
-        DLOG << __PRETTY_FUNCTION__ << ": bad checksum in arg '" << ss.str() <<
-                "'";
-        return false; 
-    }
+//    // Create an external representation of the argument, e.g.,
+//    // "0x02 0x57 0x03 0x26". We'll use this for error messages.
+//    std::ostringstream ss;
+//    ss << std::setfill('0') << std::setw(2) << std::hex;
+//    for (unsigned int i = 0; i < arg.length(); i++) {
+//        if (i > 0)
+//            ss << " ";
+//        ss << "0x" << arg[i];
+//    }
+//    // Arg must be at least 4 characters long
+//    if (arg.length() < 4) {
+//        
+//        DLOG << __PRETTY_FUNCTION__ << ": arg '" << ss.str() << 
+//                "' too short; it must be at least 4 characters long";
+//        return false;
+//    }
+//    // First character of arg must be STX
+//    if (arg[0] != '\x02') {
+//        DLOG << __PRETTY_FUNCTION__ << ": first character of arg '" << 
+//                ss.str() << "' is not STX (0x02)";
+//        return false;
+//    }
+//    // Next-to-last character of arg must be ETX
+//    if (arg[arg.length() - 2] != '\x03') {
+//        DLOG << __PRETTY_FUNCTION__ << ": last character before checksum in" <<
+//                " arg '" << ss.str() << "' is not ETX (0x03)";
+//    }
+//    // Sum of bytes after STX must be zero (in lowest 7 bits)
+//    int cksum = 0;
+//    for (unsigned int i = 1; i < arg.length(); i++) {
+//        cksum += arg[i];
+//    }
+//    if ((cksum & 0x7f) != 0) {
+//        DLOG << __PRETTY_FUNCTION__ << ": bad checksum in arg '" << ss.str() <<
+//                "'";
+//        return false; 
+//    }
     // Looks OK!
     return true;
 }
