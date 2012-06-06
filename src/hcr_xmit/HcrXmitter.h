@@ -11,43 +11,6 @@
 #include <string>
 #include <stdint.h>
 
-struct HcrXmitStatus {
-    bool serialConnected;
-
-    bool filamentOn;
-    bool highVoltageOn;
-    bool rfOn;
-    bool modPulseExternal;
-    bool syncPulseExternal;
-    bool filamentDelayActive;
-    bool powerValid;
-    bool faultSummary;
-    bool frontPanelControl;
-    bool rs232Control;
-    bool rdsControl;
-    bool modulatorFault;
-    bool syncFault;
-    bool xmitterTempFault;
-    bool waveguideArcFault;
-    bool collectorCurrentFault;
-    bool bodyCurrentFault;
-    bool filamentLorFault;
-    bool focusElectrodeLorFault;
-    bool cathodeLorFault;
-    bool inverterOverloadFault;
-    bool externalInterlockFault;
-    bool eikInterlockFault;
-    bool badChecksumReceived;
-    
-    double cathodeVoltage;
-    double bodyCurrent;
-    double collectorCurrent;
-    double xmitterTemp;
-    
-    int panelPulsewidth;    // 0-15
-    int panelPrf;           // 0-15
-};
-
 class HcrXmitter {
 public:
     /**
@@ -60,9 +23,60 @@ public:
     virtual ~HcrXmitter();
     
     /**
+     * Control methods: front panel, RS-232, or RDS
+     */
+    typedef enum {
+        FrontPanel = 1,
+        RS232 = 2,
+        RDS = 4
+    } ControlSource;
+            
+    /**
+     * Struct for status information returned by getStatus()
+     */
+    struct Status {
+        bool serialConnected;
+        
+        ControlSource controlSource;
+
+        bool filamentOn;
+        bool highVoltageOn;
+        bool rfOn;
+        bool modPulseExternal;
+        bool syncPulseExternal;
+        bool filamentDelayActive;
+        bool powerValid;
+        bool faultSummary;
+        bool frontPanelControl;
+        bool rs232Control;
+        bool rdsControl;
+        bool modulatorFault;
+        bool syncFault;
+        bool xmitterTempFault;
+        bool waveguideArcFault;
+        bool collectorCurrentFault;
+        bool bodyCurrentFault;
+        bool filamentLorFault;
+        bool focusElectrodeLorFault;
+        bool cathodeLorFault;
+        bool inverterOverloadFault;
+        bool externalInterlockFault;
+        bool eikInterlockFault;
+        bool badChecksumReceived;
+        
+        double cathodeVoltage;
+        double bodyCurrent;
+        double collectorCurrent;
+        double xmitterTemp;
+        
+        int panelPulsewidth;    // 0-15
+        int panelPrf;           // 0-15
+    };
+
+    /**
      * @brief Get current status values from the transmitter.
      */
-    HcrXmitStatus getStatus(unsigned int recursion = 0);
+    Status getStatus(unsigned int recursion = 0);
     
     /**
      * @brief Set filament state.
@@ -125,7 +139,7 @@ public:
      * Device name to use when creating a simulation HcrXmitter.
      */
     static const std::string SIM_DEVICE;
-        
+
 private:
     /**
      * Open and configure our tty connection to the transmitter
@@ -155,7 +169,7 @@ private:
      * Fill a HcrXmitStatus struct with 0.0/false values.
      * @param status the HcrXmitStatus to be cleared
      */
-    void _clearStatus(HcrXmitStatus & status);
+    void _clearStatus(Status & status);
     
     /**
      * Initialize the simulated status struct.
@@ -178,7 +192,7 @@ private:
     uint8_t _aliveCounter;
     
     // Keep a local status struct to use when simulating.
-    HcrXmitStatus _simStatus;
+    Status _simStatus;
     
     // Our serial port device name (may be SIM_DEVICE)
     std::string _ttyDev;

@@ -45,6 +45,7 @@ const std::string HcrXmitter::_STATUS_COMMAND = "\xf0\x06\x00\x00\x00\x00\x06\xf
 
 HcrXmitter::HcrXmitter(std::string ttyDev) :
         _simulate(ttyDev == SIM_DEVICE),
+        _aliveCounter(0),
         _ttyDev(ttyDev),
         _fd(-1) {
     ILOG << "HcrXmitter on device " << ttyDev;
@@ -144,7 +145,7 @@ HcrXmitter::operate() {
 }
 #define MAX_GET_STATUS_TRIES 2
 
-HcrXmitStatus
+HcrXmitter::Status
 HcrXmitter::getStatus(unsigned int recursion) {
 //    // Special handling if we're simulating...
 //    if (_simulate) {
@@ -175,7 +176,7 @@ HcrXmitter::getStatus(unsigned int recursion) {
 //    }
     
     // This must be the real thing, so get status from the transmitter
-    HcrXmitStatus status;
+    Status status;
     _clearStatus(status);
     // don't recurse more than 'N' levels in retries
     if (recursion++ == MAX_GET_STATUS_TRIES) {
@@ -211,8 +212,9 @@ HcrXmitter::getStatus(unsigned int recursion) {
     }
     
     // Read the 20-byte status reply
+    DLOG << "Reading status reply";
     static const int REPLYSIZE = 20;
-    char reply[REPLYSIZE];
+    uint8_t reply[REPLYSIZE];
     int nRead = 0;
     while (nRead < REPLYSIZE) {
         int result = read(_fd, reply + nRead, REPLYSIZE - nRead);
@@ -227,24 +229,25 @@ HcrXmitter::getStatus(unsigned int recursion) {
         }
     }
     
-    // Validate the reply
-    if (! _argValid(std::string(reply, REPLYSIZE))) {
-        WLOG << ": Trying again after bad status reply";
-        return(getStatus(recursion));
-    }
+//    // Validate the reply
+//    if (! _argValid(std::string(reply, REPLYSIZE))) {
+//        WLOG << ": Trying again after bad status reply";
+//        return(getStatus(recursion));
+//    }
     
     // Finally, parse the reply
     status.serialConnected = true;
     
     // 8 bits of boolean status in byte 3
-    status.filamentOn = (reply[3] >> 0) & 0x1;
-    status.highVoltageOn = (reply[3] >> 1) & 0x1;
-    status.rfOn = (reply[3] >> 2) & 0x1;
-    status.modPulseExternal = (reply[3] >> 3) & 0x1;
-    status.syncPulseExternal = (reply[3] >> 4) & 0x1;
-    status.filamentDelayActive = (reply[3] >> 5) & 0x1;
-    status.powerValid = (reply[3] >> 6) & 0x1;
-    status.faultSummary = (reply[3] >> 7) & 0x1;
+    status.filamentOn =             (reply[3] >> 0) & 0x1;
+    status.highVoltageOn =          (reply[3] >> 1) & 0x1;
+    status.rfOn =                   (reply[3] >> 2) & 0x1;
+    status.modPulseExternal =       (reply[3] >> 3) & 0x1;
+    status.syncPulseExternal =      (reply[3] >> 4) & 0x1;
+    status.filamentDelayActive =    (reply[3] >> 5) & 0x1;
+    status.powerValid =             (reply[3] >> 6) & 0x1;
+    status.faultSummary =           (reply[3] >> 7) & 0x1;
+
     DLOG << "filament on " << status.filamentOn <<
             ", HV on " << status.highVoltageOn <<
             ", RF on " << status.rfOn <<
@@ -253,6 +256,67 @@ HcrXmitter::getStatus(unsigned int recursion) {
             ", filament delay active " << status.filamentDelayActive <<
             ", power valid " << status.powerValid <<
             ", fault summary " << status.faultSummary;
+    
+    // Byte 4: Is control currently via front panel, RS-232, or RDS?
+    switch (reply[4]) {
+    case FrontPanel:
+    case RS232:
+    case RDS:
+        status.controlSource = static_cast<ControlSource>(reply[4]);
+        break;
+    default:
+        ELOG << "Uh-oh, bad transmitter control source byte with value 0x" <<
+            std::hex << uint16_t(reply[4]) << std::dec;
+        abort();
+        break;
+    }
+    
+    // 8 fault bits from byte 5
+    status.modulatorFault =         (reply[5] >> 0) & 0x1;
+    status.syncFault =              (reply[5] >> 1) & 0x1;
+    status.xmitterTempFault =       (reply[5] >> 2) & 0x1;
+    status.waveguideArcFault =      (reply[5] >> 3) & 0x1;
+    status.collectorCurrentFault =  (reply[5] >> 4) & 0x1;
+    status.bodyCurrentFault =       (reply[5] >> 5) & 0x1;
+    status.filamentLorFault =       (reply[5] >> 6) & 0x1;
+    status.focusElectrodeLorFault = (reply[5] >> 7) & 0x1;
+    
+    // 4 fault bits from byte 6 (other 4 bits are unused)
+    status.cathodeLorFault =        (reply[6] >> 0) & 0x1;
+    status.inverterOverloadFault =  (reply[6] >> 1) & 0x1;
+    status.externalInterlockFault = (reply[6] >> 2) & 0x1;
+    status.eikInterlockFault    =   (reply[6] >> 3) & 0x1;
+
+    
+    // Bytes 7 and 8 contain whole and fractional cathode voltage
+    status.cathodeVoltage = reply[7] + 0.1 * reply[8];
+    DLOG << "Cathode voltage: " << status.cathodeVoltage;
+    
+    // Bytes 9 and 10 contain whole and fractional body current
+    status.bodyCurrent = reply[9] + 0.1 * reply[10];
+    DLOG << "Body current: " << status.bodyCurrent;
+    
+    // Bytes 11 and 12 contain whole and fractional collector current
+    status.collectorCurrent = reply[11] + 0.1 * reply[12];
+    DLOG << "Collector current: " << status.collectorCurrent;
+    
+    // Bytes 13 and 14 contain whole and fractional transmitter temperature
+    status.xmitterTemp = reply[13] + 0.1 * reply[14];
+    DLOG << "Temp: " << status.xmitterTemp;
+    
+    // Byte 15 contains panel pulsewidth setting (0-15)
+    status.panelPulsewidth = reply[15];
+    
+    // Byte 16 contains panel PRF setting (0-15)
+    status.panelPrf = reply[16];
+    
+    // Byte 17 is 1 if the transmitter received a bad communication, 0 
+    // otherwise
+    if (reply[17]) {
+        ELOG << std::setfill('0') << 
+                "Transmitter received a bad command at alive counter 0x" <<
+                std::setw(2) << std::hex << uint16_t(reply[2]) << std::dec;
+    }
     
 //    // Six used bits in the second status byte
 //    status.magnetronCurrentFault = (reply[2] >> 5) & 0x1;
@@ -355,8 +419,8 @@ HcrXmitter::_openTty() {
 }
 
 void
-HcrXmitter::_clearStatus(HcrXmitStatus & status) {
-    memset(&status, 0, sizeof(HcrXmitStatus));
+HcrXmitter::_clearStatus(Status & status) {
+    memset(&status, 0, sizeof(Status));
 }
 
 void
@@ -378,9 +442,9 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     cmd.push_back(0);
     cmd.push_back(0);
   
-    // Checksum is XOR of bytes 1-5 of the command
-    int8_t chksum = 0;
-    for (int i = 1; i < 6; i++) {
+    // Checksum is XOR of everything after the start byte
+    uint8_t chksum = 0;
+    for (unsigned int i = 1; i < cmd.size(); i++) {
         chksum ^= cmd[i];
     }
     
@@ -390,18 +454,17 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     // Try up to five times to send all of the chars out
     int nSent = 0;
     int nToSend = cmd.size();
-    WLOG << "Sending " << nToSend << " bytes with chksum " << chksum;
     for (int attempt = 0; attempt < 5; attempt++) {
         if (attempt > 0) {
             ILOG << __PRETTY_FUNCTION__ << ": Attempt " << attempt + 1 << 
-                    " to send xmitter state 0x" << std::hex << cmd[3] << 
-                    std::dec;
+                    " to send xmitter state 0x" << 
+                    std::hex << uint16_t(cmd[3]) << std::dec;
         }
         int result = write(_fd, cmd.data() + nSent, nToSend);
         if (result == -1) {
             WLOG << __PRETTY_FUNCTION__ << ": Error (" << strerror(errno) <<
-                    ") sending xmitter state 0x" << std::hex << cmd[3] << 
-                    std::dec;
+                    ") sending xmitter state 0x" << 
+                    std::hex << uint16_t(cmd[3]) << std::dec;
         } else {
             nToSend -= result;
             nSent += result;
@@ -412,8 +475,8 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     }
     // Exit if we fail to get the command through after many attempts...
     ELOG << __PRETTY_FUNCTION__ << ": Repeated Errors (" << strerror(errno) <<
-                    ") sending xmitter state 0x" << std::hex << cmd[3] << 
-                    std::dec << ": exiting";
+                    ") sending xmitter state 0x" << 
+                    std::hex << uint16_t(cmd[3]) << std::dec << ": exiting";
     exit(1);
 }
 

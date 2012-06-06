@@ -35,7 +35,7 @@ LOGGING("hcr_xmitd")
 /// Our transmitter
 HcrXmitter *Xmitter = 0;
 /// Current transmitter status
-HcrXmitStatus XmitStatus;
+HcrXmitter::Status XmitStatus;
 
 /// Our RPC server
 using namespace XmlRpc;
@@ -428,7 +428,7 @@ public:
 /// dictionary.
 void
 updateStatus() {
-    static HcrXmitStatus PrevXmitStatus;
+    static HcrXmitter::Status PrevXmitStatus;
     PrevXmitStatus = XmitStatus;
     XmitStatus = Xmitter->getStatus();
     time_t now = time(0);
