@@ -9,6 +9,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <radar/iwrf_functions.hh>
 #include <toolsa/pmu.h>
+#include <toolsa/uusleep.h>
 #include <toolsa/TaXml.hh>
 
 using namespace boost::posix_time;
@@ -459,7 +460,7 @@ int IwrfExport::_sendIwrfMetaData()
 
   // write individual messages for each struct
 
-  if (_sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
+  if (_sock && _sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
     cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
     cerr << "  Writing IWRF_RADAR_INFO" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
@@ -467,7 +468,7 @@ int IwrfExport::_sendIwrfMetaData()
     return -1;
   }
   
-  if (_sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
+  if (_sock && _sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
     cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
     cerr << "  Writing IWRF_TS_PROCESSING" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
@@ -475,7 +476,7 @@ int IwrfExport::_sendIwrfMetaData()
     return -1;
   }
   
-  if (_sock->writeBuffer(&_calib, sizeof(_calib))) {
+  if (_sock && _sock->writeBuffer(&_calib, sizeof(_calib))) {
     cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
     cerr << "  Writing IWRF_CALIBRATION" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
@@ -569,7 +570,7 @@ void IwrfExport::_assembleIwrfPulsePacket()
 int IwrfExport::_sendIwrfPulsePacket()
 {
 
-  if (_sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
+  if (_sock && _sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
     cerr << "ERROR - IwrfExport::_sendIwrfPulsePacket()" << endl;
     cerr << "  Writing pulse packet" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
@@ -785,7 +786,7 @@ int IwrfExport::_sendIwrfStatusXmlPacket()
 
 {
 
-  if (_sock->writeBuffer(_statusBuf, _statusMsgLen)) {
+  if (_sock && _sock->writeBuffer(_statusBuf, _statusMsgLen)) {
     cerr << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()" << endl;
     cerr << "  Writing status xml packet" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
@@ -828,6 +829,7 @@ int IwrfExport::_openServer()
     cerr << "ERROR - IwrfExport::_openServer" << endl;
     cerr << "  Cannot open server, port: " << _iwrfServerTcpPort << endl;
     cerr << "  " << _server.getErrStr() << endl;
+    umsleep(1000);
     return -1;
   }
 
