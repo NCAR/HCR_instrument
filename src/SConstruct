@@ -23,6 +23,7 @@ svnInfo = env.SvnInfo('svnInfo.h', '#')
 
 SConscript("acex/SConscript")
 SConscript("rtfcommon/SConscript")
+SConscript("hcr_xmit/SConscript")
 SConscript("hcrbscan/SConscript")
 SConscript("hcrdrx/SConscript")
 SConscript("hcrscope/SConscript")
