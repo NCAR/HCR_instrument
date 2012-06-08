@@ -26,8 +26,11 @@ public:
      * Control methods: front panel, RS-232, or RDS
      */
     typedef enum {
+        /// @brief front panel control selected
         FrontPanel = 1,
+        /// @brief RS-232 control selected
         RS232 = 2,
+        /// @brief RDS control selected
         RDS = 4
     } ControlSource;
             
@@ -35,42 +38,76 @@ public:
      * Struct for status information returned by getStatus()
      */
     struct Status {
+        /// Is the serial line connected?
         bool serialConnected;
-        
+
+        /// Which control source is selected on the front panel?
         ControlSource controlSource;
 
+        /// EIK filament on?
         bool filamentOn;
+        /// High voltage on?
         bool highVoltageOn;
+        /// RF on?
         bool rfOn;
+        /// Is external modulation pulse selected?
         bool modPulseExternal;
+        /// Is external sync pulse selected?
         bool syncPulseExternal;
+        /**
+         * @brief Is the EIK filament delay active? I.e., is the filament not
+         * yet warm?
+         * 
+         * This will be true until the filament has been turned on for at least
+         * 150 seconds. High voltage cannot be applied until the delay is no
+         * longer active.
+         */
         bool filamentDelayActive;
+        /// Is power valid?
         bool powerValid;
+        /// This is true if any fault is currently active.
         bool faultSummary;
-        bool frontPanelControl;
-        bool rs232Control;
-        bool rdsControl;
+        /// Is there a modulator fault?
         bool modulatorFault;
+        /// Is there a sync fault?
         bool syncFault;
+        /// Is there a transmitter temperature fault?
         bool xmitterTempFault;
+        /// Is there a waveguide arc fault?
         bool waveguideArcFault;
+        /// Is there a collector current fault?
         bool collectorCurrentFault;
+        /// Is there a body current fault?
         bool bodyCurrentFault;
+        /// Is there a filament "loss of reference" fault?
         bool filamentLorFault;
+        /// Is there a focus electrode "loss of reference" fault?
         bool focusElectrodeLorFault;
+        /// Is there a cathode "loss of reference" fault?
         bool cathodeLorFault;
+        /// Is there an inverter overload fault?
         bool inverterOverloadFault;
+        /// Is there an external interlock fault?
         bool externalInterlockFault;
+        /// Is there an EIK interlock fault?
         bool eikInterlockFault;
+        /// Was there a bad checksum on the last communication to the 
+        /// transmitter?
         bool badChecksumReceived;
         
+        /// Cathode voltage, kV
         double cathodeVoltage;
+        /// Body current, mA
         double bodyCurrent;
+        /// Collector current, mA
         double collectorCurrent;
+        /// Transmitter temperature, °C
         double xmitterTemp;
         
-        int panelPulsewidth;    // 0-15
-        int panelPrf;           // 0-15
+        /// Front panel pulsewidth selector value (0-15)
+        uint16_t pulsewidthSelector;
+        /// Front panel PRF selector value (0-15)
+        uint16_t prfSelector;
     };
 
     /**

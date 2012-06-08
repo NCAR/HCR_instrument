@@ -55,26 +55,32 @@ bool DoAutoFaultReset = true;
 int AutoResetCount = 0;
 
 // Fault counters
-int MagnetronCurrentFaultCount = 0;
-int BlowerFaultCount = 0;
-int SafetyInterlockFaultCount = 0;
-int ReversePowerFaultCount = 0;
-int PulseInputFaultCount = 0;
-int HvpsCurrentFaultCount = 0;
-int WaveguidePressureFaultFaultCount = 0;
-int HvpsUnderVoltageCount = 0;
-int HvpsOverVoltagetCount = 0;
+int ModulatorFaultCount = 0;
+int SyncFaultCount = 0;
+int XmitterTempFaultCount = 0;
+int WgArcFaultCount = 0;
+int CollectorCurrFaultCount = 0;
+int BodyCurrFaultCount = 0;
+int FilamentLorFaultCount = 0;
+int FocusElectrodeLorFaultCount = 0;
+int CathodeLorFaultCount = 0;
+int InverterOverloadFaultCount = 0;
+int ExtInterlockFaultCount = 0;
+int EikInterlockFaultCount = 0;
 
 // Latest fault times
-time_t MagnetronCurrentFaultTime = -1;
-time_t BlowerFaultTime = -1;
-time_t SafetyInterlockFaultTime = -1;
-time_t ReversePowerFaultTime = -1;
-time_t PulseInputFaultTime = -1;
-time_t HvpsCurrentFaultTime = -1;
-time_t WaveguidePressureFaultFaultTime = -1;
-time_t HvpsUnderVoltageTime = -1;
-time_t HvpsOverVoltagetTime = -1;
+time_t ModulatorFaultTime = -1;
+time_t SyncFaultTime = -1;
+time_t XmitterTempFaultTime = -1;
+time_t WgArcFaultTime = -1;
+time_t CollectorCurrFaultTime = -1;
+time_t BodyCurrFaultTime = -1;
+time_t FilamentLorFaultTime = -1;
+time_t FocusElectrodeLorFaultTime = -1;
+time_t CathodeLorFaultTime = -1;
+time_t InverterOverloadFaultTime = -1;
+time_t ExtInterlockFaultTime = -1;
+time_t EikInterlockFaultTime = -1;
 
 // log4cpp Appender which keeps around the 50 most recent log messages. 
 logx::RecentHistoryAppender RecentLogHistory("RecentHistoryAppender", 50);
@@ -92,226 +98,295 @@ std::string InstanceName = "";
 std::string HcrdrxHost = "localhost";
 int HcrdrxPort = 8081;
 
-/// Xmlrpc++ method to get transmitter status from hcr_xmitd. The method
-/// returns a XmlRpc::XmlRpcValue struct (dictionary) mapping std::string keys 
-/// to XmlRpc::XmlRpcValue values. The dictionary will contain:
-/// <table border>
-///   <tr>
-///     <td><b>key</b></td>
-///     <td><b>value type</b></td>
-///     <td><b>value</b></td>
-///   </tr>
-///   <tr>
-///     <td>fault_summary</td>
-///     <td>bool</td>
-///     <td>true iff any system fault bits are currently set</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_runup</td>
-///     <td>bool</td>
-///     <td>true if the HV voltage power supply has been commanded ON</td>
-///   </tr>
-///   <tr>
-///     <td>standby</td>
-///     <td>bool</td>
-///     <td>transmitter ready for HV on</td>
-///   </tr>
-///   <tr>
-///     <td>heater_warmup</td>
-///     <td>bool</td>
-///     <td>heater 30-minute warmup is in progress</td>
-///   </tr>
-///   <tr>
-///     <td>cooldown</td>
-///     <td>bool</td>
-///     <td>3-minute transmitter cooldown is in progress</td>
-///   </tr>
-///   <tr>
-///     <td>unit_on</td>
-///     <td>bool</td>
-///     <td>indicates transmitter contactor energized and unit not in cooldown</td>
-///   </tr>
-///   <tr>
-///     <td>magnetron_current_fault</td>
-///     <td>bool</td>
-///     <td>magnetron over-current detected</td>
-///   </tr>
-///   <tr>
-///     <td>blower_fault</td>
-///     <td>bool</td>
-///     <td>the blower speed detector indicates that blower is stopped</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_on</td>
-///     <td>bool</td>
-///     <td>high voltage is on</td>
-///   </tr>
-///   <tr>
-///     <td>remote_enabled</td>
-///     <td>bool</td>
-///     <td>the unit is ready to accept remote commands</td>
-///   </tr>
-///   <tr>
-///     <td>safety_interlock</td>
-///     <td>bool</td>
-///     <td>power transmitter door/cover is open</td>
-///   </tr>
-///   <tr>
-///     <td>reverse_power_fault</td>
-///     <td>bool</td>
-///     <td>VSWR greater than 2:1 load mismatch</td>
-///   </tr>
-///   <tr>
-///     <td>pulse_input_fault</td>
-///     <td>bool</td>
-///     <td>the transmitter input pulse has exceeded the duty cycle or PRF limits</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_current_fault</td>
-///     <td>bool</td>
-///     <td>HVPS protection has detected over-current</td>
-///   </tr>
-///   <tr>
-///     <td>waveguide_pressure_fault</td>
-///     <td>bool</td>
-///     <td>waveguide pressure is detected low</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_under_voltage</td>
-///     <td>bool</td>
-///     <td>HVPS voltage is too low</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_over_voltage</td>
-///     <td>bool</td>
-///     <td>HVPS voltage is too high</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_voltage</td>
-///     <td>double</td>
-///     <td>HVPS potential, kV</td>
-///   </tr>
-///   <tr>
-///     <td>magnetron_current</td>
-///     <td>double</td>
-///     <td>average magnetron current, mA</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_current</td>
-///     <td>double</td>
-///     <td>HVPS current, mA</td>
-///   </tr>
-///   <tr>
-///     <td>auto_pulse_fault_resets</td>
-///     <td>int</td>
-///     <td>count of pulse input faults which have been automatically reset since startup</td>
-///   </tr>
-///   <tr>
-///     <td>magnetron_current_fault_count</td>
-///     <td>int</td>
-///     <td>count of magnetron current faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>blower_fault_count</td>
-///     <td>int</td>
-///     <td>count of blower faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>safety_interlock_count</td>
-///     <td>int</td>
-///     <td>count of safety interlock faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>reverse_power_fault_count</td>
-///     <td>int</td>
-///     <td>count of reverse power faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>pulse_input_fault_count</td>
-///     <td>int</td>
-///     <td>count of pulse input faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_current_fault_count</td>
-///     <td>int</td>
-///     <td>count of HVPS current faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>waveguide_pressure_fault_count</td>
-///     <td>int</td>
-///     <td>count of waveguide pressure faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_under_voltage_count</td>
-///     <td>int</td>
-///     <td>count of HVPS under-voltage faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_over_voltage_count</td>
-///     <td>int</td>
-///     <td>count of HVPS over-voltage faults since startup</td>
-///   </tr>
-///   <tr>
-///     <td>magnetron_current_fault_time</td>
-///     <td>int</td>
-///     <td>Unix time of last magnetron current fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>blower_fault_time</td>
-///     <td>int</td>
-///     <td>Unix time of last blower fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>safety_interlock_time</td>
-///     <td>int</td>
-///     <td>Unix time of last safety interlock fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>reverse_power_fault_time</td>
-///     <td>int</td>
-///     <td>Unix time of last reverse power fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>pulse_input_fault_time</td>
-///     <td>int</td>
-///     <td>Unix time of last pulse input fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_current_fault_time</td>
-///     <td>int</td>
-///     <td>Unix time of last HVPS current fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>waveguide_pressure_fault_time</td>
-///     <td>int</td>
-///     <td>Unix time of last waveguide pressure fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_under_voltage_time</td>
-///     <td>int</td>
-///     <td>Unix time of last HVPS under-voltage fault seen</td>
-///   </tr>
-///   <tr>
-///     <td>hvps_over_voltage_time</td>
-///     <td>int</td>
-///     <td>Unix time of last HVPS over-voltage fault seen</td>
-///   </tr>
-/// </table>
-/// Example client usage, where hcr_xmitd is running on machine `xmitserver`:
-/// @code
-///     #include <XmlRpc.h>
-///     ...
-///
-///     // Get the transmitter status from hcr_xmitd on xmitserver.local.net on port 8080
-///     XmlRpc::XmlRpcClient client("xmitserver.local.net", 8080);
-///     const XmlRpc::XmlRpcValue nullParams;
-///     XmlRpc::XmlRpcValue statusDict;
-///     client.execute("getStatus", nullParams, statusDict);
-///
-///     // extract a couple of values from the dictionary
-///     bool hvpsOn = bool(statusDict["hvps_on"]));
-///     double hvpsCurrent = double(statusDict["hvps_current"]));
-/// @endcode
+/**
+ * @brief Xmlrpc++ method to get transmitter status from hcr_xmitd. 
+ *
+ * The method returns a XmlRpc::XmlRpcValue struct (dictionary) mapping 
+ * std::string keys to XmlRpc::XmlRpcValue values. The dictionary will 
+ * contain:
+ * <table border>
+ *   <tr>
+ *     <td><b>key</b></td>
+ *     <td><b>value type</b></td>
+ *     <td><b>value</b></td>
+ *   </tr>
+ *   <tr>
+ *     <td>serial_connected</td>
+ *     <td>bool</td>
+ *     <td>Is the transmitter serial port connected and responding?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>filament_on</td>
+ *     <td>bool</td>
+ *     <td>EIK filament on?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>high_voltage_on</td>
+ *     <td>bool</td>
+ *     <td>High voltage on?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rf_on</td>
+ *     <td>bool</td>
+ *     <td>RF on?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>mod_pulse_external</td>
+ *     <td>bool</td>
+ *     <td>Is external modulation pulse selected?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>sync_pulse_external</td>
+ *     <td>bool</td>
+ *     <td>Is external sync pulse selected?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>filament_delay_active</td>
+ *     <td>bool</td>
+ *     <td>Is the EIK filament delay active? I.e., is the filament not yet warm?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>power_valid</td>
+ *     <td>bool</td>
+ *     <td>Is power valid?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>fault_summary</td>
+ *     <td>bool</td>
+ *     <td>This is true if any fault is currently active.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>front_panel_control_enabled</td>
+ *     <td>bool</td>
+ *     <td>Is control via the front panel enabled?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rs232_control_enabled</td>
+ *     <td>bool</td>
+ *     <td>Is control via the RS-232 serial port enabled?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rds_control_enabled</td>
+ *     <td>bool</td>
+ *     <td>Is control via the Radar Data System (RDS) enabled?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>modulator_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a modulator fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>sync_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a sync fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>xmitter_temp_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a transmitter temperature fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>waveguide_arc_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a waveguide arc fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>collector_current_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a collector current fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>body_current_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a body current fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>filament_lor_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a filament "loss of reference" fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>focus_electrode_lor_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a focus electrode "loss of reference" fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>cathode_lor_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there a cathode "loss of reference" fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>inverter_overload_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there an inverter overload fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>external_interlock_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there an external interlock fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>eik_interlock_fault</td>
+ *     <td>bool</td>
+ *     <td>Is there an EIK interlock fault?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>cathode_voltage</td>
+ *     <td>double</td>
+ *     <td>cathode voltage, kV</td>
+ *   </tr>
+ *   <tr>
+ *     <td>body_current</td>
+ *     <td>double</td>
+ *     <td>body current, mA</td>
+ *   </tr>
+ *   <tr>
+ *     <td>collector_current</td>
+ *     <td>double</td>
+ *     <td>collector current, mA</td>
+ *   </tr>
+ *   <tr>
+ *     <td>xmitter_temp</td>
+ *     <td>double</td>
+ *     <td>transmitter temperature, °C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>modulator_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of modulator faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>sync_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of sync faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>xmitter_temp_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of transmitter temperature faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>waveguide_arc_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of waveguide arc faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>collector_current_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of collector current faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>body_current_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of body current faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>filament_lor_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of filament "loss of reference" faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>focus_electrode_lor_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of focus electrod "loss of reference" faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>cathode_lor_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of cathode "loss of reference" faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>inverter_overload_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of inverter overload faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>external_interlock_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of external interlock faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>eik_interlock_fault_count</td>
+ *     <td>int</td>
+ *     <td>Count of EIK interlock faults since startup</td>
+ *   </tr>
+ *   <tr>
+ *     <td>modulator_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last modulator fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>sync_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last sync fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>xmitter_temp_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last transmitter temperature fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>waveguide_arc_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last waveguide arc fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>collector_current_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last collector current fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>body_current_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last body current fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>filament_lor_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last filament "loss of reference" fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>focus_electrode_lor_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last focus electrode "loss of reference" fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>cathode_lor_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last cathode "loss of reference" fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>inverter_overload_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last inverter overload fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>external_interlock_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last external interlock fault seen</td>
+ *   </tr>
+ *   <tr>
+ *     <td>eik_interlock_fault_time</td>
+ *     <td>int</td>
+ *     <td>Unix time of last EIK interlock fault seen</td>
+ *   </tr>
+ * </table>
+ * Example client usage, where hcr_xmitd is running on machine `xmitserver`:
+ * @code
+ *     #include <XmlRpc.h>
+ *     ...
+ *
+ *     // Get the transmitter status from hcr_xmitd on xmitserver.local.net on port 8080
+ *     XmlRpc::XmlRpcClient client("xmitserver.local.net", 8080);
+ *     const XmlRpc::XmlRpcValue nullParams;
+ *     XmlRpc::XmlRpcValue statusDict;
+ *     client.execute("getStatus", nullParams, statusDict);
+ *
+ *     // extract a couple of values from the dictionary
+ *     bool filamentOn = bool(statusDict["filament_on"]));
+ *     double cathodeVoltage = double(statusDict["cathode_voltage"]));
+ * @endcode
+ */
 class GetStatusMethod : public XmlRpcServerMethod {
 public:
     GetStatusMethod(XmlRpcServer *s) : XmlRpcServerMethod("getStatus", s) {}
@@ -320,9 +395,11 @@ public:
     }
 } getStatusMethod(&RpcServer);
 
-/// Xmlrpc++ method to turn transmitter on. Note that this merely turns on
-/// power to the transmitter unit, and does not enable the high voltage (i.e.,
-/// actual transmission).
+/**
+ * Xmlrpc++ method to turn transmitter on. Note that this merely turns on
+ * power to the transmitter unit, and does not enable the high voltage (i.e.,
+ * actual transmission).
+ */
 class PowerOnMethod : public XmlRpcServerMethod {
 public:
     PowerOnMethod(XmlRpcServer *s) : XmlRpcServerMethod("powerOn", s) {}
@@ -433,107 +510,129 @@ updateStatus() {
     XmitStatus = Xmitter->getStatus();
     time_t now = time(0);
     
-//    // Increment fault counters
-//    if (XmitStatus.magnetronCurrentFault && ! PrevXmitStatus.magnetronCurrentFault) {
-//        WLOG << "Magnetron current fault";
-//        MagnetronCurrentFaultCount++;
-//        MagnetronCurrentFaultTime = now;
-//    }
-//    if (XmitStatus.blowerFault && ! PrevXmitStatus.blowerFault) {
-//        WLOG << "Blower fault";
-//        BlowerFaultCount++;
-//        BlowerFaultTime = now;
-//    }
-//    if (XmitStatus.safetyInterlock && ! PrevXmitStatus.safetyInterlock) {
-//        WLOG << "Safety interlock fault";
-//        SafetyInterlockFaultCount++;
-//        SafetyInterlockFaultTime = now;
-//    }
-//    if (XmitStatus.reversePowerFault && ! PrevXmitStatus.reversePowerFault) {
-//        WLOG << "Reverse power fault";
-//        ReversePowerFaultCount++;
-//        ReversePowerFaultTime = now;
-//    }
-//    if (XmitStatus.pulseInputFault && ! PrevXmitStatus.pulseInputFault) {
-//        WLOG << "Pulse input fault";
-//        PulseInputFaultCount++;
-//        PulseInputFaultTime = now;
-//    }
-//    if (XmitStatus.hvpsCurrentFault && ! PrevXmitStatus.hvpsCurrentFault) {
-//        WLOG << "HVPS current fault";
-//        HvpsCurrentFaultCount++;
-//        HvpsCurrentFaultTime = now;
-//    }
-//    if (XmitStatus.waveguidePressureFault && ! PrevXmitStatus.waveguidePressureFault) {
-//        WLOG << "Waveguide pressure fault";
-//        WaveguidePressureFaultFaultCount++;
-//        WaveguidePressureFaultFaultTime = now;
-//    }
-//    if (XmitStatus.hvpsUnderVoltage && ! PrevXmitStatus.hvpsUnderVoltage) {
-//        WLOG << "HVPS under-voltage fault";
-//        HvpsUnderVoltageCount++;
-//        HvpsUnderVoltageTime = now;
-//    }
-//    if (XmitStatus.hvpsOverVoltage && ! PrevXmitStatus.hvpsOverVoltage) {
-//        WLOG << "HVPS over-voltage fault";
-//        HvpsOverVoltagetCount++;
-//        HvpsOverVoltagetTime = now;
-//    }
+    // Increment fault counters and latest fault times
+    if (XmitStatus.modulatorFault && ! PrevXmitStatus.modulatorFault) {
+        WLOG << "modulator fault";
+        ModulatorFaultCount++;
+        ModulatorFaultTime = now;
+    }
+    if (XmitStatus.syncFault && ! PrevXmitStatus.syncFault) {
+        WLOG << "sync fault";
+        SyncFaultCount++;
+        SyncFaultTime = now;
+    }
+    if (XmitStatus.xmitterTempFault && ! PrevXmitStatus.xmitterTempFault) {
+        WLOG << "transmitter temperature fault";
+        XmitterTempFaultCount++;
+        XmitterTempFaultTime = now;
+    }
+    if (XmitStatus.waveguideArcFault && ! PrevXmitStatus.waveguideArcFault) {
+        WLOG << "waveguide arc fault";
+        WgArcFaultCount++;
+        WgArcFaultTime = now;
+    }
+    if (XmitStatus.collectorCurrentFault && ! PrevXmitStatus.collectorCurrentFault) {
+        WLOG << "collector current fault";
+        CollectorCurrFaultCount++;
+        CollectorCurrFaultTime = now;
+    }
+    if (XmitStatus.bodyCurrentFault && ! PrevXmitStatus.bodyCurrentFault) {
+        WLOG << "body current fault";
+        BodyCurrFaultCount++;
+        BodyCurrFaultTime = now;
+    }
+    if (XmitStatus.filamentLorFault && ! PrevXmitStatus.filamentLorFault) {
+        WLOG << "filament LOR fault";
+        FilamentLorFaultCount++;
+        FilamentLorFaultTime = now;
+    }
+    if (XmitStatus.focusElectrodeLorFault && ! PrevXmitStatus.focusElectrodeLorFault) {
+        WLOG << "focus electrode LOR fault";
+        FocusElectrodeLorFaultCount++;
+        FocusElectrodeLorFaultTime = now;
+    }
+    if (XmitStatus.cathodeLorFault && ! PrevXmitStatus.cathodeLorFault) {
+        WLOG << "cathode LOR fault";
+        CathodeLorFaultCount++;
+        CathodeLorFaultTime = now;
+    }
+    if (XmitStatus.inverterOverloadFault && ! PrevXmitStatus.inverterOverloadFault) {
+        WLOG << "inverter overload fault";
+        InverterOverloadFaultCount++;
+        InverterOverloadFaultTime = now;
+    }
+    if (XmitStatus.externalInterlockFault && ! PrevXmitStatus.externalInterlockFault) {
+        WLOG << "external interlock fault";
+        ExtInterlockFaultCount++;
+        ExtInterlockFaultTime = now;
+    }
+    if (XmitStatus.eikInterlockFault && ! PrevXmitStatus.eikInterlockFault) {
+        WLOG << "EIK interlock fault";
+        EikInterlockFaultCount++;
+        EikInterlockFaultTime = now;
+    }
     
     // Unpack the status from the transmitter into our XML-RPC StatusDict
     StatusDict["serial_connected"] = XmlRpcValue(XmitStatus.serialConnected);
+    StatusDict["filament_on"] = XmlRpcValue(XmitStatus.filamentOn);
+    StatusDict["high_voltage_on"] = XmlRpcValue(XmitStatus.highVoltageOn);
+    StatusDict["rf_on"] = XmlRpcValue(XmitStatus.rfOn);
+    StatusDict["mod_pulse_external"] = XmlRpcValue(XmitStatus.modPulseExternal);
+    StatusDict["sync_pulse_external"] = XmlRpcValue(XmitStatus.syncPulseExternal);
+    StatusDict["filament_delay_active"] = XmlRpcValue(XmitStatus.filamentDelayActive);
+    StatusDict["power_valid"] = XmlRpcValue(XmitStatus.powerValid);
     StatusDict["fault_summary"] = XmlRpcValue(XmitStatus.faultSummary);
-//    StatusDict["hvps_runup"] = XmlRpcValue(XmitStatus.hvpsRunup);
-//    StatusDict["standby"] = XmlRpcValue(XmitStatus.standby);
-//    StatusDict["heater_warmup"] = XmlRpcValue(XmitStatus.heaterWarmup);
-//    StatusDict["cooldown"] = XmlRpcValue(XmitStatus.cooldown);
-//    StatusDict["unit_on"] = XmlRpcValue(XmitStatus.unitOn);
-//    StatusDict["magnetron_current_fault"] = 
-//            XmlRpcValue(XmitStatus.magnetronCurrentFault);
-//    StatusDict["blower_fault"] = XmlRpcValue(XmitStatus.blowerFault);
-//    StatusDict["hvps_on"] = XmlRpcValue(XmitStatus.hvpsOn);
-//    StatusDict["remote_enabled"] = XmlRpcValue(XmitStatus.remoteEnabled);
-//    StatusDict["safety_interlock"] = XmlRpcValue(XmitStatus.safetyInterlock);
-//    StatusDict["reverse_power_fault"] = XmlRpcValue(XmitStatus.reversePowerFault);
-//    StatusDict["pulse_input_fault"] = XmlRpcValue(XmitStatus.pulseInputFault);
-//    StatusDict["hvps_current_fault"] = XmlRpcValue(XmitStatus.hvpsCurrentFault);
-//    StatusDict["waveguide_pressure_fault"] = 
-//            XmlRpcValue(XmitStatus.waveguidePressureFault);
-//    StatusDict["hvps_under_voltage"] = XmlRpcValue(XmitStatus.hvpsUnderVoltage);
-//    StatusDict["hvps_over_voltage"] = XmlRpcValue(XmitStatus.hvpsOverVoltage);
-//    StatusDict["hvps_voltage"] = XmlRpcValue(XmitStatus.hvpsVoltage);
-//    StatusDict["magnetron_current"] = XmlRpcValue(XmitStatus.magnetronCurrent);
-//    StatusDict["hvps_current"] = XmlRpcValue(XmitStatus.hvpsCurrent);
-//    StatusDict["temperature"] = XmlRpcValue(XmitStatus.temperature);
+    StatusDict["front_panel_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::FrontPanel);
+    StatusDict["rs232_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::RS232);
+    StatusDict["rds_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::RDS);
+    StatusDict["modulator_fault"] = XmlRpcValue(XmitStatus.modulatorFault);
+    StatusDict["sync_fault"] = XmlRpcValue(XmitStatus.syncFault);
+    StatusDict["xmitter_temp_fault"] = XmlRpcValue(XmitStatus.xmitterTempFault);
+    StatusDict["waveguide_arc_fault"] = XmlRpcValue(XmitStatus.waveguideArcFault);
+    StatusDict["collector_current_fault"] = XmlRpcValue(XmitStatus.collectorCurrentFault);
+    StatusDict["body_current_fault"] = XmlRpcValue(XmitStatus.bodyCurrentFault);
+    StatusDict["filament_lor_fault"] = XmlRpcValue(XmitStatus.filamentLorFault);
+    StatusDict["focus_electrode_lor_fault"] = XmlRpcValue(XmitStatus.focusElectrodeLorFault);
+    StatusDict["cathode_lor_fault"] = XmlRpcValue(XmitStatus.cathodeLorFault);
+    StatusDict["inverter_overload_fault"] = XmlRpcValue(XmitStatus.inverterOverloadFault);
+    StatusDict["external_interlock_fault"] = XmlRpcValue(XmitStatus.externalInterlockFault);
+    StatusDict["eik_interlock_fault"] = XmlRpcValue(XmitStatus.eikInterlockFault);
+    StatusDict["cathode_voltage"] = XmlRpcValue(XmitStatus.cathodeVoltage);
+    StatusDict["body_current"] = XmlRpcValue(XmitStatus.bodyCurrent);
+    StatusDict["collector_current"] = XmlRpcValue(XmitStatus.collectorCurrent);
+    StatusDict["xmitter_temp"] = XmlRpcValue(XmitStatus.xmitterTemp);
     
     // And add our fault history counts
-    StatusDict["auto_pulse_fault_resets"] = XmlRpcValue(AutoResetCount);
-    StatusDict["magnetron_current_fault_count"] = 
-            XmlRpcValue(MagnetronCurrentFaultCount);
-    StatusDict["blower_fault_count"] = XmlRpcValue(BlowerFaultCount);
-    StatusDict["safety_interlock_count"] = XmlRpcValue(SafetyInterlockFaultCount);
-    StatusDict["reverse_power_fault_count"] = XmlRpcValue(ReversePowerFaultCount);
-    StatusDict["pulse_input_fault_count"] = XmlRpcValue(PulseInputFaultCount);
-    StatusDict["hvps_current_fault_count"] = XmlRpcValue(HvpsCurrentFaultCount);
-    StatusDict["waveguide_pressure_fault_count"] = 
-            XmlRpcValue(WaveguidePressureFaultFaultCount);
-    StatusDict["hvps_under_voltage_count"] = XmlRpcValue(HvpsUnderVoltageCount);
-    StatusDict["hvps_over_voltage_count"] = XmlRpcValue(HvpsOverVoltagetCount);
+    StatusDict["modulator_fault_count"] = XmlRpcValue(ModulatorFaultCount);
+    StatusDict["sync_fault_count"] = XmlRpcValue(SyncFaultCount);
+    StatusDict["xmitter_temp_fault_count"] = XmlRpcValue(XmitterTempFaultCount);
+    StatusDict["waveguide_arc_fault_count"] = XmlRpcValue(WgArcFaultCount);
+    StatusDict["collector_current_fault_count"] = XmlRpcValue(CollectorCurrFaultCount);
+    StatusDict["body_current_fault_count"] = XmlRpcValue(BodyCurrFaultCount);
+    StatusDict["filament_lor_fault_count"] = XmlRpcValue(FilamentLorFaultCount);
+    StatusDict["focus_electrode_lor_fault_count"] = 
+            XmlRpcValue(FocusElectrodeLorFaultCount);
+    StatusDict["cathode_lor_fault_count"] = XmlRpcValue(CathodeLorFaultCount);
+    StatusDict["inverter_overload_fault_count"] = XmlRpcValue(InverterOverloadFaultCount);
+    StatusDict["external_interlock_fault_count"] = XmlRpcValue(ExtInterlockFaultCount);
+    StatusDict["eik_interlock_fault_count"] = XmlRpcValue(EikInterlockFaultCount);
     
-    // Add latest fault times
-    StatusDict["magnetron_current_fault_time"] = 
-            XmlRpcValue(int(MagnetronCurrentFaultTime));
-    StatusDict["blower_fault_time"] = XmlRpcValue(int(BlowerFaultTime));
-    StatusDict["safety_interlock_time"] = XmlRpcValue(int(SafetyInterlockFaultTime));
-    StatusDict["reverse_power_fault_time"] = XmlRpcValue(int(ReversePowerFaultTime));
-    StatusDict["pulse_input_fault_time"] = XmlRpcValue(int(PulseInputFaultTime));
-    StatusDict["hvps_current_fault_time"] = XmlRpcValue(int(HvpsCurrentFaultTime));
-    StatusDict["waveguide_pressure_fault_time"] = 
-            XmlRpcValue(int(WaveguidePressureFaultFaultTime));
-    StatusDict["hvps_under_voltage_time"] = XmlRpcValue(int(HvpsUnderVoltageTime));
-    StatusDict["hvps_over_voltage_time"] = XmlRpcValue(int(HvpsOverVoltagetTime));
+    // And latest fault times
+    StatusDict["modulator_fault_time"] = XmlRpcValue(int(ModulatorFaultTime));
+    StatusDict["sync_fault_time"] = XmlRpcValue(int(SyncFaultTime));
+    StatusDict["xmitter_temp_fault_time"] = XmlRpcValue(int(XmitterTempFaultTime));
+    StatusDict["waveguide_arc_fault_time"] = XmlRpcValue(int(WgArcFaultTime));
+    StatusDict["collector_current_fault_time"] = XmlRpcValue(int(CollectorCurrFaultTime));
+    StatusDict["body_current_fault_time"] = XmlRpcValue(int(BodyCurrFaultTime));
+    StatusDict["filament_lor_fault_time"] = XmlRpcValue(int(FilamentLorFaultTime));
+    StatusDict["focus_electrode_lor_fault_time"] = 
+            XmlRpcValue(int(FocusElectrodeLorFaultTime));
+    StatusDict["cathode_lor_fault_time"] = XmlRpcValue(int(CathodeLorFaultTime));
+    StatusDict["inverter_overload_fault_time"] = XmlRpcValue(int(InverterOverloadFaultTime));
+    StatusDict["external_interlock_fault_time"] = XmlRpcValue(int(ExtInterlockFaultTime));
+    StatusDict["eik_interlock_fault_time"] = XmlRpcValue(int(EikInterlockFaultTime));
     
-    // If we're operating (hvps_runup is true), update LastOperateTime to now
+    // If we're operating (rfOn is true), update LastOperateTime to now
     if (XmitStatus.rfOn)
         LastOperateTime = time(0);
 }

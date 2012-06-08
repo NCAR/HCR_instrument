@@ -304,11 +304,11 @@ HcrXmitter::getStatus(unsigned int recursion) {
     status.xmitterTemp = reply[13] + 0.1 * reply[14];
     DLOG << "Temp: " << status.xmitterTemp;
     
-    // Byte 15 contains panel pulsewidth setting (0-15)
-    status.panelPulsewidth = reply[15];
+    // Byte 15 contains panel pulsewidth selector setting (0-15)
+    status.pulsewidthSelector = reply[15];
     
-    // Byte 16 contains panel PRF setting (0-15)
-    status.panelPrf = reply[16];
+    // Byte 16 contains panel PRF selector setting (0-15)
+    status.prfSelector = reply[16];
     
     // Byte 17 is 1 if the transmitter received a bad communication, 0 
     // otherwise

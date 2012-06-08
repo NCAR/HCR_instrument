@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>596</width>
+    <width>641</width>
     <height>570</height>
    </rect>
   </property>
@@ -42,12 +42,12 @@
           <number>4</number>
          </property>
          <item>
-          <widget class="QLabel" name="runupLabel">
+          <widget class="QLabel" name="powerValidLabel">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>HVPS Runup</string>
+            <string>Power Valid</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -55,12 +55,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="standbyLabel">
+          <widget class="QLabel" name="filamentOnLabel">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Standby</string>
+            <string>Filament On</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -68,12 +68,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="warmupLabel">
+          <widget class="QLabel" name="filamentDelayLabel">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Warmup</string>
+            <string>Waiting For Filament Warmup</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -81,12 +81,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="cooldownLabel">
+          <widget class="QLabel" name="highVoltageLabel">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Cooldown</string>
+            <string>High Voltage</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -94,25 +94,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="hvpsOnLabel">
+          <widget class="QLabel" name="rfLabel">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>HVPS On</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="remoteEnabledLabel">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Remote Enabled</string>
+            <string>RF</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -129,14 +116,14 @@
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="0" column="0">
-             <widget class="QLabel" name="hvpsVoltageTitle">
+             <widget class="QLabel" name="cathodeVoltageTitle">
               <property name="text">
-               <string>HVPS Voltage </string>
+               <string>Cathode Voltage </string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLabel" name="hvpsVoltageValue">
+             <widget class="QLabel" name="cathodeVoltageValue">
               <property name="text">
                <string>00.0</string>
               </property>
@@ -146,7 +133,7 @@
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QLabel" name="hvpsVoltateUnits">
+             <widget class="QLabel" name="cathodeVoltageUnits">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -159,14 +146,14 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="magCurrentTitle">
+             <widget class="QLabel" name="bodyCurrentTitle">
               <property name="text">
-               <string>Magnetron Avg. Current </string>
+               <string>Body Current </string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLabel" name="magCurrentValue">
+             <widget class="QLabel" name="bodyCurrentValue">
               <property name="text">
                <string>00.0</string>
               </property>
@@ -176,37 +163,7 @@
              </widget>
             </item>
             <item row="1" column="2">
-             <widget class="QLabel" name="magCurrentUnits">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>mA</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="hvpsCurrentTitle">
-              <property name="text">
-               <string>HVPS Current</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLabel" name="hvpsCurrentValue">
-              <property name="text">
-               <string>00.0</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QLabel" name="hvpsCurrentUnits">
+             <widget class="QLabel" name="bodyCurrentUnits">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -219,9 +176,9 @@
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QLabel" name="temperatureValue">
+             <widget class="QLabel" name="xmitterTempValue">
               <property name="text">
-               <string>00</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;00.0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -229,33 +186,97 @@
              </widget>
             </item>
             <item row="3" column="2">
-             <widget class="QLabel" name="temperatureUnits">
+             <widget class="QLabel" name="xmitterTempUnits">
               <property name="text">
-               <string>C</string>
+               <string>°C</string>
               </property>
              </widget>
             </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="temperatureTitle">
+             <widget class="QLabel" name="xmitterTempTitle">
               <property name="text">
-               <string>Temperature</string>
+               <string>Transmitter Temp.</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="autoResetTitle">
+            <item row="2" column="0">
+             <widget class="QLabel" name="collectorCurrentTitle">
               <property name="text">
-               <string>Auto Pulse Fault Resets</string>
+               <string>Collector Current</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
-             <widget class="QLabel" name="autoResetCount">
+            <item row="2" column="1">
+             <widget class="QLabel" name="collectorCurrentValue">
               <property name="text">
-               <string>0</string>
+               <string>00.0</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="collectorCurrentUnits">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>mA</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="controlBox">
+           <property name="title">
+            <string>Control</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="frontPanelLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Front Panel</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="rs232Label">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>RS-232</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="rdsLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>RDS</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -283,8 +304,8 @@
          <property name="margin">
           <number>4</number>
          </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="blowerFaultIcon">
+         <item row="8" column="0">
+          <widget class="QLabel" name="focusElectrodeLorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -295,12 +316,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="blowerFaultLabel">
+         <item row="8" column="1">
+          <widget class="QLabel" name="focusElectrodeLorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -308,7 +329,36 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Blower</string>
+            <string>Focus Electrode LOR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="modulatorFaultIcon">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="modulatorFaultLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Modulator</string>
            </property>
            <property name="indent">
             <number>0</number>
@@ -316,7 +366,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="interlockFaultIcon">
+          <widget class="QLabel" name="syncFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -327,12 +377,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLabel" name="interlockFaultLabel">
+          <widget class="QLabel" name="syncFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -340,12 +390,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Safety Interlock</string>
+            <string>Sync</string>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="revPowerFaultIcon">
+          <widget class="QLabel" name="xmitterTempFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -356,12 +406,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QLabel" name="revPowerFaultLabel">
+          <widget class="QLabel" name="xmitterTempFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -369,12 +419,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Reverse Power</string>
+            <string>Transmitter Temperature</string>
            </property>
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="pulseInputFaultIcon">
+          <widget class="QLabel" name="wgArcFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -385,12 +435,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QLabel" name="pulseInputFaultLabel">
+          <widget class="QLabel" name="wgArcFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -398,12 +448,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Pulse Input</string>
+            <string>Waveguide Arc</string>
            </property>
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QLabel" name="wgPresFaultIcon">
+          <widget class="QLabel" name="collectorCurrFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -414,12 +464,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
          <item row="6" column="0">
-          <widget class="QLabel" name="magCurrFaultIcon">
+          <widget class="QLabel" name="bodyCurrFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -430,25 +480,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QLabel" name="magCurrFaultLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Magnetron Current</string>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
          <item row="7" column="0">
-          <widget class="QLabel" name="hvpsCurrFaultIcon">
+          <widget class="QLabel" name="filamentLorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -459,12 +496,25 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLabel" name="bodyCurrFaultLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Body Current</string>
            </property>
           </widget>
          </item>
          <item row="7" column="1">
-          <widget class="QLabel" name="hvpsCurrFaultLabel">
+          <widget class="QLabel" name="filamentLorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -472,41 +522,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>HVPS Current</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="hvpsUnderVFaultIcon">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="1">
-          <widget class="QLabel" name="hvpsUnderVFaultLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>HVPS Under Voltage</string>
+            <string>Filament LOR</string>
            </property>
           </widget>
          </item>
          <item row="9" column="0">
-          <widget class="QLabel" name="hvpsOverVFaultIcon">
+          <widget class="QLabel" name="cathodeLorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -517,12 +538,12 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
           </widget>
          </item>
          <item row="9" column="1">
-          <widget class="QLabel" name="hvpsOverVFaultLabel">
+          <widget class="QLabel" name="cathodeLorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -530,12 +551,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>HVPS Over Voltage</string>
+            <string>Cathode LOR</string>
            </property>
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="QLabel" name="wgPresFaultLabel">
+          <widget class="QLabel" name="collectorCurrFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -543,12 +564,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Waveguide Pressure</string>
+            <string>Collector Current</string>
            </property>
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLabel" name="blowerFaultCount">
+          <widget class="QLabel" name="modulatorFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -558,7 +579,7 @@
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QLabel" name="interlockFaultCount">
+          <widget class="QLabel" name="syncFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -568,7 +589,7 @@
           </widget>
          </item>
          <item row="3" column="2">
-          <widget class="QLabel" name="revPowerFaultCount">
+          <widget class="QLabel" name="xmitterTempFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -578,7 +599,7 @@
           </widget>
          </item>
          <item row="4" column="2">
-          <widget class="QLabel" name="pulseInputFaultCount">
+          <widget class="QLabel" name="wgArcFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -588,7 +609,7 @@
           </widget>
          </item>
          <item row="5" column="2">
-          <widget class="QLabel" name="wgPresFaultCount">
+          <widget class="QLabel" name="collectorCurrFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -598,7 +619,7 @@
           </widget>
          </item>
          <item row="6" column="2">
-          <widget class="QLabel" name="magCurrFaultCount">
+          <widget class="QLabel" name="bodyCurrFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -626,7 +647,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="7" column="2">
-          <widget class="QLabel" name="hvpsCurrFaultCount">
+          <widget class="QLabel" name="filamentLorFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -636,7 +657,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="8" column="2">
-          <widget class="QLabel" name="hvpsUnderVFaultCount">
+          <widget class="QLabel" name="focusElectrodeLorFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -646,7 +667,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="9" column="2">
-          <widget class="QLabel" name="hvpsOverVFaultCount">
+          <widget class="QLabel" name="cathodeLorFaultCount">
            <property name="text">
             <string>0</string>
            </property>
@@ -674,7 +695,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QLabel" name="blowerFaultTime">
+          <widget class="QLabel" name="modulatorFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -684,7 +705,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QLabel" name="interlockFaultTime">
+          <widget class="QLabel" name="syncFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -694,7 +715,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="3" column="3">
-          <widget class="QLabel" name="revPowerFaultTime">
+          <widget class="QLabel" name="xmitterTempFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -704,7 +725,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="4" column="3">
-          <widget class="QLabel" name="pulseInputFaultTime">
+          <widget class="QLabel" name="wgArcFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -714,7 +735,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="5" column="3">
-          <widget class="QLabel" name="wgPresFaultTime">
+          <widget class="QLabel" name="collectorCurrFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -724,7 +745,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="6" column="3">
-          <widget class="QLabel" name="magCurrFaultTime">
+          <widget class="QLabel" name="bodyCurrFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -734,7 +755,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="7" column="3">
-          <widget class="QLabel" name="hvpsCurrFaultTime">
+          <widget class="QLabel" name="filamentLorFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -744,7 +765,7 @@ COUNT</string>
           </widget>
          </item>
          <item row="8" column="3">
-          <widget class="QLabel" name="hvpsUnderVFaultTime">
+          <widget class="QLabel" name="focusElectrodeLorFaultTime">
            <property name="text">
             <string/>
            </property>
@@ -754,12 +775,114 @@ COUNT</string>
           </widget>
          </item>
          <item row="9" column="3">
-          <widget class="QLabel" name="hvpsOverVFaultTime">
+          <widget class="QLabel" name="cathodeLorFaultTime">
            <property name="text">
             <string/>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="inverterOverloadFaultIcon">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLabel" name="inverterOverloadFaultLabel">
+           <property name="text">
+            <string>Inverter Overload</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="2">
+          <widget class="QLabel" name="inverterOverloadFaultCount">
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="3">
+          <widget class="QLabel" name="inverterOverloadFaultTime">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="QLabel" name="extInterlockFaultLabel">
+           <property name="text">
+            <string>External Interlock</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="extInterlockFaultIcon">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="2">
+          <widget class="QLabel" name="extInterlockFaultCount">
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="3">
+          <widget class="QLabel" name="extInterlockFaultTime">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="eikInterlockFaultIcon">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QLabel" name="eikInterlockFaultLabel">
+           <property name="text">
+            <string>EIK Interlock</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="2">
+          <widget class="QLabel" name="eikInterlockFaultCount">
+           <property name="text">
+            <string>0</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="3">
+          <widget class="QLabel" name="eikInterlockFaultTime">
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
@@ -844,49 +967,7 @@ COUNT</string>
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="KaXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="powerButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="KaXmitCtlMainWindow.qrc">
-          <normaloff>:/powerbutton.png</normaloff>:/powerbutton.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="faultResetButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Fault Reset</string>
+         <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
         </property>
        </widget>
       </item>
@@ -934,7 +1015,7 @@ COUNT</string>
   </action>
  </widget>
  <resources>
-  <include location="KaXmitCtlMainWindow.qrc"/>
+  <include location="HcrXmitCtlMainWindow.qrc"/>
  </resources>
  <connections/>
  <slots>

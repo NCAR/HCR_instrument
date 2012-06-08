@@ -97,103 +97,121 @@ XmitClient::getLogMessages(unsigned int firstIndex, std::string & msgs,
 }
 
 // Default constructor; fill with bad values.
-XmitClient::XmitStatus::XmitStatus() {
-    _serialConnected = false;
-    _faultSummary = false;
-    _hvpsRunup = false;
-    _standby = false;
-    _heaterWarmup = false;
-    _cooldown = false;
-    _unitOn = false;
-    _magnetronCurrentFault = false;
-    _blowerFault = false;
-    _hvpsOn = false;
-    _remoteEnabled = false;
-    _safetyInterlock = false;
-    _reversePowerFault = false;
-    _pulseInputFault = false;
-    _hvpsCurrentFault = false;
-    _waveguidePressureFault = false;
-    _hvpsUnderVoltage = false;
-    _hvpsOverVoltage = false;
-    
-    _magnetronCurrentFaultCount = -1;
-    _blowerFaultCount = -1;
-    _safetyInterlockCount = -1;
-    _reversePowerFaultCount = -1;
-    _pulseInputFaultCount = -1;
-    _hvpsCurrentFaultCount = -1;
-    _waveguidePressureFaultCount = -1;
-    _hvpsUnderVoltageCount = -1;
-    _hvpsOverVoltageCount = -1;
-    _autoPulseFaultResets = -1;
-    
-    _magnetronCurrentFaultTime = -1;
-    _blowerFaultTime = -1;
-    _safetyInterlockTime = -1;
-    _reversePowerFaultTime = -1;
-    _pulseInputFaultTime = -1;
-    _hvpsCurrentFaultTime = -1;
-    _waveguidePressureFaultTime = -1;
-    _hvpsUnderVoltageTime = -1;
-    _hvpsOverVoltageTime = -1;
-    
-    _hvpsVoltage = -9999.9;
-    _magnetronCurrent = -9999.9;
-    _hvpsCurrent = -9999.9;
-    _temperature = -9999.9;
-
+XmitClient::XmitStatus::XmitStatus() :
+        _serialConnected(false),
+        _filamentOn(false),
+        _highVoltageOn(false),
+        _rfOn(false),
+        _modPulseExternal(false),
+        _syncPulseExternal(false),
+        _filamentDelayActive(false),
+        _powerValid(false),
+        _faultSummary(false),
+        _frontPanelCtlEnabled(false),
+        _rs232CtlEnabled(false),
+        _rdsCtlEnabled(false),
+        _modulatorFault(false),
+        _syncFault(false),
+        _xmitterTempFault(false),
+        _wgArcFault(false),
+        _collectorCurrFault(false),
+        _bodyCurrFault(false),
+        _filamentLorFault(false),
+        _focusElectrodeLorFault(false),
+        _cathodeLorFault(false),
+        _inverterOverloadFault(false),
+        _extInterlockFault(false),
+        _eikInterlockFault(false),
+        _modulatorFaultCount(-1),
+        _syncFaultCount(-1),
+        _xmitterTempFaultCount(-1),
+        _wgArcFaultCount(-1),
+        _collectorCurrFaultCount(-1),
+        _bodyCurrFaultCount(-1),
+        _filamentLorFaultCount(-1),
+        _focusElectrodeLorFaultCount(-1),
+        _cathodeLorFaultCount(-1),
+        _inverterOverloadFaultCount(-1),
+        _extInterlockFaultCount(-1),
+        _eikInterlockFaultCount(-1),
+        _modulatorFaultTime(-1),
+        _syncFaultTime(-1),
+        _xmitterTempFaultTime(-1),
+        _wgArcFaultTime(-1),
+        _collectorCurrFaultTime(-1),
+        _bodyCurrFaultTime(-1),
+        _filamentLorFaultTime(-1),
+        _focusElectrodeLorFaultTime(-1),
+        _cathodeLorFaultTime(-1),
+        _inverterOverloadFaultTime(-1),
+        _extInterlockFaultTime(-1),
+        _eikInterlockFaultTime(-1),
+        _cathodeVoltage(-9999.9),
+        _bodyCurrent(-9999.9),
+        _collectorCurrent(-9999.9),
+        _xmitterTemp(-9999.9)
+{
 }
 
 XmitClient::XmitStatus::XmitStatus(XmlRpc::XmlRpcValue & statusDict) {
     // Unpack all of the status values from the XmlRpc::XmlRpcValue dictionary
     // into local member variables
     _serialConnected = _StatusBool(statusDict, "serial_connected");
-    _faultSummary = _StatusBool(statusDict, "fault_summary");
-    _hvpsRunup = _StatusBool(statusDict, "hvps_runup");
-    _standby = _StatusBool(statusDict, "standby");
-    _heaterWarmup = _StatusBool(statusDict, "heater_warmup");
-    _cooldown = _StatusBool(statusDict, "cooldown");
-    _unitOn = _StatusBool(statusDict, "unit_on");
-    _magnetronCurrentFault = _StatusBool(statusDict, "magnetron_current_fault");
-    _blowerFault = _StatusBool(statusDict, "blower_fault");
-    _hvpsOn = _StatusBool(statusDict, "hvps_on");
-    _remoteEnabled = _StatusBool(statusDict, "remote_enabled");
-    _safetyInterlock = _StatusBool(statusDict, "safety_interlock");
-    _reversePowerFault = _StatusBool(statusDict, "reverse_power_fault");
-    _pulseInputFault = _StatusBool(statusDict, "pulse_input_fault");
-    _hvpsCurrentFault = _StatusBool(statusDict, "hvps_current_fault");
-    _waveguidePressureFault = _StatusBool(statusDict, "waveguide_pressure_fault");
-    _hvpsUnderVoltage = _StatusBool(statusDict, "hvps_under_voltage");
-    _hvpsOverVoltage = _StatusBool(statusDict, "hvps_over_voltage");
+    _filamentOn = _StatusBool(statusDict, "filament_on");
+    _highVoltageOn = _StatusBool(statusDict, "high_voltage_on");
+    _rfOn = _StatusBool(statusDict, "rf_on");
+    _modPulseExternal = _StatusBool(statusDict, "mod_pulse_external");
+    _syncPulseExternal = _StatusBool(statusDict, "sync_pulse_external");
+    _filamentDelayActive = _StatusBool(statusDict, "filament_delay_active");
+    _powerValid = _StatusBool(statusDict, "power_valid");
+    _faultSummary = _StatusBool(statusDict, "power_valid");
+    _frontPanelCtlEnabled = _StatusBool(statusDict, "front_panel_control_enabled");
+    _rs232CtlEnabled = _StatusBool(statusDict, "rs232_control_enabled");
+    _rdsCtlEnabled = _StatusBool(statusDict, "rds_control_enabled");
     
-    _magnetronCurrentFaultCount = _StatusInt(statusDict, "magnetron_current_fault_count");
-    _blowerFaultCount = _StatusInt(statusDict, "blower_fault_count");
-    _safetyInterlockCount = _StatusInt(statusDict, "safety_interlock_count");
-    _reversePowerFaultCount = _StatusInt(statusDict, "reverse_power_fault_count");
-    _pulseInputFaultCount = _StatusInt(statusDict, "pulse_input_fault_count");
-    _hvpsCurrentFaultCount = _StatusInt(statusDict, "hvps_current_fault_count");
-    _waveguidePressureFaultCount = _StatusInt(statusDict, "waveguide_pressure_fault_count");
-    _hvpsUnderVoltageCount = _StatusInt(statusDict, "hvps_under_voltage_count");
-    _hvpsOverVoltageCount = _StatusInt(statusDict, "hvps_over_voltage_count");
-
-    _autoPulseFaultResets = _StatusInt(statusDict, "auto_pulse_fault_resets");
+    _modulatorFault = _StatusBool(statusDict, "modulator_fault");
+    _syncFault = _StatusBool(statusDict, "sync_fault");
+    _xmitterTempFault = _StatusBool(statusDict, "xmitter_temp_fault");
+    _wgArcFault = _StatusBool(statusDict, "waveguide_arc_fault");
+    _collectorCurrFault = _StatusBool(statusDict, "collector_current_fault");
+    _bodyCurrFault = _StatusBool(statusDict, "body_current_fault");
+    _filamentLorFault = _StatusBool(statusDict, "filament_lor_fault");
+    _focusElectrodeLorFault = _StatusBool(statusDict, "focus_electrode_lor_fault");
+    _cathodeLorFault = _StatusBool(statusDict, "cathode_lor_fault");
+    _inverterOverloadFault = _StatusBool(statusDict, "inverter_overload_fault");
+    _extInterlockFault = _StatusBool(statusDict, "external_interlock_fault");
+    _eikInterlockFault = _StatusBool(statusDict, "external_interlock_fault");
     
-    _magnetronCurrentFaultTime = _StatusInt(statusDict, "magnetron_current_fault_time");
-    _blowerFaultTime = _StatusInt(statusDict, "blower_fault_time");
-    _safetyInterlockTime = _StatusInt(statusDict, "safety_interlock_time");
-    _reversePowerFaultTime = _StatusInt(statusDict, "reverse_power_fault_time");
-    _pulseInputFaultTime = _StatusInt(statusDict, "pulse_input_fault_time");
-    _hvpsCurrentFaultTime = _StatusInt(statusDict, "hvps_current_fault_time");
-    _waveguidePressureFaultTime = _StatusInt(statusDict, "waveguide_pressure_fault_time");
-    _hvpsUnderVoltageTime = _StatusInt(statusDict, "hvps_under_voltage_time");
-    _hvpsOverVoltageTime = _StatusInt(statusDict, "hvps_over_voltage_time");
-
-    _hvpsVoltage = _StatusDouble(statusDict, "hvps_voltage");
-    _magnetronCurrent = _StatusDouble(statusDict, "magnetron_current");
-    _hvpsCurrent = _StatusDouble(statusDict, "hvps_current");
-    _temperature = _StatusDouble(statusDict, "temperature");
+    _modulatorFaultCount = _StatusInt(statusDict, "modulator_fault_count");
+    _syncFaultCount = _StatusInt(statusDict, "sync_fault_count");
+    _xmitterTempFaultCount = _StatusInt(statusDict, "xmitter_temp_fault_count");
+    _wgArcFaultCount = _StatusInt(statusDict, "waveguide_arc_fault_count");
+    _collectorCurrFaultCount = _StatusInt(statusDict, "collector_current_fault_count");
+    _bodyCurrFaultCount = _StatusInt(statusDict, "body_current_fault_count");
+    _filamentLorFaultCount = _StatusInt(statusDict, "filament_lor_fault_count");
+    _focusElectrodeLorFaultCount = _StatusInt(statusDict, "focus_electrode_lor_fault_count");
+    _cathodeLorFaultCount = _StatusInt(statusDict, "cathode_lor_fault_count");
+    _inverterOverloadFaultCount = _StatusInt(statusDict, "inverter_overload_fault_count");
+    _extInterlockFaultCount = _StatusInt(statusDict, "external_interlock_fault_count");
+    _eikInterlockFaultCount = _StatusInt(statusDict, "eik_interlock_fault_count");
     
+    _modulatorFaultTime = _StatusInt(statusDict, "modulator_fault_time");
+    _syncFaultTime = _StatusInt(statusDict, "sync_fault_time");
+    _xmitterTempFaultTime = _StatusInt(statusDict, "xmitter_temp_fault_time");
+    _wgArcFaultTime = _StatusInt(statusDict, "waveguide_arc_fault_time");
+    _collectorCurrFaultTime = _StatusInt(statusDict, "collector_current_fault_time");
+    _bodyCurrFaultTime = _StatusInt(statusDict, "body_current_fault_time");
+    _filamentLorFaultTime = _StatusInt(statusDict, "filament_lor_fault_time");
+    _focusElectrodeLorFaultTime = _StatusInt(statusDict, "focus_electrode_lor_fault_time");
+    _cathodeLorFaultTime = _StatusInt(statusDict, "cathode_lor_fault_time");
+    _inverterOverloadFaultTime = _StatusInt(statusDict, "inverter_overload_fault_time");
+    _extInterlockFaultTime = _StatusInt(statusDict, "external_interlock_fault_time");
+    _eikInterlockFaultTime = _StatusInt(statusDict, "eik_interlock_fault_time");
+    
+    _cathodeVoltage = _StatusDouble(statusDict, "cathode_voltage");
+    _bodyCurrent = _StatusDouble(statusDict, "body_current");
+    _collectorCurrent = _StatusDouble(statusDict, "collector_current");
+    _xmitterTemp = _StatusDouble(statusDict, "xmitter_temp");
 }
 
 XmitClient::XmitStatus::~XmitStatus() {

@@ -31,12 +31,13 @@ public:
     class XmitStatus {
     public:
         /**
-         * Default constructor creates an instance with all boolean members set to
-         * false, int members set to -1, and double members set to -9999.9.
+         * @brief Default constructor creates an instance with all boolean 
+         * members set to false, int members set to -1, and double members 
+         * set to -9999.9.
          */
         XmitStatus();
         /**
-         * Construct using status values extracted from the given 
+         * @brief Construct using status values extracted from the given 
          * XmlRpc::XmlRpcValue dictionary, which should come from an XML-RPC
          * getStatus() call to hcr_xmitd.
          */
@@ -47,233 +48,307 @@ public:
         virtual ~XmitStatus();
 
         /**
-         * Does hcr_xmitd have a serial connection to the transmitter?
+         * @brief Does hcr_xmitd have a serial connection to the transmitter?
          * @return true iff hcr_xmitd has a serial connection to the transmitter.
          */
         bool serialConnected() const { return(_serialConnected); }
         /**
-         * Is the transmitter reporting any faults?
-         * @return true iff the transmitter is reporting one or more faults
+         * @brief Is the Extended Interaction Klystron (EIK) filament on?
+         * @return true iff the EIK filament is on.
          */
-        bool faultSummary() const { return(_faultSummary); }
+        bool filamentOn() const { return (_filamentOn); }
         /**
-         * Is high-voltage enabled?
-         * @return true iff the HV voltage power supply has been commanded ON.
+         * @brief Is high voltage on?
+         * @return true iff high voltage is on.
          */
-        bool hvpsRunup() const { return(_hvpsRunup); }
+        bool highVoltageOn() const { return (_highVoltageOn); }
         /**
-         * Is the transmitter ready for high voltage to be applied?
-         * @return true iff the transmitter is ready for HV on.
+         * @brief Is RF enabled?
+         * @return true iff RF is enabled.
          */
-        bool standby() const { return(_standby); }
+        bool rfOn() const { return (_rfOn); }
         /**
-         * Is the heater in its 30-minute warmup period?
-         * @return true iff the heater is in its 30-minute warmup period.
+         * @brief Is an external modulator pulse being used?
+         * @return true iff an external modulator pulse is being used.
          */
-        bool heaterWarmup() const { return(_heaterWarmup); }
+        bool modPulseExternal() const { return (_modPulseExternal); }
         /**
-         * Is the transmitter in its 3-minute cooldown period?
-         * @return true iff the transmitter is in its 3-minute cooldown period.
+         * @brief Is an external sync pulse being used?
+         * @return true iff an external sync pulse is being used.
          */
-        bool cooldown() const { return(_cooldown); }
+        bool syncPulseExternal() const { return (_syncPulseExternal); }
         /**
-         * Is transmitter power on?
-         * @return true iff transmitter power is on.
+         * @brief Is filament delay active? Filament delay, disabling 
+         * application of high voltage, is active until filament power has
+         * been applied for 150 seconds or more.
+         * @return true iff filament delay is active.
          */
-        bool unitOn() const { return(_unitOn); }
+        bool filamentDelayActive() const { return (_filamentDelayActive); }
         /**
-         * Magnetron over-current state.
-         * @return true iff magentron over-current is detected.
+         * @brief Is power to the transmitter valid?
+         * @return true iff power to the transmitter is valid.
          */
-        bool magnetronCurrentFault() const { return(_magnetronCurrentFault); }
+        bool powerValid() const { return (_powerValid); }
         /**
-         * Blower fault state.
-         * @return true iff a blower fault is detected.
+         * @brief Is the transmitter reporting any faults?
+         * @return true iff the transmitter is reporting one or more faults.
          */
-        bool blowerFault() const { return(_blowerFault); }
+        bool faultSummary() const { return (_faultSummary); }
         /**
-         * High voltage power supply state.
-         * @return true iff the high voltage is on.
+         * @brief Is control via front panel enabled?
+         * @return true iff control via front panel is enabled.
          */
-        bool hvpsOn() const { return(_hvpsOn); }
+        bool frontPanelCtlEnabled() const { return(_frontPanelCtlEnabled); }
         /**
-         * Remote control state.
-         * @return true iff remote control is enabled.
+         * @brief Is control via the RS-232 interface enabled?
+         * @return true iff control via the RS-232 interface is enabled.
          */
-        bool remoteEnabled() const { return(_remoteEnabled); }
+        bool rs232CtlEnabled() const { return(_rs232CtlEnabled); }
         /**
-         * Safety interlock state.
-         * @return true iff power transmitter door/cover is open.
+         * @brief Is control via RDS enabled?
+         * @return true iff control via RDS is enabled.
          */
-        bool safetyInterlock() const { return(_safetyInterlock); }
+        bool rdsCtlEnabled() const { return(_rdsCtlEnabled); }
+
+        
         /**
-         * Reverse power fault state.
-         * @return true iff VSWR shows greater than 2:1 load mismatch.
+         * @brief Modulator fault state.
+         * @return true iff a modulator fault is detected.
          */
-        bool reversePowerFault() const { return(_reversePowerFault); }
+        bool modulatorFault() const { return (_modulatorFault); }
         /**
-         * Pulse input fault state.
-         * @return true iff the transmitter input pulse has exceeded the duty 
-         * cycle or PRF limits.
+         * @brief Sync fault state.
+         * @return true iff a sync fault is detected.
          */
-        bool pulseInputFault() const { return(_pulseInputFault); }
+        bool syncFault() const { return (_syncFault); }
         /**
-         * HVPS current fault state.
-         * @return true iff HVPS protection has detected over-current.
+         * @brief Transmitter temperature fault state.
+         * @return true iff a transmitter temperature fault is detected.
          */
-        bool hvpsCurrentFault() const { return(_hvpsCurrentFault); }
+        bool xmitterTempFault() const { return (_xmitterTempFault); }
         /**
-         * Waveguide pressure fault state. (This applies to SF6 pressure in
-         * waveguide inside the transmitter)
-         * @return true iff SF6 pressure in the waveguide (within the 
-         * transmitter) is too low.
+         * @brief Waveguide arc fault state.
+         * @return true iff a waveguide arc fault is detected.
          */
-        bool waveguidePressureFault() const { return(_waveguidePressureFault); }
+        bool wgArcFault() const { return (_wgArcFault); }
         /**
-         * HVPS under voltage state.
-         * @return true iff HVPS voltage is too low.
+         * @brief Collector current fault state.
+         * @return true iff a collector current fault is detected.
          */
-        bool hvpsUnderVoltage() const { return(_hvpsUnderVoltage); }
+        bool collectorCurrFault() const { return (_collectorCurrFault); }
         /**
-         * HVPS over voltage state.
-         * @return true iff HVPS voltage is too high.
+         * @brief Body current fault state.
+         * @return true iff a body current fault is detected.
          */
-        bool hvpsOverVoltage() const { return(_hvpsOverVoltage); }
+        bool bodyCurrFault() const { return (_bodyCurrFault); }
         /**
-         * HVPS voltage.
-         * @return HVPS voltage, in kV.
+         * @brief Filament "loss of reference" fault state.
+         * @return true iff a filament "loss of reference" fault is detected.
          */
-        double hvpsVoltage() const { return(_hvpsVoltage); }
+        bool filamentLorFault() const { return (_filamentLorFault); }
         /**
-         * Magnetron current.
-         * @return magnetron current, in mA
+         * @brief Focus electrode "loss of reference" fault state.
+         * @return true iff a focus electrode "loss of reference" fault is detected.
          */
-        double magnetronCurrent() const { return(_magnetronCurrent); }
+        bool focusElectrodeLorFault() const { return (_focusElectrodeLorFault); }
         /**
-         * HVPS current.
-         * @return HVPS current, in mA
+         * @brief Cathode "loss of reference" fault state.
+         * @return true iff a cathode "loss of reference" fault is detected.
          */
-        double hvpsCurrent() const { return(_hvpsCurrent); }
+        bool cathodeLorFault() const { return (_cathodeLorFault); }
         /**
-         * Transmitter temperature.
-         * @return transmitter temperature, in C
+         * @brief Inverter overload fault state.
+         * @return true iff an inverter overload fault is detected.
          */
-        double temperature() const { return(_temperature); }
+        bool inverterOverloadFault() const { return (_inverterOverloadFault); }
+        /**
+         * @brief External interlock fault state.
+         * @return true iff an external interlock fault is detected.
+         */
+        bool extInterlockFault() const { return (_extInterlockFault); }
+        /**
+         * @brief EIK interlock fault state.
+         * @return true iff an EIK interlock fault is detected.
+         */
+        bool eikInterlockFault() const { return (_eikInterlockFault); }
+
+
 
         /**
-         * Number of magnetron current faults since hcr_xmitd startup.
-         * @return the number of magnetron current faults since hcr_xmitd 
-         * startup.
+         * @brief Cathode voltage
+         * @return cathode voltage, in kV
          */
-        int magnetronCurrentFaultCount() const { return(_magnetronCurrentFaultCount); }
+        double cathodeVoltage() const { return (_cathodeVoltage); }
         /**
-         * Number of blower faults since hcr_xmitd startup.
-         * @return the number of blower faults since hcr_xmitd 
-         * startup.
+         * @brief Body current
+         * @return body current, in mA
          */
-        int blowerFaultCount() const { return(_blowerFaultCount); }
+        double bodyCurrent() const { return (_bodyCurrent); }
         /**
-         * Number of safety interlock faults since hcr_xmitd startup.
-         * @return the number of safety interlock faults since hcr_xmitd 
-         * startup.
+         * @brief Collector current
+         * @return collector current, in mA
          */
-        int safetyInterlockCount() const { return(_safetyInterlockCount); }
+        double collectorCurrent() const { return (_collectorCurrent); }
         /**
-         * Number of reverse power faults since hcr_xmitd startup.
-         * @return the number of reverse power faults since hcr_xmitd 
-         * startup.
+         * @brief Transmitter temperature
+         * @return transmitter temperature, in °C
          */
-        int reversePowerFaultCount() const { return(_reversePowerFaultCount); }
+        double xmitterTemperature() const { return (_xmitterTemp); }
+
+
+
         /**
-         * Number of pulse input faults since hcr_xmitd startup.
-         * @return the number of pulse input faults since hcr_xmitd 
-         * startup.
+         * @brief Number of modulator faults since hcr_xmitd startup.
+         * @return the number of modulator faults since hcr_xmitd startup.
          */
-        int pulseInputFaultCount() const { return(_pulseInputFaultCount); }
+        int modulatorFaultCount() const { return (_modulatorFaultCount); }
         /**
-         * Number of HVPS current faults since hcr_xmitd startup.
-         * @return the number of HVPS current faults since hcr_xmitd 
-         * startup.
+         * @brief Number of sync faults since hcr_xmitd startup.
+         * @return the number of sync faults since hcr_xmitd startup.
          */
-        int hvpsCurrentFaultCount() const { return(_hvpsCurrentFaultCount); }
+        int syncFaultCount() const { return (_syncFaultCount); }
         /**
-         * Number of waveguide pressure faults since hcr_xmitd startup.
-         * @return the number of waveguide pressure faults since hcr_xmitd 
+         * @brief Number of transmitter temperature faults since hcr_xmitd 
+         * startup.
+         * @return the number of transmitter temperature faults since hcr_xmitd 
          * startup.
          */
-        int waveguidePressureFaultCount() const { return(_waveguidePressureFaultCount); }
+        int xmitterTempFaultCount() const { return (_xmitterTempFaultCount); }
         /**
-         * Number of HVPS under-voltage faults since hcr_xmitd startup.
-         * @return the number of HVPS under-voltage faults since hcr_xmitd 
-         * startup.
+         * @brief Number of waveguide arc faults since hcr_xmitd startup.
+         * @return the number of waveguide arc faults since hcr_xmitd startup.
          */
-        int hvpsUnderVoltageCount() const { return(_hvpsUnderVoltageCount); }
+        int wgArcFaultCount() const { return (_wgArcFaultCount); }
         /**
-         * Number of HVPS over-voltage faults since hcr_xmitd startup.
-         * @return the number of HVPS over-voltage faults since hcr_xmitd 
-         * startup.
+         * @brief Number of collector current faults since hcr_xmitd startup.
+         * @return the number of collector current faults since hcr_xmitd startup.
          */
-        int hvpsOverVoltageCount() const { return(_hvpsOverVoltageCount); }
+        int collectorCurrFaultCount() const { return (_collectorCurrFaultCount); }
         /**
-         * Unix time of last magnetron current fault since hcr_xmitd startup.
-         * @return the Unix time of the last magnetron current fault since hcr_xmitd 
-         * startup.
+         * @brief Number of body current faults since hcr_xmitd startup.
+         * @return the number of body current faults since hcr_xmitd startup.
          */
-        int magnetronCurrentFaultTime() const { return(_magnetronCurrentFaultTime); }
+        int bodyCurrFaultCount() const { return (_bodyCurrFaultCount); }
         /**
-         * Unix time of last blower fault since hcr_xmitd startup.
-         * @return the Unix time of the last blower fault since hcr_xmitd 
+         * @brief Number of filament "loss of reference" faults since hcr_xmitd 
          * startup.
+         * @return the number of filament "loss of reference" faults since 
+         * hcr_xmitd startup.
          */
-        int blowerFaultTime() const { return(_blowerFaultTime); }
+        int filamentLorFaultCount() const { return (_filamentLorFaultCount); }
         /**
-         * Unix time of last safety interlock fault since hcr_xmitd startup.
-         * @return the Unix time of the last safety interlock fault since hcr_xmitd 
-         * startup.
+         * @brief Number of focus electrode "loss of reference" faults since 
+         * hcr_xmitd startup.
+         * @return the number of focus electrode "loss of reference" faults 
+         * since hcr_xmitd startup.
          */
-        int safetyInterlockTime() const { return(_safetyInterlockTime); }
+        int focusElectrodeLorFaultCount() const { return (_focusElectrodeLorFaultCount); }
         /**
-         * Unix time of last reverse power fault since hcr_xmitd startup.
-         * @return the Unix time of the last reverse power fault since hcr_xmitd 
+         * @brief Number of cathode "loss of reference" faults since hcr_xmitd 
          * startup.
+         * @return the number of cathode "loss of reference" faults since 
+         * hcr_xmitd startup.
          */
-        int reversePowerFaultTime() const { return(_reversePowerFaultTime); }
+        int cathodeLorFaultCount() const { return (_cathodeLorFaultCount); }
         /**
-         * Unix time of last pulse input fault since hcr_xmitd startup.
-         * @return the Unix time of the last pulse input fault since hcr_xmitd 
-         * startup.
+         * @brief Number of inverter overload faults since hcr_xmitd startup.
+         * @return the number of inverter overload faults since hcr_xmitd startup.
          */
-        int pulseInputFaultTime() const { return(_pulseInputFaultTime); }
+        int inverterOverloadFaultCount() const { return (_inverterOverloadFaultCount); }
         /**
-         * Unix time of last HVPS current fault since hcr_xmitd startup.
-         * @return the Unix time of the last HVPS current fault since hcr_xmitd 
+         * @brief Number of external interlock faults since hcr_xmitd startup.
+         * @return the number of external interlock faults since hcr_xmitd 
          * startup.
          */
-        int hvpsCurrentFaultTime() const { return(_hvpsCurrentFaultTime); }
+        int extInterlockFaultCount() const { return (_extInterlockFaultCount); }
         /**
-         * Unix time of last waveguide pressure fault since hcr_xmitd startup.
-         * @return the Unix time of the last waveguide pressure fault since hcr_xmitd 
-         * startup.
+         * @brief Number of EIK interlock faults since hcr_xmitd startup.
+         * @return the number of EIK interlock faults since hcr_xmitd startup.
          */
-        int waveguidePressureFaultTime() const { return(_waveguidePressureFaultTime); }
+        int eikInterlockFaultCount() const { return (_eikInterlockFaultCount); }
+
+
+
         /**
-         * Unix time of last HVPS under-voltage fault since hcr_xmitd startup.
-         * @return the Unix time of the last HVPS under-voltage fault since hcr_xmitd 
+         * Unix time of last modulator fault since hcr_xmitd startup.
+         * @return the Unix time of the last modulator fault since hcr_xmitd 
          * startup.
          */
-        int hvpsUnderVoltageTime() const { return(_hvpsUnderVoltageTime); }
+        time_t modulatorFaultTime() const { return(_modulatorFaultTime); }
         /**
-         * Unix time of last HVPS over-voltage fault since hcr_xmitd startup.
-         * @return the Unix time of the last HVPS over-voltage fault since hcr_xmitd 
+         * Unix time of last sync fault since hcr_xmitd startup.
+         * @return the Unix time of the last sync fault since hcr_xmitd 
          * startup.
          */
-        int hvpsOverVoltageTime() const { return(_hvpsOverVoltageTime); }
+        time_t syncFaultTime() const { return(_syncFaultTime); }
         /**
-         * Number of auto pulse fault resets by hcr_xmitd since startup.
-         * @return the number of auto pulse fault resets by hcr_xmitd since
+         * Unix time of last transmitter temperature fault since hcr_xmitd 
+         * startup.
+         * @return the Unix time of the last transmitter temperature fault since
+         * hcr_xmitd startup.
+         */
+        time_t xmitterTempFaultTime() const { return(_xmitterTempFaultTime); }
+        /**
+         * Unix time of last waveguide arc fault since hcr_xmitd startup.
+         * @return the Unix time of the last waveguide arc fault since hcr_xmitd 
          * startup.
          */
-        int autoPulseFaultResets() const { return(_autoPulseFaultResets); }
+        time_t wgArcFaultTime() const { return(_wgArcFaultTime); }
+        /**
+         * Unix time of last collector current fault since hcr_xmitd startup.
+         * @return the Unix time of the last collector current fault since 
+         * hcr_xmitd startup.
+         */
+        time_t collectorCurrFaultTime() const { return(_collectorCurrFaultTime); }
+        /**
+         * Unix time of last body current fault since hcr_xmitd startup.
+         * @return the Unix time of the last body current fault since hcr_xmitd 
+         * startup.
+         */
+        time_t bodyCurrFaultTime() const { return(_bodyCurrFaultTime); }
+        /**
+         * Unix time of last filament "loss of reference" fault since hcr_xmitd 
+         * startup.
+         * @return the Unix time of the last filament "loss of reference" fault
+         * since hcr_xmitd startup.
+         */
+        time_t filamentLorFaultTime() const { return(_filamentLorFaultTime); }
+        /**
+         * Unix time of last focus electrode "loss of reference" fault since 
+         * hcr_xmitd startup.
+         * @return the Unix time of the last focus electrode "loss of reference"
+         * fault since hcr_xmitd startup.
+         */
+        time_t focusElectrodeLorFaultTime() const { 
+            return(_focusElectrodeLorFaultTime);
+        }
+        /**
+         * Unix time of last cathode "loss of reference" fault since hcr_xmitd 
+         * startup.
+         * @return the Unix time of the last cathode "loss of reference" fault 
+         * since hcr_xmitd startup.
+         */
+        time_t cathodeLorFaultTime() const { return(_cathodeLorFaultTime); }
+        /**
+         * Unix time of last inverter overload fault since hcr_xmitd startup.
+         * @return the Unix time of the last inverter overload fault since 
+         * hcr_xmitd startup.
+         */
+        time_t inverterOverloadFaultTime() const {
+            return(_inverterOverloadFaultTime);
+        }
+        /**
+         * Unix time of last external interlock fault since hcr_xmitd startup.
+         * @return the Unix time of the last external interlock fault since 
+         * hcr_xmitd startup.
+         */
+        time_t extInterlockFaultTime() const { return(_extInterlockFaultTime); }
+        /**
+         * Unix time of last EIK interlock fault since hcr_xmitd startup.
+         * @return the Unix time of the last EIK interlock fault since hcr_xmitd 
+         * startup.
+         */
+        time_t eikInterlockFaultTime() const { return(_eikInterlockFaultTime); }
 
     private:
         static bool _StatusBool(XmlRpc::XmlRpcValue statusDict, std::string key);
@@ -281,50 +356,63 @@ public:
         static double _StatusDouble(XmlRpc::XmlRpcValue statusDict, std::string key);
 
         bool _serialConnected;
-        bool _faultSummary;
-        bool _hvpsRunup;
-        bool _standby;
-        bool _heaterWarmup;
-        bool _cooldown;
-        bool _unitOn;
-        bool _magnetronCurrentFault;
-        bool _blowerFault;
-        bool _hvpsOn;
-        bool _remoteEnabled;
-        bool _safetyInterlock;
-        bool _reversePowerFault;
-        bool _pulseInputFault;
-        bool _hvpsCurrentFault;
-        bool _waveguidePressureFault;
-        bool _hvpsUnderVoltage;
-        bool _hvpsOverVoltage;
-
-        int _magnetronCurrentFaultCount;
-        int _blowerFaultCount;
-        int _safetyInterlockCount;
-        int _reversePowerFaultCount;
-        int _pulseInputFaultCount;
-        int _hvpsCurrentFaultCount;
-        int _waveguidePressureFaultCount;
-        int _hvpsUnderVoltageCount;
-        int _hvpsOverVoltageCount;
         
-        int _autoPulseFaultResets;
+        bool _filamentOn;
+        bool _highVoltageOn;
+        bool _rfOn;
+        bool _modPulseExternal;
+        bool _syncPulseExternal;
+        bool _filamentDelayActive;
+        bool _powerValid;
+        bool _faultSummary;
+        
+        bool _frontPanelCtlEnabled;
+        bool _rs232CtlEnabled;
+        bool _rdsCtlEnabled;
 
-        time_t _magnetronCurrentFaultTime;
-        time_t _blowerFaultTime;
-        time_t _safetyInterlockTime;
-        time_t _reversePowerFaultTime;
-        time_t _pulseInputFaultTime;
-        time_t _hvpsCurrentFaultTime;
-        time_t _waveguidePressureFaultTime;
-        time_t _hvpsUnderVoltageTime;
-        time_t _hvpsOverVoltageTime;
+        bool _modulatorFault;
+        bool _syncFault;
+        bool _xmitterTempFault;
+        bool _wgArcFault;
+        bool _collectorCurrFault;
+        bool _bodyCurrFault;
+        bool _filamentLorFault;
+        bool _focusElectrodeLorFault;
+        bool _cathodeLorFault;
+        bool _inverterOverloadFault;
+        bool _extInterlockFault;
+        bool _eikInterlockFault;
 
-        double _hvpsVoltage;
-        double _magnetronCurrent;
-        double _hvpsCurrent;
-        double _temperature;
+        int _modulatorFaultCount;
+        int _syncFaultCount;
+        int _xmitterTempFaultCount;
+        int _wgArcFaultCount;
+        int _collectorCurrFaultCount;
+        int _bodyCurrFaultCount;
+        int _filamentLorFaultCount;
+        int _focusElectrodeLorFaultCount;
+        int _cathodeLorFaultCount;
+        int _inverterOverloadFaultCount;
+        int _extInterlockFaultCount;
+        int _eikInterlockFaultCount;
+
+        time_t _modulatorFaultTime;
+        time_t _syncFaultTime;
+        time_t _xmitterTempFaultTime;
+        time_t _wgArcFaultTime;
+        time_t _collectorCurrFaultTime;
+        time_t _bodyCurrFaultTime;
+        time_t _filamentLorFaultTime;
+        time_t _focusElectrodeLorFaultTime;
+        time_t _cathodeLorFaultTime;
+        time_t _inverterOverloadFaultTime;
+        time_t _extInterlockFaultTime;
+        time_t _eikInterlockFaultTime;
+
+        double _cathodeVoltage;
+        double _bodyCurrent;
+        double _collectorCurrent;
+        double _xmitterTemp;
     };
     
     /// Send an "operate" command to the transmitter

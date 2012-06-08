@@ -40,22 +40,6 @@ HcrXmitCtlMainWindow::~HcrXmitCtlMainWindow() {
 }
 
 void
-HcrXmitCtlMainWindow::on_powerButton_clicked() {
-    if (_status.unitOn()) {
-        _xmitClient.powerOff();
-    } else {
-        _xmitClient.powerOn();
-    }
-    _update();
-}
-
-void
-HcrXmitCtlMainWindow::on_faultResetButton_clicked() {
-    _xmitClient.faultReset();
-    _update();
-}
-
-void
 HcrXmitCtlMainWindow::on_standbyButton_clicked() {
     _xmitClient.standby();
     _update();
@@ -110,88 +94,98 @@ HcrXmitCtlMainWindow::_update() {
     _enableUi();
 
     // boolean status values
-    _ui.runupLabel->setEnabled(_status.hvpsRunup());
-    _ui.standbyLabel->setEnabled(_status.standby());
-    _ui.warmupLabel->setEnabled(_status.heaterWarmup());
-    _ui.cooldownLabel->setEnabled(_status.cooldown());
-    _ui.hvpsOnLabel->setEnabled(_status.hvpsOn());
-    _ui.remoteEnabledLabel->setEnabled(_status.remoteEnabled());
+    _ui.powerValidLabel->setEnabled(_status.powerValid());
+    _ui.filamentOnLabel->setEnabled(_status.filamentOn());
+    _ui.filamentDelayLabel->setEnabled(_status.filamentDelayActive());
+    _ui.highVoltageLabel->setEnabled(_status.highVoltageOn());
+    _ui.rfLabel->setEnabled(_status.rfOn());
+    
+    // Which control source is enabled?
+    _ui.frontPanelLabel->setEnabled(_status.frontPanelCtlEnabled());
+    _ui.rs232Label->setEnabled(_status.rs232CtlEnabled());
+    _ui.rdsLabel->setEnabled(_status.rdsCtlEnabled());
     
     // fault lights
-    _ui.magCurrFaultIcon->setPixmap(_status.magnetronCurrentFault() ? _redLED : _greenLED);
-    _ui.blowerFaultIcon->setPixmap(_status.blowerFault() ? _redLED : _greenLED);
-    _ui.interlockFaultIcon->setPixmap(_status.safetyInterlock() ? _redLED : _greenLED);
-    _ui.revPowerFaultIcon->setPixmap(_status.reversePowerFault() ? _redLED : _greenLED);
-    _ui.pulseInputFaultIcon->setPixmap(_status.pulseInputFault() ? _redLED : _greenLED);
-    _ui.hvpsCurrFaultIcon->setPixmap(_status.hvpsCurrentFault() ? _redLED : _greenLED);
-    _ui.wgPresFaultIcon->setPixmap(_status.waveguidePressureFault() ? _redLED : _greenLED);
-    _ui.hvpsUnderVFaultIcon->setPixmap(_status.hvpsUnderVoltage() ? _redLED : _greenLED);
-    _ui.hvpsOverVFaultIcon->setPixmap(_status.hvpsOverVoltage() ? _redLED : _greenLED);
+    _ui.modulatorFaultIcon->setPixmap(_status.modulatorFault() ? _redLED : _greenLED);
+    _ui.syncFaultIcon->setPixmap(_status.syncFault() ? _redLED : _greenLED);
+    _ui.xmitterTempFaultIcon->setPixmap(_status.xmitterTempFault() ? _redLED : _greenLED);
+    _ui.wgArcFaultIcon->setPixmap(_status.wgArcFault() ? _redLED : _greenLED);
+    _ui.collectorCurrFaultIcon->setPixmap(_status.collectorCurrFault() ? _redLED : _greenLED);
+    _ui.bodyCurrFaultIcon->setPixmap(_status.bodyCurrFault() ? _redLED : _greenLED);
+    _ui.filamentLorFaultIcon->setPixmap(_status.filamentLorFault() ? _redLED : _greenLED);
+    _ui.focusElectrodeLorFaultIcon->setPixmap(_status.focusElectrodeLorFault() ? _redLED : _greenLED);
+    _ui.cathodeLorFaultIcon->setPixmap(_status.cathodeLorFault() ? _redLED : _greenLED);
+    _ui.inverterOverloadFaultIcon->setPixmap(_status.inverterOverloadFault() ? _redLED : _greenLED);
+    _ui.extInterlockFaultIcon->setPixmap(_status.extInterlockFault() ? _redLED : _greenLED);
+    _ui.eikInterlockFaultIcon->setPixmap(_status.eikInterlockFault() ? _redLED : _greenLED);
     
     // fault counts
-    _ui.magCurrFaultCount->setText(_countLabel(_status.magnetronCurrentFaultCount()));
-    _ui.blowerFaultCount->setText(_countLabel(_status.blowerFaultCount()));
-    _ui.interlockFaultCount->setText(_countLabel(_status.safetyInterlockCount()));
-    _ui.revPowerFaultCount->setText(_countLabel(_status.reversePowerFaultCount()));
-    _ui.pulseInputFaultCount->setText(_countLabel(_status.pulseInputFaultCount()));
-    _ui.hvpsCurrFaultCount->setText(_countLabel(_status.hvpsCurrentFaultCount()));
-    _ui.wgPresFaultCount->setText(_countLabel(_status.waveguidePressureFaultCount()));
-    _ui.hvpsUnderVFaultCount->setText(_countLabel(_status.hvpsUnderVoltageCount()));
-    _ui.hvpsOverVFaultCount->setText(_countLabel(_status.hvpsOverVoltageCount()));
+    _ui.modulatorFaultCount->setText(_countLabel(-1));
+    _ui.syncFaultCount->setText(_countLabel(-1));
+    _ui.xmitterTempFaultCount->setText(_countLabel(-1));
+    _ui.wgArcFaultCount->setText(_countLabel(-1));
+    _ui.collectorCurrFaultCount->setText(_countLabel(-1));
+    _ui.bodyCurrFaultCount->setText(_countLabel(-1));
+    _ui.filamentLorFaultCount->setText(_countLabel(-1));
+    _ui.focusElectrodeLorFaultCount->setText(_countLabel(-1));
+    _ui.cathodeLorFaultCount->setText(_countLabel(-1));
+    _ui.inverterOverloadFaultCount->setText(_countLabel(-1));
+    _ui.extInterlockFaultCount->setText(_countLabel(-1));
+    _ui.eikInterlockFaultCount->setText(_countLabel(-1));
     
     // latest fault times
-    _ui.magCurrFaultTime->setText(_faultTimeLabel(_status.magnetronCurrentFaultTime()));
-    _ui.blowerFaultTime->setText(_faultTimeLabel(_status.blowerFaultTime()));
-    _ui.interlockFaultTime->setText(_faultTimeLabel(_status.safetyInterlockTime()));
-    _ui.revPowerFaultTime->setText(_faultTimeLabel(_status.reversePowerFaultTime()));
-    _ui.pulseInputFaultTime->setText(_faultTimeLabel(_status.pulseInputFaultTime()));
-    _ui.hvpsCurrFaultTime->setText(_faultTimeLabel(_status.hvpsCurrentFaultTime()));
-    _ui.wgPresFaultTime->setText(_faultTimeLabel(_status.waveguidePressureFaultTime()));
-    _ui.hvpsUnderVFaultTime->setText(_faultTimeLabel(_status.hvpsUnderVoltageTime()));
-    _ui.hvpsOverVFaultTime->setText(_faultTimeLabel(_status.hvpsOverVoltageTime()));
+    _ui.modulatorFaultTime->setText(_faultTimeLabel(-1));
+    _ui.syncFaultTime->setText(_faultTimeLabel(-1));
+    _ui.xmitterTempFaultTime->setText(_faultTimeLabel(-1));
+    _ui.wgArcFaultTime->setText(_faultTimeLabel(-1));
+    _ui.collectorCurrFaultTime->setText(_faultTimeLabel(-1));
+    _ui.bodyCurrFaultTime->setText(_faultTimeLabel(-1));
+    _ui.filamentLorFaultTime->setText(_faultTimeLabel(-1));
+    _ui.focusElectrodeLorFaultTime->setText(_faultTimeLabel(-1));
+    _ui.cathodeLorFaultTime->setText(_faultTimeLabel(-1));
+    _ui.inverterOverloadFaultTime->setText(_faultTimeLabel(-1));
+    _ui.extInterlockFaultTime->setText(_faultTimeLabel(-1));
+    _ui.eikInterlockFaultTime->setText(_faultTimeLabel(-1));
     
     QString txt;
-    txt.setNum(_status.autoPulseFaultResets());
-    _ui.autoResetCount->setText(txt);
+//    txt.setNum(_status.autoPulseFaultResets());
+//    _ui.autoResetCount->setText(txt);
     
     
     // Text displays for voltage, currents, and temperature
-    txt.setNum(_status.hvpsVoltage(), 'f', 1);
-    _ui.hvpsVoltageValue->setText(txt);
+    txt.setNum(_status.cathodeVoltage(), 'f', 1);
+    _ui.cathodeVoltageValue->setText(txt);
     
-    txt.setNum(_status.magnetronCurrent(), 'f', 1);
-    _ui.magCurrentValue->setText(txt);
+    txt.setNum(_status.collectorCurrent(), 'f', 1);
+    _ui.collectorCurrentValue->setText(txt);
     
-    txt.setNum(_status.hvpsCurrent(), 'f', 1);
-    _ui.hvpsCurrentValue->setText(txt);
+    txt.setNum(_status.bodyCurrent(), 'f', 1);
+    _ui.bodyCurrentValue->setText(txt);
     
-    txt.setNum(_status.temperature(), 'f', 0);
-    _ui.temperatureValue->setText(txt);
+    txt.setNum(_status.xmitterTemperature(), 'f', 1);
+    _ui.xmitterTempValue->setText(txt);
     
     // "unit on" light
-    _ui.unitOnLabel->setPixmap(_status.unitOn() ? _greenLED : _greenLED_off);
+    _ui.unitOnLabel->setPixmap(_status.serialConnected() ? _greenLED : _greenLED_off);
     
-    // enable/disable buttons
-    _ui.powerButton->setEnabled(_status.remoteEnabled());
-    if (_status.remoteEnabled() && _status.unitOn()) {
-        _ui.faultResetButton->setEnabled(_status.faultSummary());
-        if (_status.faultSummary()) {
-            _ui.standbyButton->setEnabled(false);
-            _ui.operateButton->setEnabled(false);
-        } else {
-            _ui.standbyButton->setEnabled(_status.hvpsRunup() && ! _status.heaterWarmup());
-            _ui.operateButton->setEnabled(! _status.hvpsRunup() && ! _status.heaterWarmup());
-        }
-    } else {
-        _ui.faultResetButton->setEnabled(false);
-        _ui.standbyButton->setEnabled(false);
-        _ui.operateButton->setEnabled(false);
-    }
+//    // enable/disable buttons
+//    if (_status.serialConnected() && _status.rs232CtlEnabled()) {
+//        if (_status.faultSummary()) {
+//            _ui.standbyButton->setEnabled(true);
+//            _ui.operateButton->setEnabled(false);
+//        } else {
+//            _ui.standbyButton->setEnabled(_status.hvpsRunup() && ! _status.heaterWarmup());
+//            _ui.operateButton->setEnabled(! _status.filamentDelayActive() && ! _status.heaterWarmup());
+//        }
+//    } else {
+//        _ui.standbyButton->setEnabled(false);
+//        _ui.operateButton->setEnabled(false);
+//    }
     
-    if (_status.remoteEnabled()) {
+    if (_status.rs232CtlEnabled()) {
         statusBar()->clearMessage();
     } else {
-        statusBar()->showMessage("Remote control is currently DISABLED");
+        statusBar()->showMessage("RS-232 control is currently DISABLED");
     }
 }
 
@@ -230,31 +224,30 @@ HcrXmitCtlMainWindow::_disableUi() {
 
     _ui.unitOnLabel->setPixmap(_greenLED_off);
     
-    _ui.magCurrFaultIcon->setPixmap(_greenLED_off);
-    _ui.magCurrFaultCount->setText("");
-    _ui.blowerFaultIcon->setPixmap(_greenLED_off);
-    _ui.blowerFaultCount->setText("");
-    _ui.interlockFaultIcon->setPixmap(_greenLED_off);
-    _ui.interlockFaultCount->setText("");
-    _ui.revPowerFaultIcon->setPixmap(_greenLED_off);
-    _ui.revPowerFaultCount->setText("");
-    _ui.pulseInputFaultIcon->setPixmap(_greenLED_off);
-    _ui.pulseInputFaultCount->setText("");
-    _ui.hvpsCurrFaultIcon->setPixmap(_greenLED_off);
-    _ui.hvpsCurrFaultCount->setText("");
-    _ui.wgPresFaultIcon->setPixmap(_greenLED_off);
-    _ui.wgPresFaultCount->setText("");
-    _ui.hvpsUnderVFaultIcon->setPixmap(_greenLED_off);
-    _ui.hvpsUnderVFaultCount->setText("");
-    _ui.hvpsOverVFaultIcon->setPixmap(_greenLED_off);
-    _ui.hvpsOverVFaultCount->setText("");
+    _ui.modulatorFaultIcon->setPixmap(_greenLED_off);
+    _ui.modulatorFaultCount->setText("");
+    _ui.syncFaultIcon->setPixmap(_greenLED_off);
+    _ui.syncFaultCount->setText("");
+    _ui.xmitterTempFaultIcon->setPixmap(_greenLED_off);
+    _ui.xmitterTempFaultCount->setText("");
+    _ui.wgArcFaultIcon->setPixmap(_greenLED_off);
+    _ui.wgArcFaultCount->setText("");
+    _ui.collectorCurrFaultIcon->setPixmap(_greenLED_off);
+    _ui.collectorCurrFaultCount->setText("");
+    _ui.bodyCurrFaultIcon->setPixmap(_greenLED_off);
+    _ui.bodyCurrFaultCount->setText("");
+    _ui.filamentLorFaultIcon->setPixmap(_greenLED_off);
+    _ui.filamentLorFaultCount->setText("");
+    _ui.focusElectrodeLorFaultIcon->setPixmap(_greenLED_off);
+    _ui.focusElectrodeLorFaultCount->setText("");
+    _ui.cathodeLorFaultIcon->setPixmap(_greenLED_off);
+    _ui.cathodeLorFaultCount->setText("");
     
-    _ui.hvpsVoltageValue->setText("0.0");
-    _ui.magCurrentValue->setText("0.0");
-    _ui.hvpsCurrentValue->setText("0.0");
-    _ui.temperatureValue->setText("0");
+    _ui.cathodeVoltageValue->setText("0.0");
+    _ui.collectorCurrentValue->setText("0.0");
+    _ui.bodyCurrentValue->setText("0.0");
+    _ui.xmitterTempValue->setText("0.0");
     
-    _ui.autoResetCount->setText("");
 }
 
 void

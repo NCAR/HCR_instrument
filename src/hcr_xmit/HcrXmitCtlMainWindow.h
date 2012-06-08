@@ -24,8 +24,6 @@ public:
     HcrXmitCtlMainWindow(std::string xmitterHost, int xmitterPort);
     ~HcrXmitCtlMainWindow();
 private slots:
-    void on_powerButton_clicked();
-    void on_faultResetButton_clicked();
     void on_standbyButton_clicked();
     void on_operateButton_clicked();
     void _update();
