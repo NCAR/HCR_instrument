@@ -68,7 +68,6 @@ HcrXmitCtlMainWindow::on_operateButton_clicked() {
 
 void
 HcrXmitCtlMainWindow::on_detailVisibilityButton_clicked() {
-    std::cerr << __FUNCTION__ << std::endl;
     _ui.faultStatusBox->setVisible(! _ui.faultStatusBox->isVisible());
     if (_ui.faultStatusBox->isVisible()) {
         _ui.detailVisibilityButton->setText("Hide Details");
@@ -122,6 +121,7 @@ HcrXmitCtlMainWindow::_update() {
     _ui.rdsLabel->setEnabled(_status.rdsCtlEnabled());
     
     // fault lights
+    _ui.faultSummaryIcon->setPixmap(_status.faultSummary() ? _redLED: _greenLED);
     _ui.modulatorFaultIcon->setPixmap(_status.modulatorFault() ? _redLED : _greenLED);
     _ui.syncFaultIcon->setPixmap(_status.syncFault() ? _redLED : _greenLED);
     _ui.xmitterTempFaultIcon->setPixmap(_status.xmitterTempFault() ? _redLED : _greenLED);
@@ -136,32 +136,56 @@ HcrXmitCtlMainWindow::_update() {
     _ui.eikInterlockFaultIcon->setPixmap(_status.eikInterlockFault() ? _redLED : _greenLED);
     
     // fault counts
-    _ui.modulatorFaultCount->setText(_countLabel(-1));
-    _ui.syncFaultCount->setText(_countLabel(-1));
-    _ui.xmitterTempFaultCount->setText(_countLabel(-1));
-    _ui.wgArcFaultCount->setText(_countLabel(-1));
-    _ui.collectorCurrFaultCount->setText(_countLabel(-1));
-    _ui.bodyCurrFaultCount->setText(_countLabel(-1));
-    _ui.filamentLorFaultCount->setText(_countLabel(-1));
-    _ui.focusElectrodeLorFaultCount->setText(_countLabel(-1));
-    _ui.cathodeLorFaultCount->setText(_countLabel(-1));
-    _ui.inverterOverloadFaultCount->setText(_countLabel(-1));
-    _ui.extInterlockFaultCount->setText(_countLabel(-1));
-    _ui.eikInterlockFaultCount->setText(_countLabel(-1));
+    _ui.modulatorFaultCount->
+        setText(_countLabel(_status.modulatorFaultCount()));
+    _ui.syncFaultCount->
+        setText(_countLabel(_status.syncFaultCount()));
+    _ui.xmitterTempFaultCount->
+        setText(_countLabel(_status.xmitterTempFaultCount()));
+    _ui.wgArcFaultCount->
+        setText(_countLabel(_status.wgArcFaultCount()));
+    _ui.collectorCurrFaultCount->
+        setText(_countLabel(_status.collectorCurrFaultCount()));
+    _ui.bodyCurrFaultCount->
+        setText(_countLabel(_status.bodyCurrFaultCount()));
+    _ui.filamentLorFaultCount->
+        setText(_countLabel(_status.filamentLorFaultCount()));
+    _ui.focusElectrodeLorFaultCount->
+        setText(_countLabel(_status.focusElectrodeLorFaultCount()));
+    _ui.cathodeLorFaultCount->
+        setText(_countLabel(_status.cathodeLorFaultCount()));
+    _ui.inverterOverloadFaultCount->
+        setText(_countLabel(_status.inverterOverloadFaultCount()));
+    _ui.extInterlockFaultCount->
+        setText(_countLabel(_status.extInterlockFaultCount()));
+    _ui.eikInterlockFaultCount->
+        setText(_countLabel(_status.eikInterlockFaultCount()));
     
     // latest fault times
-    _ui.modulatorFaultTime->setText(_faultTimeLabel(-1));
-    _ui.syncFaultTime->setText(_faultTimeLabel(-1));
-    _ui.xmitterTempFaultTime->setText(_faultTimeLabel(-1));
-    _ui.wgArcFaultTime->setText(_faultTimeLabel(-1));
-    _ui.collectorCurrFaultTime->setText(_faultTimeLabel(-1));
-    _ui.bodyCurrFaultTime->setText(_faultTimeLabel(-1));
-    _ui.filamentLorFaultTime->setText(_faultTimeLabel(-1));
-    _ui.focusElectrodeLorFaultTime->setText(_faultTimeLabel(-1));
-    _ui.cathodeLorFaultTime->setText(_faultTimeLabel(-1));
-    _ui.inverterOverloadFaultTime->setText(_faultTimeLabel(-1));
-    _ui.extInterlockFaultTime->setText(_faultTimeLabel(-1));
-    _ui.eikInterlockFaultTime->setText(_faultTimeLabel(-1));
+    _ui.modulatorFaultTime->
+        setText(_faultTimeLabel(_status.modulatorFaultTime()));
+    _ui.syncFaultTime->
+        setText(_faultTimeLabel(_status.syncFaultTime()));
+    _ui.xmitterTempFaultTime->
+        setText(_faultTimeLabel(_status.xmitterTempFaultTime()));
+    _ui.wgArcFaultTime->
+        setText(_faultTimeLabel(_status.wgArcFaultTime()));
+    _ui.collectorCurrFaultTime->
+        setText(_faultTimeLabel(_status.collectorCurrFaultTime()));
+    _ui.bodyCurrFaultTime->
+        setText(_faultTimeLabel(_status.bodyCurrFaultTime()));
+    _ui.filamentLorFaultTime->
+        setText(_faultTimeLabel(_status.filamentLorFaultTime()));
+    _ui.focusElectrodeLorFaultTime->
+        setText(_faultTimeLabel(_status.focusElectrodeLorFaultTime()));
+    _ui.cathodeLorFaultTime->
+        setText(_faultTimeLabel(_status.cathodeLorFaultTime()));
+    _ui.inverterOverloadFaultTime->
+        setText(_faultTimeLabel(_status.inverterOverloadFaultTime()));
+    _ui.extInterlockFaultTime->
+        setText(_faultTimeLabel(_status.extInterlockFaultTime()));
+    _ui.eikInterlockFaultTime->
+        setText(_faultTimeLabel(_status.eikInterlockFaultTime()));
     
     QString txt;
     // Text displays for voltage, currents, and temperature
