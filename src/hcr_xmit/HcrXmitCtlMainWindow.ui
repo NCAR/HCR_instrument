@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>585</width>
+    <width>589</width>
     <height>670</height>
    </rect>
   </property>
@@ -364,7 +364,7 @@
              <item>
               <widget class="QLabel" name="faultSummaryLabel">
                <property name="text">
-                <string>Fault Summary</string>
+                <string>Fault Status</string>
                </property>
               </widget>
              </item>
@@ -384,7 +384,7 @@
              <item>
               <widget class="QPushButton" name="detailVisibilityButton">
                <property name="text">
-                <string>DetailVisibility</string>
+                <string>Hide Details</string>
                </property>
               </widget>
              </item>
@@ -908,6 +908,9 @@ COUNT</string>
                <property name="text">
                 <string/>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
               </widget>
              </item>
              <item row="11" column="0">
@@ -942,6 +945,9 @@ COUNT</string>
                <property name="text">
                 <string/>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
               </widget>
              </item>
              <item row="12" column="0">
@@ -975,6 +981,9 @@ COUNT</string>
               <widget class="QLabel" name="eikInterlockFaultTime">
                <property name="text">
                 <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -1141,6 +1150,7 @@ COUNT</string>
  </widget>
  <resources>
   <include location="HcrXmitCtlMainWindow.qrc"/>
+  <include location="../../../../.designer/backup/HcrXmitCtlMainWindow.qrc"/>
  </resources>
  <connections/>
  <slots>
