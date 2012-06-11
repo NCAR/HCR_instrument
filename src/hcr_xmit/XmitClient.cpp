@@ -164,7 +164,7 @@ XmitClient::XmitStatus::XmitStatus(XmlRpc::XmlRpcValue & statusDict) {
     _syncPulseExternal = _StatusBool(statusDict, "sync_pulse_external");
     _filamentDelayActive = _StatusBool(statusDict, "filament_delay_active");
     _powerValid = _StatusBool(statusDict, "power_valid");
-    _faultSummary = _StatusBool(statusDict, "power_valid");
+    _faultSummary = _StatusBool(statusDict, "fault_summary");
     _frontPanelCtlEnabled = _StatusBool(statusDict, "front_panel_control_enabled");
     _rs232CtlEnabled = _StatusBool(statusDict, "rs232_control_enabled");
     _rdsCtlEnabled = _StatusBool(statusDict, "rds_control_enabled");
