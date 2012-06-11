@@ -258,16 +258,21 @@ HcrXmitter::getStatus(unsigned int recursion) {
             ", fault summary " << status.faultSummary;
     
     // Byte 4: Is control currently via front panel, RS-232, or RDS?
-    switch (reply[4]) {
-    case FrontPanel:
-    case RS232:
-    case RDS:
-        status.controlSource = static_cast<ControlSource>(reply[4]);
+    uint8_t controlSource = reply[4] & AllControlSources;
+    switch (controlSource) {
+    case FrontPanelControl:
+        status.controlSource = FrontPanelControl;
+        break;
+    case RS232Control:
+        status.controlSource = RS232Control;
+        break;
+    case RDSControl:
+        status.controlSource = RDSControl;
         break;
     default:
         ELOG << "Uh-oh, bad transmitter control source byte with value 0x" <<
             std::hex << uint16_t(reply[4]) << std::dec;
-        abort();
+        status.controlSource = UnknownControl;
         break;
     }
     

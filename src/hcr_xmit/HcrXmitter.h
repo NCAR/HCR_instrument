@@ -14,8 +14,10 @@
 class HcrXmitter {
 public:
     /**
-     * @brief Construct a HcrXmitter providing access to the HCR transmitter on
-     * the given serial port. If special serial port name HcrXmitter::SIM_DEVICE
+     * @brief Construct a HcrXmitter providing access to the HCR transmitter's
+     * Control and Monitor Unit (CMU) on the given serial port.
+     * 
+     * If special serial port name HcrXmitter::SIM_DEVICE
      * is used, existence of the transmitter will be simulated.
      * @param ttyDev the name of the serial port connected to the transmitter.
      */
@@ -23,15 +25,21 @@ public:
     virtual ~HcrXmitter();
     
     /**
-     * Control methods: front panel, RS-232, or RDS
+     * Control methods: front panel, RS-232, or RDS. Exactly one of the three
+     * control bits is supposed to be set, but occasionally that is not true
+     * and we then use UnknownControl.
      */
     typedef enum {
+        /// @brief unknown control source
+        UnknownControl = 0,
         /// @brief front panel control selected
-        FrontPanel = 1,
+        FrontPanelControl = 1,
         /// @brief RS-232 control selected
-        RS232 = 2,
+        RS232Control = 2,
         /// @brief RDS control selected
-        RDS = 4
+        RDSControl = 4,
+        /// @brief A mask with all of the control bits
+        AllControlSources = 7
     } ControlSource;
             
     /**
@@ -41,7 +49,11 @@ public:
         /// Is the serial line connected?
         bool serialConnected;
 
-        /// Which control source is selected on the front panel?
+        /**
+         *  @brief Which control source is selected on the front panel?
+         *  
+         *  As documented, this 
+         */
         ControlSource controlSource;
 
         /// EIK filament on?
@@ -134,21 +146,7 @@ public:
      * @param state boolean state: true to enable RF transmit, false to
      * disable RF transmit.
      */
-    void setRfState(bool state);
-    
-    /**
-     * Turn on the transmitter unit (does not enable high voltage and actual
-     * transmission). A warmup period is required before high voltage can be
-     * enabled.
-     */
-    void powerOn();
-    
-    /**
-     * Turn off the transmitter unit. After power is turned off, the unit will
-     * stay up in a cooldown mode for three minutes before all power is 
-     * removed.
-     */
-    void powerOff();
+    void setRfEnabled(bool state);
     
     /**
      * Reset all fault conditions.
