@@ -61,31 +61,6 @@ HcrXmitter::~HcrXmitter() {
 }
 
 void
-HcrXmitter::powerOn() {
-    WLOG << "powerOn() not implemented!";
-//    ILOG << "Power On";
-//    if (! _simulate) {
-//        _sendCommand(_POWERON_COMMAND);
-//    } else {
-//        _simStatus.unitOn = true;
-//        _simStatus.standby = true;
-//    }
-    return;
-}
-
-void
-HcrXmitter::powerOff() {
-    WLOG << "powerOff() not implemented!";
-//    ILOG << "Power Off";
-//    if (! _simulate) {
-//        _sendCommand(_POWEROFF_COMMAND);
-//    } else {
-//        _initSimStatus();
-//    }
-    return;
-}
-
-void
 HcrXmitter::faultReset() {
     WLOG << "faultReset() not implemented!";
 //    ILOG << "Fault Reset";
@@ -566,8 +541,7 @@ HcrXmitter::_readSelect(unsigned int waitMsecs)
 
 void
 HcrXmitter::_initSimStatus() {
-    WLOG << "_initSimStatus() not implemented!";
-//    _clearStatus(_simStatus);
-//    _simStatus.serialConnected = true;
-//    _simStatus.remoteEnabled = true;
+    _clearStatus(_simStatus);
+    _simStatus.serialConnected = true;
+    _simStatus.controlSource = RS232Control;
 }
