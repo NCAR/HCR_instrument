@@ -26,6 +26,7 @@ public:
 private slots:
     void on_standbyButton_clicked();
     void on_operateButton_clicked();
+    void on_detailVisibilityButton_clicked();
     void _update();
 private:
     // Disable the UI

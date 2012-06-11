@@ -32,6 +32,11 @@ HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost,
     _ui.logArea->setMaximumBlockCount(1000);
     _logMessage("hcr_xmitctl started");
     
+    // Hide fault details initially
+    _ui.faultStatusBox->setVisible(false);
+    _ui.detailVisibilityButton->setText("Show Details");
+    
+    // Schedule 1 Hz updates
     connect(&_updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
 }
@@ -59,6 +64,17 @@ void
 HcrXmitCtlMainWindow::on_operateButton_clicked() {
     _xmitClient.operate();
     _update();
+}
+
+void
+HcrXmitCtlMainWindow::on_detailVisibilityButton_clicked() {
+    std::cerr << __FUNCTION__ << std::endl;
+    _ui.faultStatusBox->setVisible(! _ui.faultStatusBox->isVisible());
+    if (_ui.faultStatusBox->isVisible()) {
+        _ui.detailVisibilityButton->setText("Hide Details");
+    } else {
+        _ui.detailVisibilityButton->setText("Show Details");
+    }
 }
 
 void
@@ -148,10 +164,6 @@ HcrXmitCtlMainWindow::_update() {
     _ui.eikInterlockFaultTime->setText(_faultTimeLabel(-1));
     
     QString txt;
-//    txt.setNum(_status.autoPulseFaultResets());
-//    _ui.autoResetCount->setText(txt);
-    
-    
     // Text displays for voltage, currents, and temperature
     txt.setNum(_status.cathodeVoltage(), 'f', 1);
     _ui.cathodeVoltageValue->setText(txt);
