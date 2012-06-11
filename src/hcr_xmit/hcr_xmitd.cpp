@@ -248,7 +248,7 @@ int HcrdrxPort = 8081;
  *   <tr>
  *     <td>xmitter_temp</td>
  *     <td>double</td>
- *     <td>transmitter temperature, °C</td>
+ *     <td>transmitter temperature, degrees C</td>
  *   </tr>
  *   <tr>
  *     <td>modulator_fault_count</td>
@@ -395,31 +395,6 @@ public:
     }
 } getStatusMethod(&RpcServer);
 
-/**
- * Xmlrpc++ method to turn transmitter on. Note that this merely turns on
- * power to the transmitter unit, and does not enable the high voltage (i.e.,
- * actual transmission).
- */
-class PowerOnMethod : public XmlRpcServerMethod {
-public:
-    PowerOnMethod(XmlRpcServer *s) : XmlRpcServerMethod("powerOn", s) {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        DLOG << "power ON command received";
-        Xmitter->powerOn();
-    }
-} powerOnMethod(&RpcServer);
-
-/// Xmlrpc++ method to turn transmitter off. It takes three minutes
-/// of cooldown time before the transmitter turns off completely.
-class PowerOffMethod : public XmlRpcServerMethod {
-public:
-    PowerOffMethod(XmlRpcServer *s) : XmlRpcServerMethod("powerOff", s) {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        DLOG << "power OFF command received";
-        Xmitter->powerOff();
-    }
-} powerOffMethod(&RpcServer);
-
 /// Xmlrpc++ method to reset transmitter faults.
 class FaultResetMethod : public XmlRpcServerMethod {
 public:
@@ -506,6 +481,7 @@ public:
 void
 updateStatus() {
     static HcrXmitter::Status PrevXmitStatus;
+    
     PrevXmitStatus = XmitStatus;
     XmitStatus = Xmitter->getStatus();
     time_t now = time(0);
@@ -582,9 +558,9 @@ updateStatus() {
     StatusDict["filament_delay_active"] = XmlRpcValue(XmitStatus.filamentDelayActive);
     StatusDict["power_valid"] = XmlRpcValue(XmitStatus.powerValid);
     StatusDict["fault_summary"] = XmlRpcValue(XmitStatus.faultSummary);
-    StatusDict["front_panel_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::FrontPanel);
-    StatusDict["rs232_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::RS232);
-    StatusDict["rds_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::RDS);
+    StatusDict["front_panel_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::FrontPanelControl);
+    StatusDict["rs232_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::RS232Control);
+    StatusDict["rds_control_enabled"] = XmlRpcValue(XmitStatus.controlSource == HcrXmitter::RDSControl);
     StatusDict["modulator_fault"] = XmlRpcValue(XmitStatus.modulatorFault);
     StatusDict["sync_fault"] = XmlRpcValue(XmitStatus.syncFault);
     StatusDict["xmitter_temp_fault"] = XmlRpcValue(XmitStatus.xmitterTempFault);
