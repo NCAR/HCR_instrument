@@ -18,11 +18,6 @@ public:
     static HcrPmc730 & theHcrPmc730();
     
     /**
-     * Get the current value in the PMC730 pulse counter.
-     */
-    static uint32_t getPulseCounter() { return(theHcrPmc730()._getPulseCounter()); }
-
-    /**
      * Static method to change whether the singleton instance will be created
      * as a simulated PMC-730. This must be called before the singleton is
      * instantiated.
@@ -45,39 +40,45 @@ private:
      * Input DIO lines
      */
     typedef enum {
+        /// DIO line 0 unused
         _HCR_DIN_UNUSED0 = 0,
+        /// DIO line 1 unused
         _HCR_DIN_UNUSED1 = 1,
-        _HCR_DIN_COUNTER = 2,        // pulse counter input
+        /// DIO line 2 unused
+        _HCR_DIN_UNUSED2 = 2,
+        /// DIO line 3 unused
         _HCR_DIN_UNUSED3 = 3,
-        _HCR_DIN_UNUSED4 = 4,
-        _HCR_DIN_UNUSED5 = 5,
-        _HCR_DIN_UNUSED6 = 6,
-        _HCR_DIN_UNUSED7 = 7
+        /// SCM status bit 0
+        _HCR_DIN_SCM_STATUS0 = 4,
+        /// SCM status bit 1
+        _HCR_DIN_SCM_STATUS1 = 5,
+        /// SCM status bit 2
+        _HCR_DIN_SCM_STATUS2 = 6,
+        /// SCM status bit 3
+        _HCR_DIN_SCM_STATUS3 = 7
     } DinLine_t;
     
     /**
      * Output DIO lines
      */
     typedef enum {
-        _HCR_DOUT_UNUSED0 = 8,
-        _HCR_DOUT_UNUSED1 = 9,
-        _HCR_DOUT_UNUSED2 = 10,
-        _HCR_DOUT_UNUSED3 = 11,
-        _HCR_DOUT_UNUSED4 = 12,
-        _HCR_DOUT_UNUSED5 = 13,
-        _HCR_DOUT_UNUSED6 = 14,
-        _HCR_DOUT_UNUSED7 = 15
+        /// Turn on noise source
+        _HCR_DOUT_NOISE_SRC_ON = 8,
+        /// SCM reset signal
+        _HCR_DOUT_SCM_RESET = 9,
+        /// waveguide switch 'D' control
+        _HCR_DOUT_WG_SWITCH_D = 10,
+        /// waveguide switch 'C' control
+        _HCR_DOUT_WG_SWITCH_C = 11,
+        /// Turn on transmitter Klystron filament (differential +)
+        _HCR_DOUT_TX_FILAMENT_ON_P = 12,
+        /// Turn on transmitter Klystron filament (differential -)
+        _HCR_DOUT_TX_FILAMENT_ON_N = 13,
+        /// Turn on transmitter Klystron high voltage (differential +)
+        _HCR_DOUT_TX_HV_ON_P = 14,
+        /// Turn on transmitter Klystron high voltage (differential -)
+        _HCR_DOUT_TX_HV_ON_N = 15,
     } DoutLine_t;
-    
-    /**
-     * Initialize the PMC730 for pulse counting, which uses DIO channel 2.
-     */
-    void _initPulseCounter();
-    
-    /**
-     * Get the current value in the PMC730 pulse counter.
-     */
-    uint32_t _getPulseCounter();
     
     /**
      * Send a differential signal over two selected PMC730 DIO lines.

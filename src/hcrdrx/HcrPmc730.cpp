@@ -40,39 +40,38 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
     // Verify that our defined input DIO lines are all actually set for input
     if (getDioDirection(_HCR_DIN_UNUSED0) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_UNUSED1) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_COUNTER) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED2) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_UNUSED3) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_UNUSED4) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_UNUSED5) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_UNUSED6) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_UNUSED7) != DIO_INPUT) {
+            getDioDirection(_HCR_DIN_SCM_STATUS0) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_SCM_STATUS1) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_SCM_STATUS2) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_SCM_STATUS3) != DIO_INPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
                 _HCR_DIN_UNUSED0 << ", " << _HCR_DIN_UNUSED1 << ", " << 
-                _HCR_DIN_COUNTER << ", " << _HCR_DIN_UNUSED3 << ", " <<
-                _HCR_DIN_UNUSED4 << ", " << _HCR_DIN_UNUSED5 << ", " <<
-                _HCR_DIN_UNUSED6 << ", and " << _HCR_DIN_UNUSED7 <<
+                _HCR_DIN_UNUSED2 << ", " << _HCR_DIN_UNUSED3 << ", " <<
+                _HCR_DIN_SCM_STATUS0 << ", " << _HCR_DIN_SCM_STATUS1 << ", " <<
+                _HCR_DIN_SCM_STATUS2 << ", and " << _HCR_DIN_SCM_STATUS3 <<
                 " are not all set for input!";
         abort();
     }
     // Verify that our defined output DIO lines are all actually set for output
-    if (getDioDirection(_HCR_DOUT_UNUSED0) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED1) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED2) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED3) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED4) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED5) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED6) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_UNUSED7) != DIO_OUTPUT) {
+    if (getDioDirection(_HCR_DOUT_NOISE_SRC_ON) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_SCM_RESET) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_WG_SWITCH_D) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_WG_SWITCH_C) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_TX_FILAMENT_ON_P) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_TX_FILAMENT_ON_N) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_TX_HV_ON_P) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_TX_HV_ON_N) != DIO_OUTPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
-                _HCR_DOUT_UNUSED0 << ", " << _HCR_DOUT_UNUSED1 << ", " <<
-                _HCR_DOUT_UNUSED2 << ", " << _HCR_DOUT_UNUSED3 << ", " <<
-                _HCR_DOUT_UNUSED4 << ", " << _HCR_DOUT_UNUSED5 << ", " <<
-                _HCR_DOUT_UNUSED6 << ", and " << _HCR_DOUT_UNUSED7 << 
+                _HCR_DOUT_NOISE_SRC_ON << ", " << _HCR_DOUT_SCM_RESET << ", " <<
+                _HCR_DOUT_WG_SWITCH_D << ", " << _HCR_DOUT_WG_SWITCH_C << ", " <<
+                _HCR_DOUT_TX_FILAMENT_ON_P << ", " << 
+                _HCR_DOUT_TX_FILAMENT_ON_N << ", " <<
+                _HCR_DOUT_TX_HV_ON_P << ", and " << _HCR_DOUT_TX_HV_ON_N << 
                 " are not all set for output!";
         abort();
     }
-    // Hcr uses the PMC730 pulse counting function, which uses DIO channel 2
-    _initPulseCounter();
 }
 
 HcrPmc730::~HcrPmc730() {
@@ -96,72 +95,6 @@ HcrPmc730::theHcrPmc730() {
         _theHcrPmc730 = new HcrPmc730();
     }
     return(*_theHcrPmc730);
-}
-
-void
-HcrPmc730::_initPulseCounter() {
-	if (_simulate)
-		return;
-
-    // Initialize the PMC730 counter/timer for:
-    // - pulse counting
-    // - input polarity high
-    // - software trigger to start counting
-    // - disable counter interrupts
-    
-    // set up as an event (pulse) counter
-    if (SetMode(&_card, InEvent) != Success) {
-        ELOG << __PRETTY_FUNCTION__ << ": setting PMC730 to count pulses";
-        abort();
-    }
-    // set input polarity to high
-    if (SetInputPolarity(&_card, InPolHi) != Success) {
-        ELOG << __PRETTY_FUNCTION__ << ": setting PMC730 input pulse polarity";
-        abort();
-    }
-    // Use internal (software) trigger to start the timer
-    if (SetTriggerSource(&_card, InTrig) != Success) {
-        ELOG << __PRETTY_FUNCTION__ << ": setting trigger source";
-        abort();
-    }
-    // disable counter/timer interrupts
-    if (SetInterruptEnable(&_card, IntDisable) != Success) {
-        ELOG << __PRETTY_FUNCTION__ << ": disabling PMC730 counter/timer interrupts";
-        abort();
-    }
-    // Set counter constant 0 (maximum count value) to 2^32-1, so we can count
-    // up to the full 32 bits. This must be non-zero, or you'll never see any
-    // pulses counted!
-    if (SetCounterConstant(&_card, 0, 0xFFFFFFFFul) != Success) {
-        ELOG << __PRETTY_FUNCTION__ << ": setting counter constant 0";
-        abort();
-    }
-    // Now enable this configuration and then start the counter.
-    ConfigureCounterTimer(&_card);
-    // Send the software trigger to start the counter.
-    StartCounter(&_card);    
-}
-
-uint32_t
-HcrPmc730::_getPulseCounter() {
-	// If simulating, just return a count of milliseconds since we were
-	// instantiated.
-	if (_simulate) {
-		struct timeval tv;
-		gettimeofday(&tv, NULL);
-		double diff = (tv.tv_sec + 1.0e-6 * tv.tv_usec) - _startTimeOfDay;
-		if (diff < 0.0)
-			diff += 86400; // seconds in a day
-		return(uint32_t(1000 * diff));
-	}
-    // Read the current count value from the counter readback register.
-    int32_t signedCount = input_long(_card.nHandle, 
-        (long*)&_card.brd_ptr->CounterReadBack);
-    // We get a signed 32-bit value from input_long, but the counter readback
-    // register is actually unsigned. Reinterpret the result to get the full
-    // (unsigned) resolution.
-    uint32_t* countPtr = reinterpret_cast<uint32_t*>(&signedCount);
-    return(*countPtr);
 }
 
 void
