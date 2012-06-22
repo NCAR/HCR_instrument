@@ -19,19 +19,11 @@ LOGGING("hcrdrx")
 
 // For configuration management
 #include <QtConfig.h>
-// Proxy argc/argv
-#include <ArgvParams.h>
-
-// This is required for some tests below which try to work around issues
-// with OpenDDS 2.0/2.1
-#include <dds/Version.h>
 
 #include "HcrPmc730.h"
 #include "HcrDrxPub.h"
 #include "p7142sd3c.h"
 #include "p7142Up.h"
-#include "DDSPublisher.h"
-#include "TSWriter.h"
 
 #include "HcrDrxConfig.h"
 #include "IwrfExport.h"
@@ -41,22 +33,12 @@ using namespace std;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
 
-bool _publish;                   ///< set true if the pentek data should be published to DDS.
-std::string _devRoot;            ///< Device root e.g. /dev/pentek/0
 std::string _drxConfig;          ///< DRX configuration file
 std::string _instance;           ///< application instance
 int _chans = 2;                  ///< number of channels
-std::string _ORB;                ///< path to the ORB configuration file.
-std::string _DCPS;               ///< path to the DCPS configuration file.
-std::string _DCPSInfoRepo;       ///< URL to access DCPSInfoRepo
-std::string _tsTopic;            ///< The published timeseries topic
-int _DCPSDebugLevel = 0;         ///< the DCPSDebugLevel
-int _DCPSTransportDebugLevel = 0;///< the DCPSTransportDebugLevel
 int _tsLength;                   ///< The time series length
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
-DDSPublisher* _publisher = 0;    ///< The publisher.
-TSWriter* _tsWriter = 0;         ///< The time series writer.
 IwrfExport* _exporter = 0;       ///< The exporter - IWRF TCP server
 bool _simulate;                  ///< Set true for simulate mode
 int _simWaveLength;              ///< The simulated data wavelength, in samples
@@ -72,37 +54,6 @@ bool _terminate = false;         ///< set true to signal the main loop to termin
 void sigHandler(int sig) {
   ILOG << "Interrupt received...termination may take a few seconds";
   _terminate = true;
-}
-
-/////////////////////////////////////////////////////////////////////
-void createDDSservices()
-{
-	ArgvParams argv("sd3cdrx");
-	argv["-DCPSInfoRepo"] = _DCPSInfoRepo;
-	argv["-DCPSConfigFile"] = _DCPS;
-	if (_DCPSDebugLevel > 0)
-		argv["-DCPSDebugLevel"] = QString("%1").arg(_DCPSDebugLevel).toStdString().c_str();
-	if (_DCPSTransportDebugLevel > 0)
-		argv["-DCPSTransportDebugLevel"] = QString("%1").arg(_DCPSTransportDebugLevel).toStdString().c_str();
-	argv["-ORBSvcConf"] = _ORB;
-
-	// create our DDS publisher
-	char **theArgv = argv.argv();
-	_publisher = new DDSPublisher(argv.argc(), theArgv);
-	if (_publisher->status()) {
-		ELOG << "Unable to create a publisher, exiting.";
-		exit(1);
-	}
-
-	// create the DDS time series writer
-	_tsWriter = new TSWriter(*_publisher, _tsTopic.c_str());
-}
-
-/////////////////////////////////////////////////////////////////////
-void stopDDSservices()
-{
-//    delete _tsWriter;
-    delete _publisher;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -124,18 +75,7 @@ void getConfigParams()
 		exit(1);
 	}
 
-	// and create the default DDS configuration file paths, since these
-	// depend upon HCRDIR
-	std::string orbFile      = HcrDir + "ORBSvc.conf";
-	std::string dcpsFile     = HcrDir + "DDSClient.ini";
-	std::string dcpsInfoRepo = "iiop://localhost:50000/DCPSInfoRepo";
-
 	// get parameters
-	_publish       = config.getBool  ("DDS/Publish",        true);
-	_ORB           = config.getString("DDS/ORBConfigFile",  orbFile);
-	_DCPS          = config.getString("DDS/DCPSConfigFile", dcpsFile);
-	_tsTopic       = config.getString("DDS/TopicTS",        "HCRTS");
-	_DCPSInfoRepo  = config.getString("DDS/DCPSInfoRepo",   dcpsInfoRepo);
 	_tsLength      = config.getInt   ("Radar/TsLength",     256);
 	_simulate      = config.getBool  ("Simulate",           false);
 	_simPauseMS    = config.getDouble("SimPauseMs",         0.1);
@@ -158,19 +98,10 @@ void parseOptions(int argc,
 	po::options_description descripts("Options");
 	descripts.add_options()
 	("help", "Describe options")
-	("devRoot", po::value<std::string>(&_devRoot), "Device root (e.g. /dev/pentek/0)")
 	("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
 	("instance", po::value<std::string>(&_instance), "App instance for procmap")
-	("nopublish",                                  "Do not publish data")
 	("simulate",                                   "Enable simulation")
 	("simPauseMS",  po::value<double>(&_simPauseMS),  "Simulation pause interval between beams (ms)")
-	("ORB", po::value<std::string>(&_ORB),         "ORB service configuration file (Corba ORBSvcConf arg)")
-	("DCPS", po::value<std::string>(&_DCPS),       "DCPS configuration file (OpenDDS DCPSConfigFile arg)")
-	("DCPSInfoRepo", po::value<std::string>(&_DCPSInfoRepo),
-	                                               "DCPSInfoRepo URL (OpenDDS DCPSInfoRepo arg)")
-	("DCPSDebugLevel", po::value<int>(&_DCPSDebugLevel), "DCPSDebugLevel")
-	("DCPSTransportDebugLevel", po::value<int>(&_DCPSTransportDebugLevel),
-			                                       "DCPSTransportDebugLevel")
 			;
 	// If we get an option on the command line with no option name, it
 	// is treated like --drxConfig=<option> was given.
@@ -188,8 +119,6 @@ void parseOptions(int argc,
 		exit(0);
 	}
 
-	if (vm.count("nopublish"))
-	    _publish = false;
 	if (vm.count("simulate"))
 	    _simulate = true;
 	if (vm.count("drxConfig") != 1) {
@@ -298,35 +227,9 @@ main(int argc, char** argv)
     // create the export object
     _exporter = new IwrfExport(hcrConfig, hcrMonitor);
 
-    // For OpenDDS 2.1, keep the published sample size less than ~64 KB,
-    // since larger samples are a problem...
-    if (DDS_MAJOR_VERSION == 2 && DDS_MINOR_VERSION == 1) {
-        // this is just an approximation...
-        int onePulseSize = sizeof(RadarDDS::SysHousekeeping) + hcrConfig.gates() * 4;
-        int maxTsLength = 65000 / onePulseSize;
-        if (! maxTsLength) {
-            ELOG << "Cannot adjust tsLength to meet OpenDDS 2.1 " <<
-                    "max sample size of 2^16 bytes";
-            exit(1);
-        } else if (_tsLength > maxTsLength) {
-            int oldTsLength = _tsLength;
-            // Set _tsLength to the greatest power of 2 which is <= maxTsLength
-            _tsLength = 1;
-            while ((_tsLength * 2) <= maxTsLength)
-                _tsLength *= 2;
-            ELOG << "Adjusted tsLength from " << oldTsLength << " to "
-                 << _tsLength
-                 << " to stay under OpenDDS 2.1 64 KB sample size limit.";
-        }
-    }
-
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
 
-	// create the dds services
-	if (_publish)
-		createDDSservices();
-	
     // Instantiate our p7142sd3c
     Pentek::p7142sd3c sd3c(_simulate, hcrConfig.tx_delay(),
         hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
@@ -356,9 +259,8 @@ main(int argc, char** argv)
 
 	for (int c = 0; c < _chans; c++) {
 	    ILOG << "*** Channel " << c << " ***";
-	    downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsWriter,
-	            _publish, _tsLength, _gaussianFile, _kaiserFile,
-	            _simWaveLength);
+	    downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsLength,
+	    		_gaussianFile, _kaiserFile, _simWaveLength);
 	}
 
     // Create the upConverter.
@@ -429,14 +331,12 @@ main(int argc, char** argv)
 		startTime = currentTime;
 
 		std::vector<long> bytes(_chans);
-		std::vector<unsigned long> discards(_chans);
 		std::vector<unsigned long> droppedPulses(_chans);
 		std::vector<unsigned long> syncErrors(_chans);
 		
 		for (int c = 0; c < _chans; c++) {
 		    Pentek::p7142sd3cDn * down = downThreads[c]->downconverter();
 			bytes[c] = down->bytesRead();
-			discards[c] = downThreads[c]->tsDiscards();
 			droppedPulses[c] = down->droppedPulses();
             syncErrors[c] = down->syncErrors();
 		}
@@ -448,7 +348,6 @@ main(int argc, char** argv)
 			std::cout << std::setprecision(3) << std::setw(5)
                       << "chan " << c << " -- "
                       << bytes[c]/1000000.0/elapsed << " MB/s "
-					  << " nopub:"<< discards[c]
 					  << " drop:" << droppedPulses[c]
 	                  << " sync:" << syncErrors[c];
 		}
@@ -469,9 +368,6 @@ main(int argc, char** argv)
 
 	// stop the timers
     sd3c.timersStartStop(false);
-    
-    // Stop DDS services
-    stopDDSservices();
     
     return(0);
 }

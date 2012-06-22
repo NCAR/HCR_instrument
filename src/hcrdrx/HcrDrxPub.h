@@ -3,7 +3,6 @@
 
 #include <QThread>
 #include <p7142sd3c.h>
-#include <TSWriter.h>
 #include "HcrDrxConfig.h"
 
 class IwrfExport;
@@ -60,8 +59,6 @@ public:
           int chanId,
           const HcrDrxConfig& config,
           IwrfExport *exporter,
-          TSWriter* tsWriter,
-          bool publishDds,
           int tsLength,
           std::string gaussianFile,
           std::string kaiserFile,
@@ -126,26 +123,8 @@ private:
    */
   unsigned int _nGates;
         
-  /// Set true if we are going to publish the data via DDS
-  bool _publishDDS;
-  /// The DDS time series writer
-  TSWriter* _tsWriter;
-  /// The number of unpublished blocks or partial blocks, due to no
-  /// empty items being available from DDS. It is reset to zero whenever 
-  /// tsDiscards() is called.
-  unsigned long _tsDiscards;
-  /// How many pulses are we putting in each published sample?
-  int _ddsSamplePulses;
-  /// The DDS time series sequence we're filling. Once it has 
-  /// _ddsSamplePulses pulses in it, we publish it.
-  RadarDDS::TimeSeriesSequence *_ddsSeqInProgress;
-  /// Where are we in _ddsSeqInProgress?
-  int _ndxInDdsSample;
   /// The DDS sample number; increment when a sample is published.
   long _sampleNumber;
-  /// Base DDS housekeeping with values that remain fixed for this
-  /// downconverter.
-  RadarDDS::SysHousekeeping _baseDdsHskp;
 
   // Exporting IWRF
   
