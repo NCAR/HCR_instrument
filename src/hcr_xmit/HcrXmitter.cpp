@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <stdint.h>
 #include <termios.h>
 #include <fcntl.h>
 
@@ -23,31 +24,12 @@ LOGGING("HcrXmitter")
 const std::string HcrXmitter::SIM_DEVICE = "SimulatedHcrXmitter";
 
 
-// operate command: STX 'O' ETX 0x2e
-const std::string HcrXmitter::_OPERATE_COMMAND = "\x02\x4f\x03\x2e";
-
-// standby command: STX 'S' ETX 0x2a
-const std::string HcrXmitter::_STANDBY_COMMAND = "\x02\x53\x03\x2a";
-
-// reset command: STX 'R' ETX 0x2a
-const std::string HcrXmitter::_RESET_COMMAND = "\x02\x52\x03\x2b";
-
-// power on command: STX 'P' ETX 0x2d
-const std::string HcrXmitter::_POWERON_COMMAND = "\x02\x50\x03\x2d";
-
-// power off command: STX 'p' ETX 0x0d
-const std::string HcrXmitter::_POWEROFF_COMMAND = "\x02\x70\x03\x0d";
-
-// @TODO FIX THIS status command
-const std::string HcrXmitter::_STATUS_COMMAND = "\xf0\x06\x00\x00\x00\x00\x06\xff";
-
-
-
 HcrXmitter::HcrXmitter(std::string ttyDev) :
         _simulate(ttyDev == SIM_DEVICE),
         _aliveCounter(0),
         _ttyDev(ttyDev),
-        _fd(-1) {
+        _fd(-1),
+        _intendedState(0) {
     ILOG << "HcrXmitter on device " << ttyDev;
     // Open the serial port
     if (! _simulate) {
@@ -85,7 +67,9 @@ HcrXmitter::faultReset() {
 
 void
 HcrXmitter::standby() {
-    WLOG << "standby() not implemented!";
+    _intendedState ^= _FILAMENT_ON_BIT;	// toggle the "filament on" bit
+    ILOG << "Commanding filament " << ((_intendedState & _FILAMENT_ON_BIT) ? "on" : "off");
+    _sendCommand(_intendedState);
 //    ILOG << "Standby";
 //    if (! _simulate) {
 //        _sendCommand(_STANDBY_COMMAND);
@@ -169,7 +153,7 @@ HcrXmitter::getStatus(unsigned int recursion) {
     // to come back
     for (int attempt = 0; ; attempt++) {
         // Send the currently desired state to elicit a status response
-        _sendCommand(0);
+        _sendCommand(_intendedState);
     
         // Wait up to a quarter second for reply to be ready
         if (_readSelect(250) == 0) {
@@ -204,24 +188,18 @@ HcrXmitter::getStatus(unsigned int recursion) {
         }
     }
     
-//    // Validate the reply
-//    if (! _argValid(std::string(reply, REPLYSIZE))) {
-//        WLOG << ": Trying again after bad status reply";
-//        return(getStatus(recursion));
-//    }
-    
     // Finally, parse the reply
     status.serialConnected = true;
     
     // 8 bits of boolean status in byte 3
-    status.filamentOn =             (reply[3] >> 0) & 0x1;
-    status.highVoltageOn =          (reply[3] >> 1) & 0x1;
-    status.rfOn =                   (reply[3] >> 2) & 0x1;
-    status.modPulseExternal =       (reply[3] >> 3) & 0x1;
-    status.syncPulseExternal =      (reply[3] >> 4) & 0x1;
-    status.filamentDelayActive =    (reply[3] >> 5) & 0x1;
-    status.powerValid =             (reply[3] >> 6) & 0x1;
-    status.faultSummary =           (reply[3] >> 7) & 0x1;
+    status.filamentOn =             reply[3] & _FILAMENT_ON_BIT;
+    status.highVoltageOn =          reply[3] & _HV_ON_BIT;
+    status.rfOn =                   reply[3] & _RF_ON_BIT;
+    status.modPulseExternal =       reply[3] & _EXT_MOD_PULSE_BIT;
+    status.syncPulseExternal =      reply[3] & _EXT_SYNC_PULSE_BIT;
+    status.filamentDelayActive =    reply[3] & _FILAMENT_DELAY_BIT;
+    status.powerValid =             reply[3] & _POWER_VALID_BIT;
+    status.faultSummary =           reply[3] & _FAULT_SUMMARY_BIT;
 
     DLOG << "filament on " << status.filamentOn <<
             ", HV on " << status.highVoltageOn <<
@@ -252,20 +230,20 @@ HcrXmitter::getStatus(unsigned int recursion) {
     }
     
     // 8 fault bits from byte 5
-    status.modulatorFault =         (reply[5] >> 0) & 0x1;
-    status.syncFault =              (reply[5] >> 1) & 0x1;
-    status.xmitterTempFault =       (reply[5] >> 2) & 0x1;
-    status.waveguideArcFault =      (reply[5] >> 3) & 0x1;
-    status.collectorCurrentFault =  (reply[5] >> 4) & 0x1;
-    status.bodyCurrentFault =       (reply[5] >> 5) & 0x1;
-    status.filamentLorFault =       (reply[5] >> 6) & 0x1;
-    status.focusElectrodeLorFault = (reply[5] >> 7) & 0x1;
+    status.modulatorFault =         reply[5] & _MODULATOR_FAULT_BIT;
+    status.syncFault =              reply[5] & _SYNC_FAULT_BIT;
+    status.xmitterTempFault =       reply[5] & _XMITTER_TEMP_FAULT_BIT;
+    status.waveguideArcFault =      reply[5] & _WG_ARC_FAULT_BIT;
+    status.collectorCurrentFault =  reply[5] & _COLLECTOR_CURRENT_FAULT_BIT;
+    status.bodyCurrentFault =       reply[5] & _BODY_CURRENT_FAULT_BIT;
+    status.filamentLorFault =       reply[5] & _FILAMENT_LOR_FAULT_BIT;
+    status.focusElectrodeLorFault = reply[5] & _FOCUS_ELECTRODE_LOR_FAULT_BIT;
     
     // 4 fault bits from byte 6 (other 4 bits are unused)
-    status.cathodeLorFault =        (reply[6] >> 0) & 0x1;
-    status.inverterOverloadFault =  (reply[6] >> 1) & 0x1;
-    status.externalInterlockFault = (reply[6] >> 2) & 0x1;
-    status.eikInterlockFault    =   (reply[6] >> 3) & 0x1;
+    status.cathodeLorFault =        reply[6] & _CATHODE_LOR_FAULT_BIT;
+    status.inverterOverloadFault =  reply[6] & _INVERTER_OVERLOAD_FAULT_BIT;
+    status.externalInterlockFault = reply[6] & _EXT_INTERLOCK_FAULT_BIT;
+    status.eikInterlockFault    =   reply[6] & _EIK_INTERLOCK_FAULT_BIT;
 
     
     // Bytes 7 and 8 contain whole and fractional cathode voltage
@@ -297,60 +275,6 @@ HcrXmitter::getStatus(unsigned int recursion) {
                 "Transmitter received a bad command at alive counter 0x" <<
                 std::setw(2) << std::hex << uint16_t(reply[2]) << std::dec;
     }
-    
-//    // Six used bits in the second status byte
-//    status.magnetronCurrentFault = (reply[2] >> 5) & 0x1;
-//    status.blowerFault = (reply[2] >> 4) & 0x1;
-//    status.hvpsOn = (reply[2] >> 3) & 0x1;
-//    status.remoteEnabled = (reply[2] >> 2) & 0x1;
-//    status.safetyInterlock = (reply[2] >> 1) & 0x1;
-//    status.reversePowerFault = (reply[2] >> 0) & 0x1;
-//    DLOG << "mag cur flt " << status.magnetronCurrentFault << 
-//        ", blower flt " << status.blowerFault << 
-//        ", hvpsOn " << status.hvpsOn <<
-//        ", remote ena " << status.remoteEnabled << 
-//        ", safety " << status.safetyInterlock <<
-//        ", reverse pwr flt " << status.reversePowerFault;
-//    
-//    // Five used bits in the third status byte
-//    status.pulseInputFault = (reply[3] >> 5) & 0x1;
-//    status.hvpsCurrentFault = (reply[3] >> 3) & 0x1;
-//    status.waveguidePressureFault = (reply[3] >> 2) & 0x1;
-//    status.hvpsUnderVoltage = (reply[3] >> 1) & 0x1;
-//    status.hvpsOverVoltage = (reply[3] >> 0) & 0x1;
-//    DLOG << "pulse flt " << status.pulseInputFault << 
-//        ", HVPS cur flt " << status.hvpsCurrentFault <<
-//        ", wg pres flt " << status.waveguidePressureFault <<
-//        ", HVPS underV " << status.hvpsUnderVoltage <<
-//        ", HVPS overV " << status.hvpsOverVoltage;
-//    
-//    // 4-character HVPS voltage starting at character 4, e.g., " 0.0"
-//    if (sscanf(reply + 4, "%4lf", &status.hvpsVoltage) != 1) {
-//        WLOG << __PRETTY_FUNCTION__ << ": Bad HVPS voltage in status!";
-//    } else {
-//        DLOG << "HVPS voltage " << status.hvpsVoltage << " kV";
-//    }
-//        
-//    // 4-character magnetron current starting at character 8, e.g., " 0.2"
-//    if (sscanf(reply + 8, "%4lf", &status.magnetronCurrent) != 1) {
-//        WLOG << "Bad magnetron current in status!";
-//    } else {
-//        DLOG << "magnetron current " << status.magnetronCurrent << " mA";
-//    }
-//        
-//    // 4-character HVPS current starting at character 12, e.g., " 0.2"
-//    if (sscanf(reply + 12, "%4lf", &status.hvpsCurrent) != 1) {
-//        WLOG << "Bad HVPS current in status!";
-//    } else {
-//        DLOG << "HVPS current " << status.hvpsCurrent << " mA";
-//    }
-//    
-//    // 3-character temperature starting at character 16, e.g., "+27."
-//    if (sscanf(reply+16, "%4lf", &status.temperature) != 1) {
-//        WLOG << "Bad temperature in status!";
-//    } else {
-//        DLOG << "transmitter temperature " << status.temperature << " C";
-//    }
     
     return(status);
 }
@@ -408,11 +332,6 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     if (_simulate)
         return;
     
-//    // Sanity check on command
-//    if (! _argValid(cmd)) {
-//        abort();
-//    }
-    
     // Build the actual command containing the desired state
     std::vector<uint8_t> cmd;
     cmd.push_back(uint8_t(0xf0));   // command start byte
@@ -458,49 +377,6 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
                     ") sending xmitter state 0x" << 
                     std::hex << uint16_t(cmd[3]) << std::dec << ": exiting";
     exit(1);
-}
-
-bool
-HcrXmitter::_argValid(std::string arg) {
-//    // Create an external representation of the argument, e.g.,
-//    // "0x02 0x57 0x03 0x26". We'll use this for error messages.
-//    std::ostringstream ss;
-//    ss << std::setfill('0') << std::setw(2) << std::hex;
-//    for (unsigned int i = 0; i < arg.length(); i++) {
-//        if (i > 0)
-//            ss << " ";
-//        ss << "0x" << arg[i];
-//    }
-//    // Arg must be at least 4 characters long
-//    if (arg.length() < 4) {
-//        
-//        DLOG << __PRETTY_FUNCTION__ << ": arg '" << ss.str() << 
-//                "' too short; it must be at least 4 characters long";
-//        return false;
-//    }
-//    // First character of arg must be STX
-//    if (arg[0] != '\x02') {
-//        DLOG << __PRETTY_FUNCTION__ << ": first character of arg '" << 
-//                ss.str() << "' is not STX (0x02)";
-//        return false;
-//    }
-//    // Next-to-last character of arg must be ETX
-//    if (arg[arg.length() - 2] != '\x03') {
-//        DLOG << __PRETTY_FUNCTION__ << ": last character before checksum in" <<
-//                " arg '" << ss.str() << "' is not ETX (0x03)";
-//    }
-//    // Sum of bytes after STX must be zero (in lowest 7 bits)
-//    int cksum = 0;
-//    for (unsigned int i = 1; i < arg.length(); i++) {
-//        cksum += arg[i];
-//    }
-//    if ((cksum & 0x7f) != 0) {
-//        DLOG << __PRETTY_FUNCTION__ << ": bad checksum in arg '" << ss.str() <<
-//                "'";
-//        return false; 
-//    }
-    // Looks OK!
-    return true;
 }
 
 int 

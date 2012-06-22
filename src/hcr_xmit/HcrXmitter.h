@@ -187,12 +187,6 @@ private:
     void _sendCommand(uint8_t desiredState);
     
     /**
-     * Is the argument string (command or reply) valid?
-     * @return true iff the argument string is valid, including its checksum
-     */
-    bool _argValid(std::string arg);
-    
-    /**
      * Wait for input on our file descriptor, with a timeout specified in
      * milliseconds. 
      * @return 0 when input is ready, -1 if the select timed out, -2 on
@@ -211,14 +205,49 @@ private:
      */
     void _initSimStatus();
     
-    // Command strings for the transmitter
-    static const std::string _OPERATE_COMMAND;
-    static const std::string _STANDBY_COMMAND;
-    static const std::string _RESET_COMMAND;
-    static const std::string _POWERON_COMMAND;
-    static const std::string _POWEROFF_COMMAND;
-    static const std::string _STATUS_COMMAND;
+    /// Command byte 3 & status byte 3: Filament on?
+    static const uint8_t _FILAMENT_ON_BIT 		= 0x01;
+    /// Command byte 3 & status byte 3: HV on?
+    static const uint8_t _HV_ON_BIT				= 0x02;
+    /// Command byte 3 & status byte 3: RF on?
+    static const uint8_t _RF_ON_BIT				= 0x04;
+    /// Command byte 3 & status byte 3: External modulation pulse?
+    static const uint8_t _EXT_MOD_PULSE_BIT		= 0x08;
+    /// Command byte 3 & status byte 3: External sync pulse?
+    static const uint8_t _EXT_SYNC_PULSE_BIT	= 0x10;
+    /// Status byte 3: Is filament delay active?
+    static const uint8_t _FILAMENT_DELAY_BIT	= 0x20;
+    /// Status byte 3: Is power valid?
+    static const uint8_t _POWER_VALID_BIT		= 0x40;
+    /// Status byte 3: Are any faults active?
+    static const uint8_t _FAULT_SUMMARY_BIT		= 0x80;
     
+    /// Status byte 5: Modulator fault?
+    static const uint8_t _MODULATOR_FAULT_BIT			= 0x01;
+    /// Status byte 5: Sync fault?
+    static const uint8_t _SYNC_FAULT_BIT				= 0x02;
+    /// Status byte 5: Transmitter temperature fault?
+    static const uint8_t _XMITTER_TEMP_FAULT_BIT		= 0x04;
+    /// Status byte 5: Waveguide arc fault?
+    static const uint8_t _WG_ARC_FAULT_BIT				= 0x08;
+    /// Status byte 5: Collector current fault?
+    static const uint8_t _COLLECTOR_CURRENT_FAULT_BIT	= 0x10;
+    /// Status byte 5: Body current fault?
+    static const uint8_t _BODY_CURRENT_FAULT_BIT		= 0x20;
+    /// Status byte 5: Filament "loss of reference" fault?
+    static const uint8_t _FILAMENT_LOR_FAULT_BIT		= 0x40;
+    /// Status byte 5: Focus electrode "loss of reference" fault?
+    static const uint8_t _FOCUS_ELECTRODE_LOR_FAULT_BIT	= 0x80;
+
+    /// Status byte 6: Cathode "loss of reference" fault?
+    static const uint8_t _CATHODE_LOR_FAULT_BIT			= 0x01;
+    /// Status byte 6: Inverter overload fault?
+    static const uint8_t _INVERTER_OVERLOAD_FAULT_BIT	= 0x02;
+    /// Status byte 6: External interlock fault?
+    static const uint8_t _EXT_INTERLOCK_FAULT_BIT		= 0x04;
+    /// Status byte 6: EIK interlock fault?
+    static const uint8_t _EIK_INTERLOCK_FAULT_BIT		= 0x08;
+
     // Are we simulating?
     bool _simulate;
     
@@ -234,6 +263,9 @@ private:
     
     // File descriptor for the open serial port
     int _fd;
+
+    // Intended transmitter state
+    uint8_t _intendedState;
 };
 
 #endif /* HCRXMITTER_H_ */
