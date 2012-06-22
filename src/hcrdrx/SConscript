@@ -2,7 +2,6 @@
 
 tools = Split("""
 logx
-hcrdds
 pentek
 qtt_qtconfig
 boost_date_time
