@@ -24,13 +24,13 @@
     <item>
      <widget class="QFrame" name="statusFrame">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::Panel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -321,7 +321,7 @@
        <item>
         <widget class="QGroupBox" name="faultBox">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -335,6 +335,12 @@
           </property>
           <item>
            <widget class="QFrame" name="faultSummaryFrame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
@@ -396,6 +402,12 @@
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="title">
              <string>Fault Details</string>
             </property>
@@ -403,6 +415,9 @@
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="flat">
+             <bool>false</bool>
+            </property>
+            <property name="checkable">
              <bool>false</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
@@ -1108,7 +1123,7 @@ COUNT</string>
       <item>
        <widget class="QPushButton" name="standbyButton">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -1150,7 +1165,7 @@ COUNT</string>
  </widget>
  <resources>
   <include location="HcrXmitCtlMainWindow.qrc"/>
-  <include location="../../../../.designer/backup/HcrXmitCtlMainWindow.qrc"/>
+  <include location="HcrXmitCtlMainWindow.qrc"/>
  </resources>
  <connections/>
  <slots>
