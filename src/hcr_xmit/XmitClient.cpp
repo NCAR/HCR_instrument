@@ -180,7 +180,7 @@ XmitClient::XmitStatus::XmitStatus(XmlRpc::XmlRpcValue & statusDict) {
     _cathodeLorFault = _StatusBool(statusDict, "cathode_lor_fault");
     _inverterOverloadFault = _StatusBool(statusDict, "inverter_overload_fault");
     _extInterlockFault = _StatusBool(statusDict, "external_interlock_fault");
-    _eikInterlockFault = _StatusBool(statusDict, "external_interlock_fault");
+    _eikInterlockFault = _StatusBool(statusDict, "eik_interlock_fault");
     
     _modulatorFaultCount = _StatusInt(statusDict, "modulator_fault_count");
     _syncFaultCount = _StatusInt(statusDict, "sync_fault_count");
