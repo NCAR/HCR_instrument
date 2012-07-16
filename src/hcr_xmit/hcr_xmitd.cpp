@@ -48,12 +48,6 @@ XmlRpcValue StatusDict;
 /// What was the last time we saw the transmitter in "operate" mode?
 time_t LastOperateTime = 0;
 
-/// Are we allowing auto-reset of pulse input faults?
-bool DoAutoFaultReset = true;
-
-/// How many auto fault resets have we done?
-int AutoResetCount = 0;
-
 // Fault counters
 int ModulatorFaultCount = 0;
 int SyncFaultCount = 0;
@@ -395,19 +389,6 @@ public:
     }
 } getStatusMethod(&RpcServer);
 
-/// Xmlrpc++ method to reset transmitter faults.
-class FaultResetMethod : public XmlRpcServerMethod {
-public:
-    FaultResetMethod(XmlRpcServer *s) : XmlRpcServerMethod("faultReset", s) {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        DLOG << "fault reset command received";
-        Xmitter->faultReset();
-        // Re-enable auto pulse fault resets when the user explicitly clears 
-        // faults
-        DoAutoFaultReset = true;
-    }
-} faultResetMethod(&RpcServer);
-
 /// Xmlrpc++ method to enter "standby" state (warmed up, but high voltage off)
 class StandbyMethod : public XmlRpcServerMethod {
 public:
@@ -613,125 +594,6 @@ updateStatus() {
         LastOperateTime = time(0);
 }
 
-/// Handle a pulse input fault
-void
-handlePulseInputFault() {
-    /// List of pulse input fault times, and the max number of them we keep around
-    static std::deque<time_t> PulseFaultTimes;
-    static const unsigned int MAX_PF_ENTRIES = 10;
-
-    // If auto-resets are disabled, just return now
-    if (! DoAutoFaultReset)
-        return;
-
-    // Get current time
-    time_t now = time(0);
-
-    // Push the time of this fault on to our deque
-    PulseFaultTimes.push_back(now);
-    
-    // Keep no more than the last MAX_ENTRIES fault times.
-    if (PulseFaultTimes.size() == (MAX_PF_ENTRIES + 1))
-        PulseFaultTimes.pop_front();
-    
-    // Issue a "faultReset" command unless the time span for the last 
-    // MAX_ENTRIES faults is less than 100 seconds.
-    if (PulseFaultTimes.size() < MAX_PF_ENTRIES || 
-        ((PulseFaultTimes[MAX_PF_ENTRIES - 1] - PulseFaultTimes[0]) > 100)) {
-        Xmitter->faultReset();
-        AutoResetCount++;
-        ILOG << "Pulse input fault auto reset";
-    } else {
-        std::ostringstream ss;
-        WLOG << "Pulse input fault auto reset disabled after 10 faults in " << 
-            (PulseFaultTimes[MAX_PF_ENTRIES - 1] - PulseFaultTimes[0]) << 
-            " seconds!";
-        // Disable auto fault resets. They will be re-enabled if the user
-        // pushes the "Fault Reset" button.
-        DoAutoFaultReset = false;
-        return;
-    }
-    // The pulse input fault puts the radar into "standby" mode. 
-    // If the radar was *very* recently in "operate" mode, wait until the fault
-    // clears, then return to "operate" mode.
-    if ((now - LastOperateTime) < 2) {
-        int tries;
-        const int MAXTRIES = 10;
-        
-        // Try a few times if necessary waiting for the fault to clear
-        for (tries = 0; tries < MAXTRIES; tries++) {
-            // Sleep a moment and get updated status
-            usleep(100000);
-            updateStatus();
-            // When the fault was actually cleared, bail out of the loop.
-            if (! XmitStatus.faultSummary) {
-                break;
-            }
-        }
-        if (tries == MAXTRIES) {
-            WLOG << "Too many tries waiting for fault(s) to clear!";
-            // Disable auto fault resets. They will be re-enabled if the user
-            // pushes the "Fault Reset" button.
-            DoAutoFaultReset = false;
-        }
-        
-        // Now try a few times if necessary to go back to 'operate' mode
-        ILOG << "Returning to 'operate' after pulse input fault reset.";
-        for (tries = 0; tries < MAXTRIES; tries++) {
-            // Send the "operate" command
-            Xmitter->operate();
-            // Sleep a moment and get updated status
-            usleep(100000);
-            updateStatus();
-            // Exit the loop if the transmitter is now operating
-            if (XmitStatus.rfOn) {
-                ILOG << "Succeeded after " << tries + 1 << " tries";
-                break;
-            }
-        }
-        if (tries == MAXTRIES) {
-            WLOG << "Failed to re-enter 'operate' mode after " << MAXTRIES <<
-                    " tries";
-        }
-    }
-    return;     
-}
-
-
-// Try to have hcrdrx lower the transmit trigger enable line
-void
-lowerXmitEnableLine() {
-    ILOG << "Disabling transmit XML-RPC call to hcrdrx.";
-    XmlRpcClient client(HcrdrxHost.c_str(), HcrdrxPort);
-
-    XmlRpcValue params;
-    XmlRpcValue result;
-    // Send the "disableTransmit" command to hcrdrx
-    if (! client.execute("disableTransmit", params, result)) {
-        ELOG << "Error executing hcrdrx 'disableTransmit' command @ " <<
-                HcrdrxHost << ":" << HcrdrxPort;
-        ELOG << "Transmit disable via hcrdrx failed";
-    }
-    client.close();
-}
-
-// Try to have hcrdrx raise the transmit trigger enable line
-void
-raiseXmitEnableLine() {
-    ILOG << "Enabling transmit XML-RPC call to hcrdrx.";
-    XmlRpcClient client(HcrdrxHost.c_str(), HcrdrxPort);
-
-    XmlRpcValue params;
-    XmlRpcValue result;
-    // Send the "enableTransmit" command to hcrdrx
-    if (! client.execute("enableTransmit", params, result)) {
-        ELOG << "Error executing hcrdrx 'enableTransmit' command @ " <<
-                HcrdrxHost << ":" << HcrdrxPort;
-        ELOG << "Transmit enable via hcrdrx failed";
-    }
-    client.close();
-}
-
 /// Print usage information
 void
 usage(const char* argv0) {
@@ -849,10 +711,6 @@ main(int argc, char *argv[]) {
         PMU_auto_register("running");
         // Get current transmitter status
         updateStatus();
-        
-//        // If we got a pulse input fault, try to handle it
-//        if (XmitStatus.pulseInputFault)
-//            handlePulseInputFault();
         
         // Listen for XML-RPC commands.
         // Note that work() mostly goes for 2x the given time, but sometimes
