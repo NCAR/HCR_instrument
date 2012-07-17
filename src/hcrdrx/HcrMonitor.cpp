@@ -78,22 +78,23 @@ HcrMonitor::_getMultiIoValues() {
     QMutexLocker locker(&_mutex);
 
     HcrPmc730 & pmc730 = HcrPmc730::theHcrPmc730();
-    // Get data from analog channels 0-9 on the PMC-730 multi-IO card
-    std::vector<float> analogData = pmc730.readAnalogChannels(0, 9);
-//    // Channels 0-2 give us RF power measurements
-//    _testTargetPowerVideo = _lookupQEAPower(analogData[0]);
-//    _vTxPowerVideo = _lookupQEAPower(analogData[1]);
-//    _hTxPowerVideo = _lookupQEAPower(analogData[2]);
+    // Get data from analog channels 0-21 on the PMC-730 multi-IO card
+    std::vector<float> analogData = pmc730.readAnalogChannels(0, 21);
+//    // Channel 0 gives us RF power measurement
+//    implementation;
+//    // Channels 1 and 2 have pressure sensors
+//    implementation;
     // Channel 3 gives us temperature near the DRX. The data are a bit noisy, so
     // we keep up to TEMP_AVERAGING_LEN samples so we can generate moving 
     // averages.
-    _procDrxTemps.push_back(_voltsToTemp(analogData[7]));
+    _procDrxTemps.push_back(_voltsToTemp(analogData[3]));
     while (_procDrxTemps.size() > TEMP_AVERAGING_LEN) {
         _procDrxTemps.pop_front();
     }
 
     DLOG << std::fixed << std::setprecision(1) << 
-        "drx: " << procDrxTemp() << " C";
+        "temp sensor: " <<
+        	_pt1000Temperature(analogData[16], analogData[3], 1000) << " ohms";
 }
 
 float

@@ -46,6 +46,18 @@ private:
     // run-time configuration
     const HcrDrxConfig &_config;
 
+    // Calculate temperature of a Pt1000 RTD temperature sensor connected in
+    // series with a pulldown resistor across a known voltage.
+    // @param v_ps the voltage of the power supply feeding the divider, V
+    // @param v_pulldown the voltage across the pulldown resistor, V
+    // @param r_pulldown the resistance of the pulldown resistor, ohms
+    // @return the temperature of the RTD, deg C
+    static double _pt1000Temperature(double v_ps, double v_pulldown,
+    		double r_pulldown) {
+    	// Resistance of the RTD
+    	double r_rtd = r_pulldown * (v_ps / v_pulldown - 1);
+    	return(r_rtd);
+    }
     /**
      * Return the temperature, in C, based on temperature sensor voltage.
      * @param voltage voltage from temperature sensor
