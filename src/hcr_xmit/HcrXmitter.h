@@ -125,7 +125,7 @@ public:
     /**
      * @brief Get current status values from the transmitter.
      */
-    Status getStatus(unsigned int recursion = 0);
+    Status getStatus();
     
     /**
      * @brief Set filament state.
@@ -147,11 +147,6 @@ public:
      * disable RF transmit.
      */
     void setRfEnabled(bool state);
-    
-    /**
-     * Reset all fault conditions.
-     */
-    void faultReset();
     
     /**
      * Enter "standby" state (ready to operate, but high voltage disabled).

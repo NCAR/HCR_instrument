@@ -44,45 +44,15 @@ HcrXmitter::~HcrXmitter() {
 }
 
 void
-HcrXmitter::faultReset() {
-    WLOG << "faultReset() not implemented!";
-//    ILOG << "Fault Reset";
-//    if (! _simulate) {
-//        _sendCommand(_RESET_COMMAND);
-//    } else {
-//        if (! _simStatus.unitOn)
-//            return;
-//        
-//        _simStatus.faultSummary = false;
-//        _simStatus.blowerFault = false;
-//        _simStatus.hvpsCurrentFault = false;
-//        _simStatus.hvpsOverVoltage = false;
-//        _simStatus.hvpsUnderVoltage = false;
-//        _simStatus.magnetronCurrentFault = false;
-//        _simStatus.pulseInputFault = false;
-//        _simStatus.reversePowerFault = false;
-//        _simStatus.safetyInterlock = false;
-//    }
-    return;
-}
-
-void
 HcrXmitter::standby() {
+	ILOG << "Standby";
     _intendedState ^= _FILAMENT_ON_BIT;	// toggle the "filament on" bit
     ILOG << "Commanding filament " << ((_intendedState & _FILAMENT_ON_BIT) ? "on" : "off");
-    _sendCommand(_intendedState);
-//    ILOG << "Standby";
-//    if (! _simulate) {
-//        _sendCommand(_STANDBY_COMMAND);
-//    } else {
-//        if (! _simStatus.unitOn)
-//            return;
-//        
-//        _simStatus.hvpsOn = false;
-//        _simStatus.hvpsRunup = false;
-//        _simStatus.hvpsVoltage = 0.0;
-//        _simStatus.standby = true;
-//    }
+    if (! _simulate) {
+    	_sendCommand(_intendedState);
+    } else {
+    	_simStatus.filamentOn = (_intendedState & _FILAMENT_ON_BIT);
+    }
     return;
 }
 
@@ -103,95 +73,113 @@ HcrXmitter::operate() {
 //    }
     return;
 }
-#define MAX_GET_STATUS_TRIES 2
 
 HcrXmitter::Status
-HcrXmitter::getStatus(unsigned int recursion) {
-//    // Special handling if we're simulating...
-//    if (_simulate) {
-//        _simStatus.magnetronCurrent = 0.1 + (0.2 * random()) / RAND_MAX;
-//        _simStatus.hvpsCurrent = 0.2 + (0.2 * random()) / RAND_MAX;
-//        _simStatus.temperature = 30 + (2.0 * random()) / RAND_MAX;
-//        
-//        // If in operate mode, occasionally generate a pulse input fault
-//        if (_simStatus.hvpsRunup && (random() / float(RAND_MAX)) < 0.05) {
-//            _simStatus.pulseInputFault = true;
-//        }
-//
-//        _simStatus.faultSummary = _simStatus.blowerFault ||
-//                _simStatus.hvpsCurrentFault|| _simStatus.hvpsOverVoltage ||
-//                _simStatus.hvpsUnderVoltage || _simStatus.magnetronCurrentFault ||
-//                _simStatus.pulseInputFault || _simStatus.reversePowerFault ||
-//                _simStatus.safetyInterlock;
-//        
-//        // If we simulated a fault, also simulate leaving operate mode
-//        if (_simStatus.faultSummary) {
-//            _simStatus.hvpsOn = false;
-//            _simStatus.hvpsRunup = false;
-//            _simStatus.hvpsVoltage = 0.0;
-//            _simStatus.standby = true;
-//        }
-//        
-//        return(_simStatus);
-//    }
+HcrXmitter::getStatus() {
+    // Special handling if we're simulating...
+    if (_simulate) {
+    	_simStatus.powerValid = true;
+    	_simStatus.serialConnected = true;
+    	_simStatus.cathodeVoltage = 14.9 + (0.2 * random()) / RAND_MAX;
+    	_simStatus.collectorCurrent = 390. + (20.0 * random()) / RAND_MAX;
+    	_simStatus.bodyCurrent = 49.0 + (2.0 * random()) / RAND_MAX;
+    	_simStatus.xmitterTemp = 39.5 + (1.0 * random()) / RAND_MAX;
+        return(_simStatus);
+    }
     
     // This must be the real thing, so get status from the transmitter
+    
+    // Status struct which we will return
     Status status;
-    _clearStatus(status);
-    // don't recurse more than 'N' levels in retries
-    if (recursion++ == MAX_GET_STATUS_TRIES) {
-       ELOG << __PRETTY_FUNCTION__ << ": Too many getStatus() retries! (giving up)";
-       return status;
+	_clearStatus(status);
+
+	// Reply from the transmitter, which will be parsed to build the Status
+	// struct.
+	static const int REPLYSIZE = 20;
+	uint8_t reply[REPLYSIZE];
+
+	// Max number of times to attempt to get good status from the transmitter
+    unsigned int MAX_ATTEMPTS = 3;
+
+    unsigned int attempt = 0;
+    unsigned int nReplies = 0;
+
+	// Loop until we either get a usable status reply or we hit our maximum 
+	// number of attempts.
+    for (attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    	// Get rid of any unread input
+    	tcflush(_fd, TCIFLUSH);
+
+    	// Send the currently desired state to elicit a status response
+    	_sendCommand(_intendedState);
+
+    	// Wait up to a second for reply to arrive
+    	if (_readSelect(1000) < 0) {
+    		DLOG << "Error or timeout waiting for status reply";
+    		// Try again
+    		continue;
+    	}
+
+    	if (attempt > 0 && nReplies == 0) {
+    		ILOG << "Got first status reply after " << attempt + 1 <<
+    				" attempts";
+    	}
+
+    	// Read the 20-byte status reply
+    	DLOG << "Reading status reply";
+    	int nBytesRead = 0;
+    	int nReads = 0;
+    	while (nBytesRead < REPLYSIZE && nReads < 5) {
+    		int result = read(_fd, reply + nBytesRead, REPLYSIZE - nBytesRead);
+    		nReads++;
+    		if (result == 0) {
+    			// wait 5 ms for more data
+    			ILOG << "Sleeping for more status data...";
+    			usleep(5000);
+    		} else if (result < 0) {
+    			ELOG << "Status reply read error: " << strerror(errno);
+    			return(status);
+    		} else {
+    			nBytesRead += result;
+    		}
+    	}
+    	if (nBytesRead == REPLYSIZE) {
+    		// We got a reply
+    		nReplies++;
+    	} else {
+    		// Incomplete reply, so try again
+    		WLOG << "Incomplete reply";
+    		continue;
+    	}
+
+    	// Byte 17 is non-zero if the transmitter received a bad communication.
+    	// If this byte indicates an error, the rest of the returned status can't
+    	// be trusted, so go back and try again.
+    	if (reply[17] != 0) {
+    		ELOG << "'Bad communication' reply from transmitter";
+    		// Try again
+    		continue;
+    	}
+
+    	// It appears we have a good reply, so break out and parse it.
+    	break;
     }
-    if (recursion > 1) {
-       WLOG << __PRETTY_FUNCTION__ << ": getStatus() retry - recursion = " << recursion;
+    
+    // If we used up our tries, we just return the empty status
+    if (attempt == MAX_ATTEMPTS) {
+    	if (nReplies == 0) {
+    		WLOG << "No status reply in " << MAX_ATTEMPTS <<
+    				" tries; Is the transmitter plugged in?";
+    	} else {
+    		WLOG << "Only 'bad communication' replies in " << MAX_ATTEMPTS <<
+    				" attempts to get status";
+    	}
+    	return(status);
     }
-    
-    // Get rid of any unread input
-    tcflush(_fd, TCIFLUSH);
-    
-    // Try up to five times so send a status command and wait for *something*
-    // to come back
-    for (int attempt = 0; ; attempt++) {
-        // Send the currently desired state to elicit a status response
-        _sendCommand(_intendedState);
-    
-        // Wait up to a quarter second for reply to be ready
-        if (_readSelect(250) == 0) {
-            if (attempt > 0) {
-                DLOG << "Took " << attempt + 1 << " tries to get status reply";
-            }
-            break;
-        } else {
-            if (attempt == 4) {
-                WLOG << "No status reply in " << attempt + 1 << 
-                    " tries; Is the transmitter plugged in?";
-                return(status);
-            }
-        }
-    }
-    
-    // Read the 20-byte status reply
-    DLOG << "Reading status reply";
-    static const int REPLYSIZE = 20;
-    uint8_t reply[REPLYSIZE];
-    int nRead = 0;
-    while (nRead < REPLYSIZE) {
-        int result = read(_fd, reply + nRead, REPLYSIZE - nRead);
-        if (result == 0) {
-            DLOG << "Status reply read timeout. Trying again.";
-            return getStatus(recursion);
-        } else if (result < 0) {
-            ELOG << "Status reply read error: " << strerror(errno);
-            return(status);
-        } else {
-            nRead += result;
-        }
-    }
-    
-    // Finally, parse the reply
-    status.serialConnected = true;
-    
+
+	// Parse the status reply
+	status.serialConnected = true;
+
     // 8 bits of boolean status in byte 3
     status.filamentOn =             reply[3] & _FILAMENT_ON_BIT;
     status.highVoltageOn =          reply[3] & _HV_ON_BIT;
@@ -269,14 +257,6 @@ HcrXmitter::getStatus(unsigned int recursion) {
     // Byte 16 contains panel PRF selector setting (0-15)
     status.prfSelector = reply[16];
     
-    // Byte 17 is 1 if the transmitter received a bad communication, 0 
-    // otherwise
-    if (reply[17]) {
-        ELOG << std::setfill('0') << 
-                "Transmitter received a bad command at alive counter 0x" <<
-                std::setw(2) << std::hex << uint16_t(reply[2]) << std::dec;
-    }
-    
     return(status);
 }
 
@@ -335,21 +315,22 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     
     // Build the actual command containing the desired state
     std::vector<uint8_t> cmd;
-    cmd.push_back(uint8_t(0xf0));   // command start byte
-    cmd.push_back(6);               // byte count (without start and end)
-    cmd.push_back(_aliveCounter++); // alive counter
-    cmd.push_back(desiredState);    // transmitter state
-    cmd.push_back(0);
-    cmd.push_back(0);
+
+    cmd.push_back(uint8_t(0xf0));		// byte 0: command start byte 0xf0
+    cmd.push_back(6);               	// byte 1: byte count (without start and end)
+    cmd.push_back(_aliveCounter++);		// byte 2: alive counter
+    cmd.push_back(desiredState);		// byte 3: transmitter state
+    cmd.push_back(0);					// byte 4: always zero
+    cmd.push_back(0);					// byte 5: always zero
   
-    // Checksum is XOR of everything after the start byte
+    // Compute and append XOR checksum of bytes 1-5
     uint8_t chksum = 0;
-    for (unsigned int i = 1; i < cmd.size(); i++) {
+    for (unsigned int i = 1; i < 6; i++) {
         chksum ^= cmd[i];
     }
+    cmd.push_back(chksum);				// byte 6: checksum
     
-    cmd.push_back(chksum);          // checksum
-    cmd.push_back(uint8_t(0xff));   // end byte
+    cmd.push_back(uint8_t(0xff));		// byte 7: command end byte 0xff
     
     // Try up to five times to send all of the chars out
     int nSent = 0;
@@ -358,13 +339,13 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
         if (attempt > 0) {
             ILOG << __PRETTY_FUNCTION__ << ": Attempt " << attempt + 1 << 
                     " to send xmitter state 0x" << 
-                    std::hex << uint16_t(cmd[3]) << std::dec;
+                    std::hex << uint16_t(desiredState) << std::dec;
         }
         int result = write(_fd, cmd.data() + nSent, nToSend);
         if (result == -1) {
             WLOG << __PRETTY_FUNCTION__ << ": Error (" << strerror(errno) <<
                     ") sending xmitter state 0x" << 
-                    std::hex << uint16_t(cmd[3]) << std::dec;
+                    std::hex << uint16_t(desiredState) << std::dec;
         } else {
             nToSend -= result;
             nSent += result;
@@ -375,7 +356,7 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     }
     // Exit if we fail to get the command through after many attempts...
     ELOG << __PRETTY_FUNCTION__ << ": Repeated Errors (" << strerror(errno) <<
-                    ") sending xmitter state 0x" << 
+                    ") sending xmitter state 0x" << std::setfill('0') <<
                     std::hex << uint16_t(cmd[3]) << std::dec << ": exiting";
     exit(1);
 }
@@ -420,5 +401,6 @@ void
 HcrXmitter::_initSimStatus() {
     _clearStatus(_simStatus);
     _simStatus.serialConnected = true;
+    _simStatus.powerValid = true;
     _simStatus.controlSource = RS232Control;
 }
