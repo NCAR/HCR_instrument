@@ -1,15 +1,16 @@
 # -*- python -*-
 
 tools = Split("""
-logx
-pentek
-qtt_qtconfig
 boost_date_time
 boost_program_options
 doxygen
+logx
+pentek
 pmc730
-rapradar
 qt4
+qtt_qtconfig
+rapradar
+xmitclient
 """)
 
 sources = Split("""
