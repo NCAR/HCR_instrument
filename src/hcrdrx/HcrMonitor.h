@@ -14,6 +14,8 @@
 #include <QThread>
 #include <QMutex>
 
+#include <XmitClient.h>
+
 #include "HcrDrxConfig.h"
 
 // #include <XmitClient.h>
@@ -27,9 +29,13 @@ class HcrMonitor : public QThread {
 public:
     /**
      * Construct a HcrMonitor which will read data on a regular basis from 
-     * the PMC-730 card.
+     * the PMC-730 card, and get transmitter status from ka_xmitd
+     * running on host xmitdHost/port xmitdPort.
+     * @param config the HcrDrxConfig defining run-time configuration for hcrdrx
+     * @param xmitdHost the name of the host on which hcr_xmitd is running
+     * @param xmitdPort the port number hcr_xmitd is using for XmlRpc calls
      */
-    HcrMonitor(const HcrDrxConfig &config);
+    HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost, int xmitdPort);
     
     virtual ~HcrMonitor();
     
@@ -40,6 +46,12 @@ public:
      * @return temperature near the DRX computer, C
      */
     float procDrxTemp() const;
+
+    /**
+     * Get the transmitter status.
+     * @return the transmitter status.
+     */
+    XmitClient::XmitStatus transmitterStatus() const;
 
 private:
 
@@ -82,6 +94,11 @@ private:
     void _getMultiIoValues();
 
     /**
+     * Get transmitter status information from the hcr_xmitd process.
+     */
+    void _getXmitStatus();
+
+    /**
      * Return the average of values in a deque<float>, or -99.9 if the deque
      * is empty.
      * @return the average of values in a deque<float>, or -99.9 if the deque
@@ -99,6 +116,10 @@ private:
     /// Deques to hold temperature lists. Lists of temperatures are kept so
     /// that we can time-average to reduce noise in the sampling.
     std::deque<float> _procDrxTemps;
+
+    /// XML-RPC access to hcr_xmitd for its status
+    XmitClient _xmitClient;
+    XmitClient::XmitStatus _xmitStatus;
 };
 
 
