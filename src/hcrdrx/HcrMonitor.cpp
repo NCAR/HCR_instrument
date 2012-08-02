@@ -37,6 +37,77 @@ HcrMonitor::~HcrMonitor() {
     }
 }
 
+/*
+ * Map from Pt1000 resistance to temperature, generated on the first call to 
+ * _pt1000Temperature()
+ */
+static std::map<double, double>  Pt1000_OhmsToTempMap;
+static double Pt1000MapMinOhms;
+static double Pt1000MapMaxOhms;
+
+double
+HcrMonitor::_pt1000Temperature(double psVolts, double pulldownVolts,
+        double pulldownOhms) {
+    // Build the resistance->temperature map the first time we come here.
+    // The map is just a table of resistances calculated every 1 degree
+    // C from -50 to 200 deg C. The formula is the Callendar-Van Dusen 
+    // equation, using the standard Pt1000 values for A, B, and C.
+    if (Pt1000_OhmsToTempMap.empty()) {
+        double R0 = 1000;   // 1000 ohms for Pt1000
+        double A = 3.9083e-3;   // deg C^-1
+        double B = -5.775e-7;   // deg C^-2
+        double C = -4.183e-12;  // deg C^-4
+        double TMin = -50.0;
+        double TMax = 200.0;
+        for (double t = TMin; t <= TMax; t += 1.0) {
+            double r = R0 * (1 + (A * t) + (B * t * t));
+            if (t < 0) {
+                r += R0 * (C * t * t * t * (t - 100));
+            }
+            if (t == TMin) {
+                Pt1000MapMinOhms = r;
+            }
+            Pt1000MapMaxOhms = r;
+            Pt1000_OhmsToTempMap[r] = t;
+        }
+    }
+    // Resistance of the RTD, calculated from psVolts drop across our 
+    // voltage divider with the RTD and the pulldown resistor in series.
+    double rtdOhms = pulldownOhms * (psVolts / pulldownVolts - 1);
+
+    // If rtdOhms is less than the lowest resistance in our map, 
+    // return -999.9
+    if (rtdOhms < Pt1000MapMinOhms) {
+        return(-999.9);
+    }
+    // If rtdOhms is greater than the highest resistance in our map,
+    // return 999.9
+    if (rtdOhms > Pt1000MapMaxOhms) {
+        return(999.9);
+    }
+    // Find the iterators for entries which bound our RTD resistance
+    std::map<double, double>::iterator itLower = 
+        Pt1000_OhmsToTempMap.lower_bound(rtdOhms);
+    std::map<double, double>::iterator itUpper = itLower++;
+    // Interpolate between the two values to get our temperature.
+    double r0 = itLower->first;
+    double t0 = itLower->second;
+    double r1 = itUpper->first;
+    double t1 = itUpper->second;
+    return(t0 + (rtdOhms - r0) / (r1 - r0) * (t1 - t0));
+}
+
+double
+HcrMonitor::_15PSI_A_4V_Pres(double sensorVolts) {
+    // Nominal calibration from device spec: 0.25 V @ zero pressure
+    const double zeroPresOffsetVolts = 0.25;
+    // Nominal calibration from device spec: 4 V output span over 15 PSI
+    // (1034.2 hPa)
+    const double hPaPerVolt = 1034.2 / 4.0;
+    return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
+}
+
+
 float
 HcrMonitor::procDrxTemp() const {
     QMutexLocker locker(&_mutex);
@@ -50,7 +121,7 @@ HcrMonitor::run() {
     // Since we have no event loop, allow thread termination via the terminate()
     // method.
     setTerminationEnabled(true);
-  
+
     while (true) {
         // Sleep if necessary to get ~1 second between updates
         QDateTime now = QDateTime::currentDateTime().toUTC();
@@ -91,10 +162,6 @@ HcrMonitor::_getMultiIoValues() {
     while (_procDrxTemps.size() > TEMP_AVERAGING_LEN) {
         _procDrxTemps.pop_front();
     }
-
-    DLOG << std::fixed << std::setprecision(1) << 
-        "temp sensor: " <<
-        	_pt1000Temperature(analogData[16], analogData[3], 1000) << " ohms";
 }
 
 float
