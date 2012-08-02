@@ -45,8 +45,8 @@ int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of millisecnds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
-std::string _xmitdHost("hcrdrx"); ///< The host on which xmitd is running
-int _xmitdPort = 8080;           ///< The port on which xmitd is listening
+std::string _xmitdHost("hcrdrx");	///< The host on which hcr_xmitd is running
+int _xmitdPort = 8080;				///< The port on which hcr_xmitd is listening
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -97,12 +97,14 @@ void parseOptions(int argc,
 	// get the options
 	po::options_description descripts("Options");
 	descripts.add_options()
-	("help", "Describe options")
-	("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
-	("instance", po::value<std::string>(&_instance), "App instance for procmap")
-	("simulate",                                   "Enable simulation")
-	("simPauseMS",  po::value<double>(&_simPauseMS),  "Simulation pause interval between beams (ms)")
-			;
+		("help", "Describe options")
+		("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
+		("instance", po::value<std::string>(&_instance), "App instance for procmap")
+		("simulate", "Enable simulation")
+		("simPauseMS",  po::value<double>(&_simPauseMS), "Simulation pause interval between beams (ms)")
+		("xmitdHost", po::value<std::string>(&_xmitdHost), "Host machine for hcr_xmitd")
+		("xmitdPort", po::value<int>(&_xmitdPort), "Port for contacting hcr_xmitd")
+		;
 	// If we get an option on the command line with no option name, it
 	// is treated like --drxConfig=<option> was given.
 	po::positional_options_description pd;
@@ -221,7 +223,7 @@ main(int argc, char** argv)
     }
 
     // Start our status monitoring thread.
-    HcrMonitor hcrMonitor(hcrConfig);
+    HcrMonitor hcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
     hcrMonitor.start();
 
     // create the export object
