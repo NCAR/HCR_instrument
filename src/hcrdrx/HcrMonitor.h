@@ -67,7 +67,7 @@ private:
      * @return the temperature of the RTD, deg C
      */
     static double _pt1000Temperature(double psVolts, double pulldownVolts,
-    		double pulldownOhms);
+            double pulldownOhms);
     
     /** 
      * Calculate the pressure based on the voltage from an
