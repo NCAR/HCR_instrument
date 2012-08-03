@@ -8,17 +8,18 @@
 class IwrfExport;
 class PulseData;
 
-/// @brief HcrDrxPub publishes data from a p7142sd3c receive channel via DDS.
+/// @brief HcrDrxPub publishes data from a p7142sd3c receive channel via an
+/// IwrfExport object.
 ///
 /// HcrDrxPub moves data from a downconverter to a data publisher. The 
 /// downconverter is created for one receive channel via the associated 
-/// p7142sd3c object. A TSWriter is passed in by the user, and is used for
+/// p7142sd3c object. An IwrfExport object is instantiated and is used for
 /// data publishing.
 ///
 /// HcrDrxPub provides a separate thread for performing
 /// the data processing. It is initiated by calling the start() method,
-/// which then invokes the run() method. run() simple loops, reading beams
-/// from p7142sd3cDn and publishing them via the TSWriter.
+/// which then invokes the run() method. run() simply loops, reading beams
+/// from p7142sd3cDn and publishing them via the IwrfExport object.
 ///
 /// Since HcrDrxPub does not use a Qt event loop at this point, the thread
 /// should be stopped by calling its terminate() method.
@@ -39,14 +40,13 @@ public:
     } HcrChannel;
         
   /**
-   * Constructor.
+   * @brief Constructor.
    * @param sd3c reference to the p7142sd3c object for our P7142 card
    * @param chanId the P7142 channel this thread will read
    * @param config HcrDrxConfig defining the desired configuration.
-   * @param tsWriter the time series DDS writer to be used.
-   * @param publish should we publish data via DDS?
-   * @param tsLength the number of time series pulses to be sent when
-   *     we publish
+   * @param exporter the IwrfExport object to be used for merging and publishing
+   *     data
+   * @param tsLength the timeseries length to be used by our downconverter
    * @param gaussianFile Name of the file containing the Gaussian
    *     filter parameters
    * @param kaiserFile Name of the file containing the Kaiser
@@ -67,11 +67,15 @@ public:
   /// Destructor
   virtual ~HcrDrxPub();
   void run();
+
+  /// @brief Return the number of timeseries blocks that have been discarded
+  /// since the last time this function was called.
   /// @return The number of timeseries blocks that have been discarded
   /// since the last time this function was called.
   unsigned long tsDiscards();
 
-  /// @ return a pointer to our downconverter object
+  /// @brief Return a pointer to our downconverter object
+  /// @return a pointer to our downconverter object
   Pentek::p7142sd3cDn* downconverter() { return _down; }
 
 private:
@@ -80,26 +84,19 @@ private:
 
   const HcrDrxConfig &_config;
 
-  /// Return the current time in seconds since 1970/01/01 00:00:00 UTC.
+  /// @brief Return the current time in seconds since 1970/01/01 00:00:00 UTC.
   /// Returned value has 1 ms precision.
   /// @return the current time in seconds since 1970/01/01 00:00:00 UTC
   double _nowTime();
 
-  /// Publish a beam. A DDS sample is built and put into _ddsSeqInProgress.
-  /// When all of the samples have been filled in _ddsSeqInProgress, it is published.
-  /// @param buf The raw buffer of data from the downconverter
+  /// @brief Add data to the IWRF export object
+  /// @param iq The raw buffer of data from the downconverter
   /// channel. It contains all Is and Qs
-  /// @param pulsenum The pulse number. Will be zero for raw data.
-  void publishDDS(char* buf, int64_t pulsenum);
-
-  /// add data to the IWRF export object
-  /// @param buf The raw buffer of data from the downconverter
-  /// channel. It contains all Is and Qs
-  /// @param pulseSeqNum The pulse number. Will be zero for raw data.
+  /// @param pulseSeqNum The pulse number (will be zero for raw data).
   void _addToExport(const int16_t *iq, int64_t pulseSeqNum);
         
   /**
-   * Return true iff the current configuration is valid.
+   * @brief Return true iff the current configuration is valid.
    * @return true iff the current configuration is valid.
    */
   bool _configIsValid() const;
@@ -113,9 +110,10 @@ private:
   /// Our associated Pentek downconverter
   Pentek::p7142sd3cDn* _down;
 
-  /// I and Q count scaling factor to get power in mW easily:
-  /// mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
-
+  /**
+   * I and Q count scaling factor to get power in mW easily:
+   * mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
+   */
   double _iqScaleForMw;
 
   /**
@@ -126,9 +124,13 @@ private:
   /// The DDS sample number; increment when a sample is published.
   long _sampleNumber;
 
-  // Exporting IWRF
-  
+  /**
+   * Our IWRF exporter, which merges time series data and publishes via a
+   * TCP socket
+   */
   IwrfExport *_exporter;
+  
+  /// PulseData instance to be filled and passed to our exporter
   PulseData *_pulseData;
 
 };
