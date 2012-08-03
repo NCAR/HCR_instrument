@@ -25,7 +25,7 @@ LOGGING("HcrMonitor")
 
 
 HcrMonitor::HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost,
-		int xmitdPort) :
+        int xmitdPort) :
     QThread(),
     _config(config),
     _mutex(QMutex::Recursive),
@@ -152,9 +152,9 @@ HcrMonitor::run() {
 void
 HcrMonitor::_getMultiIoValues() {
 
-	if (_config.simulate_pmc730()) {
-		return;
-	}
+    if (_config.simulate_pmc730()) {
+        return;
+    }
 
     QMutexLocker locker(&_mutex);
 
@@ -177,7 +177,7 @@ HcrMonitor::_getMultiIoValues() {
 void
 HcrMonitor::_getXmitStatus() {
     // Get the status first, then get the mutex and set our member variable.
-	// This way, we don't have the mutex locked very long at all....
+    // This way, we don't have the mutex locked very long at all....
     XmitClient::XmitStatus xmitStatus;
     _xmitClient.getStatus(xmitStatus);
 
