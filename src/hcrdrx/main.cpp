@@ -45,8 +45,8 @@ int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of millisecnds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
-std::string _xmitdHost("hcrdrx");	///< The host on which hcr_xmitd is running
-int _xmitdPort = 8080;				///< The port on which hcr_xmitd is listening
+std::string _xmitdHost("hcrdrx");///< The host on which hcr_xmitd is running
+int _xmitdPort = 8080;           ///< The port on which hcr_xmitd is listening
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -63,24 +63,24 @@ void sigHandler(int sig) {
 void getConfigParams()
 {
 
-	QtConfig config("HcrDrx", "HcrDrx");
+    QtConfig config("HcrDrx", "HcrDrx");
 
-	// set up the default configuration directory path
-	std::string HcrDir("/conf/");
-	char* e = getenv("HCRDIR");
-	if (e) {
-		HcrDir = e + HcrDir;
-	} else {
-		ELOG << "Environment variable HCRDIR must be set.";
-		exit(1);
-	}
+    // set up the default configuration directory path
+    std::string HcrDir("/conf/");
+    char* e = getenv("HCRDIR");
+    if (e) {
+        HcrDir = e + HcrDir;
+    } else {
+        ELOG << "Environment variable HCRDIR must be set.";
+        exit(1);
+    }
 
-	// get parameters
-	_tsLength      = config.getInt   ("Radar/TsLength",     256);
-	_simulate      = config.getBool  ("Simulate",           false);
-	_simPauseMS    = config.getDouble("SimPauseMs",         0.1);
-	_simWaveLength = config.getInt   ("SimWavelength",      5000);
-	_freeRun       = config.getBool  ("FreeRun",            false);
+    // get parameters
+    _tsLength      = config.getInt   ("Radar/TsLength",     256);
+    _simulate      = config.getBool  ("Simulate",           false);
+    _simPauseMS    = config.getDouble("SimPauseMs",         0.1);
+    _simWaveLength = config.getInt   ("SimWavelength",      5000);
+    _freeRun       = config.getBool  ("FreeRun",            false);
 
 }
 
@@ -91,42 +91,42 @@ void getConfigParams()
 /// @return The runtime options that can be passed to the
 /// threads that interact with the RR314.
 void parseOptions(int argc,
-		char** argv)
+        char** argv)
 {
 
-	// get the options
-	po::options_description descripts("Options");
-	descripts.add_options()
-		("help", "Describe options")
-		("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
-		("instance", po::value<std::string>(&_instance), "App instance for procmap")
-		("simulate", "Enable simulation")
-		("simPauseMS",  po::value<double>(&_simPauseMS), "Simulation pause interval between beams (ms)")
-		("xmitdHost", po::value<std::string>(&_xmitdHost), "Host machine for hcr_xmitd")
-		("xmitdPort", po::value<int>(&_xmitdPort), "Port for contacting hcr_xmitd")
-		;
-	// If we get an option on the command line with no option name, it
-	// is treated like --drxConfig=<option> was given.
-	po::positional_options_description pd;
-	pd.add("drxConfig", 1);
-	
-	po::variables_map vm;
-	po::store(po:: command_line_parser(argc, argv).options(descripts).positional(pd).run(), vm);
-	po::notify(vm);
+    // get the options
+    po::options_description descripts("Options");
+    descripts.add_options()
+        ("help", "Describe options")
+        ("drxConfig", po::value<std::string>(&_drxConfig), "DRX configuration file")
+        ("instance", po::value<std::string>(&_instance), "App instance for procmap")
+        ("simulate", "Enable simulation")
+        ("simPauseMS",  po::value<double>(&_simPauseMS), "Simulation pause interval between beams (ms)")
+        ("xmitdHost", po::value<std::string>(&_xmitdHost), "Host machine for hcr_xmitd")
+        ("xmitdPort", po::value<int>(&_xmitdPort), "Port for contacting hcr_xmitd")
+        ;
+    // If we get an option on the command line with no option name, it
+    // is treated like --drxConfig=<option> was given.
+    po::positional_options_description pd;
+    pd.add("drxConfig", 1);
+    
+    po::variables_map vm;
+    po::store(po:: command_line_parser(argc, argv).options(descripts).positional(pd).run(), vm);
+    po::notify(vm);
 
-	if (vm.count("help")) {
-		std::cout << "Usage: " << argv[0] << 
+    if (vm.count("help")) {
+        std::cout << "Usage: " << argv[0] << 
                   " [OPTION]... [--drxConfig] <configFile>" << std::endl;
-		std::cout << descripts << std::endl;
-		exit(0);
-	}
+        std::cout << descripts << std::endl;
+        exit(0);
+    }
 
-	if (vm.count("simulate"))
-	    _simulate = true;
-	if (vm.count("drxConfig") != 1) {
-	    ELOG << "Exactly one DRX configuration file must be given!";
-	    exit(1);
-	}
+    if (vm.count("simulate"))
+        _simulate = true;
+    if (vm.count("drxConfig") != 1) {
+        ELOG << "Exactly one DRX configuration file must be given!";
+        exit(1);
+    }
 }
 
 ///////////////////////////////////////////////////////////
@@ -134,51 +134,51 @@ void parseOptions(int argc,
 void
 makeRealTime()
 {
-	uid_t id = getuid();
+    uid_t id = getuid();
 
-	// don't even try if we are not root.
-	if (id != 0) {
-		ELOG << "Not root, unable to change scheduling priority";
-		return;
-	}
+    // don't even try if we are not root.
+    if (id != 0) {
+        ELOG << "Not root, unable to change scheduling priority";
+        return;
+    }
 
-	sched_param sparam;
-	sparam.sched_priority = 50;
+    sched_param sparam;
+    sparam.sched_priority = 50;
 
-	if (sched_setscheduler(0, SCHED_RR, &sparam)) {
-		ELOG << "warning, unable to set scheduler parameters: ";
-		ELOG << strerror(errno);
-	}
+    if (sched_setscheduler(0, SCHED_RR, &sparam)) {
+        ELOG << "warning, unable to set scheduler parameters: ";
+        ELOG << strerror(errno);
+    }
 }
 
 ///////////////////////////////////////////////////////////
 /// @return The current time, in seconds since Jan. 1, 1970.
 double nowTime()
 {
-	struct timeb timeB;
-	ftime(&timeB);
-	return timeB.time + timeB.millitm/1000.0;
+    struct timeb timeB;
+    ftime(&timeB);
+    return timeB.time + timeB.millitm/1000.0;
 }
 
 ///////////////////////////////////////////////////////////
 void startUpConverter(Pentek::p7142Up& upConverter, 
         unsigned int pulsewidth_counts) {
 
-	// create the signal
-	unsigned int n = pulsewidth_counts * 2;
-	int32_t IQ[n];
+    // create the signal
+    unsigned int n = pulsewidth_counts * 2;
+    int32_t IQ[n];
 
-	for (unsigned int i = 0; i < n/2; i++) {
-		IQ[i]   = 0x8000 << 16 | 0x8000;
-	}
-	for (unsigned int i = n/2; i < n; i++) {
-		IQ[i]   = 0x8000 << 16 | 0x8000;
-	}
-	// load mem2
-	upConverter.write(IQ, n);
+    for (unsigned int i = 0; i < n/2; i++) {
+        IQ[i]   = 0x8000 << 16 | 0x8000;
+    }
+    for (unsigned int i = n/2; i < n; i++) {
+        IQ[i]   = 0x8000 << 16 | 0x8000;
+    }
+    // load mem2
+    upConverter.write(IQ, n);
 
-	// start the upconverter
-	upConverter.startDAC();
+    // start the upconverter
+    upConverter.startDAC();
 
 }
 
@@ -186,19 +186,19 @@ void startUpConverter(Pentek::p7142Up& upConverter,
 int
 main(int argc, char** argv)
 {
-	// try to change scheduling to real-time
-	makeRealTime();
+    // try to change scheduling to real-time
+    makeRealTime();
 
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
 
-	// get the configuration parameters from the configuration file
-	getConfigParams();
+    // get the configuration parameters from the configuration file
+    getConfigParams();
 
-	// parse the command line options, substituting for config params.
-	parseOptions(argc, argv);
+    // parse the command line options, substituting for config params.
+    parseOptions(argc, argv);
 
-	// Read the HCR configuration file
+    // Read the HCR configuration file
     HcrDrxConfig hcrConfig(_drxConfig);
     if (! hcrConfig.isValid()) {
         ELOG << "Exiting on incomplete configuration!";
@@ -255,120 +255,120 @@ main(int argc, char** argv)
     
     // Create (but don't yet start) the downconversion threads.
     
-	// Create the down converter threads. The threads are not run at creation, 
+    // Create the down converter threads. The threads are not run at creation, 
     // but they do instantiate the down converters.
-	std::vector<HcrDrxPub*> downThreads(_chans);
+    std::vector<HcrDrxPub*> downThreads(_chans);
 
-	for (int c = 0; c < _chans; c++) {
-	    ILOG << "*** Channel " << c << " ***";
-	    downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsLength,
-	    		_gaussianFile, _kaiserFile, _simWaveLength);
-	}
+    for (int c = 0; c < _chans; c++) {
+        ILOG << "*** Channel " << c << " ***";
+        downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsLength,
+                _gaussianFile, _kaiserFile, _simWaveLength);
+    }
 
     // Create the upConverter.
     // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
-	PMU_auto_register("create upconverter");
-	Pentek::p7142Up & upConverter = *sd3c.addUpconverter(sd3c.adcFrequency(), 
-	        sd3c.adcFrequency() / 4, 9);
+    PMU_auto_register("create upconverter");
+    Pentek::p7142Up & upConverter = *sd3c.addUpconverter(sd3c.adcFrequency(), 
+            sd3c.adcFrequency() / 4, 9);
 
     // catch a control-C
     signal(SIGINT, sigHandler);
 
-	for (int c = 0; c < _chans; c++) {
-		// run the downconverter thread. This will cause the
-		// thread code to call the run() method, which will
-		// start reading data, but should block on the first
-		// read since the timers and filters are not running yet.
-		downThreads[c]->start();
-		ILOG << "processing enabled on channel " << c;
-	}
+    for (int c = 0; c < _chans; c++) {
+        // run the downconverter thread. This will cause the
+        // thread code to call the run() method, which will
+        // start reading data, but should block on the first
+        // read since the timers and filters are not running yet.
+        downThreads[c]->start();
+        ILOG << "processing enabled on channel " << c;
+    }
 
     // wait awhile, so that the threads can all get to the first read.
-	struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
-	while (nanosleep(&sleepTime, &sleepTime)) {
-	    if (errno != EINTR) {
-	        ELOG << "Error " << errno << " from nanosleep().  Aborting.";
-	        abort();
-	    } else {
-	        // We were interrupted. Return to sleeping until the interval is done.
-	        continue;
-	    }
-	}
+    struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
+    while (nanosleep(&sleepTime, &sleepTime)) {
+        if (errno != EINTR) {
+            ELOG << "Error " << errno << " from nanosleep().  Aborting.";
+            abort();
+        } else {
+            // We were interrupted. Return to sleeping until the interval is done.
+            continue;
+        }
+    }
 
-	// all of the filters are started by any call to
-	// start filters(). So just call it for channel 0
-	PMU_auto_register("starting filters");
-	sd3c.startFilters();
+    // all of the filters are started by any call to
+    // start filters(). So just call it for channel 0
+    PMU_auto_register("starting filters");
+    sd3c.startFilters();
 
-	// Load the DAC memory bank 2, clear the DACM fifo, and enable the 
-	// DAC memory counters. This must take place before the timers are started.
-	PMU_auto_register("starting upconverter");
-	startUpConverter(upConverter, sd3c.txPulseWidthCounts());
+    // Load the DAC memory bank 2, clear the DACM fifo, and enable the 
+    // DAC memory counters. This must take place before the timers are started.
+    PMU_auto_register("starting upconverter");
+    startUpConverter(upConverter, sd3c.txPulseWidthCounts());
 
     // start the IWRF export
     PMU_auto_register("start export");
     _exporter->start();
 
-	// Start the timers, which will allow data to flow.
+    // Start the timers, which will allow data to flow.
     // All timers are started by calling timerStartStop for
     // any one channel.
     sd3c.timersStartStop(true);
 
-	double startTime = nowTime();
+    double startTime = nowTime();
 
-	while (1) {
-		for (int i = 0; i < 100; i++) {
-			// check for the termination request
-			if (_terminate) {
-				break;
-			}
-			usleep(100000);
-		}
-		if (_terminate) {
-			break;
-		}
+    while (1) {
+        for (int i = 0; i < 100; i++) {
+            // check for the termination request
+            if (_terminate) {
+                break;
+            }
+            usleep(100000);
+        }
+        if (_terminate) {
+            break;
+        }
 
-		double currentTime = nowTime();
-		double elapsed = currentTime - startTime;
-		startTime = currentTime;
+        double currentTime = nowTime();
+        double elapsed = currentTime - startTime;
+        startTime = currentTime;
 
-		std::vector<long> bytes(_chans);
-		std::vector<unsigned long> droppedPulses(_chans);
-		std::vector<unsigned long> syncErrors(_chans);
-		
-		for (int c = 0; c < _chans; c++) {
-		    Pentek::p7142sd3cDn * down = downThreads[c]->downconverter();
-			bytes[c] = down->bytesRead();
-			droppedPulses[c] = down->droppedPulses();
+        std::vector<long> bytes(_chans);
+        std::vector<unsigned long> droppedPulses(_chans);
+        std::vector<unsigned long> syncErrors(_chans);
+        
+        for (int c = 0; c < _chans; c++) {
+            Pentek::p7142sd3cDn * down = downThreads[c]->downconverter();
+            bytes[c] = down->bytesRead();
+            droppedPulses[c] = down->droppedPulses();
             syncErrors[c] = down->syncErrors();
-		}
-		
-		for (int c = 0; c < _chans; c++) {
-		    if (c != 0) {
-		        std::cout << "  ";
-		    }
-			std::cout << std::setprecision(3) << std::setw(5)
+        }
+        
+        for (int c = 0; c < _chans; c++) {
+            if (c != 0) {
+                std::cout << "  ";
+            }
+            std::cout << std::setprecision(3) << std::setw(5)
                       << "chan " << c << " -- "
                       << bytes[c]/1000000.0/elapsed << " MB/s "
-					  << " drop:" << droppedPulses[c]
-	                  << " sync:" << syncErrors[c];
-		}
-		std::cout << std::endl;
-	}
-	
+                      << " drop:" << droppedPulses[c]
+                      << " sync:" << syncErrors[c];
+        }
+        std::cout << std::endl;
+    }
+    
         ILOG << "Shutting down...";
     
-	// Stop the downconverter threads
-	for (int c = 0; c < _chans; c++) {
-	    ILOG << "Stopping thread for channel " << c;
-	    downThreads[c]->terminate();
-	    downThreads[c]->wait(1000);    // wait up to a second for termination
-	}
+    // Stop the downconverter threads
+    for (int c = 0; c < _chans; c++) {
+        ILOG << "Stopping thread for channel " << c;
+        downThreads[c]->terminate();
+        downThreads[c]->wait(1000);    // wait up to a second for termination
+    }
 
-	// stop the DAC
-	upConverter.stopDAC();
+    // stop the DAC
+    upConverter.stopDAC();
 
-	// stop the timers
+    // stop the timers
     sd3c.timersStartStop(false);
     
     return(0);
