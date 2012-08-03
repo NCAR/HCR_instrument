@@ -43,26 +43,28 @@ HcrMonitor::~HcrMonitor() {
  * Map from Pt1000 resistance to temperature, generated on the first call to 
  * _pt1000Temperature()
  */
-static std::map<double, double>  Pt1000_OhmsToTempMap;
-static double Pt1000MapMinOhms;
-static double Pt1000MapMaxOhms;
+static std::map<float, float>  Pt1000_OhmsToTempMap;
+static float Pt1000MapMinOhms;
+static float Pt1000MapMaxOhms;
 
-double
-HcrMonitor::_pt1000Temperature(double psVolts, double pulldownVolts,
-        double pulldownOhms) {
+float
+HcrMonitor::_pt1000Temperature(float psVolts, float pulldownVolts) {
+    // All of our Pt1000 temperature sensor pulldown resistors are 1000 ohms.
+    const float PulldownOhms = 1000;
+
     // Build the resistance->temperature map the first time we come here.
     // The map is just a table of resistances calculated every 1 degree
     // C from -50 to 200 deg C. The formula is the Callendar-Van Dusen 
     // equation, using the standard Pt1000 values for A, B, and C.
     if (Pt1000_OhmsToTempMap.empty()) {
-        double R0 = 1000;   // 1000 ohms for Pt1000
-        double A = 3.9083e-3;   // deg C^-1
-        double B = -5.775e-7;   // deg C^-2
-        double C = -4.183e-12;  // deg C^-4
-        double TMin = -50.0;
-        double TMax = 200.0;
-        for (double t = TMin; t <= TMax; t += 1.0) {
-            double r = R0 * (1 + (A * t) + (B * t * t));
+        float R0 = 1000;   // 1000 ohms for Pt1000
+        float A = 3.9083e-3;   // deg C^-1
+        float B = -5.775e-7;   // deg C^-2
+        float C = -4.183e-12;  // deg C^-4
+        float TMin = -50.0;
+        float TMax = 200.0;
+        for (float t = TMin; t <= TMax; t += 1.0) {
+            float r = R0 * (1 + (A * t) + (B * t * t));
             if (t < 0) {
                 r += R0 * (C * t * t * t * (t - 100));
             }
@@ -75,7 +77,7 @@ HcrMonitor::_pt1000Temperature(double psVolts, double pulldownVolts,
     }
     // Resistance of the RTD, calculated from psVolts drop across our 
     // voltage divider with the RTD and the pulldown resistor in series.
-    double rtdOhms = pulldownOhms * (psVolts / pulldownVolts - 1);
+    float rtdOhms = PulldownOhms * (psVolts / pulldownVolts - 1);
 
     // If rtdOhms is less than the lowest resistance in our map, 
     // return -999.9
@@ -88,32 +90,38 @@ HcrMonitor::_pt1000Temperature(double psVolts, double pulldownVolts,
         return(999.9);
     }
     // Find the iterators for entries which bound our RTD resistance
-    std::map<double, double>::iterator itLower = 
+    std::map<float, float>::iterator itLower =
         Pt1000_OhmsToTempMap.lower_bound(rtdOhms);
-    std::map<double, double>::iterator itUpper = itLower++;
+    std::map<float, float>::iterator itUpper = itLower++;
     // Interpolate between the two values to get our temperature.
-    double r0 = itLower->first;
-    double t0 = itLower->second;
-    double r1 = itUpper->first;
-    double t1 = itUpper->second;
+    float r0 = itLower->first;
+    float t0 = itLower->second;
+    float r1 = itUpper->first;
+    float t1 = itUpper->second;
     return(t0 + (rtdOhms - r0) / (r1 - r0) * (t1 - t0));
 }
 
-double
-HcrMonitor::_15PSI_A_4V_Pres(double sensorVolts) {
+float
+HcrMonitor::_15PSI_A_4V_Pres(float sensorVolts) {
     // Nominal calibration from device spec: 0.25 V @ zero pressure
-    const double zeroPresOffsetVolts = 0.25;
+    const float zeroPresOffsetVolts = 0.25;
     // Nominal calibration from device spec: 4 V output span over 15 PSI
     // (1034.2 hPa)
-    const double hPaPerVolt = 1034.2 / 4.0;
+    const float hPaPerVolt = 1034.2 / 4.0;
     return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
 }
 
 
 float
-HcrMonitor::procDrxTemp() const {
+HcrMonitor::ploTemp() const {
     QMutexLocker locker(&_mutex);
-    return _dequeAverage(_procDrxTemps);
+    return _dequeAverage(_ploTemps);
+}
+
+float
+HcrMonitor::eikTemp() const {
+    QMutexLocker locker(&_mutex);
+    return _dequeAverage(_eikTemps);
 }
 
 XmitClient::XmitStatus
@@ -159,18 +167,20 @@ HcrMonitor::_getMultiIoValues() {
     QMutexLocker locker(&_mutex);
 
     HcrPmc730 & pmc730 = HcrPmc730::theHcrPmc730();
-    // Get data from analog channels 0-21 on the PMC-730 multi-IO card
-    std::vector<float> analogData = pmc730.readAnalogChannels(0, 21);
-//    // Channel 0 gives us RF power measurement
-//    implementation;
-//    // Channels 1 and 2 have pressure sensors
-//    implementation;
-    // Channel 3 gives us temperature near the DRX. The data are a bit noisy, so
+    // Get data from analog channels 0-16 on the PMC-730 multi-IO card
+    std::vector<float> analogData = pmc730.readAnalogChannels(0, 16);
+
+    // Get the power supply voltage from channel 16 now, since we need if to
+    // calculate temperatures below.
+    _psVoltage = analogData[16];
+    // Channels 3-15 gives us various temperatures. The data are a bit noisy, so
     // we keep up to TEMP_AVERAGING_LEN samples so we can generate moving 
     // averages.
-    _procDrxTemps.push_back(_voltsToTemp(analogData[3]));
-    while (_procDrxTemps.size() > TEMP_AVERAGING_LEN) {
-        _procDrxTemps.pop_front();
+    _ploTemps.push_front(_pt1000Temperature(_psVoltage, analogData[3]));
+    _eikTemps.push_front(_pt1000Temperature(_psVoltage, analogData[4]));
+    if (_ploTemps.size() > TEMP_AVERAGING_LEN) {
+        _ploTemps.resize(TEMP_AVERAGING_LEN);
+        _eikTemps.resize(TEMP_AVERAGING_LEN);
     }
 }
 
