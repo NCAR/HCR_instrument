@@ -9,6 +9,7 @@
 #define HCR_MONITOR_H_
 
 #include <deque>
+#include <numeric>
 #include <string>
 
 #include <QThread>
@@ -95,8 +96,8 @@ public:
      */
     float ps28VTemp() const;
     /**
-     * @brief Return the temperature at the input air duct for the remote data system
-     * (RDS), deg C
+     * @brief Return the temperature at the input air duct for the remote data 
+     * system (RDS), deg C
      * @return the temperature at the input air duct for the remote data system
      * (RDS), deg C
      */
@@ -168,9 +169,46 @@ public:
     XmitClient::XmitStatus transmitterStatus() const;
 
 private:
-
-    /// run-time configuration
-    const HcrDrxConfig &_config;
+    /**
+     * @brief Simple class implementing a list of temperatures with a maximum 
+     * size. When a temperature is added which causes the maximum size to be 
+     * exceeded, the oldest item in the list will be removed to bring the size 
+     * back to the maximum.
+     */
+    class TemperatureList {
+    public:
+        /**
+         * @brief Constructor.
+         */
+        TemperatureList() : _items() {}
+        /**
+         * @brief Add a temperature to the list.
+         * @param val the temperature to add to the list
+         */
+        void addTemperature(float val) {
+            _items.push_front(val);
+            if (_items.size() > _MAX_SIZE) {
+                _items.pop_back();
+            }
+        }
+        /**
+         * @brief Return the mean of the values in the list, or -99.9 if
+         * the list is empty.
+         * @Return the mean of the values in the list, or -99.9 if
+         * the list is empty.
+         */
+        float mean() const {
+            if (_items.empty())
+                return(-99.9);
+            float sum = std::accumulate(_items.begin(), _items.end(), 0.0);
+            return(sum / _items.size());
+        }
+        
+    private:
+        /// Maximum number of values kept in the temperature list.
+        static const unsigned int _MAX_SIZE = 10;
+        std::deque<float> _items;
+    };
 
     /** 
      * @brief Calculate temperature of a Pt1000 RTD temperature sensor connected
@@ -199,30 +237,56 @@ private:
      */
     void _getXmitStatus();
 
-    /**
-     * @brief Return the average of values in a deque<float>, or -99.9 if the deque
-     * is empty.
-     * @return the average of values in a deque<float>, or -99.9 if the deque
-     *      is empty.
-     */
-    static float _dequeAverage(const std::deque<float> & list);
-    
+    /// run-time configuration
+    const HcrDrxConfig &_config;
+
+    /// XML-RPC access to hcr_xmitd for its status
+    XmitClient _xmitClient;
+
+    /// Last transmitter status we obtained
+    XmitClient::XmitStatus _xmitStatus;
+
     /**
      * Thread access mutex (mutable so we can lock the mutex even in const
      * methods)
      */
     mutable QMutex _mutex;
     
-    /// window size for moving temperature averages
-    static const unsigned int TEMP_AVERAGING_LEN = 20;
+    /// pressure vessel aft pressure
+    float _pvAftPressure;
     
-    // Deques to hold temperature lists. Lists of temperatures are kept so
-    // that we can time-average to reduce noise in the sampling.
+    /// pressure vessel fore pressure
+    float _pvForePressure;
+    
+    // Keep lists of temperatures are kept so that we can time-average to reduce
+    // noise in the sampling.
 
-    /// 93 GHz PLO temperature deque
-    std::deque<float> _ploTemps;
-    /// Transmitter EIK temperature deque
-    std::deque<float> _eikTemps;
+    /// 93 GHz PLO temperature list
+    TemperatureList _ploTemps;
+    /// Transmitter EIK temperature list
+    TemperatureList _eikTemps;
+    /// vertical channel LNA temperature list
+    TemperatureList _vLnaTemps;
+    /// horizontal channel LNA temperature list
+    TemperatureList _hLnaTemps;
+    /// polarization switch temperature list
+    TemperatureList _polarizationSwitchTemps;
+    /// crystal RF detector temperature list
+    TemperatureList _rfDetectorTemps;
+    /// noise source temperature list
+    TemperatureList _noiseSourceTemps;
+    /// 28V power supply temperature list
+    TemperatureList _ps28VTemps;
+    /// remote data system (RDS) intake duct temperature list
+    TemperatureList _rdsInDuctTemps;
+    /// rotation motor temperature list
+    TemperatureList _rotationMotorTemps;
+    /// tilt motor temperature list
+    TemperatureList _tiltMotorTemps;
+    /// C-MIGITS temperature list
+    TemperatureList _cmigitsTemps;
+    /// tailcone temperature list
+    TemperatureList _tailconeTemps;
 
     /// measured voltage from 5V power supply
     float _psVoltage;
@@ -238,12 +302,18 @@ private:
 
     /// 1250 MHz oscillator phase locked?
     bool _locked1250MHzPLO;
-
-    /// XML-RPC access to hcr_xmitd for its status
-    XmitClient _xmitClient;
-
-    /// Last transmitter status we obtained
-    XmitClient::XmitStatus _xmitStatus;
+    
+    /// Is modulator pulse passthrough disabled at the HMC?
+    bool _modPulseDisabled;
+    
+    /**
+     * HMC status
+     * 0 = no errors,
+     * 1 = EMS power below threshold,
+     * 2 = receiver protector switching error,
+     * 3 = polarization switching error
+     */
+    uint16_t _hmcStatus;
 };
 
 

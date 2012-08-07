@@ -28,8 +28,17 @@ HcrMonitor::HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost,
         int xmitdPort) :
     QThread(),
     _config(config),
+    _xmitClient(xmitdHost, xmitdPort),
     _mutex(QMutex::Recursive),
-    _xmitClient(xmitdHost, xmitdPort)  {
+    _pvAftPressure(0.0),
+    _pvForePressure(0.0),
+    _psVoltage(0.0),
+    _noiseSourceSelected(false),
+    _terminationSelected(false),
+    _locked15_5GHzPLO(false),
+    _locked1250MHzPLO(false),
+    _modPulseDisabled(false),
+    _hmcStatus(0) {
 }
 
 HcrMonitor::~HcrMonitor() {
@@ -112,16 +121,95 @@ HcrMonitor::_15PSI_A_4V_Pres(float sensorVolts) {
 }
 
 
+
+float
+HcrMonitor::pvForePressure() const {
+    QMutexLocker locker(&_mutex);
+    return(_pvForePressure);
+}
+
+float
+HcrMonitor::pvAftPressure() const {
+    QMutexLocker locker(&_mutex);
+    return(_pvAftPressure);
+}
+
 float
 HcrMonitor::ploTemp() const {
     QMutexLocker locker(&_mutex);
-    return _dequeAverage(_ploTemps);
+    return(_ploTemps.mean());
 }
 
 float
 HcrMonitor::eikTemp() const {
     QMutexLocker locker(&_mutex);
-    return _dequeAverage(_eikTemps);
+    return(_eikTemps.mean());
+}
+
+float
+HcrMonitor::vLnaTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_vLnaTemps.mean());
+}
+
+float
+HcrMonitor::hLnaTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_hLnaTemps.mean());
+}
+
+float
+HcrMonitor::polarizationSwitchTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_polarizationSwitchTemps.mean());
+}
+
+float
+HcrMonitor::rfDetectorTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_rfDetectorTemps.mean());
+}
+
+float
+HcrMonitor::noiseSourceTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_noiseSourceTemps.mean());
+}
+
+float
+HcrMonitor::ps28VTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_ps28VTemps.mean());
+}
+
+float
+HcrMonitor::rdsInDuctTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_rdsInDuctTemps.mean());
+}
+
+float
+HcrMonitor::rotationMotorTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_rotationMotorTemps.mean());
+}
+
+float
+HcrMonitor::tiltMotorTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_tiltMotorTemps.mean());
+}
+
+float
+HcrMonitor::cmigitsTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_cmigitsTemps.mean());
+}
+
+float
+HcrMonitor::tailconeTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_tailconeTemps.mean());
 }
 
 XmitClient::XmitStatus
@@ -173,15 +261,29 @@ HcrMonitor::_getMultiIoValues() {
     // Get the power supply voltage from channel 16 now, since we need if to
     // calculate temperatures below.
     _psVoltage = analogData[16];
+    
+    // Pressure sensors are on analog channels 1 and 2
+    _pvAftPressure = _15PSI_A_4V_Pres(analogData[1]);
+    _pvForePressure = _15PSI_A_4V_Pres(analogData[2]);
+    
     // Channels 3-15 gives us various temperatures. The data are a bit noisy, so
-    // we keep up to TEMP_AVERAGING_LEN samples so we can generate moving 
+    // we keep up to TemperatureList::_MAX_SIZE samples so we can generate moving 
     // averages.
-    _ploTemps.push_front(_pt1000Temperature(_psVoltage, analogData[3]));
-    _eikTemps.push_front(_pt1000Temperature(_psVoltage, analogData[4]));
-    if (_ploTemps.size() > TEMP_AVERAGING_LEN) {
-        _ploTemps.resize(TEMP_AVERAGING_LEN);
-        _eikTemps.resize(TEMP_AVERAGING_LEN);
-    }
+    _ploTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[3]));
+    _eikTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[4]));
+    _vLnaTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[5]));
+    _hLnaTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[6]));
+    _polarizationSwitchTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[7]));
+    _rfDetectorTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[8]));
+    _noiseSourceTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[9]));
+    _ps28VTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[10]));
+    _rdsInDuctTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[11]));
+    _rotationMotorTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[12]));
+    _tiltMotorTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[13]));
+    _cmigitsTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[14]));
+    _tailconeTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[15]));
+    
+    DLOG << "PLO temperature: " << std::setprecision(3) << ploTemp() << " deg C";
 }
 
 void
@@ -193,16 +295,4 @@ HcrMonitor::_getXmitStatus() {
 
     QMutexLocker locker(&_mutex);
     _xmitStatus = xmitStatus;
-}
-
-float
-HcrMonitor::_dequeAverage(const std::deque<float> & list) {
-    unsigned int nPoints = list.size();
-    if (nPoints == 0)
-        return(-99.9);
-        
-    float sum = 0.0;
-    for (unsigned int i = 0; i < nPoints; i++)
-        sum += list.at(i);
-    return(sum / nPoints); 
 }
