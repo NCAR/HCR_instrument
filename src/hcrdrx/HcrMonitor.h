@@ -11,6 +11,7 @@
 #include <deque>
 #include <numeric>
 #include <string>
+#include <stdint.h>
 
 #include <QThread>
 #include <QMutex>
