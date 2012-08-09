@@ -57,8 +57,8 @@ private:
         _HCR_DIN_HMC_STATUS1 = 5,
         /// digital in line 6: HMC modulation pulse disabled
         _HCR_DIN_HMC_MODPULSE_DISABLED = 6,
-        /// digital in line 7: unused
-        _HCR_DIN_7_UNUSED = 7
+        /// digital in line 7: HMC status bit 2
+        _HCR_DIN_HMC_STATUS2 = 7
     } DinLine_t;
     
     /**
@@ -67,10 +67,10 @@ private:
     typedef enum {
         /// digital out line 8: Turn on noise source
         _HCR_DOUT_NOISE_SRC_ON = 8,
-        /// digital out line 9: SCM reset signal
-        _HCR_DOUT_HMC_RESET = 9,
-        /// digital out line 10: waveguide switch D control
-        _HCR_DOUT_WG_SWITCH_D = 10,
+        /// digital out line 9: waveguide switch D control
+        _HCR_DOUT_WG_SWITCH_D = 9,
+        /// digital out line 10: HMC reset signal
+        _HCR_DOUT_HMC_RESET = 10,
         /// digital out line 11: waveguide switch C control
         _HCR_DOUT_WG_SWITCH_C = 11,
         /// digital out line 12: Turn on transmitter Klystron filament

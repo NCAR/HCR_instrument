@@ -39,20 +39,20 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
             getDioDirection(_HCR_DIN_HMC_STATUS0) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_HMC_STATUS1) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_HMC_MODPULSE_DISABLED) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_7_UNUSED) != DIO_INPUT) {
+            getDioDirection(_HCR_DIN_HMC_STATUS2) != DIO_INPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
             _HCR_DIN_WG_SWITCH_A << ", " << _HCR_DIN_WG_SWITCH_B << ", " << 
             _HCR_DIN_15_5GHZ_PHASELOCK << ", " << 
             _HCR_DIN_1250MHZ_PHASELOCK << ", " <<
             _HCR_DIN_HMC_STATUS0 << ", " << _HCR_DIN_HMC_STATUS1 << ", " <<
-            _HCR_DIN_HMC_MODPULSE_DISABLED << ", and " << _HCR_DIN_7_UNUSED <<
+            _HCR_DIN_HMC_MODPULSE_DISABLED << ", and " << _HCR_DIN_HMC_STATUS2 <<
             " are not all set for input!";
         abort();
     }
     // Verify that our defined output DIO lines are all actually set for output
     if (getDioDirection(_HCR_DOUT_NOISE_SRC_ON) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_HMC_RESET) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_WG_SWITCH_D) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_HMC_RESET) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_WG_SWITCH_C) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_TX_FILAMENT_ON) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT0) != DIO_OUTPUT ||
