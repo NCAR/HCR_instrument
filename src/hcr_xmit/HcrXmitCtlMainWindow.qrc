@@ -3,6 +3,7 @@
     <file>greenLED_off.png</file>
     <file>powerbutton.png</file>
     <file>greenLED.png</file>
+    <file>amberLED.png</file>
     <file>redLED.png</file>
   </qresource>
 </RCC>

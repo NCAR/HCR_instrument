@@ -22,6 +22,7 @@ HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost,
     _xmitClient(xmitterHost, xmitterPort),
     _updateTimer(this),
     _redLED(":/redLED.png"),
+    _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
     _nextLogIndex(0),
@@ -33,7 +34,7 @@ HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost,
     _logMessage("hcr_xmitctl started");
     
     // Hide fault details initially
-    _ui.faultStatusBox->setVisible(false);
+    _ui.xmitterFaultDetailsBox->setVisible(false);
     _ui.detailVisibilityButton->setText("Show Details");
     
     // Schedule 1 Hz updates
@@ -45,7 +46,7 @@ HcrXmitCtlMainWindow::~HcrXmitCtlMainWindow() {
 }
 
 void
-HcrXmitCtlMainWindow::on_standbyButton_clicked() {
+HcrXmitCtlMainWindow::on_filamentButton_clicked() {
     _xmitClient.standby();
     _update();
 }
@@ -61,15 +62,15 @@ HcrXmitCtlMainWindow::_appendXmitdLogMsgs() {
 }
 
 void
-HcrXmitCtlMainWindow::on_operateButton_clicked() {
+HcrXmitCtlMainWindow::on_hvButton_clicked() {
     _xmitClient.operate();
     _update();
 }
 
 void
 HcrXmitCtlMainWindow::on_detailVisibilityButton_clicked() {
-    _ui.faultStatusBox->setVisible(! _ui.faultStatusBox->isVisible());
-    if (_ui.faultStatusBox->isVisible()) {
+    _ui.xmitterFaultDetailsBox->setVisible(! _ui.xmitterFaultDetailsBox->isVisible());
+    if (_ui.xmitterFaultDetailsBox->isVisible()) {
         _ui.detailVisibilityButton->setText("Hide Details");
     } else {
         _ui.detailVisibilityButton->setText("Show Details");
@@ -108,12 +109,22 @@ HcrXmitCtlMainWindow::_update() {
     
     _enableUi();
 
-    // boolean status values
-    _ui.powerValidLabel->setEnabled(_status.powerValid());
-    _ui.filamentOnLabel->setEnabled(_status.filamentOn());
-    _ui.filamentDelayLabel->setEnabled(_status.filamentDelayActive());
-    _ui.highVoltageLabel->setEnabled(_status.highVoltageOn());
-    _ui.rfLabel->setEnabled(_status.rfOn());
+    // Update transmitter control
+    _ui.powerValidIcon->setPixmap(_status.powerValid() ? _greenLED : _greenLED_off);
+    _ui.filamentIcon->setPixmap(_status.filamentOn() ? _greenLED : _greenLED_off);
+    if (! _status.filamentOn()) {
+        // Warmup LED is off if the filament is not on
+        _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
+        _ui.filamentWarmupLabel->setText("Filament warmup");
+    } else {
+        // Amber during filament warmup, then green when warm
+        _ui.filamentWarmupIcon->setPixmap(_status.filamentDelayActive() ? _amberLED : _greenLED);
+        _ui.filamentWarmupLabel->setText(_status.filamentDelayActive() ?
+                "Waiting for filament warmup" : "Filament is warm");
+    }
+    _ui.hvIcon->setPixmap(_status.highVoltageOn() ? _greenLED : _greenLED_off);
+    _ui.hvButton->setEnabled(! _status.filamentDelayActive());
+    _ui.xmittingIcon->setPixmap(_status.rfOn() ? _greenLED : _greenLED_off);
     
     // Which control source is enabled?
     _ui.frontPanelLabel->setEnabled(_status.frontPanelCtlEnabled());
@@ -201,9 +212,6 @@ HcrXmitCtlMainWindow::_update() {
     txt.setNum(_status.xmitterTemperature(), 'f', 1);
     _ui.xmitterTempValue->setText(txt);
     
-    // "unit on" light
-    _ui.unitOnLabel->setPixmap(_status.serialConnected() ? _greenLED : _greenLED_off);
-    
 //    // enable/disable buttons
 //    if (_status.serialConnected() && _status.rs232CtlEnabled()) {
 //        if (_status.faultSummary()) {
@@ -256,9 +264,13 @@ HcrXmitCtlMainWindow::_noXmitter() {
 void
 HcrXmitCtlMainWindow::_disableUi() {
     _ui.statusBox->setEnabled(false);
-    _ui.faultStatusBox->setEnabled(false);
+    _ui.xmitterFaultDetailsBox->setEnabled(false);
+    _ui.xmitterStartBox->setEnabled(false);
 
-    _ui.unitOnLabel->setPixmap(_greenLED_off);
+    _ui.powerValidIcon->setPixmap(_greenLED_off);
+    _ui.filamentIcon->setPixmap(_greenLED_off);
+    _ui.hvIcon->setPixmap(_greenLED_off);
+    _ui.xmittingIcon->setPixmap(_greenLED_off);
     
     _ui.modulatorFaultIcon->setPixmap(_greenLED_off);
     _ui.modulatorFaultCount->setText("");
@@ -288,8 +300,9 @@ HcrXmitCtlMainWindow::_disableUi() {
 
 void
 HcrXmitCtlMainWindow::_enableUi() {
-    _ui.faultStatusBox->setEnabled(true);
+    _ui.xmitterFaultDetailsBox->setEnabled(true);
     _ui.statusBox->setEnabled(true);
+    _ui.xmitterStartBox->setEnabled(true);
 }
 
 void

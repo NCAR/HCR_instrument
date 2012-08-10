@@ -24,8 +24,8 @@ public:
     HcrXmitCtlMainWindow(std::string xmitterHost, int xmitterPort);
     ~HcrXmitCtlMainWindow();
 private slots:
-    void on_standbyButton_clicked();
-    void on_operateButton_clicked();
+    void on_filamentButton_clicked();
+    void on_hvButton_clicked();
     void on_detailVisibilityButton_clicked();
     void _update();
 private:
@@ -63,6 +63,7 @@ private:
     XmitClient _xmitClient;
     QTimer _updateTimer;
     QPixmap _redLED;
+    QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
     // Last status read
