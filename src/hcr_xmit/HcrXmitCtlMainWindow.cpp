@@ -89,7 +89,7 @@ HcrXmitCtlMainWindow::_update() {
     _appendXmitdLogMsgs();
     
     // Get status from hcr_xmitd
-    _status = XmitClient::XmitStatus(); // start with uninitialized status
+    _status = XmitdRpcClient::XmitStatus(); // start with uninitialized status
     if (! _xmitClient.getStatus(_status)) {
         _noDaemon();
         return;

@@ -1,28 +1,28 @@
 /*
- * XmitClient.cpp
+ * XmitdRpcClient.cpp
  *
  *  Created on: Mar 11, 2011
  *      Author: burghart
  */
 
-#include "XmitClient.h"
+#include "XmitdRpcClient.h"
 
 #include <cstdlib>
 #include <logx/Logging.h>
 
-LOGGING("XmitClient")
+LOGGING("XmitdRpcClient")
 
-XmitClient::XmitClient(std::string xmitdHost, int xmitdPort) :
+XmitdRpcClient::XmitdRpcClient(std::string xmitdHost, int xmitdPort) :
     XmlRpc::XmlRpcClient(xmitdHost.c_str(), xmitdPort),
     _xmitdHost(xmitdHost),
     _xmitdPort(xmitdPort) {
 }
 
-XmitClient::~XmitClient() {
+XmitdRpcClient::~XmitdRpcClient() {
 }
 
 bool
-XmitClient::_executeXmlRpcCommand(const std::string cmd, 
+XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd, 
     const XmlRpc::XmlRpcValue & params, XmlRpc::XmlRpcValue & result) {
     DLOG << "Executing '" << cmd << "()' command";
     if (! execute(cmd.c_str(), params, result)) {
@@ -37,42 +37,42 @@ XmitClient::_executeXmlRpcCommand(const std::string cmd,
 }
 
 void
-XmitClient::powerOn() {
+XmitdRpcClient::powerOn() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
     _executeXmlRpcCommand("powerOn", null, result);
 }
 
 void
-XmitClient::powerOff() {
+XmitdRpcClient::powerOff() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
     _executeXmlRpcCommand("powerOff", null, result);
 }
 
 void
-XmitClient::faultReset() {
+XmitdRpcClient::faultReset() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
     _executeXmlRpcCommand("faultReset", null, result);
 }
 
 void
-XmitClient::standby() {
+XmitdRpcClient::standby() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
     _executeXmlRpcCommand("standby", null, result);
 }
 
 void
-XmitClient::operate() {
+XmitdRpcClient::operate() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
     _executeXmlRpcCommand("operate", null, result);
 }
 
 bool
-XmitClient::getStatus(XmitStatus & status) {
+XmitdRpcClient::getStatus(XmitStatus & status) {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue statusDict;
     if (! _executeXmlRpcCommand("getStatus", null, statusDict)) {
@@ -84,7 +84,7 @@ XmitClient::getStatus(XmitStatus & status) {
 }
 
 void
-XmitClient::getLogMessages(unsigned int firstIndex, std::string & msgs, 
+XmitdRpcClient::getLogMessages(unsigned int firstIndex, std::string & msgs, 
         unsigned int  & nextLogIndex) {
     XmlRpc::XmlRpcValue startIndex = int(firstIndex);
     XmlRpc::XmlRpcValue resultDict;
@@ -97,7 +97,7 @@ XmitClient::getLogMessages(unsigned int firstIndex, std::string & msgs,
 }
 
 // Default constructor; fill with bad values.
-XmitClient::XmitStatus::XmitStatus() :
+XmitdRpcClient::XmitStatus::XmitStatus() :
         _serialConnected(false),
         _filamentOn(false),
         _highVoltageOn(false),
@@ -153,7 +153,7 @@ XmitClient::XmitStatus::XmitStatus() :
 {
 }
 
-XmitClient::XmitStatus::XmitStatus(XmlRpc::XmlRpcValue & statusDict) {
+XmitdRpcClient::XmitStatus::XmitStatus(XmlRpc::XmlRpcValue & statusDict) {
     // Unpack all of the status values from the XmlRpc::XmlRpcValue dictionary
     // into local member variables
     _serialConnected = _StatusBool(statusDict, "serial_connected");
@@ -214,11 +214,11 @@ XmitClient::XmitStatus::XmitStatus(XmlRpc::XmlRpcValue & statusDict) {
     _xmitterTemp = _StatusDouble(statusDict, "xmitter_temp");
 }
 
-XmitClient::XmitStatus::~XmitStatus() {
+XmitdRpcClient::XmitStatus::~XmitStatus() {
 }
 
 bool
-XmitClient::XmitStatus::_StatusBool(XmlRpc::XmlRpcValue statusDict, std::string key) {
+XmitdRpcClient::XmitStatus::_StatusBool(XmlRpc::XmlRpcValue statusDict, std::string key) {
     if (! statusDict.hasMember(key)) {
         ELOG << "Status dictionary does not contain requested key '" << key <<
             "'!";
@@ -229,7 +229,7 @@ XmitClient::XmitStatus::_StatusBool(XmlRpc::XmlRpcValue statusDict, std::string 
 }
 
 int
-XmitClient::XmitStatus::_StatusInt(XmlRpc::XmlRpcValue statusDict, std::string key) {
+XmitdRpcClient::XmitStatus::_StatusInt(XmlRpc::XmlRpcValue statusDict, std::string key) {
     if (! statusDict.hasMember(key)) {
         ELOG << "Status dictionary does not contain requested key '" << key <<
             "'!";
@@ -240,7 +240,7 @@ XmitClient::XmitStatus::_StatusInt(XmlRpc::XmlRpcValue statusDict, std::string k
 }
 
 double
-XmitClient::XmitStatus::_StatusDouble(XmlRpc::XmlRpcValue statusDict, std::string key) {
+XmitdRpcClient::XmitStatus::_StatusDouble(XmlRpc::XmlRpcValue statusDict, std::string key) {
     if (! statusDict.hasMember(key)) {
         ELOG << "Status dictionary does not contain requested key '" << key <<
             "'!";

@@ -14,7 +14,7 @@
 #include <QPixmap>
 #include <QTimer>
 
-#include <XmitClient.h>
+#include <XmitdRpcClient.h>
 
 #include "ui_HcrXmitCtlMainWindow.h"
 
@@ -60,14 +60,14 @@ private:
     static QString _faultTimeLabel(time_t time);
 
     Ui::HcrXmitCtlMainWindow _ui;
-    XmitClient _xmitClient;
+    XmitdRpcClient _xmitClient;
     QTimer _updateTimer;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
     // Last status read
-    XmitClient::XmitStatus _status;
+    XmitdRpcClient::XmitStatus _status;
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;

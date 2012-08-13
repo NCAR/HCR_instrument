@@ -1,30 +1,30 @@
 /*
- * XmitClient.h
+ * XmitdRpcClient.h
  *
  *  Created on: Mar 11, 2011
  *      Author: burghart
  */
 
-#ifndef XMITCLIENT_H_
-#define XMITCLIENT_H_
+#ifndef XMITDRPCCLIENT_H_
+#define XMITDRPCCLIENT_H_
 
 #include <XmlRpc.h>
 #include <string>
 
 /**
- * XmitClient encapsulates an XML-RPC connection to a hcr_xmitd daemon 
+ * XmitdRpcClient encapsulates an XML-RPC connection to a hcr_xmitd daemon 
  * process which is controlling the HCR transmitter.
  */
-class XmitClient : private XmlRpc::XmlRpcClient {
+class XmitdRpcClient : private XmlRpc::XmlRpcClient {
 public:
     /**
-     * Instantiate XmitClient to communicate with a hcr_xmitd process running
+     * Instantiate XmitdRpcClient to communicate with a hcr_xmitd process running
      * on host xmitdHost and using port xmitdPort.
      * @param xmitdHost the name of the host on which hcr_xmitd is running
      * @param xmitdPort the port number being used by hcr_xmitd
      */
-    XmitClient(std::string xmitdHost, int xmitdPort);
-    ~XmitClient();
+    XmitdRpcClient(std::string xmitdHost, int xmitdPort);
+    ~XmitdRpcClient();
     
     /// XmitStatus is a class encapsulating all status values available from the
     /// HCR transmitter.
@@ -430,13 +430,13 @@ public:
     /// Send a "faultReset" command to the transmitter
     void faultReset();
     
-    // Send a "getStatus" command, filling a XmitClient::XmitStatus object if
+    // Send a "getStatus" command, filling a XmitdRpcClient::XmitStatus object if
     // we get status from the hcr_xmitd.
-    // @param status the XmitClient::XmitStatus object to be filled
+    // @param status the XmitdRpcClient::XmitStatus object to be filled
     // @return true and fill the status object if status is obtained from 
     // hcr_xmitd, otherwise return false and leave the status object 
     // unmodified.
-    bool getStatus(XmitClient::XmitStatus & status);
+    bool getStatus(XmitdRpcClient::XmitStatus & status);
     
     /**
      * Get the port number of the associated hcr_xmitd.
@@ -477,4 +477,4 @@ private:
     int _xmitdPort;
 };
 
-#endif /* XMITCLIENT_H_ */
+#endif /* XMITDRPCCLIENT_H_ */

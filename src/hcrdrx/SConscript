@@ -10,7 +10,7 @@ pmc730
 qt4
 qtt_qtconfig
 rapradar
-xmitclient
+xmitdrpcclient
 """)
 
 sources = Split("""

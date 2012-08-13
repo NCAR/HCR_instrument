@@ -659,7 +659,7 @@ string IwrfExport::_assembleStatusXml()
 
 #ifdef NOTYET
 
-  const XmitClient::XmitStatus &xs = _monitor.transmitterStatus();
+  const XmitdRpcClient::XmitStatus &xs = _monitor.transmitterStatus();
 
   xml += TaXml::writeBoolean
     ("SerialConnected", 2, xs.serialConnected());

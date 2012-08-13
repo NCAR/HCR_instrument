@@ -25,7 +25,7 @@ Default(hcr_xmitd)
 xmitctlTools = Split("""
 logx
 doxygen
-xmitclient
+xmitdrpcclient
 qt4
 """)
 xmitctlEnv = Environment(tools = ['default'] + xmitctlTools)

@@ -16,7 +16,7 @@
 #include <QThread>
 #include <QMutex>
 
-#include <XmitClient.h>
+#include <XmitdRpcClient.h>
 
 #include "HcrDrxConfig.h"
 
@@ -167,7 +167,7 @@ public:
      * @brief Return the transmitter status.
      * @return the transmitter status.
      */
-    XmitClient::XmitStatus transmitterStatus() const;
+    XmitdRpcClient::XmitStatus transmitterStatus() const;
 
 private:
     /**
@@ -242,10 +242,10 @@ private:
     const HcrDrxConfig &_config;
 
     /// XML-RPC access to hcr_xmitd for its status
-    XmitClient _xmitClient;
+    XmitdRpcClient _xmitClient;
 
     /// Last transmitter status we obtained
-    XmitClient::XmitStatus _xmitStatus;
+    XmitdRpcClient::XmitStatus _xmitStatus;
 
     /**
      * Thread access mutex (mutable so we can lock the mutex even in const
