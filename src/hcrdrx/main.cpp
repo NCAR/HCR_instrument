@@ -12,6 +12,7 @@
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <csignal>
+#include <XmlRpc.h>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
 
@@ -30,6 +31,7 @@ LOGGING("hcrdrx")
 #include "HcrMonitor.h"
 
 using namespace std;
+using namespace XmlRpc;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
 
@@ -182,6 +184,46 @@ void startUpConverter(Pentek::p7142Up& upConverter,
 
 }
 
+/// Xmlrpc++ method to turn on the transmitter klystron filament.
+class XmitFilamentOnMethod : public XmlRpcServerMethod {
+public:
+    XmitFilamentOnMethod() : XmlRpcServerMethod("xmitFilamentOn") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'xmitFilamentOn' command";
+        HcrPmc730::setXmitterFilamentState(true);
+    }
+};
+
+/// Xmlrpc++ method to turn off the transmitter klystron filament.
+class XmitFilamentOffMethod : public XmlRpcServerMethod {
+public:
+    XmitFilamentOffMethod() : XmlRpcServerMethod("xmitFilamentOff") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'xmitFilamentOff' command";
+        HcrPmc730::setXmitterFilamentState(false);
+    }
+};
+
+/// Xmlrpc++ method to turn on the transmitter high voltage.
+class XmitHvOnMethod : public XmlRpcServerMethod {
+public:
+    XmitHvOnMethod() : XmlRpcServerMethod("xmitHvOn") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'xmitHvOn' command";
+        HcrPmc730::setXmitterHvState(true);
+    }
+};
+
+/// Xmlrpc++ method to turn off the transmitter high voltage.
+class XmitHvOffMethod : public XmlRpcServerMethod {
+public:
+    XmitHvOffMethod() : XmlRpcServerMethod("xmitHvOff") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'xmitHvOff' command";
+        HcrPmc730::setXmitterHvState(false);
+    }
+};
+
 ///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
@@ -221,6 +263,18 @@ main(int argc, char** argv)
       PMU_auto_init("hcrdrx", _instance.c_str(), PROCMAP_REGISTER_INTERVAL);
       ILOG << "will register with procmap, instance: " << _instance;
     }
+
+    // Initialize our RPC server on port 8081
+    XmlRpc::XmlRpcServer rpcServer;
+    rpcServer.addMethod(new XmitFilamentOnMethod());
+    rpcServer.addMethod(new XmitFilamentOffMethod());
+    rpcServer.addMethod(new XmitHvOnMethod());
+    rpcServer.addMethod(new XmitHvOffMethod());
+    if (! rpcServer.bindAndListen(8081)) {
+        ELOG << "Failed to initialize XmlRpcServer!";
+        exit(1);
+    }
+    rpcServer.enableIntrospection(true);
 
     // Start our status monitoring thread.
     HcrMonitor hcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
@@ -309,8 +363,6 @@ main(int argc, char** argv)
     _exporter->start();
 
     // Start the timers, which will allow data to flow.
-    // All timers are started by calling timerStartStop for
-    // any one channel.
     sd3c.timersStartStop(true);
 
     double startTime = nowTime();
