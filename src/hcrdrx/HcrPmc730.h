@@ -29,6 +29,24 @@ public:
      */
     static void doSimulate(bool simulate);
 
+    /**
+     * @brief Set the state of the transmitter klystron filament.
+     * @param state If true, the klystron filament will be turned on, otherwise
+     * the filament will be turned off.
+     */
+    static void setXmitterFilamentState(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_TX_FILAMENT_ON, state ? 1 : 0);
+    }
+
+    /**
+     * @brief Enable or disable transmitter high voltage.
+     * @param state If true, transmitter high voltage will be enabled, otherwise
+     * it will be disabled.
+     */
+    static void setXmitterHvState(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_TX_HV_ON, state ? 1 : 0);
+    }
+
 private:
     HcrPmc730();
     virtual ~HcrPmc730();
