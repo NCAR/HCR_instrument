@@ -16,10 +16,11 @@ LOGGING("MainWindow")
 
 
 HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost, 
-    int xmitterPort) :
+    int xmitterPort, std::string hcrdrxHost, int hcrdrxPort) :
     QMainWindow(),
     _ui(),
     _xmitClient(xmitterHost, xmitterPort),
+    _drxClient(hcrdrxHost, hcrdrxPort),
     _updateTimer(this),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
@@ -45,9 +46,45 @@ HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost,
 HcrXmitCtlMainWindow::~HcrXmitCtlMainWindow() {
 }
 
+/// Toggle the current on/off state of the transmitter klystron filament
 void
 HcrXmitCtlMainWindow::on_filamentButton_clicked() {
-    _xmitClient.standby();
+    if (_status.rs232CtlEnabled()) {
+        // If RS-232 control is enabled, then transmitter commands go
+        // to hcr_xmitd, which owns the serial line talking to the transmitter
+        // CMU.
+        _xmitClient.standby(); // XXX currently toggles filament state
+    } else if (_status.rdsCtlEnabled()) {
+        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // (i.e., the Remote Data System), since it owns the digital lines
+        // controlling the transmitter.
+        if (_status.filamentOn()) {
+            _drxClient.xmitFilamentOff();
+        } else {
+            _drxClient.xmitFilamentOn();
+        }
+    }
+    _update();
+}
+
+/// Toggle the current on/off state of the transmitter high voltage
+void
+HcrXmitCtlMainWindow::on_hvButton_clicked() {
+    if (_status.rs232CtlEnabled()) {
+        // If RS-232 control is enabled, then transmitter commands go
+        // to hcr_xmitd, which owns the serial line talking to the transmitter
+        // CMU.
+//        _xmitClient.something();    // @TODO implement this
+    } else if (_status.rdsCtlEnabled()) {
+        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // (i.e., the Remote Data System), since it owns the digital lines
+        // controlling the transmitter.
+        if (_status.highVoltageOn()) {
+            _drxClient.xmitHvOff();
+        } else {
+            _drxClient.xmitHvOn();
+        }
+    }
     _update();
 }
 
@@ -59,12 +96,6 @@ HcrXmitCtlMainWindow::_appendXmitdLogMsgs() {
     if (_nextLogIndex != firstIndex) {
         _ui.logArea->appendPlainText(msgs.c_str());
     }
-}
-
-void
-HcrXmitCtlMainWindow::on_hvButton_clicked() {
-    _xmitClient.operate();
-    _update();
 }
 
 void
@@ -123,6 +154,7 @@ HcrXmitCtlMainWindow::_update() {
                 "Waiting for filament warmup" : "Filament is warm");
     }
     _ui.hvIcon->setPixmap(_status.highVoltageOn() ? _greenLED : _greenLED_off);
+    // Enable the HV button as soon as filament delay has expired
     _ui.hvButton->setEnabled(! _status.filamentDelayActive());
     _ui.xmittingIcon->setPixmap(_status.rfOn() ? _greenLED : _greenLED_off);
     

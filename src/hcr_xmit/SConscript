@@ -25,6 +25,7 @@ Default(hcr_xmitd)
 xmitctlTools = Split("""
 logx
 doxygen
+hcrdrxrpcclient
 xmitdrpcclient
 qt4
 """)

@@ -15,13 +15,15 @@
 #include <QTimer>
 
 #include <XmitdRpcClient.h>
+#include <HcrdrxRpcClient.h>
 
 #include "ui_HcrXmitCtlMainWindow.h"
 
 class HcrXmitCtlMainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    HcrXmitCtlMainWindow(std::string xmitterHost, int xmitterPort);
+    HcrXmitCtlMainWindow(std::string xmitterHost, int xmitterPort,
+            std::string hcrdrxHost, int hcrdrxPort);
     ~HcrXmitCtlMainWindow();
 private slots:
     void on_filamentButton_clicked();
@@ -61,12 +63,13 @@ private:
 
     Ui::HcrXmitCtlMainWindow _ui;
     XmitdRpcClient _xmitClient;
+    HcrdrxRpcClient _drxClient;
     QTimer _updateTimer;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
-    // Last status read
+    // Last status read from the transmitter
     XmitdRpcClient::XmitStatus _status;
     
     // next log index to get from hcr_xmitd
