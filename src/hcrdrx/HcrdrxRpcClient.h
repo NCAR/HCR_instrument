@@ -24,7 +24,7 @@ public:
      * @param hcrdrxPort the port number being used by hcrdrx
      */
     HcrdrxRpcClient(std::string hcrdrxHost, int hcrdrxPort);
-    ~HcrdrxRpcClient();
+    virtual ~HcrdrxRpcClient();
     
     /// Status is a class encapsulating all status values available from hcrdrx.
     class Status {
