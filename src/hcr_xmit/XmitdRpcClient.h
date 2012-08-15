@@ -191,7 +191,7 @@ public:
         double collectorCurrent() const { return (_collectorCurrent); }
         /**
          * @brief Transmitter temperature
-         * @return transmitter temperature, in °C
+         * @return transmitter temperature, in deg C
          */
         double xmitterTemperature() const { return (_xmitterTemp); }
 
@@ -415,21 +415,6 @@ public:
         double _xmitterTemp;
     };
     
-    /// Send an "operate" command to the transmitter
-    void operate();
-    
-    /// Send a "powerOn" command to the transmitter
-    void powerOn();
-    
-    /// Send a "powerOff" command to the transmitter
-    void powerOff();
-    
-    /// Send a "standby" command to the transmitter
-    void standby();
-    
-    /// Send a "faultReset" command to the transmitter
-    void faultReset();
-    
     // Send a "getStatus" command, filling a XmitdRpcClient::XmitStatus object if
     // we get status from the hcr_xmitd.
     // @param status the XmitdRpcClient::XmitStatus object to be filled
@@ -450,6 +435,26 @@ public:
      */
     std::string getXmitdHost() { return(_xmitdHost); }
     
+    /**
+     * @brief Turn on the klystron filament.
+     */
+    void xmitFilamentOn();
+
+    /**
+     * @brief Turn off the klystron filament.
+     */
+    void xmitFilamentOff();
+
+    /**
+     * @brief Turn on transmitter high voltage.
+     */
+    void xmitHvOn();
+
+    /**
+     * @brief Turn off the transmitter high voltage.
+     */
+    void xmitHvOff();
+
     /**
      * Get log messages from the associated hcr_xmitd at and after a selected
      * index.

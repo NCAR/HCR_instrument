@@ -37,38 +37,31 @@ XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd,
 }
 
 void
-XmitdRpcClient::powerOn() {
+XmitdRpcClient::xmitFilamentOn() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("powerOn", null, result);
+    _executeXmlRpcCommand("xmitFilamentOn", null, result);
 }
 
 void
-XmitdRpcClient::powerOff() {
+XmitdRpcClient::xmitFilamentOff() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("powerOff", null, result);
+    _executeXmlRpcCommand("xmitFilamentOff", null, result);
 }
 
 void
-XmitdRpcClient::faultReset() {
+XmitdRpcClient::xmitHvOn() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("faultReset", null, result);
+    _executeXmlRpcCommand("xmitHvOn", null, result);
 }
 
 void
-XmitdRpcClient::standby() {
+XmitdRpcClient::xmitHvOff() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("standby", null, result);
-}
-
-void
-XmitdRpcClient::operate() {
-    XmlRpc::XmlRpcValue null;
-    XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("operate", null, result);
+    _executeXmlRpcCommand("xmitHvOff", null, result);
 }
 
 bool
