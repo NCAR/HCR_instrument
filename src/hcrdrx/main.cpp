@@ -37,6 +37,7 @@ namespace po = boost::program_options;
 
 std::string _drxConfig;          ///< DRX configuration file
 std::string _instance;           ///< application instance
+HcrMonitor * _hcrMonitor;        ///< HcrMonitor instance
 int _chans = 2;                  ///< number of channels
 int _tsLength;                   ///< The time series length
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
@@ -184,6 +185,60 @@ void startUpConverter(Pentek::p7142Up& upConverter,
 
 }
 
+/**
+ * @brief Xmlrpc++ method to get transmitter status from hcr_xmitd.
+ *
+ * The method returns a XmlRpc::XmlRpcValue struct (dictionary) mapping
+ * std::string keys to XmlRpc::XmlRpcValue values. The dictionary will
+ * contain:
+ * <table border>
+ *   <tr>
+ *     <td><b>key</b></td>
+ *     <td><b>value type</b></td>
+ *     <td><b>value</b></td>
+ *   </tr>
+ *   <tr>
+ *     <td>some_bool</td>
+ *     <td>bool</td>
+ *     <td>Is the transmitter serial port connected and responding?</td>
+ *   </tr>
+ *   <tr>
+ *     <td>some_double</td>
+ *     <td>double</td>
+ *     <td>cathode voltage, kV</td>
+ *   </tr>
+ *   <tr>
+ *     <td>some_int</td>
+ *     <td>int</td>
+ *     <td>Count of modulator faults since startup</td>
+ *   </tr>
+ * </table>
+ * Example client usage, where hcrdrx is running on machine `drxhost`:
+ * @code
+ *     #include <XmlRpc.h>
+ *     ...
+ *
+ *     // Get the transmitter status from hcrdrx on drxhost.local.net on port 8081
+ *     XmlRpc::XmlRpcClient client("drxhost.local.net", 8081);
+ *     const XmlRpc::XmlRpcValue nullParams;
+ *     XmlRpc::XmlRpcValue statusDict;
+ *     client.execute("getStatus", nullParams, statusDict);
+ *
+ *     // extract a couple of values from the dictionary
+ *     bool bVal = bool(statusDict["some_bool"]));
+ *     double dVal = double(statusDict["some_double"]));
+ * @endcode
+ */
+class GetStatusMethod : public XmlRpcServerMethod {
+public:
+    GetStatusMethod() : XmlRpcServerMethod("getStatus") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        XmlRpcValue statusDict;
+        statusDict["cmigitsTemp"] = XmlRpcValue(_hcrMonitor->cmigitsTemp());
+        retvalP = statusDict;
+    }
+};
+
 /// Xmlrpc++ method to turn on the transmitter klystron filament.
 class XmitFilamentOnMethod : public XmlRpcServerMethod {
 public:
@@ -266,6 +321,7 @@ main(int argc, char** argv)
 
     // Initialize our RPC server on port 8081
     XmlRpc::XmlRpcServer rpcServer;
+    rpcServer.addMethod(new GetStatusMethod());
     rpcServer.addMethod(new XmitFilamentOnMethod());
     rpcServer.addMethod(new XmitFilamentOffMethod());
     rpcServer.addMethod(new XmitHvOnMethod());
@@ -277,11 +333,11 @@ main(int argc, char** argv)
     rpcServer.enableIntrospection(true);
 
     // Start our status monitoring thread.
-    HcrMonitor hcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
-    hcrMonitor.start();
+    _hcrMonitor = new HcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
+    _hcrMonitor->start();
 
     // create the export object
-    _exporter = new IwrfExport(hcrConfig, hcrMonitor);
+    _exporter = new IwrfExport(hcrConfig, *_hcrMonitor);
 
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
