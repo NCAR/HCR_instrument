@@ -44,33 +44,38 @@ HcrXmitter::~HcrXmitter() {
 }
 
 void
-HcrXmitter::standby() {
-	ILOG << "Standby";
-    _intendedState ^= _FILAMENT_ON_BIT;	// toggle the "filament on" bit
-    ILOG << "Commanding filament " << ((_intendedState & _FILAMENT_ON_BIT) ? "on" : "off");
-    if (! _simulate) {
-    	_sendCommand(_intendedState);
+HcrXmitter::setFilamentState(bool filamentState) {
+    // Tweak the filament bit in the intended state
+    if (filamentState) {
+        _intendedState |= _FILAMENT_ON_BIT;     // set bit
     } else {
-    	_simStatus.filamentOn = (_intendedState & _FILAMENT_ON_BIT);
+        _intendedState &= ~_FILAMENT_ON_BIT;    // clear bit
+    }
+
+    ILOG << "Commanding filament " << (filamentState ? "on" : "off");
+    if (! _simulate) {
+        _sendCommand(_intendedState);
+    } else {
+        _simStatus.filamentOn = filamentState;
     }
     return;
 }
 
 void
-HcrXmitter::operate() {
-    WLOG << "operate() not implemented!";
-//    ILOG << "Operate";
-//    if (! _simulate) {
-//        _sendCommand(_OPERATE_COMMAND);
-//    } else {
-//        if (! _simStatus.unitOn)
-//            return;
-//        
-//        _simStatus.hvpsOn = true;
-//        _simStatus.hvpsRunup = true;
-//        _simStatus.hvpsVoltage = 20.0;
-//        _simStatus.standby = false;
-//    }
+HcrXmitter::setHvState(bool hvState) {
+    // Tweak the HV bit in the intended state
+    if (hvState) {
+        _intendedState |= _HV_ON_BIT;     // set bit
+    } else {
+        _intendedState &= ~_HV_ON_BIT;    // clear bit
+    }
+
+    ILOG << "Commanding high voltage " << (hvState ? "on" : "off");
+    if (! _simulate) {
+        _sendCommand(_intendedState);
+    } else {
+        _simStatus.highVoltageOn = hvState;
+    }
     return;
 }
 
@@ -121,7 +126,7 @@ HcrXmitter::getStatus() {
     	}
 
     	if (attempt > 0 && nReplies == 0) {
-    		ILOG << "Got first status reply after " << attempt + 1 <<
+    		ILOG << "Got a status reply after " << attempt + 1 <<
     				" attempts";
     	}
 
@@ -313,7 +318,7 @@ HcrXmitter::_sendCommand(uint8_t desiredState) {
     if (_simulate)
         return;
     
-    // Build the actual command containing the desired state
+    // Construct the 8-byte packet containing the desired command byte
     std::vector<uint8_t> cmd;
 
     cmd.push_back(uint8_t(0xf0));		// byte 0: command start byte 0xf0

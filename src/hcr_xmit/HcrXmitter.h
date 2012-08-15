@@ -132,32 +132,14 @@ public:
      * @param state boolean state: true to turn on filament, false to turn off
      * filament.
      */
-    void setFilamentEnabled(bool state);
+    void setFilamentState(bool state);
     
     /**
      * @brief Set high voltage state.
      * @param state boolean state: true to turn on HV, false to turn off
      * HV.
      */
-    void setHvEnabled(bool state);
-    
-    /**
-     * @brief Set RF state.
-     * @param state boolean state: true to enable RF transmit, false to
-     * disable RF transmit.
-     */
-    void setRfEnabled(bool state);
-    
-    /**
-     * Enter "standby" state (ready to operate, but high voltage disabled).
-     */
-    void standby();
-    
-    /**
-     * Enter "operate" state, with high voltage enabled and ready to transmit
-     * when triggered.
-     */
-    void operate();
+    void setHvState(bool state);
     
     /**
      * Reopen our serial port talking to the transmitter. Generally this should
@@ -243,23 +225,25 @@ private:
     /// Status byte 6: EIK interlock fault?
     static const uint8_t _EIK_INTERLOCK_FAULT_BIT		= 0x08;
 
-    // Are we simulating?
+    /// Are we simulating?
     bool _simulate;
     
-    // Counter which is incremented every time we send a command to the
-    // transmitter.
+    /**
+     *  Counter which is incremented every time we send a command to the
+     * transmitter.
+     */
     uint8_t _aliveCounter;
     
-    // Keep a local status struct to use when simulating.
+    /// Keep a local status struct to use when simulating.
     Status _simStatus;
     
-    // Our serial port device name (may be SIM_DEVICE)
+    /// Our serial port device name (may be SIM_DEVICE)
     std::string _ttyDev;
     
-    // File descriptor for the open serial port
+    /// File descriptor for the open serial port
     int _fd;
 
-    // Intended transmitter state
+    /// Intended transmitter state
     uint8_t _intendedState;
 };
 
