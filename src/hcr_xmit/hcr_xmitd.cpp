@@ -389,25 +389,45 @@ public:
     }
 } getStatusMethod(&RpcServer);
 
-/// Xmlrpc++ method to enter "standby" state (warmed up, but high voltage off)
-class StandbyMethod : public XmlRpcServerMethod {
+/// Xmlrpc++ method to turn on the transmitter klystron filament.
+class XmitFilamentOnMethod : public XmlRpcServerMethod {
 public:
-    StandbyMethod(XmlRpcServer *s) : XmlRpcServerMethod("standby", s) {}
+    XmitFilamentOnMethod(XmlRpcServer *s) : XmlRpcServerMethod("xmitFilamentOn", s) {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        DLOG << "standby command received";
-        Xmitter->standby();
+        ILOG << "Received 'xmitFilamentOn' command";
+        Xmitter->setFilamentState(true);    // turn filament on
     }
-} standbyMethod(&RpcServer);
+} xmitFilamentOnMethod(&RpcServer);
 
-/// Xmlrpc++ method to enter "operate" state (high voltage on, ready to transmit)
-class OperateMethod : public XmlRpcServerMethod {
+/// Xmlrpc++ method to turn off the transmitter klystron filament.
+class XmitFilamentOffMethod : public XmlRpcServerMethod {
 public:
-    OperateMethod(XmlRpcServer *s) : XmlRpcServerMethod("operate", s) {}
+    XmitFilamentOffMethod(XmlRpcServer *s) : XmlRpcServerMethod("xmitFilamentOff", s) {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        DLOG << "operate command received";
-        Xmitter->operate();
+        ILOG << "Received 'xmitFilamentOff' command";
+        Xmitter->setFilamentState(false);   // turn filament off
     }
-} operateMethod(&RpcServer);
+} xmitFilamentOffMethod(&RpcServer);
+
+/// Xmlrpc++ method to turn on the transmitter high voltage.
+class XmitHvOnMethod : public XmlRpcServerMethod {
+public:
+    XmitHvOnMethod(XmlRpcServer *s) : XmlRpcServerMethod("xmitHvOn", s) {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'xmitHvOn' command";
+        Xmitter->setHvState(true);  // turn HV on
+    }
+} xmitHvOnMethod(&RpcServer);
+
+/// Xmlrpc++ method to turn off the transmitter high voltage.
+class XmitHvOffMethod : public XmlRpcServerMethod {
+public:
+    XmitHvOffMethod(XmlRpcServer *s) : XmlRpcServerMethod("xmitHvOff", s) {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'xmitHvOff' command";
+        Xmitter->setHvState(true);  // turn HV off
+    }
+} xmitHvOffMethod(&RpcServer);
 
 /// Xmlrpc++ method to get a string containing all available xmitd log 
 /// messages at or later than the given index. If the index is zero, all 
