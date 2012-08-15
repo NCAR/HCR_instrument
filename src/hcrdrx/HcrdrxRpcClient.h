@@ -82,9 +82,12 @@ public:
     };
     
     /**
-     * @brief Return the current client connection state, which can be
-     * NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER, READ_RESPONSE,
-     * or IDLE.
+     * @brief Return the current ClientConnectionState connection state, which
+     * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
+     * READ_RESPONSE, or IDLE.
+     * @return the current ClientConnectionState connection state, which
+     * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
+     * READ_RESPONSE, or IDLE.
      */
     ClientConnectionState connectionState() const { return _connectionState; }
 
