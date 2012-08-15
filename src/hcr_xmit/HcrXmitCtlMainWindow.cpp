@@ -53,7 +53,11 @@ HcrXmitCtlMainWindow::on_filamentButton_clicked() {
         // If RS-232 control is enabled, then transmitter commands go
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
-        _xmitClient.standby(); // XXX currently toggles filament state
+        if (_status.filamentOn()) {
+            _xmitClient.xmitFilamentOff();
+        } else {
+            _xmitClient.xmitFilamentOn();
+        }
     } else if (_status.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
@@ -151,7 +155,7 @@ HcrXmitCtlMainWindow::_update() {
         // Amber during filament warmup, then green when warm
         _ui.filamentWarmupIcon->setPixmap(_status.filamentDelayActive() ? _amberLED : _greenLED);
         _ui.filamentWarmupLabel->setText(_status.filamentDelayActive() ?
-                "Waiting for filament warmup" : "Filament is warm");
+                "Waiting for warmup" : "Filament is warm");
     }
     _ui.hvIcon->setPixmap(_status.highVoltageOn() ? _greenLED : _greenLED_off);
     // Enable the HV button as soon as filament delay has expired
