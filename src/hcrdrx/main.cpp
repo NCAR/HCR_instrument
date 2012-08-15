@@ -429,7 +429,8 @@ main(int argc, char** argv)
             if (_terminate) {
                 break;
             }
-            usleep(100000);
+            // handle XML-RPC commands for 0.1 second
+            rpcServer.work(0.1);
         }
         if (_terminate) {
             break;
