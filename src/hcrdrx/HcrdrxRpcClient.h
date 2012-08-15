@@ -81,24 +81,34 @@ public:
         double _someDouble;
     };
     
-    /// Send an "xmitFilamentOn" command to hcrdrx
+    /**
+     * @brief Return the current client connection state, which can be
+     * NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER, READ_RESPONSE,
+     * or IDLE.
+     */
+    ClientConnectionState connectionState() const { return _connectionState; }
+
+    /// @brief Send an "xmitFilamentOn" command to hcrdrx
     void xmitFilamentOn();
     
-    /// Send a "xmitFilamentOff" command to hcrdrx
+    /// @brief Send a "xmitFilamentOff" command to hcrdrx
     void xmitFilamentOff();
     
-    /// Send an "xmitHvOn" command to hcrdrx
+    /// @brief Send an "xmitHvOn" command to hcrdrx
     void xmitHvOn();
     
-    /// Send a "xmitHvOff" command to hcrdrx
+    /// @brief Send a "xmitHvOff" command to hcrdrx
     void xmitHvOff();
     
-    // Send a "getStatus" command, filling a HcrdrxRpcClient::Status object if
-    // we get status from the hcrdrx.
-    // @param status the HcrdrxRpcClient::Status object to be filled
-    // @return true and fill the status object if status is obtained from 
-    // hcrdrx, otherwise return false and leave the status object
-    // unmodified.
+    /**
+     * @brief Send a "getStatus" command, filling a HcrdrxRpcClient::Status
+     * object if
+     * we get status from the hcrdrx.
+     * @param status the HcrdrxRpcClient::Status object to be filled
+     * @return true and fill the status object if status is obtained from
+     * hcrdrx, otherwise return false and leave the status object
+     * unmodified.
+     */
     bool getStatus(HcrdrxRpcClient::Status & status);
     
     /**
