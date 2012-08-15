@@ -129,13 +129,13 @@ HcrXmitCtlMainWindow::_update() {
         _noDaemon();
         return;
     } 
-    if (_noXmitd){
+    if (_noXmitd) {
         // we were out of touch with the hcr_xmitd
-	std::ostringstream ss;
-	ss << "Connected to hcr_xmitd @ " << _xmitClient.getXmitdHost() << ":" <<
-		_xmitClient.getXmitdPort();
-	_logMessage(ss.str().c_str());
-	_noXmitd = false;
+        std::ostringstream ss;
+        ss << "Connected to hcr_xmitd @ " << _xmitClient.getXmitdHost() << ":" <<
+                _xmitClient.getXmitdPort();
+        _logMessage(ss.str().c_str());
+        _noXmitd = false;
     } 
     if (! _status.serialConnected()) {
         _noXmitter();
