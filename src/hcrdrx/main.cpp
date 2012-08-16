@@ -198,19 +198,118 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     <td><b>value</b></td>
  *   </tr>
  *   <tr>
- *     <td>some_bool</td>
- *     <td>bool</td>
- *     <td>Is the transmitter serial port connected and responding?</td>
- *   </tr>
- *   <tr>
- *     <td>some_double</td>
+ *     <td>detectedRfPower</td>
  *     <td>double</td>
- *     <td>cathode voltage, kV</td>
+ *     <td>transmit pulse power from the QuinStar crystal detector, dBm</td>
  *   </tr>
  *   <tr>
- *     <td>some_int</td>
+ *     <td>pvForePressure</td>
+ *     <td>double</td>
+ *     <td>pressure in the fore end of the pressure vessel, hPa</td>
+ *   </tr>
+ *   <tr>
+ *     <td>pvAftPressure</td>
+ *     <td>double</td>
+ *     <td>pressure in the aft end of the pressure vessel, hPa</td>
+ *   </tr>
+ *   <tr>
+ *     <td>ploTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the 93 GHz phase-locked oscillator, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>eikTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the Extended Interaction Klystron (EIK), deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>vLnaTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the vertical channel LNA, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>hLnaTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the horizontal channel LNA, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>polarizationSwitchTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the polarization switch, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rfDetectorTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the crystal RF detector, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>noiseSourceTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the noise source, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>ps28VTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the 28 V power supply, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rdsInDuctTemp</td>
+ *     <td>double</td>
+ *     <td>temperature at the input air duct for the remote data system (RDS), deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rotationMotorTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the reflector rotation motor, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>tiltMotorTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the reflector tilt motor, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>cmigitsTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the C-MIGITS inertial navigation system, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>tailconeTemp</td>
+ *     <td>double</td>
+ *     <td>ambient temperature in the tailcone, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>noiseSourceSelected</td>
+ *     <td>bool</td>
+ *     <td>true iff waveguide switch A is in the "noise source" position</td>
+ *   </tr>
+ *   <tr>
+ *     <td>terminationSelected</td>
+ *     <td>bool</td>
+ *     <td>true iff waveguide switch B is in "termination" position</td>
+ *   </tr>
+ *   <tr>
+ *     <td>locked15_5GHzPLO</td>
+ *     <td>bool</td>
+ *     <td>true iff 15.5 GHz PLO is phase locked</td>
+ *   </tr>
+ *   <tr>
+ *     <td>locked1250MHzPLO</td>
+ *     <td>bool</td>
+ *     <td>true iff 1250 MHz PLO is phase locked</td>
+ *   </tr>
+ *   <tr>
+ *     <td>modPulseDisabled</td>
+ *     <td>bool</td>
+ *     <td>true iff modulation pulses are being stopped at the HMC and not
+ *         passed through to the transmitter</td>
+ *   </tr>
+ *   <tr>
+ *     <td>hmcStatus</td>
  *     <td>int</td>
- *     <td>Count of modulator faults since startup</td>
+ *     <td>The status value from the Health Monitoring and Control (HMC) card.
+ *         The values are: 0 = no errors, 1 = EMS power below threshold,
+ *         2 = receiver protector switching error,
+ *         3 = polarization switching error</td>
  *   </tr>
  * </table>
  * Example client usage, where hcrdrx is running on machine `drxhost`:
@@ -226,7 +325,7 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *
  *     // extract a couple of values from the dictionary
  *     bool bVal = bool(statusDict["some_bool"]));
- *     double dVal = double(statusDict["some_double"]));
+ *     double cmigitsTemp = double(statusDict["cmigitsTemp"]));
  * @endcode
  */
 class GetStatusMethod : public XmlRpcServerMethod {
@@ -234,7 +333,28 @@ public:
     GetStatusMethod() : XmlRpcServerMethod("getStatus") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
         XmlRpcValue statusDict;
+        statusDict["detectedRfPower"] = XmlRpcValue(_hcrMonitor->detectedRfPower());
+        statusDict["pvForePressure"] = XmlRpcValue(_hcrMonitor->pvForePressure());
+        statusDict["pvAftPressure"] = XmlRpcValue(_hcrMonitor->pvAftPressure());
+        statusDict["ploTemp"] = XmlRpcValue(_hcrMonitor->ploTemp());
+        statusDict["eikTemp"] = XmlRpcValue(_hcrMonitor->eikTemp());
+        statusDict["vLnaTemp"] = XmlRpcValue(_hcrMonitor->vLnaTemp());
+        statusDict["hLnaTemp"] = XmlRpcValue(_hcrMonitor->hLnaTemp());
+        statusDict["polarizationSwitchTemp"] = XmlRpcValue(_hcrMonitor->polarizationSwitchTemp());
+        statusDict["rfDetectorTemp"] = XmlRpcValue(_hcrMonitor->rfDetectorTemp());
+        statusDict["noiseSourceTemp"] = XmlRpcValue(_hcrMonitor->noiseSourceTemp());
+        statusDict["ps28VTemp"] = XmlRpcValue(_hcrMonitor->ps28VTemp());
+        statusDict["rdsInDuctTemp"] = XmlRpcValue(_hcrMonitor->rdsInDuctTemp());
+        statusDict["rotationMotorTemp"] = XmlRpcValue(_hcrMonitor->rotationMotorTemp());
+        statusDict["tiltMotorTemp"] = XmlRpcValue(_hcrMonitor->tiltMotorTemp());
         statusDict["cmigitsTemp"] = XmlRpcValue(_hcrMonitor->cmigitsTemp());
+        statusDict["tailconeTemp"] = XmlRpcValue(_hcrMonitor->tailconeTemp());
+        statusDict["noiseSourceSelected"] = XmlRpcValue(_hcrMonitor->noiseSourceSelected());
+        statusDict["terminationSelected"] = XmlRpcValue(_hcrMonitor->terminationSelected());
+        statusDict["locked15_5GHzPLO"] = XmlRpcValue(_hcrMonitor->locked15_5GHzPLO());
+        statusDict["locked1250MHzPLO"] = XmlRpcValue(_hcrMonitor->locked1250MHzPLO());
+        statusDict["modPulseDisabled"] = XmlRpcValue(_hcrMonitor->modPulseDisabled());
+        statusDict["hmcStatus"] = XmlRpcValue(_hcrMonitor->hmcStatus());
         retvalP = statusDict;
     }
 };
@@ -245,7 +365,7 @@ public:
     XmitFilamentOnMethod() : XmlRpcServerMethod("xmitFilamentOn") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
         ILOG << "Received 'xmitFilamentOn' command";
-        HcrPmc730::setXmitterFilamentState(true);
+        HcrPmc730::setXmitterFilamentOn(true);
     }
 };
 
@@ -255,7 +375,7 @@ public:
     XmitFilamentOffMethod() : XmlRpcServerMethod("xmitFilamentOff") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
         ILOG << "Received 'xmitFilamentOff' command";
-        HcrPmc730::setXmitterFilamentState(false);
+        HcrPmc730::setXmitterFilamentOn(false);
     }
 };
 
@@ -265,7 +385,7 @@ public:
     XmitHvOnMethod() : XmlRpcServerMethod("xmitHvOn") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
         ILOG << "Received 'xmitHvOn' command";
-        HcrPmc730::setXmitterHvState(true);
+        HcrPmc730::setXmitterHvOn(true);
     }
 };
 
@@ -275,7 +395,7 @@ public:
     XmitHvOffMethod() : XmlRpcServerMethod("xmitHvOff") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
         ILOG << "Received 'xmitHvOff' command";
-        HcrPmc730::setXmitterHvState(false);
+        HcrPmc730::setXmitterHvOn(false);
     }
 };
 
