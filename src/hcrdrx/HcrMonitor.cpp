@@ -212,6 +212,48 @@ HcrMonitor::tailconeTemp() const {
     return(_tailconeTemps.mean());
 }
 
+bool
+HcrMonitor::noiseSourceSelected() const {
+    QMutexLocker locker(&_mutex);
+    return(_noiseSourceSelected);
+}
+
+bool
+HcrMonitor::terminationSelected() const {
+    QMutexLocker locker(&_mutex);
+    return(_terminationSelected);
+}
+
+bool
+HcrMonitor::locked15_5GHzPLO() const {
+    QMutexLocker locker(&_mutex);
+    return(_locked15_5GHzPLO);
+}
+
+bool
+HcrMonitor::locked1250MHzPLO() const {
+    QMutexLocker locker(&_mutex);
+    return(_locked1250MHzPLO);
+}
+
+bool
+HcrMonitor::modPulseDisabled() const {
+    QMutexLocker locker(&_mutex);
+    return(_modPulseDisabled);
+}
+
+float
+HcrMonitor::detectedRfPower() const {
+    QMutexLocker locker(&_mutex);
+    return(0.0);
+}
+
+int
+HcrMonitor::hmcStatus() const {
+    QMutexLocker locker(&_mutex);
+    return(_hmcStatus);
+}
+
 XmitdRpcClient::XmitStatus
 HcrMonitor::transmitterStatus() const {
     QMutexLocker locker(&_mutex);
@@ -283,6 +325,8 @@ HcrMonitor::_getMultiIoValues() {
     _cmigitsTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[14]));
     _tailconeTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[15]));
     
+    // @TODO get the digital values!
+
     DLOG << "PLO temperature: " << std::setprecision(3) << ploTemp() << " deg C";
 }
 
