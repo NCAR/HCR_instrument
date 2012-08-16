@@ -24,7 +24,7 @@ public:
      * @param xmitdPort the port number being used by hcr_xmitd
      */
     XmitdRpcClient(std::string xmitdHost, int xmitdPort);
-    virtual ~XmitdRpcClient();
+    ~XmitdRpcClient();
     
     /// XmitStatus is a class encapsulating all status values available from the
     /// HCR transmitter.
@@ -415,24 +415,12 @@ public:
         double _xmitterTemp;
     };
     
-    /**
-     * @brief Return the current ClientConnectionState connection state, which
-     * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
-     * READ_RESPONSE, or IDLE.
-     * @return the current ClientConnectionState connection state, which
-     * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
-     * READ_RESPONSE, or IDLE.
-     */
-    ClientConnectionState connectionState() const { return _connectionState; }
-
-    /**
-     * @brief Send a "getStatus" command, filling a XmitdRpcClient::XmitStatus
-     * object if we get status from the hcr_xmitd.
-     * @param status the XmitdRpcClient::XmitStatus object to be filled
-     * @return true and fill the status object if status is obtained from
-     * hcr_xmitd, otherwise return false and leave the status object
-     * unmodified.
-     */
+    // Send a "getStatus" command, filling a XmitdRpcClient::XmitStatus object if
+    // we get status from the hcr_xmitd.
+    // @param status the XmitdRpcClient::XmitStatus object to be filled
+    // @return true and fill the status object if status is obtained from 
+    // hcr_xmitd, otherwise return false and leave the status object 
+    // unmodified.
     bool getStatus(XmitdRpcClient::XmitStatus & status);
     
     /**
