@@ -30,12 +30,21 @@ public:
     static void doSimulate(bool simulate);
 
     /**
+     * @brief Set the state of the noise source.
+     * @param state If true, the noise source will be turned on, otherwise off.
+     */
+    static void setNoiseSourceOn(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_NOISE_SRC_ON, state ? 1 : 0);
+    }
+
+    /**
      * @brief Set the state of the transmitter klystron filament.
      * @param state If true, the klystron filament will be turned on, otherwise
-     * the filament will be turned off.
+     * off.
      */
-    static void setXmitterFilamentState(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_TX_FILAMENT_ON, state ? 1 : 0);
+    static void setXmitterFilamentOn(bool state) {
+        // NOTE: setting _HCR_DOUT_TX_FILAMENT_OFF line high turns OFF the filament!
+        theHcrPmc730().setDioLine(_HCR_DOUT_TX_FILAMENT_OFF, state ? 0 : 1);
     }
 
     /**
@@ -43,8 +52,55 @@ public:
      * @param state If true, transmitter high voltage will be enabled, otherwise
      * it will be disabled.
      */
-    static void setXmitterHvState(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_TX_HV_ON, state ? 1 : 0);
+    static void setXmitterHvOn(bool state) {
+        // NOTE: setting _HCR_DOUT_TX_HV_OFF line high turns OFF the high voltage!
+        theHcrPmc730().setDioLine(_HCR_DOUT_TX_HV_OFF, state ? 0 : 1);
+    }
+
+    /**
+     * @brief Set the state of waveguide switch C.
+     * @param state the desired switch position: 0 if state is false, 1 if
+     * state is true.
+     */
+    static void setWaveguideSwitchC(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_WG_SWITCH_C, state ? 1 : 0);
+    }
+
+    /**
+     * @brief Set the state of waveguide switch D.
+     * @param state the desired switch position: 0 if state is false, 1 if
+     * state is true.
+     */
+    static void setWaveguideSwitchD(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_WG_SWITCH_D, state ? 1 : 0);
+    }
+
+    /**
+     * @brief Set the state of the HMC reset line.
+     * @param state If true, the reset line will be set high, otherwise it will
+     * be set low.
+     */
+    static void setHmcResetOn(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_HMC_RESET, state ? 1 : 0);
+    }
+
+    /**
+     * @brief Set the HMC operations mode
+     */
+    typedef enum _HmcOperationMode {
+        HMC_NORMAL_OPERATION = 0,
+        HMC_NOISE_SOURCE_CAL = 1,
+        HMC_CORNER_REFLECTOR_CAL = 2
+    } HmcOperationMode;
+
+    static void setHmcOperationMode(HmcOperationMode mode) {
+        // Set the two bits of the HMC operation mode.
+        // @TODO Does this need to be an atomic operation, with both bits
+        // changed at once?
+        uint8_t bit0 = (mode >> 0) & 0x01;
+        theHcrPmc730().setDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0, bit0);
+        uint8_t bit1 = (mode >> 1) & 0x01;
+        theHcrPmc730().setDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1, bit1);
     }
 
 private:
@@ -91,12 +147,12 @@ private:
         _HCR_DOUT_HMC_RESET = 10,
         /// digital out line 11: waveguide switch C control
         _HCR_DOUT_WG_SWITCH_C = 11,
-        /// digital out line 12: Turn on transmitter Klystron filament
-        _HCR_DOUT_TX_FILAMENT_ON = 12,
+        /// digital out line 12: Turn off transmitter Klystron filament
+        _HCR_DOUT_TX_FILAMENT_OFF = 12,
         /// digital out line 13: HMC operation mode bit 0
         _HCR_DOUT_HMC_OPS_MODE_BIT0 = 13,
-        /// digital out line 14: Turn on transmitter Klystron high voltage
-        _HCR_DOUT_TX_HV_ON = 14,
+        /// digital out line 14: Turn off transmitter Klystron high voltage
+        _HCR_DOUT_TX_HV_OFF = 14,
         /// digital out line 15: HMC operation mode bit 1
         _HCR_DOUT_HMC_OPS_MODE_BIT1 = 15,
     } DoutLine_t;

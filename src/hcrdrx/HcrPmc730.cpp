@@ -54,19 +54,28 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
             getDioDirection(_HCR_DOUT_WG_SWITCH_D) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_RESET) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_WG_SWITCH_C) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_TX_FILAMENT_ON) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_TX_FILAMENT_OFF) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT0) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_TX_HV_ON) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_TX_HV_OFF) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT1) != DIO_OUTPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
             _HCR_DOUT_NOISE_SRC_ON << ", " << _HCR_DOUT_HMC_RESET << ", " <<
             _HCR_DOUT_WG_SWITCH_D << ", " << _HCR_DOUT_WG_SWITCH_C << ", " <<
-            _HCR_DOUT_TX_FILAMENT_ON << ", " << 
+            _HCR_DOUT_TX_FILAMENT_OFF << ", " <<
             _HCR_DOUT_HMC_OPS_MODE_BIT0 << ", " <<
-            _HCR_DOUT_TX_HV_ON << ", and " << _HCR_DOUT_HMC_OPS_MODE_BIT1 << 
+            _HCR_DOUT_TX_HV_OFF << ", and " << _HCR_DOUT_HMC_OPS_MODE_BIT1 <<
             " are not all set for output!";
         abort();
     }
+    // Initialize output lines
+    setHmcResetOn(true);    // Start with HMC in reset...
+    setNoiseSourceOn(false);
+    setWaveguideSwitchC(0);
+    setWaveguideSwitchD(0);
+    setXmitterFilamentOn(false);
+    setXmitterHvOn(false);
+    setHmcOperationMode(HMC_NORMAL_OPERATION);
+    setHmcResetOn(false);   // ...and allow the HMC to operate
 }
 
 HcrPmc730::~HcrPmc730() {
