@@ -428,6 +428,17 @@ main(int argc, char** argv)
     // Just refer to theHcrPmc730() to instantiate the singleton.
     HcrPmc730::theHcrPmc730();
     
+    // Initialize output lines
+    HcrPmc730::setHmcResetOn(true);    // Start with HMC in reset...
+    HcrPmc730::setNoiseSourceOn(false);
+    HcrPmc730::setWaveguideSwitchC(0);
+    HcrPmc730::setWaveguideSwitchD(0);
+    HcrPmc730::setXmitterFilamentOn(false);
+    HcrPmc730::setXmitterHvOn(false);
+    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_NORMAL_OPERATION);
+    // Now allow the HMC to operate
+    HcrPmc730::setHmcResetOn(false);
+
     // set to ignore SIGPIPE errors which occur when sockets
     // are broken between client and server
 

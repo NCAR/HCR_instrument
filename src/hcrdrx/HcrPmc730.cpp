@@ -67,15 +67,6 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
             " are not all set for output!";
         abort();
     }
-    // Initialize output lines
-    setHmcResetOn(true);    // Start with HMC in reset...
-    setNoiseSourceOn(false);
-    setWaveguideSwitchC(0);
-    setWaveguideSwitchD(0);
-    setXmitterFilamentOn(false);
-    setXmitterHvOn(false);
-    setHmcOperationMode(HMC_NORMAL_OPERATION);
-    setHmcResetOn(false);   // ...and allow the HMC to operate
 }
 
 HcrPmc730::~HcrPmc730() {
