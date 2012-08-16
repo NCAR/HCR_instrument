@@ -100,11 +100,11 @@ HcrdrxRpcClient::Status::Status() :
 HcrdrxRpcClient::Status::Status(XmlRpc::XmlRpcValue & statusDict) {
     // Unpack all of the status values from the XmlRpc::XmlRpcValue dictionary
     // into local member variables
-    _someBoolean = _StatusBool(statusDict, "some_boolean");
+//    _someBoolean = _StatusBool(statusDict, "some_boolean");
     
-    _someInt = _StatusInt(statusDict, "some_int");
+//    _someInt = _StatusInt(statusDict, "some_int");
     
-    _someDouble = _StatusDouble(statusDict, "some_double");
+    _someDouble = _StatusDouble(statusDict, "cmigitsTemp");
 }
 
 HcrdrxRpcClient::Status::~Status() {

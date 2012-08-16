@@ -21,15 +21,10 @@ env = Environment(tools = ['default'],
                   GLOBAL_TOOLS = ['prefixoptions', 'buildmode', 'svninfo', HcrSetup])
 svnInfo = env.SvnInfo('svnInfo.h', '#')
 
-#SConscript("acex/SConscript")
-#SConscript("rtfcommon/SConscript")
 SConscript("hcr_xmit/SConscript")
 SConscript("hcrbscan/SConscript")
 SConscript("hcrdrx/SConscript")
-#SConscript("hcrscope/SConscript")
 SConscript("tcpscope/SConscript")
-#SConscript("hcrprod/SConscript")
-#SConscript("hcrarchiver/SConscript")
 
 env.Alias('apidocs', env.Dir("apidocs"))
 

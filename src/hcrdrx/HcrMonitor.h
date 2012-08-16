@@ -153,13 +153,12 @@ public:
     /**
      * @brief Return the status value from the Health Monitoring and Control
      * (HMC) card.
-     * Return the two-bit status value from the HMC. The meanings of the
+     * @return the two-bit status value from the HMC. The meanings of the
      * status values are:
      * 0 = no errors,
      * 1 = EMS power below threshold,
      * 2 = receiver protector switching error,
      * 3 = polarization switching error
-     * @return true iff 1250 MHz PLO is phase locked
      */
     int hmcStatus() const;
 
@@ -195,7 +194,7 @@ private:
         /**
          * @brief Return the mean of the values in the list, or -99.9 if
          * the list is empty.
-         * @Return the mean of the values in the list, or -99.9 if
+         * @return the mean of the values in the list, or -99.9 if
          * the list is empty.
          */
         float mean() const {

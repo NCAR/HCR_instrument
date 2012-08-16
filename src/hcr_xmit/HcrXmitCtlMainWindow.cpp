@@ -78,7 +78,11 @@ HcrXmitCtlMainWindow::on_hvButton_clicked() {
         // If RS-232 control is enabled, then transmitter commands go
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
-//        _xmitClient.something();    // @TODO implement this
+        if (_status.highVoltageOn()) {
+            _xmitClient.xmitHvOff();
+        } else {
+            _xmitClient.xmitHvOn();
+        }
     } else if (_status.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
@@ -128,7 +132,7 @@ HcrXmitCtlMainWindow::_update() {
     if (! _xmitClient.getStatus(_status)) {
         _noDaemon();
         return;
-    } 
+    }
     if (_noXmitd) {
         // we were out of touch with the hcr_xmitd
         std::ostringstream ss;
@@ -144,11 +148,21 @@ HcrXmitCtlMainWindow::_update() {
     
     _enableUi();
 
+    HcrdrxRpcClient::Status drxStatus;
+    if (! _drxClient.getStatus(drxStatus)) {
+        std::ostringstream ss;
+        ss << "No connection to hcrdrx @ " << _drxClient.getHcrdrxHost() << ":" <<
+                _drxClient.getHcrdrxPort();
+        _logMessage(ss.str().c_str());
+    }
+
     // Update transmitter control
     _ui.powerValidIcon->setPixmap(_status.powerValid() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_status.filamentOn() ? _greenLED : _greenLED_off);
+    // filament button disabled if control is from the CMU front panel
+    _ui.filamentButton->setEnabled(! _status.frontPanelCtlEnabled());
     if (! _status.filamentOn()) {
-        // Warmup LED is off if the filament is not on
+        // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
         _ui.filamentWarmupLabel->setText("Filament warmup");
     } else {
@@ -158,8 +172,10 @@ HcrXmitCtlMainWindow::_update() {
                 "Waiting for warmup" : "Filament is warm");
     }
     _ui.hvIcon->setPixmap(_status.highVoltageOn() ? _greenLED : _greenLED_off);
-    // Enable the HV button as soon as filament delay has expired
-    _ui.hvButton->setEnabled(! _status.filamentDelayActive());
+    // Enable the HV button as soon as filament delay has expired (and control
+    // is not via the CMU front panel)
+    _ui.hvButton->setEnabled(! _status.frontPanelCtlEnabled() &&
+            ! _status.filamentDelayActive());
     _ui.xmittingIcon->setPixmap(_status.rfOn() ? _greenLED : _greenLED_off);
     
     // Which control source is enabled?
