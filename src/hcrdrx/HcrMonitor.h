@@ -82,8 +82,8 @@ public:
      */
     float polarizationSwitchTemp() const;
     /**
-     * @brief Return the temperature of the crystal RF detector, deg C
-     * @return the temperature of the crystal RF detector, deg C
+     * @brief Return the temperature of the Mi-Wave 950W RF detector, deg C
+     * @return the temperature of the Mi-Wave 950W RF detector, deg C
      */
     float rfDetectorTemp() const;
     /**
@@ -288,7 +288,7 @@ private:
     TemperatureList _hLnaTemps;
     /// polarization switch temperature list
     TemperatureList _polarizationSwitchTemps;
-    /// crystal RF detector temperature list
+    /// Mi-Wave 950W RF detector temperature list
     TemperatureList _rfDetectorTemps;
     /// noise source temperature list
     TemperatureList _noiseSourceTemps;
