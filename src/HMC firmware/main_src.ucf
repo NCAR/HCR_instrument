@@ -14,7 +14,7 @@ NET "T0" LOC = "P60";
 NET "MOD_PULSE" LOC = "P37";
 NET "SYNC_PULSE" LOC = "P38";
 NET "EMS_TRIG" LOC = "P15";
-NET "RX_GATE2" LOC = "P18";
+NET "RX_GATE" LOC = "P18";
 
 # Power Monitoring
 NET "STATUS_5V" LOC = "P31";

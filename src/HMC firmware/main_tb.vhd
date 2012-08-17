@@ -50,7 +50,7 @@ ARCHITECTURE behavior OF main_tb IS
 --       Unused Pentek Timing Signals
 --				TIMER_6 : in  STD_LOGIC;      		
 --          TIMER_7 : in  STD_LOGIC;
-				RX_GATE2 : in  STD_LOGIC;  							
+				RX_GATE : in  STD_LOGIC;  							
 					
 --			Pentek Timing Signals (Connector PN 4)
 				EXT_CLK : in  STD_LOGIC;	-- 15.625 MHz clock; 125 MHz/8
@@ -142,7 +142,7 @@ ARCHITECTURE behavior OF main_tb IS
 	signal SYNC_PULSE : std_logic := '0';
 	signal MOD_PULSE : std_logic := '0';
 	signal ONE_PPS : std_logic := '0';
-   signal RX_GATE2 : std_logic := '0';
+   signal RX_GATE : std_logic := '0';
 	signal T0 : std_logic := '0';
 	signal RESET_730 : std_logic := '0';
 	
@@ -181,7 +181,7 @@ BEGIN
 			 SYNC_PULSE_OUT_P => SYNC_PULSE_OUT_P, 		
 			 SYNC_PULSE_OUT_N => SYNC_PULSE_OUT_N,
 			 ONE_PPS => ONE_PPS,
-			 RX_GATE2 => RX_GATE2,
+			 RX_GATE => RX_GATE,
 			 T0 => T0,
 			 MOD_PULSE => MOD_PULSE, 
 			 SYNC_PULSE => SYNC_PULSE, 	
@@ -244,9 +244,9 @@ BEGIN
 		MOD_PULSE <= '0';
 		wait for 256 ns;
 		EMS_TRIG <= '0';
-		RX_GATE2 <= '1';
+		RX_GATE <= '1';
 		wait for 97280 ns;  -- 380 gates @ 256 ns/gate
-		RX_GATE2 <= '0';
+		RX_GATE <= '0';
 		wait for 2928 ns;
    end process;
 

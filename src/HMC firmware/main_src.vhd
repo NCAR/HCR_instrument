@@ -42,7 +42,7 @@ entity main_src is
 --       Unused Pentek Timing Signals
 --				TIMER_6 : in  STD_LOGIC;      		
 --          TIMER_7 : in  STD_LOGIC;
-				RX_GATE2 : in  STD_LOGIC;  							
+				RX_GATE : in  STD_LOGIC;  							
 					
 --			Pentek Timing Signals (Connector PN 4)
 				EXT_CLK : in  STD_LOGIC;	-- 15.625 MHz clock; 125 MHz/8
@@ -139,7 +139,7 @@ signal l_tx_dly : STD_LOGIC;
 signal l_rx_dly : STD_LOGIC;
 signal half_hz : STD_LOGIC; 	-- 1/2 Hz Clock
 signal pps_count : STD_LOGIC_VECTOR(1 downto 0); 
-signal l_rx_gate2 : STD_LOGIC;
+signal l_rx_gate : STD_LOGIC;
 
 -- State machine declarations
 type state_type is (s0,s1,s2,s3);
@@ -363,14 +363,14 @@ begin
 end process;
 
 -- Defines cycle over which State Machine operates
-CYCLE: process (EXT_CLK, RESET_730, RX_GATE2, l_rx_gate2)
+CYCLE: process (EXT_CLK, RESET_730, RX_GATE, l_rx_gate)
 begin
 	if (RESET_730 = '1') then
       end_cycle <= '0';
-		l_rx_gate2 <= '0';
+		l_rx_gate <= '0';
    elsif (rising_edge (EXT_CLK)) then
-		l_rx_gate2 <= RX_GATE2;
-		end_cycle <= l_rx_gate2 AND NOT RX_GATE2;  -- end cycle on falling edge of rx_gate2!
+		l_rx_gate <= RX_GATE;
+		end_cycle <= l_rx_gate AND NOT RX_GATE;  -- end cycle on falling edge of rx_gate!
 	end if;
 end process;
 
@@ -409,7 +409,7 @@ begin
 					state <=s0;										
 				end if;
 			when s3 =>
-				if(RX_GATE2 = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
+				if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s0;
 				end if;
 		end case;
