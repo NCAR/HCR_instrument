@@ -124,13 +124,18 @@ public:
      */
     float tailconeTemp() const;
     /**
-     * @brief Return true iff waveguide switch A is in the "noise source" position
-     * @return true iff waveguide switch A is in the "noise source" position
+     * @brief Return the measured voltage from the 5V power supply.
+     * @return the measured voltage from the 5V power supply, V
+     */
+    float psVoltage() const;
+    /**
+     * @brief Return true iff waveguide switch is in the "noise source" position
+     * @return true iff waveguide switch is in the "noise source" position
      */
     bool noiseSourceSelected() const;
     /**
-     * @brief Return true iff waveguide switch B is in "termination" position
-     * @return true iff waveguide switch B is in "termination" position
+     * @brief Return true iff waveguide switch is in "termination" position
+     * @return true iff waveguide switch is in "termination" position
      */
     bool terminationSelected() const;
     /**
@@ -153,13 +158,13 @@ public:
     /**
      * @brief Return the status value from the Health Monitoring and Control
      * (HMC) card.
-     * Return the two-bit status value from the HMC. The meanings of the
+     * @return the 3-bit status value from the HMC. The meanings of the
      * status values are:
      * 0 = no errors,
      * 1 = EMS power below threshold,
      * 2 = receiver protector switching error,
      * 3 = polarization switching error
-     * @return true iff 1250 MHz PLO is phase locked
+     * 4-7 are currently unused.
      */
     int hmcStatus() const;
 
@@ -195,7 +200,7 @@ private:
         /**
          * @brief Return the mean of the values in the list, or -99.9 if
          * the list is empty.
-         * @Return the mean of the values in the list, or -99.9 if
+         * @return the mean of the values in the list, or -99.9 if
          * the list is empty.
          */
         float mean() const {
@@ -224,9 +229,17 @@ private:
      * @brief Calculate the pressure based on the voltage from an
      * All Sensors 15PSI-A-4V-MIL sensor.
      * @param sensorVolts the potential across the sensor, V
+     * @return the pressure at the 15PSI-A-4V-MIL sensor
      */
     static float _15PSI_A_4V_Pres(float sensorVolts);
 
+    /**
+     * @brief Convert the given voltage to measured RF power from
+     * Mi-Wave 950W RF detector.
+     * @param voltage the voltage measured at the Mi-Wave 950W detector
+     * @return the RF power measured at the Mi-Wave 950W detector, dBm
+     */
+    static double _lookupMiWv950WPower(double voltage);
     /**
      * @brief Get new values for all of our sensor data supplied via the PMC730
      * multi-IO card.
@@ -253,6 +266,9 @@ private:
      */
     mutable QMutex _mutex;
     
+    /// detected RF power
+    float _detectedRfPower;
+
     /// pressure vessel aft pressure
     float _pvAftPressure;
     

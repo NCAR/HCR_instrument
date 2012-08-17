@@ -23,6 +23,47 @@
 
 LOGGING("HcrMonitor")
 
+/*
+ * Mi-Wave 950W finline RF power detector calibration measurements from
+ * 7/21/2009, 94.4 GHz input power in dBm vs. output volts (into high impedance).
+ */
+
+static const float MiWv950W_Cal[][2] = {
+ {-26.60, 3.20e-3},
+ {-23.65, 3.93e-3},
+ {-22.74, 5.01e-3},
+ {-21.86, 6.36e-3},
+ {-20.50, 7.83e-3},
+ {-19.85, 9.69e-3},
+ {-18.90, 11.9e-3},
+ {-17.96, 14.8e-3},
+ {-16.94, 18.0e-3},
+ {-15.99, 21.9e-3},
+ {-15.00, 26.6e-3},
+ {-14.01, 31.8e-3},
+ {-13.02, 38.3e-3},
+ {-12.04, 46.3e-3},
+ {-11.05, 55.0e-3},
+ {-10.05, 65.1e-3},
+ {-9.05, 76.7e-3},
+ {-8.04, 89.8e-3},
+ {-7.05, 105.e-3},
+ {-6.05, 123.e-3},
+ {-5.03, 142.e-3},
+ {-4.07, 165.e-3},
+ {-3.07, 191.e-3},
+ {-2.07, 219.e-3},
+ {-1.08, 252.e-3},
+ {-0.08, 288.e-3},
+ {0.92, 330.e-3},
+ {1.91, 383.e-3},
+ {2.89, 432.e-3},
+ {3.89, 495.e-3},
+ {4.88, 560.e-3},
+ {5.85, 632.e-3}
+};
+static const int MiWv950W_CalLen = (sizeof(MiWv950W_Cal) / (sizeof(*MiWv950W_Cal)));
+
 
 HcrMonitor::HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost,
         int xmitdPort) :
@@ -30,6 +71,7 @@ HcrMonitor::HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost,
     _config(config),
     _xmitClient(xmitdHost, xmitdPort),
     _mutex(QMutex::Recursive),
+    _detectedRfPower(-99.9),
     _pvAftPressure(0.0),
     _pvForePressure(0.0),
     _psVoltage(0.0),
@@ -212,6 +254,12 @@ HcrMonitor::tailconeTemp() const {
     return(_tailconeTemps.mean());
 }
 
+float
+HcrMonitor::psVoltage() const {
+    QMutexLocker locker(&_mutex);
+    return(_psVoltage);
+}
+
 bool
 HcrMonitor::noiseSourceSelected() const {
     QMutexLocker locker(&_mutex);
@@ -304,6 +352,9 @@ HcrMonitor::_getMultiIoValues() {
     // calculate temperatures below.
     _psVoltage = analogData[16];
     
+    // Detected RF power
+    _detectedRfPower = _lookupMiWv950WPower(analogData[0]);
+
     // Pressure sensors are on analog channels 1 and 2
     _pvAftPressure = _15PSI_A_4V_Pres(analogData[1]);
     _pvForePressure = _15PSI_A_4V_Pres(analogData[2]);
@@ -325,9 +376,15 @@ HcrMonitor::_getMultiIoValues() {
     _cmigitsTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[14]));
     _tailconeTemps.addTemperature(_pt1000Temperature(_psVoltage, analogData[15]));
     
-    // @TODO get the digital values!
+    // Get values from our digital input lines
+    _noiseSourceSelected = pmc730.noiseSourceSelected();
+    _terminationSelected = pmc730.terminationSelected();
+    _locked15_5GHzPLO = pmc730.locked15_5GHzPLO();
+    _locked1250MHzPLO = pmc730.locked1250MHzPLO();
+    _modPulseDisabled = pmc730.modPulseDisabled();
+    _hmcStatus = pmc730.hmcStatus();
 
-    DLOG << "PLO temperature: " << std::setprecision(3) << ploTemp() << " deg C";
+    DLOG << "PS voltage: " << std::setprecision(3) << psVoltage() << " V";
 }
 
 void
@@ -339,4 +396,39 @@ HcrMonitor::_getXmitStatus() {
 
     QMutexLocker locker(&_mutex);
     _xmitStatus = xmitStatus;
+}
+
+double
+HcrMonitor::_lookupMiWv950WPower(double voltage) {
+    // If we're below the lowest voltage in the cal table, just return a
+    // really low power
+    if (voltage < MiWv950W_Cal[0][1]) {
+        return(-99.9);
+    }
+    // If we're above the highest voltage in the cal table, just return the
+    // highest power in the cal table.
+    if (voltage > MiWv950W_Cal[MiWv950W_CalLen - 1][1]) {
+        return(MiWv950W_Cal[MiWv950W_CalLen - 1][0]);
+    }
+    // OK, our voltage is somewhere in the table. Move up through the table,
+    // and interpolate between the two enclosing points.
+    for (int i = 0; i < MiWv950W_CalLen - 1; i++) {
+        float powerLow = MiWv950W_Cal[i][0];
+        float vLow = MiWv950W_Cal[i][1];
+        float powerHigh = MiWv950W_Cal[i + 1][0];
+        float vHigh = MiWv950W_Cal[i + 1][1];
+        if (vHigh < voltage)
+            continue;
+        // Convert powers to linear space, then interpolate to our input voltage
+        double powerLowLinear = pow(10.0, powerLow / 10.0);
+        double powerHighLinear = pow(10.0, powerHigh / 10.0);
+        double fraction = (voltage - vLow) / (vHigh - vLow);
+        double powerLinear = powerLowLinear +
+            (powerHighLinear - powerLowLinear) * fraction;
+        // Convert interpolated power back to dBm and return it.
+        return(10.0 * log10(powerLinear));
+    }
+    // Oops if we get here...
+    ELOG << __PRETTY_FUNCTION__ << ": Bad lookup for " << voltage << " V!";
+    abort();
 }
