@@ -93,15 +93,7 @@ public:
         HMC_CORNER_REFLECTOR_CAL = 2
     } HmcOperationMode;
 
-    static void setHmcOperationMode(HmcOperationMode mode) {
-        // Set the two bits of the HMC operation mode.
-        // @TODO Does this need to be an atomic operation, with both bits
-        // changed at once?
-        uint8_t bit0 = (mode >> 0) & 0x01;
-        theHcrPmc730().setDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0, bit0);
-        uint8_t bit1 = (mode >> 1) & 0x01;
-        theHcrPmc730().setDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1, bit1);
-    }
+    static void setHmcOperationMode(HmcOperationMode mode);
 
 private:
     HcrPmc730();

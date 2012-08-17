@@ -91,3 +91,32 @@ HcrPmc730::theHcrPmc730() {
     }
     return(*_theHcrPmc730);
 }
+
+// static
+void
+HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
+    // Set the HMC mode bits on our digital out lines. This method works
+    // atomically, setting both bits at once rather than changing one at a time.
+
+    // As written, this only works if the output lines we're setting are in
+    // the range 8-15!
+    assert(_HCR_DOUT_HMC_OPS_MODE_BIT0 >=8 && _HCR_DOUT_HMC_OPS_MODE_BIT0 <= 15 &&
+            _HCR_DOUT_HMC_OPS_MODE_BIT1 >= 8 && _HCR_DOUT_HMC_OPS_MODE_BIT1 <= 15);
+
+    // start from the current state of lines 8-15
+    uint8_t new8_15 = theHcrPmc730().getDio8_15();
+
+    // set the bits for the two lines we care about
+    uint8_t modeBit0 = (mode >> 0) & 0x01;
+    new8_15 = modeBit0 ?
+            _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
+            _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
+
+    uint8_t modeBit1 = (mode >> 1) & 0x01;
+    new8_15 = modeBit1 ?
+            _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
+            _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
+
+    // ship out the new state
+    theHcrPmc730().setDio8_15(new8_15);
+}
