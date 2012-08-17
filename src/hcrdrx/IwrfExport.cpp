@@ -653,125 +653,258 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeStartTag("HcrStatus", 0);
 
+  ///////////////////////////////////////////////////////
   // transmit block
   
   xml += TaXml::writeStartTag("HcrTransmitterStatus", 1);
 
-#ifdef NOTYET
-
   const XmitdRpcClient::XmitStatus &xs = _monitor.transmitterStatus();
+
+  // booleans
 
   xml += TaXml::writeBoolean
     ("SerialConnected", 2, xs.serialConnected());
+  
+  xml += TaXml::writeBoolean
+    ("SerialConnected", 2, xs.serialConnected());
+
+  xml += TaXml::writeBoolean
+    ("FilamentOn", 2, xs.filamentOn());
+
+  xml += TaXml::writeBoolean
+    ("HighVoltageOn", 2, xs.highVoltageOn());
+
+  xml += TaXml::writeBoolean
+    ("RfOn", 2, xs.rfOn());
+
+  xml += TaXml::writeBoolean
+    ("ModPulseExternal", 2, xs.modPulseExternal());
+
+  xml += TaXml::writeBoolean
+    ("SyncPulseExternal", 2, xs.syncPulseExternal());
+
+  xml += TaXml::writeBoolean
+    ("FilamentDelayActive", 2, xs.filamentDelayActive());
+
+  xml += TaXml::writeBoolean
+    ("PowerValid", 2, xs.powerValid());
+
   xml += TaXml::writeBoolean
     ("FaultSummary", 2, xs.faultSummary());
-  xml += TaXml::writeBoolean
-    ("HvpsRunup", 2, xs.hvpsRunup());
-  xml += TaXml::writeBoolean
-    ("Standby", 2, xs.standby());
-  xml += TaXml::writeBoolean
-    ("HeaterWarmup", 2, xs.heaterWarmup());
-  xml += TaXml::writeBoolean
-    ("Cooldown", 2, xs.cooldown());
-  xml += TaXml::writeBoolean
-    ("UnitOn", 2, xs.unitOn());
-  xml += TaXml::writeBoolean
-    ("MagnetronCurrentFault", 2, xs.magnetronCurrentFault());
-  xml += TaXml::writeBoolean
-    ("BlowerFault", 2, xs.blowerFault());
-  xml += TaXml::writeBoolean
-    ("HvpsOn", 2, xs.hvpsOn());
-  xml += TaXml::writeBoolean
-    ("RemoteEnabled", 2, xs.remoteEnabled());
-  xml += TaXml::writeBoolean
-    ("SafetyInterlock", 2, xs.safetyInterlock());
-  xml += TaXml::writeBoolean
-    ("ReversePowerFault", 2, xs.reversePowerFault());
-  xml += TaXml::writeBoolean
-    ("PulseInputFault", 2, xs.pulseInputFault());
-  xml += TaXml::writeBoolean
-    ("HvpsCurrentFault", 2, xs.hvpsCurrentFault());
-  xml += TaXml::writeBoolean
-    ("WaveguidePressureFault", 2, xs.waveguidePressureFault
-     ());
-  xml += TaXml::writeBoolean
-    ("HvpsUnderVoltage", 2, xs.hvpsUnderVoltage());
-  xml += TaXml::writeBoolean
-    ("HvpsOverVoltage", 2, xs.hvpsOverVoltage());
-  
-  xml += TaXml::writeBoolean
-    ("HvpsVoltage", 2, xs.hvpsVoltage());
-  xml += TaXml::writeBoolean
-    ("MagnetronCurrent", 2, xs.magnetronCurrent());
-  xml += TaXml::writeBoolean
-    ("HvpsCurrent", 2, xs.hvpsCurrent());
-  xml += TaXml::writeBoolean
-    ("Temperature", 2, xs.temperature());
-  
-  xml += TaXml::writeInt
-    ("MagnetronCurrentFaultCount", 2, xs.magnetronCurrentFaultCount());
-  xml += TaXml::writeInt
-    ("BlowerFaultCount", 2, xs.blowerFaultCount());
-  xml += TaXml::writeInt
-    ("SafetyInterlockCount", 2, xs.safetyInterlockCount());
-  xml += TaXml::writeInt
-    ("ReversePowerFaultCount", 2, xs.reversePowerFaultCount());
-  xml += TaXml::writeInt
-    ("PulseInputFaultCount", 2, xs.pulseInputFaultCount());
-  xml += TaXml::writeInt
-    ("HvpsCurrentFaultCount", 2, xs.hvpsCurrentFaultCount());
-  xml += TaXml::writeInt
-    ("WaveguidePressureFaultCount", 2, xs.waveguidePressureFaultCount());
-  xml += TaXml::writeInt
-    ("HvpsUnderVoltageCount", 2, xs.hvpsUnderVoltageCount());
-  xml += TaXml::writeInt
-    ("HvpsOverVoltageCount", 2, xs.hvpsOverVoltageCount());
-  xml += TaXml::writeInt
-    ("AutoPulseFaultResets", 2, xs.autoPulseFaultResets());
 
-#endif
+  xml += TaXml::writeBoolean
+    ("FrontPanelCtlEnabled", 2, xs.frontPanelCtlEnabled());
+
+  xml += TaXml::writeBoolean
+    ("Rs232CtlEnabled", 2, xs.rs232CtlEnabled());
+
+  xml += TaXml::writeBoolean
+    ("RdsCtlEnabled", 2, xs.rdsCtlEnabled());
+
+  xml += TaXml::writeBoolean
+    ("ModulatorFault", 2, xs.modulatorFault());
+
+  xml += TaXml::writeBoolean
+    ("SyncFault", 2, xs.syncFault());
+
+  xml += TaXml::writeBoolean
+    ("XmitterTempFault", 2, xs.xmitterTempFault());
+
+  xml += TaXml::writeBoolean
+    ("WgArcFault", 2, xs.wgArcFault());
+
+  xml += TaXml::writeBoolean
+    ("CollectorCurrFault", 2, xs.collectorCurrFault());
+
+  xml += TaXml::writeBoolean
+    ("BodyCurrFault", 2, xs.bodyCurrFault());
+
+  xml += TaXml::writeBoolean
+    ("FilamentLorFault", 2, xs.filamentLorFault());
+
+  xml += TaXml::writeBoolean
+    ("FocusElectrodeLorFault", 2, xs.focusElectrodeLorFault());
+
+  xml += TaXml::writeBoolean
+    ("InverterOverloadFault", 2, xs.inverterOverloadFault());
+
+  xml += TaXml::writeBoolean
+    ("ExtInterlockFault", 2, xs.extInterlockFault());
+
+  xml += TaXml::writeBoolean
+    ("EikInterlockFault", 2, xs.eikInterlockFault());
+
+  // doubles
+
+  xml += TaXml::writeDouble
+    ("CathodeVoltage", 2, xs.cathodeVoltage());
+
+  xml += TaXml::writeDouble
+    ("BodyCurrent", 2, xs.bodyCurrent());
+
+  xml += TaXml::writeDouble
+    ("CollectorCurrent", 2, xs.collectorCurrent());
+
+  xml += TaXml::writeDouble
+    ("XmitterTemperature", 2, xs.xmitterTemperature());
+
+  // ints
+
+  xml += TaXml::writeInt
+    ("ModulatorFaultCount", 2, xs.modulatorFaultCount());
+
+  xml += TaXml::writeInt
+    ("SyncFaultCount", 2, xs.syncFaultCount());
+
+  xml += TaXml::writeInt
+    ("XmitterTempFaultCount", 2, xs.xmitterTempFaultCount());
+
+  xml += TaXml::writeInt
+    ("WgArcFaultCount", 2, xs.wgArcFaultCount());
+
+  xml += TaXml::writeInt
+    ("CollectorCurrFaultCount", 2, xs.collectorCurrFaultCount());
+
+  xml += TaXml::writeInt
+    ("FilamentLorFaultCount", 2, xs.filamentLorFaultCount());
+
+  xml += TaXml::writeInt
+    ("FocusElectrodeLorFaultCount", 2, xs.focusElectrodeLorFaultCount());
+
+  xml += TaXml::writeInt
+    ("InverterOverloadFaultCount", 2, xs.inverterOverloadFaultCount());
+
+  xml += TaXml::writeInt
+    ("EikInterlockFaultCount", 2, xs.eikInterlockFaultCount());
+
+  // times
+
+  xml += TaXml::writeTime
+    ("ModulatorFaultTime", 2, xs.modulatorFaultTime());
+
+  xml += TaXml::writeTime
+    ("SyncFaultTime", 2, xs.syncFaultTime());
+
+  xml += TaXml::writeTime
+    ("XmitterTempFaultTime", 2, xs.xmitterTempFaultTime());
+
+  xml += TaXml::writeTime
+    ("WgArcFaultTime", 2, xs.wgArcFaultTime());
+
+  xml += TaXml::writeTime
+    ("CollectorCurrFaultTime", 2, xs.collectorCurrFaultTime());
+
+  xml += TaXml::writeTime
+    ("FilamentLorFaultTime", 2, xs.filamentLorFaultTime());
+
+  xml += TaXml::writeTime
+    ("FocusElectrodeLorFaultTime", 2, xs.focusElectrodeLorFaultTime());
+
+  xml += TaXml::writeTime
+    ("CathodeLorFaultTime", 2, xs.cathodeLorFaultTime());
+
+  xml += TaXml::writeTime
+    ("InverterOverloadFaultTime", 2, xs.inverterOverloadFaultTime());
+
+  xml += TaXml::writeTime
+    ("ExtInterlockFaultTime", 2, xs.extInterlockFaultTime());
+
+  xml += TaXml::writeTime
+    ("EikInterlockFaultTime", 2, xs.eikInterlockFaultTime());
+
+  // end transmit status
 
   xml += TaXml::writeEndTag("HcrTransmitterStatus", 1);
 
+  ///////////////////////////////////////////////////////
   // receive block
 
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
-#ifdef NOTYET
-
   const HcrMonitor &mon = _monitor;
 
+  // floats
+
   xml += TaXml::writeDouble
-    ("ProcEnclosureTemp", 2, mon.procEnclosureTemp());
+    ("DetectedRfPower", 2, mon.detectedRfPower());
+
   xml += TaXml::writeDouble
-    ("ProcDrxTemp", 2, mon.procDrxTemp());
+    ("PvForePressure", 2, mon.pvForePressure());
+
   xml += TaXml::writeDouble
-    ("TxEnclosureTemp", 2, mon.txEnclosureTemp());
+    ("PvAftPressure", 2, mon.pvAftPressure());
+
   xml += TaXml::writeDouble
-    ("RxTopTemp", 2, mon.rxTopTemp());
+    ("PloTemp", 2, mon.ploTemp());
+
   xml += TaXml::writeDouble
-    ("RxBackTemp", 2, mon.rxBackTemp());
+    ("EikTemp", 2, mon.eikTemp());
+
   xml += TaXml::writeDouble
-    ("RxFrontTemp", 2, mon.rxFrontTemp());
+    ("VLnaTemp", 2, mon.vLnaTemp());
+
   xml += TaXml::writeDouble
-    ("HTxPowerVideo", 2, mon.hTxPowerVideo());
+    ("HLnaTemp", 2, mon.hLnaTemp());
+
   xml += TaXml::writeDouble
-    ("VTxPowerVideo", 2, mon.vTxPowerVideo());
+    ("PolarizationSwitchTemp", 2, mon.polarizationSwitchTemp());
+
   xml += TaXml::writeDouble
-    ("TestTargetPowerVideo", 2, mon.testTargetPowerVideo());
+    ("RfDetectorTemp", 2, mon.rfDetectorTemp());
+
+  xml += TaXml::writeDouble
+    ("NoiseSourceTemp", 2, mon.noiseSourceTemp());
+
+  xml += TaXml::writeDouble
+    ("Ps28VTemp", 2, mon.ps28VTemp());
+
+  xml += TaXml::writeDouble
+    ("RdsInDuctTemp", 2, mon.rdsInDuctTemp());
+
+  xml += TaXml::writeDouble
+    ("RotationMotorTemp", 2, mon.rotationMotorTemp());
+
+  xml += TaXml::writeDouble
+    ("TiltMotorTemp", 2, mon.tiltMotorTemp());
+
+  xml += TaXml::writeDouble
+    ("CmigitsTemp", 2, mon.cmigitsTemp());
+
+  xml += TaXml::writeDouble
+    ("TailconeTemp", 2, mon.tailconeTemp());
+
   xml += TaXml::writeDouble
     ("PsVoltage", 2, mon.psVoltage());
-  
-  xml += TaXml::writeBoolean
-    ("WgPressureGood", 2, mon.wgPressureGood());
-  xml += TaXml::writeBoolean
-    ("Locked100MHz", 2, mon.locked100MHz());
-  xml += TaXml::writeBoolean
-    ("GpsTimeServerGood", 2, mon.gpsTimeServerGood());
 
-#endif
+  // booleans
+
+  xml += TaXml::writeBoolean
+    ("NoiseSourceSelected", 2, mon.noiseSourceSelected());
+
+  xml += TaXml::writeBoolean
+    ("TerminationSelected", 2, mon.terminationSelected());
+
+  xml += TaXml::writeBoolean
+    ("Locked15_5GHzPLO", 2, mon.locked15_5GHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("Locked1250MHzPLO", 2, mon.locked1250MHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("ModPulseDisabled", 2, mon.modPulseDisabled());
   
+  // ints
+
+  xml += TaXml::writeInt
+    ("HmcStatus", 2, mon.hmcStatus());
+
+  // end receive status
+
   xml += TaXml::writeEndTag("HcrReceiverStatus", 1);
+
+  ////////////////////////////////////////////////
+
+  // close
 
   xml += TaXml::writeEndTag("HcrStatus", 0);
 
