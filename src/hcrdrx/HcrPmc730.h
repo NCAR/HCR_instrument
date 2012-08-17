@@ -30,6 +30,60 @@ public:
     static void doSimulate(bool simulate);
 
     /**
+     * @brief Is the waveguide switch selecting the noise source?
+     * @return true iff the waveguide switch is selecting the noise source
+     */
+    static bool noiseSourceSelected() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_NOISE_SOURCE_SELECTED));
+    }
+
+    /**
+     * @brief Is the waveguide switch selecting termination?
+     * @return true iff the waveguide switch is selecting termination
+     */
+    static bool terminationSelected() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_TERMINATION_SELECTED));
+    }
+
+    /**
+     * @brief Is the 15.5 GHz PLO locked?
+     * @return true iff the 15.5 GHz PLO is locked
+     */
+    static bool locked15_5GHzPLO() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_15_5GHZ_PHASELOCK));
+    }
+
+    /**
+     * @brief Is the 1250 MHz PLO locked?
+     * @return true iff the 1250 MHz PLO is locked
+     */
+    static bool locked1250MHzPLO() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_1250MHZ_PHASELOCK));
+    }
+
+    /**
+     * @brief Is the modulation pulse signal blocked at the HMC?
+     * @return true iff the modulation pulse signal is blocked at the HMC
+     */
+    static bool modPulseDisabled() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_MODPULSE_DISABLED));
+    }
+
+    /**
+     * @brief Return the 3-bit status value from the HMC. Valid status values
+     * are 0 = no errors, 1 = EMS power below threshold,
+     * 2 = receiver protector switching error, 3 = polarization switching error,
+     * 4-7 are currently unused.
+     * @return the 3-bit status value from the HMC
+     */
+    static uint8_t hmcStatus() {
+        uint8_t status;
+        status = theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS0) << 0 |
+                theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS1) << 1 |
+                theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS2) << 2;
+        return(status);
+    }
+    /**
      * @brief Set the state of the noise source.
      * @param state If true, the noise source will be turned on, otherwise off.
      */
@@ -110,9 +164,9 @@ private:
      */
     typedef enum {
         /// digital in line 0: waveguide switch A position
-        _HCR_DIN_WG_SWITCH_A = 0,
+        _HCR_DIN_NOISE_SOURCE_SELECTED = 0,
         /// digital in line 1: waveguide switch B position
-        _HCR_DIN_WG_SWITCH_B = 1,
+        _HCR_DIN_TERMINATION_SELECTED = 1,
         /// digital in line 2: 15.5 GHz PLO phase locked
         _HCR_DIN_15_5GHZ_PHASELOCK = 2,
         /// digital in line 3: 1250 MHz PLO phase locked
