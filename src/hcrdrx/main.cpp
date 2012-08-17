@@ -278,6 +278,11 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     <td>ambient temperature in the tailcone, deg C</td>
  *   </tr>
  *   <tr>
+ *     <td>psVoltage</td>
+ *     <td>double</td>
+ *     <td>measured voltage from the 5V power supply, V</td>
+ *   </tr>
+ *   <tr>
  *     <td>noiseSourceSelected</td>
  *     <td>bool</td>
  *     <td>true iff waveguide switch A is in the "noise source" position</td>
@@ -349,6 +354,7 @@ public:
         statusDict["tiltMotorTemp"] = XmlRpcValue(_hcrMonitor->tiltMotorTemp());
         statusDict["cmigitsTemp"] = XmlRpcValue(_hcrMonitor->cmigitsTemp());
         statusDict["tailconeTemp"] = XmlRpcValue(_hcrMonitor->tailconeTemp());
+        statusDict["psVoltage"] = XmlRpcValue(_hcrMonitor->psVoltage());
         statusDict["noiseSourceSelected"] = XmlRpcValue(_hcrMonitor->noiseSourceSelected());
         statusDict["terminationSelected"] = XmlRpcValue(_hcrMonitor->terminationSelected());
         statusDict["locked15_5GHzPLO"] = XmlRpcValue(_hcrMonitor->locked15_5GHzPLO());
