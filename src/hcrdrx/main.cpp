@@ -200,7 +200,7 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *   <tr>
  *     <td>detectedRfPower</td>
  *     <td>double</td>
- *     <td>transmit pulse power from the QuinStar crystal detector, dBm</td>
+ *     <td>transmit pulse power from the Mi-Wave 950W RF detector, dBm</td>
  *   </tr>
  *   <tr>
  *     <td>pvForePressure</td>
@@ -240,7 +240,7 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *   <tr>
  *     <td>rfDetectorTemp</td>
  *     <td>double</td>
- *     <td>temperature of the crystal RF detector, deg C</td>
+ *     <td>temperature of the Mi-Wave 950W RF detector, deg C</td>
  *   </tr>
  *   <tr>
  *     <td>noiseSourceTemp</td>
