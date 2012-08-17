@@ -1,0 +1,37 @@
+# -*- python -*-
+
+hcrguiTools = Split("""
+logx
+doxygen
+hcrdrxrpcclient
+xmitdrpcclient
+qt4
+""")
+hcrguiEnv = Environment(tools = ['default'] + hcrguiTools)
+hcrguiEnv.EnableQt4Modules(['QtCore', 'QtGui'])
+
+hcrgui_sources = Split("""
+hcr_xmitctl.cpp
+HcrXmitCtlMainWindow.cpp
+qrc_HcrXmitCtlMainWindow.cc
+""")
+hcrgui = hcrguiEnv.Program('hcrgui', hcrgui_sources)
+Default(hcrgui)
+
+uifiles = Split("""
+HcrXmitCtlMainWindow.ui
+""")
+hcrguiEnv.Uic4(uifiles)
+
+# This generates the rules for *.qrc -> qrc_*.cc
+qrcfiles = Split("""
+HcrXmitCtlMainWindow.qrc
+""")
+hcrguiEnv.Qrc(qrcfiles)
+
+headers = Split("""
+HcrXmitCtlMainWindow.h
+""")
+
+html = hcrguiEnv.Apidocs(hcrgui_sources + headers)
+Default(html)
