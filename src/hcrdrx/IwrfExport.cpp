@@ -664,9 +664,6 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("SerialConnected", 2, xs.serialConnected());
-  
-  xml += TaXml::writeBoolean
-    ("SerialConnected", 2, xs.serialConnected());
 
   xml += TaXml::writeBoolean
     ("FilamentOn", 2, xs.filamentOn());
