@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HcrXmitCtlMainWindow</class>
- <widget class="QMainWindow" name="HcrXmitCtlMainWindow">
+ <class>HcrGuiMainWindow</class>
+ <widget class="QMainWindow" name="HcrGuiMainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -153,7 +153,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                <pixmap>:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -163,7 +163,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                <pixmap>:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -173,7 +173,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                <pixmap>:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -183,7 +183,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                <pixmap>:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -203,7 +203,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                <pixmap>:/greenLED_off.png</pixmap>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -479,7 +479,7 @@
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -614,7 +614,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -666,7 +666,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -705,7 +705,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -754,7 +754,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -803,7 +803,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -852,7 +852,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -901,7 +901,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -937,7 +937,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -986,7 +986,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1029,7 +1029,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1059,7 +1059,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1096,7 +1096,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="HcrXmitCtlMainWindow.qrc">:/greenLED_off.png</pixmap>
+                   <pixmap>:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>

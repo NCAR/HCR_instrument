@@ -1,5 +1,5 @@
 /*
- * hcr_xmitctl.cpp
+ * hcrgui.cpp
  *
  *  Created on: Jan 6, 2011
  *      Author: burghart
@@ -11,9 +11,9 @@
 
 #include <logx/Logging.h>
 
-#include "HcrXmitCtlMainWindow.h"
+#include "HcrGuiMainWindow.h"
 
-LOGGING("hcr_xmitctl")
+LOGGING("hcrgui")
 
 void
 usage(const char* appName) {
@@ -44,7 +44,7 @@ main(int argc, char *argv[]) {
         usage(argv[0]);
     }
 
-    QMainWindow* mainWindow = new HcrXmitCtlMainWindow(xmitdHost, xmitdPort,
+    QMainWindow* mainWindow = new HcrGuiMainWindow(xmitdHost, xmitdPort,
             hcrdrxHost, hcrdrxPort);
     mainWindow->show();
     

@@ -2,8 +2,8 @@
  *  Created on: Jan 14, 2011
  *      Author: burghart
  */
-#ifndef HCRXMITCTLMAINWINDOW_H_
-#define HCRXMITCTLMAINWINDOW_H_
+#ifndef HCRGUIMAINWINDOW_H_
+#define HCRGUIMAINWINDOW_H_
 
 #include <string>
 #include <map>
@@ -17,14 +17,14 @@
 #include <XmitdRpcClient.h>
 #include <HcrdrxRpcClient.h>
 
-#include "ui_HcrXmitCtlMainWindow.h"
+#include "ui_HcrGuiMainWindow.h"
 
-class HcrXmitCtlMainWindow : public QMainWindow {
+class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    HcrXmitCtlMainWindow(std::string xmitterHost, int xmitterPort,
+    HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
             std::string hcrdrxHost, int hcrdrxPort);
-    ~HcrXmitCtlMainWindow();
+    ~HcrGuiMainWindow();
 private slots:
     void on_filamentButton_clicked();
     void on_hvButton_clicked();
@@ -61,7 +61,7 @@ private:
      */
     static QString _faultTimeLabel(time_t time);
 
-    Ui::HcrXmitCtlMainWindow _ui;
+    Ui::HcrGuiMainWindow _ui;
     XmitdRpcClient _xmitClient;
     HcrdrxRpcClient _drxClient;
     QTimer _updateTimer;
@@ -76,4 +76,4 @@ private:
     unsigned int _nextLogIndex;
     bool _noXmitd;
 };
-#endif /*HCRXMITCTLMAINWINDOW_H_*/
+#endif /*HCRGUIMAINWINDOW_H_*/

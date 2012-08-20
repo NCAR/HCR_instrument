@@ -1,10 +1,10 @@
 /*
- * HcrXmitCtlMainWindow.cpp
+ * HcrGuiMainWindow.cpp
  *
  *  Created on: Jan 14, 2011
  *      Author: burghart
  */
-#include "HcrXmitCtlMainWindow.h"
+#include "HcrGuiMainWindow.h"
 
 #include <sstream>
 #include <unistd.h>
@@ -15,7 +15,7 @@
 LOGGING("MainWindow")
 
 
-HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost, 
+HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost, 
     int xmitterPort, std::string hcrdrxHost, int hcrdrxPort) :
     QMainWindow(),
     _ui(),
@@ -43,12 +43,12 @@ HcrXmitCtlMainWindow::HcrXmitCtlMainWindow(std::string xmitterHost,
     _updateTimer.start(1000);
 }
 
-HcrXmitCtlMainWindow::~HcrXmitCtlMainWindow() {
+HcrGuiMainWindow::~HcrGuiMainWindow() {
 }
 
 /// Toggle the current on/off state of the transmitter klystron filament
 void
-HcrXmitCtlMainWindow::on_filamentButton_clicked() {
+HcrGuiMainWindow::on_filamentButton_clicked() {
     if (_status.rs232CtlEnabled()) {
         // If RS-232 control is enabled, then transmitter commands go
         // to hcr_xmitd, which owns the serial line talking to the transmitter
@@ -73,7 +73,7 @@ HcrXmitCtlMainWindow::on_filamentButton_clicked() {
 
 /// Toggle the current on/off state of the transmitter high voltage
 void
-HcrXmitCtlMainWindow::on_hvButton_clicked() {
+HcrGuiMainWindow::on_hvButton_clicked() {
     if (_status.rs232CtlEnabled()) {
         // If RS-232 control is enabled, then transmitter commands go
         // to hcr_xmitd, which owns the serial line talking to the transmitter
@@ -97,7 +97,7 @@ HcrXmitCtlMainWindow::on_hvButton_clicked() {
 }
 
 void
-HcrXmitCtlMainWindow::_appendXmitdLogMsgs() {
+HcrGuiMainWindow::_appendXmitdLogMsgs() {
     unsigned int firstIndex = _nextLogIndex;
     std::string msgs;
     _xmitClient.getLogMessages(firstIndex, msgs, _nextLogIndex);
@@ -107,7 +107,7 @@ HcrXmitCtlMainWindow::_appendXmitdLogMsgs() {
 }
 
 void
-HcrXmitCtlMainWindow::on_detailVisibilityButton_clicked() {
+HcrGuiMainWindow::on_detailVisibilityButton_clicked() {
     _ui.xmitterFaultDetailsBox->setVisible(! _ui.xmitterFaultDetailsBox->isVisible());
     if (_ui.xmitterFaultDetailsBox->isVisible()) {
         _ui.detailVisibilityButton->setText("Hide Details");
@@ -117,7 +117,7 @@ HcrXmitCtlMainWindow::on_detailVisibilityButton_clicked() {
 }
 
 void
-HcrXmitCtlMainWindow::_update() {
+HcrGuiMainWindow::_update() {
     // Update the current time string
     char timestring[32];
     time_t now = time(0);
@@ -286,7 +286,7 @@ HcrXmitCtlMainWindow::_update() {
 }
 
 void
-HcrXmitCtlMainWindow::_noDaemon() {
+HcrGuiMainWindow::_noDaemon() {
     // Note lack of daemon connection in the status bar
     std::ostringstream ss;
     ss << "No connection to hcr_xmitd @ " << _xmitClient.getXmitdHost() << ":" <<
@@ -308,13 +308,13 @@ HcrXmitCtlMainWindow::_noDaemon() {
 }
 
 void
-HcrXmitCtlMainWindow::_noXmitter() {
+HcrGuiMainWindow::_noXmitter() {
     statusBar()->showMessage("No serial connection from hcr_xmitd to xmitter!");
     _disableUi();
 }
 
 void
-HcrXmitCtlMainWindow::_disableUi() {
+HcrGuiMainWindow::_disableUi() {
     _ui.statusBox->setEnabled(false);
     _ui.xmitterFaultDetailsBox->setEnabled(false);
     _ui.xmitterStartBox->setEnabled(false);
@@ -351,21 +351,21 @@ HcrXmitCtlMainWindow::_disableUi() {
 }
 
 void
-HcrXmitCtlMainWindow::_enableUi() {
+HcrGuiMainWindow::_enableUi() {
     _ui.xmitterFaultDetailsBox->setEnabled(true);
     _ui.statusBox->setEnabled(true);
     _ui.xmitterStartBox->setEnabled(true);
 }
 
 void
-HcrXmitCtlMainWindow::_logMessage(std::string message) {
+HcrGuiMainWindow::_logMessage(std::string message) {
     _ui.logArea->appendPlainText(
             QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh:mm:ss ") + 
             message.c_str());
 }
 
 QString
-HcrXmitCtlMainWindow::_countLabel(int count) {
+HcrGuiMainWindow::_countLabel(int count) {
     if (count == 0)
         return QString("-");
 
@@ -375,7 +375,7 @@ HcrXmitCtlMainWindow::_countLabel(int count) {
 }
 
 QString
-HcrXmitCtlMainWindow::_faultTimeLabel(time_t time) {
+HcrGuiMainWindow::_faultTimeLabel(time_t time) {
     if (time == -1)
         return QString("");
     
