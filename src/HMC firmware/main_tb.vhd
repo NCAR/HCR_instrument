@@ -261,11 +261,11 @@ BEGIN
 	EMS_BIT: process -- Generate EMS BIT response
 	begin
 		wait for 320 ns;  -- 320 ns is max delay measured
-		BIT_EMS_P <= "0101110";
-		BIT_EMS_N <= "1010001";
+		BIT_EMS_N <= "0101110";
+		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_P <= "1010011";
-		BIT_EMS_N <= "0101100";
+		BIT_EMS_N <= "1010011";
+		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;
 	end process;  
 END;
