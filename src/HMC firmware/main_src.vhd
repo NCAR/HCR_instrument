@@ -418,49 +418,105 @@ end process;
 
 -- State Machine Ouputs
 
-STATE_OUT: process (state,MOD_PULSE,EMS_TRIG)
+STATE_OUT: process (state,MOD_PULSE,EMS_TRIG,OPS_MODE_730)
 begin
 	case state is
 		when S0 => 			-- Reset State
 			MOD_PULSE_OUT_P <= '0';
 			MOD_PULSE_OUT_N <= '1';
 			MOD_PULSE_FUSELAGE <= '0';
-			EMS_OUT <= "0000000";
-		when S1 => 	
-			MOD_PULSE_OUT_P <= '0';
-			MOD_PULSE_OUT_N <= '1';
-			MOD_PULSE_FUSELAGE <= '0';
-			EMS_OUT(1) <= NOT EMS_TRIG;
-			EMS_OUT(2) <= '1';
-			EMS_OUT(3) <= EMS_TRIG;
-			EMS_OUT(4) <= EMS_TRIG;
-			EMS_OUT(5) <= NOT EMS_TRIG;
-			EMS_OUT(6) <= EMS_TRIG;
-			EMS_OUT(7) <= NOT EMS_TRIG;
-	
+			if (OPS_MODE_730 = "01") then -- Noise source cal, no tx	
+				EMS_OUT <= "0101101";
+			else
+				EMS_OUT <= "0000000";
+			end if;
+		when S1 =>
+			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
+			elsif (OPS_MODE_730 = "01") then -- Noise source cal, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT <= "0101101";
+			elsif (OPS_MODE_730 = "10") then -- Corner reflector cal, vertical tx w/reduced power
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= '0';
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= '0';
+			end if;
 		when S2 =>
-			MOD_PULSE_OUT_P <= MOD_PULSE;
-			MOD_PULSE_OUT_N <= NOT MOD_PULSE;
-			MOD_PULSE_FUSELAGE <= MOD_PULSE;
-			EMS_OUT(1) <= NOT EMS_TRIG;
-			EMS_OUT(2) <= '1';
-			EMS_OUT(3) <= EMS_TRIG;
-			EMS_OUT(4) <= EMS_TRIG;
-			EMS_OUT(5) <= NOT EMS_TRIG;
-			EMS_OUT(6) <= EMS_TRIG;
-			EMS_OUT(7) <= NOT EMS_TRIG;
-						
-		when S3 => 
-			MOD_PULSE_OUT_P <= MOD_PULSE;
-			MOD_PULSE_OUT_N <= NOT MOD_PULSE;
-			MOD_PULSE_FUSELAGE <= MOD_PULSE;
-			EMS_OUT(1) <= NOT EMS_TRIG;
-			EMS_OUT(2) <= '1';
-			EMS_OUT(3) <= EMS_TRIG;
-			EMS_OUT(4) <= EMS_TRIG;
-			EMS_OUT(5) <= NOT EMS_TRIG;
-			EMS_OUT(6) <= EMS_TRIG;
-			EMS_OUT(7) <= NOT EMS_TRIG;
+			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx		
+				MOD_PULSE_OUT_P <= MOD_PULSE;
+				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
+				MOD_PULSE_FUSELAGE <= MOD_PULSE;
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
+			elsif (OPS_MODE_730 = "01") then -- Noise source cal, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT <= "0101101";
+			elsif (OPS_MODE_730 = "10") then -- Corner reflector cal, vertical tx w/reduced power
+				MOD_PULSE_OUT_P <= MOD_PULSE;
+				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
+				MOD_PULSE_FUSELAGE <= MOD_PULSE;
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= '0';
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= '0';
+			end if;						
+		when S3 =>
+			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx				
+				MOD_PULSE_OUT_P <= MOD_PULSE;
+				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
+				MOD_PULSE_FUSELAGE <= MOD_PULSE;
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
+			elsif (OPS_MODE_730 = "01") then -- Noise source cal, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT <= "0101101";
+			elsif (OPS_MODE_730 = "10") then -- Corner reflector cal, vertical tx w/reduced power
+				MOD_PULSE_OUT_P <= MOD_PULSE;
+				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
+				MOD_PULSE_FUSELAGE <= MOD_PULSE;
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= '0';
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= '0';
+			end if;						
 	end case;
 end process;	
 			
