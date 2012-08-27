@@ -309,6 +309,18 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *         passed through to the transmitter</td>
  *   </tr>
  *   <tr>
+ *     <td>rdsXmitterFilamentOn</td>
+ *     <td>bool</td>
+ *     <td>true iff we are currently commanding "filament on" via
+ *         the RDS filament control line going to the transmitter</td>
+ *   </tr>
+ *   <tr>
+ *     <td>rdsXmitterHvOn</td>
+ *     <td>bool</td>
+ *     <td>true iff we are currently commanding "high voltage on" via
+ *         the RDS HV control line going to the transmitter</td>
+ *   </tr>
+ *   <tr>
  *     <td>hmcStatus</td>
  *     <td>int</td>
  *     <td>The status value from the Health Monitoring and Control (HMC) card.
@@ -361,6 +373,10 @@ public:
         statusDict["locked1250MHzPLO"] = XmlRpcValue(_hcrMonitor->locked1250MHzPLO());
         statusDict["modPulseDisabled"] = XmlRpcValue(_hcrMonitor->modPulseDisabled());
         statusDict["hmcStatus"] = XmlRpcValue(_hcrMonitor->hmcStatus());
+        // Get the state of the RDS (Remote Data System) control lines going
+        // to the transmitter.
+        statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(HcrPmc730::xmitterFilamentOn());
+        statusDict["rdsXmitterHvOn"] = XmlRpcValue(HcrPmc730::xmitterHvOn());
         retvalP = statusDict;
     }
 };

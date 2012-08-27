@@ -83,6 +83,31 @@ public:
                 theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS2) << 2;
         return(status);
     }
+
+    /**
+     * @brief Return true iff we are currently commanding "filament on" via
+     * the RDS filament control line going to the transmitter.
+     * @Return true iff we are currently commanding "filament on" via
+     * the RDS filament control line going to the transmitter.
+     */
+    static bool xmitterFilamentOn() {
+        // Invert the sense of the outgoing line, since it is set high to
+        // turn the filament off.
+        return(! theHcrPmc730().getDioLine(_HCR_DOUT_TX_FILAMENT_OFF));
+    }
+
+    /**
+     * @brief Return true iff we are currently commanding "high voltage on" via
+     * the RDS HV control line going to the transmitter.
+     * @Return true iff we are currently commanding "high voltage on" via
+     * the RDS HV control line going to the transmitter.
+     */
+    static bool xmitterHvOn() {
+        // Invert the sense of the outgoing line, since it is set high to
+        // turn HV off.
+        return(! theHcrPmc730().getDioLine(_HCR_DOUT_TX_HV_OFF));
+    }
+
     /**
      * @brief Set the state of the noise source.
      * @param state If true, the noise source will be turned on, otherwise off.
