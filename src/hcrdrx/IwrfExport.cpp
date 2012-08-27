@@ -890,6 +890,12 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeBoolean
     ("ModPulseDisabled", 2, mon.modPulseDisabled());
   
+  xml += TaXml::writeBoolean
+    ("RdsXmitterFilamentOn", 2, mon.rdsXmitterFilamentOn());
+
+  xml += TaXml::writeBoolean
+    ("RdsXmitterHvOn", 2, mon.rdsXmitterHvOn());
+
   // ints
 
   xml += TaXml::writeInt

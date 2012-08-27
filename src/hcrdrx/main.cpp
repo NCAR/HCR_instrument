@@ -375,8 +375,8 @@ public:
         statusDict["hmcStatus"] = XmlRpcValue(_hcrMonitor->hmcStatus());
         // Get the state of the RDS (Remote Data System) control lines going
         // to the transmitter.
-        statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(HcrPmc730::xmitterFilamentOn());
-        statusDict["rdsXmitterHvOn"] = XmlRpcValue(HcrPmc730::xmitterHvOn());
+        statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(_hcrMonitor->rdsXmitterFilamentOn());
+        statusDict["rdsXmitterHvOn"] = XmlRpcValue(_hcrMonitor->rdsXmitterHvOn());
         retvalP = statusDict;
     }
 };

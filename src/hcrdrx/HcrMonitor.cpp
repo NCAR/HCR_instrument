@@ -290,6 +290,18 @@ HcrMonitor::modPulseDisabled() const {
     return(_modPulseDisabled);
 }
 
+bool
+HcrMonitor::rdsXmitterFilamentOn() const {
+    QMutexLocker locker(&_mutex);
+    return(_rdsXmitterFilamentOn);
+}
+
+bool
+HcrMonitor::rdsXmitterHvOn() const {
+    QMutexLocker locker(&_mutex);
+    return(_rdsXmitterHvOn);
+}
+
 float
 HcrMonitor::detectedRfPower() const {
     QMutexLocker locker(&_mutex);
@@ -383,6 +395,10 @@ HcrMonitor::_getMultiIoValues() {
     _locked1250MHzPLO = pmc730.locked1250MHzPLO();
     _modPulseDisabled = pmc730.modPulseDisabled();
     _hmcStatus = pmc730.hmcStatus();
+
+    // Get values of two digital output lines
+    _rdsXmitterFilamentOn = pmc730.xmitterFilamentOn();
+    _rdsXmitterHvOn = pmc730.xmitterHvOn();
 
     DLOG << "PS voltage: " << std::setprecision(3) << psVoltage() << " V";
 }

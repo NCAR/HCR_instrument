@@ -156,6 +156,21 @@ public:
      */
     bool modPulseDisabled() const;
     /**
+     * @brief Return true iff we are currently commanding "filament on" via
+     * the RDS filament control line going to the transmitter.
+     * @Return true iff we are currently commanding "filament on" via
+     * the RDS filament control line going to the transmitter.
+     */
+    bool rdsXmitterFilamentOn() const;
+    /**
+     * @brief Return true iff we are currently commanding "high voltage on" via
+     * the RDS HV control line going to the transmitter.
+     * @Return true iff we are currently commanding "high voltage on" via
+     * the RDS HV control line going to the transmitter.
+     */
+    bool rdsXmitterHvOn() const;
+
+    /**
      * @brief Return the status value from the Health Monitoring and Control
      * (HMC) card.
      * @return the 3-bit status value from the HMC. The meanings of the
@@ -323,6 +338,12 @@ private:
     /// Is modulator pulse passthrough disabled at the HMC?
     bool _modPulseDisabled;
     
+    /// Is "filament on" being commanded via the RDS control line to the transmitter?
+    bool _rdsXmitterFilamentOn;
+
+    /// Is "high voltage on" being commanded via the RDS control line to the transmitter?
+    bool _rdsXmitterHvOn;
+
     /**
      * HMC status
      * 0 = no errors,
