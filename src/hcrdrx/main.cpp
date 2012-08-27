@@ -450,7 +450,7 @@ main(int argc, char** argv)
     // Just refer to theHcrPmc730() to instantiate the singleton.
     HcrPmc730::theHcrPmc730();
     
-    // Initialize output lines
+    // Initialize output lines.
     HcrPmc730::setHmcResetOn(true);    // Start with HMC in reset...
     HcrPmc730::setNoiseSourceOn(false);
     HcrPmc730::setWaveguideSwitchC(0);
@@ -463,7 +463,6 @@ main(int argc, char** argv)
 
     // set to ignore SIGPIPE errors which occur when sockets
     // are broken between client and server
-
     signal(SIGPIPE, SIG_IGN);
 
     // set up registration with procmap if instance is specified
@@ -615,9 +614,34 @@ main(int argc, char** argv)
                       << " sync:" << syncErrors[c];
         }
         std::cout << std::endl;
+        std::cout << "detectedRfPower: " << _hcrMonitor->detectedRfPower() << std::endl;
+        std::cout << "pvForePressure: " << _hcrMonitor->pvForePressure() << std::endl;
+        std::cout << "pvAftPressure: " << _hcrMonitor->pvAftPressure() << std::endl;
+        std::cout << "ploTemp: " << _hcrMonitor->ploTemp() << std::endl;
+        std::cout << "eikTemp: " << _hcrMonitor->eikTemp() << std::endl;
+        std::cout << "vLnaTemp: " << _hcrMonitor->vLnaTemp() << std::endl;
+        std::cout << "hLnaTemp: " << _hcrMonitor->hLnaTemp() << std::endl;
+        std::cout << "polarizationSwitchTemp: " << _hcrMonitor->polarizationSwitchTemp() << std::endl;
+        std::cout << "rfDetectorTemp: " << _hcrMonitor->rfDetectorTemp() << std::endl;
+        std::cout << "noiseSourceTemp: " << _hcrMonitor->noiseSourceTemp() << std::endl;
+        std::cout << "ps28VTemp: " << _hcrMonitor->ps28VTemp() << std::endl;
+        std::cout << "rdsInDuctTemp: " << _hcrMonitor->rdsInDuctTemp() << std::endl;
+        std::cout << "rotationMotorTemp: " << _hcrMonitor->rotationMotorTemp() << std::endl;
+        std::cout << "tiltMotorTemp: " << _hcrMonitor->tiltMotorTemp() << std::endl;
+        std::cout << "cmigitsTemp: " << _hcrMonitor->cmigitsTemp() << std::endl;
+        std::cout << "tailconeTemp: " << _hcrMonitor->tailconeTemp() << std::endl;
+        std::cout << "psVoltage: " << _hcrMonitor->psVoltage() << std::endl;
+        std::cout << "noiseSourceSelected: " << _hcrMonitor->noiseSourceSelected() << std::endl;
+        std::cout << "terminationSelected: " << _hcrMonitor->terminationSelected() << std::endl;
+        std::cout << "locked15_5GHzPLO: " << _hcrMonitor->locked15_5GHzPLO() << std::endl;
+        std::cout << "locked1250MHzPLO: " << _hcrMonitor->locked1250MHzPLO() << std::endl;
+        std::cout << "modPulseDisabled: " << _hcrMonitor->modPulseDisabled() << std::endl;
+        std::cout << "hmcStatus: " << _hcrMonitor->hmcStatus() << std::endl;
+        std::cout << "rdsXmitterFilamentOn: " << _hcrMonitor->rdsXmitterFilamentOn() << std::endl;
+        std::cout << "rdsXmitterHvOn: " << _hcrMonitor->rdsXmitterHvOn() << std::endl;
     }
     
-        ILOG << "Shutting down...";
+    ILOG << "Shutting down...";
     
     // Stop the downconverter threads
     for (int c = 0; c < _chans; c++) {
