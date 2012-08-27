@@ -91,20 +91,64 @@ HcrdrxRpcClient::getLogMessages(unsigned int firstIndex, std::string & msgs,
 
 // Default constructor; fill with bad values.
 HcrdrxRpcClient::Status::Status() :
-        _someBoolean(false),
-        _someInt(-1),
-        _someDouble(-9999.9)
+    _detectedRfPower(-9999.9),
+    _pvForePressure(-9999.9),
+    _pvAftPressure(-9999.9),
+    _ploTemp(-9999.9),
+    _eikTemp(-9999.9),
+    _vLnaTemp(-9999.9),
+    _hLnaTemp(-9999.9),
+    _polarizationSwitchTemp(-9999.9),
+    _rfDetectorTemp(-9999.9),
+    _noiseSourceTemp(-9999.9),
+    _ps28VTemp(-9999.9),
+    _rdsInDuctTemp(-9999.9),
+    _rotationMotorTemp(-9999.9),
+    _tiltMotorTemp(-9999.9),
+    _cmigitsTemp(-9999.9),
+    _tailconeTemp(-9999.9),
+    _psVoltage(-9999.9),
+    _noiseSourceSelected(false),
+    _terminationSelected(false),
+    _locked15_5GHzPLO(false),
+    _locked1250MHzPLO(false),
+    _modPulseDisabled(false),
+    _rdsXmitterFilamentOn(false),
+    _rdsXmitterHvOn(false),
+    _hmcStatus(-1)
 {
 }
 
 HcrdrxRpcClient::Status::Status(XmlRpc::XmlRpcValue & statusDict) {
     // Unpack all of the status values from the XmlRpc::XmlRpcValue dictionary
     // into local member variables
-//    _someBoolean = _StatusBool(statusDict, "some_boolean");
-    
-//    _someInt = _StatusInt(statusDict, "some_int");
-    
-    _someDouble = _StatusDouble(statusDict, "cmigitsTemp");
+    _detectedRfPower = _StatusDouble(statusDict, "detectedRfPower");
+    _pvForePressure = _StatusDouble(statusDict, "pvForePressure");
+    _pvAftPressure = _StatusDouble(statusDict, "pvAftPressure");
+    _ploTemp = _StatusDouble(statusDict, "ploTemp");
+    _eikTemp = _StatusDouble(statusDict, "eikTemp");
+    _vLnaTemp = _StatusDouble(statusDict, "vLnaTemp");
+    _hLnaTemp = _StatusDouble(statusDict, "hLnaTemp");
+    _polarizationSwitchTemp = _StatusDouble(statusDict, "polarizationSwitchTemp");
+    _rfDetectorTemp = _StatusDouble(statusDict, "rfDetectorTemp");
+    _noiseSourceTemp = _StatusDouble(statusDict, "noiseSourceTemp");
+    _ps28VTemp = _StatusDouble(statusDict, "ps28VTemp");
+    _rdsInDuctTemp = _StatusDouble(statusDict, "rdsInDuctTemp");
+    _rotationMotorTemp = _StatusDouble(statusDict, "rotationMotorTemp");
+    _tiltMotorTemp = _StatusDouble(statusDict, "tiltMotorTemp");
+    _cmigitsTemp = _StatusDouble(statusDict, "cmigitsTemp");
+    _tailconeTemp = _StatusDouble(statusDict, "tailconeTemp");
+    _psVoltage = _StatusDouble(statusDict, "psVoltage");
+
+    _noiseSourceSelected = _StatusBool(statusDict, "noiseSourceSelected");
+    _terminationSelected = _StatusBool(statusDict, "terminationSelected");
+    _locked15_5GHzPLO = _StatusBool(statusDict, "locked15_5GHzPLO");
+    _locked1250MHzPLO = _StatusBool(statusDict, "locked1250MHzPLO");
+    _modPulseDisabled = _StatusBool(statusDict, "modPulseDisabled");
+    _rdsXmitterFilamentOn = _StatusBool(statusDict, "rdsXmitterFilamentOn");
+    _rdsXmitterHvOn = _StatusBool(statusDict, "rdsXmitterHvOn");
+
+    _hmcStatus = _StatusInt(statusDict, "hmcStatus");
 }
 
 HcrdrxRpcClient::Status::~Status() {

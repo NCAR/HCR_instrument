@@ -47,26 +47,152 @@ public:
         virtual ~Status();
 
         /**
-         * @brief Is someBoolean true?
-         * @return true iff someBoolean is true.
+         * @brief Return the transmit pulse power from the Mi-Wave 950W RF
+         * detector, dBm
+         * @return the transmit pulse power from the Mi-Wave 950W RF
+         * detector, dBm
          */
-        bool someBoolean() const { return (_someBoolean); }
-
-
+        double detectedRfPower() const { return(_detectedRfPower); }
         /**
-         * @brief someDouble value
-         * @return someDouble value, in <units>
+         * @brief Return the pressure in the fore end of the pressure vessel, hPa
+         * @return the pressure in the fore end of the pressure vessel, hPa
          */
-        double someDouble() const { return (_someDouble); }
-
-
+        double pvForePressure() const { return(_pvForePressure); }
         /**
-         * @brief someInt value.
-         * @return someInt value, in <units>
+         * @brief Return the pressure in the aft end of the pressure vessel, hPa
+         * @return the pressure in the aft end of the pressure vessel, hPa
          */
-        int someInt() const { return (_someInt); }
-
-
+        double pvAftPressure() const { return(_pvAftPressure); }
+        /**
+         * @brief Return the temperature of the 93 GHz phase-locked oscillator,
+         * deg C
+         * @return the temperature of the 93 GHz phase-locked oscillator,
+         * deg C
+         */
+        double ploTemp() const { return(_ploTemp); }
+        /**
+         * @brief Return the temperature of the Extended Interaction Klystron
+         * (EIK), deg C
+         * @return the temperature of the Extended Interaction Klystron
+         * (EIK), deg C
+         */
+        double eikTemp() const { return(_eikTemp); }
+        /**
+         * @brief Return the temperature of the vertical channel LNA, deg C
+         * @return the temperature of the vertical channel LNA, deg C
+         */
+        double vLnaTemp() const { return(_vLnaTemp); }
+        /**
+         * @brief Return the temperature of the horizontal channel LNA, deg C
+         * @return the temperature of the horizontal channel LNA, deg C
+         */
+        double hLnaTemp() const { return(_hLnaTemp); }
+        /**
+         * @brief Return the temperature of the polarization switch, deg C
+         * @return the temperature of the polarization switch, deg C
+         */
+        double polarizationSwitchTemp() const { return(_polarizationSwitchTemp); }
+        /**
+         * @brief Return the temperature of the Mi-Wave 950W RF detector, deg C
+         * @return the temperature of the Mi-Wave 950W RF detector, deg C
+         */
+        double rfDetectorTemp() const { return(_rfDetectorTemp); }
+        /**
+         * @brief Return the temperature of the noise source, deg C
+         * @return the temperature of the noise source, deg C
+         */
+        double noiseSourceTemp() const { return(_noiseSourceTemp); }
+        /**
+         * @brief Return the temperature of the 28 V power supply, deg C
+         * @return the temperature of the 28 V power supply, deg C
+         */
+        double ps28VTemp() const { return(_ps28VTemp); }
+        /**
+         * @brief Return the temperature at the input air duct for the remote
+         * data system (RDS), deg C
+         * @return the temperature at the input air duct for the remote data
+         * system (RDS), deg C
+         */
+        double rdsInDuctTemp() const { return(_rdsInDuctTemp); }
+        /**
+         * @brief Return the temperature of the reflector rotation motor, deg C
+         * @return the temperature of the reflector rotation motor, deg C
+         */
+        double rotationMotorTemp() const { return(_rotationMotorTemp); }
+        /**
+         * @brief Return the temperature of the reflector tilt motor, deg C
+         * @return the temperature of the reflector tilt motor, deg C
+         */
+        double tiltMotorTemp() const { return(_tiltMotorTemp); }
+        /**
+         * @brief Return the temperature of the C-MIGITS inertial navigation
+         * system, deg C
+         * @return the temperature of the C-MIGITS inertial navigation system,
+         * deg C
+         */
+        double cmigitsTemp() const { return(_cmigitsTemp); }
+        /**
+         * @brief Return the ambient temperature in the tailcone, deg C
+         * @return the ambient temperature in the tailcone, deg C
+         */
+        double tailconeTemp() const { return(_tailconeTemp); }
+        /**
+         * @brief Return the measured voltage from the 5V power supply, V
+         * @return the measured voltage from the 5V power supply, V
+         */
+        double psVoltage() const { return(_psVoltage); }
+        /**
+         * @brief Return true iff waveguide switch A is in the "noise source"
+         * position
+         * @return true iff waveguide switch A is in the "noise source" position
+         */
+        bool noiseSourceSelected() const { return(_noiseSourceSelected); }
+        /**
+         * @brief Return true iff waveguide switch B is in "termination" position
+         * @return true iff waveguide switch B is in "termination" position
+         */
+        bool terminationSelected() const { return(_terminationSelected); }
+        /**
+         * @brief Return true iff 15.5 GHz PLO is phase locked
+         * @return true iff 15.5 GHz PLO is phase locked
+         */
+        bool locked15_5GHzPLO();
+        /**
+         * @brief Return true iff 1250 MHz PLO is phase locked
+         * @return true iff 1250 MHz PLO is phase locked
+         */
+        bool locked1250MHzPLO() const { return(_locked1250MHzPLO); }
+        /**
+         * @brief Return true iff modulation pulses are being stopped at the HMC
+         * and not passed through to the transmitter
+         * @return true iff modulation pulses are being stopped at the HMC and
+         * not passed through to the transmitter
+         */
+        bool modPulseDisabled() const { return(_modPulseDisabled); }
+        /**
+         * @brief Return true iff we are currently commanding "filament on" via
+         * the RDS filament control line going to the transmitter
+         * @return true iff we are currently commanding "filament on" via
+         * the RDS filament control line going to the transmitter
+         */
+        bool rdsXmitterFilamentOn() const { return(_rdsXmitterFilamentOn); }
+        /**
+         * @brief Return true iff we are currently commanding "high voltage on"
+         * via the RDS filament control line going to the transmitter
+         * @return true iff we are currently commanding "high voltage on" via
+         * the RDS filament control line going to the transmitter
+         */
+        bool rdsXmitterHvOn() const { return(_rdsXmitterHvOn); }
+        /**
+         * @brief The status value from the Health Monitoring and Control (HMC)
+         * card.
+        *         The values are: 0 = no errors, 1 = EMS power below threshold,
+        *         2 = receiver protector switching error,
+        *         3 = polarization switching error
+        *  @return The status value from the Health Monitoring and Control (HMC)
+        *  card.
+        */
+        int hmcStatus() const { return(_hmcStatus); }
 
 
     private:
@@ -74,11 +200,33 @@ public:
         static int _StatusInt(XmlRpc::XmlRpcValue statusDict, std::string key);
         static double _StatusDouble(XmlRpc::XmlRpcValue statusDict, std::string key);
 
-        bool _someBoolean;
+        double _detectedRfPower;
+        double _pvForePressure;
+        double _pvAftPressure;
+        double _ploTemp;
+        double _eikTemp;
+        double _vLnaTemp;
+        double _hLnaTemp;
+        double _polarizationSwitchTemp;
+        double _rfDetectorTemp;
+        double _noiseSourceTemp;
+        double _ps28VTemp;
+        double _rdsInDuctTemp;
+        double _rotationMotorTemp;
+        double _tiltMotorTemp;
+        double _cmigitsTemp;
+        double _tailconeTemp;
+        double _psVoltage;
 
-        int _someInt;
+        bool _noiseSourceSelected;
+        bool _terminationSelected;
+        bool _locked15_5GHzPLO;
+        bool _locked1250MHzPLO;
+        bool _modPulseDisabled;
+        bool _rdsXmitterFilamentOn;
+        bool _rdsXmitterHvOn;
 
-        double _someDouble;
+        int _hmcStatus;
     };
     
     /**
@@ -89,7 +237,7 @@ public:
      * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
      * READ_RESPONSE, or IDLE.
      */
-    ClientConnectionState connectionState() const { return _connectionState; }
+    ClientConnectionState connectionState() const { return(_connectionState); }
 
     /// @brief Send an "xmitFilamentOn" command to hcrdrx
     void xmitFilamentOn();
