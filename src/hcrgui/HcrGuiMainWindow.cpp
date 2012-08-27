@@ -46,23 +46,43 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
 HcrGuiMainWindow::~HcrGuiMainWindow() {
 }
 
+bool
+HcrGuiMainWindow::_xmitterFilamentOn() const {
+    // If transmitter control is via RS-232 or front panel, we can trust the
+    // "filament on" bit in the transmitter's status. Otherwise, we just test
+    // if the hcrdrx is commanding "filament on" via its RDS control
+    // line.
+    return(_xmitStatus.rdsCtlEnabled() ?
+            _drxStatus.rdsXmitterFilamentOn() : _xmitStatus.filamentOn());
+}
+
+bool
+HcrGuiMainWindow::_xmitterHvOn() const {
+    // If transmitter control is via RS-232 or front panel, we can trust the
+    // "filament on" bit in the transmitter's status. Otherwise, we just test
+    // if the hcrdrx is commanding "filament on" via its RDS control
+    // line.
+    return(_xmitStatus.rdsCtlEnabled() ?
+            _drxStatus.rdsXmitterHvOn() : _xmitStatus.highVoltageOn());
+}
+
 /// Toggle the current on/off state of the transmitter klystron filament
 void
 HcrGuiMainWindow::on_filamentButton_clicked() {
-    if (_status.rs232CtlEnabled()) {
+    if (_xmitStatus.rs232CtlEnabled()) {
         // If RS-232 control is enabled, then transmitter commands go
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
-        if (_status.filamentOn()) {
+        if (_xmitterFilamentOn()) {
             _xmitClient.xmitFilamentOff();
         } else {
             _xmitClient.xmitFilamentOn();
         }
-    } else if (_status.rdsCtlEnabled()) {
+    } else if (_xmitStatus.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
-        if (_status.filamentOn()) {
+        if (_xmitterFilamentOn()) {
             _drxClient.xmitFilamentOff();
         } else {
             _drxClient.xmitFilamentOn();
@@ -71,27 +91,95 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     _update();
 }
 
-/// Toggle the current on/off state of the transmitter high voltage
+/// Turn on the transmitter klystron filament
 void
-HcrGuiMainWindow::on_hvButton_clicked() {
-    if (_status.rs232CtlEnabled()) {
+HcrGuiMainWindow::on_filamentOnButton_clicked() {
+    if (_xmitStatus.rs232CtlEnabled()) {
         // If RS-232 control is enabled, then transmitter commands go
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
-        if (_status.highVoltageOn()) {
+        _xmitClient.xmitFilamentOn();
+    } else if (_xmitStatus.rdsCtlEnabled()) {
+        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // (i.e., the Remote Data System), since it owns the digital lines
+        // controlling the transmitter.
+        _drxClient.xmitFilamentOn();
+    }
+    _update();
+}
+
+/// Turn off the transmitter klystron filament
+void
+HcrGuiMainWindow::on_filamentOffButton_clicked() {
+    if (_xmitStatus.rs232CtlEnabled()) {
+        // If RS-232 control is enabled, then transmitter commands go
+        // to hcr_xmitd, which owns the serial line talking to the transmitter
+        // CMU.
+        _xmitClient.xmitFilamentOff();
+    } else if (_xmitStatus.rdsCtlEnabled()) {
+        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // (i.e., the Remote Data System), since it owns the digital lines
+        // controlling the transmitter.
+        _drxClient.xmitFilamentOff();
+    }
+    _update();
+}
+
+/// Toggle the current on/off state of the transmitter high voltage
+void
+HcrGuiMainWindow::on_hvButton_clicked() {
+    if (_xmitStatus.rs232CtlEnabled()) {
+        // If RS-232 control is enabled, then transmitter commands go
+        // to hcr_xmitd, which owns the serial line talking to the transmitter
+        // CMU.
+        if (_xmitterHvOn()) {
             _xmitClient.xmitHvOff();
         } else {
             _xmitClient.xmitHvOn();
         }
-    } else if (_status.rdsCtlEnabled()) {
+    } else if (_xmitStatus.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
-        if (_status.highVoltageOn()) {
+        if (_xmitterHvOn()) {
             _drxClient.xmitHvOff();
         } else {
             _drxClient.xmitHvOn();
         }
+    }
+    _update();
+}
+
+/// Turn on the transmitter klystron HV
+void
+HcrGuiMainWindow::on_hvOnButton_clicked() {
+    if (_xmitStatus.rs232CtlEnabled()) {
+        // If RS-232 control is enabled, then transmitter commands go
+        // to hcr_xmitd, which owns the serial line talking to the transmitter
+        // CMU.
+        _xmitClient.xmitHvOn();
+    } else if (_xmitStatus.rdsCtlEnabled()) {
+        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // (i.e., the Remote Data System), since it owns the digital lines
+        // controlling the transmitter.
+        _drxClient.xmitHvOn();
+    }
+    _update();
+}
+
+/// Turn off the transmitter klystron HV
+void
+HcrGuiMainWindow::on_hvOffButton_clicked() {
+    if (_xmitStatus.rs232CtlEnabled()) {
+        // If RS-232 control is enabled, then transmitter commands go
+        // to hcr_xmitd, which owns the serial line talking to the transmitter
+        // CMU.
+        _xmitClient.xmitHvOff();
+    } else if (_xmitStatus.rdsCtlEnabled()) {
+        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // (i.e., the Remote Data System), since it owns the digital lines
+        // controlling the transmitter.
+        _drxClient.xmitHvOff();
     }
     _update();
 }
@@ -128,8 +216,8 @@ HcrGuiMainWindow::_update() {
     _appendXmitdLogMsgs();
     
     // Get status from hcr_xmitd
-    _status = XmitdRpcClient::XmitStatus(); // start with uninitialized status
-    if (! _xmitClient.getStatus(_status)) {
+    _xmitStatus = XmitdRpcClient::XmitStatus(); // start with uninitialized status
+    if (! _xmitClient.getStatus(_xmitStatus)) {
         _noDaemon();
         return;
     }
@@ -141,15 +229,15 @@ HcrGuiMainWindow::_update() {
         _logMessage(ss.str().c_str());
         _noXmitd = false;
     } 
-    if (! _status.serialConnected()) {
+    if (! _xmitStatus.serialConnected()) {
         _noXmitter();
         return;
     }
     
     _enableUi();
 
-    HcrdrxRpcClient::Status drxStatus;
-    if (! _drxClient.getStatus(drxStatus)) {
+    _drxStatus = HcrdrxRpcClient::Status(); // start with uninitialized status
+    if (! _drxClient.getStatus(_drxStatus)) {
         std::ostringstream ss;
         ss << "No connection to hcrdrx @ " << _drxClient.getHcrdrxHost() << ":" <<
                 _drxClient.getHcrdrxPort();
@@ -157,128 +245,114 @@ HcrGuiMainWindow::_update() {
     }
 
     // Update transmitter control
-    _ui.powerValidIcon->setPixmap(_status.powerValid() ? _greenLED : _greenLED_off);
-    _ui.filamentIcon->setPixmap(_status.filamentOn() ? _greenLED : _greenLED_off);
+    _ui.powerValidIcon->setPixmap(_xmitStatus.powerValid() ? _greenLED : _greenLED_off);
+    _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
-    _ui.filamentButton->setEnabled(! _status.frontPanelCtlEnabled());
-    if (! _status.filamentOn()) {
+    _ui.filamentButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled());
+    if (! _xmitterFilamentOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
         _ui.filamentWarmupLabel->setText("Filament warmup");
     } else {
         // Amber during filament warmup, then green when warm
-        _ui.filamentWarmupIcon->setPixmap(_status.filamentDelayActive() ? _amberLED : _greenLED);
-        _ui.filamentWarmupLabel->setText(_status.filamentDelayActive() ?
+        _ui.filamentWarmupIcon->setPixmap(_xmitStatus.filamentDelayActive() ? _amberLED : _greenLED);
+        _ui.filamentWarmupLabel->setText(_xmitStatus.filamentDelayActive() ?
                 "Waiting for warmup" : "Filament is warm");
     }
-    _ui.hvIcon->setPixmap(_status.highVoltageOn() ? _greenLED : _greenLED_off);
+    _ui.hvIcon->setPixmap(_xmitterHvOn()() ? _greenLED : _greenLED_off);
     // Enable the HV button as soon as filament delay has expired (and control
     // is not via the CMU front panel)
-    _ui.hvButton->setEnabled(! _status.frontPanelCtlEnabled() &&
-            ! _status.filamentDelayActive());
-    _ui.xmittingIcon->setPixmap(_status.rfOn() ? _greenLED : _greenLED_off);
+    _ui.hvButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled() &&
+            ! _xmitStatus.filamentDelayActive());
+    _ui.xmittingIcon->setPixmap(_xmitStatus.rfOn() ? _greenLED : _greenLED_off);
     
     // Which control source is enabled?
-    _ui.frontPanelLabel->setEnabled(_status.frontPanelCtlEnabled());
-    _ui.rs232Label->setEnabled(_status.rs232CtlEnabled());
-    _ui.rdsLabel->setEnabled(_status.rdsCtlEnabled());
+    _ui.frontPanelLabel->setEnabled(_xmitStatus.frontPanelCtlEnabled());
+    _ui.rs232Label->setEnabled(_xmitStatus.rs232CtlEnabled());
+    _ui.rdsLabel->setEnabled(_xmitStatus.rdsCtlEnabled());
     
     // fault lights
-    _ui.faultSummaryIcon->setPixmap(_status.faultSummary() ? _redLED: _greenLED);
-    _ui.modulatorFaultIcon->setPixmap(_status.modulatorFault() ? _redLED : _greenLED);
-    _ui.syncFaultIcon->setPixmap(_status.syncFault() ? _redLED : _greenLED);
-    _ui.xmitterTempFaultIcon->setPixmap(_status.xmitterTempFault() ? _redLED : _greenLED);
-    _ui.wgArcFaultIcon->setPixmap(_status.wgArcFault() ? _redLED : _greenLED);
-    _ui.collectorCurrFaultIcon->setPixmap(_status.collectorCurrFault() ? _redLED : _greenLED);
-    _ui.bodyCurrFaultIcon->setPixmap(_status.bodyCurrFault() ? _redLED : _greenLED);
-    _ui.filamentLorFaultIcon->setPixmap(_status.filamentLorFault() ? _redLED : _greenLED);
-    _ui.focusElectrodeLorFaultIcon->setPixmap(_status.focusElectrodeLorFault() ? _redLED : _greenLED);
-    _ui.cathodeLorFaultIcon->setPixmap(_status.cathodeLorFault() ? _redLED : _greenLED);
-    _ui.inverterOverloadFaultIcon->setPixmap(_status.inverterOverloadFault() ? _redLED : _greenLED);
-    _ui.extInterlockFaultIcon->setPixmap(_status.extInterlockFault() ? _redLED : _greenLED);
-    _ui.eikInterlockFaultIcon->setPixmap(_status.eikInterlockFault() ? _redLED : _greenLED);
+    _ui.faultSummaryIcon->setPixmap(_xmitStatus.faultSummary() ? _redLED: _greenLED);
+    _ui.modulatorFaultIcon->setPixmap(_xmitStatus.modulatorFault() ? _redLED : _greenLED);
+    _ui.syncFaultIcon->setPixmap(_xmitStatus.syncFault() ? _redLED : _greenLED);
+    _ui.xmitterTempFaultIcon->setPixmap(_xmitStatus.xmitterTempFault() ? _redLED : _greenLED);
+    _ui.wgArcFaultIcon->setPixmap(_xmitStatus.wgArcFault() ? _redLED : _greenLED);
+    _ui.collectorCurrFaultIcon->setPixmap(_xmitStatus.collectorCurrFault() ? _redLED : _greenLED);
+    _ui.bodyCurrFaultIcon->setPixmap(_xmitStatus.bodyCurrFault() ? _redLED : _greenLED);
+    _ui.filamentLorFaultIcon->setPixmap(_xmitStatus.filamentLorFault() ? _redLED : _greenLED);
+    _ui.focusElectrodeLorFaultIcon->setPixmap(_xmitStatus.focusElectrodeLorFault() ? _redLED : _greenLED);
+    _ui.cathodeLorFaultIcon->setPixmap(_xmitStatus.cathodeLorFault() ? _redLED : _greenLED);
+    _ui.inverterOverloadFaultIcon->setPixmap(_xmitStatus.inverterOverloadFault() ? _redLED : _greenLED);
+    _ui.extInterlockFaultIcon->setPixmap(_xmitStatus.extInterlockFault() ? _redLED : _greenLED);
+    _ui.eikInterlockFaultIcon->setPixmap(_xmitStatus.eikInterlockFault() ? _redLED : _greenLED);
     
     // fault counts
     _ui.modulatorFaultCount->
-        setText(_countLabel(_status.modulatorFaultCount()));
+        setText(_countLabel(_xmitStatus.modulatorFaultCount()));
     _ui.syncFaultCount->
-        setText(_countLabel(_status.syncFaultCount()));
+        setText(_countLabel(_xmitStatus.syncFaultCount()));
     _ui.xmitterTempFaultCount->
-        setText(_countLabel(_status.xmitterTempFaultCount()));
+        setText(_countLabel(_xmitStatus.xmitterTempFaultCount()));
     _ui.wgArcFaultCount->
-        setText(_countLabel(_status.wgArcFaultCount()));
+        setText(_countLabel(_xmitStatus.wgArcFaultCount()));
     _ui.collectorCurrFaultCount->
-        setText(_countLabel(_status.collectorCurrFaultCount()));
+        setText(_countLabel(_xmitStatus.collectorCurrFaultCount()));
     _ui.bodyCurrFaultCount->
-        setText(_countLabel(_status.bodyCurrFaultCount()));
+        setText(_countLabel(_xmitStatus.bodyCurrFaultCount()));
     _ui.filamentLorFaultCount->
-        setText(_countLabel(_status.filamentLorFaultCount()));
+        setText(_countLabel(_xmitStatus.filamentLorFaultCount()));
     _ui.focusElectrodeLorFaultCount->
-        setText(_countLabel(_status.focusElectrodeLorFaultCount()));
+        setText(_countLabel(_xmitStatus.focusElectrodeLorFaultCount()));
     _ui.cathodeLorFaultCount->
-        setText(_countLabel(_status.cathodeLorFaultCount()));
+        setText(_countLabel(_xmitStatus.cathodeLorFaultCount()));
     _ui.inverterOverloadFaultCount->
-        setText(_countLabel(_status.inverterOverloadFaultCount()));
+        setText(_countLabel(_xmitStatus.inverterOverloadFaultCount()));
     _ui.extInterlockFaultCount->
-        setText(_countLabel(_status.extInterlockFaultCount()));
+        setText(_countLabel(_xmitStatus.extInterlockFaultCount()));
     _ui.eikInterlockFaultCount->
-        setText(_countLabel(_status.eikInterlockFaultCount()));
+        setText(_countLabel(_xmitStatus.eikInterlockFaultCount()));
     
     // latest fault times
     _ui.modulatorFaultTime->
-        setText(_faultTimeLabel(_status.modulatorFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.modulatorFaultTime()));
     _ui.syncFaultTime->
-        setText(_faultTimeLabel(_status.syncFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.syncFaultTime()));
     _ui.xmitterTempFaultTime->
-        setText(_faultTimeLabel(_status.xmitterTempFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.xmitterTempFaultTime()));
     _ui.wgArcFaultTime->
-        setText(_faultTimeLabel(_status.wgArcFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.wgArcFaultTime()));
     _ui.collectorCurrFaultTime->
-        setText(_faultTimeLabel(_status.collectorCurrFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.collectorCurrFaultTime()));
     _ui.bodyCurrFaultTime->
-        setText(_faultTimeLabel(_status.bodyCurrFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.bodyCurrFaultTime()));
     _ui.filamentLorFaultTime->
-        setText(_faultTimeLabel(_status.filamentLorFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.filamentLorFaultTime()));
     _ui.focusElectrodeLorFaultTime->
-        setText(_faultTimeLabel(_status.focusElectrodeLorFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.focusElectrodeLorFaultTime()));
     _ui.cathodeLorFaultTime->
-        setText(_faultTimeLabel(_status.cathodeLorFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.cathodeLorFaultTime()));
     _ui.inverterOverloadFaultTime->
-        setText(_faultTimeLabel(_status.inverterOverloadFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.inverterOverloadFaultTime()));
     _ui.extInterlockFaultTime->
-        setText(_faultTimeLabel(_status.extInterlockFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.extInterlockFaultTime()));
     _ui.eikInterlockFaultTime->
-        setText(_faultTimeLabel(_status.eikInterlockFaultTime()));
+        setText(_faultTimeLabel(_xmitStatus.eikInterlockFaultTime()));
     
     QString txt;
     // Text displays for voltage, currents, and temperature
-    txt.setNum(_status.cathodeVoltage(), 'f', 1);
+    txt.setNum(_xmitStatus.cathodeVoltage(), 'f', 1);
     _ui.cathodeVoltageValue->setText(txt);
     
-    txt.setNum(_status.collectorCurrent(), 'f', 1);
+    txt.setNum(_xmitStatus.collectorCurrent(), 'f', 1);
     _ui.collectorCurrentValue->setText(txt);
     
-    txt.setNum(_status.bodyCurrent(), 'f', 1);
+    txt.setNum(_xmitStatus.bodyCurrent(), 'f', 1);
     _ui.bodyCurrentValue->setText(txt);
     
-    txt.setNum(_status.xmitterTemperature(), 'f', 1);
+    txt.setNum(_xmitStatus.xmitterTemperature(), 'f', 1);
     _ui.xmitterTempValue->setText(txt);
     
-//    // enable/disable buttons
-//    if (_status.serialConnected() && _status.rs232CtlEnabled()) {
-//        if (_status.faultSummary()) {
-//            _ui.standbyButton->setEnabled(true);
-//            _ui.operateButton->setEnabled(false);
-//        } else {
-//            _ui.standbyButton->setEnabled(_status.hvpsRunup() && ! _status.heaterWarmup());
-//            _ui.operateButton->setEnabled(! _status.filamentDelayActive() && ! _status.heaterWarmup());
-//        }
-//    } else {
-//        _ui.standbyButton->setEnabled(false);
-//        _ui.operateButton->setEnabled(false);
-//    }
-    
-    if (_status.rs232CtlEnabled()) {
+    if (_xmitStatus.rs232CtlEnabled()) {
         statusBar()->clearMessage();
     } else {
         statusBar()->showMessage("RS-232 control is currently DISABLED");

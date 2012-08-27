@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>654</width>
+    <width>791</width>
     <height>821</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Hcr Transmitter Control</string>
+   <string>HCR Control and Status</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -153,7 +153,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>:/greenLED_off.png</pixmap>
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -163,7 +163,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>:/greenLED_off.png</pixmap>
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -173,7 +173,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>:/greenLED_off.png</pixmap>
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -183,7 +183,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>:/greenLED_off.png</pixmap>
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                </property>
               </widget>
              </item>
@@ -203,7 +203,7 @@
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap>:/greenLED_off.png</pixmap>
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -214,6 +214,34 @@
               <widget class="QLabel" name="powerValidLabel">
                <property name="text">
                 <string>PSM power</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QPushButton" name="filamentOnButton">
+               <property name="text">
+                <string>Fil. On</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QPushButton" name="filamentOffButton">
+               <property name="text">
+                <string>Fil. Off</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QPushButton" name="hvOnButton">
+               <property name="text">
+                <string>HV On</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QPushButton" name="hvOffButton">
+               <property name="text">
+                <string>HV Off</string>
                </property>
               </widget>
              </item>
@@ -479,7 +507,7 @@
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -614,7 +642,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -666,7 +694,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -705,7 +733,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -754,7 +782,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -803,7 +831,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -852,7 +880,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -901,7 +929,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -937,7 +965,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -986,7 +1014,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1029,7 +1057,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1059,7 +1087,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1096,7 +1124,7 @@ COUNT</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>:/greenLED_off.png</pixmap>
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -1228,9 +1256,7 @@ COUNT</string>
   </action>
  </widget>
  <resources>
-  <include location="HcrXmitCtlMainWindow.qrc"/>
-  <include location="HcrXmitCtlMainWindow.qrc"/>
-  <include location="../../../../.designer/backup/HcrXmitCtlMainWindow.qrc"/>
+  <include location="HcrGuiMainWindow.qrc"/>
  </resources>
  <connections/>
  <slots>

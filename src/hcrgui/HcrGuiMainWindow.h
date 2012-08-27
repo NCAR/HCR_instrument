@@ -27,7 +27,11 @@ public:
     ~HcrGuiMainWindow();
 private slots:
     void on_filamentButton_clicked();
+    void on_filamentOnButton_clicked();
+    void on_filamentOffButton_clicked();
     void on_hvButton_clicked();
+    void on_hvOnButton_clicked();
+    void on_hvOffButton_clicked();
     void on_detailVisibilityButton_clicked();
     void _update();
 private:
@@ -43,8 +47,23 @@ private:
     void _noXmitter();
     // Log a message
     void _logMessage(std::string message);
+
     /**
-     *  Return "-" if the count is zero, otherwise a text representation of 
+     *  @brief Return true iff our latest status indicates that the transmitter
+     *  filament is on.
+     *  @return true iff our latest status indicates that the transmitter
+     *  filament is on.
+     */
+    bool _xmitterFilamentOn() const;
+    /**
+     *  @brief Return true iff our latest status indicates that the transmitter
+     *  high voltage is on.
+     *  @return true iff our latest status indicates that the transmitter
+     *  high voltage is on.
+     */
+    bool _xmitterHvOn() const;
+    /**
+     *  @brief Return "-" if the count is zero, otherwise a text representation of
      *  the count.
      *  @param count the count to be represented
      *  @return "-" if the count is zero, otherwise a text representation of 
@@ -70,7 +89,9 @@ private:
     QPixmap _greenLED;
     QPixmap _greenLED_off;
     // Last status read from the transmitter
-    XmitdRpcClient::XmitStatus _status;
+    XmitdRpcClient::XmitStatus _xmitStatus;
+    // Last status read from hcrdrx
+    HcrdrxRpcClient::Status _drxStatus;
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;
