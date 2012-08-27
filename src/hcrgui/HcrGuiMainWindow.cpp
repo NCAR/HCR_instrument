@@ -66,6 +66,20 @@ HcrGuiMainWindow::_xmitterHvOn() const {
             _drxStatus.rdsXmitterHvOn() : _xmitStatus.highVoltageOn());
 }
 
+bool
+HcrGuiMainWindow::_xmitting() const {
+    // If transmitter control is via RS-232 or front panel, we can trust the
+    // "RF on" status bit to tell us we're transmitting. Otherwise, we need
+    // to cobble together information provided by the RDS.
+    if (!_xmitStatus.rdsCtlEnabled()) {
+        return(_xmitStatus.rfOn());
+    } else {
+        // We're transmitting if the filament is on, HV is on, and modulation
+        // pulses are being allowed through.
+        return(_xmitterFilamentOn() && _xmitterHvOn() &&
+                ! _drxStatus.modPulseDisabled());
+    }
+}
 /// Toggle the current on/off state of the transmitter klystron filament
 void
 HcrGuiMainWindow::on_filamentButton_clicked() {
@@ -248,7 +262,8 @@ HcrGuiMainWindow::_update() {
     _ui.powerValidIcon->setPixmap(_xmitStatus.powerValid() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
-    _ui.filamentButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled());
+    _ui.filamentButton->setEnabled(_xmitStatus.powerValid() &&
+            ! _xmitStatus.frontPanelCtlEnabled());
     if (! _xmitterFilamentOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
@@ -264,7 +279,7 @@ HcrGuiMainWindow::_update() {
     // is not via the CMU front panel)
     _ui.hvButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled() &&
             ! _xmitStatus.filamentDelayActive());
-    _ui.xmittingIcon->setPixmap(_xmitStatus.rfOn() ? _greenLED : _greenLED_off);
+    _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
     
     // Which control source is enabled?
     _ui.frontPanelLabel->setEnabled(_xmitStatus.frontPanelCtlEnabled());

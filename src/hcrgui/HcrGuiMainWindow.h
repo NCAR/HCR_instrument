@@ -63,6 +63,11 @@ private:
      */
     bool _xmitterHvOn() const;
     /**
+     * @brief Return true iff the transmitter is actually transmitting.
+     * @return true iff the transmitter is actually transmitting.
+     */
+    bool _xmitting() const;
+    /**
      *  @brief Return "-" if the count is zero, otherwise a text representation of
      *  the count.
      *  @param count the count to be represented
