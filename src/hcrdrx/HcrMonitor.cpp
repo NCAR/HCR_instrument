@@ -305,7 +305,7 @@ HcrMonitor::rdsXmitterHvOn() const {
 float
 HcrMonitor::detectedRfPower() const {
     QMutexLocker locker(&_mutex);
-    return(0.0);
+    return(_detectedRfPower);
 }
 
 int
@@ -317,7 +317,7 @@ HcrMonitor::hmcStatus() const {
 XmitdRpcClient::XmitStatus
 HcrMonitor::transmitterStatus() const {
     QMutexLocker locker(&_mutex);
-    return _xmitStatus;
+    return(_xmitStatus);
 }
 
 void
