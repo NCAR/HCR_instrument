@@ -259,7 +259,7 @@ HcrGuiMainWindow::_update() {
         _ui.filamentWarmupLabel->setText(_xmitStatus.filamentDelayActive() ?
                 "Waiting for warmup" : "Filament is warm");
     }
-    _ui.hvIcon->setPixmap(_xmitterHvOn()() ? _greenLED : _greenLED_off);
+    _ui.hvIcon->setPixmap(_xmitterHvOn() ? _greenLED : _greenLED_off);
     // Enable the HV button as soon as filament delay has expired (and control
     // is not via the CMU front panel)
     _ui.hvButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled() &&
