@@ -24,7 +24,7 @@ class HcrGuiMainWindow : public QMainWindow {
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
             std::string hcrdrxHost, int hcrdrxPort);
-    ~HcrGuiMainWindow();
+    virtual ~HcrGuiMainWindow();
 private slots:
     void on_filamentButton_clicked();
     void on_filamentOnButton_clicked();
