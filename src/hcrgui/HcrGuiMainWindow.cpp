@@ -19,6 +19,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     int xmitterPort, std::string hcrdrxHost, int hcrdrxPort) :
     QMainWindow(),
     _ui(),
+    _xmitStatusDialog(this),
     _xmitClient(xmitterHost, xmitterPort),
     _drxClient(hcrdrxHost, hcrdrxPort),
     _updateTimer(this),
@@ -33,10 +34,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     // Limit the log area to 1000 messages
     _ui.logArea->setMaximumBlockCount(1000);
     _logMessage("hcr_xmitctl started");
-    
-    // Hide fault details initially
-    _ui.xmitterFaultDetailsBox->setVisible(false);
-    _ui.detailVisibilityButton->setText("Show Details");
     
     // Schedule 1 Hz updates
     connect(&_updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
@@ -209,13 +206,8 @@ HcrGuiMainWindow::_appendXmitdLogMsgs() {
 }
 
 void
-HcrGuiMainWindow::on_detailVisibilityButton_clicked() {
-    _ui.xmitterFaultDetailsBox->setVisible(! _ui.xmitterFaultDetailsBox->isVisible());
-    if (_ui.xmitterFaultDetailsBox->isVisible()) {
-        _ui.detailVisibilityButton->setText("Hide Details");
-    } else {
-        _ui.detailVisibilityButton->setText("Show Details");
-    }
+HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
+    _xmitStatusDialog.show();
 }
 
 void
@@ -280,98 +272,46 @@ HcrGuiMainWindow::_update() {
     _ui.hvButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled() &&
             ! _xmitStatus.filamentDelayActive());
     _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
-    
+
     // Which control source is enabled?
-    _ui.frontPanelLabel->setEnabled(_xmitStatus.frontPanelCtlEnabled());
-    _ui.rs232Label->setEnabled(_xmitStatus.rs232CtlEnabled());
-    _ui.rdsLabel->setEnabled(_xmitStatus.rdsCtlEnabled());
-    
-    // fault lights
-    _ui.faultSummaryIcon->setPixmap(_xmitStatus.faultSummary() ? _redLED: _greenLED);
-    _ui.modulatorFaultIcon->setPixmap(_xmitStatus.modulatorFault() ? _redLED : _greenLED);
-    _ui.syncFaultIcon->setPixmap(_xmitStatus.syncFault() ? _redLED : _greenLED);
-    _ui.xmitterTempFaultIcon->setPixmap(_xmitStatus.xmitterTempFault() ? _redLED : _greenLED);
-    _ui.wgArcFaultIcon->setPixmap(_xmitStatus.wgArcFault() ? _redLED : _greenLED);
-    _ui.collectorCurrFaultIcon->setPixmap(_xmitStatus.collectorCurrFault() ? _redLED : _greenLED);
-    _ui.bodyCurrFaultIcon->setPixmap(_xmitStatus.bodyCurrFault() ? _redLED : _greenLED);
-    _ui.filamentLorFaultIcon->setPixmap(_xmitStatus.filamentLorFault() ? _redLED : _greenLED);
-    _ui.focusElectrodeLorFaultIcon->setPixmap(_xmitStatus.focusElectrodeLorFault() ? _redLED : _greenLED);
-    _ui.cathodeLorFaultIcon->setPixmap(_xmitStatus.cathodeLorFault() ? _redLED : _greenLED);
-    _ui.inverterOverloadFaultIcon->setPixmap(_xmitStatus.inverterOverloadFault() ? _redLED : _greenLED);
-    _ui.extInterlockFaultIcon->setPixmap(_xmitStatus.extInterlockFault() ? _redLED : _greenLED);
-    _ui.eikInterlockFaultIcon->setPixmap(_xmitStatus.eikInterlockFault() ? _redLED : _greenLED);
-    
-    // fault counts
-    _ui.modulatorFaultCount->
-        setText(_countLabel(_xmitStatus.modulatorFaultCount()));
-    _ui.syncFaultCount->
-        setText(_countLabel(_xmitStatus.syncFaultCount()));
-    _ui.xmitterTempFaultCount->
-        setText(_countLabel(_xmitStatus.xmitterTempFaultCount()));
-    _ui.wgArcFaultCount->
-        setText(_countLabel(_xmitStatus.wgArcFaultCount()));
-    _ui.collectorCurrFaultCount->
-        setText(_countLabel(_xmitStatus.collectorCurrFaultCount()));
-    _ui.bodyCurrFaultCount->
-        setText(_countLabel(_xmitStatus.bodyCurrFaultCount()));
-    _ui.filamentLorFaultCount->
-        setText(_countLabel(_xmitStatus.filamentLorFaultCount()));
-    _ui.focusElectrodeLorFaultCount->
-        setText(_countLabel(_xmitStatus.focusElectrodeLorFaultCount()));
-    _ui.cathodeLorFaultCount->
-        setText(_countLabel(_xmitStatus.cathodeLorFaultCount()));
-    _ui.inverterOverloadFaultCount->
-        setText(_countLabel(_xmitStatus.inverterOverloadFaultCount()));
-    _ui.extInterlockFaultCount->
-        setText(_countLabel(_xmitStatus.extInterlockFaultCount()));
-    _ui.eikInterlockFaultCount->
-        setText(_countLabel(_xmitStatus.eikInterlockFaultCount()));
-    
-    // latest fault times
-    _ui.modulatorFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.modulatorFaultTime()));
-    _ui.syncFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.syncFaultTime()));
-    _ui.xmitterTempFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.xmitterTempFaultTime()));
-    _ui.wgArcFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.wgArcFaultTime()));
-    _ui.collectorCurrFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.collectorCurrFaultTime()));
-    _ui.bodyCurrFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.bodyCurrFaultTime()));
-    _ui.filamentLorFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.filamentLorFaultTime()));
-    _ui.focusElectrodeLorFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.focusElectrodeLorFaultTime()));
-    _ui.cathodeLorFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.cathodeLorFaultTime()));
-    _ui.inverterOverloadFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.inverterOverloadFaultTime()));
-    _ui.extInterlockFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.extInterlockFaultTime()));
-    _ui.eikInterlockFaultTime->
-        setText(_faultTimeLabel(_xmitStatus.eikInterlockFaultTime()));
-    
-    QString txt;
-    // Text displays for voltage, currents, and temperature
-    txt.setNum(_xmitStatus.cathodeVoltage(), 'f', 1);
-    _ui.cathodeVoltageValue->setText(txt);
-    
-    txt.setNum(_xmitStatus.collectorCurrent(), 'f', 1);
-    _ui.collectorCurrentValue->setText(txt);
-    
-    txt.setNum(_xmitStatus.bodyCurrent(), 'f', 1);
-    _ui.bodyCurrentValue->setText(txt);
-    
-    txt.setNum(_xmitStatus.xmitterTemperature(), 'f', 1);
-    _ui.xmitterTempValue->setText(txt);
-    
-    if (_xmitStatus.rs232CtlEnabled()) {
-        statusBar()->clearMessage();
+    if (_xmitStatus.frontPanelCtlEnabled()) {
+        _ui.controlSourceLabel->setText("Control via <b>Front Panel</b>");
+    } else if (_xmitStatus.rs232CtlEnabled()) {
+        _ui.controlSourceLabel->setText("Control via <b>RS-232</b>");
+    } else if (_xmitStatus.rdsCtlEnabled()) {
+        _ui.controlSourceLabel->setText("Control via <b>RDS</b>");
     } else {
-        statusBar()->showMessage("RS-232 control is currently DISABLED");
+        // Unknown control source. Show "Unknown" in dark red text.
+        _ui.controlSourceLabel->setText("Control via <b><font color=#880000>Unknown</font></b>");
     }
+
+    // Status summary: "OK" or "<n> Faults".
+    int faultCount = 0;
+    faultCount += _xmitStatus.modulatorFault() ? 1 : 0;
+    faultCount += _xmitStatus.syncFault() ? 1 : 0;
+    faultCount += _xmitStatus.xmitterTempFault() ? 1 : 0;
+    faultCount += _xmitStatus.wgArcFault() ? 1 : 0;
+    faultCount += _xmitStatus.collectorCurrFault() ? 1 : 0;
+    faultCount += _xmitStatus.bodyCurrFault() ? 1 : 0;
+    faultCount += _xmitStatus.filamentLorFault() ? 1 : 0;
+    faultCount += _xmitStatus.focusElectrodeLorFault() ? 1 : 0;
+    faultCount += _xmitStatus.cathodeLorFault() ? 1 : 0;
+    faultCount += _xmitStatus.inverterOverloadFault() ? 1 : 0;
+    faultCount += _xmitStatus.extInterlockFault() ? 1 : 0;
+    faultCount += _xmitStatus.eikInterlockFault() ? 1 : 0;
+
+    if (faultCount > 0) {
+        std::ostringstream ss;
+        ss << faultCount << " Transmitter Fault(s)";
+        _ui.xmitterStatusSummaryLabel->setText(ss.str().c_str());
+        _ui.xmitterStatusSummaryIcon->setPixmap(_redLED);
+    } else {
+        _ui.xmitterStatusSummaryLabel->setText("Transmitter OK");
+        _ui.xmitterStatusSummaryIcon->setPixmap(_greenLED);
+    }
+
+    // Update the transmitter status details dialog
+    _xmitStatusDialog.updateStatus(_xmitStatus);
 }
 
 void
@@ -404,8 +344,6 @@ HcrGuiMainWindow::_noXmitter() {
 
 void
 HcrGuiMainWindow::_disableUi() {
-    _ui.statusBox->setEnabled(false);
-    _ui.xmitterFaultDetailsBox->setEnabled(false);
     _ui.xmitterStartBox->setEnabled(false);
 
     _ui.powerValidIcon->setPixmap(_greenLED_off);
@@ -413,36 +351,11 @@ HcrGuiMainWindow::_disableUi() {
     _ui.hvIcon->setPixmap(_greenLED_off);
     _ui.xmittingIcon->setPixmap(_greenLED_off);
     
-    _ui.modulatorFaultIcon->setPixmap(_greenLED_off);
-    _ui.modulatorFaultCount->setText("");
-    _ui.syncFaultIcon->setPixmap(_greenLED_off);
-    _ui.syncFaultCount->setText("");
-    _ui.xmitterTempFaultIcon->setPixmap(_greenLED_off);
-    _ui.xmitterTempFaultCount->setText("");
-    _ui.wgArcFaultIcon->setPixmap(_greenLED_off);
-    _ui.wgArcFaultCount->setText("");
-    _ui.collectorCurrFaultIcon->setPixmap(_greenLED_off);
-    _ui.collectorCurrFaultCount->setText("");
-    _ui.bodyCurrFaultIcon->setPixmap(_greenLED_off);
-    _ui.bodyCurrFaultCount->setText("");
-    _ui.filamentLorFaultIcon->setPixmap(_greenLED_off);
-    _ui.filamentLorFaultCount->setText("");
-    _ui.focusElectrodeLorFaultIcon->setPixmap(_greenLED_off);
-    _ui.focusElectrodeLorFaultCount->setText("");
-    _ui.cathodeLorFaultIcon->setPixmap(_greenLED_off);
-    _ui.cathodeLorFaultCount->setText("");
-    
-    _ui.cathodeVoltageValue->setText("0.0");
-    _ui.collectorCurrentValue->setText("0.0");
-    _ui.bodyCurrentValue->setText("0.0");
-    _ui.xmitterTempValue->setText("0.0");
-    
+    _xmitStatusDialog.noStatus();
 }
 
 void
 HcrGuiMainWindow::_enableUi() {
-    _ui.xmitterFaultDetailsBox->setEnabled(true);
-    _ui.statusBox->setEnabled(true);
     _ui.xmitterStartBox->setEnabled(true);
 }
 
@@ -451,28 +364,4 @@ HcrGuiMainWindow::_logMessage(std::string message) {
     _ui.logArea->appendPlainText(
             QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh:mm:ss ") + 
             message.c_str());
-}
-
-QString
-HcrGuiMainWindow::_countLabel(int count) {
-    if (count == 0)
-        return QString("-");
-
-    QString txt;
-    txt.setNum(count);
-    return txt;
-}
-
-QString
-HcrGuiMainWindow::_faultTimeLabel(time_t time) {
-    if (time == -1)
-        return QString("");
-    
-    QDateTime nowQDT = QDateTime::currentDateTime().toUTC();
-    QDateTime faultQDT = QDateTime::fromTime_t(time).toUTC();
-    if (faultQDT.date() == nowQDT.date()) {
-        return(faultQDT.toString("hh:mm:ss"));
-    } else {
-        return(faultQDT.toString("MM/dd hh:mm:ss"));
-    }
 }

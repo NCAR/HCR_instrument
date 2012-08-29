@@ -18,6 +18,7 @@
 #include <HcrdrxRpcClient.h>
 
 #include "ui_HcrGuiMainWindow.h"
+#include "HcrGuiXmitStatusDialog.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -32,7 +33,7 @@ private slots:
     void on_hvButton_clicked();
     void on_hvOnButton_clicked();
     void on_hvOffButton_clicked();
-    void on_detailVisibilityButton_clicked();
+    void on_xmitterDetailsButton_clicked();
     void _update();
 private:
     // Disable the UI
@@ -67,25 +68,9 @@ private:
      * @return true iff the transmitter is actually transmitting.
      */
     bool _xmitting() const;
-    /**
-     *  @brief Return "-" if the count is zero, otherwise a text representation of
-     *  the count.
-     *  @param count the count to be represented
-     *  @return "-" if the count is zero, otherwise a text representation of 
-     *      the count.
-     */
-    static QString _countLabel(int count);
-    
-    /**
-     *  Return an empty string if the time is -1, otherwise a brief text 
-     *  representation of the time.
-     *  @param time the time_t time to be represented
-     *  @return an empty string if the time is -1, otherwise a brief text 
-     *  representation of the time.
-     */
-    static QString _faultTimeLabel(time_t time);
 
     Ui::HcrGuiMainWindow _ui;
+    HcrGuiXmitStatusDialog _xmitStatusDialog;
     XmitdRpcClient _xmitClient;
     HcrdrxRpcClient _drxClient;
     QTimer _updateTimer;
