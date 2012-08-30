@@ -385,11 +385,15 @@ begin
 	elsif (rising_edge (EXT_CLK)) then
 		case state is
 			when s0 =>
-				if(EMS_TRIG = '1' AND T0 = '1'AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
+				if (OPS_MODE_730 = "11" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1') then   -- Test Mode
+					state <= s1;
+				elsif(EMS_TRIG = '1' AND T0 = '1'AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s1;
 				end if;		
 			when s1 =>
-				if(ems_tx_ok = '1' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
+				if (OPS_MODE_730 = "11" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Test Mode
+					state <= s2;
+				elsif(ems_tx_ok = '1' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s2;
 --				elsif(ems_tx_ok = '0' AND rx_dly = '0' AND tx_dly = '1' ) then
 --					state <=s0;
@@ -399,7 +403,9 @@ begin
 					state <=s0;					
 				end if;			
 			when s2 =>
-				if(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '1' AND ems_pwr_ok = '1') then
+				if (OPS_MODE_730 = "11" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Test Mode
+					state <= s3;
+				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s3;
 				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '0' AND ems_pwr_ok = '1') then
 					state <=s0;					
@@ -458,6 +464,17 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
+			elsif (OPS_MODE_730 = "11") then -- Test Mode, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
 			end if;
 		when S2 =>
 			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx		
@@ -487,6 +504,17 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
+			elsif (OPS_MODE_730 = "11") then -- Test Mode, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
 			end if;						
 		when S3 =>
 			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx				
@@ -516,6 +544,17 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
+			elsif (OPS_MODE_730 = "11") then -- Test Mode, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
 			end if;						
 	end case;
 end process;	
