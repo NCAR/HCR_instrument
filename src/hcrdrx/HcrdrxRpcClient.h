@@ -142,6 +142,17 @@ public:
          */
         double psVoltage() const { return(_psVoltage); }
         /**
+         * @brief Return the temperature of the Pentek signal processing FPGA,
+         * deg C
+         * @return the temperature of the Pentek signal processing FPGA, deg C
+         */
+        double pentekFpgaTemp() const { return(_pentekFpgaTemp); }
+        /**
+         * @brief Return the temperature of the Pentek PCB, deg C
+         * @return the temperature of the Pentek PCB, deg C
+         */
+        double pentekBoardTemp() const { return(_pentekBoardTemp); }
+        /**
          * @brief Return true iff waveguide switch A is in the "noise source"
          * position
          * @return true iff waveguide switch A is in the "noise source" position
@@ -217,6 +228,8 @@ public:
         double _cmigitsTemp;
         double _tailconeTemp;
         double _psVoltage;
+        double _pentekFpgaTemp;
+        double _pentekBoardTemp;
 
         bool _noiseSourceSelected;
         bool _terminationSelected;

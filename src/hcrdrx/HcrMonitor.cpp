@@ -65,10 +65,11 @@ static const float MiWv950W_Cal[][2] = {
 static const int MiWv950W_CalLen = (sizeof(MiWv950W_Cal) / (sizeof(*MiWv950W_Cal)));
 
 
-HcrMonitor::HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost,
-        int xmitdPort) :
+HcrMonitor::HcrMonitor(const HcrDrxConfig &config, const Pentek::p7142 & pentek,
+        std::string xmitdHost, int xmitdPort) :
     QThread(),
     _config(config),
+    _pentek(pentek),
     _xmitClient(xmitdHost, xmitdPort),
     _mutex(QMutex::Recursive),
     _detectedRfPower(-99.9),
@@ -314,6 +315,18 @@ HcrMonitor::hmcStatus() const {
     return(_hmcStatus);
 }
 
+float
+HcrMonitor::pentekFpgaTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_pentekFpgaTemp);
+}
+
+float
+HcrMonitor::pentekBoardTemp() const {
+    QMutexLocker locker(&_mutex);
+    return(_pentekBoardTemp);
+}
+
 XmitdRpcClient::XmitStatus
 HcrMonitor::transmitterStatus() const {
     QMutexLocker locker(&_mutex);
@@ -342,6 +355,11 @@ HcrMonitor::run() {
         
         // Get transmitter status.
         _getXmitStatus();
+
+        // Get the Pentek temperatures
+        _pentekFpgaTemp = _pentek.fpgaTemp();
+        _pentekBoardTemp = _pentek.circuitBoardTemp();
+        std::cout << "Pentek FPGA temperature: " << _pentekFpgaTemp << " C" << std::endl;
 
         lastUpdateTime = QDateTime::currentDateTime().toUTC();
     }

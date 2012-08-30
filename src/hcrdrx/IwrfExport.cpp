@@ -873,6 +873,12 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeDouble
     ("PsVoltage", 2, mon.psVoltage());
 
+  xml += TaXml::writeDouble
+    ("PentekFpgaTemp", 2, mon.pentekFpgaTemp());
+
+  xml += TaXml::writeDouble
+    ("PentekBoardTemp", 2, mon.pentekBoardTemp());
+
   // booleans
 
   xml += TaXml::writeBoolean

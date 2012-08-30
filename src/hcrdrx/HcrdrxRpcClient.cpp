@@ -108,6 +108,8 @@ HcrdrxRpcClient::Status::Status() :
     _cmigitsTemp(-9999.9),
     _tailconeTemp(-9999.9),
     _psVoltage(-9999.9),
+    _pentekFpgaTemp(-9999.9),
+    _pentekBoardTemp(-9999.9),
     _noiseSourceSelected(false),
     _terminationSelected(false),
     _locked15_5GHzPLO(false),
@@ -139,6 +141,8 @@ HcrdrxRpcClient::Status::Status(XmlRpc::XmlRpcValue & statusDict) {
     _cmigitsTemp = _StatusDouble(statusDict, "cmigitsTemp");
     _tailconeTemp = _StatusDouble(statusDict, "tailconeTemp");
     _psVoltage = _StatusDouble(statusDict, "psVoltage");
+    _pentekFpgaTemp = _StatusDouble(statusDict, "pentekFpgaTemp");
+    _pentekBoardTemp = _StatusDouble(statusDict, "pentekBoardTemp");
 
     _noiseSourceSelected = _StatusBool(statusDict, "noiseSourceSelected");
     _terminationSelected = _StatusBool(statusDict, "terminationSelected");

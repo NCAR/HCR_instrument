@@ -283,6 +283,16 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     <td>measured voltage from the 5V power supply, V</td>
  *   </tr>
  *   <tr>
+ *     <td>pentekFpgaTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the Pentek signal processing FPGA, deg C</td>
+ *   </tr>
+ *   <tr>
+ *     <td>pentekBoardTemp</td>
+ *     <td>double</td>
+ *     <td>temperature of the Pentek PCB, deg C</td>
+ *   </tr>
+ *   <tr>
  *     <td>noiseSourceSelected</td>
  *     <td>bool</td>
  *     <td>true iff waveguide switch A is in the "noise source" position</td>
@@ -367,6 +377,8 @@ public:
         statusDict["cmigitsTemp"] = XmlRpcValue(_hcrMonitor->cmigitsTemp());
         statusDict["tailconeTemp"] = XmlRpcValue(_hcrMonitor->tailconeTemp());
         statusDict["psVoltage"] = XmlRpcValue(_hcrMonitor->psVoltage());
+        statusDict["pentekFpgaTemp"] = XmlRpcValue(_hcrMonitor->pentekFpgaTemp());
+        statusDict["pentekBoardTemp"] = XmlRpcValue(_hcrMonitor->pentekBoardTemp());
         statusDict["noiseSourceSelected"] = XmlRpcValue(_hcrMonitor->noiseSourceSelected());
         statusDict["terminationSelected"] = XmlRpcValue(_hcrMonitor->terminationSelected());
         statusDict["locked15_5GHzPLO"] = XmlRpcValue(_hcrMonitor->locked15_5GHzPLO());
@@ -484,13 +496,6 @@ main(int argc, char** argv)
     }
     rpcServer.enableIntrospection(true);
 
-    // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(hcrConfig, _xmitdHost, _xmitdPort);
-    _hcrMonitor->start();
-
-    // create the export object
-    _exporter = new IwrfExport(hcrConfig, *_hcrMonitor);
-
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
 
@@ -505,6 +510,13 @@ main(int argc, char** argv)
         abort();
     }
     
+    // Start our status monitoring thread.
+    _hcrMonitor = new HcrMonitor(hcrConfig, sd3c, _xmitdHost, _xmitdPort);
+    _hcrMonitor->start();
+
+    // create the export object
+    _exporter = new IwrfExport(hcrConfig, *_hcrMonitor);
+
     // We use SD3C's first general purpose timer for transmit pulse modulation
     sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
     

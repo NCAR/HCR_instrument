@@ -16,6 +16,7 @@
 #include <QThread>
 #include <QMutex>
 
+#include <p7142.h>
 #include <XmitdRpcClient.h>
 
 #include "HcrDrxConfig.h"
@@ -32,10 +33,12 @@ public:
      * the PMC-730 card, and get transmitter status from ka_xmitd
      * running on host xmitdHost/port xmitdPort.
      * @param config the HcrDrxConfig defining run-time configuration
+     * @param pentek the p7142 Pentek card to be monitored for temperatures
      * @param xmitdHost the name of the host on which hcr_xmitd is running
      * @param xmitdPort the port number hcr_xmitd is using for XmlRpc calls
      */
-    HcrMonitor(const HcrDrxConfig &config, std::string xmitdHost, int xmitdPort);
+    HcrMonitor(const HcrDrxConfig &config, const Pentek::p7142 & pentek,
+            std::string xmitdHost, int xmitdPort);
     
     virtual ~HcrMonitor();
     
@@ -184,6 +187,20 @@ public:
     int hmcStatus() const;
 
     /**
+     * @brief Return the signal processing FPGA temperature from the Pentek
+     * card, deg C
+     * @return the signal processing FPGA temperature from the Pentek
+     * card, deg C
+     */
+    float pentekFpgaTemp() const;
+
+    /**
+     * @brief Return the PCB temperature from the Pentek card, deg C
+     * @return the PCB temperature from the Pentek card, deg C
+     */
+    float pentekBoardTemp() const;
+
+    /**
      * @brief Return the transmitter status.
      * @return the transmitter status.
      */
@@ -269,6 +286,9 @@ private:
     /// run-time configuration
     const HcrDrxConfig &_config;
 
+    /// The Pentek P7142 we're monitoring for temperatures
+    const Pentek::p7142 & _pentek;
+
     /// XML-RPC access to hcr_xmitd for its status
     XmitdRpcClient _xmitClient;
 
@@ -352,6 +372,12 @@ private:
      * 3 = polarization switching error
      */
     uint16_t _hmcStatus;
+
+    /// Pentek FPGA temperature
+    float _pentekFpgaTemp;
+
+    /// Pentek board temperature;
+    float _pentekBoardTemp;
 };
 
 
