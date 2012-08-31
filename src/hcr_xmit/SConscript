@@ -14,6 +14,7 @@ xmitdEnv = Environment(tools = ['default'] + xmitdTools)
 xmitd_sources = Split("""
 hcr_xmitd.cpp
 HcrXmitter.cpp
+XmitStatus.cpp
 """)
 
 # We need HcrPmc730 from hcrdrx
@@ -25,6 +26,7 @@ Default(hcr_xmitd)
 
 headers = Split("""
 HcrXmitter.h
+XmitStatus.h
 """)
 
 html = xmitdEnv.Apidocs(xmitd_sources + headers)
