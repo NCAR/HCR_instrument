@@ -88,7 +88,7 @@ bool Foreground = false;
 /// Instance name for procmap
 std::string InstanceName = "";
 
-/// Host and port for XMLRPC comminucation with the hcrdrx process
+/// Host and port for XMLRPC communication with the hcrdrx process
 std::string HcrdrxHost = "localhost";
 int HcrdrxPort = 8081;
 
