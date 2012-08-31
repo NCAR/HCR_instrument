@@ -359,7 +359,6 @@ HcrMonitor::run() {
         // Get the Pentek temperatures
         _pentekFpgaTemp = _pentek.fpgaTemp();
         _pentekBoardTemp = _pentek.circuitBoardTemp();
-        std::cout << "Pentek FPGA temperature: " << _pentekFpgaTemp << " C" << std::endl;
 
         lastUpdateTime = QDateTime::currentDateTime().toUTC();
     }
