@@ -54,13 +54,23 @@ int main(int argc, char *argv[]) {
 
     QApplication* app = new QApplication(argc, argv);
     
+    // Any other args are file names
     std::vector<std::string> productFiles;
     for (int i = 1; i < argc; i++) {
         productFiles.push_back(argv[i]);
     }
-    IwrfMomReaderFile fileReader(productFiles);
+
+    // If we got any file names, set up a file reader, otherwise try for
+    // real-time data from the moments FMQ
+    IwrfMomReader *momReader;
+    if (! productFiles.empty()) {
+        momReader = new IwrfMomReaderFile(productFiles);
+    } else {
+        // Set up a reader getting its data from the Radx moments FMQ
+        momReader = new IwrfMomReaderFmq("fmq/moments/wband/shmem_20000");
+    }
     RadxBscanRaySource bscanRaySource;
-    ReaderThread readerThread(fileReader, bscanRaySource);
+    ReaderThread readerThread(*momReader, bscanRaySource);
     readerThread.start();
     
     QMainWindow* mainWindow = new BscanMainWindow(config);

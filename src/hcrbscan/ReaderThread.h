@@ -9,7 +9,6 @@
 #define READERTHREAD_H_
 
 #include <QThread>
-#include <QTimer>
 
 #include "RadxBscanRaySource.h"
 #include <radar/IwrfMomReader.hh>
@@ -19,11 +18,16 @@ class ReaderThread : public QThread {
 public:
     ReaderThread(IwrfMomReader & reader, const RadxBscanRaySource & radxBscanRaySource);
     virtual ~ReaderThread();
+
+    void run();
 private:
     IwrfMomReader & _reader;
     const RadxBscanRaySource & _radxBscanRaySource;
-    QTimer _rayTimer;
+    // Stop thread execution when _stopNow is true. Generally, this is set by
+    // the destructor.
+    bool _stopNow;
 private slots:
+    // Read one ray from the IwrfMomReader and generate a BscanRay from it.
     void _makeNextBscanRay();
 };
 
