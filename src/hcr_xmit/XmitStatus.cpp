@@ -38,6 +38,39 @@ time_t XmitStatus::_InverterOverloadFaultTime = -1;
 time_t XmitStatus::_ExternalInterlockFaultTime = -1;
 time_t XmitStatus::_EikInterlockFaultTime = -1;
 
+XmitStatus XmitStatus::_PrevStatus;
+
+XmitStatus::XmitStatus() {
+    _filamentOn = false;
+    _highVoltageOn = false;
+    _rfOn = false;
+    _modPulseExternal = false;
+    _syncPulseExternal = false;
+    _filamentDelayActive = false;
+    _psmPowerOn = false;
+    _summaryFault = false;
+    _controlSource = UnknownControl;
+    _modulatorFault = false;
+    _syncFault = false;
+    _xmitterTempFault = false;
+    _waveguideArcFault = false;
+    _collectorCurrentFault = false;
+    _bodyCurrentFault = false;
+    _filamentLorFault = false;
+    _focusElectrodeLorFault = false;
+    _cathodeLorFault = false;
+    _inverterOverloadFault = false;
+    _externalInterlockFault = false;
+    _eikInterlockFault = false;
+
+    _cathodeVoltage = 0.0;
+    _bodyCurrent = 0.0;
+    _collectorCurrent = 0.0;
+    _xmitterTemp = 0.0;
+
+    _pulsewidthSelector = 0;
+    _prfSelector = 0;
+}
 
 XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     // Byte 17 of the status packet is non-zero if the transmitter received a
@@ -56,7 +89,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     _syncPulseExternal =      xmitterPkt[3] & _EXT_SYNC_PULSE_BIT;
     _filamentDelayActive =    xmitterPkt[3] & _FILAMENT_DELAY_BIT;
     _psmPowerOn =             xmitterPkt[3] & _POWER_VALID_BIT;
-    _summaryFault =           xmitterPkt[3] & _FAULT_SUMMARY_BIT;
+    _summaryFault =           xmitterPkt[3] & _SUMMARY_FAULT_BIT;
 
     DLOG << "filament on " << _filamentOn <<
             ", HV on " << _highVoltageOn <<
@@ -124,6 +157,65 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
 
     // Byte 16 contains panel PRF selector setting (0-15)
     _prfSelector = xmitterPkt[16];
+
+    // Update fault counts and times
+    time_t now = time(0);
+
+    if (_summaryFault && ! _PrevStatus._summaryFault) {
+        _SummaryFaultCount++;
+        _SummaryFaultTime = now;
+    }
+    if (_modulatorFault && ! _PrevStatus._modulatorFault) {
+        _ModulatorFaultCount++;
+        _ModulatorFaultTime = now;
+    }
+    if (_syncFault && ! _PrevStatus._syncFault) {
+        _SyncFaultCount++;
+        _SyncFaultTime = now;
+    }
+    if (_xmitterTempFault && ! _PrevStatus._xmitterTempFault) {
+        _XmitterTempFaultCount++;
+        _XmitterTempFaultTime = now;
+    }
+    if (_waveguideArcFault && ! _PrevStatus._waveguideArcFault) {
+        _WaveguideArcFaultCount++;
+        _WaveguideArcFaultTime = now;
+    }
+    if (_collectorCurrentFault && ! _PrevStatus._collectorCurrentFault) {
+        _CollectorCurrentFaultCount++;
+        _CollectorCurrentFaultTime = now;
+    }
+    if (_bodyCurrentFault && ! _PrevStatus._bodyCurrentFault) {
+        _BodyCurrentFaultCount++;
+        _BodyCurrentFaultTime = now;
+    }
+    if (_filamentLorFault && ! _PrevStatus._filamentLorFault) {
+        _FilamentLorFaultCount++;
+        _FilamentLorFaultTime = now;
+    }
+    if (_focusElectrodeLorFault && ! _PrevStatus._focusElectrodeLorFault) {
+        _FocusElectrodeLorFaultCount++;
+        _FocusElectrodeLorFaultTime = now;
+    }
+    if (_cathodeLorFault && ! _PrevStatus._cathodeLorFault) {
+        _CathodeLorFaultCount++;
+        _CathodeLorFaultTime = now;
+    }
+    if (_inverterOverloadFault && ! _PrevStatus._inverterOverloadFault) {
+        _InverterOverloadFaultCount++;
+        _InverterOverloadFaultTime = now;
+    }
+    if (_externalInterlockFault && ! _PrevStatus._externalInterlockFault) {
+        _ExternalInterlockFaultCount++;
+        _ExternalInterlockFaultTime = now;
+    }
+    if (_eikInterlockFault && ! _PrevStatus._eikInterlockFault) {
+        _EikInterlockFaultCount++;
+        _EikInterlockFaultTime = now;
+    }
+
+    // And now we become the previous status...
+    _PrevStatus = *this;
 }
 
 XmitStatus::XmitStatus(XmlRpcValue & statusDict) throw(ConstructError) {

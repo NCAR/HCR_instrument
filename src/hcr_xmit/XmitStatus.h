@@ -358,6 +358,9 @@ public:
      */
     static time_t eikInterlockFaultTime() { return(_EikInterlockFaultTime); }
 private:
+    /// @brief Private default constructor.
+    XmitStatus();
+
     /// @brief Return the boolean value associated with statusDict[key]
     /// @param statusDict the XmlRpcValue status dictionary
     /// @param key the key for the desired value
@@ -400,7 +403,7 @@ private:
     /// Status byte 3: Is power valid?
     static const uint8_t _POWER_VALID_BIT       = 0x40;
     /// Status byte 3: Are any faults active?
-    static const uint8_t _FAULT_SUMMARY_BIT     = 0x80;
+    static const uint8_t _SUMMARY_FAULT_BIT     = 0x80;
 
     /// Status byte 5: Modulator fault?
     static const uint8_t _MODULATOR_FAULT_BIT           = 0x01;
@@ -461,6 +464,12 @@ private:
     static time_t _InverterOverloadFaultTime;
     static time_t _ExternalInterlockFaultTime;
     static time_t _EikInterlockFaultTime;
+
+    /**
+     * @brief Keep around a copy of the last XmitStatus created from a transmitter
+     * reply packet.
+     */
+    static XmitStatus _PrevStatus;
 
     /**
      *  @brief Which control source is selected on the front panel?
