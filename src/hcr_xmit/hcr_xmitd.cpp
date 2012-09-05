@@ -45,9 +45,6 @@ XmlRpcServer RpcServer;
 /// (see documentation for GetStatusMethod below)
 XmlRpcValue StatusDict;
 
-/// What was the last time we saw the transmitter in "operate" mode?
-time_t LastOperateTime = 0;
-
 // Fault counters
 int ModulatorFaultCount = 0;
 int SyncFaultCount = 0;
@@ -608,10 +605,6 @@ updateStatus() {
     StatusDict["inverter_overload_fault_time"] = XmlRpcValue(int(InverterOverloadFaultTime));
     StatusDict["external_interlock_fault_time"] = XmlRpcValue(int(ExtInterlockFaultTime));
     StatusDict["eik_interlock_fault_time"] = XmlRpcValue(int(EikInterlockFaultTime));
-    
-    // If we're operating (rfOn is true), update LastOperateTime to now
-    if (XmitStatus.rfOn)
-        LastOperateTime = time(0);
 }
 
 /// Print usage information
