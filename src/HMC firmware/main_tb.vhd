@@ -159,7 +159,7 @@ ARCHITECTURE behavior OF main_tb IS
 	signal SPARE4 : std_logic;		-- debug test signal
 	signal SPARE5 : std_logic;		-- debug test signal
 	signal SPARE6 : std_logic;		-- debug test signal
-	
+	signal SPARE7 : std_logic;		-- debug test signal
 	-- Inouts 
      -- Clock period definitions
   constant EXT_CLK_period : time := 32 ns; -- clock period/2, clock is 15.625MHz,
@@ -199,7 +199,8 @@ BEGIN
 			 SPARE3 => SPARE3,
 			 SPARE4 => SPARE4,
 			 SPARE5 => SPARE5,
-			 SPARE6 => SPARE6,			 
+			 SPARE6 => SPARE6,	
+			 SPARE7 => SPARE7,				 
 			 BIT_EMS_N => BIT_EMS_N	 
 			 
         );
@@ -261,10 +262,12 @@ BEGIN
 	EMS_BIT: process -- Generate EMS BIT response
 	begin
 		wait for 320 ns;  -- 320 ns is max delay measured
-		BIT_EMS_N <= "0101110";
+--		BIT_EMS_N <= "0101110";
+		BIT_EMS_N <= "1010110";
 		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_N <= "1010011";
+--		BIT_EMS_N <= "1010011";
+		BIT_EMS_N <= "0101011";
 		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;
 	end process;  

@@ -140,6 +140,11 @@ signal l_rx_dly : STD_LOGIC;
 signal half_hz : STD_LOGIC; 	-- 1/2 Hz Clock
 signal pps_count : STD_LOGIC_VECTOR(1 downto 0); 
 signal l_rx_gate : STD_LOGIC;
+signal ops_mode : STD_LOGIC_VECTOR(1 downto 0);    -- ops_mode at state S0
+signal ems_tx_error: STD_LOGIC;
+signal ems_rx_error: STD_LOGIC;
+signal clear_stat: STD_LOGIC;
+signal hold_stat: STD_LOGIC;
 
 -- State machine declarations
 type state_type is (s0,s1,s2,s3);
@@ -182,14 +187,14 @@ CHECK_VOLT: process (STATUS_5V, STATUS_8V, STATUS_12V, STATUS_15V, STATUS_28V)
 	end process; 
 	
 -- Check EMS BIT
-CHECK_BIT: process (BIT_EMS_P,BIT_EMS_N)
+CHECK_BIT: process (BIT_EMS_N,BIT_EMS_P)
 begin
-	if (BIT_EMS_N <= "0101110" AND BIT_EMS_P <= "1111111") then   -- vertical transmit mode
+	if (BIT_EMS_N = "1010110" AND BIT_EMS_P = "1111111") then   -- vertical transmit mode
 		ems_tx_stat <= '1';
 	else
 		ems_tx_stat <= '0';
 	end if;
-	if (BIT_EMS_N <= "1010011" AND BIT_EMS_P <= "1111111") then   -- vertical transmit mode
+	if (BIT_EMS_N = "0101011" AND BIT_EMS_P = "1111111") then   -- vertical transmit mode
 		ems_rx_stat <= '1';
 	else
 		ems_rx_stat <= '0';
@@ -229,24 +234,24 @@ begin
 end process;
 
 -- Update status every two seconds
-UPDATE_STAT: process (RESET_730, half_hz, ems_pwr_ok, ems_tx_ok, ems_rx_ok)
+UPDATE_STAT: process (RESET_730, half_hz)
 begin
 	if (RESET_730 = '1') then
 		STATUS <= "000";   -- good status
+		clear_stat <= '0';
+		hold_stat <= '0';
 	elsif (rising_edge (half_hz)) then
-		STATUS(0) <= NOT ems_pwr_ok;
-		STATUS(1) <= NOT ems_tx_ok;
-		STATUS(2) <= NOT ems_rx_ok;
-		MOD_PULSE_DISABLE <= NOT (ems_pwr_ok AND ems_tx_ok);
---		if (ems_pwr_ok = '0') then
---			STATUS <= "001";
---		elsif (ems_tx_ok = '0') then
---			STATUS <= "10";
---		elsif (ems_rx_ok = '0') then
---			STATUS <= "11";
---		else
---			STATUS <= "00";
---		end if;
+		if (hold_stat = '0') then
+			STATUS(0) <= NOT ems_pwr_ok;
+			STATUS(1) <= ems_tx_error;
+			STATUS(2) <= ems_rx_error;
+			MOD_PULSE_DISABLE <= NOT (ems_pwr_ok AND NOT ems_tx_error);
+			hold_stat <= '1';
+			clear_stat <= '0';
+		else
+			hold_stat <= '0';
+			clear_stat <= '1';
+		end if;
 	end if;	
 end process;
 
@@ -263,14 +268,18 @@ begin
 end process;
 
 -- Update EMS status when BIT is valid
-EMS_STAT: process (EXT_CLK, RESET_730, ems_tx_stat, ems_rx_stat, tx_dly, rx_dly, l_tx_dly, l_rx_dly, end_cycle)
+EMS_STAT: process (EXT_CLK, RESET_730)
 begin
 	if (RESET_730 = '1') then
 		ems_tx_ok <= '1';
 		ems_rx_ok <= '1';
+		ems_tx_error <= '0';
+		ems_rx_error <= '0';
 	elsif (rising_edge (EXT_CLK)) then
 		ems_tx_ok <= ((NOT l_tx_dly AND tx_dly AND ems_tx_stat) OR ems_tx_ok) AND NOT end_cycle;
+		ems_tx_error <= ((NOT l_tx_dly AND tx_dly AND NOT ems_tx_stat) OR ems_tx_error) AND NOT clear_stat;
 		ems_rx_ok <= ((NOT l_rx_dly AND rx_dly AND ems_rx_stat) OR ems_rx_ok) AND NOT end_cycle;
+		ems_rx_error <= ((NOT l_rx_dly AND tx_dly AND NOT ems_rx_stat) OR ems_rx_error) AND NOT clear_stat;
 	end if;
 end process;
 	
@@ -385,13 +394,13 @@ begin
 	elsif (rising_edge (EXT_CLK)) then
 		case state is
 			when s0 =>
-				if (OPS_MODE_730 = "11" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1') then   -- Test Mode
+				if (ops_mode = "11" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1') then   -- Test Mode
 					state <= s1;
 				elsif(EMS_TRIG = '1' AND T0 = '1'AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s1;
 				end if;		
 			when s1 =>
-				if (OPS_MODE_730 = "11" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Test Mode
+				if (ops_mode = "11" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Test Mode
 					state <= s2;
 				elsif(ems_tx_ok = '1' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s2;
@@ -403,7 +412,7 @@ begin
 					state <=s0;					
 				end if;			
 			when s2 =>
-				if (OPS_MODE_730 = "11" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Test Mode
+				if (ops_mode = "11" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Test Mode
 					state <= s3;
 				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s3;
@@ -415,7 +424,7 @@ begin
 					state <=s0;										
 				end if;
 			when s3 =>
-				if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
+				if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0') then
 					state <= s0;
 				end if;
 		end case;
@@ -424,137 +433,142 @@ end process;
 
 -- State Machine Ouputs
 
-STATE_OUT: process (state,MOD_PULSE,EMS_TRIG,OPS_MODE_730)
+STATE_OUT: process (state,MOD_PULSE,EMS_TRIG)
 begin
 	case state is
 		when S0 => 			-- Reset State
+			ops_mode <= OPS_MODE_730;		
 			MOD_PULSE_OUT_P <= '0';
 			MOD_PULSE_OUT_N <= '1';
 			MOD_PULSE_FUSELAGE <= '0';
-			if (OPS_MODE_730 = "01") then -- Noise source cal, no tx	
-				EMS_OUT <= "0101101";
+			if (ops_mode = "01") then -- Noise source cal, no tx	
+--				EMS_OUT <= "0101101";
+				EMS_OUT <= "1010101";
 			else
 				EMS_OUT <= "0000000";
 			end if;
 		when S1 =>
-			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx
+			if (ops_mode = "00") then -- Normal Ops, vertical tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= NOT EMS_TRIG;
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= NOT EMS_TRIG;
-			elsif (OPS_MODE_730 = "01") then -- Noise source cal, no tx
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= EMS_TRIG;
+			elsif (ops_mode = "01") then -- Noise source cal, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
-				EMS_OUT <= "0101101";
-			elsif (OPS_MODE_730 = "10") then -- Corner reflector cal, vertical tx w/reduced power
-				MOD_PULSE_OUT_P <= '0';
-				MOD_PULSE_OUT_N <= '1';
-				MOD_PULSE_FUSELAGE <= '0';
-				EMS_OUT(1) <= NOT EMS_TRIG;
-				EMS_OUT(2) <= '1';
-				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= '0';
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= '0';
-			elsif (OPS_MODE_730 = "11") then -- Test Mode, no tx
+--				EMS_OUT <= "0101101";
+				EMS_OUT <= "1010101";
+			elsif (ops_mode = "10") then -- Corner reflector cal, vertical tx w/reduced power
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= NOT EMS_TRIG;
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= NOT EMS_TRIG;
+				EMS_OUT(4) <= '0';
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= '0';
+				EMS_OUT(7) <= EMS_TRIG;
+			elsif (ops_mode = "11") then -- Test Mode, no tx
+				MOD_PULSE_OUT_P <= '0';
+				MOD_PULSE_OUT_N <= '1';
+				MOD_PULSE_FUSELAGE <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= EMS_TRIG;
 			end if;
 		when S2 =>
-			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx		
+			if (ops_mode = "00") then -- Normal Ops, vertical tx		
 				MOD_PULSE_OUT_P <= MOD_PULSE;
 				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
 				MOD_PULSE_FUSELAGE <= MOD_PULSE;
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= NOT EMS_TRIG;
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= NOT EMS_TRIG;
-			elsif (OPS_MODE_730 = "01") then -- Noise source cal, no tx
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= EMS_TRIG;
+			elsif (ops_mode = "01") then -- Noise source cal, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
-				EMS_OUT <= "0101101";
-			elsif (OPS_MODE_730 = "10") then -- Corner reflector cal, vertical tx w/reduced power
+--				EMS_OUT <= "0101101";
+				EMS_OUT <= "1010101";
+			elsif (ops_mode = "10") then -- Corner reflector cal, vertical tx w/reduced power
 				MOD_PULSE_OUT_P <= MOD_PULSE;
 				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
 				MOD_PULSE_FUSELAGE <= MOD_PULSE;
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= '0';
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= '0';
-			elsif (OPS_MODE_730 = "11") then -- Test Mode, no tx
+				EMS_OUT(4) <= '0';
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= '0';
+				EMS_OUT(7) <= EMS_TRIG;
+			elsif (ops_mode = "11") then -- Test Mode, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= NOT EMS_TRIG;
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= NOT EMS_TRIG;
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= EMS_TRIG;
 			end if;						
 		when S3 =>
-			if (OPS_MODE_730 = "00") then -- Normal Ops, vertical tx				
+			if (ops_mode = "00") then -- Normal Ops, vertical tx				
 				MOD_PULSE_OUT_P <= MOD_PULSE;
 				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
 				MOD_PULSE_FUSELAGE <= MOD_PULSE;
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= NOT EMS_TRIG;
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= NOT EMS_TRIG;
-			elsif (OPS_MODE_730 = "01") then -- Noise source cal, no tx
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= EMS_TRIG;
+			elsif (ops_mode = "01") then -- Noise source cal, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
-				EMS_OUT <= "0101101";
-			elsif (OPS_MODE_730 = "10") then -- Corner reflector cal, vertical tx w/reduced power
+--				EMS_OUT <= "0101101";
+				EMS_OUT <= "1010101";
+			elsif (ops_mode = "10") then -- Corner reflector cal, vertical tx w/reduced power
 				MOD_PULSE_OUT_P <= MOD_PULSE;
 				MOD_PULSE_OUT_N <= NOT MOD_PULSE;
 				MOD_PULSE_FUSELAGE <= MOD_PULSE;
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= '0';
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= '0';
-			elsif (OPS_MODE_730 = "11") then -- Test Mode, no tx
+				EMS_OUT(4) <= '0';
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= '0';
+				EMS_OUT(7) <= EMS_TRIG;
+			elsif (ops_mode = "11") then -- Test Mode, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
 				MOD_PULSE_FUSELAGE <= '0';
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= EMS_TRIG;
-				EMS_OUT(5) <= NOT EMS_TRIG;
-				EMS_OUT(6) <= EMS_TRIG;
-				EMS_OUT(7) <= NOT EMS_TRIG;
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= EMS_TRIG;
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= EMS_TRIG;
 			end if;						
 	end case;
 end process;	
