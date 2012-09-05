@@ -35,6 +35,9 @@ public:
         std::string _msg;
     };
 
+    /// @brief Default constructor. All fields are set to zero/false.
+    XmitStatus();
+
     /// @brief Construct from a 20-byte status packet returned by the
     /// transmitter.
     /// @param xmitterPkt a 20-byte status packet returned by the transmitter
@@ -269,28 +272,26 @@ public:
      */
     static int eikInterlockFaultCount() { return (_EikInterlockFaultCount); }
 
-
-
     /**
-     * Unix time of last summary fault since hcr_xmitd startup.
+     * @brief Unix time of last summary fault since hcr_xmitd startup.
      * @return the Unix time of the last summary fault since hcr_xmitd
      * startup.
      */
     static time_t summaryFaultTime() { return(_SummaryFaultTime); }
     /**
-     * Unix time of last modulator fault since hcr_xmitd startup.
+     * @brief Unix time of last modulator fault since hcr_xmitd startup.
      * @return the Unix time of the last modulator fault since hcr_xmitd
      * startup.
      */
     static time_t modulatorFaultTime() { return(_ModulatorFaultTime); }
     /**
-     * Unix time of last sync fault since hcr_xmitd startup.
+     * @brief Unix time of last sync fault since hcr_xmitd startup.
      * @return the Unix time of the last sync fault since hcr_xmitd
      * startup.
      */
     static time_t syncFaultTime() { return(_SyncFaultTime); }
     /**
-     * Unix time of last transmitter temperature fault since hcr_xmitd
+     * @brief Unix time of last transmitter temperature fault since hcr_xmitd
      * startup.
      * @return the Unix time of the last transmitter temperature fault since
      * hcr_xmitd startup.
@@ -303,26 +304,26 @@ public:
      */
     static time_t waveguideArcFaultTime() { return(_WaveguideArcFaultTime); }
     /**
-     * Unix time of last collector current fault since hcr_xmitd startup.
+     * @brief Unix time of last collector current fault since hcr_xmitd startup.
      * @return the Unix time of the last collector current fault since
      * hcr_xmitd startup.
      */
     static time_t collectorCurrentFaultTime() { return(_CollectorCurrentFaultTime); }
     /**
-     * Unix time of last body current fault since hcr_xmitd startup.
+     * @brief Unix time of last body current fault since hcr_xmitd startup.
      * @return the Unix time of the last body current fault since hcr_xmitd
      * startup.
      */
     static time_t bodyCurrentFaultTime() { return(_BodyCurrentFaultTime); }
     /**
-     * Unix time of last filament "loss of reference" fault since hcr_xmitd
+     * @brief Unix time of last filament "loss of reference" fault since hcr_xmitd
      * startup.
      * @return the Unix time of the last filament "loss of reference" fault
      * since hcr_xmitd startup.
      */
     static time_t filamentLorFaultTime() { return(_FilamentLorFaultTime); }
     /**
-     * Unix time of last focus electrode "loss of reference" fault since
+     * @brief Unix time of last focus electrode "loss of reference" fault since
      * hcr_xmitd startup.
      * @return the Unix time of the last focus electrode "loss of reference"
      * fault since hcr_xmitd startup.
@@ -331,14 +332,14 @@ public:
         return(_FocusElectrodeLorFaultTime);
     }
     /**
-     * Unix time of last cathode "loss of reference" fault since hcr_xmitd
+     * @brief Unix time of last cathode "loss of reference" fault since hcr_xmitd
      * startup.
      * @return the Unix time of the last cathode "loss of reference" fault
      * since hcr_xmitd startup.
      */
     static time_t cathodeLorFaultTime() { return(_CathodeLorFaultTime); }
     /**
-     * Unix time of last inverter overload fault since hcr_xmitd startup.
+     * @brief Unix time of last inverter overload fault since hcr_xmitd startup.
      * @return the Unix time of the last inverter overload fault since
      * hcr_xmitd startup.
      */
@@ -346,21 +347,26 @@ public:
         return(_InverterOverloadFaultTime);
     }
     /**
-     * Unix time of last external interlock fault since hcr_xmitd startup.
+     * @brief Unix time of last external interlock fault since hcr_xmitd startup.
      * @return the Unix time of the last external interlock fault since
      * hcr_xmitd startup.
      */
     static time_t externalInterlockFaultTime() { return(_ExternalInterlockFaultTime); }
     /**
-     * Unix time of last EIK interlock fault since hcr_xmitd startup.
+     * @brief Unix time of last EIK interlock fault since hcr_xmitd startup.
      * @return the Unix time of the last EIK interlock fault since hcr_xmitd
      * startup.
      */
     static time_t eikInterlockFaultTime() { return(_EikInterlockFaultTime); }
-private:
-    /// @brief Private default constructor.
-    XmitStatus();
 
+    /**
+     * @brief Return a simulated status
+     * @param filamentOn "filamentOn" state to use in the simulated status
+     * @param highVoltageOn "highVoltageOn" state to use in the simulated status
+     * @return a simulated status
+     */
+    static XmitStatus simulatedStatus(bool filamentOn, bool highVoltageOn);
+private:
     /// @brief Return the boolean value associated with statusDict[key]
     /// @param statusDict the XmlRpcValue status dictionary
     /// @param key the key for the desired value

@@ -6,6 +6,7 @@
  */
 
 #include "XmitStatus.h"
+#include <cstdlib>
 #include <logx/Logging.h>
 
 LOGGING("XmitStatus")
@@ -275,6 +276,19 @@ XmitStatus::XmitStatus(XmlRpcValue & statusDict) throw(ConstructError) {
 }
 
 XmitStatus::~XmitStatus() {
+}
+
+XmitStatus
+XmitStatus::simulatedStatus(bool filamentOn, bool highVoltageOn) {
+    XmitStatus simStatus;
+    simStatus._psmPowerOn = true;
+    simStatus._filamentOn = filamentOn;
+    simStatus._highVoltageOn = highVoltageOn;
+    simStatus._cathodeVoltage = 14.9 + (0.2 * random()) / RAND_MAX;
+    simStatus._collectorCurrent = 390. + (20.0 * random()) / RAND_MAX;
+    simStatus._bodyCurrent = 49.0 + (2.0 * random()) / RAND_MAX;
+    simStatus._xmitterTemp = 39.5 + (1.0 * random()) / RAND_MAX;
+    return simStatus;
 }
 
 XmlRpcValue
