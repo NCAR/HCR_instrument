@@ -18,7 +18,7 @@ public:
     HcrGuiXmitStatusDialog(QWidget *parent);
     virtual ~HcrGuiXmitStatusDialog() {}
 
-    void updateStatus(const XmitdRpcClient::XmitStatus & xmitStatus);
+    void updateStatus(const XmitStatus & xmitStatus);
     void noStatus();
 
 protected:

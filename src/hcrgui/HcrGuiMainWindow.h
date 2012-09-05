@@ -79,7 +79,7 @@ private:
     QPixmap _greenLED;
     QPixmap _greenLED_off;
     // Last status read from the transmitter
-    XmitdRpcClient::XmitStatus _xmitStatus;
+    XmitStatus _xmitStatus;
     // Last status read from hcrdrx
     HcrdrxRpcClient::Status _drxStatus;
     

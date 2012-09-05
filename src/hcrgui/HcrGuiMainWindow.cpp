@@ -222,7 +222,7 @@ HcrGuiMainWindow::_update() {
     _appendXmitdLogMsgs();
     
     // Get status from hcr_xmitd
-    _xmitStatus = XmitdRpcClient::XmitStatus(); // start with uninitialized status
+    _xmitStatus = XmitStatus(); // start with uninitialized status
     if (! _xmitClient.getStatus(_xmitStatus)) {
         _noDaemon();
         return;
@@ -251,10 +251,10 @@ HcrGuiMainWindow::_update() {
     }
 
     // Update transmitter control
-    _ui.powerValidIcon->setPixmap(_xmitStatus.powerValid() ? _greenLED : _greenLED_off);
+    _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
-    _ui.filamentButton->setEnabled(_xmitStatus.powerValid() &&
+    _ui.filamentButton->setEnabled(_xmitStatus.psmPowerOn() &&
             ! _xmitStatus.frontPanelCtlEnabled());
     if (! _xmitterFilamentOn()) {
         // Turn off warmup LED if the filament is not on
@@ -290,14 +290,14 @@ HcrGuiMainWindow::_update() {
     faultCount += _xmitStatus.modulatorFault() ? 1 : 0;
     faultCount += _xmitStatus.syncFault() ? 1 : 0;
     faultCount += _xmitStatus.xmitterTempFault() ? 1 : 0;
-    faultCount += _xmitStatus.wgArcFault() ? 1 : 0;
-    faultCount += _xmitStatus.collectorCurrFault() ? 1 : 0;
-    faultCount += _xmitStatus.bodyCurrFault() ? 1 : 0;
+    faultCount += _xmitStatus.waveguideArcFault() ? 1 : 0;
+    faultCount += _xmitStatus.collectorCurrentFault() ? 1 : 0;
+    faultCount += _xmitStatus.bodyCurrentFault() ? 1 : 0;
     faultCount += _xmitStatus.filamentLorFault() ? 1 : 0;
     faultCount += _xmitStatus.focusElectrodeLorFault() ? 1 : 0;
     faultCount += _xmitStatus.cathodeLorFault() ? 1 : 0;
     faultCount += _xmitStatus.inverterOverloadFault() ? 1 : 0;
-    faultCount += _xmitStatus.extInterlockFault() ? 1 : 0;
+    faultCount += _xmitStatus.externalInterlockFault() ? 1 : 0;
     faultCount += _xmitStatus.eikInterlockFault() ? 1 : 0;
 
     if (faultCount > 0) {

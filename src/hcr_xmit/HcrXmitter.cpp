@@ -27,6 +27,8 @@ const std::string HcrXmitter::SIM_DEVICE = "SimulatedHcrXmitter";
 
 HcrXmitter::HcrXmitter(std::string ttyDev) :
         _simulate(ttyDev == SIM_DEVICE),
+        _simFilamentOn(false),
+        _simHvOn(false),
         _aliveCounter(0),
         _ttyDev(ttyDev),
         _fd(-1),
@@ -36,8 +38,6 @@ HcrXmitter::HcrXmitter(std::string ttyDev) :
     if (! _simulate) {
         _openTty();
     }
-    // Initialize our simulated status
-    _initSimStatus();
 }
 
 HcrXmitter::~HcrXmitter() {
@@ -56,7 +56,7 @@ HcrXmitter::setFilamentState(bool filamentState) {
     if (! _simulate) {
         _sendCommand(_intendedState);
     } else {
-        _simStatus.filamentOn = filamentState;
+        _simFilamentOn = filamentState;
     }
     return;
 }
@@ -74,29 +74,20 @@ HcrXmitter::setHvState(bool hvState) {
     if (! _simulate) {
         _sendCommand(_intendedState);
     } else {
-        _simStatus.highVoltageOn = hvState;
+        _simHvOn = hvState;
     }
     return;
 }
 
-HcrXmitter::Status
+XmitStatus
 HcrXmitter::getStatus() {
     // Special handling if we're simulating...
     if (_simulate) {
-    	_simStatus.powerValid = true;
-    	_simStatus.serialConnected = true;
-    	_simStatus.cathodeVoltage = 14.9 + (0.2 * random()) / RAND_MAX;
-    	_simStatus.collectorCurrent = 390. + (20.0 * random()) / RAND_MAX;
-    	_simStatus.bodyCurrent = 49.0 + (2.0 * random()) / RAND_MAX;
-    	_simStatus.xmitterTemp = 39.5 + (1.0 * random()) / RAND_MAX;
-        return(_simStatus);
+        return(XmitStatus::simulatedStatus(_simFilamentOn, _simHvOn));
     }
     
     // This must be the real thing, so get status from the transmitter
-    
-    // Status struct which we will return
-    Status status;
-	_clearStatus(status);
+    XmitStatus status;
 
 	// Reply from the transmitter, which will be parsed to build the Status
 	// struct.
@@ -160,109 +151,26 @@ HcrXmitter::getStatus() {
     	// Byte 17 is non-zero if the transmitter received a bad communication.
     	// If this byte indicates an error, the rest of the returned status can't
     	// be trusted, so go back and try again.
-    	if (reply[17] != 0) {
-    		ELOG << "'Bad communication' reply from transmitter";
-    		// Try again
-    		continue;
+    	try {
+    	    return(XmitStatus(reply));
+    	} catch(XmitStatus::ConstructError & e) {
+            // Report the error.
+    	    ELOG << e.what();
+    	    // Go back and try again.
+    	    continue;
     	}
-
-    	// It appears we have a good reply, so break out and parse it.
-    	break;
     }
     
-    // If we used up our tries, we just return the empty status
-    if (attempt == MAX_ATTEMPTS) {
-    	if (nReplies == 0) {
-    		WLOG << "No status reply in " << MAX_ATTEMPTS <<
-    				" tries; Is the transmitter plugged in?";
-    	} else {
-    		WLOG << "Only 'bad communication' replies in " << MAX_ATTEMPTS <<
-    				" attempts to get status";
-    	}
-    	return(status);
-    }
-
-	// Parse the status reply
-	status.serialConnected = true;
-
-    // 8 bits of boolean status in byte 3
-    status.filamentOn =             reply[3] & _FILAMENT_ON_BIT;
-    status.highVoltageOn =          reply[3] & _HV_ON_BIT;
-    status.rfOn =                   reply[3] & _RF_ON_BIT;
-    status.modPulseExternal =       reply[3] & _EXT_MOD_PULSE_BIT;
-    status.syncPulseExternal =      reply[3] & _EXT_SYNC_PULSE_BIT;
-    status.filamentDelayActive =    reply[3] & _FILAMENT_DELAY_BIT;
-    status.powerValid =             reply[3] & _POWER_VALID_BIT;
-    status.faultSummary =           reply[3] & _FAULT_SUMMARY_BIT;
-
-    DLOG << "filament on " << status.filamentOn <<
-            ", HV on " << status.highVoltageOn <<
-            ", RF on " << status.rfOn <<
-            ", external mod pulse " << status.modPulseExternal <<
-            ", external sync pulse " << status.syncPulseExternal <<
-            ", filament delay active " << status.filamentDelayActive <<
-            ", power valid " << status.powerValid <<
-            ", fault summary " << status.faultSummary;
-    
-    // Byte 4: Is control currently via front panel, RS-232, or RDS?
-    uint8_t controlSource = reply[4] & AllControlSources;
-    switch (controlSource) {
-    case FrontPanelControl:
-        status.controlSource = FrontPanelControl;
-        break;
-    case RS232Control:
-        status.controlSource = RS232Control;
-        break;
-    case RDSControl:
-        status.controlSource = RDSControl;
-        break;
-    default:
-        ELOG << "Uh-oh, bad transmitter control source byte with value 0x" <<
-            std::hex << uint16_t(reply[4]) << std::dec;
-        status.controlSource = UnknownControl;
-        break;
+    // If we used up our tries, we just return an empty status
+    if (nReplies == 0) {
+        WLOG << "No status reply in " << MAX_ATTEMPTS <<
+                " tries; Is the transmitter plugged in?";
+    } else {
+        WLOG << "Only 'bad communication' replies in " << MAX_ATTEMPTS <<
+                " attempts to get status";
     }
     
-    // 8 fault bits from byte 5
-    status.modulatorFault =         reply[5] & _MODULATOR_FAULT_BIT;
-    status.syncFault =              reply[5] & _SYNC_FAULT_BIT;
-    status.xmitterTempFault =       reply[5] & _XMITTER_TEMP_FAULT_BIT;
-    status.waveguideArcFault =      reply[5] & _WG_ARC_FAULT_BIT;
-    status.collectorCurrentFault =  reply[5] & _COLLECTOR_CURRENT_FAULT_BIT;
-    status.bodyCurrentFault =       reply[5] & _BODY_CURRENT_FAULT_BIT;
-    status.filamentLorFault =       reply[5] & _FILAMENT_LOR_FAULT_BIT;
-    status.focusElectrodeLorFault = reply[5] & _FOCUS_ELECTRODE_LOR_FAULT_BIT;
-    
-    // 4 fault bits from byte 6 (other 4 bits are unused)
-    status.cathodeLorFault =        reply[6] & _CATHODE_LOR_FAULT_BIT;
-    status.inverterOverloadFault =  reply[6] & _INVERTER_OVERLOAD_FAULT_BIT;
-    status.externalInterlockFault = reply[6] & _EXT_INTERLOCK_FAULT_BIT;
-    status.eikInterlockFault    =   reply[6] & _EIK_INTERLOCK_FAULT_BIT;
-
-    
-    // Bytes 7 and 8 contain whole and fractional cathode voltage
-    status.cathodeVoltage = reply[7] + 0.1 * reply[8];
-    DLOG << "Cathode voltage: " << status.cathodeVoltage;
-    
-    // Bytes 9 and 10 contain whole and fractional body current
-    status.bodyCurrent = reply[9] + 0.1 * reply[10];
-    DLOG << "Body current: " << status.bodyCurrent;
-    
-    // Bytes 11 and 12 contain whole and fractional collector current
-    status.collectorCurrent = reply[11] + 0.1 * reply[12];
-    DLOG << "Collector current: " << status.collectorCurrent;
-    
-    // Bytes 13 and 14 contain whole and fractional transmitter temperature
-    status.xmitterTemp = reply[13] + 0.1 * reply[14];
-    DLOG << "Temp: " << status.xmitterTemp;
-    
-    // Byte 15 contains panel pulsewidth selector setting (0-15)
-    status.pulsewidthSelector = reply[15];
-    
-    // Byte 16 contains panel PRF selector setting (0-15)
-    status.prfSelector = reply[16];
-    
-    return(status);
+    return(XmitStatus());
 }
 
 void
@@ -306,11 +214,6 @@ HcrXmitter::_openTty() {
         exit(1);
     }
     DLOG << "Done configuring " << _ttyDev;
-}
-
-void
-HcrXmitter::_clearStatus(Status & status) {
-    memset(&status, 0, sizeof(Status));
 }
 
 void
@@ -400,12 +303,4 @@ HcrXmitter::_readSelect(unsigned int waitMsecs)
     }
     // Oops, shouldn't get here!
     return -3;
-}
-
-void
-HcrXmitter::_initSimStatus() {
-    _clearStatus(_simStatus);
-    _simStatus.serialConnected = true;
-    _simStatus.powerValid = true;
-    _simStatus.controlSource = RS232Control;
 }

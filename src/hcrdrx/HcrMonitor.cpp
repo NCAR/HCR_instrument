@@ -327,7 +327,7 @@ HcrMonitor::pentekBoardTemp() const {
     return(_pentekBoardTemp);
 }
 
-XmitdRpcClient::XmitStatus
+XmitStatus
 HcrMonitor::transmitterStatus() const {
     QMutexLocker locker(&_mutex);
     return(_xmitStatus);
@@ -424,7 +424,7 @@ void
 HcrMonitor::_getXmitStatus() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
-    XmitdRpcClient::XmitStatus xmitStatus;
+    XmitStatus xmitStatus;
     _xmitClient.getStatus(xmitStatus);
 
     QMutexLocker locker(&_mutex);

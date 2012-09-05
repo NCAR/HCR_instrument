@@ -204,7 +204,7 @@ public:
      * @brief Return the transmitter status.
      * @return the transmitter status.
      */
-    XmitdRpcClient::XmitStatus transmitterStatus() const;
+    XmitStatus transmitterStatus() const;
 
 private:
     /**
@@ -293,7 +293,7 @@ private:
     XmitdRpcClient _xmitClient;
 
     /// Last transmitter status we obtained
-    XmitdRpcClient::XmitStatus _xmitStatus;
+    XmitStatus _xmitStatus;
 
     /**
      * Thread access mutex (mutable so we can lock the mutex even in const

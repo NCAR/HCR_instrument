@@ -10,7 +10,7 @@ env = Environment(tools=['default'] + tools)
 tooldir = env.Dir('.').srcnode().abspath    # this directory
 includeDir = tooldir
 
-lib = env.Library('xmitdrpcclient', 'XmitdRpcClient.cpp')
+lib = env.Library('xmitdrpcclient', ['XmitdRpcClient.cpp', 'XmitStatus.o'])
     
 def xmitdrpcclient(env):
     env.Require(tools)

@@ -18,7 +18,7 @@ HcrGuiXmitStatusDialog::HcrGuiXmitStatusDialog(QWidget *parent) :
 }
 
 void
-HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStatus) {
+HcrGuiXmitStatusDialog::updateStatus(const XmitStatus & xmitStatus) {
     // fault lights
     _ui.modulatorFaultIcon->
         setPixmap(xmitStatus.modulatorFault() ? _redLED : _greenLED);
@@ -27,11 +27,11 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     _ui.xmitterTempFaultIcon->
         setPixmap(xmitStatus.xmitterTempFault() ? _redLED : _greenLED);
     _ui.wgArcFaultIcon->
-        setPixmap(xmitStatus.wgArcFault() ? _redLED : _greenLED);
+        setPixmap(xmitStatus.waveguideArcFault() ? _redLED : _greenLED);
     _ui.collectorCurrFaultIcon->
-        setPixmap(xmitStatus.collectorCurrFault() ? _redLED : _greenLED);
+        setPixmap(xmitStatus.collectorCurrentFault() ? _redLED : _greenLED);
     _ui.bodyCurrFaultIcon->
-        setPixmap(xmitStatus.bodyCurrFault() ? _redLED : _greenLED);
+        setPixmap(xmitStatus.bodyCurrentFault() ? _redLED : _greenLED);
     _ui.filamentLorFaultIcon->
         setPixmap(xmitStatus.filamentLorFault() ? _redLED : _greenLED);
     _ui.focusElectrodeLorFaultIcon->
@@ -41,7 +41,7 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     _ui.inverterOverloadFaultIcon->
         setPixmap(xmitStatus.inverterOverloadFault() ? _redLED : _greenLED);
     _ui.extInterlockFaultIcon->
-        setPixmap(xmitStatus.extInterlockFault() ? _redLED : _greenLED);
+        setPixmap(xmitStatus.externalInterlockFault() ? _redLED : _greenLED);
     _ui.eikInterlockFaultIcon->
         setPixmap(xmitStatus.eikInterlockFault() ? _redLED : _greenLED);
     // fault counts
@@ -52,11 +52,11 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     _ui.xmitterTempFaultCount->
         setText(_countLabel(xmitStatus.xmitterTempFaultCount()));
     _ui.wgArcFaultCount->
-        setText(_countLabel(xmitStatus.wgArcFaultCount()));
+        setText(_countLabel(xmitStatus.waveguideArcFaultCount()));
     _ui.collectorCurrFaultCount->
-        setText(_countLabel(xmitStatus.collectorCurrFaultCount()));
+        setText(_countLabel(xmitStatus.collectorCurrentFaultCount()));
     _ui.bodyCurrFaultCount->
-        setText(_countLabel(xmitStatus.bodyCurrFaultCount()));
+        setText(_countLabel(xmitStatus.bodyCurrentFaultCount()));
     _ui.filamentLorFaultCount->
         setText(_countLabel(xmitStatus.filamentLorFaultCount()));
     _ui.focusElectrodeLorFaultCount->
@@ -66,7 +66,7 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     _ui.inverterOverloadFaultCount->
         setText(_countLabel(xmitStatus.inverterOverloadFaultCount()));
     _ui.extInterlockFaultCount->
-        setText(_countLabel(xmitStatus.extInterlockFaultCount()));
+        setText(_countLabel(xmitStatus.externalInterlockFaultCount()));
     _ui.eikInterlockFaultCount->
         setText(_countLabel(xmitStatus.eikInterlockFaultCount()));
 
@@ -78,11 +78,11 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     _ui.xmitterTempFaultTime->
         setText(_faultTimeLabel(xmitStatus.xmitterTempFaultTime()));
     _ui.wgArcFaultTime->
-        setText(_faultTimeLabel(xmitStatus.wgArcFaultTime()));
+        setText(_faultTimeLabel(xmitStatus.waveguideArcFaultTime()));
     _ui.collectorCurrFaultTime->
-        setText(_faultTimeLabel(xmitStatus.collectorCurrFaultTime()));
+        setText(_faultTimeLabel(xmitStatus.collectorCurrentFaultTime()));
     _ui.bodyCurrFaultTime->
-        setText(_faultTimeLabel(xmitStatus.bodyCurrFaultTime()));
+        setText(_faultTimeLabel(xmitStatus.bodyCurrentFaultTime()));
     _ui.filamentLorFaultTime->
         setText(_faultTimeLabel(xmitStatus.filamentLorFaultTime()));
     _ui.focusElectrodeLorFaultTime->
@@ -92,7 +92,7 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     _ui.inverterOverloadFaultTime->
         setText(_faultTimeLabel(xmitStatus.inverterOverloadFaultTime()));
     _ui.extInterlockFaultTime->
-        setText(_faultTimeLabel(xmitStatus.extInterlockFaultTime()));
+        setText(_faultTimeLabel(xmitStatus.externalInterlockFaultTime()));
     _ui.eikInterlockFaultTime->
         setText(_faultTimeLabel(xmitStatus.eikInterlockFaultTime()));
 
@@ -107,7 +107,7 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitdRpcClient::XmitStatus & xmitStat
     txt.setNum(xmitStatus.bodyCurrent(), 'f', 1);
     _ui.bodyCurrentValue->setText(txt);
 
-    txt.setNum(xmitStatus.xmitterTemperature(), 'f', 1);
+    txt.setNum(xmitStatus.xmitterTemp(), 'f', 1);
     _ui.xmitterTempValue->setText(txt);
 }
 
