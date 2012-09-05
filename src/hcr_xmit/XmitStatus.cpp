@@ -42,6 +42,7 @@ time_t XmitStatus::_EikInterlockFaultTime = -1;
 XmitStatus XmitStatus::_PrevStatus;
 
 XmitStatus::XmitStatus() {
+    _serialConnected = false;
     _filamentOn = false;
     _highVoltageOn = false;
     _rfOn = false;
@@ -74,6 +75,9 @@ XmitStatus::XmitStatus() {
 }
 
 XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
+    // Since we have transmitter packet, the serial line must be connected
+    _serialConnected = true;
+
     // Byte 17 of the status packet is non-zero if the transmitter received a
     // bad communication. When this is the case, the rest of the returned status
     // can't be trusted.
@@ -221,6 +225,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
 
 XmitStatus::XmitStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     // Unpack the XmlRpcValue dictionary into our members
+    _serialConnected = _StatusBool(statusDict, "serialConnected");
     _filamentOn = _StatusBool(statusDict, "filamentOn");
     _highVoltageOn = _StatusBool(statusDict, "highVoltageOn");
     _rfOn = _StatusBool(statusDict, "rfOn");
@@ -296,6 +301,7 @@ XmitStatus::toXmlRpcValue() const {
     XmlRpcValue statusDict;
 
     // Save state into our XML-RPC statusDict
+    statusDict["serialConnected"] = XmlRpcValue(_serialConnected);
     statusDict["filamentOn"] = XmlRpcValue(_filamentOn);
     statusDict["highVoltageOn"] = XmlRpcValue(_highVoltageOn);
     statusDict["rfOn"] = XmlRpcValue(_rfOn);

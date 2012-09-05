@@ -88,6 +88,22 @@ public:
     /// @return the control source selected on the CMU front panel.
     ControlSource controlSource() const { return(_controlSource); }
 
+    /// @brief Return true iff serial communication to the transmitter is connected
+    /// @return true iff serial connection to the transmitter is connected
+    bool serialConnected() const { return(_serialConnected); }
+
+    /// @brief Return true iff RS-232 control is enabled
+    /// @return true iff RS-232 control is enabled
+    bool rs232CtlEnabled() const { return(_controlSource == RS232Control); }
+
+    /// @brief Return true iff front panel control is enabled
+    /// @return true iff front panel control is enabled
+    bool frontPanelCtlEnabled() const { return(_controlSource == FrontPanelControl); }
+
+    /// @brief Return true iff RDS control is enabled
+    /// @return true iff RDS control is enabled
+    bool rdsCtlEnabled() const { return(_controlSource == RDSControl); }
+
     /// @brief return true iff the EIK filament is on.
     /// @return true iff the EIK filament is on.
     bool filamentOn() const { return(_filamentOn); }
@@ -477,9 +493,10 @@ private:
      */
     static XmitStatus _PrevStatus;
 
-    /**
-     *  @brief Which control source is selected on the front panel?
-     */
+    /// Is serial communication to the transmitter connected?
+    bool _serialConnected;
+
+    /// Which control source is selected on the front panel?
     ControlSource _controlSource;
 
     /// EIK filament on?
