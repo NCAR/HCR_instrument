@@ -264,6 +264,10 @@ public:
     /// @brief Send a "xmitHvOff" command to hcrdrx
     void xmitHvOff();
     
+    /// @brief Send "setHmcMode" command to hcrdrx
+    /// @param mode integer mode number for the HMC, 0-3
+    void setHmcMode(int mode);
+
     /**
      * @brief Send a "getStatus" command, filling a HcrdrxRpcClient::Status
      * object if

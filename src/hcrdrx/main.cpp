@@ -433,6 +433,18 @@ public:
     }
 };
 
+/// Xmlrpc++ method to set HMC mode.
+class SetHmcModeMethod : public XmlRpcServerMethod {
+public:
+    SetHmcModeMethod() : XmlRpcServerMethod("setHmcMode") {}
+    void execute(XmlRpcValue & modeVal, XmlRpcValue & retvalP) {
+        int iMode = int(modeVal);
+        HcrPmc730::HmcOperationMode mode = static_cast<HcrPmc730::HmcOperationMode>(int(iMode));
+        ILOG << "Received 'setHmcMode(" << iMode << ")' command";
+        HcrPmc730::setHmcOperationMode(mode);
+    }
+};
+
 ///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
