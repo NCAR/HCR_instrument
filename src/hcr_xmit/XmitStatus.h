@@ -91,7 +91,13 @@ public:
     /// @brief Return true iff serial communication to the transmitter is connected
     /// @return true iff serial connection to the transmitter is connected
     bool serialConnected() const { return(_serialConnected); }
-
+    
+    /// @brief Return true iff the transmitter reported a bad checksum on the
+    /// last communication it received.
+    /// @return true iff the transmitter reported a bad checksum on the
+    /// last communication it received.
+    bool badChecksumReceived() const { return(_badChecksumReceived); }
+    
     /// @brief Return true iff RS-232 control is enabled
     /// @return true iff RS-232 control is enabled
     bool rs232CtlEnabled() const { return(_controlSource == RS232Control); }
@@ -495,6 +501,10 @@ private:
 
     /// Is serial communication to the transmitter connected?
     bool _serialConnected;
+    
+    /// Was there a bad checksum on the last communication to the
+    /// transmitter?
+    bool _badChecksumReceived;
 
     /// Which control source is selected on the front panel?
     ControlSource _controlSource;
@@ -546,9 +556,6 @@ private:
     bool _externalInterlockFault;
     /// Is there an EIK interlock fault?
     bool _eikInterlockFault;
-    /// Was there a bad checksum on the last communication to the
-    /// transmitter?
-    bool _badChecksumReceived;
 
     /// Cathode voltage, kV
     double _cathodeVoltage;

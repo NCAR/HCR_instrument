@@ -64,11 +64,12 @@ XmitStatus::XmitStatus() {
     _inverterOverloadFault = false;
     _externalInterlockFault = false;
     _eikInterlockFault = false;
+    _badChecksumReceived = false;
 
-    _cathodeVoltage = 0.0;
-    _bodyCurrent = 0.0;
-    _collectorCurrent = 0.0;
-    _xmitterTemp = 0.0;
+    _cathodeVoltage = -99.9;
+    _bodyCurrent = -99.9;
+    _collectorCurrent = -99.9;
+    _xmitterTemp = -99.9;
 
     _pulsewidthSelector = 0;
     _prfSelector = 0;
@@ -81,7 +82,8 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     // Byte 17 of the status packet is non-zero if the transmitter received a
     // bad communication. When this is the case, the rest of the returned status
     // can't be trusted.
-    if (xmitterPkt[17] != 0) {
+    _badChecksumReceived = xmitterPkt[17];
+    if (_badChecksumReceived) {
         throw ConstructError("Transmitter packet reports 'Bad communication'. "
                 "No good status in packet.");
     }
@@ -139,7 +141,6 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     _inverterOverloadFault =  xmitterPkt[6] & _INVERTER_OVERLOAD_FAULT_BIT;
     _externalInterlockFault = xmitterPkt[6] & _EXT_INTERLOCK_FAULT_BIT;
     _eikInterlockFault =      xmitterPkt[6] & _EIK_INTERLOCK_FAULT_BIT;
-
 
     // Bytes 7 and 8 contain whole and fractional cathode voltage
     _cathodeVoltage = xmitterPkt[7] + 0.1 * xmitterPkt[8];
@@ -226,6 +227,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
 XmitStatus::XmitStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     // Unpack the XmlRpcValue dictionary into our members
     _serialConnected = _StatusBool(statusDict, "serialConnected");
+    _badChecksumReceived = _StatusBool(statusDict, "badChecksumReceived");
     _filamentOn = _StatusBool(statusDict, "filamentOn");
     _highVoltageOn = _StatusBool(statusDict, "highVoltageOn");
     _rfOn = _StatusBool(statusDict, "rfOn");
@@ -286,6 +288,7 @@ XmitStatus::~XmitStatus() {
 XmitStatus
 XmitStatus::simulatedStatus(bool filamentOn, bool highVoltageOn) {
     XmitStatus simStatus;
+    simStatus._serialConnected = true;
     simStatus._psmPowerOn = true;
     simStatus._filamentOn = filamentOn;
     simStatus._highVoltageOn = highVoltageOn;
