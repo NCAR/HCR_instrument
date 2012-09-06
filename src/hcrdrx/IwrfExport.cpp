@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <iostream>
 #include <iomanip>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <radar/iwrf_functions.hh>
 #include <toolsa/pmu.h>
 #include <toolsa/uusleep.h>
@@ -16,11 +15,6 @@ using namespace boost::posix_time;
 using namespace std;
 
 LOGGING("IwrfExport")
-
-/////////////////////////////////////////////////////////////////////////////
-// 1970-01-01 00:00:00 UTC
-static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1),
-                             time_duration(0, 0, 0));
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -57,6 +51,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
 
   // status xml
 
+  _xmlLen = 0;
   _statusBuf = NULL;
   _statusBufLen = 0;
   _statusMsgLen = 0;
