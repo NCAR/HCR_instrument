@@ -437,8 +437,8 @@ public:
 class SetHmcModeMethod : public XmlRpcServerMethod {
 public:
     SetHmcModeMethod() : XmlRpcServerMethod("setHmcMode") {}
-    void execute(XmlRpcValue & modeVal, XmlRpcValue & retvalP) {
-        int iMode = int(modeVal);
+    void execute(XmlRpcValue & args, XmlRpcValue & retvalP) {
+        int iMode = int(args[0]);
         HcrPmc730::HmcOperationMode mode = static_cast<HcrPmc730::HmcOperationMode>(int(iMode));
         ILOG << "Received 'setHmcMode(" << iMode << ")' command";
         HcrPmc730::setHmcOperationMode(mode);
@@ -502,6 +502,7 @@ main(int argc, char** argv)
     rpcServer.addMethod(new XmitFilamentOffMethod());
     rpcServer.addMethod(new XmitHvOnMethod());
     rpcServer.addMethod(new XmitHvOffMethod());
+    rpcServer.addMethod(new SetHmcModeMethod());
     if (! rpcServer.bindAndListen(8081)) {
         ELOG << "Failed to initialize XmlRpcServer!";
         exit(1);

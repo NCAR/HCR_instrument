@@ -66,9 +66,10 @@ HcrdrxRpcClient::xmitHvOff() {
 
 void
 HcrdrxRpcClient::setHmcMode(int mode) {
-    XmlRpc::XmlRpcValue modeVal(mode);
+    XmlRpc::XmlRpcValue args;
     XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("setHmcMode", modeVal, result);
+    args[0] = XmlRpc::XmlRpcValue(mode);
+    _executeXmlRpcCommand("setHmcMode", args, result);
 }
 
 bool
