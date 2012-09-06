@@ -664,6 +664,9 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("SerialConnected", 2, xs.serialConnected());
+  
+  xml += TaXml::writeBoolean
+    ("BadChecksumReceived", 2, xs.badChecksumReceived());
 
   xml += TaXml::writeBoolean
     ("FilamentOn", 2, xs.filamentOn());
@@ -687,9 +690,6 @@ string IwrfExport::_assembleStatusXml()
     ("PsmPowerOn", 2, xs.psmPowerOn());
 
   xml += TaXml::writeBoolean
-    ("SummaryFault", 2, xs.summaryFault());
-
-  xml += TaXml::writeBoolean
     ("FrontPanelCtlEnabled", 2, xs.frontPanelCtlEnabled());
 
   xml += TaXml::writeBoolean
@@ -697,6 +697,9 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("RdsCtlEnabled", 2, xs.rdsCtlEnabled());
+
+  xml += TaXml::writeBoolean
+    ("SummaryFault", 2, xs.summaryFault());
 
   xml += TaXml::writeBoolean
     ("ModulatorFault", 2, xs.modulatorFault());
@@ -721,6 +724,9 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("FocusElectrodeLorFault", 2, xs.focusElectrodeLorFault());
+  
+  xml += TaXml::writeBoolean
+    ("CathodeLorFault", 2, xs.cathodeLorFault());
 
   xml += TaXml::writeBoolean
     ("InverterOverloadFault", 2, xs.inverterOverloadFault());
@@ -748,6 +754,9 @@ string IwrfExport::_assembleStatusXml()
   // ints
 
   xml += TaXml::writeInt
+    ("SummaryFaultCount", 2, xs.summaryFaultCount());
+
+  xml += TaXml::writeInt
     ("ModulatorFaultCount", 2, xs.modulatorFaultCount());
 
   xml += TaXml::writeInt
@@ -763,10 +772,16 @@ string IwrfExport::_assembleStatusXml()
     ("CollectorCurrentFaultCount", 2, xs.collectorCurrentFaultCount());
 
   xml += TaXml::writeInt
+    ("BodyCurrentFaultCount", 2, xs.bodyCurrentFaultCount());
+
+  xml += TaXml::writeInt
     ("FilamentLorFaultCount", 2, xs.filamentLorFaultCount());
 
   xml += TaXml::writeInt
     ("FocusElectrodeLorFaultCount", 2, xs.focusElectrodeLorFaultCount());
+
+  xml += TaXml::writeInt
+    ("CathodeLorFaultCount", 2, xs.cathodeLorFaultCount());
 
   xml += TaXml::writeInt
     ("InverterOverloadFaultCount", 2, xs.inverterOverloadFaultCount());
@@ -778,6 +793,9 @@ string IwrfExport::_assembleStatusXml()
     ("EikInterlockFaultCount", 2, xs.eikInterlockFaultCount());
 
   // times
+
+  xml += TaXml::writeTime
+    ("SummaryFaultTime", 2, xs.summaryFaultTime());
 
   xml += TaXml::writeTime
     ("ModulatorFaultTime", 2, xs.modulatorFaultTime());
@@ -793,6 +811,9 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeTime
     ("CollectorCurrentFaultTime", 2, xs.collectorCurrentFaultTime());
+
+  xml += TaXml::writeTime
+    ("BodyCurrentFaultTime", 2, xs.bodyCurrentFaultTime());
 
   xml += TaXml::writeTime
     ("FilamentLorFaultTime", 2, xs.filamentLorFaultTime());
