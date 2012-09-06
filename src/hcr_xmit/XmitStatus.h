@@ -65,6 +65,13 @@ public:
     /// @return an external representation of the object's state as
     /// an XmlRpcValue dictionary.
     XmlRpcValue toXmlRpcValue() const;
+    
+    /// @brief Return a std::string representation of this object rendered as
+    /// XML via the TaXml class, using the given indentation depth.
+    /// @param depth the indentation depth to use in rendering the XML
+    /// @return a std::string representation of this object rendered as
+    /// XML via the TaXml class, using the given indentation depth.
+    std::string toTaXmlString(int depth) const;
 
     /**
      * Control methods: front panel, RS-232, or RDS. Exactly one of the three

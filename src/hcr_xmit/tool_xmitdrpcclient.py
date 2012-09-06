@@ -3,7 +3,7 @@
 #
 import os
 
-tools = ['xmlrpc']
+tools = ['xmlrpc', 'rapradar']
 env = Environment(tools=['default'] + tools)
 
 # The object file and header file live in this directory.
@@ -13,8 +13,8 @@ includeDir = tooldir
 lib = env.Library('xmitdrpcclient', ['XmitdRpcClient.cpp', 'XmitStatus.o'])
     
 def xmitdrpcclient(env):
-    env.Require(tools)
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
+    env.Require(tools)
 
 Export('xmitdrpcclient')

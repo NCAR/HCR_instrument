@@ -8,6 +8,7 @@
 #include "XmitStatus.h"
 #include <cstdlib>
 #include <logx/Logging.h>
+#include <toolsa/TaXml.hh>
 
 LOGGING("XmitStatus")
 
@@ -108,7 +109,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
             ", power valid " << _psmPowerOn <<
             ", fault summary " << _summaryFault;
 
-    // Byte 4: Is control currently via front panel, RS-232, or RDS?
+    // Byte 4: Is control currently via front panel, RS-23depth, or RDS?
     uint8_t controlSource = xmitterPkt[4] & AllControlSources;
     switch (controlSource) {
     case FrontPanelControl:
@@ -360,6 +361,187 @@ XmitStatus::toXmlRpcValue() const {
     statusDict["xmitterTemp"] = XmlRpcValue(_xmitterTemp);
 
     return(statusDict);
+}
+
+std::string
+XmitStatus::toTaXmlString(int depth) const {
+    std::string xml;
+
+    // booleans
+
+    xml += TaXml::writeBoolean
+            ("SerialConnected", depth, _serialConnected);
+
+    xml += TaXml::writeBoolean
+            ("BadChecksumReceived", depth, _badChecksumReceived);
+
+    xml += TaXml::writeBoolean
+            ("FilamentOn", depth, _filamentOn);
+
+    xml += TaXml::writeBoolean
+            ("HighVoltageOn", depth, _highVoltageOn);
+
+    xml += TaXml::writeBoolean
+            ("RfOn", depth, _rfOn);
+
+    xml += TaXml::writeBoolean
+            ("ModPulseExternal", depth, _modPulseExternal);
+
+    xml += TaXml::writeBoolean
+            ("SyncPulseExternal", depth, _syncPulseExternal);
+
+    xml += TaXml::writeBoolean
+            ("FilamentDelayActive", depth, _filamentDelayActive);
+
+    xml += TaXml::writeBoolean
+            ("PsmPowerOn", depth, _psmPowerOn);
+
+    xml += TaXml::writeBoolean
+            ("FrontPanelCtlEnabled", depth, (_controlSource == FrontPanelControl));
+
+    xml += TaXml::writeBoolean
+            ("Rs232CtlEnabled", depth, (_controlSource == RS232Control));
+
+    xml += TaXml::writeBoolean
+            ("RdsCtlEnabled", depth, (_controlSource == RDSControl));
+
+    xml += TaXml::writeBoolean
+            ("SummaryFault", depth, _summaryFault);
+
+    xml += TaXml::writeBoolean
+            ("ModulatorFault", depth, _modulatorFault);
+
+    xml += TaXml::writeBoolean
+            ("SyncFault", depth, _syncFault);
+
+    xml += TaXml::writeBoolean
+            ("XmitterTempFault", depth, _xmitterTempFault);
+
+    xml += TaXml::writeBoolean
+            ("WaveguideArcFault", depth, _waveguideArcFault);
+
+    xml += TaXml::writeBoolean
+            ("CollectorCurrentFault", depth, _collectorCurrentFault);
+
+    xml += TaXml::writeBoolean
+            ("BodyCurrentFault", depth, _bodyCurrentFault);
+
+    xml += TaXml::writeBoolean
+            ("FilamentLorFault", depth, _filamentLorFault);
+
+    xml += TaXml::writeBoolean
+            ("FocusElectrodeLorFault", depth, _focusElectrodeLorFault);
+
+    xml += TaXml::writeBoolean
+            ("CathodeLorFault", depth, _cathodeLorFault);
+
+    xml += TaXml::writeBoolean
+            ("InverterOverloadFault", depth, _inverterOverloadFault);
+
+    xml += TaXml::writeBoolean
+            ("ExternalInterlockFault", depth, _externalInterlockFault);
+
+    xml += TaXml::writeBoolean
+            ("EikInterlockFault", depth, _eikInterlockFault);
+
+    // doubles
+
+    xml += TaXml::writeDouble
+            ("CathodeVoltage", depth, _cathodeVoltage);
+
+    xml += TaXml::writeDouble
+            ("BodyCurrent", depth, _bodyCurrent);
+
+    xml += TaXml::writeDouble
+            ("CollectorCurrent", depth, _collectorCurrent);
+
+    xml += TaXml::writeDouble
+            ("XmitterTemp", depth, _xmitterTemp);
+
+    // ints
+
+    xml += TaXml::writeInt
+            ("SummaryFaultCount", depth, _SummaryFaultCount);
+
+    xml += TaXml::writeInt
+            ("ModulatorFaultCount", depth, _ModulatorFaultCount);
+
+    xml += TaXml::writeInt
+            ("SyncFaultCount", depth, _SyncFaultCount);
+
+    xml += TaXml::writeInt
+            ("XmitterTempFaultCount", depth, _XmitterTempFaultCount);
+
+    xml += TaXml::writeInt
+            ("WaveguideArcFaultCount", depth, _WaveguideArcFaultCount);
+
+    xml += TaXml::writeInt
+            ("CollectorCurrentFaultCount", depth, _CollectorCurrentFaultCount);
+
+    xml += TaXml::writeInt
+            ("BodyCurrentFaultCount", depth, _BodyCurrentFaultCount);
+
+    xml += TaXml::writeInt
+            ("FilamentLorFaultCount", depth, _FilamentLorFaultCount);
+
+    xml += TaXml::writeInt
+            ("FocusElectrodeLorFaultCount", depth, _FocusElectrodeLorFaultCount);
+
+    xml += TaXml::writeInt
+            ("CathodeLorFaultCount", depth, _CathodeLorFaultCount);
+
+    xml += TaXml::writeInt
+            ("InverterOverloadFaultCount", depth, _InverterOverloadFaultCount);
+
+    xml += TaXml::writeInt
+            ("ExternalInterlockFaultCount", depth, _ExternalInterlockFaultCount);
+
+    xml += TaXml::writeInt
+            ("EikInterlockFaultCount", depth, _EikInterlockFaultCount);
+
+    // times
+
+    xml += TaXml::writeTime
+            ("SummaryFaultTime", depth, _SummaryFaultTime);
+
+    xml += TaXml::writeTime
+            ("ModulatorFaultTime", depth, _ModulatorFaultTime);
+
+    xml += TaXml::writeTime
+            ("SyncFaultTime", depth, _SyncFaultTime);
+
+    xml += TaXml::writeTime
+            ("XmitterTempFaultTime", depth, _XmitterTempFaultTime);
+
+    xml += TaXml::writeTime
+            ("WaveguideArcFaultTime", depth, _WaveguideArcFaultTime);
+
+    xml += TaXml::writeTime
+            ("CollectorCurrentFaultTime", depth, _CollectorCurrentFaultTime);
+
+    xml += TaXml::writeTime
+            ("BodyCurrentFaultTime", depth, _BodyCurrentFaultTime);
+
+    xml += TaXml::writeTime
+            ("FilamentLorFaultTime", depth, _FilamentLorFaultTime);
+
+    xml += TaXml::writeTime
+            ("FocusElectrodeLorFaultTime", depth, _FocusElectrodeLorFaultTime);
+
+    xml += TaXml::writeTime
+            ("CathodeLorFaultTime", depth, _CathodeLorFaultTime);
+
+    xml += TaXml::writeTime
+            ("InverterOverloadFaultTime", depth, _InverterOverloadFaultTime);
+
+    xml += TaXml::writeTime
+            ("ExternalInterlockFaultTime", depth, _ExternalInterlockFaultTime);
+
+    xml += TaXml::writeTime
+            ("EikInterlockFaultTime", depth, _EikInterlockFaultTime);
+
+
+    return xml;
 }
 
 bool
