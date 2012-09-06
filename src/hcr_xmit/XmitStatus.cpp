@@ -307,6 +307,7 @@ XmitStatus::toXmlRpcValue() const {
 
     // Save state into our XML-RPC statusDict
     statusDict["serialConnected"] = XmlRpcValue(_serialConnected);
+    statusDict["badChecksumReceived"] = XmlRpcValue(_badChecksumReceived);
     statusDict["filamentOn"] = XmlRpcValue(_filamentOn);
     statusDict["highVoltageOn"] = XmlRpcValue(_highVoltageOn);
     statusDict["rfOn"] = XmlRpcValue(_rfOn);
