@@ -43,6 +43,8 @@ XmitStatus XmitStatus::_PrevStatus;
 
 XmitStatus::XmitStatus() {
     _serialConnected = false;
+    _badChecksumReceived = false;
+    
     _filamentOn = false;
     _highVoltageOn = false;
     _rfOn = false;
@@ -64,7 +66,6 @@ XmitStatus::XmitStatus() {
     _inverterOverloadFault = false;
     _externalInterlockFault = false;
     _eikInterlockFault = false;
-    _badChecksumReceived = false;
 
     _cathodeVoltage = -99.9;
     _bodyCurrent = -99.9;
