@@ -164,12 +164,13 @@ public:
     }
 
     /**
-     * @brief Set the HMC operations mode
+     * @brief Set the HMC operation mode
      */
     typedef enum _HmcOperationMode {
         HMC_NORMAL_OPERATION = 0,
         HMC_NOISE_SOURCE_CAL = 1,
-        HMC_CORNER_REFLECTOR_CAL = 2
+        HMC_CORNER_REFLECTOR_CAL = 2,
+        HMC_MODE_3 = 3
     } HmcOperationMode;
 
     static void setHmcOperationMode(HmcOperationMode mode);
