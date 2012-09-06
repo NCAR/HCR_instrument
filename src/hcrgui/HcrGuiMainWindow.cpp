@@ -33,7 +33,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _ui.setupUi(this);
     // Limit the log area to 1000 messages
     _ui.logArea->setMaximumBlockCount(1000);
-    _logMessage("hcr_xmitctl started");
+    _logMessage("hcrgui started");
     
     // Schedule 1 Hz updates
     connect(&_updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
@@ -102,40 +102,6 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     _update();
 }
 
-/// Turn on the transmitter klystron filament
-void
-HcrGuiMainWindow::on_filamentOnButton_clicked() {
-    if (_xmitStatus.rs232CtlEnabled()) {
-        // If RS-232 control is enabled, then transmitter commands go
-        // to hcr_xmitd, which owns the serial line talking to the transmitter
-        // CMU.
-        _xmitClient.xmitFilamentOn();
-    } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to hcrdrx
-        // (i.e., the Remote Data System), since it owns the digital lines
-        // controlling the transmitter.
-        _drxClient.xmitFilamentOn();
-    }
-    _update();
-}
-
-/// Turn off the transmitter klystron filament
-void
-HcrGuiMainWindow::on_filamentOffButton_clicked() {
-    if (_xmitStatus.rs232CtlEnabled()) {
-        // If RS-232 control is enabled, then transmitter commands go
-        // to hcr_xmitd, which owns the serial line talking to the transmitter
-        // CMU.
-        _xmitClient.xmitFilamentOff();
-    } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to hcrdrx
-        // (i.e., the Remote Data System), since it owns the digital lines
-        // controlling the transmitter.
-        _drxClient.xmitFilamentOff();
-    }
-    _update();
-}
-
 /// Toggle the current on/off state of the transmitter high voltage
 void
 HcrGuiMainWindow::on_hvButton_clicked() {
@@ -161,38 +127,28 @@ HcrGuiMainWindow::on_hvButton_clicked() {
     _update();
 }
 
-/// Turn on the transmitter klystron HV
+/// Set HMC mode 0
 void
-HcrGuiMainWindow::on_hvOnButton_clicked() {
-    if (_xmitStatus.rs232CtlEnabled()) {
-        // If RS-232 control is enabled, then transmitter commands go
-        // to hcr_xmitd, which owns the serial line talking to the transmitter
-        // CMU.
-        _xmitClient.xmitHvOn();
-    } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to hcrdrx
-        // (i.e., the Remote Data System), since it owns the digital lines
-        // controlling the transmitter.
-        _drxClient.xmitHvOn();
-    }
-    _update();
+HcrGuiMainWindow::on_hmcMode0Button_clicked() {
+    _drxClient.setHmcMode(0);
 }
 
-/// Turn off the transmitter klystron HV
+/// Set HMC mode 1
 void
-HcrGuiMainWindow::on_hvOffButton_clicked() {
-    if (_xmitStatus.rs232CtlEnabled()) {
-        // If RS-232 control is enabled, then transmitter commands go
-        // to hcr_xmitd, which owns the serial line talking to the transmitter
-        // CMU.
-        _xmitClient.xmitHvOff();
-    } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to hcrdrx
-        // (i.e., the Remote Data System), since it owns the digital lines
-        // controlling the transmitter.
-        _drxClient.xmitHvOff();
-    }
-    _update();
+HcrGuiMainWindow::on_hmcMode1Button_clicked() {
+    _drxClient.setHmcMode(1);
+}
+
+/// Set HMC mode 2
+void
+HcrGuiMainWindow::on_hmcMode2Button_clicked() {
+    _drxClient.setHmcMode(2);
+}
+
+/// Set HMC mode 3
+void
+HcrGuiMainWindow::on_hmcMode3Button_clicked() {
+    _drxClient.setHmcMode(3);
 }
 
 void
@@ -344,7 +300,7 @@ HcrGuiMainWindow::_noXmitter() {
 
 void
 HcrGuiMainWindow::_disableUi() {
-    _ui.xmitterStartBox->setEnabled(false);
+    _ui.xmitterStartupBox->setEnabled(false);
 
     _ui.powerValidIcon->setPixmap(_greenLED_off);
     _ui.filamentIcon->setPixmap(_greenLED_off);
@@ -356,7 +312,7 @@ HcrGuiMainWindow::_disableUi() {
 
 void
 HcrGuiMainWindow::_enableUi() {
-    _ui.xmitterStartBox->setEnabled(true);
+    _ui.xmitterStartupBox->setEnabled(true);
 }
 
 void

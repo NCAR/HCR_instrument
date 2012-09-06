@@ -28,12 +28,12 @@ public:
     virtual ~HcrGuiMainWindow();
 private slots:
     void on_filamentButton_clicked();
-    void on_filamentOnButton_clicked();
-    void on_filamentOffButton_clicked();
     void on_hvButton_clicked();
-    void on_hvOnButton_clicked();
-    void on_hvOffButton_clicked();
     void on_xmitterDetailsButton_clicked();
+    void on_hmcMode0Button_clicked();
+    void on_hmcMode1Button_clicked();
+    void on_hmcMode2Button_clicked();
+    void on_hmcMode3Button_clicked();
     void _update();
 private:
     // Disable the UI
