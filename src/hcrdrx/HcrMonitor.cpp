@@ -81,7 +81,11 @@ HcrMonitor::HcrMonitor(const HcrDrxConfig &config, const Pentek::p7142 & pentek,
     _locked15_5GHzPLO(false),
     _locked1250MHzPLO(false),
     _modPulseDisabled(false),
-    _hmcStatus(0) {
+    _rdsXmitterFilamentOn(false),
+    _rdsXmitterHvOn(false),
+    _hmcStatus(0),
+    _pentekFpgaTemp(-99.9),
+    _pentekBoardTemp(-99.9) {
 }
 
 HcrMonitor::~HcrMonitor() {
