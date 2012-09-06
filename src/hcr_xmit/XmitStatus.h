@@ -35,7 +35,8 @@ public:
         std::string _msg;
     };
 
-    /// @brief Default constructor. All fields are set to zero/false.
+    /// @brief Default constructor. Boolean fields are set to false, integer
+    /// fields are set to 0, and double fields are set to -99.9.
     XmitStatus();
 
     /// @brief Construct from a 20-byte status packet returned by the
