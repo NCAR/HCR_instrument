@@ -189,12 +189,14 @@ CHECK_VOLT: process (STATUS_5V, STATUS_8V, STATUS_12V, STATUS_15V, STATUS_28V)
 -- Check EMS BIT
 CHECK_BIT: process (BIT_EMS_N,BIT_EMS_P)
 begin
-	if (BIT_EMS_N = "1010110" AND BIT_EMS_P = "1111111") then   -- vertical transmit mode
+--	if (BIT_EMS_N = "1010110" AND BIT_EMS_P = "0101001") then   -- vertical transmit mode, uncomment when re-wire ems switches
+	if (BIT_EMS_N = "1010110") then   -- vertical transmit mode
 		ems_tx_stat <= '1';
 	else
 		ems_tx_stat <= '0';
 	end if;
-	if (BIT_EMS_N = "0101011" AND BIT_EMS_P = "1111111") then   -- vertical transmit mode
+--	if (BIT_EMS_N = "0101011" AND BIT_EMS_P = "1010100") then   -- vertical transmit mode, uncomment when re-wire ems switches
+	if (BIT_EMS_N = "0101011") then   -- vertical transmit mode
 		ems_rx_stat <= '1';
 	else
 		ems_rx_stat <= '0';
@@ -279,7 +281,7 @@ begin
 		ems_tx_ok <= ((NOT l_tx_dly AND tx_dly AND ems_tx_stat) OR ems_tx_ok) AND NOT end_cycle;
 		ems_tx_error <= ((NOT l_tx_dly AND tx_dly AND NOT ems_tx_stat) OR ems_tx_error) AND NOT clear_stat;
 		ems_rx_ok <= ((NOT l_rx_dly AND rx_dly AND ems_rx_stat) OR ems_rx_ok) AND NOT end_cycle;
-		ems_rx_error <= ((NOT l_rx_dly AND tx_dly AND NOT ems_rx_stat) OR ems_rx_error) AND NOT clear_stat;
+		ems_rx_error <= ((NOT l_rx_dly AND rx_dly AND NOT ems_rx_stat) OR ems_rx_error) AND NOT clear_stat;
 	end if;
 end process;
 	
