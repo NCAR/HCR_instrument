@@ -109,7 +109,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
             ", power valid " << _psmPowerOn <<
             ", fault summary " << _summaryFault;
 
-    // Byte 4: Is control currently via front panel, RS-23depth, or RDS?
+    // Byte 4: Is control currently via front panel, RS-232, or RDS?
     uint8_t controlSource = xmitterPkt[4] & AllControlSources;
     switch (controlSource) {
     case FrontPanelControl:
