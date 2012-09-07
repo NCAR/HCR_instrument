@@ -263,34 +263,34 @@ BEGIN
 	begin
 		wait for 320 ns;  -- 320 ns is max delay measured
 		OPS_MODE_730 <= "01";
-		BIT_EMS_N <= "1010110";
+		BIT_EMS_N <= "0101110";
 		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_N <= "0101011";
+		BIT_EMS_N <= "1010011";
 		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;
 		wait for 320 ns;  -- 320 ns is max delay measured
 		OPS_MODE_730 <= "10";
-		BIT_EMS_N <= "1010101";
+		BIT_EMS_N <= "0101101";
 		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_N <= "1010101";
+		BIT_EMS_N <= "0101101";
 		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;		
 		wait for 320 ns;  -- 320 ns is max delay measured
 		OPS_MODE_730 <= "11";
-		BIT_EMS_N <= "1010110";
+		BIT_EMS_N <= "0101110";
 		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_N <= "1111011";
+		BIT_EMS_N <= "0000011";
 		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;	
 		wait for 320 ns;  -- 320 ns is max delay measured
 		OPS_MODE_730 <= "00";
-		BIT_EMS_N <= "1010110";
+		BIT_EMS_N <= "0101110";
 		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_N <= "0101011";
+		BIT_EMS_N <= "1010011";
 		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;				
 	end process;  
