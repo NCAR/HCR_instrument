@@ -87,7 +87,7 @@ public:
     /**
      * @brief Return true iff we are currently commanding "filament on" via
      * the RDS filament control line going to the transmitter.
-     * @Return true iff we are currently commanding "filament on" via
+     * @return true iff we are currently commanding "filament on" via
      * the RDS filament control line going to the transmitter.
      */
     static bool xmitterFilamentOn() {
@@ -99,7 +99,7 @@ public:
     /**
      * @brief Return true iff we are currently commanding "high voltage on" via
      * the RDS HV control line going to the transmitter.
-     * @Return true iff we are currently commanding "high voltage on" via
+     * @return true iff we are currently commanding "high voltage on" via
      * the RDS HV control line going to the transmitter.
      */
     static bool xmitterHvOn() {
