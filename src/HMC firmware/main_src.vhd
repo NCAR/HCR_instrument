@@ -187,20 +187,61 @@ CHECK_VOLT: process (STATUS_5V, STATUS_8V, STATUS_12V, STATUS_15V, STATUS_28V)
 	end process; 
 	
 -- Check EMS BIT
-CHECK_BIT: process (BIT_EMS_N,BIT_EMS_P)
+CHECK_BIT: process (BIT_EMS_N,BIT_EMS_P,ops_mode)
 begin
+	case ops_mode is
+		when "00" => -- vertical transmit
 --	if (BIT_EMS_N = "1010110" AND BIT_EMS_P = "0101001") then   -- vertical transmit mode, uncomment when re-wire ems switches
-	if (BIT_EMS_N = "1010110") then   -- vertical transmit mode
-		ems_tx_stat <= '1';
-	else
-		ems_tx_stat <= '0';
-	end if;
+			if (BIT_EMS_N = "1010110") then
+				ems_tx_stat <= '1';
+			else
+				ems_tx_stat <= '0';
+			end if;
 --	if (BIT_EMS_N = "0101011" AND BIT_EMS_P = "1010100") then   -- vertical transmit mode, uncomment when re-wire ems switches
-	if (BIT_EMS_N = "0101011") then   -- vertical transmit mode
-		ems_rx_stat <= '1';
-	else
-		ems_rx_stat <= '0';
-	end if;	
+			if (BIT_EMS_N = "0101011") then
+				ems_rx_stat <= '1';
+			else
+				ems_rx_stat <= '0';
+			end if;
+
+		when "01" => -- Noise source cal, no tx
+			if (BIT_EMS_N = "1010101") then
+				ems_tx_stat <= '1';
+			else
+				ems_tx_stat <= '0';
+			end if;
+			if (BIT_EMS_N = "1010101") then
+				ems_rx_stat <= '1';
+			else
+				ems_rx_stat <= '0';
+			end if;
+		
+		when "10" =>	-- Corner reflector cal, vertical tx w/reduced power
+			if (BIT_EMS_N = "1010110") then
+				ems_tx_stat <= '1';
+			else
+				ems_tx_stat <= '0';
+			end if;
+			if (BIT_EMS_N = "1111011") then
+				ems_rx_stat <= '1';
+			else
+				ems_rx_stat <= '0';
+			end if;		
+		when "11" => 	-- Test Mode, no tx
+			if (BIT_EMS_N = "1010110") then
+				ems_tx_stat <= '1';
+			else
+				ems_tx_stat <= '0';
+			end if;
+			if (BIT_EMS_N = "0101011") then
+				ems_rx_stat <= '1';
+			else
+				ems_rx_stat <= '0';
+			end if;
+		when others =>   -- default
+			ems_tx_stat <= '0';
+			ems_rx_stat <= '0';
+		end case;
 end process;
 
 -- Assign test signals to SPARE outputs for debug
@@ -210,8 +251,11 @@ end process;
 	SPARE3 <= rx_dly;
 	SPARE4 <= ems_tx_stat;
 	SPARE5 <= ems_tx_ok;
+--	SPARE4 <= ops_mode(0);
+--	SPARE5 <= ops_mode(1);	
 	SPARE6 <= end_cycle;
 	SPARE7 <= ems_pwr_ok;
+--	SPARE7 <= ems_tx_ok;
 	
 --- End Asychronous Processes --------------------------------------------------------------------
 
@@ -426,7 +470,8 @@ begin
 					state <=s0;										
 				end if;
 			when s3 =>
-				if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0') then
+--				if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0') then
+				if(RX_GATE = '0' AND rx_dly = '0' AND tx_dly = '0') then
 					state <= s0;
 				end if;
 		end case;
@@ -435,7 +480,7 @@ end process;
 
 -- State Machine Ouputs
 
-STATE_OUT: process (state,MOD_PULSE,EMS_TRIG)
+STATE_OUT: process (state,MOD_PULSE,EMS_TRIG,OPS_MODE_730)
 begin
 	case state is
 		when S0 => 			-- Reset State
@@ -474,10 +519,10 @@ begin
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= '0';
-				EMS_OUT(5) <= EMS_TRIG;
-				EMS_OUT(6) <= '0';
-				EMS_OUT(7) <= EMS_TRIG;
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= '1';
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= '1';
 			elsif (ops_mode = "11") then -- Test Mode, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
@@ -515,10 +560,10 @@ begin
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= '0';
-				EMS_OUT(5) <= EMS_TRIG;
-				EMS_OUT(6) <= '0';
-				EMS_OUT(7) <= EMS_TRIG;
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= '1';
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= '1';
 			elsif (ops_mode = "11") then -- Test Mode, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
@@ -556,10 +601,10 @@ begin
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
 				EMS_OUT(3) <= EMS_TRIG;
-				EMS_OUT(4) <= '0';
-				EMS_OUT(5) <= EMS_TRIG;
-				EMS_OUT(6) <= '0';
-				EMS_OUT(7) <= EMS_TRIG;
+				EMS_OUT(4) <= NOT EMS_TRIG;
+				EMS_OUT(5) <= '1';
+				EMS_OUT(6) <= NOT EMS_TRIG;
+				EMS_OUT(7) <= '1';
 			elsif (ops_mode = "11") then -- Test Mode, no tx
 				MOD_PULSE_OUT_P <= '0';
 				MOD_PULSE_OUT_N <= '1';
