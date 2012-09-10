@@ -663,94 +663,94 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
-  const HcrMonitor &mon = _monitor;
+  const DrxStatus drxStatus = _monitor.drxStatus();
 
   // floats
 
   xml += TaXml::writeDouble
-    ("DetectedRfPower", 2, mon.detectedRfPower());
+    ("DetectedRfPower", 2, drxStatus.detectedRfPower());
 
   xml += TaXml::writeDouble
-    ("PvForePressure", 2, mon.pvForePressure());
+    ("PvForePressure", 2, drxStatus.pvForePressure());
 
   xml += TaXml::writeDouble
-    ("PvAftPressure", 2, mon.pvAftPressure());
+    ("PvAftPressure", 2, drxStatus.pvAftPressure());
 
   xml += TaXml::writeDouble
-    ("PloTemp", 2, mon.ploTemp());
+    ("PloTemp", 2, drxStatus.ploTemp());
 
   xml += TaXml::writeDouble
-    ("EikTemp", 2, mon.eikTemp());
+    ("EikTemp", 2, drxStatus.eikTemp());
 
   xml += TaXml::writeDouble
-    ("VLnaTemp", 2, mon.vLnaTemp());
+    ("VLnaTemp", 2, drxStatus.vLnaTemp());
 
   xml += TaXml::writeDouble
-    ("HLnaTemp", 2, mon.hLnaTemp());
+    ("HLnaTemp", 2, drxStatus.hLnaTemp());
 
   xml += TaXml::writeDouble
-    ("PolarizationSwitchTemp", 2, mon.polarizationSwitchTemp());
+    ("PolarizationSwitchTemp", 2, drxStatus.polarizationSwitchTemp());
 
   xml += TaXml::writeDouble
-    ("RfDetectorTemp", 2, mon.rfDetectorTemp());
+    ("RfDetectorTemp", 2, drxStatus.rfDetectorTemp());
 
   xml += TaXml::writeDouble
-    ("NoiseSourceTemp", 2, mon.noiseSourceTemp());
+    ("NoiseSourceTemp", 2, drxStatus.noiseSourceTemp());
 
   xml += TaXml::writeDouble
-    ("Ps28VTemp", 2, mon.ps28VTemp());
+    ("Ps28VTemp", 2, drxStatus.ps28VTemp());
 
   xml += TaXml::writeDouble
-    ("RdsInDuctTemp", 2, mon.rdsInDuctTemp());
+    ("RdsInDuctTemp", 2, drxStatus.rdsInDuctTemp());
 
   xml += TaXml::writeDouble
-    ("RotationMotorTemp", 2, mon.rotationMotorTemp());
+    ("RotationMotorTemp", 2, drxStatus.rotationMotorTemp());
 
   xml += TaXml::writeDouble
-    ("TiltMotorTemp", 2, mon.tiltMotorTemp());
+    ("TiltMotorTemp", 2, drxStatus.tiltMotorTemp());
 
   xml += TaXml::writeDouble
-    ("CmigitsTemp", 2, mon.cmigitsTemp());
+    ("CmigitsTemp", 2, drxStatus.cmigitsTemp());
 
   xml += TaXml::writeDouble
-    ("TailconeTemp", 2, mon.tailconeTemp());
+    ("TailconeTemp", 2, drxStatus.tailconeTemp());
 
   xml += TaXml::writeDouble
-    ("PsVoltage", 2, mon.psVoltage());
+    ("PsVoltage", 2, drxStatus.psVoltage());
 
   xml += TaXml::writeDouble
-    ("PentekFpgaTemp", 2, mon.pentekFpgaTemp());
+    ("PentekFpgaTemp", 2, drxStatus.pentekFpgaTemp());
 
   xml += TaXml::writeDouble
-    ("PentekBoardTemp", 2, mon.pentekBoardTemp());
+    ("PentekBoardTemp", 2, drxStatus.pentekBoardTemp());
 
   // booleans
 
   xml += TaXml::writeBoolean
-    ("NoiseSourceSelected", 2, mon.noiseSourceSelected());
+    ("NoiseSourceSelected", 2, drxStatus.noiseSourceSelected());
 
   xml += TaXml::writeBoolean
-    ("TerminationSelected", 2, mon.terminationSelected());
+    ("TerminationSelected", 2, drxStatus.terminationSelected());
 
   xml += TaXml::writeBoolean
-    ("Locked15_5GHzPLO", 2, mon.locked15_5GHzPLO());
+    ("Locked15_5GHzPLO", 2, drxStatus.locked15_5GHzPLO());
 
   xml += TaXml::writeBoolean
-    ("Locked1250MHzPLO", 2, mon.locked1250MHzPLO());
+    ("Locked1250MHzPLO", 2, drxStatus.locked1250MHzPLO());
 
   xml += TaXml::writeBoolean
-    ("ModPulseDisabled", 2, mon.modPulseDisabled());
+    ("ModPulseDisabled", 2, drxStatus.modPulseDisabled());
   
   xml += TaXml::writeBoolean
-    ("RdsXmitterFilamentOn", 2, mon.rdsXmitterFilamentOn());
+    ("RdsXmitterFilamentOn", 2, drxStatus.rdsXmitterFilamentOn());
 
   xml += TaXml::writeBoolean
-    ("RdsXmitterHvOn", 2, mon.rdsXmitterHvOn());
+    ("RdsXmitterHvOn", 2, drxStatus.rdsXmitterHvOn());
 
   // ints
 
   xml += TaXml::writeInt
-    ("HmcStatus", 2, mon.hmcStatus());
+    ("HmcStatus", 2, drxStatus.hmcStatus());
 
   // end receive status
 

@@ -3,18 +3,23 @@
 #
 import os
 
-tools = ['xmlrpc']
+tools = ['xmlrpc', 'logx', 'pentek', 'pmc730']
 env = Environment(tools=['default'] + tools)
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory
 includeDir = tooldir
 
-lib = env.Library('hcrdrxrpcclient', 'HcrdrxRpcClient.cpp')
+sources = Split('''
+DrxStatus.cpp
+HcrdrxRpcClient.cpp
+HcrPmc730.cpp
+''')
+lib = env.Library('hcrdrxrpcclient', sources)
     
 def hcrdrxrpcclient(env):
-    env.Require(tools)
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
+    env.Require(tools)
 
 Export('hcrdrxrpcclient')

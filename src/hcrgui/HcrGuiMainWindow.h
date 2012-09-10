@@ -81,7 +81,7 @@ private:
     // Last status read from the transmitter
     XmitStatus _xmitStatus;
     // Last status read from hcrdrx
-    HcrdrxRpcClient::Status _drxStatus;
+    DrxStatus _drxStatus;
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;

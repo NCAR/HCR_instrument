@@ -359,37 +359,7 @@ class GetStatusMethod : public XmlRpcServerMethod {
 public:
     GetStatusMethod() : XmlRpcServerMethod("getStatus") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        XmlRpcValue statusDict;
-        statusDict["detectedRfPower"] = XmlRpcValue(_hcrMonitor->detectedRfPower());
-        statusDict["pvForePressure"] = XmlRpcValue(_hcrMonitor->pvForePressure());
-        statusDict["pvAftPressure"] = XmlRpcValue(_hcrMonitor->pvAftPressure());
-        statusDict["ploTemp"] = XmlRpcValue(_hcrMonitor->ploTemp());
-        statusDict["eikTemp"] = XmlRpcValue(_hcrMonitor->eikTemp());
-        statusDict["vLnaTemp"] = XmlRpcValue(_hcrMonitor->vLnaTemp());
-        statusDict["hLnaTemp"] = XmlRpcValue(_hcrMonitor->hLnaTemp());
-        statusDict["polarizationSwitchTemp"] = XmlRpcValue(_hcrMonitor->polarizationSwitchTemp());
-        statusDict["rfDetectorTemp"] = XmlRpcValue(_hcrMonitor->rfDetectorTemp());
-        statusDict["noiseSourceTemp"] = XmlRpcValue(_hcrMonitor->noiseSourceTemp());
-        statusDict["ps28VTemp"] = XmlRpcValue(_hcrMonitor->ps28VTemp());
-        statusDict["rdsInDuctTemp"] = XmlRpcValue(_hcrMonitor->rdsInDuctTemp());
-        statusDict["rotationMotorTemp"] = XmlRpcValue(_hcrMonitor->rotationMotorTemp());
-        statusDict["tiltMotorTemp"] = XmlRpcValue(_hcrMonitor->tiltMotorTemp());
-        statusDict["cmigitsTemp"] = XmlRpcValue(_hcrMonitor->cmigitsTemp());
-        statusDict["tailconeTemp"] = XmlRpcValue(_hcrMonitor->tailconeTemp());
-        statusDict["psVoltage"] = XmlRpcValue(_hcrMonitor->psVoltage());
-        statusDict["pentekFpgaTemp"] = XmlRpcValue(_hcrMonitor->pentekFpgaTemp());
-        statusDict["pentekBoardTemp"] = XmlRpcValue(_hcrMonitor->pentekBoardTemp());
-        statusDict["noiseSourceSelected"] = XmlRpcValue(_hcrMonitor->noiseSourceSelected());
-        statusDict["terminationSelected"] = XmlRpcValue(_hcrMonitor->terminationSelected());
-        statusDict["locked15_5GHzPLO"] = XmlRpcValue(_hcrMonitor->locked15_5GHzPLO());
-        statusDict["locked1250MHzPLO"] = XmlRpcValue(_hcrMonitor->locked1250MHzPLO());
-        statusDict["modPulseDisabled"] = XmlRpcValue(_hcrMonitor->modPulseDisabled());
-        statusDict["hmcStatus"] = XmlRpcValue(_hcrMonitor->hmcStatus());
-        // Get the state of the RDS (Remote Data System) control lines going
-        // to the transmitter.
-        statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(_hcrMonitor->rdsXmitterFilamentOn());
-        statusDict["rdsXmitterHvOn"] = XmlRpcValue(_hcrMonitor->rdsXmitterHvOn());
-        retvalP = statusDict;
+        retvalP = _hcrMonitor->drxStatus().toXmlRpcValue();
     }
 };
 
@@ -524,7 +494,7 @@ main(int argc, char** argv)
     }
     
     // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(hcrConfig, sd3c, _xmitdHost, _xmitdPort);
+    _hcrMonitor = new HcrMonitor(sd3c, _xmitdHost, _xmitdPort);
     _hcrMonitor->start();
 
     // create the export object
@@ -639,31 +609,33 @@ main(int argc, char** argv)
                       << " sync:" << syncErrors[c];
         }
         std::cout << std::endl;
-        std::cout << "detectedRfPower: " << _hcrMonitor->detectedRfPower() << std::endl;
-        std::cout << "pvForePressure: " << _hcrMonitor->pvForePressure() << std::endl;
-        std::cout << "pvAftPressure: " << _hcrMonitor->pvAftPressure() << std::endl;
-        std::cout << "ploTemp: " << _hcrMonitor->ploTemp() << std::endl;
-        std::cout << "eikTemp: " << _hcrMonitor->eikTemp() << std::endl;
-        std::cout << "vLnaTemp: " << _hcrMonitor->vLnaTemp() << std::endl;
-        std::cout << "hLnaTemp: " << _hcrMonitor->hLnaTemp() << std::endl;
-        std::cout << "polarizationSwitchTemp: " << _hcrMonitor->polarizationSwitchTemp() << std::endl;
-        std::cout << "rfDetectorTemp: " << _hcrMonitor->rfDetectorTemp() << std::endl;
-        std::cout << "noiseSourceTemp: " << _hcrMonitor->noiseSourceTemp() << std::endl;
-        std::cout << "ps28VTemp: " << _hcrMonitor->ps28VTemp() << std::endl;
-        std::cout << "rdsInDuctTemp: " << _hcrMonitor->rdsInDuctTemp() << std::endl;
-        std::cout << "rotationMotorTemp: " << _hcrMonitor->rotationMotorTemp() << std::endl;
-        std::cout << "tiltMotorTemp: " << _hcrMonitor->tiltMotorTemp() << std::endl;
-        std::cout << "cmigitsTemp: " << _hcrMonitor->cmigitsTemp() << std::endl;
-        std::cout << "tailconeTemp: " << _hcrMonitor->tailconeTemp() << std::endl;
-        std::cout << "psVoltage: " << _hcrMonitor->psVoltage() << std::endl;
-        std::cout << "noiseSourceSelected: " << _hcrMonitor->noiseSourceSelected() << std::endl;
-        std::cout << "terminationSelected: " << _hcrMonitor->terminationSelected() << std::endl;
-        std::cout << "locked15_5GHzPLO: " << _hcrMonitor->locked15_5GHzPLO() << std::endl;
-        std::cout << "locked1250MHzPLO: " << _hcrMonitor->locked1250MHzPLO() << std::endl;
-        std::cout << "modPulseDisabled: " << _hcrMonitor->modPulseDisabled() << std::endl;
-        std::cout << "hmcStatus: " << _hcrMonitor->hmcStatus() << std::endl;
-        std::cout << "rdsXmitterFilamentOn: " << _hcrMonitor->rdsXmitterFilamentOn() << std::endl;
-        std::cout << "rdsXmitterHvOn: " << _hcrMonitor->rdsXmitterHvOn() << std::endl;
+
+        DrxStatus status = _hcrMonitor->drxStatus();
+        std::cout << "detectedRfPower: " << status.detectedRfPower() << std::endl;
+        std::cout << "pvForePressure: " << status.pvForePressure() << std::endl;
+        std::cout << "pvAftPressure: " << status.pvAftPressure() << std::endl;
+        std::cout << "ploTemp: " << status.ploTemp() << std::endl;
+        std::cout << "eikTemp: " << status.eikTemp() << std::endl;
+        std::cout << "vLnaTemp: " << status.vLnaTemp() << std::endl;
+        std::cout << "hLnaTemp: " << status.hLnaTemp() << std::endl;
+        std::cout << "polarizationSwitchTemp: " << status.polarizationSwitchTemp() << std::endl;
+        std::cout << "rfDetectorTemp: " << status.rfDetectorTemp() << std::endl;
+        std::cout << "noiseSourceTemp: " << status.noiseSourceTemp() << std::endl;
+        std::cout << "ps28VTemp: " << status.ps28VTemp() << std::endl;
+        std::cout << "rdsInDuctTemp: " << status.rdsInDuctTemp() << std::endl;
+        std::cout << "rotationMotorTemp: " << status.rotationMotorTemp() << std::endl;
+        std::cout << "tiltMotorTemp: " << status.tiltMotorTemp() << std::endl;
+        std::cout << "cmigitsTemp: " << status.cmigitsTemp() << std::endl;
+        std::cout << "tailconeTemp: " << status.tailconeTemp() << std::endl;
+        std::cout << "psVoltage: " << status.psVoltage() << std::endl;
+        std::cout << "noiseSourceSelected: " << status.noiseSourceSelected() << std::endl;
+        std::cout << "terminationSelected: " << status.terminationSelected() << std::endl;
+        std::cout << "locked15_5GHzPLO: " << status.locked15_5GHzPLO() << std::endl;
+        std::cout << "locked1250MHzPLO: " << status.locked1250MHzPLO() << std::endl;
+        std::cout << "modPulseDisabled: " << status.modPulseDisabled() << std::endl;
+        std::cout << "hmcStatus: " << status.hmcStatus() << std::endl;
+        std::cout << "rdsXmitterFilamentOn: " << status.rdsXmitterFilamentOn() << std::endl;
+        std::cout << "rdsXmitterHvOn: " << status.rdsXmitterHvOn() << std::endl;
     }
     
     ILOG << "Shutting down...";

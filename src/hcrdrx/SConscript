@@ -4,6 +4,7 @@ tools = Split("""
 boost_date_time
 boost_program_options
 doxygen
+hcrdrxrpcclient
 logx
 pentek
 pmc730
@@ -13,19 +14,22 @@ rapradar
 xmitdrpcclient
 """)
 
+# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
+# via the hcrdrxrpcclient tool
 sources = Split("""
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
 HcrMonitor.cpp
-HcrPmc730.cpp
 IwrfExport.cpp
 main.cpp
 PulseData.cpp
 """)
 
 headers = Split("""
+DrxStatus.h
 HcrDrxConfig.h
 HcrDrxPub.h
+HcrdrxRpcClient.h
 HcrMonitor.h
 HcrPmc730.h
 IwrfExport.h

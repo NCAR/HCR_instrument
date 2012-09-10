@@ -198,7 +198,7 @@ HcrGuiMainWindow::_update() {
     
     _enableUi();
 
-    _drxStatus = HcrdrxRpcClient::Status(); // start with uninitialized status
+    _drxStatus = DrxStatus(); // start with uninitialized status
     if (! _drxClient.getStatus(_drxStatus)) {
         std::ostringstream ss;
         ss << "No connection to hcrdrx @ " << _drxClient.getHcrdrxHost() << ":" <<
