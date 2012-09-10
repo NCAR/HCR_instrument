@@ -55,8 +55,7 @@ public:
 
     /**
      * @brief Send a "getStatus" command, filling a HcrdrxRpcClient::Status
-     * object if
-     * we get status from the hcrdrx.
+     * object if we get status from the hcrdrx.
      * @param status the HcrdrxRpcClient::Status object to be filled
      * @return true and fill the status object if status is obtained from
      * hcrdrx, otherwise return false and leave the status object
