@@ -226,6 +226,13 @@ public:
      * @return the PCB temperature from the Pentek card, deg C
      */
     double pentekBoardTemp() const { return(_pentekBoardTemp); }
+    /**
+     * @brief Return the HMC operating mode number: 0-3
+     * 0 - normal operation, 1 - noise source cal, 2 - corner reflector cal,
+     * 3 - integration and testing
+     * @return the HMC operating mode number: 0-3
+     */
+    int hmcMode() const { return(_hmcMode); }
 
 private:
     /**
@@ -450,6 +457,9 @@ private:
 
     /// Pentek board temperature;
     double _pentekBoardTemp;
+
+    /// HMC operating mode
+    int _hmcMode;
 };
 
 #endif /* DRXSTATUS_H_ */

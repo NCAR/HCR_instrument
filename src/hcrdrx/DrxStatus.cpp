@@ -95,7 +95,8 @@ DrxStatus::DrxStatus() :
     _rdsXmitterHvOn(false),
     _hmcStatus(0),
     _pentekFpgaTemp(-99.9),
-    _pentekBoardTemp(-99.9) {
+    _pentekBoardTemp(-99.9),
+    _hmcMode(0) {
 }
 
 DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
@@ -133,6 +134,8 @@ DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     // to the transmitter.
     _rdsXmitterFilamentOn = _StatusBool(statusDict, "rdsXmitterFilamentOn");
     _rdsXmitterHvOn = _StatusBool(statusDict, "rdsXmitterHvOn");
+    // Get the state of the mode lines going to the HMC
+    _hmcMode = _StatusInt(statusDict, "hmcMode");
 }
 
 DrxStatus::~DrxStatus() {
@@ -171,6 +174,8 @@ DrxStatus::toXmlRpcValue() const {
     // to the transmitter.
     statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(_rdsXmitterFilamentOn);
     statusDict["rdsXmitterHvOn"] = XmlRpcValue(_rdsXmitterHvOn);
+    // Get the state of the mode lines going to the HMC
+    statusDict["hmcMode"] = XmlRpcValue(_hmcMode);
 
     return(statusDict);
 }
@@ -305,9 +310,10 @@ DrxStatus::_getMultiIoValues() {
     _modPulseDisabled = pmc730.modPulseDisabled();
     _hmcStatus = pmc730.hmcStatus();
 
-    // Get values of two digital output lines
+    // Get values of some digital output lines
     _rdsXmitterFilamentOn = pmc730.xmitterFilamentOn();
     _rdsXmitterHvOn = pmc730.xmitterHvOn();
+    _hmcMode = pmc730.hmcMode();
 
     DLOG << "PS voltage: " << std::setprecision(3) << psVoltage() << " V";
 }
