@@ -109,6 +109,19 @@ public:
     }
 
     /**
+     * @brief Return the HMC operating mode: 0-3.
+     * Operating modes are: 0 = normal operation, 1 = noise source cal,
+     * 2 = corner reflector cal, 3 = test and integration
+     * @return the HMC operating mode
+     */
+    static int hmcMode() {
+        int mode;
+        mode = theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0 |
+                theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1;
+        return(mode);
+    }
+
+    /**
      * @brief Set the state of the noise source.
      * @param state If true, the noise source will be turned on, otherwise off.
      */
