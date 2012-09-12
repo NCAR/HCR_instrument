@@ -12,10 +12,11 @@
 
 #include <QMainWindow>
 #include <QPixmap>
-#include <QTimer>
-
-#include <XmitdRpcClient.h>
 #include <HcrdrxRpcClient.h>
+#include <XmitdRpcClient.h>
+
+#include "XmitdStatusThread.h"
+#include "HcrdrxStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
 #include "HcrGuiXmitStatusDialog.h"
@@ -35,17 +36,21 @@ private slots:
     void on_hmcMode2Button_clicked();
     void on_hmcMode3Button_clicked();
     void _update();
+    /// @brief Save the last status received from hcrdrx.
+    /// @param status the last status received from hcrdrx.
+    void _setDrxStatus(DrxStatus status);
+    /// @brief Slot to call when hcrdrx server responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _drxResponsivenessChange(bool responding);
+    /// @brief Save the last status received from hcrdrx.
+    /// @param status the last status received from hcrdrx.
+    void _setXmitStatus(XmitStatus status);
+    /// @brief Slot to call when hcr_xmitd server responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _xmitdResponsivenessChange(bool responding);
 private:
-    // Disable the UI
-    void _disableUi();
-    // Enable the UI
-    void _enableUi();
     // Append latest messages from hcr_xmitd to our logging area
     void _appendXmitdLogMsgs();
-    // Disable the UI when no connection exists to the hcr_xmitd.
-    void _noDaemon();
-    // Disable the UI if the daemon is not talking to the transmitter
-    void _noXmitter();
     // Log a message
     void _logMessage(std::string message);
 
@@ -71,9 +76,10 @@ private:
 
     Ui::HcrGuiMainWindow _ui;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
-    XmitdRpcClient _xmitClient;
-    HcrdrxRpcClient _drxClient;
-    QTimer _updateTimer;
+    XmitdRpcClient _xmitdRpcClient;
+    XmitdStatusThread _xmitdStatusThread;
+    HcrdrxRpcClient _drxRpcClient;
+    HcrdrxStatusThread _drxStatusThread;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
@@ -85,6 +91,5 @@ private:
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;
-    bool _noXmitd;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/

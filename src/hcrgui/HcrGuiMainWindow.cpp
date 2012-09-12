@@ -20,27 +20,90 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     QMainWindow(),
     _ui(),
     _xmitStatusDialog(this),
-    _xmitClient(xmitterHost, xmitterPort),
-    _drxClient(hcrdrxHost, hcrdrxPort),
-    _updateTimer(this),
+    _xmitdRpcClient(xmitterHost, xmitterPort),
+    _xmitdStatusThread(_xmitdRpcClient),
+    _drxRpcClient(hcrdrxHost, hcrdrxPort),
+    _drxStatusThread(_drxRpcClient),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
-    _nextLogIndex(0),
-    _noXmitd(true) {
+    _nextLogIndex(0) {
     // Set up the UI
     _ui.setupUi(this);
     // Limit the log area to 1000 messages
     _ui.logArea->setMaximumBlockCount(1000);
     _logMessage("hcrgui started");
     
-    // Schedule 1 Hz updates
-    connect(&_updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
-    _updateTimer.start(1000);
+    _ui.dataSystemBox->setEnabled(false);
+    connect(& _drxStatusThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_drxResponsivenessChange(bool)));
+    connect(& _drxStatusThread, SIGNAL(newStatus(DrxStatus)),
+            this, SLOT(_setDrxStatus(DrxStatus)));
+    _drxStatusThread.start();
+
+    _ui.xmitterBox->setEnabled(false);
+    connect(& _xmitdStatusThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_xmitdResponsivenessChange(bool)));
+    connect(& _xmitdStatusThread, SIGNAL(newStatus(XmitStatus)),
+            this, SLOT(_setXmitStatus(XmitStatus)));
+    _xmitdStatusThread.start();
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
+}
+
+void
+HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
+    _drxStatus = status;
+    _update();
+}
+
+void
+HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "hcrdrx @ " <<
+            _drxRpcClient.getHcrdrxHost() << ":" <<
+            _drxRpcClient.getHcrdrxPort() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+
+    _ui.dataSystemBox->setEnabled(responding);
+    if (! responding) {
+        // Create a default (bad) DrxStatus, and set it as the last status
+        // received.
+        _setDrxStatus(DrxStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
+    _xmitStatus = status;
+    _update();
+}
+
+void
+HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "hcr_xmitd @ " <<
+            _xmitdRpcClient.getXmitdHost() << ":" <<
+            _xmitdRpcClient.getXmitdPort() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+
+    _ui.xmitterBox->setEnabled(responding);
+    if (! responding) {
+        // If we lose contact with hcr_xmitd, reset _nextLogIndex to zero so we
+        // start fresh when we connect again
+        _nextLogIndex = 0;
+        // Create a default (bad) XmitStatus, and set it as the last status
+        // received.
+        _setXmitStatus(XmitStatus());
+    }
 }
 
 bool
@@ -85,21 +148,20 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
         if (_xmitterFilamentOn()) {
-            _xmitClient.xmitFilamentOff();
+            _xmitdRpcClient.xmitFilamentOff();
         } else {
-            _xmitClient.xmitFilamentOn();
+            _xmitdRpcClient.xmitFilamentOn();
         }
     } else if (_xmitStatus.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
         if (_xmitterFilamentOn()) {
-            _drxClient.xmitFilamentOff();
+            _drxRpcClient.xmitFilamentOff();
         } else {
-            _drxClient.xmitFilamentOn();
+            _drxRpcClient.xmitFilamentOn();
         }
     }
-    _update();
 }
 
 /// Toggle the current on/off state of the transmitter high voltage
@@ -110,52 +172,51 @@ HcrGuiMainWindow::on_hvButton_clicked() {
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
         if (_xmitterHvOn()) {
-            _xmitClient.xmitHvOff();
+            _xmitdRpcClient.xmitHvOff();
         } else {
-            _xmitClient.xmitHvOn();
+            _xmitdRpcClient.xmitHvOn();
         }
     } else if (_xmitStatus.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
         if (_xmitterHvOn()) {
-            _drxClient.xmitHvOff();
+            _drxRpcClient.xmitHvOff();
         } else {
-            _drxClient.xmitHvOn();
+            _drxRpcClient.xmitHvOn();
         }
     }
-    _update();
 }
 
 /// Set HMC mode 0
 void
 HcrGuiMainWindow::on_hmcMode0Button_clicked() {
-    _drxClient.setHmcMode(0);
+    _drxRpcClient.setHmcMode(0);
 }
 
 /// Set HMC mode 1
 void
 HcrGuiMainWindow::on_hmcMode1Button_clicked() {
-    _drxClient.setHmcMode(1);
+    _drxRpcClient.setHmcMode(1);
 }
 
 /// Set HMC mode 2
 void
 HcrGuiMainWindow::on_hmcMode2Button_clicked() {
-    _drxClient.setHmcMode(2);
+    _drxRpcClient.setHmcMode(2);
 }
 
 /// Set HMC mode 3
 void
 HcrGuiMainWindow::on_hmcMode3Button_clicked() {
-    _drxClient.setHmcMode(3);
+    _drxRpcClient.setHmcMode(3);
 }
 
 void
 HcrGuiMainWindow::_appendXmitdLogMsgs() {
     unsigned int firstIndex = _nextLogIndex;
     std::string msgs;
-    _xmitClient.getLogMessages(firstIndex, msgs, _nextLogIndex);
+    _xmitdRpcClient.getLogMessages(firstIndex, msgs, _nextLogIndex);
     if (_nextLogIndex != firstIndex) {
         _ui.logArea->appendPlainText(msgs.c_str());
     }
@@ -177,35 +238,6 @@ HcrGuiMainWindow::_update() {
     // Append new log messages from hcr_xmitd
     _appendXmitdLogMsgs();
     
-    // Get status from hcr_xmitd
-    _xmitStatus = XmitStatus(); // start with uninitialized status
-    if (! _xmitClient.getStatus(_xmitStatus)) {
-        _noDaemon();
-        return;
-    }
-    if (_noXmitd) {
-        // we were out of touch with the hcr_xmitd
-        std::ostringstream ss;
-        ss << "Connected to hcr_xmitd @ " << _xmitClient.getXmitdHost() << ":" <<
-                _xmitClient.getXmitdPort();
-        _logMessage(ss.str().c_str());
-        _noXmitd = false;
-    } 
-    if (! _xmitStatus.serialConnected()) {
-        _noXmitter();
-        return;
-    }
-    
-    _enableUi();
-
-    _drxStatus = DrxStatus(); // start with uninitialized status
-    if (! _drxClient.getStatus(_drxStatus)) {
-        std::ostringstream ss;
-        ss << "No connection to hcrdrx @ " << _drxClient.getHcrdrxHost() << ":" <<
-                _drxClient.getHcrdrxPort();
-        _logMessage(ss.str().c_str());
-    }
-
     // Update transmitter control
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
@@ -268,51 +300,6 @@ HcrGuiMainWindow::_update() {
 
     // Update the transmitter status details dialog
     _xmitStatusDialog.updateStatus(_xmitStatus);
-}
-
-void
-HcrGuiMainWindow::_noDaemon() {
-    // Note lack of daemon connection in the status bar
-    std::ostringstream ss;
-    ss << "No connection to hcr_xmitd @ " << _xmitClient.getXmitdHost() << ":" <<
-            _xmitClient.getXmitdPort();
-    statusBar()->showMessage(ss.str().c_str());
-    // If we've been in contact with a hcr_xmitd, log that we lost contact
-    if (_noXmitd == false) {
-        ss.seekp(0, std::ios_base::beg); // start over in the ostringstream
-        ss << "Lost contact with hcr_xmitd @ " << _xmitClient.getXmitdHost() <<
-                ":" << _xmitClient.getXmitdPort();
-        _logMessage(ss.str());
-    }
-    // If we lose contact with hcr_xmitd, reset _nextLogIndex to zero so we
-    // start fresh when we connect again
-    _nextLogIndex = 0;
-    // Disable the UI when we are out of contact
-    _noXmitd = true;
-    _disableUi();
-}
-
-void
-HcrGuiMainWindow::_noXmitter() {
-    statusBar()->showMessage("No serial connection from hcr_xmitd to xmitter!");
-    _disableUi();
-}
-
-void
-HcrGuiMainWindow::_disableUi() {
-    _ui.xmitterStartupBox->setEnabled(false);
-
-    _ui.powerValidIcon->setPixmap(_greenLED_off);
-    _ui.filamentIcon->setPixmap(_greenLED_off);
-    _ui.hvIcon->setPixmap(_greenLED_off);
-    _ui.xmittingIcon->setPixmap(_greenLED_off);
-    
-    _xmitStatusDialog.noStatus();
-}
-
-void
-HcrGuiMainWindow::_enableUi() {
-    _ui.xmitterStartupBox->setEnabled(true);
 }
 
 void
