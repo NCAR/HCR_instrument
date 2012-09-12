@@ -12,9 +12,11 @@ hcrguiEnv.EnableQt4Modules(['QtCore', 'QtGui'])
 
 hcrgui_sources = Split("""
 hcrgui.cpp
+HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
 HcrGuiXmitStatusDialog.cpp
 qrc_HcrGuiMainWindow.cc
+XmitdStatusThread.cpp
 """)
 hcrgui = hcrguiEnv.Program('hcrgui', hcrgui_sources)
 Default(hcrgui)
@@ -32,8 +34,10 @@ HcrGuiMainWindow.qrc
 hcrguiEnv.Qrc(qrcfiles)
 
 headers = Split("""
+HcrdrxStatusThread.h
 HcrGuiMainWindow.h
 HcrGuiXmitStatusDialog.h
+XmitdStatusThread.h
 """)
 
 html = hcrguiEnv.Apidocs(hcrgui_sources + headers)
