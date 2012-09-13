@@ -33,14 +33,28 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _ui.logArea->setMaximumBlockCount(1000);
     _logMessage("hcrgui started");
     
+    std::ostringstream ss;
+    ss << "No response yet from hcr_xmitd at " << xmitterHost << ":" <<
+            xmitterPort;
+    _logMessage(ss.str());
+
+    ss.str("");
+    ss << "No response yet from hcrdrx at " << hcrdrxHost << ":" <<
+            hcrdrxPort;
+    _logMessage(ss.str());
+
+    // Disable the data system box.
     _ui.dataSystemBox->setEnabled(false);
+    // Connect signals from our HcrdrxStatusThread object and start the thread.
     connect(& _drxStatusThread, SIGNAL(serverResponsive(bool)),
             this, SLOT(_drxResponsivenessChange(bool)));
     connect(& _drxStatusThread, SIGNAL(newStatus(DrxStatus)),
             this, SLOT(_setDrxStatus(DrxStatus)));
     _drxStatusThread.start();
 
+    // Disable the transmitter box.
     _ui.xmitterBox->setEnabled(false);
+    // Connect signals from our XmitdStatusThread object and start the thread.
     connect(& _xmitdStatusThread, SIGNAL(serverResponsive(bool)),
             this, SLOT(_xmitdResponsivenessChange(bool)));
     connect(& _xmitdStatusThread, SIGNAL(newStatus(XmitStatus)),
