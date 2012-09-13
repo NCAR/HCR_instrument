@@ -296,6 +296,30 @@ HcrGuiMainWindow::_update() {
         _ui.xmitterStatusSummaryIcon->setPixmap(_greenLED);
     }
 
+    // HMC mode
+    switch (_drxStatus.hmcMode()) {
+    case 0:
+        _ui.hmcMode0Button->setChecked(true);
+        break;
+    case 1:
+        _ui.hmcMode1Button->setChecked(true);
+        break;
+    case 2:
+        _ui.hmcMode2Button->setChecked(true);
+        break;
+    case 3:
+        _ui.hmcMode3Button->setChecked(true);
+        break;
+    default:
+        // Whoa, unknown mode...
+        _ui.hmcMode0Button->setChecked(false);
+        _ui.hmcMode1Button->setChecked(false);
+        _ui.hmcMode2Button->setChecked(false);
+        _ui.hmcMode3Button->setChecked(false);
+        ELOG << "Unknown HMC mode: " << _drxStatus.hmcMode();
+        break;
+    }
+
     // Update the transmitter status details dialog
     _xmitStatusDialog.updateStatus(_xmitStatus);
 }
