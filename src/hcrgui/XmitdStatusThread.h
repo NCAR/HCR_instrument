@@ -24,12 +24,16 @@ class XmitdStatusThread : public QThread {
     Q_OBJECT
 
 public:
-    /// @brief Instantiate, using the given XmitdRpcClient connection to the
+    /// @brief Instantiate, creating an XmitdRpcClient connection to the
     /// hcr_xmitd XML-RPC server.
-    XmitdStatusThread(XmitdRpcClient & client);
+    XmitdStatusThread(std::string xmitdHost, int xmitdPort);
     virtual ~XmitdStatusThread();
 
     void run();
+
+    /// @brief Return the XmitdRpcClient instance being used to talk to hcr_xmitd.
+    /// @return the XmitdRpcClient instance being used to talk to hcr_xmitd.
+    XmitdRpcClient & rpcClient() { return *_client; }
 
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
@@ -37,7 +41,8 @@ signals:
     /// @param responsive true if the server has become responsive or false
     /// if the server has become unresponsive
     void serverResponsive(bool responsive);
-    /// @brief signal emitted when a new status is obtained from hcr_xmitd
+    /// @brief signal emitted when a new status is received from hcr_xmitd
+    /// @param status the new status received from hcr_xmitd
     void newStatus(XmitStatus status);
 
 private slots:
@@ -49,8 +54,11 @@ private:
     /// XML-RPC server on the last XML-RPC method call.
     bool _responsive;
 
+    std::string _xmitdHost;
+    int _xmitdPort;
+
     /// The XmitdRpcClient object handling the XML-RPC connection
-    XmitdRpcClient & _client;
+    XmitdRpcClient * _client;
 };
 
 #endif /* XMITDSTATUSTHREAD_H_ */

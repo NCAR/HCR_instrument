@@ -8,9 +8,11 @@
 #include "XmitdStatusThread.h"
 #include <QTimer>
 
-XmitdStatusThread::XmitdStatusThread(XmitdRpcClient & client) :
+XmitdStatusThread::XmitdStatusThread(std::string xmitdHost, int xmitdPort) :
     _responsive(false),
-    _client(client) {
+    _xmitdHost(xmitdHost),
+    _xmitdPort(xmitdPort),
+    _client(0) {
 }
 
 XmitdStatusThread::~XmitdStatusThread() {
@@ -18,6 +20,7 @@ XmitdStatusThread::~XmitdStatusThread() {
 
 void
 XmitdStatusThread::run() {
+    _client = new XmitdRpcClient(_xmitdHost, _xmitdPort);
     // Set up a 1 s timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
@@ -30,7 +33,7 @@ XmitdStatusThread::run() {
 void
 XmitdStatusThread::_getStatus() {
     XmitStatus status;
-    if (_client.getStatus(status)) {
+    if (_client->getStatus(status)) {
         if (! _responsive) {
             _responsive = true;
             emit serverResponsive(true);

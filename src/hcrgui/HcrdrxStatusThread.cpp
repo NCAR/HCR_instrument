@@ -8,9 +8,11 @@
 #include "HcrdrxStatusThread.h"
 #include <QTimer>
 
-HcrdrxStatusThread::HcrdrxStatusThread(HcrdrxRpcClient & client) :
+HcrdrxStatusThread::HcrdrxStatusThread(std::string drxHost, int drxPort) :
     _responsive(false),
-    _client(client) {
+    _drxHost(drxHost),
+    _drxPort(drxPort),
+    _client(0) {
 }
 
 HcrdrxStatusThread::~HcrdrxStatusThread() {
@@ -18,6 +20,7 @@ HcrdrxStatusThread::~HcrdrxStatusThread() {
 
 void
 HcrdrxStatusThread::run() {
+    _client = new HcrdrxRpcClient(_drxHost, _drxPort);
     // Set up a 1 s timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
@@ -30,7 +33,7 @@ HcrdrxStatusThread::run() {
 void
 HcrdrxStatusThread::_getStatus() {
     DrxStatus status;
-    if (_client.getStatus(status)) {
+    if (_client->getStatus(status)) {
         if (! _responsive) {
             _responsive = true;
             emit serverResponsive(true);

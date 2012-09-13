@@ -20,10 +20,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     QMainWindow(),
     _ui(),
     _xmitStatusDialog(this),
-    _xmitdRpcClient(xmitterHost, xmitterPort),
-    _xmitdStatusThread(_xmitdRpcClient),
-    _drxRpcClient(hcrdrxHost, hcrdrxPort),
-    _drxStatusThread(_drxRpcClient),
+    _xmitdStatusThread(xmitterHost, xmitterPort),
+    _drxStatusThread(hcrdrxHost, hcrdrxPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
@@ -64,8 +62,8 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "hcrdrx @ " <<
-            _drxRpcClient.getHcrdrxHost() << ":" <<
-            _drxRpcClient.getHcrdrxPort() <<
+            _drxStatusThread.rpcClient().getHcrdrxHost() << ":" <<
+            _drxStatusThread.rpcClient().getHcrdrxPort() <<
             (responding ? " is " : " is not ") <<
             "responding";
     _logMessage(ss.str().c_str());
@@ -89,8 +87,8 @@ HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "hcr_xmitd @ " <<
-            _xmitdRpcClient.getXmitdHost() << ":" <<
-            _xmitdRpcClient.getXmitdPort() <<
+            _xmitdStatusThread.rpcClient().getXmitdHost() << ":" <<
+            _xmitdStatusThread.rpcClient().getXmitdPort() <<
             (responding ? " is " : " is not ") <<
             "responding";
     _logMessage(ss.str().c_str());
@@ -148,18 +146,18 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
         if (_xmitterFilamentOn()) {
-            _xmitdRpcClient.xmitFilamentOff();
+            _xmitdStatusThread.rpcClient().xmitFilamentOff();
         } else {
-            _xmitdRpcClient.xmitFilamentOn();
+            _xmitdStatusThread.rpcClient().xmitFilamentOn();
         }
     } else if (_xmitStatus.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
         if (_xmitterFilamentOn()) {
-            _drxRpcClient.xmitFilamentOff();
+            _drxStatusThread.rpcClient().xmitFilamentOff();
         } else {
-            _drxRpcClient.xmitFilamentOn();
+            _drxStatusThread.rpcClient().xmitFilamentOn();
         }
     }
 }
@@ -172,18 +170,18 @@ HcrGuiMainWindow::on_hvButton_clicked() {
         // to hcr_xmitd, which owns the serial line talking to the transmitter
         // CMU.
         if (_xmitterHvOn()) {
-            _xmitdRpcClient.xmitHvOff();
+            _xmitdStatusThread.rpcClient().xmitHvOff();
         } else {
-            _xmitdRpcClient.xmitHvOn();
+            _xmitdStatusThread.rpcClient().xmitHvOn();
         }
     } else if (_xmitStatus.rdsCtlEnabled()) {
         // If RDS control is enabled, then transmitter commands go to hcrdrx
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
         if (_xmitterHvOn()) {
-            _drxRpcClient.xmitHvOff();
+            _drxStatusThread.rpcClient().xmitHvOff();
         } else {
-            _drxRpcClient.xmitHvOn();
+            _drxStatusThread.rpcClient().xmitHvOn();
         }
     }
 }
@@ -191,32 +189,32 @@ HcrGuiMainWindow::on_hvButton_clicked() {
 /// Set HMC mode 0
 void
 HcrGuiMainWindow::on_hmcMode0Button_clicked() {
-    _drxRpcClient.setHmcMode(0);
+    _drxStatusThread.rpcClient().setHmcMode(0);
 }
 
 /// Set HMC mode 1
 void
 HcrGuiMainWindow::on_hmcMode1Button_clicked() {
-    _drxRpcClient.setHmcMode(1);
+    _drxStatusThread.rpcClient().setHmcMode(1);
 }
 
 /// Set HMC mode 2
 void
 HcrGuiMainWindow::on_hmcMode2Button_clicked() {
-    _drxRpcClient.setHmcMode(2);
+    _drxStatusThread.rpcClient().setHmcMode(2);
 }
 
 /// Set HMC mode 3
 void
 HcrGuiMainWindow::on_hmcMode3Button_clicked() {
-    _drxRpcClient.setHmcMode(3);
+    _drxStatusThread.rpcClient().setHmcMode(3);
 }
 
 void
 HcrGuiMainWindow::_appendXmitdLogMsgs() {
     unsigned int firstIndex = _nextLogIndex;
     std::string msgs;
-    _xmitdRpcClient.getLogMessages(firstIndex, msgs, _nextLogIndex);
+    _xmitdStatusThread.rpcClient().getLogMessages(firstIndex, msgs, _nextLogIndex);
     if (_nextLogIndex != firstIndex) {
         _ui.logArea->appendPlainText(msgs.c_str());
     }

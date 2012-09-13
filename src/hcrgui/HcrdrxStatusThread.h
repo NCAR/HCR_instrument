@@ -11,8 +11,8 @@
 #include <HcrdrxRpcClient.h>
 #include <QThread>
 
-/// @brief Class providing a thread which gets hcrdrx status on a regular basis
-/// using a HcrdrxRpcClient connection.
+/// @brief Class providing a thread which gets hcrdrx status on a regular
+/// basis using a HcrdrxRpcClient connection.
 ///
 /// This class uses the given HcrdrxRpcClient connection to poll for status
 /// from hcrdrx on a ~1 Hz basis (when connected). When new status is received,
@@ -24,20 +24,25 @@ class HcrdrxStatusThread : public QThread {
     Q_OBJECT
 
 public:
-    /// @brief Instantiate, using the given HcrdrxRpcClient connection to the
+    /// @brief Instantiate, creating an HcrdrxRpcClient connection to the
     /// hcrdrx XML-RPC server.
-    HcrdrxStatusThread(HcrdrxRpcClient & client);
+    HcrdrxStatusThread(std::string hcrdrxHost, int hcrdrxPort);
     virtual ~HcrdrxStatusThread();
 
     void run();
 
+    /// @brief Return the HcrdrxRpcClient instance being used to talk to hcrdrx.
+    /// @return the HcrdrxRpcClient instance being used to talk to hcrdrx.
+    HcrdrxRpcClient & rpcClient() { return *_client; }
+
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
     /// becomes responsive or unresponsive.
-/// @param responsive true if the server has become responsive or false
-/// if the server has become unresponsive
+    /// @param responsive true if the server has become responsive or false
+    /// if the server has become unresponsive
     void serverResponsive(bool responsive);
-    /// @brief signal emitted when a new status is obtained from hcrdrx
+    /// @brief signal emitted when a new status is received from hcrdrx
+    /// @param status the new status received from hcrdrx
     void newStatus(DrxStatus status);
 
 private slots:
@@ -49,8 +54,11 @@ private:
     /// XML-RPC server on the last XML-RPC method call.
     bool _responsive;
 
+    std::string _drxHost;
+    int _drxPort;
+
     /// The HcrdrxRpcClient object handling the XML-RPC connection
-    HcrdrxRpcClient & _client;
+    HcrdrxRpcClient * _client;
 };
 
 #endif /* HCRDRXSTATUSTHREAD_H_ */

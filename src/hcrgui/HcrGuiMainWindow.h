@@ -12,8 +12,6 @@
 
 #include <QMainWindow>
 #include <QPixmap>
-#include <HcrdrxRpcClient.h>
-#include <XmitdRpcClient.h>
 
 #include "XmitdStatusThread.h"
 #include "HcrdrxStatusThread.h"
@@ -35,6 +33,7 @@ private slots:
     void on_hmcMode1Button_clicked();
     void on_hmcMode2Button_clicked();
     void on_hmcMode3Button_clicked();
+    /// @brief Update GUI state based on _xmitStatus and _drxStatus
     void _update();
     /// @brief Save the last status received from hcrdrx.
     /// @param status the last status received from hcrdrx.
@@ -76,9 +75,7 @@ private:
 
     Ui::HcrGuiMainWindow _ui;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
-    XmitdRpcClient _xmitdRpcClient;
     XmitdStatusThread _xmitdStatusThread;
-    HcrdrxRpcClient _drxRpcClient;
     HcrdrxStatusThread _drxStatusThread;
     QPixmap _redLED;
     QPixmap _amberLED;
