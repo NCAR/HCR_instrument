@@ -6,6 +6,7 @@
  */
 
 #include "XmitdStatusThread.h"
+#include <QMetaType>
 #include <QTimer>
 
 XmitdStatusThread::XmitdStatusThread(std::string xmitdHost, int xmitdPort) :
@@ -13,6 +14,13 @@ XmitdStatusThread::XmitdStatusThread(std::string xmitdHost, int xmitdPort) :
     _xmitdHost(xmitdHost),
     _xmitdPort(xmitdPort),
     _client(0) {
+    // We need to register XmitStatus as a metatype, since we'll be passing it
+    // as an argument in a signal.
+    qRegisterMetaType<XmitStatus>("XmitStatus");
+    // Change thread affinity to self instead of our parent's thread.
+    // This makes the calls to _getStatus() execute in *this* thread, which is
+    // what we want.
+    moveToThread(this);
 }
 
 XmitdStatusThread::~XmitdStatusThread() {
