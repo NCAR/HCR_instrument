@@ -451,7 +451,7 @@ main(int argc, char** argv)
     HcrPmc730::setWaveguideSwitchD(0);
     HcrPmc730::setXmitterFilamentOn(false);
     HcrPmc730::setXmitterHvOn(false);
-    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_NORMAL_OPERATION);
+    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_CORNER_REFLECTOR_CAL);
     // Now allow the HMC to operate
     HcrPmc730::setHmcResetOn(false);
 
