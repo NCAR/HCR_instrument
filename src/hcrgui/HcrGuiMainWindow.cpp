@@ -251,6 +251,7 @@ HcrGuiMainWindow::_update() {
     _appendXmitdLogMsgs();
     
     // Update transmitter control
+    _ui.xmitterBox->setEnabled(_xmitStatus.serialConnected());
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
@@ -335,6 +336,7 @@ HcrGuiMainWindow::_update() {
     }
 
     // Update the transmitter status details dialog
+    _xmitStatusDialog.setEnabled(_xmitStatus.serialConnected());
     _xmitStatusDialog.updateStatus(_xmitStatus);
 }
 
