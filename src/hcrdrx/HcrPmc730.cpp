@@ -36,19 +36,19 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
             getDioDirection(_HCR_DIN_TERMINATION_SELECTED) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_15_5GHZ_PHASELOCK) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_1250MHZ_PHASELOCK) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_STATUS0) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_STATUS1) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_HMC_EMS_POWER_ERROR) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR) != DIO_INPUT ||
             getDioDirection(_HCR_DIN_HMC_MODPULSE_DISABLED) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_STATUS2) != DIO_INPUT) {
+            getDioDirection(_HCR_DIN_HMC_POL_SWITCH_ERROR) != DIO_INPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
             _HCR_DIN_NOISE_SOURCE_SELECTED << ", " <<
             _HCR_DIN_TERMINATION_SELECTED << ", " <<
             _HCR_DIN_15_5GHZ_PHASELOCK << ", " << 
             _HCR_DIN_1250MHZ_PHASELOCK << ", " <<
-            _HCR_DIN_HMC_STATUS0 << ", " <<
-            _HCR_DIN_HMC_STATUS1 << ", " <<
+            _HCR_DIN_HMC_EMS_POWER_ERROR << ", " <<
+            _HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR << ", " <<
             _HCR_DIN_HMC_MODPULSE_DISABLED << ", and " <<
-            _HCR_DIN_HMC_STATUS2 <<
+            _HCR_DIN_HMC_POL_SWITCH_ERROR <<
             " are not all set for input!";
         abort();
     }

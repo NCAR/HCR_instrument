@@ -189,156 +189,10 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  * @brief Xmlrpc++ method to get transmitter status from hcr_xmitd.
  *
  * The method returns a XmlRpc::XmlRpcValue struct (dictionary) mapping
- * std::string keys to XmlRpc::XmlRpcValue values. The dictionary will
- * contain:
- * <table border>
- *   <tr>
- *     <td><b>key</b></td>
- *     <td><b>value type</b></td>
- *     <td><b>value</b></td>
- *   </tr>
- *   <tr>
- *     <td>detectedRfPower</td>
- *     <td>double</td>
- *     <td>transmit pulse power from the Mi-Wave 950W RF detector, dBm</td>
- *   </tr>
- *   <tr>
- *     <td>pvForePressure</td>
- *     <td>double</td>
- *     <td>pressure in the fore end of the pressure vessel, hPa</td>
- *   </tr>
- *   <tr>
- *     <td>pvAftPressure</td>
- *     <td>double</td>
- *     <td>pressure in the aft end of the pressure vessel, hPa</td>
- *   </tr>
- *   <tr>
- *     <td>ploTemp</td>
- *     <td>double</td>
- *     <td>temperature of the 93 GHz phase-locked oscillator, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>eikTemp</td>
- *     <td>double</td>
- *     <td>temperature of the Extended Interaction Klystron (EIK), deg C</td>
- *   </tr>
- *   <tr>
- *     <td>vLnaTemp</td>
- *     <td>double</td>
- *     <td>temperature of the vertical channel LNA, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>hLnaTemp</td>
- *     <td>double</td>
- *     <td>temperature of the horizontal channel LNA, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>polarizationSwitchTemp</td>
- *     <td>double</td>
- *     <td>temperature of the polarization switch, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>rfDetectorTemp</td>
- *     <td>double</td>
- *     <td>temperature of the Mi-Wave 950W RF detector, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>noiseSourceTemp</td>
- *     <td>double</td>
- *     <td>temperature of the noise source, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>ps28VTemp</td>
- *     <td>double</td>
- *     <td>temperature of the 28 V power supply, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>rdsInDuctTemp</td>
- *     <td>double</td>
- *     <td>temperature at the input air duct for the remote data system (RDS), deg C</td>
- *   </tr>
- *   <tr>
- *     <td>rotationMotorTemp</td>
- *     <td>double</td>
- *     <td>temperature of the reflector rotation motor, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>tiltMotorTemp</td>
- *     <td>double</td>
- *     <td>temperature of the reflector tilt motor, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>cmigitsTemp</td>
- *     <td>double</td>
- *     <td>temperature of the C-MIGITS inertial navigation system, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>tailconeTemp</td>
- *     <td>double</td>
- *     <td>ambient temperature in the tailcone, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>psVoltage</td>
- *     <td>double</td>
- *     <td>measured voltage from the 5V power supply, V</td>
- *   </tr>
- *   <tr>
- *     <td>pentekFpgaTemp</td>
- *     <td>double</td>
- *     <td>temperature of the Pentek signal processing FPGA, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>pentekBoardTemp</td>
- *     <td>double</td>
- *     <td>temperature of the Pentek PCB, deg C</td>
- *   </tr>
- *   <tr>
- *     <td>noiseSourceSelected</td>
- *     <td>bool</td>
- *     <td>true iff waveguide switch A is in the "noise source" position</td>
- *   </tr>
- *   <tr>
- *     <td>terminationSelected</td>
- *     <td>bool</td>
- *     <td>true iff waveguide switch B is in "termination" position</td>
- *   </tr>
- *   <tr>
- *     <td>locked15_5GHzPLO</td>
- *     <td>bool</td>
- *     <td>true iff 15.5 GHz PLO is phase locked</td>
- *   </tr>
- *   <tr>
- *     <td>locked1250MHzPLO</td>
- *     <td>bool</td>
- *     <td>true iff 1250 MHz PLO is phase locked</td>
- *   </tr>
- *   <tr>
- *     <td>modPulseDisabled</td>
- *     <td>bool</td>
- *     <td>true iff modulation pulses are being stopped at the HMC and not
- *         passed through to the transmitter</td>
- *   </tr>
- *   <tr>
- *     <td>rdsXmitterFilamentOn</td>
- *     <td>bool</td>
- *     <td>true iff we are currently commanding "filament on" via
- *         the RDS filament control line going to the transmitter</td>
- *   </tr>
- *   <tr>
- *     <td>rdsXmitterHvOn</td>
- *     <td>bool</td>
- *     <td>true iff we are currently commanding "high voltage on" via
- *         the RDS HV control line going to the transmitter</td>
- *   </tr>
- *   <tr>
- *     <td>hmcStatus</td>
- *     <td>int</td>
- *     <td>The status value from the Health Monitoring and Control (HMC) card.
- *         The values are: 0 = no errors, 1 = EMS power below threshold,
- *         2 = receiver protector switching error,
- *         3 = polarization switching error</td>
- *   </tr>
- * </table>
+ * std::string keys to XmlRpc::XmlRpcValue values. The dictionary should be
+ * passed to the constructor for the DrxStatus class to create a DrxStatus
+ * object.
+ * 
  * Example client usage, where hcrdrx is running on machine `drxhost`:
  * @code
  *     #include <XmlRpc.h>
@@ -349,10 +203,13 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     const XmlRpc::XmlRpcValue nullParams;
  *     XmlRpc::XmlRpcValue statusDict;
  *     client.execute("getStatus", nullParams, statusDict);
+ *     
+ *     // Instantiate a DrxStatus using the returned dictionary
+ *     DrxStatus status(statusDict);
  *
- *     // extract a couple of values from the dictionary
+ *     // extract a value from the status
  *     bool bVal = bool(statusDict["some_bool"]));
- *     double cmigitsTemp = double(statusDict["cmigitsTemp"]));
+ *     double cmigitsTemp = status.cmigitsTemp();
  * @endcode
  */
 class GetStatusMethod : public XmlRpcServerMethod {
@@ -633,7 +490,9 @@ main(int argc, char** argv)
         std::cout << "locked15_5GHzPLO: " << status.locked15_5GHzPLO() << std::endl;
         std::cout << "locked1250MHzPLO: " << status.locked1250MHzPLO() << std::endl;
         std::cout << "modPulseDisabled: " << status.modPulseDisabled() << std::endl;
-        std::cout << "hmcStatus: " << status.hmcStatus() << std::endl;
+        std::cout << "hmcEmsPowerError: " << status.hmcEmsPowerError() << std::endl;
+        std::cout << "hmcRxProtectSwitchError: " << status.hmcRxProtectSwitchError() << std::endl;
+        std::cout << "hmcPolSwitchError: " << status.hmcPolSwitchError() << std::endl;
         std::cout << "rdsXmitterFilamentOn: " << status.rdsXmitterFilamentOn() << std::endl;
         std::cout << "rdsXmitterHvOn: " << status.rdsXmitterHvOn() << std::endl;
     }

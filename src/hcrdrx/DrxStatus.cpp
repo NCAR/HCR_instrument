@@ -93,7 +93,9 @@ DrxStatus::DrxStatus() :
     _modPulseDisabled(false),
     _rdsXmitterFilamentOn(false),
     _rdsXmitterHvOn(false),
-    _hmcStatus(0),
+    _hmcEmsPowerError(false),
+    _hmcRxProtectSwitchError(false),
+    _hmcPolSwitchError(false),
     _pentekFpgaTemp(-99.9),
     _pentekBoardTemp(-99.9),
     _hmcMode(0) {
@@ -129,7 +131,9 @@ DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     _locked15_5GHzPLO = _StatusBool(statusDict, "locked15_5GHzPLO");
     _locked1250MHzPLO = _StatusBool(statusDict, "locked1250MHzPLO");
     _modPulseDisabled = _StatusBool(statusDict, "modPulseDisabled");
-    _hmcStatus = _StatusInt(statusDict, "hmcStatus");
+    _hmcEmsPowerError = _StatusBool(statusDict, "hmcEmsPowerError");
+    _hmcRxProtectSwitchError = _StatusBool(statusDict, "hmcRxProtectSwitchError");
+    _hmcPolSwitchError = _StatusBool(statusDict, "hmcPolSwitchError");
     // Get the state of the RDS (Remote Data System) control lines going
     // to the transmitter.
     _rdsXmitterFilamentOn = _StatusBool(statusDict, "rdsXmitterFilamentOn");
@@ -169,7 +173,9 @@ DrxStatus::toXmlRpcValue() const {
     statusDict["locked15_5GHzPLO"] = XmlRpcValue(_locked15_5GHzPLO);
     statusDict["locked1250MHzPLO"] = XmlRpcValue(_locked1250MHzPLO);
     statusDict["modPulseDisabled"] = XmlRpcValue(_modPulseDisabled);
-    statusDict["hmcStatus"] = XmlRpcValue(_hmcStatus);
+    statusDict["hmcEmsPowerError"] = XmlRpcValue(_hmcEmsPowerError);
+    statusDict["hmcRxProtectSwitchError"] = XmlRpcValue(_hmcRxProtectSwitchError);
+    statusDict["hmcPolSwitchError"] = XmlRpcValue(_hmcPolSwitchError);
     // Get the state of the RDS (Remote Data System) control lines going
     // to the transmitter.
     statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(_rdsXmitterFilamentOn);
@@ -308,7 +314,9 @@ DrxStatus::_getMultiIoValues() {
     _locked15_5GHzPLO = pmc730.locked15_5GHzPLO();
     _locked1250MHzPLO = pmc730.locked1250MHzPLO();
     _modPulseDisabled = pmc730.modPulseDisabled();
-    _hmcStatus = pmc730.hmcStatus();
+    _hmcEmsPowerError = pmc730.hmcEmsPowerError();
+    _hmcRxProtectSwitchError = pmc730.hmcRxProtectSwitchError();
+    _hmcPolSwitchError = pmc730.hmcPolSwitchError();
 
     // Get values of some digital output lines
     _rdsXmitterFilamentOn = pmc730.xmitterFilamentOn();

@@ -747,10 +747,14 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeBoolean
     ("RdsXmitterHvOn", 2, drxStatus.rdsXmitterHvOn());
 
-  // ints
+  xml += TaXml::writeBoolean
+    ("HmcEmsPowerError", 2, drxStatus.hmcEmsPowerError());
 
-  xml += TaXml::writeInt
-    ("HmcStatus", 2, drxStatus.hmcStatus());
+  xml += TaXml::writeBoolean
+    ("HmcRxProtectSwitchError", 2, drxStatus.hmcRxProtectSwitchError());
+
+  xml += TaXml::writeBoolean
+    ("HmcPolSwitchError", 2, drxStatus.hmcPolSwitchError());
 
   // end receive status
 

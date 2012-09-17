@@ -181,9 +181,9 @@ public:
      */
     bool locked1250MHzPLO() const { return(_locked1250MHzPLO); }
     /**
-     * @brief Return true iff modulation pulses are being stopped at the SCM and not
+     * @brief Return true iff modulation pulses are being stopped at the HMC and not
      * passed through to the transmitter
-     * @return true iff modulation pulses are being stopped at the SCM and not
+     * @return true iff modulation pulses are being stopped at the HMC and not
      * passed through to the transmitter
      */
     bool modPulseDisabled() const { return(_modPulseDisabled); }
@@ -203,17 +203,25 @@ public:
     bool rdsXmitterHvOn() const { return(_rdsXmitterHvOn); }
 
     /**
-     * @brief Return the status value from the Health Monitoring and Control
-     * (HMC) card.
-     * @return the 3-bit status value from the HMC. The meanings of the
-     * status values are:
-     * 0 = no errors,
-     * 1 = EMS power below threshold,
-     * 2 = receiver protector switching error,
-     * 3 = polarization switching error
-     * 4-7 are currently unused.
+     * @brief Return true iff the HMC is reporting EMS power error
+     * @return true iff the HMC is reporting EMS power error
      */
-    int hmcStatus() const { return(_hmcStatus); }
+    bool hmcEmsPowerError() const { return(_hmcEmsPowerError); }
+
+    /**
+     * @brief Return true iff the HMC is reporting receiver protection switching
+     * error
+     * @return true iff the HMC is reporting receiver protection switching
+     * error
+     */
+    bool hmcRxProtectSwitchError() const { return(_hmcRxProtectSwitchError); }
+
+    /**
+     * @brief Return true iff the HMC is reporting polarization switching error
+     * @return true iff the HMC is reporting polarization switching error
+     */
+    bool hmcPolSwitchError() const { return(_hmcPolSwitchError); }
+
     /**
      * @brief Return the signal processing FPGA temperature from the Pentek
      * card, deg C
@@ -443,14 +451,14 @@ private:
     /// Is "high voltage on" being commanded via the RDS control line to the transmitter?
     bool _rdsXmitterHvOn;
 
-    /**
-     * HMC status
-     * 0 = no errors,
-     * 1 = EMS power below threshold,
-     * 2 = receiver protector switching error,
-     * 3 = polarization switching error
-     */
-    uint16_t _hmcStatus;
+    /// Is HMC reporting EMS power error?
+    uint16_t _hmcEmsPowerError;
+
+    /// Is HMC reporting receiver protection switching error?
+    uint16_t _hmcRxProtectSwitchError;
+
+    /// Is HMC reporting polarization switching error?
+    uint16_t _hmcPolSwitchError;
 
     /// Pentek FPGA temperature
     double _pentekFpgaTemp;

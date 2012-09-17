@@ -70,18 +70,30 @@ public:
     }
 
     /**
-     * @brief Return the 3-bit status value from the HMC. Valid status values
-     * are 0 = no errors, 1 = EMS power below threshold,
-     * 2 = receiver protector switching error, 3 = polarization switching error,
-     * 4-7 are currently unused.
-     * @return the 3-bit status value from the HMC
+     * @brief Return true iff the HMC is reporting an EMS power error
+     * @return true iff the HMC is reporting an EMS power error
      */
-    static uint8_t hmcStatus() {
-        uint8_t status;
-        status = theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS0) << 0 |
-                theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS1) << 1 |
-                theHcrPmc730().getDioLine(_HCR_DIN_HMC_STATUS2) << 2;
-        return(status);
+    static bool hmcEmsPowerError() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_EMS_POWER_ERROR));
+    }
+
+    /**
+     * @brief Return true iff the HMC is reporting a receiver protection 
+     * switching error
+     * @return true iff the HMC is reporting a receiver protection switching 
+     * error
+     */
+    static bool hmcRxProtectSwitchError() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR));
+    }
+
+    /**
+     * @brief Return true iff the HMC is reporting a polarization switching 
+     * error
+     * @return true iff the HMC is reporting a polarization switching error
+     */
+    static bool hmcPolSwitchError() {
+        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_POL_SWITCH_ERROR));
     }
 
     /**
@@ -210,14 +222,14 @@ private:
         _HCR_DIN_15_5GHZ_PHASELOCK = 2,
         /// digital in line 3: 1250 MHz PLO phase locked
         _HCR_DIN_1250MHZ_PHASELOCK = 3,
-        /// digital in line 4: HMC status bit 0
-        _HCR_DIN_HMC_STATUS0 = 4,
-        /// digital in line 5: HMC status bit 1
-        _HCR_DIN_HMC_STATUS1 = 5,
+        /// digital in line 4: HMC EMS power below threshold
+        _HCR_DIN_HMC_EMS_POWER_ERROR = 4,
+        /// digital in line 5: HMC receiver protection switching error
+        _HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR = 5,
         /// digital in line 6: HMC modulation pulse disabled
         _HCR_DIN_HMC_MODPULSE_DISABLED = 6,
-        /// digital in line 7: HMC status bit 2
-        _HCR_DIN_HMC_STATUS2 = 7
+        /// digital in line 7: HMC polarization switching error
+        _HCR_DIN_HMC_POL_SWITCH_ERROR = 7
     } DinLine_t;
     
     /**
