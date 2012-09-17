@@ -164,7 +164,7 @@ HcrXmitter::getStatus() {
     // If we used up our tries, we just return an empty status
     if (nReplies == 0) {
         WLOG << "No status reply in " << MAX_ATTEMPTS <<
-                " tries; Is the transmitter plugged in?";
+                " tries; Is the transmitter CMU turned on?";
     } else {
         WLOG << "Only 'bad communication' replies in " << MAX_ATTEMPTS <<
                 " attempts to get status";
