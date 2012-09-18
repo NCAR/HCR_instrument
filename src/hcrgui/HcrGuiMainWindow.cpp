@@ -94,6 +94,8 @@ void
 HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     _xmitStatus = status;
     _update();
+    // Append new log messages from hcr_xmitd
+    _appendXmitdLogMsgs();
 }
 
 void
@@ -246,9 +248,6 @@ HcrGuiMainWindow::_update() {
     time_t now = time(0);
     strftime(timestring, sizeof(timestring) - 1, "%F %T", gmtime(&now));
     _ui.clockLabel->setText(timestring);
-    
-    // Append new log messages from hcr_xmitd
-    _appendXmitdLogMsgs();
     
     // Update transmitter control
     _ui.xmitterBox->setEnabled(_xmitStatus.serialConnected());
