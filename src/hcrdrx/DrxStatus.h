@@ -452,13 +452,13 @@ private:
     bool _rdsXmitterHvOn;
 
     /// Is HMC reporting EMS power error?
-    uint16_t _hmcEmsPowerError;
+    bool _hmcEmsPowerError;
 
     /// Is HMC reporting receiver protection switching error?
-    uint16_t _hmcRxProtectSwitchError;
+    bool _hmcRxProtectSwitchError;
 
     /// Is HMC reporting polarization switching error?
-    uint16_t _hmcPolSwitchError;
+    bool _hmcPolSwitchError;
 
     /// Pentek FPGA temperature
     double _pentekFpgaTemp;
