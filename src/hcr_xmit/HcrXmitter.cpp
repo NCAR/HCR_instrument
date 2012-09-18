@@ -95,7 +95,7 @@ HcrXmitter::getStatus() {
 	uint8_t reply[REPLYSIZE];
 
 	// Max number of times to attempt to get good status from the transmitter
-    unsigned int MAX_ATTEMPTS = 3;
+    unsigned int MAX_ATTEMPTS = 2;
 
     unsigned int attempt = 0;
     unsigned int nReplies = 0;
@@ -109,8 +109,8 @@ HcrXmitter::getStatus() {
     	// Send the currently desired state to elicit a status response
     	_sendCommand(_intendedState);
 
-    	// Wait up to 250 ms for reply to arrive
-    	if (_readSelect(250) < 0) {
+    	// Wait up to 400 ms for reply to arrive
+    	if (_readSelect(400) < 0) {
     		DLOG << "Error or timeout waiting for status reply";
     		// Try again
     		continue;
