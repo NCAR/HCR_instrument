@@ -1,7 +1,7 @@
 # Test config file for HCR
 radar_id                HCR
 
-gates                   500
+gates                   200
 
 ant_gain                46.2    # dB
 ant_hbeam_width         0.75    # deg
@@ -15,17 +15,17 @@ rcvr_digital_gain       -2.67   # dB
 rcvr_filter_mismatch    1.1     # dB
 rcvr_gate0_delay        0.0     # s
 rcvr_noise_figure       8.9     # dB
-rcvr_pulse_width        1.92e-7 # s
+rcvr_pulse_width        2.56e-7 # s
 rcvr_rf_gain            39.48   # dB
 
 range_to_gate0          19.2    # m to center of gate
 
-tx_cntr_freq            9.44065e10 # Hz
+tx_cntr_freq            9.440625e10 # Hz
 tx_peak_power           58.78   # dBm
-tx_pulse_width          1.92e-7 # s
-tx_pulse_mod_delay      8.0e-8  # s
-tx_pulse_mod_width      5.12e-7 # s
-tx_delay                0.0     # s
+tx_pulse_width          2.56e-7 # s
+tx_pulse_mod_delay      4.32e-7  # s
+tx_pulse_mod_width      7.84e-7 # s
+tx_delay                3.36e-7     # s
 
 # iqcount_scale_for_mw: count scaling factor to easily get power in mW from
 # I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
@@ -53,7 +53,7 @@ pulse_interval_per_iwrf_meta_data   5000    # how often to send out meta data
 
 # Enable/disable simulated PMC-730 card
 
-simulate_pmc730         1
+simulate_pmc730         0
 
 # simulation of antenna angles
 
