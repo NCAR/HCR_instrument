@@ -109,15 +109,15 @@ HcrXmitter::getStatus() {
     	// Send the currently desired state to elicit a status response
     	_sendCommand(_intendedState);
 
-    	// Wait up to 400 ms for reply to arrive
-    	if (_readSelect(400) < 0) {
+    	// Wait up to 350 ms for reply to arrive
+    	if (_readSelect(350) < 0) {
     		DLOG << "Error or timeout waiting for status reply";
     		// Try again
     		continue;
     	}
 
     	if (attempt > 0 && nReplies == 0) {
-    		ILOG << "Got a status reply after " << attempt + 1 <<
+    		DLOG << "Got a status reply after " << attempt + 1 <<
     				" attempts";
     	}
 
