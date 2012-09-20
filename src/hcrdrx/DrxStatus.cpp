@@ -285,7 +285,9 @@ DrxStatus::_getMultiIoValues() {
     _HLnaTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[6]));
     _PolarizationSwitchTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[7]));
     _RfDetectorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[8]));
-    _NoiseSourceTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[9]));
+    // @TODO Noise source temp sensor is not currently connected...
+//    _NoiseSourceTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[9]));
+    _NoiseSourceTemps.addTemperature(25.0);
     _Ps28VTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[10]));
     _RdsInDuctTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[11]));
     // @TODO The next four temperature sensors are not yet connected...
