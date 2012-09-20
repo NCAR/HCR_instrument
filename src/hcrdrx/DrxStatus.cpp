@@ -288,10 +288,15 @@ DrxStatus::_getMultiIoValues() {
     _NoiseSourceTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[9]));
     _Ps28VTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[10]));
     _RdsInDuctTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[11]));
-    _RotationMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[12]));
-    _TiltMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[13]));
-    _CmigitsTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[14]));
-    _TailconeTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[15]));
+    // @TODO The next four temperature sensors are not yet connected...
+//    _RotationMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[12]));
+//    _TiltMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[13]));
+//    _CmigitsTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[14]));
+//    _TailconeTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[15]));
+    _RotationMotorTemps.addTemperature(25.0);
+    _TiltMotorTemps.addTemperature(25.0);
+    _CmigitsTemps.addTemperature(25.0);
+    _TailconeTemps.addTemperature(25.0);
 
     // Save the current averaged temperatures
     _ploTemp = _PloTemps.mean();
