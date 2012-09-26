@@ -45,7 +45,7 @@ std::string _kaiserFile = "";    ///< kaiser filter coefficient file
 IwrfExport* _exporter = 0;       ///< The exporter - IWRF TCP server
 bool _simulate;                  ///< Set true for simulate mode
 int _simWaveLength;              ///< The simulated data wavelength, in samples
-double _simPauseMS;              ///< The number of millisecnds to pause when reading in simulate mode.
+double _simPauseMS;              ///< The number of milliseconds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
 std::string _xmitdHost("hcrdrx");///< The host on which hcr_xmitd is running
