@@ -78,11 +78,11 @@ public:
     /**
      * Get log messages from the associated hcrdrx at and after a selected
      * index.
-     * @param firstIndex[in] the first message index to include in the returned
+     * @param[in] firstIndex the first message index to include in the returned
      * log messages
-     * @param msgs[out] all log messages at or later than the selected start index
+     * @param[out] msgs all log messages at or later than the selected start index
      * will be appended to msgs
-     * @param nextLogIndex[out] the index of the next log message after the last
+     * @param[out] nextLogIndex the index of the next log message after the last
      * available message is returned in nextLogIndex
      */
     void getLogMessages(unsigned int firstIndex, std::string & msgs, 
