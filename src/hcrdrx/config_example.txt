@@ -1,6 +1,6 @@
 # Test config file for HCR
 radar_id                HCR
-
+start_on_1pps           1
 gates                   200
 
 ant_gain                46.2    # dB
