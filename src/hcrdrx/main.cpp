@@ -48,8 +48,8 @@ int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of milliseconds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
-std::string _xmitdHost("hcrdrx");///< The host on which hcr_xmitd is running
-int _xmitdPort = 8080;           ///< The port on which hcr_xmitd is listening
+std::string _xmitdHost("archiver");///< The host on which hcr_xmitd is running
+int _xmitdPort = 8000;           ///< The port on which hcr_xmitd is listening
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -343,7 +343,8 @@ main(int argc, char** argv)
     Pentek::p7142sd3c sd3c(_simulate, hcrConfig.tx_delay(),
         hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
         hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
-        Pentek::p7142sd3c::DDC8DECIMATE, false, _simPauseMS);
+        Pentek::p7142sd3c::DDC8DECIMATE, hcrConfig.start_on_1pps(), 
+        _simPauseMS);
     
     if (! sd3c.ok()) {
         ELOG << "P7142 was not opened successfully!";

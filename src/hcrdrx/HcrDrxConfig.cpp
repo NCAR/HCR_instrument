@@ -89,6 +89,7 @@ std::set<std::string> HcrDrxConfig::_createBoolLegalKeys() {
     keys.insert("pdpp");
     keys.insert("simulate_antenna_angles");
     keys.insert("simulate_pmc730");
+    keys.insert("start_on_1pps");
     return keys;
 }
 
@@ -331,6 +332,11 @@ HcrDrxConfig::isValid(bool verbose) const {
     if (pulse_interval_per_iwrf_meta_data() == UNSET_INT) {
         if (verbose)
             std::cerr << "'pulse_interval_per_iwrf_meta_data' not set" << std::endl;
+        valid = false;
+    }
+    if (start_on_1pps() == UNSET_BOOL) {
+        if (verbose)
+            std::cerr << "'start_on_1pps' unset in DRX configuration" << std::endl;
         valid = false;
     }
 

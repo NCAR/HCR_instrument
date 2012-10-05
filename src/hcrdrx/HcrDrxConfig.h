@@ -171,6 +171,11 @@ public:
     	return _getBoolVal("simulate_pmc730");
     }
 
+    // Start radar on external 1 PPS trigger signal?
+    int start_on_1pps() const {
+        return _getBoolVal("start_on_1pps");
+    }
+
     /**
      * Validate that all metadata values required for product generation 
      * have been set.
