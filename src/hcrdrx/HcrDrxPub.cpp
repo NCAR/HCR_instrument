@@ -81,24 +81,10 @@ static const ptime Epoch1970(boost::gregorian::date(1970, 1, 1), time_duration(0
 bool
 HcrDrxPub::_configIsValid() const {
     bool valid = true;
-    // gate count must be in the interval [1,511]
-    if (_nGates < 1 || _nGates > 511) {
+    // gate count must be in the interval [1,2047]
+    if (_nGates < 1 || _nGates > 2047) {
       ELOG << "gates is " << _nGates <<
-        "; it must be greater than 0 and less than 512.";
-      valid = false;
-    }
-    // PRT must be a multiple of the pulse width
-    if (_sd3c.prtCounts() % _sd3c.txPulseWidthCounts()) {
-      ELOG  << "PRT is " << _sd3c.prt() << " (" << 
-        _sd3c.prtCounts() << ") and pulse width is " << 
-        _sd3c.txPulseWidth() << 
-        " (" << _sd3c.txPulseWidthCounts() << 
-        "): PRT must be an integral number of pulse widths.";
-      valid = false;
-    }
-    // PRT must be longer than (gates + 1) * pulse width
-    if (_sd3c.prtCounts() <= ((_nGates + 1) * _sd3c.txPulseWidthCounts())) {
-      ELOG << "PRT must be greater than (gates+1)*(pulse width).";
+        "; it must be greater than 0 and less than 2048.";
       valid = false;
     }
     // DDC type must be 8
@@ -108,7 +94,7 @@ HcrDrxPub::_configIsValid() const {
         ", but HCR requires that it be DDC8DECIMATE.";
       valid = false;
     }
-    return valid;
+    return(valid);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
