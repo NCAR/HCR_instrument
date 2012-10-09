@@ -23,13 +23,17 @@ public:
     HcrDrxConfig(std::string configFile);
     virtual ~HcrDrxConfig();
 
+    /// radar name
+    std::string radar_id() const {
+        return _getStringVal("radar_id");
+    }
+    /// calibration file name
+    std::string calibration_file() const {
+        return _getStringVal("calibration_file");
+    }
     /// number of gates
     int gates() const { 
         return _getIntVal("gates"); 
-    }
-    /// radar name
-    std::string radar_id() const { 
-        return _getStringVal("radar_id");
     }
     /** 
      * Staggered PRT? 
@@ -38,13 +42,6 @@ public:
     int staggered_prt() const {
         return _getBoolVal("staggered_prt");
     }
-    /** 
-     * Polarization-diversity pulse pair?
-     * @ return 0 if false, 1 if true, or UNSET_BOOL if unset
-     */
-    int pdpp() const { 
-        return _getBoolVal("pdpp");
-    }
     /// first PRT, s
     double prt1() const {
         return _getDoubleVal("prt1");
@@ -52,18 +49,6 @@ public:
     /// second PRT, s
     double prt2() const {
         return _getDoubleVal("prt2");
-    }
-    /// peak transmit power, kW
-    double tx_peak_power() const {
-        return _getDoubleVal("tx_peak_power");
-    }
-    /// center transmit frequency, Hz
-    double tx_cntr_freq() const {
-        return _getDoubleVal("tx_cntr_freq");
-    }
-    /// transmit chirp bandwidth, Hz
-    double tx_chirp_bandwidth() const {
-        return _getDoubleVal("tx_chirp_bandwidth");
     }
     /// transmit pulse delay, s
     double tx_delay() const {
@@ -81,69 +66,54 @@ public:
     double tx_pulse_mod_width() const {
         return _getDoubleVal("tx_pulse_mod_width");
     }
+    /// @brief transmitter latency, s
+    ///
+    /// Return the transmitter latency, the time between rising edge of the
+    /// transmit trigger pulse and actual generation of the RF pulse.
+    double tx_latency() const {
+        return _getDoubleVal("tx_latency");
+    }
 
     ///////////////////////////////////////////////////
     /// IWRF TCP output
 
-    /// size of queue buffers for pulse merging for IWRF
+    /// @brief size of queue buffers for pulse merging for IWRF
     int merge_queue_size() const {
         return _getIntVal("merge_queue_size");
     }
-    /// TCP port for IWRF data server
+    /// @brief TCP port for IWRF data server
     int iwrf_server_tcp_port() const {
         return _getIntVal("iwrf_server_tcp_port");
     }
-    /// How often do we send IWRF meta data?
+    /// @brief How often do we send IWRF meta data?
     int pulse_interval_per_iwrf_meta_data() const {
       return _getIntVal("pulse_interval_per_iwrf_meta_data");
     }
 
-    // @TODO End-of-line comments below are not working correctly in doxygen. Change to pre-comments.
-    double tx_switching_network_loss() const { return _getDoubleVal("tx_switching_network_loss"); }  /// dB
-    double tx_waveguide_loss() const { return _getDoubleVal("tx_waveguide_loss"); }      /// dB
-    double tx_peak_pwr_coupling() const { return _getDoubleVal("tx_peak_pwr_coupling"); }        /// dB
-    double tx_upconverter_latency() const { return _getDoubleVal("tx_upconverter_latency"); }    /// seconds
-    
-    double ant_gain() const { return _getDoubleVal("ant_gain"); }                    /// dB
-    double ant_hbeam_width() const { return _getDoubleVal("ant_hbeam_width"); }      /// degrees
-    double ant_vbeam_width() const { return _getDoubleVal("ant_vbeam_width"); }      /// degrees
-    double ant_E_plane_angle() const { return _getDoubleVal("ant_E_plane_angle"); }  /// degrees
-    double ant_H_plane_angle() const { return _getDoubleVal("ant_H_plane_angle"); }  /// degrees
-    double ant_encoder_up() const { return _getDoubleVal("ant_encoder_up"); }        /// degrees
-    double ant_pitch_up() const { return _getDoubleVal("ant_pitch_up"); }            /// degrees
-
-    int actual_num_rcvrs() const { return _getIntVal("actual_num_rcvrs"); }     /// number of channels
-    double rcvr_bandwidth() const { return _getDoubleVal("rcvr_bandwidth"); }   /// Hz
-    double rcvr_cntr_freq() const { return _getDoubleVal("rcvr_cntr_freq"); }        /// Hz
-    double rcvr_pulse_width() const { return _getDoubleVal("rcvr_pulse_width"); }    /// seconds
-    double rcvr_switching_network_loss() const { return _getDoubleVal("rcvr_switching_network_loss"); }  /// dB
-    double rcvr_waveguide_loss() const { return _getDoubleVal("rcvr_waveguide_loss"); }      /// dB
-    double rcvr_noise_figure() const { return _getDoubleVal("rcvr_noise_figure"); }          /// dB
-    double rcvr_filter_mismatch() const { return _getDoubleVal("rcvr_filter_mismatch"); }    /// dB
-    double rcvr_rf_gain() const { return _getDoubleVal("rcvr_rf_gain"); }                  /// dB
-    double rcvr_if_gain() const { return _getDoubleVal("rcvr_if_gain"); }            /// dB
-    double rcvr_digital_gain() const { return _getDoubleVal("rcvr_digital_gain"); }  /// dB
-    double rcvr_gate0_delay() const { return _getDoubleVal("rcvr_gate0_delay"); }    /// seconds
+    /// @brief Digitizer sample width, s
+    double digitizer_sample_width() const { return _getDoubleVal("digitizer_sample_width"); }
+    /// @brief Digitizer delay before sampling the first gate, s
+    double digitizer_gate0_delay() const { return _getDoubleVal("digitizer_gate0_delay"); }
 
     /// Return the range to the center of gate 0, in meters
     /// @return the range to the center of gate 0, in meters
-    double range_to_gate0() const { return _getDoubleVal("range_to_gate0"); }
+    double range_to_gate0() const;
 
-    /// location
-
-    double latitude() const { return _getDoubleVal("latitude"); }    /// degrees
-    double longitude() const { return _getDoubleVal("longitude"); }  /// degrees
-    double altitude() const { return _getDoubleVal("altitude"); }    /// meters MSL
+    /// @brief radar latitude, degrees
+    double latitude() const { return _getDoubleVal("latitude"); }
+    /// @brief radar longitude, degrees
+    double longitude() const { return _getDoubleVal("longitude"); }
+    /// @brief radar altitude, m MSL
+    double altitude() const { return _getDoubleVal("altitude"); }
     
-    int ddcType() const { return _getIntVal("ddc_type"); } /// 4 or 8
-    
-    // iqcount_scale_for_mw: count scaling factor to easily get power in mW from
-    // I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
-    // mW is:
-    //
-    //      (I / iqcount_scale_for_mw)^2 + (Q / iqcount_scale_for_mw)^2
-    //
-    // This value is determined empirically.
+    /// @brief Count scaling factor to easily get power in mW from I and Q.
+    ///
+    /// If I and Q are counts from the Pentek, the power at the A/D in
+    /// mW is:
+    ///
+    ///      (I / iqcount_scale_for_mw)^2 + (Q / iqcount_scale_for_mw)^2
+    ///
+    /// This value is determined empirically.
     double iqcount_scale_for_mw() const {
         return _getDoubleVal("iqcount_scale_for_mw");
     }

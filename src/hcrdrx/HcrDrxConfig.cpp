@@ -27,36 +27,13 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     std::set<std::string> keys;
     keys.insert("prt1");
     keys.insert("prt2");
-    keys.insert("tx_peak_power");
-    keys.insert("tx_cntr_freq");
-    keys.insert("tx_chirp_bandwidth");
     keys.insert("tx_delay");
+    keys.insert("tx_latency");
     keys.insert("tx_pulse_width");
     keys.insert("tx_pulse_mod_delay");
     keys.insert("tx_pulse_mod_width");
-    keys.insert("tx_switching_network_loss");
-    keys.insert("tx_waveguide_loss");
-    keys.insert("tx_peak_pwr_coupling");
-    keys.insert("tx_upconverter_latency");
-    keys.insert("ant_gain");
-    keys.insert("ant_hbeam_width");
-    keys.insert("ant_vbeam_width");
-    keys.insert("ant_E_plane_angle");
-    keys.insert("ant_H_plane_angle");
-    keys.insert("ant_encoder_up");
-    keys.insert("ant_pitch_up");
-    keys.insert("rcvr_bandwidth");
-    keys.insert("rcvr_cntr_freq");
-    keys.insert("rcvr_digital_gain");
-    keys.insert("rcvr_filter_mismatch");
-    keys.insert("rcvr_gate0_delay");
-    keys.insert("range_to_gate0");
-    keys.insert("rcvr_if_gain");
-    keys.insert("rcvr_noise_figure");
-    keys.insert("rcvr_pulse_width");
-    keys.insert("rcvr_rf_gain");
-    keys.insert("rcvr_switching_network_loss");
-    keys.insert("rcvr_waveguide_loss");
+    keys.insert("digitizer_gate0_delay");
+    keys.insert("digitizer_sample_width");
     keys.insert("latitude");
     keys.insert("longitude");
     keys.insert("altitude");
@@ -72,8 +49,6 @@ std::set<std::string> HcrDrxConfig::_IntLegalKeys(_createIntLegalKeys());
 std::set<std::string> HcrDrxConfig::_createIntLegalKeys() {
     std::set<std::string> keys;
     keys.insert("gates");
-    keys.insert("actual_num_rcvrs");
-    keys.insert("ddc_type");
     keys.insert("merge_queue_size");
     keys.insert("iwrf_server_tcp_port");
     keys.insert("pulse_interval_per_iwrf_meta_data");
@@ -86,7 +61,6 @@ std::set<std::string> HcrDrxConfig::_BoolLegalKeys(_createBoolLegalKeys());
 std::set<std::string> HcrDrxConfig::_createBoolLegalKeys() {
     std::set<std::string> keys;
     keys.insert("staggered_prt");
-    keys.insert("pdpp");
     keys.insert("simulate_antenna_angles");
     keys.insert("simulate_pmc730");
     keys.insert("start_on_1pps");
@@ -98,6 +72,7 @@ std::set<std::string> HcrDrxConfig::_StringLegalKeys(_createStringLegalKeys());
 std::set<std::string> HcrDrxConfig::_createStringLegalKeys() {
     std::set<std::string> keys;
     keys.insert("radar_id");
+    keys.insert("calibration_file");
     return keys;
 }
 
@@ -158,9 +133,6 @@ HcrDrxConfig::HcrDrxConfig(std::string configFile) {
             break;
         // Trim comments and leading and trailing space from the line
         line = trimmedString(line);
-//        // Skip empty lines and comment lines beginning with '#'
-//        if (! line.length() || line[0] == '#')
-//            continue;
         // If there's nothing left, move to the next line
         if (! line.length())
             continue;
@@ -207,24 +179,19 @@ HcrDrxConfig::~HcrDrxConfig() {
 bool
 HcrDrxConfig::isValid(bool verbose) const {
     bool valid = true;
+    if (radar_id() == UNSET_STRING) {
+        if (verbose)
+            std::cerr << "'radar_id' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (calibration_file() == UNSET_STRING) {
+        if (verbose)
+            std::cerr << "'calibration_file' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
     if (gates() == UNSET_INT) {
         if (verbose)
             std::cerr << "'gates' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (ant_gain() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'ant_gain' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (ant_hbeam_width() == UNSET_INT) {
-        if (verbose)
-            std::cerr << "'ant_hbeam_width' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (ant_vbeam_width() == UNSET_INT) {
-        if (verbose)
-            std::cerr << "'ant_vbeam_width' unset in DRX configuration" << std::endl;
         valid = false;
     }
     if (staggered_prt() == UNSET_BOOL) {
@@ -237,54 +204,20 @@ HcrDrxConfig::isValid(bool verbose) const {
             std::cerr << "'prt1' unset in DRX configuration" << std::endl;
         valid = false;
     }
-    if (rcvr_bandwidth() == UNSET_DOUBLE) {
+    if (staggered_prt() == 1 && prt2() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'rcvr_bandwidth' unset in DRX configuration" << std::endl;
+            std::cerr << "'prt2' unset in DRX configuration when "
+                "'staggered_prt' is true" << std::endl;
         valid = false;
     }
-    if (rcvr_digital_gain() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'rcvr_digital_gain' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (rcvr_filter_mismatch() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'rcvr_filter_mismatch' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (rcvr_gate0_delay() == UNSET_DOUBLE) {
+    if (digitizer_gate0_delay() == UNSET_DOUBLE) {
         if (verbose)
             std::cerr << "'rcvr_gate0_delay' unset in DRX configuration" << std::endl;
         valid = false;
     }
-    if (range_to_gate0() == UNSET_DOUBLE) {
+    if (digitizer_sample_width() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'range_to_gate0' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (rcvr_noise_figure() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'rcvr_noise_figure' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (rcvr_pulse_width() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'rcvr_pulse_width' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (rcvr_rf_gain() == UNSET_INT) {
-        if (verbose)
-            std::cerr << "'rcvr_rf_gain' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (tx_cntr_freq() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'tx_cntr_freq' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (tx_peak_power() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'tx_peak_power' unset in DRX configuration" << std::endl;
+            std::cerr << "'digitizer_sample_width' unset in DRX configuration" << std::endl;
         valid = false;
     }
     if (tx_pulse_width() == UNSET_DOUBLE) {
@@ -292,15 +225,14 @@ HcrDrxConfig::isValid(bool verbose) const {
             std::cerr << "'tx_pulse_width' unset in DRX configuration" << std::endl;
         valid = false;
     }
-    if (tx_pulse_width() != rcvr_pulse_width()) {
-    	if (verbose)
-    		std::cerr << "'rcvr_pulse_width' must be the same as " <<
-    			"'tx_pulse_width' for HCR" << std::endl;
-    		valid = false;
-    }
     if (tx_delay() == UNSET_DOUBLE) {
         if (verbose)
             std::cerr << "'tx_delay' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (tx_latency() == UNSET_DOUBLE) {
+        if (verbose)
+            std::cerr << "'tx_latency' unset in DRX configuration" << std::endl;
         valid = false;
     }
     if (tx_pulse_mod_delay() == UNSET_DOUBLE) {
@@ -318,7 +250,6 @@ HcrDrxConfig::isValid(bool verbose) const {
             std::cerr << "'iqcount_scale_for_mw' unset in DRX configuration" << std::endl;
         valid = false;
     }
-    
     if (merge_queue_size() == UNSET_INT) {
         if (verbose)
             std::cerr << "'merge_queue_size' not set" << std::endl;
@@ -334,6 +265,37 @@ HcrDrxConfig::isValid(bool verbose) const {
             std::cerr << "'pulse_interval_per_iwrf_meta_data' not set" << std::endl;
         valid = false;
     }
+    if (simulate_antenna_angles() == UNSET_BOOL) {
+        if (verbose)
+            std::cerr << "'simulate_antenna_angles' unset in DRX configuration" << std::endl;
+        valid = false;
+    }
+    if (simulate_antenna_angles() == 1) {
+        if (sim_n_elev() == UNSET_INT) {
+            if (verbose)
+                std::cerr << "'simulate_antenna_angles' is true, but "
+                    "'sim_n_elev' is unset in DRX configuration" << std::endl;
+            valid = false;
+        }
+        if (sim_start_elev() == UNSET_DOUBLE) {
+            if (verbose)
+                std::cerr << "'simulate_antenna_angles' is true, but "
+                    "'sim_start_elev' is unset in DRX configuration" << std::endl;
+            valid = false;
+        }
+        if (sim_delta_elev() == UNSET_DOUBLE) {
+            if (verbose)
+                std::cerr << "'simulate_antenna_angles' is true, but "
+                    "'sim_delta_elev' is unset in DRX configuration" << std::endl;
+            valid = false;
+        }
+        if (sim_az_rate() == UNSET_DOUBLE) {
+            if (verbose)
+                std::cerr << "'simulate_antenna_angles' is true, but "
+                    "'sim_az_rate' is unset in DRX configuration" << std::endl;
+            valid = false;
+        }
+    }
     if (start_on_1pps() == UNSET_BOOL) {
         if (verbose)
             std::cerr << "'start_on_1pps' unset in DRX configuration" << std::endl;
@@ -341,4 +303,14 @@ HcrDrxConfig::isValid(bool verbose) const {
     }
 
     return valid;
+}
+
+double
+HcrDrxConfig::range_to_gate0() const {
+//    const double SpeedOfLight = 2.9979245e8; // m/s
+//    double gateSpacing = 0.5 * SpeedOfLight * digitizer_sample_width();
+//    return(digitizer_gate0_delay() - tx_delay() - tx_latency() + 0.5 * gateSpacing);
+	// For now, just return 0.0
+	// @TODO Come up with a better solution. 
+	return(0.0);
 }
