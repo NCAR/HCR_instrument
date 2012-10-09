@@ -6,6 +6,7 @@
 #include "PulseData.h"
 #include "HcrMonitor.h"
 #include <radar/iwrf_data.h>
+#include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
 #include <QThread>
 #include <boost/thread/mutex.hpp>
@@ -130,7 +131,7 @@ private:
   int64_t _packetSeqNum;
   iwrf_radar_info_t _radarInfo;
   iwrf_ts_processing_t _tsProc;
-  iwrf_calibration_t _calib;
+  IwrfCalib _calib;
   iwrf_scan_segment_t _simScan;
   iwrf_pulse_header_t _pulseHdr;
 

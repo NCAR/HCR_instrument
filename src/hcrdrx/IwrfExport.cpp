@@ -7,6 +7,7 @@
 #include <iostream>
 #include <iomanip>
 #include <radar/iwrf_functions.hh>
+#include <radar/IwrfCalib.hh>
 #include <toolsa/pmu.h>
 #include <toolsa/uusleep.h>
 #include <toolsa/TaXml.hh>
@@ -44,8 +45,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   _nGates = 0;
   _pulseBuf = NULL;
   _iq = NULL;
-  _pulseIntervalPerIwrfMetaData =
-    config.pulse_interval_per_iwrf_meta_data();
+  _pulseIntervalPerIwrfMetaData = config.pulse_interval_per_iwrf_meta_data();
   _pulseBufLen = 0;
   _pulseMsgLen = 0;
 
@@ -70,6 +70,16 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   _prevTimeSecs = 0;
   _prevNanoSecs = 0;
 
+  // initialize IWRF calibration struct from the calibration file defined in
+  // the config
+
+  std::string errStr;
+  if (_calib.readFromXmlFile(_config.calibration_file(), errStr) != 0) {
+      ELOG << "Error reading calibration file '" <<
+              _config.calibration_file() << "': " << errStr;
+      abort();
+  }
+
   // initialize IWRF radar_info struct from config
 
   _packetSeqNum = 0;
@@ -79,14 +89,11 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   _radarInfo.longitude_deg = _config.longitude();
   _radarInfo.altitude_m = _config.altitude();
   _radarInfo.platform_type = IWRF_RADAR_PLATFORM_FIXED;
-  _radarInfo.beamwidth_deg_h = _config.ant_hbeam_width();
-  _radarInfo.beamwidth_deg_v = _config.ant_vbeam_width();
-  double freqHz = _config.tx_cntr_freq();
-  double lightSpeedMps = 2.99792458e8;
-  double wavelengthM = lightSpeedMps / freqHz;
-  _radarInfo.wavelength_cm = wavelengthM * 100.0;
-  _radarInfo.nominal_gain_ant_db_h = _config.ant_gain();
-  _radarInfo.nominal_gain_ant_db_v = _config.ant_gain();
+  _radarInfo.beamwidth_deg_h = _calib.getBeamWidthDegH();
+  _radarInfo.beamwidth_deg_v = _calib.getBeamWidthDegV();
+  _radarInfo.wavelength_cm = _calib.getWavelengthCm();
+  _radarInfo.nominal_gain_ant_db_h = _calib.getAntGainDbH();
+  _radarInfo.nominal_gain_ant_db_v = _calib.getAntGainDbV();
   strncpy(_radarInfo.radar_name, _config.radar_id().c_str(),
           IWRF_MAX_RADAR_NAME - 1);
 
@@ -104,25 +111,10 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   //   _tsProc.burst_range_offset_m =
   //     _config.burst_sample_delay() * lightSpeedMps / 2.0;
   _tsProc.pulse_width_us = _config.tx_pulse_width() * 1.0e6;
-  _tsProc.gate_spacing_m = _config.rcvr_pulse_width() * 1.5e8;
+  const double SpeedOfLight = 2.99792458e8; // m/s
+  _tsProc.gate_spacing_m = _config.digitizer_sample_width() * SpeedOfLight / 2;
   _tsProc.start_range_m = _config.range_to_gate0(); // center of gate 0
   _tsProc.pol_mode = IWRF_POL_MODE_H;
-
-  // initialize IWRF calibration struct from config
-
-  iwrf_calibration_init(_calib);
-  _calib.wavelength_cm = _radarInfo.wavelength_cm;
-  _calib.beamwidth_deg_h = _radarInfo.beamwidth_deg_h;
-  _calib.beamwidth_deg_v = _radarInfo.beamwidth_deg_v;
-  _calib.gain_ant_db_h = _radarInfo.nominal_gain_ant_db_h;
-  _calib.gain_ant_db_v = _radarInfo.nominal_gain_ant_db_v;
-  _calib.pulse_width_us = _config.tx_pulse_width() * 1.0e6;
-  _calib.xmit_power_dbm_h = _config.tx_peak_power();
-  _calib.xmit_power_dbm_v = 0.0;
-  _calib.two_way_waveguide_loss_db_h = _config.tx_waveguide_loss() + 3.0103;
-  _calib.two_way_waveguide_loss_db_v = _config.tx_waveguide_loss() + 3.0103;
-  _calib.power_meas_loss_db_h = _config.tx_peak_pwr_coupling();
-  _calib.power_meas_loss_db_v = _config.tx_peak_pwr_coupling();
 
   // initialize IWRF scan segment for simulation angles
 
@@ -449,9 +441,10 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.time_secs_utc = _timeSecs;
   _tsProc.packet.time_nano_secs = _nanoSecs;
 
-  _calib.packet.seq_num = _packetSeqNum++;
-  _calib.packet.time_secs_utc = _timeSecs;
-  _calib.packet.time_nano_secs = _nanoSecs;
+  iwrf_calibration_t calibStruct = _calib.getStruct();
+  calibStruct.packet.seq_num = _packetSeqNum++;
+  calibStruct.packet.time_secs_utc = _timeSecs;
+  calibStruct.packet.time_nano_secs = _nanoSecs;
 
   // write individual messages for each struct
 
@@ -471,7 +464,7 @@ int IwrfExport::_sendIwrfMetaData()
     return -1;
   }
   
-  if (_sock && _sock->writeBuffer(&_calib, sizeof(_calib))) {
+  if (_sock && _sock->writeBuffer(&calibStruct, sizeof(calibStruct))) {
     cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
     cerr << "  Writing IWRF_CALIBRATION" << endl;
     cerr << "  " << _sock->getErrStr() << endl;
