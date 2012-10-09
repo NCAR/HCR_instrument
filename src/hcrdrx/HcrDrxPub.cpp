@@ -41,8 +41,8 @@ HcrDrxPub::HcrDrxPub(
 
     // Create our associated downconverter.
     _down = sd3c.addDownconverter(_chanId, 4 * 512 * 1024, false, tsLength,
-        config.rcvr_gate0_delay(), config.rcvr_pulse_width(), gaussianFile, 
-        kaiserFile, simWavelength);
+        config.digitizer_gate0_delay(), config.digitizer_sample_width(),
+        gaussianFile, kaiserFile, simWavelength);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
