@@ -45,7 +45,7 @@ entity main_src is
 				RX_GATE : in  STD_LOGIC;  							
 					
 --			Pentek Timing Signals (Connector PN 4)
-				EXT_CLK : in  STD_LOGIC;	-- 15.625 MHz clock; 125 MHz/8
+				EXT_CLK : in  STD_LOGIC;	-- 62.5 MHz clock; 125 MHz/2
 				T0 : in  STD_LOGIC;						
 				MOD_PULSE : in  STD_LOGIC;			 	
 				SYNC_PULSE : in  STD_LOGIC;	  				
@@ -121,12 +121,12 @@ architecture Behavioral of main_src is
 signal radar_pwr_ok : STD_LOGIC;
 signal ems_pwr_ok : STD_LOGIC; 
 signal hv_dly : STD_LOGIC;
-signal hv_count : STD_LOGIC_VECTOR(23 downto 0);
+signal hv_count : STD_LOGIC_VECTOR(25 downto 0);
 signal count_enable : STD_LOGIC;
 signal tx_dly : STD_LOGIC;									-- Delay before reading EMS BIT on transmit
-signal ems_tx_count : STD_LOGIC_VECTOR(2 downto 0);
+signal ems_tx_count : STD_LOGIC_VECTOR(4 downto 0);
 signal rx_dly : STD_LOGIC;									-- Delay before reading EMS BIT on receive
-signal ems_rx_count : STD_LOGIC_VECTOR(2 downto 0);
+signal ems_rx_count : STD_LOGIC_VECTOR(4 downto 0);
 signal l_ems_trig : STD_LOGIC;							-- Latched EMS_TRIG signal
 signal ems_tx_count_enable : STD_LOGIC;
 signal ems_rx_count_enable : STD_LOGIC;
@@ -333,20 +333,20 @@ end process;
 DELAY_1SEC: process (EXT_CLK, RESET_730, HV_ON_730)
 begin 
 	if (RESET_730 = '1') then
-      hv_count <= "000000000000000000000000";
+      hv_count <= "00000000000000000000000000";
 		hv_dly <= '0';
 		count_enable <= '1';	
    elsif (rising_edge (EXT_CLK)) then				
 		if (HV_ON_730 = '0') then
-			if(hv_count = "111100000000000000000000") then -- ~1sec delay
-				hv_count <= "000000000000000000000000";
+			if(hv_count = "11110000000000000000000000") then -- ~1sec delay
+				hv_count <= "00000000000000000000000000";
 				count_enable <= '0';
 				hv_dly <= '1';
 			elsif (count_enable = '1') then	
 				hv_count <= hv_count + 1;
 			end if;
 		else	
-				hv_count <= "000000000000000000000000";
+				hv_count <= "00000000000000000000000000";
 				hv_dly <= '0';
 				count_enable <= '1';
 		end if;
@@ -379,18 +379,18 @@ end process;
 EMS_TX_DELAY: process (EXT_CLK, RESET_730, ems_tx_count_enable)
 begin 
 	if (RESET_730 = '1') then
-      ems_tx_count <= "000";
+      ems_tx_count <= "00000";
 		tx_dly <= '0';	
    elsif (rising_edge (EXT_CLK)) then				
 		if (ems_tx_count_enable = '1') then
-			if(ems_tx_count = "100") then 
-				ems_tx_count <= "000";
+			if(ems_tx_count = "10101") then 
+				ems_tx_count <= "00000";
 				tx_dly <= '1';
 			else
 				ems_tx_count <= ems_tx_count + 1;
 			end if;
 		else	
-				ems_tx_count <= "000";
+				ems_tx_count <= "00000";
 				tx_dly <= '0';
 		end if;
 	end if;
@@ -400,18 +400,18 @@ end process;
 EMS_RX_DELAY: process (EXT_CLK, RESET_730, ems_rx_count_enable)
 begin 
 	if (RESET_730 = '1') then
-      ems_rx_count <= "000";
+      ems_rx_count <= "00000";
 		rx_dly <= '0';	
    elsif (rising_edge (EXT_CLK)) then				
 		if (ems_rx_count_enable = '1') then
-			if(ems_rx_count = "100") then 
-				ems_rx_count <= "000";
+			if(ems_rx_count = "10101") then 
+				ems_rx_count <= "00000";
 				rx_dly <= '1';
 			else
 				ems_rx_count <= ems_rx_count + 1;
 			end if;
 		else	
-				ems_rx_count <= "000";
+				ems_rx_count <= "00000";
 				rx_dly <= '0';
 		end if;
 	end if;

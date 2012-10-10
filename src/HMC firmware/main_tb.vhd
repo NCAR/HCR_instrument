@@ -162,7 +162,7 @@ ARCHITECTURE behavior OF main_tb IS
 	signal SPARE7 : std_logic;		-- debug test signal
 	-- Inouts 
      -- Clock period definitions
-  constant EXT_CLK_period : time := 32 ns; -- clock period/2, clock is 15.625MHz,
+  constant EXT_CLK_period : time := 8 ns; -- clock period/2, clock is 62.5MHz,
 
 -- Simulation based on 101376 ns PRT, 256 ns Tx pulsewidth
 
