@@ -10,7 +10,6 @@
 
 #include <string>
 #include <stdint.h>
-#include "CmigitsStatus.h"
 
 class Cmigits {
 public:
@@ -26,16 +25,16 @@ public:
     virtual ~Cmigits();
     
     /**
-     * @brief Get current status values from the C-MIGITS.
-     */
-    CmigitsStatus getStatus();
-    
-    /**
      * Device name to use when creating a simulation Cmigits.
      */
     static const std::string SIM_DEVICE;
 
 private:
+    /**
+     * C-MIGITS III message sync word
+     */
+    static const uint16_t MESSAGE_SYNC_WORD = 0x81ff;
+
     /**
      * Open and configure our tty connection to the C-MIGITS
      */
@@ -62,6 +61,9 @@ private:
     
     /// File descriptor for the open serial port
     int _fd;
+    
+    /// Private thread to which this object's thread affinity is assigned
+    QThread _myThread;
 };
 
 #endif /* CMIGITS_H_ */
