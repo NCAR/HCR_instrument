@@ -2,8 +2,10 @@
 # Rules to build libcmigits.a and export it as a SCons tool
 #
 
-tools = ['doxygen', 'logx']
+tools = ['doxygen', 'logx', 'qt4']
 env = Environment(tools=['default'] + tools)
+env.EnableQt4Modules(['QtCore'])
+
 
 tooldir = env.Dir('.').srcnode().abspath    # this directory
 
@@ -26,10 +28,10 @@ Default(lib)
 
 html = env.Apidocs(sources + headers, DOXYFILE_DICT={'PROJECT_NAME':'cmigits'})
 Default(html)
-    
+
 def cmigits(env):
-    env.Require(tools)
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
+    env.Require(tools)
 
 Export('cmigits')
