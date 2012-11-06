@@ -10,12 +10,16 @@
 
 #include <string>
 #include <stdint.h>
+#include <QMutex>
+#include <QThread>
 
-class Cmigits {
+
+class Cmigits : public QObject {
+    Q_OBJECT
 public:
     /**
-     * @brief Construct a Cmigits providing access to the C-MIGITS III on the 
-     * given serial port.
+     * @brief Construct a Cmigits providing access to the C-MIGITS III on 
+     * the given serial port.
      * 
      * If special serial port name Cmigits::SIM_DEVICE
      * is used, existence of the C-MIGITS will be simulated.
@@ -28,31 +32,73 @@ public:
      * Device name to use when creating a simulation Cmigits.
      */
     static const std::string SIM_DEVICE;
-
+    
+signals:
+    /// Signal emitted when GPS validity changes
+    /// @param newValue boolean telling the new state of GPS validity
+    void gpsValidChanged(bool newValue);
+    /// Signal emitted when INS validity changes
+    /// @param newValue boolean telling the new state of INS validity
+    void insValidChanged(bool newValue);
+    /// Signal emitted when _doRead() is finished. This signal is intended
+    /// for internal use by the class.
+    void _readDone();
+private slots:
+    /**
+     * Read from the serial line until we get a complete message or we time out.
+     * Emit a _readDone() signal when finished.
+     */
+    void _doRead();
 private:
     /**
      * C-MIGITS III message sync word
      */
-    static const uint16_t MESSAGE_SYNC_WORD = 0x81ff;
+    static const uint16_t _MESSAGE_SYNC_WORD = 0x81ff;
 
-    /**
-     * Open and configure our tty connection to the C-MIGITS
-     */
+    /// @brief Open and configure our tty connection to the C-MIGITS
     void _openTty();
     
-    /**
-     * Send a command to the C-MIGITS.
-     */
-    void _sendCommand(uint8_t desiredState);
+    /// @brief Process data in the _rawData array
+    void _processRawData();
     
-    /**
-     * Wait for input on our file descriptor, with a timeout specified in
-     * milliseconds. 
-     * @return 0 when input is ready, -1 if the select timed out, -2 on
-     *      select error
-     */
-    int _readSelect(unsigned int timeoutMsecs);
+    /// @brief Process a C-MIGITS message. The message header checksum and
+    /// data checksum should already be verified.
+    /// @param msgWords pointer to the words of the message
+    /// @param nMsgWords number of 16-bit words in msgWords
+    void _processCmigitsMessage(const uint16_t * msgWords, 
+            uint16_t nMsgWords);
     
+    /// @brief Process a C-MIGITS 3500 message (System Status).
+    /// @param dataWords pointer to the words of the 3500 message
+    /// @param nDataWords the number of words in the 3500 message
+    void _process3500Message(const uint16_t * msgWords, uint16_t nMsgWords);
+    
+    /// @brief Process a C-MIGITS 3501 message (Navigation Solution).
+    /// @param dataWords pointer to the words of the 3501 message
+    /// @param nDataWords the number of words in the 3501 message
+    void _process3501Message(const uint16_t * msgWords, uint16_t nMsgWords);
+    
+    /// @brief Process a C-MIGITS 3623 message (Jupiter GPS Timemark).
+    /// @param dataWords pointer to the words of the 3623 message
+    /// @param nDataWords the number of words in the 3623 message
+    void _process3623Message(const uint16_t * msgWords, uint16_t nMsgWords);
+    
+    /// Calculate the C-MIGITS checksum for a given series of words
+    /// @param words pointer to the array of words to be checksummed
+    /// @param nwords number of words to include in the checksum
+    static uint16_t _CmigitsChecksum(uint16_t * words, int nwords);
+    
+    /// @brief Unpack a C-MIGITS 32-bit floating point value.
+    ///
+    /// The packed value is 32 bits, stored in little-endian byte order, with
+    /// sign in the most significant bit, and the remaining bits are a 
+    /// scaled value representing 31 bits to the right of a decimal point.
+    /// The final value is calculated by multiplying this scaled value by
+    /// 2^binaryScaling.
+    /// @param words pointer to the 32-bit data
+    /// @param binaryScaling the binary scaling to be used in unpacking
+    static float _UnpackFloat32(const uint16_t * words, uint16_t binaryScaling);
+
     /// Are we simulating?
     bool _simulate;
     
@@ -62,8 +108,52 @@ private:
     /// File descriptor for the open serial port
     int _fd;
     
-    /// Private thread to which this object's thread affinity is assigned
+    /// C-MIGITS header is 5 words (10 bytes) long
+    static const uint16_t _CMIGITS_HDR_LEN_BYTES = 10;
+    
+    /// Maximum C-MIGITS message length: 10-word header + maximum 128 data
+    /// words + 1-word data checksum = 139 words = 278 bytes.
+    static const uint16_t _CMIGITS_MAX_MSG_LEN_BYTES = 278;
+    
+    /// Data read but not yet processed
+    uint8_t _rawData[_CMIGITS_MAX_MSG_LEN_BYTES];
+    uint16_t _nRawBytes;
+    
+    /// How many bytes have we skipped so far looking for _MESSAGE_SYNC_WORD?
+    uint32_t _nSkippedForSync;
+    
+    /// Size of current incoming message
+    uint16_t _curMsgLenBytes;
+    
+    /// Message ID for current incoming message
+    uint16_t _curMsgId;
+    
+    /// Number of 16-bit data words in the current incoming message
+    uint16_t _curMsgDataLenWords;
+    
+    /// Thread where we'll do all the real work
     QThread _myThread;
+    
+    /// Mutex for thread safety when reading/writing members
+    QMutex _mutex;
+    
+    /// Does the C-MIGITS have GPS time and at least 4 satellites tracked?
+    bool _gpsValid;
+    
+    /// Is the C-MIGITS getting INS sensor data?
+    bool _insValid;
+    
+    /// Number of GPS satellites currently tracked
+    uint16_t _nSatsTracked;
+    
+    /// Expected horizontal position error, m
+    float _hPosError;
+    
+    /// Expected vertical position error, m
+    float _vPosError;
+    
+    /// Expected velocity error, m/s
+    float _velocityError;
 };
 
 #endif /* CMIGITS_H_ */
