@@ -11,6 +11,7 @@
 #include <string>
 #include <stdint.h>
 #include <QMutex>
+#include <QObject>
 #include <QThread>
 
 

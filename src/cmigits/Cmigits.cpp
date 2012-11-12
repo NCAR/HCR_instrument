@@ -62,9 +62,9 @@ Cmigits::Cmigits(std::string ttyDev) :
     moveToThread(&_myThread);
     
     // Start reading as soon as our thread is started
-    connect(&_myThread, SIGNAL(started()), this, SLOT(_doRead()));
+    connect(&_myThread, SIGNAL(started()), this, SLOT(_doRead()), Qt::QueuedConnection);
     // Make sure we queue a new read after each completed read.
-    connect(this, SIGNAL(_readDone()), this, SLOT(_doRead()));
+    connect(this, SIGNAL(_readDone()), this, SLOT(_doRead()), Qt::QueuedConnection);
     
     _myThread.start();
 }
@@ -303,15 +303,10 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     _insValid = insValid;
     
     _nSatsTracked = msgWords[11];
-    
-    int hFom = msgWords[14] & 0xf;
-    int vFom = (msgWords[14] & 0xf0) >> 4;
-    int tFom = (msgWords[14] & 0xf000) >> 12;
-    
+
     DLOG << "GPS: " << (_gpsValid ? "valid" : "not valid") << " (tracking " <<
             _nSatsTracked << " satellites), " <<
             "INS: " << (_insValid ? "valid" : "not valid");
-    DLOG << "FOM h: " << hFom << ", v: " << vFom << ", t: " << tFom;
 }
 
 void
@@ -350,6 +345,7 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     ELOG << "expected errors - hPos: " << _hPosError << " m, vPos: " <<
             _vPosError << " m, t: " << 0.01 * tErrorCm << 
             " m, _velocityError: " << _velocityError << " m/s";
+    ELOG << "Tracking " << msgWords[15] << " satellites";
 }
 
 float
