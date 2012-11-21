@@ -68,22 +68,33 @@ private:
     /// @param nMsgWords number of 16-bit words in msgWords
     void _processCmigitsMessage(const uint16_t * msgWords, 
             uint16_t nMsgWords);
+    /// @brief Process a C-MIGITS header-only message (Message Acknowledgment/
+    /// Acceptance).
+    /// @param msgWords pointer to the words of the header-only message.
+    /// The msgWords parameter must point to at least 5 words of valid data.
+    void _processHeaderOnlyMessage(const uint16_t * msgWords);
     
     /// @brief Process a C-MIGITS 3500 message (System Status).
-    /// @param dataWords pointer to the words of the 3500 message
-    /// @param nDataWords the number of words in the 3500 message
+    /// @param msgWords pointer to the words of the 3500 message
+    /// @param nMsgWords the number of words in the 3500 message
     void _process3500Message(const uint16_t * msgWords, uint16_t nMsgWords);
     
     /// @brief Process a C-MIGITS 3501 message (Navigation Solution).
-    /// @param dataWords pointer to the words of the 3501 message
-    /// @param nDataWords the number of words in the 3501 message
+    /// @param msgWords pointer to the words of the 3501 message
+    /// @param nMsgWords the number of words in the 3501 message
     void _process3501Message(const uint16_t * msgWords, uint16_t nMsgWords);
     
     /// @brief Process a C-MIGITS 3623 message (Jupiter GPS Timemark).
-    /// @param dataWords pointer to the words of the 3623 message
-    /// @param nDataWords the number of words in the 3623 message
+    /// @param msgWords pointer to the words of the 3623 message
+    /// @param nMsgWords the number of words in the 3623 message
     void _process3623Message(const uint16_t * msgWords, uint16_t nMsgWords);
     
+    /**
+     * @brief Start automatic mode sequencing. This causes the CMIGITS-III
+     * to "find itself", sequencing through alignment into navigation mode.
+     */
+    void _initialize();
+
     /// Calculate the C-MIGITS checksum for a given series of words
     /// @param words pointer to the array of words to be checksummed
     /// @param nwords number of words to include in the checksum
@@ -100,6 +111,14 @@ private:
     /// @param binaryScaling the binary scaling to be used in unpacking
     static float _UnpackFloat32(const uint16_t * words, uint16_t binaryScaling);
 
+    /// @brief Pack a floating point value into C-MIGITS 32-bit floating point
+    /// representation
+    /// at the given destination using the given binary scaling factor.
+    /// @param dest pointer to the destination for the packed value. This must
+    /// point to 4 writable bytes.
+    /// @param value the floating point value to be packed
+    /// @param binaryScaling the binary scaling factor to be used in packing
+    static void _PackFloat32(void * dest, float value, uint16_t binaryScaling);
     /// Are we simulating?
     bool _simulate;
     
@@ -109,8 +128,12 @@ private:
     /// File descriptor for the open serial port
     int _fd;
     
-    /// C-MIGITS header is 5 words (10 bytes) long
-    static const uint16_t _CMIGITS_HDR_LEN_BYTES = 10;
+    /// Have we sent an initialization message to the C-MIGITS yet?
+    bool _initialized;
+
+    /// C-MIGITS header is 5 words long
+    static const uint16_t _CMIGITS_HDR_LEN_WORDS = 5;
+    static const uint16_t _CMIGITS_HDR_LEN_BYTES = 2 * _CMIGITS_HDR_LEN_WORDS;
     
     /// Maximum C-MIGITS message length: 10-word header + maximum 128 data
     /// words + 1-word data checksum = 139 words = 278 bytes.
@@ -138,6 +161,18 @@ private:
     /// Mutex for thread safety when reading/writing members
     QMutex _mutex;
     
+    /// Current operating mode.
+    /// 1 = Test
+    /// 2 = Initialization
+    /// 3 = (Unused)
+    /// 4 = Fine Alignment
+    /// 5 = Air Alignment
+    /// 6 = Transfer Alignment
+    /// 7 = Air Navigation
+    /// 8 = Land Navigation
+    /// 9 = GPS Only
+    uint16_t _currentMode;
+
     /// Does the C-MIGITS have GPS time and at least 4 satellites tracked?
     bool _gpsValid;
     
