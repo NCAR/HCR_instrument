@@ -8,11 +8,15 @@
 #ifndef CMIGITS_H_
 #define CMIGITS_H_
 
+#include <map>
 #include <string>
 #include <stdint.h>
+#include <termios.h>
 #include <QMutex>
 #include <QObject>
 #include <QThread>
+#include <QTime>
+#include <QTimer>
 
 
 class Cmigits : public QObject {
@@ -28,13 +32,13 @@ public:
      */
     Cmigits(std::string ttyDev);
     virtual ~Cmigits();
-    
+
     /**
      * Device name to use when creating a simulation Cmigits.
      */
     static const std::string SIM_DEVICE;
-    
-signals:
+
+    signals:
     /// Signal emitted when GPS validity changes
     /// @param newValue boolean telling the new state of GPS validity
     void gpsValidChanged(bool newValue);
@@ -50,6 +54,12 @@ private slots:
      * Emit a _readDone() signal when finished.
      */
     void _doRead();
+    /**
+     * @brief This slot is called when we have waited too long to receive an
+     * accept/reject reply to a message we sent. The message will be sent
+     * again.
+     */
+    void _noHandshakeRcvd();
 private:
     /**
      * C-MIGITS III message sync word
@@ -58,10 +68,10 @@ private:
 
     /// @brief Open and configure our tty connection to the C-MIGITS
     void _openTty();
-    
+
     /// @brief Process data in the _rawData array
     void _processRawData();
-    
+
     /// @brief Process a C-MIGITS message. The message header checksum and
     /// data checksum should already be verified.
     /// @param msgWords pointer to the words of the message
@@ -73,33 +83,64 @@ private:
     /// @param msgWords pointer to the words of the header-only message.
     /// The msgWords parameter must point to at least 5 words of valid data.
     void _processHeaderOnlyMessage(const uint16_t * msgWords);
-    
+
     /// @brief Process a C-MIGITS 3500 message (System Status).
     /// @param msgWords pointer to the words of the 3500 message
     /// @param nMsgWords the number of words in the 3500 message
     void _process3500Message(const uint16_t * msgWords, uint16_t nMsgWords);
-    
+
     /// @brief Process a C-MIGITS 3501 message (Navigation Solution).
     /// @param msgWords pointer to the words of the 3501 message
     /// @param nMsgWords the number of words in the 3501 message
     void _process3501Message(const uint16_t * msgWords, uint16_t nMsgWords);
-    
+
     /// @brief Process a C-MIGITS 3623 message (Jupiter GPS Timemark).
     /// @param msgWords pointer to the words of the 3623 message
     /// @param nMsgWords the number of words in the 3623 message
     void _process3623Message(const uint16_t * msgWords, uint16_t nMsgWords);
-    
+
+    /// @brief Send a message with the given message id, and containing the
+    /// given data.
+    /// @param msgId the C-MIGITS message id for the message
+    /// @param dataWords a pointer to the data portion of the message.
+    /// @param nDataWords the number of 16-bit words contained in dataWords
+    void _sendMessage(uint16_t msgId, const uint16_t * dataWords, uint16_t nWords);
+
     /**
      * @brief Start automatic mode sequencing. This causes the CMIGITS-III
      * to "find itself", sequencing through alignment into navigation mode.
      */
     void _initialize();
 
-    /// Calculate the C-MIGITS checksum for a given series of words
+    /// @brief Set serial line speed to the given value, in hopes we will
+    /// find the right speed to talk to the C-MIGITS.
+    /// @param baudValue the speed_t desired baud rate value from termios.h:
+    //  B9600, B19200, B38400, B57600, or B115200.
+    void _setBaud(speed_t baudValue);
+
+    /// @brief Return the next legal baud value for the C-MIGITS after the
+    /// given value. The returned value is a speed_t from termios.h: B9600,
+    /// B19200, B38400, B57600, or B115200.
+    ///
+    /// The speed returned will be the next one higher than the one given unless
+    /// the given value is unknown or is B115200, in which case B9600 will
+    /// be returned.
+    /// @param baudValue the speed_t value from which to increment. This should
+    /// be a value from termios.h: B9600, B19200, B38400, B57600, or B115200.
+    static speed_t _NextBaud(speed_t baudValue);
+
+    /// @brief Return a text representation for a speed_t value from termios.h.
+    /// E.g., the string "B9600" will be returned for speed_t value B9600.
+    /// @param baudValue a speed_t value from termios.h: B9600, B19200, B38400,
+    /// B57600, or B115200.
+    /// @return a text representation for the given speed_t value.
+    static std::string _BaudToText(speed_t baudValue);
+
+    /// @brief Calculate the C-MIGITS checksum for a given series of words
     /// @param words pointer to the array of words to be checksummed
     /// @param nwords number of words to include in the checksum
-    static uint16_t _CmigitsChecksum(uint16_t * words, int nwords);
-    
+    static uint16_t _CmigitsChecksum(const uint16_t * words, uint16_t nwords);
+
     /// @brief Unpack a C-MIGITS 32-bit floating point value.
     ///
     /// The packed value is 32 bits, stored in little-endian byte order, with
@@ -119,48 +160,86 @@ private:
     /// @param value the floating point value to be packed
     /// @param binaryScaling the binary scaling factor to be used in packing
     static void _PackFloat32(void * dest, float value, uint16_t binaryScaling);
-    /// Are we simulating?
-    bool _simulate;
-    
-    /// Our serial port device name (may be SIM_DEVICE)
-    std::string _ttyDev;
-    
-    /// File descriptor for the open serial port
-    int _fd;
-    
-    /// Have we sent an initialization message to the C-MIGITS yet?
-    bool _initialized;
+
+    /// Initialization is a multi-stage process, driven by responses from the
+    /// C-MIGITS. This type enumerates the initialization phases.
+    typedef enum {
+        INIT_PreInit,           ///< waiting for first 3623 GPS Timemark Message
+        INIT_EnableInitMode,    ///< putting C-MIGITS into Initialize mode
+        INIT_SetRates,          ///< setting serial line and data message rates
+        INIT_SensorConfig,      ///< configuring sensor orientation
+        INIT_StartAutoNav,     ///< starting auto-navigation sequence
+        INIT_Complete           ///< initialization complete
+    } InitPhase;
 
     /// C-MIGITS header is 5 words long
     static const uint16_t _CMIGITS_HDR_LEN_WORDS = 5;
     static const uint16_t _CMIGITS_HDR_LEN_BYTES = 2 * _CMIGITS_HDR_LEN_WORDS;
-    
-    /// Maximum C-MIGITS message length: 10-word header + maximum 128 data
-    /// words + 1-word data checksum = 139 words = 278 bytes.
-    static const uint16_t _CMIGITS_MAX_MSG_LEN_BYTES = 278;
-    
+
+    /// Maximum C-MIGITS message length: 5-word header + maximum 128 data
+    /// words + 1-word data checksum = 134 words.
+    static const uint16_t _CMIGITS_MAX_MSG_LEN_WORDS = 134;
+    static const uint16_t _CMIGITS_MAX_MSG_LEN_BYTES = 2 * _CMIGITS_MAX_MSG_LEN_WORDS;
+
+    /// Static map of message id to message data length (in words) for message
+    /// types we may want to send.
+    static std::map<uint16_t, uint16_t> _MsgDataLenWords;
+
+    /// Static method used to initialize _MsgDataLenWords
+    static std::map<uint16_t, uint16_t> _CreateMsgDataLenWords();
+
+    /// Are we simulating?
+    bool _simulate;
+
+    /// Our serial port device name (may be SIM_DEVICE)
+    std::string _ttyDev;
+
+    /// Current baud rate for our device. This should always be one of the
+    /// speed_t values from termios.h: B9600, B19200, etc.
+    speed_t _currentBaud;
+
+    /// File descriptor for the open serial port
+    int _fd;
+
+    /// Where are we in the initialization?
+    InitPhase _initPhase;
+
+    /// When did we complete our initialization commands?
+    QDateTime _initCompleteTime;
+
     /// Data read but not yet processed
     uint8_t _rawData[_CMIGITS_MAX_MSG_LEN_BYTES];
     uint16_t _nRawBytes;
-    
+
     /// How many bytes have we skipped so far looking for _MESSAGE_SYNC_WORD?
     uint32_t _nSkippedForSync;
-    
+
     /// Size of current incoming message
     uint16_t _curMsgLenBytes;
-    
+
     /// Message ID for current incoming message
     uint16_t _curMsgId;
-    
+
     /// Number of 16-bit data words in the current incoming message
     uint16_t _curMsgDataLenWords;
-    
+
     /// Thread where we'll do all the real work
     QThread _myThread;
-    
+
     /// Mutex for thread safety when reading/writing members
     QMutex _mutex;
-    
+
+    /// @brief This member is normally -1, but will be set to a message id
+    /// value while we are awaiting handshake for that message id.
+    int16_t _awaitingHandshake;
+
+    /// @brief Count of consecutive rejections of the same command.
+    int16_t _rejectRetryCount;
+
+    /// @brief QTimer used to prevent waiting too long for message handshake
+    /// reply
+    QTimer  * _handshakeTimer;
+
     /// Current operating mode.
     /// 1 = Test
     /// 2 = Initialization
@@ -175,19 +254,19 @@ private:
 
     /// Does the C-MIGITS have GPS time and at least 4 satellites tracked?
     bool _gpsValid;
-    
+
     /// Is the C-MIGITS getting INS sensor data?
     bool _insValid;
-    
+
     /// Number of GPS satellites currently tracked
     uint16_t _nSatsTracked;
-    
+
     /// Expected horizontal position error, m
     float _hPosError;
-    
+
     /// Expected vertical position error, m
     float _vPosError;
-    
+
     /// Expected velocity error, m/s
     float _velocityError;
 };
