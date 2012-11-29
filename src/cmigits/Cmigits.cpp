@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <cmath>    // for fmod()
 #include <ctime>
 #include <unistd.h>
 #include <stdint.h>
@@ -24,32 +25,6 @@ LOGGING("Cmigits")
 
 // device name to use for simulated C-MIGITS
 const std::string Cmigits::SIM_DEVICE = "SimulatedCmigits";
-
-// map from message id to message data length
-std::map<uint16_t, uint16_t> Cmigits::_MsgDataLenWords = Cmigits::_CreateMsgDataLenWords();
-
-std::map<uint16_t, uint16_t>
-Cmigits::_CreateMsgDataLenWords() {
-    std::map<uint16_t, uint16_t> m;
-    // Below are the data sizes, in words, for each of the C-MIGITS
-    // message ids. Note that Message 3 and Message 3512 have variable
-    // lengths, so are not included.
-    //
-    // Many of these messages can also be sent in header-only versions,
-    // with no data portion at all.
-    m[0] = 0;
-//    m[3] = ??;
-    m[3500] = 16;
-    m[3501] = 22;
-    m[3502] = 16;
-    m[3503] = 100;
-    m[3504] = 5;
-    m[3510] = 21;
-    m[3511] = 22;
-//    m[3512] = ??;
-    m[3623] = 117;
-    return(m);
-}
 
 Cmigits::Cmigits(std::string ttyDev) :
                 QObject(),
@@ -65,6 +40,7 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _awaitingHandshake(-1),
                 _rejectRetryCount(0),
                 _handshakeTimer(0),
+                _utcToGpsCorrection(-1),
                 _gpsValid(false),
                 _insValid(false),
                 _nSatsTracked(0),
@@ -388,11 +364,11 @@ void
 Cmigits::_processCmigitsMessage(const uint16_t * msgWords, uint16_t nMsgWords) {
     // Message ID is in word 1 of the message
     uint16_t msgId = msgWords[1];
-    // Header-only messages get separate processing. Other messages are
-    // processed based on message ID.
-    bool headerOnly = (nMsgWords == _CMIGITS_HDR_LEN_WORDS);
-    if (headerOnly) {
-        _processHeaderOnlyMessage(msgWords);
+    // Response (header-only) messages get separate processing. Other messages
+    // are processed based on message ID.
+    bool msgIsResponse = (nMsgWords == _CMIGITS_HDR_LEN_WORDS);
+    if (msgIsResponse) {
+        _processResponseMessage(msgWords);
     } else {
         switch (msgId) {
         case 3500:  // 3500: system status
@@ -403,6 +379,9 @@ Cmigits::_processCmigitsMessage(const uint16_t * msgWords, uint16_t nMsgWords) {
             break;
         case 3503:  // 3503: built-in-test results
             ILOG << "Got 3503 message with " << nMsgWords << " words";
+            break;
+        case 3512:  // 3512: flight control
+            _process3512Message(msgWords, nMsgWords);
             break;
         case 3623:  // 3623:
             _process3623Message(msgWords, nMsgWords);
@@ -416,7 +395,7 @@ Cmigits::_processCmigitsMessage(const uint16_t * msgWords, uint16_t nMsgWords) {
 }
 
 void
-Cmigits::_processHeaderOnlyMessage(const uint16_t * msgWords) {
+Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     uint16_t msgId = msgWords[1];
     uint16_t flags = msgWords[3];
     bool handshake = flags & (1 << 9);
@@ -504,9 +483,10 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         return;
     }
 
+    double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
+
     // current mode
     _currentMode = msgWords[9];
-    ELOG << "mode " << _currentMode;
 
     // If the C-MIGITS is ever in Initialization mode more than 5 seconds after
     // we think we completed initialization, force the initialization process
@@ -538,13 +518,11 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     _nSatsTracked = msgWords[11];
 
-    DLOG << "GPS: " << (_gpsValid ? "valid" : "not valid") << " (tracking " <<
-            _nSatsTracked << " satellites), " <<
+    ILOG << "3500 time: " << utcSecondOfDay << ", mode: " << _currentMode <<
+            ", GPS: " << (_gpsValid ? "valid" : "not valid") <<
+            " (tracking " << _nSatsTracked << " sats), " <<
             "INS: " << (_insValid ? "valid" : "not valid");
 }
-
-/// @TODO Get rid of this! XXX
-static int __Count3501 = 0;
 
 void
 Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
@@ -556,6 +534,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         return;
     }
 
+    double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
     float lat = 180.0 * _UnpackFloat32(msgWords + 9, 0);
     float lon = 180.0 * _UnpackFloat32(msgWords + 11, 0);
     float alt = _UnpackFloat32(msgWords + 13, 15);
@@ -563,10 +542,41 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     float roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
     float heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
 
-    __Count3501++;
-    if (! (__Count3501 % 10)) {
-        ILOG << "lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
-                ", pitch: " << pitch << ", roll: " << roll << ", heading: " << heading;
+    uint16_t decisecond = round(10 * fmod(utcSecondOfDay, 1.0));
+    decisecond %= 10;
+    if (decisecond == 0) {
+         ILOG << "3501 time: " <<
+                 std::setprecision(10) << utcSecondOfDay << std::setprecision(6) <<
+                 ", lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
+                 ", pitch: " << pitch << ", roll: " << roll << ", heading: " << heading;
+    }
+}
+
+void
+Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
+    QMutexLocker locker(&_mutex);
+
+    // 3512 message length is variable, but we configure it to contain only
+    // attitude data (6 words), giving a total message length of 16 words.
+    if (nMsgWords != 16) {
+        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 21!";
+        return;
+    }
+
+    double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
+
+
+    float pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
+    float roll = 180.0 * _UnpackFloat32(msgWords + 11, 0);
+    float heading = 180.0 * _UnpackFloat32(msgWords + 13, 0);
+
+    int centisecond = round(fmod(utcSecondOfDay, 1.0) * 100);
+    centisecond %= 100;
+    if (centisecond == 0) {
+        ILOG << "3512 time: " <<
+                std::setprecision(10) << utcSecondOfDay << std::setprecision(6) <<
+                ", pitch: " << pitch <<
+                ", roll: " << roll << ", heading: " << heading;
     }
 }
 
@@ -580,19 +590,32 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         return;
     }
 
-    //    uint32_t hPosErrorCm = *(reinterpret_cast<const uint32_t *>(msgWords + 33));
-    //    _hPosError = 0.01 * hPosErrorCm;
-    //    uint32_t vPosErrorCm = *(reinterpret_cast<const uint32_t *>(msgWords + 35));
-    //    _vPosError = 0.01 * vPosErrorCm;
-    //    uint32_t tErrorCm = *(reinterpret_cast<const uint32_t *>(msgWords + 37));
-    //    _velocityError = 0.01 * msgWords[39];
-    //    ELOG << "expected errors - hPos: " << _hPosError << " m, vPos: " <<
-    //            _vPosError << " m, t: " << 0.01 * tErrorCm <<
-    //            " m, _velocityError: " << _velocityError << " m/s";
+    // Unpack both raw GPS time of week and UTC time of day in order to
+    // calculate _utcToGpsCorrection, which is used by _UnpackTimeTag()
+    double gpsSecondOfWeek = _UnpackFloat64(msgWords + 5, 20);
+    double utcSecondOfDay = _UnpackFloat64(msgWords + 9, 17);
+    // Calculate GPS second-of-day, dealing with day roll-over. We assume that
+    // GPS time is always *ahead* of UTC time, which will be true unless they
+    // start applying negative leap seconds...
+    double gpsSecondOfDay = fmod(gpsSecondOfWeek, 86400);
+    if (gpsSecondOfDay < utcSecondOfDay) {
+        gpsSecondOfDay += 86400;
+    }
+    // Calculate current leap seconds offset between UTC and GPS.
+    //
+    // We must be careful to round here, since the floating precision of
+    // gpsSecondOfWeek and utcSecondOfDay differ. We know the leap second
+    // difference will actually be an integer, so round to make sure we get
+    // the right value, rather than truncating 15.999999999 to 15!
+    _utcToGpsCorrection = round(gpsSecondOfDay - utcSecondOfDay);
+
     float lat = 180.0 * _UnpackFloat32(msgWords + 21, 0);
     float lon = 180.0 * _UnpackFloat32(msgWords + 23, 0);
     float alt = _UnpackFloat32(msgWords + 25, 15);
-    ILOG << "GPS lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
+    ILOG << "GPS time: " << gpsSecondOfWeek <<
+            ", UTC time: " << utcSecondOfDay <<
+            ", UTC to GPS: " << _utcToGpsCorrection <<
+            ", GPS lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
             " (" << msgWords[15] << " satellites)";
     // We can initialize any time after we get the first 3623 message.
     // (See "Commanded Initialization" in the C-MIGITS manual)
@@ -604,13 +627,63 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
 float
 Cmigits::_UnpackFloat32(const uint16_t * words, uint16_t binaryScaling) {
+    // Get the 32-bit packed value as int32_t
     int32_t packedVal;
     memcpy(&packedVal, words, 4);
-    float fraction = float(packedVal) / 0x80000000UL;
-    float floatVal = (1 << binaryScaling) * fraction;
-    return(floatVal);
+    // Apply the binary scaling factor to the packed value
+    float val = float(packedVal) / (1UL << (31 - binaryScaling));
+    return(val);
 }
 
+
+double
+Cmigits::_UnpackFloat64(const uint16_t * words, uint16_t binaryScaling) {
+    // int64_t to hold the 64-bit packed value
+    int64_t packedVal;
+    // Data in bytes is packed in order 43218765, where byte 1 is the
+    // most significant and byte 8 is the least significant. Copy the data into
+    // packedVal in little-endian order.
+    uint16_t* pPtr = reinterpret_cast<uint16_t *>(&packedVal);
+    memcpy(pPtr, words + 2, 4);
+    memcpy(pPtr + 2, words, 4);
+    // Apply the binary scaling factor to the packed value
+    double val = double(packedVal) / (1ULL << (63 - binaryScaling));
+    return(val);
+}
+
+
+// @TODO get rid of this!
+static double __LastTimeTag = 0.0;
+
+double
+Cmigits::_unpackTimeTag(const uint16_t * words) {
+    // Return -1 if we don't yet have the UTC to GPS correction value
+    if (_utcToGpsCorrection < 0) {
+        return -1;
+    }
+    // Time tag is GPS second of week
+    double gpsSecondOfWeek = _UnpackFloat64(words, 20);
+    // Convert to GPS second of day, then apply leap seconds correction to
+    // get UTC time of day
+    double utcSecondOfDay = fmod(gpsSecondOfWeek, 86400) - _utcToGpsCorrection;
+    // Correct when we're near the day boundary
+    if (utcSecondOfDay < 0) {
+        utcSecondOfDay += 86400;
+    }
+
+    double timeDiff = utcSecondOfDay - __LastTimeTag;
+    if (timeDiff < -43200) {
+        timeDiff += 86400;
+    }
+    if (timeDiff < 0) {
+        ILOG << "Time tag went backward by " << timeDiff << " from " <<
+                __LastTimeTag << " to " << utcSecondOfDay;
+
+    }
+    __LastTimeTag = utcSecondOfDay;
+
+    return(utcSecondOfDay);
+}
 
 void
 Cmigits::_PackFloat32(void * dest, float value, uint16_t binaryScaling) {
@@ -621,7 +694,7 @@ Cmigits::_PackFloat32(void * dest, float value, uint16_t binaryScaling) {
 
 void
 Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
-        uint16_t nDataWords) {
+        uint16_t nDataWords, bool setDisconnectBit, bool setConnectBit) {
     // Don't send a message if we're waiting for a handshake for a previous
     // message.
     if (_awaitingHandshake >= 0) {
@@ -638,15 +711,25 @@ Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
     uint16_t msgLenWords = 0;
 
     // Set up the message header, with request for acknowledgment and
-    // handshake.
+    // handshake. Add connect or disconnect bits that were passed in.
     msg[0] = _MESSAGE_SYNC_WORD;
+
     msg[1] = msgId;
+
     msg[2] = dataWords ? nDataWords : 0;    // data word count
-    msg[3] = 0;             // flags
+
+    if (setDisconnectBit) {
+        msg[3] |= (1 << 5); // flag: disconnect
+    }
+    if (setConnectBit) {
+        msg[3] |= (1 << 6); // flag: connect
+    }
     msg[3] |= (1 << 9);     // flag: handshake request
     msg[3] |= (1 << 12);    // flag: ACK request
     msg[3] |= (1 << 15);    // flag: ready
+
     msg[4] = _CmigitsChecksum(msg, 4);
+
     msgLenWords = _CMIGITS_HDR_LEN_WORDS;
 
     // Copy in the data
@@ -684,6 +767,16 @@ Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
 }
 
 void
+Cmigits::_sendDisconnectForMsg(uint16_t msgId) {
+    _sendMessage(msgId, 0, 0, true, false);
+}
+
+void
+Cmigits::_sendConnectForMsg(uint16_t msgId) {
+    _sendMessage(msgId, 0, 0, false, true);
+}
+
+void
 Cmigits::_initialize() {
     // Buffer for message data, initialized to zeros
     uint16_t data[_CMIGITS_MAX_MSG_LEN_WORDS];
@@ -713,13 +806,19 @@ Cmigits::_initialize() {
         // set the mode to 2 -> initialization mode
         data[1] = 2;        // mode: 2 -> initialization mode
 
-        _sendMessage(3510, data, _MsgDataLenWords[3510]);
+        _sendMessage(3510, data, 21);
+        break;
+    case INIT_EnableDefaultMsgs:
+        // Disconnect for message type 0 causes the C-MIGITS to revert to
+        // sending only the default messages.
+        _sendDisconnectForMsg(0);
         break;
     case INIT_SetRates:
         // Build and send a 3504 message to:
         //      1) set serial communication rate to 115200 bps
         //      2) request that the C-MIGITS generate 3512 (Flight Control)
         //         messages containing aircraft attitude at 100 Hz rate
+        //      3) include only attitude data in 3512 messages
 
         // set data validity bits
         data[0] |= (1 << 0);		// set host vehicle transmit baud rate
@@ -736,7 +835,7 @@ Cmigits::_initialize() {
         data[4] |= (1 << 8);		// send attitude in Message 3512
 
         // Send the 3504 message
-        _sendMessage(3504, data, _MsgDataLenWords[3504]);
+        _sendMessage(3504, data, 5);
         break;
     case INIT_SensorConfig:
         // Build a 3511 message to set the orientation of the C-MIGITS w.r.t.
@@ -758,7 +857,11 @@ Cmigits::_initialize() {
         _PackFloat32(&data[17], -1.0, 1);   // [2,2] = -1
 
         // Send the 3511 message
-        _sendMessage(3511, data, _MsgDataLenWords[3511]);
+        _sendMessage(3511, data, 22);
+        break;
+    case INIT_Enable3512:
+        // Tell the C-MIGITS to start sending 3512 (Flight Control) messages
+        _sendConnectForMsg(3512);
         break;
     case INIT_StartAutoNav:
         // Create a 3510 (Control and Initialization) message to enable
@@ -802,7 +905,7 @@ Cmigits::_initialize() {
         data[18] |= 1 << 8;	// initialize from GPS when GPS has position
 
         // Send the 3510 message
-        _sendMessage(3510, data, _MsgDataLenWords[3510]);
+        _sendMessage(3510, data, 21);
         break;
     case INIT_Complete:
         ILOG << "C-MIGITS initialization is complete!";

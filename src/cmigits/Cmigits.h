@@ -78,11 +78,11 @@ private:
     /// @param nMsgWords number of 16-bit words in msgWords
     void _processCmigitsMessage(const uint16_t * msgWords, 
             uint16_t nMsgWords);
-    /// @brief Process a C-MIGITS header-only message (Message Acknowledgment/
+    /// @brief Process a C-MIGITS response message (Message Acknowledgment/
     /// Acceptance).
-    /// @param msgWords pointer to the words of the header-only message.
+    /// @param msgWords pointer to the words of the response message.
     /// The msgWords parameter must point to at least 5 words of valid data.
-    void _processHeaderOnlyMessage(const uint16_t * msgWords);
+    void _processResponseMessage(const uint16_t * msgWords);
 
     /// @brief Process a C-MIGITS 3500 message (System Status).
     /// @param msgWords pointer to the words of the 3500 message
@@ -94,6 +94,11 @@ private:
     /// @param nMsgWords the number of words in the 3501 message
     void _process3501Message(const uint16_t * msgWords, uint16_t nMsgWords);
 
+    /// @brief Process a C-MIGITS 3512 message (Flight Control).
+    /// @param msgWords pointer to the words of the 3512 message
+    /// @param nMsgWords the number of words in the 3512 message
+    void _process3512Message(const uint16_t * msgWords, uint16_t nMsgWords);
+
     /// @brief Process a C-MIGITS 3623 message (Jupiter GPS Timemark).
     /// @param msgWords pointer to the words of the 3623 message
     /// @param nMsgWords the number of words in the 3623 message
@@ -104,7 +109,24 @@ private:
     /// @param msgId the C-MIGITS message id for the message
     /// @param dataWords a pointer to the data portion of the message.
     /// @param nDataWords the number of 16-bit words contained in dataWords
-    void _sendMessage(uint16_t msgId, const uint16_t * dataWords, uint16_t nWords);
+    /// @param setDisconnectBit if true, the 'disconnect' bit will be set in
+    ///     the message header flags (default = false)
+    /// @param setConnectBit if true, the 'connect' bit will be set in the
+    ///     message header flags (default = false)
+    void _sendMessage(uint16_t msgId, const uint16_t * dataWords,
+            uint16_t nWords, bool setDisconnectBit = false,
+            bool setConnectBit = false);
+
+    /// @brief Tell the C-MIGITS to "connect" (start sending) the specified
+    /// message id.
+    /// @param msgId the message id which should be connected
+    void _sendConnectForMsg(uint16_t msgId);
+
+    /// @brief Tell the C-MIGITS to "disconnect" (stop sending) the specified
+    /// message id. If message id is 0, this tells the C-MIGITS to revert to
+    /// sending only the default messages.
+    /// @param msgId the message id which should be disconnected
+    void _sendDisconnectForMsg(uint16_t msgId);
 
     /**
      * @brief Start automatic mode sequencing. This causes the CMIGITS-III
@@ -141,20 +163,41 @@ private:
     /// @param nwords number of words to include in the checksum
     static uint16_t _CmigitsChecksum(const uint16_t * words, uint16_t nwords);
 
-    /// @brief Unpack a C-MIGITS 32-bit floating point value.
+    /// @brief Unpack a C-MIGITS 32-bit binary-scaled floating point value.
     ///
-    /// The packed value is 32 bits, stored in little-endian byte order, with
-    /// sign in the most significant bit, and the remaining bits are a 
-    /// scaled value representing 31 bits to the right of a decimal point.
-    /// The final value is calculated by multiplying this scaled value by
+    /// The packed value is 32 bits, stored in byte order 4321, where byte
+    /// 1 is the most significant, and byte 4 is the lease significant. The
+    /// packed value has sign in the most significant bit, and the remaining
+    /// bits are a scaled value representing 31 bits to the right of a binary
+    /// point. The final value is calculated by multiplying this scaled value by
     /// 2^binaryScaling.
     /// @param words pointer to the 32-bit data
     /// @param binaryScaling the binary scaling to be used in unpacking
     static float _UnpackFloat32(const uint16_t * words, uint16_t binaryScaling);
 
-    /// @brief Pack a floating point value into C-MIGITS 32-bit floating point
-    /// representation
-    /// at the given destination using the given binary scaling factor.
+    /// @brief Unpack a C-MIGITS 64-bit binary-scaled floating point value.
+    ///
+    /// The packed value is 64 bits, stored in byte order 43218765, where byte
+    /// 1 is the most significant, and byte 8 is the least significant. The
+    /// packed value has sign in the most significant bit, and the remaining
+    /// bits are a scaled value representing 63 bits to the right of a binary
+    /// point. The final value is calculated by multiplying this scaled value by
+    /// 2^binaryScaling.
+    /// @param words pointer to the 64-bit data
+    /// @param binaryScaling the binary scaling to be used in unpacking
+    static double _UnpackFloat64(const uint16_t * words, uint16_t binaryScaling);
+
+    /// @brief Unpack a C-MIGITS time tag, returning the value as UTC
+    /// second-of-day. If the correction from GPS time to UTC time is not yet
+    /// initialized, this method will return -1.
+    /// @param words pointer to the 4-word location containing the raw time tag
+    /// @return time as UTC second-of-day or -1 if correction from GPS time to
+    /// UTC time is not yet determined
+    double _unpackTimeTag(const uint16_t * words);
+
+    /// @brief Pack a floating point value into C-MIGITS binary-scaled 32-bit
+    /// floating point representation at the given destination using the given
+    /// binary scaling factor.
     /// @param dest pointer to the destination for the packed value. This must
     /// point to 4 writable bytes.
     /// @param value the floating point value to be packed
@@ -166,9 +209,11 @@ private:
     typedef enum {
         INIT_PreInit,           ///< waiting for first 3623 GPS Timemark Message
         INIT_EnableInitMode,    ///< putting C-MIGITS into Initialize mode
+        INIT_EnableDefaultMsgs, ///< revert to sending default messages
         INIT_SetRates,          ///< setting serial line and data message rates
         INIT_SensorConfig,      ///< configuring sensor orientation
-        INIT_StartAutoNav,     ///< starting auto-navigation sequence
+        INIT_Enable3512,        ///< enable sending of 3512 Flight Control messages
+        INIT_StartAutoNav,      ///< starting auto-navigation sequence
         INIT_Complete           ///< initialization complete
     } InitPhase;
 
@@ -180,13 +225,6 @@ private:
     /// words + 1-word data checksum = 134 words.
     static const uint16_t _CMIGITS_MAX_MSG_LEN_WORDS = 134;
     static const uint16_t _CMIGITS_MAX_MSG_LEN_BYTES = 2 * _CMIGITS_MAX_MSG_LEN_WORDS;
-
-    /// Static map of message id to message data length (in words) for message
-    /// types we may want to send.
-    static std::map<uint16_t, uint16_t> _MsgDataLenWords;
-
-    /// Static method used to initialize _MsgDataLenWords
-    static std::map<uint16_t, uint16_t> _CreateMsgDataLenWords();
 
     /// Are we simulating?
     bool _simulate;
@@ -238,7 +276,20 @@ private:
 
     /// @brief QTimer used to prevent waiting too long for message handshake
     /// reply
-    QTimer  * _handshakeTimer;
+    QTimer * _handshakeTimer;
+
+    /// @brief Correction factor, in seconds, to convert UTC second of day into
+    /// GPS second of day.
+    ///
+    /// This is the number of leap seconds that have occurred
+    /// since the beginning of GPS time.
+    /// <p>
+    /// GPS second of day = UTC second of day + _utcToGpsCorrection
+    /// <p>
+    /// It is assumed that a valid correction will always be positive, i.e.,
+    /// GPS time is always ahead of UTC time. A negative value is used to
+    /// mark _utcToGpsCorrection as uninitialized.
+    int16_t _utcToGpsCorrection;
 
     /// Current operating mode.
     /// 1 = Test
