@@ -40,10 +40,11 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _awaitingHandshake(-1),
                 _rejectRetryCount(0),
                 _handshakeTimer(0),
+                _gpsTimeoutTimer(0),
+                _gpsDataTooOld(true),
                 _utcToGpsCorrection(-1),
                 _gpsValid(false),
                 _insValid(false),
-                _nSatsTracked(0),
                 _hPosError(9.9e9),
                 _vPosError(9.9e9),
                 _velocityError(9.9e9) {
@@ -66,6 +67,24 @@ Cmigits::Cmigits(std::string ttyDev) :
 
     // Move affinity to our private thread, so all 'real' work gets done there
     moveToThread(&_myThread);
+
+    // Build _gpsTimeoutTimer which is used to signal when our most recent GPS
+    // data are older than _GPS_TIMEOUT_SECS. Set the timer's thread affinity
+    // to _myThread.
+    _gpsTimeoutTimer = new QTimer();
+    _gpsTimeoutTimer->setInterval(1000 * _GPS_TIMEOUT_SECS);
+    _gpsTimeoutTimer->setSingleShot(true);
+    _gpsTimeoutTimer->moveToThread(&_myThread);
+    // When this timer times out, call _gpsTimedOut()
+    connect(_gpsTimeoutTimer, SIGNAL(timeout()), this, SLOT(_gpsTimedOut()));
+
+    // Build a timer to limit the time we wait for handshake messages from the
+    // C-MIGITS. Set the timer's thread affinity to _myThread.
+    _handshakeTimer = new QTimer();
+    _handshakeTimer->setSingleShot(true);
+    _handshakeTimer->moveToThread(&_myThread);
+    // If the timer times out, call _noHandshakeRcvd()
+    connect(_handshakeTimer, SIGNAL(timeout()), this, SLOT(_noHandshakeRcvd()));
 
     // Start reading as soon as our thread is started
     connect(&_myThread, SIGNAL(started()), this, SLOT(_doRead()), Qt::QueuedConnection);
@@ -152,6 +171,14 @@ Cmigits::_setBaud(speed_t baudValue) {
         }
     }
     _currentBaud = baudValue;
+}
+
+bool
+Cmigits::_navDataOk() {
+    // Current mode must be "Air Navigation" or "Land Navigation", INS data must
+    // be good, and last good GPS fix must be somewhat recent.
+    bool modeOk = (_currentMode == 7) || (_currentMode == 8);
+    return(modeOk && _insValid && ! _gpsDataTooOld);
 }
 
 speed_t
@@ -288,7 +315,7 @@ Cmigits::_processRawData() {
         _nRawBytes--;
         _nSkippedForSync++;
         // If we're hunting too long for sync, we're probably at the wrong
-        // speed. Try a new speed if necessary.
+        // speed on the serial port. Try a new speed if necessary.
         if (_nSkippedForSync >= _CMIGITS_MAX_MSG_LEN_BYTES) {
             speed_t nextBaud = _NextBaud(_currentBaud);
             ELOG << "No sync word found. Changing speed from " <<
@@ -433,9 +460,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     // Second response to a command is a handshake reply telling whether the
     // command was accepted or rejected.
     if (handshake) {
-        if (_handshakeTimer) {
-            _handshakeTimer->stop();
-        }
+        _handshakeTimer->stop();
         _awaitingHandshake = -1;
         if (reject) {
             // Sometimes a command is rejected because the C-MIGITS is
@@ -456,7 +481,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
                 abort();
             }
         } else {
-            DLOG << msgId << " command accepted";
+            ILOG << msgId << " command accepted";
             _rejectRetryCount = 0;
             // Command was accepted. Move to the next initialization step.
             _initPhase = InitPhase(static_cast<int>(_initPhase) + 1);
@@ -502,31 +527,53 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     // "GPS Measurements Available" is bit 0 of system status validity
     bool gpsValid = systemStatusValidity & (1 << 0);
-    // Emit a signal when GPS validity changes
+    // Act when GPS validity changes
     if (gpsValid != _gpsValid) {
-        emit(gpsValidChanged(gpsValid));
+        _gpsValid = gpsValid;
+        ILOG << "GPS is now " << (_gpsValid ? "" : "not ") << "valid";
+        // Emit a signal when GPS validity changes
+        emit(gpsValidChanged(_gpsValid));
     }
-    _gpsValid = gpsValid;
+
+    // If GPS is valid, set the "too old" flag to false, and start (or restart)
+    // the GPS data timeout timer.
+    if (_gpsValid) {
+        _gpsDataTooOld = false;
+        _gpsTimeoutTimer->start();
+    }
 
     // "INS Measurements Available" is bit 1 of system status validity
     bool insValid = systemStatusValidity & (1 << 1);
     // Emit a signal when INS validity changes
     if (insValid != _insValid) {
-        emit(insValidChanged(insValid));
+        _insValid = insValid;
+        ILOG << "INS is now " << (_insValid ? "" : "not ") << "valid";
+        emit(insValidChanged(_insValid));
     }
-    _insValid = insValid;
 
-    _nSatsTracked = msgWords[11];
-
+    double sysSecondOfDay =
+            fmod(0.001 * QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(),
+                    86400);
+    double latency = sysSecondOfDay - utcSecondOfDay;
     ILOG << "3500 time: " << utcSecondOfDay << ", mode: " << _currentMode <<
-            ", GPS: " << (_gpsValid ? "valid" : "not valid") <<
-            " (tracking " << _nSatsTracked << " sats), " <<
-            "INS: " << (_insValid ? "valid" : "not valid");
+            ", GPS: " << _gpsValid <<
+            ", INS: " << _insValid << ", latency: " << latency;
+}
+
+void
+Cmigits::_gpsTimedOut() {
+    if (! _gpsDataTooOld) {
+        ILOG << "GPS data are now too old!";
+    }
+    _gpsDataTooOld = true;
 }
 
 void
 Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     QMutexLocker locker(&_mutex);
+
+    if (! _navDataOk())
+        return;
 
     // 3501 message should be exactly 28 words long
     if (nMsgWords != 28) {
@@ -545,16 +592,24 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     uint16_t decisecond = round(10 * fmod(utcSecondOfDay, 1.0));
     decisecond %= 10;
     if (decisecond == 0) {
-         ILOG << "3501 time: " <<
-                 std::setprecision(10) << utcSecondOfDay << std::setprecision(6) <<
-                 ", lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
-                 ", pitch: " << pitch << ", roll: " << roll << ", heading: " << heading;
+        double sysSecondOfDay =
+                fmod(0.001 * QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(),
+                        86400);
+        double latency = sysSecondOfDay - utcSecondOfDay;
+        ILOG << "3501 time: " <<
+                std::setprecision(7) << utcSecondOfDay << std::setprecision(6) <<
+                ", latency: " << latency <<
+                ", lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
+                ", pitch: " << pitch << ", roll: " << roll << ", heading: " << heading;
     }
 }
 
 void
 Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     QMutexLocker locker(&_mutex);
+
+    if (! _navDataOk())
+        return;
 
     // 3512 message length is variable, but we configure it to contain only
     // attitude data (6 words), giving a total message length of 16 words.
@@ -573,8 +628,13 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     int centisecond = round(fmod(utcSecondOfDay, 1.0) * 100);
     centisecond %= 100;
     if (centisecond == 0) {
+        double sysSecondOfDay =
+                fmod(0.001 * QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(),
+                        86400);
+        double latency = sysSecondOfDay - utcSecondOfDay;
         ILOG << "3512 time: " <<
                 std::setprecision(10) << utcSecondOfDay << std::setprecision(6) <<
+                ", latency: " << latency <<
                 ", pitch: " << pitch <<
                 ", roll: " << roll << ", heading: " << heading;
     }
@@ -612,10 +672,7 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     float lat = 180.0 * _UnpackFloat32(msgWords + 21, 0);
     float lon = 180.0 * _UnpackFloat32(msgWords + 23, 0);
     float alt = _UnpackFloat32(msgWords + 25, 15);
-    ILOG << "GPS time: " << gpsSecondOfWeek <<
-            ", UTC time: " << utcSecondOfDay <<
-            ", UTC to GPS: " << _utcToGpsCorrection <<
-            ", GPS lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
+    ILOG << "3623 lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
             " (" << msgWords[15] << " satellites)";
     // We can initialize any time after we get the first 3623 message.
     // (See "Commanded Initialization" in the C-MIGITS manual)
@@ -651,10 +708,6 @@ Cmigits::_UnpackFloat64(const uint16_t * words, uint16_t binaryScaling) {
     return(val);
 }
 
-
-// @TODO get rid of this!
-static double __LastTimeTag = 0.0;
-
 double
 Cmigits::_unpackTimeTag(const uint16_t * words) {
     // Return -1 if we don't yet have the UTC to GPS correction value
@@ -670,17 +723,6 @@ Cmigits::_unpackTimeTag(const uint16_t * words) {
     if (utcSecondOfDay < 0) {
         utcSecondOfDay += 86400;
     }
-
-    double timeDiff = utcSecondOfDay - __LastTimeTag;
-    if (timeDiff < -43200) {
-        timeDiff += 86400;
-    }
-    if (timeDiff < 0) {
-        ILOG << "Time tag went backward by " << timeDiff << " from " <<
-                __LastTimeTag << " to " << utcSecondOfDay;
-
-    }
-    __LastTimeTag = utcSecondOfDay;
 
     return(utcSecondOfDay);
 }
@@ -751,13 +793,6 @@ Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
                 msgId << "message";
     } else {
         DLOG << "Sent " << msgLenBytes << "-byte " << msgId << " message";
-        // If we have no handshake timer, create it now.
-        if (! _handshakeTimer) {
-            _handshakeTimer = new QTimer();
-            _handshakeTimer->setSingleShot(true);
-            // If the timer times out, call _noHandshakeRcvd()
-            connect(_handshakeTimer, SIGNAL(timeout()), this, SLOT(_noHandshakeRcvd()));
-        }
         // Set up a timer so that if we don't get a handshake message in reply
         // to our command, we can send the command again. Wait up to 1 second
         // for the reply.

@@ -60,6 +60,11 @@ private slots:
      * again.
      */
     void _noHandshakeRcvd();
+    /**
+     * @brief This slot is called when the latest GPS data are considered too
+     * old to yield a good navigation solution.
+     */
+    void _gpsTimedOut();
 private:
     /**
      * C-MIGITS III message sync word
@@ -139,6 +144,12 @@ private:
     /// @param baudValue the speed_t desired baud rate value from termios.h:
     //  B9600, B19200, B38400, B57600, or B115200.
     void _setBaud(speed_t baudValue);
+
+    /// @brief Return true iff current navigation data is considered good.
+    /// This is the case if 1) current mode of the C-MIGITS is either "ground
+    /// navigation" or "air navigation", 2) last good GPS data are younger than
+    /// _GPS_TIMOUT_SECS seconds old.
+    bool _navDataOk();
 
     /// @brief Return the next legal baud value for the C-MIGITS after the
     /// given value. The returned value is a speed_t from termios.h: B9600,
@@ -278,6 +289,18 @@ private:
     /// reply
     QTimer * _handshakeTimer;
 
+    /// @brief Navigation data will delivered and considered reasonable only if
+    /// the most recent GPS fix is younger than this number of seconds.
+    static const uint16_t _GPS_TIMEOUT_SECS = 60;
+
+    /// @brief QTimer which expires when good GPS data have been unavailable for
+    /// more than _GPS_TIMEOUT_SECS seconds.
+    QTimer * _gpsTimeoutTimer;
+
+    /// @brief This is true if the C-MIGITS has not yet reported good GPS data,
+    /// or if the latest GPS data are older than _GPS_TIMEOUT_SECS seconds.
+    bool _gpsDataTooOld;
+
     /// @brief Correction factor, in seconds, to convert UTC second of day into
     /// GPS second of day.
     ///
@@ -308,9 +331,6 @@ private:
 
     /// Is the C-MIGITS getting INS sensor data?
     bool _insValid;
-
-    /// Number of GPS satellites currently tracked
-    uint16_t _nSatsTracked;
 
     /// Expected horizontal position error, m
     float _hPosError;
