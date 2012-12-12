@@ -18,10 +18,114 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <QMutexLocker>
+#include <boost/numeric/ublas/matrix.hpp>
+
+using boost::numeric::ublas::matrix;
+using boost::numeric::ublas::identity_matrix;
+using boost::numeric::ublas::matrix_expression;
 
 #include <logx/Logging.h>
 
 LOGGING("Cmigits")
+
+inline double degToRad(double deg) { return((deg / 180.0) * M_PI); }
+
+class RotationMatrix {
+public:
+    /// Instantiate an identity RotationMatrix.
+    RotationMatrix() :
+    _matrix(3, 3) {
+        _matrix = boost::numeric::ublas::identity_matrix<double>(3, 3);
+    }
+    ~RotationMatrix() {}
+    /// Rotate about the x axis by angle degrees. The angle is counterclockwise
+    /// as viewed from a point on the positive x axis looking at the origin.
+    /// @param angle rotation angle in degrees
+    /// @return a reference to this matrix (after the rotation)
+    RotationMatrix & rotateAboutX(double angle) {
+        double angleRadians = (angle / 180.0) * M_PI;
+        double cosAng = cos(angleRadians);
+        double sinAng = sin(angleRadians);
+        boost::numeric::ublas::matrix<double> rot(3, 3);
+        rot(0, 0) = 1.0;
+        rot(0, 1) = 0.0;
+        rot(0, 2) = 0.0;
+
+        rot(1, 0) = 0.0;
+        rot(1, 1) = cosAng;
+        rot(1, 2) = -sinAng;
+
+        rot(2, 0) = 0.0;
+        rot(2, 1) = sinAng;
+        rot(2, 2) = cosAng;
+
+        matrix<double> newMatrix(boost::numeric::ublas::prod(_matrix, rot));
+        _matrix = newMatrix;
+        return(*this);
+    }
+    /// Rotate about the y axis by angle degrees. The angle is counterclockwise
+    /// as viewed from a point on the positive y axis looking at the origin.
+    /// @param angle rotation angle in degrees
+    /// @return a reference to this matrix (after the rotation)
+    RotationMatrix & rotateAboutY(double angle) {
+        double angleRadians = (angle / 180.0) * M_PI;
+        double cosAng = cos(angleRadians);
+        double sinAng = sin(angleRadians);
+        boost::numeric::ublas::matrix<double> rot(3, 3);
+        rot(0, 0) = cosAng;
+        rot(0, 1) = 0.0;
+        rot(0, 2) = sinAng;
+
+        rot(1, 0) = 0.0;
+        rot(1, 1) = 1.0;
+        rot(1, 2) = 0.0;
+
+        rot(2, 0) = -sinAng;
+        rot(2, 1) = 0.0;
+        rot(2, 2) = cosAng;
+
+        matrix<double> newMatrix(boost::numeric::ublas::prod(_matrix, rot));
+        _matrix = newMatrix;
+        return(*this);
+    }
+    /// Rotate about the z axis by angle degrees. The angle is counterclockwise
+    /// as viewed from a point on the positive z axis looking at the origin.
+    /// @param angle rotation angle in degrees
+    /// @return a reference to this matrix (after the rotation)
+    RotationMatrix & rotateAboutZ(double angle) {
+        double angleRadians = (angle / 180.0) * M_PI;
+        double cosAng = cos(angleRadians);
+        double sinAng = sin(angleRadians);
+        boost::numeric::ublas::matrix<double> rot(3, 3);
+        rot(0, 0) = cosAng;
+        rot(0, 1) = -sinAng;
+        rot(0, 2) = 0.0;
+
+        rot(1, 0) = sinAng;
+        rot(1, 1) = cosAng;
+        rot(1, 2) = 0.0;
+
+        rot(2, 0) = 0.0;
+        rot(2, 1) = 0.0;
+        rot(2, 2) = 1.0;
+
+        matrix<double> newMatrix(boost::numeric::ublas::prod(_matrix, rot));
+        _matrix = newMatrix;
+        return(*this);
+    }
+    /// Return the matrix element specified by row and column.
+    /// @param row the row number (0-2)
+    /// @param column the column number (0-2)
+    /// @return the matrix element specified by row and column
+    double element(uint16_t row, uint16_t column) {
+        assert(row <= 2);
+        assert(column <= 2);
+        return(_matrix(row, column));
+    }
+private:
+    // row-major rotation matrix
+    matrix<double> _matrix;
+};
 
 // device name to use for simulated C-MIGITS
 const std::string Cmigits::SIM_DEVICE = "SimulatedCmigits";
@@ -68,23 +172,21 @@ Cmigits::Cmigits(std::string ttyDev) :
     // Move affinity to our private thread, so all 'real' work gets done there
     moveToThread(&_myThread);
 
+    // Build a timer to limit the time we wait for handshake messages from the
+    // C-MIGITS. Set the timer's thread affinity to _myThread.
+    _handshakeTimer.setSingleShot(true);
+    _handshakeTimer.moveToThread(&_myThread);
+    // If the timer times out, call _noHandshakeRcvd()
+    connect(&_handshakeTimer, SIGNAL(timeout()), this, SLOT(_noHandshakeRcvd()));
+
     // Build _gpsTimeoutTimer which is used to signal when our most recent GPS
     // data are older than _GPS_TIMEOUT_SECS. Set the timer's thread affinity
     // to _myThread.
-    _gpsTimeoutTimer = new QTimer();
-    _gpsTimeoutTimer->setInterval(1000 * _GPS_TIMEOUT_SECS);
-    _gpsTimeoutTimer->setSingleShot(true);
-    _gpsTimeoutTimer->moveToThread(&_myThread);
+    _gpsTimeoutTimer.setInterval(1000 * _GPS_TIMEOUT_SECS);
+    _gpsTimeoutTimer.setSingleShot(true);
+    _gpsTimeoutTimer.moveToThread(&_myThread);
     // When this timer times out, call _gpsTimedOut()
-    connect(_gpsTimeoutTimer, SIGNAL(timeout()), this, SLOT(_gpsTimedOut()));
-
-    // Build a timer to limit the time we wait for handshake messages from the
-    // C-MIGITS. Set the timer's thread affinity to _myThread.
-    _handshakeTimer = new QTimer();
-    _handshakeTimer->setSingleShot(true);
-    _handshakeTimer->moveToThread(&_myThread);
-    // If the timer times out, call _noHandshakeRcvd()
-    connect(_handshakeTimer, SIGNAL(timeout()), this, SLOT(_noHandshakeRcvd()));
+    connect(&_gpsTimeoutTimer, SIGNAL(timeout()), this, SLOT(_gpsTimedOut()));
 
     // Start reading as soon as our thread is started
     connect(&_myThread, SIGNAL(started()), this, SLOT(_doRead()), Qt::QueuedConnection);
@@ -460,7 +562,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     // Second response to a command is a handshake reply telling whether the
     // command was accepted or rejected.
     if (handshake) {
-        _handshakeTimer->stop();
+        _handshakeTimer.stop();
         _awaitingHandshake = -1;
         if (reject) {
             // Sometimes a command is rejected because the C-MIGITS is
@@ -539,7 +641,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // the GPS data timeout timer.
     if (_gpsValid) {
         _gpsDataTooOld = false;
-        _gpsTimeoutTimer->start();
+        _gpsTimeoutTimer.start();
     }
 
     // "INS Measurements Available" is bit 1 of system status validity
@@ -797,7 +899,7 @@ Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
         // to our command, we can send the command again. Wait up to 1 second
         // for the reply.
         _awaitingHandshake = msgId;
-        _handshakeTimer->start(1000);
+        _handshakeTimer.start(1000);
     }
 }
 
@@ -880,17 +982,21 @@ Cmigits::_initialize() {
         data[0] |= (1 << 0);		// set sensor-to-body transformation
 
         // Set the sensor-to-body transformation matrix
-        // XXX This is a fixed 180 degree roll for now... @TODO fix this!
-        _PackFloat32(&data[1], 1.0, 1);	    // [0,0] = 1
-        _PackFloat32(&data[3], 0.0, 1);	    // [0,1] = 0
-        _PackFloat32(&data[5], 0.0, 1);	    // [0,2] = 0
-        _PackFloat32(&data[7], 0.0, 1);	    // [1,0] = 0
-        _PackFloat32(&data[9], -1.0, 1);    // [1,1] = -1
-        _PackFloat32(&data[11], 0.0, 1);	// [1,2] = 0
-        _PackFloat32(&data[13], 0.0, 1);	// [2,0] = 0
-        _PackFloat32(&data[15], 0.0, 1);	// [2,1] = 0
-        _PackFloat32(&data[17], -1.0, 1);   // [2,2] = -1
-
+        {
+            RotationMatrix rotMatrix;
+            rotMatrix.rotateAboutX(180.0);
+            rotMatrix.rotateAboutY(90.0);
+            rotMatrix.rotateAboutZ(-90.0);
+            _PackFloat32(&data[1], rotMatrix.element(0, 0), 1);
+            _PackFloat32(&data[3], rotMatrix.element(0, 1), 1);
+            _PackFloat32(&data[5], rotMatrix.element(0, 2), 1);
+            _PackFloat32(&data[7], rotMatrix.element(1, 0), 1);
+            _PackFloat32(&data[9], rotMatrix.element(1, 1), 1);
+            _PackFloat32(&data[11], rotMatrix.element(1, 2), 1);
+            _PackFloat32(&data[13], rotMatrix.element(2, 0), 1);
+            _PackFloat32(&data[15], rotMatrix.element(2, 1), 1);
+            _PackFloat32(&data[17], rotMatrix.element(2, 2), 1);
+        }
         // Send the 3511 message
         _sendMessage(3511, data, 22);
         break;

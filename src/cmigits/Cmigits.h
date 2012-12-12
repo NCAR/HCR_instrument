@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <termios.h>
 #include <QMutex>
+#include <QtCore/qmutex.h>
 #include <QObject>
 #include <QThread>
 #include <QTime>
@@ -287,7 +288,7 @@ private:
 
     /// @brief QTimer used to prevent waiting too long for message handshake
     /// reply
-    QTimer * _handshakeTimer;
+    QTimer _handshakeTimer;
 
     /// @brief Navigation data will delivered and considered reasonable only if
     /// the most recent GPS fix is younger than this number of seconds.
@@ -295,7 +296,7 @@ private:
 
     /// @brief QTimer which expires when good GPS data have been unavailable for
     /// more than _GPS_TIMEOUT_SECS seconds.
-    QTimer * _gpsTimeoutTimer;
+    QTimer _gpsTimeoutTimer;
 
     /// @brief This is true if the C-MIGITS has not yet reported good GPS data,
     /// or if the latest GPS data are older than _GPS_TIMEOUT_SECS seconds.
