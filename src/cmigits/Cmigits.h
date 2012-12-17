@@ -217,7 +217,7 @@ private:
     static void _PackFloat32(void * dest, float value, uint16_t binaryScaling);
 
     /// Initialization is a multi-stage process, driven by responses from the
-    /// C-MIGITS. This type enumerates the initialization phases.
+    /// C-MIGITS. This type enumerates our initialization phases.
     typedef enum {
         INIT_PreInit,           ///< waiting for first 3623 GPS Timemark Message
         INIT_EnableInitMode,    ///< putting C-MIGITS into Initialize mode
@@ -228,6 +228,25 @@ private:
         INIT_StartAutoNav,      ///< starting auto-navigation sequence
         INIT_Complete           ///< initialization complete
     } InitPhase;
+
+    /// Array of C-MIGITS operating mode names indexed by mode number.
+    static const std::string _ModeNames[];
+
+    /// Array of C-MIGITS position figure-of-merit (FOM) strings indexed by
+    /// FOM integer value.
+    static const std::string _PositionFomStrings[];
+
+    /// Array of C-MIGITS velocity figure-of-merit (FOM) strings indexed by
+    /// FOM integer value.
+    static const std::string _VelocityFomStrings[];
+
+    /// Array of C-MIGITS heading figure-of-merit (FOM) strings indexed by
+    /// FOM integer value.
+    static const std::string _HeadingFomStrings[];
+
+    /// Array of C-MIGITS time figure-of-merit (FOM) strings indexed by
+    /// FOM integer value.
+    static const std::string _TimeFomStrings[];
 
     /// C-MIGITS header is 5 words long
     static const uint16_t _CMIGITS_HDR_LEN_WORDS = 5;
@@ -250,6 +269,10 @@ private:
 
     /// File descriptor for the open serial port
     int _fd;
+
+    /// Is the C-MIGITS mounted in right wing/ground configuration?
+    /// (For left wing operation, the C-MIGITS is rolled 180 degrees.)
+    bool _onRightWing;
 
     /// Where are we in the initialization?
     InitPhase _initPhase;
@@ -332,6 +355,18 @@ private:
 
     /// Is the C-MIGITS getting INS sensor data?
     bool _insValid;
+
+    /// latest osition figure-of-merit (FOM) value
+    uint16_t _positionFomValue;
+
+    /// latest velocity figure-of-merit (FOM) value
+    uint16_t _velocityFomValue;
+
+    /// latest heading figure-of-merit (FOM) value
+    uint16_t _headingFomValue;
+
+    /// latest time figure-of-merit (FOM) value
+    uint16_t _timeFomValue;
 
     /// Expected horizontal position error, m
     float _hPosError;

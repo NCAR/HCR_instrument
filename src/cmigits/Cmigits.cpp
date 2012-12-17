@@ -35,7 +35,7 @@ public:
     /// Instantiate an identity RotationMatrix.
     RotationMatrix() :
     _matrix(3, 3) {
-        _matrix = boost::numeric::ublas::identity_matrix<double>(3, 3);
+        _matrix = identity_matrix<double>(3, 3);
     }
     ~RotationMatrix() {}
     /// Rotate about the x axis by angle degrees. The angle is counterclockwise
@@ -46,7 +46,7 @@ public:
         double angleRadians = (angle / 180.0) * M_PI;
         double cosAng = cos(angleRadians);
         double sinAng = sin(angleRadians);
-        boost::numeric::ublas::matrix<double> rot(3, 3);
+        matrix<double> rot(3, 3);
         rot(0, 0) = 1.0;
         rot(0, 1) = 0.0;
         rot(0, 2) = 0.0;
@@ -71,7 +71,7 @@ public:
         double angleRadians = (angle / 180.0) * M_PI;
         double cosAng = cos(angleRadians);
         double sinAng = sin(angleRadians);
-        boost::numeric::ublas::matrix<double> rot(3, 3);
+        matrix<double> rot(3, 3);
         rot(0, 0) = cosAng;
         rot(0, 1) = 0.0;
         rot(0, 2) = sinAng;
@@ -96,7 +96,7 @@ public:
         double angleRadians = (angle / 180.0) * M_PI;
         double cosAng = cos(angleRadians);
         double sinAng = sin(angleRadians);
-        boost::numeric::ublas::matrix<double> rot(3, 3);
+        matrix<double> rot(3, 3);
         rot(0, 0) = cosAng;
         rot(0, 1) = -sinAng;
         rot(0, 2) = 0.0;
@@ -130,11 +130,82 @@ private:
 // device name to use for simulated C-MIGITS
 const std::string Cmigits::SIM_DEVICE = "SimulatedCmigits";
 
+// Operating mode names, indexed by operating mode value
+const std::string Cmigits::_ModeNames[]  = {
+        "(Mode 0, Not Used)",
+        "Test",
+        "Initialization",
+        "(Mode 3, Not Used)",
+        "Fine Alignment",
+        "Air Alignment",
+        "Transfer Alignment",
+        "Air Navigation",
+        "Land Navigation",
+        "GPS Only"
+};
+
+// Position figure-of-merit strings, indexed by position figure-of-merit integer value
+const std::string Cmigits::_PositionFomStrings[] = {
+        "(Invalid)",
+        "< 25 m",
+        "< 50 m",
+        "< 75 m",
+        "< 100 m",
+        "< 200 m",
+        "< 500 m",
+        "< 1000 m",
+        "< 5000 m",
+        ">= 5000 m"
+};
+
+// Velocity figure-of-merit strings, indexed by velocity figure-of-merit integer value
+const std::string Cmigits::_VelocityFomStrings[] = {
+        "(Invalid)",
+        "< 0.2 m/s",
+        "< 1 m/s",
+        "< 5 m/s",
+        "< 25 m/s",
+        "< 50 m/s",
+        "< 80 m/s",
+        "< 150 m/s",
+        "< 300 m/s",
+        ">= 300 m/s"
+};
+
+// Heading figure-of-merit strings, indexed by heading figure-of-merit integer value
+const std::string Cmigits::_HeadingFomStrings[] = {
+        "(Invalid)",
+        "< 0.5 mrad",
+        "< 1 mrad",
+        "< 1.73 mrad",
+        "< 5 mrad",
+        "< 8.66 mrad",
+        "< 10 mrad",
+        "< 17.3 mrad",
+        "< 86.6 mrad",
+        ">= 86.6 mrad"
+};
+
+// Time figure-of-merit strings, indexed by time figure-of-merit integer value
+const std::string Cmigits::_TimeFomStrings[] = {
+        "(Invalid)",
+        "< 0.001 µs",
+        "< 0.01 µs",
+        "< 0.1 µs",
+        "< 1 µs",
+        "< 10 µs",
+        "< 100 µs",
+        "< 1000 µs",
+        "< 10000 µs",
+        ">= 10000 µs"
+};
+
 Cmigits::Cmigits(std::string ttyDev) :
                 QObject(),
                 _simulate(ttyDev == SIM_DEVICE),
                 _ttyDev(ttyDev),
                 _fd(-1),
+                _onRightWing(true),
                 _initPhase(INIT_PreInit),
                 _initCompleteTime(),
                 _nRawBytes(0),
@@ -653,13 +724,37 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         emit(insValidChanged(_insValid));
     }
 
-    double sysSecondOfDay =
-            fmod(0.001 * QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(),
-                    86400);
-    double latency = sysSecondOfDay - utcSecondOfDay;
-    ILOG << "3500 time: " << utcSecondOfDay << ", mode: " << _currentMode <<
+    // Built-in-test failure is indicated in bit 5 of system status validity
+    bool bitFailure = systemStatusValidity & (1 << 5);
+    if (bitFailure) {
+        // Consider this fatal for now
+        ELOG << "C-MIGITS built-in test failed!";
+        abort();
+    }
+
+    // Figure-of-merit (FOM) information
+    uint16_t fomInfo = msgWords[14];
+    _positionFomValue = (fomInfo >> 0) & 0x0f;
+    _velocityFomValue = (fomInfo >> 4) & 0x0f;
+    _headingFomValue = (fomInfo >> 8) & 0x0f;
+    _timeFomValue = (fomInfo >> 12) & 0x0f;
+
+    // Expected errors
+    _hPosError = _UnpackFloat32(msgWords + 15, 15);     // m
+    _vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
+    _velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
+
+    ILOG << "3500 time: " << utcSecondOfDay <<
+            ", mode: " << _ModeNames[_currentMode] <<
             ", GPS: " << _gpsValid <<
-            ", INS: " << _insValid << ", latency: " << latency;
+            ", INS: " << _insValid;
+    DLOG << "3500 position FOM: " << _PositionFomStrings[_positionFomValue] <<
+            ", velocity FOM: " << _VelocityFomStrings[_velocityFomValue] <<
+            ", heading FOM: " << _HeadingFomStrings[_headingFomValue] <<
+            ", time FOM: " << _TimeFomStrings[_timeFomValue];
+    ILOG << "3500 expected errors - h pos: " << _hPosError <<
+            " m, v pos: " << _vPosError << " m, velocity: " << _velocityError <<
+            " m/s";
 }
 
 void
@@ -984,9 +1079,24 @@ Cmigits::_initialize() {
         // Set the sensor-to-body transformation matrix
         {
             RotationMatrix rotMatrix;
+            // The default orientation for the C-MIGITS has the sensor x axis
+            // pointing out the nose of the aircraft, the y axis pointing out
+            // the right wing, and the z axis pointing down.
+            //
+            // For ground operation or installation on the right wing, the
+            // C-MIGITS for HCR is physically oriented with the labels on the
+            // unit facing zenith. Set up a rotation matrix for this
+            // orientation so that attitude (pitch, yaw, and heading) data
+            // reported by the C-MIGITS are correct.
             rotMatrix.rotateAboutX(180.0);
             rotMatrix.rotateAboutY(90.0);
-            rotMatrix.rotateAboutZ(-90.0);
+            // When installed on the left wing, the whole pod is rolled 180
+            // degrees from the right wing installation.  From the above
+            // orientation, this is a 180 degree rotation about the sensor z
+            // axis.
+            if (! _onRightWing) {
+                rotMatrix.rotateAboutZ(180.0);
+            }
             _PackFloat32(&data[1], rotMatrix.element(0, 0), 1);
             _PackFloat32(&data[3], rotMatrix.element(0, 1), 1);
             _PackFloat32(&data[5], rotMatrix.element(0, 2), 1);
