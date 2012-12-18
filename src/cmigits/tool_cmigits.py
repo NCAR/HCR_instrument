@@ -4,7 +4,7 @@
 
 tools = ['doxygen', 'logx', 'qt4']
 env = Environment(tools=['default'] + tools)
-env.EnableQt4Modules(['QtCore'])
+env.EnableQt4Modules(['QtCore', 'QtGui', 'QtNetwork'])
 
 
 tooldir = env.Dir('.').srcnode().abspath    # this directory
@@ -14,6 +14,7 @@ libDir = tooldir
 includeDir = tooldir
 
 sources = Split('''
+    cmigitsDaemon.cpp
     Cmigits.cpp
 ''')
 
@@ -23,6 +24,9 @@ headers = Split('''
 
 lib = env.Library('cmigits', sources)
 Default(lib)
+
+daemon = env.Program('cmigitsDaemon', sources)
+Default(daemon)
 
 html = env.Apidocs(sources + headers, DOXYFILE_DICT={'PROJECT_NAME':'cmigits'})
 Default(html)
