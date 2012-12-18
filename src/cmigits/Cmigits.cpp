@@ -145,7 +145,7 @@ const std::string Cmigits::_ModeNames[]  = {
 };
 
 // Position figure-of-merit strings, indexed by position figure-of-merit integer value
-const std::string Cmigits::_PositionFomStrings[] = {
+const std::string Cmigits::_PositionFOMStrings[] = {
         "(Invalid)",
         "< 25 m",
         "< 50 m",
@@ -159,7 +159,7 @@ const std::string Cmigits::_PositionFomStrings[] = {
 };
 
 // Velocity figure-of-merit strings, indexed by velocity figure-of-merit integer value
-const std::string Cmigits::_VelocityFomStrings[] = {
+const std::string Cmigits::_VelocityFOMStrings[] = {
         "(Invalid)",
         "< 0.2 m/s",
         "< 1 m/s",
@@ -173,7 +173,7 @@ const std::string Cmigits::_VelocityFomStrings[] = {
 };
 
 // Heading figure-of-merit strings, indexed by heading figure-of-merit integer value
-const std::string Cmigits::_HeadingFomStrings[] = {
+const std::string Cmigits::_HeadingFOMStrings[] = {
         "(Invalid)",
         "< 0.5 mrad",
         "< 1 mrad",
@@ -187,7 +187,7 @@ const std::string Cmigits::_HeadingFomStrings[] = {
 };
 
 // Time figure-of-merit strings, indexed by time figure-of-merit integer value
-const std::string Cmigits::_TimeFomStrings[] = {
+const std::string Cmigits::_TimeFOMStrings[] = {
         "(Invalid)",
         "< 0.001 µs",
         "< 0.01 µs",
@@ -206,6 +206,7 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _ttyDev(ttyDev),
                 _fd(-1),
                 _onRightWing(true),
+                _useAirNavigation(false),
                 _initPhase(INIT_PreInit),
                 _initCompleteTime(),
                 _nRawBytes(0),
@@ -218,11 +219,8 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _gpsTimeoutTimer(0),
                 _gpsDataTooOld(true),
                 _utcToGpsCorrection(-1),
-                _gpsValid(false),
-                _insValid(false),
-                _hPosError(9.9e9),
-                _vPosError(9.9e9),
-                _velocityError(9.9e9) {
+                _insAvailable(false),
+                _gpsAvailable(false) {
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
     uint16_t word = 0x0102;
@@ -351,7 +349,7 @@ Cmigits::_navDataOk() {
     // Current mode must be "Air Navigation" or "Land Navigation", INS data must
     // be good, and last good GPS fix must be somewhat recent.
     bool modeOk = (_currentMode == 7) || (_currentMode == 8);
-    return(modeOk && _insValid && ! _gpsDataTooOld);
+    return(modeOk && _insAvailable && ! _gpsDataTooOld);
 }
 
 speed_t
@@ -403,6 +401,30 @@ Cmigits::_BaudToText(speed_t baudValue) {
     }
     return(speedTxt);
 }
+
+QDateTime
+Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
+    static const int SecondsPerDay = 86400;
+    time_t now = time(0);
+    int sysSecondOfDay = now % SecondsPerDay;
+    time_t startOfDay = now - sysSecondOfDay;
+
+    // Be careful around midnight, since our system clock may be slightly ahead
+    // of or slightly behind the times from the C-MIGITS.
+    double diff = secondOfDay - sysSecondOfDay;
+    if (diff > (SecondsPerDay / 2)) {
+        startOfDay -= SecondsPerDay;    // given time is in day previous to system time
+    } else if (diff < (-SecondsPerDay / 2)) {
+        startOfDay += SecondsPerDay;    // given time is in day after system time
+    }
+
+    // Convert milliseconds since the epoch into a QDateTime
+    int millisecondOfDay = int(1000 * secondOfDay);
+    qint64 msecsSinceEpoch = qint64(startOfDay) * 1000 + millisecondOfDay;
+    QDateTime dateTime(QDateTime::fromMSecsSinceEpoch(msecsSinceEpoch).toUTC());
+    return(dateTime);
+}
+
 void 
 Cmigits::_doRead() {
     QMutexLocker locker(&_mutex);
@@ -682,6 +704,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     }
 
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
+    QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
 
     // current mode
     _currentMode = msgWords[9];
@@ -699,29 +722,29 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     uint16_t systemStatusValidity = msgWords[10];
 
     // "GPS Measurements Available" is bit 0 of system status validity
-    bool gpsValid = systemStatusValidity & (1 << 0);
+    bool gpsAvailable = systemStatusValidity & (1 << 0);
     // Act when GPS validity changes
-    if (gpsValid != _gpsValid) {
-        _gpsValid = gpsValid;
-        ILOG << "GPS is now " << (_gpsValid ? "" : "not ") << "valid";
+    if (gpsAvailable != _gpsAvailable) {
+        _gpsAvailable = gpsAvailable;
+        ILOG << "GPS is now " << (_gpsAvailable ? "" : "not ") << "available";
         // Emit a signal when GPS validity changes
-        emit(gpsValidChanged(_gpsValid));
+        emit(gpsAvailableChanged(_gpsAvailable));
     }
 
     // If GPS is valid, set the "too old" flag to false, and start (or restart)
     // the GPS data timeout timer.
-    if (_gpsValid) {
+    if (_gpsAvailable) {
         _gpsDataTooOld = false;
         _gpsTimeoutTimer.start();
     }
 
     // "INS Measurements Available" is bit 1 of system status validity
-    bool insValid = systemStatusValidity & (1 << 1);
+    bool insAvailable = systemStatusValidity & (1 << 1);
     // Emit a signal when INS validity changes
-    if (insValid != _insValid) {
-        _insValid = insValid;
-        ILOG << "INS is now " << (_insValid ? "" : "not ") << "valid";
-        emit(insValidChanged(_insValid));
+    if (insAvailable != _insAvailable) {
+        _insAvailable = insAvailable;
+        ILOG << "INS is now " << (_insAvailable ? "" : "not ") << "available";
+        emit(insAvailableChanged(_insAvailable));
     }
 
     // Built-in-test failure is indicated in bit 5 of system status validity
@@ -732,29 +755,36 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         abort();
     }
 
-    // Figure-of-merit (FOM) information
+    // Figure-of-merit (FOM) information. Each figure-of-merit is a 4-bit
+    // integer value unpacked from the FOM information word, and each integer
+    // value signifies an explicit range for the associated figure-of-merit.
+    // See the C-MIGITS documentation for message 3500 for details.
     uint16_t fomInfo = msgWords[14];
-    _positionFomValue = (fomInfo >> 0) & 0x0f;
-    _velocityFomValue = (fomInfo >> 4) & 0x0f;
-    _headingFomValue = (fomInfo >> 8) & 0x0f;
-    _timeFomValue = (fomInfo >> 12) & 0x0f;
+    uint16_t positionFOM = (fomInfo >> 0) & 0x0f;
+    uint16_t velocityFOM = (fomInfo >> 4) & 0x0f;
+    uint16_t headingFOM = (fomInfo >> 8) & 0x0f;
+    uint16_t timeFOM = (fomInfo >> 12) & 0x0f;
 
     // Expected errors
-    _hPosError = _UnpackFloat32(msgWords + 15, 15);     // m
-    _vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
-    _velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
+    float hPosError = _UnpackFloat32(msgWords + 15, 15);     // m
+    float vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
+    float velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
 
-    ILOG << "3500 time: " << utcSecondOfDay <<
+    DLOG << "3500 time: " << msgTime.toString().toStdString() <<
             ", mode: " << _ModeNames[_currentMode] <<
-            ", GPS: " << _gpsValid <<
-            ", INS: " << _insValid;
-    DLOG << "3500 position FOM: " << _PositionFomStrings[_positionFomValue] <<
-            ", velocity FOM: " << _VelocityFomStrings[_velocityFomValue] <<
-            ", heading FOM: " << _HeadingFomStrings[_headingFomValue] <<
-            ", time FOM: " << _TimeFomStrings[_timeFomValue];
-    ILOG << "3500 expected errors - h pos: " << _hPosError <<
-            " m, v pos: " << _vPosError << " m, velocity: " << _velocityError <<
+            ", GPS: " << _gpsAvailable <<
+            ", INS: " << _insAvailable;
+    DLOG << "3500 position FOM: " << _PositionFOMStrings[positionFOM] <<
+            ", velocity FOM: " << _VelocityFOMStrings[velocityFOM] <<
+            ", heading FOM: " << _HeadingFOMStrings[headingFOM] <<
+            ", time FOM: " << _TimeFOMStrings[timeFOM];
+    DLOG << "3500 expected errors - h pos: " << hPosError <<
+            " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
+
+    CmigitsStatus status(msgTime, _currentMode, insAvailable, gpsAvailable,
+            positionFOM, velocityFOM, headingFOM, timeFOM,
+            hPosError, vPosError, velocityError);
 }
 
 void
@@ -778,27 +808,37 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         return;
     }
 
+    // Unpack time
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
-    float lat = 180.0 * _UnpackFloat32(msgWords + 9, 0);
-    float lon = 180.0 * _UnpackFloat32(msgWords + 11, 0);
-    float alt = _UnpackFloat32(msgWords + 13, 15);
-    float pitch = 180.0 * _UnpackFloat32(msgWords + 21, 0);
-    float roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
-    float heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
+    QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
+
+    // Unpack latitude, longitude, altitude
+    float latitude = 180.0 * _UnpackFloat32(msgWords + 9, 0);
+    float longitude = 180.0 * _UnpackFloat32(msgWords + 11, 0);
+    float altitude = _UnpackFloat32(msgWords + 13, 15);
+
+    // Unpack velocity components
+    float velocityNorth = _UnpackFloat32(msgWords + 15, 10);
+    float velocityEast = _UnpackFloat32(msgWords + 17, 10);
+    float velocityUp = _UnpackFloat32(msgWords + 19, 10);
+
+// Ignore attitude, since we get it at 100 Hz via 3512 messages
+//    // Unpack attitude components
+//    float pitch = 180.0 * _UnpackFloat32(msgWords + 21, 0);
+//    float roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
+//    float heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
 
     uint16_t decisecond = round(10 * fmod(utcSecondOfDay, 1.0));
     decisecond %= 10;
     if (decisecond == 0) {
-        double sysSecondOfDay =
-                fmod(0.001 * QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(),
-                        86400);
-        double latency = sysSecondOfDay - utcSecondOfDay;
-        ILOG << "3501 time: " <<
-                std::setprecision(7) << utcSecondOfDay << std::setprecision(6) <<
-                ", latency: " << latency <<
-                ", lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
-                ", pitch: " << pitch << ", roll: " << roll << ", heading: " << heading;
+        ILOG << "3501 time: " << msgTime.toString().toStdString() <<
+                ", lat: " << latitude << ", lon: " << longitude <<
+                ", alt: " << altitude << ", vel north: " << velocityNorth <<
+                ", vel east: " << velocityEast << ", vel up: " << velocityUp;
     }
+
+    CmigitsPositionVelocity positionVelocity(msgTime, latitude, longitude,
+            altitude, velocityNorth, velocityEast, velocityUp);
 }
 
 void
@@ -808,14 +848,15 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     if (! _navDataOk())
         return;
 
-    // 3512 message length is variable, but we configure it to contain only
+    // 3512 message length is variable, but we configured it to contain only
     // attitude data (6 words), giving a total message length of 16 words.
     if (nMsgWords != 16) {
-        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 21!";
+        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 16!";
         return;
     }
 
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
+    QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
 
 
     float pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
@@ -825,16 +866,12 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     int centisecond = round(fmod(utcSecondOfDay, 1.0) * 100);
     centisecond %= 100;
     if (centisecond == 0) {
-        double sysSecondOfDay =
-                fmod(0.001 * QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(),
-                        86400);
-        double latency = sysSecondOfDay - utcSecondOfDay;
-        ILOG << "3512 time: " <<
-                std::setprecision(10) << utcSecondOfDay << std::setprecision(6) <<
-                ", latency: " << latency <<
+        ILOG << "3512 time: " << msgTime.toString().toStdString() <<
                 ", pitch: " << pitch <<
                 ", roll: " << roll << ", heading: " << heading;
     }
+
+    CmigitsAttitude attitude(msgTime, pitch, roll, heading);
 }
 
 void
@@ -858,6 +895,8 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     if (gpsSecondOfDay < utcSecondOfDay) {
         gpsSecondOfDay += 86400;
     }
+    QDateTime msgTime = _SecondOfDayToNearestDateTime(gpsSecondOfDay);
+
     // Calculate current leap seconds offset between UTC and GPS.
     //
     // We must be careful to round here, since the floating precision of
@@ -869,9 +908,9 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     float lat = 180.0 * _UnpackFloat32(msgWords + 21, 0);
     float lon = 180.0 * _UnpackFloat32(msgWords + 23, 0);
     float alt = _UnpackFloat32(msgWords + 25, 15);
-    ILOG << "3623 lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
+    DLOG << "3623 lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
             " (" << msgWords[15] << " satellites)";
-    // We can initialize any time after we get the first 3623 message.
+    // We can start initialization any time after we get the first 3623 message.
     // (See "Commanded Initialization" in the C-MIGITS manual)
     if (_initPhase == INIT_PreInit) {
         _initPhase = INIT_EnableInitMode;
@@ -1152,7 +1191,13 @@ Cmigits::_initialize() {
         data[17] = 3000;		// heading is 30.0 (0.01 degree units)
 
         data[18] |= 4 << 0;	// starting alignment mode: 4 - fine alignment
-        data[18] |= 7 << 4;	// starting nav mode: 7 - air navigation
+        if (_useAirNavigation) {
+            ILOG << "Configuring for air navigation";
+            data[18] |= 7 << 4;	// auto sequence nav mode: 7 - air navigation
+        } else {
+            ILOG << "Configuring for land navigation";
+            data[18] |= 8 << 4; // auto sequence nav mode: 8 - land navigation
+        }
         data[18] |= 1 << 8;	// initialize from GPS when GPS has position
 
         // Send the 3510 message

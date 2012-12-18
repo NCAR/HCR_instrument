@@ -19,6 +19,161 @@
 #include <QTime>
 #include <QTimer>
 
+/// @brief Class to hold attitude information (pitch, roll, and heading) and
+/// the time it was collected.
+class CmigitsAttitude {
+public:
+    /// @brief Instantiate using the given data collection time and attitude
+    /// information.
+    /// @param dataTime QDateTime holding the time the attitude data were
+    /// collected
+    /// @param pitch the pitch, in degrees
+    /// @param roll the roll, in degrees
+    /// @param heading the heading, in degrees clockwise from true north
+    CmigitsAttitude(const QDateTime & dataTime, float pitch, float roll, float heading) :
+        _dataTime(dataTime),
+        _pitch(pitch),
+        _roll(roll),
+        _heading(heading) {}
+    /// @brief Return the time the attitude data were collected
+    /// @return the time the attitude data were collected
+    const QDateTime & dataTime() { return _dataTime; }
+    /// @brief Return the pitch in degrees
+    /// @return the pitch in degrees
+    float pitch() { return _pitch; }
+    /// @brief Return the roll in degrees
+    /// @return the roll in degrees
+    float roll() { return _roll; }
+    /// @brief Return the heading in degrees clockwise from true north
+    /// @return the heading in degrees clockwise from true north
+    float heading() { return _heading; }
+private:
+    QDateTime _dataTime;
+    float _pitch;
+    float _roll;
+    float _heading;
+};
+
+
+/// @brief Class to hold status information for the C-MIGITS and
+/// the time it was collected.
+class CmigitsStatus {
+public:
+    /// @brief Instantiate using the given data collection time and status
+    /// information. Values are defined in the C-MIGITS documentation for the
+    /// 3500 (System Status) message.
+    /// @param dataTime QDateTime holding the time the status data were
+    /// collected
+    /// @param currentMode current operating mode
+    /// @param insAvailable true iff INS measurements are available
+    /// @param gpsAvailable true iff GPS time is valid and at least 4 satellites
+    /// are being used
+    /// @param positionFOM position figure-of-merit value
+    /// @param velocityFOM velocity figure-of-merit value
+    /// @param headingFOM heading figure-of-merit value
+    /// @param timeFOM time figure-of-merit value
+    /// @param expectedHPosError expected error in horizontal position, m
+    /// @param expectedVPosError expected error in vertical position, m
+    /// @param expectedVelocityError expected error in velocity, m/s
+    CmigitsStatus(const QDateTime & dataTime, uint16_t currentMode,
+            bool insAvailable, bool gpsAvailable, uint16_t positionFOM,
+            uint16_t velocityFOM, uint16_t headingFOM, uint16_t timeFOM,
+            float expectedHPosError, float expectedVPosError,
+            float expectedVelocityError) :
+        _dataTime(dataTime),
+        _currentMode(currentMode),
+        _insAvailable(insAvailable),
+        _gpsAvailable(gpsAvailable),
+        _positionFOM(positionFOM),
+        _velocityFOM(velocityFOM),
+        _headingFOM(headingFOM),
+        _timeFOM(timeFOM),
+        _expectedHPosError(expectedHPosError),
+        _expectedVPosError(expectedVPosError),
+        _expectedVelocityError(expectedVelocityError) {}
+    /// @brief Return the time the status data were collected
+    /// @return the time the status data were collected
+    const QDateTime & dataTime() { return _dataTime; }
+    uint16_t currentMode() { return(_currentMode); }
+    bool insAvailable() { return(_insAvailable); }
+    bool gpsAvailable() { return(_gpsAvailable); }
+    uint16_t positionFOM() { return(_positionFOM); }
+    uint16_t velocityFOM() { return(_velocityFOM); }
+    uint16_t headingFOM() { return(_headingFOM); }
+    uint16_t timeFOM() { return(_timeFOM); }
+    float expectedHPosError() { return(_expectedHPosError); }
+    float expectedVPosError() { return(_expectedVPosError); }
+    float expectedVelocityError() { return(_expectedVelocityError); }
+private:
+    QDateTime _dataTime;
+    uint16_t _currentMode;
+    bool _insAvailable;
+    bool _gpsAvailable;
+    uint16_t _positionFOM;
+    uint16_t _velocityFOM;
+    uint16_t _headingFOM;
+    uint16_t _timeFOM;
+    float _expectedHPosError;
+    float _expectedVPosError;
+    float _expectedVelocityError;
+};
+
+
+/// @brief Class to hold position/velocity information and the time it was
+/// collected.
+class CmigitsPositionVelocity {
+public:
+    /// @brief Instantiate using the given data collection time and
+    /// position/velocity information.
+    /// @param dataTime QDateTime holding the time the position/velocity data
+    /// were collected
+    /// @param latitude the latitude, deg
+    /// @param longitude the longitude, deg
+    /// @param altitude the altitude, m MSL
+    /// @param velocityNorth the north component of velocity, m/s
+    /// @param velocityEast the east component of velocity, m/s
+    /// @param velocityUp the upward component of velocity, m/s
+    CmigitsPositionVelocity(const QDateTime & dataTime,
+            float latitude, float longitude, float altitude,
+            float velocityNorth, float velocityEast, float velocityUp) :
+        _dataTime(dataTime),
+        _latitude(latitude),
+        _longitude(longitude),
+        _altitude(altitude),
+        _velocityNorth(velocityNorth),
+        _velocityEast(velocityEast),
+        _velocityUp(velocityUp) {}
+    /// @brief Return the time the position/velocity data were collected
+    /// @return the time the position/velocity data were collected
+    const QDateTime & dataTime() { return _dataTime; }
+    /// @brief Return the latitude, deg
+    /// @return the latitude, deg
+    float latitude() { return(_latitude); }
+    /// @brief Return the longitude, deg
+    /// @return the longitude, deg
+    float longitude() { return(_longitude); }
+    /// @brief Return the altitude, m MSL
+    /// @return the altitude, m MSL
+    float altitude() { return(_altitude); }
+    /// @brief Return the north component of velocity, m/s
+    /// @return the north component of velocity, m/s
+    float velocityNorth() { return(_velocityNorth); }
+    /// @brief Return the east component of velocity, m/s
+    /// @return the east component of velocity, m/s
+    float velocityEast() { return(_velocityEast); }
+    /// @brief Return the upward component of velocity, m/s
+    /// @return the upward component of velocity, m/s
+    float velocityUp() { return(_velocityUp); }
+private:
+    QDateTime _dataTime;
+    float _latitude;
+    float _longitude;
+    float _altitude;
+    float _velocityNorth;
+    float _velocityEast;
+    float _velocityUp;
+};
+
 
 class Cmigits : public QObject {
     Q_OBJECT
@@ -40,12 +195,12 @@ public:
     static const std::string SIM_DEVICE;
 
     signals:
-    /// Signal emitted when GPS validity changes
-    /// @param newValue boolean telling the new state of GPS validity
-    void gpsValidChanged(bool newValue);
-    /// Signal emitted when INS validity changes
-    /// @param newValue boolean telling the new state of INS validity
-    void insValidChanged(bool newValue);
+    /// Signal emitted when GPS availability changes
+    /// @param newValue boolean telling the new state of GPS availability
+    void gpsAvailableChanged(bool newValue);
+    /// Signal emitted when INS availability changes
+    /// @param newValue boolean telling the new state of INS availability
+    void insAvailableChanged(bool newValue);
     /// Signal emitted when _doRead() is finished. This signal is intended
     /// for internal use by the class.
     void _readDone();
@@ -216,6 +371,14 @@ private:
     /// @param binaryScaling the binary scaling factor to be used in packing
     static void _PackFloat32(void * dest, float value, uint16_t binaryScaling);
 
+
+    /// @brief Convert second-of-day to the QDateTime nearest to now with the
+    /// same second-of-day.
+    /// @param secOfDay the second-of-day value to convert
+    /// @return The QDateTime nearest to now with the same second-of-day. Note
+    /// that the QDateTime returned will be truncated to the nearest millisecond.
+    QDateTime _SecondOfDayToNearestDateTime(double secondOfDay);
+
     /// Initialization is a multi-stage process, driven by responses from the
     /// C-MIGITS. This type enumerates our initialization phases.
     typedef enum {
@@ -234,19 +397,19 @@ private:
 
     /// Array of C-MIGITS position figure-of-merit (FOM) strings indexed by
     /// FOM integer value.
-    static const std::string _PositionFomStrings[];
+    static const std::string _PositionFOMStrings[];
 
     /// Array of C-MIGITS velocity figure-of-merit (FOM) strings indexed by
     /// FOM integer value.
-    static const std::string _VelocityFomStrings[];
+    static const std::string _VelocityFOMStrings[];
 
     /// Array of C-MIGITS heading figure-of-merit (FOM) strings indexed by
     /// FOM integer value.
-    static const std::string _HeadingFomStrings[];
+    static const std::string _HeadingFOMStrings[];
 
     /// Array of C-MIGITS time figure-of-merit (FOM) strings indexed by
     /// FOM integer value.
-    static const std::string _TimeFomStrings[];
+    static const std::string _TimeFOMStrings[];
 
     /// C-MIGITS header is 5 words long
     static const uint16_t _CMIGITS_HDR_LEN_WORDS = 5;
@@ -273,6 +436,9 @@ private:
     /// Is the C-MIGITS mounted in right wing/ground configuration?
     /// (For left wing operation, the C-MIGITS is rolled 180 degrees.)
     bool _onRightWing;
+
+    /// Do we want the C-MIGITS set up for air navigation or land?
+    bool _useAirNavigation;
 
     /// Where are we in the initialization?
     InitPhase _initPhase;
@@ -350,32 +516,11 @@ private:
     /// 9 = GPS Only
     uint16_t _currentMode;
 
-    /// Does the C-MIGITS have GPS time and at least 4 satellites tracked?
-    bool _gpsValid;
-
     /// Is the C-MIGITS getting INS sensor data?
-    bool _insValid;
+    bool _insAvailable;
 
-    /// latest osition figure-of-merit (FOM) value
-    uint16_t _positionFomValue;
-
-    /// latest velocity figure-of-merit (FOM) value
-    uint16_t _velocityFomValue;
-
-    /// latest heading figure-of-merit (FOM) value
-    uint16_t _headingFomValue;
-
-    /// latest time figure-of-merit (FOM) value
-    uint16_t _timeFomValue;
-
-    /// Expected horizontal position error, m
-    float _hPosError;
-
-    /// Expected vertical position error, m
-    float _vPosError;
-
-    /// Expected velocity error, m/s
-    float _velocityError;
+    /// Does the C-MIGITS have GPS time and at least 4 satellites?
+    bool _gpsAvailable;
 };
 
 #endif /* CMIGITS_H_ */
