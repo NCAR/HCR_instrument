@@ -782,7 +782,8 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
 
-    CmigitsStatus status(msgTime, _currentMode, insAvailable, gpsAvailable,
+    emit newStatus(msgTime.toMSecsSinceEpoch(), _currentMode,
+            insAvailable, gpsAvailable,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
 }
@@ -837,7 +838,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velocityEast << ", vel up: " << velocityUp;
     }
 
-    CmigitsPositionVelocity positionVelocity(msgTime, latitude, longitude,
+    emit new3501Data(msgTime.toMSecsSinceEpoch(), latitude, longitude,
             altitude, velocityNorth, velocityEast, velocityUp);
 }
 
@@ -871,7 +872,7 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", roll: " << roll << ", heading: " << heading;
     }
 
-    CmigitsAttitude attitude(msgTime, pitch, roll, heading);
+    emit new3512Data(msgTime.toMSecsSinceEpoch(), pitch, roll, heading);
 }
 
 void
@@ -1109,13 +1110,12 @@ Cmigits::_initialize() {
         _sendMessage(3504, data, 5);
         break;
     case INIT_SensorConfig:
-        // Build a 3511 message to set the orientation of the C-MIGITS w.r.t.
-        // the radar.
+        // Build a 3511 message to set the orientation of the C-MIGITS
 
         // set data validity bits
         data[0] |= (1 << 0);		// set sensor-to-body transformation
 
-        // Set the sensor-to-body transformation matrix
+        // Set the sensor-to-body transformation matrix.
         {
             RotationMatrix rotMatrix;
             // The default orientation for the C-MIGITS has the sensor x axis
@@ -1133,8 +1133,12 @@ Cmigits::_initialize() {
             // degrees from the right wing installation.  From the above
             // orientation, this is a 180 degree rotation about the sensor z
             // axis.
-            if (! _onRightWing) {
+            if (_onRightWing) {
+                ILOG << "RIGHT WING/GROUND configuration";
+            } else {
+                // Pod is rolled 180 degrees
                 rotMatrix.rotateAboutZ(180.0);
+                ILOG << "LEFT WING configuration";
             }
             _PackFloat32(&data[1], rotMatrix.element(0, 0), 1);
             _PackFloat32(&data[3], rotMatrix.element(0, 1), 1);
@@ -1192,10 +1196,10 @@ Cmigits::_initialize() {
 
         data[18] |= 4 << 0;	// starting alignment mode: 4 - fine alignment
         if (_useAirNavigation) {
-            ILOG << "Configuring for air navigation";
+            ILOG << "AIR NAVIGATION configuration";
             data[18] |= 7 << 4;	// auto sequence nav mode: 7 - air navigation
         } else {
-            ILOG << "Configuring for land navigation";
+            ILOG << "LAND NAVIGATION configuration";
             data[18] |= 8 << 4; // auto sequence nav mode: 8 - land navigation
         }
         data[18] |= 1 << 8;	// initialize from GPS when GPS has position
