@@ -405,6 +405,7 @@ Cmigits::_BaudToText(speed_t baudValue) {
 QDateTime
 Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     static const int SecondsPerDay = 86400;
+    static const int SecondsPerHalfDay = SecondsPerDay / 2;
     time_t now = time(0);
     int sysSecondOfDay = now % SecondsPerDay;
     time_t startOfDay = now - sysSecondOfDay;
@@ -412,9 +413,9 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     // Be careful around midnight, since our system clock may be slightly ahead
     // of or slightly behind the times from the C-MIGITS.
     double diff = secondOfDay - sysSecondOfDay;
-    if (diff > (SecondsPerDay / 2)) {
+    if (diff > SecondsPerHalfDay) {
         startOfDay -= SecondsPerDay;    // given time is in day previous to system time
-    } else if (diff < (-SecondsPerDay / 2)) {
+    } else if (diff < -SecondsPerHalfDay) {
         startOfDay += SecondsPerDay;    // given time is in day after system time
     }
 
