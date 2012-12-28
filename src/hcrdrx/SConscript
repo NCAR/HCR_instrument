@@ -3,6 +3,7 @@
 tools = Split("""
 boost_date_time
 boost_program_options
+cmigits
 doxygen
 hcrdrxrpcclient
 logx
