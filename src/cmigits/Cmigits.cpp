@@ -783,7 +783,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
 
-    emit newStatus(msgTime.toMSecsSinceEpoch(), _currentMode,
+    emit new3500Data(msgTime.toMSecsSinceEpoch(), _currentMode,
             insAvailable, gpsAvailable,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);

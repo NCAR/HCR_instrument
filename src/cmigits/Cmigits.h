@@ -64,7 +64,7 @@ signals:
     /// @param expectedHPosError expected error in horizontal position, m
     /// @param expectedVPosError expected error in vertical position, m
     /// @param expectedVelocityError expected error in velocity, m/s
-    void newStatus(int64_t dataTime, uint16_t currentMode,
+    void new3500Data(uint64_t dataTime, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, uint16_t positionFOM,
             uint16_t velocityFOM, uint16_t headingFOM, uint16_t timeFOM,
             float expectedHPosError, float expectedVPosError,
@@ -79,7 +79,7 @@ signals:
     /// @param velNorth north component of velocity, m/s
     /// @param velEast east component of velocity, m/s
     /// @param velUp upward component of velocity, m/s
-    void new3501Data(int64_t dataTime, float latitude, float longitude,
+    void new3501Data(uint64_t dataTime, float latitude, float longitude,
             float altitude, float velNorth, float velEast, float velUp);
 
     /// @brief Signal emitted when new 3512 message (Flight Control) data are
@@ -88,7 +88,7 @@ signals:
     /// @param pitch pitch, deg
     /// @param roll roll, deg
     /// @param heading heading, deg clockwise from true north
-    void new3512Data(int64_t dataTime, float pitch, float roll, float heading);
+    void new3512Data(uint64_t dataTime, float pitch, float roll, float heading);
 
 private slots:
     /**
