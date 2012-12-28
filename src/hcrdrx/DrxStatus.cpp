@@ -384,6 +384,8 @@ DrxStatus::_StatusBool(XmlRpc::XmlRpcValue & statusDict,
     } else {
         return(bool(statusDict[key]));
     }
+    // Can't get here, but make Eclipse happy...
+    return(false);
 }
 
 int
@@ -396,6 +398,8 @@ DrxStatus::_StatusInt(XmlRpc::XmlRpcValue & statusDict,
     } else {
         return(int(statusDict[key]));
     }
+    // Can't get here, but make Eclipse happy...
+    return(0);
 }
 
 double
@@ -408,4 +412,6 @@ DrxStatus::_StatusDouble(XmlRpc::XmlRpcValue & statusDict,
     } else {
         return(double(statusDict[key]));
     }
+    // Can't get here, but make Eclipse happy...
+    return(0.0);
 }
