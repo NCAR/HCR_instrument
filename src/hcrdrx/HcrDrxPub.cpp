@@ -40,9 +40,10 @@ HcrDrxPub::HcrDrxPub(
     _iqScaleForMw = config.iqcount_scale_for_mw();
 
     // Create our associated downconverter.
+    bool useInternalClock = false;
     _down = sd3c.addDownconverter(_chanId, 4 * 512 * 1024, false, tsLength,
         config.digitizer_gate0_delay(), config.digitizer_sample_width(),
-        gaussianFile, kaiserFile, simWavelength);
+        gaussianFile, kaiserFile, simWavelength, useInternalClock);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
