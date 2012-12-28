@@ -27,7 +27,7 @@ HcrMonitor::HcrMonitor(const Pentek::p7142 & pentek,
     _pentek(pentek),
     _drxStatus(_pentek),
     _xmitClient(xmitdHost, xmitdPort),
-    _cmigitsShm(QSharedMemory::ReadOnly),
+    _cmigitsShm(),
     _mutex(QMutex::Recursive) {
 }
 
