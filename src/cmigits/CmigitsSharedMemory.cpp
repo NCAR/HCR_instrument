@@ -13,104 +13,107 @@
 
 const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
 
-CmigitsSharedMemory::CmigitsSharedMemory(AccessMode mode) throw(Exception) :
-    QSharedMemory(CMIGITS_SHM_KEY),
-    _mode(mode),
+CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
+    _qShm(CMIGITS_SHM_KEY),
+    _writeAccess(writeAccess),
     _shmContents(0) {
     // Create and attach to the shared memory segment, which will hold our
     // private type struct _ShmContents
     int segsize = sizeof(struct _ShmContents);
-    // Try to create the shared memory segment
-    if (create(segsize, ReadWrite)) {
+    // Try to create the shared memory segment. Create the segment with
+    // read/write access, even if this object will have read-only access.
+    if (_qShm.create(segsize, QSharedMemory::ReadWrite)) {
         std::cout << "Created shared memory segment '" << CMIGITS_SHM_KEY.toStdString() << "'" << std::endl;
-        lock();
+        _qShm.lock();
         // Zero the segment.
-        memset(data(), 0, segsize);
-        unlock();
+        memset(_qShm.data(), 0, segsize);
+        _qShm.unlock();
         // This bit is bogus, but necessary to re-attach ReadOnly if we just
         // created the shared memory segment.
         // Create a temporary QSharedMemory object and attach it to the
         // shared memory segment so that we can detach momentarily and
         // re-attach ReadOnly without the segment being destroyed.
-        if (_mode == ReadOnly) {
+        if (! _writeAccess) {
             QSharedMemory tempShmObj(CMIGITS_SHM_KEY);
             tempShmObj.attach();
-            detach();           // detach ourselves
-            attach(ReadOnly);   // re-attach with ReadOnly access
+            _qShm.detach();           // detach ourselves
+            _qShm.attach(QSharedMemory::ReadOnly);   // re-attach with ReadOnly access
         }
     } else {
         // Anything other than AlreadyExists is a problem...
-        if (error() != AlreadyExists) {
+        if (_qShm.error() != QSharedMemory::AlreadyExists) {
             std::ostringstream msgStream;
-            msgStream << "Shared memory create failed: " << errorString().toStdString();
+            msgStream << "Shared memory create failed: " << _qShm.errorString().toStdString();
             throw(Exception(msgStream.str()));
         }
     }
     // If we didn't create and attach above, attach to the shared memory with
     // the desired access mode.
-    if (! isAttached() && ! attach(_mode)) {
+    QSharedMemory::AccessMode accessMode = _writeAccess ?
+            QSharedMemory::ReadWrite : QSharedMemory::ReadOnly;
+    if (! _qShm.isAttached() && ! _qShm.attach(accessMode)) {
         std::ostringstream msgStream;
         msgStream << "Shared memory attach error: " <<
-                errorString().toStdString() << " (" << error() << ")";
+                _qShm.errorString().toStdString() << " (" << _qShm.error() << ")";
         throw(Exception(msgStream.str()));
     }
     // Contents of the shared memory data are defined by our private
     // struct _ShmContents
-    if (size() != sizeof(struct _ShmContents)) {
+    if (_qShm.size() != sizeof(struct _ShmContents)) {
         std::ostringstream msgStream;
-        msgStream << "Actual shared memory size of " << size() <<
+        msgStream << "Actual shared memory size of " << _qShm.size() <<
                 "bytes does not match the expected size of " <<
                 sizeof(struct _ShmContents) << " bytes!";
         throw(Exception(msgStream.str()));
     }
-    _shmContents = static_cast<struct _ShmContents *>(data());
+    _shmContents = static_cast<struct _ShmContents *>(_qShm.data());
     // If write access has been requested, verify that there is not a
     // writer already.
-    if (_mode == ReadWrite) {
+    if (_writeAccess) {
         pid_t writerPid = getWriterPid();
         if (writerPid != 0) {
-            detach();
+            _qShm.detach();
             std::ostringstream msgStream;
             msgStream << "An object in pid " << writerPid <<
                     " already claims write access to shared memory";
             throw(Exception(msgStream.str()));
         }
         // Set our process id as the writer id
-        lock();
+        _qShm.lock();
         _shmContents->writerPid = getpid();
-        unlock();
+        _qShm.unlock();
     }
 }
 
 CmigitsSharedMemory::~CmigitsSharedMemory() {
     // If this is the writer, clear the writer PID now
-    if (_mode == ReadWrite) {
+    if (_writeAccess) {
         // Remove this object as writer (set the writer pid to zero)
-        lock();
+        _qShm.lock();
         _shmContents->writerPid = 0;
-        unlock();
+        _qShm.unlock();
     }
-    detach();
+    _qShm.detach();
 }
 
 pid_t
-CmigitsSharedMemory::getWriterPid() {
-    lock();
+CmigitsSharedMemory::getWriterPid() const {
+    _qShm.lock();
     pid_t writerPid = _shmContents->writerPid;
-    unlock();
+    _qShm.unlock();
     return(writerPid);
 }
 
 void
-CmigitsSharedMemory::setLatestStatus(int64_t dataTime, uint16_t currentMode,
+CmigitsSharedMemory::setLatestStatus(uint64_t dataTime, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, uint16_t positionFOM,
             uint16_t velocityFOM, uint16_t headingFOM, uint16_t timeFOM,
             float expectedHPosError, float expectedVPosError,
             float expectedVelocityError) throw(Exception) {
-    if (_mode != ReadWrite) {
+    if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
-    lock();
+    _qShm.lock();
     _shmContents->statusTime = dataTime;
     _shmContents->currentMode = currentMode;
     _shmContents->insAvailable = insAvailable;
@@ -122,16 +125,16 @@ CmigitsSharedMemory::setLatestStatus(int64_t dataTime, uint16_t currentMode,
     _shmContents->hPosError = expectedHPosError;
     _shmContents->vPosError = expectedVPosError;
     _shmContents->velocityError = expectedVelocityError;
-    unlock();
+    _qShm.unlock();
 }
 
 void
-CmigitsSharedMemory::getLatestStatus(int64_t & dataTime, uint16_t & currentMode,
+CmigitsSharedMemory::getLatestStatus(uint64_t & dataTime, uint16_t & currentMode,
             bool & insAvailable, bool & gpsAvailable, uint16_t & positionFOM,
             uint16_t & velocityFOM, uint16_t & headingFOM, uint16_t & timeFOM,
             float & expectedHPosError, float & expectedVPosError,
-            float & expectedVelocityError) {
-    lock();
+            float & expectedVelocityError) const {
+    _qShm.lock();
     dataTime = _shmContents->statusTime;
     currentMode = _shmContents->currentMode;
     insAvailable = _shmContents->insAvailable;
@@ -143,17 +146,17 @@ CmigitsSharedMemory::getLatestStatus(int64_t & dataTime, uint16_t & currentMode,
     expectedHPosError = _shmContents->hPosError;
     expectedVPosError = _shmContents->vPosError;
     expectedVelocityError = _shmContents->velocityError;
-    unlock();
+    _qShm.unlock();
 }
 
 void
-CmigitsSharedMemory::setLatestNavSolution(int64_t dataTime, float latitude,
+CmigitsSharedMemory::setLatestNavSolution(uint64_t dataTime, float latitude,
         float longitude, float altitude, float velNorth, float velEast,
         float velUp) throw(Exception) {
-    if (_mode != ReadWrite) {
+    if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
-    lock();
+    _qShm.lock();
     _shmContents->navSolutionTime = dataTime;
     _shmContents->latitude = latitude;
     _shmContents->longitude = longitude;
@@ -161,15 +164,15 @@ CmigitsSharedMemory::setLatestNavSolution(int64_t dataTime, float latitude,
     _shmContents->velNorth = velNorth;
     _shmContents->velEast = velEast;
     _shmContents->velUp = velUp;
-    unlock();
+    _qShm.unlock();
     return;
 }
 
 void
-CmigitsSharedMemory::getLatestNavSolution(int64_t & dataTime, float & latitude,
+CmigitsSharedMemory::getLatestNavSolution(uint64_t & dataTime, float & latitude,
         float & longitude, float & altitude, float & velNorth, float & velEast,
-        float & velUp) {
-    lock();
+        float & velUp) const {
+    _qShm.lock();
     dataTime = _shmContents->navSolutionTime;
     latitude = _shmContents->latitude;
     longitude = _shmContents->longitude;
@@ -177,33 +180,33 @@ CmigitsSharedMemory::getLatestNavSolution(int64_t & dataTime, float & latitude,
     velNorth = _shmContents->velNorth;
     velEast = _shmContents->velEast;
     velUp = _shmContents->velUp;
-    unlock();
+    _qShm.unlock();
     return;
 }
 
 void
-CmigitsSharedMemory::setLatestAttitude(int64_t dataTime, float pitch,
+CmigitsSharedMemory::setLatestAttitude(uint64_t dataTime, float pitch,
         float roll, float heading) throw(Exception) {
-    if (_mode != ReadWrite) {
+    if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
-    lock();
+    _qShm.lock();
     _shmContents->attitudeTime = dataTime;
     _shmContents->pitch = pitch;
     _shmContents->roll = roll;
     _shmContents->heading = heading;
-    unlock();
+    _qShm.unlock();
     return;
 }
 
 void
-CmigitsSharedMemory::getLatestAttitude(int64_t & dataTime, float & pitch,
-        float & roll, float & heading) {
-    lock();
+CmigitsSharedMemory::getLatestAttitude(uint64_t & dataTime, float & pitch,
+        float & roll, float & heading) const {
+    _qShm.lock();
     dataTime = _shmContents->attitudeTime;
     pitch = _shmContents->pitch;
     roll = _shmContents->roll;
     heading = _shmContents->heading;
-    unlock();
+    _qShm.unlock();
     return;
 }
