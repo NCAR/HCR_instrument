@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <csignal>
 #include <QApplication>
+#include <QMetaType>
 #include <logx/Logging.h>
 
 LOGGING("cmigitsDaemon")
@@ -45,10 +46,17 @@ main(int argc, char *argv[]) {
     std::string devName(argv[1]);
     Cmigits cm(devName);
 
-    CmigitsSharedMemory shm(QSharedMemory::ReadWrite);
+    // Get a writable connection to the C-MIGITS shared memory segment
+    CmigitsSharedMemory shm(true);
+
+    // Register uint16_t and uint64_t as a Qt metatype, since we need to use
+    // them as signal/slot arguments below.
+    qRegisterMetaType<uint16_t>("uint16_t");
+    qRegisterMetaType<uint64_t>("uint64_t");
+
     // When new status arrives, stuff into shared memory.
     QObject::connect(
-            &cm, SIGNAL(newStatusData(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
+            &cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
             &shm, SLOT(setLatestStatus(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)));
     // When new navigation solution arrives, stuff into shared memory.
     QObject::connect(
@@ -57,7 +65,7 @@ main(int argc, char *argv[]) {
     // When new attitude arrives, stuff into shared memory.
     QObject::connect(
             &cm, SIGNAL(new3512Data(uint64_t, float, float, float)),
-            &shm, SLOT(setLatestAttitudes(uint64_t, float, float, float)));
+            &shm, SLOT(setLatestAttitude(uint64_t, float, float, float)));
 
     App->exec();
     return 0;
