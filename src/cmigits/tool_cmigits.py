@@ -16,10 +16,12 @@ includeDir = tooldir
 sources = Split('''
     cmigitsDaemon.cpp
     Cmigits.cpp
+    CmigitsSharedMemory.cpp
 ''')
 
 headers = Split('''
     Cmigits.h
+    CmigitsSharedMemory.h
 ''')
 
 lib = env.Library('cmigits', sources)
