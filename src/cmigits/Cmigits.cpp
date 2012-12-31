@@ -422,7 +422,8 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     // Convert milliseconds since the epoch into a QDateTime
     int millisecondOfDay = int(1000 * secondOfDay);
     qint64 msecsSinceEpoch = qint64(startOfDay) * 1000 + millisecondOfDay;
-    QDateTime dateTime(QDateTime::fromMSecsSinceEpoch(msecsSinceEpoch).toUTC());
+    QDateTime dateTime(QDateTime::fromTime_t(0).toUTC());   // 1970-01-01 00:00:00 UTC
+    dateTime.addMSecs(msecsSinceEpoch);
     return(dateTime);
 }
 
@@ -714,7 +715,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // we think we completed initialization, force the initialization process
     // to start again.
     if (_currentMode == 2 && _initPhase == INIT_Complete &&
-            _initCompleteTime.msecsTo(QDateTime::currentDateTime()) > 5000) {
+            _initCompleteTime.secsTo(QDateTime::currentDateTime().toUTC()) > 5) {
         ELOG << "C-MIGITS has returned to Initialization mode. Beginning re-initialization.";
         _initPhase = INIT_PreInit;
     }
@@ -783,7 +784,8 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
 
-    emit new3500Data(msgTime.toMSecsSinceEpoch(), _currentMode,
+    uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
+    emit new3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
@@ -839,7 +841,8 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velocityEast << ", vel up: " << velocityUp;
     }
 
-    emit new3501Data(msgTime.toMSecsSinceEpoch(), latitude, longitude,
+    uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
+    emit new3501Data(msecsSinceEpoch, latitude, longitude,
             altitude, velocityNorth, velocityEast, velocityUp);
 }
 
@@ -873,7 +876,8 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", roll: " << roll << ", heading: " << heading;
     }
 
-    emit new3512Data(msgTime.toMSecsSinceEpoch(), pitch, roll, heading);
+    uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
+    emit new3512Data(msecsSinceEpoch, pitch, roll, heading);
 }
 
 void
@@ -1210,7 +1214,7 @@ Cmigits::_initialize() {
         break;
     case INIT_Complete:
         ILOG << "C-MIGITS initialization is complete!";
-        _initCompleteTime = QDateTime::currentDateTimeUtc();
+        _initCompleteTime = QDateTime::currentDateTime().toUTC();
         break;
     default:
         ELOG << __PRETTY_FUNCTION__ << ": Unknown configuration phase: " << _initPhase;

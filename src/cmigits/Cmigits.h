@@ -13,7 +13,6 @@
 #include <stdint.h>
 #include <termios.h>
 #include <QMutex>
-#include <QtCore/qmutex.h>
 #include <QObject>
 #include <QThread>
 #include <QTime>
