@@ -1,0 +1,20 @@
+# -*- python -*-
+#
+# Build cmigitsDaemon
+#
+
+tools = ['cmigits', 'qt4']
+
+env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtGui', 'QtNetwork'])
+
+sources = ['cmigitsDaemon.cpp']
+
+headers = ['cmigitsDaemon.h']
+
+# Explicit addition of cmigits library here is temporary until tool_cmigits.py
+# is fixed...
+env.AppendUnique(LIBS = [env.GetGlobalTarget('libcmigits')])
+daemon = env.Program('cmigitsDaemon', sources)
+
+Default(daemon)
