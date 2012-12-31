@@ -5,7 +5,7 @@
  *      Author: burghart
  */
 #include <iostream>
-#include <unistd.h>
+#include <cstdlib>
 #include <csignal>
 #include <QApplication>
 #include <QMetaType>
