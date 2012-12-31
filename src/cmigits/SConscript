@@ -6,7 +6,7 @@
 tools = ['cmigits', 'qt4']
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtGui', 'QtNetwork'])
+env.EnableQt4Modules(['QtCore', 'QtGui', 'QtNetwork'])
 
 sources = ['cmigitsDaemon.cpp']
 
