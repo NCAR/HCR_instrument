@@ -215,8 +215,9 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _mutex(QMutex::Recursive),
                 _awaitingHandshake(-1),
                 _rejectRetryCount(0),
-                _handshakeTimer(0),
-                _gpsTimeoutTimer(0),
+                _readTimer(),
+                _handshakeTimer(),
+                _gpsTimeoutTimer(),
                 _gpsDataTooOld(true),
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
@@ -241,36 +242,53 @@ Cmigits::Cmigits(std::string ttyDev) :
     // Move affinity to our private thread, so all 'real' work gets done there
     moveToThread(&_myThread);
 
-    // Build a timer to limit the time we wait for handshake messages from the
-    // C-MIGITS. Set the timer's thread affinity to _myThread.
-    _handshakeTimer.setSingleShot(true);
-    _handshakeTimer.moveToThread(&_myThread);
-    // If the timer times out, call _noHandshakeRcvd()
-    connect(&_handshakeTimer, SIGNAL(timeout()), this, SLOT(_noHandshakeRcvd()));
-
-    // Build _gpsTimeoutTimer which is used to signal when our most recent GPS
-    // data are older than _GPS_TIMEOUT_SECS. Set the timer's thread affinity
-    // to _myThread.
-    _gpsTimeoutTimer.setInterval(1000 * _GPS_TIMEOUT_SECS);
-    _gpsTimeoutTimer.setSingleShot(true);
-    _gpsTimeoutTimer.moveToThread(&_myThread);
-    // When this timer times out, call _gpsTimedOut()
-    connect(&_gpsTimeoutTimer, SIGNAL(timeout()), this, SLOT(_gpsTimedOut()));
-
-    // Start reading as soon as our thread is started
-    connect(&_myThread, SIGNAL(started()), this, SLOT(_doRead()), Qt::QueuedConnection);
-    // Make sure we queue a new read after each completed read.
-    connect(this, SIGNAL(_readDone()), this, SLOT(_doRead()), Qt::QueuedConnection);
+    // Perform the rest of our initialization from inside our work thread
+    connect(&_myThread, SIGNAL(started()), this, SLOT(_threadStartInitialize()));
 
     _myThread.start();
 }
 
 Cmigits::~Cmigits() {
-    disconnect(this, SIGNAL(_readDone()), this, SLOT(_doRead()));
+    delete(_gpsTimeoutTimer);
+    delete(_handshakeTimer);
+    delete(_readTimer);
     _myThread.quit();
     if (! _myThread.wait(1000)) {
         ELOG << __PRETTY_FUNCTION__ << ": wait for _myThread termination timed out!";
     }
+}
+
+void
+Cmigits::_threadStartInitialize() {
+    // Create a zero-interval timer to schedule a read whenever our thread
+    // is not busy doing something else. This timer and the _doRead() slot
+    // are how the work of reading data from the C-MIGITS gets done.
+    _readTimer = new QTimer();
+    _readTimer->setInterval(0);
+    connect(_readTimer, SIGNAL(timeout()), this, SLOT(_doRead()));
+    ILOG << "READ TIMER CREATED";
+    _readTimer->start();
+    ILOG << "READ TIMER STARTED";
+
+    // Create a single-shot timer to limit the time we wait for a handshake 
+    // message from the C-MIGITS. The timer is started after we send a
+    // message requiring a handshake.
+    _handshakeTimer = new QTimer(this);
+    _handshakeTimer->setSingleShot(true);
+    _handshakeTimer->setInterval(200);  // 200 msec
+    // If the timer times out, call _noHandshakeRcvd()
+    connect(_handshakeTimer, SIGNAL(timeout()), this, SLOT(_noHandshakeRcvd()));
+    ILOG << "HANDSHAKE TIMER CREATED";
+
+    // Build _gpsTimeoutTimer which is used to signal when our most recent GPS
+    // data are older than _GPS_TIMEOUT_SECS. Set the timer's thread affinity
+    // to _myThread.
+   _gpsTimeoutTimer = new QTimer();
+    _gpsTimeoutTimer->setInterval(1000 * _GPS_TIMEOUT_SECS);
+    _gpsTimeoutTimer->setSingleShot(true);
+    // When this timer times out, call _gpsTimedOut()
+    connect(_gpsTimeoutTimer, SIGNAL(timeout()), this, SLOT(_gpsTimedOut()));
+    ILOG << "GPS TIMER CREATED";
 }
 
 void
@@ -410,8 +428,10 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     int sysSecondOfDay = now % SecondsPerDay;
     time_t startOfDay = now - sysSecondOfDay;
 
-    // Be careful around midnight, since our system clock may be slightly ahead
-    // of or slightly behind the times from the C-MIGITS.
+    // Be very careful around midnight UTC, since our system clock may be 
+    // slightly ahead of or slightly behind the times from the C-MIGITS, and
+    // hence on a different day. Use the closest day based on the difference
+    // in second-of-day.
     double diff = secondOfDay - sysSecondOfDay;
     if (diff > SecondsPerHalfDay) {
         startOfDay -= SecondsPerDay;    // given time is in day previous to system time
@@ -422,8 +442,7 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     // Convert milliseconds since the epoch into a QDateTime
     int millisecondOfDay = int(1000 * secondOfDay);
     qint64 msecsSinceEpoch = qint64(startOfDay) * 1000 + millisecondOfDay;
-    QDateTime dateTime(QDateTime::fromTime_t(0).toUTC());   // 1970-01-01 00:00:00 UTC
-    dateTime.addMSecs(msecsSinceEpoch);
+    QDateTime dateTime(QDateTime::fromTime_t(0).toUTC().addMSecs(msecsSinceEpoch));
     return(dateTime);
 }
 
@@ -463,7 +482,6 @@ Cmigits::_doRead() {
                 ELOG << __PRETTY_FUNCTION__ << ": select error: " << strerror(errno);
             }
         }
-        emit(_readDone());
         return;
     } 
     /*
@@ -472,7 +490,6 @@ Cmigits::_doRead() {
     int result = read(_fd, _rawData + _nRawBytes, _CMIGITS_MAX_MSG_LEN_BYTES - _nRawBytes);
     if (result < 0) {
         ELOG << __PRETTY_FUNCTION__ << ": read error: " << strerror(errno);
-        emit(_readDone());
         return;
     }
     _nRawBytes += result;
@@ -480,8 +497,6 @@ Cmigits::_doRead() {
      * Process what we can from the data read so far.
      */
     _processRawData();
-
-    emit(_readDone());
     return;
 }
 
@@ -628,7 +643,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     bool ack = flags & (1 << 11);
     std::string handshakeMsg = std::string("HANDSHAKE");
     handshakeMsg += reject ? "(cmd rejected) " : "(cmd accepted) ";
-    DLOG << "Got reply message for " << msgWords[1] << ": " <<
+    ILOG << "Got reply message for " << msgWords[1] << ": " <<
             ((flags & (1 << 7)) ? "INVALID " : "") <<
             (handshake ? handshakeMsg : "") <<
             (nak ? "NAK " : "") <<
@@ -636,7 +651,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
             ((flags & (1 << 12)) ? "(ACK request)" : "");
 
     // Deal with more initialization after phases which are waiting for response
-    // to a messages.
+    // to a message.
     if (msgId != _awaitingHandshake) {
         if (_awaitingHandshake < 0) {
             WLOG << "Got unexpected header-only id " << msgId;
@@ -646,6 +661,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
         }
         return;
     }
+
     // First response to a command is ACK or NAK. If we got a NAK, we can
     // just try the same command again.
     if (nak) {
@@ -657,7 +673,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     // Second response to a command is a handshake reply telling whether the
     // command was accepted or rejected.
     if (handshake) {
-        _handshakeTimer.stop();
+        _handshakeTimer->stop();
         _awaitingHandshake = -1;
         if (reject) {
             // Sometimes a command is rejected because the C-MIGITS is
@@ -737,7 +753,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // the GPS data timeout timer.
     if (_gpsAvailable) {
         _gpsDataTooOld = false;
-        _gpsTimeoutTimer.start();
+        _gpsTimeoutTimer->start();
     }
 
     // "INS Measurements Available" is bit 1 of system status validity
@@ -832,7 +848,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 //    float roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
 //    float heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
 
-    uint16_t decisecond = round(10 * fmod(utcSecondOfDay, 1.0));
+    uint16_t decisecond = uint16_t(round(10 * fmod(utcSecondOfDay, 1.0)));
     decisecond %= 10;
     if (decisecond == 0) {
         ILOG << "3501 time: " << msgTime.toString().toStdString() <<
@@ -868,7 +884,7 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     float roll = 180.0 * _UnpackFloat32(msgWords + 11, 0);
     float heading = 180.0 * _UnpackFloat32(msgWords + 13, 0);
 
-    int centisecond = round(fmod(utcSecondOfDay, 1.0) * 100);
+    int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
     centisecond %= 100;
     if (centisecond == 0) {
         ILOG << "3512 time: " << msgTime.toString().toStdString() <<
@@ -909,7 +925,7 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // gpsSecondOfWeek and utcSecondOfDay differ. We know the leap second
     // difference will actually be an integer, so round to make sure we get
     // the right value, rather than truncating 15.999999999 to 15!
-    _utcToGpsCorrection = round(gpsSecondOfDay - utcSecondOfDay);
+    _utcToGpsCorrection = int16_t(round(gpsSecondOfDay - utcSecondOfDay));
 
     float lat = 180.0 * _UnpackFloat32(msgWords + 21, 0);
     float lon = 180.0 * _UnpackFloat32(msgWords + 23, 0);
@@ -939,12 +955,12 @@ double
 Cmigits::_UnpackFloat64(const uint16_t * words, uint16_t binaryScaling) {
     // int64_t to hold the 64-bit packed value
     int64_t packedVal;
-    // Data in bytes is packed in order 43218765, where byte 1 is the
-    // most significant and byte 8 is the least significant. Copy the data into
-    // packedVal in little-endian order.
-    uint16_t* pPtr = reinterpret_cast<uint16_t *>(&packedVal);
-    memcpy(pPtr, words + 2, 4);
-    memcpy(pPtr + 2, words, 4);
+    char * pvPtr = reinterpret_cast<char *>(&packedVal);
+    // Data is packed in word order 2143, where word 1 is the most significant 
+    // and word 4 is the least significant. Copy the 4 words into packedVal in 
+    // little-endian order.
+    memcpy(pvPtr, words + 2, 4);
+    memcpy(pvPtr + 4, words, 4);
     // Apply the binary scaling factor to the packed value
     double val = double(packedVal) / (1ULL << (63 - binaryScaling));
     return(val);
@@ -1035,21 +1051,22 @@ Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
                 msgId << "message";
     } else {
         DLOG << "Sent " << msgLenBytes << "-byte " << msgId << " message";
-        // Set up a timer so that if we don't get a handshake message in reply
-        // to our command, we can send the command again. Wait up to 1 second
-        // for the reply.
+        // Start the handshake timer so that we will send the message again if
+        // no handshake reply is received within a reasonable time.
         _awaitingHandshake = msgId;
-        _handshakeTimer.start(1000);
+        _handshakeTimer->start();
     }
 }
 
 void
 Cmigits::_sendDisconnectForMsg(uint16_t msgId) {
+    ILOG << "Sending disconnect request for message type " << msgId;
     _sendMessage(msgId, 0, 0, true, false);
 }
 
 void
 Cmigits::_sendConnectForMsg(uint16_t msgId) {
+    ILOG << "Sending connect request for message type " << msgId;
     _sendMessage(msgId, 0, 0, false, true);
 }
 

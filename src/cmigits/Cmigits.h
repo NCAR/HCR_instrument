@@ -46,9 +46,6 @@ signals:
     /// @brief Signal emitted when INS availability changes
     /// @param newValue boolean telling the new state of INS availability
     void insAvailableChanged(bool newValue);
-    /// @brief Signal emitted when _doRead() is finished. This signal is intended
-    /// for internal use by the class.
-    void _readDone();
     /// @brief Signal emitted when new 3500 message (System Status) data are
     /// available.
     /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
@@ -90,6 +87,11 @@ signals:
     void new3512Data(uint64_t dataTime, float pitch, float roll, float heading);
 
 private slots:
+    /**
+     * This slot performs initialization that must happen after the work thread
+     * has started.
+     */
+    void _threadStartInitialize();
     /**
      * Read from the serial line until we get a complete message or we time out.
      * Emit a _readDone() signal when finished.
@@ -360,9 +362,13 @@ private:
     /// @brief Count of consecutive rejections of the same command.
     int16_t _rejectRetryCount;
 
+    /// @brief Zero-interval timer used to schedule a new read whenever the
+    /// work thread is not busy
+    QTimer * _readTimer;
+    
     /// @brief QTimer used to prevent waiting too long for message handshake
     /// reply
-    QTimer _handshakeTimer;
+    QTimer * _handshakeTimer;
 
     /// @brief Navigation data will delivered and considered reasonable only if
     /// the most recent GPS fix is younger than this number of seconds.
@@ -370,7 +376,7 @@ private:
 
     /// @brief QTimer which expires when good GPS data have been unavailable for
     /// more than _GPS_TIMEOUT_SECS seconds.
-    QTimer _gpsTimeoutTimer;
+    QTimer * _gpsTimeoutTimer;
 
     /// @brief This is true if the C-MIGITS has not yet reported good GPS data,
     /// or if the latest GPS data are older than _GPS_TIMEOUT_SECS seconds.
