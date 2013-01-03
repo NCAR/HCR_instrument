@@ -18,17 +18,14 @@
 
 #include <p7142.h>
 #include <XmitdRpcClient.h>
-#include <CmigitsSharedMemory.h>
 
 #include "DrxStatus.h"
 
 class HcrMonitorPriv;
 
 /// @brief QThread object which handles HCR monitoring, regularly sampling all
-/// status available via the multi-IO card, transmitter status
-/// information obtained from the hcr_xmitd process, and provides shared memory
-/// access to information from the C-MIGITS INS/GPS Navigation System via
-/// a CmigitsSharedMemory object.
+/// status available via the multi-IO card and transmitter status
+/// information obtained from the hcr_xmitd process.
 class HcrMonitor : public QThread {
 public:
     /**
@@ -57,14 +54,6 @@ public:
      */
     DrxStatus drxStatus() const;
 
-    /**
-     * @brief Return a reference to the CmigitsSharedMemory object
-     * providing access to latest information from the C-MIGITS.
-     * @return a reference to the CmigitsSharedMemory object
-     * providing access to latest information from the C-MIGITS.
-     */
-    const CmigitsSharedMemory & cmigitsShmObject() const { return(_cmigitsShm); }
-
 private:
 
     /**
@@ -88,9 +77,6 @@ private:
 
     /// Last transmitter status we obtained
     XmitStatus _xmitStatus;
-
-    /// CmigitsSharedMemory instance to get information from the C-MIGITS
-    CmigitsSharedMemory _cmigitsShm;
 
     /**
      * Thread access mutex (mutable so we can lock the mutex even in const

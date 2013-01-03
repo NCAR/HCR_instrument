@@ -749,6 +749,68 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeBoolean
     ("HmcPolSwitchError", 2, drxStatus.hmcPolSwitchError());
 
+  // C-MIGITS status info (latest 3500 message from C-MIGITS)
+  double statusTime = 0.0;      // seconds since 1970-01-01 00:00:00 UTC
+  uint16_t currentMode = 0;     // see info for C-MIGITS 3500 message
+  bool insAvailable = false;
+  bool gpsAvailable = false;
+  uint16_t positionFOM = 0;     // see info for C-MIGITS 3500 message
+  uint16_t velocityFOM = 0;     // see info for C-MIGITS 3500 message
+  uint16_t headingFOM = 0;      // see info for C-MIGITS 3500 message
+  uint16_t timeFOM = 0;         // see info for C-MIGITS 3500 message
+  float expectedHPosError = 0.0;      // m
+  float expectedVPosError = 0.0;      // m
+  float expectedVelocityError = 0.0;  // m/s
+
+  drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable, gpsAvailable, 
+          positionFOM, velocityFOM, headingFOM, timeFOM, expectedHPosError, 
+          expectedVPosError, expectedVelocityError);
+
+  xml += TaXml::writeUtime("Cmigits3500Time", 2, time_t(statusTime));
+  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, currentMode);
+  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, insAvailable);
+  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, gpsAvailable);
+  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, positionFOM);
+  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, velocityFOM);
+  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, headingFOM);
+  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2, timeFOM);
+  xml += TaXml::writeDouble("Cmigits3500HPosError", 2, expectedHPosError);
+  xml += TaXml::writeDouble("Cmigits3500VPosError", 2, expectedVPosError);
+  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2, expectedVelocityError);
+
+  // current position/velocity (latest 3501 message from C-MIGITS)
+  double navSolutionTime = 0.0; // seconds since 1970-01-01 00:00:00 UTC
+  float latitude = 0.0;         // deg
+  float longitude = 0.0;        // deg
+  float altitude = 0.0;         // m above MSL
+  float velNorth = 0.0;         // m/s
+  float velEast = 0.0;          // m/s
+  float velUp = 0.0;            // m/s
+
+  drxStatus.cmigitsNavSolution(navSolutionTime, latitude, longitude, altitude, 
+          velNorth, velEast, velUp);
+
+  xml += TaXml::writeUtime("Cmigits3501Time", 2, time_t(navSolutionTime));
+  xml += TaXml::writeDouble("Cmigits3501Latitude", 2, latitude);
+  xml += TaXml::writeDouble("Cmigits3501Longitude", 2, longitude);
+  xml += TaXml::writeDouble("Cmigits3501Altitude", 2, altitude);
+  xml += TaXml::writeDouble("Cmigits3501VelNorth", 2, velNorth);
+  xml += TaXml::writeDouble("Cmigits3501VelEast", 2, velEast);
+  xml += TaXml::writeDouble("Cmigits3501VelUp", 2, velUp);
+
+  // current attitude (latest 3512 message from C-MIGITS)
+  double attitudeTime = 0.0;    // seconds since 1970-01-01 00:00:00 UTC
+  float pitch = 0.0;            // deg
+  float roll = 0.0;             // deg
+  float heading = 0.0;          // deg clockwise from true north
+  
+  drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
+
+  xml += TaXml::writeUtime("Cmigits3512Time", 2, time_t(attitudeTime));
+  xml += TaXml::writeDouble("Cmigits3512Pitch", 2, pitch);
+  xml += TaXml::writeDouble("Cmigits3512Roll", 2, roll);
+  xml += TaXml::writeDouble("Cmigits3512Heading", 2, heading);
+
   // end receive status
 
   xml += TaXml::writeEndTag("HcrReceiverStatus", 1);
@@ -757,68 +819,6 @@ string IwrfExport::_assembleStatusXml()
   // HCR C-MIGITS block
 
   xml += TaXml::writeStartTag("HcrCmigitsData", 1);
-
-  // status info (latest 3500 message from C-MIGITS)
-  uint64_t statusTime;           // msecs since 1970-01-01 00:00:00 UTC
-  uint16_t currentMode;         // see info for C-MIGITS 3500 message
-  bool insAvailable;
-  bool gpsAvailable;
-  uint16_t positionFOM;         // see info for C-MIGITS 3500 message
-  uint16_t velocityFOM;         // see info for C-MIGITS 3500 message
-  uint16_t headingFOM;          // see info for C-MIGITS 3500 message
-  uint16_t timeFOM;             // see info for C-MIGITS 3500 message
-  float expectedHPosError;      // m
-  float expectedVPosError;      // m
-  float expectedVelocityError;  // m/s
-
-  _monitor.cmigitsShmObject().getLatestStatus(statusTime, currentMode,
-          insAvailable, gpsAvailable, positionFOM, velocityFOM, headingFOM,
-          timeFOM, expectedHPosError, expectedVPosError, expectedVelocityError);
-
-  xml += TaXml::writeUtime("3500Time", 2, statusTime / 1000);
-  xml += TaXml::writeInt("3500CurrentMode", 2, currentMode);
-  xml += TaXml::writeBoolean("3500InsAvailable", 2, insAvailable);
-  xml += TaXml::writeBoolean("3500GpsAvailable", 2, gpsAvailable);
-  xml += TaXml::writeInt("3500PositionFOM", 2, positionFOM);
-  xml += TaXml::writeInt("3500VelocityFOM", 2, velocityFOM);
-  xml += TaXml::writeInt("3500HeadingFOM", 2, headingFOM);
-  xml += TaXml::writeInt("3500TimeFOM", 2, timeFOM);
-  xml += TaXml::writeDouble("3500HPosError", 2, expectedHPosError);
-  xml += TaXml::writeDouble("3500VPosError", 2, expectedVPosError);
-  xml += TaXml::writeDouble("3500VelocityError", 2, expectedVelocityError);
-
-  // current position/velocity (latest 3501 message from C-MIGITS)
-  uint64_t navSolutionTime;  // msecs since 1970-01-01 00:00:00 UTC
-  float latitude;           // deg
-  float longitude;          // deg
-  float altitude;           // m above MSL
-  float velNorth;           // m/s
-  float velEast;            // m/s
-  float velUp;              // m/s
-
-  _monitor.cmigitsShmObject().getLatestNavSolution(navSolutionTime,
-          latitude, longitude, altitude, velNorth, velEast, velUp);
-
-  xml += TaXml::writeUtime("3501Time", 2, navSolutionTime / 1000);
-  xml += TaXml::writeDouble("3501Latitude", 2, latitude);
-  xml += TaXml::writeDouble("3501Longitude", 2, longitude);
-  xml += TaXml::writeDouble("3501Altitude", 2, altitude);
-  xml += TaXml::writeDouble("3501VelNorth", 2, velNorth);
-  xml += TaXml::writeDouble("3501VelEast", 2, velEast);
-  xml += TaXml::writeDouble("3501VelUp", 2, velUp);
-
-  // current attitude (latest 3512 message from C-MIGITS)
-  uint64_t attitudeTime; // msecs since 1970-01-01 00:00:00 UTC
-  float pitch;          // deg
-  float roll;           // deg
-  float heading;        // deg clockwise from true north
-
-  _monitor.cmigitsShmObject().getLatestAttitude(attitudeTime, pitch, roll, heading);
-
-  xml += TaXml::writeUtime("3512Time", 2, attitudeTime / 1000);
-  xml += TaXml::writeDouble("3512Pitch", 2, pitch);
-  xml += TaXml::writeDouble("3512Roll", 2, roll);
-  xml += TaXml::writeDouble("3512Heading", 2, heading);
 
   // end C-MIGITS data
 

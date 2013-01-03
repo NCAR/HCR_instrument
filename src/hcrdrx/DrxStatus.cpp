@@ -98,12 +98,35 @@ DrxStatus::DrxStatus() :
     _hmcPolSwitchError(false),
     _pentekFpgaTemp(-99.9),
     _pentekBoardTemp(-99.9),
-    _hmcMode(0) {
+    _hmcMode(0),
+    _cmigitsStatusTime(0.0),
+    _cmigitsCurrentMode(0),
+    _cmigitsInsAvailable(false),
+    _cmigitsGpsAvailable(false),
+    _cmigitsPositionFOM(0),
+    _cmigitsVelocityFOM(0),
+    _cmigitsHeadingFOM(0),
+    _cmigitsTimeFOM(0),
+    _cmigitsHPosError(0.0),
+    _cmigitsVPosError(0.0),
+    _cmigitsVelocityError(0.0),
+    _cmigitsNavSolutionTime(0.0),
+    _cmigitsLatitude(0.0),
+    _cmigitsLongitude(0.0),
+    _cmigitsAltitude(0.0),
+    _cmigitsVelNorth(0.0),
+    _cmigitsVelEast(0.0),
+    _cmigitsVelUp(0.0),
+    _cmigitsAttitudeTime(0.0),
+    _cmigitsPitch(0.0),
+    _cmigitsRoll(0.0),
+    _cmigitsHeading(0.0) {
 }
 
 DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
     _getMultiIoValues();
     _getPentekValues(pentek);
+    _getCmigitsValues();
 }
 
 DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
@@ -140,6 +163,31 @@ DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     _rdsXmitterHvOn = _StatusBool(statusDict, "rdsXmitterHvOn");
     // Get the state of the mode lines going to the HMC
     _hmcMode = _StatusInt(statusDict, "hmcMode");
+    // C-MIGITS status from its 3500 message
+    _cmigitsStatusTime = _StatusDouble(statusDict, "cmigitsStatusTime");
+    _cmigitsCurrentMode = _StatusInt(statusDict, "cmigitsCurrentMode");
+    _cmigitsInsAvailable = _StatusBool(statusDict, "cmigitsInsAvailable");
+    _cmigitsGpsAvailable = _StatusBool(statusDict, "cmigitsGpsAvailable");
+    _cmigitsPositionFOM = _StatusInt(statusDict, "cmigitsPositionFOM");
+    _cmigitsVelocityFOM = _StatusInt(statusDict, "cmigitsVelocityFOM");
+    _cmigitsHeadingFOM = _StatusInt(statusDict, "cmigitsHeadingFOM");
+    _cmigitsTimeFOM = _StatusInt(statusDict, "cmigitsTimeFOM");
+    _cmigitsHPosError = _StatusDouble(statusDict, "cmigitsHPosError");
+    _cmigitsVPosError = _StatusDouble(statusDict, "cmigitsVPosError");
+    _cmigitsVelocityError = _StatusDouble(statusDict, "cmigitsVelocityError");
+    // C-MIGITS navigation solution from its 3501 message
+    _cmigitsNavSolutionTime = _StatusDouble(statusDict, "cmigitsNavSolutionTime");
+    _cmigitsLatitude = _StatusDouble(statusDict, "cmigitsLatitude");
+    _cmigitsLongitude = _StatusDouble(statusDict, "cmigitsLongitude");
+    _cmigitsAltitude = _StatusDouble(statusDict, "cmigitsAltitude");
+    _cmigitsVelNorth = _StatusDouble(statusDict, "cmigitsVelNorth");
+    _cmigitsVelEast = _StatusDouble(statusDict, "cmigitsVelEast");
+    _cmigitsVelUp = _StatusDouble(statusDict, "cmigitsVelUp");
+    // C-MIGITS attitude from its 3512 message
+    _cmigitsAttitudeTime = _StatusDouble(statusDict, "cmigitsAttitudeTime");
+    _cmigitsPitch = _StatusDouble(statusDict, "cmigitsPitch");
+    _cmigitsRoll = _StatusDouble(statusDict, "cmigitsRoll");
+    _cmigitsHeading = _StatusDouble(statusDict, "cmigitsHeading");
 }
 
 DrxStatus::~DrxStatus() {
@@ -182,6 +230,31 @@ DrxStatus::toXmlRpcValue() const {
     statusDict["rdsXmitterHvOn"] = XmlRpcValue(_rdsXmitterHvOn);
     // Get the state of the mode lines going to the HMC
     statusDict["hmcMode"] = XmlRpcValue(_hmcMode);
+    // C-MIGITS status
+    statusDict["cmigitsStatusTime"] = XmlRpcValue(_cmigitsStatusTime);
+    statusDict["cmigitsCurrentMode"] = XmlRpcValue(_cmigitsCurrentMode);
+    statusDict["cmigitsInsAvailable"] = XmlRpcValue(_cmigitsInsAvailable);
+    statusDict["cmigitsGpsAvailable"] = XmlRpcValue(_cmigitsGpsAvailable);
+    statusDict["cmigitsPositionFOM"] = XmlRpcValue(_cmigitsPositionFOM);
+    statusDict["cmigitsVelocityFOM"] = XmlRpcValue(_cmigitsVelocityFOM);
+    statusDict["cmigitsHeadingFOM"] = XmlRpcValue(_cmigitsHeadingFOM);
+    statusDict["cmigitsTimeFOM"] = XmlRpcValue(_cmigitsTimeFOM);
+    statusDict["cmigitsHPosError"] = XmlRpcValue(_cmigitsHPosError);
+    statusDict["cmigitsVPosError"] = XmlRpcValue(_cmigitsVPosError);
+    statusDict["cmigitsVelocityError"] = XmlRpcValue(_cmigitsVelocityError);
+    // C-MIGITS navigation solution
+    statusDict["cmigitsNavSolutionTime"] = XmlRpcValue(_cmigitsNavSolutionTime);
+    statusDict["cmigitsLatitude"] = XmlRpcValue(_cmigitsLatitude);
+    statusDict["cmigitsLongitude"] = XmlRpcValue(_cmigitsLongitude);
+    statusDict["cmigitsAltitude"] = XmlRpcValue(_cmigitsAltitude);
+    statusDict["cmigitsVelNorth"] = XmlRpcValue(_cmigitsVelNorth);
+    statusDict["cmigitsVelEast"] = XmlRpcValue(_cmigitsVelEast);
+    statusDict["cmigitsVelUp"] = XmlRpcValue(_cmigitsVelUp);
+    // C-MIGITS attitude
+    statusDict["cmigitsAttitudeTime"] = XmlRpcValue(_cmigitsAttitudeTime);
+    statusDict["cmigitsPitch"] = XmlRpcValue(_cmigitsPitch);
+    statusDict["cmigitsRoll"] = XmlRpcValue(_cmigitsRoll);
+    statusDict["cmigitsHeading"] = XmlRpcValue(_cmigitsHeading);
 
     return(statusDict);
 }
@@ -372,6 +445,34 @@ void
 DrxStatus::_getPentekValues(const Pentek::p7142 & pentek) {
     _pentekFpgaTemp = pentek.fpgaTemp();
     _pentekBoardTemp = pentek.circuitBoardTemp();
+}
+
+void
+DrxStatus::_getCmigitsValues() {
+    // Get access to the C-MIGITS shared memory segment filled by the
+    // cmigitsDaemon
+    CmigitsSharedMemory cShm;
+    
+    // Times from the C-MIGITS shared memory are 64-bit unsigned milliseconds
+    // since 1970-01-01 00:00:00 UTC
+    uint64_t dataTime;
+    
+    // Get status data
+    cShm.getLatestStatus(dataTime, _cmigitsCurrentMode, _cmigitsInsAvailable,
+            _cmigitsGpsAvailable, _cmigitsPositionFOM, _cmigitsVelocityFOM,
+            _cmigitsHeadingFOM, _cmigitsTimeFOM, _cmigitsHPosError, 
+            _cmigitsVPosError, _cmigitsVelocityError);
+    _cmigitsStatusTime = dataTime * 0.001;      // ms -> s
+    
+    // Get attitude data
+    cShm.getLatestAttitude(dataTime, _cmigitsPitch, _cmigitsRoll,
+            _cmigitsHeading);
+    _cmigitsAttitudeTime = dataTime * 0.001;    // ms -> s
+    
+    // Get navigation solution data
+    cShm.getLatestNavSolution(dataTime, _cmigitsLatitude, _cmigitsLongitude, 
+            _cmigitsAltitude, _cmigitsVelNorth, _cmigitsVelEast, _cmigitsVelUp);
+    _cmigitsNavSolutionTime = dataTime * 0.001; // ms -> s
 }
 
 bool

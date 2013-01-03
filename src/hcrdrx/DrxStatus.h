@@ -41,8 +41,9 @@ public:
     /// fields are set to 0, and double fields are set to -99.9.
     DrxStatus();
 
-    /// @brief Construct a DrxStatus using data from HcrPmc730::theHcrPmc730()
-    /// and from the specified Pentek::p7142 device.
+    /// @brief Construct a DrxStatus using data from the given 
+    /// Pentek::p7142 device, the singleton HcrPmc730::theHcrPmc730(), and
+    /// from CmigitsSharedMemory.
     /// @param pentek the Pentek::p7142 device from which to get status
     DrxStatus(const Pentek::p7142 & pentek);
 
@@ -241,7 +242,81 @@ public:
      * @return the HMC operating mode number: 0-3
      */
     int hmcMode() const { return(_hmcMode); }
-
+    
+    /**
+     * @brief Return the latest status information from the C-MIGITS
+     * (information from the C-MIGITS 3500 message).
+     * @param[out] dataTime time of the status data, seconds since 1970-01-01
+     * 00:00:00 UTC
+     * @param[out] currentMode current C-MIGITS mode
+     * @param[out] insAvailable true iff INS data are available
+     * @param[out] gpsAvailable true iff GPS time is good and 4 or more 
+     * satellites are seen
+     * @param[out] positionFOM position figure-of-merit, values 1-9
+     * @parma[out] velocityFOM velocity figure-of-merit, values 1-9
+     * @param[out] headingFOM heading figure-of-merit, values 1-9
+     * @param[out] timeFOM time figure-of-merit, values 1-9
+     * @param[out] expectedHPosError expected horizontal position error, m
+     * @param[out] expectedVPosError expected vertical position error, m
+     * @param[out] expectedVelocityError expected velocity error, m/s
+     */
+    void cmigitsStatus(double dataTime, uint16_t currentMode,
+              bool insAvailable, bool gpsAvailable, uint16_t positionFOM, 
+              uint16_t velocityFOM, uint16_t headingFOM,
+              uint16_t timeFOM, float expectedHPosError, 
+              float expectedVPosError, float expectedVelocityError) const {
+        dataTime = _cmigitsStatusTime;
+        currentMode = _cmigitsCurrentMode;
+        insAvailable = _cmigitsInsAvailable;
+        gpsAvailable = _cmigitsGpsAvailable;
+        positionFOM = _cmigitsPositionFOM;
+        velocityFOM = _cmigitsVelocityFOM;
+        headingFOM = _cmigitsHeadingFOM;
+        timeFOM = _cmigitsTimeFOM;
+        expectedHPosError = _cmigitsHPosError;
+        expectedVPosError = _cmigitsVPosError;
+        expectedVelocityError = _cmigitsVelocityError;
+    }
+    
+    /**
+     * @brief Return the latest attitude data from the C-MIGITS (information
+     * from the C-MIGITS 3512 message)
+     * @param[out] dataTime time of the attitude data, seconds since 
+     * 1970-01-01 00:00:00 UTC
+     * @param[out] pitch pitch, deg
+     * @param[out] roll roll, deg
+     * @param[out] heading heading, deg clockwise from true north
+     */
+    void cmigitsAttitude(double dataTime, float pitch, float roll,
+            float heading) const {
+        dataTime = _cmigitsAttitudeTime;
+        pitch = _cmigitsPitch;
+        roll = _cmigitsRoll;
+        heading = _cmigitsHeading;
+    }
+    
+    /**
+     * @brief Return the latest navigation solution data from the C-MIGITS
+     * (information from the C-MIGITS 3501 message).
+     * @param[out] dataTime time of the navigation solution data, seconds since 
+     * 1970-01-01 00:00:00 UTC
+     * @param[out] latitude latitude, deg
+     * @param[out] longitude longitude, deg
+     * @param[out] altitude altitude, m above MSL
+     * @param[out] velNorth, north component of velocity, m/s
+     * @param[out] velEast, east component of velocity, m/s
+     * @param[out] velUp, upward component of velocity, m/s
+     */
+    void cmigitsNavSolution(double dataTime, float latitude, float longitude,
+            float altitude, float velNorth, float velEast, float velUp) const {
+        dataTime = _cmigitsNavSolutionTime;
+        latitude = _cmigitsLatitude;
+        longitude = _cmigitsLongitude;
+        altitude = _cmigitsAltitude;
+        velNorth = _cmigitsVelNorth;
+        velEast = _cmigitsVelEast;
+        velUp = _cmigitsVelUp;
+    }
 private:
     /**
      * @brief Simple class implementing a list of temperatures with a maximum
@@ -345,6 +420,11 @@ private:
      * @brief Get new sensor data from the Pentek P7142 card.
      */
     void _getPentekValues(const Pentek::p7142 & pentek);
+    
+    /**
+     * @brief Get latest available data from the C-MIGITS
+     */
+    void _getCmigitsValues();
 
     // Keep static lists of temperatures sampled from the multi-IO card so that
     // we can time-average to reduce noise in the sampling. Values are added to
@@ -468,6 +548,66 @@ private:
 
     /// HMC operating mode
     int _hmcMode;
+    
+    /// C-MIGITS time of latest attitude information, seconds since 
+    /// 1970-01-01 00:00:00 UTC. This time applies to pitch, roll, and
+    /// heading.
+    double _cmigitsAttitudeTime;
+    /// C-MIGITS latest pitch, deg
+    double _cmigitsPitch;
+    /// C-MIGITS latest roll, deg
+    double _cmigitsRoll;
+    /// C-MIGITS latest heading, deg clockwise from true north
+    double _cmigitsHeading;
+    
+    /// C-MIGITS time of last status information, seconds since 
+    /// 1970-01-01 00:00:00 UTC. This time applies to current mode, 
+    /// INS available, GPS available, position FOM, velocity FOM, 
+    /// heading FOM, time FOM, H position error, V position error, and
+    /// velocity error
+    double _cmigitsStatusTime;
+    /// C-MIGITS current mode (see documentation for the C-MIGITS 3500 message)
+    uint16_t _cmigitsCurrentMode;
+    /// C-MIGITS INS available
+    bool _cmigitsInsAvailable;
+    /// C-MIGITS GPS available
+    bool _cmigitsGpsAvailable;
+    /// C-MIGITS position figure of merit (see documentation for the C-MIGITS
+    /// 3500 message)
+    uint16_t _cmigitsPositionFOM;
+    /// C-MIGITS velocity figure of merit (see documentation for the C-MIGITS
+    /// 3500 message)
+    uint16_t _cmigitsVelocityFOM;
+    /// C-MIGITS heading figure of merit (see documentation for the C-MIGITS
+    /// 3500 message)
+    uint16_t _cmigitsHeadingFOM;
+    /// C-MIGITS time figure of merit (see documentation for the C-MIGITS
+    /// 3500 message)
+    uint16_t _cmigitsTimeFOM;
+    /// C-MIGITS expected horizontal position error, m
+    float _cmigitsHPosError;
+    /// C-MIGITS expected vertical position error, m
+    float _cmigitsVPosError;
+    /// C-MIGITS expected velocity error, m/s
+    float _cmigitsVelocityError;
+    
+    /// C-MIGITS time of last navigation solution, seconds since 
+    /// 1970-01-01 00:00:00 UTC. This time applies to latitude, longitude,
+    /// altitude, north velocity component, east velocity component, and 
+    /// upward velocity component
+    double _cmigitsNavSolutionTime;
+    /// C-MIGITS latitude, deg
+    float _cmigitsLatitude;
+    /// C-MIGITS longitude, deg
+    float _cmigitsLongitude;
+    /// C-MIGITS altitude, m above MSL
+    float _cmigitsAltitude;
+    /// C-MIGITS north component of velocity, m/s
+    float _cmigitsVelNorth;
+    /// C-MIGITS east component of velocity, m/s
+    float _cmigitsVelEast;
+    /// C-MIGITS upward component of velocity, m/s
+    float _cmigitsVelUp;
 };
 
 #endif /* DRXSTATUS_H_ */
