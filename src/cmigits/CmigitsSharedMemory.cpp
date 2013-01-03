@@ -40,7 +40,7 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
             _qShm.attach(QSharedMemory::ReadOnly);   // re-attach with ReadOnly access
         }
     } else {
-        // Anything other than AlreadyExists is a problem...
+        // AlreadyExists is OK, anything else is a problem...
         if (_qShm.error() != QSharedMemory::AlreadyExists) {
             std::ostringstream msgStream;
             msgStream << "Shared memory create failed: " << _qShm.errorString().toStdString();
@@ -67,8 +67,8 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         throw(Exception(msgStream.str()));
     }
     _shmContents = static_cast<struct _ShmContents *>(_qShm.data());
-    // If write access has been requested, verify that there is not a
-    // writer already.
+    // If write access has been requested, establish this instance as the 
+    // writer instance if possible.
     if (_writeAccess) {
         pid_t writerPid = getWriterPid();
         if (writerPid != 0) {
