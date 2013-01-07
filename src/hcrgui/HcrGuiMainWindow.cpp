@@ -19,6 +19,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     int xmitterPort, std::string hcrdrxHost, int hcrdrxPort) :
     QMainWindow(),
     _ui(),
+    _cmigitsStatusDialog(this),
     _xmitStatusDialog(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
     _drxStatusThread(hcrdrxHost, hcrdrxPort),
@@ -242,6 +243,11 @@ HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
 }
 
 void
+HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
+    _cmigitsStatusDialog.show();
+}
+
+void
 HcrGuiMainWindow::_update() {
     // Update the current time string
     char timestring[32];
@@ -334,9 +340,34 @@ HcrGuiMainWindow::_update() {
         break;
     }
 
+    // C-MIGITS status light
+    {
+        // Get C-MIGITS status
+        double statusTime = 0.0;
+        uint16_t mode = 0;
+        bool insAvailable = 0;
+        bool gpsAvailable = 0;
+        uint16_t positionFOM = 0;
+        uint16_t velocityFOM = 0;
+        uint16_t headingFOM = 0;
+        uint16_t timeFOM = 0;
+        float expectedHPosError = 0.0;
+        float expectedVPosError = 0.0;
+        float expectedVelError = 0.0;
+        _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
+                positionFOM, velocityFOM, headingFOM, timeFOM, expectedHPosError,
+                expectedVPosError, expectedVelError);
+        // Green light if both INS and GPS are available
+        bool cmigitsStatusGood = insAvailable && gpsAvailable;
+        _ui.cmigitsStatusIcon->setPixmap(cmigitsStatusGood ?  _greenLED : _redLED);
+    }
+
     // Update the transmitter status details dialog
     _xmitStatusDialog.setEnabled(_xmitStatus.serialConnected());
     _xmitStatusDialog.updateStatus(_xmitStatus);
+
+    // Update the C-MIGITS status details dialog
+    _cmigitsStatusDialog.updateStatus(_drxStatus);
 }
 
 void

@@ -15,6 +15,7 @@ hcrgui.cpp
 HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
 HcrGuiXmitStatusDialog.cpp
+HcrGuiCmigitsStatusDialog.cpp
 qrc_HcrGuiMainWindow.cc
 XmitdStatusThread.cpp
 """)
@@ -24,6 +25,7 @@ Default(hcrgui)
 uifiles = Split("""
 HcrGuiMainWindow.ui
 HcrGuiXmitStatusDialog.ui
+HcrGuiCmigitsStatusDialog.ui
 """)
 hcrguiEnv.Uic4(uifiles)
 
@@ -37,6 +39,7 @@ headers = Split("""
 HcrdrxStatusThread.h
 HcrGuiMainWindow.h
 HcrGuiXmitStatusDialog.h
+HcrGuiCmigitsStatusDialog.h
 XmitdStatusThread.h
 """)
 

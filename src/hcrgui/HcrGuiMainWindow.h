@@ -18,6 +18,7 @@
 
 #include "ui_HcrGuiMainWindow.h"
 #include "HcrGuiXmitStatusDialog.h"
+#include "HcrGuiCmigitsStatusDialog.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -26,6 +27,7 @@ public:
             std::string hcrdrxHost, int hcrdrxPort);
     virtual ~HcrGuiMainWindow();
 private slots:
+    void on_cmigitsDetailsButton_clicked();
     void on_filamentButton_clicked();
     void on_hvButton_clicked();
     void on_xmitterDetailsButton_clicked();
@@ -74,6 +76,7 @@ private:
     bool _xmitting() const;
 
     Ui::HcrGuiMainWindow _ui;
+    HcrGuiCmigitsStatusDialog _cmigitsStatusDialog;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
     XmitdStatusThread _xmitdStatusThread;
     HcrdrxStatusThread _drxStatusThread;
