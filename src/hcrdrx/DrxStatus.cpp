@@ -6,6 +6,7 @@
  */
 
 #include "DrxStatus.h"
+#include <CmigitsSharedMemory.h>
 #include "HcrPmc730.h"
 #include <logx/Logging.h>
 #include <iomanip>
