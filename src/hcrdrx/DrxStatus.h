@@ -260,11 +260,12 @@ public:
      * @param[out] expectedVPosError expected vertical position error, m
      * @param[out] expectedVelocityError expected velocity error, m/s
      */
-    void cmigitsStatus(double dataTime, uint16_t currentMode,
-              bool insAvailable, bool gpsAvailable, uint16_t positionFOM, 
-              uint16_t velocityFOM, uint16_t headingFOM,
-              uint16_t timeFOM, float expectedHPosError, 
-              float expectedVPosError, float expectedVelocityError) const {
+    void cmigitsStatus(double & dataTime, uint16_t & currentMode,
+              bool & insAvailable, bool & gpsAvailable,
+              uint16_t & positionFOM, uint16_t & velocityFOM,
+              uint16_t & headingFOM, uint16_t & timeFOM,
+              float & expectedHPosError, float & expectedVPosError,
+              float & expectedVelocityError) const {
         dataTime = _cmigitsStatusTime;
         currentMode = _cmigitsCurrentMode;
         insAvailable = _cmigitsInsAvailable;
@@ -287,8 +288,8 @@ public:
      * @param[out] roll roll, deg
      * @param[out] heading heading, deg clockwise from true north
      */
-    void cmigitsAttitude(double dataTime, float pitch, float roll,
-            float heading) const {
+    void cmigitsAttitude(double & dataTime,
+            float & pitch, float & roll, float & heading) const {
         dataTime = _cmigitsAttitudeTime;
         pitch = _cmigitsPitch;
         roll = _cmigitsRoll;
@@ -307,8 +308,9 @@ public:
      * @param[out] velEast, east component of velocity, m/s
      * @param[out] velUp, upward component of velocity, m/s
      */
-    void cmigitsNavSolution(double dataTime, float latitude, float longitude,
-            float altitude, float velNorth, float velEast, float velUp) const {
+    void cmigitsNavSolution(double & dataTime,
+            float & latitude, float & longitude, float & altitude,
+            float & velNorth, float & velEast, float & velUp) const {
         dataTime = _cmigitsNavSolutionTime;
         latitude = _cmigitsLatitude;
         longitude = _cmigitsLongitude;
