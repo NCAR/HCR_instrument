@@ -186,7 +186,7 @@ void startUpConverter(Pentek::p7142Up& upConverter,
 }
 
 /**
- * @brief Xmlrpc++ method to get transmitter status from hcr_xmitd.
+ * @brief Xmlrpc++ method to get status from the hcrdrx process.
  *
  * The method returns a XmlRpc::XmlRpcValue struct (dictionary) mapping
  * std::string keys to XmlRpc::XmlRpcValue values. The dictionary should be
@@ -198,7 +198,7 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     #include <XmlRpc.h>
  *     ...
  *
- *     // Get the transmitter status from hcrdrx on drxhost.local.net on port 8081
+ *     // Get the DrxStatus from hcrdrx on drxhost.local.net on port 8081
  *     XmlRpc::XmlRpcClient client("drxhost.local.net", 8081);
  *     const XmlRpc::XmlRpcValue nullParams;
  *     XmlRpc::XmlRpcValue statusDict;
