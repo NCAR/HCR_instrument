@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>355</width>
-    <height>494</height>
+    <height>497</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -832,7 +832,7 @@ COUNT</string>
  </widget>
  <resources>
   <include location="HcrGuiMainWindow.qrc"/>
-  <include location="../../../../HcrGuiMainWindow.qrc"/>
+  <include location="HcrGuiMainWindow.qrc"/>
  </resources>
  <connections>
   <connection>
