@@ -3,7 +3,13 @@
 #
 import os
 
-tools = ['xmlrpc', 'logx', 'pentek', 'pmc730']
+tools = Split("""
+    cmigits
+    logx
+    pentek
+    pmc730
+    xmlrpc
+""")
 env = Environment(tools=['default'] + tools)
 
 # The object file and header file live in this directory.
