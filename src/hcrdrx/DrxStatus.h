@@ -549,17 +549,6 @@ private:
     /// HMC operating mode
     int _hmcMode;
     
-    /// C-MIGITS time of latest attitude information, seconds since 
-    /// 1970-01-01 00:00:00 UTC. This time applies to pitch, roll, and
-    /// heading.
-    double _cmigitsAttitudeTime;
-    /// C-MIGITS latest pitch, deg
-    double _cmigitsPitch;
-    /// C-MIGITS latest roll, deg
-    double _cmigitsRoll;
-    /// C-MIGITS latest heading, deg clockwise from true north
-    double _cmigitsHeading;
-    
     /// C-MIGITS time of last status information, seconds since 
     /// 1970-01-01 00:00:00 UTC. This time applies to current mode, 
     /// INS available, GPS available, position FOM, velocity FOM, 
@@ -608,6 +597,17 @@ private:
     float _cmigitsVelEast;
     /// C-MIGITS upward component of velocity, m/s
     float _cmigitsVelUp;
+    
+    /// C-MIGITS time of latest attitude information, seconds since 
+    /// 1970-01-01 00:00:00 UTC. This time applies to pitch, roll, and
+    /// heading.
+    double _cmigitsAttitudeTime;
+    /// C-MIGITS latest pitch, deg
+    float _cmigitsPitch;
+    /// C-MIGITS latest roll, deg
+    float _cmigitsRoll;
+    /// C-MIGITS latest heading, deg clockwise from true north
+    float _cmigitsHeading;
 };
 
 #endif /* DRXSTATUS_H_ */
