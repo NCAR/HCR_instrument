@@ -15,10 +15,15 @@
 
 LOGGING("hcrgui")
 
+// Default to archiver:8000 for xmitd host and port, and rds:8081 for the
+// hcrdrx host and port.
+const char * DefaultXmitdHostAndPort = "archiver:8000";
+const char * DefaultHcrdrxHostAndPort = "rds:8081";
+
 void
 usage(const char* appName) {
     ELOG << "Usage: " << appName <<
-            " <xmitd_host>:<xmitd_port> <hcrdrx_host>:<hcrdrx_port>";
+            " [<xmitd_host>:<xmitd_port> <hcrdrx_host>:<hcrdrx_port>]";
     exit(1);
 }
 
@@ -29,18 +34,26 @@ main(int argc, char *argv[]) {
     
     QApplication* app = new QApplication(argc, argv);
     
-    if (argc != 3) {
+    if (argc != 3 && argc != 1) {
         usage(argv[0]);
+    }
+    // Start with default host/port values, but replace these with argv[1] and
+    // argv[2] if they are given.
+    const char * xmitdHostAndPort = DefaultXmitdHostAndPort;
+    const char * hcrdrxHostAndPort = DefaultHcrdrxHostAndPort;
+    if (argc == 3) {
+        xmitdHostAndPort = argv[1];
+        hcrdrxHostAndPort = argv[2];
     }
 
     char xmitdHost[80];
     int xmitdPort;
     char hcrdrxHost[80];
     int hcrdrxPort;
-    if (sscanf(argv[1], "%[^:]:%d", xmitdHost, &xmitdPort) != 2) {
+    if (sscanf(xmitdHostAndPort, "%[^:]:%d", xmitdHost, &xmitdPort) != 2) {
         usage(argv[0]);
     }
-    if (sscanf(argv[2], "%[^:]:%d", hcrdrxHost, &hcrdrxPort) != 2) {
+    if (sscanf(hcrdrxHostAndPort, "%[^:]:%d", hcrdrxHost, &hcrdrxPort) != 2) {
         usage(argv[0]);
     }
 
