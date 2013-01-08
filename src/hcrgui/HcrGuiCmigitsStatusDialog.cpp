@@ -65,6 +65,15 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     _ui.velNorthValue->setText(QString::number(velNorth, 'f', 1));
     _ui.velEastValue->setText(QString::number(velEast, 'f', 1));
     _ui.velUpValue->setText(QString::number(velUp, 'f', 2));
+
+    double attitudeTime = 0.0;
+    float pitch = 0.0;
+    float roll = 0.0;
+    float heading = 0.0;
+    drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
+    _ui.pitchValue->setText(QString::number(pitch, 'f', 1));
+    _ui.rollValue->setText(QString::number(roll, 'f', 1));
+    _ui.headingValue->setText(QString::number(heading, 'f', 1));
 }
 
 void
