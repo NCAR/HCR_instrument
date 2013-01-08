@@ -9,12 +9,11 @@
 #include <csignal>
 #include <QApplication>
 #include <QMetaType>
+#include <Cmigits.h>
+#include <CmigitsSharedMemory.h>
 #include <logx/Logging.h>
 
 LOGGING("cmigitsDaemon")
-
-#include "Cmigits.h"
-#include "CmigitsSharedMemory.h"
 
 quint16 ServerPort = 8001;
 
