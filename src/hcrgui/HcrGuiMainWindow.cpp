@@ -44,8 +44,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             hcrdrxPort;
     _logMessage(ss.str());
 
-    // Disable the data system box.
+    // Disable the data system box and C-MIGITS box until we get status from
+    // hcrdrx.
     _ui.dataSystemBox->setEnabled(false);
+    _ui.cmigitsBox->setEnabled(false);
+
     // Connect signals from our HcrdrxStatusThread object and start the thread.
     connect(& _drxStatusThread, SIGNAL(serverResponsive(bool)),
             this, SLOT(_drxResponsivenessChange(bool)));
@@ -84,10 +87,13 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     _ui.dataSystemBox->setEnabled(responding);
+    _ui.cmigitsBox->setEnabled(responding);
     if (! responding) {
         // Create a default (bad) DrxStatus, and set it as the last status
         // received.
         _setDrxStatus(DrxStatus());
+        // Close the C-MIGITS status details dialog
+        _cmigitsStatusDialog.accept();
     }
 }
 
