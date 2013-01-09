@@ -82,7 +82,7 @@ public:
     /// @param[out] expectedVelocityError expected error in velocity, m/s
     void getLatestStatus(uint64_t & dataTime, uint16_t & currentMode,
             bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
-            uint16_t&  positionFOM, uint16_t & velocityFOM,
+            uint16_t &  positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             float & expectedHPosError, float & expectedVPosError,
             float & expectedVelocityError) const;
