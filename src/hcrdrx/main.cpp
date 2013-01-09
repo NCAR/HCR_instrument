@@ -385,8 +385,9 @@ main(int argc, char** argv)
     Pentek::p7142Up & upConverter = *sd3c.addUpconverter(sd3c.adcFrequency(), 
             sd3c.adcFrequency() / 4, 9);
 
-    // catch a control-C
+    // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
+    signal(SIGTERM, sigHandler);
 
     for (int c = 0; c < _chans; c++) {
         // run the downconverter thread. This will cause the
