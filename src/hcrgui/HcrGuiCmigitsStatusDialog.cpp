@@ -43,6 +43,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable,
             gpsAvailable, nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
             expectedHPosError, expectedVPosError, expectedVelocityError);
+    _ui.statusTimeValue->setText(QDateTime::fromTime_t(uint32_t(statusTime)).toUTC().toString("hh:mm:ss"));
     _ui.insValue->setPixmap(insAvailable ? _greenLED : _redLED);
     _ui.gpsValue->setPixmap(gpsAvailable ? _greenLED : _redLED);
     _ui.currentModeValue->setText(QString::number(currentMode));
@@ -61,6 +62,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     float velUp = 0.0;
     drxStatus.cmigitsNavSolution(navSolutionTime, latitude, longitude, altitude,
             velNorth, velEast, velUp);
+    _ui.navSolutionTimeValue->setText(QDateTime::fromTime_t(uint32_t(navSolutionTime)).toUTC().toString("hh:mm:ss"));
     _ui.latitudeValue->setText(QString::number(latitude, 'f', 4));
     _ui.longitudeValue->setText(QString::number(longitude, 'f', 4));
     _ui.altitudeValue->setText(QString::number(altitude, 'f', 0));
@@ -73,6 +75,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     float roll = 0.0;
     float heading = 0.0;
     drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
+    _ui.attitudeTimeValue->setText(QDateTime::fromTime_t(uint32_t(attitudeTime)).toUTC().toString("hh:mm:ss"));
     _ui.pitchValue->setText(QString::number(pitch, 'f', 1));
     _ui.rollValue->setText(QString::number(roll, 'f', 1));
     _ui.headingValue->setText(QString::number(heading, 'f', 1));
