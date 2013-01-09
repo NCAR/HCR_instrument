@@ -804,7 +804,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
 
-    uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
+    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
     emit new3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
@@ -861,7 +861,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velocityEast << ", vel up: " << velocityUp;
     }
 
-    uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
+    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
     emit new3501Data(msecsSinceEpoch, latitude, longitude,
             altitude, velocityNorth, velocityEast, velocityUp);
 }
@@ -896,7 +896,7 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", roll: " << roll << ", heading: " << heading;
     }
 
-    uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
+    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
     emit new3512Data(msecsSinceEpoch, pitch, roll, heading);
 }
 
