@@ -32,6 +32,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     uint16_t currentMode = 0;
     bool insAvailable = false;
     bool gpsAvailable = false;
+    uint16_t nSats = 0;
     uint16_t positionFOM = 0;
     uint16_t velocityFOM = 0;
     uint16_t headingFOM = 0;
@@ -40,11 +41,12 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     float expectedVPosError = 0.0;
     float expectedVelocityError = 0.0;
     drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable,
-            gpsAvailable, positionFOM, velocityFOM, headingFOM, timeFOM,
+            gpsAvailable, nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
             expectedHPosError, expectedVPosError, expectedVelocityError);
     _ui.insValue->setPixmap(insAvailable ? _greenLED : _redLED);
     _ui.gpsValue->setPixmap(gpsAvailable ? _greenLED : _redLED);
     _ui.currentModeValue->setText(QString::number(currentMode));
+    _ui.satCountValue->setText(QString::number(nSats));
     _ui.positionFOMValue->setText(QString::number(positionFOM));
     _ui.velocityFOMValue->setText(QString::number(velocityFOM));
     _ui.headingFOMValue->setText(QString::number(headingFOM));

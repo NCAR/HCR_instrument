@@ -754,6 +754,7 @@ string IwrfExport::_assembleStatusXml()
   uint16_t currentMode = 0;     // see info for C-MIGITS 3500 message
   bool insAvailable = false;
   bool gpsAvailable = false;
+  uint16_t nSats = 0;
   uint16_t positionFOM = 0;     // see info for C-MIGITS 3500 message
   uint16_t velocityFOM = 0;     // see info for C-MIGITS 3500 message
   uint16_t headingFOM = 0;      // see info for C-MIGITS 3500 message
@@ -763,13 +764,14 @@ string IwrfExport::_assembleStatusXml()
   float expectedVelocityError = 0.0;  // m/s
 
   drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable, gpsAvailable, 
-          positionFOM, velocityFOM, headingFOM, timeFOM, expectedHPosError, 
-          expectedVPosError, expectedVelocityError);
+          nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
+          expectedHPosError, expectedVPosError, expectedVelocityError);
 
   xml += TaXml::writeUtime("Cmigits3500Time", 2, time_t(statusTime));
   xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, currentMode);
   xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, insAvailable);
   xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, gpsAvailable);
+  xml += TaXml::writeInt("Cmigits3500NSats", 2, nSats);
   xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, positionFOM);
   xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, velocityFOM);
   xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, headingFOM);

@@ -106,8 +106,9 @@ CmigitsSharedMemory::getWriterPid() const {
 
 void
 CmigitsSharedMemory::setLatestStatus(uint64_t dataTime, uint16_t currentMode,
-            bool insAvailable, bool gpsAvailable, uint16_t positionFOM,
-            uint16_t velocityFOM, uint16_t headingFOM, uint16_t timeFOM,
+            bool insAvailable, bool gpsAvailable, uint16_t nSats,
+            uint16_t positionFOM, uint16_t velocityFOM,
+            uint16_t headingFOM, uint16_t timeFOM,
             float expectedHPosError, float expectedVPosError,
             float expectedVelocityError) throw(Exception) {
     if (! _writeAccess) {
@@ -118,6 +119,7 @@ CmigitsSharedMemory::setLatestStatus(uint64_t dataTime, uint16_t currentMode,
     _shmContents->currentMode = currentMode;
     _shmContents->insAvailable = insAvailable;
     _shmContents->gpsAvailable = gpsAvailable;
+    _shmContents->nSats = nSats;
     _shmContents->positionFOM = positionFOM;
     _shmContents->velocityFOM = velocityFOM;
     _shmContents->headingFOM = headingFOM;
@@ -130,8 +132,9 @@ CmigitsSharedMemory::setLatestStatus(uint64_t dataTime, uint16_t currentMode,
 
 void
 CmigitsSharedMemory::getLatestStatus(uint64_t & dataTime, uint16_t & currentMode,
-            bool & insAvailable, bool & gpsAvailable, uint16_t & positionFOM,
-            uint16_t & velocityFOM, uint16_t & headingFOM, uint16_t & timeFOM,
+            bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
+            uint16_t & positionFOM, uint16_t & velocityFOM,
+            uint16_t & headingFOM, uint16_t & timeFOM,
             float & expectedHPosError, float & expectedVPosError,
             float & expectedVelocityError) const {
     _qShm.lock();
@@ -139,6 +142,7 @@ CmigitsSharedMemory::getLatestStatus(uint64_t & dataTime, uint16_t & currentMode
     currentMode = _shmContents->currentMode;
     insAvailable = _shmContents->insAvailable;
     gpsAvailable = _shmContents->gpsAvailable;
+    nSats = _shmContents->nSats;
     positionFOM = _shmContents->positionFOM;
     velocityFOM = _shmContents->velocityFOM;
     headingFOM = _shmContents->headingFOM;

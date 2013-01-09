@@ -773,6 +773,9 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         abort();
     }
 
+    // Number of satellites tracked
+    uint16_t nSats = msgWords[11];
+
     // Figure-of-merit (FOM) information. Each figure-of-merit is a 4-bit
     // integer value unpacked from the FOM information word, and each integer
     // value signifies an explicit range for the associated figure-of-merit.
@@ -791,7 +794,8 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     DLOG << "3500 time: " << msgTime.toString().toStdString() <<
             ", mode: " << _ModeNames[_currentMode] <<
             ", GPS: " << _gpsAvailable <<
-            ", INS: " << _insAvailable;
+            ", INS: " << _insAvailable <<
+            ", # satellites tracked: " << nSats;
     DLOG << "3500 position FOM: " << _PositionFOMStrings[positionFOM] <<
             ", velocity FOM: " << _VelocityFOMStrings[velocityFOM] <<
             ", heading FOM: " << _HeadingFOMStrings[headingFOM] <<
@@ -802,7 +806,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     uint64_t msecsSinceEpoch = 1000 * msgTime.toTime_t() + msgTime.time().msec();
     emit new3500Data(msecsSinceEpoch, _currentMode,
-            insAvailable, gpsAvailable,
+            insAvailable, gpsAvailable, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
 }

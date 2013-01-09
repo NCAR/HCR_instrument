@@ -353,6 +353,7 @@ HcrGuiMainWindow::_update() {
         uint16_t mode = 0;
         bool insAvailable = 0;
         bool gpsAvailable = 0;
+        uint16_t nSats = 0;
         uint16_t positionFOM = 0;
         uint16_t velocityFOM = 0;
         uint16_t headingFOM = 0;
@@ -361,8 +362,8 @@ HcrGuiMainWindow::_update() {
         float expectedVPosError = 0.0;
         float expectedVelError = 0.0;
         _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
-                positionFOM, velocityFOM, headingFOM, timeFOM, expectedHPosError,
-                expectedVPosError, expectedVelError);
+                nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
+                expectedHPosError, expectedVPosError, expectedVelError);
         // Green light if both INS and GPS are available
         bool cmigitsStatusGood = insAvailable && gpsAvailable;
         _ui.cmigitsStatusIcon->setPixmap(cmigitsStatusGood ?  _greenLED : _redLED);

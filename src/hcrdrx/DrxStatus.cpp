@@ -102,6 +102,7 @@ DrxStatus::DrxStatus() :
     _hmcMode(0),
     _cmigitsStatusTime(0.0),
     _cmigitsCurrentMode(0),
+    _cmigitsNSats(0),
     _cmigitsInsAvailable(false),
     _cmigitsGpsAvailable(false),
     _cmigitsPositionFOM(0),
@@ -167,6 +168,7 @@ DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     // C-MIGITS status from its 3500 message
     _cmigitsStatusTime = _StatusDouble(statusDict, "cmigitsStatusTime");
     _cmigitsCurrentMode = _StatusInt(statusDict, "cmigitsCurrentMode");
+    _cmigitsNSats = _StatusInt(statusDict, "cmigitsNSats");
     _cmigitsInsAvailable = _StatusBool(statusDict, "cmigitsInsAvailable");
     _cmigitsGpsAvailable = _StatusBool(statusDict, "cmigitsGpsAvailable");
     _cmigitsPositionFOM = _StatusInt(statusDict, "cmigitsPositionFOM");
@@ -234,6 +236,7 @@ DrxStatus::toXmlRpcValue() const {
     // C-MIGITS status
     statusDict["cmigitsStatusTime"] = XmlRpcValue(_cmigitsStatusTime);
     statusDict["cmigitsCurrentMode"] = XmlRpcValue(_cmigitsCurrentMode);
+    statusDict["cmigitsNSats"] = XmlRpcValue(_cmigitsNSats);
     statusDict["cmigitsInsAvailable"] = XmlRpcValue(_cmigitsInsAvailable);
     statusDict["cmigitsGpsAvailable"] = XmlRpcValue(_cmigitsGpsAvailable);
     statusDict["cmigitsPositionFOM"] = XmlRpcValue(_cmigitsPositionFOM);
@@ -459,10 +462,10 @@ DrxStatus::_getCmigitsValues() {
     uint64_t dataTime;
     
     // Get status data
-    cShm.getLatestStatus(dataTime, _cmigitsCurrentMode, _cmigitsInsAvailable,
-            _cmigitsGpsAvailable, _cmigitsPositionFOM, _cmigitsVelocityFOM,
-            _cmigitsHeadingFOM, _cmigitsTimeFOM, _cmigitsHPosError, 
-            _cmigitsVPosError, _cmigitsVelocityError);
+    cShm.getLatestStatus(dataTime, _cmigitsCurrentMode,
+            _cmigitsInsAvailable, _cmigitsGpsAvailable, _cmigitsNSats,
+            _cmigitsPositionFOM, _cmigitsVelocityFOM, _cmigitsHeadingFOM, _cmigitsTimeFOM,
+            _cmigitsHPosError, _cmigitsVPosError, _cmigitsVelocityError);
     _cmigitsStatusTime = dataTime * 0.001;      // ms -> s
     
     // Get attitude data
