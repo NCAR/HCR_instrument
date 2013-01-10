@@ -6,6 +6,7 @@
  */
 #include "HcrGuiCmigitsStatusDialog.h"
 #include <QDateTime>
+#include <Cmigits.h>
 
 HcrGuiCmigitsStatusDialog::HcrGuiCmigitsStatusDialog(QWidget *parent) :
     QDialog(parent),
@@ -46,12 +47,12 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     _ui.statusTimeValue->setText(QDateTime::fromTime_t(uint32_t(statusTime)).toUTC().toString("hh:mm:ss"));
     _ui.insValue->setPixmap(insAvailable ? _greenLED : _redLED);
     _ui.gpsValue->setPixmap(gpsAvailable ? _greenLED : _redLED);
-    _ui.currentModeValue->setText(QString::number(currentMode));
+    _ui.currentModeValue->setText(Cmigits::ModeName(currentMode).c_str());
     _ui.satCountValue->setText(QString::number(nSats));
-    _ui.positionFOMValue->setText(QString::number(positionFOM));
-    _ui.velocityFOMValue->setText(QString::number(velocityFOM));
-    _ui.headingFOMValue->setText(QString::number(headingFOM));
-    _ui.timeFOMValue->setText(QString::number(timeFOM));
+    _ui.positionFOMValue->setText(Cmigits::PositionFOMString(positionFOM).c_str());
+    _ui.velocityFOMValue->setText(Cmigits::VelocityFOMString(velocityFOM).c_str());
+    _ui.headingFOMValue->setText(Cmigits::HeadingFOMString(headingFOM).c_str());
+    _ui.timeFOMValue->setText(Cmigits::TimeFOMString(timeFOM).c_str());
 
     double navSolutionTime = 0.0;
     float latitude = 0.0;
