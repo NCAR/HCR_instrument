@@ -1,6 +1,7 @@
 # -*- python -*-
 
 hcrguiTools = Split("""
+cmigits
 logx
 doxygen
 hcrdrxrpcclient
