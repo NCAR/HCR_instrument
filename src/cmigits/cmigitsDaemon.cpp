@@ -30,8 +30,9 @@ int
 main(int argc, char *argv[]) {
     App = new QCoreApplication(argc, argv);
 
-    // Catch interrupt signal to shut us down cleanly on ^C
+    // Catch INT and TERM signals so we can shut down cleanly on ^C or 'kill'
     signal(SIGINT, sigHandler);
+    signal(SIGTERM, sigHandler);
     
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
