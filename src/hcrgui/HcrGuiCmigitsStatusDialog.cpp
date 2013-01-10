@@ -52,7 +52,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     _ui.positionFOMValue->setText(Cmigits::PositionFOMString(positionFOM).c_str());
     _ui.velocityFOMValue->setText(Cmigits::VelocityFOMString(velocityFOM).c_str());
     _ui.headingFOMValue->setText(Cmigits::HeadingFOMString(headingFOM).c_str());
-    _ui.timeFOMValue->setText(Cmigits::TimeFOMString(timeFOM).c_str());
+    _ui.timeFOMValue->setText(QString::fromUtf8(Cmigits::TimeFOMString(timeFOM).c_str()));
 
     double navSolutionTime = 0.0;
     float latitude = 0.0;
