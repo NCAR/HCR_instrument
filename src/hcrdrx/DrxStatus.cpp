@@ -6,7 +6,6 @@
  */
 
 #include "DrxStatus.h"
-#include <CmigitsSharedMemory.h>
 #include "HcrPmc730.h"
 #include <logx/Logging.h>
 #include <iomanip>
@@ -53,7 +52,10 @@ static const double MiWv950W_Cal[][2] = {
 };
 static const int MiWv950W_CalLen = (sizeof(MiWv950W_Cal) / (sizeof(*MiWv950W_Cal)));
 
+// Static instance for access to shared memory containing C-MIGITS data
+CmigitsSharedMemory DrxStatus::_CmigitsShm;
 
+// Static temperature lists
 DrxStatus::TemperatureList DrxStatus::_PloTemps;
 DrxStatus::TemperatureList DrxStatus::_EikTemps;
 DrxStatus::TemperatureList DrxStatus::_VLnaTemps;
@@ -453,28 +455,24 @@ DrxStatus::_getPentekValues(const Pentek::p7142 & pentek) {
 
 void
 DrxStatus::_getCmigitsValues() {
-    // Get access to the C-MIGITS shared memory segment filled by the
-    // cmigitsDaemon
-    CmigitsSharedMemory cShm;
-    
     // Times from the C-MIGITS shared memory are 64-bit unsigned milliseconds
     // since 1970-01-01 00:00:00 UTC
     uint64_t dataTime;
     
     // Get status data
-    cShm.getLatestStatus(dataTime, _cmigitsCurrentMode,
+    _CmigitsShm.getLatestStatus(dataTime, _cmigitsCurrentMode,
             _cmigitsInsAvailable, _cmigitsGpsAvailable, _cmigitsNSats,
             _cmigitsPositionFOM, _cmigitsVelocityFOM, _cmigitsHeadingFOM, _cmigitsTimeFOM,
             _cmigitsHPosError, _cmigitsVPosError, _cmigitsVelocityError);
     _cmigitsStatusTime = dataTime * 0.001;      // ms -> s
     
     // Get attitude data
-    cShm.getLatestAttitude(dataTime, _cmigitsPitch, _cmigitsRoll,
+    _CmigitsShm.getLatestAttitude(dataTime, _cmigitsPitch, _cmigitsRoll,
             _cmigitsHeading);
     _cmigitsAttitudeTime = dataTime * 0.001;    // ms -> s
     
     // Get navigation solution data
-    cShm.getLatestNavSolution(dataTime, _cmigitsLatitude, _cmigitsLongitude, 
+    _CmigitsShm.getLatestNavSolution(dataTime, _cmigitsLatitude, _cmigitsLongitude,
             _cmigitsAltitude, _cmigitsVelNorth, _cmigitsVelEast, _cmigitsVelUp);
     _cmigitsNavSolutionTime = dataTime * 0.001; // ms -> s
 }

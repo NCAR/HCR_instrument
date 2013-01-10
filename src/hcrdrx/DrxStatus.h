@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <XmlRpc.h>
 #include <p7142.h>
+#include <CmigitsSharedMemory.h>
 
 using namespace XmlRpc;
 
@@ -429,6 +430,10 @@ private:
      * @brief Get latest available data from the C-MIGITS
      */
     void _getCmigitsValues();
+
+    // We can keep one static object to give all instances access to the
+    // shared memory segment with C-MIGITS data.
+    static CmigitsSharedMemory _CmigitsShm;
 
     // Keep static lists of temperatures sampled from the multi-IO card so that
     // we can time-average to reduce noise in the sampling. Values are added to
