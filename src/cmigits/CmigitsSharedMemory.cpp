@@ -10,6 +10,9 @@
 #include <unistd.h>
 #include <cassert>
 #include "CmigitsSharedMemory.h"
+#include <logx/Logging.h>
+
+LOGGING("CmigitsSharedMemory")
 
 const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
 
@@ -23,7 +26,7 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     // Try to create the shared memory segment. Create the segment with
     // read/write access, even if this object will have read-only access.
     if (_qShm.create(segsize, QSharedMemory::ReadWrite)) {
-        std::cout << "Created shared memory segment '" << CMIGITS_SHM_KEY.toStdString() << "'" << std::endl;
+        DLOG << "Created shared memory segment '" << CMIGITS_SHM_KEY.toStdString() << "'";
         _qShm.lock();
         // Zero the segment.
         memset(_qShm.data(), 0, segsize);
