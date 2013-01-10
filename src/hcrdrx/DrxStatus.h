@@ -415,6 +415,7 @@ private:
      * @return the RF power measured at the Mi-Wave 950W detector, dBm
      */
     static double _LookupMiWv950WPower(double voltage);
+    
     /**
      * @brief Get new values for all of our sensor data supplied via the PMC730
      * multi-IO card.
@@ -433,7 +434,7 @@ private:
 
     // We can keep one static object to give all instances access to the
     // shared memory segment with C-MIGITS data.
-    static CmigitsSharedMemory _CmigitsShm;
+    static CmigitsSharedMemory * _CmigitsShm;
 
     // Keep static lists of temperatures sampled from the multi-IO card so that
     // we can time-average to reduce noise in the sampling. Values are added to
