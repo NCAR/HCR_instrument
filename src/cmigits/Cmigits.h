@@ -217,10 +217,9 @@ private:
     void _sendDisconnectForMsg(uint16_t msgId);
 
     /**
-     * @brief Start automatic mode sequencing. This causes the CMIGITS-III
-     * to "find itself", sequencing through alignment into navigation mode.
+     * @brief Do actions for the current initialization phase.
      */
-    void _initialize();
+    void _doCurrentInitPhase();
 
     /// @brief Set serial line speed to the given value, in hopes we will
     /// find the right speed to talk to the C-MIGITS.
@@ -310,11 +309,11 @@ private:
     /// C-MIGITS. This type enumerates our initialization phases.
     typedef enum {
         INIT_PreInit,           ///< waiting for first 3623 GPS Timemark Message
-        INIT_EnableInitMode,    ///< putting C-MIGITS into Initialize mode
+        INIT_GoToInitMode,      ///< putting C-MIGITS into Initialize mode
         INIT_EnableDefaultMsgs, ///< revert to sending default messages
         INIT_SetRates,          ///< setting serial line and data message rates
         INIT_SensorConfig,      ///< configuring sensor orientation
-        INIT_Enable3512,        ///< enable sending of 3512 Flight Control messages
+        INIT_Enable3512Msgs,    ///< enable sending of 3512 Flight Control messages
         INIT_StartAutoNav,      ///< starting auto-navigation sequence
         INIT_Complete           ///< initialization complete
     } InitPhase;

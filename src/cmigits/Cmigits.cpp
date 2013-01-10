@@ -537,7 +537,7 @@ Cmigits::_processRawData() {
         }
     }
     if (_nSkippedForSync > 0) {
-        ELOG << "C-MIGITS data resynchronized after " << _nSkippedForSync << " bytes";
+        ILOG << "C-MIGITS data resynchronized after " << _nSkippedForSync << " bytes";
         _nSkippedForSync = 0;
     }
 
@@ -667,7 +667,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     if (nak) {
         ILOG << "Re-doing initialization phase " << _initPhase <<
                 " after NAK of " << msgId << " command";
-        _initialize();
+        _doCurrentInitPhase();
     }
 
     // Second response to a command is a handshake reply telling whether the
@@ -687,7 +687,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
                 // if it's not long enough.
                 usleep(800000);
                 _rejectRetryCount++;
-                _initialize();
+                _doCurrentInitPhase();
             } else {
                 ELOG << msgId << " command rejected " << _rejectRetryCount <<
                         "times, aborting!";
@@ -698,7 +698,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
             _rejectRetryCount = 0;
             // Command was accepted. Move to the next initialization step.
             _initPhase = InitPhase(static_cast<int>(_initPhase) + 1);
-            _initialize();
+            _doCurrentInitPhase();
         }
     }
 }
@@ -708,7 +708,7 @@ Cmigits::_noHandshakeRcvd() {
     WLOG << "No handshake received for " << _awaitingHandshake <<
             " command. Trying again.";
     _awaitingHandshake = -1;
-    _initialize();
+    _doCurrentInitPhase();
 }
 
 void
@@ -939,8 +939,8 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // We can start initialization any time after we get the first 3623 message.
     // (See "Commanded Initialization" in the C-MIGITS manual)
     if (_initPhase == INIT_PreInit) {
-        _initPhase = INIT_EnableInitMode;
-        _initialize();
+        _initPhase = INIT_GoToInitMode;
+        _doCurrentInitPhase();
     }
 }
 
@@ -1075,7 +1075,7 @@ Cmigits::_sendConnectForMsg(uint16_t msgId) {
 }
 
 void
-Cmigits::_initialize() {
+Cmigits::_doCurrentInitPhase() {
     // Buffer for message data, initialized to zeros
     uint16_t data[_CMIGITS_MAX_MSG_LEN_WORDS];
     memset(data, 0, sizeof(data));
@@ -1085,7 +1085,7 @@ Cmigits::_initialize() {
     struct tm  * now_tm = gmtime(&now);
 
     // Process the next initialization phase
-    ILOG << "Initialization entering phase " << _initPhase;
+    ILOG << "Doing initialization phase " << _initPhase << " of " << INIT_Complete;
 
     // Handle the current initialization phase
     switch (_initPhase) {
@@ -1095,7 +1095,7 @@ Cmigits::_initialize() {
                 " while in INIT_PreInit state!";
         abort();
         break;
-    case INIT_EnableInitMode:
+    case INIT_GoToInitMode:
         // Create and send a 3510 (Control and Initialization) message to put
         // the C-MIGITS into Initialization mode
 
@@ -1179,7 +1179,7 @@ Cmigits::_initialize() {
         // Send the 3511 message
         _sendMessage(3511, data, 22);
         break;
-    case INIT_Enable3512:
+    case INIT_Enable3512Msgs:
         // Tell the C-MIGITS to start sending 3512 (Flight Control) messages
         _sendConnectForMsg(3512);
         break;
