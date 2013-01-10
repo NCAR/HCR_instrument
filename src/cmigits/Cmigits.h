@@ -38,6 +38,46 @@ public:
      * Device name to use when creating a simulation Cmigits.
      */
     static const std::string SIM_DEVICE;
+    
+    /**
+     * @brief Return a string describing the given operating mode number, which
+     * must be in the range [1,9].
+     * @param mode the operating mode number of interest
+     * @return a string describing the given operating mode number
+     */
+    static const std::string ModeName(uint16_t mode) { return(_ModeNames[mode]); }
+    
+    /**
+     * @brief Return a string describing the given C-MIGITS integer position 
+     * figure-of-merit (FOM). The integer must be in the range [1,9].
+     * @param pFOM the C-MIGITS integer position figure-of-merit
+     * @return a string describing the given C-MIGITS integer position FOM
+     */
+    static const std::string PositionFOMString(uint16_t pFOM) { return(_PositionFOMStrings[pFOM]); }
+
+    /**
+     * @brief Return a string describing the given C-MIGITS integer velocity 
+     * figure-of-merit (FOM). The integer must be in the range [1,9].
+     * @param vFOM the C-MIGITS integer velocity figure-of-merit
+     * @return a string describing the given C-MIGITS integer velocity FOM
+     */
+    static const std::string VelocityFOMString(uint16_t vFOM) { return(_VelocityFOMStrings[vFOM]); }
+
+    /**
+     * @brief Return a string describing the given C-MIGITS integer heading 
+     * figure-of-merit (FOM). The integer must be in the range [1,9].
+     * @param pFOM the C-MIGITS integer heading figure-of-merit
+     * @return a string describing the given C-MIGITS integer heading FOM
+     */
+    static const std::string HeadingFOMString(uint16_t hFOM) { return(_HeadingFOMStrings[hFOM]); }
+
+    /**
+     * @brief Return a string describing the given C-MIGITS integer time 
+     * figure-of-merit (FOM). The integer must be in the range [1,9].
+     * @param tFOM the C-MIGITS integer time figure-of-merit
+     * @return a string describing the given C-MIGITS integer time FOM
+     */
+    static const std::string TimeFOMString(uint16_t tFOM) { return(_TimeFOMStrings[tFOM]); }
 
 signals:
     /// @brief Signal emitted when GPS availability changes

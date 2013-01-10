@@ -792,14 +792,14 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     float velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
 
     DLOG << "3500 time: " << msgTime.toString().toStdString() <<
-            ", mode: " << _ModeNames[_currentMode] <<
+            ", mode: " << ModeName(_currentMode) <<
             ", GPS: " << _gpsAvailable <<
             ", INS: " << _insAvailable <<
             ", # satellites tracked: " << nSats;
-    DLOG << "3500 position FOM: " << _PositionFOMStrings[positionFOM] <<
-            ", velocity FOM: " << _VelocityFOMStrings[velocityFOM] <<
-            ", heading FOM: " << _HeadingFOMStrings[headingFOM] <<
-            ", time FOM: " << _TimeFOMStrings[timeFOM];
+    DLOG << "3500 position FOM: " << PositionFOMString(positionFOM) <<
+            ", velocity FOM: " << VelocityFOMString(velocityFOM) <<
+            ", heading FOM: " << HeadingFOMString(headingFOM) <<
+            ", time FOM: " << TimeFOMString(timeFOM);
     DLOG << "3500 expected errors - h pos: " << hPosError <<
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
