@@ -1184,43 +1184,44 @@ Cmigits::_doCurrentInitPhase() {
         _sendConnectForMsg(3512);
         break;
     case INIT_StartAutoNav:
+    {
         // Create a 3510 (Control and Initialization) message to enable
         // automatic mode sequencing
 
         // set data validity bits
         data[0] |= 1 << 0;	// set mode
-        data[0] |= 1 << 1;	// set lat/lon/alt
-        data[0] |= 1 << 2;	// set horizontal velocity
         data[0] |= 1 << 3;	// set date/time data
         data[0] |= 1 << 4;	// set true heading
-        //	data[0] |= 1 << 5;	// set auto align/nav sequence data
+        data[0] |= 1 << 5;	// set auto align/nav sequence data
         data[0] |= 1 << 8;	// setting auto GPS state
 
-        data[1] = 0;			// mode: 0 -> automatic mode sequencing
+        // Follow automatic mode sequencing, defined by the alignment/navigation
+        // word below.
+        data[1] = 0;        // mode: 0 -> automatic mode sequencing
 
-        data[2] = 0;			// lat deg
-        data[3] = 0;			// lat min
-        data[4] = 0;			// lat sec
-
-        data[5] = 0;		// lon deg
-        data[6] = 0;		// lon min
-        data[7] = 0;		// lon sec
-
-        data[8] = 0;		// alt m (high order word)
-        data[9] = 0;		// alt m (low order word)
-
-        data[10] = 0;		// ground speed m/s
-        data[11] = 0;		// ground track deg
-
+        // Provide the current time
         data[12] = now_tm->tm_year - 1900;
         data[13] = now_tm->tm_yday;
         data[14] = now_tm->tm_hour;
         data[15] = now_tm->tm_min;
         data[16] = now_tm->tm_sec;
 
-        data[17] = 3000;		// heading is 30.0 (0.01 degree units)
+        // Provide the current heading
+        float heading = -20.0;
+        // normalize heading to interval [0, 360.0)
+        heading = fmodf(heading, 360.0);
+        if (heading < 0.0)
+            heading += 360.0;
+        data[17] = uint16_t(rintf(heading * 100)); // pass heading in 0.01 degree units
 
-        data[18] |= 4 << 0;	// starting alignment mode: 4 - fine alignment
+        // Set up alignment/navigation sequence to be used
+        bool stationary = true;
+        if (stationary) {
+            data[18] |= 4 << 0;	// alignment mode: 4 - fine alignment
+        } else {
+            data[18] |= 5 << 0; // alignment mode: 5 - air alignment
+        }
+
         if (_useAirNavigation) {
             ILOG << "AIR NAVIGATION configuration";
             data[18] |= 7 << 4;	// auto sequence nav mode: 7 - air navigation
@@ -1233,6 +1234,7 @@ Cmigits::_doCurrentInitPhase() {
         // Send the 3510 message
         _sendMessage(3510, data, 21);
         break;
+    }
     case INIT_Complete:
         ILOG << "C-MIGITS initialization is complete!";
         _initCompleteTime = QDateTime::currentDateTime().toUTC();
