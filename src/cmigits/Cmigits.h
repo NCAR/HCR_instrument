@@ -308,7 +308,7 @@ private:
     /// Initialization is a multi-stage process, driven by responses from the
     /// C-MIGITS. This type enumerates our initialization phases.
     typedef enum {
-        INIT_PreInit,           ///< waiting for first 3623 GPS Timemark Message
+        INIT_PreInit,           ///< waiting for a 3623 GPS Timemark Message
         INIT_GoToInitMode,      ///< putting C-MIGITS into Initialize mode
         INIT_EnableDefaultMsgs, ///< revert to sending default messages
         INIT_SetRates,          ///< setting serial line and data message rates
