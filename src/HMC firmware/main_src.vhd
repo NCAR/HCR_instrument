@@ -442,7 +442,7 @@ begin
 			when s0 =>
 				if (ops_mode = "11" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1') then   -- Test Mode
 					state <= s1;
-				elsif(EMS_TRIG = '1' AND T0 = '1'AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
+				elsif(EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s1;
 				end if;		
 			when s1 =>
@@ -454,8 +454,12 @@ begin
 --					state <=s0;
 				elsif(ems_pwr_ok = '0' AND rx_dly = '0' AND tx_dly = '1') then
 					state <=s0;
-				elsif(hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
-					state <=s0;					
+				elsif(ops_mode = "00" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
+					state <=s0;
+				elsif(ops_mode = "01" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
+					state <=s0;
+				elsif(ops_mode = "10" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
+					state <=s0;										
 				end if;			
 			when s2 =>
 				if (ops_mode = "11" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Test Mode
