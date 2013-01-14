@@ -1188,8 +1188,10 @@ Cmigits::_doCurrentInitPhase() {
         // Create a 3510 (Control and Initialization) message to enable
         // automatic mode sequencing
 
-        // set data validity bits
+        // Set data validity bits
         data[0] |= 1 << 0;	// set mode
+        data[0] |= 1 << 1;	// set lat/lon/alt
+        data[0] |= 1 << 2;	// set horizontal velocity
         data[0] |= 1 << 3;	// set date/time data
         data[0] |= 1 << 4;	// set true heading
         data[0] |= 1 << 5;	// set auto align/nav sequence data
@@ -1198,6 +1200,25 @@ Cmigits::_doCurrentInitPhase() {
         // Follow automatic mode sequencing, defined by the alignment/navigation
         // word below.
         data[1] = 0;        // mode: 0 -> automatic mode sequencing
+
+        // Position and velocity *have* to be initialized some time after power 
+        // up, even if we tell the C-MIGITS to use Auto GPS Initialization.
+        // (See "How do I initialize the unit?" in the Frequently Asked 
+        // Questions chapter of the C-MIGITS manual.)  We just provide a bogus 
+        // location and velocity every time we initialize.
+        data[2] = 0;    // lat deg
+        data[3] = 0;    // lat min
+        data[4] = 0;    // lat sec
+
+        data[5] = 0;    // lon deg
+        data[6] = 0;    // lon min
+        data[7] = 0;    // lon sec
+
+        data[8] = 0;    // alt m (high order word)
+        data[9] = 0;    // alt m (low order word)
+
+        data[10] = 0;   // ground speed m/s
+        data[11] = 0;   // ground track deg
 
         // Provide the current time
         data[12] = now_tm->tm_year - 1900;
@@ -1208,12 +1229,19 @@ Cmigits::_doCurrentInitPhase() {
 
         // Provide the current heading
         float heading = -20.0;
-        // normalize heading to interval [0, 360.0)
+        // normalize heading to interval [-180.0, 180.0]
         heading = fmodf(heading, 360.0);
-        if (heading < 0.0)
+        if (heading < -180.0) {
             heading += 360.0;
-        data[17] = uint16_t(rintf(heading * 100)); // pass heading in 0.01 degree units
-
+        } else if (heading > 180.0) {
+            heading -= 360.0;
+        }
+        // Convert heading to 16-bit signed integer, in hundredths of a degree.
+        // (Value will be in the interval [-18000, 18000]
+        int16_t iHeading = int16_t(rintf(heading * 100));
+        // Copy signed integer heading into unsigned data word 17
+        memcpy(data + 17, &iHeading, 2);
+ 
         // Set up alignment/navigation sequence to be used
         bool stationary = true;
         if (stationary) {
