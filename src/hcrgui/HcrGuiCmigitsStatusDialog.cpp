@@ -54,6 +54,12 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     _ui.headingFOMValue->setText(Cmigits::HeadingFOMString(headingFOM).c_str());
     _ui.timeFOMValue->setText(QString::fromUtf8(Cmigits::TimeFOMString(timeFOM).c_str()));
 
+    // Disable (gray out) the navigation solution and attitude boxes if
+    // current mode is not "Air Navigation" or "Land Navigation".
+    bool enableBoxes = (currentMode == 7 || currentMode == 8);
+    _ui.navSolutionBox->setEnabled(enableBoxes);
+    _ui.attitudeBox->setEnabled(enableBoxes);
+
     double navSolutionTime = 0.0;
     float latitude = 0.0;
     float longitude = 0.0;
