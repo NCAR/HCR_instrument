@@ -364,8 +364,8 @@ HcrGuiMainWindow::_update() {
         _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
                 nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
                 expectedHPosError, expectedVPosError, expectedVelError);
-        // Green light if both INS and GPS are available
-        bool cmigitsStatusGood = insAvailable && gpsAvailable;
+        // Green light if mode is "Air Navigation" or "Land Navigation"
+        bool cmigitsStatusGood = (mode == 7 || mode == 8);
         _ui.cmigitsStatusIcon->setPixmap(cmigitsStatusGood ?  _greenLED : _redLED);
     }
 
