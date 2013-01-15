@@ -121,7 +121,7 @@ architecture Behavioral of main_src is
 signal radar_pwr_ok : STD_LOGIC;
 signal ems_pwr_ok : STD_LOGIC; 
 signal hv_dly : STD_LOGIC;
-signal hv_count : STD_LOGIC_VECTOR(25 downto 0);
+signal hv_count : STD_LOGIC_VECTOR(23 downto 0);
 signal count_enable : STD_LOGIC;
 signal tx_dly : STD_LOGIC;									-- Delay before reading EMS BIT on transmit
 signal ems_tx_count : STD_LOGIC_VECTOR(4 downto 0);
@@ -138,7 +138,7 @@ signal ems_rx_stat : STD_LOGIC;
 signal l_tx_dly : STD_LOGIC;
 signal l_rx_dly : STD_LOGIC;
 signal half_hz : STD_LOGIC; 	-- 1/2 Hz Clock
-signal pps_count : STD_LOGIC_VECTOR(1 downto 0); 
+-- signal pps_count : STD_LOGIC; 
 signal l_rx_gate : STD_LOGIC;
 signal ops_mode : STD_LOGIC_VECTOR(1 downto 0);    -- ops_mode at state S0
 signal ems_tx_error: STD_LOGIC;
@@ -251,12 +251,9 @@ end process;
 	SPARE3 <= rx_dly;
 	SPARE4 <= ems_tx_stat;
 	SPARE5 <= ems_tx_ok;
---	SPARE4 <= ops_mode(0);
---	SPARE5 <= ops_mode(1);	
 	SPARE6 <= end_cycle;
 	SPARE7 <= ems_pwr_ok;
---	SPARE7 <= ems_tx_ok;
-	
+
 --- End Asychronous Processes --------------------------------------------------------------------
 
 -- Synchronous Processes -------------------------------------------------------------------------
@@ -267,15 +264,10 @@ HALF_HZ_COUNTER: process (RESET_730, ONE_PPS)
 begin
 	if (RESET_730 = '1') then
 		half_hz <= '0';
-		pps_count <= "00";
 	elsif (rising_edge (ONE_PPS)) then
-		if (pps_count <= "01") then
-			half_hz <= '1';
-			pps_count <= "00";
-		else
-			pps_count <= pps_count + 1;
-			half_hz <= '0';
-		end if;
+		half_hz <= NOT half_hz;
+	else
+		half_hz <= half_hz;
 	end if;
 end process;
 
@@ -333,20 +325,20 @@ end process;
 DELAY_1SEC: process (EXT_CLK, RESET_730, HV_ON_730)
 begin 
 	if (RESET_730 = '1') then
-      hv_count <= "00000000000000000000000000";
+      hv_count <= "000000000000000000000000";
 		hv_dly <= '0';
 		count_enable <= '1';	
    elsif (rising_edge (EXT_CLK)) then				
 		if (HV_ON_730 = '0') then
-			if(hv_count = "11110000000000000000000000") then -- ~1sec delay
-				hv_count <= "00000000000000000000000000";
+			if(hv_count = "111100000000000000000000") then -- ~1sec delay
+				hv_count <= "000000000000000000000000";
 				count_enable <= '0';
 				hv_dly <= '1';
 			elsif (count_enable = '1') then	
 				hv_count <= hv_count + 1;
 			end if;
 		else	
-				hv_count <= "00000000000000000000000000";
+				hv_count <= "000000000000000000000000";
 				hv_dly <= '0';
 				count_enable <= '1';
 		end if;
@@ -383,7 +375,7 @@ begin
 		tx_dly <= '0';	
    elsif (rising_edge (EXT_CLK)) then				
 		if (ems_tx_count_enable = '1') then
-			if(ems_tx_count = "10101") then 
+			if(ems_tx_count = "100") then 
 				ems_tx_count <= "00000";
 				tx_dly <= '1';
 			else
@@ -404,7 +396,7 @@ begin
 		rx_dly <= '0';	
    elsif (rising_edge (EXT_CLK)) then				
 		if (ems_rx_count_enable = '1') then
-			if(ems_rx_count = "10101") then 
+			if(ems_rx_count = "100") then 
 				ems_rx_count <= "00000";
 				rx_dly <= '1';
 			else

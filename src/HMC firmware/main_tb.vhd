@@ -162,7 +162,7 @@ ARCHITECTURE behavior OF main_tb IS
 	signal SPARE7 : std_logic;		-- debug test signal
 	-- Inouts 
      -- Clock period definitions
-  constant EXT_CLK_period : time := 8 ns; -- clock period/2, clock is 62.5MHz,
+  constant EXT_CLK_period : time := 32 ns; -- clock period/2, clock is 15.625MHz,
 
 -- Simulation based on 101376 ns PRT, 256 ns Tx pulsewidth
 
@@ -217,8 +217,10 @@ BEGIN
 	begin
 		ONE_PPS <= '1';
 		wait for 101376 ns;
+--		wait for 10 ns;	-- for test
 		ONE_PPS <= '0';
 		wait for 101376 ns;
+--		wait for 10 ns;  -- for test
 	end process;
 
 	PMC_730: process	-- PMC730 generated command signals
@@ -266,7 +268,7 @@ BEGIN
 		BIT_EMS_N <= "0101110";
 		BIT_EMS_P <= "1111111";
 		wait for 1376 ns;
-		BIT_EMS_N <= "1010011";
+		BIT_EMS_N <= "1010011"; 
 		BIT_EMS_P <= "1111111";
 		wait for 99680 ns;
 		wait for 320 ns;  -- 320 ns is max delay measured
