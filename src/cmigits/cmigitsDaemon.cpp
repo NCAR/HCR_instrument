@@ -5,49 +5,90 @@
  *      Author: burghart
  */
 #include <iostream>
+#include <cerrno>
 #include <cstdlib>
 #include <csignal>
 #include <QApplication>
 #include <QMetaType>
 #include <Cmigits.h>
 #include <CmigitsSharedMemory.h>
+#include <xmlrpc-c/base.hpp>
+#include <xmlrpc-c/registry.hpp>
+#include <xmlrpc-c/server_abyss.hpp>
 #include <logx/Logging.h>
-
 LOGGING("cmigitsDaemon")
 
-quint16 ServerPort = 8001;
 
+quint16 ServerPort = 8002;
+
+// Our QApplication instance
 QCoreApplication * App = 0;
-bool Interrupted = false;
 
+// Our Cmigits instance
+Cmigits * Cm = 0;
+
+// Flag set when exit is requested.
+bool ExitRequested = false;
+
+// Handler for SIGINT and SIGTERM signals.
 void
-sigHandler(int signal) {
-    App->quit();
+exitHandler(int signal) {
+    ExitRequested = true;
 }
 
+// Handler for SIGALRM signals.
+void
+alarmHandler(int signal) {
+    // Do nothing. This handler just assures that arrival of the signal doesn't 
+    // terminate our process. The intention of the signal is to force the
+    // XML-RPC server runOnce() method to return occasionally, even if no
+    // request comes in.
+    DLOG << "Got itimer ALRM signal";
+}
+
+
+//class InitCmigitsUsingIWG1 : public xmlrpc_c::method {
+//public:
+//    InitCmigitsUsingIWG1() {
+//        this->_signature = "b:";
+//        this->_help = "This method causes the C-MIGITS to initialize using IWG1 data.";
+//    }
+//    void
+//    execute(xmlrpc_c::param_list       const paramList,
+//            const xmlrpc_c::callInfo * const callInfoP,
+//            const xmlrpc_c::value *    const retvalP) {
+//
+//        
+//        bool ok = (Cm && Cm->initializeUsingIWG1());
+//        *retvalP = xmlrpc_c::value_boolean(ok);
+//    }
+//};
 
 int
 main(int argc, char *argv[]) {
     App = new QCoreApplication(argc, argv);
 
     // Catch INT and TERM signals so we can shut down cleanly on ^C or 'kill'
-    signal(SIGINT, sigHandler);
-    signal(SIGTERM, sigHandler);
+    signal(SIGINT, exitHandler);
+    signal(SIGTERM, exitHandler);
     
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
-
-    ILOG << "cmigitsDaemon starting";
 
     if (argc != 2) {
     	std::cerr << "Usage: " << argv[0] << " <tty_dev>" << std::endl;
     	exit(1);
     }
-    std::string devName(argv[1]);
-    Cmigits cm(devName);
+    
+    ILOG << "Started cmigitsDaemon";
 
-    // Get a writable connection to the C-MIGITS shared memory segment
+    // Get a writable connection to the shared memory segment where we will
+    // put C-MIGITS data.
     CmigitsSharedMemory shm(true);
+    
+    // Open connection to the C-MIGITS device.
+    std::string devName(argv[1]);
+    Cm = new Cmigits(devName);
 
     // Register uint16_t and uint64_t as a Qt metatype, since we need to use
     // them as signal/slot arguments below.
@@ -56,17 +97,45 @@ main(int argc, char *argv[]) {
 
     // When new status arrives, stuff into shared memory.
     QObject::connect(
-            &cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
+            Cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
             &shm, SLOT(setLatestStatus(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)));
     // When new navigation solution arrives, stuff into shared memory.
     QObject::connect(
-            &cm, SIGNAL(new3501Data(uint64_t, float, float, float, float, float, float)),
+            Cm, SIGNAL(new3501Data(uint64_t, float, float, float, float, float, float)),
             &shm, SLOT(setLatestNavSolution(uint64_t, float, float, float, float, float, float)));
     // When new attitude arrives, stuff into shared memory.
     QObject::connect(
-            &cm, SIGNAL(new3512Data(uint64_t, float, float, float)),
+            Cm, SIGNAL(new3512Data(uint64_t, float, float, float)),
             &shm, SLOT(setLatestAttitude(uint64_t, float, float, float)));
 
-    App->exec();
+    // Create our XML-RPC method registry and server instance
+    xmlrpc_c::registryPtr myRegistryP(new xmlrpc_c::registry);
+    xmlrpc_c::serverAbyss xmlrpcServer(xmlrpc_c::serverAbyss::constrOpt()
+                                       .registryPtr(myRegistryP)
+                                       .portNumber(ServerPort)
+                                      );
+        
+    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
+    // arrival causes the XML-RPC server's runOnce() method to return so that 
+    // we can process Qt events on a regular basis.
+    const struct timeval tv = { 0, 10000 }; // 0.01 s
+    const struct itimerval iv = { tv, tv };
+    signal(SIGALRM, alarmHandler);
+    setitimer(ITIMER_REAL, &iv, 0);
+    
+    // Now enter our processing loop
+    while (1) {
+        // Handle the next XML-RPC request, or return after receiving a SIGALRM
+        // from our timer above
+        xmlrpcServer.runOnce();
+        
+        // Exit when the exit flag gets raised
+        if (ExitRequested)
+            break;
+        
+        // Process Qt events
+        App->processEvents();
+    }
+    
     return 0;
 }
