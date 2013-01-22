@@ -18,6 +18,8 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <QMutexLocker>
+#include <QStringList>
+#include <QUdpSocket>
 #include <boost/numeric/ublas/matrix.hpp>
 
 using boost::numeric::ublas::matrix;
@@ -206,9 +208,9 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _ttyDev(ttyDev),
                 _fd(-1),
                 _onRightWing(true),
-                _useAirNavigation(false),
-                _initPhase(INIT_PreInit),
-                _initCompleteTime(),
+                _useAirNavigation(true),
+                _configPhase(CONFIG_PreInit),
+                _configCompleteTime(),
                 _nRawBytes(0),
                 _nSkippedForSync(0),
                 _myThread(),
@@ -650,7 +652,7 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
             (ack ? "ACK " : "") <<
             ((flags & (1 << 12)) ? "(ACK request)" : "");
 
-    // Deal with more initialization after phases which are waiting for response
+    // Deal with more configuration after phases which are waiting for response
     // to a message.
     if (msgId != _awaitingHandshake) {
         if (_awaitingHandshake < 0) {
@@ -665,9 +667,9 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     // First response to a command is ACK or NAK. If we got a NAK, we can
     // just try the same command again.
     if (nak) {
-        ILOG << "Re-doing initialization phase " << _initPhase <<
+        ILOG << "Re-doing configuration phase " << _configPhase <<
                 " after NAK of " << msgId << " command";
-        _doCurrentInitPhase();
+        _doCurrentConfigPhase();
     }
 
     // Second response to a command is a handshake reply telling whether the
@@ -679,15 +681,15 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
             // Sometimes a command is rejected because the C-MIGITS is
             // busy reconfiguring from a previous command. Sleep briefly and try
             // the rejected command again (up to 3 times).
-            ILOG << msgId << " command rejected in init phase " << _initPhase;
+            ILOG << msgId << " command rejected in config phase " << _configPhase;
             if (_rejectRetryCount < 3) {
-                ILOG << "Sleeping briefly, then retrying init phase " << _initPhase;
+                ILOG << "Sleeping briefly, then retrying config phase " << _configPhase;
                 // Sleep for 0.8 seconds. This time was determined empirically
                 // for the most common reject case, but feel free to adjust it
                 // if it's not long enough.
                 usleep(800000);
                 _rejectRetryCount++;
-                _doCurrentInitPhase();
+                _doCurrentConfigPhase();
             } else {
                 ELOG << msgId << " command rejected " << _rejectRetryCount <<
                         "times, aborting!";
@@ -696,9 +698,9 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
         } else {
             ILOG << msgId << " command accepted";
             _rejectRetryCount = 0;
-            // Command was accepted. Move to the next initialization step.
-            _initPhase = InitPhase(static_cast<int>(_initPhase) + 1);
-            _doCurrentInitPhase();
+            // Command was accepted. Move to the next configuration step.
+            _configPhase = ConfigPhase(static_cast<int>(_configPhase) + 1);
+            _doCurrentConfigPhase();
         }
     }
 }
@@ -708,7 +710,7 @@ Cmigits::_noHandshakeRcvd() {
     WLOG << "No handshake received for " << _awaitingHandshake <<
             " command. Trying again.";
     _awaitingHandshake = -1;
-    _doCurrentInitPhase();
+    _doCurrentConfigPhase();
 }
 
 void
@@ -728,12 +730,12 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     _currentMode = msgWords[9];
 
     // If the C-MIGITS is ever in Initialization mode more than 5 seconds after
-    // we think we completed initialization, force the initialization process
+    // we think we completed configuration, force the configuration process
     // to start again.
-    if (_currentMode == 2 && _initPhase == INIT_Complete &&
-            _initCompleteTime.secsTo(QDateTime::currentDateTime().toUTC()) > 5) {
-        ELOG << "C-MIGITS has returned to Initialization mode. Beginning re-initialization.";
-        _initPhase = INIT_PreInit;
+    if (_currentMode == 2 && _configPhase == CONFIG_Complete &&
+            _configCompleteTime.secsTo(QDateTime::currentDateTime().toUTC()) > 5) {
+        ELOG << "C-MIGITS has returned to Initialization mode. Beginning re-configuration.";
+        _configPhase = CONFIG_PreInit;
     }
 
     // system status validity
@@ -936,11 +938,11 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     float alt = _UnpackFloat32(msgWords + 25, 15);
     DLOG << "3623 lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
             " (" << msgWords[15] << " satellites)";
-    // We can start initialization any time after we get the first 3623 message.
+    // We can start configuration any time after we get the first 3623 message.
     // (See "Commanded Initialization" in the C-MIGITS manual)
-    if (_initPhase == INIT_PreInit) {
-        _initPhase = INIT_GoToInitMode;
-        _doCurrentInitPhase();
+    if (_configPhase == CONFIG_PreInit) {
+        _configPhase = CONFIG_GoToInitMode;
+        _doCurrentConfigPhase();
     }
 }
 
@@ -1075,43 +1077,45 @@ Cmigits::_sendConnectForMsg(uint16_t msgId) {
 }
 
 void
-Cmigits::_doCurrentInitPhase() {
-    // Buffer for message data, initialized to zeros
-    uint16_t data[_CMIGITS_MAX_MSG_LEN_WORDS];
-    memset(data, 0, sizeof(data));
+Cmigits::_doCurrentConfigPhase() {
+    // Buffer for message data, initialized to zeros. We keep a pointer to the
+    // data both as uint16_t and int16_t.
+    uint16_t udata[_CMIGITS_MAX_MSG_LEN_WORDS];
+    int16_t * sdata = reinterpret_cast<int16_t *>(udata);
+    memset(udata, 0, sizeof(udata));
 
     // Current time
     time_t now = time(0);
     struct tm  * now_tm = gmtime(&now);
 
-    // Process the next initialization phase
-    ILOG << "Doing initialization phase " << _initPhase << " of " << INIT_Complete;
+    // Process the next configuration phase
+    ILOG << "Doing configuration phase " << _configPhase << " of " << CONFIG_Complete;
 
-    // Handle the current initialization phase
-    switch (_initPhase) {
-    case INIT_PreInit:
+    // Handle the current configuration phase
+    switch (_configPhase) {
+    case CONFIG_PreInit:
         // Shouldn't happen!
         ELOG << "BUG: entered " << __PRETTY_FUNCTION__ <<
-                " while in INIT_PreInit state!";
+                " while in CONFIG_PreInit state!";
         abort();
         break;
-    case INIT_GoToInitMode:
+    case CONFIG_GoToInitMode:
         // Create and send a 3510 (Control and Initialization) message to put
         // the C-MIGITS into Initialization mode
 
         // set data validity bits
-        data[0] |= 1 << 0;	// set mode
+        udata[0] |= 1 << 0;	// set mode
         // set the mode to 2 -> initialization mode
-        data[1] = 2;        // mode: 2 -> initialization mode
+        udata[1] = 2;        // mode: 2 -> initialization mode
 
-        _sendMessage(3510, data, 21);
+        _sendMessage(3510, udata, 21);
         break;
-    case INIT_EnableDefaultMsgs:
+    case CONFIG_EnableDefaultMsgs:
         // Disconnect for message type 0 causes the C-MIGITS to revert to
         // sending only the default messages.
         _sendDisconnectForMsg(0);
         break;
-    case INIT_SetRates:
+    case CONFIG_SetRates:
         // Build and send a 3504 message to:
         //      1) set serial communication rate to 115200 bps
         //      2) request that the C-MIGITS generate 3512 (Flight Control)
@@ -1119,46 +1123,52 @@ Cmigits::_doCurrentInitPhase() {
         //      3) include only attitude data in 3512 messages
 
         // set data validity bits
-        data[0] |= (1 << 0);		// set host vehicle transmit baud rate
-        data[0] |= (1 << 1);		// set host vehicle receive baud rate
-        data[0] |= (1 << 7);		// set Message 3512 transmit rate
-        data[0] |= (1 << 8);		// set Message 3512 contents
+        udata[0] |= (1 << 0);		// set host vehicle transmit baud rate
+        udata[0] |= (1 << 1);		// set host vehicle receive baud rate
+        udata[0] |= (1 << 5);       // set Message 3501 transmit rate
+        udata[0] |= (1 << 7);		// set Message 3512 transmit rate
+        udata[0] |= (1 << 8);		// set Message 3512 contents
 
         // set host vehicle baud rates
-        data[1] |= (1 << 0);		// transmit baud rate 1 -> 115200 bps
-        data[1] |= (1 << 8);		// receive baud rate 1 -> 115200 bps
+        udata[1] |= (1 << 0);		// transmit baud rate 1 -> 115200 bps
+        udata[1] |= (1 << 8);		// receive baud rate 1 -> 115200 bps
 
         // set Message Control word
-        data[4] |= (3 << 4);		// Message 3512 transmit rate 3 -> 100 Hz
-        data[4] |= (1 << 8);		// send attitude in Message 3512
+        udata[4] |= (2 << 0);       // Message 3501 transmit rate 2 -> 10 Hz
+        udata[4] |= (3 << 4);		// Message 3512 transmit rate 3 -> 100 Hz
+        udata[4] |= (1 << 8);		// send attitude in Message 3512
 
         // Send the 3504 message
-        _sendMessage(3504, data, 5);
+        _sendMessage(3504, udata, 5);
         break;
-    case INIT_SensorConfig:
+    case CONFIG_SensorConfig:
         // Build a 3511 message to set the orientation of the C-MIGITS
 
         // set data validity bits
-        data[0] |= (1 << 0);		// set sensor-to-body transformation
+        udata[0] |= (1 << 0);		// set sensor-to-body transformation
 
         // Set the sensor-to-body transformation matrix.
         {
             RotationMatrix rotMatrix;
             // The default orientation for the C-MIGITS has the sensor x axis
             // pointing out the nose of the aircraft, the y axis pointing out
-            // the right wing, and the z axis pointing down.
+            // the right wing, and the z axis pointing down. For any other
+            // orientation of the C-MIGITS, a rotation matrix from the default
+            // orientation must be provided in order for attitude information
+            // (pitch, roll, heading) to be correct.
             //
-            // For ground operation or installation on the right wing, the
-            // C-MIGITS for HCR is physically oriented with the labels on the
-            // unit facing zenith. Set up a rotation matrix for this
-            // orientation so that attitude (pitch, yaw, and heading) data
-            // reported by the C-MIGITS are correct.
+            // For HCR ground operation or installation on the right wing, the
+            // C-MIGITS is physically oriented with the labels on the
+            // unit facing zenith and the connectors facing forward. Starting
+            // from its default orientation described above, a 180 degree
+            // rotation about the sensor x axis followed by a 90 degree
+            // rotation about the sensor y axis puts the C-MIGITS in the
+            // HCR right-wing orientation.
             rotMatrix.rotateAboutX(180.0);
             rotMatrix.rotateAboutY(90.0);
-            // When installed on the left wing, the whole pod is rolled 180
-            // degrees from the right wing installation.  From the above
-            // orientation, this is a 180 degree rotation about the sensor z
-            // axis.
+            // When installed on the left wing, the C-MIGITS is rolled 180
+            // degrees from the right wing installation.  This means an
+            // additional 180 degree rotation about the sensor z axis.
             if (_onRightWing) {
                 ILOG << "RIGHT WING/GROUND configuration";
             } else {
@@ -1166,110 +1176,162 @@ Cmigits::_doCurrentInitPhase() {
                 rotMatrix.rotateAboutZ(180.0);
                 ILOG << "LEFT WING configuration";
             }
-            _PackFloat32(&data[1], rotMatrix.element(0, 0), 1);
-            _PackFloat32(&data[3], rotMatrix.element(0, 1), 1);
-            _PackFloat32(&data[5], rotMatrix.element(0, 2), 1);
-            _PackFloat32(&data[7], rotMatrix.element(1, 0), 1);
-            _PackFloat32(&data[9], rotMatrix.element(1, 1), 1);
-            _PackFloat32(&data[11], rotMatrix.element(1, 2), 1);
-            _PackFloat32(&data[13], rotMatrix.element(2, 0), 1);
-            _PackFloat32(&data[15], rotMatrix.element(2, 1), 1);
-            _PackFloat32(&data[17], rotMatrix.element(2, 2), 1);
+            _PackFloat32(&udata[1], rotMatrix.element(0, 0), 1);
+            _PackFloat32(&udata[3], rotMatrix.element(0, 1), 1);
+            _PackFloat32(&udata[5], rotMatrix.element(0, 2), 1);
+            _PackFloat32(&udata[7], rotMatrix.element(1, 0), 1);
+            _PackFloat32(&udata[9], rotMatrix.element(1, 1), 1);
+            _PackFloat32(&udata[11], rotMatrix.element(1, 2), 1);
+            _PackFloat32(&udata[13], rotMatrix.element(2, 0), 1);
+            _PackFloat32(&udata[15], rotMatrix.element(2, 1), 1);
+            _PackFloat32(&udata[17], rotMatrix.element(2, 2), 1);
         }
         // Send the 3511 message
-        _sendMessage(3511, data, 22);
+        _sendMessage(3511, udata, 22);
         break;
-    case INIT_Enable3512Msgs:
+    case CONFIG_Enable3512Msgs:
         // Tell the C-MIGITS to start sending 3512 (Flight Control) messages
         _sendConnectForMsg(3512);
         break;
-    case INIT_StartAutoNav:
+    case CONFIG_StartAutoNav:
     {
-        // Create a 3510 (Control and Initialization) message to enable
-        // automatic mode sequencing
-
         // Set data validity bits
-        data[0] |= 1 << 0;	// set mode
-        data[0] |= 1 << 1;	// set lat/lon/alt
-        data[0] |= 1 << 2;	// set horizontal velocity
-        data[0] |= 1 << 3;	// set date/time data
-        data[0] |= 1 << 4;	// set true heading
-        data[0] |= 1 << 5;	// set auto align/nav sequence data
-        data[0] |= 1 << 8;	// setting auto GPS state
+        udata[0] |= 1 << 0;	// set mode
+        udata[0] |= 1 << 1;	// set lat/lon/alt
+        udata[0] |= 1 << 2;	// set horizontal velocity
+        udata[0] |= 1 << 3;	// set date/time data
+        udata[0] |= 1 << 4;	// set true heading
+        udata[0] |= 1 << 5;	// set auto align/nav sequence data
+        udata[0] |= 1 << 8;	// setting auto GPS state
 
         // Follow automatic mode sequencing, defined by the alignment/navigation
         // word below.
-        data[1] = 0;        // mode: 0 -> automatic mode sequencing
+        udata[1] = 0;        // mode: 0 -> automatic mode sequencing
+
+        // Try to get lat, lon, heading, and true airspeed from the IWG1
+        // data stream, since knowing current position allows the C-MIGITS
+        // GPS to find itself more quickly.
+        //
+        // If we do not get an IWG1 packet in a short time, just use zeros.
+        double iwg1Lat(0.0);    // deg
+        double iwg1Lon(0.0);    // deg
+        double iwg1Alt(0.0);    // m MSL
+        double iwg1Tas(0.0) ;   // true airspeed, m/s
+        double iwg1Heading(0.0);// deg clockwise from true north
+        if (! _getIwg1Info(&iwg1Lat, &iwg1Lon, &iwg1Alt, &iwg1Tas, &iwg1Heading)) {
+            WLOG << "No IWG1 packet obtained. Using zeros to initialize C-MIGITS";
+        }
+        ILOG << "Configuring C-MIGITS using IWG1 lat: " << iwg1Lat <<
+                ", lon: " << iwg1Lon << ", alt: " << iwg1Alt <<
+                ", tas: " << iwg1Tas << ", heading: " << iwg1Heading;
 
         // Position and velocity *have* to be initialized some time after power 
         // up, even if we tell the C-MIGITS to use Auto GPS Initialization.
         // (See "How do I initialize the unit?" in the Frequently Asked 
-        // Questions chapter of the C-MIGITS manual.)  We just provide a bogus 
-        // location and velocity every time we initialize.
-        data[2] = 0;    // lat deg
-        data[3] = 0;    // lat min
-        data[4] = 0;    // lat sec
+        // Questions chapter of the C-MIGITS manual.)
+        sdata[2] = int16_t(iwg1Lat);                             // lat deg
+        sdata[3] = int16_t(fmod(iwg1Lat, 1.0) * 60);             // lat min
+        sdata[4] = int16_t(fmod(iwg1Lat, 1.0 / 60.0) * 3600);    // lat sec
 
-        data[5] = 0;    // lon deg
-        data[6] = 0;    // lon min
-        data[7] = 0;    // lon sec
+        sdata[5] = int16_t(iwg1Lon);                             // lon deg
+        sdata[6] = int16_t(fmod(iwg1Lon, 1.0) * 60);             // lon min
+        sdata[7] = int16_t(fmod(iwg1Lon, 1.0 / 60.0) * 3600);    // lon sec
 
-        data[8] = 0;    // alt m (high order word)
-        data[9] = 0;    // alt m (low order word)
+        // cast altitude to a 32-bit little-endian integer and copy it
+        // into the appropriate data words.
+        int32_t intalt(iwg1Alt);
+        memcpy(udata + 8, &intalt, 4);
 
-        data[10] = 0;   // ground speed m/s
-        data[11] = 0;   // ground track deg
+        sdata[10] = 0;   // ground speed m/s
+        sdata[11] = 0;   // ground track deg
 
         // Provide the current time
-        data[12] = now_tm->tm_year - 1900;
-        data[13] = now_tm->tm_yday;
-        data[14] = now_tm->tm_hour;
-        data[15] = now_tm->tm_min;
-        data[16] = now_tm->tm_sec;
+        udata[12] = now_tm->tm_year - 1900;
+        udata[13] = now_tm->tm_yday;
+        udata[14] = now_tm->tm_hour;
+        udata[15] = now_tm->tm_min;
+        udata[16] = now_tm->tm_sec;
 
-        // Provide the current heading
-        float heading = -20.0;
         // normalize heading to interval [-180.0, 180.0]
-        heading = fmodf(heading, 360.0);
+        double heading = iwg1Heading;   // @TODO use user-provided heading for ground ops
+        heading = fmod(heading, 360.0);
         if (heading < -180.0) {
             heading += 360.0;
         } else if (heading > 180.0) {
             heading -= 360.0;
         }
         // Convert heading to 16-bit signed integer, in hundredths of a degree.
-        // (Value will be in the interval [-18000, 18000]
-        int16_t iHeading = int16_t(rintf(heading * 100));
-        // Copy signed integer heading into unsigned data word 17
-        memcpy(data + 17, &iHeading, 2);
+        // (Value will be in the interval [-18000, 18000])
+        sdata[17] = int16_t(rintf(heading * 100));
  
         // Set up alignment/navigation sequence to be used
-        bool stationary = true;
+        // Assume stationary (Fine Alignment) initialization if we're moving
+        // less than 2 m/s, otherwise use moving initialization (Air Alignment).
+        bool stationary = (iwg1Tas < 2.0);
         if (stationary) {
-            data[18] |= 4 << 0;	// alignment mode: 4 - fine alignment
+            udata[18] |= 4 << 0;    // alignment mode: 4 - fine alignment
         } else {
-            data[18] |= 5 << 0; // alignment mode: 5 - air alignment
+            udata[18] |= 5 << 0;    // alignment mode: 5 - air alignment
         }
 
         if (_useAirNavigation) {
             ILOG << "AIR NAVIGATION configuration";
-            data[18] |= 7 << 4;	// auto sequence nav mode: 7 - air navigation
+            udata[18] |= 7 << 4;	// auto sequence nav mode: 7 - air navigation
         } else {
             ILOG << "LAND NAVIGATION configuration";
-            data[18] |= 8 << 4; // auto sequence nav mode: 8 - land navigation
+            udata[18] |= 8 << 4; // auto sequence nav mode: 8 - land navigation
         }
-        data[18] |= 1 << 8;	// initialize from GPS when GPS has position
+        udata[18] |= 1 << 8;	// initialize from GPS when GPS has position
 
         // Send the 3510 message
-        _sendMessage(3510, data, 21);
+        _sendMessage(3510, udata, 21);
         break;
     }
-    case INIT_Complete:
-        ILOG << "C-MIGITS initialization is complete!";
-        _initCompleteTime = QDateTime::currentDateTime().toUTC();
+    case CONFIG_Complete:
+        ILOG << "C-MIGITS configuration is complete!";
+        _configCompleteTime = QDateTime::currentDateTime().toUTC();
         break;
     default:
-        ELOG << __PRETTY_FUNCTION__ << ": Unknown configuration phase: " << _initPhase;
+        ELOG << __PRETTY_FUNCTION__ << ": Unknown configuration phase: " << _configPhase;
         abort();
         break;
     }
+}
+
+bool
+Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
+        double * tas, double * heading) {
+    // Open a UDP socket on the IWG1 port (7071)
+    QUdpSocket socket(this);
+    socket.bind(7071, QUdpSocket::ShareAddress);
+
+    // Wait up to two seconds for an IWG1 packet to arrive. Return false if
+    // no packet arrives.
+    if (! socket.waitForReadyRead(2000)) {
+        ELOG << "Timeout waiting for IWG1 packet";
+        return(false);
+    }
+
+    // Read the pending packet
+    int pktLen = socket.pendingDatagramSize();
+    QByteArray datagram;
+    datagram.resize(pktLen + 1);
+    datagram.data()[pktLen] = 0;    // null terminate for print below
+    if (socket.readDatagram(datagram.data(), pktLen) < 0) {
+        ELOG << __PRETTY_FUNCTION__ << ": readDatagram error";
+        return(false);
+    }
+
+    // Unpack the pieces we want from the packet
+    QStringList tokens = QString(datagram).split(",");
+    if (tokens[0] != "IWG1" || tokens.size() < 14) {
+        WLOG << "Bad IWG1 packet: '" << QString(datagram).toStdString() << "'";
+        return(false);
+    }
+    *lat = tokens[2].toDouble();
+    *lon = tokens[3].toDouble();
+    *alt = tokens[4].toDouble();
+    *tas = tokens[9].toDouble();
+    *heading = tokens[13].toDouble();
+    return(true);
 }

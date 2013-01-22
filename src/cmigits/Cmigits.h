@@ -217,9 +217,9 @@ private:
     void _sendDisconnectForMsg(uint16_t msgId);
 
     /**
-     * @brief Do actions for the current initialization phase.
+     * @brief Do actions for the current configuration phase.
      */
-    void _doCurrentInitPhase();
+    void _doCurrentConfigPhase();
 
     /// @brief Set serial line speed to the given value, in hopes we will
     /// find the right speed to talk to the C-MIGITS.
@@ -288,6 +288,18 @@ private:
     /// UTC time is not yet determined
     double _unpackTimeTag(const uint16_t * words);
 
+    /// @brief Get the next broadcast IWG1 packet and extract lat, lon, alt,
+    /// heading, and velocity into local member variables. Return true iff
+    /// IWG1 values were obtained.
+    /// @param[out] lat latitude from IWG1 packet, deg
+    /// @param[out] lon longitude from IWG1 packet, deg
+    /// @param[out] alt altitude from IWG1 packet, m MSL
+    /// @param[out] tas true airspeed from IWG1 packet, m/s
+    /// @param[out] heading heading from IWG1 packet, deg clockwise from true north
+    /// @return true iff IWG1 values were obtained.
+    bool _getIwg1Info(double * lat, double * lon, double * alt,
+            double * tas, double * heading);
+
     /// @brief Pack a floating point value into C-MIGITS binary-scaled 32-bit
     /// floating point representation at the given destination using the given
     /// binary scaling factor.
@@ -305,18 +317,18 @@ private:
     /// that the QDateTime returned will be truncated to the nearest millisecond.
     QDateTime _SecondOfDayToNearestDateTime(double secondOfDay);
 
-    /// Initialization is a multi-stage process, driven by responses from the
-    /// C-MIGITS. This type enumerates our initialization phases.
+    /// Configuration is a multi-stage process, driven by responses from the
+    /// C-MIGITS. This type enumerates our configuration phases.
     typedef enum {
-        INIT_PreInit,           ///< waiting for a 3623 GPS Timemark Message
-        INIT_GoToInitMode,      ///< putting C-MIGITS into Initialize mode
-        INIT_EnableDefaultMsgs, ///< revert to sending default messages
-        INIT_SetRates,          ///< setting serial line and data message rates
-        INIT_SensorConfig,      ///< configuring sensor orientation
-        INIT_Enable3512Msgs,    ///< enable sending of 3512 Flight Control messages
-        INIT_StartAutoNav,      ///< starting auto-navigation sequence
-        INIT_Complete           ///< initialization complete
-    } InitPhase;
+        CONFIG_PreInit,             ///< waiting for a 3623 GPS Timemark Message
+        CONFIG_GoToInitMode,        ///< putting C-MIGITS into Initialize mode
+        CONFIG_EnableDefaultMsgs,   ///< revert to sending default messages
+        CONFIG_SetRates,            ///< setting serial line and data message rates
+        CONFIG_SensorConfig,        ///< configuring sensor orientation
+        CONFIG_Enable3512Msgs,      ///< enable sending of 3512 Flight Control messages
+        CONFIG_StartAutoNav,        ///< starting auto-navigation sequence
+        CONFIG_Complete             ///< configuration complete
+    } ConfigPhase;
 
     /// Array of C-MIGITS operating mode names indexed by mode number.
     static const std::string _ModeNames[];
@@ -366,11 +378,11 @@ private:
     /// Do we want the C-MIGITS set up for air navigation or land?
     bool _useAirNavigation;
 
-    /// Where are we in the initialization?
-    InitPhase _initPhase;
+    /// Where are we in the configuration?
+    ConfigPhase _configPhase;
 
-    /// When did we complete our initialization commands?
-    QDateTime _initCompleteTime;
+    /// When did we complete our configuration commands?
+    QDateTime _configCompleteTime;
 
     /// Data read but not yet processed
     uint8_t _rawData[_CMIGITS_MAX_MSG_LEN_BYTES];
