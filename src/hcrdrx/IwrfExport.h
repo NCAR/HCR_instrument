@@ -2,9 +2,10 @@
 #define IWRF_EXPORT_H_
 
 #include "HcrDrxConfig.h"
-#include "CircBuffer.h"
-#include "PulseData.h"
 #include "HcrMonitor.h"
+#include <CmigitsSharedMemory.h>
+#include <CircBuffer.h>
+#include <PulseData.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
@@ -142,6 +143,10 @@ private:
   bool _serverIsOpen;
   Socket *_sock;
   bool _newClient;
+
+  /// Shared memory to access C-MIGITS data
+  CmigitsSharedMemory _cmigitsShm;
+  uint64_t _lastCmigits3512Time;    // time of last C-MIGITS 3512 message seen
 
   /// simulation of antenna angles
 

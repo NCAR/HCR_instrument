@@ -22,7 +22,9 @@ LOGGING("IwrfExport")
 IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         QThread(),
         _config(config),
-        _monitor(monitor)
+        _monitor(monitor),
+        _cmigitsShm(false),
+        _lastCmigits3512Time(0)
 {
 
   // initialize
@@ -250,6 +252,17 @@ void IwrfExport::run()
       metaDataInitialized = true;
     }
     
+    // If C-MIGITS data are new, assemble a packet containing that information.
+    // Test against the time of the C-MIGITS 3512 message, since that one
+    // goes out at the highest rate (100 Hz).
+    uint64_t time3512 = _cmigitsShm.getLatest3512Time();
+    if (time3512 != _lastCmigits3512Time) {
+        // @TODO assemble and send out attitude/position packet here...
+//        _cmigitsShm.getLatest3501Data(...);   // position/velocity
+//        _cmigitsShm.getLatest3512Data(time3512,...);  // attitude
+        _lastCmigits3512Time = time3512;
+    }
+
     // assemble and send out the IWRF pulse packet
     
     if (metaDataInitialized) {
