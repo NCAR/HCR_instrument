@@ -113,6 +113,19 @@ public:
     void getLatest3512Data(uint64_t & dataTime, float & pitch, float & roll,
             float & heading) const;
 
+    /// @brief Get the time of the latest 3512 (Flight Control) data, in
+    /// milliseconds since 1970-01-01 00:00:00 UTC.
+    ///
+    /// This method is inlined, since it may be called very frequently.
+    /// @return the time of the latest 3512 (Flight Control) data, in
+    /// milliseconds since 1970-01-01 00:00:00 UTC.
+    uint64_t getLatest3512Time() const {
+        _qShm.lock();
+        uint64_t time = _shmContents->attitudeTime;
+        _qShm.unlock();
+        return(time);
+    }
+
 public slots:
     /// @brief Store the latest 3500 (System Status) data.
     /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
