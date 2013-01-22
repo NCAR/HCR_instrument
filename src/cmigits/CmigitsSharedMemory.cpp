@@ -108,7 +108,7 @@ CmigitsSharedMemory::getWriterPid() const {
 }
 
 void
-CmigitsSharedMemory::setLatestStatus(uint64_t dataTime, uint16_t currentMode,
+CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, uint16_t nSats,
             uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
@@ -134,7 +134,7 @@ CmigitsSharedMemory::setLatestStatus(uint64_t dataTime, uint16_t currentMode,
 }
 
 void
-CmigitsSharedMemory::getLatestStatus(uint64_t & dataTime, uint16_t & currentMode,
+CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMode,
             bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
             uint16_t & positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
@@ -157,7 +157,7 @@ CmigitsSharedMemory::getLatestStatus(uint64_t & dataTime, uint16_t & currentMode
 }
 
 void
-CmigitsSharedMemory::setLatestNavSolution(uint64_t dataTime, float latitude,
+CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, float latitude,
         float longitude, float altitude, float velNorth, float velEast,
         float velUp) throw(Exception) {
     if (! _writeAccess) {
@@ -176,7 +176,7 @@ CmigitsSharedMemory::setLatestNavSolution(uint64_t dataTime, float latitude,
 }
 
 void
-CmigitsSharedMemory::getLatestNavSolution(uint64_t & dataTime, float & latitude,
+CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, float & latitude,
         float & longitude, float & altitude, float & velNorth, float & velEast,
         float & velUp) const {
     _qShm.lock();
@@ -192,7 +192,7 @@ CmigitsSharedMemory::getLatestNavSolution(uint64_t & dataTime, float & latitude,
 }
 
 void
-CmigitsSharedMemory::setLatestAttitude(uint64_t dataTime, float pitch,
+CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, float pitch,
         float roll, float heading) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
@@ -207,7 +207,7 @@ CmigitsSharedMemory::setLatestAttitude(uint64_t dataTime, float pitch,
 }
 
 void
-CmigitsSharedMemory::getLatestAttitude(uint64_t & dataTime, float & pitch,
+CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, float & pitch,
         float & roll, float & heading) const {
     _qShm.lock();
     dataTime = _shmContents->attitudeTime;

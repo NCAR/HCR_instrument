@@ -466,21 +466,21 @@ DrxStatus::_getCmigitsValues() {
     uint64_t dataTime;
     
     // Get status data
-    _CmigitsShm->getLatestStatus(dataTime, _cmigitsCurrentMode,
+    _CmigitsShm->getLatest3500Data(dataTime, _cmigitsCurrentMode,
             _cmigitsInsAvailable, _cmigitsGpsAvailable, _cmigitsNSats,
             _cmigitsPositionFOM, _cmigitsVelocityFOM, _cmigitsHeadingFOM, _cmigitsTimeFOM,
             _cmigitsHPosError, _cmigitsVPosError, _cmigitsVelocityError);
     _cmigitsStatusTime = dataTime * 0.001;      // ms -> s
     
-    // Get attitude data
-    _CmigitsShm->getLatestAttitude(dataTime, _cmigitsPitch, _cmigitsRoll,
-            _cmigitsHeading);
-    _cmigitsAttitudeTime = dataTime * 0.001;    // ms -> s
-    
     // Get navigation solution data
-    _CmigitsShm->getLatestNavSolution(dataTime, _cmigitsLatitude, _cmigitsLongitude,
+    _CmigitsShm->getLatest3501Data(dataTime, _cmigitsLatitude, _cmigitsLongitude,
             _cmigitsAltitude, _cmigitsVelNorth, _cmigitsVelEast, _cmigitsVelUp);
     _cmigitsNavSolutionTime = dataTime * 0.001; // ms -> s
+
+    // Get attitude data
+    _CmigitsShm->getLatest3512Data(dataTime, _cmigitsPitch, _cmigitsRoll,
+            _cmigitsHeading);
+    _cmigitsAttitudeTime = dataTime * 0.001;    // ms -> s
 }
 
 bool

@@ -64,9 +64,9 @@ public:
     /// shared memory segment. If there is no writer, zero is returned.
     pid_t getWriterPid() const;
 
-    /// @brief Get the latest status data. If no status data have been
-    /// collected yet, the data values will all be zero, and the dataTime will
-    /// be zero.
+    /// @brief Get the latest 3500 (System Status) data. If no 3500 message
+    /// has been received yet, the data values will all be zero, and the
+    /// dataTime will be zero.
     /// @param[out] dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
     /// @param[out] currentMode current operating mode
     /// @param[out] insAvailable true iff INS measurements are available
@@ -80,16 +80,16 @@ public:
     /// @param[out] expectedHPosError expected error in horizontal position, m
     /// @param[out] expectedVPosError expected error in vertical position, m
     /// @param[out] expectedVelocityError expected error in velocity, m/s
-    void getLatestStatus(uint64_t & dataTime, uint16_t & currentMode,
+    void getLatest3500Data(uint64_t & dataTime, uint16_t & currentMode,
             bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
             uint16_t &  positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             float & expectedHPosError, float & expectedVPosError,
             float & expectedVelocityError) const;
 
-    /// @brief Get the latest navigation solution data available. If no
-    /// navigation solution data have been collected yet, the data values will
-    /// all be zero and the dataTime will be zero.
+    /// @brief Get the latest 3501 (Navigation Solution) data available. If no
+    /// 3501 message has been received yet, the data values will all be zero
+    /// and the dataTime will be zero.
     /// @param[out] dataTime date/time for navigation solution data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param[out] latitude latitude, deg
@@ -98,23 +98,23 @@ public:
     /// @param[out] velNorth north component of velocity, m/s
     /// @param[out] velEast east component of velocity, m/s
     /// @param[out] velUp upward component of velocity, m/s
-    void getLatestNavSolution(uint64_t & dataTime, float & latitude,
+    void getLatest3501Data(uint64_t & dataTime, float & latitude,
             float & longitude, float & altitude, float & velNorth,
             float & velEast, float & velUp) const;
 
-    /// @brief Get the latest attitude data available. If no attitude data have
-    /// been collected yet, the data values will all be zero and the dataTime
-    /// will be zero.
+    /// @brief Get the latest 3512 (Flight Control) attitude data available.
+    /// If no 3512 message has been received yet, the data values will all be
+    /// zero and the dataTime will be zero.
     /// @param[out] dataTime date/time for attitude data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param[out] pitch pitch, deg
     /// @param[out] roll roll, deg
     /// @param[out] heading heading, deg clockwise from true north
-    void getLatestAttitude(uint64_t & dataTime, float & pitch, float & roll,
+    void getLatest3512Data(uint64_t & dataTime, float & pitch, float & roll,
             float & heading) const;
 
 public slots:
-    /// @brief Set the latest status data.
+    /// @brief Store the latest 3500 (System Status) data.
     /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
     /// @param currentMode current operating mode
     /// @param insAvailable true iff INS measurements are available
@@ -130,14 +130,14 @@ public slots:
     /// @param expectedVelocityError expected error in velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void setLatestStatus(uint64_t dataTime, uint16_t currentMode,
+    void storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, uint16_t nSats,
             uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
             float expectedHPosError, float expectedVPosError,
             float expectedVelocityError) throw(Exception);
 
-    /// @brief Set the latest navigation solution data.
+    /// @brief Store the latest 3501 (Navigation Solution) data.
     /// @param dataTime date/time for position data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param latitude latitude, deg
@@ -148,10 +148,10 @@ public slots:
     /// @param velUp upward component of velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void setLatestNavSolution(uint64_t dataTime, float latitude, float longitude,
+    void storeLatest3501Data(uint64_t dataTime, float latitude, float longitude,
             float altitude, float velNorth, float velEast, float velUp) throw(Exception);
 
-    /// @brief Set the latest attitude data.
+    /// @brief Store the latest 3512 (Flight Control) data.
     /// @param dataTime date/time for attitude data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param pitch pitch, deg
@@ -159,7 +159,7 @@ public slots:
     /// @param heading heading, deg clockwise from true north
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void setLatestAttitude(uint64_t dataTime, float pitch, float roll,
+    void storeLatest3512Data(uint64_t dataTime, float pitch, float roll,
             float heading) throw(Exception);
 
 private:

@@ -98,15 +98,15 @@ main(int argc, char *argv[]) {
     // When new status arrives, stuff into shared memory.
     QObject::connect(
             Cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
-            &shm, SLOT(setLatestStatus(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)));
+            &shm, SLOT(storeLatest3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)));
     // When new navigation solution arrives, stuff into shared memory.
     QObject::connect(
             Cm, SIGNAL(new3501Data(uint64_t, float, float, float, float, float, float)),
-            &shm, SLOT(setLatestNavSolution(uint64_t, float, float, float, float, float, float)));
+            &shm, SLOT(storeLatest3501Data(uint64_t, float, float, float, float, float, float)));
     // When new attitude arrives, stuff into shared memory.
     QObject::connect(
             Cm, SIGNAL(new3512Data(uint64_t, float, float, float)),
-            &shm, SLOT(setLatestAttitude(uint64_t, float, float, float)));
+            &shm, SLOT(storeLatest3512Data(uint64_t, float, float, float)));
 
     // Create our XML-RPC method registry and server instance
     xmlrpc_c::registryPtr myRegistryP(new xmlrpc_c::registry);
