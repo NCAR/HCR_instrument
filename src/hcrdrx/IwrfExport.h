@@ -131,6 +131,7 @@ private:
 
   int64_t _packetSeqNum;
   iwrf_radar_info_t _radarInfo;
+  iwrf_platform_georef_t _radarGeoref;
   iwrf_ts_processing_t _tsProc;
   IwrfCalib _calib;
   iwrf_scan_segment_t _simScan;
@@ -177,6 +178,9 @@ private:
   int _sendIwrfStatusXmlPacket();
   void _allocStatusBuf();
   
+  bool _assembleIwrfGeorefPacket();
+  int _sendIwrfGeorefPacket();
+
   int _openServer();
   int _checkClient();
   void _closeSocketToClient();

@@ -255,12 +255,8 @@ void IwrfExport::run()
     // If C-MIGITS data are new, assemble a packet containing that information.
     // Test against the time of the C-MIGITS 3512 message, since that one
     // goes out at the highest rate (100 Hz).
-    uint64_t time3512 = _cmigitsShm.getLatest3512Time();
-    if (time3512 != _lastCmigits3512Time) {
-        // @TODO assemble and send out attitude/position packet here...
-//        _cmigitsShm.getLatest3501Data(...);   // position/velocity
-//        _cmigitsShm.getLatest3512Data(time3512,...);  // attitude
-        _lastCmigits3512Time = time3512;
+    if (_assembleIwrfGeorefPacket()) {
+        _sendIwrfGeorefPacket();
     }
 
     // assemble and send out the IWRF pulse packet
@@ -880,6 +876,82 @@ void IwrfExport::_allocStatusBuf()
     _statusBufLen = _statusMsgLen;
     _statusBuf = new char[_statusBufLen];
   }
+}
+
+//////////////////////////////////////////////////
+// Assemble IWRF georef packet if we have new georef data available from
+// the C-MIGITS. Return true iff we create a new georef packet.
+bool IwrfExport::_assembleIwrfGeorefPacket() {
+  // The 3512 message comes out at 100 Hz, so use we its time to determine if
+  // new georef data are available.
+  uint64_t time3512 = _cmigitsShm.getLatest3512Time();
+
+  if (time3512 != _lastCmigits3512Time) {
+    // Get data from the latest 3512 message, which contains attitude.
+    float pitch, roll, heading;
+    _cmigitsShm.getLatest3512Data(time3512, pitch, roll, heading);
+
+    // Get data from the latest 3501 message, which contains location and
+    // velocity.
+    uint64_t time3501;
+    float lat, lon, alt, velNorth, velEast, velUp;
+    _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt, velNorth, velEast, velUp);
+
+    _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
+    _radarGeoref.altitude_msl_km = alt * 0.001; // m -> km
+    _radarGeoref.drift_angle_deg = IWRF_MISSING_FLOAT;
+    _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
+    _radarGeoref.ew_velocity_mps = velEast;
+    _radarGeoref.heading_deg = heading;
+    _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
+    _radarGeoref.latitude = lat;
+    _radarGeoref.longitude = lon;
+    _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
+    _radarGeoref.ns_velocity_mps = velNorth;
+    _radarGeoref.pitch_deg = pitch;
+    _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
+    _radarGeoref.roll_deg = roll;
+    _radarGeoref.rotation_angle_deg = 180.0;    // @TODO fixed at nadir for now
+    _radarGeoref.tilt_deg = 0.0;
+    _radarGeoref.vert_velocity_mps = velUp;
+    _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
+
+    int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
+    for (int i = 0; i < nUnused; i++) {
+      _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
+    }
+
+    // Save the time of the latest data we have provided
+    _lastCmigits3512Time = time3512;
+    return(true);
+  }
+  return(false);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// send the IWRF georef packet
+
+int IwrfExport::_sendIwrfGeorefPacket()
+{
+
+  // set seq num and time in packet header
+
+  _radarGeoref.packet.seq_num = _packetSeqNum++;
+  _radarGeoref.packet.time_secs_utc = _timeSecs;
+  _radarGeoref.packet.time_nano_secs = _nanoSecs;
+
+  // write the message
+
+  if (_sock && _sock->writeBuffer(&_radarGeoref, sizeof(_radarGeoref))) {
+    cerr << "ERROR - IwrfExport::_sendIwrfGeorefPacket()" << endl;
+    cerr << "  Writing IWRF_RADAR_GEOREF" << endl;
+    cerr << "  " << _sock->getErrStr() << endl;
+    _closeSocketToClient();
+    return -1;
+  }
+
+  return 0;
+
 }
 
 //////////////////////////////////////////////////
