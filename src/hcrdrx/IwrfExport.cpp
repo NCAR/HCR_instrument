@@ -897,6 +897,8 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     float lat, lon, alt, velNorth, velEast, velUp;
     _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt, velNorth, velEast, velUp);
 
+    iwrf_platform_georef_init(_radarGeoref);
+
     _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
     _radarGeoref.altitude_msl_km = alt * 0.001; // m -> km
     _radarGeoref.drift_angle_deg = IWRF_MISSING_FLOAT;
