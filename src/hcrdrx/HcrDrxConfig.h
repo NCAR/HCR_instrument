@@ -62,10 +62,6 @@ public:
     double tx_pulse_mod_delay() const {
         return _getDoubleVal("tx_pulse_mod_delay");
     }
-    /// transmit pulse modulation timer width, s
-    double tx_pulse_mod_width() const {
-        return _getDoubleVal("tx_pulse_mod_width");
-    }
     /// @brief transmitter latency, s
     ///
     /// Return the transmitter latency, the time between rising edge of the

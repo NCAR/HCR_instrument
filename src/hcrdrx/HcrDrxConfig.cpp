@@ -31,7 +31,6 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("tx_latency");
     keys.insert("tx_pulse_width");
     keys.insert("tx_pulse_mod_delay");
-    keys.insert("tx_pulse_mod_width");
     keys.insert("digitizer_gate0_delay");
     keys.insert("digitizer_sample_width");
     keys.insert("latitude");
@@ -238,11 +237,6 @@ HcrDrxConfig::isValid(bool verbose) const {
     if (tx_pulse_mod_delay() == UNSET_DOUBLE) {
         if (verbose)
             std::cerr << "'tx_pulse_mod_delay' unset in DRX configuration" << std::endl;
-        valid = false;
-    }
-    if (tx_pulse_mod_width() == UNSET_DOUBLE) {
-        if (verbose)
-            std::cerr << "'tx_pulse_mod_width' unset in DRX configuration" << std::endl;
         valid = false;
     }
     if (iqcount_scale_for_mw() == UNSET_DOUBLE) {
