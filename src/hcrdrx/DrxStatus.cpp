@@ -364,20 +364,13 @@ DrxStatus::_getMultiIoValues() {
     _HLnaTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[6]));
     _PolarizationSwitchTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[7]));
     _RfDetectorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[8]));
-    // @TODO Noise source temp sensor is not currently connected...
-//    _NoiseSourceTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[9]));
-    _NoiseSourceTemps.addTemperature(25.0);
+    _NoiseSourceTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[9]));
     _Ps28VTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[10]));
     _RdsInDuctTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[11]));
-    // @TODO The next four temperature sensors are not yet connected...
-//    _RotationMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[12]));
-//    _TiltMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[13]));
-//    _CmigitsTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[14]));
-//    _TailconeTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[15]));
-    _RotationMotorTemps.addTemperature(25.0);
-    _TiltMotorTemps.addTemperature(25.0);
-    _CmigitsTemps.addTemperature(25.0);
-    _TailconeTemps.addTemperature(25.0);
+    _CmigitsTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[12]));
+    _TiltMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[13]));
+    _RotationMotorTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[14]));
+    _TailconeTemps.addTemperature(_Pt1000Temperature(_psVoltage, analogData[15]));
 
     // Save the current averaged temperatures
     _ploTemp = _PloTemps.mean();
@@ -389,9 +382,9 @@ DrxStatus::_getMultiIoValues() {
     _noiseSourceTemp = _NoiseSourceTemps.mean();
     _ps28VTemp = _Ps28VTemps.mean();
     _rdsInDuctTemp = _RdsInDuctTemps.mean();
-    _rotationMotorTemp = _RotationMotorTemps.mean();
-    _tiltMotorTemp = _TiltMotorTemps.mean();
     _cmigitsTemp = _CmigitsTemps.mean();
+    _tiltMotorTemp = _TiltMotorTemps.mean();
+    _rotationMotorTemp = _RotationMotorTemps.mean();
     _tailconeTemp = _TailconeTemps.mean();
 
     // Get values from our digital input lines
