@@ -15,6 +15,7 @@
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>
 #include <xmlrpc-c/server_abyss.hpp>
+#include <toolsa/pmu.h>
 #include <logx/Logging.h>
 LOGGING("cmigitsDaemon")
 
@@ -29,6 +30,9 @@ Cmigits * Cm = 0;
 
 // Flag set when exit is requested.
 bool ExitRequested = false;
+
+// PMU application instance name
+std::string PmuInstance = "ops";   ///< application instance
 
 // Handler for SIGINT and SIGTERM signals.
 void
@@ -75,6 +79,12 @@ main(int argc, char *argv[]) {
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
 
+    // set up registration with procmap if instance is specified
+    if (PmuInstance.size() > 0) {
+      PMU_auto_init("cmigitsDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
+      ILOG << "will register with procmap, instance: " << PmuInstance;
+    }
+
     if (argc != 2) {
     	std::cerr << "Usage: " << argv[0] << " <tty_dev>" << std::endl;
     	exit(1);
@@ -84,9 +94,11 @@ main(int argc, char *argv[]) {
 
     // Get a writable connection to the shared memory segment where we will
     // put C-MIGITS data.
+    PMU_auto_register("opening shared memory segment");
     CmigitsSharedMemory shm(true);
     
     // Open connection to the C-MIGITS device.
+    PMU_auto_register("creating Cmigits instance");
     std::string devName(argv[1]);
     Cm = new Cmigits(devName);
 
@@ -109,6 +121,7 @@ main(int argc, char *argv[]) {
             &shm, SLOT(storeLatest3512Data(uint64_t, float, float, float)));
 
     // Create our XML-RPC method registry and server instance
+    PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registryPtr myRegistryP(new xmlrpc_c::registry);
     xmlrpc_c::serverAbyss xmlrpcServer(xmlrpc_c::serverAbyss::constrOpt()
                                        .registryPtr(myRegistryP)
@@ -124,6 +137,7 @@ main(int argc, char *argv[]) {
     setitimer(ITIMER_REAL, &iv, 0);
     
     // Now enter our processing loop
+    PMU_auto_register("starting");
     while (1) {
         // Handle the next XML-RPC request, or return after receiving a SIGALRM
         // from our timer above
@@ -136,6 +150,8 @@ main(int argc, char *argv[]) {
         // Process Qt events
         App->processEvents();
     }
+    
+    PMU_auto_register("exiting");
     
     return 0;
 }
