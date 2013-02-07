@@ -1166,6 +1166,10 @@ Cmigits::_doCurrentConfigPhase() {
             // HCR right-wing orientation.
             rotMatrix.rotateAboutX(180.0);
             rotMatrix.rotateAboutY(90.0);
+
+            // Compensate for -0.4 degree roll in C-MIGITS mount in pod nosecone
+            rotMatrix.rotateAboutZ(-0.4);
+
             // When installed on the left wing, the C-MIGITS is rolled 180
             // degrees from the right wing installation.  This means an
             // additional 180 degree rotation about the sensor z axis.
@@ -1224,6 +1228,9 @@ Cmigits::_doCurrentConfigPhase() {
         ILOG << "Configuring C-MIGITS using IWG1 lat: " << iwg1Lat <<
                 ", lon: " << iwg1Lon << ", alt: " << iwg1Alt <<
                 ", tas: " << iwg1Tas << ", heading: " << iwg1Heading;
+
+        WLOG << "CHANGME: forcing zero heading for now!";
+        iwg1Heading = 0;
 
         // Position and velocity *have* to be initialized some time after power 
         // up, even if we tell the C-MIGITS to use Auto GPS Initialization.
