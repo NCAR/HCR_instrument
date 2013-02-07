@@ -36,7 +36,7 @@ using namespace boost::posix_time;
 namespace po = boost::program_options;
 
 std::string _drxConfig;          ///< DRX configuration file
-std::string _instance;           ///< application instance
+std::string _instance = "ops";   ///< application instance
 HcrMonitor * _hcrMonitor;        ///< HcrMonitor instance
 int _chans = 2;                  ///< number of channels
 int _tsLength;                   ///< The time series length
@@ -359,7 +359,10 @@ main(int argc, char** argv)
     _exporter = new IwrfExport(hcrConfig, *_hcrMonitor);
 
     // We use SD3C's first general purpose timer for transmit pulse modulation
-    sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), hcrConfig.tx_pulse_mod_width());
+    // The width of the modulation pulse is transmit pulse width + 272 ns,
+    // where the 272 ns was empirically measured.
+    double pulseModWidth = hcrConfig.tx_pulse_width() + 2.72e-7;
+    sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), pulseModWidth);
     
     // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing.
     // Use 800 ns + transmit pulse width + transmit delay
@@ -479,13 +482,13 @@ main(int argc, char** argv)
 //        std::cout << "hLnaTemp: " << status.hLnaTemp() << std::endl;
 //        std::cout << "polarizationSwitchTemp: " << status.polarizationSwitchTemp() << std::endl;
 //        std::cout << "rfDetectorTemp: " << status.rfDetectorTemp() << std::endl;
-//        std::cout << "noiseSourceTemp: " << status.noiseSourceTemp() << std::endl;
+        std::cout << "noiseSourceTemp: " << status.noiseSourceTemp() << std::endl;
         std::cout << "ps28VTemp: " << status.ps28VTemp() << std::endl;
         std::cout << "rdsInDuctTemp: " << status.rdsInDuctTemp() << std::endl;
-//        std::cout << "rotationMotorTemp: " << status.rotationMotorTemp() << std::endl;
-//        std::cout << "tiltMotorTemp: " << status.tiltMotorTemp() << std::endl;
-//        std::cout << "cmigitsTemp: " << status.cmigitsTemp() << std::endl;
-//        std::cout << "tailconeTemp: " << status.tailconeTemp() << std::endl;
+        std::cout << "cmigitsTemp: " << status.cmigitsTemp() << std::endl;
+        std::cout << "tiltMotorTemp: " << status.tiltMotorTemp() << std::endl;
+        std::cout << "rotationMotorTemp: " << status.rotationMotorTemp() << std::endl;
+        std::cout << "tailconeTemp: " << status.tailconeTemp() << std::endl;
         std::cout << "psVoltage: " << status.psVoltage() << std::endl;
 //        std::cout << "noiseSourceSelected: " << status.noiseSourceSelected() << std::endl;
 //        std::cout << "terminationSelected: " << status.terminationSelected() << std::endl;
