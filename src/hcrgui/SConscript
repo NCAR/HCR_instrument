@@ -2,6 +2,7 @@
 
 hcrguiTools = Split("""
 cmigits
+cmigitsdaemonrpcclient
 logx
 doxygen
 hcrdrxrpcclient

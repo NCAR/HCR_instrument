@@ -9,9 +9,11 @@
 #include <map>
 #include <deque>
 #include <ctime>
+#include <CmigitsDaemonRpcClient.h>
 
 #include <QMainWindow>
 #include <QPixmap>
+#include <QTimer>
 
 #include "XmitdStatusThread.h"
 #include "HcrdrxStatusThread.h"
@@ -28,6 +30,7 @@ public:
     virtual ~HcrGuiMainWindow();
 private slots:
     void on_cmigitsDetailsButton_clicked();
+    void on_cmigitsInitButton_clicked();
     void on_filamentButton_clicked();
     void on_hvButton_clicked();
     void on_xmitterDetailsButton_clicked();
@@ -76,10 +79,12 @@ private:
     bool _xmitting() const;
 
     Ui::HcrGuiMainWindow _ui;
+    QTimer _updateTimer;
     HcrGuiCmigitsStatusDialog _cmigitsStatusDialog;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
     XmitdStatusThread _xmitdStatusThread;
     HcrdrxStatusThread _drxStatusThread;
+    CmigitsDaemonRpcClient _cmigitsDaemonRpcClient;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;

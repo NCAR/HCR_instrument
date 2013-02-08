@@ -11,18 +11,21 @@
 #include <logx/Logging.h>
 
 #include <QDateTime>
+#include <QMessageBox>
 
-LOGGING("MainWindow")
+LOGGING("HcrGuiMainWindow")
 
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost, 
     int xmitterPort, std::string hcrdrxHost, int hcrdrxPort) :
     QMainWindow(),
     _ui(),
+    _updateTimer(this),
     _cmigitsStatusDialog(this),
     _xmitStatusDialog(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
     _drxStatusThread(hcrdrxHost, hcrdrxPort),
+    _cmigitsDaemonRpcClient(hcrdrxHost, 8002),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
@@ -46,8 +49,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
 
     // Disable the data system box and C-MIGITS box until we get status from
     // hcrdrx.
-    _ui.dataSystemBox->setEnabled(false);
-    _ui.cmigitsBox->setEnabled(false);
+    _ui.dataSystemBox->setEnabled(true);
+    _ui.cmigitsBox->setEnabled(true);
 
     // Connect signals from our HcrdrxStatusThread object and start the thread.
     connect(& _drxStatusThread, SIGNAL(serverResponsive(bool)),
@@ -64,6 +67,10 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     connect(& _xmitdStatusThread, SIGNAL(newStatus(XmitStatus)),
             this, SLOT(_setXmitStatus(XmitStatus)));
     _xmitdStatusThread.start();
+
+    // Update every second
+    connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
+    _updateTimer.start(1000);
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -254,6 +261,33 @@ HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
 }
 
 void
+HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
+    try {
+        if (_cmigitsDaemonRpcClient.initializeUsingIwg1()) {
+            QMessageBox msgBox(QMessageBox::Information,
+                    "C-MIGITS initialization", "C-MIGITS initialization started",
+                    QMessageBox::Close, this);
+            msgBox.exec();
+        } else {
+            QMessageBox msgBox(QMessageBox::Warning,
+                    "C-MIGITS initialization", "Failed to start C-MIGITS initialization",
+                    QMessageBox::Close, this);
+            msgBox.setInformativeText("This generally happens if the C-MIGITS "
+                    "is not getting IWG1 packets.");
+            msgBox.exec();
+        }
+    } catch (std::exception & e) {
+        std::ostringstream ss;
+        ss << "XML-RPC error calling initializeUsingIwg1(): " << e.what();
+        _logMessage(ss.str());
+        QMessageBox msgBox(QMessageBox::Warning, "cmigitsDaemon XML-RPC Error",
+                "Error calling initializeUsingIwg1()", QMessageBox::Close, this);
+        msgBox.setDetailedText(e.what());
+        msgBox.exec();
+    }
+}
+
+void
 HcrGuiMainWindow::_update() {
     // Update the current time string
     char timestring[32];
@@ -364,9 +398,18 @@ HcrGuiMainWindow::_update() {
         _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
                 nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
                 expectedHPosError, expectedVPosError, expectedVelError);
-        // Green light if mode is "Air Navigation" or "Land Navigation"
-        bool cmigitsStatusGood = (mode == 7 || mode == 8);
-        _ui.cmigitsStatusIcon->setPixmap(cmigitsStatusGood ?  _greenLED : _redLED);
+        QPixmap light;
+        if (mode == 7 || mode == 8) {
+            // Green light if mode is "Air Navigation" or "Land Navigation"
+            light = _greenLED;
+        } else if (insAvailable && gpsAvailable) {
+            // Amber light if we have both INS and GPS
+            light = _amberLED;
+        } else {
+            // Otherwise red light
+            light = _redLED;
+        }
+        _ui.cmigitsStatusIcon->setPixmap(light);
     }
 
     // Update the transmitter status details dialog

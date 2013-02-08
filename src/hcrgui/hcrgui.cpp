@@ -19,6 +19,7 @@ LOGGING("hcrgui")
 // hcrdrx host and port.
 const char * DefaultXmitdHostAndPort = "archiver:8000";
 const char * DefaultHcrdrxHostAndPort = "rds:8081";
+const char * DefaultCmigitsDaemonHostAndPort = "rds:8002";
 
 void
 usage(const char* appName) {

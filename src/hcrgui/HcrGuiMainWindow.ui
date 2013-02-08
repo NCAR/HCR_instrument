@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>560</height>
+    <width>539</width>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -431,6 +431,13 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="2">
+              <widget class="QPushButton" name="cmigitsInitButton">
+               <property name="text">
+                <string>Initialize C-MIGITS</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -442,7 +449,7 @@
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>40</height>
+              <height>2</height>
              </size>
             </property>
            </spacer>
