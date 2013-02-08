@@ -50,23 +50,51 @@ alarmHandler(int signal) {
     DLOG << "Got itimer ALRM signal";
 }
 
+// Create a periodic ALRM signal to break us out of
+// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
+void
+startXmlrpcWorkAlarm() {
+    const struct timeval tv = { 0, 100000 }; // 0.1 s
+    const struct itimerval iv = { tv, tv };
+    setitimer(ITIMER_REAL, &iv, 0);
+}
 
-//class InitCmigitsUsingIWG1 : public xmlrpc_c::method {
-//public:
-//    InitCmigitsUsingIWG1() {
-//        this->_signature = "b:";
-//        this->_help = "This method causes the C-MIGITS to initialize using IWG1 data.";
-//    }
-//    void
-//    execute(xmlrpc_c::param_list       const paramList,
-//            const xmlrpc_c::callInfo * const callInfoP,
-//            const xmlrpc_c::value *    const retvalP) {
-//
-//        
-//        bool ok = (Cm && Cm->initializeUsingIWG1());
-//        *retvalP = xmlrpc_c::value_boolean(ok);
-//    }
-//};
+
+// Stop the alarm which breaks us out of xmlrpc_c::serverAbyss::runOnce()
+// while our server is actually processing an XML-RPC command.
+void
+stopXmlrpcWorkAlarm() {
+    // Stop the periodic timer.
+    const struct timeval tv = { 0, 0 }; // zero time stops the timer
+    const struct itimerval iv = { tv, tv };
+   setitimer(ITIMER_REAL, &iv, 0);
+}
+
+
+class InitializeUsingIwg1Method : public xmlrpc_c::method {
+public:
+    InitializeUsingIwg1Method() {
+        this->_signature = "b:";
+        this->_help = "This method causes the C-MIGITS to initialize using IWG1 data.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+        ILOG << "Executing XML-RPC call to initializeUsingIwg1()";
+        bool ok = (Cm && Cm->initializeUsingIwg1());
+        if (ok) {
+            ILOG << "C-MIGITS beginning initialization using IWG1 data";
+        } else {
+            WLOG << "C-MIGITS initializeUsingIwg1() failed!";
+        }
+        *retvalP = xmlrpc_c::value_boolean(ok);
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+    }
+};
 
 int
 main(int argc, char *argv[]) {
@@ -122,19 +150,15 @@ main(int argc, char *argv[]) {
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
-    xmlrpc_c::registryPtr myRegistryP(new xmlrpc_c::registry);
-    xmlrpc_c::serverAbyss xmlrpcServer(xmlrpc_c::serverAbyss::constrOpt()
-                                       .registryPtr(myRegistryP)
-                                       .portNumber(ServerPort)
-                                      );
+    xmlrpc_c::registry myRegistry;
+    myRegistry.addMethod("initializeUsingIwg1", new InitializeUsingIwg1Method);
+    xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
         
     // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
     // arrival causes the XML-RPC server's runOnce() method to return so that 
     // we can process Qt events on a regular basis.
-    const struct timeval tv = { 0, 10000 }; // 0.01 s
-    const struct itimerval iv = { tv, tv };
     signal(SIGALRM, alarmHandler);
-    setitimer(ITIMER_REAL, &iv, 0);
+    startXmlrpcWorkAlarm();
     
     // Now enter our processing loop
     PMU_auto_register("starting");
