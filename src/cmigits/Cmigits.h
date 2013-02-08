@@ -79,6 +79,14 @@ public:
      */
     static const std::string TimeFOMString(uint16_t tFOM) { return(_TimeFOMStrings[tFOM]); }
 
+    /**
+     * @brief Initialize the C-MIGITS using information obtained from the broadcast IWG1 packets
+     * on the aircraft, if possible.
+     * @return true iff good IWG1 data were obtained and the initialization process has been
+     * started
+     */
+    bool initializeUsingIwg1();
+
 signals:
     /// @brief Signal emitted when GPS availability changes
     /// @param newValue boolean telling the new state of GPS availability

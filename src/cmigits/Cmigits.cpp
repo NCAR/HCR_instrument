@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <fcntl.h>
+#include <arpa/inet.h>
 #include <QMutexLocker>
 #include <QStringList>
 #include <QUdpSocket>
@@ -1222,15 +1223,21 @@ Cmigits::_doCurrentConfigPhase() {
         double iwg1Alt(0.0);    // m MSL
         double iwg1Tas(0.0) ;   // true airspeed, m/s
         double iwg1Heading(0.0);// deg clockwise from true north
+
+        bool forceInit = false;
         if (! _getIwg1Info(&iwg1Lat, &iwg1Lon, &iwg1Alt, &iwg1Tas, &iwg1Heading)) {
-            WLOG << "No IWG1 packet obtained. Using zeros to initialize C-MIGITS";
+            WLOG << "No good IWG1 packet obtained.";
+            if (forceInit) {
+                WLOG << "Initializing using zeros for all IWG1 values";
+            } else {
+                WLOG << "Returning to CONFIG_PreInit phase";
+                _configPhase = CONFIG_PreInit;
+                break;
+            }
         }
         ILOG << "Configuring C-MIGITS using IWG1 lat: " << iwg1Lat <<
                 ", lon: " << iwg1Lon << ", alt: " << iwg1Alt <<
                 ", tas: " << iwg1Tas << ", heading: " << iwg1Heading;
-
-        WLOG << "CHANGME: forcing zero heading for now!";
-        iwg1Heading = 0;
 
         // Position and velocity *have* to be initialized some time after power 
         // up, even if we tell the C-MIGITS to use Auto GPS Initialization.
@@ -1308,9 +1315,26 @@ Cmigits::_doCurrentConfigPhase() {
 bool
 Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
         double * tas, double * heading) {
+    static const unsigned int Iwg1Port = 7071;
+    static const char Iwg1Group[] = "239.0.0.10";
     // Open a UDP socket on the IWG1 port (7071)
-    QUdpSocket socket(this);
-    socket.bind(7071, QUdpSocket::ShareAddress);
+    QUdpSocket socket;
+    socket.bind(Iwg1Port, QUdpSocket::ShareAddress);
+
+    // Before Qt 4.8, we need to do the work below to join a multicast group
+    // With Qt 4.8, all of this will become:
+    //     socket.joinMulticastGroup(QHostAddress(Iwg1Group));
+    int socketFd = socket.socketDescriptor();
+    ip_mreq mreq;
+    memset(&mreq, 0, sizeof(ip_mreq));
+    mreq.imr_multiaddr.s_addr = inet_addr(Iwg1Group); // multicast group
+    mreq.imr_interface.s_addr = htons(INADDR_ANY);
+    if (setsockopt(socketFd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *)&mreq,
+            sizeof(mreq)) < 0) {
+        ELOG << __PRETTY_FUNCTION__ << ": error joining multicast group" <<
+                Iwg1Group;
+        return(false);
+    }
 
     // Wait up to two seconds for an IWG1 packet to arrive. Return false if
     // no packet arrives.
@@ -1322,8 +1346,6 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
     // Read the pending packet
     int pktLen = socket.pendingDatagramSize();
     QByteArray datagram;
-    datagram.resize(pktLen + 1);
-    datagram.data()[pktLen] = 0;    // null terminate for print below
     if (socket.readDatagram(datagram.data(), pktLen) < 0) {
         ELOG << __PRETTY_FUNCTION__ << ": readDatagram error";
         return(false);
@@ -1335,10 +1357,50 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
         WLOG << "Bad IWG1 packet: '" << QString(datagram).toStdString() << "'";
         return(false);
     }
-    *lat = tokens[2].toDouble();
-    *lon = tokens[3].toDouble();
-    *alt = tokens[4].toDouble();
-    *tas = tokens[9].toDouble();
-    *heading = tokens[13].toDouble();
+
+    bool ok;
+    double latVal, lonVal, altVal, tasVal, headingVal;
+
+    latVal = tokens[2].toDouble(&ok);
+    if (! ok) {
+        WLOG << "Bad lat '" << tokens[2].toStdString() << "' in IWG1 packet!";
+        return(false);
+    }
+
+    lonVal = tokens[3].toDouble(&ok);
+    if (! ok) {
+        WLOG << "Bad lon '" << tokens[3].toStdString() << "' in IWG1 packet!";
+        return(false);
+    }
+
+    altVal = tokens[4].toDouble(&ok);
+    if (! ok) {
+        WLOG << "Bad alt '" << tokens[4].toStdString() << "' in IWG1 packet!";
+        return(false);
+    }
+
+    tasVal = tokens[9].toDouble(&ok);
+    if (! ok) {
+        WLOG << "Bad true airspeed '" << tokens[9].toStdString() << "' in IWG1 packet!";
+        return(false);
+    }
+
+    headingVal = tokens[13].toDouble();
+    if (! ok) {
+        WLOG << "Bad heading '" << tokens[13].toStdString() << "' in IWG1 packet!";
+        return(false);
+    }
+
+    // OK, we have good values. Copy them to the return arguments.
+    *lat = latVal;
+    *lon = lonVal;
+    *alt = altVal;
+    *tas = tasVal;
+    *heading = headingVal;
+    return(true);
+}
+
+bool Cmigits::initializeUsingIwg1() {
+    _configPhase = CONFIG_PreInit;
     return(true);
 }
