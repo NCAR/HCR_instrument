@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
-#include <cmath>    // for fmod()
+#include <cmath>    // for fmod() and isnan()
 #include <ctime>
 #include <unistd.h>
 #include <stdint.h>
@@ -1282,7 +1282,11 @@ Cmigits::_doCurrentConfigPhase() {
         // Assume stationary (Fine Alignment) initialization if we're moving
         // less than 2 m/s, otherwise use moving initialization (Air Alignment).
         // NOTE: if the true airspeed is NaN, we assume we're stationary.
-        bool stationary = (isnan(iwg1Tas) || iwg1Tas < 2.0);
+	if (isnan(iwg1Tas)) {
+            iwg1Tas = 0.0;
+            ILOG << "IWG1 true airspeed is NaN, setting to zero!";
+        }
+        bool stationary = (iwg1Tas < 2.0);
         if (stationary) {
             if (isnan(heading)) {
                 WLOG << "Got NaN for IWG1 heading; must have real heading " <<
