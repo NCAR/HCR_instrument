@@ -1283,6 +1283,13 @@ Cmigits::_doCurrentConfigPhase() {
         // less than 2 m/s, otherwise use moving initialization (Air Alignment).
         bool stationary = (iwg1Tas < 2.0);
         if (stationary) {
+            if (isnan(heading)) {
+                WLOG << "Got NaN for IWG1 heading; must have real heading " <<
+                    "for stationary initialization";
+                WLOG << "Going back to CONFIG_PreInit phase.";
+                _configPhase = CONFIG_PreInit;
+                break;
+            }
             udata[18] |= 4 << 0;    // alignment mode: 4 - fine alignment
         } else {
             udata[18] |= 5 << 0;    // alignment mode: 5 - air alignment
@@ -1345,13 +1352,14 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
 
     // Read the pending packet
     int pktLen = socket.pendingDatagramSize();
-    QByteArray datagram;
+    QByteArray datagram(pktLen, 0);
     if (socket.readDatagram(datagram.data(), pktLen) < 0) {
         ELOG << __PRETTY_FUNCTION__ << ": readDatagram error";
         return(false);
     }
 
     // Unpack the pieces we want from the packet
+    ILOG << "Got IWG1 datagram: " << datagram.data();
     QStringList tokens = QString(datagram).split(",");
     if (tokens[0] != "IWG1" || tokens.size() < 14) {
         WLOG << "Bad IWG1 packet: '" << QString(datagram).toStdString() << "'";
