@@ -7,7 +7,6 @@
 
 #include <QDialog>
 #include <QPixmap>
-#include <QTimer>
 #include <DrxStatus.h>
 
 #include "ui_HcrGuiCmigitsStatusDialog.h"
@@ -30,7 +29,5 @@ private:
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
-
-    QTimer _updateTimer;
 };
 #endif /*HCRGUICMIGITSSTATUSDIALOG_H_*/

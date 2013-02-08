@@ -15,16 +15,11 @@ HcrGuiCmigitsStatusDialog::HcrGuiCmigitsStatusDialog(QWidget *parent) :
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
-    _greenLED_off(":/greenLED_off.png"),
-    _updateTimer() {
+    _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
     // Initialize to no status available
     noStatus();
-    // Set up a timer to update the dialog every second
-    _updateTimer.setInterval(1000); // 1000 ms
-    connect(&_updateTimer, SIGNAL(timeout()), this, SLOT(updateStatus()));
-    _updateTimer.start();
 }
 
 void
