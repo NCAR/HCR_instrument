@@ -1281,7 +1281,8 @@ Cmigits::_doCurrentConfigPhase() {
         // Set up alignment/navigation sequence to be used
         // Assume stationary (Fine Alignment) initialization if we're moving
         // less than 2 m/s, otherwise use moving initialization (Air Alignment).
-        bool stationary = (iwg1Tas < 2.0);
+        // NOTE: if the true airspeed is NaN, we assume we're stationary.
+        bool stationary = (isnan(iwg1Tas) || iwg1Tas < 2.0);
         if (stationary) {
             if (isnan(heading)) {
                 WLOG << "Got NaN for IWG1 heading; must have real heading " <<
