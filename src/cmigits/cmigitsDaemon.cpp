@@ -161,8 +161,9 @@ main(int argc, char *argv[]) {
     startXmlrpcWorkAlarm();
     
     // Now enter our processing loop
-    PMU_auto_register("starting");
     while (1) {
+        PMU_auto_register("running");
+
         // Handle the next XML-RPC request, or return after receiving a SIGALRM
         // from our timer above
         xmlrpcServer.runOnce();
