@@ -49,8 +49,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
 
     // Disable the data system box and C-MIGITS box until we get status from
     // hcrdrx.
-    _ui.dataSystemBox->setEnabled(true);
-    _ui.cmigitsBox->setEnabled(true);
+    _ui.setHmcModeBox->setEnabled(false);
+    _ui.cmigitsBox->setEnabled(true);   // XXX this is always enabled for now
 
     // Connect signals from our HcrdrxStatusThread object and start the thread.
     connect(& _drxStatusThread, SIGNAL(serverResponsive(bool)),
@@ -93,8 +93,9 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
             "responding";
     _logMessage(ss.str().c_str());
 
-    _ui.dataSystemBox->setEnabled(responding);
-    _ui.cmigitsBox->setEnabled(responding);
+    _ui.setHmcModeBox->setEnabled(responding);
+    // XXX cmigitsBox is always enabled for now
+//    _ui.cmigitsBox->setEnabled(responding);
     if (! responding) {
         // Create a default (bad) DrxStatus, and set it as the last status
         // received.
@@ -262,6 +263,25 @@ HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
 
 void
 HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
+    // Confirm that it's OK to begin initialization
+    QMessageBox confirmBox(QMessageBox::Question, "Confirm Initialization",
+            "Continue with C-MIGITS initialization?", 
+            QMessageBox::Ok | QMessageBox::Cancel, this);
+    confirmBox.setInformativeText("Criteria for initialization are:\n\n"
+            "Aircraft is stationary and will remain stationary\n"
+            "for two minutes.\n"
+            "\n"
+            "OR\n"
+            "\n"
+            "Aircraft is flying straight and level, and will continue\n"
+            "straight and level until the C-MIGITS leaves 'Coarse\n"
+            "Alignment' submode, *followed* by an acceleration\n"
+            "(speed change or turn).");
+    if (confirmBox.exec() == QMessageBox::Cancel) {
+        return;
+    }
+    
+    // We got confirmation, so send the XML-RPC command to begin initialization.
     try {
         if (_cmigitsDaemonRpcClient.initializeUsingIwg1()) {
             QMessageBox msgBox(QMessageBox::Information,
