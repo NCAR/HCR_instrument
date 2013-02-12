@@ -109,8 +109,8 @@ CmigitsSharedMemory::getWriterPid() const {
 
 void
 CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
-            bool insAvailable, bool gpsAvailable, uint16_t nSats,
-            uint16_t positionFOM, uint16_t velocityFOM,
+            bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
+            uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
             float expectedHPosError, float expectedVPosError,
             float expectedVelocityError) throw(Exception) {
@@ -122,6 +122,7 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
     _shmContents->currentMode = currentMode;
     _shmContents->insAvailable = insAvailable;
     _shmContents->gpsAvailable = gpsAvailable;
+    _shmContents->doingCoarseAlignment = doingCoarseAlignment;
     _shmContents->nSats = nSats;
     _shmContents->positionFOM = positionFOM;
     _shmContents->velocityFOM = velocityFOM;
@@ -135,8 +136,8 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
 
 void
 CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMode,
-            bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
-            uint16_t & positionFOM, uint16_t & velocityFOM,
+            bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
+            uint16_t & nSats, uint16_t & positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             float & expectedHPosError, float & expectedVPosError,
             float & expectedVelocityError) const {
@@ -145,6 +146,7 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
     currentMode = _shmContents->currentMode;
     insAvailable = _shmContents->insAvailable;
     gpsAvailable = _shmContents->gpsAvailable;
+    doingCoarseAlignment = _shmContents->doingCoarseAlignment;
     nSats = _shmContents->nSats;
     positionFOM = _shmContents->positionFOM;
     velocityFOM = _shmContents->velocityFOM;

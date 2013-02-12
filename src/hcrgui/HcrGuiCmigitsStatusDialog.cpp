@@ -28,6 +28,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     uint16_t currentMode = 0;
     bool insAvailable = false;
     bool gpsAvailable = false;
+    bool doingCoarseAlignment = false;
     uint16_t nSats = 0;
     uint16_t positionFOM = 0;
     uint16_t velocityFOM = 0;
@@ -37,7 +38,8 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
     float expectedVPosError = 0.0;
     float expectedVelocityError = 0.0;
     drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable,
-            gpsAvailable, nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
+            gpsAvailable, doingCoarseAlignment, nSats, 
+            positionFOM, velocityFOM, headingFOM, timeFOM,
             expectedHPosError, expectedVPosError, expectedVelocityError);
     _ui.statusTimeValue->setText(QDateTime::fromTime_t(uint32_t(statusTime)).toUTC().toString("hh:mm:ss"));
     _ui.insValue->setPixmap(insAvailable ? _greenLED : _redLED);

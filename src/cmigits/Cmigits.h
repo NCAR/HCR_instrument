@@ -101,6 +101,8 @@ signals:
     /// @param insAvailable true iff INS measurements are available
     /// @param gpsAvailable true iff GPS time is valid and at least 4 satellites
     /// are being used
+    /// @param doingCoarseAlignment true iff C-MIGITS is in "Coarse Alignment"
+    /// submode
     /// @param nSats number of satellites currently tracked
     /// @param positionFOM position figure-of-merit value
     /// @param velocityFOM velocity figure-of-merit value
@@ -110,9 +112,10 @@ signals:
     /// @param expectedVPosError expected error in vertical position, m
     /// @param expectedVelocityError expected error in velocity, m/s
     void new3500Data(uint64_t dataTime, uint16_t currentMode,
-            bool insAvailable, bool gpsAvailable, uint16_t nSats,
-            uint16_t positionFOM, uint16_t velocityFOM, uint16_t headingFOM, uint16_t timeFOM,
-            float expectedHPosError, float expectedVPosError, float expectedVelocityError);
+            bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
+            uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM, 
+            uint16_t headingFOM, uint16_t timeFOM, float expectedHPosError, 
+            float expectedVPosError, float expectedVelocityError);
 
     /// @brief Signal emitted when new 3501 message (Navigation Solution) data are
     /// available

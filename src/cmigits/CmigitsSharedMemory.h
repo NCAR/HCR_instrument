@@ -72,6 +72,8 @@ public:
     /// @param[out] insAvailable true iff INS measurements are available
     /// @param[out] gpsAvailable true iff GPS time is valid and at least 4 satellites
     /// are being used
+    /// @param[out] doingCoarseAlignment true iff C-MIGITS is in "Coarse
+    /// Alignment" submode
     /// @param[out] nSats number of GPS satellites tracked
     /// @param[out] positionFOM position figure-of-merit value
     /// @param[out] velocityFOM velocity figure-of-merit value
@@ -81,8 +83,8 @@ public:
     /// @param[out] expectedVPosError expected error in vertical position, m
     /// @param[out] expectedVelocityError expected error in velocity, m/s
     void getLatest3500Data(uint64_t & dataTime, uint16_t & currentMode,
-            bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
-            uint16_t &  positionFOM, uint16_t & velocityFOM,
+            bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
+            uint16_t & nSats, uint16_t &  positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             float & expectedHPosError, float & expectedVPosError,
             float & expectedVelocityError) const;
@@ -133,6 +135,8 @@ public slots:
     /// @param insAvailable true iff INS measurements are available
     /// @param gpsAvailable true iff GPS time is valid and at least 4 satellites
     /// are being used
+    /// @param doingCoarseAlignment true iff the C-MIGITS is in "Coarse 
+    /// Alignment" submode
     /// @param nSats number of GPS satellites tracked
     /// @param positionFOM position figure-of-merit value
     /// @param velocityFOM velocity figure-of-merit value
@@ -144,8 +148,8 @@ public slots:
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
     void storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
-            bool insAvailable, bool gpsAvailable, uint16_t nSats,
-            uint16_t positionFOM, uint16_t velocityFOM,
+            bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
+            uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
             float expectedHPosError, float expectedVPosError,
             float expectedVelocityError) throw(Exception);
@@ -190,6 +194,7 @@ private:
         uint16_t currentMode;
         bool insAvailable;
         bool gpsAvailable;
+        bool doingCoarseAlignment;
         uint16_t nSats;         // number of GPS satellites tracked
         uint16_t positionFOM;   // position figure-of-merit value
         uint16_t velocityFOM;   // velocity figure-of-merit value

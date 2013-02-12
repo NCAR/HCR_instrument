@@ -107,6 +107,7 @@ DrxStatus::DrxStatus() :
     _cmigitsNSats(0),
     _cmigitsInsAvailable(false),
     _cmigitsGpsAvailable(false),
+    _cmigitsDoingCoarseAlignment(false),
     _cmigitsPositionFOM(0),
     _cmigitsVelocityFOM(0),
     _cmigitsHeadingFOM(0),
@@ -173,6 +174,7 @@ DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
     _cmigitsNSats = _StatusInt(statusDict, "cmigitsNSats");
     _cmigitsInsAvailable = _StatusBool(statusDict, "cmigitsInsAvailable");
     _cmigitsGpsAvailable = _StatusBool(statusDict, "cmigitsGpsAvailable");
+    _cmigitsDoingCoarseAlignment = _StatusBool(statusDict, "cmigitsDoingCoarseAlignment");
     _cmigitsPositionFOM = _StatusInt(statusDict, "cmigitsPositionFOM");
     _cmigitsVelocityFOM = _StatusInt(statusDict, "cmigitsVelocityFOM");
     _cmigitsHeadingFOM = _StatusInt(statusDict, "cmigitsHeadingFOM");
@@ -241,6 +243,7 @@ DrxStatus::toXmlRpcValue() const {
     statusDict["cmigitsNSats"] = XmlRpcValue(_cmigitsNSats);
     statusDict["cmigitsInsAvailable"] = XmlRpcValue(_cmigitsInsAvailable);
     statusDict["cmigitsGpsAvailable"] = XmlRpcValue(_cmigitsGpsAvailable);
+    statusDict["cmigitsDoingCoarseAlignment"] = XmlRpcValue(_cmigitsDoingCoarseAlignment);
     statusDict["cmigitsPositionFOM"] = XmlRpcValue(_cmigitsPositionFOM);
     statusDict["cmigitsVelocityFOM"] = XmlRpcValue(_cmigitsVelocityFOM);
     statusDict["cmigitsHeadingFOM"] = XmlRpcValue(_cmigitsHeadingFOM);
@@ -460,7 +463,8 @@ DrxStatus::_getCmigitsValues() {
     
     // Get status data
     _CmigitsShm->getLatest3500Data(dataTime, _cmigitsCurrentMode,
-            _cmigitsInsAvailable, _cmigitsGpsAvailable, _cmigitsNSats,
+            _cmigitsInsAvailable, _cmigitsGpsAvailable, 
+            _cmigitsDoingCoarseAlignment,_cmigitsNSats,
             _cmigitsPositionFOM, _cmigitsVelocityFOM, _cmigitsHeadingFOM, _cmigitsTimeFOM,
             _cmigitsHPosError, _cmigitsVPosError, _cmigitsVelocityError);
     _cmigitsStatusTime = dataTime * 0.001;      // ms -> s

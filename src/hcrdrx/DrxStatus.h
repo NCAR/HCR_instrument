@@ -253,6 +253,8 @@ public:
      * @param[out] insAvailable true iff INS data are available
      * @param[out] gpsAvailable true iff GPS time is good and 4 or more 
      * satellites are seen
+     * @param[out] doingCoarseAlignment true iff C-MIGITS is in "Coarse
+     * Alignment" submode
      * @param[out] nSats number of GPS satellites tracked
      * @param[out] positionFOM position figure-of-merit, values 1-9
      * @parma[out] velocityFOM velocity figure-of-merit, values 1-9
@@ -263,7 +265,8 @@ public:
      * @param[out] expectedVelocityError expected velocity error, m/s
      */
     void cmigitsStatus(double & dataTime, uint16_t & currentMode,
-              bool & insAvailable, bool & gpsAvailable, uint16_t & nSats,
+              bool & insAvailable, bool & gpsAvailable, 
+              bool & doingCoarseAlignment, uint16_t & nSats,
               uint16_t & positionFOM, uint16_t & velocityFOM,
               uint16_t & headingFOM, uint16_t & timeFOM,
               float & expectedHPosError, float & expectedVPosError,
@@ -272,6 +275,7 @@ public:
         currentMode = _cmigitsCurrentMode;
         insAvailable = _cmigitsInsAvailable;
         gpsAvailable = _cmigitsGpsAvailable;
+        doingCoarseAlignment = _cmigitsDoingCoarseAlignment;
         nSats = _cmigitsNSats;
         positionFOM = _cmigitsPositionFOM;
         velocityFOM = _cmigitsVelocityFOM;
@@ -573,6 +577,8 @@ private:
     bool _cmigitsInsAvailable;
     /// C-MIGITS GPS available
     bool _cmigitsGpsAvailable;
+    /// Is C-MIGITS currently in "Coarse Alignment" submode?
+    bool _cmigitsDoingCoarseAlignment;
     /// C-MIGITS position figure of merit (see documentation for the C-MIGITS
     /// 3500 message)
     uint16_t _cmigitsPositionFOM;

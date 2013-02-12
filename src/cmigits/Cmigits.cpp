@@ -775,6 +775,9 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         ELOG << "C-MIGITS built-in test failed!";
         abort();
     }
+    
+    // "Coarse Alignment" submode is indicated by bit 8 of system status validity
+    bool doingCoarseAlignment = systemStatusValidity & (1 << 8);
 
     // Number of satellites tracked
     uint16_t nSats = msgWords[11];
@@ -809,7 +812,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
     emit new3500Data(msecsSinceEpoch, _currentMode,
-            insAvailable, gpsAvailable, nSats,
+            insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
 }

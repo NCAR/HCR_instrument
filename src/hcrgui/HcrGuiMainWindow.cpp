@@ -407,6 +407,7 @@ HcrGuiMainWindow::_update() {
         uint16_t mode = 0;
         bool insAvailable = 0;
         bool gpsAvailable = 0;
+        bool doingCoarseAlignment = 0;
         uint16_t nSats = 0;
         uint16_t positionFOM = 0;
         uint16_t velocityFOM = 0;
@@ -416,7 +417,8 @@ HcrGuiMainWindow::_update() {
         float expectedVPosError = 0.0;
         float expectedVelError = 0.0;
         _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
-                nSats, positionFOM, velocityFOM, headingFOM, timeFOM,
+                doingCoarseAlignment, nSats, 
+                positionFOM, velocityFOM,  headingFOM, timeFOM,
                 expectedHPosError, expectedVPosError, expectedVelError);
         QPixmap light;
         if (mode == 7 || mode == 8) {
