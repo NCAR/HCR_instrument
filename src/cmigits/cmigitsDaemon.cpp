@@ -137,8 +137,8 @@ main(int argc, char *argv[]) {
 
     // When new status arrives, stuff into shared memory.
     QObject::connect(
-            Cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
-            &shm, SLOT(storeLatest3500Data(uint64_t, uint16_t, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)));
+            Cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)),
+            &shm, SLOT(storeLatest3500Data(uint64_t, uint16_t, bool, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, float, float)));
     // When new navigation solution arrives, stuff into shared memory.
     QObject::connect(
             Cm, SIGNAL(new3501Data(uint64_t, float, float, float, float, float, float)),
