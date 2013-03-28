@@ -1,0 +1,404 @@
+                   Release Notes  PN 93000607
+
+               Digi RealPort Driver & Setup Wizard
+                  Version 4.4.365.0, 03/01/2010
+
+                      Microsoft Windows XP
+                  Microsoft Windows Server 2003
+                     Microsoft Windows Vista
+                  Microsoft Windows Server 2008
+                      Microsoft Windows 7
+                 Microsoft Windows Server 2008 R2
+                            x86/x64
+
+                       Software Package PN
+                            40002549
+                             Rev E1
+                         
+
+  CONTENTS
+
+  Section      Description
+  -------------------------------
+  1            Introduction
+  2            Supported Operating Systems
+  3            Supported Products
+  4            Getting Started
+  5            Help and Documentation
+  6            Release History
+
+
+  1. INTRODUCTION
+
+     This document contains general information as well as 
+     last minute changes for the Digi RealPort driver and
+     Setup Wizard.
+
+
+  2. SUPPORTED OPERATING SYSTEMS
+
+     Microsoft Windows XP 
+     Microsoft Windows Server 2003 
+     Microsoft Windows Vista
+     Microsoft Windows Server 2008  
+     Microsoft Windows 7 
+     Microsoft Windows Server 2008 R2 
+
+   Note for Windows Server 2008 R2 installs:
+     Run Setup64.exe (for 64-bit)
+    	
+
+  3. SUPPORTED PRODUCTS
+
+     Digi Connect Family
+     Digi ConnectPort Family
+     Digi EtherLite Family
+     Digi One Family
+     Digi PortServer Family
+     Digi PortServer TS Family
+
+
+  4. GETTING STARTED
+
+     The quickest way to get started is to run the Digi RealPort
+     Setup Wizard, setup.com. See the help file, digirlpt.chm, 
+     for more details.
+
+
+  5. HELP AND DOCUMENTATION
+
+     Help and Documentation for installing, updating, removing and
+     configuring Digi RealPort for Windows can be found in the help 
+     file, digirlpt.chm.
+
+     digirlpt.chm is part of the same software package as this file.
+     To view the help file, browse to the directory containing the
+     software package and double-click on the file, digirlpt.chm.
+
+     If a Digi RealPort device is installed, the help file can also 
+     be accessed from the Device Manager, via the device's Multi-port 
+     serial adapters property page.
+
+
+  6. HISTORY
+
+     Version 4.4.365.0, 03/01/2010 (Rev. E)
+     --------------------------------------
+     o Support Windows 2008 R2 and Windows 7
+     o Free excess Tx resources when no longer required.
+     o Fix intermittent system hang on recovery from network error.
+     o Fixed a memory leak in the encryption service.
+     o Add the configuration option "Wait for COM open request" to
+       the setup install wizard UI.
+     o Outbound buffers were not reported as purged after a PurgeComm()
+       request while the ethernet cable was disconnected.
+
+       Known Issues:
+          When upgrading to Rev E, the following critical settings may
+          not be properly defaulted:
+
+             a. "keepalivefreq=10000" (send keep alive after 10000 ms of inactivity)
+             b. "keepalivealways"     (always send keep alives even if no ports are open)
+             c. "nonagling"           (Disable TCP Nagle algorithm)
+
+          These defaults are recommended. The following should be included when invoking setup 
+          from the command line.
+		"/keepalivefreq=10000 /keepalivealways /nonagling"
+
+
+     Version 4.2.360.1, 01/30/2009 (Rev. D1)
+     --------------------------------------------
+     o Fixes to the setup CLI: several parameters were being 
+       ignored. This update modifies only the setup32/setup64.exe
+       files. The other binaries are unchanged from the 4.2.360.0
+       release.
+
+     Version 4.2.360.0, 07/10/2008 (Rev. D)
+     --------------------------------------------
+     o Support for Microsoft Windows Server 2008.
+     o Fixed bluescreen during write timeout processing
+       for applications using overlapped writes.
+     o Fixed problem closing flow controlled port while 
+       also handling network error causes port to be 
+       unopenable until reboot.
+     o Fixed stack corruption problem in network service 
+       caused by fault in standard string library, typically 
+       exhibited on fast, quadruple-processor machines.
+     o Fixed problem not restarting transmit after running 
+       low on network resources, generally caused by applications 
+       using TCP: Typical Settings and reading hundreds of bytes 
+       one byte at a time.
+     o Changed TCP: Typical Settings to disable Nagle by default,
+       as it induces 200 msec. delays for some applications when 
+       remote devices are configured for delayed ACKs, as they 
+       are by default.
+     o Changed non-typical TCP Port Profiles to use 554 msec. 
+       Device Transmit Notification update timeout (see "Or 
+       this many msec pass since last update" on Data Notification 
+       Settings dialog, accessible from port TCP tab), since 
+       a 0 value with Complete Write Requests Immediately also
+       enabled may cause write requests to go uncompleted.
+     o Fixed: Unabled to enable/disable "Disable TCP Nagle 
+       Algorithm" option on Device Manager property page.
+     o Fixed: x64 Device Manager property page GUI layout.
+
+     Version 4.1.353.0, 09/21/2007 (Rev. C)
+     --------------------------------------------
+     o UDP support (serial data only).
+     o Device-Initiated RealPort support.
+     o Fixed bluescreen or hang when recovering from low network 
+       resource condition.
+     o Fixed installation problem when phantom ports present.
+     o Doubled maximum allowed baud rate, from 921600 to 1843200.
+     o The Setup Wizard and Device Manager property pages warn 
+       if a device being configured cannot be found online.
+     o Setup Wizard will no longer run CLI commands unless user is
+       running from console window with administrative privileges
+       (Vista and later OSes).
+     o Fixed service in Vista to not load disabled devices.
+     o Fixed memory corruption when processing multiple simultaneous 
+       write timeouts during a network outage for applications 
+       using overlapped writes.
+     o New option, Force HUPCL.
+     o Fixed first port open after a device is rebooted to not 
+       fail immediately but to recover the lost network session 
+       and try again.
+
+     Version 4.0.332.0, 04/06/2007 (Rev. B)
+     --------------------------------------------
+     o Support for Windows Vista and Windows Vista x64.
+     o New TCP-Listen network option for devices "hidden" by a NAT.
+     o Fixed bluescreen on packet flood from rogue RealPort endpoint.
+     o Corrected timing of network reconnection timer.
+     o Added new device connection option, Fail COM open if Retry 
+       Frequency not elapsed, to choose whether the retry and 
+       offline frequencies should be enforced for CreateFile 
+       requests or just when reconnecting a lost network connection.
+     o Added controls to reduce network usage by ignoring certain 
+       signals and settings for each port, including hardware lines, 
+       software flow control, serial errors, and serial settings
+     o Added a way to control whether the Complete Write Requests 
+       Immediately feature is lossy or not when the device buffer 
+       is full; the feature is called, "Discard Writes if Device 
+       Buffer Full (else block WriteFile)".
+     o Added option to Setup Wizard to install modem INF file -- 
+       this causes a Windows security prompt so this is optional
+     o Modified "Wait for COM open before connecting" to wait two 
+       seconds after last COM close before shutting down network
+     o Fixed problems enabling and disabling ports from a device's 
+       Device Manager properties page.
+     o "Hidden" CLI feature /purgereg added.
+     o Pressing "Refresh" button on discovery dialog causes 
+       <Device Not Listed> item to appear immediately.
+     o Added options to install Setup Wizard to Program Files, 
+       to Control Panel > Add or Remove Programs, and to PATH 
+       environment variable.
+     o Added hidden Registry option for each port, 'ForceHUPCL'.
+     o Fixed modem detection to occur upon device installation.
+
+     Version 3.6.325.0, 11/17/2006 (Rev. A)
+     --------------------------------------------
+     o AMD64 64-bit support for Windows XP x64 and Server 2003 x64.
+     o Significantly improved device installation time.
+     o Added CLI [===>] sliders to indicate Setup Wizard progress
+       (use /silent to suppress output).
+     o Added more useful information when Setup Wizard fails on 
+       exception, including the file name and line number where the 
+       exception was raised; this applies to both the CLI and GUI.
+     o Added timeout to wait for COM port data to drain on close
+     o Corrected /skipenumerations to apply to all ports on /install.
+     o Reworded the two Port Network Profiles:
+       1. The default setting, "Latency-Optimized TCP",
+          is renamed "TCP: Typical Settings";
+       2. The cellular environment-targeted setting, "Throughput-
+          Optimized TCP", is renamed "TCP: Less Overhead".
+     o Added two additional Port Network Profiles:
+       1. "TCP: Modified Read/Write" acts like "Typical Settings"
+          but may cause some applications to write data more 
+          efficiently and may cause the device to transport serial data 
+          using fewer network packets and less overhead;
+       2. "TCP: Low Overhead/No Deltas" works like "Less Overhead" 
+          but further reduces network traffic by suppressing line 
+          change notifications and disabling RealPort Keep Alive packets 
+          (flow control still works if your application sets it and 
+          forgets it, but do not use this setting if your application 
+          needs to know the current state of line signals and when they 
+          change).
+     o Removed the "Optimize for Throughput" checkbox from the RealPort
+       Setup Wizard Discovery page and replaced it with a drop-down list 
+       of Network Profiles on the Describe Device page.
+     o Fixed Keep-alive mechanism, which was slewing its time calculation
+     o Updated Event Viewer-logging of application name to be universally 
+       supported on all operating systems (rather than logging "Unknown")
+     o Updated help with discussion of writing applications for networked-
+       serial devices, troubleshooting help, and details about the new
+       Network Profiles.
+     o Created new package (this package, PN 40002549) to support x64, 
+       and migrated support for Windows XP and Windows Server 2003 from 
+       PN 40002164, the Digi RealPort Driver & Setup Wizard for Windows 
+       2000.
+
+     Changelog copied from PN 40002164:
+     ----------------------------------
+
+     Version 3.5.316.0, 07/12/2006 (Rev. V)
+     --------------------------------------------
+     o Fixed race condition on close while losing network 
+       connectivity causes CloseHandle to hang.
+     o Fixed race condition on purge while also calling ReadFile 
+       from another thread causes new read to be canceled.
+     o Fixed race condition on write timeout while another WriteFile
+       request is pending and a network interruption occurs causes
+       second write to hang.
+     o Corrected blue screen when using Always Grant Port Opens, 
+       driver is loading, network stack is not done loading, and port
+       is accessed by user application.
+     o Fixed problem pending first WriteFile when using Always Grant
+       and network stack is not done loading.
+     o Added option to never block serial communication 
+       API calls because of network response lag.
+     o Added setup CLI options /pnet and /ptcp to supercede /pnetw.
+     o Added setup CLI options /pser and /padv to replace /port.
+     o Added network and port re-connection controls to throttle network 
+       activity for byte-conscious environments (for IP-addressed devices).
+     o Added additional controls to allow user to influence network usage, 
+       including: Port data drain-on-close timeout; Port is being shared; 
+       and, Wait on COM open before starting network.
+     o On update, now fixing ports' driver versions to reflect new version.
+     o Added absolute TCP timeout to unblock driver when critical device 
+       responses are dropped and the system network stack does not properly 
+       detect the situation.
+     o Improved driver load time on boot.
+     o Improved driver update time when SkipEnumerations is enabled.
+
+     Version 3.4.306.0, 06/16/2006 (Rev. U)
+     --------------------------------------------
+     o Improved device installation time.
+     o Fixed problem with the first port of additional device 
+       installations being installed before Serenum runs,
+       causing the port to not be installed correctly.
+
+     Version 3.2.281.0, 11/17/2005 (Rev. S)
+     --------------------------------------------
+     o Added feature to optimize network usage for different
+       networks -- i.e., wired, wireless, and cellular.
+     o Added 'examine' command to RealPort Setup Wizard CLI
+       to simplify driver backup, restoration and deployment.
+     o Added option to use device MAC or DNS name rather than IP address.
+     o Added digirlpt.chm context and HTML help.
+     o Updated 'change' command in RealPort Setup Wizard CLI to 
+       support /id, /likeid, /com, and /likecom switches.
+     o Fixed RTS toggle to not require CTS to be asserted to send.
+     o Added feature to coalesce data for legacy applications.
+     o Corrected processing of SERIAL_NULL_STRIPPING.
+     o Resolved transmission issue with offline device when
+       port is configured for Always Grant Port Open Requests.
+     o Corrected support of XonLimit and XoffLimit.
+     o Fixed problem loading driver when Registry misconfigured.
+     o Corrected blue screen on ARP from closed cellular device.
+     o Corrected polling application receive resource exhaustion issue.
+     o Exposed option to force RTS Toggle flow for legacy applications.
+     o Added option to set SkipEnumerations Serenum key.
+     o Fixed issue sending command after device rejects open request.
+
+     Version 3.1.243.0, 11/15/2004 (Rev. R)
+     --------------------------------------------
+     o Added support for Digi PortServer TS MEI Families, including
+       Wireless, Modem, Hardened, and Power series.
+     o Resolved issue with updating three or more adapters in 
+       Windows Server 2003 unnecessarily prompting for reboot.
+     o Resolved issue with Setup Wizard failing if it encountered 
+       corrupt or unparsable INFs in the Windows INF directory.
+     o Fixed condition during driver update that could cause a 
+       bugcheck.
+     o Fixed a condition where closing the ports during a network 
+       outage and subsequently disabling the adapter freezes the 
+       system.
+     o Resolved problem with opened ports being unresponsive after 
+       returning from hibernation or sleep.
+     o Fixed problem with COM ports being mislabeled in Device 
+       Manager after device installation.
+     o Added Registry option to specify that a port should always 
+       be configured for RTS toggle.
+     o Modified behavior of "Always grant port open requests" to
+       try to establish connection before succeeding open request.
+     o Fixed a condition where write timeout processing under certain
+       conditions may cause a bugcheck.
+     o Fixed condition where read timeout processing while also handling
+       incoming read data under certain conditions may cause a bugcheck.
+     o Added encryption support for DOIAP.
+     o Corrected Setup Wizard to always enable encryption for a 
+       device when the user specifies as such during installation.
+     o Modified SetQueueSize to accept any queue size.
+     o Fixed problem with encryption service unloading unexpectedly
+       after disabling encryption for a device.
+     o Fixed issue reopening port when "Always Grant Port Open 
+       Requests" is enabled under certain conditions.
+     o Corrected support for IOCTL_SERIAL_LSRMST_INSERT.
+
+     Version 3.0.226.0, 03/18/2004 (Rev. P)
+     --------------------------------------------
+     o Added Digi RealPort Setup Wizard for installing, updating,
+       and removing RealPort device driver and devices
+     o Updated Device Manager user interface.
+     o Added registry option to force baud rate.
+     o Added registry option to disable DOSMODE.
+     o Improved Event Log messages in case of network disconnect.
+     o Resolved issues with Complete write requests immediately.
+     o Improved handling of network outage.
+     o Added support for IOCTL_SERIAL_XOFF_COUNTER.
+     o Added registry option to force xedata (ignore serial errors).
+     o Fixed support for IOCTL_SERIAL_IMMEDIATE_CHAR.
+     o Fixed a condition where a network disconnect under certain
+       conditions may cause a bugcheck.
+
+     Version 2.8.94.0, 06/10/2003 (Rev. N)
+     --------------------------------------------
+     o Added support for Digi Connect ME.
+     o Fixed a problem processing write requests after the input
+       buffer is cleared with PurgeComm during network disconnect.
+     o Corrected break event signaling.
+     o Fixed detection of modem line transitions for EtherLite 2.
+
+     Version 2.7.90.0, 04/22/2003 (Rev. M)
+     --------------------------------------------
+     o Added support for Microsoft Windows Server 2003
+     o Improved management of outgoing network resources.
+     o Fixed a condition where a network disconnect under certain
+       conditions may cause a bugcheck.
+     o Fixed RTS Toggle functionality. A RTS pre- and post-delay
+       can be configured through the command line interface or the
+       web interface of your Digi One or Digi PortServer.
+     o Modified the Complete Writes Immediately feature to allow
+       queued data to drain when the port is closed.
+     o Fixed framing error detection to not insert bogus data
+       into the read data stream.
+     o Modified driver to default uninitialized ports to 1200,7,e,1,
+       like the standard serial driver, and to maintain baud rate,
+       line settings and flow control across opens.
+     o Added code to force RTS low when device is closed; sometimes,
+       if a port was using RTS/CTS flow control and was closed, RTS
+       would remain high.
+     o Added support for Digi One TS H, Digi PortServer TS 2 H,
+       and Digi PortServer TS 4 H.
+     o Added support for Digi One TS W, Digi PortServer TS 2 W,
+       and Digi PortServer TS 4 W.
+
+     Version 2.6.82.0, 01/31/2003 (Rev. L)
+     --------------------------------------------
+     o Added support for Digi One EM, Digi One IA and Digi One SP.
+     o Fixed race condition when switching parity states.
+     o Modified Complete Write Requests Immediately feature to work
+       irregardless of flow control.
+     o Added user interface option "Send keep alive packets" to control
+       keep alive packets sent to the remote device. The default setting
+       is disabled.
+     o Fixed condition where default Xon and Xoff characters were
+       not initialized correctly.
+     o Fixed detection of parity and framing errors.
+     o Fixed Xon/Xoff limit bounds checking.
+     o Exposed GUI option to allow serial ports to be opened
+       even if the driver cannot communicate with the remote device.
+     o Improved driver load time when network is disconnected.
+     o Changed event reporting to begin accumulating events once
+       SetCommMask is called, instead of waiting for WaitCommMask.
