@@ -1,10 +1,10 @@
 #ifndef IWRF_EXPORT_H_
 #define IWRF_EXPORT_H_
 
+#include "CircBuffer.h"
 #include "HcrDrxConfig.h"
 #include "HcrMonitor.h"
 #include <CmigitsSharedMemory.h>
-#include <CircBuffer.h>
 #include <PulseData.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
