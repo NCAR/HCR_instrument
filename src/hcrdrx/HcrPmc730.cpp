@@ -32,42 +32,43 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
     setDioDirection0_7(DIO_INPUT);
     setDioDirection8_15(DIO_OUTPUT);
     // Verify that our defined input DIO lines are all actually set for input
-    if (getDioDirection(_HCR_DIN_NOISE_SOURCE_SELECTED) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_TERMINATION_SELECTED) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_15_5GHZ_PHASELOCK) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_1250MHZ_PHASELOCK) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_EMS_POWER_ERROR) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_MODPULSE_DISABLED) != DIO_INPUT ||
-            getDioDirection(_HCR_DIN_HMC_POL_SWITCH_ERROR) != DIO_INPUT) {
+    if (getDioDirection(_HCR_DIN_UNUSED_0) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED_1) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_EMS_ERROR_EVENT) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED_3) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_UNUSED_4) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_SPARE_PENTEK_1) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_SPARE_PENTEK_0) != DIO_INPUT ||
+            getDioDirection(_HCR_DIN_HMC_MODPULSE_DISABLED) != DIO_INPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
-            _HCR_DIN_NOISE_SOURCE_SELECTED << ", " <<
-            _HCR_DIN_TERMINATION_SELECTED << ", " <<
-            _HCR_DIN_15_5GHZ_PHASELOCK << ", " << 
-            _HCR_DIN_1250MHZ_PHASELOCK << ", " <<
-            _HCR_DIN_HMC_EMS_POWER_ERROR << ", " <<
-            _HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR << ", " <<
-            _HCR_DIN_HMC_MODPULSE_DISABLED << ", and " <<
-            _HCR_DIN_HMC_POL_SWITCH_ERROR <<
-            " are not all set for input!";
+                _HCR_DIN_UNUSED_0 << ", " <<
+                _HCR_DIN_UNUSED_1 << ", " <<
+                _HCR_DIN_EMS_ERROR_EVENT << ", " << 
+                _HCR_DIN_UNUSED_3 << ", " <<
+                _HCR_DIN_UNUSED_4 << ", " <<
+                _HCR_DIN_SPARE_PENTEK_1 << ", " <<
+                _HCR_DIN_SPARE_PENTEK_0 << ", and " <<
+                _HCR_DIN_HMC_MODPULSE_DISABLED <<
+                " are not all set for input!";
         abort();
     }
-    // Verify that our defined output DIO lines are all actually set for output
-    if (getDioDirection(_HCR_DOUT_NOISE_SRC_ON) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_WG_SWITCH_D) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_HMC_RESET) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_WG_SWITCH_C) != DIO_OUTPUT ||
+    if (getDioDirection(_HCR_DOUT_SPARE_PENTEK_3) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_SPARE_PENTEK_2) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_HMC_STATUS_ACK) != DIO_OUTPUT ||
+            getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT2) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_TX_FILAMENT_OFF) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT0) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_TX_HV_OFF) != DIO_OUTPUT ||
+            getDioDirection( _HCR_DOUT_TX_HV_OFF) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT1) != DIO_OUTPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
-            _HCR_DOUT_NOISE_SRC_ON << ", " << _HCR_DOUT_HMC_RESET << ", " <<
-            _HCR_DOUT_WG_SWITCH_D << ", " << _HCR_DOUT_WG_SWITCH_C << ", " <<
-            _HCR_DOUT_TX_FILAMENT_OFF << ", " <<
-            _HCR_DOUT_HMC_OPS_MODE_BIT0 << ", " <<
-            _HCR_DOUT_TX_HV_OFF << ", and " << _HCR_DOUT_HMC_OPS_MODE_BIT1 <<
-            " are not all set for output!";
+                _HCR_DOUT_SPARE_PENTEK_3 << ", " <<
+                _HCR_DOUT_SPARE_PENTEK_2 << ", " <<
+                _HCR_DOUT_HMC_STATUS_ACK << ", " <<
+                _HCR_DOUT_HMC_OPS_MODE_BIT2 << ", " <<
+                _HCR_DOUT_TX_FILAMENT_OFF << ", " <<
+                _HCR_DOUT_HMC_OPS_MODE_BIT0 << ", " <<
+                _HCR_DOUT_TX_HV_OFF << ", and " << 
+                _HCR_DOUT_HMC_OPS_MODE_BIT1 << " are not all set for output!";
         abort();
     }
 }
@@ -104,12 +105,13 @@ HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
     // As written, this only works if the output lines we're setting are in
     // the range 8-15!
     assert(_HCR_DOUT_HMC_OPS_MODE_BIT0 >=8 && _HCR_DOUT_HMC_OPS_MODE_BIT0 <= 15 &&
-            _HCR_DOUT_HMC_OPS_MODE_BIT1 >= 8 && _HCR_DOUT_HMC_OPS_MODE_BIT1 <= 15);
+            _HCR_DOUT_HMC_OPS_MODE_BIT1 >= 8 && _HCR_DOUT_HMC_OPS_MODE_BIT1 <= 15 &&
+            _HCR_DOUT_HMC_OPS_MODE_BIT2 >= 8 && _HCR_DOUT_HMC_OPS_MODE_BIT2 <= 15);
 
     // start from the current state of lines 8-15
     uint8_t new8_15 = theHcrPmc730().getDio8_15();
 
-    // set the bits for the two lines we care about
+    // set the bits for the three lines which set the mode
     uint8_t modeBit0 = (mode >> 0) & 0x01;
     new8_15 = modeBit0 ?
             _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
@@ -120,6 +122,173 @@ HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
             _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
             _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
 
+    uint8_t modeBit2 = (mode >> 2) & 0x01;
+    new8_15 = modeBit2 ?
+            _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
+            _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);
+
     // ship out the new state
     theHcrPmc730().setDio8_15(new8_15);
+}
+
+int
+HcrPmc730::_analogValueToTtlBinary(int channel) throw (BadTtlVoltage) {
+    float voltage = _analogValues[channel];
+    if (voltage < 0.8) {
+        return 0;
+    } else if (voltage > 2.0) {
+        return 1;
+    } else {
+        std::ostringstream ss;
+        ss << "Bad TTL digital logic voltage " << voltage << " V on channel " <<
+                channel;
+        throw new BadTtlVoltage(ss.str());
+    }
+}
+
+/*
+ * Mi-Wave 950W finline RF power detector calibration measurements from
+ * 7/21/2009, 94.4 GHz input power in dBm vs. output volts (into high impedance).
+ */
+static const double MiWv950W_Cal[][2] = {
+    {-26.60, 3.20e-3},
+    {-23.65, 3.93e-3},
+    {-22.74, 5.01e-3},
+    {-21.86, 6.36e-3},
+    {-20.50, 7.83e-3},
+    {-19.85, 9.69e-3},
+    {-18.90, 11.9e-3},
+    {-17.96, 14.8e-3},
+    {-16.94, 18.0e-3},
+    {-15.99, 21.9e-3},
+    {-15.00, 26.6e-3},
+    {-14.01, 31.8e-3},
+    {-13.02, 38.3e-3},
+    {-12.04, 46.3e-3},
+    {-11.05, 55.0e-3},
+    {-10.05, 65.1e-3},
+    {-9.05, 76.7e-3},
+    {-8.04, 89.8e-3},
+    {-7.05, 105.e-3},
+    {-6.05, 123.e-3},
+    {-5.03, 142.e-3},
+    {-4.07, 165.e-3},
+    {-3.07, 191.e-3},
+    {-2.07, 219.e-3},
+    {-1.08, 252.e-3},
+    {-0.08, 288.e-3},
+    {0.92, 330.e-3},
+    {1.91, 383.e-3},
+    {2.89, 432.e-3},
+    {3.89, 495.e-3},
+    {4.88, 560.e-3},
+    {5.85, 632.e-3}
+};
+static const int MiWv950W_CalLen = (sizeof(MiWv950W_Cal) / (sizeof(*MiWv950W_Cal)));
+
+double
+HcrPmc730::_LookupMiWv950WPower(double voltage) {
+    // If we're below the lowest voltage in the cal table, just return a
+    // really low power
+    if (voltage < MiWv950W_Cal[0][1]) {
+        return(-99.9);
+    }
+    // If we're above the highest voltage in the cal table, just return the
+    // highest power in the cal table.
+    if (voltage > MiWv950W_Cal[MiWv950W_CalLen - 1][1]) {
+        return(MiWv950W_Cal[MiWv950W_CalLen - 1][0]);
+    }
+    // OK, our voltage is somewhere in the table. Move up through the table,
+    // and interpolate between the two enclosing points.
+    for (int i = 0; i < MiWv950W_CalLen - 1; i++) {
+        double powerLow = MiWv950W_Cal[i][0];
+        double vLow = MiWv950W_Cal[i][1];
+        double powerHigh = MiWv950W_Cal[i + 1][0];
+        double vHigh = MiWv950W_Cal[i + 1][1];
+        if (vHigh < voltage)
+            continue;
+        // Convert powers to linear space, then interpolate to our input voltage
+        double powerLowLinear = pow(10.0, powerLow / 10.0);
+        double powerHighLinear = pow(10.0, powerHigh / 10.0);
+        double fraction = (voltage - vLow) / (vHigh - vLow);
+        double powerLinear = powerLowLinear +
+            (powerHighLinear - powerLowLinear) * fraction;
+        // Convert interpolated power back to dBm and return it.
+        return(10.0 * log10(powerLinear));
+    }
+    // Oops if we get here...
+    ELOG << __PRETTY_FUNCTION__ << ": Bad lookup for " << voltage << " V!";
+    abort();
+}
+
+/*
+ * Map from Pt1000 resistance to temperature, generated on the first call to
+ * _Pt1000Temperature()
+ */
+static std::map<double, double>  Pt1000_OhmsToTempMap;
+static double Pt1000MapMinOhms;
+static double Pt1000MapMaxOhms;
+
+double
+HcrPmc730::_Pt1000Temperature(double psVolts, double pulldownVolts) {
+    // All of our Pt1000 temperature sensor pulldown resistors are 1000 ohms.
+    const double PulldownOhms = 1000;
+
+    // Build the resistance->temperature map the first time we come here.
+    // The map is just a table of resistances calculated every 1 degree
+    // C from -50 to 200 deg C. The formula is the Callendar-Van Dusen
+    // equation, using the standard Pt1000 values for A, B, and C.
+    if (Pt1000_OhmsToTempMap.empty()) {
+        double R0 = 1000;   // 1000 ohms for Pt1000
+        double A = 3.9083e-3;   // deg C^-1
+        double B = -5.775e-7;   // deg C^-2
+        double C = -4.183e-12;  // deg C^-4
+        double TMin = -50.0;
+        double TMax = 200.0;
+        for (double t = TMin; t <= TMax; t += 1.0) {
+            double r = R0 * (1 + (A * t) + (B * t * t));
+            if (t < 0) {
+                r += R0 * (C * t * t * t * (t - 100));
+            }
+            if (t == TMin) {
+                Pt1000MapMinOhms = r;
+            }
+            Pt1000MapMaxOhms = r;
+            Pt1000_OhmsToTempMap[r] = t;
+        }
+    }
+    // Resistance of the RTD, calculated from psVolts drop across our
+    // voltage divider with the RTD and the pulldown resistor in series.
+    double rtdOhms = PulldownOhms * (psVolts / pulldownVolts - 1);
+
+    // If rtdOhms is less than the lowest resistance in our map,
+    // return -999.9
+    if (rtdOhms < Pt1000MapMinOhms) {
+        return(-999.9);
+    }
+    // If rtdOhms is greater than the highest resistance in our map,
+    // return 999.9
+    if (rtdOhms > Pt1000MapMaxOhms) {
+        return(999.9);
+    }
+    // Find the iterators for entries which bound our RTD resistance
+    std::map<double, double>::iterator itLower =
+        Pt1000_OhmsToTempMap.lower_bound(rtdOhms);
+    std::map<double, double>::iterator itUpper = itLower++;
+    // Interpolate between the two values to get our temperature.
+    double r0 = itLower->first;
+    double t0 = itLower->second;
+    double r1 = itUpper->first;
+    double t1 = itUpper->second;
+    return(t0 + (rtdOhms - r0) / (r1 - r0) * (t1 - t0));
+}
+
+double
+HcrPmc730::_15PSI_A_4V_Pres(double sensorVolts) {
+    // Nominal calibration from device spec: 0.25 V @ zero pressure
+    const double zeroPresOffsetVolts = 0.25;
+    // Nominal calibration from device spec: 4 V output span over 15 PSI
+    // (1034.2 hPa)
+    const double hPaPerVolt = 1034.2 / 4.0;
+    return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
 }

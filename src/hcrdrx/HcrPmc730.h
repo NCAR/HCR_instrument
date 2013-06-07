@@ -9,11 +9,46 @@
 #define HCRPMC730_H_
 
 #include "Pmc730.h"
+#include <exception>
+
+/**
+ * Enumerated type for HMC operation modes
+ */
+typedef enum _HmcOperationMode {
+    /// 0 = transmit H, receive H and V
+    HMC_TX_H_RX_HV = 0,
+    /// 1 = transmit V, receive H and V
+    HMC_TX_V_RX_HV = 1,
+    /// 2 = transmit alternating H and V, receive H and V
+    HMC_TX_HV_RX_HV = 2,
+    /// 3 = unused
+    HMC_UNUSED_3 = 3,
+    /// 4 = noise source calibration
+    HMC_NOISE_SOURCE_CAL = 4,
+    /// 5 = corner reflector calibration
+    HMC_CORNER_REFLECTOR_CAL = 5,
+    /// 6 = bench test
+    HMC_BENCH_TEST = 6,
+    /// 7 = unused
+    HMC_UNUSED_7 = 7
+} HmcOperationMode;
 
 /// Control a singleton instance of Pmc730 for the one PMC730 card on the
 /// HCR DRX machine. 
 class HcrPmc730 : public Pmc730 {
 public:
+    /**
+     * Exception thrown for bad TTL voltage.
+     */
+    class BadTtlVoltage : public std::exception {
+    public:
+        BadTtlVoltage(std::string desc = "") throw () : _desc(desc) {}
+        ~BadTtlVoltage() throw () {}
+        const char * what() { return(_desc.c_str()); }
+    private:
+        std::string _desc;
+    };
+    
     /** 
      * @brief Return a reference to HCR's singleton Pmc730 instance.
      * @return a reference to HCR's singleton Pmc730 instance.
@@ -30,37 +65,18 @@ public:
     static void doSimulate(bool simulate);
 
     /**
-     * @brief Is the waveguide switch selecting the noise source?
-     * @return true iff the waveguide switch is selecting the noise source
+     * @brief Read and store voltage values from all 32 analog input channels.
+     * These stored values will be used will be used by accessor methods which
+     * refer to values derived from the analog input channels: detectedRfPower(), 
+     * ploTemperature(), locked15_5GHzPLO(), and many others.
+     * 
+     * Documentation for accessor methods affected by this method will mention 
+     * their dependency on updateAnalogValues().
      */
-    static bool noiseSourceSelected() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_NOISE_SOURCE_SELECTED));
+    static void updateAnalogValues() {
+        theHcrPmc730()._updateAnalogValues();
     }
-
-    /**
-     * @brief Is the waveguide switch selecting termination?
-     * @return true iff the waveguide switch is selecting termination
-     */
-    static bool terminationSelected() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_TERMINATION_SELECTED));
-    }
-
-    /**
-     * @brief Is the 15.5 GHz PLO locked?
-     * @return true iff the 15.5 GHz PLO is locked
-     */
-    static bool locked15_5GHzPLO() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_15_5GHZ_PHASELOCK));
-    }
-
-    /**
-     * @brief Is the 1250 MHz PLO locked?
-     * @return true iff the 1250 MHz PLO is locked
-     */
-    static bool locked1250MHzPLO() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_1250MHZ_PHASELOCK));
-    }
-
+    
     /**
      * @brief Is the modulation pulse signal blocked at the HMC?
      * @return true iff the modulation pulse signal is blocked at the HMC
@@ -70,30 +86,246 @@ public:
     }
 
     /**
-     * @brief Return true iff the HMC is reporting an EMS power error
-     * @return true iff the HMC is reporting an EMS power error
+     * @brief Return the detected RF power in dBm from the crystal RF detector
+     * at the last call to updateAnalogValues().
+     * @return the detected RF power in dBm from the crystal RF detector
+     * at the last call to updateAnalogValues().
      */
-    static bool hmcEmsPowerError() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_EMS_POWER_ERROR));
+    static double detectedRfPower() {
+        return _LookupMiWv950WPower(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
     }
 
     /**
-     * @brief Return true iff the HMC is reporting a receiver protection 
-     * switching error
-     * @return true iff the HMC is reporting a receiver protection switching 
-     * error
+     * @brief Return the pressure vessel aft sensor pressure in hPa at the last
+     * call to updateAnalogValues().
+     * @return the pressure vessel aft sensor pressure in hPa at the last call 
+     * to updateAnalogValues().
      */
-    static bool hmcRxProtectSwitchError() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR));
+    static double pvAftPressure() {
+        return _15PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE]);
     }
 
     /**
-     * @brief Return true iff the HMC is reporting a polarization switching 
-     * error
-     * @return true iff the HMC is reporting a polarization switching error
+     * @brief Return the pressure vessel fore sensor pressure in hPa at the last
+     * call to updateAnalogValues().
+     * @return the pressure vessel fore sensor pressure in hPa at the last call 
+     * to updateAnalogValues().
      */
-    static bool hmcPolSwitchError() {
-        return(theHcrPmc730().getDioLine(_HCR_DIN_HMC_POL_SWITCH_ERROR));
+    static double pvForePressure() {
+        return _15PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE]);
+    }
+
+    /**
+     * @brief Return the measured voltage from the 5V power supply at the last
+     * call to updateAnalogValues().
+     * @return the measured voltage from the 5V power supply at the last
+     * call to updateAnalogValues().
+     */
+    static double ps5vVoltage() {
+        return theHcrPmc730()._analogValues[_HCR_AIN_VOLTAGE_PS_5V];
+    }
+
+    /**
+     * @brief Return the PLO temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the PLO temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double ploTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_PLO];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the EIK temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the EIK temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double eikTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_EIK];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the V LNA temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the V LNA temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double vLnaTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_VLNA];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the H LNA temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the H LNA temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double hLnaTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_HLNA];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the polarization switch temperature in deg C at the last 
+     * call to updateAnalogValues().
+     * @return the polarization switch temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double polSwitchTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_POL_SWITCH];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the RF detector temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the RF detector temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double rfDetectorTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_RF_DETECTOR];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the noise source temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the noise source temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double noiseSourceTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_NOISE_SOURCE];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the 28V power supply temperature in deg C at the last call 
+     * to updateAnalogValues().
+     * @return the 28V power supply temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double ps28vTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_PS_28V];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the RDS in duct temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the RDS in duct temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double rdsInDuctTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_RDS_IN_DUCT];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the tilt motor temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the tilt motor temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double tiltMotorTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_TILT_MOTOR];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the rotation motor temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the rotation motor temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double rotMotorTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_ROT_MOTOR];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the tailcone temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the tailcone temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double tailconeTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_TAILCONE];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return the C-MIGITS temperature in deg C at the last call to 
+     * updateAnalogValues().
+     * @return the C-MIGITS temperature in deg C at the last call to 
+     * updateAnalogValues().
+     */
+    static double cmigitsTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_CMIGITS];
+        return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
+    }
+
+    /**
+     * @brief Return true iff the 15.5 GHz PLO indicated lock at
+     * the last call to updateAnalogValues().
+     * @return true iff the 15.5 GHz PLO indicated lock at the last
+     * call to updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "15.5 GHz PLO lock"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool locked15_5GHzPLO() {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_15_5_GHZ_LOCKED));
+    }
+
+    /**
+     * @brief Return true iff the 1250 MHz PLO indicated lock at
+     * the last call to updateAnalogValues().
+     * @return true iff the 1250 MHz PLO indicated lock at the last
+     * call to updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "1250 MHz PLO lock"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool locked1250MHzPLO() {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_1250_MHZ_LOCKED));
+    }
+
+    /**
+     * @brief Return true iff the 125 MHz PLO indicated lock at
+     * the last call to updateAnalogValues().
+     * @return true iff the 125 MHz PLO indicated lock at the last
+     * call to updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "125 MHz PLO lock"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool locked125MHzPLO() {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_125_MHZ_LOCKED));
+    }
+
+    /**
+     * @brief Return true iff there was an EMS power error indicated at
+     * the last call to updateAnalogValues().
+     * @return true iff there was an EMS power error indicated at the last
+     * call to updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "EMS power error"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool hmcEmsPowerError() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_PWR_ERROR));
+    }
+
+    /**
+     * @brief Return true iff there was a waveguide switch error indicated at
+     * the last call to updateAnalogValues().
+     * @return true iff there was a waveguide switch error indicated at the last
+     * call to updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "waveguide switch error"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool hmcWaveguideSwitchError() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_WG_SWITCH_ERROR));
     }
 
     /**
@@ -121,24 +353,18 @@ public:
     }
 
     /**
-     * @brief Return the HMC operating mode: 0-3.
-     * Operating modes are: 0 = normal operation, 1 = noise source cal,
-     * 2 = corner reflector cal, 3 = test and integration
-     * @return the HMC operating mode
+     * @brief Return the current HMC operating mode as a value from the
+     * HmcOperationMode enumerated type.
+     * @return the current HMC operating mode as a value from the
+     * HmcOperationMode enum.
      */
-    static int hmcMode() {
+    static HmcOperationMode hmcMode() {
         int mode;
-        mode = theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0 |
-                theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1;
-        return(mode);
-    }
+        mode = theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT2) << 2 |
+                theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1 |
+                theHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
 
-    /**
-     * @brief Set the state of the noise source.
-     * @param state If true, the noise source will be turned on, otherwise off.
-     */
-    static void setNoiseSourceOn(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_NOISE_SRC_ON, state ? 1 : 0);
+        return(HmcOperationMode(mode));
     }
 
     /**
@@ -162,42 +388,8 @@ public:
     }
 
     /**
-     * @brief Set the state of waveguide switch C.
-     * @param state the desired switch position: 0 if state is false, 1 if
-     * state is true.
-     */
-    static void setWaveguideSwitchC(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_WG_SWITCH_C, state ? 1 : 0);
-    }
-
-    /**
-     * @brief Set the state of waveguide switch D.
-     * @param state the desired switch position: 0 if state is false, 1 if
-     * state is true.
-     */
-    static void setWaveguideSwitchD(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_WG_SWITCH_D, state ? 1 : 0);
-    }
-
-    /**
-     * @brief Set the state of the HMC reset line.
-     * @param state If true, the reset line will be set high, otherwise it will
-     * be set low.
-     */
-    static void setHmcResetOn(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_HMC_RESET, state ? 1 : 0);
-    }
-
-    /**
      * @brief Set the HMC operation mode
      */
-    typedef enum _HmcOperationMode {
-        HMC_NORMAL_OPERATION = 0,
-        HMC_NOISE_SOURCE_CAL = 1,
-        HMC_CORNER_REFLECTOR_CAL = 2,
-        HMC_MODE_3 = 3
-    } HmcOperationMode;
-
     static void setHmcOperationMode(HmcOperationMode mode);
 
 private:
@@ -214,36 +406,37 @@ private:
      * Input DIO lines
      */
     typedef enum {
-        /// digital in line 0: waveguide switch A position
-        _HCR_DIN_NOISE_SOURCE_SELECTED = 0,
-        /// digital in line 1: waveguide switch B position
-        _HCR_DIN_TERMINATION_SELECTED = 1,
-        /// digital in line 2: 15.5 GHz PLO phase locked
-        _HCR_DIN_15_5GHZ_PHASELOCK = 2,
-        /// digital in line 3: 1250 MHz PLO phase locked
-        _HCR_DIN_1250MHZ_PHASELOCK = 3,
-        /// digital in line 4: HMC EMS power below threshold
-        _HCR_DIN_HMC_EMS_POWER_ERROR = 4,
-        /// digital in line 5: HMC receiver protection switching error
-        _HCR_DIN_HMC_RX_PROTECT_SWITCH_ERROR = 5,
-        /// digital in line 6: HMC modulation pulse disabled
-        _HCR_DIN_HMC_MODPULSE_DISABLED = 6,
-        /// digital in line 7: HMC polarization switching error
-        _HCR_DIN_HMC_POL_SWITCH_ERROR = 7
+        /// digital in line 0: unused
+        _HCR_DIN_UNUSED_0 = 0,
+        /// digital in line 1: unused
+        _HCR_DIN_UNUSED_1 = 1,
+        /// digital in line 2/counter input: EMS error event. Pulses on this
+        /// line will be counted using the PMC730's built-in counter.
+        _HCR_DIN_EMS_ERROR_EVENT = 2,
+        /// digital in line 3: unused
+        _HCR_DIN_UNUSED_3 = 3,
+        /// digital in line 4: unused
+        _HCR_DIN_UNUSED_4 = 4,
+        /// digital in line 5: Spare input line from Pentek
+        _HCR_DIN_SPARE_PENTEK_1 = 5,
+        /// digital in line 6: Spare input line from Pentek
+        _HCR_DIN_SPARE_PENTEK_0 = 6,
+        /// digital in line 7: HMC signal for mod pulse disabled
+        _HCR_DIN_HMC_MODPULSE_DISABLED = 7
     } DinLine_t;
     
     /**
      * Output DIO lines
      */
     typedef enum {
-        /// digital out line 8: Turn on noise source
-        _HCR_DOUT_NOISE_SRC_ON = 8,
-        /// digital out line 9: waveguide switch D control
-        _HCR_DOUT_WG_SWITCH_D = 9,
-        /// digital out line 10: HMC reset signal
-        _HCR_DOUT_HMC_RESET = 10,
-        /// digital out line 11: waveguide switch C control
-        _HCR_DOUT_WG_SWITCH_C = 11,
+        /// digital out line 8: Spare output line to Pentek
+        _HCR_DOUT_SPARE_PENTEK_3 = 8,
+        /// digital out line 9: Spare output line to Pentek
+        _HCR_DOUT_SPARE_PENTEK_2 = 9,
+        /// digital out line 10: HMC status acknowledgment signal
+        _HCR_DOUT_HMC_STATUS_ACK = 10,
+        /// digital out line 11: HMC operation mode bit 2
+        _HCR_DOUT_HMC_OPS_MODE_BIT2 = 11,
         /// digital out line 12: Turn off transmitter Klystron filament
         _HCR_DOUT_TX_FILAMENT_OFF = 12,
         /// digital out line 13: HMC operation mode bit 0
@@ -253,6 +446,77 @@ private:
         /// digital out line 15: HMC operation mode bit 1
         _HCR_DOUT_HMC_OPS_MODE_BIT1 = 15,
     } DoutLine_t;
+    
+    /**
+     * Analog input lines (note that many of these lines are actually used
+     * for TTL level digital input).
+     */
+    typedef enum {
+        /// analog input 0: RF power crystal detector
+        _HCR_AIN_CRYSTAL_DET_RF = 0,
+        /// analog input 1: aft pressure sensor
+        _HCR_AIN_PV_AFT_PRESSURE = 1,
+        /// analog input 2: fore pressure sensor
+        _HCR_AIN_PV_FORE_PRESSURE = 2,
+        /// analog input 3: PLO temperature sensor
+        _HCR_AIN_TEMP_PLO = 3,
+        /// analog input 4: EIK temperature sensor
+        _HCR_AIN_TEMP_EIK = 4,
+        /// analog input 5: V LNA temperature sensor
+        _HCR_AIN_TEMP_VLNA = 5,
+        /// analog input 6: H LNA temperature sensor
+        _HCR_AIN_TEMP_HLNA = 6,
+        /// analog input 7: polarization switch temperature sensor
+        _HCR_AIN_TEMP_POL_SWITCH = 7,
+        /// analog input 8: RF detector temperature sensor
+        _HCR_AIN_TEMP_RF_DETECTOR = 8,
+        /// analog input 9: noise source temperature sensor
+        _HCR_AIN_TEMP_NOISE_SOURCE = 9,
+        /// analog input 10: 28 V power supply temperature sensor
+        _HCR_AIN_TEMP_PS_28V = 10,
+        /// analog input 11: RDS in duct temperature sensor
+        _HCR_AIN_TEMP_RDS_IN_DUCT = 11,
+        /// analog input 12: C-MIGITS temperature sensor
+        _HCR_AIN_TEMP_CMIGITS = 12,
+        /// analog input 13: tilt motor temperature sensor
+        _HCR_AIN_TEMP_TILT_MOTOR = 13,
+        /// analog input 14: rotation motor temperature sensor
+        _HCR_AIN_TEMP_ROT_MOTOR = 14,
+        /// analog input 15: tailcone temperature sensor
+        _HCR_AIN_TEMP_TAILCONE = 15,
+        /// analog input 16: 5V power supply voltage
+        _HCR_AIN_VOLTAGE_PS_5V = 16,
+        /// analog input 17: TBD temperature sensor
+        _HCR_AIN_TEMP_TBD = 17,
+        /// analog input 18: EMS error 1 (TTL-level digital value)
+        _HCR_AIN_TTL_EMS_ERROR_1 = 18,
+        /// analog input 19: EMS error 2 (TTL-level digital value)
+        _HCR_AIN_TTL_EMS_ERROR_2 = 19,
+        /// analog input 20: EMS error 3 (TTL-level digital value)
+        _HCR_AIN_TTL_EMS_ERROR_3 = 20,
+        /// analog input 21: EMS error 4 or 5 (TTL-level digital value)
+        _HCR_AIN_TTL_EMS_ERROR_4OR5 = 21,
+        /// analog input 22: EMS error 6 or 7 (TTL-level digital value)
+        _HCR_AIN_TTL_EMS_ERROR_6OR7 = 22,
+        /// analog input 23: EMS power error (TTL-level digital value)
+        _HCR_AIN_TTL_EMS_PWR_ERROR = 23,
+        /// analog input 24: radar power error (TTL-level digital value)
+        _HCR_AIN_TTL_RADAR_PWR_ERROR = 24,
+        /// analog input 25: 125 MHz oscillator locked (TTL-level digital value)
+        _HCR_AIN_TTL_125_MHZ_LOCKED = 25,
+        /// analog input 26: 1250 MHz oscillator locked (TTL-level digital value)
+        _HCR_AIN_TTL_1250_MHZ_LOCKED = 26,
+        /// analog input 27: 15.5 GHz oscillator locked (TTL-level digital value)
+        _HCR_AIN_TTL_15_5_GHZ_LOCKED = 27,
+        /// analog input 28: waveguide switch error (TTL-level digital value)
+        _HCR_AIN_TTL_WG_SWITCH_ERROR = 28,
+        /// analog input 29: spare connected to HMC FPGA
+        _HCR_AIN_HMC_SPARE_0 = 29,
+        /// analog input 30: spare connected to HMC FPGA
+        _HCR_AIN_HMC_SPARE_1 = 30,
+        /// analog input 31: spare connected to breakout board
+        _HCR_AIN_BREAKOUT_SPARE_0 = 31
+    } AinLine_t;
     
     /**
      * @brief Set the selected bit in the source byte and return the result.
@@ -277,6 +541,75 @@ private:
         uint8_t mask = (1 << bitnum);
         return(src & ~mask);
     }
+    
+    /**
+     * @brief Read and store voltage values from all 32 analog input channels.
+     * These stored values will be used will be used by accessor methods which
+     * refer to values derived from the analog input channels: detectedRfPower(), 
+     * ploTemperature(), locked15_5GHzPLO(), and many others.
+     * 
+     * Documentation for accessor methods affected by this method will mention 
+     * their dependency on updateAnalogValues().
+     */
+    void _updateAnalogValues() {
+        _analogValues = readAnalogChannels(0, 31);
+    }
+    
+    /**
+     * @brief Convert the voltage from the selected Analog In channel to a 
+     * digital value of 0 or 1, using TTL signal levels: voltage less than 
+     * 0.8 V => 0 and voltage greater than 2.0 V => 1. The channel's voltage
+     * stored at the last call to updateAnalogValues() is used.
+     * A BadTtlVoltage exception is thrown for voltages outside the legal
+     * TTL signal levels.
+     * @param channel The Analog In channel to interpret as a TTL binary
+     * signal. Legal values are 0-31.
+     * @return 0 if the channel's voltage is less than 0.8 V and 1 if the
+     * channel's voltage is greter than 2.0 V.
+     * @throws BadTtlVoltage if the incoming voltage is in range (0.8, 2.0).
+     */
+    int _analogValueToTtlBinary(int channel) throw (BadTtlVoltage);
+    
+    /**
+     * @brief Calculate temperature of a Pt1000 RTD temperature sensor connected
+     * in series with a 1 kOhm pulldown resistor across a known voltage.
+     * @param psVolts the voltage of the power supply feeding the divider, V
+     * @param pulldownVolts the voltage across the pulldown resistor, V
+     * @return the temperature of the RTD, deg C
+     */
+    static double _Pt1000Temperature(double psVolts, double pulldownVolts);
+
+    /**
+     * @brief Calculate the pressure based on the voltage from an
+     * All Sensors 15PSI-A-4V-MIL sensor.
+     * @param sensorVolts the potential across the sensor, V
+     * @return the pressure at the 15PSI-A-4V-MIL sensor
+     */
+    static double _15PSI_A_4V_Pres(double sensorVolts);
+
+    /**
+     * @brief Convert the given voltage to measured RF power from
+     * Mi-Wave 950W RF detector.
+     * @param voltage the voltage measured at the Mi-Wave 950W detector
+     * @return the RF power measured at the Mi-Wave 950W detector, dBm
+     */
+    static double _LookupMiWv950WPower(double voltage);
+    
+    /**
+     * Initialize the PMC730 for event counting, which uses DIO channel 2.
+     */
+    void _initEventCounter();
+    
+    /**
+     * Get the current value in the PMC730 event counter.
+     */
+    uint32_t _getEventCounter();
+    
+    /**
+     * Analog voltage values from all 32 Analog In channels, as of the last call
+     * to updateAnalogValues().
+     */
+    std::vector<float> _analogValues;
     
     /**
      * @brief The singleton instance of HcrPmc730.

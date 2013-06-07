@@ -753,10 +753,7 @@ string IwrfExport::_assembleStatusXml()
     ("HmcEmsPowerError", 2, drxStatus.hmcEmsPowerError());
 
   xml += TaXml::writeBoolean
-    ("HmcRxProtectSwitchError", 2, drxStatus.hmcRxProtectSwitchError());
-
-  xml += TaXml::writeBoolean
-    ("HmcPolSwitchError", 2, drxStatus.hmcPolSwitchError());
+    ("WaveguideSwitchError", 2, drxStatus.waveguideSwitchError());
 
   // C-MIGITS status info (latest 3500 message from C-MIGITS)
   double statusTime = 0.0;      // seconds since 1970-01-01 00:00:00 UTC

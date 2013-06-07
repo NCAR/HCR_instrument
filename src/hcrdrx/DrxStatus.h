@@ -211,18 +211,10 @@ public:
     bool hmcEmsPowerError() const { return(_hmcEmsPowerError); }
 
     /**
-     * @brief Return true iff the HMC is reporting receiver protection switching
-     * error
-     * @return true iff the HMC is reporting receiver protection switching
-     * error
-     */
-    bool hmcRxProtectSwitchError() const { return(_hmcRxProtectSwitchError); }
-
-    /**
      * @brief Return true iff the HMC is reporting polarization switching error
      * @return true iff the HMC is reporting polarization switching error
      */
-    bool hmcPolSwitchError() const { return(_hmcPolSwitchError); }
+    bool waveguideSwitchError() const { return(_waveguideSwitchError); }
 
     /**
      * @brief Return the signal processing FPGA temperature from the Pentek
@@ -231,11 +223,13 @@ public:
      * card, deg C
      */
     double pentekFpgaTemp() const { return(_pentekFpgaTemp); }
+    
     /**
      * @brief Return the PCB temperature from the Pentek card, deg C
      * @return the PCB temperature from the Pentek card, deg C
      */
     double pentekBoardTemp() const { return(_pentekBoardTemp); }
+    
     /**
      * @brief Return the HMC operating mode number: 0-3
      * 0 - normal operation, 1 - noise source cal, 2 - corner reflector cal,
@@ -396,31 +390,6 @@ private:
             std::string key) throw(ConstructError);
 
     /**
-     * @brief Calculate temperature of a Pt1000 RTD temperature sensor connected
-     * in series with a 1 kOhm pulldown resistor across a known voltage.
-     * @param psVolts the voltage of the power supply feeding the divider, V
-     * @param pulldownVolts the voltage across the pulldown resistor, V
-     * @return the temperature of the RTD, deg C
-     */
-    static double _Pt1000Temperature(double psVolts, double pulldownVolts);
-
-    /**
-     * @brief Calculate the pressure based on the voltage from an
-     * All Sensors 15PSI-A-4V-MIL sensor.
-     * @param sensorVolts the potential across the sensor, V
-     * @return the pressure at the 15PSI-A-4V-MIL sensor
-     */
-    static double _15PSI_A_4V_Pres(double sensorVolts);
-
-    /**
-     * @brief Convert the given voltage to measured RF power from
-     * Mi-Wave 950W RF detector.
-     * @param voltage the voltage measured at the Mi-Wave 950W detector
-     * @return the RF power measured at the Mi-Wave 950W detector, dBm
-     */
-    static double _LookupMiWv950WPower(double voltage);
-    
-    /**
      * @brief Get new values for all of our sensor data supplied via the PMC730
      * multi-IO card.
      */
@@ -472,16 +441,6 @@ private:
     /// tailcone temperature list
     static TemperatureList _TailconeTemps;
 
-    /// detected RF power
-    double _detectedRfPower;
-
-    /// pressure vessel aft pressure
-    double _pvAftPressure;
-
-    /// pressure vessel fore pressure
-    double _pvForePressure;
-
-
     /// 93 GHz PLO time-averaged temperature
     double _ploTemp;
 
@@ -521,6 +480,15 @@ private:
     /// tailcone time-averaged temperature
     double _tailconeTemp;
 
+    /// detected RF power
+    double _detectedRfPower;
+
+    /// pressure vessel aft pressure
+    double _pvAftPressure;
+
+    /// pressure vessel fore pressure
+    double _pvForePressure;
+
     /// measured voltage from 5V power supply
     double _psVoltage;
 
@@ -536,6 +504,9 @@ private:
     /// 1250 MHz oscillator phase locked?
     bool _locked1250MHzPLO;
 
+    /// 125 MHz oscillator phase locked?
+    bool _locked125MHzPLO;
+
     /// Is modulator pulse passthrough disabled at the HMC?
     bool _modPulseDisabled;
 
@@ -548,11 +519,8 @@ private:
     /// Is HMC reporting EMS power error?
     bool _hmcEmsPowerError;
 
-    /// Is HMC reporting receiver protection switching error?
-    bool _hmcRxProtectSwitchError;
-
     /// Is HMC reporting polarization switching error?
-    bool _hmcPolSwitchError;
+    bool _waveguideSwitchError;
 
     /// Pentek FPGA temperature
     double _pentekFpgaTemp;
