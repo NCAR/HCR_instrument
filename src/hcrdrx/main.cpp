@@ -302,15 +302,9 @@ main(int argc, char** argv)
     HcrPmc730::theHcrPmc730();
     
     // Initialize output lines.
-    HcrPmc730::setHmcResetOn(true);    // Start with HMC in reset...
-    HcrPmc730::setNoiseSourceOn(false);
-    HcrPmc730::setWaveguideSwitchC(0);
-    HcrPmc730::setWaveguideSwitchD(0);
     HcrPmc730::setXmitterFilamentOn(false);
     HcrPmc730::setXmitterHvOn(false);
     HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_CORNER_REFLECTOR_CAL);
-    // Now allow the HMC to operate
-    HcrPmc730::setHmcResetOn(false);
 
     // set to ignore SIGPIPE errors which occur when sockets
     // are broken between client and server
@@ -490,14 +484,11 @@ main(int argc, char** argv)
         std::cout << "rotationMotorTemp: " << status.rotationMotorTemp() << std::endl;
         std::cout << "tailconeTemp: " << status.tailconeTemp() << std::endl;
         std::cout << "psVoltage: " << status.psVoltage() << std::endl;
-//        std::cout << "noiseSourceSelected: " << status.noiseSourceSelected() << std::endl;
-//        std::cout << "terminationSelected: " << status.terminationSelected() << std::endl;
         std::cout << "locked15_5GHzPLO: " << status.locked15_5GHzPLO() << std::endl;
         std::cout << "locked1250MHzPLO: " << status.locked1250MHzPLO() << std::endl;
         std::cout << "modPulseDisabled: " << status.modPulseDisabled() << std::endl;
         std::cout << "hmcEmsPowerError: " << status.hmcEmsPowerError() << std::endl;
-        std::cout << "hmcRxProtectSwitchError: " << status.hmcRxProtectSwitchError() << std::endl;
-        std::cout << "hmcPolSwitchError: " << status.hmcPolSwitchError() << std::endl;
+        std::cout << "waveguideSwitchError: " << status.waveguideSwitchError() << std::endl;
 //        std::cout << "rdsXmitterFilamentOn: " << status.rdsXmitterFilamentOn() << std::endl;
 //        std::cout << "rdsXmitterHvOn: " << status.rdsXmitterHvOn() << std::endl;
     }
