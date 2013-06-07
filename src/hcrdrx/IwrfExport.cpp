@@ -741,6 +741,9 @@ string IwrfExport::_assembleStatusXml()
     ("Locked1250MHzPLO", 2, drxStatus.locked1250MHzPLO());
 
   xml += TaXml::writeBoolean
+    ("Locked125MHzPLO", 2, drxStatus.locked125MHzPLO());
+
+  xml += TaXml::writeBoolean
     ("ModPulseDisabled", 2, drxStatus.modPulseDisabled());
   
   xml += TaXml::writeBoolean

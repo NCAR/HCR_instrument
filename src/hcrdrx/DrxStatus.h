@@ -183,6 +183,11 @@ public:
      */
     bool locked1250MHzPLO() const { return(_locked1250MHzPLO); }
     /**
+     * @brief Return true iff 125 MHz PLO is phase locked
+     * @return true iff 125 MHz PLO is phase locked
+     */
+    bool locked125MHzPLO() const { return(_locked125MHzPLO); }
+    /**
      * @brief Return true iff modulation pulses are being stopped at the HMC and not
      * passed through to the transmitter
      * @return true iff modulation pulses are being stopped at the HMC and not
