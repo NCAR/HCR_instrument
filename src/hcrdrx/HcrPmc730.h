@@ -11,32 +11,16 @@
 #include "Pmc730.h"
 #include <exception>
 
-/**
- * Enumerated type for HMC operation modes
- */
-typedef enum _HmcOperationMode {
-    /// 0 = transmit H, receive H and V
-    HMC_TX_H_RX_HV = 0,
-    /// 1 = transmit V, receive H and V
-    HMC_TX_V_RX_HV = 1,
-    /// 2 = transmit alternating H and V, receive H and V
-    HMC_TX_HV_RX_HV = 2,
-    /// 3 = unused
-    HMC_UNUSED_3 = 3,
-    /// 4 = noise source calibration
-    HMC_NOISE_SOURCE_CAL = 4,
-    /// 5 = corner reflector calibration
-    HMC_CORNER_REFLECTOR_CAL = 5,
-    /// 6 = bench test
-    HMC_BENCH_TEST = 6,
-    /// 7 = unused
-    HMC_UNUSED_7 = 7
-} HmcOperationMode;
-
 /// Control a singleton instance of Pmc730 for the one PMC730 card on the
 /// HCR DRX machine. 
 class HcrPmc730 : public Pmc730 {
 public:
+    /** 
+     * @brief Return a reference to HCR's singleton Pmc730 instance.
+     * @return a reference to HCR's singleton Pmc730 instance.
+     */
+    static HcrPmc730 & theHcrPmc730();
+    
     /**
      * Exception thrown for bad TTL voltage.
      */
@@ -49,12 +33,28 @@ public:
         std::string _desc;
     };
     
-    /** 
-     * @brief Return a reference to HCR's singleton Pmc730 instance.
-     * @return a reference to HCR's singleton Pmc730 instance.
+    /**
+     * Enumerated type for HMC operation modes
      */
-    static HcrPmc730 & theHcrPmc730();
-    
+    typedef enum _HmcOperationMode {
+        /// 0 = transmit H, receive H and V
+        HMC_TX_H_RX_HV = 0,
+        /// 1 = transmit V, receive H and V
+        HMC_TX_V_RX_HV = 1,
+        /// 2 = transmit alternating H and V, receive H and V
+        HMC_TX_HV_RX_HV = 2,
+        /// 3 = unused
+        HMC_UNUSED_3 = 3,
+        /// 4 = noise source calibration
+        HMC_NOISE_SOURCE_CAL = 4,
+        /// 5 = corner reflector calibration
+        HMC_CORNER_REFLECTOR_CAL = 5,
+        /// 6 = bench test
+        HMC_BENCH_TEST = 6,
+        /// 7 = unused
+        HMC_UNUSED_7 = 7
+    } HmcOperationMode;
+
     /**
      * @brief Static method to change whether the singleton instance will be created
      * as a simulated PMC-730. This must be called before the singleton is
