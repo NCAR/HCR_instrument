@@ -10,7 +10,121 @@
 #include <logx/Logging.h>
 #include <iomanip>
 
+#include <boost/archive/detail/common_iarchive.hpp>
+#include <boost/archive/detail/common_oarchive.hpp>
+
 LOGGING("DrxStatus")
+
+// Boost archive class to populate XmlRpcValue dictionary
+class XmlRpcValue_oarchive : 
+    public boost::archive::detail::common_oarchive<XmlRpcValue_oarchive> {
+public:
+    XmlRpcValue_oarchive(XmlRpcValue & archive) : _archive(archive) {}
+    
+    // Do nothing with special pieces of serialization: version_type, 
+    // object_id_type, etc.
+    // (for now?)
+    template<class T>
+    void save_override(const T & t, int val) {
+        // Just drop it on the floor...
+    }
+
+    template<class T>
+    XmlRpcValue_oarchive & operator&(const boost::serialization::nvp<T> & pair) {
+        _archive[pair.name()] = XmlRpcValue(pair.value());
+        return(*this);
+    }
+private:
+    XmlRpcValue & _archive;
+};
+
+// Boost archive class to unpack XmlRpcValue dictionary
+class XmlRpcValue_iarchive : 
+    public boost::archive::detail::common_iarchive<XmlRpcValue_iarchive> {
+public:
+    XmlRpcValue_iarchive(const XmlRpcValue & archive) : _archive(archive) {}
+    
+    // Do nothing with special pieces of serialization: version_type, 
+    // object_id_type, etc.
+    // (for now?)
+    template<class T>
+    void load_override(const T & t, int val) {
+        // Just drop it on the floor...
+    }
+
+    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<double> & pair) {
+        const char * key = pair.name();
+        if (! _archive.hasMember(key)) {
+            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
+                    key << "'!";
+            abort();
+        }
+        pair.value() = double(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
+        return(*this);
+    }
+    
+    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<float> & pair) {
+        const char * key = pair.name();
+        if (! _archive.hasMember(key)) {
+            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
+                    key << "'!";
+            abort();
+        }
+        // The const_cast<XmlRpcValue&> is required below, since 
+        // XmlRpcValue::operator[] is not a const operation. In our case, we
+        // verified above that the key exists, so it actually *will* be a
+        // const operation.
+        pair.value() = double(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
+        return(*this);
+    }
+    
+    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<bool> & pair) {
+        const char * key = pair.name();
+        if (! _archive.hasMember(key)) {
+            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
+                    key << "'!";
+            abort();
+        }
+        // The const_cast<XmlRpcValue&> is required below, since 
+        // XmlRpcValue::operator[] is not a const operation. In our case, we
+        // verified above that the key exists, so it actually *will* be a
+        // const operation.
+        pair.value() = bool(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
+        return(*this);
+    }
+    
+    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<int> & pair) {
+        const char * key = pair.name();
+        if (! _archive.hasMember(key)) {
+            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
+                    key << "'!";
+            abort();
+        }
+        // The const_cast<XmlRpcValue&> is required below, since 
+        // XmlRpcValue::operator[] is not a const operation. In our case, we
+        // verified above that the key exists, so it actually *will* be a
+        // const operation.
+        pair.value() = int(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
+        return(*this);
+    }
+    
+    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<uint16_t> & pair) {
+        const char * key = pair.name();
+        if (! _archive.hasMember(key)) {
+            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
+                    key << "'!";
+            abort();
+        }
+        // The const_cast<XmlRpcValue&> is required below, since 
+        // XmlRpcValue::operator[] is not a const operation. In our case, we
+        // verified above that the key exists, so it actually *will* be a
+        // const operation.
+        pair.value() = int(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
+        return(*this);
+    }
+private:
+    const XmlRpcValue & _archive;
+};
 
 // Static instance for access to shared memory containing C-MIGITS data
 CmigitsSharedMemory * DrxStatus::_CmigitsShm = 0;
@@ -95,63 +209,10 @@ DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
 }
 
 DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
-    //
-    // Looking for something below? It's in alphabetical order!
-    //
-    _cmigitsAltitude = _StatusDouble(statusDict, "cmigitsAltitude");
-    _cmigitsAttitudeTime = _StatusDouble(statusDict, "cmigitsAttitudeTime");
-    _cmigitsCurrentMode = _StatusInt(statusDict, "cmigitsCurrentMode");
-    _cmigitsDoingCoarseAlignment = _StatusBool(statusDict, "cmigitsDoingCoarseAlignment");
-    _cmigitsGpsAvailable = _StatusBool(statusDict, "cmigitsGpsAvailable");
-    _cmigitsHeadingFOM = _StatusInt(statusDict, "cmigitsHeadingFOM");
-    _cmigitsHeading = _StatusDouble(statusDict, "cmigitsHeading");
-    _cmigitsHPosError = _StatusDouble(statusDict, "cmigitsHPosError");
-    _cmigitsInsAvailable = _StatusBool(statusDict, "cmigitsInsAvailable");
-    _cmigitsLatitude = _StatusDouble(statusDict, "cmigitsLatitude");
-    _cmigitsLongitude = _StatusDouble(statusDict, "cmigitsLongitude");
-    _cmigitsNavSolutionTime = _StatusDouble(statusDict, "cmigitsNavSolutionTime");
-    _cmigitsNSats = _StatusInt(statusDict, "cmigitsNSats");
-    _cmigitsPitch = _StatusDouble(statusDict, "cmigitsPitch");
-    _cmigitsPositionFOM = _StatusInt(statusDict, "cmigitsPositionFOM");
-    _cmigitsRoll = _StatusDouble(statusDict, "cmigitsRoll");
-    _cmigitsStatusTime = _StatusDouble(statusDict, "cmigitsStatusTime");
-    _cmigitsTemp = _StatusDouble(statusDict, "cmigitsTemp");
-    _cmigitsTimeFOM = _StatusInt(statusDict, "cmigitsTimeFOM");
-    _cmigitsVelEast = _StatusDouble(statusDict, "cmigitsVelEast");
-    _cmigitsVelNorth = _StatusDouble(statusDict, "cmigitsVelNorth");
-    _cmigitsVelocityError = _StatusDouble(statusDict, "cmigitsVelocityError");
-    _cmigitsVelocityFOM = _StatusInt(statusDict, "cmigitsVelocityFOM");
-    _cmigitsVelUp = _StatusDouble(statusDict, "cmigitsVelUp");
-    _cmigitsVPosError = _StatusDouble(statusDict, "cmigitsVPosError");
-    _detectedRfPower = _StatusDouble(statusDict, "detectedRfPower");
-    _eikTemp = _StatusDouble(statusDict, "eikTemp");
-    _hLnaTemp = _StatusDouble(statusDict, "hLnaTemp");
-    _hmcEmsPowerError = _StatusBool(statusDict, "hmcEmsPowerError");
-    _hmcMode = _StatusInt(statusDict, "hmcMode");
-    _locked1250MHzPLO = _StatusBool(statusDict, "locked1250MHzPLO");
-    _locked125MHzPLO = _StatusBool(statusDict, "locked125MHzPLO");
-    _locked15_5GHzPLO = _StatusBool(statusDict, "locked15_5GHzPLO");
-    _modPulseDisabled = _StatusBool(statusDict, "modPulseDisabled");
-    _noiseSourceSelected = _StatusBool(statusDict, "noiseSourceSelected");
-    _noiseSourceTemp = _StatusDouble(statusDict, "noiseSourceTemp");
-    _pentekBoardTemp = _StatusDouble(statusDict, "pentekBoardTemp");
-    _pentekFpgaTemp = _StatusDouble(statusDict, "pentekFpgaTemp");
-    _ploTemp = _StatusDouble(statusDict, "ploTemp");
-    _polarizationSwitchTemp = _StatusDouble(statusDict, "polarizationSwitchTemp");
-    _ps28VTemp = _StatusDouble(statusDict, "ps28VTemp");
-    _psVoltage = _StatusDouble(statusDict, "psVoltage");
-    _pvAftPressure = _StatusDouble(statusDict, "pvAftPressure");
-    _pvForePressure = _StatusDouble(statusDict, "pvForePressure");
-    _rdsInDuctTemp = _StatusDouble(statusDict, "rdsInDuctTemp");
-    _rdsXmitterFilamentOn = _StatusBool(statusDict, "rdsXmitterFilamentOn");
-    _rdsXmitterHvOn = _StatusBool(statusDict, "rdsXmitterHvOn");
-    _rfDetectorTemp = _StatusDouble(statusDict, "rfDetectorTemp");
-    _rotationMotorTemp = _StatusDouble(statusDict, "rotationMotorTemp");
-    _tailconeTemp = _StatusDouble(statusDict, "tailconeTemp");
-    _terminationSelected = _StatusBool(statusDict, "terminationSelected");
-    _tiltMotorTemp = _StatusDouble(statusDict, "tiltMotorTemp");
-    _vLnaTemp = _StatusDouble(statusDict, "vLnaTemp");
-    _waveguideSwitchError = _StatusBool(statusDict, "waveguideSwitchError");
+    // Create an input archiver wrapper around the XmlRpcValue dictionary,
+    // and use _serialize() to populate our members from its content.
+    XmlRpcValue_iarchive iar(statusDict);
+    _serialize(iar);
 }
 
 DrxStatus::~DrxStatus() {
@@ -160,65 +221,13 @@ DrxStatus::~DrxStatus() {
 XmlRpcValue
 DrxStatus::toXmlRpcValue() const {
     XmlRpcValue statusDict;
-
-    //
-    // Looking for something below? It's in alphabetical order!
-    //
-    statusDict["cmigitsAltitude"] = XmlRpcValue(_cmigitsAltitude);
-    statusDict["cmigitsAttitudeTime"] = XmlRpcValue(_cmigitsAttitudeTime);
-    statusDict["cmigitsCurrentMode"] = XmlRpcValue(_cmigitsCurrentMode);
-    statusDict["cmigitsDoingCoarseAlignment"] = XmlRpcValue(_cmigitsDoingCoarseAlignment);
-    statusDict["cmigitsGpsAvailable"] = XmlRpcValue(_cmigitsGpsAvailable);
-    statusDict["cmigitsHeadingFOM"] = XmlRpcValue(_cmigitsHeadingFOM);
-    statusDict["cmigitsHeading"] = XmlRpcValue(_cmigitsHeading);
-    statusDict["cmigitsHPosError"] = XmlRpcValue(_cmigitsHPosError);
-    statusDict["cmigitsInsAvailable"] = XmlRpcValue(_cmigitsInsAvailable);
-    statusDict["cmigitsLatitude"] = XmlRpcValue(_cmigitsLatitude);
-    statusDict["cmigitsLongitude"] = XmlRpcValue(_cmigitsLongitude);
-    statusDict["cmigitsNavSolutionTime"] = XmlRpcValue(_cmigitsNavSolutionTime);
-    statusDict["cmigitsNSats"] = XmlRpcValue(_cmigitsNSats);
-    statusDict["cmigitsPitch"] = XmlRpcValue(_cmigitsPitch);
-    statusDict["cmigitsPositionFOM"] = XmlRpcValue(_cmigitsPositionFOM);
-    statusDict["cmigitsRoll"] = XmlRpcValue(_cmigitsRoll);
-    statusDict["cmigitsStatusTime"] = XmlRpcValue(_cmigitsStatusTime);
-    statusDict["cmigitsTemp"] = XmlRpcValue(_cmigitsTemp);
-    statusDict["cmigitsTimeFOM"] = XmlRpcValue(_cmigitsTimeFOM);
-    statusDict["cmigitsVelEast"] = XmlRpcValue(_cmigitsVelEast);
-    statusDict["cmigitsVelNorth"] = XmlRpcValue(_cmigitsVelNorth);
-    statusDict["cmigitsVelocityError"] = XmlRpcValue(_cmigitsVelocityError);
-    statusDict["cmigitsVelocityFOM"] = XmlRpcValue(_cmigitsVelocityFOM);
-    statusDict["cmigitsVelUp"] = XmlRpcValue(_cmigitsVelUp);
-    statusDict["cmigitsVPosError"] = XmlRpcValue(_cmigitsVPosError);
-    statusDict["detectedRfPower"] = XmlRpcValue(_detectedRfPower);
-    statusDict["eikTemp"] = XmlRpcValue(_eikTemp);
-    statusDict["hLnaTemp"] = XmlRpcValue(_hLnaTemp);
-    statusDict["hmcEmsPowerError"] = XmlRpcValue(_hmcEmsPowerError);
-    statusDict["hmcMode"] = XmlRpcValue(_hmcMode);
-    statusDict["locked1250MHzPLO"] = XmlRpcValue(_locked1250MHzPLO);
-    statusDict["locked125MHzPLO"] = XmlRpcValue(_locked125MHzPLO);
-    statusDict["locked15_5GHzPLO"] = XmlRpcValue(_locked15_5GHzPLO);
-    statusDict["modPulseDisabled"] = XmlRpcValue(_modPulseDisabled);
-    statusDict["noiseSourceSelected"] = XmlRpcValue(_noiseSourceSelected);
-    statusDict["noiseSourceTemp"] = XmlRpcValue(_noiseSourceTemp);
-    statusDict["pentekBoardTemp"] = XmlRpcValue(_pentekBoardTemp);
-    statusDict["pentekFpgaTemp"] = XmlRpcValue(_pentekFpgaTemp);
-    statusDict["ploTemp"] = XmlRpcValue(_ploTemp);
-    statusDict["polarizationSwitchTemp"] = XmlRpcValue(_polarizationSwitchTemp);
-    statusDict["ps28VTemp"] = XmlRpcValue(_ps28VTemp);
-    statusDict["psVoltage"] = XmlRpcValue(_psVoltage);
-    statusDict["pvAftPressure"] = XmlRpcValue(_pvAftPressure);
-    statusDict["pvForePressure"] = XmlRpcValue(_pvForePressure);
-    statusDict["rdsInDuctTemp"] = XmlRpcValue(_rdsInDuctTemp);
-    statusDict["rdsXmitterFilamentOn"] = XmlRpcValue(_rdsXmitterFilamentOn);
-    statusDict["rdsXmitterHvOn"] = XmlRpcValue(_rdsXmitterHvOn);
-    statusDict["rfDetectorTemp"] = XmlRpcValue(_rfDetectorTemp);
-    statusDict["rotationMotorTemp"] = XmlRpcValue(_rotationMotorTemp);
-    statusDict["tailconeTemp"] = XmlRpcValue(_tailconeTemp);
-    statusDict["terminationSelected"] = XmlRpcValue(_terminationSelected);
-    statusDict["tiltMotorTemp"] = XmlRpcValue(_tiltMotorTemp);
-    statusDict["vLnaTemp"] = XmlRpcValue(_vLnaTemp);
-    statusDict["waveguideSwitchError"] = XmlRpcValue(_waveguideSwitchError);
-
+    // Clone ourself to a non-const instance
+    DrxStatus clone(*this);
+    // Stuff our content into the statusDict, i.e., _serialize() to an 
+    // output archiver wrapped around the statusDict.
+    XmlRpcValue_oarchive oar(statusDict);
+    clone._serialize(oar);
+    // Finally, return the statusDict
     return(statusDict);
 }
 
@@ -310,46 +319,4 @@ DrxStatus::_getCmigitsValues() {
     _CmigitsShm->getLatest3512Data(dataTime, _cmigitsPitch, _cmigitsRoll,
             _cmigitsHeading);
     _cmigitsAttitudeTime = dataTime * 0.001;    // ms -> s
-}
-
-bool
-DrxStatus::_StatusBool(XmlRpc::XmlRpcValue & statusDict,
-        std::string key) throw(ConstructError) {
-    if (! statusDict.hasMember(key)) {
-        ELOG << "Status dictionary does not contain requested key '" << key <<
-            "'!";
-        abort();
-    } else {
-        return(bool(statusDict[key]));
-    }
-    // Can't get here, but make Eclipse happy...
-    return(false);
-}
-
-int
-DrxStatus::_StatusInt(XmlRpc::XmlRpcValue & statusDict,
-        std::string key) throw(ConstructError) {
-    if (! statusDict.hasMember(key)) {
-        ELOG << "Status dictionary does not contain requested key '" << key <<
-            "'!";
-        abort();
-    } else {
-        return(int(statusDict[key]));
-    }
-    // Can't get here, but make Eclipse happy...
-    return(0);
-}
-
-double
-DrxStatus::_StatusDouble(XmlRpc::XmlRpcValue & statusDict,
-        std::string key) throw(ConstructError) {
-    if (! statusDict.hasMember(key)) {
-        ELOG << "Status dictionary does not contain requested key '" << key <<
-            "'!";
-        abort();
-    } else {
-        return(double(statusDict[key]));
-    }
-    // Can't get here, but make Eclipse happy...
-    return(0.0);
 }

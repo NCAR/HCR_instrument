@@ -15,6 +15,7 @@
 #include <XmlRpc.h>
 #include <p7142.h>
 #include <CmigitsSharedMemory.h>
+#include <boost/serialization/nvp.hpp>
 
 using namespace XmlRpc;
 
@@ -367,33 +368,6 @@ private:
         std::deque<double> _items;
     };
 
-    /// @brief Return the boolean value associated with statusDict[key]
-    /// @param statusDict the XmlRpcValue status dictionary
-    /// @param key the key for the desired value
-    /// @return the boolean value associated with statusDict[key]
-    /// @throws ConstructError if the key does not exist in the dictionary or
-    /// there is another problem with the XmlRpcValue
-    static bool _StatusBool(XmlRpcValue & statusDict,
-            std::string key) throw(ConstructError);
-
-    /// @brief Return the int value associated with statusDict[key]
-    /// @param statusDict the XmlRpcValue status dictionary
-    /// @param key the key for the desired value
-    /// @return the int value associated with statusDict[key]
-    /// @throws ConstructError if the key does not exist in the dictionary or
-    /// there is another problem with the XmlRpcValue
-    static int _StatusInt(XmlRpcValue & statusDict,
-            std::string key) throw(ConstructError);
-
-    /// @brief Return the double value associated with statusDict[key]
-    /// @param statusDict the XmlRpcValue status dictionary
-    /// @param key the key for the desired value
-    /// @return the double value associated with statusDict[key]
-    /// @throws ConstructError if the key does not exist in the dictionary or
-    /// there is another problem with the XmlRpcValue
-    static double _StatusDouble(XmlRpcValue & statusDict,
-            std::string key) throw(ConstructError);
-
     /**
      * @brief Get new values for all of our sensor data supplied via the PMC730
      * multi-IO card.
@@ -409,6 +383,68 @@ private:
      * @brief Get latest available data from the C-MIGITS
      */
     void _getCmigitsValues();
+    
+    /**
+     * @brief Serialize our members to a boost save (output) archive or populate
+     * our members from a boost load (input) archive.
+     */
+    template<class Archive>
+    void _serialize(Archive & ar) {
+        ar & boost::serialization::make_nvp("cmigitsAltitude", _cmigitsAltitude);
+        ar & boost::serialization::make_nvp("cmigitsAttitudeTime", _cmigitsAttitudeTime);
+        ar & boost::serialization::make_nvp("cmigitsCurrentMode", _cmigitsCurrentMode);
+        ar & boost::serialization::make_nvp("cmigitsDoingCoarseAlignment", _cmigitsDoingCoarseAlignment);
+        ar & boost::serialization::make_nvp("cmigitsGpsAvailable", _cmigitsGpsAvailable);
+        ar & boost::serialization::make_nvp("cmigitsHeadingFOM", _cmigitsHeadingFOM);
+        ar & boost::serialization::make_nvp("cmigitsHeading", _cmigitsHeading);
+        ar & boost::serialization::make_nvp("cmigitsHPosError", _cmigitsHPosError);
+        ar & boost::serialization::make_nvp("cmigitsInsAvailable", _cmigitsInsAvailable);
+        ar & boost::serialization::make_nvp("cmigitsLatitude", _cmigitsLatitude);
+        ar & boost::serialization::make_nvp("cmigitsLongitude", _cmigitsLongitude);
+        ar & boost::serialization::make_nvp("cmigitsNavSolutionTime", _cmigitsNavSolutionTime);
+        ar & boost::serialization::make_nvp("cmigitsNSats", _cmigitsNSats);
+        ar & boost::serialization::make_nvp("cmigitsPitch", _cmigitsPitch);
+        ar & boost::serialization::make_nvp("cmigitsPositionFOM", _cmigitsPositionFOM);
+        ar & boost::serialization::make_nvp("cmigitsRoll", _cmigitsRoll);
+        ar & boost::serialization::make_nvp("cmigitsStatusTime", _cmigitsStatusTime);
+        ar & boost::serialization::make_nvp("cmigitsTemp", _cmigitsTemp);
+        ar & boost::serialization::make_nvp("cmigitsTimeFOM", _cmigitsTimeFOM);
+        ar & boost::serialization::make_nvp("cmigitsVelEast", _cmigitsVelEast);
+        ar & boost::serialization::make_nvp("cmigitsVelNorth", _cmigitsVelNorth);
+        ar & boost::serialization::make_nvp("cmigitsVelocityError", _cmigitsVelocityError);
+        ar & boost::serialization::make_nvp("cmigitsVelocityFOM", _cmigitsVelocityFOM);
+        ar & boost::serialization::make_nvp("cmigitsVelUp", _cmigitsVelUp);
+        ar & boost::serialization::make_nvp("cmigitsVPosError", _cmigitsVPosError);
+        ar & boost::serialization::make_nvp("detectedRfPower", _detectedRfPower);
+        ar & boost::serialization::make_nvp("eikTemp", _eikTemp);
+        ar & boost::serialization::make_nvp("hLnaTemp", _hLnaTemp);
+        ar & boost::serialization::make_nvp("hmcEmsPowerError", _hmcEmsPowerError);
+        ar & boost::serialization::make_nvp("hmcMode", _hmcMode);
+        ar & boost::serialization::make_nvp("locked1250MHzPLO", _locked1250MHzPLO);
+        ar & boost::serialization::make_nvp("locked125MHzPLO", _locked125MHzPLO);
+        ar & boost::serialization::make_nvp("locked15_5GHzPLO", _locked15_5GHzPLO);
+        ar & boost::serialization::make_nvp("modPulseDisabled", _modPulseDisabled);
+        ar & boost::serialization::make_nvp("noiseSourceSelected", _noiseSourceSelected);
+        ar & boost::serialization::make_nvp("noiseSourceTemp", _noiseSourceTemp);
+        ar & boost::serialization::make_nvp("pentekBoardTemp", _pentekBoardTemp);
+        ar & boost::serialization::make_nvp("pentekFpgaTemp", _pentekFpgaTemp);
+        ar & boost::serialization::make_nvp("ploTemp", _ploTemp);
+        ar & boost::serialization::make_nvp("polarizationSwitchTemp", _polarizationSwitchTemp);
+        ar & boost::serialization::make_nvp("ps28VTemp", _ps28VTemp);
+        ar & boost::serialization::make_nvp("psVoltage", _psVoltage);
+        ar & boost::serialization::make_nvp("pvAftPressure", _pvAftPressure);
+        ar & boost::serialization::make_nvp("pvForePressure", _pvForePressure);
+        ar & boost::serialization::make_nvp("rdsInDuctTemp", _rdsInDuctTemp);
+        ar & boost::serialization::make_nvp("rdsXmitterFilamentOn", _rdsXmitterFilamentOn);
+        ar & boost::serialization::make_nvp("rdsXmitterHvOn", _rdsXmitterHvOn);
+        ar & boost::serialization::make_nvp("rfDetectorTemp", _rfDetectorTemp);
+        ar & boost::serialization::make_nvp("rotationMotorTemp", _rotationMotorTemp);
+        ar & boost::serialization::make_nvp("tailconeTemp", _tailconeTemp);
+        ar & boost::serialization::make_nvp("terminationSelected", _terminationSelected);
+        ar & boost::serialization::make_nvp("tiltMotorTemp", _tiltMotorTemp);
+        ar & boost::serialization::make_nvp("vLnaTemp", _vLnaTemp);
+        ar & boost::serialization::make_nvp("waveguideSwitchError", _waveguideSwitchError);
+    }
 
     // We can keep one static object to give all instances access to the
     // shared memory segment with C-MIGITS data.
@@ -534,7 +570,7 @@ private:
     double _pentekBoardTemp;
 
     /// HMC operating mode
-    int _hmcMode;
+    uint16_t _hmcMode;
     
     /// C-MIGITS time of last status information, seconds since 
     /// 1970-01-01 00:00:00 UTC. This time applies to current mode, 

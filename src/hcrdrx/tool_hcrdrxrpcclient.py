@@ -9,6 +9,7 @@ tools = Split("""
     pentek
     pmc730
     xmlrpc
+    boost_serialization
 """)
 env = Environment(tools=['default'] + tools)
 
