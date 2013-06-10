@@ -30,6 +30,7 @@ SConscript("hcrbscan/SConscript")
 SConscript("hcrgui/SConscript")
 SConscript("hcrdrx/SConscript")
 SConscript("tcpscope/SConscript")
+SConscript("MotionControl/SConscript")
 
 env.Alias('apidocs', env.Dir("apidocs"))
 

@@ -1,0 +1,38 @@
+# -*- python -*-
+#
+# Build Motion Control
+#
+
+tools = ['qt4', 'xmlrpc_server_abyss++', 'xmlrpc_client++', 'cmigits']
+
+env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtCore', 'QtGui', 'QtNetwork'])
+
+uisources = ['ClientMainWindow.ui']
+env.Uic4(uisources)
+
+serversources = Split("""
+	MotionControlDaemon.cpp
+ 	DriveConnection.cpp
+""")
+
+serverheaders = Split("""
+ 	DriveConnection.h
+""")
+
+xmlrpc_server = env.Program('xmlrpc_server', serversources)
+env.Default(xmlrpc_server)
+
+clientsources = Split("""
+	ClientMain.cpp
+	MotionControlRpcClient.cpp
+	ClientMainWindow.cpp
+""")
+
+clientheaders = Split("""
+	MotionControlRpcClient.h
+	ClientMainWindow.h
+""")
+
+xmlrpc_client = env.Program('xmlrpc_client', clientsources)
+env.Default(xmlrpc_client)
