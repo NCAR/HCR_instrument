@@ -1,0 +1,51 @@
+// Start at power up
+#@AUTOEXEC
+
+##START
+
+// Main
+main();
+exit;
+
+/////////////////////////////////////////////////////////////////////
+function main()
+	homing();
+	
+	wait(1000);
+		
+	MO=0; UM=5;
+	
+	// Limit motion to 1 full cycle
+	XM[1]=0; XM[2]=CA[18]*100;
+	ER[3]=XM[2]/4-1;
+	
+	MO=1; PA=PX;
+	// Max speed allowed is VH[2]
+	SP=VH[2]*0.75;
+	BG;
+return
+
+/////////////////////////////////////////////////////////////////////
+function homing()
+	MO=0;UM=2;
+	
+	// Stop at Home
+	HM[3]=17; HM[4]=0; HM[5]=2;	HM[1]=1;
+	MO=1; JV=80000; BG;
+	waitHome(30000);
+	
+	// Stop at first Index
+	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0; HM[1]=1;
+	JV=80000; BG;
+return
+
+/////////////////////////////////////////////////////////////////////
+function waitHome(int timeOut)
+	int startTime;
+	startTime = TM;
+	while (HM[1])
+		if (tdif(startTime) >= timeOut)
+			return;
+		end
+	end
+return
