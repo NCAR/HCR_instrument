@@ -292,3 +292,15 @@ HcrPmc730::_15PSI_A_4V_Pres(double sensorVolts) {
     const double hPaPerVolt = 1034.2 / 4.0;
     return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
 }
+
+/**
+ * @brief Briefly raise the HMC's 'status_ack' line to reset its sense-and-hold
+ * values.
+ */
+void 
+HcrPmc730::_ackHmcStatus() {
+    setDioLine(_HCR_DOUT_HMC_STATUS_ACK, 1);
+    usleep(1);
+    setDioLine(_HCR_DOUT_HMC_STATUS_ACK, 0);
+}
+

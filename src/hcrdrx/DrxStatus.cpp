@@ -171,8 +171,14 @@ DrxStatus::DrxStatus() :
     _modPulseDisabled(false),
     _rdsXmitterFilamentOn(false),
     _rdsXmitterHvOn(false),
-    _hmcEmsPowerError(false),
+    _radarPowerError(false),
+    _emsPowerError(false),
     _waveguideSwitchError(false),
+    _emsError1(false),
+    _emsError2(false),
+    _emsError3(false),
+    _emsError4Or5(false),
+    _emsError6Or7(false),
     _pentekFpgaTemp(-99.9),
     _pentekBoardTemp(-99.9),
     _hmcMode(0),
@@ -277,11 +283,21 @@ DrxStatus::_getMultiIoValues() {
     _locked1250MHzPLO = HcrPmc730::locked1250MHzPLO();
     _locked125MHzPLO = HcrPmc730::locked125MHzPLO();
     _modPulseDisabled = HcrPmc730::modPulseDisabled();
-    _hmcEmsPowerError = HcrPmc730::hmcEmsPowerError();
-    _waveguideSwitchError = HcrPmc730::hmcWaveguideSwitchError();
+    _emsError1 = HcrPmc730::emsError1();
+    _emsError2 = HcrPmc730::emsError2();
+    _emsError3 = HcrPmc730::emsError3();
+    _emsError4Or5 = HcrPmc730::emsError4Or5();
+    _emsError6Or7 = HcrPmc730::emsError6Or7();
+    _emsPowerError = HcrPmc730::emsPowerError();
+    _radarPowerError = HcrPmc730::radarPowerError();
+    _waveguideSwitchError = HcrPmc730::waveguideSwitchError();
     _rdsXmitterFilamentOn = HcrPmc730::xmitterFilamentOn();
     _rdsXmitterHvOn = HcrPmc730::xmitterHvOn();
     _hmcMode = HcrPmc730::hmcMode();
+    
+    // Raise the 'status_ack' line on the HMC briefly so that it will reset
+    // status values for which it does sense-and-hold.
+    HcrPmc730::ackHmcStatus(); 
 }
 
 void

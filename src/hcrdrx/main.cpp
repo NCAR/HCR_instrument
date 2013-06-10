@@ -487,7 +487,7 @@ main(int argc, char** argv)
         std::cout << "locked15_5GHzPLO: " << status.locked15_5GHzPLO() << std::endl;
         std::cout << "locked1250MHzPLO: " << status.locked1250MHzPLO() << std::endl;
         std::cout << "modPulseDisabled: " << status.modPulseDisabled() << std::endl;
-        std::cout << "hmcEmsPowerError: " << status.hmcEmsPowerError() << std::endl;
+        std::cout << "emsPowerError: " << status.emsPowerError() << std::endl;
         std::cout << "waveguideSwitchError: " << status.waveguideSwitchError() << std::endl;
 //        std::cout << "rdsXmitterFilamentOn: " << status.rdsXmitterFilamentOn() << std::endl;
 //        std::cout << "rdsXmitterHvOn: " << status.rdsXmitterHvOn() << std::endl;

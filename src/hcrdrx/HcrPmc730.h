@@ -312,8 +312,20 @@ public:
      * @throw BadTtlVoltage if the voltage on the "EMS power error"
      * analog input line is not in ranges for TTL logic.
      */
-    static bool hmcEmsPowerError() throw (BadTtlVoltage) {
+    static bool emsPowerError() throw (BadTtlVoltage) {
         return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_PWR_ERROR));
+    }
+
+    /**
+     * @brief Return true iff there was an radar power error indicated at
+     * the last call to updateAnalogValues().
+     * @return true iff there was an radar power error indicated at the last
+     * call to updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "radar power error"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool radarPowerError() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_RADAR_PWR_ERROR));
     }
 
     /**
@@ -324,8 +336,68 @@ public:
      * @throw BadTtlVoltage if the voltage on the "waveguide switch error"
      * analog input line is not in ranges for TTL logic.
      */
-    static bool hmcWaveguideSwitchError() throw (BadTtlVoltage) {
+    static bool waveguideSwitchError() throw (BadTtlVoltage) {
         return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_WG_SWITCH_ERROR));
+    }
+
+    /**
+     * @brief Return true iff EMS error 1 was indicated at the last call to 
+     * updateAnalogValues().
+     * @return true iff EMS error 1 was indicated at the last call to 
+     * updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "EMS error 1"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool emsError1() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_1));
+    }
+
+    /**
+     * @brief Return true iff EMS error 2 was indicated at the last call to 
+     * updateAnalogValues().
+     * @return true iff EMS error 2 was indicated at the last call to 
+     * updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "EMS error 2"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool emsError2() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_2));
+    }
+
+    /**
+     * @brief Return true iff EMS error 3 was indicated at the last call to 
+     * updateAnalogValues().
+     * @return true iff EMS error 3 was indicated at the last call to 
+     * updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "EMS error 3"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool emsError3() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_3));
+    }
+
+    /**
+     * @brief Return true iff EMS error 4 or 5 was indicated at the last call to 
+     * updateAnalogValues().
+     * @return true iff EMS error 4 or 5 was indicated at the last call to 
+     * updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "EMS error 4Or5"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool emsError4Or5() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_4OR5));
+    }
+
+    /**
+     * @brief Return true iff EMS error 6 or 7 was indicated at the last call to 
+     * updateAnalogValues().
+     * @return true iff EMS error 6 or 7 was indicated at the last call to 
+     * updateAnalogValues().
+     * @throw BadTtlVoltage if the voltage on the "EMS error 6Or7"
+     * analog input line is not in ranges for TTL logic.
+     */
+    static bool emsError6Or7() throw (BadTtlVoltage) {
+        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_6OR7));
     }
 
     /**
@@ -385,6 +457,14 @@ public:
     static void setXmitterHvOn(bool state) {
         // NOTE: setting _HCR_DOUT_TX_HV_OFF line high turns OFF the high voltage!
         theHcrPmc730().setDioLine(_HCR_DOUT_TX_HV_OFF, state ? 0 : 1);
+    }
+
+    /**
+     * @brief Raise the HMC's 'status_ack' line momentarily to reset the state
+     * of its sense-and-hold values.
+     */
+    static void ackHmcStatus() {
+        theHcrPmc730()._ackHmcStatus();
     }
 
     /**
@@ -604,6 +684,12 @@ private:
      * Get the current value in the PMC730 event counter.
      */
     uint32_t _getEventCounter();
+    
+    /**
+     * @brief Raise the HMC's 'status_ack' line momentarily to reset the state of
+     * its sense-and-hold values.
+     */
+    void _ackHmcStatus();
     
     /**
      * Analog voltage values from all 32 Analog In channels, as of the last call

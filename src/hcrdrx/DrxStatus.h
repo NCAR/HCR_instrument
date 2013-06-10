@@ -211,10 +211,46 @@ public:
     bool rdsXmitterHvOn() const { return(_rdsXmitterHvOn); }
 
     /**
-     * @brief Return true iff the HMC is reporting EMS power error
-     * @return true iff the HMC is reporting EMS power error
+     * @brief Return true iff radar power error is being reported.
+     * @return true iff iff radar power error is being reported.
      */
-    bool hmcEmsPowerError() const { return(_hmcEmsPowerError); }
+    bool radarPowerError() const { return(_radarPowerError); }
+
+    /**
+     * @brief Return true iff EMS error 1 is being reported.
+     * @return true iff iff EMS error 1 is being reported.
+     */
+    bool emsError1() const { return(_emsError1); }
+
+    /**
+     * @brief Return true iff EMS error 2 is being reported.
+     * @return true iff iff EMS error 2 is being reported.
+     */
+    bool emsError2() const { return(_emsError2); }
+
+    /**
+     * @brief Return true iff EMS error 3 is being reported.
+     * @return true iff iff EMS error 3 is being reported.
+     */
+    bool emsError3() const { return(_emsError3); }
+
+    /**
+     * @brief Return true iff EMS error 4 or 5 is being reported.
+     * @return true iff iff EMS error 4 or 5 is being reported.
+     */
+    bool emsError4Or5() const { return(_emsError4Or5); }
+
+    /**
+     * @brief Return true iff EMS error 6 or 7 is being reported.
+     * @return true iff iff EMS error 6 or 7 is being reported.
+     */
+    bool emsError6Or7() const { return(_emsError6Or7); }
+
+    /**
+     * @brief Return true iff EMS power error is being reported.
+     * @return true iff iff EMS power error is being reported.
+     */
+    bool emsPowerError() const { return(_emsPowerError); }
 
     /**
      * @brief Return true iff the HMC is reporting polarization switching error
@@ -390,6 +426,8 @@ private:
      */
     template<class Archive>
     void _serialize(Archive & ar) {
+        // Map named entries to our member variables using serialization's
+        // name/value pairs (nvp).
         ar & boost::serialization::make_nvp("cmigitsAltitude", _cmigitsAltitude);
         ar & boost::serialization::make_nvp("cmigitsAttitudeTime", _cmigitsAttitudeTime);
         ar & boost::serialization::make_nvp("cmigitsCurrentMode", _cmigitsCurrentMode);
@@ -417,8 +455,13 @@ private:
         ar & boost::serialization::make_nvp("cmigitsVPosError", _cmigitsVPosError);
         ar & boost::serialization::make_nvp("detectedRfPower", _detectedRfPower);
         ar & boost::serialization::make_nvp("eikTemp", _eikTemp);
+        ar & boost::serialization::make_nvp("emsError1", _emsError1);
+        ar & boost::serialization::make_nvp("emsError2", _emsError2);
+        ar & boost::serialization::make_nvp("emsError3", _emsError3);
+        ar & boost::serialization::make_nvp("emsError4Or5", _emsError4Or5);
+        ar & boost::serialization::make_nvp("emsError6Or7", _emsError6Or7);
+        ar & boost::serialization::make_nvp("emsPowerError", _emsPowerError);
         ar & boost::serialization::make_nvp("hLnaTemp", _hLnaTemp);
-        ar & boost::serialization::make_nvp("hmcEmsPowerError", _hmcEmsPowerError);
         ar & boost::serialization::make_nvp("hmcMode", _hmcMode);
         ar & boost::serialization::make_nvp("locked1250MHzPLO", _locked1250MHzPLO);
         ar & boost::serialization::make_nvp("locked125MHzPLO", _locked125MHzPLO);
@@ -434,6 +477,7 @@ private:
         ar & boost::serialization::make_nvp("psVoltage", _psVoltage);
         ar & boost::serialization::make_nvp("pvAftPressure", _pvAftPressure);
         ar & boost::serialization::make_nvp("pvForePressure", _pvForePressure);
+        ar & boost::serialization::make_nvp("radarPowerError", _radarPowerError);
         ar & boost::serialization::make_nvp("rdsInDuctTemp", _rdsInDuctTemp);
         ar & boost::serialization::make_nvp("rdsXmitterFilamentOn", _rdsXmitterFilamentOn);
         ar & boost::serialization::make_nvp("rdsXmitterHvOn", _rdsXmitterHvOn);
@@ -557,11 +601,29 @@ private:
     /// Is "high voltage on" being commanded via the RDS control line to the transmitter?
     bool _rdsXmitterHvOn;
 
-    /// Is HMC reporting EMS power error?
-    bool _hmcEmsPowerError;
+    /// Is radar power error being reported?
+    bool _radarPowerError;
 
-    /// Is HMC reporting polarization switching error?
+    /// Is EMS power error being reported?
+    bool _emsPowerError;
+
+    /// Is waveguide switch error being reported?
     bool _waveguideSwitchError;
+    
+    /// Is EMS error 1 being reported?
+    bool _emsError1;
+
+    /// Is EMS error 2 being reported?
+    bool _emsError2;
+
+    /// Is EMS error 3 being reported?
+    bool _emsError3;
+
+    /// Is EMS error 4 or 5 being reported?
+    bool _emsError4Or5;
+
+    /// Is EMS error 6 or 7 being reported?
+    bool _emsError6Or7;
 
     /// Pentek FPGA temperature
     double _pentekFpgaTemp;

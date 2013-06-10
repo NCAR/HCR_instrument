@@ -753,7 +753,25 @@ string IwrfExport::_assembleStatusXml()
     ("RdsXmitterHvOn", 2, drxStatus.rdsXmitterHvOn());
 
   xml += TaXml::writeBoolean
-    ("HmcEmsPowerError", 2, drxStatus.hmcEmsPowerError());
+    ("RadarPowerError", 2, drxStatus.radarPowerError());
+
+  xml += TaXml::writeBoolean
+    ("EmsError1", 2, drxStatus.emsError1());
+
+  xml += TaXml::writeBoolean
+    ("EmsError2", 2, drxStatus.emsError2());
+
+  xml += TaXml::writeBoolean
+    ("EmsError3", 2, drxStatus.emsError3());
+
+  xml += TaXml::writeBoolean
+    ("EmsError4Or5", 2, drxStatus.emsError4Or5());
+
+  xml += TaXml::writeBoolean
+    ("EmsError16Or7", 2, drxStatus.emsError6Or7());
+
+  xml += TaXml::writeBoolean
+    ("EmsPowerError", 2, drxStatus.emsPowerError());
 
   xml += TaXml::writeBoolean
     ("WaveguideSwitchError", 2, drxStatus.waveguideSwitchError());
