@@ -482,7 +482,7 @@ public:
     /**
      * @brief Reset the PMC730 event counter.
      */
-    void resetEmsErrorCount() {
+    static void resetEmsErrorCount() {
         theHcrPmc730()._resetEmsErrorCount();
     }
     
