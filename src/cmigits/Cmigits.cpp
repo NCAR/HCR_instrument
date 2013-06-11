@@ -286,7 +286,7 @@ Cmigits::_threadStartInitialize() {
     // Build _gpsTimeoutTimer which is used to signal when our most recent GPS
     // data are older than _GPS_TIMEOUT_SECS. Set the timer's thread affinity
     // to _myThread.
-   _gpsTimeoutTimer = new QTimer();
+    _gpsTimeoutTimer = new QTimer();
     _gpsTimeoutTimer->setInterval(1000 * _GPS_TIMEOUT_SECS);
     _gpsTimeoutTimer->setSingleShot(true);
     // When this timer times out, call _gpsTimedOut()
