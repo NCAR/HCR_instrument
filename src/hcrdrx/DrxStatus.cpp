@@ -283,6 +283,7 @@ DrxStatus::_getMultiIoValues() {
     _locked1250MHzPLO = HcrPmc730::locked1250MHzPLO();
     _locked125MHzPLO = HcrPmc730::locked125MHzPLO();
     _modPulseDisabled = HcrPmc730::modPulseDisabled();
+    _emsErrorCount = HcrPmc730::getEmsErrorCount();
     _emsError1 = HcrPmc730::emsError1();
     _emsError2 = HcrPmc730::emsError2();
     _emsError3 = HcrPmc730::emsError3();

@@ -71,6 +71,8 @@ HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
                 _HCR_DOUT_HMC_OPS_MODE_BIT1 << " are not all set for output!";
         abort();
     }
+    // Initialize the PMC730's event counter, which uses DIO channel 2
+    _initEventCounter();
 }
 
 HcrPmc730::~HcrPmc730() {
@@ -299,8 +301,78 @@ HcrPmc730::_15PSI_A_4V_Pres(double sensorVolts) {
  */
 void 
 HcrPmc730::_ackHmcStatus() {
+    if (_simulate)
+        return;
+
     setDioLine(_HCR_DOUT_HMC_STATUS_ACK, 1);
     usleep(1);
     setDioLine(_HCR_DOUT_HMC_STATUS_ACK, 0);
 }
 
+void
+HcrPmc730::_initEventCounter() {
+    if (_simulate)
+        return;
+
+    // Initialize the PMC730 counter/timer for:
+    // - pulse counting
+    // - input polarity high
+    // - software trigger to start counting
+    // - disable counter interrupts
+    
+    // set up as an event (pulse) counter
+    if (SetMode(&_card, InEvent) != Success) {
+        ELOG << __PRETTY_FUNCTION__ << ": setting PMC730 to count pulses";
+        abort();
+    }
+    // set input polarity to high
+    if (SetInputPolarity(&_card, InPolHi) != Success) {
+        ELOG << __PRETTY_FUNCTION__ << ": setting PMC730 input pulse polarity";
+        abort();
+    }
+    // Use internal (software) trigger to start the timer
+    if (SetTriggerSource(&_card, InTrig) != Success) {
+        ELOG << __PRETTY_FUNCTION__ << ": setting trigger source";
+        abort();
+    }
+    // disable counter/timer interrupts
+    if (SetInterruptEnable(&_card, IntDisable) != Success) {
+        ELOG << __PRETTY_FUNCTION__ << ": disabling PMC730 counter/timer interrupts";
+        abort();
+    }
+    // Set counter constant 0 (maximum count value) to 2^32-1, so we can count
+    // up to the full 32 bits. This must be non-zero, or you'll never see any
+    // pulses counted!
+    if (SetCounterConstant(&_card, 0, 0xFFFFFFFFul) != Success) {
+        ELOG << __PRETTY_FUNCTION__ << ": setting counter constant 0";
+        abort();
+    }
+    // Now enable this configuration and then start the counter.
+    ConfigureCounterTimer(&_card);
+    // Send the software trigger to start the counter.
+    StartCounter(&_card);    
+}
+
+uint32_t
+HcrPmc730::_getEmsErrorCount() {
+    // If simulating, just return the current second modulo 100, for a rolling
+    // count from 0 to 99.
+    if (_simulate) {
+        return(uint32_t(time(0) % 100));
+    }
+    // Read the current count value from the counter readback register.
+    int32_t signedCount = input_long(_card.nHandle, 
+        (long*)&_card.brd_ptr->CounterReadBack);
+    // We get a signed 32-bit value from input_long, but the counter readback
+    // register is actually unsigned. Reinterpret the result to get the full
+    // (unsigned) resolution.
+    uint32_t* countPtr = reinterpret_cast<uint32_t*>(&signedCount);
+    return(*countPtr);
+}
+
+void
+HcrPmc730::_resetEmsErrorCount() {
+    // Stop and restart the counter to reset the count.
+    StopCounter(&_card);
+    StartCounter(&_card);    
+}

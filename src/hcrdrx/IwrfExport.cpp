@@ -754,6 +754,9 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeBoolean
     ("RadarPowerError", 2, drxStatus.radarPowerError());
+  
+  xml += TaXml::writeInt
+    ("EmsErrorCount", 2, drxStatus.emsErrorCount());
 
   xml += TaXml::writeBoolean
     ("EmsError1", 2, drxStatus.emsError1());

@@ -472,6 +472,20 @@ public:
      */
     static void setHmcOperationMode(HmcOperationMode mode);
 
+    /**
+     * @brief Get the current value in the PMC730 event counter.
+     */
+    static uint32_t getEmsErrorCount() {
+        return theHcrPmc730()._getEmsErrorCount();
+    }
+    
+    /**
+     * @brief Reset the PMC730 event counter.
+     */
+    void resetEmsErrorCount() {
+        theHcrPmc730()._resetEmsErrorCount();
+    }
+    
 private:
     HcrPmc730();
     virtual ~HcrPmc730();
@@ -676,14 +690,19 @@ private:
     static double _LookupMiWv950WPower(double voltage);
     
     /**
-     * Initialize the PMC730 for event counting, which uses DIO channel 2.
+     * @brief Initialize the PMC730 for event counting using DIO channel 2.
      */
     void _initEventCounter();
     
     /**
-     * Get the current value in the PMC730 event counter.
+     * @brief Get the current value in the PMC730 event counter.
      */
-    uint32_t _getEventCounter();
+    uint32_t _getEmsErrorCount();
+    
+    /**
+     * @brief Reset the PMC730 event counter.
+     */
+    void _resetEmsErrorCount();
     
     /**
      * @brief Raise the HMC's 'status_ack' line momentarily to reset the state of

@@ -217,32 +217,48 @@ public:
     bool radarPowerError() const { return(_radarPowerError); }
 
     /**
-     * @brief Return true iff EMS error 1 is being reported.
-     * @return true iff iff EMS error 1 is being reported.
+     * @brief Return the count of EMC error events.
+     * @return the count of EMC error events.
+     */
+    uint32_t emsErrorCount() const { return(_emsErrorCount); }
+    
+    /**
+     * @brief Return true iff there is one or more EMS error of type 1 in
+     * the current error count.
+     * @return true iff there is one or more EMS error of type 1 in
+     * the current error count.
      */
     bool emsError1() const { return(_emsError1); }
 
     /**
-     * @brief Return true iff EMS error 2 is being reported.
-     * @return true iff iff EMS error 2 is being reported.
+     * @brief Return true iff there is one or more EMS error of type 2 in
+     * the current error count.
+     * @return true iff there is one or more EMS error of type 2 in
+     * the current error count.
      */
     bool emsError2() const { return(_emsError2); }
 
     /**
-     * @brief Return true iff EMS error 3 is being reported.
-     * @return true iff iff EMS error 3 is being reported.
+     * @brief Return true iff there is one or more EMS error of type 3 in
+     * the current error count.
+     * @return true iff there is one or more EMS error of type 3 in
+     * the current error count.
      */
     bool emsError3() const { return(_emsError3); }
 
     /**
-     * @brief Return true iff EMS error 4 or 5 is being reported.
-     * @return true iff iff EMS error 4 or 5 is being reported.
+     * @brief Return true iff there is one or more EMS error of type 4 or 5 in
+     * the current error count.
+     * @return true iff there is one or more EMS error of type 4 or 5 in
+     * the current error count.
      */
     bool emsError4Or5() const { return(_emsError4Or5); }
 
     /**
-     * @brief Return true iff EMS error 6 or 7 is being reported.
-     * @return true iff iff EMS error 6 or 7 is being reported.
+     * @brief Return true iff there is one or more EMS error of type 6 or 7 in
+     * the current error count.
+     * @return true iff there is one or more EMS error of type 6 or 7 in
+     * the current error count.
      */
     bool emsError6Or7() const { return(_emsError6Or7); }
 
@@ -610,19 +626,22 @@ private:
     /// Is waveguide switch error being reported?
     bool _waveguideSwitchError;
     
-    /// Is EMS error 1 being reported?
+    /// EMS error count
+    uint32_t _emsErrorCount;
+    
+    /// Is there one or more EMS errors of type 1 in the error count?
     bool _emsError1;
 
-    /// Is EMS error 2 being reported?
+    /// Is there one or more EMS errors of type 2 in the error count?
     bool _emsError2;
 
-    /// Is EMS error 3 being reported?
+    /// Is there one or more EMS errors of type 3 in the error count?
     bool _emsError3;
 
-    /// Is EMS error 4 or 5 being reported?
+    /// Is there one or more EMS errors of type 4 or 5 in the error count?
     bool _emsError4Or5;
 
-    /// Is EMS error 6 or 7 being reported?
+    /// Is there one or more EMS errors of type 6 or 7 in the error count?
     bool _emsError6Or7;
 
     /// Pentek FPGA temperature
