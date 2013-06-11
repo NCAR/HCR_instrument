@@ -28,6 +28,11 @@ _drift(0.0)
 	initUdpSockets();
 
 	_sharedMemory = new CmigitsSharedMemory();
+
+	// Create log file driveUdpLogs.txt
+	_logFile = new QFile("driveUdpLog.txt");
+	_textStream = new QTextStream(_logFile);
+	_logFile->open(QIODevice::WriteOnly);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -45,6 +50,12 @@ DriveConnection::~DriveConnection()
 
 	if (_sharedMemory)
 		delete _sharedMemory;
+
+	if (_logFile) {
+		_logFile->close();
+		delete _textStream;
+		delete _logFile;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -108,13 +119,16 @@ DriveConnection::sendCmd(QUdpSocket* driveSocket, std::string cmd)
 
 	size_t sent;
 	// Command will be unicast
-	sent = _rotationUdpSocket->writeDatagram(
+	sent = driveSocket->writeDatagram(
 			cmd.c_str(), cmd.size(), QHostAddress(_driveIP), _rotationPort);
 
 	if (sent != cmd.size()) {
 		qDebug() << "Warning, only" << sent << "bytes out of" << cmd.size() <<
 				"were sent to port" << _rotationPort;
 	}
+
+	// Log the sent message
+	writeLog(cmd, driveSocket, true);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -199,6 +213,27 @@ DriveConnection::rotationUdpRead()
 		_rotationUdpSocket->readDatagram(data.data(), dataSize);
 
 		std::string msg = QString(data).toStdString();
-		//qDebug() << "return msg:" << msg.c_str();
+		// Log the received message
+		writeLog(msg, _rotationUdpSocket, false);
 	}
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+DriveConnection::writeLog(std::string msg, QUdpSocket* socket, bool toDrive)
+{
+	QDateTime now = QDateTime::currentDateTime();
+	QString log = now.toString(QString("yyyy-MM-dd hh:mm:ss.zzzZ "));
+	if (toDrive)
+		log += "--> ";
+	else
+		log += "<-- ";
+	if (socket == _rotationUdpSocket)
+		log += "Rotation Drive, Message: ";
+	else
+		log += "Tilt Drive, Message: ";
+	log += msg.c_str();
+
+	(*_textStream) << log;
+	_textStream->flush();
 }

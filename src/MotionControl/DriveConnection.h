@@ -48,6 +48,11 @@ protected:
     /// @param roll The aircraft roll angle
     /// @param drift The aircraft drift angle
 	void adjustDrivePosition(double pitch, double roll, double drift);
+	/// Write a UDP message to log file
+	/// @param msg The UDP message to be logged
+	/// @param socket The UDP socket used to send the message
+	/// @param toDrive True if message is send to the drive, Flase if received message
+	void writeLog(std::string msg, QUdpSocket* socket, bool toDrive);
 
 	/// The rotation drive socket
 	QUdpSocket* _rotationUdpSocket;
@@ -70,6 +75,12 @@ protected:
 
 	/// Cmigits shared memory object
 	CmigitsSharedMemory* _sharedMemory;
+
+	/// The log file
+	QFile* _logFile;
+	/// The text stream associated with _logFile
+	QTextStream* _textStream;
+
 };
 
 #endif /* DRIVECONNECTION_H_ */
