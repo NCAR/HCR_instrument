@@ -298,7 +298,10 @@ DrxStatus::_getMultiIoValues() {
     
     // Raise the 'status_ack' line on the HMC briefly so that it will reset
     // status values for which it does sense-and-hold.
-    HcrPmc730::ackHmcStatus(); 
+    HcrPmc730::ackHmcStatus();
+
+    // Reset the EMS error counter
+    HcrPmc730::resetEmsErrorCount();
 }
 
 void
