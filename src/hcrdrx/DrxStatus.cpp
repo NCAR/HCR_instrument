@@ -7,124 +7,11 @@
 
 #include "DrxStatus.h"
 #include "HcrPmc730.h"
+#include "XmlRpcValueArchive.h"
 #include <logx/Logging.h>
 #include <iomanip>
 
-#include <boost/archive/detail/common_iarchive.hpp>
-#include <boost/archive/detail/common_oarchive.hpp>
-
 LOGGING("DrxStatus")
-
-// Boost archive class to populate XmlRpcValue dictionary
-class XmlRpcValue_oarchive : 
-    public boost::archive::detail::common_oarchive<XmlRpcValue_oarchive> {
-public:
-    XmlRpcValue_oarchive(XmlRpcValue & archive) : _archive(archive) {}
-    
-    // Do nothing with special pieces of serialization: version_type, 
-    // object_id_type, etc.
-    // (for now?)
-    template<class T>
-    void save_override(const T & t, int val) {
-        // Just drop it on the floor...
-    }
-
-    template<class T>
-    XmlRpcValue_oarchive & operator&(const boost::serialization::nvp<T> & pair) {
-        _archive[pair.name()] = XmlRpcValue(pair.value());
-        return(*this);
-    }
-private:
-    XmlRpcValue & _archive;
-};
-
-// Boost archive class to unpack XmlRpcValue dictionary
-class XmlRpcValue_iarchive : 
-    public boost::archive::detail::common_iarchive<XmlRpcValue_iarchive> {
-public:
-    XmlRpcValue_iarchive(const XmlRpcValue & archive) : _archive(archive) {}
-    
-    // Do nothing with special pieces of serialization: version_type, 
-    // object_id_type, etc.
-    // (for now?)
-    template<class T>
-    void load_override(const T & t, int val) {
-        // Just drop it on the floor...
-    }
-
-    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<double> & pair) {
-        const char * key = pair.name();
-        if (! _archive.hasMember(key)) {
-            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
-                    key << "'!";
-            abort();
-        }
-        pair.value() = double(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
-        return(*this);
-    }
-    
-    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<float> & pair) {
-        const char * key = pair.name();
-        if (! _archive.hasMember(key)) {
-            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
-                    key << "'!";
-            abort();
-        }
-        // The const_cast<XmlRpcValue&> is required below, since 
-        // XmlRpcValue::operator[] is not a const operation. In our case, we
-        // verified above that the key exists, so it actually *will* be a
-        // const operation.
-        pair.value() = double(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
-        return(*this);
-    }
-    
-    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<bool> & pair) {
-        const char * key = pair.name();
-        if (! _archive.hasMember(key)) {
-            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
-                    key << "'!";
-            abort();
-        }
-        // The const_cast<XmlRpcValue&> is required below, since 
-        // XmlRpcValue::operator[] is not a const operation. In our case, we
-        // verified above that the key exists, so it actually *will* be a
-        // const operation.
-        pair.value() = bool(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
-        return(*this);
-    }
-    
-    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<int> & pair) {
-        const char * key = pair.name();
-        if (! _archive.hasMember(key)) {
-            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
-                    key << "'!";
-            abort();
-        }
-        // The const_cast<XmlRpcValue&> is required below, since 
-        // XmlRpcValue::operator[] is not a const operation. In our case, we
-        // verified above that the key exists, so it actually *will* be a
-        // const operation.
-        pair.value() = int(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
-        return(*this);
-    }
-    
-    XmlRpcValue_iarchive & operator&(const boost::serialization::nvp<uint16_t> & pair) {
-        const char * key = pair.name();
-        if (! _archive.hasMember(key)) {
-            ELOG << "XmlRpcValue dictionary does not contain requested key '" <<
-                    key << "'!";
-            abort();
-        }
-        // The const_cast<XmlRpcValue&> is required below, since 
-        // XmlRpcValue::operator[] is not a const operation. In our case, we
-        // verified above that the key exists, so it actually *will* be a
-        // const operation.
-        pair.value() = int(const_cast<XmlRpcValue&>(_archive)[pair.name()]);
-        return(*this);
-    }
-private:
-    const XmlRpcValue & _archive;
-};
 
 // Static instance for access to shared memory containing C-MIGITS data
 CmigitsSharedMemory * DrxStatus::_CmigitsShm = 0;
@@ -174,6 +61,7 @@ DrxStatus::DrxStatus() :
     _radarPowerError(false),
     _emsPowerError(false),
     _waveguideSwitchError(false),
+    _emsErrorCount(0),
     _emsError1(false),
     _emsError2(false),
     _emsError3(false),
@@ -214,11 +102,11 @@ DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
     _getCmigitsValues();
 }
 
-DrxStatus::DrxStatus(XmlRpcValue & statusDict) throw(ConstructError) {
+DrxStatus::DrxStatus(XmlRpcValue & statusDict) {
     // Create an input archiver wrapper around the XmlRpcValue dictionary,
-    // and use _serialize() to populate our members from its content.
-    XmlRpcValue_iarchive iar(statusDict);
-    _serialize(iar);
+    // and use serialize() to populate our members from its content.
+    XmlRpcValueIarchive iar(statusDict);
+    iar >> *this;
 }
 
 DrxStatus::~DrxStatus() {
@@ -231,8 +119,8 @@ DrxStatus::toXmlRpcValue() const {
     DrxStatus clone(*this);
     // Stuff our content into the statusDict, i.e., _serialize() to an 
     // output archiver wrapped around the statusDict.
-    XmlRpcValue_oarchive oar(statusDict);
-    clone._serialize(oar);
+    XmlRpcValueOarchive oar(statusDict);
+    oar << clone;
     // Finally, return the statusDict
     return(statusDict);
 }
