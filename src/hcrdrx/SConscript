@@ -38,9 +38,6 @@ PulseData.h
 """)
 
 env = Environment(tools = ['default'] + tools)
-# Explicit addition of cmigits library here is temporary until tool_cmigits.py
-# is fixed...
-#env.AppendUnique(LIBS = [env.GetGlobalTarget('libcmigits')])
 
 hcrdrx = env.Program('hcrdrx', sources)
 
