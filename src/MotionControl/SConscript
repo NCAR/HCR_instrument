@@ -3,7 +3,12 @@
 # Build Motion Control
 #
 
-tools = ['qt4', 'xmlrpc_server_abyss++', 'xmlrpc_client++', 'cmigits']
+tools = Split("""
+    qt4
+    xmlrpc_server_abyss++
+    cmigits
+    motioncontrolrpcclient
+""")
 
 env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui', 'QtNetwork'])
@@ -25,12 +30,10 @@ env.Default(xmlrpc_server)
 
 clientsources = Split("""
 	ClientMain.cpp
-	MotionControlRpcClient.cpp
 	ClientMainWindow.cpp
 """)
 
 clientheaders = Split("""
-	MotionControlRpcClient.h
 	ClientMainWindow.h
 """)
 
