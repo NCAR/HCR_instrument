@@ -25,8 +25,8 @@ serverheaders = Split("""
  	DriveConnection.h
 """)
 
-xmlrpc_server = env.Program('xmlrpc_server', serversources)
-env.Default(xmlrpc_server)
+daemon = env.Program('MotionControlDaemon', serversources)
+env.Default(daemon)
 
 clientsources = Split("""
 	ClientMain.cpp
@@ -37,5 +37,5 @@ clientheaders = Split("""
 	ClientMainWindow.h
 """)
 
-xmlrpc_client = env.Program('xmlrpc_client', clientsources)
-env.Default(xmlrpc_client)
+client = env.Program('MotionControlClient', clientsources)
+env.Default(client)
