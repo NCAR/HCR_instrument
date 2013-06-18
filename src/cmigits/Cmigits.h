@@ -66,7 +66,7 @@ public:
     /**
      * @brief Return a string describing the given C-MIGITS integer heading 
      * figure-of-merit (FOM). The integer must be in the range [1,9].
-     * @param pFOM the C-MIGITS integer heading figure-of-merit
+     * @param hFOM the C-MIGITS integer heading figure-of-merit
      * @return a string describing the given C-MIGITS integer heading FOM
      */
     static const std::string HeadingFOMString(uint16_t hFOM) { return(_HeadingFOMStrings[hFOM]); }
