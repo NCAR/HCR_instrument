@@ -2,7 +2,7 @@
 # Rules to build libcmigits.a and export it as a SCons tool
 #
 tools = ['doxygen', 'logx', 'qt4']
-qt4modules = ['QtCore', 'QtGui', 'QtNetwork']
+qt4modules = ['QtGui', 'QtNetwork', 'QtCore']
 cmigitsDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
@@ -26,5 +26,3 @@ def cmigits(env):
     env.EnableQt4Modules(qt4modules)
 
 Export('cmigits')
-
-
