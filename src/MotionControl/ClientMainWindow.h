@@ -9,7 +9,7 @@
 #define CLIENTMAINWINDOW_H_
 
 #include <QtGui>
-#include "MotionControlRpcClient.h"
+#include <MotionControlRpcClient.h>
 #include "ui_ClientMainWindow.h"
 
 class ClientMainWindow: public QMainWindow, public Ui::ClientMainWindow
