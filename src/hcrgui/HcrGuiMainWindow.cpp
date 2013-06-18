@@ -217,28 +217,10 @@ HcrGuiMainWindow::on_hvButton_clicked() {
     }
 }
 
-/// Set HMC mode 0
+/// Set HMC mode
 void
-HcrGuiMainWindow::on_hmcMode0Button_clicked() {
-    _drxStatusThread.rpcClient().setHmcMode(0);
-}
-
-/// Set HMC mode 1
-void
-HcrGuiMainWindow::on_hmcMode1Button_clicked() {
-    _drxStatusThread.rpcClient().setHmcMode(1);
-}
-
-/// Set HMC mode 2
-void
-HcrGuiMainWindow::on_hmcMode2Button_clicked() {
-    _drxStatusThread.rpcClient().setHmcMode(2);
-}
-
-/// Set HMC mode 3
-void
-HcrGuiMainWindow::on_hmcMode3Button_clicked() {
-    _drxStatusThread.rpcClient().setHmcMode(3);
+HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
+    _drxStatusThread.rpcClient().setHmcMode(index);
 }
 
 void
@@ -377,28 +359,7 @@ HcrGuiMainWindow::_update() {
     }
 
     // HMC mode
-    switch (_drxStatus.hmcMode()) {
-    case 0:
-        _ui.hmcMode0Button->setChecked(true);
-        break;
-    case 1:
-        _ui.hmcMode1Button->setChecked(true);
-        break;
-    case 2:
-        _ui.hmcMode2Button->setChecked(true);
-        break;
-    case 3:
-        _ui.hmcMode3Button->setChecked(true);
-        break;
-    default:
-        // Whoa, unknown mode...
-        _ui.hmcMode0Button->setChecked(false);
-        _ui.hmcMode1Button->setChecked(false);
-        _ui.hmcMode2Button->setChecked(false);
-        _ui.hmcMode3Button->setChecked(false);
-        ELOG << "Unknown HMC mode: " << _drxStatus.hmcMode();
-        break;
-    }
+    _ui.hmcModeCombo->setCurrentIndex(_drxStatus.hmcMode());
 
     // C-MIGITS status light
     {

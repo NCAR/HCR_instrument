@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
-    <height>555</height>
+    <width>738</width>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -145,7 +145,7 @@
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>Details</string>
+                   <string>Details...</string>
                   </property>
                  </widget>
                 </item>
@@ -359,31 +359,50 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
-              <widget class="QRadioButton" name="hmcMode0Button">
-               <property name="text">
-                <string>Normal Operation</string>
+              <widget class="QComboBox" name="hmcModeCombo">
+               <property name="currentIndex">
+                <number>5</number>
                </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="hmcMode1Button">
-               <property name="text">
-                <string>Noise Source Cal</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="hmcMode2Button">
-               <property name="text">
-                <string>Corner Reflector Cal</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="hmcMode3Button">
-               <property name="text">
-                <string>Test and Integration</string>
-               </property>
+               <item>
+                <property name="text">
+                 <string>Transmit H, Receive HV</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Transmit V, Receive HV</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Transmit HV, Receive HV</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Unused (3)</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Noise Source Calibration</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Corner Reflector Calibration</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Bench Test</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Unused (7)</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -427,7 +446,7 @@
              <item row="0" column="2">
               <widget class="QPushButton" name="cmigitsDetailsButton">
                <property name="text">
-                <string>Details</string>
+                <string>Details...</string>
                </property>
               </widget>
              </item>
@@ -450,6 +469,137 @@
              <size>
               <width>20</width>
               <height>2</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="antennaBox">
+         <property name="title">
+          <string>Antenna</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QGroupBox" name="antennaPositionBox">
+            <property name="title">
+             <string>Position</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="1">
+              <widget class="QLabel" name="tiltLabel">
+               <property name="text">
+                <string>Tilt</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="tiltValue">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="rotationLabel">
+               <property name="text">
+                <string>Rotation</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="rotationValue">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QDial" name="rotationDial">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="minimum">
+                <number>-180</number>
+               </property>
+               <property name="maximum">
+                <number>180</number>
+               </property>
+               <property name="tracking">
+                <bool>false</bool>
+               </property>
+               <property name="wrapping">
+                <bool>true</bool>
+               </property>
+               <property name="notchesVisible">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="antennaModeBox">
+            <property name="title">
+             <string>Mode</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QLabel" name="antennaModeLabel">
+               <property name="text">
+                <string>mode unknown...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="antennaModeButton">
+               <property name="text">
+                <string>Edit...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>5</height>
              </size>
             </property>
            </spacer>

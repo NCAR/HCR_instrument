@@ -34,10 +34,7 @@ private slots:
     void on_filamentButton_clicked();
     void on_hvButton_clicked();
     void on_xmitterDetailsButton_clicked();
-    void on_hmcMode0Button_clicked();
-    void on_hmcMode1Button_clicked();
-    void on_hmcMode2Button_clicked();
-    void on_hmcMode3Button_clicked();
+    void on_hmcModeCombo_activated(int index);
     /// @brief Update GUI state based on _xmitStatus and _drxStatus
     void _update();
     /// @brief Save the last status received from hcrdrx.
