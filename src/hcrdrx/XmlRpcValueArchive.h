@@ -21,6 +21,7 @@
 ///   int _a;
 ///   double _b;
 ///   bool _c;
+/// };
 ///    
 class XmlRpcValueOarchive : 
     public boost::archive::detail::common_oarchive<XmlRpcValueOarchive> {
