@@ -21,6 +21,7 @@ sources = Split('''
 DrxStatus.cpp
 HcrdrxRpcClient.cpp
 HcrPmc730.cpp
+XmlRpcValueArchive.cpp
 ''')
 lib = env.Library('hcrdrxrpcclient', sources)
     

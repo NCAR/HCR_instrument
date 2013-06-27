@@ -3,6 +3,8 @@
 #include <boost/archive/detail/common_iarchive.hpp>
 #include <boost/archive/detail/common_oarchive.hpp>
 
+using namespace XmlRpc;
+
 /// @brief Boost output archive class to populate an XmlRpcValue dictionary
 /// 
 /// Here's a simple class with a templated serialize() method:
