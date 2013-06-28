@@ -273,132 +273,88 @@ public:
      * the last call to updateAnalogValues().
      * @return true iff the 15.5 GHz PLO indicated lock at the last
      * call to updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "15.5 GHz PLO lock"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool locked15_5GHzPLO() {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_15_5_GHZ_LOCKED));
-    }
+    static bool locked15_5GHzPLO();
 
     /**
      * @brief Return true iff the 1250 MHz PLO indicated lock at
      * the last call to updateAnalogValues().
      * @return true iff the 1250 MHz PLO indicated lock at the last
      * call to updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "1250 MHz PLO lock"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool locked1250MHzPLO() {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_1250_MHZ_LOCKED));
-    }
+    static bool locked1250MHzPLO();
 
     /**
      * @brief Return true iff the 125 MHz PLO indicated lock at
      * the last call to updateAnalogValues().
      * @return true iff the 125 MHz PLO indicated lock at the last
      * call to updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "125 MHz PLO lock"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool locked125MHzPLO() {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_125_MHZ_LOCKED));
-    }
+    static bool locked125MHzPLO();
 
     /**
      * @brief Return true iff there was an EMS power error indicated at
      * the last call to updateAnalogValues().
      * @return true iff there was an EMS power error indicated at the last
      * call to updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "EMS power error"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool emsPowerError() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_PWR_ERROR));
-    }
+    static bool emsPowerError();
 
     /**
      * @brief Return true iff there was an radar power error indicated at
      * the last call to updateAnalogValues().
      * @return true iff there was an radar power error indicated at the last
      * call to updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "radar power error"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool radarPowerError() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_RADAR_PWR_ERROR));
-    }
+    static bool radarPowerError();
 
     /**
      * @brief Return true iff there was a waveguide switch error indicated at
      * the last call to updateAnalogValues().
      * @return true iff there was a waveguide switch error indicated at the last
      * call to updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "waveguide switch error"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool waveguideSwitchError() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_WG_SWITCH_ERROR));
-    }
+    static bool waveguideSwitchError();
 
     /**
      * @brief Return true iff EMS error 1 was indicated at the last call to 
      * updateAnalogValues().
      * @return true iff EMS error 1 was indicated at the last call to 
      * updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "EMS error 1"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool emsError1() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_1));
-    }
+    static bool emsError1();
 
     /**
      * @brief Return true iff EMS error 2 was indicated at the last call to 
      * updateAnalogValues().
      * @return true iff EMS error 2 was indicated at the last call to 
      * updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "EMS error 2"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool emsError2() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_2));
-    }
+    static bool emsError2();
 
     /**
      * @brief Return true iff EMS error 3 was indicated at the last call to 
      * updateAnalogValues().
      * @return true iff EMS error 3 was indicated at the last call to 
      * updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "EMS error 3"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool emsError3() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_3));
-    }
+    static bool emsError3();
 
     /**
      * @brief Return true iff EMS error 4 or 5 was indicated at the last call to 
      * updateAnalogValues().
      * @return true iff EMS error 4 or 5 was indicated at the last call to 
      * updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "EMS error 4Or5"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool emsError4Or5() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_4OR5));
-    }
+    static bool emsError4Or5();
 
     /**
      * @brief Return true iff EMS error 6 or 7 was indicated at the last call to 
      * updateAnalogValues().
      * @return true iff EMS error 6 or 7 was indicated at the last call to 
      * updateAnalogValues().
-     * @throw BadTtlVoltage if the voltage on the "EMS error 6Or7"
-     * analog input line is not in ranges for TTL logic.
      */
-    static bool emsError6Or7() throw (BadTtlVoltage) {
-        return(theHcrPmc730()._analogValueToTtlBinary(_HCR_AIN_TTL_EMS_ERROR_6OR7));
-    }
+    static bool emsError6Or7();
 
     /**
      * @brief Return true iff we are currently commanding "filament on" via

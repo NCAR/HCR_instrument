@@ -133,6 +133,128 @@ HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
     theHcrPmc730().setDio8_15(new8_15);
 }
 
+bool
+HcrPmc730::locked15_5GHzPLO() {
+	float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_15_5_GHZ_LOCKED];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on 15_5_GHZ_LOCKED line";
+		return false;
+	}
+}
+
+bool
+HcrPmc730::locked1250MHzPLO() {
+	float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_1250_MHZ_LOCKED];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on 1250_MHZ_LOCKED line";
+		return false;
+	}
+}
+
+bool
+HcrPmc730::locked125MHzPLO() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_125_MHZ_LOCKED];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on 125_MHZ_LOCKED line";
+		return false;
+	}
+}
+
+bool
+HcrPmc730::emsPowerError() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_EMS_PWR_ERROR];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_PWR_ERROR line";
+		return true;
+	}
+}
+
+bool
+HcrPmc730::radarPowerError() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_RADAR_PWR_ERROR];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on RADAR_PWR_ERROR line";
+		return true;
+	}
+}
+
+bool
+HcrPmc730::waveguideSwitchError() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_WG_SWITCH_ERROR];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on WG_SWITCH_ERROR line";
+		return true;
+	}
+}
+
+bool
+HcrPmc730::emsError1() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_EMS_ERROR_1];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_1 line";
+		return true;
+	}
+}
+
+bool
+HcrPmc730::emsError2() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_EMS_ERROR_2];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_2 line";
+		return true;
+	}
+}
+
+bool
+HcrPmc730::emsError3() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_EMS_ERROR_3];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_3 line";
+		return true;
+	}
+}
+
+bool
+HcrPmc730::emsError4Or5() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_EMS_ERROR_4OR5];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_4OR5 line";
+		return true;
+	}
+}
+
+
+bool
+HcrPmc730::emsError6Or7() {
+    float voltage = theHcrPmc730()._analogValues[_HCR_AIN_TTL_EMS_ERROR_6OR7];
+	try {
+    	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
+	} catch (BadTtlVoltage & e) {
+		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_6OR7 line";
+		return true;
+	}
+}
+
 int
 HcrPmc730::_analogValueToTtlBinary(int channel) throw (BadTtlVoltage) {
     float voltage = _analogValues[channel];
