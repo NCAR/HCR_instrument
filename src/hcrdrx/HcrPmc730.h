@@ -102,7 +102,7 @@ public:
      * to updateAnalogValues().
      */
     static double pvAftPressure() {
-        return _15PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE]);
+        return _30PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE]);
     }
 
     /**
@@ -112,7 +112,7 @@ public:
      * to updateAnalogValues().
      */
     static double pvForePressure() {
-        return _15PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE]);
+        return _30PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE]);
     }
 
     /**
@@ -680,6 +680,14 @@ private:
      * @return the pressure at the 15PSI-A-4V-MIL sensor
      */
     static double _15PSI_A_4V_Pres(double sensorVolts);
+
+    /**
+     * @brief Calculate the pressure based on the voltage from an
+     * All Sensors 30PSI-A-4V-MIL sensor.
+     * @param sensorVolts the potential across the sensor, V
+     * @return the pressure at the 30PSI-A-4V-MIL sensor
+     */
+    static double _30PSI_A_4V_Pres(double sensorVolts);
 
     /**
      * @brief Convert the given voltage to measured RF power from

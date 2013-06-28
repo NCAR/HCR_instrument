@@ -295,6 +295,16 @@ HcrPmc730::_15PSI_A_4V_Pres(double sensorVolts) {
     return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
 }
 
+double
+HcrPmc730::_30PSI_A_4V_Pres(double sensorVolts) {
+    // Nominal calibration from device spec: 0.25 V @ zero pressure
+    const double zeroPresOffsetVolts = 0.25;
+    // Nominal calibration from device spec: 4 V output span over 15 PSI
+    // (2068.4 hPa)
+    const double hPaPerVolt = 2068.4 / 4.0;
+    return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
+}
+
 /**
  * @brief Briefly raise the HMC's 'status_ack' line to reset its sense-and-hold
  * values.
