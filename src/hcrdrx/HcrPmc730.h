@@ -618,7 +618,7 @@ private:
      * channel's voltage is greter than 2.0 V.
      * @throws BadTtlVoltage if the incoming voltage is in range (0.8, 2.0).
      */
-    int _analogValueToTtlBinary(int channel) throw (BadTtlVoltage);
+    int _ttlBinaryForChannel(int channel) throw (BadTtlVoltage);
     
     /**
      * @brief Calculate temperature of a Pt1000 RTD temperature sensor connected
