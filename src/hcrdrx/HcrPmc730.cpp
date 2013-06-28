@@ -139,7 +139,7 @@ HcrPmc730::locked15_5GHzPLO() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on 15_5_GHZ_LOCKED line";
+		ELOG << e.what();
 		return false;
 	}
 }
@@ -150,7 +150,7 @@ HcrPmc730::locked1250MHzPLO() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on 1250_MHZ_LOCKED line";
+		ELOG << e.what();
 		return false;
 	}
 }
@@ -161,7 +161,7 @@ HcrPmc730::locked125MHzPLO() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on 125_MHZ_LOCKED line";
+		ELOG << e.what();
 		return false;
 	}
 }
@@ -172,7 +172,7 @@ HcrPmc730::emsPowerError() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_PWR_ERROR line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -183,7 +183,7 @@ HcrPmc730::radarPowerError() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on RADAR_PWR_ERROR line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -194,7 +194,7 @@ HcrPmc730::waveguideSwitchError() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on WG_SWITCH_ERROR line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -205,7 +205,7 @@ HcrPmc730::emsError1() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_1 line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -216,7 +216,7 @@ HcrPmc730::emsError2() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_2 line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -227,7 +227,7 @@ HcrPmc730::emsError3() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_3 line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -238,7 +238,7 @@ HcrPmc730::emsError4Or5() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_4OR5 line";
+		ELOG << e.what();
 		return true;
 	}
 }
@@ -250,7 +250,7 @@ HcrPmc730::emsError6Or7() {
 	try {
     	return(theHcrPmc730()._analogValueToTtlBinary(voltage));
 	} catch (BadTtlVoltage & e) {
-		ELOG << "Bad TTL voltage (" << voltage << ") on EMS_ERROR_6OR7 line";
+		ELOG << e.what();
 		return true;
 	}
 }
