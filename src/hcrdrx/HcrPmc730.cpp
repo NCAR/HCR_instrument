@@ -410,7 +410,7 @@ double
 HcrPmc730::_30PSI_A_4V_Pres(double sensorVolts) {
     // Nominal calibration from device spec: 0.25 V @ zero pressure
     const double zeroPresOffsetVolts = 0.25;
-    // Nominal calibration from device spec: 4 V output span over 15 PSI
+    // Nominal calibration from device spec: 4 V output span over 30 PSI
     // (2068.4 hPa)
     const double hPaPerVolt = 2068.4 / 4.0;
     return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
@@ -475,7 +475,7 @@ HcrPmc730::_initEventCounter() {
 }
 
 uint32_t
-HcrPmc730::_getEmsErrorCount() {
+HcrPmc730::_emsErrorCount() const {
     // If simulating, just return the current second modulo 100, for a rolling
     // count from 0 to 99.
     if (_simulate) {
