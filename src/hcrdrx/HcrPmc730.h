@@ -431,8 +431,8 @@ public:
     /**
      * @brief Get the current value in the PMC730 event counter.
      */
-    static uint32_t getEmsErrorCount() {
-        return theHcrPmc730()._getEmsErrorCount();
+    static uint32_t emsErrorCount() {
+        return theHcrPmc730()._emsErrorCount();
     }
     
     /**
@@ -661,7 +661,7 @@ private:
     /**
      * @brief Get the current value in the PMC730 event counter.
      */
-    uint32_t _getEmsErrorCount();
+    uint32_t _emsErrorCount() const;
     
     /**
      * @brief Reset the PMC730 event counter.
