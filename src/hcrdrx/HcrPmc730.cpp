@@ -255,7 +255,7 @@ HcrPmc730::_ttlBinaryForChannel(int channel) throw (BadTtlVoltage) {
         std::ostringstream ss;
         ss << "Bad TTL digital logic voltage " << voltage << " V on channel " <<
                 channel;
-        throw new BadTtlVoltage(ss.str());
+        throw BadTtlVoltage(ss.str());
     }
 }
 
