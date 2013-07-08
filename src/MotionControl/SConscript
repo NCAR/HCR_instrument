@@ -17,11 +17,13 @@ uisources = ['ClientMainWindow.ui']
 env.Uic4(uisources)
 
 serversources = Split("""
+    ElmoServoDrive.cpp
 	MotionControlDaemon.cpp
  	DriveConnection.cpp
 """)
 
 serverheaders = Split("""
+    ElmoServoDrive.h
  	DriveConnection.h
 """)
 
