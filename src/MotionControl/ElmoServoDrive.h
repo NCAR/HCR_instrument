@@ -50,22 +50,30 @@ private slots:
      */
     void _replyTimedOut();
 
+    /**
+     * Slot called when our sync wait timer expires.
+     */
+    void _syncWaitExpired();
+
 private:
     /// Open our serial connection to the drive.
     void _openTty();
 
-    /// Send a string command to the servo drive for execution.
+    /// Send a string command to the servo drive for execution. Just one
+    /// SimplIQ command should be in the cmd string, and the string should
+    /// contain no terminator characters (';').
     /// @param cmd the single Elmo SimpIQ command to execute
-    /// @param initializeReplySync this parameter should only be set true when
-    ///		establishing synchronization between sent commands and received
-    ///		replies. When true, this is the last command which will be executed
-    ///		until either a reply is received or the wait for a reply times out.
-    bool _execElmoCmd(const std::string cmd, bool initializeReplySync = false);
+    bool _execElmoCmd(const std::string cmd);
 
     /// Read a reply from the servo drive
     int _getReply();
 
     void _setBaud(speed_t baudValue);
+
+    /// Turn off echo from the drive, then stop sending commands to the drive
+    /// for a while so we can wait for all pending replies to arrive. After
+    /// that, we should have command/reply synchronization.
+    void _startCommandReplySync();
 
     /// @brief Return a text representation for a speed_t value from termios.h.
     /// E.g., the string "B9600" will be returned for speed_t value B9600.
@@ -95,11 +103,20 @@ private:
     /// Boolean to mark the period where we wait for a reply to a known
     /// command. After the reply is received, we can synchronize replies with
     /// further commands which are sent.
-    bool _waitingForSyncReply;
+    bool _waitingForSync;
 
     /// Timer used to verify that we are getting replies from the servo drive
     /// in a timely fashion.
     QTimer _replyTimer;
+
+    /// Timer used to wait long enough to assure that replies to all sent
+    /// commands have been received, so we can establish command/reply
+    /// synchronization.
+    QTimer _syncWaitTimer;
+
+    /// Have we received at least one reply since starting the synchronization
+    /// process?
+    bool _syncReplyReceived;
 
     /// Data read but not yet processed
     static const int _ELMO_REPLY_BUFFER_SIZE = 2048;

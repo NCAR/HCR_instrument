@@ -21,8 +21,10 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _fd(-1),
     _readNotifier(0),
     _driveResponding(false),
-    _waitingForSyncReply(false),
+    _waitingForSync(false),
     _replyTimer(),
+    _syncWaitTimer(),
+    _syncReplyReceived(false),
     _rawReplyLen(0) {
     DLOG << "Instantiating ElmoServoDrive '" << _driveName << "' on device " <<
     		_ttyDev;
@@ -38,6 +40,12 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _replyTimer.setInterval(250);	// allow 250 ms for replies
     _replyTimer.setSingleShot(true);
     connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
+
+    // Assume that all replies to issued commands will arrive within 250 ms
+    // when we're trying to sync commands and replies.
+    _syncWaitTimer.setInterval(250);	// allow 250 ms for replies
+    _syncWaitTimer.setSingleShot(true);
+    connect(& _syncWaitTimer, SIGNAL(timeout()), this, SLOT(_syncWaitExpired()));
 
     // Send a null command just to get a reply from the drive.
     _execElmoCmd("");
@@ -99,41 +107,26 @@ ElmoServoDrive::moveTo(float angle) {
 	// Convert angle to drive counts
     int counts = int(COUNTS_PER_DEGREE * angle);
 
+    // Wrap to positive counts if necessary
+    if (counts < 0)
+    	counts += COUNTS_PER_DEGREE;
+
     // Generate a command to move to the given absolute position
     std::ostringstream cmdstream;
     cmdstream << "PA=" << counts;
     _execElmoCmd(cmdstream.str());
     _execElmoCmd("BG");
-    // XXX the rest is debugging for reply sync
-    int index = rand() % 3;
-    switch (index) {
-    case 0:
-        _execElmoCmd("PX");
-        break;
-    case 1:
-        _execElmoCmd("MO");
-        break;
-    case 2:
-        _execElmoCmd("EO");
-        break;
-    }
 }
 
 bool
-ElmoServoDrive::_execElmoCmd(const std::string cmd, bool initializeReplySync) {
+ElmoServoDrive::_execElmoCmd(const std::string cmd) {
 	// TODO: verify that we got a single command, with no terminator characters
 	// (or exactly one terminator at the end of the command)
 
-	if (initializeReplySync) {
-		// Stop sending commands after we send this one, so that the reply
-		// to this command can mark a known spot for synchronization. This
-		// flag will be set back to false after the next reply from the drive
-		// is received.
-		_waitingForSyncReply = true;
-	} else if (_waitingForSyncReply) {
-		// Don't send commands while we're waiting for a reply to establish
-		// synchronization between sent commands and received replies.
-		ILOG << "Dropping command '" << cmd << "', waiting for sync reply";
+	// Unless forced, don't send commands while we're waiting for a reply to
+	// establish command/reply synchronization.
+	if (_waitingForSync) {
+		DLOG << "Dropping command '" << cmd << "', waiting for sync";
 		return(false);
 	}
 	std::string tcmd = cmd + ";"; // copy of the command with terminator appended
@@ -158,50 +151,34 @@ ElmoServoDrive::_execElmoCmd(const std::string cmd, bool initializeReplySync) {
     // Add this command to our queue of commands not yet acknowledged
    	_unackedCmds.push(cmd);
 
-    ILOG << "Sent command '" << cmd << "' to " << _driveName << " drive (" <<
+    DLOG << "Sent command '" << cmd << "' to " << _driveName << " drive (" <<
     		_unackedCmds.size() << " unacked)";
     return(true);
 }
 
 void
 ElmoServoDrive::_readReply() {
-	bool dropReply = false;
 	/*
-	 * Stop the reply timer and note that the drive is responding.
+	 * Drop reply after we read it if this is the first response from the
+	 * drive, or if we're waiting for a reply to establish command/reply
+	 * synchronization.
+	 */
+	bool dropReply = _waitingForSync || ! _driveResponding;
+
+	/*
+	 * Stop the reply timer and note that the drive is now responding.
 	 */
 	_replyTimer.stop();
 	if (! _driveResponding) {
 		ILOG << _driveName << " drive is now responding";
 		_driveResponding = true;
-		dropReply = true;	// read and drop the reply below
 
-		// Make sure echo is disabled, since we require echo off when sync'ing
-		// replies with our queue of unacknowledged commands.
-		//
-		// We also set the initializeReplySync flag to make the reply to this
-		// command establish our command/reply synchronization.
-		_execElmoCmd("EO=0", true);
-
-		// Clear the list of unacknowledged commands
-		while (! _unackedCmds.empty()) {
-			_unackedCmds.pop();
-		}
-	} else if (_waitingForSyncReply) {
-		// Clear _unackedCmds *before* we set _waitingForSyncReply to false!
-		if (! _unackedCmds.empty()) {
-			ILOG << _driveName << ": clearing " << _unackedCmds.size() <<
-				" unacked command entries to sync commands and replies";
-		}
-		while (! _unackedCmds.empty()) {
-			_unackedCmds.pop();
-		}
-		// Read and drop this reply, and all commands and replies after this
-		// should be synchronized.
-		_waitingForSyncReply = false;
-		dropReply = true;	// read and drop the reply below
-		ILOG << _driveName << " commands and replies are now synced";
+		_startCommandReplySync();
 	}
 
+	if (_waitingForSync) {
+		_syncReplyReceived = true;
+	}
 	/*
 	 * Read what's available on the serial port
 	 */
@@ -221,10 +198,10 @@ ElmoServoDrive::_readReply() {
 		ELOG << "BUG: reply buffer overflow for " << _driveName << " drive. " <<
 				". Increase size of _ELMO_REPLY_BUFFER_SIZE!";
 		ELOG << "Attempting to resynchronize commands and replies.";
-		// Restart the reply synchronization process
+		// Reset and start over...
 		_rawReplyLen = 0;
 		_driveResponding = false;
-		_waitingForSyncReply = false;
+		_waitingForSync = false;
 		while (! _unackedCmds.empty()) {
 			_unackedCmds.pop();
 		}
@@ -234,36 +211,30 @@ ElmoServoDrive::_readReply() {
 	// If requested, just drop the reply and return.
 	if (dropReply) {
 		_rawReply[_rawReplyLen] = '\0';
-		ILOG << _driveName << " dropping reply '" << _rawReply << "'";
+		DLOG << _driveName << " dropping reply '" << _rawReply << "'";
 		_rawReplyLen = 0;
 		return;
 	}
 
 	_rawReply[_rawReplyLen] = '\0';
-	ILOG << _driveName << " raw reply '" << _rawReply << "', with " <<
+	DLOG << _driveName << " raw reply '" << _rawReply << "', with " <<
 			_unackedCmds.size() << " unacked";
+
+	// Pointer to the last found terminator character ";"
+	uint8_t * term = 0;
+
 	// Parse replies in order by finding their semicolon terminators, removing
 	// the associated commands from our unacknowledged queue.
 	int nAcked = 0;
 	int startNdx = 0;
 	while (startNdx < _rawReplyLen) {
-		// Find the next semicolon after startNdx
-		uint8_t * term = static_cast<uint8_t *>
-			(memchr(_rawReply + startNdx, ';', _rawReplyLen - startNdx));
-		// If there's no semicolon left in our buffer, save the remainder
-		// and break out. (Do the same if we found a semicolon, but have no
-		// unacknowledged commands left to match a reply to).
-		if (! term || _unackedCmds.empty()) {
-			int nkeep = _rawReplyLen - startNdx;
-			if (_unackedCmds.empty()) {
-				ELOG << _driveName << ": dropping " << nkeep << "bytes of unexpected reply";
-				nkeep = 0;	// XXX testing
-			}
-			memmove(_rawReply, _rawReply + startNdx, nkeep);
-			_rawReplyLen = nkeep;
-			break;
-		}
+		// Find the next semicolon terminator at or after startNdx
+		term = static_cast<uint8_t *>(memchr(_rawReply + startNdx, ';', _rawReplyLen - startNdx));
 
+		if (! term)
+			break;
+
+		// Get the next unacknowledged command
 		std::string cmd = _unackedCmds.front();
 
 		nAcked++;
@@ -299,8 +270,54 @@ ElmoServoDrive::_readReply() {
 		startNdx += replySize + 1;
 	}
 
-	ILOG << nAcked << " commands ack'ed";
+	// If the buffer did not end with a terminator, save the remainder for next
+	// time around.
+	if (term) {
+		// We parsed it all
+		_rawReplyLen = 0;
+	} else {
+		// Shift the stuff we didn't parse to the beginning of _rawReply.
+		int nkeep = _rawReplyLen - startNdx;
+		memmove(_rawReply, _rawReply + startNdx, nkeep);
+		_rawReplyLen = nkeep;
+		_rawReply[_rawReplyLen] = 0;
+		DLOG << _driveName << ": " << nkeep << " unparsed reply bytes. " <<
+				"Remainder is '" <<	_rawReply << "'";
+	}
+
 	return;
+}
+
+void
+ElmoServoDrive::_startCommandReplySync() {
+	// Make sure echo is disabled, since we require echo off when sync'ing
+	// replies with our queue of unacknowledged commands.
+	_execElmoCmd("EO=0");
+
+	// No more commands will be sent while _waitingForReplySync is true.
+	// Wait long enough for all pending replies to be received, then
+	// command/reply synchronization should be established.
+	_waitingForSync = true;
+	_syncReplyReceived = false;
+	_syncWaitTimer.start();
+}
+
+void
+ElmoServoDrive::_syncWaitExpired() {
+	// Empty the list of unacknowledged commands
+	while (! _unackedCmds.empty()) {
+		_unackedCmds.pop();
+	}
+	// We're done waiting for sync reply. Let commands go to the drive again.
+	_waitingForSync = false;
+
+	// If we got no replies while we were waiting, treat it as a reply timeout.
+	// Otherwise, command/reply synchronization has been achieved!
+	if (! _syncReplyReceived) {
+		_replyTimedOut();
+	} else {
+		ILOG << _driveName << " commands and replies are now synced";
+	}
 }
 
 void
@@ -360,22 +377,19 @@ ElmoServoDrive::_BaudToText(speed_t baudValue) {
 
 void
 ElmoServoDrive::_replyTimedOut() {
+	// Ignore reply timeouts while we're waiting for synchronization
+	if (_waitingForSync) {
+		ILOG << _driveName <<
+			" ignoring reply timeout while waiting for synchronization";
+		return;
+	}
+
+	// If the drive had been responding, note that it is no longer responding.
 	if (_driveResponding) {
 		ELOG << _driveName << " servo drive is no longer responding";
 	}
 
 	_driveResponding = false;
-	_waitingForSyncReply = false;
-
-	if (! _unackedCmds.empty()) {
-		std::ostringstream unackMsg;
-		while (! _unackedCmds.empty()) {
-			unackMsg << _unackedCmds.front().c_str() << ";";
-			_unackedCmds.pop();
-		}
-		ELOG << _driveName << " commands: '" << unackMsg.str() <<
-				"' were not acknowledged";
-	}
 
 	// Send a null command to try again for a response
 	_execElmoCmd("");
