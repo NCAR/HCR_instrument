@@ -2,24 +2,25 @@
  * DriveConnection.cpp
  *
  *  Created on: May 30, 2013
- *      Author: avaps
+ *      Author: Xuanyong Xu
  */
 
 #include "DriveConnection.h"
 #include <unistd.h>
 #include <iostream>
+#include <logx/Logging.h>
 
-inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
-inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
+LOGGING("DriveConnection")
+
+inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
+inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
 
 /////////////////////////////////////////////////////////////////////
 DriveConnection::DriveConnection() :
 	_rotDrive("/dev/ttydp00", "rotation"),
 	_tiltDrive("/dev/ttydp01", "tilt"),
-	_pointAngle(0),
-	_pitch(0.0),
-	_roll(0.0),
-	_drift(0.0),
+	_antennaMode(POINTING),
+	_pointingAngle(0),
 	_cmigitsShm()
 {
 }
@@ -41,13 +42,13 @@ void DriveConnection::updateAttitude()
 
 	// Get aircraft attitude
 	uint64_t dataTime;
-	float pitch, roll, heading, drift;
+	float pitch, roll, heading;
 	_cmigitsShm.getLatest3512Data(dataTime, pitch, roll, heading);
 	// Get ground speed components
 	float lat, lon, alt, velNorth, velEast, velUp;
 	_cmigitsShm.getLatest3501Data(dataTime, lat, lon, alt, velNorth, velEast, velUp);
 	// Calculate aircraft drift
-	drift = 90 - RadToDeg(atan2(velNorth, velEast)) - heading;
+	float drift = 90 - RadToDeg(atan2(velNorth, velEast)) - heading;
 
 	// For testing purpose, the pitch, roll, and drift will be randomly generated.
 
@@ -56,26 +57,36 @@ void DriveConnection::updateAttitude()
 	roll  = ((rand() % 1000) * 0.001 - 0.5) * 2;
 	drift = ((rand() % 1000) * 0.001 - 0.5) * 2;
 
-	if (_pitch != pitch || _roll != roll || _drift != drift) {
-		_pitch = pitch;
-		_roll  = roll;
-		_drift = drift;
-		adjustDrivePosition(pitch, roll, drift);
+	switch (_antennaMode) {
+	case POINTING:
+		_adjustPointingForAttitude(pitch, roll, drift);
+		break;
+	case SCANNING:
+		_adjustScanningForAttitude(pitch, roll, drift);
+		break;
 	}
 }
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::point(double angle)
+DriveConnection::point(float angle)
 {
-	// Save current pointing angle
-	_pointAngle = angle;
+	// Set up for fixed antenna pointing
+	_pointingAngle = angle;
+	_antennaMode = POINTING;
 	_rotDrive.moveTo(angle);
 }
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::adjustDrivePosition(double pitch, double roll, double drift)
+DriveConnection::scan(float ccwLimit, float cwLimit, float scanRate)
+{
+	WLOG << "scan not yet implemented";
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift)
 {
 	double sinPitch = sin(DegToRad(pitch));
 	double cosPitch = cos(DegToRad(pitch));
@@ -87,8 +98,8 @@ DriveConnection::adjustDrivePosition(double pitch, double roll, double drift)
 	double cosDrift = cos(DegToRad(drift));
 
 	// Track relative coordinates - desired beam position
-	double sinPoint = sin(DegToRad(_pointAngle));
-	double cosPoint = cos(DegToRad(_pointAngle));
+	double sinPoint = sin(DegToRad(_pointingAngle));
+	double cosPoint = cos(DegToRad(_pointingAngle));
 
 	double tiltAngle = 0.0;	// fixed!
 	double sinTilt = sin(DegToRad(tiltAngle));
@@ -125,4 +136,11 @@ DriveConnection::adjustDrivePosition(double pitch, double roll, double drift)
 	_rotDrive.moveTo(rot_a);
 	// Adjust tilt drive
 	_tiltDrive.moveTo(tilt_a);
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+DriveConnection::_adjustScanningForAttitude(float pitch, float roll, float drift)
+{
+	ILOG << "_adjustScanningForAttitude not implemented";
 }
