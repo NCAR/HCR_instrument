@@ -45,6 +45,18 @@ public:
 	} AntennaMode;
 
 protected:
+	// Given desired rotation and tilt angles, adjust to pod-relative angles
+	// using the given pod attitude information.
+	// @param[in,out] rot the desired rotation angle (in), and the needed
+	//	 pod-relative rotation angle (out), deg
+	// @param[in,out] tilt the desired tilt angle (in), and the needed
+	//   pod-relative tilt angle (out), deg
+	// @param pitch the pod pitch, deg
+	// @param roll the pod roll angle, deg
+	// @param drift the pod drift angle, deg
+	void _adjustForAttitude(float & rot, float & tilt, float pitch, float roll,
+			float drift);
+
 	/// Adjust pointing position according to aircraft attitude
     /// @param pitch The aircraft pitch angle
     /// @param roll The aircraft roll angle
@@ -78,6 +90,12 @@ protected:
 	/// Cmigits shared memory object
 	CmigitsSharedMemory _cmigitsShm;
 
+	/// Are we generating fake attitude values?
+	bool _fakeAttitude;
+
+	/// Drive "start" time (object instantiation time), used when generating
+	/// fake attitude.
+	QTime _driveStartTime;
 };
 
 #endif /* DRIVECONNECTION_H_ */

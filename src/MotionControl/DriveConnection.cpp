@@ -21,7 +21,9 @@ DriveConnection::DriveConnection() :
 	_tiltDrive("/dev/ttydp01", "tilt"),
 	_antennaMode(POINTING),
 	_pointingAngle(0),
-	_cmigitsShm()
+	_cmigitsShm(),
+	_fakeAttitude(true),
+	_driveStartTime(QTime::currentTime())
 {
 }
 
@@ -50,12 +52,20 @@ void DriveConnection::updateAttitude()
 	// Calculate aircraft drift
 	float drift = 90 - RadToDeg(atan2(velNorth, velEast)) - heading;
 
-	// For testing purpose, the pitch, roll, and drift will be randomly generated.
+	// Substitute fake attitude if requested
+	if (_fakeAttitude) {
+		// How many seconds since we started the drive?
+		float secsRunning = 0.001 * _driveStartTime.msecsTo(QTime::currentTime());
+		if (secsRunning < 0)
+			secsRunning += 86400;	// secs per day
 
-	// Update aircraft attitude data in degrees (up to +-1.0 degree)
-	pitch = ((rand() % 1000) * 0.001 - 0.5) * 2;
-	roll  = ((rand() % 1000) * 0.001 - 0.5) * 2;
-	drift = ((rand() % 1000) * 0.001 - 0.5) * 2;
+		// Pitch the aircraft through +/- 10 deg every seven seconds.
+		pitch = 10.0 * sin(2.0 * M_PI * fmod(secsRunning / 7.0, 1.0));
+		// Roll the aircraft through +/- 45 deg every 12 seconds.
+		roll = 45 * sin(2.0 * M_PI * fmod(secsRunning / 12.0, 1.0));
+		// Just leave drift at zero.
+		drift = 0.0;
+	}
 
 	switch (_antennaMode) {
 	case POINTING:
@@ -86,8 +96,12 @@ DriveConnection::scan(float ccwLimit, float cwLimit, float scanRate)
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift)
+DriveConnection::_adjustForAttitude(float & rot, float & tilt, float pitch,
+		float roll, float drift)
 {
+	float desiredRot = rot;
+	float desiredTilt = tilt;
+
 	double sinPitch = sin(DegToRad(pitch));
 	double cosPitch = cos(DegToRad(pitch));
 
@@ -98,12 +112,11 @@ DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift
 	double cosDrift = cos(DegToRad(drift));
 
 	// Track relative coordinates - desired beam position
-	double sinPoint = sin(DegToRad(_pointingAngle));
-	double cosPoint = cos(DegToRad(_pointingAngle));
+	double sinPoint = sin(DegToRad(desiredRot));
+	double cosPoint = cos(DegToRad(desiredRot));
 
-	double tiltAngle = 0.0;	// fixed!
-	double sinTilt = sin(DegToRad(tiltAngle));
-	double cosTilt = cos(DegToRad(tiltAngle));
+	double sinTilt = sin(DegToRad(desiredTilt));
+	double cosTilt = cos(DegToRad(desiredTilt));
 
 	// Convert to track relative Cartesian coordinates
 	double x_t = cosTilt * sinPoint;
@@ -125,17 +138,27 @@ DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift
 	    z_t * cosPitch * cosRoll;
 
 	// Convert from pod relative Cartesian coordinates to polar coordinates
-	double rot_a, tilt_a;
-	// tilt_a needs to be divided by 2!
-	tilt_a = RadToDeg(asin(y_a)) / 2;
-	// rot_a needs to be in the range of 0-360
-	rot_a  = RadToDeg(atan2(x_a, z_a));
-	if (rot_a < 0) rot_a += 360.0;
+	// and save the adjusted rotation and tilt angles.
 
-	// Adjust rotation drive
-	_rotDrive.moveTo(rot_a);
-	// Adjust tilt drive
-	_tiltDrive.moveTo(tilt_a);
+	// tilt needs to be divided by 2!
+	tilt = RadToDeg(asin(y_a)) / 2;
+	// rotation needs to be in the range of 0-360
+	rot  = RadToDeg(atan2(x_a, z_a));
+	if (rot < 0) rot += 360.0;
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift)
+{
+	// Start with the desired track-relative rotation and tilt angles
+	float rot = _pointingAngle;
+	float tilt = 0.0;
+	// Adjust to pod-relative rotation and tilt angles
+	_adjustForAttitude(rot, tilt, pitch, roll, drift);
+	// Move the drives to their new angles
+	_rotDrive.moveTo(rot);
+	_tiltDrive.moveTo(tilt);
 }
 
 /////////////////////////////////////////////////////////////////////
