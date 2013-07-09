@@ -305,9 +305,14 @@ ElmoServoDrive::_readReply() {
 
 				// Save reply from TM "system time" command
 				if (! cmd.compare("TM")) {
-					uint32_t time = qCmdReply.toUInt(&ok);
+					// System time is actually a 32-bit unsigned count, but
+					// the reply sends it as a signed value. We'll convert
+					// to unsigned as long as the value parses as an int.
+					int32_t time = qCmdReply.toInt(&ok);
 					if (ok) {
-						_driveSystemTime = time;	// drive system time, us
+						// Reinterpret the returned value as an *unsigned*
+						// 32-bit int.
+						_driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
 					} else {
 						WLOG << _driveName << ": bad TM reply '" <<
 								cmdReply << "'";
