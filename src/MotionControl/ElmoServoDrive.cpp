@@ -290,8 +290,6 @@ ElmoServoDrive::_readReply() {
 						WLOG << _driveName << ": bad SR reply '" <<
 								cmdReply << "'";
 					}
-					ILOG << _driveName << " status register: 0x" << std::hex <<
-							_driveStatusRegister << std::dec;
 				}
 
 				// Save reply from TI[1] "temperature indicator 1" command
@@ -303,8 +301,6 @@ ElmoServoDrive::_readReply() {
 						WLOG << _driveName << ": bad TI[1] reply '" <<
 								cmdReply << "'";
 					}
-					ILOG << _driveName << " temperature: " <<
-							_driveTemperature << " deg C";
 				}
 
 				// Save reply from TM "system time" command
@@ -316,8 +312,6 @@ ElmoServoDrive::_readReply() {
 						WLOG << _driveName << ": bad TM reply '" <<
 								cmdReply << "'";
 					}
-					ILOG << _driveName << " time: " << _driveSystemTime <<
-							" us";
 				}
 			}
 			delete(cmdReply);
