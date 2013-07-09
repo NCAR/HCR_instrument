@@ -131,12 +131,13 @@ ElmoServoDrive::_execElmoCmd(const std::string cmd) {
 	// TODO: verify that we got a single command, with no terminator characters
 	// (or exactly one terminator at the end of the command)
 
-	// Unless forced, don't send commands while we're waiting for a reply to
-	// establish command/reply synchronization.
+	// Don't send commands while we're waiting to establish command/reply
+	// synchronization.
 	if (_waitingForSync) {
 		DLOG << "Dropping command '" << cmd << "', waiting for sync";
 		return(false);
 	}
+
 	std::string tcmd = cmd + ";"; // copy of the command with terminator appended
     int tcmdlen = tcmd.length();
 
