@@ -36,8 +36,9 @@ public:
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
-    /// Optical encoder counts per degree.
-    static const double COUNTS_PER_DEGREE = 400000 / 360.0;
+    /// Optical encoder counts per full circle.
+    static const uint32_t COUNTS_PER_CIRCLE = 400000;
+    static const float COUNTS_PER_DEGREE = COUNTS_PER_CIRCLE / 360.0;
 
 private slots:
     /**

@@ -106,17 +106,18 @@ ElmoServoDrive::moveTo(float angle) {
 	}
 
 	// Normalize the angle into range 0-360
-	angle = fmod(angle, 360.0);
+	angle = fmodf(angle, 360.0);
 	if (angle < 0) {
 		angle += 360.0;
 	}
 
 	// Convert angle to drive counts
-    int counts = int(COUNTS_PER_DEGREE * angle);
+    uint32_t counts = int(COUNTS_PER_DEGREE * angle);
 
-    // Wrap to positive counts if necessary
-    if (counts < 0)
-    	counts += COUNTS_PER_DEGREE;
+    // Correct the occasional outlier due to floating point rounding which
+    // yields COUNTS_PER_CIRCLE counts rather than zero.
+    if (counts == COUNTS_PER_CIRCLE)
+    	counts = 0;
 
     // Generate a command to move to the given absolute position
     std::ostringstream cmdstream;
