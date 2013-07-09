@@ -36,6 +36,15 @@ public:
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
+    /// Get latest sampled drive status register value
+    uint32_t driveStatusRegister() { return _driveStatusRegister; }
+
+    /// Get latest sampled drive system time, in microseconds
+    uint32_t driveSystemTime() { return _driveSystemTime; }
+
+    /// Get latest sampled drive temperature, C
+    uint32_t driveTemperature() { return _driveTemperature; }
+
     /// Optical encoder counts per full circle.
     static const uint32_t COUNTS_PER_CIRCLE = 400000;
     static const float COUNTS_PER_DEGREE = COUNTS_PER_CIRCLE / 360.0;
@@ -55,6 +64,11 @@ private slots:
      * Slot called when our sync wait timer expires.
      */
     void _syncWaitExpired();
+
+    /**
+     * Slot called when it's time to collect status
+     */
+    void _collectStatus();
 
 private:
     /// Open our serial connection to the drive.
@@ -110,6 +124,9 @@ private:
     /// in a timely fashion.
     QTimer _replyTimer;
 
+    /// Timer used to collect status information on a regular basis
+    QTimer _statusTimer;
+
     /// Timer used to wait long enough to assure that replies to all sent
     /// commands have been received, so we can establish command/reply
     /// synchronization.
@@ -124,6 +141,14 @@ private:
     uint8_t _rawReply[_ELMO_REPLY_BUFFER_SIZE];
     uint16_t _rawReplyLen;
 
+    /// drive temperature, sampled at 5 Hz
+    int _driveTemperature;
+
+    /// drive system time, microseconds, sampled at 5 Hz
+    uint32_t _driveSystemTime;
+
+    /// drive status register, sampled at 5 Hz
+    uint32_t _driveStatusRegister;
 };
 
 #endif /* ELMOSERVODRIVE_H_ */

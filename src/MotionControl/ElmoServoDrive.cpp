@@ -24,6 +24,7 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _driveResponding(false),
     _waitingForSync(false),
     _replyTimer(),
+    _statusTimer(),
     _syncWaitTimer(),
     _syncReplyReceived(false),
     _rawReplyLen(0) {
@@ -41,6 +42,11 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _replyTimer.setInterval(250);	// allow 250 ms for replies
     _replyTimer.setSingleShot(true);
     connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
+
+    // Collect status information at 5 Hz rate
+    _statusTimer.setInterval(200);	// 200 ms -> 5 Hz
+    connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
+    _statusTimer.start();
 
     // Assume that all replies to issued commands will arrive within 250 ms
     // when we're trying to sync commands and replies.
@@ -266,8 +272,53 @@ ElmoServoDrive::_readReply() {
 				ELOG << _driveName << " command '" << cmd << "' gave error " <<
 						errorCode;
 			} else {
-				ILOG << _driveName << " command '" << cmd << "' replied '" <<
+				DLOG << _driveName << " command '" << cmd << "' replied '" <<
 						cmdReply << "'";
+
+				QString qCmdReply(reinterpret_cast<char*>(cmdReply));
+				bool ok;
+
+				// Look for replies to status requests we've made, and stash
+				// the returned values.
+
+				// Save reply from SR "status register" command
+				if (! cmd.compare("SR")) {
+					uint32_t statusRegister = qCmdReply.toUInt(&ok);
+					if (ok) {
+						_driveStatusRegister = statusRegister;
+					} else {
+						WLOG << _driveName << ": bad SR reply '" <<
+								cmdReply << "'";
+					}
+					ILOG << _driveName << " status register: 0x" << std::hex <<
+							_driveStatusRegister << std::dec;
+				}
+
+				// Save reply from TI[1] "temperature indicator 1" command
+				if (! cmd.compare("TI[1]")) {
+					uint32_t temp = qCmdReply.toInt(&ok);
+					if (ok) {
+						_driveTemperature = temp;	// drive temperature, deg C
+					} else {
+						WLOG << _driveName << ": bad TI[1] reply '" <<
+								cmdReply << "'";
+					}
+					ILOG << _driveName << " temperature: " <<
+							_driveTemperature << " deg C";
+				}
+
+				// Save reply from TM "system time" command
+				if (! cmd.compare("TM")) {
+					uint32_t time = qCmdReply.toUInt(&ok);
+					if (ok) {
+						_driveSystemTime = time;	// drive system time, us
+					} else {
+						WLOG << _driveName << ": bad TM reply '" <<
+								cmdReply << "'";
+					}
+					ILOG << _driveName << " time: " << _driveSystemTime <<
+							" us";
+				}
 			}
 			delete(cmdReply);
 		}
@@ -402,4 +453,14 @@ ElmoServoDrive::_replyTimedOut() {
 
 	// Send a null command to try again for a response
 	_execElmoCmd("");
+}
+
+void
+ElmoServoDrive::_collectStatus() {
+	// Send commands to the drive to get back status values we want. The
+	// status values will be parsed out and saved in _readReply when the
+	// replies come back.
+	_execElmoCmd("SR");		// status register
+	_execElmoCmd("TI[1]");	// "temperature indicator 1", drive temperature
+	_execElmoCmd("TM");		// system time
 }
