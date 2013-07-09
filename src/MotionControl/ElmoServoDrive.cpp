@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <cerrno>
+#include <cmath>
 #include <cstdlib>
 #include <stdint.h>
 #include <logx/Logging.h>
@@ -102,6 +103,12 @@ ElmoServoDrive::moveTo(float angle) {
 	// Don't bother if the drive is not responding
 	if (! _driveResponding) {
 		return;
+	}
+
+	// Normalize the angle into range 0-360
+	angle = fmod(angle, 360.0);
+	if (angle < 0) {
+		angle += 360.0;
 	}
 
 	// Convert angle to drive counts
