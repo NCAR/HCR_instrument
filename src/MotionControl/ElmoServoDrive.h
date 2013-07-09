@@ -36,14 +36,19 @@ public:
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
+    /// Return the drive responding state. This is true as long as replies to
+    /// commands are received from the drive.
+    /// @return the drive responding state
+    bool driveResponding() const { return _driveResponding; }
+
     /// Get latest sampled drive status register value
-    uint32_t driveStatusRegister() { return _driveStatusRegister; }
+    uint32_t driveStatusRegister() const { return _driveStatusRegister; }
 
     /// Get latest sampled drive system time, in microseconds
-    uint32_t driveSystemTime() { return _driveSystemTime; }
+    uint32_t driveSystemTime() const { return _driveSystemTime; }
 
     /// Get latest sampled drive temperature, C
-    uint32_t driveTemperature() { return _driveTemperature; }
+    uint32_t driveTemperature() const { return _driveTemperature; }
 
     /// Optical encoder counts per full circle.
     static const uint32_t COUNTS_PER_CIRCLE = 400000;
