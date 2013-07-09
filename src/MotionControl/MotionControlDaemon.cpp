@@ -181,5 +181,7 @@ main(int argc, char** argv)
         App->processEvents();
     }
 
+    delete(DriveConn);
+    delete(App);
 	return 0;
 }
