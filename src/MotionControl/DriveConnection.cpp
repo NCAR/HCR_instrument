@@ -59,10 +59,10 @@ void DriveConnection::updateAttitude()
 		if (secsRunning < 0)
 			secsRunning += 86400;	// secs per day
 
-		// Pitch the aircraft through +/- 10 deg every seven seconds.
-		pitch = 10.0 * sin(2.0 * M_PI * fmod(secsRunning / 7.0, 1.0));
-		// Roll the aircraft through +/- 45 deg every 12 seconds.
-		roll = 45 * sin(2.0 * M_PI * fmod(secsRunning / 12.0, 1.0));
+		// Pitch the aircraft through +/- 10 deg every 3 seconds.
+		pitch = 10.0 * sin(2.0 * M_PI * fmod(secsRunning / 3.0, 1.0));
+		// Roll the aircraft through +/- 45 deg every 11 seconds.
+		roll = 45 * sin(2.0 * M_PI * fmod(secsRunning / 11.0, 1.0));
 		// Just leave drift at zero.
 		drift = 0.0;
 	}
