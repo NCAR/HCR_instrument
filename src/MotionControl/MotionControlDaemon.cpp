@@ -8,7 +8,6 @@
 #include <csignal>
 #include <iostream>
 #include <QtGui>
-#include <QTime>
 #include "svnInfo.h"
 #include <logx/Logging.h>
 
@@ -57,8 +56,8 @@ startXmlrpcWorkAlarm() {
 //    const struct timeval tv = { 0, 500000 }; // 0.5s (2Hz)
 //    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
 //    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
-//    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
-    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
+    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
+//    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
@@ -157,9 +156,6 @@ main(int argc, char** argv)
     signal(SIGALRM, alarmHandler);
     startXmlrpcWorkAlarm();
 
-	QTime startTime(QTime::currentTime());
-	int updateCount = 0;
-
     while (true) {
     	if (Terminate)
     		break;
@@ -170,12 +166,6 @@ main(int argc, char** argv)
 
 	   	// update aircraft attitude
 	   	DriveConn->updateAttitude();
-	   	updateCount++;
-	   	if (! (updateCount % 100)) {
-	   		ILOG << "Average update rate " <<
-	   			updateCount / (0.001 * startTime.msecsTo(QTime::currentTime())) <<
-	   			" Hz";
-	   	}
 
         // Process Qt events
         App->processEvents();
