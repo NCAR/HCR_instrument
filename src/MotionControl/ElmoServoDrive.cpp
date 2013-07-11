@@ -189,9 +189,7 @@ ElmoServoDrive::_readReply() {
 		_driveResponding = true;
 
 		_startCommandReplySync();
-	}
-
-	if (_waitingForSync) {
+	} else if (_waitingForSync) {
 		_syncReplyReceived = true;
 	}
 	/*
