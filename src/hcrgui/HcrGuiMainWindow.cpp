@@ -23,6 +23,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _updateTimer(this),
     _cmigitsStatusDialog(this),
     _xmitStatusDialog(this),
+    _antennaModeDialog(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
     _drxStatusThread(hcrdrxHost, hcrdrxPort),
     _cmigitsDaemonRpcClient(hcrdrxHost, 8002),
@@ -221,6 +222,14 @@ HcrGuiMainWindow::on_hvButton_clicked() {
 void
 HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
     _drxStatusThread.rpcClient().setHmcMode(index);
+}
+
+/// Pop up the antenna mode editing dialog
+void
+HcrGuiMainWindow::on_antennaModeButton_clicked() {
+    if (_antennaModeDialog.exec() == QDialog::Accepted) {
+        // XXX do something!
+    }
 }
 
 void

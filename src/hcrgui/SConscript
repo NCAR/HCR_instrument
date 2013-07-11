@@ -18,6 +18,7 @@ HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
 HcrGuiXmitStatusDialog.cpp
 HcrGuiCmigitsStatusDialog.cpp
+HcrGuiAntennaModeDialog.cpp
 qrc_HcrGuiMainWindow.cc
 XmitdStatusThread.cpp
 """)
@@ -28,6 +29,7 @@ uifiles = Split("""
 HcrGuiMainWindow.ui
 HcrGuiXmitStatusDialog.ui
 HcrGuiCmigitsStatusDialog.ui
+HcrGuiAntennaModeDialog.ui
 """)
 hcrguiEnv.Uic4(uifiles)
 
@@ -42,6 +44,7 @@ HcrdrxStatusThread.h
 HcrGuiMainWindow.h
 HcrGuiXmitStatusDialog.h
 HcrGuiCmigitsStatusDialog.h
+HcrGuiAntennaModeDialog.h
 XmitdStatusThread.h
 """)
 

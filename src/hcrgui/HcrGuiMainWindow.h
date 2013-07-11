@@ -21,6 +21,7 @@
 #include "ui_HcrGuiMainWindow.h"
 #include "HcrGuiXmitStatusDialog.h"
 #include "HcrGuiCmigitsStatusDialog.h"
+#include "HcrGuiAntennaModeDialog.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -35,6 +36,7 @@ private slots:
     void on_hvButton_clicked();
     void on_xmitterDetailsButton_clicked();
     void on_hmcModeCombo_activated(int index);
+    void on_antennaModeButton_clicked();
     /// @brief Update GUI state based on _xmitStatus and _drxStatus
     void _update();
     /// @brief Save the last status received from hcrdrx.
@@ -79,6 +81,7 @@ private:
     QTimer _updateTimer;
     HcrGuiCmigitsStatusDialog _cmigitsStatusDialog;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
+    HcrGuiAntennaModeDialog _antennaModeDialog;
     XmitdStatusThread _xmitdStatusThread;
     HcrdrxStatusThread _drxStatusThread;
     CmigitsDaemonRpcClient _cmigitsDaemonRpcClient;
