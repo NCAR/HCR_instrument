@@ -36,8 +36,8 @@ public:
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
-    /// Return the drive responding state. This is true as long as replies to
-    /// commands are received from the drive.
+    /// Return the drive responding state. The state is true as long as replies
+    /// to commands are being received from the drive.
     /// @return the drive responding state
     bool driveResponding() const { return _driveResponding; }
 
