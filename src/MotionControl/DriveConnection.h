@@ -19,24 +19,32 @@ class DriveConnection : public QObject
 	Q_OBJECT
 
 public:
-	/// Constructor
+	/// @brief Constructor
 	DriveConnection();
-	/// Destructor
+	/// @brief Destructor
 	virtual ~DriveConnection();
 
-    /// Point the antenna to a specific angle
+    /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
 	void point(float angle);
 
-	/// Scan the antenna between the given counterclockwise and clockwise
+	/// @brief Scan the antenna between the given counterclockwise and clockwise
 	/// limits, at the given scan rate.
 	/// @param ccwLimit the counterclockwise limit of the scan, deg
 	/// @param cwLimit the clockwise limit of the scan, deg
 	/// @pararm scanRate the scan rate, deg/s
 	void scan(float ccwLimit, float cwLimit, float scanRate);
 
-	/// Update aircraft attitude used to adjust drive position
+	/// @brief Update aircraft attitude used to adjust drive position
 	void updateAttitude();
+
+	/// @brief Return a reference to the rotation drive.
+	/// @return a reference to the rotation drive.
+	const ElmoServoDrive & rotationDrive() const { return(_rotDrive); }
+
+	/// @brief Return a reference to the tilt drive.
+	/// @return a reference to the tilt drive.
+	const ElmoServoDrive & tiltDrive() const { return(_tiltDrive); }
 
 	/// Antenna motion mode: pointing or scanning
 	typedef enum {
@@ -69,7 +77,9 @@ protected:
     /// @param drift The aircraft drift angle
 	void _adjustScanningForAttitude(float pitch, float roll, float drift);
 
+	/// Rotation drive
 	ElmoServoDrive _rotDrive;
+	/// Tilt drive
 	ElmoServoDrive _tiltDrive;
 
 	/// Current antenna mode
