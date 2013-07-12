@@ -75,6 +75,11 @@ private slots:
      */
     void _collectStatus();
 
+    /**
+     * Reset all status values to a "status unknown" state
+     */
+    void _resetStatus();
+
 private:
     /// Open our serial connection to the drive.
     void _openTty();

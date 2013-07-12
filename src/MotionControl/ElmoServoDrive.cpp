@@ -447,6 +447,7 @@ ElmoServoDrive::_replyTimedOut() {
 	}
 
 	_driveResponding = false;
+	_resetStatus();
 
 	// Send a null command to try again for a response
 	_execElmoCmd("");
@@ -460,4 +461,10 @@ ElmoServoDrive::_collectStatus() {
 	_execElmoCmd("SR");		// status register
 	_execElmoCmd("TI[1]");	// "temperature indicator 1", drive temperature
 	_execElmoCmd("TM");		// system time
+}
+
+void
+ElmoServoDrive::_resetStatus() {
+	_driveTemperature = 0;
+	_driveStatusRegister = 0;
 }
