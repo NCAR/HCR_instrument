@@ -88,7 +88,9 @@ private:
     /// SimplIQ command should be in the cmd string, and the string should
     /// contain no terminator characters (';').
     /// @param cmd the single Elmo SimpIQ command to execute
-    bool _execElmoCmd(const std::string cmd);
+    /// @param emptyReplyExpected set to true if an empty reply to the command
+    ///		is expected. Default: true
+    bool _execElmoCmd(const std::string cmd, bool emptyReplyExpected = true);
 
     /// Read a reply from the servo drive
     int _getReply();
@@ -123,7 +125,15 @@ private:
     bool _driveResponding;
 
     /// List of commands not yet acknowledged by the drive
-    std::queue<std::string> _unackedCmds;
+    class CmdQueueEntry {
+    public:
+    	CmdQueueEntry(const std::string cmd_text, bool empty_reply_expected) :
+    		cmdText(cmd_text),
+    		emptyReplyExpected(empty_reply_expected) {}
+    	std::string cmdText;
+    	bool emptyReplyExpected;
+    };
+    std::queue<CmdQueueEntry> _unackedCmds;
 
     /// Boolean to mark the period where we wait for a reply to a known
     /// command. After the reply is received, we can synchronize replies with

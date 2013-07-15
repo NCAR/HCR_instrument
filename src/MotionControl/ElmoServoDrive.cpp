@@ -133,7 +133,7 @@ ElmoServoDrive::moveTo(float angle) {
 }
 
 bool
-ElmoServoDrive::_execElmoCmd(const std::string cmd) {
+ElmoServoDrive::_execElmoCmd(const std::string cmd, bool emptyReplyExpected) {
 	// TODO: verify that we got a single command, with no terminator characters
 	// (or exactly one terminator at the end of the command)
 
@@ -164,7 +164,8 @@ ElmoServoDrive::_execElmoCmd(const std::string cmd) {
     }
 
     // Add this command to our queue of commands not yet acknowledged
-   	_unackedCmds.push(cmd);
+    CmdQueueEntry entry(cmd, emptyReplyExpected);
+   	_unackedCmds.push(entry);
 
     DLOG << "Sent command '" << cmd << "' to " << _driveName << " drive (" <<
     		_unackedCmds.size() << " unacked)";
@@ -186,8 +187,6 @@ ElmoServoDrive::_readReply() {
 	_replyTimer.stop();
 	if (! _driveResponding) {
 		ILOG << _driveName << " drive is now responding";
-		_driveResponding = true;
-
 		_startCommandReplySync();
 	} else if (_waitingForSync) {
 		_syncReplyReceived = true;
@@ -212,12 +211,7 @@ ElmoServoDrive::_readReply() {
 				". Increase size of _ELMO_REPLY_BUFFER_SIZE!";
 		ELOG << "Attempting to resynchronize commands and replies.";
 		// Reset and start over...
-		_rawReplyLen = 0;
-		_driveResponding = false;
-		_waitingForSync = false;
-		while (! _unackedCmds.empty()) {
-			_unackedCmds.pop();
-		}
+		_startCommandReplySync();
 		return;
 	}
 
@@ -238,7 +232,6 @@ ElmoServoDrive::_readReply() {
 
 	// Parse replies in order by finding their semicolon terminators, removing
 	// the associated commands from our unacknowledged queue.
-	int nAcked = 0;
 	int startNdx = 0;
 	while (startNdx < _rawReplyLen) {
 		// Find the next semicolon terminator at or after startNdx
@@ -248,14 +241,21 @@ ElmoServoDrive::_readReply() {
 			break;
 
 		// Get the next unacknowledged command
-		std::string cmd = _unackedCmds.front();
-
-		nAcked++;
+		std::string cmd = _unackedCmds.front().cmdText;
+		bool emptyReplyExpected = _unackedCmds.front().emptyReplyExpected;
 
 		int replySize = term - (_rawReply + startNdx);
 		if (replySize == 0) {
-			// Empty reply indicates success
-			DLOG << _driveName << " command '" << cmd << "' succeeded";
+			if (emptyReplyExpected) {
+				// Empty reply indicates success
+				DLOG << _driveName << " command '" << cmd << "' succeeded";
+			} else {
+				ELOG << _driveName << ": No value included in reply to '" <<
+						cmd << "' command. Resynchronizing commands a replies.";
+				// Reset and start over...
+				this->_startCommandReplySync();
+				return;
+			}
 		} else {
 			// Copy out the reply to the command into a null-terminated
 			// uint8_t array.
@@ -270,8 +270,16 @@ ElmoServoDrive::_readReply() {
 				ELOG << _driveName << " command '" << cmd << "' gave error " <<
 						errorCode;
 			} else {
-				DLOG << _driveName << " command '" << cmd << "' replied '" <<
-						cmdReply << "'";
+				if (! emptyReplyExpected) {
+					DLOG << _driveName << " command '" << cmd << "' replied '" <<
+							cmdReply << "'";
+				} else {
+					ELOG << _driveName << " command '" << cmd << "' " <<
+							"gave unexpected reply '" << cmdReply << "'. " <<
+							"Resynchronizing commands and replies.";
+					_startCommandReplySync();
+					return;
+				}
 
 				QString qCmdReply(reinterpret_cast<char*>(cmdReply));
 				bool ok;
@@ -354,6 +362,8 @@ ElmoServoDrive::_startCommandReplySync() {
 	// No more commands will be sent while _waitingForReplySync is true.
 	// Wait long enough for all pending replies to be received, then
 	// command/reply synchronization should be established.
+	_rawReplyLen = 0;
+	_driveResponding = true;
 	_waitingForSync = true;
 	_syncReplyReceived = false;
 	_syncWaitTimer.start();
@@ -458,9 +468,9 @@ ElmoServoDrive::_collectStatus() {
 	// Send commands to the drive to get back status values we want. The
 	// status values will be parsed out and saved in _readReply when the
 	// replies come back.
-	_execElmoCmd("SR");		// status register
-	_execElmoCmd("TI[1]");	// "temperature indicator 1", drive temperature
-	_execElmoCmd("TM");		// system time
+	_execElmoCmd("SR", false);		// status register
+	_execElmoCmd("TI[1]", false);	// "temperature indicator 1", drive temperature
+	_execElmoCmd("TM", false);		// system time
 }
 
 void
