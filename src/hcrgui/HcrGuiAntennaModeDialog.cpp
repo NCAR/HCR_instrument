@@ -13,6 +13,21 @@ HcrGuiAntennaModeDialog::HcrGuiAntennaModeDialog(QWidget *parent) :
     _ui.setupUi(this);
 }
 
+HcrGuiAntennaModeDialog::AntennaMode
+HcrGuiAntennaModeDialog::getMode() {
+	int index = _ui.tabWidget->currentIndex();
+	if (_ui.tabWidget->tabText(index).contains("Pointing"))
+		return HcrGuiAntennaModeDialog::POINTING;
+	else
+		return HcrGuiAntennaModeDialog::SCANNING;
+}
+
+int
+HcrGuiAntennaModeDialog::getPointingAngle() {
+	return _ui.pointingSpinBox->value();
+}
+
 void
-HcrGuiAntennaModeDialog::updateStatus() {
+HcrGuiAntennaModeDialog::on_buttonBox_clicked() {
+	this->accept();
 }

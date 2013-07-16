@@ -13,13 +13,27 @@
 
 class HcrGuiAntennaModeDialog : public QDialog {
     Q_OBJECT
+
 public:
+	/// Antenna motion mode: pointing or scanning
+	typedef enum {
+		POINTING,
+		SCANNING
+	} AntennaMode;
+
     HcrGuiAntennaModeDialog(QWidget *parent);
     virtual ~HcrGuiAntennaModeDialog() {}
 
-public slots:
-    void updateStatus();
+    // Get selected antenna mode
+    AntennaMode getMode();
+    // Get antenna pointing angle
+    int getPointingAngle();
+
+private slots:
+    void on_buttonBox_clicked();
+
 private:
     Ui::HcrGuiAntennaModeDialog _ui;
 };
+
 #endif /*HCRGUIANTENNAMODEDIALOG_H_*/

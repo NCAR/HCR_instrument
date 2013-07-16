@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>235</width>
-    <height>144</height>
+    <width>243</width>
+    <height>193</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="pointingAngleLabel">
          <property name="text">
-          <string>Pointing angle</string>
+          <string>Pointing angle (deg)</string>
          </property>
         </widget>
        </item>
@@ -86,14 +86,14 @@
        <item row="0" column="0">
         <widget class="QLabel" name="ccwLimitLabel">
          <property name="text">
-          <string>CCW limit</string>
+          <string>CCW limit (deg)</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="cwLimitLabel">
          <property name="text">
-          <string>CW limit</string>
+          <string>CW limit (deg)</string>
          </property>
         </widget>
        </item>
