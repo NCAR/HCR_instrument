@@ -27,6 +27,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _xmitdStatusThread(xmitterHost, xmitterPort),
     _drxStatusThread(hcrdrxHost, hcrdrxPort),
     _cmigitsDaemonRpcClient(hcrdrxHost, 8002),
+    _motionControlRpcClient(hcrdrxHost, 8080),	// port #????
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
@@ -228,7 +229,12 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
-        // XXX do something!
+    	if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::POINTING) {
+    		int angle = _antennaModeDialog.getPointingAngle();
+    		// Send the command to the antenna
+        	//_motionControlRpcClient.point(angle);
+    		std::cout << "Pointing angle = " << angle << std::endl;
+    	}
     }
 }
 

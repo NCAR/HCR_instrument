@@ -10,6 +10,7 @@
 #include <deque>
 #include <ctime>
 #include <CmigitsDaemonRpcClient.h>
+#include <MotionControlRpcClient.h>
 
 #include <QMainWindow>
 #include <QPixmap>
@@ -85,6 +86,7 @@ private:
     XmitdStatusThread _xmitdStatusThread;
     HcrdrxStatusThread _drxStatusThread;
     CmigitsDaemonRpcClient _cmigitsDaemonRpcClient;
+    MotionControlRpcClient _motionControlRpcClient;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
