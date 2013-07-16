@@ -16,6 +16,7 @@
 #include <xmlrpc-c/server_abyss.hpp>
 
 #include "DriveConnection.h"
+#include "DriveStatus.h"
 
 LOGGING("MotionControlDaemon")
 
@@ -124,6 +125,33 @@ public:
 		qDebug() << "Scan from" << angleA << "to" << angleB;
 
 		*retvalP = xmlrpc_c::value_int(0);
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+	}
+};
+
+/////////////////////////////////////////////////////////////////////
+class DriveStatusMethod : public xmlrpc_c::method
+{
+public:
+	DriveStatusMethod() {
+		// The method result and arguments are all integers
+		this->_signature = "S:";	// we return a struct
+		this->_help = "This method returns servo drive status";
+	}
+
+	void
+	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+	{
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+		paramList.verifyEnd(0);
+
+		DriveStatus status(DriveConn->rotationDrive(), DriveConn->tiltDrive());
+		xmlrpc_c::value_struct dict = status.to_value_struct();
+		*retvalP = dict;
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
