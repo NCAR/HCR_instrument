@@ -1,12 +1,12 @@
 /*
- * DriveConnection.h
+ * MotionControl.h
  *
  *  Created on: May 30, 2013
  *      Author: avaps
  */
 
-#ifndef DRIVECONNECTION_H_
-#define DRIVECONNECTION_H_
+#ifndef MOTIONCONTROL_H_
+#define MOTIONCONTROL_H_
 
 #include <QtCore>
 #include <QtNetwork>
@@ -14,15 +14,15 @@
 #include "CmigitsSharedMemory.h"
 #include "ElmoServoDrive.h"
 
-class DriveConnection : public QObject
+class MotionControl : public QObject
 {
 	Q_OBJECT
 
 public:
 	/// @brief Constructor
-	DriveConnection();
+	MotionControl();
 	/// @brief Destructor
-	virtual ~DriveConnection();
+	virtual ~MotionControl();
 
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
@@ -108,4 +108,4 @@ protected:
 	QTime _driveStartTime;
 };
 
-#endif /* DRIVECONNECTION_H_ */
+#endif /* MOTIONCONTROL_H_ */

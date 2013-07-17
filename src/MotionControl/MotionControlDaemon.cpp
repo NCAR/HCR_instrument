@@ -15,7 +15,7 @@
 #include <xmlrpc-c/registry.hpp>
 #include <xmlrpc-c/server_abyss.hpp>
 
-#include "DriveConnection.h"
+#include "MotionControl.h"
 #include "DriveStatus.h"
 
 LOGGING("MotionControlDaemon")
@@ -25,8 +25,8 @@ quint16 ServerPort = 8080;
 // QApplication instance
 QApplication * App = 0;
 
-// DriveConnection instance
-DriveConnection * DriveConn = 0;
+// MotionControl instance
+MotionControl * Control = 0;
 
 // Set to true when it's time to terminate
 bool Terminate = false;
@@ -93,7 +93,7 @@ public:
 		double const angle(paramList.getDouble(0));
 		paramList.verifyEnd(1);
 
-		DriveConn->point(angle);
+		Control->point(angle);
 
 		*retvalP = xmlrpc_c::value_int(0);
 
@@ -124,7 +124,7 @@ public:
 		double const scanRate(paramList.getDouble(2));
 		paramList.verifyEnd(3);
 
-		DriveConn->scan(ccwLimit, cwLimit, scanRate);
+		Control->scan(ccwLimit, cwLimit, scanRate);
 
 		*retvalP = xmlrpc_c::value_int(0);
 
@@ -138,8 +138,8 @@ class DriveStatusMethod : public xmlrpc_c::method
 {
 public:
 	DriveStatusMethod() {
-		// The method result and arguments are all integers
-		this->_signature = "S:";	// we return a struct
+		// The method takes no arguments, and returns a struct
+		this->_signature = "S:";
 		this->_help = "This method returns servo drive status";
 	}
 
@@ -151,7 +151,7 @@ public:
 
 		paramList.verifyEnd(0);
 
-		DriveStatus status(DriveConn->rotationDrive(), DriveConn->tiltDrive());
+		DriveStatus status(Control->rotationDrive(), Control->tiltDrive());
 		xmlrpc_c::value_struct dict = status.to_value_struct();
 		*retvalP = dict;
 
@@ -169,7 +169,7 @@ main(int argc, char** argv)
 
 	// Create the Qt application and our drive connection
 	App = new QApplication(argc, argv);
-	DriveConn = new DriveConnection();
+	Control = new MotionControl();
 
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("Point", new DrivePointMethod);
@@ -195,13 +195,13 @@ main(int argc, char** argv)
 	   	xmlrpcServer.runOnce();
 
 	   	// update aircraft attitude
-	   	DriveConn->updateAttitude();
+	   	Control->updateAttitude();
 
         // Process Qt events
         App->processEvents();
     }
 
-    delete(DriveConn);
+    delete(Control);
     delete(App);
 	return 0;
 }

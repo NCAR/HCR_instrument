@@ -1,22 +1,22 @@
 /*
- * DriveConnection.cpp
+ * MotionControl.cpp
  *
  *  Created on: May 30, 2013
  *      Author: Xuanyong Xu
  */
 
-#include "DriveConnection.h"
+#include "MotionControl.h"
 #include <unistd.h>
 #include <iostream>
 #include <logx/Logging.h>
 
-LOGGING("DriveConnection")
+LOGGING("MotionControl")
 
 inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
 inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
 
 /////////////////////////////////////////////////////////////////////
-DriveConnection::DriveConnection() :
+MotionControl::MotionControl() :
 	_rotDrive("/dev/ttydp00", "rotation"),
 	_tiltDrive("/dev/ttydp01", "tilt"),
 	_antennaMode(POINTING),
@@ -28,12 +28,12 @@ DriveConnection::DriveConnection() :
 }
 
 /////////////////////////////////////////////////////////////////////
-DriveConnection::~DriveConnection()
+MotionControl::~MotionControl()
 {
 }
 
 /////////////////////////////////////////////////////////////////////
-void DriveConnection::updateAttitude()
+void MotionControl::updateAttitude()
 {
 	/**
 	 * The pitch, roll, and heading come from CmigitsSharedMemory
@@ -79,7 +79,7 @@ void DriveConnection::updateAttitude()
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::point(float angle)
+MotionControl::point(float angle)
 {
 	// Set up for fixed antenna pointing
 	_pointingAngle = angle;
@@ -89,14 +89,14 @@ DriveConnection::point(float angle)
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::scan(float ccwLimit, float cwLimit, float scanRate)
+MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
 {
 	WLOG << "scan not yet implemented";
 }
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::_adjustForAttitude(float & rot, float & tilt, float pitch,
+MotionControl::_adjustForAttitude(float & rot, float & tilt, float pitch,
 		float roll, float drift)
 {
 	float desiredRot = rot;
@@ -149,7 +149,7 @@ DriveConnection::_adjustForAttitude(float & rot, float & tilt, float pitch,
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift)
+MotionControl::_adjustPointingForAttitude(float pitch, float roll, float drift)
 {
 	// Start with the desired track-relative rotation and tilt angles
 	float rot = _pointingAngle;
@@ -163,7 +163,7 @@ DriveConnection::_adjustPointingForAttitude(float pitch, float roll, float drift
 
 /////////////////////////////////////////////////////////////////////
 void
-DriveConnection::_adjustScanningForAttitude(float pitch, float roll, float drift)
+MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
 {
 	ILOG << "_adjustScanningForAttitude not implemented";
 }
