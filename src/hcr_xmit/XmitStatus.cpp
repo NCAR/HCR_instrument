@@ -144,21 +144,58 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     _externalInterlockFault = xmitterPkt[6] & _EXT_INTERLOCK_FAULT_BIT;
     _eikInterlockFault =      xmitterPkt[6] & _EIK_INTERLOCK_FAULT_BIT;
 
-    // Bytes 7 and 8 contain whole and fractional cathode voltage
-    _cathodeVoltage = xmitterPkt[7] + 0.1 * xmitterPkt[8];
-    DLOG << "Cathode voltage: " << _cathodeVoltage;
+    // Decode meter values. These values are only good if PSM power is on.
+    //
+    // The values are each divided into one unsigned byte of "whole" units,
+    // and one unsigned byte of "fractional" units. The fractional part
+    // represents tenths of a unit, but in the range from 0-10 rather than
+    // 0-9. I.e., 21.0 degrees is recorded as 20 (whole) + 10 (fractional).
+    // At least 0.0 shows up more rationally as 0 (whole) + 0 (fractional).
+    //
+    // Also, the fractional part is occasionally outside the range 0-10. Who
+    // knows what that means. We note that as an error and move on. Annoying...
+    _cathodeVoltage = -99.9;
+    _bodyCurrent = -99.9;
+    _collectorCurrent = -99.9;
+    _xmitterTemp = -99.9;
 
-    // Bytes 9 and 10 contain whole and fractional body current
-    _bodyCurrent = xmitterPkt[9] + 0.1 * xmitterPkt[10];
-    DLOG << "Body current: " << _bodyCurrent;
+    if (_psmPowerOn) {
+    	// Bytes 7 and 8 contain whole and fractional cathode voltage
+    	if (xmitterPkt[8] >= 0 && xmitterPkt[8] <= 10) {
+        	_cathodeVoltage = xmitterPkt[7] + 0.1 * xmitterPkt[8];
+    	} else {
+    		ELOG << "Bad cathode voltage bytes: " << uint16_t(xmitterPkt[7]) <<
+    				" (whole), " << uint16_t(xmitterPkt[8]) << " (fractional).";
+    	}
+    	DLOG << "Cathode voltage: " << _cathodeVoltage;
 
-    // Bytes 11 and 12 contain whole and fractional collector current
-    _collectorCurrent = xmitterPkt[11] + 0.1 * xmitterPkt[12];
-    DLOG << "Collector current: " << _collectorCurrent;
+    	// Bytes 9 and 10 contain whole and fractional body current
+    	if (xmitterPkt[10] >= 0 && xmitterPkt[10] <= 10) {
+        	_bodyCurrent = xmitterPkt[9] + 0.1 * xmitterPkt[10];
+    	} else {
+    		ELOG << "Bad body current bytes: " << uint16_t(xmitterPkt[9]) <<
+    				" (whole), " << uint16_t(xmitterPkt[10]) << " (fractional).";
+    	}
+    	DLOG << "Body current: " << _bodyCurrent;
 
-    // Bytes 13 and 14 contain whole and fractional transmitter temperature
-    _xmitterTemp = xmitterPkt[13] + 0.1 * xmitterPkt[14];
-    DLOG << "Temp: " << _xmitterTemp;
+    	// Bytes 11 and 12 contain whole and fractional collector current
+    	if (xmitterPkt[12] >= 0 && xmitterPkt[12] <= 10) {
+        	_collectorCurrent = xmitterPkt[11] + 0.1 * xmitterPkt[12];
+    	} else {
+    		ELOG << "Bad collector current bytes: " << uint16_t(xmitterPkt[11]) <<
+    				" (whole), " << uint16_t(xmitterPkt[12]) << " (fractional).";
+    	}
+    	DLOG << "Collector current: " << _collectorCurrent;
+
+    	// Bytes 13 and 14 contain whole and fractional transmitter temperature
+    	if (xmitterPkt[14] >= 0 && xmitterPkt[14] <= 10) {
+        	_xmitterTemp = xmitterPkt[13] + 0.1 * xmitterPkt[14];
+    	} else {
+    		ELOG << "Bad transmitter temp bytes: " << uint16_t(xmitterPkt[13]) <<
+    				" (whole), " << uint16_t(xmitterPkt[14]) << " (fractional).";
+    	}
+    	DLOG << "Temp: " << _xmitterTemp;
+    }
 
     // Byte 15 contains panel pulsewidth selector setting (0-15)
     _pulsewidthSelector = xmitterPkt[15];
