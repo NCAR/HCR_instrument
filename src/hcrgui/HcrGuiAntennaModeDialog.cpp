@@ -28,6 +28,13 @@ HcrGuiAntennaModeDialog::getPointingAngle(float& angle) {
 }
 
 void
+HcrGuiAntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate) {
+	ccwLimit = (float)_ui.ccwLimitSpinBox->value();
+	cwLimit  = (float)_ui.cwLimitSpinBox->value();
+	scanRate = (float)_ui.scanRateSpinBox->value();
+}
+
+void
 HcrGuiAntennaModeDialog::on_buttonBox_clicked() {
 	this->accept();
 }

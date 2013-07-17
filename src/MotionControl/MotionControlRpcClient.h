@@ -27,11 +27,12 @@ public:
     /// @param angle The angle that the antenna points to
     /// @throws std::exception if there's a problem in the XML-RPC call.
     void point(float angle) throw (std::exception);
-    /// Move (Scan) the antenna from angle A to angle B
-    /// @param angleA The starting angle
-    /// @param angleB The ending angle
-    /// @throws std::exception if there's a problem in the XML-RPC call.
-    void scan(int angleA, int angleB) throw (std::exception);
+	/// Scan the antenna between the given counterclockwise and clockwise
+	/// limits, at the given scan rate.
+	/// @param ccwLimit the counterclockwise limit of the scan, deg
+	/// @param cwLimit the clockwise limit of the scan, deg
+	/// @pararm scanRate the scan rate, deg/s
+	void scan(float ccwLimit, float cwLimit, float scanRate) throw (std::exception);
 
 private:
     std::string _daemonHost;

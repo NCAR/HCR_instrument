@@ -235,6 +235,12 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
     		// Point the antenna to the angle
         	_motionControlRpcClient.point(angle);
     	}
+    	else if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
+    		float ccwLimit, cwLimit, scanRate;
+    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
+    		// Put the antenna to scan
+    		_motionControlRpcClient.scan(ccwLimit, cwLimit, scanRate);
+    	}
     }
 }
 

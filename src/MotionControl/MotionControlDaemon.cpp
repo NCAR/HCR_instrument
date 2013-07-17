@@ -107,9 +107,10 @@ class DriveScanMethod : public xmlrpc_c::method
 {
 public:
 	DriveScanMethod() {
-		// The method result and arguments are all integers
-		this->_signature = "i:ii";
-		this->_help = "This method takes drive scan angle range from client";
+		// The method has integer result and double arguments
+		this->_signature = "i:ddd";
+		this->_help = "This method takes drive scan between given limits, "
+				      "at the given scan rate";
 	}
 
 	void
@@ -118,11 +119,12 @@ public:
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-		int const angleA(paramList.getInt(0));
-		int const angleB(paramList.getInt(1));
-		paramList.verifyEnd(2);
+		double const ccwLimit(paramList.getDouble(0));
+		double const cwLimit(paramList.getDouble(1));
+		double const scanRate(paramList.getDouble(2));
+		paramList.verifyEnd(3);
 
-		qDebug() << "Scan from" << angleA << "to" << angleB;
+		DriveConn->scan(ccwLimit, cwLimit, scanRate);
 
 		*retvalP = xmlrpc_c::value_int(0);
 

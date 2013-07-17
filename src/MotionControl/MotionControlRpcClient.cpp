@@ -50,13 +50,14 @@ MotionControlRpcClient::point(float angle) throw (std::exception)
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControlRpcClient::scan(int angleA, int angleB) throw (std::exception)
+MotionControlRpcClient::scan(float ccwLimit, float cwLimit, float scanRate)
+throw (std::exception)
 {
-	std::cout << "scan() from " << angleA << " to " << angleB << std::endl;
+	std::cout << "scan() between " << ccwLimit << " and " << cwLimit << " at rate " << scanRate << std::endl;
 
 	try {
 		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Scan", "ii", &result, angleA, angleB);
+		_client.call(_daemonUrl, "Scan", "ddd", &result, ccwLimit, cwLimit, scanRate);
 	}
 	catch (std::exception e) {
 		WLOG << "XML-RPC error calling scan(): " << e.what();
