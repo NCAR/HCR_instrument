@@ -22,9 +22,9 @@ HcrGuiAntennaModeDialog::getMode() {
 		return HcrGuiAntennaModeDialog::SCANNING;
 }
 
-int
-HcrGuiAntennaModeDialog::getPointingAngle() {
-	return _ui.pointingSpinBox->value();
+void
+HcrGuiAntennaModeDialog::getPointingAngle(float& angle) {
+	angle = (float)_ui.pointingSpinBox->value();
 }
 
 void

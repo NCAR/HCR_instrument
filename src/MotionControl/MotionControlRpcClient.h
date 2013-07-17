@@ -26,7 +26,7 @@ public:
     /// Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    void point(int angle) throw (std::exception);
+    void point(float angle) throw (std::exception);
     /// Move (Scan) the antenna from angle A to angle B
     /// @param angleA The starting angle
     /// @param angleB The ending angle

@@ -79,8 +79,8 @@ class DrivePointMethod : public xmlrpc_c::method
 {
 public:
 	DrivePointMethod() {
-		// The method result and arguments are all integers
-		this->_signature = "i:i";
+		// The method has integer result and double argument
+		this->_signature = "i:d";
 		this->_help = "This method takes drive point angle from client";
 	}
 
@@ -90,10 +90,10 @@ public:
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-		int const angle(paramList.getInt(0));
+		double const angle(paramList.getDouble(0));
 		paramList.verifyEnd(1);
 
-		DriveConn->point((double)angle);
+		DriveConn->point(angle);
 
 		*retvalP = xmlrpc_c::value_int(0);
 

@@ -27,7 +27,8 @@ public:
     // Get selected antenna mode
     AntennaMode getMode();
     // Get antenna pointing angle
-    int getPointingAngle();
+    void getPointingAngle(float& angle);
+    //void getScanningParam()
 
 private slots:
     void on_buttonBox_clicked();

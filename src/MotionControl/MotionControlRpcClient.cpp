@@ -10,6 +10,9 @@
 #include <sstream>
 #include <math.h>
 #include "MotionControlRpcClient.h"
+#include <logx/Logging.h>
+
+LOGGING("MotionControlRpcClient")
 
 /////////////////////////////////////////////////////////////////////
 MotionControlRpcClient::MotionControlRpcClient(
@@ -22,7 +25,7 @@ _client() {
     std::ostringstream ss;
     ss << "http://" << _daemonHost << ":" << _daemonPort << "/RPC2";
     _daemonUrl = ss.str();
-    std::cout << "_daemonUrl = " << _daemonUrl << std::endl;
+    ILOG << "MotionControlRpcClient on " << _daemonUrl;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -32,12 +35,17 @@ MotionControlRpcClient::~MotionControlRpcClient()
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControlRpcClient::point(int angle) throw (std::exception)
+MotionControlRpcClient::point(float angle) throw (std::exception)
 {
 	std::cout << "point() to " << angle << std::endl;
 
-	xmlrpc_c::value result;
-	_client.call(_daemonUrl, "Point", "i", &result, angle);
+	try {
+		xmlrpc_c::value result;
+		_client.call(_daemonUrl, "Point", "d", &result, angle);
+	}
+	catch (std::exception e) {
+		WLOG << "XML-RPC error calling point(): " << e.what();
+	}
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -46,6 +54,11 @@ MotionControlRpcClient::scan(int angleA, int angleB) throw (std::exception)
 {
 	std::cout << "scan() from " << angleA << " to " << angleB << std::endl;
 
-	xmlrpc_c::value result;
-	_client.call(_daemonUrl, "Scan", "ii", &result, angleA, angleB);
+	try {
+		xmlrpc_c::value result;
+		_client.call(_daemonUrl, "Scan", "ii", &result, angleA, angleB);
+	}
+	catch (std::exception e) {
+		WLOG << "XML-RPC error calling scan(): " << e.what();
+	}
 }
