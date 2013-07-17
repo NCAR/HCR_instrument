@@ -35,7 +35,7 @@ public:
 	/// @pararm scanRate the scan rate, deg/s
 	void scan(float ccwLimit, float cwLimit, float scanRate);
 
-	/// @brief Update aircraft attitude used to adjust drive position
+	/// @brief Get current aircraft attitude and adjust drive position
 	void updateAttitude();
 
 	/// @brief Return a reference to the rotation drive.
