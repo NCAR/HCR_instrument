@@ -512,10 +512,10 @@ private:
         _HCR_AIN_TEMP_PLO = 3,
         /// analog input 4: EIK temperature sensor
         _HCR_AIN_TEMP_EIK = 4,
-        /// analog input 5: V LNA temperature sensor
-        _HCR_AIN_TEMP_VLNA = 5,
-        /// analog input 6: H LNA temperature sensor
-        _HCR_AIN_TEMP_HLNA = 6,
+        /// analog input 5: H LNA temperature sensor
+        _HCR_AIN_TEMP_HLNA = 5,
+        /// analog input 6: V LNA temperature sensor
+        _HCR_AIN_TEMP_VLNA = 6,
         /// analog input 7: polarization switch temperature sensor
         _HCR_AIN_TEMP_POL_SWITCH = 7,
         /// analog input 8: RF detector temperature sensor
