@@ -28,7 +28,8 @@ class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
-            std::string hcrdrxHost, int hcrdrxPort);
+            std::string rdsHost, int hcrdrxPort, int cmigitsPort, 
+            int motionControlPort);
     virtual ~HcrGuiMainWindow();
 private slots:
     void on_cmigitsDetailsButton_clicked();

@@ -17,7 +17,8 @@ LOGGING("HcrGuiMainWindow")
 
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost, 
-    int xmitterPort, std::string hcrdrxHost, int hcrdrxPort) :
+    int xmitterPort, std::string rdsHost, int hcrdrxPort,
+    int cmigitsPort, int motionControlPort) :
     QMainWindow(),
     _ui(),
     _updateTimer(this),
@@ -25,9 +26,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _xmitStatusDialog(this),
     _antennaModeDialog(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
-    _drxStatusThread(hcrdrxHost, hcrdrxPort),
-    _cmigitsDaemonRpcClient(hcrdrxHost, 8002),
-    _motionControlRpcClient(hcrdrxHost, 8080),
+    _drxStatusThread(rdsHost, hcrdrxPort),
+    _cmigitsDaemonRpcClient(rdsHost, cmigitsPort),
+    _motionControlRpcClient(rdsHost, motionControlPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
@@ -45,7 +46,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _logMessage(ss.str());
 
     ss.str("");
-    ss << "No response yet from hcrdrx at " << hcrdrxHost << ":" <<
+    ss << "No response yet from hcrdrx at " << rdsHost << ":" <<
             hcrdrxPort;
     _logMessage(ss.str());
 

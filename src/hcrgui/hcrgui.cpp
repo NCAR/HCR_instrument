@@ -19,7 +19,8 @@ LOGGING("hcrgui")
 // hcrdrx host and port.
 const char * DefaultXmitdHostAndPort = "archiver:8000";
 const char * DefaultHcrdrxHostAndPort = "rds:8081";
-const char * DefaultCmigitsDaemonHostAndPort = "rds:8002";
+const int DefaultCmigitsPort = 8002;
+const int DefaultMotionControlPort = 8080;
 
 void
 usage(const char* appName) {
@@ -49,17 +50,19 @@ main(int argc, char *argv[]) {
 
     char xmitdHost[80];
     int xmitdPort;
-    char hcrdrxHost[80];
+    char rdsHost[80];
     int hcrdrxPort;
+    int cmigitsPort = DefaultCmigitsPort;
+    int motionControlPort = DefaultMotionControlPort;
     if (sscanf(xmitdHostAndPort, "%[^:]:%d", xmitdHost, &xmitdPort) != 2) {
         usage(argv[0]);
     }
-    if (sscanf(hcrdrxHostAndPort, "%[^:]:%d", hcrdrxHost, &hcrdrxPort) != 2) {
+    if (sscanf(hcrdrxHostAndPort, "%[^:]:%d", rdsHost, &hcrdrxPort) != 2) {
         usage(argv[0]);
     }
 
     QMainWindow* mainWindow = new HcrGuiMainWindow(xmitdHost, xmitdPort,
-            hcrdrxHost, hcrdrxPort);
+            rdsHost, hcrdrxPort, cmigitsPort, motionControlPort);
     mainWindow->show();
     
     return app->exec();
