@@ -3,10 +3,10 @@
 hcrguiTools = Split("""
 cmigits
 cmigitsdaemonrpcclient
-motioncontrolrpcclient
-logx
 doxygen
 hcrdrxrpcclient
+logx
+motioncontrol
 xmitdrpcclient
 qt4
 """)
