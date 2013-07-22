@@ -42,12 +42,15 @@ public:
 	/// @return a MotionControlStatus object
     /// @throws std::exception if there's a problem in the XML-RPC call.
 	MotionControl::Status status() throw (std::exception);
-private:
-    std::string _daemonHost;
-    int _daemonPort;
-    std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 
+	/// @brief Return true iff the MotionControlDaemon is responding.
+	/// @return true iff the MotionControlDaemon is responding.
+	bool daemonResponding() const { return(_daemonResponding); }
+
+private:
+	bool _daemonResponding;
+	std::string _daemonUrl;
+    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* MOTIONCONTROLRPCCLIENT_H_ */
