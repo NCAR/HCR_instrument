@@ -43,8 +43,8 @@ MotionControlRpcClient::point(float angle) throw (std::exception)
 		xmlrpc_c::value result;
 		_client.call(_daemonUrl, "Point", "d", &result, angle);
 	}
-	catch (std::exception e) {
-		WLOG << "XML-RPC error calling point(): " << e.what();
+	catch (std::exception & e) {
+		WLOG << "XML-RPC error calling Point(): " << e.what();
 	}
 }
 
@@ -59,7 +59,24 @@ throw (std::exception)
 		xmlrpc_c::value result;
 		_client.call(_daemonUrl, "Scan", "ddd", &result, ccwLimit, cwLimit, scanRate);
 	}
-	catch (std::exception e) {
-		WLOG << "XML-RPC error calling scan(): " << e.what();
+	catch (std::exception & e) {
+		WLOG << "XML-RPC error calling Scan(): " << e.what();
 	}
+}
+
+/////////////////////////////////////////////////////////////////////
+MotionControl::Status
+MotionControlRpcClient::status()
+throw (std::exception)
+{
+	try {
+		xmlrpc_c::value result;
+		_client.call(_daemonUrl, "Status", "", &result);
+		xmlrpc_c::value_struct vstruct = static_cast<xmlrpc_c::value_struct>(result);
+		return(MotionControl::Status(vstruct));
+	}
+	catch (std::exception & e) {
+		WLOG << "XML-RPC error calling Status(): " << e.what();
+	}
+	return(MotionControl::Status());
 }
