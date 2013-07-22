@@ -122,7 +122,7 @@ public:
 	    /// Tilt drive temperature, deg C
 	    int tiltDriveTemp;
 	    /// Antenna motion mode
-	    int antennaMode;
+	    AntennaMode antennaMode;
 	    // Pointing angle for POINTING mode
 	    float fixedPointingAngle;
 	    // Scanning counterclockwise limit, deg

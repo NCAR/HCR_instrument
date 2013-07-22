@@ -205,7 +205,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
 	rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
 	tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
 	tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
-	antennaMode = static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"]);
+	antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
 	fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
 	scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
 	scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
