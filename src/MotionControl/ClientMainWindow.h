@@ -9,6 +9,7 @@
 #define CLIENTMAINWINDOW_H_
 
 #include <QtGui>
+#include <QTimer>
 #include <MotionControlRpcClient.h>
 #include "ui_ClientMainWindow.h"
 
@@ -28,10 +29,15 @@ protected slots:
 	void lePointingAngle(int);
     /// Get the angle that the drive to be point to
     void getPointingAngle();
+    /// Update status
+    void updateStatus();
 
 protected:
 	/// The MotionControlRpcClient
     MotionControlRpcClient& _rpcClient;
+
+    /// Status timer
+    QTimer _statusTimer;
 
 };
 
