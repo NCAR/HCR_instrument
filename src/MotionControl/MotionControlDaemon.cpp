@@ -16,7 +16,6 @@
 #include <xmlrpc-c/server_abyss.hpp>
 
 #include "MotionControl.h"
-#include "DriveStatus.h"
 
 LOGGING("MotionControlDaemon")
 
@@ -134,10 +133,10 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////
-class DriveStatusMethod : public xmlrpc_c::method
+class StatusMethod : public xmlrpc_c::method
 {
 public:
-	DriveStatusMethod() {
+	StatusMethod() {
 		// The method takes no arguments, and returns a struct
 		this->_signature = "S:";
 		this->_help = "This method returns servo drive status";
@@ -151,8 +150,9 @@ public:
 
 		paramList.verifyEnd(0);
 
-		DriveStatus status(Control->rotationDrive(), Control->tiltDrive());
-		xmlrpc_c::value_struct dict = status.to_value_struct();
+		// Get current status of our MotionControl, pack it into an
+		// xmlrpc_c::value_struct, and return the struct.
+		xmlrpc_c::value_struct dict = Control->status().to_value_struct();
 		*retvalP = dict;
 
         // Restart the work alarm.
@@ -174,6 +174,7 @@ main(int argc, char** argv)
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("Point", new DrivePointMethod);
     myRegistry.addMethod("Scan", new DriveScanMethod);
+    myRegistry.addMethod("Status", new StatusMethod);
     xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
 
     // catch a control-C or kill to shut down cleanly

@@ -20,7 +20,7 @@ MotionControl::MotionControl() :
 	_rotDrive("/dev/ttydp00", "rotation"),
 	_tiltDrive("/dev/ttydp01", "tilt"),
 	_antennaMode(POINTING),
-	_pointingAngle(0),
+	_fixedPointingAngle(0),
 	_cmigitsShm(),
 	_fakeAttitude(true),
 	_driveStartTime(QTime::currentTime())
@@ -82,7 +82,7 @@ void
 MotionControl::point(float angle)
 {
 	// Set up for fixed antenna pointing
-	_pointingAngle = angle;
+	_fixedPointingAngle = angle;
 	_antennaMode = POINTING;
 	_rotDrive.moveTo(angle);
 }
@@ -152,7 +152,7 @@ void
 MotionControl::_adjustPointingForAttitude(float pitch, float roll, float drift)
 {
 	// Start with the desired track-relative rotation and tilt angles
-	float rot = _pointingAngle;
+	float rot = _fixedPointingAngle;
 	float tilt = 0.0;
 	// Adjust to pod-relative rotation and tilt angles
 	_adjustForAttitude(rot, tilt, pitch, roll, drift);
@@ -166,4 +166,71 @@ void
 MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
 {
 	ILOG << "_adjustScanningForAttitude not implemented";
+}
+
+/////////////////////////////////////////////////////////////////////
+MotionControl::Status::Status() :
+	rotDriveResponding(false),
+	rotDriveTemp(0.0),
+	tiltDriveResponding(false),
+	tiltDriveTemp(0.0),
+	antennaMode(POINTING),
+	fixedPointingAngle(0.0),
+	scanCcwLimit(0.0),
+	scanCwLimit(0.0),
+	scanRate(0.0) {}
+
+/////////////////////////////////////////////////////////////////////
+MotionControl::Status::Status(const MotionControl & mc) :
+	rotDriveResponding(mc.rotationDrive().driveResponding()),
+	rotDriveTemp(mc.rotationDrive().driveTemperature()),
+	tiltDriveResponding(mc.tiltDrive().driveResponding()),
+	tiltDriveTemp(mc.tiltDrive().driveTemperature()),
+	antennaMode(mc.antennaMode()),
+	fixedPointingAngle(mc.fixedPointingAngle()) {
+	mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate);
+	DLOG << "rotDriveResponding: " << rotDriveResponding;
+	DLOG << "rotDriveTemp: " << rotDriveTemp;
+	DLOG << "tiltDriveResponding: " << tiltDriveResponding;
+	DLOG << "tiltDriveTemp: " << tiltDriveTemp;
+}
+
+/////////////////////////////////////////////////////////////////////
+MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
+	// Cast the given xmlrpc_c::value_struct into a map from string to
+	// xmlrpc_c::value.
+	std::map<std::string, xmlrpc_c::value> statusMap =
+			static_cast<std::map<std::string, xmlrpc_c::value> >(statusDict);
+	rotDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveResponding"]);
+	rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
+	tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
+	tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
+	antennaMode = static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"]);
+	fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
+	scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
+	scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
+	scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
+}
+
+/////////////////////////////////////////////////////////////////////
+MotionControl::Status::~Status() {
+}
+
+/////////////////////////////////////////////////////////////////////
+xmlrpc_c::value_struct
+MotionControl::Status::to_value_struct() const {
+    // Stuff our content into a dictionary mapping string to
+	// xmlrpc_c::value.
+	std::map<std::string, xmlrpc_c::value> dict;
+	dict["rotDriveResponding"] = xmlrpc_c::value_boolean(rotDriveResponding);
+	dict["rotDriveTemp"] = xmlrpc_c::value_int(rotDriveTemp);
+	dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
+	dict["tiltDriveTemp"] = xmlrpc_c::value_int(tiltDriveTemp);
+	dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
+	dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
+	dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);
+	dict["scanCwLimit"] = xmlrpc_c::value_double(scanCwLimit);
+	dict["scanRate"] = xmlrpc_c::value_double(scanRate);
+    // Construct an xmlrpc_c::value_struct from the map and return it.
+    return(xmlrpc_c::value_struct(dict));
 }

@@ -6,7 +6,7 @@
 tools = Split("""
     archive_xmlrpc_c
     cmigits
-    motioncontrolrpcclient
+    motioncontrol
     qt4
     xmlrpc_server_abyss++
 """)
@@ -18,16 +18,7 @@ uisources = ['ClientMainWindow.ui']
 env.Uic4(uisources)
 
 serversources = Split("""
-    MotionControl.cpp
-    DriveStatus.cpp
-    ElmoServoDrive.cpp
 	MotionControlDaemon.cpp
-""")
-
-serverheaders = Split("""
-    MotionControl.h
-    DriveStatus.h
-    ElmoServoDrive.h
 """)
 
 daemon = env.Program('MotionControlDaemon', serversources)

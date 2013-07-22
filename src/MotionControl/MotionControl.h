@@ -2,7 +2,7 @@
  * MotionControl.h
  *
  *  Created on: May 30, 2013
- *      Author: avaps
+ *      Author: Xuanyong Xu
  */
 
 #ifndef MOTIONCONTROL_H_
@@ -10,6 +10,7 @@
 
 #include <QtCore>
 #include <QtNetwork>
+#include <xmlrpc-c/base.hpp>
 
 #include "CmigitsSharedMemory.h"
 #include "ElmoServoDrive.h"
@@ -52,7 +53,92 @@ public:
 		SCANNING
 	} AntennaMode;
 
-protected:
+	/// @brief Return the current antenna mode.
+	/// @return the current antenna mode.
+	AntennaMode antennaMode() const { return(_antennaMode); }
+
+	/// @brief Return the fixed pointing angle, deg.
+	/// @return the fixed pointing angle, deg.
+	float fixedPointingAngle() const { return(_fixedPointingAngle); }
+
+	/// @brief Return the antenna scanning parameters
+	/// @param[out] ccwLimit, counterclockwise scan limit, deg
+	/// @param[out] cwLimit, clockwise scan limit, deg
+	/// @param[out] scanRate, scan rate, deg/s
+	/// @return the antenna scanning parameters.
+	void getScanParams(float & ccwLimit, float & cwLimit, float & scanRate) const {
+		ccwLimit = _scanCcwLimit;
+		cwLimit = _scanCwLimit;
+		scanRate = _scanRate;
+	}
+
+	/// @brief Simple class to encapsulate status of a MotionControl object.
+	class Status {
+	public:
+		/// @brief Default constructor.
+		Status();
+
+	    /// @brief Construct status using current values from the given
+		/// MotionControl.
+	    Status(const MotionControl & mc);
+
+	    /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
+	    /// by a call to the Status::to_value_struct() method.
+	    /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by a
+	    /// call to the Status::to_value_struct() method.
+	    Status(xmlrpc_c::value_struct & statusDict);
+
+	    /// @brief destructor
+	    virtual ~Status();
+
+	    /// @brief Return an external representation of the object's state as
+	    /// an xmlrpc_c::value_struct dictionary.
+	    ///
+	    /// The returned value can be used on the other side of an XML-RPC
+	    /// connection to create an identical object via the
+	    /// Status(const xmlrpc_c::value_struct &) constructor.
+	    /// @return an external representation of the object's state as
+	    /// an xmlrpc_c::value_struct dictionary.
+	    xmlrpc_c::value_struct to_value_struct() const;
+
+	    /**
+	     * @brief Return antenna scanning parameters.
+	     * @param[out] ccwLimit the counterclockwise scan limit, deg
+	     * @param[out] cwLimit the clockwise scan limit, deg
+	     * @param[out] rate the scan rate, deg/s
+	     */
+	    void scanParameters(float & ccwLimit, float & cwLimit, float rate) {
+	    	ccwLimit = scanCcwLimit;
+	    	cwLimit = scanCwLimit;
+	    	rate = scanRate;
+	    }
+
+	    /// Is the rotation drive responding?
+	    bool rotDriveResponding;
+	    /// Rotation drive temperature, deg C
+	    int rotDriveTemp;
+	    /// Is the tilt drive responding?
+	    bool tiltDriveResponding;
+	    /// Tilt drive temperature, deg C
+	    int tiltDriveTemp;
+	    /// Antenna motion mode
+	    int antennaMode;
+	    // Pointing angle for POINTING mode
+	    float fixedPointingAngle;
+	    // Scanning counterclockwise limit, deg
+	    float scanCcwLimit;
+	    // Scanning clockwise limit, deg
+	    float scanCwLimit;
+	    // Scan rate, deg/s
+	    float scanRate;
+	};
+
+	/// @brief Return a MotionControl::Status object containing current
+	/// status.
+	/// @return a MotionControl::Status object containing current status.
+	Status status() const { return(Status(*this)); }
+
+private:
 	// Given desired rotation and tilt angles, adjust to pod-relative angles
 	// using the given pod attitude information.
 	// @param[in,out] rot the desired rotation angle (in), and the needed
@@ -85,14 +171,14 @@ protected:
 	/// Current antenna mode
 	AntennaMode _antennaMode;
 
-	/// Current angle that the antenna is pointing to
-	float _pointingAngle;
+	/// Current angle for fixed pointing
+	float _fixedPointingAngle;
 
 	/// Scanning counterclockwise limit, deg
-	float _ccwLimit;
+	float _scanCcwLimit;
 
 	/// Scanning clockwise limit, deg
-	float _cwLimit;
+	float _scanCwLimit;
 
 	/// Scan rate, deg/s
 	float _scanRate;
