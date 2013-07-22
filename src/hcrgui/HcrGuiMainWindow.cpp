@@ -423,6 +423,30 @@ HcrGuiMainWindow::_update() {
 
     // Update the C-MIGITS status details dialog
     _cmigitsStatusDialog.updateStatus(_drxStatus);
+    
+    // MotionControl status
+    MotionControl::Status mcStatus = _motionControlRpcClient.status();
+    bool motionControlOk = _motionControlRpcClient.daemonResponding() &&
+            mcStatus.rotDriveResponding && mcStatus.tiltDriveResponding;
+    if (_motionControlRpcClient.daemonResponding()) {
+        std::ostringstream ss;
+        switch (mcStatus.antennaMode) {
+        case MotionControl::POINTING:
+            ss << "Fixed pointing at " << mcStatus.fixedPointingAngle << "°";
+            break;
+        case MotionControl::SCANNING:
+            ss << "Scanning from " << mcStatus.scanCcwLimit << "° CCW to " <<
+                mcStatus.scanCwLimit << "° CW at " << mcStatus.scanRate <<
+                "°/s";
+            break;
+        default:
+            ss << "Unknown antenna mode " << mcStatus.antennaMode;
+            break;
+        }
+        _ui.antennaModeLabel->setText(ss.str().c_str());
+    } else {
+        _ui.antennaModeLabel->setText("MotionControlDaemon not responding");
+    }
 }
 
 void
