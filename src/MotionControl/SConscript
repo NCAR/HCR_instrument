@@ -4,7 +4,6 @@
 #
 
 tools = Split("""
-    archive_xmlrpc_c
     cmigits
     motioncontrol
     qt4
