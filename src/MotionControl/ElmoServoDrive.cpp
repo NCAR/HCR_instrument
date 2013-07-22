@@ -12,6 +12,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <stdint.h>
+#include <unistd.h>
 #include <logx/Logging.h>
 
 LOGGING("ElmoServoDrive")
