@@ -115,10 +115,14 @@ public:
 
 	    /// Is the rotation drive responding?
 	    bool rotDriveResponding;
+	    /// Rotation drive status register
+	    ElmoServoDrive::StatusReg rotDriveStatusReg;
 	    /// Rotation drive temperature, deg C
 	    int rotDriveTemp;
 	    /// Is the tilt drive responding?
 	    bool tiltDriveResponding;
+	    /// Tilt drive status register
+	    ElmoServoDrive::StatusReg tiltDriveStatusReg;
 	    /// Tilt drive temperature, deg C
 	    int tiltDriveTemp;
 	    /// Antenna motion mode

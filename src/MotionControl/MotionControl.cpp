@@ -183,8 +183,10 @@ MotionControl::Status::Status() :
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status(const MotionControl & mc) :
 	rotDriveResponding(mc.rotationDrive().driveResponding()),
+	rotDriveStatusReg(mc.rotationDrive().driveStatusRegister()),
 	rotDriveTemp(mc.rotationDrive().driveTemperature()),
 	tiltDriveResponding(mc.tiltDrive().driveResponding()),
+	tiltDriveStatusReg(mc.tiltDrive().driveStatusRegister()),
 	tiltDriveTemp(mc.tiltDrive().driveTemperature()),
 	antennaMode(mc.antennaMode()),
 	fixedPointingAngle(mc.fixedPointingAngle()) {
@@ -202,8 +204,10 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
 	std::map<std::string, xmlrpc_c::value> statusMap =
 			static_cast<std::map<std::string, xmlrpc_c::value> >(statusDict);
 	rotDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveResponding"]);
+	rotDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveStatusReg"]);
 	rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
 	tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
+	tiltDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveStatusReg"]);
 	tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
 	antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
 	fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
