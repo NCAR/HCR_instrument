@@ -28,9 +28,13 @@ headers = Split('''
 lib = env.Library('motioncontrol', sources)
 Default(lib)
 
+env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "motion control library" })
+doxref = env.Apidocs(sources + headers)
+
 def motioncontrol(env):
     env.AppendUnique(CPPPATH = motionControlDir)
     env.Append(LIBS=[lib])
+    env.AppendDoxref(doxref[0])
     env.Require(tools)
 
 Export('motioncontrol')
