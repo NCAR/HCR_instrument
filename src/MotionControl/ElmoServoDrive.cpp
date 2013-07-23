@@ -290,7 +290,7 @@ ElmoServoDrive::_readReply() {
 
 				// Save reply from SR "status register" command
 				if (! cmd.compare("SR")) {
-					uint32_t statusRegister = qCmdReply.toUInt(&ok);
+					StatusReg statusRegister = qCmdReply.toInt(&ok);
 					if (ok) {
 						_driveStatusRegister = statusRegister;
 					} else {
