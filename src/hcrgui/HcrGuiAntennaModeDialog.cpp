@@ -17,9 +17,9 @@ HcrGuiAntennaModeDialog::AntennaMode
 HcrGuiAntennaModeDialog::getMode() {
 	int index = _ui.tabWidget->currentIndex();
 	if (_ui.tabWidget->tabText(index).contains("Pointing"))
-		return HcrGuiAntennaModeDialog::POINTING;
+		return POINTING;
 	else
-		return HcrGuiAntennaModeDialog::SCANNING;
+		return SCANNING;
 }
 
 void

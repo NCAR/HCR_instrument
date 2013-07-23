@@ -128,9 +128,50 @@ ElmoServoDrive::moveTo(float angle) {
 
     // Generate a command to move to the given absolute position
     std::ostringstream cmdstream;
-    cmdstream << "PA=" << counts;
+    cmdstream << "PA=" << counts << "; BG";
     _execElmoCmd(cmdstream.str());
-    _execElmoCmd("BG");
+    //_execElmoCmd("BG");
+}
+
+void
+ElmoServoDrive::setPVT(int p, int v, int t, int n) {
+	// Don't bother if the drive is not responding
+	if (! _driveResponding) {
+		return;
+	}
+
+	std::ostringstream cmdstream;
+	// Set position
+	//cmdstream << "QP[" << n << "]=" << p;
+	std::cout << cmdstream.str() << std::endl;
+	_execElmoCmd(cmdstream.str());
+	// Set velicity
+	cmdstream.str("");
+	//cmdstream << "QV[" << n << "]=" << v;
+	std::cout << cmdstream.str() << std::endl;
+	_execElmoCmd(cmdstream.str());
+	// Set time
+	cmdstream.str("");
+	//cmdstream << "QT[" << n << "]=" << t;
+	std::cout << cmdstream.str() << std::endl;
+	_execElmoCmd(cmdstream.str());
+}
+
+void
+ElmoServoDrive::scan(int n) {
+	// Don't bother if the drive is not responding
+	if (! _driveResponding) {
+		return;
+	}
+
+	std::ostringstream cmdstream;
+	// Set PVT motion parameters
+	cmdstream << "MP[1]=1; MP[2]=" << n << "; MP[3]=1";
+	_execElmoCmd(cmdstream.str());
+    // Set the drive to scan
+	cmdstream.str("");
+	cmdstream << "PV=1; BG";
+	_execElmoCmd(cmdstream.str());
 }
 
 bool
