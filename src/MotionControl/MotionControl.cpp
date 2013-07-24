@@ -230,8 +230,10 @@ MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status() :
 	rotDriveResponding(false),
+	rotDriveStatusReg(0),
 	rotDriveTemp(0.0),
 	tiltDriveResponding(false),
+	tiltDriveStatusReg(0),
 	tiltDriveTemp(0.0),
 	antennaMode(POINTING),
 	fixedPointingAngle(0.0),
@@ -286,8 +288,10 @@ MotionControl::Status::to_value_struct() const {
 	// xmlrpc_c::value.
 	std::map<std::string, xmlrpc_c::value> dict;
 	dict["rotDriveResponding"] = xmlrpc_c::value_boolean(rotDriveResponding);
+	dict["rotDriveStatusReg"] = xmlrpc_c::value_int(rotDriveStatusReg);
 	dict["rotDriveTemp"] = xmlrpc_c::value_int(rotDriveTemp);
 	dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
+	dict["tiltDriveStatusReg"] = xmlrpc_c::value_int(tiltDriveStatusReg);
 	dict["tiltDriveTemp"] = xmlrpc_c::value_int(tiltDriveTemp);
 	dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
 	dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
