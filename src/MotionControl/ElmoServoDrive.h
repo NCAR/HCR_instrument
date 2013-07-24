@@ -94,8 +94,8 @@ public:
     	return((statusReg >> 6) & 0x1);
     }
 
-    /// @brief Return unit mode from status register.
-    /// @return unit mode from status register.
+    /// @brief Return 3-bit unit mode from status register.
+    /// @return 3-bit unit mode from status register.
     static int SREG_unitMode(StatusReg statusReg) {
     	return((statusReg >> 7) & 0x7);
     }
