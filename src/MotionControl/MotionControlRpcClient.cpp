@@ -24,7 +24,7 @@ MotionControlRpcClient::MotionControlRpcClient(
     std::ostringstream ss;
     ss << "http://" << daemonHost << ":" << daemonPort << "/RPC2";
     _daemonUrl = ss.str();
-    ILOG << "MotionControlRpcClient on " << _daemonUrl;
+    ILOG << "MotionControlRpcClient talking to " << _daemonUrl;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -76,7 +76,9 @@ throw (std::exception)
 	try {
 		xmlrpc_c::value result;
 		_client.call(_daemonUrl, "Status", "", &result);
-		xmlrpc_c::value_struct vstruct = static_cast<xmlrpc_c::value_struct>(result);
+		// Construct an xmlrpc_c::value_struct from the result, and use that
+		// to construct the  MotionControl::Status which we return.
+		xmlrpc_c::value_struct vstruct(result);
 		return(MotionControl::Status(vstruct));
 	}
 	catch (std::exception & e) {
