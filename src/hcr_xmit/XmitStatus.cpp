@@ -161,7 +161,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
 
     if (_psmPowerOn) {
     	// Bytes 7 and 8 contain whole and fractional cathode voltage
-    	if (xmitterPkt[8] >= 0 && xmitterPkt[8] <= 10) {
+    	if (xmitterPkt[8] <= 10) {
         	_cathodeVoltage = xmitterPkt[7] + 0.1 * xmitterPkt[8];
     	} else {
     		ELOG << "Bad cathode voltage bytes: " << uint16_t(xmitterPkt[7]) <<
@@ -170,7 +170,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     	DLOG << "Cathode voltage: " << _cathodeVoltage;
 
     	// Bytes 9 and 10 contain whole and fractional body current
-    	if (xmitterPkt[10] >= 0 && xmitterPkt[10] <= 10) {
+    	if (xmitterPkt[10] <= 10) {
         	_bodyCurrent = xmitterPkt[9] + 0.1 * xmitterPkt[10];
     	} else {
     		ELOG << "Bad body current bytes: " << uint16_t(xmitterPkt[9]) <<
@@ -179,7 +179,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     	DLOG << "Body current: " << _bodyCurrent;
 
     	// Bytes 11 and 12 contain whole and fractional collector current
-    	if (xmitterPkt[12] >= 0 && xmitterPkt[12] <= 10) {
+    	if (xmitterPkt[12] <= 10) {
         	_collectorCurrent = xmitterPkt[11] + 0.1 * xmitterPkt[12];
     	} else {
     		ELOG << "Bad collector current bytes: " << uint16_t(xmitterPkt[11]) <<
@@ -188,7 +188,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     	DLOG << "Collector current: " << _collectorCurrent;
 
     	// Bytes 13 and 14 contain whole and fractional transmitter temperature
-    	if (xmitterPkt[14] >= 0 && xmitterPkt[14] <= 10) {
+    	if (xmitterPkt[14] <= 10) {
         	_xmitterTemp = xmitterPkt[13] + 0.1 * xmitterPkt[14];
     	} else {
     		ELOG << "Bad transmitter temp bytes: " << uint16_t(xmitterPkt[13]) <<
