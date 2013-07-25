@@ -55,8 +55,17 @@ void MotionControl::updateAttitude()
 		float lat, lon, alt, velNorth, velEast, velUp;
 		_cmigitsShm.getLatest3501Data(dataTime, lat, lon, alt, velNorth,
 				velEast, velUp);
-		// Calculate aircraft drift
-		drift = 90 - RadToDeg(atan2(velNorth, velEast)) - heading;
+		// Calculate aircraft drift.
+		float gndTrack = heading;	// default ground track to heading
+		float gndSpeed = sqrt(velNorth * velNorth + velEast * velEast);
+		// If ground speed is > 1.0 m/s, calculate the real ground track angle
+		// from north and east ground velocity components.
+		// XXX TODO - take airspeed into account as well when deciding whether
+		// to calculate ground track?
+		if (gndSpeed > 1.0) {
+			gndTrack = 90 - RadToDeg(atan2(velNorth, velEast));
+		}
+		drift = gndTrack - heading;
 	}
 
 	// Substitute fake attitude if requested
