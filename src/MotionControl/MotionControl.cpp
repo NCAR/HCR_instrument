@@ -22,7 +22,7 @@ MotionControl::MotionControl() :
 	_antennaMode(POINTING),
 	_fixedPointingAngle(0),
 	_cmigitsShm(),
-	_fakeAttitude(true),
+	_fakeAttitude(false),
 	_driveStartTime(QTime::currentTime())
 {
 }
@@ -44,13 +44,20 @@ void MotionControl::updateAttitude()
 
 	// Get aircraft attitude
 	uint64_t dataTime;
-	float pitch, roll, heading;
-	_cmigitsShm.getLatest3512Data(dataTime, pitch, roll, heading);
-	// Get ground speed components
-	float lat, lon, alt, velNorth, velEast, velUp;
-	_cmigitsShm.getLatest3501Data(dataTime, lat, lon, alt, velNorth, velEast, velUp);
-	// Calculate aircraft drift
-	float drift = 90 - RadToDeg(atan2(velNorth, velEast)) - heading;
+	float pitch = 0.0;
+	float roll = 0.0;
+	float heading = 0.0;
+	float drift = 0.0;
+
+	if (_cmigitsShm.getWriterPid()) {
+		_cmigitsShm.getLatest3512Data(dataTime, pitch, roll, heading);
+		// Get ground speed components
+		float lat, lon, alt, velNorth, velEast, velUp;
+		_cmigitsShm.getLatest3501Data(dataTime, lat, lon, alt, velNorth,
+				velEast, velUp);
+		// Calculate aircraft drift
+		drift = 90 - RadToDeg(atan2(velNorth, velEast)) - heading;
+	}
 
 	// Substitute fake attitude if requested
 	if (_fakeAttitude) {
@@ -81,6 +88,7 @@ void MotionControl::updateAttitude()
 void
 MotionControl::point(float angle)
 {
+	ILOG << "Point to " << angle << " deg";
 	// Set up for fixed antenna pointing
 	_fixedPointingAngle = angle;
 	_antennaMode = POINTING;
@@ -91,7 +99,8 @@ MotionControl::point(float angle)
 void
 MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
 {
-	WLOG << "scan not yet implemented";
+    ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
+    		scanRate << " deg/s";
 
 	// Build up PVT table for rotation drive
 	float posR[40] = { 167560, 172690, 177820, 182950, 188070,
