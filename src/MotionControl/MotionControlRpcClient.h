@@ -47,6 +47,10 @@ public:
 	/// @return true iff the MotionControlDaemon is responding.
 	bool daemonResponding() const { return(_daemonResponding); }
 
+	/// @brief Return the URL used to communicate with MotionControlDaemon.
+	/// @return the URL used to communicate with MotionControlDaemon.
+	std::string daemonUrl() const { return(_daemonUrl); }
+
 private:
 	bool _daemonResponding;
 	std::string _daemonUrl;
