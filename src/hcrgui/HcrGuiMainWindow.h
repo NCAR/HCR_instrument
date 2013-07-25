@@ -10,19 +10,20 @@
 #include <deque>
 #include <ctime>
 #include <CmigitsDaemonRpcClient.h>
-#include <MotionControlRpcClient.h>
 
 #include <QMainWindow>
 #include <QPixmap>
 #include <QTimer>
 
 #include "XmitdStatusThread.h"
+#include "MotionControlClientThread.h"
 #include "HcrdrxStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
 #include "HcrGuiXmitStatusDialog.h"
 #include "HcrGuiCmigitsStatusDialog.h"
 #include "HcrGuiAntennaModeDialog.h"
+#include "MotionControlDetails.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -39,6 +40,8 @@ private slots:
     void on_xmitterDetailsButton_clicked();
     void on_hmcModeCombo_activated(int index);
     void on_antennaModeButton_clicked();
+    void on_mcDetailsButton_clicked();
+
     /// @brief Update GUI state based on _xmitStatus and _drxStatus
     void _update();
     /// @brief Save the last status received from hcrdrx.
@@ -47,12 +50,18 @@ private slots:
     /// @brief Slot to call when hcrdrx server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _drxResponsivenessChange(bool responding);
-    /// @brief Save the last status received from hcrdrx.
-    /// @param status the last status received from hcrdrx.
+    /// @brief Save the last status received from hcr_xmitd.
+    /// @param status the last status received from hcr_xmitd.
     void _setXmitStatus(XmitStatus status);
+    /// @brief Save the last status received from MotionControlDaemon.
+    /// @param status the last status received from MotionControlDaemon.
+    void _setMotionControlStatus(const MotionControl::Status & status);
     /// @brief Slot to call when hcr_xmitd server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _xmitdResponsivenessChange(bool responding);
+    /// @brief Slot to call when MotionControlDaemon responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _mcResponsivenessChange(bool responding);
 private:
     // Append latest messages from hcr_xmitd to our logging area
     void _appendXmitdLogMsgs();
@@ -78,22 +87,33 @@ private:
      * @return true iff the transmitter is actually transmitting.
      */
     bool _xmitting() const;
+    /**
+     * @brief Return true iff we consider MotionControl to be OK, based on
+     * responsiveness and returned status.
+     * @param mcStatus status from the MotionControl daemon
+     * @return true iff we consider MotionControl to be OK, based on
+     * responsiveness and returned status.
+     */
+    bool _motionControlOk(const MotionControl::Status & mcStatus);
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
     HcrGuiCmigitsStatusDialog _cmigitsStatusDialog;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
     HcrGuiAntennaModeDialog _antennaModeDialog;
+    MotionControlDetails _motionControlDetails;
     XmitdStatusThread _xmitdStatusThread;
+    MotionControlClientThread _mcClientThread;
     HcrdrxStatusThread _drxStatusThread;
     CmigitsDaemonRpcClient _cmigitsDaemonRpcClient;
-    MotionControlRpcClient _motionControlRpcClient;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
     // Last status read from the transmitter
     XmitStatus _xmitStatus;
+    // Last status from the MotionControlDaemon
+    MotionControl::Status _mcStatus;
     // Last status read from hcrdrx
     DrxStatus _drxStatus;
     

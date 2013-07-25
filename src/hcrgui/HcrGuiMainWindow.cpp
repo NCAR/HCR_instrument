@@ -25,10 +25,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _cmigitsStatusDialog(this),
     _xmitStatusDialog(this),
     _antennaModeDialog(this),
+    _motionControlDetails(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
+    _mcClientThread(rdsHost, motionControlPort),
     _drxStatusThread(rdsHost, hcrdrxPort),
     _cmigitsDaemonRpcClient(rdsHost, cmigitsPort),
-    _motionControlRpcClient(rdsHost, motionControlPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
@@ -71,6 +72,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             this, SLOT(_setXmitStatus(XmitStatus)));
     _xmitdStatusThread.start();
 
+    // Connect and start the MotionControlStatusThread
+    connect(& _mcClientThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_mcResponsivenessChange(bool)));
+    connect(& _mcClientThread, SIGNAL(newStatus(MotionControl::Status)),
+            this, SLOT(_setMotionControlStatus(MotionControl::Status)));
+    _mcClientThread.start();
+
     // Update every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
@@ -109,11 +117,28 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
 }
 
 void
+HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "MotionControlDaemon @ " <<
+            _mcClientThread.rpcClient().daemonUrl() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+}
+
+void
 HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     _xmitStatus = status;
     _update();
     // Append new log messages from hcr_xmitd
     _appendXmitdLogMsgs();
+}
+
+void
+HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
+    _mcStatus = status;
+    _update();
 }
 
 void
@@ -234,13 +259,13 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
     		float angle;
     		_antennaModeDialog.getPointingAngle(angle);
     		// Point the antenna to the angle
-        	_motionControlRpcClient.point(angle);
+        	_mcClientThread.rpcClient().point(angle);
     	}
     	else if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
     		float ccwLimit, cwLimit, scanRate;
     		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
     		// Put the antenna to scan
-    		_motionControlRpcClient.scan(ccwLimit, cwLimit, scanRate);
+    		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate);
     	}
     }
 }
@@ -309,6 +334,11 @@ HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
         msgBox.setDetailedText(e.what());
         msgBox.exec();
     }
+}
+
+void
+HcrGuiMainWindow::on_mcDetailsButton_clicked() {
+    _motionControlDetails.show();
 }
 
 void
@@ -425,27 +455,28 @@ HcrGuiMainWindow::_update() {
     _cmigitsStatusDialog.updateStatus(_drxStatus);
     
     // MotionControl status
-    MotionControl::Status mcStatus = _motionControlRpcClient.status();
-    bool motionControlOk = _motionControlRpcClient.daemonResponding() &&
-            mcStatus.rotDriveResponding && mcStatus.tiltDriveResponding;
-    if (_motionControlRpcClient.daemonResponding()) {
+    _motionControlDetails.updateStatus(_mcStatus);
+    _ui.mcStatusIcon->setPixmap(_motionControlDetails.problemDetected() ? _redLED : _greenLED);
+    if (_mcClientThread.serverIsResponding()) {
         std::ostringstream ss;
-        switch (mcStatus.antennaMode) {
+        switch (_mcStatus.antennaMode) {
         case MotionControl::POINTING:
-            ss << "Fixed pointing at " << mcStatus.fixedPointingAngle << "°";
+            ss << "Fixed pointing at " << _mcStatus.fixedPointingAngle << " deg";
             break;
         case MotionControl::SCANNING:
-            ss << "Scanning from " << mcStatus.scanCcwLimit << "° CCW to " <<
-                mcStatus.scanCwLimit << "° CW at " << mcStatus.scanRate <<
-                "°/s";
+            ss << "Scanning from " << _mcStatus.scanCcwLimit << " deg CCW to " <<
+                _mcStatus.scanCwLimit << " deg CW at " << _mcStatus.scanRate <<
+                " deg/s";
             break;
         default:
-            ss << "Unknown antenna mode " << mcStatus.antennaMode;
+            ss << "Unknown antenna mode " << _mcStatus.antennaMode;
             break;
         }
         _ui.antennaModeLabel->setText(ss.str().c_str());
+        _ui.antennaModeButton->setEnabled(true);
     } else {
         _ui.antennaModeLabel->setText("MotionControlDaemon not responding");
+        _ui.antennaModeButton->setEnabled(false);
     }
 }
 

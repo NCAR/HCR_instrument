@@ -20,6 +20,8 @@ HcrGuiMainWindow.cpp
 HcrGuiXmitStatusDialog.cpp
 HcrGuiCmigitsStatusDialog.cpp
 HcrGuiAntennaModeDialog.cpp
+MotionControlDetails.cpp
+MotionControlClientThread.cpp
 qrc_HcrGuiMainWindow.cc
 XmitdStatusThread.cpp
 """)
@@ -31,6 +33,7 @@ HcrGuiMainWindow.ui
 HcrGuiXmitStatusDialog.ui
 HcrGuiCmigitsStatusDialog.ui
 HcrGuiAntennaModeDialog.ui
+MotionControlDetails.ui
 """)
 hcrguiEnv.Uic4(uifiles)
 
@@ -46,6 +49,8 @@ HcrGuiMainWindow.h
 HcrGuiXmitStatusDialog.h
 HcrGuiCmigitsStatusDialog.h
 HcrGuiAntennaModeDialog.h
+MotionControlDetails.h
+MotionControlClientThread.h
 XmitdStatusThread.h
 """)
 

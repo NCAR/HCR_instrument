@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
-    <height>579</height>
+    <width>812</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -569,11 +569,62 @@
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="antennaModeBox">
+           <widget class="QGroupBox" name="motionControlBox">
             <property name="title">
-             <string>Mode</string>
+             <string>Motion Control</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QFrame" name="mcStatusFrame">
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLabel" name="mcStatusIcon">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="pixmap">
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="mcStatusLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Status</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="mcDetailsButton">
+                  <property name="text">
+                   <string>Details...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
              <item>
               <widget class="QLabel" name="antennaModeLabel">
                <property name="text">
@@ -584,7 +635,7 @@
              <item>
               <widget class="QPushButton" name="antennaModeButton">
                <property name="text">
-                <string>Edit...</string>
+                <string>Change...</string>
                </property>
               </widget>
              </item>
