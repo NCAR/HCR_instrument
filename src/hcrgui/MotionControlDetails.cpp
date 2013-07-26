@@ -37,12 +37,12 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		_ui.rotRespondingIcon->setPixmap(_greenLED);
 		_ui.rotMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
 				_greenLED : _greenLED_off);
-		_ui.rotUnitModeLabel->setText(QString(ESD::SREG_unitMode(sr)));
+		_ui.rotUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
 		_ui.rotMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
 				_greenLED : _greenLED_off);
 		_ui.rotProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
 				_greenLED : _greenLED_off);
-		_ui.rotMotionStatusLabel->setText("");
+		_ui.rotMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
 		// Drive problem?
 		bool redLight;
 		redLight = ESD::SREG_driveProblem(sr);
@@ -88,12 +88,12 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		_ui.tiltRespondingIcon->setPixmap(_greenLED);
 		_ui.tiltMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
 				_greenLED : _greenLED_off);
-		_ui.tiltUnitModeLabel->setText(QString(ESD::SREG_unitMode(sr)));
+		_ui.tiltUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
 		_ui.tiltMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
 				_greenLED : _greenLED_off);
 		_ui.tiltProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
 				_greenLED : _greenLED_off);
-		_ui.tiltMotionStatusLabel->setText("");
+		_ui.tiltMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
 		// Drive problem?
 		bool redLight;
 		redLight = ESD::SREG_driveProblem(sr);
