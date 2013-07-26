@@ -161,6 +161,32 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////
+class SetCorrectionEnabledMethod : public xmlrpc_c::method
+{
+public:
+	SetCorrectionEnabledMethod() {
+		// The method takes no arguments, and returns a struct
+		this->_signature = ":b";
+		this->_help = "This method enables/disables attitude correction";
+	}
+
+	void
+	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+	{
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+		bool const enabled(paramList.getBoolean(0));
+		paramList.verifyEnd(1);
+
+		Control->setCorrectionEnabled(enabled);
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+	}
+};
+
+/////////////////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
 {
@@ -175,6 +201,7 @@ main(int argc, char** argv)
     myRegistry.addMethod("Point", new DrivePointMethod);
     myRegistry.addMethod("Scan", new DriveScanMethod);
     myRegistry.addMethod("Status", new StatusMethod);
+    myRegistry.addMethod("SetCorrectionEnabled", new SetCorrectionEnabledMethod);
     xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
 
     // catch a control-C or kill to shut down cleanly
@@ -196,7 +223,7 @@ main(int argc, char** argv)
 	   	xmlrpcServer.runOnce();
 
 	   	// update aircraft attitude
-	   	Control->updateAttitude();
+	   	Control->correctForAttitude();
 
         // Process Qt events
         App->processEvents();

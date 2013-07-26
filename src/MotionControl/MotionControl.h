@@ -36,8 +36,9 @@ public:
 	/// @pararm scanRate the scan rate, deg/s
 	void scan(float ccwLimit, float cwLimit, float scanRate);
 
-	/// @brief Get current aircraft attitude and adjust drive position
-	void updateAttitude();
+	/// @brief Get current aircraft attitude and adjust drive position.
+	/// This method does nothing when attitude correction is disabled.
+	void correctForAttitude();
 
 	/// @brief Return a reference to the rotation drive.
 	/// @return a reference to the rotation drive.
@@ -71,6 +72,10 @@ public:
 		cwLimit = _scanCwLimit;
 		scanRate = _scanRate;
 	}
+
+	/// @brief Set the state of attitude correction.
+	/// @param enabled true to enable attitude correction, false to disable
+	void setCorrectionEnabled(bool enabled);
 
 	/// @brief Simple class to encapsulate status of a MotionControl object.
 	class Status {
@@ -135,6 +140,8 @@ public:
 	    float scanCwLimit;
 	    // Scan rate, deg/s
 	    float scanRate;
+	    // Attitude correction enabled?
+	    bool attitudeCorrectionEnabled;
 	};
 
 	/// @brief Return a MotionControl::Status object containing current
@@ -189,6 +196,9 @@ private:
 
 	/// Cmigits shared memory object
 	CmigitsSharedMemory _cmigitsShm;
+
+	/// Is attitude correction enabled?
+	bool _attitudeCorrectionEnabled;
 
 	/// Are we generating fake attitude values?
 	bool _fakeAttitude;

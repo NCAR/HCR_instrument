@@ -25,6 +25,8 @@ MotionControl::MotionControl() :
 	_fakeAttitude(false),
 	_driveStartTime(QTime::currentTime())
 {
+	// Start with attitude correction enabled.
+	setCorrectionEnabled(true);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -33,15 +35,18 @@ MotionControl::~MotionControl()
 }
 
 /////////////////////////////////////////////////////////////////////
-void MotionControl::updateAttitude()
+void MotionControl::correctForAttitude()
 {
-	/**
+	// Ignore if attitude correction is disabled
+	if (! _attitudeCorrectionEnabled) {
+		DLOG << "Attitude correction is currently disabled";
+		return;
+	}
+	/*
 	 * The pitch, roll, and heading come from CmigitsSharedMemory
-	 * class. Using heading along with gps heading and true ground
-	 * speed (also available via CmigitsSharedMemory class), the
-	 * drift can be derived.
-	**/
-
+	 * class. Drift is derived using heading and true ground speed (also
+	 * available via CmigitsSharedMemory class).
+	 */
 	// Get aircraft attitude
 	uint64_t dataTime;
 	float pitch = 0.0;
@@ -58,10 +63,10 @@ void MotionControl::updateAttitude()
 		// Calculate aircraft drift.
 		float gndTrack = heading;	// default ground track to heading
 		float gndSpeed = sqrt(velNorth * velNorth + velEast * velEast);
-		// If ground speed is > 1.0 m/s, calculate the real ground track angle
-		// from north and east ground velocity components.
+		// Only if ground speed is > 1.0 m/s do we calculate the real ground
+		// track angle from north and east ground velocity components.
 		// XXX TODO - take airspeed into account as well when deciding whether
-		// to calculate ground track?
+		// ground track is sensible to calculate?
 		if (gndSpeed > 1.0) {
 			gndTrack = 90 - RadToDeg(atan2(velNorth, velEast));
 		}
@@ -169,6 +174,13 @@ MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
 	_antennaMode = SCANNING;
 	_rotDrive.scan(40);
 	_tiltDrive.scan(40);
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+MotionControl::setCorrectionEnabled(bool enabled) {
+	ILOG << "Attitude correction has been " << (enabled ? "enabled" : "disabled");
+	_attitudeCorrectionEnabled = enabled;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -293,6 +305,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
 	scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
 	scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
 	scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
+	attitudeCorrectionEnabled = static_cast<xmlrpc_c::value_boolean>(statusMap["attitudeCorrectionEnabled"]);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -316,6 +329,7 @@ MotionControl::Status::to_value_struct() const {
 	dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);
 	dict["scanCwLimit"] = xmlrpc_c::value_double(scanCwLimit);
 	dict["scanRate"] = xmlrpc_c::value_double(scanRate);
+	dict["attitudeCorrectionEnabled"] = xmlrpc_c::value_boolean(attitudeCorrectionEnabled);
     // Construct an xmlrpc_c::value_struct from the map and return it.
     return(xmlrpc_c::value_struct(dict));
 }
