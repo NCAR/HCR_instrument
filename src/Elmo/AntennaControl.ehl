@@ -1,45 +1,96 @@
-// Start at power up
-#@AUTOEXEC
-
-##START
-
-// Main
-main();
-exit;
+//
+//	Rotation Drive Functions
+//
 
 /////////////////////////////////////////////////////////////////////
-function main()
-	homing();
+function rotHoming()
+	MO=0; UM=2;
+	homing(80000);
+return
+
+/////////////////////////////////////////////////////////////////////
+function rotInit()
+	// Counts per full cycle (360 deg)
+	int fullCycle;
+	fullCycle = CA[18]*100;
 	
-	wait(1000);
-		
-	MO=0; UM=5;
+	// Set AC and DC to 90 deg/s2
+	AC=fullCycle/4; DC=AC;
 	
-	// Limit motion to 1 full cycle
-	XM[1]=0; XM[2]=CA[18]*100;
+	// Set counting range for the main feedback (PX)
+	XM[1]=0; XM[2]=fullCycle;
 	ER[3]=XM[2]/4-1;
 	
-	MO=1; PA=PX;
-	// Max speed allowed is VH[2]
+	// Set speed (max speed is VH[2])
 	SP=VH[2]*0.75;
-	BG;
+	MO=1;
+return
+
+//
+//	Tilt Drive Functions
+//
+
+/////////////////////////////////////////////////////////////////////
+function tiltHoming()
+	MO=0; UM=2;
+	
+	// Stop at RLS limit
+	HM[3]=7; HM[4]=0; HM[5]=2; HM[1]=1;
+	MO=1; JV=-10000; BG;
+	waitHome(10000);
+
+	homing(10000);
 return
 
 /////////////////////////////////////////////////////////////////////
-function homing()
-	MO=0;UM=2;
+function tiltInit()
+	// Counts per full cycle (360 deg)
+	int fullCycle;
+	fullCycle = CA[18]*240;
 	
+	// Set AC and DC to 90 deg/s2
+	AC=fullCycle/4; DC=AC;
+	
+	// Set counting range for the main feedback (PX)
+	XM[1]=-fullCycle/2; XM[2]=fullCycle/2;
+	ER[3]=XM[2]/4-1;
+	
+	// Set speed (max speed is VH[2])
+	SP=VH[2]*0.75;
+	MO=1;
+return
+
+
+//
+//	Sheared Functions
+//
+
+/////////////////////////////////////////////////////////////////////
+//
+//	Put drive at a known position and set reference
+//  	- jvSpeed: the jogging velocity (counts/sec)
+//
+function homing(int jvSpeed)
 	// Stop at Home
+	MO=0;
 	HM[3]=17; HM[4]=0; HM[5]=2;	HM[1]=1;
-	MO=1; JV=80000; BG;
-	waitHome(30000);
+	MO=1; JV=jvSpeed; BG;
+	waitHome(10000);
 	
 	// Stop at first Index
+	MO=0;
 	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0; HM[1]=1;
-	JV=80000; BG;
+	MO=1; JV=8000; BG;
+	waitHome(10000);
+	
+	MO=0; UM=5;
 return
 
 /////////////////////////////////////////////////////////////////////
+//
+//	Wait till homing is complete, time out otherwise (no error message)
+//		- timeOut: the time out value (millisec)
+//
 function waitHome(int timeOut)
 	int startTime;
 	startTime = TM;
@@ -48,4 +99,6 @@ function waitHome(int timeOut)
 			return;
 		end
 	end
+	// Wait a little more
+	wait(1000);
 return
