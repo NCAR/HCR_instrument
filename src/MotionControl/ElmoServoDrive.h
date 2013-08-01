@@ -9,6 +9,7 @@
 #define ELMOSERVODRIVE_H_
 #include <queue>
 #include <string>
+#include <cmath>
 #include <cstring>
 #include <stdint.h>
 #include <termios.h>
@@ -39,16 +40,32 @@ public:
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
-    /// Set PVT table entry
-    /// @param p the position (counts)
-    /// @param v the velocity (counts/s)
-    /// @param t the time (milliseconds)
-    /// @param n the table index
-    void setPVT(int p, int v, int t, int n);
+//    /// Set PVT table entry
+//    /// @param p the position (counts)
+//    /// @param v the velocity (counts/s)
+//    /// @param t the time (milliseconds)
+//    /// @param n the table index
+//    void setPVT(int p, int v, int t, int n);
 
-    /// Put the drive to scanning according to the PVT table
-    /// @param n the size of PVT table
-    void scan(int n);
+    /// Initialize table for scanning using PVT mode.
+    /// @param p vector of positions, deg
+    /// @param v vector of velocities, deg/s
+    /// @param t vector of times, s
+    void initScan(std::vector<float> p, std::vector<float> v, std::vector<float> t);
+
+    /// Initialize table for scanning using PT mode.
+    /// @param p vector of positions, deg
+    /// @param scanRate scan rate in deg/s
+    void initScan(std::vector<int> p, float scanRate);
+
+    /// Initialize table for scanning using PT mode.
+    /// @param ccwLimit counterclockwise limit, deg
+    /// @param cwLimit clockwise limit, deg
+    /// @param scanRate scan rate in deg/s
+    void initScan(float ccwLimit, float cwLimit, float scanRate);
+
+    /// @brief Put the drive to scanning according to the PVT table
+    void scan();
 
     /// Return the drive responding state. The state is true as long as replies
     /// to commands are being received from the drive.
@@ -65,8 +82,10 @@ public:
     int driveTemperature() const { return _driveTemperature; }
 
     /// Optical encoder counts per full circle.
-    static const uint32_t COUNTS_PER_CIRCLE = 400000;
-    static const float COUNTS_PER_DEGREE = COUNTS_PER_CIRCLE / 360.0;
+    uint32_t countsPerCircle() const { return(_positionMaxCnt - _positionMinCnt); }
+
+    /// Optical encoder counts per degree
+    float countsPerDegree() const { return(countsPerCircle() / 360.0); }
 
     // Static methods to unpack status register values
 
@@ -168,6 +187,11 @@ private slots:
      */
     void _resetStatus();
 
+    /**
+     * Initialize the drive
+     */
+    void _initDrive();
+
 private:
     /// Open our serial connection to the drive.
     void _openTty();
@@ -189,6 +213,25 @@ private:
     /// for a while so we can wait for all pending replies to arrive. After
     /// that, we should have command/reply synchronization.
     void _startCommandReplySync();
+
+    /// @brief Set drive's count range and position controller sample time to
+    /// bad values.
+    void _clearDriveParams();
+
+    /// @brief Return true iff drive's count range and position controller
+    /// sample time have been obtained from the drive.
+    static const int BAD_POSITION_CNT = INT_MAX;
+    bool _driveParamsGood() const {
+    	return(_positionMinCnt != BAD_POSITION_CNT &&
+    			_positionMaxCnt != BAD_POSITION_CNT &&
+    			_pcSampleTime != 0.0);
+    }
+
+    /// @brief Request needed drive parameters.
+    ///
+    /// This method sends commands to collect the drive parameters, and the
+    /// replies will be parsed out in _readReply().
+    void _collectDriveParams();
 
     /// @brief Return a text representation for a speed_t value from termios.h.
     /// E.g., the string "B9600" will be returned for speed_t value B9600.
@@ -212,6 +255,9 @@ private:
     /// Boolean to tell if the drive is currently responding to commands.
     bool _driveResponding;
 
+    /// Boolean to tell if drive has been initialized
+    bool _driveInitialized;
+
     /// List of commands not yet acknowledged by the drive
     class CmdQueueEntry {
     public:
@@ -233,6 +279,7 @@ private:
     QTimer _replyTimer;
 
     /// Timer used to collect status information on a regular basis
+    static const int STATUS_PERIOD_MSECS = 200;
     QTimer _statusTimer;
 
     /// Timer used to wait long enough to assure that replies to all sent
@@ -249,14 +296,23 @@ private:
     uint8_t _rawReply[_ELMO_REPLY_BUFFER_SIZE];
     uint16_t _rawReplyLen;
 
-    /// drive temperature, sampled at 5 Hz
+    /// drive temperature
     int _driveTemperature;
 
-    /// drive system time, microseconds, sampled at 5 Hz
+    /// drive system time, microseconds
     uint32_t _driveSystemTime;
 
-    /// drive status register, sampled at 5 Hz
+    /// drive status register
     StatusReg _driveStatusRegister;
+
+    /// minimum position count
+    int _positionMinCnt;
+
+    /// maximum position count
+    int _positionMaxCnt;
+
+    /// position controller sampling time, s
+    float _pcSampleTime;
 };
 
 #endif /* ELMOSERVODRIVE_H_ */
