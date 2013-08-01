@@ -55,8 +55,8 @@ void
 startXmlrpcWorkAlarm() {
 //    const struct timeval tv = { 0, 500000 }; // 0.5s (2Hz)
 //    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
-//    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
-    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
+    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
+//    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
 //    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
@@ -166,7 +166,7 @@ class SetCorrectionEnabledMethod : public xmlrpc_c::method
 public:
 	SetCorrectionEnabledMethod() {
 		// The method takes no arguments, and returns a struct
-		this->_signature = ":b";
+		this->_signature = "n:b";
 		this->_help = "This method enables/disables attitude correction";
 	}
 
