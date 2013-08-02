@@ -671,8 +671,6 @@ ElmoServoDrive::_startXq(std::string function) {
 
 bool
 ElmoServoDrive::_xqCompleted() {
-    ILOG << _driveName << " test for XQ completion";
-
     // If there is new status since we began XQ and the program is not running
     // on the drive, the XQ is complete.
     return(timercmp(&_lastStatusTime, &_xqStartTime, >) &&
