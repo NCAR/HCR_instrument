@@ -20,10 +20,10 @@ public:
     MotionControlDetails(QWidget *parent);
     virtual ~MotionControlDetails() {}
 
-    // @brief Return true iff there are any MotionControl problems, i.e.,
-    // if any red lights have been lit in the details display.
-    // @return true iff there are any MotionControl problems, i.e.,
-    // if any red lights have been lit in the details display.
+    /// @brief Return true iff there are any MotionControl problems, i.e.,
+    /// if any red lights have been lit in the details display.
+    /// @return true iff there are any MotionControl problems, i.e.,
+    /// if any red lights have been lit in the details display.
     bool problemDetected() const { return(_problemDetected); }
 
 public slots:
