@@ -585,7 +585,7 @@ void
 ElmoServoDrive::_syncWaitExpired() {
     // Disconnect the timer signal from this slot. This was a one-time deal!
     _gpTimer.stop();
-    disconnect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_syncWaitExpired()));
+    _gpTimer.disconnect(this);
 
     // Empty the list of unacknowledged commands
     while (! _unackedCmds.empty()) {
@@ -673,7 +673,7 @@ ElmoServoDrive::_testForInitCompletion() {
 
 stop_timer:
     _gpTimer.stop();
-    disconnect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_testForInitCompletion()));
+    _gpTimer.disconnect(this);
 }
 
 void
