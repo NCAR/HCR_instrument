@@ -249,7 +249,7 @@ CHECK_VOLT: process (EMS_PWR_ERROR)
 	end process;
 
 -- Check wavequide switch position    NEED to account for switch delay (~100 msec) before reporting status 
-CHECK_WG: process(WG_SW_TERM, WG_SW_NOISE, wg_dly, ops_mode, RESET)
+CHECK_WG: process(WG_SW_TERM, WG_SW_NOISE, wg_dly, ops_mode, RESET, cmd_wg_sw_pos)
 	begin
 		if (RESET = '0') then
 			wg_sw_pos <= '0';								-- assume waveguide switch is pointed into termination (normal ops)
@@ -277,6 +277,7 @@ CHECK_WG: process(WG_SW_TERM, WG_SW_NOISE, wg_dly, ops_mode, RESET)
 					wg_sw_pos <= '1';
 				end if;
 		   end if;
+			wg_change_state <= wg_sw_pos XOR cmd_wg_sw_pos;
 		else													-- waveguide switch is in transition
 			wg_sw_pos <= '0';
 			wg_stat <= '0';								-- bad status; don't want to transmit in transition
@@ -1053,8 +1054,6 @@ end process;
 
 U6_OE <= NOT U6_dly;
 	
-wg_change_state <= wg_sw_pos XOR cmd_wg_sw_pos;
-
 -- Sets 100 millisecond safety delay from waveguide switch command to switch in position				
 DELAY_100MSEC: process (EXT_CLK, RESET)
 begin 
