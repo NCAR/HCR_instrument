@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/TEMP/HMC_Redesign/HMC_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="hmc_tb" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="47" />
+   <wvobject fp_name="/hmc_tb/timer_6" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">timer_6</obj_property>
+      <obj_property name="ObjectShortName">timer_6</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/timer_7" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">timer_7</obj_property>
+      <obj_property name="ObjectShortName">timer_7</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/tx_gate" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tx_gate</obj_property>
+      <obj_property name="ObjectShortName">tx_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ext_clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ext_clk</obj_property>
+      <obj_property name="ObjectShortName">ext_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/t0" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">t0</obj_property>
+      <obj_property name="ObjectShortName">t0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/mod_pulse" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mod_pulse</obj_property>
+      <obj_property name="ObjectShortName">mod_pulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/sync_pulse" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sync_pulse</obj_property>
+      <obj_property name="ObjectShortName">sync_pulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_trig" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_trig</obj_property>
+      <obj_property name="ObjectShortName">ems_trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/rx_gate" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rx_gate</obj_property>
+      <obj_property name="ObjectShortName">rx_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/one_pps" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">one_pps</obj_property>
+      <obj_property name="ObjectShortName">one_pps</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_pwr_error" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_pwr_error</obj_property>
+      <obj_property name="ObjectShortName">ems_pwr_error</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/hv_on_730" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">hv_on_730</obj_property>
+      <obj_property name="ObjectShortName">hv_on_730</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/fil_on_730" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fil_on_730</obj_property>
+      <obj_property name="ObjectShortName">fil_on_730</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ops_mode_730" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ops_mode_730[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ops_mode_730[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/status_ack" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">status_ack</obj_property>
+      <obj_property name="ObjectShortName">status_ack</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/bit_ems" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bit_ems[7:1]</obj_property>
+      <obj_property name="ObjectShortName">bit_ems[7:1]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/wg_sw_term" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wg_sw_term</obj_property>
+      <obj_property name="ObjectShortName">wg_sw_term</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/wg_sw_noise" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wg_sw_noise</obj_property>
+      <obj_property name="ObjectShortName">wg_sw_noise</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/test_bit_0" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">test_bit_0</obj_property>
+      <obj_property name="ObjectShortName">test_bit_0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/test_bit_1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">test_bit_1</obj_property>
+      <obj_property name="ObjectShortName">test_bit_1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_out[7:1]</obj_property>
+      <obj_property name="ObjectShortName">ems_out[7:1]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/mod_pulse_hmc" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mod_pulse_hmc</obj_property>
+      <obj_property name="ObjectShortName">mod_pulse_hmc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/sync_pulse_hmc" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sync_pulse_hmc</obj_property>
+      <obj_property name="ObjectShortName">sync_pulse_hmc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/hv_on_hmc" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">hv_on_hmc</obj_property>
+      <obj_property name="ObjectShortName">hv_on_hmc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/fil_on_hmc" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fil_on_hmc</obj_property>
+      <obj_property name="ObjectShortName">fil_on_hmc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/wg_sw_ctrl_term" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wg_sw_ctrl_term</obj_property>
+      <obj_property name="ObjectShortName">wg_sw_ctrl_term</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/wg_sw_ctrl_noise" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wg_sw_ctrl_noise</obj_property>
+      <obj_property name="ObjectShortName">wg_sw_ctrl_noise</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/noise_source_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">noise_source_en</obj_property>
+      <obj_property name="ObjectShortName">noise_source_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/wg_sw_error" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wg_sw_error</obj_property>
+      <obj_property name="ObjectShortName">wg_sw_error</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/mod_pulse_disable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mod_pulse_disable</obj_property>
+      <obj_property name="ObjectShortName">mod_pulse_disable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_error_1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_error_1</obj_property>
+      <obj_property name="ObjectShortName">ems_error_1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_error_2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_error_2</obj_property>
+      <obj_property name="ObjectShortName">ems_error_2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_error_3" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_error_3</obj_property>
+      <obj_property name="ObjectShortName">ems_error_3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_error_45" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_error_45</obj_property>
+      <obj_property name="ObjectShortName">ems_error_45</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_error_67" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_error_67</obj_property>
+      <obj_property name="ObjectShortName">ems_error_67</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_error_event" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_error_event</obj_property>
+      <obj_property name="ObjectShortName">ems_error_event</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/spare_status0" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spare_status0</obj_property>
+      <obj_property name="ObjectShortName">spare_status0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/spare_status1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spare_status1</obj_property>
+      <obj_property name="ObjectShortName">spare_status1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/u6_oe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">u6_oe</obj_property>
+      <obj_property name="ObjectShortName">u6_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/spare1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spare1</obj_property>
+      <obj_property name="ObjectShortName">spare1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/spare2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spare2</obj_property>
+      <obj_property name="ObjectShortName">spare2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/spare3" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spare3</obj_property>
+      <obj_property name="ObjectShortName">spare3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ext_clk_period" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">ext_clk_period</obj_property>
+      <obj_property name="ObjectShortName">ext_clk_period</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/pol_state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">pol_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/ops_mode" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ops_mode[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ops_mode[2:0]</obj_property>
+   </wvobject>
+</wave_config>
