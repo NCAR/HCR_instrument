@@ -27,7 +27,7 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _waitingForSync(false),
     _replyTimer(),
     _statusTimer(),
-    _syncWaitTimer(),
+    _gpTimer(),
     _syncReplyReceived(false),
     _rawReplyLen(0) {
     // Start with bad values for drive count range and position controller
@@ -47,7 +47,7 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
 
     // If replies from the servo drive do not arrive within a specified
     // interval, call _replyTimedOut().
-    _replyTimer.setInterval(250);    // allow 250 ms for replies
+    _replyTimer.setInterval(REPLY_TIMEOUT_MSECS);
     _replyTimer.setSingleShot(true);
     connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
 
@@ -55,12 +55,6 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _statusTimer.setInterval(STATUS_PERIOD_MSECS);
     connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
     _statusTimer.start();
-
-    // Assume that all replies to issued commands will arrive within 250 ms
-    // when we're trying to sync commands and replies.
-    _syncWaitTimer.setInterval(250);    // allow 250 ms for replies
-    _syncWaitTimer.setSingleShot(true);
-    connect(& _syncWaitTimer, SIGNAL(timeout()), this, SLOT(_syncWaitExpired()));
 
     // Send a null command just to get a reply from the drive.
     _execElmoCmd("");
@@ -438,6 +432,10 @@ ElmoServoDrive::_readReply() {
                 uint16_t errorCode = uint16_t(cmdReply[replySize - 2]);
                 ELOG << _driveName << " command '" << cmd << "' gave error " <<
                         errorCode;
+                // Special handling for errors from XQ commands
+                if (! cmd.compare(0, 2, "XQ")) {
+                    _xqError = true;
+                }
             } else {
                 if (! emptyReplyExpected) {
                     DLOG << _driveName << " command '" << cmd << "' replied '" <<
@@ -461,6 +459,7 @@ ElmoServoDrive::_readReply() {
                     StatusReg statusRegister = qCmdReply.toInt(&ok);
                     if (ok) {
                         _driveStatusRegister = statusRegister;
+                        gettimeofday(&_lastStatusTime, NULL);
                     } else {
                         WLOG << _driveName << ": bad SR reply '" <<
                                 cmdReply << "'";
@@ -573,11 +572,21 @@ ElmoServoDrive::_startCommandReplySync() {
     _driveResponding = true;
     _waitingForSync = true;
     _syncReplyReceived = false;
-    _syncWaitTimer.start();
+
+    // Assume that all replies from the drive, up to and including the reply
+    // to the command issued above, will arrive within REPLY_TIMEOUT_MSECS.
+    _gpTimer.setInterval(REPLY_TIMEOUT_MSECS);
+    _gpTimer.setSingleShot(true);
+    connect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_syncWaitExpired()));
+    _gpTimer.start();
 }
 
 void
 ElmoServoDrive::_syncWaitExpired() {
+    // Disconnect the timer signal from this slot. This was a one-time deal!
+    _gpTimer.stop();
+    disconnect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_syncWaitExpired()));
+
     // Empty the list of unacknowledged commands
     while (! _unackedCmds.empty()) {
         _unackedCmds.pop();
@@ -602,6 +611,7 @@ ElmoServoDrive::_initDrive() {
     // Call the drive method for homing/initialization based on _driveName
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
+    _xqError = false;
     if (! _driveName.compare("rotation")) {
         _execElmoCmd("XQ##rotHoming");
     } else if (! _driveName.compare("tilt")) {
@@ -613,41 +623,57 @@ ElmoServoDrive::_initDrive() {
     }
     ILOG << _driveName << " initialization started";
 
-    // Wait forever, processing Qt events along the way, until we
-    // get a new drive status register.
-    _driveStatusRegister = 0;	// Force our saved register value to zero
-    while (true) {
-        ILOG << _driveName << " waiting for new status register value";
-        usleep(1000 * STATUS_PERIOD_MSECS);
-        // Process events, since that's how we get a new status register value
-        QCoreApplication::processEvents();
-        // Break out when we've gotten a new drive status register
-        if (_driveStatusRegister != 0)
-            break;
-    }
+    // Stash the current time. We will be testing against status collected after
+    // this time.
+    gettimeofday(&_initStartTime, NULL);
 
-    // Wait up to 10 seconds for the init program to finish running.
-    int startTime = time(0);
-    while ((time(0) - startTime) < 10) {
-        // Break when the initialization program is no longer running
-        if (! SREG_programRunning(_driveStatusRegister)) {
-            break;
-        }
-        usleep(1000 * STATUS_PERIOD_MSECS);
-        QCoreApplication::processEvents();
-    }
+    // Set up a periodic timer to check whether the program we just started on
+    // the drive has completed (or failed).
+    _gpTimer.setInterval(STATUS_PERIOD_MSECS);
+    _gpTimer.setSingleShot(false);
+    connect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_testForInitCompletion()));
+    _gpTimer.start();
+}
 
-    if (! SREG_programRunning(_driveStatusRegister)) {
-        // If the program has finished, the drive is initialized.
-        ILOG << _driveName << " initialization complete";
-        _driveInitialized = true;
-    } else {
-        ELOG << _driveName << " initialization timed out. Starting over.";
-        _execElmoCmd("KL");	// halt program execution and stop the motor
+void
+ElmoServoDrive::_testForInitCompletion() {
+    ILOG << _driveName << " test for init completion";
+    // If there was an error executing the program on the drive, restart
+    // the initialization process.
+    if (_xqError) {
         _startCommandReplySync();
+        goto stop_timer;
     }
+    // If there is no new status since we began initialization or if the
+    // initialization/homing program is still running on the drive,
+    // initialization is not yet complete.
+    if (timercmp(&_lastStatusTime, &_initStartTime, <=) ||
+            SREG_programRunning(_driveStatusRegister)) {
+        // If initialization has been proceeding for more than 10 seconds, time
+        // out and start over. Otherwise return and wait for the next periodic
+        // call here.
+        time_t now = time(0);
+        if ((now - _initStartTime.tv_sec) > 10) {
+            ELOG << _driveName << " initialization timed out. Starting over.";
+            _execElmoCmd("KL"); // halt program execution and stop the motor
+            _startCommandReplySync();
+            goto stop_timer;
+        } else {
+            // Nope, not done yet. Just return.
+            return;
+        }
+    }
+
+    // The initialization/homing program on the drive finished.
+    ILOG << _driveName << " initialization complete";
+    _driveInitialized = true;
+
     // Once the drive is initialized, we can query it for drive parameters.
     _collectDriveParams();
+
+stop_timer:
+    _gpTimer.stop();
+    disconnect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_testForInitCompletion()));
 }
 
 void
@@ -717,6 +743,9 @@ ElmoServoDrive::_replyTimedOut() {
     // If the drive had been responding, note that it is no longer responding.
     if (_driveResponding) {
         ELOG << _driveName << " servo drive is no longer responding";
+        // We need to consider the drive uninitialized, since there's a chance
+        // it lost power.
+        _driveInitialized = false;
     }
 
     _driveResponding = false;

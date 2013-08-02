@@ -13,6 +13,7 @@
 #include <cstring>
 #include <stdint.h>
 #include <termios.h>
+#include <sys/time.h>
 #include <QObject>
 #include <QSocketNotifier>
 #include <QThread>
@@ -192,6 +193,11 @@ private slots:
      */
     void _initDrive();
 
+    /**
+     * Test for completion of initialization
+     */
+    void _testForInitCompletion();
+
 private:
     /// Open our serial connection to the drive.
     void _openTty();
@@ -278,14 +284,19 @@ private:
     /// in a timely fashion.
     QTimer _replyTimer;
 
+    /// We allow up to this time (in ms) for replies to come back from the
+    /// servo drive.
+    static const int REPLY_TIMEOUT_MSECS = 500;
+
     /// Timer used to collect status information on a regular basis
-    static const int STATUS_PERIOD_MSECS = 200;
     QTimer _statusTimer;
 
-    /// Timer used to wait long enough to assure that replies to all sent
-    /// commands have been received, so we can establish command/reply
-    /// synchronization.
-    QTimer _syncWaitTimer;
+    /// We collect status information from the drive at this period, in ms
+    static const int STATUS_PERIOD_MSECS = 200;
+
+    /// General purpose timer used when waiting for command/reply
+    /// synchronization and for completion of initialization.
+    QTimer _gpTimer;
 
     /// Have we received at least one reply since starting the synchronization
     /// process?
@@ -304,6 +315,7 @@ private:
 
     /// drive status register
     StatusReg _driveStatusRegister;
+    struct timeval _lastStatusTime;
 
     /// minimum position count
     int _positionMinCnt;
@@ -313,6 +325,13 @@ private:
 
     /// position controller sampling time, s
     float _pcSampleTime;
+
+    /// When did we begin the initialization process?
+    struct timeval _initStartTime;
+
+    /// Has there been an error from an XQ command used for initialization/
+    /// homing?
+    bool _xqError;
 };
 
 #endif /* ELMOSERVODRIVE_H_ */
