@@ -456,8 +456,11 @@ HcrGuiMainWindow::_update() {
     
     // MotionControl status
     _motionControlDetails.updateStatus(_mcStatus);
-    _ui.mcStatusIcon->setPixmap(_motionControlDetails.problemDetected() ? _redLED : _greenLED);
+    bool mcStatusOk = _mcClientThread.serverIsResponding() &&
+            ! _motionControlDetails.problemDetected();
+    _ui.mcStatusIcon->setPixmap(mcStatusOk ? _greenLED : _redLED);
     if (_mcClientThread.serverIsResponding()) {
+        _motionControlDetails.setEnabled(true);
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
         case MotionControl::POINTING:
@@ -475,7 +478,9 @@ HcrGuiMainWindow::_update() {
         _ui.antennaModeLabel->setText(ss.str().c_str());
         _ui.antennaModeButton->setEnabled(true);
     } else {
-        _ui.antennaModeLabel->setText("MotionControlDaemon not responding");
+        _mcStatus = MotionControl::Status();    // go to an empty status
+        _motionControlDetails.setEnabled(false);
+        _ui.antennaModeLabel->setText("<font color='DarkRed'>MotionControlDaemon not responding</font>");
         _ui.antennaModeButton->setEnabled(false);
     }
 }

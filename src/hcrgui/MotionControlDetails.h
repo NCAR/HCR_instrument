@@ -34,9 +34,10 @@ private:
     void _doTiltStatus(const MotionControl::Status & mcStatus);
 
     Ui::MotionControlDetails _ui;
-    QPixmap _redLED;
+    QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
+    QPixmap _redLED;
 
     // true if we have turned on any red lights
     bool _problemDetected;

@@ -11,9 +11,10 @@
 MotionControlDetails::MotionControlDetails(QWidget *parent) :
     QDialog(parent),
     _ui(),
-    _redLED(":/redLED.png"),
+    _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
-    _greenLED_off(":/greenLED_off.png") {
+    _greenLED_off(":/greenLED_off.png"),
+    _redLED(":/redLED.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
     // Initialize with empty status
@@ -39,9 +40,9 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 				_greenLED : _greenLED_off);
 		_ui.rotUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
 		_ui.rotMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
-				_greenLED : _greenLED_off);
+				_amberLED : _greenLED_off);
 		_ui.rotProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
-				_greenLED : _greenLED_off);
+				_amberLED : _greenLED_off);
 		_ui.rotMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
 		// Drive problem?
 		bool redLight;
@@ -90,9 +91,9 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 				_greenLED : _greenLED_off);
 		_ui.tiltUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
 		_ui.tiltMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
-				_greenLED : _greenLED_off);
+				_amberLED : _greenLED_off);
 		_ui.tiltProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
-				_greenLED : _greenLED_off);
+				_amberLED : _greenLED_off);
 		_ui.tiltMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
 		// Drive problem?
 		bool redLight;
