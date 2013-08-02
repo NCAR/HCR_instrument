@@ -13,6 +13,7 @@
 #include <cstring>
 #include <stdint.h>
 #include <termios.h>
+#include <vector>
 #include <sys/time.h>
 #include <QObject>
 #include <QSocketNotifier>
@@ -238,6 +239,10 @@ private:
     /// This method sends commands to collect the drive parameters, and the
     /// replies will be parsed out in _readReply().
     void _collectDriveParams();
+
+    /// @brief Convert an angle in degrees to drive counts.
+    /// @param angleDeg angle to be converted, in degrees
+    int _angleToCounts(float angleDeg);
 
     /// @brief Return a text representation for a speed_t value from termios.h.
     /// E.g., the string "B9600" will be returned for speed_t value B9600.

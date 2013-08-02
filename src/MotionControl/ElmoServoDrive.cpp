@@ -115,6 +115,23 @@ ElmoServoDrive::_openTty() {
     DLOG << "Done configuring " << _ttyDev;
 }
 
+int
+ElmoServoDrive::_angleToCounts(float angleDeg) {
+    // Normalize the angle into range -360,360
+    angleDeg = fmodf(angleDeg, 360.0);
+
+    // Convert angle to drive counts
+    int counts = int(countsPerDegree() * angleDeg);
+
+    // Normalize into _posCountMin to (_posCountMax-1) range
+    if (counts < _positionMinCnt) {
+        counts += countsPerCircle();
+    } else if (counts > (_positionMaxCnt - 1)) {
+        counts -= countsPerCircle();
+    }
+    return(counts);
+}
+
 void
 ElmoServoDrive::moveTo(float angle) {
     // Don't bother if the drive is not responding, is not initialized,
@@ -124,25 +141,9 @@ ElmoServoDrive::moveTo(float angle) {
         return;
     }
 
-    // Normalize the angle into range 0-360
-    angle = fmodf(angle, 360.0);
-    if (angle < 0) {
-        angle += 360.0;
-    }
-
-    // Convert angle to drive counts
-    int32_t counts = int(countsPerDegree() * angle);
-
-    // Normalize into _posCountMin to (_posCountMax-1) range
-    if (counts < _positionMinCnt) {
-        counts += countsPerCircle();
-    } else if (counts > (_positionMaxCnt - 1)) {
-        counts -= countsPerCircle();
-    }
-
     // Generate a command to move to the given absolute position
     std::ostringstream cmdstream;
-    cmdstream << "PA=" << counts;
+    cmdstream << "PA=" << _angleToCounts(angle);
     _execElmoCmd(cmdstream.str());
     _execElmoCmd("BG");
 }
@@ -226,7 +227,7 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
 
     // Try to set position controller sample times per point to give us
     // 0.1 s between points. However, maximum position sample times per point
-    // is 255!
+    // is 255, so our time between points may be smaller than desired.
     int pcSampTimesPerPoint = int(0.1 / _pcSampleTime + 0.5);
     if (pcSampTimesPerPoint > 255)
         pcSampTimesPerPoint = 255;
@@ -258,8 +259,7 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
             int newi = nScanPts - i - 1;
             pos = ccwLimit + newi * degPerPoint;
         }
-        pos = fmodf(pos, 360.0);
-        int ipos = int(pos * countsPerDegree());
+        int ipos = _angleToCounts(pos);
 
         // Set position point
         ILOG << pos << ":" << ipos;
