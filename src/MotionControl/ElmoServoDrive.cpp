@@ -753,6 +753,7 @@ ElmoServoDrive::_testForHomingCompletion() {
     // The initialization/homing program on the drive finished.
     ILOG << _driveName << " homing complete";
     _driveHomed = true;
+    _execElmoCmd("MO=1");
 
 stop_timer:
     _gpTimer.stop();
