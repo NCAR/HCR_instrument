@@ -1,0 +1,89 @@
+//! **************************************************************************
+// Written by: Map P.40xd on Fri Aug 02 12:13:03 2013
+//! **************************************************************************
+
+SCHEMATIC START;
+CONFIG VCCAUX = "3.3";
+COMP "WG_SW_NOISE" LOCATE = SITE "P36" LEVEL 1;
+COMP "MOD_PULSE_HMC" LOCATE = SITE "P10" LEVEL 1;
+COMP "EMS_ERROR_45" LOCATE = SITE "P31" LEVEL 1;
+COMP "EMS_ERROR_67" LOCATE = SITE "P32" LEVEL 1;
+COMP "T0" LOCATE = SITE "P88" LEVEL 1;
+COMP "WG_SW_CTRL_TERM" LOCATE = SITE "P89" LEVEL 1;
+COMP "TEST_BIT_0" LOCATE = SITE "P83" LEVEL 1;
+COMP "TEST_BIT_1" LOCATE = SITE "P86" LEVEL 1;
+COMP "SPARE1" LOCATE = SITE "P94" LEVEL 1;
+COMP "MOD_PULSE" LOCATE = SITE "P33" LEVEL 1;
+COMP "SPARE2" LOCATE = SITE "P6" LEVEL 1;
+COMP "WG_SW_ERROR" LOCATE = SITE "P13" LEVEL 1;
+COMP "SPARE3" LOCATE = SITE "P98" LEVEL 1;
+COMP "EMS_ERROR_1" LOCATE = SITE "P35" LEVEL 1;
+COMP "EMS_ERROR_2" LOCATE = SITE "P34" LEVEL 1;
+COMP "HV_ON_730" LOCATE = SITE "P99" LEVEL 1;
+COMP "EMS_ERROR_3" LOCATE = SITE "P43" LEVEL 1;
+COMP "SYNC_PULSE_HMC" LOCATE = SITE "P19" LEVEL 1;
+COMP "EXT_CLK" LOCATE = SITE "P40" LEVEL 1;
+COMP "FIL_ON_HMC" LOCATE = SITE "P3" LEVEL 1;
+COMP "WG_SW_TERM" LOCATE = SITE "P12" LEVEL 1;
+COMP "RX_GATE" LOCATE = SITE "P16" LEVEL 1;
+COMP "EMS_OUT<1>" LOCATE = SITE "P48" LEVEL 1;
+COMP "EMS_OUT<2>" LOCATE = SITE "P64" LEVEL 1;
+COMP "MOD_PULSE_DISABLE" LOCATE = SITE "P15" LEVEL 1;
+COMP "SYNC_PULSE" LOCATE = SITE "P21" LEVEL 1;
+COMP "EMS_OUT<3>" LOCATE = SITE "P59" LEVEL 1;
+COMP "EMS_OUT<4>" LOCATE = SITE "P60" LEVEL 1;
+COMP "STATUS_ACK" LOCATE = SITE "P29" LEVEL 1;
+COMP "EMS_OUT<5>" LOCATE = SITE "P61" LEVEL 1;
+COMP "NOISE_SOURCE_EN" LOCATE = SITE "P24" LEVEL 1;
+COMP "EMS_OUT<6>" LOCATE = SITE "P57" LEVEL 1;
+COMP "EMS_OUT<7>" LOCATE = SITE "P62" LEVEL 1;
+COMP "WG_SW_CTRL_NOISE" LOCATE = SITE "P28" LEVEL 1;
+COMP "HV_ON_HMC" LOCATE = SITE "P23" LEVEL 1;
+COMP "EMS_TRIG" LOCATE = SITE "P30" LEVEL 1;
+COMP "OPS_MODE_730<0>" LOCATE = SITE "P78" LEVEL 1;
+COMP "OPS_MODE_730<1>" LOCATE = SITE "P82" LEVEL 1;
+COMP "TX_GATE" LOCATE = SITE "P25" LEVEL 1;
+COMP "OPS_MODE_730<2>" LOCATE = SITE "P90" LEVEL 1;
+COMP "U6_OE" LOCATE = SITE "P49" LEVEL 1;
+COMP "ONE_PPS" LOCATE = SITE "P41" LEVEL 1;
+COMP "SPARE_STATUS0" LOCATE = SITE "P84" LEVEL 1;
+COMP "SPARE_STATUS1" LOCATE = SITE "P44" LEVEL 1;
+COMP "EMS_PWR_ERROR" LOCATE = SITE "P27" LEVEL 1;
+COMP "BIT_EMS<1>" LOCATE = SITE "P65" LEVEL 1;
+COMP "BIT_EMS<2>" LOCATE = SITE "P68" LEVEL 1;
+COMP "EMS_ERROR_EVENT" LOCATE = SITE "P5" LEVEL 1;
+COMP "BIT_EMS<3>" LOCATE = SITE "P70" LEVEL 1;
+COMP "BIT_EMS<4>" LOCATE = SITE "P71" LEVEL 1;
+COMP "BIT_EMS<5>" LOCATE = SITE "P72" LEVEL 1;
+COMP "RESET" LOCATE = SITE "P85" LEVEL 1;
+COMP "BIT_EMS<6>" LOCATE = SITE "P73" LEVEL 1;
+COMP "FIL_ON_730" LOCATE = SITE "P4" LEVEL 1;
+COMP "BIT_EMS<7>" LOCATE = SITE "P77" LEVEL 1;
+TIMEGRP EXT_CLK = BEL "ems_3_error" BEL "ems_2_error" BEL "U6_dly" BEL
+        "l_rx_gate" BEL "ems_rx_count_0" BEL "ems_rx_count_1" BEL
+        "ems_rx_count_2" BEL "ems_rx_count_3" BEL "ems_rx_count_4" BEL
+        "ems_1_error" BEL "count_enable" BEL "ems_tx_ok" BEL "t0_rising" BEL
+        "ems_67_error" BEL "l_ems_trig" BEL "U6_count_0" BEL "U6_count_1" BEL
+        "U6_count_2" BEL "U6_count_3" BEL "U6_count_4" BEL "U6_count_5" BEL
+        "U6_count_6" BEL "U6_count_7" BEL "U6_count_8" BEL "U6_count_9" BEL
+        "U6_count_10" BEL "U6_count_11" BEL "U6_count_12" BEL "U6_count_13"
+        BEL "U6_count_14" BEL "U6_count_15" BEL "U6_count_16" BEL
+        "U6_count_17" BEL "U6_count_18" BEL "U6_count_19" BEL "U6_count_20"
+        BEL "U6_count_21" BEL "U6_count_22" BEL "U6_count_23" BEL
+        "ems_tx_count_enable" BEL "ems_rx_count_enable" BEL "ems_tx_error" BEL
+        "ems_tx_count_0" BEL "ems_tx_count_1" BEL "ems_tx_count_2" BEL
+        "ems_tx_count_3" BEL "ems_tx_count_4" BEL "end_cycle" BEL
+        "mod_pulse_error" BEL "t0_d1" BEL "ems_45_error" BEL "hv_count_0" BEL
+        "hv_count_1" BEL "hv_count_2" BEL "hv_count_3" BEL "hv_count_4" BEL
+        "hv_count_5" BEL "hv_count_6" BEL "hv_count_7" BEL "hv_count_8" BEL
+        "hv_count_9" BEL "hv_count_10" BEL "hv_count_11" BEL "hv_count_12" BEL
+        "hv_count_13" BEL "hv_count_14" BEL "hv_count_15" BEL "hv_count_16"
+        BEL "hv_count_17" BEL "hv_count_18" BEL "hv_count_19" BEL
+        "hv_count_20" BEL "hv_count_21" BEL "hv_count_22" BEL "hv_count_23"
+        BEL "ems_error_prt" BEL "hv_dly" BEL "U6_count_enable" BEL "rx_dly"
+        BEL "tx_dly" BEL "l_rx_dly" BEL "l_tx_dly" BEL "pol_state_0" BEL
+        "pol_state_1" BEL "state_FSM_FFd1" BEL "state_FSM_FFd2" BEL
+        "EXT_CLK_BUFGP/BUFG.GCLKMUX" BEL "EXT_CLK_BUFGP/BUFG";
+TS_EXT_CLK = PERIOD TIMEGRP "EXT_CLK" 16 ns HIGH 50%;
+SCHEMATIC END;
+

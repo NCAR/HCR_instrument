@@ -1,0 +1,441 @@
+Release 14.3 - xst P.40xd (nt64)
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.18 secs
+ 
+--> Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.19 secs
+ 
+--> Reading design: main_src.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+	9.1) Device utilization summary
+	9.2) Partition Resource Summary
+	9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "main_src.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "main_src"
+Output Format                      : NGC
+Target Device                      : xc3s50a-5-vq100
+
+---- Source Options
+Top Module Name                    : main_src
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : Yes
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : Yes
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Multiplier Style                   : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 100000
+Add Generic Clock Buffer(BUFG)     : 24
+Register Duplication               : YES
+Slice Packing                      : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Yes
+Use Synchronous Set                : Yes
+Use Synchronous Reset              : Yes
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+Verilog 2001                       : YES
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling vhdl file "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" in Library work.
+Entity <HMC_src> compiled.
+ERROR:HDLParsers:3010 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 136. Entity main_src does not exist.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 139. Undefined symbol 'STD_LOGIC'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 139. STD_LOGIC: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 142. Undefined symbol 'STD_LOGIC_VECTOR'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 142. STD_LOGIC_VECTOR: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 168. Undefined symbol 'std_logic_vector'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 168. std_logic_vector: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 180. Undefined symbol 'HV_ON_HMC'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 180. Undefined symbol 'HV_ON_730'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 180. HV_ON_730: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 181. Undefined symbol 'FIL_ON_HMC'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 181. Undefined symbol 'FIL_ON_730'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 181. FIL_ON_730: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 182. Undefined symbol 'SYNC_PULSE_HMC'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 182. Undefined symbol 'SYNC_PULSE'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 182. SYNC_PULSE: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 189. Undefined symbol 'SYNC_PULSE_FUSELAGE'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 192. Undefined symbol 'EMS_PWR_ERROR'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 192. EMS_PWR_ERROR: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 194. Undefined symbol 'ems_pwr_ok'.
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 192. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. Undefined symbol 'ROT_A'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. ROT_A: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. Undefined symbol 'ROT_B'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. ROT_B: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. Undefined symbol 'ROT_Z'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. ROT_Z: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 200. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 201. Undefined symbol 'rot_encoder_cnt'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 202. Undefined symbol 'ROTA'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 203. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 204. rot_encoder_cnt: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 198. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. Undefined symbol 'TILT_A'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. TILT_A: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. Undefined symbol 'TILT_B'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. TILT_B: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. Undefined symbol 'TILT_Z'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. TILT_Z: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 212. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 213. Undefined symbol 'tilt_encoder_cnt'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 215. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 216. tilt_encoder_cnt: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 210. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 224. Undefined symbol 'BIT_EMS'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 224. BIT_EMS: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 224. Undefined symbol 'ops_mode'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 224. ops_mode: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 228. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 229. Undefined symbol 'ems_tx_stat'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 231. ems_tx_stat: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 234. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 235. Undefined symbol 'ems_rx_stat'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 237. ems_rx_stat: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 241. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 246. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 253. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 258. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 264. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 269. = can not have such operands in this context.
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 224. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 282. Undefined symbol 'SPARE1'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 282. Undefined symbol 'hv_dly'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 282. hv_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 283. Undefined symbol 'SPARE2'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 283. Undefined symbol 'tx_dly'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 283. tx_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 284. Undefined symbol 'SPARE3'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 284. Undefined symbol 'rx_dly'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 284. rx_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 285. Undefined symbol 'SPARE4'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 285. Undefined symbol 'ems_tx_stat'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 285. ems_tx_stat: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 286. Undefined symbol 'SPARE5'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 286. Undefined symbol 'ems_tx_ok'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 286. ems_tx_ok: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 287. Undefined symbol 'SPARE6'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 287. Undefined symbol 'end_cycle'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 287. end_cycle: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 288. Undefined symbol 'SPARE7'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 288. Undefined symbol 'ems_pwr_ok'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 288. ems_pwr_ok: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 296. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 296. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 296. Undefined symbol 'ONE_PPS'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 296. ONE_PPS: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 298. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 299. Undefined symbol 'half_hz'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 301. half_hz: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 296. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 308. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 308. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 308. Undefined symbol 'half_hz'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 308. half_hz: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 310. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 311. Undefined symbol 'STATUS'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 312. Undefined symbol 'clear_stat'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 313. Undefined symbol 'hold_stat'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 315. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 316. STATUS: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 316. Undefined symbol 'ems_pwr_ok'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 316. ems_pwr_ok: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 317. Undefined symbol 'ems_tx_error'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 317. ems_tx_error: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 318. Undefined symbol 'ems_rx_error'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 318. ems_rx_error: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 319. Undefined symbol 'MOD_PULSE_DISABLE'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 319. NOT can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 320. hold_stat: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 321. clear_stat: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 308. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. Undefined symbol 'tx_dly'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. tx_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. Undefined symbol 'rx_dly'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. rx_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 332. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 333. Undefined symbol 'l_tx_dly'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 334. Undefined symbol 'l_rx_dly'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 336. l_tx_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 337. l_rx_dly: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 330. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 342. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 342. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 342. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 342. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 344. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 345. Undefined symbol 'ems_tx_ok'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 346. Undefined symbol 'ems_rx_ok'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 347. Undefined symbol 'ems_tx_error'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 348. Undefined symbol 'ems_rx_error'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 350. ems_tx_ok: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 350. NOT can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 350. Undefined symbol 'end_cycle'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 350. end_cycle: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 351. ems_tx_error: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 351. NOT can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 351. NOT can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 351. Undefined symbol 'clear_stat'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 351. clear_stat: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 352. ems_rx_ok: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 352. NOT can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 353. ems_rx_error: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 353. NOT can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 353. NOT can not have such operands in this context.
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 342. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. Undefined symbol 'HV_ON_730'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. HV_ON_730: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 360. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 361. Undefined symbol 'hv_count'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 362. Undefined symbol 'hv_dly'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 363. Undefined symbol 'count_enable'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 365. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 366. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 367. hv_count: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 368. count_enable: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 369. hv_dly: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 370. = can not have such operands in this context.
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 358. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. Undefined symbol 'EMS_TRIG'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. EMS_TRIG: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 384. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 385. Undefined symbol 'l_ems_trig'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 387. l_ems_trig: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 382. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. Undefined symbol 'EMS_TRIG'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. EMS_TRIG: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. Undefined symbol 'l_ems_trig'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. l_ems_trig: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 394. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 395. Undefined symbol 'ems_tx_count_enable'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 396. Undefined symbol 'ems_rx_count_enable'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 398. ems_tx_count_enable: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 398. NOT can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 398. Undefined symbol 'end_cycle'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 398. end_cycle: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 399. ems_rx_count_enable: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 399. NOT can not have such operands in this context.
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 392. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. Undefined symbol 'ems_tx_count_enable'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. ems_tx_count_enable: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 406. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 407. Undefined symbol 'ems_tx_count'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 408. Undefined symbol 'tx_dly'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 410. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 411. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 412. ems_tx_count: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 413. tx_dly: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 404. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. Undefined symbol 'ems_rx_count_enable'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. ems_rx_count_enable: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 427. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 428. Undefined symbol 'ems_rx_count'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 429. Undefined symbol 'rx_dly'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 431. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 432. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 433. ems_rx_count: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 434. rx_dly: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 425. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. Undefined symbol 'RX_GATE'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. RX_GATE: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. Undefined symbol 'l_rx_gate'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. l_rx_gate: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 448. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 449. Undefined symbol 'end_cycle'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 453. end_cycle: Undefined symbol (last report in this block)
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 446. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 461. Undefined symbol 'RESET'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 461. RESET: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 461. Undefined symbol 'EXT_CLK'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 461. EXT_CLK: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 463. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 468. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 468. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 468. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 468. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 468. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 468. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 470. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 470. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 470. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 470. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 470. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 470. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 474. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 474. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 474. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 474. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 476. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 476. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 476. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 476. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 480. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 480. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 480. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 482. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 482. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 482. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 482. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 484. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 484. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 484. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 484. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 486. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 486. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 486. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 486. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 490. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 490. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 490. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 492. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 492. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 492. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 492. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 494. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 494. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 494. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 494. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 496. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 496. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 496. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 496. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 498. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 498. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 498. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 498. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 503. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 503. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 503. = can not have such operands in this context.
+WARNING:HDLParsers:1406 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 461. No sensitivity list and no wait in the process
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 512. Undefined symbol 'MOD_PULSE'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 512. MOD_PULSE: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 512. Undefined symbol 'EMS_TRIG'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 512. EMS_TRIG: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 512. Undefined symbol 'OPS_MODE_730'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 512. OPS_MODE_730: Undefined symbol (last report in this block)
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 516. Undefined symbol 'ops_mode'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 517. Undefined symbol 'MOD_PULSE_OUT_P'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 518. Undefined symbol 'MOD_PULSE_OUT_N'.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 519. Undefined symbol 'MOD_PULSE_FUSELAGE'.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 520. = can not have such operands in this context.
+ERROR:HDLParsers:3312 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 521. Undefined symbol 'EMS_OUT'.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 523. EMS_OUT: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 526. = can not have such operands in this context.
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 527. MOD_PULSE_OUT_P: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 528. MOD_PULSE_OUT_N: Undefined symbol (last report in this block)
+ERROR:HDLParsers:1209 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 529. MOD_PULSE_FUSELAGE: Undefined symbol (last report in this block)
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 537. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 542. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 553. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 566. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 577. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 582. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 593. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 606. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 617. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 622. = can not have such operands in this context.
+ERROR:HDLParsers:808 - "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" Line 633. = can not have such operands in this context.
+--> 
+
+Total memory usage is 243824 kilobytes
+
+Number of errors   :  310 (   0 filtered)
+Number of warnings :   15 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

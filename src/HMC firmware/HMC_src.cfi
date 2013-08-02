@@ -1,0 +1,11 @@
+# PROMGEN: Xilinx Prom Generator P.40xd
+# Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+
+SOFTWARE_VERSION P.40xd
+DATE            07/31/2013 - 14:59
+SOURCE          C:\TEMP\HMC_Redesign\HMC_src.mcs
+DEVICE          XCF01S
+DATA_WIDTH      8
+FILL_DATA       0xFF
+SIGNATURE       0x012D53D2
+START_ADDRESS   0x00000000 END_ADDRESS 0x0000D5AD DIRECTION_UP   "C:/TEMP/HMC_Redesign/hmc_src.bit" 3s50avq100

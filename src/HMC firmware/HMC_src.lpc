@@ -1,0 +1,64 @@
+# HMC_src.lpc  
+#   The constraints in this file were created simply to be viewed.  
+#   If you wish to use these constraints, please copy them into your  
+#   project's constraint file. If you do not have a project constraints  
+#   file yet, please use the "Project->New Source" menu to create one.
+
+
+
+#pin2ucf - Wed May 29 12:49:21 2013
+#The following constraints were newly added
+NET "SPARE_STATUS0" LOC = P84;
+NET "SPARE_STATUS1" LOC = P44;
+NET "EMS_PWR_ERROR" LOC = P27;
+NET "RX_GATE" LOC = P16;
+NET "WG_SW_CTRL_NOISE" LOC = P28;
+NET "STATUS_ACK" LOC = P29;
+NET "EMS_ERROR_EVENT" LOC = P5;
+NET "SYNC_PULSE_HMC" LOC = P19;
+NET "EMS_ERROR_45" LOC = P31;
+NET "MOD_PULSE_DISABLE" LOC = P15;
+NET "RESET" LOC = P85;
+NET "EMS_ERROR_67" LOC = P32;
+NET "EMS_TRIG" LOC = P30;
+NET "TEST_BIT_0" LOC = P83;
+NET "TEST_BIT_1" LOC = P86;
+NET "T0" LOC = P88;
+NET "SYNC_PULSE" LOC = P21;
+NET "NOISE_SOURCE_EN" LOC = P24;
+NET "ONE_PPS" LOC = P41;
+NET "HV_ON_HMC" LOC = P23;
+NET "MOD_PULSE_HMC" LOC = P10;
+NET "HV_ON_730" LOC = P99;
+NET "EXT_CLK" LOC = P40;
+NET "EMS_ERROR_1" LOC = P35;
+NET "EMS_ERROR_2" LOC = P34;
+NET "EMS_ERROR_3" LOC = P43;
+NET "MOD_PULSE" LOC = P33;
+NET "WG_SW_TERM" LOC = P12;
+NET "EMS_OUT<1>" LOC = P48;
+NET "BIT_EMS<1>" LOC = P65;
+NET "SPARE1" LOC = P94;
+NET "SPARE2" LOC = P6;
+NET "SPARE3" LOC = P98;
+NET "EMS_OUT<2>" LOC = P64;
+NET "OPS_MODE_730<0>" LOC = P78;
+NET "BIT_EMS<2>" LOC = P68;
+NET "EMS_OUT<3>" LOC = P59;
+NET "OPS_MODE_730<1>" LOC = P82;
+NET "BIT_EMS<3>" LOC = P70;
+NET "EMS_OUT<4>" LOC = P60;
+NET "OPS_MODE_730<2>" LOC = P90;
+NET "BIT_EMS<4>" LOC = P71;
+NET "EMS_OUT<5>" LOC = P61;
+NET "BIT_EMS<5>" LOC = P72;
+NET "WG_SW_ERROR" LOC = P13;
+NET "EMS_OUT<6>" LOC = P57;
+NET "BIT_EMS<6>" LOC = P73;
+NET "EMS_OUT<7>" LOC = P62;
+NET "BIT_EMS<7>" LOC = P77;
+NET "FIL_ON_HMC" LOC = P3;
+NET "WG_SW_NOISE" LOC = P36;
+NET "FIL_ON_730" LOC = P4;
+NET "WG_SW_CTRL_TERM" LOC = P89;
+NET "TX_GATE" LOC = P25;
