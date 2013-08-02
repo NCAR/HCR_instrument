@@ -74,6 +74,16 @@ public:
     /// @return the drive responding state
     bool driveResponding() const { return _driveResponding; }
 
+    /// Return true iff the drive parameter initialization has been executed
+    /// successfully.
+    /// @return true iff the drive parameter initialization has been executed
+    /// successfully.
+    bool driveInitialized() const { return _driveInitialized; }
+
+    /// Return true iff the drive homing has been executed successfully.
+    /// @return true iff the drive homing has been executed successfully.
+    bool driveHomed() const { return _driveHomed; }
+
     /// Get latest sampled drive status register value
     StatusReg driveStatusRegister() const { return _driveStatusRegister; }
 
@@ -190,12 +200,36 @@ private slots:
     void _resetStatus();
 
     /**
-     * Initialize the drive
+     * Tell the drive to find where home is.
+     */
+    void _homeDrive();
+
+    /**
+     * Initialize drive parameters.
      */
     void _initDrive();
 
     /**
-     * Test for completion of initialization
+     * Test for completion of homing
+     */
+    void _testForHomingCompletion();
+
+    /**
+     * @brief Start execution via XQ of a named function on the drive.
+     * @param function the name of the function to execute via XQ
+     */
+    void _startXq(std::string function);
+
+    /**
+     * @brief Return true iff the last command via _startXq has completed
+     * execution on the drive.
+     * @return true iff the last command via _startXq has completed
+     * execution on the drive.
+     */
+    bool _xqCompleted();
+
+    /**
+     * Test for completion of drive parameter initialization
      */
     void _testForInitCompletion();
 
@@ -269,6 +303,9 @@ private:
     /// Boolean to tell if drive has been initialized
     bool _driveInitialized;
 
+    /// Boolean to tell if drive has been homed yet
+    bool _driveHomed;
+
     /// List of commands not yet acknowledged by the drive
     class CmdQueueEntry {
     public:
@@ -332,7 +369,7 @@ private:
     float _pcSampleTime;
 
     /// When did we begin the initialization process?
-    struct timeval _initStartTime;
+    struct timeval _xqStartTime;
 
     /// Has there been an error from an XQ command used for initialization/
     /// homing?

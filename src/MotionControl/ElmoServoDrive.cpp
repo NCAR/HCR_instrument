@@ -24,6 +24,7 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _readNotifier(0),
     _driveResponding(false),
     _driveInitialized(false),
+    _driveHomed(false),
     _waitingForSync(false),
     _replyTimer(),
     _statusTimer(),
@@ -136,7 +137,7 @@ void
 ElmoServoDrive::moveTo(float angle) {
     // Don't bother if the drive is not responding, is not initialized,
     // or we don't have drive parameters yet.
-    if (! _driveResponding || ! _driveInitialized || ! _driveParamsGood()) {
+    if (! _driveResponding || ! _driveInitialized || ! _driveHomed || ! _driveParamsGood()) {
         DLOG << _driveName << " ignoring moveTo " << angle;
         return;
     }
@@ -174,7 +175,7 @@ ElmoServoDrive::initScan(std::vector<float> p, std::vector<float> v,
         std::vector<float> t) {
     // Don't bother if the drive is not responding, is not initialized,
     // or we don't have drive parameters yet.
-    if (! _driveResponding || ! _driveInitialized || ! _driveParamsGood()) {
+    if (! _driveResponding || ! _driveInitialized || ! _driveHomed || ! _driveParamsGood()) {
         return;
     }
 
@@ -601,31 +602,50 @@ ElmoServoDrive::_syncWaitExpired() {
         _replyTimedOut();
     } else {
         ILOG << _driveName << " commands and replies are now synced";
-        // We can now tell the drive to initialize
+        // We can now tell the drive to initialize its parameters
         _initDrive();
     }
 }
 
 void
-ElmoServoDrive::_initDrive() {
-    // Call the drive method for homing/initialization based on _driveName
+ElmoServoDrive::_homeDrive() {
+    // Call the drive method for homing based on _driveName
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
-    _xqError = false;
     if (! _driveName.compare("rotation")) {
-        _execElmoCmd("XQ##rotHoming");
+        _startXq("rotHoming");
     } else if (! _driveName.compare("tilt")) {
-        _execElmoCmd("XQ##tiltHoming");
+        _startXq("tiltHoming");
+    } else {
+        ELOG << "Homing method for drive named '" << _driveName <<
+                "' is unknown!";
+        exit(1);
+    }
+    ILOG << _driveName << " homing started";
+
+    // Set up a periodic timer to check whether the program we just started on
+    // the drive has completed (or failed).
+    _gpTimer.setInterval(STATUS_PERIOD_MSECS);
+    _gpTimer.setSingleShot(false);
+    connect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_testForHomingCompletion()));
+    _gpTimer.start();
+}
+
+void
+ElmoServoDrive::_initDrive() {
+    // Call the drive method to initialize drive parameters
+    // @TODO Disable transmitter while homing, since antenna may move anywhere
+    // during this process
+    if (! _driveName.compare("rotation")) {
+        _startXq("rotInit");
+    } else if (! _driveName.compare("tilt")) {
+        _startXq("tiltInit");
     } else {
         ELOG << "Initialization method for drive named '" << _driveName <<
                 "' is unknown!";
         exit(1);
     }
     ILOG << _driveName << " initialization started";
-
-    // Stash the current time. We will be testing against status collected after
-    // this time.
-    gettimeofday(&_initStartTime, NULL);
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
@@ -636,24 +656,47 @@ ElmoServoDrive::_initDrive() {
 }
 
 void
+ElmoServoDrive::_startXq(std::string function) {
+    // Clear our XQ error indicator before we begin
+    _xqError = false;
+
+    // Use XQ to execute the given function on the drive
+    std::ostringstream cmdstream;
+    cmdstream << "XQ##" << function;
+    _execElmoCmd(cmdstream.str());
+
+    // Save the time the XQ was started
+    gettimeofday(&_xqStartTime, NULL);
+}
+
+bool
+ElmoServoDrive::_xqCompleted() {
+    ILOG << _driveName << " test for XQ completion";
+
+    // If there is new status since we began XQ and the program is not running
+    // on the drive, the XQ is complete.
+    return(timercmp(&_lastStatusTime, &_xqStartTime, >) &&
+            ! SREG_programRunning(_driveStatusRegister));
+}
+
+void
 ElmoServoDrive::_testForInitCompletion() {
     ILOG << _driveName << " test for init completion";
     // If there was an error executing the program on the drive, restart
     // the initialization process.
     if (_xqError) {
+        ELOG << _driveName << " initialization failed on XQ. Restarting.";
         _startCommandReplySync();
         goto stop_timer;
     }
-    // If there is no new status since we began initialization or if the
-    // initialization/homing program is still running on the drive,
-    // initialization is not yet complete.
-    if (timercmp(&_lastStatusTime, &_initStartTime, <=) ||
-            SREG_programRunning(_driveStatusRegister)) {
+
+    // Perhaps time out if the XQ function has not finished executing yet
+    if (! _xqCompleted()) {
         // If initialization has been proceeding for more than 10 seconds, time
         // out and start over. Otherwise return and wait for the next periodic
         // call here.
         time_t now = time(0);
-        if ((now - _initStartTime.tv_sec) > 10) {
+        if ((now - _xqStartTime.tv_sec) > 10) {
             ELOG << _driveName << " initialization timed out. Starting over.";
             _execElmoCmd("KL"); // halt program execution and stop the motor
             _startCommandReplySync();
@@ -670,6 +713,48 @@ ElmoServoDrive::_testForInitCompletion() {
 
     // Once the drive is initialized, we can query it for drive parameters.
     _collectDriveParams();
+
+stop_timer:
+    _gpTimer.stop();
+    _gpTimer.disconnect(this);
+
+    // If drive is initialized, we can now home it
+    if (_driveInitialized) {
+        _homeDrive();
+    }
+}
+
+void
+ElmoServoDrive::_testForHomingCompletion() {
+    ILOG << _driveName << " test for homing completion";
+    // If there was an error executing the program on the drive, restart
+    // the initialization process.
+    if (_xqError) {
+        ELOG << _driveName << " homing failed on XQ. Restarting.";
+        _startCommandReplySync();
+        goto stop_timer;
+    }
+
+    // Perhaps time out if the XQ function has not finished executing yet
+    if (! _xqCompleted()) {
+        // If initialization has been proceeding for more than 10 seconds, time
+        // out and start over. Otherwise return and wait for the next periodic
+        // call here.
+        time_t now = time(0);
+        if ((now - _xqStartTime.tv_sec) > 10) {
+            ELOG << _driveName << " homing timed out. Starting over.";
+            _execElmoCmd("KL"); // halt program execution and stop the motor
+            _startCommandReplySync();
+            goto stop_timer;
+        } else {
+            // Nope, not done yet. Just return.
+            return;
+        }
+    }
+
+    // The initialization/homing program on the drive finished.
+    ILOG << _driveName << " homing complete";
+    _driveHomed = true;
 
 stop_timer:
     _gpTimer.stop();
@@ -746,6 +831,7 @@ ElmoServoDrive::_replyTimedOut() {
         // We need to consider the drive uninitialized, since there's a chance
         // it lost power.
         _driveInitialized = false;
+        _driveHomed = false;
     }
 
     _driveResponding = false;
