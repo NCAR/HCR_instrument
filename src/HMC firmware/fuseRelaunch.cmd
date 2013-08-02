@@ -1,1 +1,0 @@
--intstyle "ise" -incremental -o "C:/TEMP/HMC_Redesign/HMC_tb_isim_beh.exe" -prj "C:/TEMP/HMC_Redesign/HMC_tb_beh.prj" "work.HMC_tb" 

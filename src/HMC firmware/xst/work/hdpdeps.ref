@@ -1,8 +1,0 @@
-V3 4
-FL "//cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_src.vhd" 2013/05/29.15:30:14 P.40xd
-FL C:/TEMP/HMC_Redesign/HMC_src.vhd 2013/08/02.12:12:43 P.40xd
-EN work/HMC_src 1375467169 FL C:/TEMP/HMC_Redesign/HMC_src.vhd \
-      PB ieee/std_logic_1164 1350103243 PB ieee/std_logic_arith 1350103244 \
-      PB ieee/STD_LOGIC_UNSIGNED 1350103247
-AR work/HMC_src/Behavioral 1375467170 \
-      FL C:/TEMP/HMC_Redesign/HMC_src.vhd EN work/HMC_src 1375467169
