@@ -15,12 +15,12 @@ class RotServoDrive : public ElmoServoDrive {
 public:
     /**
      * Instantiate a connection to a rotation servo drive on the named serial
-     * device. The drive's nickname will be set to "rot".
+     * device. The drive's nickname will be set to "rotation".
      * @param ttyDev the name serial port device connected to the rotation drive
      * @param driveName nickname used for the drive in log messages
      */
     RotServoDrive(const std::string ttyDev) :
-        ElmoServoDrive(ttyDev, "rot") {}
+        ElmoServoDrive(ttyDev, "rotation") {}
     virtual ~RotServoDrive() {}
 private:
     std::string _xqInitFunction() const { return("rotInit"); }
