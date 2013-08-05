@@ -335,8 +335,6 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
     scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
     attitudeCorrectionEnabled = static_cast<xmlrpc_c::value_boolean>(statusMap["attitudeCorrectionEnabled"]);
-    ILOG << "MotionControl::Status unpacked ccwLimit " << scanCcwLimit <<
-            ", cwLimit " << scanCwLimit << ", rate " << scanRate;
 }
 
 /////////////////////////////////////////////////////////////////////
