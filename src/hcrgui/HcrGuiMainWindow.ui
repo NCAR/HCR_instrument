@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>812</width>
-    <height>641</height>
+    <width>810</width>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -575,6 +575,13 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
+              <widget class="QLabel" name="antennaModeLabel">
+               <property name="text">
+                <string>status unknown...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QFrame" name="mcStatusFrame">
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
@@ -626,16 +633,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="antennaModeLabel">
-               <property name="text">
-                <string>mode unknown...</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QPushButton" name="antennaModeButton">
                <property name="text">
-                <string>Change...</string>
+                <string>Change Scan Mode...</string>
                </property>
               </widget>
              </item>

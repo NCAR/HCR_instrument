@@ -467,9 +467,10 @@ HcrGuiMainWindow::_update() {
             ss << "Fixed pointing at " << _mcStatus.fixedPointingAngle << " deg";
             break;
         case MotionControl::SCANNING:
-            ss << "Scanning from " << _mcStatus.scanCcwLimit << " deg CCW to " <<
-                _mcStatus.scanCwLimit << " deg CW at " << _mcStatus.scanRate <<
-                " deg/s";
+            ss << "Scanning:\n" <<
+                "    from " << _mcStatus.scanCcwLimit << " deg CCW to " <<
+                _mcStatus.scanCwLimit << " deg CW\n" <<
+                "    at " << _mcStatus.scanRate << " deg/s";
             break;
         default:
             ss << "Unknown antenna mode " << _mcStatus.antennaMode;
