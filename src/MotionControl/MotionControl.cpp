@@ -113,6 +113,9 @@ MotionControl::point(float angle)
 void
 MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
 {
+    _scanCcwLimit = ccwLimit;
+    _scanCwLimit = cwLimit;
+    _scanRate = scanRate;
     ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
             scanRate << " deg/s";
 
@@ -283,10 +286,10 @@ MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
 MotionControl::Status::Status() :
     rotDriveResponding(false),
     rotDriveStatusReg(0),
-    rotDriveTemp(0.0),
+    rotDriveTemp(0),
     tiltDriveResponding(false),
     tiltDriveStatusReg(0),
-    tiltDriveTemp(0.0),
+    tiltDriveTemp(0),
     antennaMode(POINTING),
     fixedPointingAngle(0.0),
     scanCcwLimit(0.0),
