@@ -614,16 +614,8 @@ ElmoServoDrive::_homeDrive() {
     // Call the drive method for homing based on _driveName
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
-    if (! _driveName.compare("rotation")) {
-        _startXq("rotHoming");
-    } else if (! _driveName.compare("tilt")) {
-        _startXq("tiltHoming");
-    } else {
-        ELOG << "Homing method for drive named '" << _driveName <<
-                "' is unknown!";
-        exit(1);
-    }
-    ILOG << _driveName << " homing started";
+    _startXq(_xqHomingFunction());
+    ILOG << _driveName << " XQ'ing homing function '" << _xqHomingFunction() << "'";
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
@@ -638,16 +630,8 @@ ElmoServoDrive::_initDrive() {
     // Call the drive method to initialize drive parameters
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
-    if (! _driveName.compare("rotation")) {
-        _startXq("rotInit");
-    } else if (! _driveName.compare("tilt")) {
-        _startXq("tiltInit");
-    } else {
-        ELOG << "Initialization method for drive named '" << _driveName <<
-                "' is unknown!";
-        exit(1);
-    }
-    ILOG << _driveName << " initialization started";
+    _startXq(_xqInitFunction());
+    ILOG << _driveName << " XQ-ing init function '" << _xqInitFunction() << "'";
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
