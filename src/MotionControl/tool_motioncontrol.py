@@ -23,6 +23,8 @@ headers = Split('''
     ElmoServoDrive.h
     MotionControl.h
     MotionControlRpcClient.h
+    RotServoDrive.h
+    TiltServoDrive.h
 ''')
 
 lib = env.Library('motioncontrol', sources)

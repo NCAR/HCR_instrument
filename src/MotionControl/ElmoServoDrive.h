@@ -31,6 +31,10 @@ public:
      * or "tilt"), to make log messages more descriptive.
      * @param ttyDev the name serial port device connected to the Elmo drive
      * @param driveName nickname used for the drive in log messages
+     * @param xqInitFunction name of the drive-resident function to be called
+     *      to initialize drive parameters
+     * @param xqHomingFunction name of the drive-resident function to be called
+     *      to home the drive
      */
     ElmoServoDrive(const std::string ttyDev, const std::string driveName);
     virtual ~ElmoServoDrive();
@@ -284,6 +288,18 @@ private:
     /// B57600, or B115200.
     /// @return a text representation for the given speed_t value.
     static std::string _BaudToText(speed_t baudValue);
+
+    /// @brief Return the name of the drive-resident function to be called
+    /// to initialize drive parameters.
+    /// @return the name of the drive-resident function to be called
+    /// to initialize drive parameters.
+    virtual std::string _xqInitFunction() const = 0;
+
+    /// @brief Return the name of the drive-resident function to be called
+    /// to home the drive.
+    /// @return the name of the drive-resident function to be called
+    /// to home the drive.
+    virtual std::string _xqHomingFunction() const = 0;
 
     /// Our serial port device name
     std::string _ttyDev;

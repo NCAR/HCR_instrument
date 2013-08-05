@@ -13,7 +13,8 @@
 #include <xmlrpc-c/base.hpp>
 
 #include "CmigitsSharedMemory.h"
-#include "ElmoServoDrive.h"
+#include "RotServoDrive.h"
+#include "TiltServoDrive.h"
 
 class MotionControl : public QObject
 {
@@ -179,9 +180,9 @@ private:
     void _adjustScanningForAttitude(float pitch, float roll, float drift);
 
     /// Rotation drive
-    ElmoServoDrive _rotDrive;
+    RotServoDrive _rotDrive;
     /// Tilt drive
-    ElmoServoDrive _tiltDrive;
+    TiltServoDrive _tiltDrive;
 
     /// Current antenna mode
     AntennaMode _antennaMode;

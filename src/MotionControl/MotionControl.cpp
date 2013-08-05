@@ -17,8 +17,8 @@ inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::MotionControl() :
-    _rotDrive("/dev/ttydp00", "rotation"),
-    _tiltDrive("/dev/ttydp01", "tilt"),
+    _rotDrive("/dev/ttydp00"),
+    _tiltDrive("/dev/ttydp01"),
     _antennaMode(POINTING),
     _fixedPointingAngle(0),
     _cmigitsShm(),

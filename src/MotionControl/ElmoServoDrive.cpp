@@ -187,6 +187,8 @@ ElmoServoDrive::initScan(std::vector<float> p, std::vector<float> v,
 
     // Stop the drive before we mess with the scan table
     _execElmoCmd("MO=0");
+    // Allow a bit of time (250 ms) for the motor to stop
+    usleep(250000);
 
     std::ostringstream cmdstream;
 
@@ -697,7 +699,8 @@ ElmoServoDrive::_testForInitCompletion() {
         if ((now - _xqStartTime.tv_sec) > 10) {
             ELOG << _driveName << " initialization timed out. Starting over.";
             _execElmoCmd("KL"); // halt program execution and stop the motor
-            _startCommandReplySync();
+            _driveResponding = false;
+            _execElmoCmd("");
             goto stop_timer;
         } else {
             // Nope, not done yet. Just return.
