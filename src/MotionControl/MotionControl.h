@@ -77,6 +77,10 @@ public:
 	/// @param enabled true to enable attitude correction, false to disable
 	void setCorrectionEnabled(bool enabled);
 
+	/// @brief Return true iff attitude correction is enabled.
+	/// @return true iff attitude correction is enabled.
+	bool attitudeCorrectionEnabled() const { return(_attitudeCorrectionEnabled); }
+
 	/// @brief Simple class to encapsulate status of a MotionControl object.
 	class Status {
 	public:
@@ -112,7 +116,7 @@ public:
 	     * @param[out] cwLimit the clockwise scan limit, deg
 	     * @param[out] rate the scan rate, deg/s
 	     */
-	    void scanParameters(float & ccwLimit, float & cwLimit, float rate) {
+	    void scanParameters(float & ccwLimit, float & cwLimit, float & rate) {
 	    	ccwLimit = scanCcwLimit;
 	    	cwLimit = scanCwLimit;
 	    	rate = scanRate;

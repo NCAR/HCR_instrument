@@ -291,7 +291,8 @@ MotionControl::Status::Status() :
 	fixedPointingAngle(0.0),
 	scanCcwLimit(0.0),
 	scanCwLimit(0.0),
-	scanRate(0.0) {}
+	scanRate(0.0),
+	attitudeCorrectionEnabled(false) {}
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status(const MotionControl & mc) :
@@ -302,7 +303,10 @@ MotionControl::Status::Status(const MotionControl & mc) :
 	tiltDriveStatusReg(mc.tiltDrive().driveStatusRegister()),
 	tiltDriveTemp(mc.tiltDrive().driveTemperature()),
 	antennaMode(mc.antennaMode()),
-	fixedPointingAngle(mc.fixedPointingAngle()) {
+	fixedPointingAngle(mc.fixedPointingAngle()),
+	attitudeCorrectionEnabled(mc.attitudeCorrectionEnabled()) {
+    // Use the MotionControl::getScanParams() method to get all three scan
+    // parameters
 	mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate);
 	DLOG << "rotDriveResponding: " << rotDriveResponding;
 	DLOG << "rotDriveTemp: " << rotDriveTemp;
@@ -328,6 +332,8 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
 	scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
 	scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
 	attitudeCorrectionEnabled = static_cast<xmlrpc_c::value_boolean>(statusMap["attitudeCorrectionEnabled"]);
+	ILOG << "MotionControl::Status unpacked ccwLimit " << scanCcwLimit <<
+	        ", cwLimit " << scanCwLimit << ", rate " << scanRate;
 }
 
 /////////////////////////////////////////////////////////////////////
