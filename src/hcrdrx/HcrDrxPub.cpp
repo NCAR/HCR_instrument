@@ -59,9 +59,15 @@ void HcrDrxPub::run() {
     ", waiting for data...";
 
   // start the loop. The thread will block on getBeam()
+  int count = 0;
   while (1) {
     int64_t pulsenum;
-    char* buf = _down->getBeam(pulsenum);
+    float rotation;
+    float tilt;
+    char* buf = _down->getBeam(pulsenum, rotation, tilt);
+    if (! (count++ % 20000)) {
+        ILOG << "rotation: " << rotation << ", tilt: " << tilt;
+    }
     _addToExport(reinterpret_cast<const int16_t *>(buf), pulsenum);
   }
 }
