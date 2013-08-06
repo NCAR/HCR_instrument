@@ -615,7 +615,6 @@ ElmoServoDrive::_homeDrive() {
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
     _startXq(_xqHomingFunction());
-    ILOG << _driveName << " XQ'ing homing function '" << _xqHomingFunction() << "'";
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
@@ -628,10 +627,7 @@ ElmoServoDrive::_homeDrive() {
 void
 ElmoServoDrive::_initDrive() {
     // Call the drive method to initialize drive parameters
-    // @TODO Disable transmitter while homing, since antenna may move anywhere
-    // during this process
     _startXq(_xqInitFunction());
-    ILOG << _driveName << " XQ-ing init function '" << _xqInitFunction() << "'";
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
@@ -650,6 +646,7 @@ ElmoServoDrive::_startXq(std::string function) {
     std::ostringstream cmdstream;
     cmdstream << "XQ##" << function;
     _execElmoCmd(cmdstream.str());
+    ILOG << _driveName << " executing drive-resident function: " << cmdstream.str();
 
     // Save the time the XQ was started
     gettimeofday(&_xqStartTime, NULL);
@@ -729,7 +726,8 @@ ElmoServoDrive::_testForHomingCompletion() {
         if ((now - _xqStartTime.tv_sec) > 10) {
             ELOG << _driveName << " homing timed out. Starting over.";
             _execElmoCmd("KL"); // halt program execution and stop the motor
-            _startCommandReplySync();
+            _driveResponding = false;
+            _execElmoCmd("");
             goto stop_timer;
         } else {
             // Nope, not done yet. Just return.
