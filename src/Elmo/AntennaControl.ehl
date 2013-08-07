@@ -4,7 +4,7 @@
 
 /////////////////////////////////////////////////////////////////////
 function rotHoming()
-	MO=0; UM=2;
+	MO=0; UM=5;
 	homing(80000);
 return
 
@@ -32,12 +32,12 @@ return
 
 /////////////////////////////////////////////////////////////////////
 function tiltHoming()
-	MO=0; UM=2;
+	MO=0; UM=5;
 	
 	// Stop at RLS limit
 	HM[3]=7; HM[4]=0; HM[5]=2; HM[1]=1;
 	MO=1; JV=-10000; BG;
-	waitHome(10000);
+	waitHoming();
 
 	homing(10000);
 return
@@ -62,7 +62,7 @@ return
 
 
 //
-//	Sheared Functions
+//	Shared Functions
 //
 
 /////////////////////////////////////////////////////////////////////
@@ -71,34 +71,56 @@ return
 //  	- jvSpeed: the jogging velocity (counts/sec)
 //
 function homing(int jvSpeed)
-	// Stop at Home
-	MO=0;
-	HM[3]=17; HM[4]=0; HM[5]=2;	HM[1]=1;
-	MO=1; JV=jvSpeed; BG;
-	waitHome(10000);
+	MO=1;
+
+	// Back up a bit if we're currently on the home sensor (digital input 5)
+	if (IP & (1 << 20))
+		PR=-10000; BG;
+		waitMotion();
+	end
+
+	// Jog forward and set zero absolute position where we first
+	// see the home sensor. This position may vary a bit since the
+	// home sensor for the rotation motor has a wide field of view.
+	HM[2]=0; HM[3]=17; HM[4]=0; HM[5]=0;
+	HM[1]=1;
+	JV=jvSpeed; BG;
+	waitHoming();
 	
-	// Stop at first Index
-	MO=0;
-	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0; HM[1]=1;
-	MO=1; JV=8000; BG;
-	waitHome(10000);
+	// Back up to the zero mark we just set
+	PA=0; BG;
+	waitMotion();
 	
-	MO=0; UM=5;
+	// Now jog to the first index mark forward of 'home' and move absolute 
+	// zero location there. This position should be consistent.
+	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0;
+	HM[1]=1;
+	JV=jvSpeed; BG;
+	waitHoming();
+	
+	// Move the drive back to our new zero
+	PA=0; BG;
+	waitMotion();
 return
 
 /////////////////////////////////////////////////////////////////////
 //
-//	Wait till homing is complete, time out otherwise (no error message)
-//		- timeOut: the time out value (millisec)
+// Wait until homing (and residual motion after homing) is complete
 //
-function waitHome(int timeOut)
-	int startTime;
-	startTime = TM;
+function waitHoming()
 	while (HM[1])
-		if (tdif(startTime) >= timeOut)
-			return;
-		end
+		wait(5);
 	end
-	// Wait a little more
-	wait(1000);
+	waitMotion();
+return
+
+/////////////////////////////////////////////////////////////////////
+//
+// Wait until motion completes
+//
+function waitMotion()
+	// wait for motion to complete
+	while (MS == 2)
+		wait(5);
+	end
 return
