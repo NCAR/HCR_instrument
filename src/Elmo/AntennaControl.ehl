@@ -34,10 +34,17 @@ return
 function tiltHoming()
 	MO=0; UM=5;
 	
-	// Stop at RLS limit
-	HM[3]=7; HM[4]=0; HM[5]=2; HM[1]=1;
-	MO=1; JV=-10000; BG;
-	waitHoming();
+    // For the tilt drive, the homing process must begin from the
+    // right limit switch. If we're not at the RLS, move there now.
+	// (IP bit 11 tells if we're at the RLS)
+	if (! (IP & (1 << 11)))
+		MO=1;
+		// Stop at RLS
+		HM[3]=7; HM[4]=0; HM[5]=2;
+		HM[1]=1;
+		JV=-10000; BG;
+		waitHoming();
+	end
 
 	homing(10000);
 return
@@ -68,12 +75,13 @@ return
 /////////////////////////////////////////////////////////////////////
 //
 //	Put drive at a known position and set reference
-//  	- jvSpeed: the jogging velocity (counts/sec)
+//     - jvSpeed: the jogging velocity (counts/sec)
 //
 function homing(int jvSpeed)
 	MO=1;
 
 	// Back up a bit if we're currently on the home sensor (digital input 5)
+	// (IP bit 20 tells the state of digital input 5)
 	if (IP & (1 << 20))
 		PR=-10000; BG;
 		waitMotion();
