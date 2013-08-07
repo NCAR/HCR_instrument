@@ -454,11 +454,17 @@ HcrGuiMainWindow::_update() {
     // Update the C-MIGITS status details dialog
     _cmigitsStatusDialog.updateStatus(_drxStatus);
     
-    // MotionControl status
+    // MotionControl status LED
     _motionControlDetails.updateStatus(_mcStatus);
-    bool mcStatusOk = _mcClientThread.serverIsResponding() &&
-            ! _motionControlDetails.problemDetected();
-    _ui.mcStatusIcon->setPixmap(mcStatusOk ? _greenLED : _redLED);
+    if (! _mcClientThread.serverIsResponding() ||
+            _motionControlDetails.errorDetected()) {
+        _ui.mcStatusIcon->setPixmap(_redLED);
+    } else if (_motionControlDetails.warningDetected()) {
+        _ui.mcStatusIcon->setPixmap(_amberLED);
+    } else {
+        _ui.mcStatusIcon->setPixmap(_greenLED);
+    }
+
     if (_mcClientThread.serverIsResponding()) {
         _motionControlDetails.setEnabled(true);
         std::ostringstream ss;

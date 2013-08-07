@@ -24,7 +24,13 @@ public:
     /// if any red lights have been lit in the details display.
     /// @return true iff there are any MotionControl problems, i.e.,
     /// if any red lights have been lit in the details display.
-    bool problemDetected() const { return(_problemDetected); }
+    bool errorDetected() const { return(_errorDetected); }
+
+    /// @brief Return true iff there are any MotionControl warnings, i.e.,
+    /// if any amber lights have beein lit in the details display.
+    /// @return true iff there are any MotionControl problems, i.e.,
+    /// if any amber lights have been lit in the details display.
+    bool warningDetected() const { return(_warningDetected); }
 
 public slots:
     void updateStatus(const MotionControl::Status & mcStatus);
@@ -39,7 +45,10 @@ private:
     QPixmap _greenLED_off;
     QPixmap _redLED;
 
+    // true if we have turned on any amber lights
+    bool _warningDetected;
+
     // true if we have turned on any red lights
-    bool _problemDetected;
+    bool _errorDetected;
 };
 #endif /*MOTIONCONTROLDETAILS_H_*/

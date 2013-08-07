@@ -23,7 +23,8 @@ MotionControlDetails::MotionControlDetails(QWidget *parent) :
 
 void
 MotionControlDetails::updateStatus(const MotionControl::Status & mcStatus) {
-	_problemDetected = false;
+    _warningDetected = false;
+	_errorDetected = false;
 	_doRotStatus(mcStatus);
 	_doTiltStatus(mcStatus);
 }
@@ -47,24 +48,24 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		// Drive problem?
 		bool redLight;
 		redLight = ESD::SREG_driveProblem(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.rotProblemIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 		_ui.rotProblemCodeLabel->
 			setText(QString::number(ESD::SREG_statusIndication(sr)));
 		// Motor failure?
 		redLight = ESD::SREG_motorFailure(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.rotMotorFailureIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 		// Drive CPU problem?
 		redLight = ESD::SREG_cpuProblem(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.rotCpuErrorIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 		// Drive stopped by limit?
 		redLight = ESD::SREG_stoppedByLimit(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.rotStoppedByLimitIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 	} else {
-		_problemDetected = true;
+		_errorDetected = true;
 		_ui.rotRespondingIcon->setPixmap(_redLED);
 		_ui.rotProblemIcon->setPixmap(_greenLED_off);
 		_ui.rotProblemCodeLabel->setText("");
@@ -84,38 +85,41 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 	typedef ElmoServoDrive ESD;	// compress our references to ElmoServoDrive somewhat...
 	const ESD::StatusReg sr = mcStatus.tiltDriveStatusReg;
 
+	bool amberLight;
+	bool redLight;
 	if (mcStatus.tiltDriveResponding) {
 		// General status
 		_ui.tiltRespondingIcon->setPixmap(_greenLED);
 		_ui.tiltMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
 				_greenLED : _greenLED_off);
 		_ui.tiltUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
-		_ui.tiltMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
-				_amberLED : _greenLED_off);
-		_ui.tiltProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
-				_amberLED : _greenLED_off);
+		amberLight = ESD::SREG_homingInProcess(sr);
+		_warningDetected = amberLight;
+		_ui.tiltMotorHomingIcon->setPixmap(amberLight ?	_amberLED : _greenLED_off);
+        amberLight = ESD::SREG_programRunning(sr);
+        _warningDetected = amberLight;
+		_ui.tiltProgramRunningIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
 		_ui.tiltMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
 		// Drive problem?
-		bool redLight;
 		redLight = ESD::SREG_driveProblem(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.tiltProblemIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 		_ui.tiltProblemCodeLabel->
 			setText(QString::number(ESD::SREG_statusIndication(sr)));
 		// Motor failure?
 		redLight = ESD::SREG_motorFailure(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.tiltMotorFailureIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 		// Drive CPU problem?
 		redLight = ESD::SREG_cpuProblem(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.tiltCpuErrorIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 		// Drive stopped by limit?
 		redLight = ESD::SREG_stoppedByLimit(sr);
-		_problemDetected |= redLight;
+		_errorDetected |= redLight;
 		_ui.tiltStoppedByLimitIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 	} else {
-		_problemDetected = true;
+		_errorDetected = true;
 		_ui.tiltRespondingIcon->setPixmap(_redLED);
 		_ui.tiltProblemIcon->setPixmap(_greenLED_off);
 		_ui.tiltProblemCodeLabel->setText("");
