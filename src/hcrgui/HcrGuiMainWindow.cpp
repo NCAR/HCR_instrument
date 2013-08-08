@@ -79,6 +79,10 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             this, SLOT(_setMotionControlStatus(MotionControl::Status)));
     _mcClientThread.start();
 
+    // QUdpSocket listening for broadcast of angles
+    _angleSocket.bind(45454, QUdpSocket::ShareAddress);
+    connect(&_angleSocket, SIGNAL(readyRead()), this, SLOT(_readAngles()));
+
     // Update every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
@@ -497,4 +501,25 @@ HcrGuiMainWindow::_logMessage(std::string message) {
     _ui.logArea->appendPlainText(
             QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh:mm:ss ") + 
             message.c_str());
+}
+
+void
+HcrGuiMainWindow::_readAngles()
+{
+    float rotation = 0.0;
+    float tilt = 0.0;
+    while (_angleSocket.hasPendingDatagrams()) {
+        QByteArray datagram;
+        datagram.resize(_angleSocket.pendingDatagramSize());
+        QHostAddress sender;
+        quint16 senderPort;
+        _angleSocket.readDatagram(datagram.data(), datagram.size(),
+                                &sender, &senderPort);
+
+        memcpy(reinterpret_cast<char*>(&rotation), datagram.data(), 4);
+        memcpy(reinterpret_cast<char*>(&tilt), datagram.data() + 4, 4);
+    }
+    _ui.rotationValue->setText(QString::number(rotation));
+    _ui.rotationDial->setValue(int(rotation));
+    _ui.tiltValue->setText(QString::number(tilt));
 }

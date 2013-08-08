@@ -14,6 +14,7 @@
 #include <QMainWindow>
 #include <QPixmap>
 #include <QTimer>
+#include <QUdpSocket>
 
 #include "XmitdStatusThread.h"
 #include "MotionControlClientThread.h"
@@ -44,6 +45,8 @@ private slots:
 
     /// @brief Update GUI state based on _xmitStatus and _drxStatus
     void _update();
+    /// @brief read angle(s) available on the broadcast port
+    void _readAngles();
     /// @brief Save the last status received from hcrdrx.
     /// @param status the last status received from hcrdrx.
     void _setDrxStatus(DrxStatus status);
@@ -119,5 +122,8 @@ private:
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;
+
+    // socket listening to angle broadcast
+    QUdpSocket _angleSocket;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/
