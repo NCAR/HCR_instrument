@@ -128,6 +128,14 @@ public:
         return(time);
     }
 
+    /// @brief Calculate and return estimated drift angle in degrees, based on
+    /// latest heading and ground velocity values. The range returned is
+    /// [-180.0,180.0].
+    ///
+    /// If ground speed is less than 10 m/s, drift will be reported as zero.
+    /// @return estimated drift angle in degrees, in range [-180.0,180.0].
+    float getEstimatedDriftAngle() const;
+
 public slots:
     /// @brief Store the latest 3500 (System Status) data.
     /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC

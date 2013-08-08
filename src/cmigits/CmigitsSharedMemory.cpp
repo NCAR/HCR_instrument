@@ -8,13 +8,16 @@
 #include <sstream>
 #include <iostream>
 #include <unistd.h>
-#include <cassert>
+#include <cmath>
 #include "CmigitsSharedMemory.h"
 #include <logx/Logging.h>
 
 LOGGING("CmigitsSharedMemory")
 
 const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
+
+inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
+inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
 
 CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     _qShm(CMIGITS_SHM_KEY),
@@ -218,4 +221,34 @@ CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, float & pitch,
     heading = _shmContents->heading;
     _qShm.unlock();
     return;
+}
+
+float
+CmigitsSharedMemory::getEstimatedDriftAngle() const {
+    _qShm.lock();
+    float heading = _shmContents->heading;
+    float velNorth = _shmContents->velNorth;
+    float velEast = _shmContents->velEast;
+    _qShm.unlock();
+
+    // Drift angle defaults to 0
+    float drift = 0.0;
+
+    // Only calculate drift angle if ground velocity is a non-zero value.
+    // We (arbitrarily) use 10 m/s as the threshold.
+    float groundSpd = sqrt(velNorth * velNorth + velEast * velEast);
+    if (groundSpd > 10.0) {
+        float groundTrk = 90 - RadToDeg(atan2(velNorth, velEast));
+        drift = groundTrk - heading;
+
+        // Normalize to range [-180,180]
+        drift = fmodf(drift, 360.0);    // this gets us to range [-360.0,360.0]
+        if (drift < -180.0) {
+            drift += 360.0;
+        } else if (drift > 180.0) {
+            drift -= 360.0;
+        }
+    }
+
+    return(drift);
 }
