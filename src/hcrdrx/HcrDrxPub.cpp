@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <QUdpSocket>
 #include <logx/Logging.h>
 
 #include "HcrDrxPub.h"
@@ -36,7 +37,6 @@ HcrDrxPub::HcrDrxPub(
         abort();
 
     // scaling between A2D counts and volts
-
     _iqScaleForMw = config.iqcount_scale_for_mw();
 
     // Create our associated downconverter.
@@ -57,6 +57,8 @@ void HcrDrxPub::run() {
   
   ILOG << "Channel " << _chanId << " beam length is " << bl <<
     ", waiting for data...";
+  // Socket for broadcasting angles. This is only used by channel 0.
+  QUdpSocket * angleSocket = (_chanId == 0) ? new QUdpSocket() : 0;
 
   // start the loop. The thread will block on getBeam()
   int count = 0;
@@ -65,11 +67,20 @@ void HcrDrxPub::run() {
     float rotation;
     float tilt;
     char* buf = _down->getBeam(pulsenum, rotation, tilt);
-    if (! (count++ % 20000)) {
-        ILOG << "rotation: " << rotation << ", tilt: " << tilt;
+    // Publish angles from channel 0 every 100 pulses.
+    if (angleSocket && ! (count++ % 100)) {
+        // Put together a datagram containing rotation and tilt as IEEE 4-byte
+        // floats.
+        QByteArray datagram;
+        datagram.append(reinterpret_cast<char*>(&rotation), sizeof(float));
+        datagram.append(reinterpret_cast<char*>(&tilt), sizeof(float));
+        angleSocket->writeDatagram(datagram.data(), datagram.size(),
+                QHostAddress::Broadcast, 45454);
     }
     _addToExport(reinterpret_cast<const int16_t *>(buf), pulsenum);
   }
+  // Delete the angle socket before we exit
+  delete(angleSocket);
 }
 
 ///////////////////////////////////////////////////////////
