@@ -923,7 +923,7 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
 
     _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
     _radarGeoref.altitude_msl_km = alt * 0.001; // m -> km
-    _radarGeoref.drift_angle_deg = IWRF_MISSING_FLOAT;
+    _radarGeoref.drift_angle_deg = _cmigitsShm.getEstimatedDriftAngle();
     _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
     _radarGeoref.ew_velocity_mps = velEast;
     _radarGeoref.heading_deg = heading;
