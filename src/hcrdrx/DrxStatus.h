@@ -284,7 +284,7 @@ public:
      * Alignment" submode
      * @param[out] nSats number of GPS satellites tracked
      * @param[out] positionFOM position figure-of-merit, values 1-9
-     * @parma[out] velocityFOM velocity figure-of-merit, values 1-9
+     * @param[out] velocityFOM velocity figure-of-merit, values 1-9
      * @param[out] headingFOM heading figure-of-merit, values 1-9
      * @param[out] timeFOM time figure-of-merit, values 1-9
      * @param[out] expectedHPosError expected horizontal position error, m
