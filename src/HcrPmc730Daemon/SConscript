@@ -6,6 +6,7 @@ hcrpmc730
 logx
 qt4
 rapradar
+xmlrpc_server_abyss++
 """)
 
 # Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
@@ -15,6 +16,7 @@ HcrPmc730Daemon.cpp
 """)
 
 env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtCore', 'QtGui'])
 
 HcrPmc730Daemon = env.Program('HcrPmc730Daemon', sources)
 
