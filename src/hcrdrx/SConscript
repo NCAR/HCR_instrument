@@ -6,9 +6,9 @@ boost_program_options
 cmigits
 doxygen
 hcrdrxrpcclient
+hcrpmc730
 logx
 pentek
-pmc730
 qt4
 qtt_qtconfig
 rapradar
@@ -32,7 +32,6 @@ HcrDrxConfig.h
 HcrDrxPub.h
 HcrdrxRpcClient.h
 HcrMonitor.h
-HcrPmc730.h
 IwrfExport.h
 PulseData.h
 """)

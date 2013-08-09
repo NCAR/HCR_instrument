@@ -20,13 +20,13 @@
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
+#include <HcrPmc730.h>
 #include <log4cpp/SyslogAppender.hh>
 #include <RecentHistoryAppender.h>
 
 #include <XmlRpc.h>
 
 #include "HcrXmitter.h"
-#include "../hcrdrx/HcrPmc730.h"
 
 namespace po = boost::program_options;
 

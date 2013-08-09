@@ -29,6 +29,7 @@ SConscript("hcr_xmit/SConscript")
 SConscript("hcrbscan/SConscript")
 SConscript("hcrgui/SConscript")
 SConscript("hcrdrx/SConscript")
+SConscript("HcrPmc730Daemon/SConscript")
 SConscript("tcpscope/SConscript")
 SConscript("MotionControl/SConscript")
 
