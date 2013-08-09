@@ -67,7 +67,7 @@ stopXmlrpcWorkAlarm() {
     // Stop the periodic timer.
     const struct timeval tv = { 0, 0 }; // zero time stops the timer
     const struct itimerval iv = { tv, tv };
-   setitimer(ITIMER_REAL, &iv, 0);
+    setitimer(ITIMER_REAL, &iv, 0);
 }
 
 
