@@ -165,7 +165,7 @@ class SetCorrectionEnabledMethod : public xmlrpc_c::method
 {
 public:
 	SetCorrectionEnabledMethod() {
-		// The method takes no arguments, and returns a struct
+        // The method takes a boolean argument, and returns nil
 		this->_signature = "n:b";
 		this->_help = "This method enables/disables attitude correction";
 	}
