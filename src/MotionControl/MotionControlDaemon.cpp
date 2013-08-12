@@ -22,7 +22,7 @@ LOGGING("MotionControlDaemon")
 quint16 ServerPort = 8080;
 
 // QApplication instance
-QApplication * App = 0;
+QCoreApplication * App = 0;
 
 // MotionControl instance
 MotionControl * Control = 0;
@@ -194,7 +194,7 @@ main(int argc, char** argv)
     logx::ParseLogArgs(argc, argv);
 
 	// Create the Qt application and our drive connection
-	App = new QApplication(argc, argv);
+	App = new QCoreApplication(argc, argv);
 	Control = new MotionControl();
 
     xmlrpc_c::registry myRegistry;
