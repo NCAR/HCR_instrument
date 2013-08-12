@@ -20,14 +20,25 @@
 /// @brief Class to represent HCR digital receiver/remote data system status.
 class HcrPmc730Status {
 public:
-    /// @brief Default constructor. Boolean fields are set to false, integer
-    /// fields are set to 0, and double fields are set to -99.9.
+    /// @brief Default constructor.
     HcrPmc730Status();
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
-    /// by a call to the HcrPmc730Status::toXmlRpcStruct() method.
+    /// by a call to the HcrPmc730Status::toXmlRpcValue() method.
     /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by
     /// call to the HcrPmc730Status::toXmlRpcValue() method.
+    ///
+    /// Generally, the xmlrpc_c::value_struct is obtained on the client side of
+    /// an XML-RPC connection to HcrPmc730Daemon:
+    /// @code
+    ///     ...
+    ///     xmlrpc_c::value result;
+    ///     _client.call(_daemonUrl, "getHcrPmc730Status", "", &result);
+    ///     // Cast the xmlrpc_c::value into xmlrpc_c::value_struct, and use
+    ///     // that to construct an HcrPmc730Status.
+    ///     HcrPmc730Status status(static_cast<xmlrpc_c::value_struct>(result));
+    ///     ...
+    /// @endcode
     HcrPmc730Status(const xmlrpc_c::value_struct & statusDict);
 
     virtual ~HcrPmc730Status();
@@ -35,18 +46,23 @@ public:
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.
     ///
-    /// The returned value can be used on the other side of an XML-RPC
-    /// connection to create an identical object via the
-    /// HcrPmc730Status(const std::map<std::string, xmlrpc_c::value>) constructor.
+    /// The common use is by an xmlrpc_c::serverXXX to provide an object which
+    /// can be used by a client to construct an equivalent HcrPmc730Status
+    /// on the other side:
     /// @code
-    ///     ...
-    ///     xmlrpc_c::value result;
-    ///     _client.call(_daemonUrl, "getHcrPmc730Status", "", &result);
-    ///     // Cast the result into type xmlrpc_c::value_struct, and use that
-    ///     // to construct a std::map<std::string, std::xmlrpc_value>.
-    ///     std::map<std::string, xmlrpc_c::value_struct> statusMap(static_cast<xmlrpc_c::value_struct>(result));
-    ///     // ...and use that to construct HcrPmc730Status
-    ///     HcrPmc730Status status(statusMap);
+    /// // XML-RPC method to get current monitored values from the PMC-730.
+    /// class GetHcrPmc730StatusMethod : public xmlrpc_c::method {
+    /// public:
+    ///     GetHcrPmc730StatusMethod() {
+    ///         this->_signature = "s:";
+    ///         this->_help = "This method returns current monitored values from the PMC-730.";
+    ///     }
+    ///     void
+    ///     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+    ///         paramList.verifyEnd(0);
+    ///         *retvalP = HcrPmc730Status().toXmlRpcValue();
+    ///     }
+    /// };
     /// @endcode
     /// @return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.

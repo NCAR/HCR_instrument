@@ -30,6 +30,7 @@ HcrPmc730Status::TemperatureList HcrPmc730Status::_TailconeTemps;
 
 
 HcrPmc730Status::HcrPmc730Status() {
+    // Construct from current values available from the card.
     _getMultiIoValues();
 }
 
@@ -48,7 +49,8 @@ HcrPmc730Status::~HcrPmc730Status() {
 xmlrpc_c::value_struct
 HcrPmc730Status::toXmlRpcValue() const {
     std::map<std::string, xmlrpc_c::value> statusMap;
-    // Clone ourself to a non-const instance
+    // Clone ourself to a non-const instance. We take as a given that the
+    // Oarchive_xmlrpc_c operator<<() will not modify us...
     HcrPmc730Status clone(*this);
     // Stuff our content into the statusMap, i.e., _serialize() to an
     // output archiver wrapped around the statusDict.
