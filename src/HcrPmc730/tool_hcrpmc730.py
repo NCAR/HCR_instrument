@@ -4,9 +4,10 @@
 import os
 
 tools = Split("""
-    pmc730
-    logx
+    archive_xmlrpc_c
     boost_serialization
+    logx
+    pmc730
 """)
 env = Environment(tools=['default'] + tools)
 
@@ -16,10 +17,12 @@ includeDir = tooldir
 
 sources = Split('''
 HcrPmc730.cpp
+HcrPmc730Status.cpp
 ''')
 
 headers = Split('''
 HcrPmc730.h
+HcrPmc730Status.h
 ''')
 lib = env.Library('hcrpmc730', sources)
 
