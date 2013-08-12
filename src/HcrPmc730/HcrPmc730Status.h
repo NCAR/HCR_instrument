@@ -24,11 +24,11 @@ public:
     /// fields are set to 0, and double fields are set to -99.9.
     HcrPmc730Status();
 
-    /// @brief Construct from a map from std::string to xmlrpc_c::value as
-    /// returned by a call to the HcrPmc730Status::toXmlRpcStruct() method.
-    /// @param statusDict an XmlRpcValue dictionary as returned by call to the
-    /// HcrPmc730Status::toXmlRpcValue() method.
-    HcrPmc730Status(const std::map<std::string, xmlrpc_c::value> & statusDict);
+    /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
+    /// by a call to the HcrPmc730Status::toXmlRpcStruct() method.
+    /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by
+    /// call to the HcrPmc730Status::toXmlRpcValue() method.
+    HcrPmc730Status(const xmlrpc_c::value_struct & statusDict);
 
     virtual ~HcrPmc730Status();
 
@@ -38,6 +38,16 @@ public:
     /// The returned value can be used on the other side of an XML-RPC
     /// connection to create an identical object via the
     /// HcrPmc730Status(const std::map<std::string, xmlrpc_c::value>) constructor.
+    /// @code
+    ///     ...
+    ///     xmlrpc_c::value result;
+    ///     _client.call(_daemonUrl, "getHcrPmc730Status", "", &result);
+    ///     // Cast the result into type xmlrpc_c::value_struct, and use that
+    ///     // to construct a std::map<std::string, std::xmlrpc_value>.
+    ///     std::map<std::string, xmlrpc_c::value_struct> statusMap(static_cast<xmlrpc_c::value_struct>(result));
+    ///     // ...and use that to construct HcrPmc730Status
+    ///     HcrPmc730Status status(statusMap);
+    /// @endcode
     /// @return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.
     xmlrpc_c::value_struct toXmlRpcValue() const;
@@ -315,31 +325,6 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsAltitude);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsAttitudeTime);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsCurrentMode);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsDoingCoarseAlignment);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsGpsAvailable);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsHeadingFOM);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsHeading);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsHPosError);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsInsAvailable);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsLatitude);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsLongitude);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsNavSolutionTime);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsNSats);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsPitch);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsPositionFOM);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsRoll);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsStatusTime);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsTemp);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsTimeFOM);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsVelEast);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsVelNorth);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsVelocityError);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsVelocityFOM);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsVelUp);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsVPosError);
             ar & BOOST_SERIALIZATION_NVP(_detectedRfPower);
             ar & BOOST_SERIALIZATION_NVP(_eikTemp);
             ar & BOOST_SERIALIZATION_NVP(_emsError1);
@@ -356,8 +341,6 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_modPulseDisabled);
             ar & BOOST_SERIALIZATION_NVP(_noiseSourceSelected);
             ar & BOOST_SERIALIZATION_NVP(_noiseSourceTemp);
-            ar & BOOST_SERIALIZATION_NVP(_pentekBoardTemp);
-            ar & BOOST_SERIALIZATION_NVP(_pentekFpgaTemp);
             ar & BOOST_SERIALIZATION_NVP(_ploTemp);
             ar & BOOST_SERIALIZATION_NVP(_polarizationSwitchTemp);
             ar & BOOST_SERIALIZATION_NVP(_ps28VTemp);
@@ -515,79 +498,9 @@ private:
     /// Is there one or more EMS errors of type 6 or 7 in the error count?
     bool _emsError6Or7;
 
-    /// Pentek FPGA temperature
-    double _pentekFpgaTemp;
-
-    /// Pentek board temperature;
-    double _pentekBoardTemp;
-
     /// HMC operating mode
     uint16_t _hmcMode;
-    
-    /// C-MIGITS time of last status information, seconds since 
-    /// 1970-01-01 00:00:00 UTC. This time applies to current mode, 
-    /// INS available, GPS available, position FOM, velocity FOM, 
-    /// heading FOM, time FOM, H position error, V position error, and
-    /// velocity error
-    double _cmigitsStatusTime;
-    /// C-MIGITS current mode (see documentation for the C-MIGITS 3500 message)
-    uint16_t _cmigitsCurrentMode;
-    /// C-MIGITS number of satellites tracked
-    uint16_t _cmigitsNSats;
-    /// C-MIGITS INS available
-    bool _cmigitsInsAvailable;
-    /// C-MIGITS GPS available
-    bool _cmigitsGpsAvailable;
-    /// Is C-MIGITS currently in "Coarse Alignment" submode?
-    bool _cmigitsDoingCoarseAlignment;
-    /// C-MIGITS position figure of merit (see documentation for the C-MIGITS
-    /// 3500 message)
-    uint16_t _cmigitsPositionFOM;
-    /// C-MIGITS velocity figure of merit (see documentation for the C-MIGITS
-    /// 3500 message)
-    uint16_t _cmigitsVelocityFOM;
-    /// C-MIGITS heading figure of merit (see documentation for the C-MIGITS
-    /// 3500 message)
-    uint16_t _cmigitsHeadingFOM;
-    /// C-MIGITS time figure of merit (see documentation for the C-MIGITS
-    /// 3500 message)
-    uint16_t _cmigitsTimeFOM;
-    /// C-MIGITS expected horizontal position error, m
-    float _cmigitsHPosError;
-    /// C-MIGITS expected vertical position error, m
-    float _cmigitsVPosError;
-    /// C-MIGITS expected velocity error, m/s
-    float _cmigitsVelocityError;
-    
-    /// C-MIGITS time of last navigation solution, seconds since 
-    /// 1970-01-01 00:00:00 UTC. This time applies to latitude, longitude,
-    /// altitude, north velocity component, east velocity component, and 
-    /// upward velocity component
-    double _cmigitsNavSolutionTime;
-    /// C-MIGITS latitude, deg
-    float _cmigitsLatitude;
-    /// C-MIGITS longitude, deg
-    float _cmigitsLongitude;
-    /// C-MIGITS altitude, m above MSL
-    float _cmigitsAltitude;
-    /// C-MIGITS north component of velocity, m/s
-    float _cmigitsVelNorth;
-    /// C-MIGITS east component of velocity, m/s
-    float _cmigitsVelEast;
-    /// C-MIGITS upward component of velocity, m/s
-    float _cmigitsVelUp;
-    
-    /// C-MIGITS time of latest attitude information, seconds since 
-    /// 1970-01-01 00:00:00 UTC. This time applies to pitch, roll, and
-    /// heading.
-    double _cmigitsAttitudeTime;
-    /// C-MIGITS latest pitch, deg
-    float _cmigitsPitch;
-    /// C-MIGITS latest roll, deg
-    float _cmigitsRoll;
-    /// C-MIGITS latest heading, deg clockwise from true north
-    float _cmigitsHeading;
-};
+    };
 
 // Increment this class version number when member variables are changed.
 BOOST_CLASS_VERSION(HcrPmc730Status, 0)

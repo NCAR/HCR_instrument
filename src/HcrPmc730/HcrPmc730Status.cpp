@@ -33,10 +33,11 @@ HcrPmc730Status::HcrPmc730Status() {
     _getMultiIoValues();
 }
 
-HcrPmc730Status::HcrPmc730Status(const std::map<std::string, xmlrpc_c::value> & statusMap) {
+HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) {
     // Create an input archiver wrapper around the map from std::string to
     // xmlrpc_c::value, and use serialize() to populate our members from its
     // content.
+    std::map<std::string, xmlrpc_c::value> statusMap(statusDict);
     Iarchive_xmlrpc_c iar(statusMap);
     iar >> *this;
 }
