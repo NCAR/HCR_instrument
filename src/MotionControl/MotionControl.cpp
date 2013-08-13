@@ -273,9 +273,13 @@ MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status() :
     rotDriveResponding(false),
+    rotDriveInitialized(false),
+    rotDriveHomed(false),
     rotDriveStatusReg(0),
     rotDriveTemp(0),
     tiltDriveResponding(false),
+    tiltDriveInitialized(false),
+    tiltDriveHomed(false),
     tiltDriveStatusReg(0),
     tiltDriveTemp(0),
     antennaMode(POINTING),
@@ -288,9 +292,13 @@ MotionControl::Status::Status() :
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status(const MotionControl & mc) :
     rotDriveResponding(mc.rotationDrive().driveResponding()),
+    rotDriveInitialized(mc.rotationDrive().driveInitialized()),
+    rotDriveHomed(mc.rotationDrive().driveHomed()),
     rotDriveStatusReg(mc.rotationDrive().driveStatusRegister()),
     rotDriveTemp(mc.rotationDrive().driveTemperature()),
     tiltDriveResponding(mc.tiltDrive().driveResponding()),
+    tiltDriveInitialized(mc.tiltDrive().driveInitialized()),
+    tiltDriveHomed(mc.tiltDrive().driveHomed()),
     tiltDriveStatusReg(mc.tiltDrive().driveStatusRegister()),
     tiltDriveTemp(mc.tiltDrive().driveTemperature()),
     antennaMode(mc.antennaMode()),
@@ -300,8 +308,12 @@ MotionControl::Status::Status(const MotionControl & mc) :
     // parameters
     mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate);
     DLOG << "rotDriveResponding: " << rotDriveResponding;
+    DLOG << "rotDriveInitialized: " << rotDriveInitialized;
+    DLOG << "rotDriveHomed: " << rotDriveHomed;
     DLOG << "rotDriveTemp: " << rotDriveTemp;
     DLOG << "tiltDriveResponding: " << tiltDriveResponding;
+    DLOG << "tiltDriveInitialized: " << tiltDriveInitialized;
+    DLOG << "tiltDriveHomed: " << tiltDriveHomed;
     DLOG << "tiltDriveTemp: " << tiltDriveTemp;
 }
 
@@ -312,9 +324,13 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     std::map<std::string, xmlrpc_c::value> statusMap =
             static_cast<std::map<std::string, xmlrpc_c::value> >(statusDict);
     rotDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveResponding"]);
+    rotDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveInitialized"]);
+    rotDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveHomed"]);
     rotDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveStatusReg"]);
     rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
     tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
+    tiltDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInitialized"]);
+    tiltDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveHomed"]);
     tiltDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveStatusReg"]);
     tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
     antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
@@ -336,9 +352,13 @@ MotionControl::Status::to_value_struct() const {
     // xmlrpc_c::value.
     std::map<std::string, xmlrpc_c::value> dict;
     dict["rotDriveResponding"] = xmlrpc_c::value_boolean(rotDriveResponding);
+    dict["rotDriveInitialized"] = xmlrpc_c::value_boolean(rotDriveInitialized);
+    dict["rotDriveHomed"] = xmlrpc_c::value_boolean(rotDriveHomed);
     dict["rotDriveStatusReg"] = xmlrpc_c::value_int(rotDriveStatusReg);
     dict["rotDriveTemp"] = xmlrpc_c::value_int(rotDriveTemp);
     dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
+    dict["tiltDriveInitialized"] = xmlrpc_c::value_boolean(tiltDriveInitialized);
+    dict["tiltDriveHomed"] = xmlrpc_c::value_boolean(tiltDriveHomed);
     dict["tiltDriveStatusReg"] = xmlrpc_c::value_int(tiltDriveStatusReg);
     dict["tiltDriveTemp"] = xmlrpc_c::value_int(tiltDriveTemp);
     dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);

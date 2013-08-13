@@ -40,8 +40,11 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		_ui.rotMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
 				_greenLED : _greenLED_off);
 		_ui.rotUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
+		_ui.rotMotorInitializedIcon->setPixmap(mcStatus.rotDriveInitialized ?
+				_greenLED : _greenLED_off);
 		_ui.rotMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
 				_amberLED : _greenLED_off);
+		_ui.rotMotorHomedIcon->setPixmap(mcStatus.rotDriveHomed ? _greenLED : _greenLED_off);
 		_ui.rotProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
 				_amberLED : _greenLED_off);
 		_ui.rotMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
@@ -72,7 +75,9 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		_ui.rotMotorOnIcon->setPixmap(_greenLED_off);
 		_ui.rotMotorFailureIcon->setPixmap(_greenLED_off);
 		_ui.rotUnitModeLabel->setText("");
+		_ui.rotMotorInitializedIcon->setPixmap(_greenLED_off);
 		_ui.rotMotorHomingIcon->setPixmap(_greenLED_off);
+		_ui.rotMotorHomedIcon->setPixmap(_greenLED_off);
 		_ui.rotProgramRunningIcon->setPixmap(_greenLED_off);
 		_ui.rotMotionStatusLabel->setText("");
 		_ui.rotCpuErrorIcon->setPixmap(_greenLED_off);
@@ -93,9 +98,12 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		_ui.tiltMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
 				_greenLED : _greenLED_off);
 		_ui.tiltUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
+		_ui.tiltMotorInitializedIcon->setPixmap(mcStatus.tiltDriveInitialized ?
+				_greenLED : _greenLED_off);
 		amberLight = ESD::SREG_homingInProcess(sr);
 		_warningDetected = amberLight;
 		_ui.tiltMotorHomingIcon->setPixmap(amberLight ?	_amberLED : _greenLED_off);
+		_ui.tiltMotorHomedIcon->setPixmap(mcStatus.tiltDriveHomed ? _greenLED : _greenLED_off);
         amberLight = ESD::SREG_programRunning(sr);
         _warningDetected = amberLight;
 		_ui.tiltProgramRunningIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
@@ -126,7 +134,9 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		_ui.tiltMotorOnIcon->setPixmap(_greenLED_off);
 		_ui.tiltMotorFailureIcon->setPixmap(_greenLED_off);
 		_ui.tiltUnitModeLabel->setText("");
+		_ui.tiltMotorInitializedIcon->setPixmap(_greenLED_off);
 		_ui.tiltMotorHomingIcon->setPixmap(_greenLED_off);
+		_ui.tiltMotorHomedIcon->setPixmap(_greenLED_off);
 		_ui.tiltProgramRunningIcon->setPixmap(_greenLED_off);
 		_ui.tiltMotionStatusLabel->setText("");
 		_ui.tiltCpuErrorIcon->setPixmap(_greenLED_off);
