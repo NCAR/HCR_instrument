@@ -41,6 +41,7 @@ private slots:
     void on_xmitterDetailsButton_clicked();
     void on_hmcModeCombo_activated(int index);
     void on_antennaModeButton_clicked();
+    void on_driveHomeButton_clicked();
     void on_mcDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _drxStatus

@@ -88,6 +88,16 @@ void MotionControl::correctForAttitude()
 
 /////////////////////////////////////////////////////////////////////
 void
+MotionControl::homeDrive()
+{
+    ILOG << "homeDrive";
+    // Set both drives to home position
+    _rotDrive.homeDrive();
+    _tiltDrive.homeDrive();
+}
+
+/////////////////////////////////////////////////////////////////////
+void
 MotionControl::point(float angle)
 {
     ILOG << "Point to " << angle << " deg";

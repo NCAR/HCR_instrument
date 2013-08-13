@@ -610,7 +610,12 @@ ElmoServoDrive::_syncWaitExpired() {
 }
 
 void
-ElmoServoDrive::_homeDrive() {
+ElmoServoDrive::homeDrive() {
+    // If drive is initialized, we can not home it
+    if (!_driveInitialized) {
+        return;
+    }
+
     // Call the drive method for homing based on _driveName
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
@@ -699,11 +704,6 @@ ElmoServoDrive::_testForInitCompletion() {
 stop_timer:
     _gpTimer.stop();
     _gpTimer.disconnect(this);
-
-    // If drive is initialized, we can now home it
-    if (_driveInitialized) {
-        _homeDrive();
-    }
 }
 
 void

@@ -26,6 +26,9 @@ public:
     /// @brief Destructor
     virtual ~MotionControl();
 
+    /// @brief Set drives to home position
+    void homeDrive();
+
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
     void point(float angle);

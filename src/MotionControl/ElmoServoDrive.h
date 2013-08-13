@@ -42,6 +42,9 @@ public:
     /// The Elmo drives have a 32-bit status register
     typedef int32_t StatusReg;
 
+    /// Tell the drive to find where home is.
+    void homeDrive();
+
     /// Move the drive to the given angle (deg)
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
@@ -202,11 +205,6 @@ private slots:
      * Reset all status values to a "status unknown" state
      */
     void _resetStatus();
-
-    /**
-     * Tell the drive to find where home is.
-     */
-    void _homeDrive();
 
     /**
      * Initialize drive parameters.

@@ -274,6 +274,12 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
     }
 }
 
+/// Set drives to home position
+void
+HcrGuiMainWindow::on_driveHomeButton_clicked() {
+	_mcClientThread.rpcClient().homeDrive();
+}
+
 void
 HcrGuiMainWindow::_appendXmitdLogMsgs() {
     unsigned int firstIndex = _nextLogIndex;
@@ -487,11 +493,13 @@ HcrGuiMainWindow::_update() {
             break;
         }
         _ui.antennaModeLabel->setText(ss.str().c_str());
+        _ui.driveHomeButton->setEnabled(true);
         _ui.antennaModeButton->setEnabled(true);
     } else {
         _mcStatus = MotionControl::Status();    // go to an empty status
         _motionControlDetails.setEnabled(false);
         _ui.antennaModeLabel->setText("<font color='DarkRed'>MotionControlDaemon not responding</font>");
+        _ui.driveHomeButton->setEnabled(false);
         _ui.antennaModeButton->setEnabled(false);
     }
 }

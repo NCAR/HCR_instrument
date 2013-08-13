@@ -25,6 +25,10 @@ public:
 	MotionControlRpcClient(std::string daemonHost, int daemonPort);
     virtual ~MotionControlRpcClient();
 
+    /// @brief Set drives to home position
+    /// @throws std::exception if there's a problem in the XML-RPC call.
+    void homeDrive() throw (std::exception);
+
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
     /// @throws std::exception if there's a problem in the XML-RPC call.

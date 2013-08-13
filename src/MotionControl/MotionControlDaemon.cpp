@@ -74,6 +74,33 @@ stopXmlrpcWorkAlarm() {
 }
 
 /////////////////////////////////////////////////////////////////////
+class DriveHomeMethod : public xmlrpc_c::method
+{
+public:
+	DriveHomeMethod() {
+		// The method has integer result and no argument
+		this->_signature = "i:";
+		this->_help = "This method takes drive to home position";
+	}
+
+	void
+	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+	{
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+		paramList.verifyEnd(0);
+
+		Control->homeDrive();
+
+		*retvalP = xmlrpc_c::value_int(0);
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+	}
+};
+
+/////////////////////////////////////////////////////////////////////
 class DrivePointMethod : public xmlrpc_c::method
 {
 public:
@@ -198,6 +225,7 @@ main(int argc, char** argv)
 	Control = new MotionControl();
 
     xmlrpc_c::registry myRegistry;
+    myRegistry.addMethod("Home", new DriveHomeMethod);
     myRegistry.addMethod("Point", new DrivePointMethod);
     myRegistry.addMethod("Scan", new DriveScanMethod);
     myRegistry.addMethod("Status", new StatusMethod);

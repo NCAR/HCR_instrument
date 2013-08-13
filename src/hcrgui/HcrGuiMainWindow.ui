@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
+    <width>862</width>
     <height>639</height>
    </rect>
   </property>
@@ -488,7 +488,7 @@
              <string>Position</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="1">
+             <item row="0" column="2">
               <widget class="QLabel" name="tiltLabel">
                <property name="text">
                 <string>Tilt</string>
@@ -498,7 +498,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="1" column="2">
               <widget class="QLabel" name="tiltValue">
                <property name="minimumSize">
                 <size>
@@ -562,6 +562,13 @@
                </property>
                <property name="notchesVisible">
                 <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="rotationAngle">
+               <property name="text">
+                <string>TextLabel</string>
                </property>
               </widget>
              </item>
@@ -630,6 +637,13 @@
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="driveHomeButton">
+               <property name="text">
+                <string>Set Drives Home</string>
+               </property>
               </widget>
              </item>
              <item>
