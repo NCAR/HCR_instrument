@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>246</width>
-    <height>429</height>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,73 +84,20 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="motorOnlabel">
-     <property name="text">
-      <string>Motor On</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="rotMotorOnIcon">
+    <widget class="QLabel" name="blankLabel1">
      <property name="text">
       <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QLabel" name="tiltMotorOnIcon">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="unitModeLabel">
-     <property name="text">
-      <string>Unit Mode</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="rotUnitModeLabel">
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="2">
-    <widget class="QLabel" name="tiltUnitModeLabel">
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
     <widget class="QLabel" name="initializedLabel">
      <property name="text">
       <string>Initialized</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="4" column="1">
     <widget class="QLabel" name="rotMotorInitializedIcon">
      <property name="text">
       <string/>
@@ -163,7 +110,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="5" column="2">
+   <item row="4" column="2">
     <widget class="QLabel" name="tiltMotorInitializedIcon">
      <property name="text">
       <string/>
@@ -176,47 +123,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="homingInProgressLabel">
-     <property name="text">
-      <string>Homing In Progress</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QLabel" name="rotMotorHomingIcon">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="2">
-    <widget class="QLabel" name="tiltMotorHomingIcon">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="homedLabel">
      <property name="text">
       <string>Homed</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="1">
+   <item row="5" column="1">
     <widget class="QLabel" name="rotMotorHomedIcon">
      <property name="text">
       <string/>
@@ -229,7 +143,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="7" column="2">
+   <item row="5" column="2">
     <widget class="QLabel" name="tiltMotorHomedIcon">
      <property name="text">
       <string/>
@@ -242,14 +156,114 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="blankLabel2">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="motorOnlabel">
+     <property name="text">
+      <string>Motor On</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLabel" name="rotMotorOnIcon">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2">
+    <widget class="QLabel" name="tiltMotorOnIcon">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
    <item row="8" column="0">
+    <widget class="QLabel" name="unitModeLabel">
+     <property name="text">
+      <string>Unit Mode</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QLabel" name="rotUnitModeLabel">
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="2">
+    <widget class="QLabel" name="tiltUnitModeLabel">
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="homingInProgressLabel">
+     <property name="text">
+      <string>Homing In Progress</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QLabel" name="rotMotorHomingIcon">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2">
+    <widget class="QLabel" name="tiltMotorHomingIcon">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
     <widget class="QLabel" name="programRunningLabel">
      <property name="text">
       <string>Program Running</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="10" column="1">
     <widget class="QLabel" name="rotProgramRunningIcon">
      <property name="text">
       <string/>
@@ -262,7 +276,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="8" column="2">
+   <item row="10" column="2">
     <widget class="QLabel" name="tiltProgramRunningIcon">
      <property name="text">
       <string/>
@@ -275,14 +289,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="11" column="0">
     <widget class="QLabel" name="motionStatusLabel">
      <property name="text">
       <string>Motion Status</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="11" column="1">
     <widget class="QLabel" name="rotMotionStatusLabel">
      <property name="text">
       <string>0</string>
@@ -292,7 +306,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="9" column="2">
+   <item row="11" column="2">
     <widget class="QLabel" name="tiltMotionStatusLabel">
      <property name="text">
       <string>0</string>
@@ -302,7 +316,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="12" column="0">
     <widget class="QLabel" name="errorLabel">
      <property name="text">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -313,14 +327,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="11" column="0">
+   <item row="13" column="0">
     <widget class="QLabel" name="problemLabel">
      <property name="text">
       <string>Problem</string>
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="13" column="1">
     <widget class="QLabel" name="rotProblemIcon">
      <property name="text">
       <string/>
@@ -333,7 +347,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="11" column="2">
+   <item row="13" column="2">
     <widget class="QLabel" name="tiltProblemIcon">
      <property name="text">
       <string/>
@@ -346,14 +360,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="12" column="0">
+   <item row="14" column="0">
     <widget class="QLabel" name="problemCodeLabel">
      <property name="text">
       <string>Problem Code</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="1">
+   <item row="14" column="1">
     <widget class="QLabel" name="rotProblemCodeLabel">
      <property name="text">
       <string>0</string>
@@ -363,7 +377,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="12" column="2">
+   <item row="14" column="2">
     <widget class="QLabel" name="tiltProblemCodeLabel">
      <property name="text">
       <string>0</string>
@@ -373,14 +387,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="13" column="0">
+   <item row="15" column="0">
     <widget class="QLabel" name="motorFailureLabel">
      <property name="text">
       <string>Motor Failure</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
+   <item row="15" column="1">
     <widget class="QLabel" name="rotMotorFailureIcon">
      <property name="text">
       <string/>
@@ -393,7 +407,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="13" column="2">
+   <item row="15" column="2">
     <widget class="QLabel" name="tiltMotorFailureIcon">
      <property name="text">
       <string/>
@@ -406,14 +420,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="14" column="0">
+   <item row="16" column="0">
     <widget class="QLabel" name="cpuErrorLabel">
      <property name="text">
       <string>CPU Error</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="16" column="1">
     <widget class="QLabel" name="rotCpuErrorIcon">
      <property name="text">
       <string/>
@@ -426,7 +440,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="14" column="2">
+   <item row="16" column="2">
     <widget class="QLabel" name="tiltCpuErrorIcon">
      <property name="text">
       <string/>
@@ -439,14 +453,14 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="15" column="0">
+   <item row="17" column="0">
     <widget class="QLabel" name="stoppedByLimitLabel">
      <property name="text">
       <string>Stopped By Limit</string>
      </property>
     </widget>
    </item>
-   <item row="15" column="1">
+   <item row="17" column="1">
     <widget class="QLabel" name="rotStoppedByLimitIcon">
      <property name="text">
       <string/>
@@ -459,7 +473,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="15" column="2">
+   <item row="17" column="2">
     <widget class="QLabel" name="tiltStoppedByLimitIcon">
      <property name="text">
       <string/>
@@ -472,7 +486,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="16" column="1" colspan="2">
+   <item row="18" column="1" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
