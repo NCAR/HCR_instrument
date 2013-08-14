@@ -7,6 +7,7 @@ tools = Split("""
     hcrpmc730
     logx
     boost_serialization
+    xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
 
