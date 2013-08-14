@@ -86,6 +86,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     // Update every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
+
+    // Show rotation angle display
+    _showRotAngle(0);
+    // Hide tilt angle display
+    _ui.tiltAngleDisplay->setVisible(false);
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -533,6 +538,49 @@ HcrGuiMainWindow::_readAngles()
         memcpy(reinterpret_cast<char*>(&tilt), datagram.data() + 4, 4);
     }
     _ui.rotationValue->setText(QString::number(rotation));
-    _ui.rotationDial->setValue(int(rotation));
+    _showRotAngle(rotation);
     _ui.tiltValue->setText(QString::number(tilt));
+}
+
+void HcrGuiMainWindow::_showRotAngle(float rotAngle)
+{
+	QPixmap *rotDisplay = new QPixmap(88, 88);
+	QPainter painter(rotDisplay);
+	painter.setRenderHint(QPainter::Antialiasing);
+	// Background
+	painter.setPen(Qt::NoPen);
+	painter.setBrush(QColor(0, 100, 0));
+	painter.drawRect(0, 0, 88, 88);
+	// Circles
+	QPen pen("lightgreen");
+	painter.setPen(pen);
+	painter.setBrush(Qt::NoBrush);
+	painter.drawEllipse(12, 12, 64, 64);
+	painter.drawEllipse(28, 28, 32, 32);
+	// Angle text
+	painter.translate(44, 44);
+	painter.setFont(QFont("arial", 5, QFont::Bold));
+	for (int r = 0; r < 360; r += 30) {
+		float theta = (r-90)*M_PI/180.0;
+		float dx = 0, dy = 0;
+		if (r > 180) dx = -13;
+		if (r > 90 && r < 270) dy = 5*sin(theta);
+		painter.drawText(QPointF(34*cos(theta)+dx, 34*sin(theta)+dy), QString::number(r));
+	}
+	// Radius lines
+	for (int r = 0; r < 360; r += 30) {
+		painter.drawLine(0, 0, 32, 0);
+		painter.rotate(30);
+	}
+	// Rot angle
+	if (_mcStatus.rotDriveResponding) {
+		painter.rotate(rotAngle-90);
+		pen.setColor("white");
+		pen.setWidth(2);
+		painter.setPen(pen);
+		painter.drawLine(0, 0, 32, 0);
+	}
+
+	painter.end();
+	_ui.rotAngleDisplay->setPixmap(*rotDisplay);
 }

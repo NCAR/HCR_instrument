@@ -13,6 +13,7 @@
 
 #include <QMainWindow>
 #include <QPixmap>
+#include <QPainter>
 #include <QTimer>
 #include <QUdpSocket>
 
@@ -28,11 +29,13 @@
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
+
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
             std::string rdsHost, int hcrdrxPort, int cmigitsPort, 
             int motionControlPort);
     virtual ~HcrGuiMainWindow();
+
 private slots:
     void on_cmigitsDetailsButton_clicked();
     void on_cmigitsInitButton_clicked();
@@ -66,6 +69,7 @@ private slots:
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _mcResponsivenessChange(bool responding);
+
 private:
     // Append latest messages from hcr_xmitd to our logging area
     void _appendXmitdLogMsgs();
@@ -99,6 +103,9 @@ private:
      * responsiveness and returned status.
      */
     bool _motionControlOk(const MotionControl::Status & mcStatus);
+
+    /// @brief Show rotation angle
+    void _showRotAngle(float rotAngle);
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;

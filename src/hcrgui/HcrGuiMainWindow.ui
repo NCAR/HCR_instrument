@@ -487,37 +487,21 @@
             <property name="title">
              <string>Position</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="2">
-              <widget class="QLabel" name="tiltLabel">
-               <property name="text">
-                <string>Tilt</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QLabel" name="tiltValue">
-               <property name="minimumSize">
-                <size>
-                 <width>50</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>0.0</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
+            <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
               <widget class="QLabel" name="rotationLabel">
                <property name="text">
                 <string>Rotation</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="tiltLabel">
+               <property name="text">
+                <string>Tilt</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -543,32 +527,41 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="tiltValue">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>0.0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
              <item row="2" column="0">
-              <widget class="QDial" name="rotationDial">
-               <property name="enabled">
-                <bool>false</bool>
+              <widget class="QLabel" name="rotAngleDisplay">
+               <property name="text">
+                <string>RotAngle
+Display</string>
                </property>
-               <property name="minimum">
-                <number>-180</number>
-               </property>
-               <property name="maximum">
-                <number>180</number>
-               </property>
-               <property name="tracking">
-                <bool>false</bool>
-               </property>
-               <property name="wrapping">
-                <bool>true</bool>
-               </property>
-               <property name="notchesVisible">
-                <bool>false</bool>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLabel" name="rotationAngle">
+              <widget class="QLabel" name="tiltAngleDisplay">
                <property name="text">
-                <string>TextLabel</string>
+                <string>TiltAngle
+Display</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
