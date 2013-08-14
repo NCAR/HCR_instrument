@@ -24,6 +24,36 @@ HcrPmc730Client::HcrPmc730Client(std::string daemonHost, int daemonPort) :
 HcrPmc730Client::~HcrPmc730Client() {
 }
 
+void
+HcrPmc730Client::xmitFilamentOn() {
+    xmlrpc_c::value result;
+    _client.call(_daemonUrl, "xmitFilamentOn", "", &result);
+}
+
+void
+HcrPmc730Client::xmitFilamentOff() {
+    xmlrpc_c::value result;
+    _client.call(_daemonUrl, "xmitFilamentOff", "", &result);
+}
+
+void
+HcrPmc730Client::xmitHvOn() {
+    xmlrpc_c::value result;
+    _client.call(_daemonUrl, "xmitHvOn", "", &result);
+}
+
+void
+HcrPmc730Client::xmitHvOff() {
+    xmlrpc_c::value result;
+    _client.call(_daemonUrl, "xmitHvOff", "", &result);
+}
+
+void
+HcrPmc730Client::setHmcMode(int mode) {
+    xmlrpc_c::value result;
+    _client.call(_daemonUrl, "setHmcMode", "i", &result, mode);
+}
+
 bool
 HcrPmc730Client::getStatus(HcrPmc730Status & status) {
     xmlrpc_c::value result;
