@@ -493,8 +493,13 @@ HcrGuiMainWindow::_update() {
             break;
         }
         _ui.antennaModeLabel->setText(ss.str().c_str());
-        _ui.driveHomeButton->setEnabled(true);
-        _ui.antennaModeButton->setEnabled(true);
+        if (_mcStatus.rotDriveHomed && _mcStatus.tiltDriveHomed) {
+            _ui.driveHomeButton->setEnabled(false);
+        	_ui.antennaModeButton->setEnabled(true);
+        } else {
+            _ui.driveHomeButton->setEnabled(true);
+            _ui.antennaModeButton->setEnabled(false);
+        }
     } else {
         _mcStatus = MotionControl::Status();    // go to an empty status
         _motionControlDetails.setEnabled(false);
