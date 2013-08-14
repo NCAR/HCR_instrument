@@ -235,5 +235,23 @@ main(int argc, char * argv[]) {
     PMU_auto_init("HcrPmc730Daemon", _instance.c_str(), PROCMAP_REGISTER_INTERVAL);
     ILOG << "HcrPmc730Daemon will register with procmap as instance: " << _instance;
 
+    // Now enter our processing loop
+    while (1) {
+        PMU_auto_register("running");
+
+        // Handle the next XML-RPC request, or return after receiving a SIGALRM
+        // from our timer above
+        xmlrpcServer.runOnce();
+
+        // Exit when the exit flag gets raised
+        if (ExitRequested)
+            break;
+
+        // Process Qt events
+        app.processEvents();
+    }
+
+    PMU_auto_register("exiting");
+
     return 0;
 }
