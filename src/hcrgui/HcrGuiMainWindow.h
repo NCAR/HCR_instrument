@@ -18,7 +18,7 @@
 
 #include "XmitdStatusThread.h"
 #include "MotionControlClientThread.h"
-#include "HcrdrxStatusThread.h"
+#include "Pmc730StatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
 #include "HcrGuiXmitStatusDialog.h"
@@ -30,7 +30,7 @@ class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
-            std::string rdsHost, int hcrdrxPort, int cmigitsPort, 
+            std::string rdsHost, int pmcPort, int cmigitsPort,
             int motionControlPort);
     virtual ~HcrGuiMainWindow();
 private slots:
@@ -43,16 +43,16 @@ private slots:
     void on_antennaModeButton_clicked();
     void on_mcDetailsButton_clicked();
 
-    /// @brief Update GUI state based on _xmitStatus and _drxStatus
+    /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
     /// @brief read angle(s) available on the broadcast port
     void _readAngles();
-    /// @brief Save the last status received from hcrdrx.
-    /// @param status the last status received from hcrdrx.
-    void _setDrxStatus(DrxStatus status);
-    /// @brief Slot to call when hcrdrx server responsiveness changes.
+    /// @brief Save the last status received from HcrPmc730Daemon.
+    /// @param status the last status received from HcrPmc730Daemon.
+    void _setPmcStatus(const HcrPmc730Status & status);
+    /// @brief Slot to call when HcrPmc730Daemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
-    void _drxResponsivenessChange(bool responding);
+    void _pmcResponsivenessChange(bool responding);
     /// @brief Save the last status received from hcr_xmitd.
     /// @param status the last status received from hcr_xmitd.
     void _setXmitStatus(XmitStatus status);
@@ -107,7 +107,7 @@ private:
     MotionControlDetails _motionControlDetails;
     XmitdStatusThread _xmitdStatusThread;
     MotionControlClientThread _mcClientThread;
-    HcrdrxStatusThread _drxStatusThread;
+    Pmc730StatusThread _pmcStatusThread;
     CmigitsDaemonRpcClient _cmigitsDaemonRpcClient;
     QPixmap _redLED;
     QPixmap _amberLED;
@@ -117,8 +117,8 @@ private:
     XmitStatus _xmitStatus;
     // Last status from the MotionControlDaemon
     MotionControl::Status _mcStatus;
-    // Last status read from hcrdrx
-    DrxStatus _drxStatus;
+    // Last status read from HcrPmc730Daemon
+    HcrPmc730Status _pmcStatus;
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;

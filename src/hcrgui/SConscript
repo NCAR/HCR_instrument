@@ -5,6 +5,7 @@ cmigits
 cmigitsdaemonrpcclient
 doxygen
 hcrdrxrpcclient
+hcrpmc730client
 logx
 motioncontrol
 xmitdrpcclient
@@ -22,6 +23,7 @@ HcrGuiCmigitsStatusDialog.cpp
 HcrGuiAntennaModeDialog.cpp
 MotionControlDetails.cpp
 MotionControlClientThread.cpp
+Pmc730StatusThread.cpp
 qrc_HcrGuiMainWindow.cc
 XmitdStatusThread.cpp
 """)
@@ -51,6 +53,7 @@ HcrGuiCmigitsStatusDialog.h
 HcrGuiAntennaModeDialog.h
 MotionControlDetails.h
 MotionControlClientThread.h
+Pmc730StatusThread.h
 XmitdStatusThread.h
 """)
 

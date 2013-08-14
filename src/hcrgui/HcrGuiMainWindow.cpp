@@ -17,7 +17,7 @@ LOGGING("HcrGuiMainWindow")
 
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost, 
-    int xmitterPort, std::string rdsHost, int hcrdrxPort,
+    int xmitterPort, std::string rdsHost, int pmcPort,
     int cmigitsPort, int motionControlPort) :
     QMainWindow(),
     _ui(),
@@ -28,7 +28,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _motionControlDetails(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
     _mcClientThread(rdsHost, motionControlPort),
-    _drxStatusThread(rdsHost, hcrdrxPort),
+    _pmcStatusThread(rdsHost, pmcPort),
     _cmigitsDaemonRpcClient(rdsHost, cmigitsPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
@@ -47,21 +47,21 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _logMessage(ss.str());
 
     ss.str("");
-    ss << "No response yet from hcrdrx at " << rdsHost << ":" <<
-            hcrdrxPort;
+    ss << "No response yet from HcrPmc730Daemon at " << rdsHost << ":" <<
+            pmcPort;
     _logMessage(ss.str());
 
     // Disable the data system box and C-MIGITS box until we get status from
-    // hcrdrx.
+    // HcrPmc730Daemon.
     _ui.setHmcModeBox->setEnabled(false);
     _ui.cmigitsBox->setEnabled(true);   // XXX this is always enabled for now
 
-    // Connect signals from our HcrdrxStatusThread object and start the thread.
-    connect(& _drxStatusThread, SIGNAL(serverResponsive(bool)),
+    // Connect signals from our Pmc730StatusThread object and start the thread.
+    connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool)),
             this, SLOT(_drxResponsivenessChange(bool)));
-    connect(& _drxStatusThread, SIGNAL(newStatus(DrxStatus)),
+    connect(& _pmcStatusThread, SIGNAL(newStatus(DrxStatus)),
             this, SLOT(_setDrxStatus(DrxStatus)));
-    _drxStatusThread.start();
+    _pmcStatusThread.start();
 
     // Disable the transmitter box.
     _ui.xmitterBox->setEnabled(false);
@@ -92,18 +92,18 @@ HcrGuiMainWindow::~HcrGuiMainWindow() {
 }
 
 void
-HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
-    _drxStatus = status;
+HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
+    _pmcStatus = status;
     _update();
 }
 
 void
-HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
+HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
     // log the responsiveness change
     std::ostringstream ss;
-    ss << "hcrdrx @ " <<
-            _drxStatusThread.rpcClient().getHcrdrxHost() << ":" <<
-            _drxStatusThread.rpcClient().getHcrdrxPort() <<
+    ss << "HcrPmc730Daemon @ " <<
+            _pmcStatusThread.rpcClient().getDaemonHost() << ":" <<
+            _pmcStatusThread.rpcClient().getDaemonPort() <<
             (responding ? " is " : " is not ") <<
             "responding";
     _logMessage(ss.str().c_str());
@@ -114,7 +114,7 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
     if (! responding) {
         // Create a default (bad) DrxStatus, and set it as the last status
         // received.
-        _setDrxStatus(DrxStatus());
+        _setPmcStatus(HcrPmc730Status());
         // Close the C-MIGITS status details dialog
         _cmigitsStatusDialog.accept();
     }
@@ -171,20 +171,20 @@ bool
 HcrGuiMainWindow::_xmitterFilamentOn() const {
     // If transmitter control is via RS-232 or front panel, we can trust the
     // "filament on" bit in the transmitter's status. Otherwise, we just test
-    // if the hcrdrx is commanding "filament on" via its RDS control
+    // if the HcrPmc730Daemon is commanding "filament on" via its RDS control
     // line.
     return(_xmitStatus.rdsCtlEnabled() ?
-            _drxStatus.rdsXmitterFilamentOn() : _xmitStatus.filamentOn());
+            _pmcStatus.rdsXmitterFilamentOn() : _xmitStatus.filamentOn());
 }
 
 bool
 HcrGuiMainWindow::_xmitterHvOn() const {
     // If transmitter control is via RS-232 or front panel, we can trust the
     // "filament on" bit in the transmitter's status. Otherwise, we just test
-    // if the hcrdrx is commanding "filament on" via its RDS control
+    // if the hcrHcrPmc730Daemon is commanding "filament on" via its RDS control
     // line.
     return(_xmitStatus.rdsCtlEnabled() ?
-            _drxStatus.rdsXmitterHvOn() : _xmitStatus.highVoltageOn());
+            _pmcStatus.rdsXmitterHvOn() : _xmitStatus.highVoltageOn());
 }
 
 bool
@@ -198,7 +198,7 @@ HcrGuiMainWindow::_xmitting() const {
         // We're transmitting if the filament is on, HV is on, and modulation
         // pulses are being allowed through.
         return(_xmitterFilamentOn() && _xmitterHvOn() &&
-                ! _drxStatus.modPulseDisabled());
+                ! _pmcStatus.modPulseDisabled());
     }
 }
 /// Toggle the current on/off state of the transmitter klystron filament
@@ -214,13 +214,13 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
             _xmitdStatusThread.rpcClient().xmitFilamentOn();
         }
     } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // If RDS control is enabled, then transmitter commands go to HcrPmc730Daemon
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
         if (_xmitterFilamentOn()) {
-            _drxStatusThread.rpcClient().xmitFilamentOff();
+            _pmcStatusThread.rpcClient().xmitFilamentOff();
         } else {
-            _drxStatusThread.rpcClient().xmitFilamentOn();
+            _pmcStatusThread.rpcClient().xmitFilamentOn();
         }
     }
 }
@@ -238,13 +238,13 @@ HcrGuiMainWindow::on_hvButton_clicked() {
             _xmitdStatusThread.rpcClient().xmitHvOn();
         }
     } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to hcrdrx
+        // If RDS control is enabled, then transmitter commands go to HcrPmc730Daemon
         // (i.e., the Remote Data System), since it owns the digital lines
         // controlling the transmitter.
         if (_xmitterHvOn()) {
-            _drxStatusThread.rpcClient().xmitHvOff();
+            _pmcStatusThread.rpcClient().xmitHvOff();
         } else {
-            _drxStatusThread.rpcClient().xmitHvOn();
+            _pmcStatusThread.rpcClient().xmitHvOn();
         }
     }
 }
@@ -252,7 +252,7 @@ HcrGuiMainWindow::on_hvButton_clicked() {
 /// Set HMC mode
 void
 HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
-    _drxStatusThread.rpcClient().setHmcMode(index);
+    _pmcStatusThread.rpcClient().setHmcMode(index);
 }
 
 /// Pop up the antenna mode editing dialog
@@ -415,7 +415,7 @@ HcrGuiMainWindow::_update() {
     }
 
     // HMC mode
-    _ui.hmcModeCombo->setCurrentIndex(_drxStatus.hmcMode());
+    _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
 
     // C-MIGITS status light
     {
@@ -433,10 +433,10 @@ HcrGuiMainWindow::_update() {
         float expectedHPosError = 0.0;
         float expectedVPosError = 0.0;
         float expectedVelError = 0.0;
-        _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
-                doingCoarseAlignment, nSats, 
-                positionFOM, velocityFOM,  headingFOM, timeFOM,
-                expectedHPosError, expectedVPosError, expectedVelError);
+//        _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
+//                doingCoarseAlignment, nSats,
+//                positionFOM, velocityFOM,  headingFOM, timeFOM,
+//                expectedHPosError, expectedVPosError, expectedVelError);
         QPixmap light;
         if (mode == 7 || mode == 8) {
             // Green light if mode is "Air Navigation" or "Land Navigation"
@@ -456,7 +456,7 @@ HcrGuiMainWindow::_update() {
     _xmitStatusDialog.updateStatus(_xmitStatus);
 
     // Update the C-MIGITS status details dialog
-    _cmigitsStatusDialog.updateStatus(_drxStatus);
+//    _cmigitsStatusDialog.updateStatus(_drxStatus);
     
     // MotionControl status LED
     _motionControlDetails.updateStatus(_mcStatus);
