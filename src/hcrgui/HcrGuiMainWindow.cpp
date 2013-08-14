@@ -563,7 +563,9 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	for (int r = 0; r < 360; r += 30) {
 		float theta = (r-90)*M_PI/180.0;
 		float dx = 0, dy = 0;
-		if (r > 180) dx = -13;
+		if (r == 0)   dx = -2;
+		if (r == 180) dx = -5;
+		if (r > 180)  dx = -13;
 		if (r > 90 && r < 270) dy = 5*sin(theta);
 		painter.drawText(QPointF(34*cos(theta)+dx, 34*sin(theta)+dy), QString::number(r));
 	}
