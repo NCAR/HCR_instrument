@@ -301,14 +301,19 @@ static const int MiWv950W_CalLen = (sizeof(MiWv950W_Cal) / (sizeof(*MiWv950W_Cal
 
 double
 HcrPmc730::_LookupMiWv950WPower(double voltage) {
+    // The HCR breakout board provides a factor of 2 gain on the voltage
+    // coming from the detector before sending the signal on to the PMC-730.
+    // Remove that gain now.
+    double detectorVoltage = 0.5 * voltage;
+
     // If we're below the lowest voltage in the cal table, just return a
     // really low power
-    if (voltage < MiWv950W_Cal[0][1]) {
+    if (detectorVoltage < MiWv950W_Cal[0][1]) {
         return(-99.9);
     }
     // If we're above the highest voltage in the cal table, just return the
     // highest power in the cal table.
-    if (voltage > MiWv950W_Cal[MiWv950W_CalLen - 1][1]) {
+    if (detectorVoltage > MiWv950W_Cal[MiWv950W_CalLen - 1][1]) {
         return(MiWv950W_Cal[MiWv950W_CalLen - 1][0]);
     }
     // OK, our voltage is somewhere in the table. Move up through the table,
@@ -318,19 +323,19 @@ HcrPmc730::_LookupMiWv950WPower(double voltage) {
         double vLow = MiWv950W_Cal[i][1];
         double powerHigh = MiWv950W_Cal[i + 1][0];
         double vHigh = MiWv950W_Cal[i + 1][1];
-        if (vHigh < voltage)
+        if (vHigh < detectorVoltage)
             continue;
         // Convert powers to linear space, then interpolate to our input voltage
         double powerLowLinear = pow(10.0, powerLow / 10.0);
         double powerHighLinear = pow(10.0, powerHigh / 10.0);
-        double fraction = (voltage - vLow) / (vHigh - vLow);
+        double fraction = (detectorVoltage - vLow) / (vHigh - vLow);
         double powerLinear = powerLowLinear +
             (powerHighLinear - powerLowLinear) * fraction;
         // Convert interpolated power back to dBm and return it.
         return(10.0 * log10(powerLinear));
     }
     // Oops if we get here...
-    ELOG << __PRETTY_FUNCTION__ << ": Bad lookup for " << voltage << " V!";
+    ELOG << __PRETTY_FUNCTION__ << ": Bad lookup for " << detectorVoltage << " V!";
     abort();
 }
 
