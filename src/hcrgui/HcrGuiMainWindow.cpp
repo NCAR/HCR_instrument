@@ -554,7 +554,6 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.setPen(pen);
 	painter.setBrush(Qt::NoBrush);
 	painter.drawEllipse(13, 13, 64, 64);
-	painter.drawEllipse(29, 29, 32, 32);
 	// Angle text
 	painter.translate(46, 45);
 	painter.setFont(QFont("arial", 5, QFont::Bold));
