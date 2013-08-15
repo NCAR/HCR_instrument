@@ -89,8 +89,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
 
     // Show rotation angle display
     _showRotAngle(0);
-    // Hide tilt angle display
-    _ui.tiltAngleDisplay->setVisible(false);
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
