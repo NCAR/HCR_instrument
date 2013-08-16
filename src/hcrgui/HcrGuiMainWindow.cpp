@@ -280,6 +280,17 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
 /// Set drives to home position
 void
 HcrGuiMainWindow::on_driveHomeButton_clicked() {
+    // Confirm that it's OK to set drives to home position
+    QMessageBox confirmBox(QMessageBox::Question, "Confirm Setting Drives Home",
+            "Continue to set drives to home position?",
+            QMessageBox::Ok | QMessageBox::Cancel, this);
+    confirmBox.setInformativeText("Criteria for setting drives home:\n\n"
+            "Radar transmitter must be turned off!\n");
+    if (confirmBox.exec() == QMessageBox::Cancel) {
+        return;
+    }
+
+    // We got confirmation, so set drive to home position
 	_mcClientThread.rpcClient().homeDrive();
 }
 
