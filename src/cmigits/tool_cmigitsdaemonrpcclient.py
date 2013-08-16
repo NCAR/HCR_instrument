@@ -1,7 +1,7 @@
 #
 # Rules to build libcmigitsdaemonrpcclient.a and export it as a SCons tool
 #
-tools = ['doxygen', 'logx', 'xmlrpc_client++']
+tools = ['doxygen', 'logx', 'xmlrpc_client++', 'cmigits']
 cmigitsDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)

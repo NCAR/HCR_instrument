@@ -11,6 +11,7 @@
 #include <QApplication>
 #include <QMetaType>
 #include <Cmigits.h>
+#include <CmigitsStatus.h>
 #include <CmigitsSharedMemory.h>
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>
@@ -96,6 +97,26 @@ public:
     }
 };
 
+class GetStatusMethod : public xmlrpc_c::method {
+public:
+    GetStatusMethod() {
+        this->_signature = "b:";
+        this->_help = "This method returns latest status/data from the C-MIGITS.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+        ILOG << "Executing XML-RPC call to getStatus()";
+        CmigitsStatus status;   // default constructor gets latest data from CmigitsSharedMemory
+        *retvalP = status.toXmlRpcValue();
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+    }
+};
+
 int
 main(int argc, char *argv[]) {
     App = new QCoreApplication(argc, argv);
@@ -152,6 +173,7 @@ main(int argc, char *argv[]) {
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("initializeUsingIwg1", new InitializeUsingIwg1Method);
+    myRegistry.addMethod("getStatus", new GetStatusMethod);
     xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
         
     // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
