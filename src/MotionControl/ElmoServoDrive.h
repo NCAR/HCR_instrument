@@ -49,19 +49,6 @@ public:
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
-//    /// Set PVT table entry
-//    /// @param p the position (counts)
-//    /// @param v the velocity (counts/s)
-//    /// @param t the time (milliseconds)
-//    /// @param n the table index
-//    void setPVT(int p, int v, int t, int n);
-
-    /// Initialize table for scanning using PVT mode.
-    /// @param p vector of positions, deg
-    /// @param v vector of velocities, deg/s
-    /// @param t vector of times, s
-    void initScan(std::vector<float> p, std::vector<float> v, std::vector<float> t);
-
     /// Initialize table for scanning using PT mode.
     /// @param p vector of positions, deg
     /// @param scanRate scan rate in deg/s

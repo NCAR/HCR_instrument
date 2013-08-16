@@ -117,84 +117,10 @@ MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
     ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
             scanRate << " deg/s";
 
-    // time vector for both rotation and tilt
-    float t[] = { 153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 153.85, 250,
-            250,    250,    250,    250,    250,
-            153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 250,    250,
-            250,    250,    250,    250
-    };
-    std::vector<float> time(t, t + sizeof(t) / sizeof(*t));
-
-    // Build up PVT table for rotation drive
-    std::vector<float> rotPos;
-    std::vector<float> rotVel;
-    {
-        // position
-        float p[] = { 167560, 172690, 177820, 182950, 188070,
-                193200, 198330, 203450, 208580, 213700,
-                218820, 223950, 229070, 234190, 238820,
-                241590, 242520, 241590, 238820, 234190,
-                229440, 224680, 219920, 215160, 210410,
-                205650, 200890, 196130, 191370, 186610,
-                181850, 177080, 172320, 167560, 162920,
-                160140, 159220, 160140, 162920
-        };
-        rotPos = std::vector<float>(p, p + sizeof(p) / sizeof(*p));
-        // velocity
-        float v[] = {  33333,   33333,    33333,  33333,  33333,
-                33333,   33333,    33333,  33333,  33333,
-                33333,   33333,    33333,  33333,  25000,
-                8333.3, -8333.3, -25000, -33333, -33333,
-                -33333,  -33333,   -33333, -33333, -33333,
-                -33333,  -33333,   -33333, -33333, -33333,
-                -33333,  -33333,   -33333, -33333, -25000,
-                -8333.3,  8333.3,  25000,  33333
-        };
-        rotVel = std::vector<float>(v, v + sizeof(v) / sizeof(*v));
-    }
-
-    // Build up PVT table for tilt drive
-    std::vector<float> tiltPos;
-    std::vector<float> tiltVel;
-    {
-        float p[] = { -189.64,  -180.03,  -169.25,  -157.37,   -144.48,
-                -130.64,  -115.96,  -100.53,   -84.448,   -67.819,
-                -50.751,  -33.355,  -15.743,    1.9716,   17.956,
-                27.506,   30.679,   27.506,   17.956,     1.9716,
-                -14.479,  -30.849,  -47.047,  -62.983,   -78.566,
-                -93.711, -108.33,  -122.35,  -135.68,   -148.26,
-                -160.01,  -170.86,  -180.76,  -189.64,   -197.27,
-                -201.34,  -202.62,  -201.34,  -197.27
-        };
-        tiltPos = std::vector<float>(p, p + sizeof(p) / sizeof(*p));
-        float v[] = {    0,       62.486,    70.074,   77.205,   83.835,
-                89.92,    95.421,   100.3,    104.53,   108.09,
-                110.94,   113.08,    114.48,   115.14,    63.937,
-                38.202,   12.691,   -12.691,  -38.202,  -63.937,
-                -106.93,  -106.41,   -105.29,  -103.58,  -101.29,
-                -98.443,  -95.042,   -91.11,   -86.668,  -81.741,
-                -76.356,  -70.544,   -64.335,  -35.548,  -30.495,
-                -16.304,   -5.0954,    5.0954,  16.304
-        };
-        tiltVel = std::vector<float>(v, v + sizeof(v) / sizeof(*v));
-    }
-
-    //	_rotDrive.initScan(rotPos, rotVel, time);
-    //	_tiltDrive.initScan(tiltPos, tiltVel, time);
     _rotDrive.initScan(ccwLimit, cwLimit, scanRate);
-    //	for (int i = 0; i < 40; i++) {
-    //		_rotDrive.setPVT(int(posR[i]), int(velR[i]), int(tm[i]), i+1);
-    //		_tiltDrive.setPVT(int(posT[i]), int(velT[i]), int(tm[i]), i+1);
-    //	}
 
     // Set up for antenna scanning
     _antennaMode = SCANNING;
-    //	_rotDrive.scan(40);
-    //	_tiltDrive.scan(40);
     _rotDrive.scan();
     _tiltDrive.scan();
 }
