@@ -1,11 +1,10 @@
 # -*- python -*-
 
 hcrguiTools = Split("""
-cmigits
+hcrpmc730client
 cmigitsdaemonrpcclient
 doxygen
 hcrdrxrpcclient
-hcrpmc730client
 logx
 motioncontrol
 xmitdrpcclient
