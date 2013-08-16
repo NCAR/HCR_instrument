@@ -616,4 +616,5 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 
 	painter.end();
 	_ui.rotAngleDisplay->setPixmap(*rotDisplay);
+	delete(rotDisplay);
 }
