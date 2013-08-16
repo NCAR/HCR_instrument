@@ -88,7 +88,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _updateTimer.start(1000);
 
     // Show rotation angle display
-    _showRotAngle(0);
+    _showRotAngle(90);
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -549,6 +549,16 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.setPen(Qt::NoPen);
 	painter.setBrush(QColor(0, 100, 0));
 	painter.drawRect(0, 0, 90, 90);
+	// Scan range
+	float ccwLimit, cwLimit, scanRate;
+	if (_mcStatus.rotDriveResponding &&
+		_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
+	   	_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
+	   	float span = cwLimit - ccwLimit;
+	   	if (span < 0) span += 360;
+	   	painter.setBrush(QColor(0, 140, 0));
+	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -span*16);
+	}
 	// Circles
 	QPen pen("lightgreen");
 	painter.setPen(pen);
@@ -577,8 +587,6 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	// Rot angle
 	if (_mcStatus.rotDriveResponding) {
     	if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
-    		float ccwLimit, cwLimit, scanRate;
-    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
     		pen.setColor("yellow");
     		pen.setWidth(1);
     		painter.setPen(pen);
