@@ -257,7 +257,7 @@ CHECK_WG: process(WG_SW_TERM, WG_SW_NOISE, wg_dly, ops_mode, RESET, cmd_wg_sw_po
 			WG_SW_ERROR <= '0';							-- assume switch is not in error until we confirm where it is pointed
 		elsif (wg_dly = '1') then
 			if (ops_mode = "100") then					-- Noise source cal
-				if (WG_SW_TERM ='0' AND WG_SW_NOISE = '1') then
+				if (WG_SW_TERM ='1' AND WG_SW_NOISE = '0') then
 					WG_SW_ERROR <= '0';
 					wg_stat <= '1';						-- good status
 					wg_sw_pos <= '1';
@@ -267,7 +267,7 @@ CHECK_WG: process(WG_SW_TERM, WG_SW_NOISE, wg_dly, ops_mode, RESET, cmd_wg_sw_po
 					wg_sw_pos <= '0';
 				end if;
 			else
-				if (WG_SW_TERM ='1' AND WG_SW_NOISE = '0') then
+				if (WG_SW_TERM ='0' AND WG_SW_NOISE = '1') then
 					WG_SW_ERROR <= '0';
 					wg_sw_pos <= '0';
 					wg_stat <= '1';						-- good status					
@@ -1261,15 +1261,15 @@ begin
 			if (ops_mode = "100") then -- Noise source cal, no tx	
 --				EMS_OUT <= "0101101";
 				EMS_OUT <= "1010010";				
-				WG_SW_CTRL_TERM <= '0';
-				WG_SW_CTRL_NOISE <= '1';
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
 				
 			elsif (ops_mode = "000") then -- Horizontal tx, receive both
 				EMS_OUT(3) <= '1';				
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';
 				
@@ -1277,15 +1277,15 @@ begin
 				EMS_OUT(2) <= '0';
 				EMS_OUT(5) <= '1';
 				EMS_OUT(7) <= '1';				
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';				
 				
 			else
 				EMS_OUT <= "0000000";
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';				
 			end if;
@@ -1299,8 +1299,8 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';	
 			elsif (ops_mode = "001") then -- Vertical tx, receive both
@@ -1312,8 +1312,8 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			elsif (ops_mode = "010") then -- HHVV tx, receive both
@@ -1326,8 +1326,8 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';
 				elsif (pol_state = "01") then  -- transmit H
@@ -1339,8 +1339,8 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';				
 				elsif (pol_state = "10") then  -- transmit V
@@ -1352,8 +1352,8 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';										
 				else									-- transmit V
@@ -1365,16 +1365,16 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';				
 				end if;
 			elsif (ops_mode = "100") then -- Noise source cal, no tx
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0101101";
-				WG_SW_CTRL_TERM <= '0';
-				WG_SW_CTRL_NOISE <= '1';
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
 			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
@@ -1386,8 +1386,8 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			elsif (ops_mode = "110") then -- Test Mode, no tx
@@ -1399,15 +1399,15 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';	
 			else
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			end if;
@@ -1421,8 +1421,8 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';			
 			elsif (ops_mode = "001") then -- Vertical tx, receive both	
@@ -1434,8 +1434,8 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';
 			elsif (ops_mode = "010") then -- HHVV tx, receive both
@@ -1448,8 +1448,8 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';
 				elsif (pol_state = "01") then  -- transmit H
@@ -1461,8 +1461,8 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';				
 				elsif (pol_state = "10") then  -- transmit V
@@ -1474,8 +1474,8 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';										
 				else									-- transmit V
@@ -1487,16 +1487,16 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
-					WG_SW_CTRL_TERM <= '1';
-					WG_SW_CTRL_NOISE <= '0';
+					WG_SW_CTRL_TERM <= '0';
+					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';				
 				end if;				
 			elsif (ops_mode = "100") then -- Noise source cal, no tx
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0101101";
-				WG_SW_CTRL_TERM <= '0';
-				WG_SW_CTRL_NOISE <= '1';
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
 			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
@@ -1508,8 +1508,8 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			elsif (ops_mode = "110") then -- Test Mode, no tx
@@ -1521,15 +1521,15 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			else
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			end if;						
@@ -1543,8 +1543,8 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';	
 			elsif (ops_mode = "001") then -- Vertical tx, receive both				
@@ -1556,8 +1556,8 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';
 			elsif (ops_mode = "010") then -- HHVV tx, receive both
@@ -1571,8 +1571,8 @@ begin
 						EMS_OUT(5) <= NOT EMS_TRIG;
 						EMS_OUT(6) <= EMS_TRIG;
 						EMS_OUT(7) <= NOT EMS_TRIG;
-						WG_SW_CTRL_TERM <= '1';
-						WG_SW_CTRL_NOISE <= '0';
+						WG_SW_CTRL_TERM <= '0';
+						WG_SW_CTRL_NOISE <= '1';
 						NOISE_SOURCE_EN <= '0';
 						cmd_wg_sw_pos <= '0';
 					when "01" =>   -- transmit H
@@ -1584,8 +1584,8 @@ begin
 						EMS_OUT(5) <= NOT EMS_TRIG;
 						EMS_OUT(6) <= EMS_TRIG;
 						EMS_OUT(7) <= NOT EMS_TRIG;
-						WG_SW_CTRL_TERM <= '1';
-						WG_SW_CTRL_NOISE <= '0';
+						WG_SW_CTRL_TERM <= '0';
+						WG_SW_CTRL_NOISE <= '1';
 						NOISE_SOURCE_EN <= '0';
 						cmd_wg_sw_pos <= '0';				
 					when "10" =>  -- transmit V
@@ -1597,8 +1597,8 @@ begin
 						EMS_OUT(5) <= NOT EMS_TRIG;
 						EMS_OUT(6) <= EMS_TRIG;
 						EMS_OUT(7) <= NOT EMS_TRIG;
-						WG_SW_CTRL_TERM <= '1';
-						WG_SW_CTRL_NOISE <= '0';
+						WG_SW_CTRL_TERM <= '0';
+						WG_SW_CTRL_NOISE <= '1';
 						NOISE_SOURCE_EN <= '0';
 						cmd_wg_sw_pos <= '0';										
 					when "11" =>	-- transmit V
@@ -1610,8 +1610,8 @@ begin
 						EMS_OUT(5) <= NOT EMS_TRIG;
 						EMS_OUT(6) <= EMS_TRIG;
 						EMS_OUT(7) <= NOT EMS_TRIG;
-						WG_SW_CTRL_TERM <= '1';
-						WG_SW_CTRL_NOISE <= '0';
+						WG_SW_CTRL_TERM <= '0';
+						WG_SW_CTRL_NOISE <= '1';
 						NOISE_SOURCE_EN <= '0';
 						cmd_wg_sw_pos <= '0';
 					when others =>
@@ -1619,8 +1619,8 @@ begin
 			elsif (ops_mode = "100") then -- Noise source cal, no tx
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0101101";
-				WG_SW_CTRL_TERM <= '0';
-				WG_SW_CTRL_NOISE <= '1';
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
 			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
@@ -1632,8 +1632,8 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			elsif (ops_mode = "110") then -- Test Mode, no tx
@@ -1645,15 +1645,15 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			else
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 			end if;
@@ -1662,8 +1662,8 @@ begin
 				cmd_wg_sw_pos <= '0';
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
-				WG_SW_CTRL_TERM <= '1';
-				WG_SW_CTRL_NOISE <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';					
 	end case;
