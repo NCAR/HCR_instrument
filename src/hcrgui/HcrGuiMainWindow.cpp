@@ -88,7 +88,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _updateTimer.start(1000);
 
     // Show rotation angle display
-    _showRotAngle(90);
+    _showRotAngle(0);
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -556,7 +556,7 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	   	_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
 	   	float span = cwLimit - ccwLimit;
 	   	if (span < 0) span += 360;
-	   	painter.setBrush(QColor(0, 140, 0));
+	   	painter.setBrush(QColor(0, 200, 80));
 	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -span*16);
 	}
 	// Circles
