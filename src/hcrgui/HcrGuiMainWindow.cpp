@@ -546,9 +546,9 @@ HcrGuiMainWindow::_readAngles()
         memcpy(reinterpret_cast<char*>(&rotation), datagram.data(), 4);
         memcpy(reinterpret_cast<char*>(&tilt), datagram.data() + 4, 4);
     }
-    _ui.rotationValue->setText(QString::number(rotation));
+    _ui.rotationValue->setText(QString::number(rotation, 'f', 1));
     _showRotAngle(rotation);
-    _ui.tiltValue->setText(QString::number(tilt));
+    _ui.tiltValue->setText(QString::number(tilt, 'f', 1));
 }
 
 void HcrGuiMainWindow::_showRotAngle(float rotAngle)
