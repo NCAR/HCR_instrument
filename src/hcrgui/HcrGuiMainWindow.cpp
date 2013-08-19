@@ -561,14 +561,15 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.setBrush(QColor(0, 100, 0));
 	painter.drawRect(0, 0, 90, 90);
 	// Scan range
-	float ccwLimit, cwLimit, scanRate;
+	float ccwLimit = _mcStatus.scanCcwLimit;
+	float cwLimit = _mcStatus.scanCwLimit;
+	float scanRange = cwLimit - ccwLimit;
+	if (scanRange < 0)
+		scanRange += 360;
 	if (_mcStatus.rotDriveResponding &&
-		_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
-	   	_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
-	   	float span = cwLimit - ccwLimit;
-	   	if (span < 0) span += 360;
+		_mcStatus.antennaMode == MotionControl::SCANNING) {
 	   	painter.setBrush(QColor(0, 200, 80));
-	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -span*16);
+	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -scanRange*16);
 	}
 	// Circles
 	QPen pen("lightgreen");
@@ -597,13 +598,13 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	}
 	// Rot angle
 	if (_mcStatus.rotDriveResponding) {
-    	if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
+    	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
     		pen.setColor("yellow");
     		pen.setWidth(1);
     		painter.setPen(pen);
     		painter.rotate(ccwLimit-90);
     		painter.drawLine(0, 0, 32, 0);
-    		painter.rotate(cwLimit-ccwLimit);
+    		painter.rotate(scanRange);
     		painter.drawLine(0, 0, 32, 0);
     		painter.rotate(90-cwLimit);
     	}
