@@ -22,7 +22,7 @@
 
 #include "ui_HcrGuiMainWindow.h"
 #include "HcrGuiXmitStatusDialog.h"
-#include "HcrGuiCmigitsStatusDialog.h"
+#include "CmigitsDetails.h"
 #include "HcrGuiAntennaModeDialog.h"
 #include "MotionControlDetails.h"
 
@@ -101,7 +101,7 @@ private:
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
-    HcrGuiCmigitsStatusDialog _cmigitsStatusDialog;
+    CmigitsDetails _cmigitsDetails;
     HcrGuiXmitStatusDialog _xmitStatusDialog;
     HcrGuiAntennaModeDialog _antennaModeDialog;
     MotionControlDetails _motionControlDetails;

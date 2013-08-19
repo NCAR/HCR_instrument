@@ -15,10 +15,10 @@ hcrguiEnv.EnableQt4Modules(['QtCore', 'QtGui'])
 
 hcrgui_sources = Split("""
 hcrgui.cpp
+CmigitsDetails.cpp
 HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
 HcrGuiXmitStatusDialog.cpp
-HcrGuiCmigitsStatusDialog.cpp
 HcrGuiAntennaModeDialog.cpp
 MotionControlDetails.cpp
 MotionControlClientThread.cpp
@@ -30,9 +30,9 @@ hcrgui = hcrguiEnv.Program('hcrgui', hcrgui_sources)
 Default(hcrgui)
 
 uifiles = Split("""
+CmigitsDetails.ui
 HcrGuiMainWindow.ui
 HcrGuiXmitStatusDialog.ui
-HcrGuiCmigitsStatusDialog.ui
 HcrGuiAntennaModeDialog.ui
 MotionControlDetails.ui
 """)
@@ -45,10 +45,10 @@ HcrGuiMainWindow.qrc
 hcrguiEnv.Qrc(qrcfiles)
 
 headers = Split("""
+CmigitsDetails.h
 HcrdrxStatusThread.h
 HcrGuiMainWindow.h
 HcrGuiXmitStatusDialog.h
-HcrGuiCmigitsStatusDialog.h
 HcrGuiAntennaModeDialog.h
 MotionControlDetails.h
 MotionControlClientThread.h

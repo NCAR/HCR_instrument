@@ -9,21 +9,21 @@
 #include <QPixmap>
 #include <DrxStatus.h>
 
-#include "ui_HcrGuiCmigitsStatusDialog.h"
+#include "ui_CmigitsDetails.h"
 #include <CmigitsSharedMemory.h>
 
 
-class HcrGuiCmigitsStatusDialog : public QDialog {
+class CmigitsDetails : public QDialog {
     Q_OBJECT
 public:
-    HcrGuiCmigitsStatusDialog(QWidget *parent);
-    virtual ~HcrGuiCmigitsStatusDialog() {}
+    CmigitsDetails(QWidget *parent);
+    virtual ~CmigitsDetails() {}
 
     void noStatus();
 public slots:
     void updateStatus(const DrxStatus & drxStatus);
 private:
-    Ui::HcrGuiCmigitsStatusDialog _ui;
+    Ui::CmigitsDetails _ui;
     CmigitsSharedMemory _cmigitsShm;
     QPixmap _redLED;
     QPixmap _amberLED;

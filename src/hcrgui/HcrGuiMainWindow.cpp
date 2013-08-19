@@ -22,7 +22,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     QMainWindow(),
     _ui(),
     _updateTimer(this),
-    _cmigitsStatusDialog(this),
+    _cmigitsDetails(this),
     _xmitStatusDialog(this),
     _antennaModeDialog(this),
     _motionControlDetails(this),
@@ -116,7 +116,7 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
         // received.
         _setPmcStatus(HcrPmc730Status());
         // Close the C-MIGITS status details dialog
-        _cmigitsStatusDialog.accept();
+        _cmigitsDetails.accept();
     }
 }
 
@@ -291,7 +291,7 @@ HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
 
 void
 HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
-    _cmigitsStatusDialog.show();
+    _cmigitsDetails.show();
 }
 
 void
