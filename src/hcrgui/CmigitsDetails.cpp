@@ -1,5 +1,5 @@
 /*
- * HcrGuiCmigitsStatusDialog.cpp
+ * CmigitsDetails.cpp
  *
  *  Created on: Aug 29, 2012
  *      Author: burghart
