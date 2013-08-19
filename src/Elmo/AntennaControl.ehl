@@ -53,14 +53,14 @@ function tiltHoming()
 	// but it tries to move backward, which can't happen because we just 
 	// moved backward to the limit switch).
 	//
-  // Move forward a bit if we're currently on the home sensor (digital input 5)
-  // (IP bit 20 tells the state of digital input 5)
-  if (IP & (1 << 20))
-    PR=2000; BG;
-    waitMotion();
-  end
+	// Move forward a bit if we're currently on the home sensor (digital input 5)
+	// (IP bit 20 tells the state of digital input 5)
+	if (IP & (1 << 20))
+		PR=2000; BG;
+		waitMotion();
+	end
 
-  // Finally, we can begin the generic homing process.
+	// Finally, we can begin the generic homing process.
 	homing(10000);
 return
 
