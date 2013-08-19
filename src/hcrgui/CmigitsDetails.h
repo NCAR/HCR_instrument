@@ -2,8 +2,8 @@
  *  Created on: Jan 14, 2011
  *      Author: burghart
  */
-#ifndef HCRGUICMIGITSSTATUSDIALOG_H_
-#define HCRGUICMIGITSSTATUSDIALOG_H_
+#ifndef CMIGITSDETAILS_H_
+#define CMIGITSDETAILS_H_
 
 #include <QDialog>
 #include <QPixmap>
@@ -30,4 +30,4 @@ private:
     QPixmap _greenLED;
     QPixmap _greenLED_off;
 };
-#endif /*HCRGUICMIGITSSTATUSDIALOG_H_*/
+#endif /* CMIGITSDETAILS_H_*/

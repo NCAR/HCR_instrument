@@ -2,8 +2,8 @@
  *  Created on: Jan 14, 2011
  *      Author: burghart
  */
-#ifndef HCRGUIXMITSTATUSDIALOG_H_
-#define HCRGUIXMITSTATUSDIALOG_H_
+#ifndef XMITDETAILS_H_
+#define XMITDETAILS_H_
 
 #include <QDialog>
 #include <QPixmap>
@@ -47,4 +47,4 @@ private:
     QPixmap _greenLED;
     QPixmap _greenLED_off;
 };
-#endif /*HCRGUIXMITSTATUSDIALOG_H_*/
+#endif /* XMITDETAILS_H_*/
