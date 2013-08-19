@@ -259,13 +259,13 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
-    	if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::POINTING) {
+    	if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
     		float angle;
     		_antennaModeDialog.getPointingAngle(angle);
     		// Point the antenna to the angle
         	_mcClientThread.rpcClient().point(angle);
     	}
-    	else if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
+    	else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
     		float ccwLimit, cwLimit, scanRate;
     		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
     		// Put the antenna to scan

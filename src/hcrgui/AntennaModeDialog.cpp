@@ -1,20 +1,20 @@
 /*
- * HcrGuiAntennaModeDialog.cpp
+ * AntennaModeDialog.cpp
  *
  *  Created on: Aug 29, 2012
  *      Author: burghart
  */
-#include "HcrGuiAntennaModeDialog.h"
+#include "AntennaModeDialog.h"
 
-HcrGuiAntennaModeDialog::HcrGuiAntennaModeDialog(QWidget *parent) :
+AntennaModeDialog::AntennaModeDialog(QWidget *parent) :
     QDialog(parent),
     _ui() {
     // Set up the UI and get the current status
     _ui.setupUi(this);
 }
 
-HcrGuiAntennaModeDialog::AntennaMode
-HcrGuiAntennaModeDialog::getMode() {
+AntennaModeDialog::AntennaMode
+AntennaModeDialog::getMode() {
 	int index = _ui.tabWidget->currentIndex();
 	if (_ui.tabWidget->tabText(index).contains("Pointing"))
 		return POINTING;
@@ -23,18 +23,18 @@ HcrGuiAntennaModeDialog::getMode() {
 }
 
 void
-HcrGuiAntennaModeDialog::getPointingAngle(float& angle) {
+AntennaModeDialog::getPointingAngle(float& angle) {
 	angle = (float)_ui.pointingSpinBox->value();
 }
 
 void
-HcrGuiAntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate) {
+AntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate) {
 	ccwLimit = (float)_ui.ccwLimitSpinBox->value();
 	cwLimit  = (float)_ui.cwLimitSpinBox->value();
 	scanRate = (float)_ui.scanRateSpinBox->value();
 }
 
 void
-HcrGuiAntennaModeDialog::on_buttonBox_clicked() {
+AntennaModeDialog::on_buttonBox_clicked() {
 	this->accept();
 }

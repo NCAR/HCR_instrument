@@ -2,16 +2,16 @@
  *  Created on: Jan 14, 2011
  *      Author: burghart
  */
-#ifndef HCRGUIANTENNAMODEDIALOG_H_
-#define HCRGUIANTENNAMODEDIALOG_H_
+#ifndef ANTENNAMODEDIALOG_H_
+#define ANTENNAMODEDIALOG_H_
 
 #include <QDialog>
 #include <DrxStatus.h>
 
-#include "ui_HcrGuiAntennaModeDialog.h"
+#include "ui_AntennaModeDialog.h"
 
 
-class HcrGuiAntennaModeDialog : public QDialog {
+class AntennaModeDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -21,8 +21,8 @@ public:
 		SCANNING
 	} AntennaMode;
 
-    HcrGuiAntennaModeDialog(QWidget *parent);
-    virtual ~HcrGuiAntennaModeDialog() {}
+    AntennaModeDialog(QWidget *parent);
+    virtual ~AntennaModeDialog() {}
 
     // Get selected antenna mode
     AntennaMode getMode();
@@ -35,7 +35,7 @@ private slots:
     void on_buttonBox_clicked();
 
 private:
-    Ui::HcrGuiAntennaModeDialog _ui;
+    Ui::AntennaModeDialog _ui;
 };
 
-#endif /*HCRGUIANTENNAMODEDIALOG_H_*/
+#endif /* ANTENNAMODEDIALOG_H_*/
