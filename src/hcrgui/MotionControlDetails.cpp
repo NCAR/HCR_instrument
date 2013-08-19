@@ -67,6 +67,10 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		redLight = ESD::SREG_stoppedByLimit(sr);
 		_errorDetected |= redLight;
 		_ui.rotStoppedByLimitIcon->setPixmap(redLight ? _redLED : _greenLED_off);
+        // User program error?
+        redLight = ESD::SREG_userProgramError(sr);
+        _errorDetected |= redLight;
+        _ui.rotProgramErrorIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 	} else {
 		_errorDetected = true;
 		_ui.rotRespondingIcon->setPixmap(_redLED);
@@ -126,6 +130,10 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		redLight = ESD::SREG_stoppedByLimit(sr);
 		_errorDetected |= redLight;
 		_ui.tiltStoppedByLimitIcon->setPixmap(redLight ? _redLED : _greenLED_off);
+		// User program error?
+		redLight = ESD::SREG_userProgramError(sr);
+		_errorDetected |= redLight;
+		_ui.tiltProgramErrorIcon->setPixmap(redLight ? _redLED : _greenLED_off);
 	} else {
 		_errorDetected = true;
 		_ui.tiltRespondingIcon->setPixmap(_redLED);
