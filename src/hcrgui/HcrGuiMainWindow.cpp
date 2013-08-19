@@ -23,7 +23,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _ui(),
     _updateTimer(this),
     _cmigitsDetails(this),
-    _xmitStatusDialog(this),
+    _xmitDetails(this),
     _antennaModeDialog(this),
     _motionControlDetails(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
@@ -286,7 +286,7 @@ HcrGuiMainWindow::_appendXmitdLogMsgs() {
 
 void
 HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
-    _xmitStatusDialog.show();
+    _xmitDetails.show();
 }
 
 void
@@ -452,8 +452,8 @@ HcrGuiMainWindow::_update() {
     }
 
     // Update the transmitter status details dialog
-    _xmitStatusDialog.setEnabled(_xmitStatus.serialConnected());
-    _xmitStatusDialog.updateStatus(_xmitStatus);
+    _xmitDetails.setEnabled(_xmitStatus.serialConnected());
+    _xmitDetails.updateStatus(_xmitStatus);
 
     // Update the C-MIGITS status details dialog
 //    _cmigitsStatusDialog.updateStatus(_drxStatus);

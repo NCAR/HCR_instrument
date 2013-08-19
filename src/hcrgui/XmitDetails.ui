@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HcrGuiXmitStatusDialog</class>
- <widget class="QDialog" name="HcrGuiXmitStatusDialog">
+ <class>XmitDetails</class>
+ <widget class="QDialog" name="XmitDetails">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -838,7 +838,7 @@ COUNT</string>
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>HcrGuiXmitStatusDialog</receiver>
+   <receiver>XmitDetails</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -854,7 +854,7 @@ COUNT</string>
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>HcrGuiXmitStatusDialog</receiver>
+   <receiver>XmitDetails</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -21,10 +21,11 @@
 #include "Pmc730StatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
-#include "HcrGuiXmitStatusDialog.h"
+
 #include "CmigitsDetails.h"
 #include "HcrGuiAntennaModeDialog.h"
 #include "MotionControlDetails.h"
+#include "XmitDetails.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -102,7 +103,7 @@ private:
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
     CmigitsDetails _cmigitsDetails;
-    HcrGuiXmitStatusDialog _xmitStatusDialog;
+    XmitDetails _xmitDetails;
     HcrGuiAntennaModeDialog _antennaModeDialog;
     MotionControlDetails _motionControlDetails;
     XmitdStatusThread _xmitdStatusThread;

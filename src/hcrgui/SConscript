@@ -32,9 +32,9 @@ Default(hcrgui)
 uifiles = Split("""
 CmigitsDetails.ui
 HcrGuiMainWindow.ui
-HcrGuiXmitStatusDialog.ui
 HcrGuiAntennaModeDialog.ui
 MotionControlDetails.ui
+XmitDetails.ui
 """)
 hcrguiEnv.Uic4(uifiles)
 
@@ -48,11 +48,11 @@ headers = Split("""
 CmigitsDetails.h
 HcrdrxStatusThread.h
 HcrGuiMainWindow.h
-HcrGuiXmitStatusDialog.h
 HcrGuiAntennaModeDialog.h
 MotionControlDetails.h
 MotionControlClientThread.h
 Pmc730StatusThread.h
+XmitDetails.h
 XmitdStatusThread.h
 """)
 
