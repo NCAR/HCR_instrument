@@ -574,6 +574,12 @@ ElmoServoDrive::_initDrive() {
 
 void
 ElmoServoDrive::_startXq(std::string function) {
+    // Before executing a drive program, stop any program running on the 
+    // drive and disarm any homing which may be in progress.
+    _execElmoCmd("KL");
+    _execElmoCmd("HM[1]=0");
+    usleep(100000); // sleep 0.1 s
+
     // Clear our XQ error indicator before we begin
     _xqError = false;
 
