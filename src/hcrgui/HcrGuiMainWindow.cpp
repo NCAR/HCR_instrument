@@ -34,7 +34,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
-    _nextLogIndex(0) {
+    _nextLogIndex(0),
+    _lastAngleUpdate(QDateTime::currentDateTime()) {
     // Set up the UI
     _ui.setupUi(this);
     // Limit the log area to 1000 messages
@@ -547,10 +548,20 @@ HcrGuiMainWindow::_readAngles()
         memcpy(reinterpret_cast<char*>(&rotation), datagram.data(), 4);
         memcpy(reinterpret_cast<char*>(&tilt), datagram.data() + 4, 4);
     }
-    _ui.rotationValue->setText(QString::number(rotation, 'f', 1));
-    _showRotAngle(rotation);
-    _ui.tiltValue->setText(QString::number(tilt, 'f', 1));
-    _showTiltAngle(tilt);
+    // Only update the GUI if the time since last update is greater than 50 ms.
+    // The test is klugy for now, since older QDateTime implementations do not
+    // have the msecsTo(QDateTime) method... Mostly the test below works, but
+    // we'll wait up to a second for an update at a day boundary.
+    QDateTime now = QDateTime::currentDateTime();
+    if (_lastAngleUpdate.secsTo(now) > 0 ||
+            _lastAngleUpdate.time().msecsTo(now.time()) > 50) {
+        _ui.rotationValue->setText(QString::number(rotation, 'f', 1));
+        _showRotAngle(rotation);
+        _ui.tiltValue->setText(QString::number(tilt, 'f', 1));
+        _showTiltAngle(tilt);
+
+        _lastAngleUpdate = now;
+    }
 }
 
 void HcrGuiMainWindow::_showRotAngle(float rotAngle)

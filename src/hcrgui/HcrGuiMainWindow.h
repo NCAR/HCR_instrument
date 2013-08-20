@@ -136,5 +136,8 @@ private:
 
     // socket listening to angle broadcast
     QUdpSocket _angleSocket;
+
+    // time of last GUI update with new angles
+    QDateTime _lastAngleUpdate;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/
