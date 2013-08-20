@@ -136,6 +136,8 @@ public:
         ElmoServoDrive::StatusReg rotDriveStatusReg;
         /// Rotation drive temperature, deg C
         int rotDriveTemp;
+        /// Rotation angle, deg
+        float rotDriveAngle;
         /// Is the tilt drive responding?
         bool tiltDriveResponding;
         /// Is the tilt drive initialized?
@@ -146,6 +148,8 @@ public:
         ElmoServoDrive::StatusReg tiltDriveStatusReg;
         /// Tilt drive temperature, deg C
         int tiltDriveTemp;
+        /// Tilt angle, deg
+        float tiltDriveAngle;
         /// Antenna motion mode
         AntennaMode antennaMode;
         // Pointing angle for POINTING mode
