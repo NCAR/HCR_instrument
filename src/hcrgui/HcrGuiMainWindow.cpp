@@ -87,8 +87,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
 
-    // Show rotation angle display
+    // Show rotation and tile angle display
     _showRotAngle(0);
+    _showTiltAngle(0);
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -549,6 +550,7 @@ HcrGuiMainWindow::_readAngles()
     _ui.rotationValue->setText(QString::number(rotation, 'f', 1));
     _showRotAngle(rotation);
     _ui.tiltValue->setText(QString::number(tilt, 'f', 1));
+    _showTiltAngle(tilt);
 }
 
 void HcrGuiMainWindow::_showRotAngle(float rotAngle)
@@ -618,4 +620,56 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.end();
 	_ui.rotAngleDisplay->setPixmap(*rotDisplay);
 	delete(rotDisplay);
+}
+
+void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
+{
+	QPixmap *tiltDisplay = new QPixmap(90, 90);
+	QPainter painter(tiltDisplay);
+	painter.setRenderHint(QPainter::Antialiasing);
+	// Background
+	painter.setPen(Qt::NoPen);
+	painter.setBrush(QColor(0, 100, 0));
+	painter.drawRect(0, 0, 90, 90);
+	// Pie
+	QPen pen("lightgreen");
+	painter.setPen(pen);
+	painter.setBrush(Qt::NoBrush);
+	painter.drawPie(-19, 13, 128, 128, (90+36)*16, -72*16);
+	// Angle text
+	painter.translate(45, 77);
+	painter.setFont(QFont("arial", 6, QFont::Bold));
+	for (int r = -36; r <= 36; r += 6) {
+		if (r/6 % 2 != 0) continue;
+		float theta = (r-90)*M_PI/180.0;
+		float dx = 0;
+		if (r < 0) dx = -5;
+		if (r == 0) dx = -2;
+		painter.drawText(QPointF(68*cos(theta)+dx, 68*sin(theta)), QString::number(r/6));
+	}
+	painter.drawText(QPoint(-39, 8), "Angle Magnified by 6");
+	// Radius lines
+	painter.rotate(-54);
+	int rc = 0;
+	for (int r = -36; r <= 36; r += 6) {
+		if (r/6 % 2 == 0)
+			painter.drawLine(0, 0, 64, 0);
+		else
+			painter.drawLine(62, 0, 64, 0);
+		painter.rotate(-6);
+		rc++;
+	}
+	painter.rotate(54+6*rc);
+	// Tilt angle
+	if (_mcStatus.tiltDriveResponding) {
+		pen.setColor("white");
+		pen.setWidth(2);
+		painter.setPen(pen);
+		painter.rotate(tiltAngle*6-90);
+		painter.drawLine(0, 0, 64, 0);
+	}
+
+	painter.end();
+	_ui.tiltAngleDisplay->setPixmap(*tiltDisplay);
+	delete(tiltDisplay);
 }

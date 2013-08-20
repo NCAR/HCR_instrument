@@ -107,6 +107,8 @@ private:
 
     /// @brief Show rotation angle
     void _showRotAngle(float rotAngle);
+    /// @brief Show tilt angle
+    void _showTiltAngle(float tiltAngle);
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;

@@ -555,9 +555,10 @@ Display</string>
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLabel" name="placeHolder">
+              <widget class="QLabel" name="tiltAngleDisplay">
                <property name="text">
-                <string/>
+                <string>TiltAngle
+Display</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
