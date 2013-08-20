@@ -1,13 +1,13 @@
 /*
- * HcrGuiXmitStatusDialog.cpp
+ * XmitDetails.cpp
  *
  *  Created on: Aug 29, 2012
  *      Author: burghart
  */
-#include "HcrGuiXmitStatusDialog.h"
+#include "XmitDetails.h"
 #include <QDateTime>
 
-HcrGuiXmitStatusDialog::HcrGuiXmitStatusDialog(QWidget *parent) :
+XmitDetails::XmitDetails(QWidget *parent) :
     QDialog(parent),
     _ui(),
     _redLED(":/redLED.png"),
@@ -18,7 +18,7 @@ HcrGuiXmitStatusDialog::HcrGuiXmitStatusDialog(QWidget *parent) :
 }
 
 void
-HcrGuiXmitStatusDialog::updateStatus(const XmitStatus & xmitStatus) {
+XmitDetails::updateStatus(const XmitStatus & xmitStatus) {
     // fault lights
     _ui.modulatorFaultIcon->
         setPixmap(xmitStatus.modulatorFault() ? _redLED : _greenLED);
@@ -112,7 +112,7 @@ HcrGuiXmitStatusDialog::updateStatus(const XmitStatus & xmitStatus) {
 }
 
 void
-HcrGuiXmitStatusDialog::noStatus() {
+XmitDetails::noStatus() {
     _ui.modulatorFaultIcon->setPixmap(_greenLED_off);
     _ui.modulatorFaultCount->setText("");
     _ui.syncFaultIcon->setPixmap(_greenLED_off);
@@ -138,7 +138,7 @@ HcrGuiXmitStatusDialog::noStatus() {
     _ui.xmitterTempValue->setText("0.0");
 }
 QString
-HcrGuiXmitStatusDialog::_countLabel(int count) {
+XmitDetails::_countLabel(int count) {
     if (count == 0)
         return QString("-");
 
@@ -148,7 +148,7 @@ HcrGuiXmitStatusDialog::_countLabel(int count) {
 }
 
 QString
-HcrGuiXmitStatusDialog::_faultTimeLabel(time_t time) {
+XmitDetails::_faultTimeLabel(time_t time) {
     if (time == -1)
         return QString("");
 

@@ -22,8 +22,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     QMainWindow(),
     _ui(),
     _updateTimer(this),
-    _cmigitsStatusDialog(this),
-    _xmitStatusDialog(this),
+    _cmigitsDetails(this),
+    _xmitDetails(this),
     _antennaModeDialog(this),
     _motionControlDetails(this),
     _xmitdStatusThread(xmitterHost, xmitterPort),
@@ -119,7 +119,7 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
         // received.
         _setDrxStatus(DrxStatus());
         // Close the C-MIGITS status details dialog
-        _cmigitsStatusDialog.accept();
+        _cmigitsDetails.accept();
     }
 }
 
@@ -262,13 +262,13 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
-    	if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::POINTING) {
+    	if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
     		float angle;
     		_antennaModeDialog.getPointingAngle(angle);
     		// Point the antenna to the angle
         	_mcClientThread.rpcClient().point(angle);
     	}
-    	else if (_antennaModeDialog.getMode() == HcrGuiAntennaModeDialog::SCANNING) {
+    	else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
     		float ccwLimit, cwLimit, scanRate;
     		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
     		// Put the antenna to scan
@@ -306,12 +306,12 @@ HcrGuiMainWindow::_appendXmitdLogMsgs() {
 
 void
 HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
-    _xmitStatusDialog.show();
+    _xmitDetails.show();
 }
 
 void
 HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
-    _cmigitsStatusDialog.show();
+    _cmigitsDetails.show();
 }
 
 void
@@ -472,11 +472,11 @@ HcrGuiMainWindow::_update() {
     }
 
     // Update the transmitter status details dialog
-    _xmitStatusDialog.setEnabled(_xmitStatus.serialConnected());
-    _xmitStatusDialog.updateStatus(_xmitStatus);
+    _xmitDetails.setEnabled(_xmitStatus.serialConnected());
+    _xmitDetails.updateStatus(_xmitStatus);
 
     // Update the C-MIGITS status details dialog
-    _cmigitsStatusDialog.updateStatus(_drxStatus);
+    _cmigitsDetails.updateStatus(_drxStatus);
     
     // MotionControl status LED
     _motionControlDetails.updateStatus(_mcStatus);

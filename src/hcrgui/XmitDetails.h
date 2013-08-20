@@ -2,21 +2,21 @@
  *  Created on: Jan 14, 2011
  *      Author: burghart
  */
-#ifndef HCRGUIXMITSTATUSDIALOG_H_
-#define HCRGUIXMITSTATUSDIALOG_H_
+#ifndef XMITDETAILS_H_
+#define XMITDETAILS_H_
 
 #include <QDialog>
 #include <QPixmap>
 
-#include "ui_HcrGuiXmitStatusDialog.h"
+#include "ui_XmitDetails.h"
 #include <XmitdRpcClient.h>
 
 
-class HcrGuiXmitStatusDialog : public QDialog {
+class XmitDetails : public QDialog {
     Q_OBJECT
 public:
-    HcrGuiXmitStatusDialog(QWidget *parent);
-    virtual ~HcrGuiXmitStatusDialog() {}
+    XmitDetails(QWidget *parent);
+    virtual ~XmitDetails() {}
 
     void updateStatus(const XmitStatus & xmitStatus);
     void noStatus();
@@ -41,10 +41,10 @@ protected:
     static QString _faultTimeLabel(time_t time);
 
 private:
-    Ui::HcrGuiXmitStatusDialog _ui;
+    Ui::XmitDetails _ui;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
 };
-#endif /*HCRGUIXMITSTATUSDIALOG_H_*/
+#endif /* XMITDETAILS_H_*/

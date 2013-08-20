@@ -1,14 +1,14 @@
 /*
- * HcrGuiCmigitsStatusDialog.cpp
+ * CmigitsDetails.cpp
  *
  *  Created on: Aug 29, 2012
  *      Author: burghart
  */
-#include "HcrGuiCmigitsStatusDialog.h"
+#include "CmigitsDetails.h"
 #include <QDateTime>
 #include <Cmigits.h>
 
-HcrGuiCmigitsStatusDialog::HcrGuiCmigitsStatusDialog(QWidget *parent) :
+CmigitsDetails::CmigitsDetails(QWidget *parent) :
     QDialog(parent),
     _ui(),
     _cmigitsShm(),
@@ -23,7 +23,7 @@ HcrGuiCmigitsStatusDialog::HcrGuiCmigitsStatusDialog(QWidget *parent) :
 }
 
 void
-HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
+CmigitsDetails::updateStatus(const DrxStatus & drxStatus) {
     double statusTime = 0.0;
     uint16_t currentMode = 0;
     bool insAvailable = false;
@@ -87,7 +87,7 @@ HcrGuiCmigitsStatusDialog::updateStatus(const DrxStatus & drxStatus) {
 }
 
 void
-HcrGuiCmigitsStatusDialog::noStatus() {
+CmigitsDetails::noStatus() {
     _ui.insValue->setPixmap(_greenLED_off);
     _ui.gpsValue->setPixmap(_greenLED_off);
 }

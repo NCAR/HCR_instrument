@@ -22,10 +22,11 @@
 #include "HcrdrxStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
-#include "HcrGuiXmitStatusDialog.h"
-#include "HcrGuiCmigitsStatusDialog.h"
-#include "HcrGuiAntennaModeDialog.h"
+
+#include "CmigitsDetails.h"
+#include "AntennaModeDialog.h"
 #include "MotionControlDetails.h"
+#include "XmitDetails.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -109,9 +110,9 @@ private:
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
-    HcrGuiCmigitsStatusDialog _cmigitsStatusDialog;
-    HcrGuiXmitStatusDialog _xmitStatusDialog;
-    HcrGuiAntennaModeDialog _antennaModeDialog;
+    CmigitsDetails _cmigitsDetails;
+    XmitDetails _xmitDetails;
+    AntennaModeDialog _antennaModeDialog;
     MotionControlDetails _motionControlDetails;
     XmitdStatusThread _xmitdStatusThread;
     MotionControlClientThread _mcClientThread;
