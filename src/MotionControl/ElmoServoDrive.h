@@ -81,8 +81,8 @@ public:
     /// Get latest sampled drive status register value
     StatusReg driveStatusRegister() const { return _driveStatusRegister; }
 
-    /// Get latest sampled drive system time, in microseconds
-    uint32_t driveSystemTime() const { return _driveSystemTime; }
+    /// Get latest sampled drive angle, in degrees
+    int32_t angle() const { return(_angleCounts / countsPerDegree()); }
 
     /// Get latest sampled drive temperature, C
     int driveTemperature() const { return _driveTemperature; }
@@ -353,8 +353,8 @@ private:
     /// drive temperature
     int _driveTemperature;
 
-    /// drive system time, microseconds
-    uint32_t _driveSystemTime;
+    /// drive angle, in counts
+    int32_t _angleCounts;
 
     /// drive status register
     StatusReg _driveStatusRegister;

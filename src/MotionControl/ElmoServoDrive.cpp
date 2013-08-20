@@ -410,18 +410,14 @@ ElmoServoDrive::_readReply() {
                     }
                 }
 
-                // Save reply from TM "system time" command
-                if (! cmd.compare("TM")) {
-                    // System time is actually a 32-bit unsigned count, but
-                    // the reply sends it as a signed value. We'll convert
-                    // to unsigned as long as the value parses as an int.
-                    int32_t time = qCmdReply.toInt(&ok);
+                // Save reply from PX "main position" command
+                if (! cmd.compare("PX")) {
+                    // PX is reported in counts in the range [XM[1],XM[2]-1]
+                    int32_t counts = qCmdReply.toInt(&ok);
                     if (ok) {
-                        // Reinterpret the returned value as an *unsigned*
-                        // 32-bit int.
-                        _driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
+                        _angleCounts = counts;
                     } else {
-                        WLOG << _driveName << ": bad TM reply '" <<
+                        WLOG << _driveName << ": bad PX reply '" <<
                                 cmdReply << "'";
                     }
                 }
@@ -766,9 +762,9 @@ ElmoServoDrive::_collectStatus() {
     // Send commands to the drive to get back status values we want. The
     // status values will be parsed out and saved in _readReply when the
     // replies come back.
-    _execElmoCmd("SR", false);        // status register
-    _execElmoCmd("TI[1]", false);    // "temperature indicator 1", drive temperature
-    _execElmoCmd("TM", false);        // system time
+    _execElmoCmd("SR", false);      // status register
+    _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
+    _execElmoCmd("PX", false);      // main position
 }
 
 void
