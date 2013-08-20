@@ -34,39 +34,42 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 	typedef ElmoServoDrive ESD;	// compress our references to ElmoServoDrive somewhat...
 	const ESD::StatusReg sr = mcStatus.rotDriveStatusReg;
 
-	if (mcStatus.rotDriveResponding) {
-		// General status
-		_ui.rotRespondingIcon->setPixmap(_greenLED);
-		_ui.rotMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
-				_greenLED : _greenLED_off);
-		_ui.rotUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
-		_ui.rotMotorInitializedIcon->setPixmap(mcStatus.rotDriveInitialized ?
-				_greenLED : _greenLED_off);
-		_ui.rotMotorHomingIcon->setPixmap(ESD::SREG_homingInProcess(sr) ?
-				_amberLED : _greenLED_off);
-		_ui.rotMotorHomedIcon->setPixmap(mcStatus.rotDriveHomed ? _greenLED : _greenLED_off);
-		_ui.rotProgramRunningIcon->setPixmap(ESD::SREG_programRunning(sr) ?
-				_amberLED : _greenLED_off);
-		_ui.rotMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
-		// Drive problem?
-		bool redLight;
-		redLight = ESD::SREG_driveProblem(sr);
-		_errorDetected |= redLight;
-		_ui.rotProblemIcon->setPixmap(redLight ? _redLED : _greenLED_off);
-		_ui.rotProblemCodeLabel->
-			setText(QString::number(ESD::SREG_statusIndication(sr)));
-		// Motor failure?
-		redLight = ESD::SREG_motorFailure(sr);
-		_errorDetected |= redLight;
-		_ui.rotMotorFailureIcon->setPixmap(redLight ? _redLED : _greenLED_off);
-		// Drive CPU problem?
-		redLight = ESD::SREG_cpuProblem(sr);
-		_errorDetected |= redLight;
-		_ui.rotCpuErrorIcon->setPixmap(redLight ? _redLED : _greenLED_off);
-		// Drive stopped by limit?
-		redLight = ESD::SREG_stoppedByLimit(sr);
-		_errorDetected |= redLight;
-		_ui.rotStoppedByLimitIcon->setPixmap(redLight ? _redLED : _greenLED_off);
+    bool amberLight;
+    bool redLight;
+    if (mcStatus.rotDriveResponding) {
+        // General status
+        _ui.rotRespondingIcon->setPixmap(_greenLED);
+        _ui.rotMotorOnIcon->setPixmap(ESD::SREG_motorOn(sr) ?
+                _greenLED : _greenLED_off);
+        _ui.rotUnitModeLabel->setText(QString::number(ESD::SREG_unitMode(sr)));
+        _ui.rotMotorInitializedIcon->setPixmap(mcStatus.rotDriveInitialized ?
+                _greenLED : _greenLED_off);
+        amberLight = ESD::SREG_homingInProcess(sr);
+        _warningDetected = amberLight;
+        _ui.rotMotorHomingIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
+        _ui.rotMotorHomedIcon->setPixmap(mcStatus.rotDriveHomed ? _greenLED : _greenLED_off);
+        amberLight = ESD::SREG_programRunning(sr);
+        _warningDetected = amberLight;
+        _ui.rotProgramRunningIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
+        _ui.rotMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
+        // Drive problem?
+        redLight = ESD::SREG_driveProblem(sr);
+        _errorDetected |= redLight;
+        _ui.rotProblemIcon->setPixmap(redLight ? _redLED : _greenLED_off);
+        _ui.rotProblemCodeLabel->
+            setText(QString::number(ESD::SREG_statusIndication(sr)));
+        // Motor failure?
+        redLight = ESD::SREG_motorFailure(sr);
+        _errorDetected |= redLight;
+        _ui.rotMotorFailureIcon->setPixmap(redLight ? _redLED : _greenLED_off);
+        // Drive CPU problem?
+        redLight = ESD::SREG_cpuProblem(sr);
+        _errorDetected |= redLight;
+        _ui.rotCpuErrorIcon->setPixmap(redLight ? _redLED : _greenLED_off);
+        // Drive stopped by limit?
+        redLight = ESD::SREG_stoppedByLimit(sr);
+        _errorDetected |= redLight;
+        _ui.rotStoppedByLimitIcon->setPixmap(redLight ? _redLED : _greenLED_off);
         // User program error?
         redLight = ESD::SREG_userProgramError(sr);
         _errorDetected |= redLight;
