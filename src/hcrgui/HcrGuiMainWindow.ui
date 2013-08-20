@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>862</width>
-    <height>639</height>
+    <width>810</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -635,7 +635,7 @@ Display</string>
              <item>
               <widget class="QPushButton" name="driveHomeButton">
                <property name="text">
-                <string>Set Drives Home</string>
+                <string>Home the Drives</string>
                </property>
               </widget>
              </item>

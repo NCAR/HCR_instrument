@@ -283,11 +283,11 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
 void
 HcrGuiMainWindow::on_driveHomeButton_clicked() {
     // Confirm that it's OK to set drives to home position
-    QMessageBox confirmBox(QMessageBox::Question, "Confirm Setting Drives Home",
-            "Continue to set drives to home position?",
+    QMessageBox confirmBox(QMessageBox::Question, "Confirm Home Drives",
+            "Continue to home the drives?",
             QMessageBox::Ok | QMessageBox::Cancel, this);
-    confirmBox.setInformativeText("Criteria for setting drives home:\n\n"
-            "Radar transmitter must be turned off!\n");
+    confirmBox.setInformativeText(
+            "Radar transmitter must be turned off before homing drives!\n");
     if (confirmBox.exec() == QMessageBox::Cancel) {
         return;
     }
