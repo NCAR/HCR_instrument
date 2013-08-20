@@ -456,7 +456,7 @@ HcrGuiMainWindow::_update() {
     _xmitDetails.updateStatus(_xmitStatus);
 
     // Update the C-MIGITS status details dialog
-//    _cmigitsStatusDialog.updateStatus(_drxStatus);
+    _cmigitsDetails.updateStatus(_drxStatus);
     
     // MotionControl status LED
     _motionControlDetails.updateStatus(_mcStatus);

@@ -19,11 +19,11 @@ AntennaModeDialog.cpp
 CmigitsDetails.cpp
 HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
-HcrGuiXmitStatusDialog.cpp
 MotionControlDetails.cpp
 MotionControlClientThread.cpp
 Pmc730StatusThread.cpp
 qrc_HcrGuiMainWindow.cc
+XmitDetails.cpp
 XmitdStatusThread.cpp
 """)
 hcrgui = hcrguiEnv.Program('hcrgui', hcrgui_sources)
