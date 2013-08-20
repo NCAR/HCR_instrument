@@ -226,7 +226,7 @@ main(int argc, char** argv)
 
     // set up registration with procmap if instance is specified
     if (PmuInstance.size() > 0) {
-        PMU_auto_init("cmigitsDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
+        PMU_auto_init("MotionControlDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
         ILOG << "will register with procmap, instance: " << PmuInstance;
     }
 
