@@ -82,7 +82,7 @@ public:
     StatusReg driveStatusRegister() const { return _driveStatusRegister; }
 
     /// Get latest sampled drive angle, in degrees
-    int32_t angle() const { return(_angleCounts / countsPerDegree()); }
+    float angle() const { return(_angleCounts / countsPerDegree()); }
 
     /// Get latest sampled drive temperature, C
     int driveTemperature() const { return _driveTemperature; }
