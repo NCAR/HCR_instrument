@@ -45,20 +45,6 @@ function tiltHoming()
 		JV=-10000; BG;
 		waitHoming();
 	end
-	
-	// KLUGE: When the tilt drive is at a limit switch, it sometimes also
-	// indicates it is at the home position. This is incorrect! If the drive
-	// now thinks it's at home position, move forward slightly to get off
-	// of home. (The 'homing' function would also try to move us off of home,
-	// but it tries to move backward, which can't happen because we just 
-	// moved backward to the limit switch).
-	//
-	// Move forward a bit if we're currently on the home sensor (digital input 5)
-	// (IP bit 20 tells the state of digital input 5)
-	if (IP & (1 << 20))
-		PR=2000; BG;
-		waitMotion();
-	end
 
 	// Finally, we can begin the generic homing process.
 	homing(10000);
