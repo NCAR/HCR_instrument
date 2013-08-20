@@ -9,6 +9,7 @@
 #include <iostream>
 #include <QtGui>
 #include "svnInfo.h"
+#include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
 #include <xmlrpc-c/base.hpp>
@@ -26,6 +27,9 @@ QCoreApplication * App = 0;
 
 // MotionControl instance
 MotionControl * Control = 0;
+
+// PMU application instance name
+std::string PmuInstance = "ops";   ///< application instance
 
 // Set to true when it's time to terminate
 bool Terminate = false;
@@ -220,6 +224,12 @@ main(int argc, char** argv)
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
 
+    // set up registration with procmap if instance is specified
+    if (PmuInstance.size() > 0) {
+      PMU_auto_init("cmigitsDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
+      ILOG << "will register with procmap, instance: " << PmuInstance;
+    }
+
 	// Create the Qt application and our drive connection
 	App = new QCoreApplication(argc, argv);
 	Control = new MotionControl();
@@ -243,7 +253,9 @@ main(int argc, char** argv)
     startXmlrpcWorkAlarm();
 
     while (true) {
-    	if (Terminate)
+        PMU_auto_register("running");
+
+        if (Terminate)
     		break;
 
 	    // Waits for the next connection, accepts it, reads the HTTP
