@@ -7,7 +7,7 @@
 
 #include <QDialog>
 #include <QPixmap>
-#include <DrxStatus.h>
+#include <CmigitsStatus.h>
 
 #include "ui_CmigitsDetails.h"
 #include <CmigitsSharedMemory.h>
@@ -21,7 +21,7 @@ public:
 
     void noStatus();
 public slots:
-    void updateStatus(const DrxStatus & drxStatus);
+    void updateStatus(const CmigitsStatus & status);
 private:
     Ui::CmigitsDetails _ui;
     CmigitsSharedMemory _cmigitsShm;

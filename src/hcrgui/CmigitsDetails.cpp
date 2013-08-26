@@ -23,7 +23,7 @@ CmigitsDetails::CmigitsDetails(QWidget *parent) :
 }
 
 void
-CmigitsDetails::updateStatus(const DrxStatus & drxStatus) {
+CmigitsDetails::updateStatus(const CmigitsStatus & status) {
     double statusTime = 0.0;
     uint16_t currentMode = 0;
     bool insAvailable = false;
@@ -37,7 +37,7 @@ CmigitsDetails::updateStatus(const DrxStatus & drxStatus) {
     float expectedHPosError = 0.0;
     float expectedVPosError = 0.0;
     float expectedVelocityError = 0.0;
-    drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable,
+    status.msg3500Data(statusTime, currentMode, insAvailable,
             gpsAvailable, doingCoarseAlignment, nSats, 
             positionFOM, velocityFOM, headingFOM, timeFOM,
             expectedHPosError, expectedVPosError, expectedVelocityError);
@@ -65,7 +65,7 @@ CmigitsDetails::updateStatus(const DrxStatus & drxStatus) {
     float velNorth = 0.0;
     float velEast = 0.0;
     float velUp = 0.0;
-    drxStatus.cmigitsNavSolution(navSolutionTime, latitude, longitude, altitude,
+    status.msg3501Data(navSolutionTime, latitude, longitude, altitude,
             velNorth, velEast, velUp);
     _ui.navSolutionTimeValue->setText(QDateTime::fromTime_t(uint32_t(navSolutionTime)).toUTC().toString("hh:mm:ss"));
     _ui.latitudeValue->setText(QString::number(latitude, 'f', 4));
@@ -79,7 +79,7 @@ CmigitsDetails::updateStatus(const DrxStatus & drxStatus) {
     float pitch = 0.0;
     float roll = 0.0;
     float heading = 0.0;
-    drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
+    status.msg3512Data(attitudeTime, pitch, roll, heading);
     _ui.attitudeTimeValue->setText(QDateTime::fromTime_t(uint32_t(attitudeTime)).toUTC().toString("hh:mm:ss"));
     _ui.pitchValue->setText(QString::number(pitch, 'f', 1));
     _ui.rollValue->setText(QString::number(roll, 'f', 1));

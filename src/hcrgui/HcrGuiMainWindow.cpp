@@ -8,11 +8,11 @@
 
 #include <sstream>
 #include <unistd.h>
-#include <logx/Logging.h>
 
 #include <QDateTime>
 #include <QMessageBox>
 
+#include <logx/Logging.h>
 LOGGING("HcrGuiMainWindow")
 
 
@@ -417,6 +417,10 @@ HcrGuiMainWindow::_update() {
     // HMC mode
     _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
 
+    // Instantiate a CmigitsStatus to get the latest values from
+    // CmigitsSharedMemory.
+    CmigitsStatus cmigitsStatus;
+
     // C-MIGITS status light
     {
         // Get C-MIGITS status
@@ -433,10 +437,10 @@ HcrGuiMainWindow::_update() {
         float expectedHPosError = 0.0;
         float expectedVPosError = 0.0;
         float expectedVelError = 0.0;
-//        _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
-//                doingCoarseAlignment, nSats,
-//                positionFOM, velocityFOM,  headingFOM, timeFOM,
-//                expectedHPosError, expectedVPosError, expectedVelError);
+        cmigitsStatus.msg3500Data(statusTime, mode, insAvailable, gpsAvailable,
+                doingCoarseAlignment, nSats,
+                positionFOM, velocityFOM,  headingFOM, timeFOM,
+                expectedHPosError, expectedVPosError, expectedVelError);
         QPixmap light;
         if (mode == 7 || mode == 8) {
             // Green light if mode is "Air Navigation" or "Land Navigation"
@@ -455,8 +459,9 @@ HcrGuiMainWindow::_update() {
     _xmitDetails.setEnabled(_xmitStatus.serialConnected());
     _xmitDetails.updateStatus(_xmitStatus);
 
-    // Update the C-MIGITS status details dialog
-    _cmigitsDetails.updateStatus(_drxStatus);
+    // Update the C-MIGITS status details dialog. We instantiate CmigitsStatus()
+    // to get the current values from CmigitsSharedMemory.
+    _cmigitsDetails.updateStatus(cmigitsStatus);
     
     // MotionControl status LED
     _motionControlDetails.updateStatus(_mcStatus);
