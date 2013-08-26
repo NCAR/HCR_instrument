@@ -81,8 +81,8 @@ CmigitsDetails::updateStatus(const DrxStatus & drxStatus) {
     float heading = 0.0;
     drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
     _ui.attitudeTimeValue->setText(QDateTime::fromTime_t(uint32_t(attitudeTime)).toUTC().toString("hh:mm:ss"));
-    _ui.pitchValue->setText(QString::number(pitch, 'f', 1));
-    _ui.rollValue->setText(QString::number(roll, 'f', 1));
+    _ui.pitchValue->setText(QString::number(pitch, 'f', 2));
+    _ui.rollValue->setText(QString::number(roll, 'f', 2));
     _ui.headingValue->setText(QString::number(heading, 'f', 1));
 }
 
