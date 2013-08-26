@@ -22,10 +22,12 @@
 LOGGING("HcrMonitor")
 
 HcrMonitor::HcrMonitor(const Pentek::p7142 & pentek,
+        std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort) :
     QThread(),
     _pentek(pentek),
     _drxStatus(_pentek),
+    _pmc730Client(pmc730dHost, pmc730dPort),
     _xmitClient(xmitdHost, xmitdPort),
     _mutex(QMutex::Recursive) {
 }
@@ -43,10 +45,22 @@ HcrMonitor::transmitterStatus() const {
     return(_xmitStatus);
 }
 
+CmigitsStatus
+HcrMonitor::cmigitsStatus() const {
+    QMutexLocker locker(&_mutex);
+    return(_cmigitsStatus);
+}
+
 DrxStatus
 HcrMonitor::drxStatus() const {
     QMutexLocker locker(&_mutex);
     return(_drxStatus);
+}
+
+HcrPmc730Status
+HcrMonitor::pmc730Status() const {
+    QMutexLocker locker(&_mutex);
+    return(_pmc730Status);
 }
 
 void
@@ -66,6 +80,9 @@ HcrMonitor::run() {
             usleep((1000 - msecsSinceUpdate) * 1000);
         }
         
+        // Get new values from the C-MIGITS
+        _getCmigitsStatus();
+
         // Get new values from the multi-IO card and Pentek
         _getDrxStatus();
         
@@ -77,6 +94,14 @@ HcrMonitor::run() {
 }
 
 void
+HcrMonitor::_getCmigitsStatus() {
+    QMutexLocker locker(&_mutex);
+    // Default constructor for CmigitsStatus populates from current values in
+    // CmigitsSharedMemory
+    _cmigitsStatus = CmigitsStatus();
+}
+
+void
 HcrMonitor::_getDrxStatus() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
@@ -84,6 +109,17 @@ HcrMonitor::_getDrxStatus() {
 
     QMutexLocker locker(&_mutex);
     _drxStatus = drxStatus;
+}
+
+void
+HcrMonitor::_getPmc730Status() {
+    // Get the status first, then get the mutex and set our member variable.
+    // This way, we don't have the mutex locked very long at all....
+    HcrPmc730Status status;
+    _pmc730Client.getStatus(status);
+
+    QMutexLocker locker(&_mutex);
+    _pmc730Status = status;
 }
 
 void

@@ -8,10 +8,10 @@
 #include <sys/timeb.h>
 #include <ctime>
 #include <cerrno>
+#include <csignal>
 #include <cstdlib>
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <csignal>
 #include <XmlRpc.h>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
@@ -21,7 +21,6 @@ LOGGING("hcrdrx")
 // For configuration management
 #include <QtConfig.h>
 
-#include "HcrPmc730.h"
 #include "HcrDrxPub.h"
 #include "p7142sd3c.h"
 #include "p7142Up.h"
@@ -48,8 +47,11 @@ int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of milliseconds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 
-std::string _xmitdHost("archiver");///< The host on which hcr_xmitd is running
-int _xmitdPort = 8000;           ///< The port on which hcr_xmitd is listening
+std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
+int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
+
+std::string _pmc730dHost("localhost");  ///< The host on which HcrPmc730Daemon is running
+int _pmc730dPort = 8003;                ///< HcrPmc730Daemon's XML-RPC port
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -106,7 +108,9 @@ void parseOptions(int argc,
         ("simulate", "Enable simulation")
         ("simPauseMS",  po::value<double>(&_simPauseMS), "Simulation pause interval between beams (ms)")
         ("xmitdHost", po::value<std::string>(&_xmitdHost), "Host machine for hcr_xmitd")
-        ("xmitdPort", po::value<int>(&_xmitdPort), "Port for contacting hcr_xmitd")
+        ("xmitdPort", po::value<int>(&_xmitdPort), "hcr_xmitd's XML-RPC port")
+        ("pmc730dHost", po::value<std::string>(&_pmc730dHost), "Host machine for HcrPmc730Daemon")
+        ("pmc730dPort", po::value<int>(&_pmc730dPort), "HcrPmc730Daemon's XML-RPC port")
         ;
     // If we get an option on the command line with no option name, it
     // is treated like --drxConfig=<option> was given.
@@ -220,58 +224,6 @@ public:
     }
 };
 
-/// Xmlrpc++ method to turn on the transmitter klystron filament.
-class XmitFilamentOnMethod : public XmlRpcServerMethod {
-public:
-    XmitFilamentOnMethod() : XmlRpcServerMethod("xmitFilamentOn") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitFilamentOn' command";
-        HcrPmc730::setXmitterFilamentOn(true);
-    }
-};
-
-/// Xmlrpc++ method to turn off the transmitter klystron filament.
-class XmitFilamentOffMethod : public XmlRpcServerMethod {
-public:
-    XmitFilamentOffMethod() : XmlRpcServerMethod("xmitFilamentOff") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitFilamentOff' command";
-        HcrPmc730::setXmitterFilamentOn(false);
-    }
-};
-
-/// Xmlrpc++ method to turn on the transmitter high voltage.
-class XmitHvOnMethod : public XmlRpcServerMethod {
-public:
-    XmitHvOnMethod() : XmlRpcServerMethod("xmitHvOn") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitHvOn' command";
-        HcrPmc730::setXmitterHvOn(true);
-    }
-};
-
-/// Xmlrpc++ method to turn off the transmitter high voltage.
-class XmitHvOffMethod : public XmlRpcServerMethod {
-public:
-    XmitHvOffMethod() : XmlRpcServerMethod("xmitHvOff") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitHvOff' command";
-        HcrPmc730::setXmitterHvOn(false);
-    }
-};
-
-/// Xmlrpc++ method to set HMC mode.
-class SetHmcModeMethod : public XmlRpcServerMethod {
-public:
-    SetHmcModeMethod() : XmlRpcServerMethod("setHmcMode") {}
-    void execute(XmlRpcValue & args, XmlRpcValue & retvalP) {
-        int iMode = int(args[0]);
-        HcrPmc730::HmcOperationMode mode = static_cast<HcrPmc730::HmcOperationMode>(int(iMode));
-        ILOG << "Received 'setHmcMode(" << iMode << ")' command";
-        HcrPmc730::setHmcOperationMode(mode);
-    }
-};
-
 ///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
@@ -295,17 +247,6 @@ main(int argc, char** argv)
         exit(1);
     }
     
-    // Make sure our KaPmc730 is created in simulation mode if requested
-    HcrPmc730::doSimulate(hcrConfig.simulate_pmc730());
-    
-    // Just refer to theHcrPmc730() to instantiate the singleton.
-    HcrPmc730::theHcrPmc730();
-    
-    // Initialize output lines.
-    HcrPmc730::setXmitterFilamentOn(false);
-    HcrPmc730::setXmitterHvOn(false);
-    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_CORNER_REFLECTOR_CAL);
-
     // set to ignore SIGPIPE errors which occur when sockets
     // are broken between client and server
     signal(SIGPIPE, SIG_IGN);
@@ -319,11 +260,6 @@ main(int argc, char** argv)
     // Initialize our RPC server on port 8081
     XmlRpc::XmlRpcServer rpcServer;
     rpcServer.addMethod(new GetStatusMethod());
-    rpcServer.addMethod(new XmitFilamentOnMethod());
-    rpcServer.addMethod(new XmitFilamentOffMethod());
-    rpcServer.addMethod(new XmitHvOnMethod());
-    rpcServer.addMethod(new XmitHvOffMethod());
-    rpcServer.addMethod(new SetHmcModeMethod());
     if (! rpcServer.bindAndListen(8081)) {
         ELOG << "Failed to initialize XmlRpcServer!";
         exit(1);
@@ -346,7 +282,8 @@ main(int argc, char** argv)
     }
     
     // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(sd3c, _xmitdHost, _xmitdPort);
+    _hcrMonitor = new HcrMonitor(sd3c, _pmc730dHost, _pmc730dPort,
+            _xmitdHost, _xmitdPort);
     _hcrMonitor->start();
 
     // create the export object
@@ -466,7 +403,7 @@ main(int argc, char** argv)
         }
         std::cout << std::endl;
 
-        DrxStatus status = _hcrMonitor->drxStatus();
+        HcrPmc730Status status = _hcrMonitor->pmc730Status();
 //        std::cout << "detectedRfPower: " << status.detectedRfPower() << std::endl;
         std::cout << "pvForePressure: " << status.pvForePressure() << std::endl;
 //        std::cout << "pvAftPressure: " << status.pvAftPressure() << std::endl;

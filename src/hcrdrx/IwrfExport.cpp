@@ -665,60 +665,117 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
-  const DrxStatus drxStatus = _monitor.drxStatus();
+  // Start with status from the PMC-730 card
+  const HcrPmc730Status pmc730Status = _monitor.pmc730Status();
 
   // floats
 
   xml += TaXml::writeDouble
-    ("DetectedRfPower", 2, drxStatus.detectedRfPower());
+    ("DetectedRfPower", 2, pmc730Status.detectedRfPower());
 
   xml += TaXml::writeDouble
-    ("PvForePressure", 2, drxStatus.pvForePressure());
+    ("PvForePressure", 2, pmc730Status.pvForePressure());
 
   xml += TaXml::writeDouble
-    ("PvAftPressure", 2, drxStatus.pvAftPressure());
+    ("PvAftPressure", 2, pmc730Status.pvAftPressure());
 
   xml += TaXml::writeDouble
-    ("PloTemp", 2, drxStatus.ploTemp());
+    ("PloTemp", 2, pmc730Status.ploTemp());
 
   xml += TaXml::writeDouble
-    ("EikTemp", 2, drxStatus.eikTemp());
+    ("EikTemp", 2, pmc730Status.eikTemp());
 
   xml += TaXml::writeDouble
-    ("VLnaTemp", 2, drxStatus.vLnaTemp());
+    ("VLnaTemp", 2, pmc730Status.vLnaTemp());
 
   xml += TaXml::writeDouble
-    ("HLnaTemp", 2, drxStatus.hLnaTemp());
+    ("HLnaTemp", 2, pmc730Status.hLnaTemp());
 
   xml += TaXml::writeDouble
-    ("PolarizationSwitchTemp", 2, drxStatus.polarizationSwitchTemp());
+    ("PolarizationSwitchTemp", 2, pmc730Status.polarizationSwitchTemp());
 
   xml += TaXml::writeDouble
-    ("RfDetectorTemp", 2, drxStatus.rfDetectorTemp());
+    ("RfDetectorTemp", 2, pmc730Status.rfDetectorTemp());
 
   xml += TaXml::writeDouble
-    ("NoiseSourceTemp", 2, drxStatus.noiseSourceTemp());
+    ("NoiseSourceTemp", 2, pmc730Status.noiseSourceTemp());
 
   xml += TaXml::writeDouble
-    ("Ps28VTemp", 2, drxStatus.ps28VTemp());
+    ("Ps28VTemp", 2, pmc730Status.ps28VTemp());
 
   xml += TaXml::writeDouble
-    ("RdsInDuctTemp", 2, drxStatus.rdsInDuctTemp());
+    ("RdsInDuctTemp", 2, pmc730Status.rdsInDuctTemp());
 
   xml += TaXml::writeDouble
-    ("RotationMotorTemp", 2, drxStatus.rotationMotorTemp());
+    ("RotationMotorTemp", 2, pmc730Status.rotationMotorTemp());
 
   xml += TaXml::writeDouble
-    ("TiltMotorTemp", 2, drxStatus.tiltMotorTemp());
+    ("TiltMotorTemp", 2, pmc730Status.tiltMotorTemp());
 
   xml += TaXml::writeDouble
-    ("CmigitsTemp", 2, drxStatus.cmigitsTemp());
+    ("CmigitsTemp", 2, pmc730Status.cmigitsTemp());
 
   xml += TaXml::writeDouble
-    ("TailconeTemp", 2, drxStatus.tailconeTemp());
+    ("TailconeTemp", 2, pmc730Status.tailconeTemp());
 
   xml += TaXml::writeDouble
-    ("PsVoltage", 2, drxStatus.psVoltage());
+    ("PsVoltage", 2, pmc730Status.psVoltage());
+
+  // booleans
+
+  xml += TaXml::writeBoolean
+    ("NoiseSourceSelected", 2, pmc730Status.noiseSourceSelected());
+
+  xml += TaXml::writeBoolean
+    ("TerminationSelected", 2, pmc730Status.terminationSelected());
+
+  xml += TaXml::writeBoolean
+    ("Locked15_5GHzPLO", 2, pmc730Status.locked15_5GHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("Locked1250MHzPLO", 2, pmc730Status.locked1250MHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("Locked125MHzPLO", 2, pmc730Status.locked125MHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("ModPulseDisabled", 2, pmc730Status.modPulseDisabled());
+  
+  xml += TaXml::writeBoolean
+    ("RdsXmitterFilamentOn", 2, pmc730Status.rdsXmitterFilamentOn());
+
+  xml += TaXml::writeBoolean
+    ("RdsXmitterHvOn", 2, pmc730Status.rdsXmitterHvOn());
+
+  xml += TaXml::writeBoolean
+    ("RadarPowerError", 2, pmc730Status.radarPowerError());
+  
+  xml += TaXml::writeInt
+    ("EmsErrorCount", 2, pmc730Status.emsErrorCount());
+
+  xml += TaXml::writeBoolean
+    ("EmsError1", 2, pmc730Status.emsError1());
+
+  xml += TaXml::writeBoolean
+    ("EmsError2", 2, pmc730Status.emsError2());
+
+  xml += TaXml::writeBoolean
+    ("EmsError3", 2, pmc730Status.emsError3());
+
+  xml += TaXml::writeBoolean
+    ("EmsError4Or5", 2, pmc730Status.emsError4Or5());
+
+  xml += TaXml::writeBoolean
+    ("EmsError16Or7", 2, pmc730Status.emsError6Or7());
+
+  xml += TaXml::writeBoolean
+    ("EmsPowerError", 2, pmc730Status.emsPowerError());
+
+  xml += TaXml::writeBoolean
+    ("WaveguideSwitchError", 2, pmc730Status.waveguideSwitchError());
+
+  // Status from hcrdrx
+  const DrxStatus drxStatus = _monitor.drxStatus();
 
   xml += TaXml::writeDouble
     ("PentekFpgaTemp", 2, drxStatus.pentekFpgaTemp());
@@ -726,58 +783,8 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeDouble
     ("PentekBoardTemp", 2, drxStatus.pentekBoardTemp());
 
-  // booleans
-
-  xml += TaXml::writeBoolean
-    ("NoiseSourceSelected", 2, drxStatus.noiseSourceSelected());
-
-  xml += TaXml::writeBoolean
-    ("TerminationSelected", 2, drxStatus.terminationSelected());
-
-  xml += TaXml::writeBoolean
-    ("Locked15_5GHzPLO", 2, drxStatus.locked15_5GHzPLO());
-
-  xml += TaXml::writeBoolean
-    ("Locked1250MHzPLO", 2, drxStatus.locked1250MHzPLO());
-
-  xml += TaXml::writeBoolean
-    ("Locked125MHzPLO", 2, drxStatus.locked125MHzPLO());
-
-  xml += TaXml::writeBoolean
-    ("ModPulseDisabled", 2, drxStatus.modPulseDisabled());
-  
-  xml += TaXml::writeBoolean
-    ("RdsXmitterFilamentOn", 2, drxStatus.rdsXmitterFilamentOn());
-
-  xml += TaXml::writeBoolean
-    ("RdsXmitterHvOn", 2, drxStatus.rdsXmitterHvOn());
-
-  xml += TaXml::writeBoolean
-    ("RadarPowerError", 2, drxStatus.radarPowerError());
-  
-  xml += TaXml::writeInt
-    ("EmsErrorCount", 2, drxStatus.emsErrorCount());
-
-  xml += TaXml::writeBoolean
-    ("EmsError1", 2, drxStatus.emsError1());
-
-  xml += TaXml::writeBoolean
-    ("EmsError2", 2, drxStatus.emsError2());
-
-  xml += TaXml::writeBoolean
-    ("EmsError3", 2, drxStatus.emsError3());
-
-  xml += TaXml::writeBoolean
-    ("EmsError4Or5", 2, drxStatus.emsError4Or5());
-
-  xml += TaXml::writeBoolean
-    ("EmsError16Or7", 2, drxStatus.emsError6Or7());
-
-  xml += TaXml::writeBoolean
-    ("EmsPowerError", 2, drxStatus.emsPowerError());
-
-  xml += TaXml::writeBoolean
-    ("WaveguideSwitchError", 2, drxStatus.waveguideSwitchError());
+  // Next is data from the C-MIGITS
+  const CmigitsStatus cmigitsStatus = _monitor.cmigitsStatus();
 
   // C-MIGITS status info (latest 3500 message from C-MIGITS)
   double statusTime = 0.0;      // seconds since 1970-01-01 00:00:00 UTC
@@ -794,7 +801,7 @@ string IwrfExport::_assembleStatusXml()
   float expectedVPosError = 0.0;      // m
   float expectedVelocityError = 0.0;  // m/s
 
-  drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable, gpsAvailable, 
+  cmigitsStatus.msg3500Data(statusTime, currentMode, insAvailable, gpsAvailable,
           doingCoarseAlignment, nSats, positionFOM, velocityFOM, headingFOM, 
           timeFOM, expectedHPosError, expectedVPosError, expectedVelocityError);
 
@@ -820,7 +827,7 @@ string IwrfExport::_assembleStatusXml()
   float velEast = 0.0;          // m/s
   float velUp = 0.0;            // m/s
 
-  drxStatus.cmigitsNavSolution(navSolutionTime, latitude, longitude, altitude, 
+  cmigitsStatus.msg3501Data(navSolutionTime, latitude, longitude, altitude,
           velNorth, velEast, velUp);
 
   xml += TaXml::writeUtime("Cmigits3501Time", 2, time_t(navSolutionTime));
@@ -837,7 +844,7 @@ string IwrfExport::_assembleStatusXml()
   float roll = 0.0;             // deg
   float heading = 0.0;          // deg clockwise from true north
   
-  drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
+  cmigitsStatus.msg3512Data(attitudeTime, pitch, roll, heading);
 
   xml += TaXml::writeUtime("Cmigits3512Time", 2, time_t(attitudeTime));
   xml += TaXml::writeDouble("Cmigits3512Pitch", 2, pitch);

@@ -1,12 +1,12 @@
 # -*- python -*-
 
 tools = Split("""
+hcrpmc730client
 boost_date_time
 boost_program_options
-cmigits
+cmigitsdaemonrpcclient
 doxygen
 hcrdrxrpcclient
-hcrpmc730
 logx
 pentek
 qt4
