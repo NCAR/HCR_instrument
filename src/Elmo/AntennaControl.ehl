@@ -46,6 +46,7 @@ function tiltHoming()
 		waitHoming();
 	end
 
+	// Finally, we can begin the generic homing process.
 	homing(10000);
 return
 

@@ -88,6 +88,16 @@ void MotionControl::correctForAttitude()
 
 /////////////////////////////////////////////////////////////////////
 void
+MotionControl::homeDrive()
+{
+    ILOG << "homeDrive";
+    // Set both drives to home position
+    _rotDrive.homeDrive();
+    _tiltDrive.homeDrive();
+}
+
+/////////////////////////////////////////////////////////////////////
+void
 MotionControl::point(float angle)
 {
     ILOG << "Point to " << angle << " deg";
@@ -107,84 +117,10 @@ MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
     ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
             scanRate << " deg/s";
 
-    // time vector for both rotation and tilt
-    float t[] = { 153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 153.85, 250,
-            250,    250,    250,    250,    250,
-            153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 153.85, 153.85,
-            153.85, 153.85, 153.85, 250,    250,
-            250,    250,    250,    250
-    };
-    std::vector<float> time(t, t + sizeof(t) / sizeof(*t));
-
-    // Build up PVT table for rotation drive
-    std::vector<float> rotPos;
-    std::vector<float> rotVel;
-    {
-        // position
-        float p[] = { 167560, 172690, 177820, 182950, 188070,
-                193200, 198330, 203450, 208580, 213700,
-                218820, 223950, 229070, 234190, 238820,
-                241590, 242520, 241590, 238820, 234190,
-                229440, 224680, 219920, 215160, 210410,
-                205650, 200890, 196130, 191370, 186610,
-                181850, 177080, 172320, 167560, 162920,
-                160140, 159220, 160140, 162920
-        };
-        rotPos = std::vector<float>(p, p + sizeof(p) / sizeof(*p));
-        // velocity
-        float v[] = {  33333,   33333,    33333,  33333,  33333,
-                33333,   33333,    33333,  33333,  33333,
-                33333,   33333,    33333,  33333,  25000,
-                8333.3, -8333.3, -25000, -33333, -33333,
-                -33333,  -33333,   -33333, -33333, -33333,
-                -33333,  -33333,   -33333, -33333, -33333,
-                -33333,  -33333,   -33333, -33333, -25000,
-                -8333.3,  8333.3,  25000,  33333
-        };
-        rotVel = std::vector<float>(v, v + sizeof(v) / sizeof(*v));
-    }
-
-    // Build up PVT table for tilt drive
-    std::vector<float> tiltPos;
-    std::vector<float> tiltVel;
-    {
-        float p[] = { -189.64,  -180.03,  -169.25,  -157.37,   -144.48,
-                -130.64,  -115.96,  -100.53,   -84.448,   -67.819,
-                -50.751,  -33.355,  -15.743,    1.9716,   17.956,
-                27.506,   30.679,   27.506,   17.956,     1.9716,
-                -14.479,  -30.849,  -47.047,  -62.983,   -78.566,
-                -93.711, -108.33,  -122.35,  -135.68,   -148.26,
-                -160.01,  -170.86,  -180.76,  -189.64,   -197.27,
-                -201.34,  -202.62,  -201.34,  -197.27
-        };
-        tiltPos = std::vector<float>(p, p + sizeof(p) / sizeof(*p));
-        float v[] = {    0,       62.486,    70.074,   77.205,   83.835,
-                89.92,    95.421,   100.3,    104.53,   108.09,
-                110.94,   113.08,    114.48,   115.14,    63.937,
-                38.202,   12.691,   -12.691,  -38.202,  -63.937,
-                -106.93,  -106.41,   -105.29,  -103.58,  -101.29,
-                -98.443,  -95.042,   -91.11,   -86.668,  -81.741,
-                -76.356,  -70.544,   -64.335,  -35.548,  -30.495,
-                -16.304,   -5.0954,    5.0954,  16.304
-        };
-        tiltVel = std::vector<float>(v, v + sizeof(v) / sizeof(*v));
-    }
-
-    //	_rotDrive.initScan(rotPos, rotVel, time);
-    //	_tiltDrive.initScan(tiltPos, tiltVel, time);
     _rotDrive.initScan(ccwLimit, cwLimit, scanRate);
-    //	for (int i = 0; i < 40; i++) {
-    //		_rotDrive.setPVT(int(posR[i]), int(velR[i]), int(tm[i]), i+1);
-    //		_tiltDrive.setPVT(int(posT[i]), int(velT[i]), int(tm[i]), i+1);
-    //	}
 
     // Set up for antenna scanning
     _antennaMode = SCANNING;
-    //	_rotDrive.scan(40);
-    //	_tiltDrive.scan(40);
     _rotDrive.scan();
     _tiltDrive.scan();
 }
@@ -273,11 +209,17 @@ MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status() :
     rotDriveResponding(false),
+    rotDriveInitialized(false),
+    rotDriveHomed(false),
     rotDriveStatusReg(0),
     rotDriveTemp(0),
+    rotDriveAngle(0.0),
     tiltDriveResponding(false),
+    tiltDriveInitialized(false),
+    tiltDriveHomed(false),
     tiltDriveStatusReg(0),
     tiltDriveTemp(0),
+    tiltDriveAngle(0.0),
     antennaMode(POINTING),
     fixedPointingAngle(0.0),
     scanCcwLimit(0.0),
@@ -288,11 +230,17 @@ MotionControl::Status::Status() :
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status(const MotionControl & mc) :
     rotDriveResponding(mc.rotationDrive().driveResponding()),
+    rotDriveInitialized(mc.rotationDrive().driveInitialized()),
+    rotDriveHomed(mc.rotationDrive().driveHomed()),
     rotDriveStatusReg(mc.rotationDrive().driveStatusRegister()),
     rotDriveTemp(mc.rotationDrive().driveTemperature()),
+    rotDriveAngle(mc.rotationDrive().angle()),
     tiltDriveResponding(mc.tiltDrive().driveResponding()),
+    tiltDriveInitialized(mc.tiltDrive().driveInitialized()),
+    tiltDriveHomed(mc.tiltDrive().driveHomed()),
     tiltDriveStatusReg(mc.tiltDrive().driveStatusRegister()),
     tiltDriveTemp(mc.tiltDrive().driveTemperature()),
+    tiltDriveAngle(mc.tiltDrive().angle()),
     antennaMode(mc.antennaMode()),
     fixedPointingAngle(mc.fixedPointingAngle()),
     attitudeCorrectionEnabled(mc.attitudeCorrectionEnabled()) {
@@ -300,8 +248,12 @@ MotionControl::Status::Status(const MotionControl & mc) :
     // parameters
     mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate);
     DLOG << "rotDriveResponding: " << rotDriveResponding;
+    DLOG << "rotDriveInitialized: " << rotDriveInitialized;
+    DLOG << "rotDriveHomed: " << rotDriveHomed;
     DLOG << "rotDriveTemp: " << rotDriveTemp;
     DLOG << "tiltDriveResponding: " << tiltDriveResponding;
+    DLOG << "tiltDriveInitialized: " << tiltDriveInitialized;
+    DLOG << "tiltDriveHomed: " << tiltDriveHomed;
     DLOG << "tiltDriveTemp: " << tiltDriveTemp;
 }
 
@@ -312,11 +264,17 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     std::map<std::string, xmlrpc_c::value> statusMap =
             static_cast<std::map<std::string, xmlrpc_c::value> >(statusDict);
     rotDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveResponding"]);
+    rotDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveInitialized"]);
+    rotDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveHomed"]);
     rotDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveStatusReg"]);
     rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
+    rotDriveAngle = static_cast<xmlrpc_c::value_double>(statusMap["rotDriveAngle"]);
     tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
+    tiltDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInitialized"]);
+    tiltDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveHomed"]);
     tiltDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveStatusReg"]);
     tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
+    tiltDriveAngle = static_cast<xmlrpc_c::value_double>(statusMap["tiltDriveAngle"]);
     antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
     fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
     scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
@@ -336,11 +294,17 @@ MotionControl::Status::to_value_struct() const {
     // xmlrpc_c::value.
     std::map<std::string, xmlrpc_c::value> dict;
     dict["rotDriveResponding"] = xmlrpc_c::value_boolean(rotDriveResponding);
+    dict["rotDriveInitialized"] = xmlrpc_c::value_boolean(rotDriveInitialized);
+    dict["rotDriveHomed"] = xmlrpc_c::value_boolean(rotDriveHomed);
     dict["rotDriveStatusReg"] = xmlrpc_c::value_int(rotDriveStatusReg);
     dict["rotDriveTemp"] = xmlrpc_c::value_int(rotDriveTemp);
+    dict["rotDriveAngle"] = xmlrpc_c::value_double(rotDriveAngle);
     dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
+    dict["tiltDriveInitialized"] = xmlrpc_c::value_boolean(tiltDriveInitialized);
+    dict["tiltDriveHomed"] = xmlrpc_c::value_boolean(tiltDriveHomed);
     dict["tiltDriveStatusReg"] = xmlrpc_c::value_int(tiltDriveStatusReg);
     dict["tiltDriveTemp"] = xmlrpc_c::value_int(tiltDriveTemp);
+    dict["tiltDriveAngle"] = xmlrpc_c::value_double(tiltDriveAngle);
     dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
     dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
     dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);

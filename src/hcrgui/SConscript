@@ -2,6 +2,7 @@
 
 hcrguiTools = Split("""
 hcrpmc730client
+cmigits
 cmigitsdaemonrpcclient
 doxygen
 hcrdrxrpcclient

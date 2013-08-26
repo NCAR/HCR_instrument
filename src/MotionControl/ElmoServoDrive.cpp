@@ -149,76 +149,6 @@ ElmoServoDrive::moveTo(float angle) {
     _execElmoCmd("BG");
 }
 
-//void
-//ElmoServoDrive::setPVT(int p, int v, int t, int n) {
-//    // Don't bother if the drive is not responding
-//    if (! _driveResponding) {
-//        return;
-//    }
-//
-//    std::ostringstream cmdstream;
-//    // Set position
-//    cmdstream << "QP[" << n << "]=" << p;
-//    _execElmoCmd(cmdstream.str());
-//    // Set velocity
-//    cmdstream.str("");
-//    cmdstream << "QV[" << n << "]=" << v;
-//    _execElmoCmd(cmdstream.str());
-//    // Set time
-//    cmdstream.str("");
-//    cmdstream << "QT[" << n << "]=" << t;
-//    _execElmoCmd(cmdstream.str());
-//}
-
-void
-ElmoServoDrive::initScan(std::vector<float> p, std::vector<float> v,
-        std::vector<float> t) {
-    // Don't bother if the drive is not responding, is not initialized,
-    // or we don't have drive parameters yet.
-    if (! _driveResponding || ! _driveInitialized || ! _driveHomed || ! _driveParamsGood()) {
-        return;
-    }
-
-    uint32_t nScanPts = p.size();
-    if (v.size() != nScanPts || t.size() != nScanPts) {
-        ELOG << "In initScan(), size of p, v, and t arrays are not all the same!";
-        exit(1);
-    }
-
-    // Stop the drive before we mess with the scan table
-    _execElmoCmd("MO=0");
-    // Allow a bit of time (250 ms) for the motor to stop
-    usleep(250000);
-
-    std::ostringstream cmdstream;
-
-    for (uint32_t i = 0; i < nScanPts; i++) {
-
-        // Set position point
-        cmdstream.str("");
-        cmdstream << "QP[" << i + 1 << "]=" << int(p[i]);
-        _execElmoCmd(cmdstream.str());
-
-        // Set velocity
-        cmdstream.str("");
-        cmdstream << "QV[" << i + 1 << "]=" << int(v[i]);
-        _execElmoCmd(cmdstream.str());
-
-        // Set time
-        cmdstream.str("");
-        cmdstream << "QT[" << i + 1 << "]=" << int(t[i]);
-        _execElmoCmd(cmdstream.str());
-    }
-    // Set PT motion parameters
-    _execElmoCmd("MP[1]=1");
-
-    cmdstream.str("");
-    cmdstream << "MP[2]=" << nScanPts;
-    _execElmoCmd(cmdstream.str());
-
-    _execElmoCmd("MP[3]=1");
-}
-
 void
 ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
     std::ostringstream cmdstream;
@@ -480,18 +410,14 @@ ElmoServoDrive::_readReply() {
                     }
                 }
 
-                // Save reply from TM "system time" command
-                if (! cmd.compare("TM")) {
-                    // System time is actually a 32-bit unsigned count, but
-                    // the reply sends it as a signed value. We'll convert
-                    // to unsigned as long as the value parses as an int.
-                    int32_t time = qCmdReply.toInt(&ok);
+                // Save reply from PX "main position" command
+                if (! cmd.compare("PX")) {
+                    // PX is reported in counts in the range [XM[1],XM[2]-1]
+                    int32_t counts = qCmdReply.toInt(&ok);
                     if (ok) {
-                        // Reinterpret the returned value as an *unsigned*
-                        // 32-bit int.
-                        _driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
+                        _angleCounts = counts;
                     } else {
-                        WLOG << _driveName << ": bad TM reply '" <<
+                        WLOG << _driveName << ": bad PX reply '" <<
                                 cmdReply << "'";
                     }
                 }
@@ -610,7 +536,12 @@ ElmoServoDrive::_syncWaitExpired() {
 }
 
 void
-ElmoServoDrive::_homeDrive() {
+ElmoServoDrive::homeDrive() {
+    // If drive is initialized, we can not home it
+    if (!_driveInitialized) {
+        return;
+    }
+
     // Call the drive method for homing based on _driveName
     // @TODO Disable transmitter while homing, since antenna may move anywhere
     // during this process
@@ -639,6 +570,12 @@ ElmoServoDrive::_initDrive() {
 
 void
 ElmoServoDrive::_startXq(std::string function) {
+    // Before executing a drive program, stop any program running on the 
+    // drive and disarm any homing which may be in progress.
+    _execElmoCmd("KL");
+    _execElmoCmd("HM[1]=0");
+    usleep(100000); // sleep 0.1 s
+
     // Clear our XQ error indicator before we begin
     _xqError = false;
 
@@ -699,11 +636,6 @@ ElmoServoDrive::_testForInitCompletion() {
 stop_timer:
     _gpTimer.stop();
     _gpTimer.disconnect(this);
-
-    // If drive is initialized, we can now home it
-    if (_driveInitialized) {
-        _homeDrive();
-    }
 }
 
 void
@@ -830,9 +762,9 @@ ElmoServoDrive::_collectStatus() {
     // Send commands to the drive to get back status values we want. The
     // status values will be parsed out and saved in _readReply when the
     // replies come back.
-    _execElmoCmd("SR", false);        // status register
-    _execElmoCmd("TI[1]", false);    // "temperature indicator 1", drive temperature
-    _execElmoCmd("TM", false);        // system time
+    _execElmoCmd("SR", false);      // status register
+    _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
+    _execElmoCmd("PX", false);      // main position
 }
 
 void

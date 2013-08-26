@@ -13,6 +13,7 @@
 
 #include <QMainWindow>
 #include <QPixmap>
+#include <QPainter>
 #include <QTimer>
 #include <QUdpSocket>
 
@@ -29,11 +30,13 @@
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
+
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
             std::string rdsHost, int pmcPort, int cmigitsPort,
             int motionControlPort);
     virtual ~HcrGuiMainWindow();
+
 private slots:
     void on_cmigitsDetailsButton_clicked();
     void on_cmigitsInitButton_clicked();
@@ -42,6 +45,7 @@ private slots:
     void on_xmitterDetailsButton_clicked();
     void on_hmcModeCombo_activated(int index);
     void on_antennaModeButton_clicked();
+    void on_driveHomeButton_clicked();
     void on_mcDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
@@ -66,6 +70,7 @@ private slots:
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _mcResponsivenessChange(bool responding);
+
 private:
     // Append latest messages from hcr_xmitd to our logging area
     void _appendXmitdLogMsgs();
@@ -100,6 +105,11 @@ private:
      */
     bool _motionControlOk(const MotionControl::Status & mcStatus);
 
+    /// @brief Show rotation angle
+    void _showRotAngle(float rotAngle);
+    /// @brief Show tilt angle
+    void _showTiltAngle(float tiltAngle);
+
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
     CmigitsDetails _cmigitsDetails;
@@ -126,5 +136,8 @@ private:
 
     // socket listening to angle broadcast
     QUdpSocket _angleSocket;
+
+    // time of last GUI update with new angles
+    QDateTime _lastAngleUpdate;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/

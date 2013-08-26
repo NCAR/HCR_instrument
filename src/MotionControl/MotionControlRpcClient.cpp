@@ -34,6 +34,23 @@ MotionControlRpcClient::~MotionControlRpcClient()
 
 /////////////////////////////////////////////////////////////////////
 void
+MotionControlRpcClient::homeDrive() throw (std::exception)
+{
+	ILOG << "homeDrive()";
+	_daemonResponding = true;
+
+	try {
+		xmlrpc_c::value result;
+		_client.call(_daemonUrl, "Home", &result);
+	}
+	catch (std::exception & e) {
+		_daemonResponding = false;
+		WLOG << "XML-RPC error calling Home(): " << e.what();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////
+void
 MotionControlRpcClient::point(float angle) throw (std::exception)
 {
 	ILOG << "point() to " << angle;

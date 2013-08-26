@@ -106,8 +106,8 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal OPS_MODE_730 : std_logic_vector(2 downto 0) := (others => '0');
    signal STATUS_ACK : std_logic := '0';
    signal BIT_EMS : std_logic_vector(7 downto 1) := (others => '0');
-   signal WG_SW_TERM : std_logic := '1';
-   signal WG_SW_NOISE : std_logic := '0';
+   signal WG_SW_TERM : std_logic := '0';
+   signal WG_SW_NOISE : std_logic := '1';
    signal TEST_BIT_0 : std_logic := '0';
    signal TEST_BIT_1 : std_logic := '0';
 
@@ -246,9 +246,8 @@ BEGIN
 	EMS_BIT: process -- Generate EMS BIT response; Ops mode will use previous state for current cycle
 	variable CNT : integer range 0 to 1024;
 	begin
-	   CNT := 0;
-		WG_SW_NOISE <= '0';  -- update switch status
-		WG_SW_TERM <= '1';		
+--		WG_SW_NOISE <= '0';  -- update switch status
+--		WG_SW_TERM <= '1';		
 		wait for 320 ns;  -- 320 ns is max delay measured
 -- Vertical transmit receive both
 		OPS_MODE_730 <= "100";   -- Next cycle ops mode is noise source
@@ -292,18 +291,18 @@ BEGIN
 --		STATUS_ACK <= '0';
 --		
 
--- Loop for 100 PRTs (~100 milliseconds to allow waveguide switch to switch
+-- Loop for 1000 PRTs (~100 milliseconds to allow waveguide switch to switch
 		CNT := 0;
 		while (CNT <= 1000) loop
 		wait for 320 ns;  -- 320 ns is max delay measured
 -- 	Noise source cal
 			if (CNT = 988) then
-				WG_SW_NOISE <= '1';  -- update switch status
-				WG_SW_TERM <= '0';
-			elsif (CNT = 1000) then
-				OPS_MODE_730 <= "101";  -- next ops mode is Corner reflector cal, vertical tx w/reduced power on receive
-				WG_SW_NOISE <= '0';  -- update switch status; return to normal status for testing should take another 100 milliseconds
-				WG_SW_TERM <= '1';				
+				WG_SW_NOISE <= '0';  -- update switch status
+				WG_SW_TERM <= '1';
+--			elsif (CNT = 1000) then
+----				OPS_MODE_730 <= "101";  -- next ops mode is Corner reflector cal, vertical tx w/reduced power on receive
+--				WG_SW_NOISE <= '0';  -- update switch status;
+--				WG_SW_TERM <= '1';
 			else
 				OPS_MODE_730 <= "100"; -- keep in Noise source cal mode
 			end if;
@@ -316,9 +315,26 @@ BEGIN
 		STATUS_ACK <= '0';
 			CNT := CNT + 1;
 		end loop;
+-- Loop for 125 PRTs (~100 milliseconds to allow waveguide switch to switch
+	CNT := 0;
+	while (CNT < 125) loop
+		wait for 320 ns;  -- 320 ns is max delay measured
+		if (CNT = 123) then
+				WG_SW_NOISE <= '1';  -- update switch status;
+				WG_SW_TERM <= '0';
+		end if;
+-- Vertical Tx, simultaneous receive	
+		OPS_MODE_730 <= "101"; -- Next ops mode is corner reflector cal, vertical tx
+		BIT_EMS <= "0101110";
+		wait for 1168 ns;
+		BIT_EMS <= "1010011";
+		wait for 99788 ns;
+		STATUS_ACK <= '1';  -- clear status every PRT for testing
+		wait for 100 ns;
+		STATUS_ACK <= '0';
 		
-		wait for 320 ns;  -- 320 ns is max delay measured		
 -- Corner reflector cal, vertical tx w/reduced power on receive
+		wait for 320 ns;  -- 320 ns is max delay measured		
 		OPS_MODE_730 <= "110"; -- Next ops mode is Test Mode, no tx
 		BIT_EMS <= "0101110";
 		wait for 1168 ns;
@@ -387,7 +403,9 @@ BEGIN
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
-			STATUS_ACK <= '0';				
+			STATUS_ACK <= '0';
+		CNT := CNT + 1;
+	end loop;			
 	end process;  
 END;
 

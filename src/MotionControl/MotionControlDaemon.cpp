@@ -9,6 +9,7 @@
 #include <iostream>
 #include <QtGui>
 #include "svnInfo.h"
+#include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
 #include <xmlrpc-c/base.hpp>
@@ -22,10 +23,13 @@ LOGGING("MotionControlDaemon")
 quint16 ServerPort = 8080;
 
 // QApplication instance
-QApplication * App = 0;
+QCoreApplication * App = 0;
 
 // MotionControl instance
 MotionControl * Control = 0;
+
+// PMU application instance name
+std::string PmuInstance = "ops";   ///< application instance
 
 // Set to true when it's time to terminate
 bool Terminate = false;
@@ -34,8 +38,8 @@ bool Terminate = false;
 // Shutdown handler for for SIGINT and SIGTERM signals.
 void
 shutdownHandler(int signal) {
-	ILOG << "Shutting down!";
-	Terminate = true;
+    ILOG << "Shutting down!";
+    Terminate = true;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -53,11 +57,11 @@ alarmHandler(int signal) {
 // xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
 void
 startXmlrpcWorkAlarm() {
-//    const struct timeval tv = { 0, 500000 }; // 0.5s (2Hz)
-//    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
+    //    const struct timeval tv = { 0, 500000 }; // 0.5s (2Hz)
+    //    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
     const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
-//    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
-//    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
+    //    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
+    //    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
@@ -67,123 +71,150 @@ startXmlrpcWorkAlarm() {
 // while our server is actually processing an XML-RPC command.
 void
 stopXmlrpcWorkAlarm() {
-	// Stop the periodic timer.
+    // Stop the periodic timer.
     const struct timeval tv = { 0, 0 }; // zero time stops the timer
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
 
 /////////////////////////////////////////////////////////////////////
-class DrivePointMethod : public xmlrpc_c::method
+class DriveHomeMethod : public xmlrpc_c::method
 {
 public:
-	DrivePointMethod() {
-		// The method has integer result and double argument
-		this->_signature = "i:d";
-		this->_help = "This method takes drive point angle from client";
-	}
+    DriveHomeMethod() {
+        // The method has integer result and no argument
+        this->_signature = "i:";
+        this->_help = "This method takes drive to home position";
+    }
 
-	void
-	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
-	{
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-		double const angle(paramList.getDouble(0));
-		paramList.verifyEnd(1);
+        paramList.verifyEnd(0);
 
-		Control->point(angle);
+        Control->homeDrive();
 
-		*retvalP = xmlrpc_c::value_int(0);
+        *retvalP = xmlrpc_c::value_int(0);
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
-	}
+    }
+};
+
+/////////////////////////////////////////////////////////////////////
+class DrivePointMethod : public xmlrpc_c::method
+{
+public:
+    DrivePointMethod() {
+        // The method has integer result and double argument
+        this->_signature = "i:d";
+        this->_help = "This method takes drive point angle from client";
+    }
+
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+        double const angle(paramList.getDouble(0));
+        paramList.verifyEnd(1);
+
+        Control->point(angle);
+
+        *retvalP = xmlrpc_c::value_int(0);
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+    }
 };
 
 /////////////////////////////////////////////////////////////////////
 class DriveScanMethod : public xmlrpc_c::method
 {
 public:
-	DriveScanMethod() {
-		// The method has integer result and double arguments
-		this->_signature = "i:ddd";
-		this->_help = "This method takes drive scan between given limits, "
-				      "at the given scan rate";
-	}
+    DriveScanMethod() {
+        // The method has integer result and double arguments
+        this->_signature = "i:ddd";
+        this->_help = "This method takes drive scan between given limits, "
+                "at the given scan rate";
+    }
 
-	void
-	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
-	{
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-		double const ccwLimit(paramList.getDouble(0));
-		double const cwLimit(paramList.getDouble(1));
-		double const scanRate(paramList.getDouble(2));
-		paramList.verifyEnd(3);
+        double const ccwLimit(paramList.getDouble(0));
+        double const cwLimit(paramList.getDouble(1));
+        double const scanRate(paramList.getDouble(2));
+        paramList.verifyEnd(3);
 
-		Control->scan(ccwLimit, cwLimit, scanRate);
+        Control->scan(ccwLimit, cwLimit, scanRate);
 
-		*retvalP = xmlrpc_c::value_int(0);
+        *retvalP = xmlrpc_c::value_int(0);
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
-	}
+    }
 };
 
 /////////////////////////////////////////////////////////////////////
 class StatusMethod : public xmlrpc_c::method
 {
 public:
-	StatusMethod() {
-		// The method takes no arguments, and returns a struct
-		this->_signature = "S:";
-		this->_help = "This method returns servo drive status";
-	}
+    StatusMethod() {
+        // The method takes no arguments, and returns a struct
+        this->_signature = "S:";
+        this->_help = "This method returns servo drive status";
+    }
 
-	void
-	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
-	{
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-		paramList.verifyEnd(0);
+        paramList.verifyEnd(0);
 
-		// Get current status of our MotionControl, pack it into an
-		// xmlrpc_c::value_struct, and return the struct.
-		xmlrpc_c::value_struct dict = Control->status().to_value_struct();
-		*retvalP = dict;
+        // Get current status of our MotionControl, pack it into an
+        // xmlrpc_c::value_struct, and return the struct.
+        xmlrpc_c::value_struct dict = Control->status().to_value_struct();
+        *retvalP = dict;
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
-	}
+    }
 };
 
 /////////////////////////////////////////////////////////////////////
 class SetCorrectionEnabledMethod : public xmlrpc_c::method
 {
 public:
-	SetCorrectionEnabledMethod() {
-		// The method takes a boolean argument, and returns nil
-		this->_signature = "n:b";
-		this->_help = "This method enables/disables attitude correction";
-	}
+    SetCorrectionEnabledMethod() {
+        // The method takes a boolean argument, and returns nil
+        this->_signature = "n:b";
+        this->_help = "This method enables/disables attitude correction";
+    }
 
-	void
-	execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
-	{
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-		bool const enabled(paramList.getBoolean(0));
-		paramList.verifyEnd(1);
+        bool const enabled(paramList.getBoolean(0));
+        paramList.verifyEnd(1);
 
-		Control->setCorrectionEnabled(enabled);
+        Control->setCorrectionEnabled(enabled);
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
-	}
+    }
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -193,11 +224,18 @@ main(int argc, char** argv)
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
 
-	// Create the Qt application and our drive connection
-	App = new QApplication(argc, argv);
-	Control = new MotionControl();
+    // set up registration with procmap if instance is specified
+    if (PmuInstance.size() > 0) {
+        PMU_auto_init("MotionControlDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
+        ILOG << "will register with procmap, instance: " << PmuInstance;
+    }
+
+    // Create the Qt application and our drive connection
+    App = new QCoreApplication(argc, argv);
+    Control = new MotionControl();
 
     xmlrpc_c::registry myRegistry;
+    myRegistry.addMethod("Home", new DriveHomeMethod);
     myRegistry.addMethod("Point", new DrivePointMethod);
     myRegistry.addMethod("Scan", new DriveScanMethod);
     myRegistry.addMethod("Status", new StatusMethod);
@@ -215,15 +253,17 @@ main(int argc, char** argv)
     startXmlrpcWorkAlarm();
 
     while (true) {
-    	if (Terminate)
-    		break;
+        PMU_auto_register("running");
 
-	    // Waits for the next connection, accepts it, reads the HTTP
-	   	// request, executes the indicated RPC, and closes the connection.
-	   	xmlrpcServer.runOnce();
+        if (Terminate)
+            break;
 
-	   	// update aircraft attitude
-	   	Control->correctForAttitude();
+        // Waits for the next connection, accepts it, reads the HTTP
+        // request, executes the indicated RPC, and closes the connection.
+        xmlrpcServer.runOnce();
+
+        // update aircraft attitude
+        Control->correctForAttitude();
 
         // Process Qt events
         App->processEvents();
@@ -231,5 +271,5 @@ main(int argc, char** argv)
 
     delete(Control);
     delete(App);
-	return 0;
+    return 0;
 }
