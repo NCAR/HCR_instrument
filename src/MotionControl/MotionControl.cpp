@@ -88,12 +88,12 @@ void MotionControl::correctForAttitude()
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::homeDrive()
+MotionControl::homeDrive(int rotHomeCounts, int tiltHomeCounts)
 {
     ILOG << "homeDrive";
     // Set both drives to home position
-    _rotDrive.homeDrive();
-    _tiltDrive.homeDrive();
+    _rotDrive.homeDrive(rotHomeCounts);
+    _tiltDrive.homeDrive(tiltHomeCounts);
 }
 
 /////////////////////////////////////////////////////////////////////

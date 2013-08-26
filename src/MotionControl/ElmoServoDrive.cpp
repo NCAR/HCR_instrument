@@ -536,15 +536,19 @@ ElmoServoDrive::_syncWaitExpired() {
 }
 
 void
-ElmoServoDrive::homeDrive() {
+ElmoServoDrive::homeDrive(int homeCounts) {
     // If drive is initialized, we can not home it
     if (!_driveInitialized) {
         return;
     }
 
-    // Call the drive method for homing based on _driveName
-    // @TODO Disable transmitter while homing, since antenna may move anywhere
-    // during this process
+    // Set UI[1] to the count value we want associated with the home position.
+    std::ostringstream cmdstream;
+    cmdstream << "UI[1]=" << homeCounts;
+    _execElmoCmd(cmdstream.str());
+
+    // Call the drive homing function. The function sets the count value for
+    // the home position to the number it finds in UI[1].
     _startXq(_xqHomingFunction());
 
     // Set up a periodic timer to check whether the program we just started on

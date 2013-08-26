@@ -26,8 +26,11 @@ public:
     /// @brief Destructor
     virtual ~MotionControl();
 
-    /// @brief Set drives to home position
-    void homeDrive();
+    /// @brief Find the home position for each drive, setting the given
+    /// count values at the home locations.
+    /// @param rotHomeCounts the count value to assign at rotation drive's home
+    /// @param tiltHomeCounts the count value to assign at tilt drive's home
+    void homeDrive(int rotHomeCounts, int tiltHomeCounts);
 
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to

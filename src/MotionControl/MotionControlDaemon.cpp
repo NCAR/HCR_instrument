@@ -95,7 +95,7 @@ public:
 
         paramList.verifyEnd(0);
 
-        Control->homeDrive();
+        Control->homeDrive(2200, 1400);
 
         *retvalP = xmlrpc_c::value_int(0);
 

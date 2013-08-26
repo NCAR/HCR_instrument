@@ -42,8 +42,10 @@ public:
     /// The Elmo drives have a 32-bit status register
     typedef int32_t StatusReg;
 
-    /// Tell the drive to find where home is.
-    void homeDrive();
+    /// Tell the drive to find where home is, and assign the given count
+    /// number to that location.
+    /// @param homeCounts the count value to be assigned at the home location
+    void homeDrive(int homeCounts = 0);
 
     /// Move the drive to the given angle (deg)
     /// @param angle the desired drive angle, deg
