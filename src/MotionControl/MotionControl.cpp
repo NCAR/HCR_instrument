@@ -180,6 +180,14 @@ MotionControl::_adjustForAttitude(float & rot, float & tilt, float pitch,
 
     // tilt needs to be divided by 2!
     tilt = RadToDeg(asin(y_a)) / 2;
+
+    // KLUGE: The algorithm above isn't really right. As compensation for now,
+    // just change the sign of the corrected tilt if the desired rotation angle
+    // points downward, i.e., if its cosine is less than zero.
+    if (cosPoint < 0.0) {
+        tilt *= -1;
+    }
+
     // rotation needs to be in the range of 0-360
     rot  = RadToDeg(atan2(x_a, z_a));
     if (rot < 0) rot += 360.0;
