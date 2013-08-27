@@ -301,10 +301,10 @@ HcrDrxConfig::isValid(bool verbose) const {
 
 double
 HcrDrxConfig::range_to_gate0() const {
-//    const double SpeedOfLight = 2.9979245e8; // m/s
-//    double gateSpacing = 0.5 * SpeedOfLight * digitizer_sample_width();
-//    return(digitizer_gate0_delay() - tx_delay() - tx_latency() + 0.5 * gateSpacing);
-	// For now, just return 0.0
-	// @TODO Come up with a better solution. 
-	return(0.0);
+  const double SpeedOfLight = 2.9979245e8; // m/s
+  double gateSpacing = 0.5 * SpeedOfLight * digitizer_sample_width();
+  double rangeToStartGate0 =
+    (digitizer_gate0_delay() - tx_delay() - tx_latency()) * SpeedOfLight * -0.5;
+  double rangeToCenterGate0 = rangeToStartGate0 + gateSpacing * 0.5;
+  return rangeToCenterGate0;
 }
