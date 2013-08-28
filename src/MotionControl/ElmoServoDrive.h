@@ -83,6 +83,9 @@ public:
     /// Get latest sampled drive status register value
     StatusReg driveStatusRegister() const { return _driveStatusRegister; }
 
+    /// Get latest sampled drive system time, in microseconds
+    uint32_t driveSystemTime() const { return _driveSystemTime; }
+
     /// Get latest sampled drive angle, in degrees
     float angle() const {
         if (_driveParamsGood()) {
@@ -363,6 +366,9 @@ private:
 
     /// drive angle, in counts
     int32_t _angleCounts;
+
+    /// drive system time, microseconds
+    uint32_t _driveSystemTime;
 
     /// drive status register
     StatusReg _driveStatusRegister;

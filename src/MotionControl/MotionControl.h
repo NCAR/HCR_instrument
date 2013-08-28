@@ -141,6 +141,8 @@ public:
         int rotDriveTemp;
         /// Rotation angle, deg
         float rotDriveAngle;
+        /// Rotation drive system time (at last status collection)
+        uint32_t rotDriveSystemTime;
         /// Is the tilt drive responding?
         bool tiltDriveResponding;
         /// Is the tilt drive initialized?
@@ -153,6 +155,8 @@ public:
         int tiltDriveTemp;
         /// Tilt angle, deg
         float tiltDriveAngle;
+        /// Rotation drive system time (at last status collection)
+        uint32_t tiltDriveSystemTime;
         /// Antenna motion mode
         AntennaMode antennaMode;
         // Pointing angle for POINTING mode
