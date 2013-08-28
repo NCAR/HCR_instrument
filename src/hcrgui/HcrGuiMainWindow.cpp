@@ -299,14 +299,11 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
 	// finished running, at which point both motors should be at their
 	// "official" zero positions.
 	ILOG << "Waiting for servo drives to complete homing";
-	int testCount = 0;
 	uint32_t lastRotSysTime = _mcStatus.rotDriveSystemTime;
 	uint32_t lastTiltSysTime = _mcStatus.tiltDriveSystemTime;
 	while (true) {
-	    testCount++;
-
-	    // Don't test unless we have new status from both the rot drive and
-	    // the tilt drive.
+	    // Only check for program completion after we have new status from
+	    // both the rotation and tilt drives.
 	    if (_mcStatus.rotDriveSystemTime != lastRotSysTime &&
 	            _mcStatus.tiltDriveSystemTime != lastTiltSysTime) {
 	        ElmoServoDrive::StatusReg rotReg = _mcStatus.rotDriveStatusReg;
