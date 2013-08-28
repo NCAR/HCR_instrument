@@ -272,6 +272,23 @@ public:
     }
 };
 
+/// Xmlrpc++ method to zero the Pentek's position counts for the two reflector
+/// motors.
+class ZeroPentekMotorCountsMethod : public XmlRpcServerMethod {
+public:
+    ZeroPentekMotorCountsMethod() : XmlRpcServerMethod("zeroPentekMotorCounts") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'zeroPentekMotorCounts' command";
+        // We just need to momentarily set the "zero rotation" and "zero tilt"
+        // lines high. Turn 'em on, then turn 'em off.
+        HcrPmc730::setPentekRotationZero(true);
+        HcrPmc730::setPentekTiltZero(true);
+
+        HcrPmc730::setPentekRotationZero(false);
+        HcrPmc730::setPentekTiltZero(false);
+    }
+};
+
 ///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
@@ -302,6 +319,8 @@ main(int argc, char** argv)
     HcrPmc730::theHcrPmc730();
     
     // Initialize output lines.
+    HcrPmc730::setPentekRotationZero(false);
+    HcrPmc730::setPentekTiltZero(false);
     HcrPmc730::setXmitterFilamentOn(false);
     HcrPmc730::setXmitterHvOn(false);
     HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_CORNER_REFLECTOR_CAL);
@@ -324,6 +343,7 @@ main(int argc, char** argv)
     rpcServer.addMethod(new XmitHvOnMethod());
     rpcServer.addMethod(new XmitHvOffMethod());
     rpcServer.addMethod(new SetHmcModeMethod());
+    rpcServer.addMethod(new ZeroPentekMotorCountsMethod());
     if (! rpcServer.bindAndListen(8081)) {
         ELOG << "Failed to initialize XmlRpcServer!";
         exit(1);
