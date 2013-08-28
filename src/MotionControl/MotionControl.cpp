@@ -313,7 +313,7 @@ MotionControl::Status::to_value_struct() const {
     dict["rotDriveAngle"] = xmlrpc_c::value_double(rotDriveAngle);
     // We cannot pack unsigned 32-bit int into XML-RPC, so reinterpret it as
     // signed and push it out that way.
-    int signedTime = *(reinterpret_cast<int *>(&rotDriveSystemTime));
+    int signedTime = *(reinterpret_cast<const int *>(&rotDriveSystemTime));
     dict["rotDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
     dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
     dict["tiltDriveInitialized"] = xmlrpc_c::value_boolean(tiltDriveInitialized);
@@ -323,7 +323,7 @@ MotionControl::Status::to_value_struct() const {
     dict["tiltDriveAngle"] = xmlrpc_c::value_double(tiltDriveAngle);
     // We cannot pack unsigned 32-bit int into XML-RPC, so reinterpret it as
     // signed and push it out that way.
-    signedTime = *(reinterpret_cast<int *>(&tiltDriveSystemTime));
+    signedTime = *(reinterpret_cast<const int *>(&tiltDriveSystemTime));
     dict["tiltDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
     dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
     dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
