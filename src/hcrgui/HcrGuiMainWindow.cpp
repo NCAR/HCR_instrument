@@ -294,6 +294,40 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
 
     // We got confirmation, so set drive to home position
 	_mcClientThread.rpcClient().homeDrive();
+
+	// Wait for Elmo drives to indicate that their homing programs have
+	// finished running, at which point both motors should be at their
+	// "official" zero positions.
+	ILOG << "Waiting for servo drives to complete homing";
+	int testCount = 0;
+	uint32_t lastRotSysTime = _mcStatus.rotDriveSystemTime;
+	uint32_t lastTiltSysTime = _mcStatus.tiltDriveSystemTime;
+	while (true) {
+	    testCount++;
+
+	    // Don't test unless we have new status from both the rot drive and
+	    // the tilt drive.
+	    if (_mcStatus.rotDriveSystemTime != lastRotSysTime &&
+	            _mcStatus.tiltDriveSystemTime != lastTiltSysTime) {
+	        ElmoServoDrive::StatusReg rotReg = _mcStatus.rotDriveStatusReg;
+	        ElmoServoDrive::StatusReg tiltReg = _mcStatus.tiltDriveStatusReg;
+	        if (! ElmoServoDrive::SREG_programRunning(rotReg) &&
+	                ! ElmoServoDrive::SREG_programRunning(tiltReg)) {
+	            break;
+	        }
+	        // Save the times so we can recognize when new status arrives
+	        lastRotSysTime = _mcStatus.rotDriveSystemTime;
+	        lastTiltSysTime = _mcStatus.tiltDriveSystemTime;
+	    }
+
+        // Let other things run for up to 200 ms
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 200);
+	}
+
+	// With the motors both at their zero positions, tell the Pentek to zero
+	// its position counts for both motors.
+	ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
+	_drxStatusThread.rpcClient().zeroPentekMotorCounts();
 }
 
 void
