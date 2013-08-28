@@ -402,7 +402,6 @@ public:
      * zero
      */
     static void setPentekRotationZero(bool state) {
-        ILOG << "Setting Pentek 'zero rotation counts' line to " << state;
         theHcrPmc730().setDioLine(_HCR_DOUT_PENTEK_ZERO_ROT, state ? 1 : 0);
     }
 
@@ -413,7 +412,6 @@ public:
      * zero
      */
     static void setPentekTiltZero(bool state) {
-        ILOG << "Setting Pentek 'zero tilt counts' line to " << state;
         theHcrPmc730().setDioLine(_HCR_DOUT_PENTEK_ZERO_TILT, state ? 1 : 0);
     }
 
