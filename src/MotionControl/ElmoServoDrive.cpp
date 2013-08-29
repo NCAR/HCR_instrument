@@ -557,6 +557,7 @@ ElmoServoDrive::homeDrive(int homeCounts) {
     if (!_driveInitialized) {
         return;
     }
+    _driveHomed = false;
 
     // Set UI[1] to the count value we want associated with the home position.
     std::ostringstream cmdstream;
