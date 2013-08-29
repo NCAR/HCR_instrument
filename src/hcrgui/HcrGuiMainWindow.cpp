@@ -327,6 +327,15 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
 	_drxStatusThread.rpcClient().zeroPentekMotorCounts();
 }
 
+/// Toggle motion control attitude correction
+void
+HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
+    // Toggle the current state of attitude correction
+    bool correction = _mcStatus.attitudeCorrectionEnabled;
+    ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
+    _mcClientThread.rpcClient().setCorrectionEnabled(! correction);
+}
+
 void
 HcrGuiMainWindow::_appendXmitdLogMsgs() {
     unsigned int firstIndex = _nextLogIndex;
@@ -524,6 +533,8 @@ HcrGuiMainWindow::_update() {
 
     if (_mcClientThread.serverIsResponding()) {
         _motionControlDetails.setEnabled(true);
+
+        // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
         case MotionControl::POINTING:
@@ -540,10 +551,20 @@ HcrGuiMainWindow::_update() {
             break;
         }
         _ui.antennaModeLabel->setText(ss.str().c_str());
+
+        // Attitude correction
+        _ui.attitudeCorrectionFrame->setEnabled(true);
+        _ui.attitudeCorrectionIcon->setPixmap(
+                _mcStatus.attitudeCorrectionEnabled ?
+                _greenLED : _greenLED_off);
+
+        // Drive homing
         if (_mcStatus.rotDriveHomed && _mcStatus.tiltDriveHomed) {
-            _ui.driveHomeButton->setEnabled(false);
+            _ui.driveHomeButton->setText("Rehome the Drives");
+            _ui.driveHomeButton->setEnabled(true);
         	_ui.antennaModeButton->setEnabled(true);
         } else {
+            _ui.driveHomeButton->setText("Home the Drives");
             _ui.driveHomeButton->setEnabled(true);
             _ui.antennaModeButton->setEnabled(false);
         }
@@ -551,6 +572,7 @@ HcrGuiMainWindow::_update() {
         _mcStatus = MotionControl::Status();    // go to an empty status
         _motionControlDetails.setEnabled(false);
         _ui.antennaModeLabel->setText("<font color='DarkRed'>MotionControlDaemon not responding</font>");
+        _ui.attitudeCorrectionFrame->setEnabled(false);
         _ui.driveHomeButton->setEnabled(false);
         _ui.antennaModeButton->setEnabled(false);
     }

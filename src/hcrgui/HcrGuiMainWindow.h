@@ -47,6 +47,7 @@ private slots:
     void on_antennaModeButton_clicked();
     void on_driveHomeButton_clicked();
     void on_mcDetailsButton_clicked();
+    void on_attitudeCorrectionButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _drxStatus
     void _update();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
-    <height>605</height>
+    <width>801</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -590,6 +590,9 @@ Display</string>
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <property name="margin">
+                 <number>0</number>
+                </property>
                 <item>
                  <widget class="QLabel" name="mcStatusIcon">
                   <property name="sizePolicy">
@@ -626,6 +629,38 @@ Display</string>
                  <widget class="QPushButton" name="mcDetailsButton">
                   <property name="text">
                    <string>Details...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="attitudeCorrectionFrame">
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="attitudeCorrectionIcon">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="pixmap">
+                   <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="attitudeCorrectionButton">
+                  <property name="text">
+                   <string>Attitude Correction</string>
                   </property>
                  </widget>
                 </item>
