@@ -293,6 +293,7 @@ main(int argc, char** argv)
 
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
+    ILOG << "hcrdrx starting";
 
     // get the configuration parameters from the configuration file
     getConfigParams();
@@ -525,6 +526,8 @@ main(int argc, char** argv)
 
     delete(_sd3c);
     
+    ILOG << "hcrdrx is done";
+
     return(0);
 }
 
