@@ -94,7 +94,7 @@ throw (std::exception)
 
     try {
         xmlrpc_c::value result;
-        _client.call(_daemonUrl, "SetCorrectionEnabled", "b", &result);
+        _client.call(_daemonUrl, "SetCorrectionEnabled", "b", &result, state);
     }
     catch (std::exception & e) {
         _daemonResponding = false;
