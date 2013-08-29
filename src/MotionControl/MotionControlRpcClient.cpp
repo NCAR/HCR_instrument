@@ -85,6 +85,23 @@ throw (std::exception)
 }
 
 /////////////////////////////////////////////////////////////////////
+void
+MotionControlRpcClient::setCorrectionEnabled(bool state)
+throw (std::exception)
+{
+    ILOG << (state ? "enabling" : "disabling") << " attitude correction";
+    _daemonResponding = true;
+
+    try {
+        xmlrpc_c::value result;
+        _client.call(_daemonUrl, "SetCorrectionEnabled", "b", &result);
+    }
+    catch (std::exception & e) {
+        _daemonResponding = false;
+        WLOG << "XML-RPC error calling SetCorrectionEnabled(): " << e.what();
+    }
+}
+/////////////////////////////////////////////////////////////////////
 MotionControl::Status
 MotionControlRpcClient::status()
 throw (std::exception)

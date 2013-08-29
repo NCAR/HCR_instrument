@@ -42,6 +42,11 @@ public:
     /// @throws std::exception if there's a problem in the XML-RPC call.
 	void scan(float ccwLimit, float cwLimit, float scanRate) throw (std::exception);
 
+    /// @brief Set the on/off state of attitude correction
+    /// @param state the desired state for attitude correction
+    /// @throws std::exception if there's a problem in the XML-RPC call.
+    void setCorrectionEnabled(bool state) throw (std::exception);
+
 	/// @brief Get motion control status
 	/// @return a MotionControlStatus object
     /// @throws std::exception if there's a problem in the XML-RPC call.
