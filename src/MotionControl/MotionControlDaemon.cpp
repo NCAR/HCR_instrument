@@ -196,8 +196,8 @@ class SetCorrectionEnabledMethod : public xmlrpc_c::method
 {
 public:
     SetCorrectionEnabledMethod() {
-        // The method takes a boolean argument, and returns nil
-        this->_signature = "n:b";
+        // The method takes a boolean argument, and returns 0 on success
+        this->_signature = "i:b";
         this->_help = "This method enables/disables attitude correction";
     }
 
@@ -211,6 +211,8 @@ public:
         paramList.verifyEnd(1);
 
         Control->setCorrectionEnabled(enabled);
+
+        *retvalP = xmlrpc_c::value_int(0);
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
