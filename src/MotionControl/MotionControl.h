@@ -27,7 +27,10 @@ public:
     virtual ~MotionControl();
 
     /// @brief Find the home position for each drive, setting the given
-    /// count values at the home locations.
+    /// count values at the home locations. Mode is set to point to 0 degrees
+    /// when this method completes, so any previously set scanning/pointing
+    /// mode is overridden. The method returns before homing is
+    /// completed.
     /// @param rotHomeCounts the count value to assign at rotation drive's home
     /// @param tiltHomeCounts the count value to assign at tilt drive's home
     void homeDrive(int rotHomeCounts, int tiltHomeCounts);

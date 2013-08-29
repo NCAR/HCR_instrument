@@ -91,7 +91,11 @@ void
 MotionControl::homeDrive(int rotHomeCounts, int tiltHomeCounts)
 {
     ILOG << "homeDrive";
-    // Set both drives to home position
+    // Change mode to fixed pointing at 0 degrees. The mode will be retained
+    // after this method exits.
+    point(0.0);
+    // Set both drives to find home position. Note that these methods return
+    // before homing is complete.
     _rotDrive.homeDrive(rotHomeCounts);
     _tiltDrive.homeDrive(tiltHomeCounts);
 }
