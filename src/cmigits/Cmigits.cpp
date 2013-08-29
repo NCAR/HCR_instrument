@@ -1171,9 +1171,6 @@ Cmigits::_doCurrentConfigPhase() {
             rotMatrix.rotateAboutX(180.0);
             rotMatrix.rotateAboutY(90.0);
 
-            // Compensate for -0.4 degree roll in C-MIGITS mount in pod nosecone
-            rotMatrix.rotateAboutZ(-0.4);
-
             // When installed on the left wing, the C-MIGITS is rolled 180
             // degrees from the right wing installation.  This means an
             // additional 180 degree rotation about the sensor z axis.
