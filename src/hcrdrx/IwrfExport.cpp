@@ -11,6 +11,7 @@
 #include <toolsa/pmu.h>
 #include <toolsa/uusleep.h>
 #include <toolsa/TaXml.hh>
+#include <toolsa/toolsa_macros.h>
 
 using namespace boost::posix_time;
 using namespace std;
@@ -137,6 +138,15 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   if (_config.prt1() != HcrDrxConfig::UNSET_DOUBLE) {
     _prt1 = _config.prt1();
   }
+
+  /// angle corrections
+
+  _rollCorr = 0.0;
+  _pitchCorr = 0.0;
+  _headingCorr = 0.0;
+  _driftCorr = 0.0;
+  _tiltCorr = 0.0;
+  _rotationCorr = 0.0;
 
   /// simulation of antenna angles
 
@@ -935,21 +945,87 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     _radarGeoref.pitch_deg = pitch;
     _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
     _radarGeoref.roll_deg = roll;
-    _radarGeoref.rotation_angle_deg = 180.0;    // @TODO fixed at nadir for now
-    _radarGeoref.tilt_deg = 0.0;
     _radarGeoref.vert_velocity_mps = velUp;
     _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
+    // TODO - get real angles from drives
+
+    _radarGeoref.drive_angle_1_deg = 88.88; // rotation
+    _radarGeoref.drive_angle_2_deg = 0.888; // tilt
+
+    _radarGeoref.rotation_angle_deg = _radarGeoref.drive_angle_1_deg;
+    _radarGeoref.tilt_deg = 
+      ((_radarGeoref.drive_angle_2_deg * 2.0) * 
+       cos(_radarGeoref.rotation_angle_deg * DEG_TO_RAD));
+    
     int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
     for (int i = 0; i < nUnused; i++) {
       _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
     }
+
+    // compute elevation and azimuth
+
+    _computeRadarAngles();
 
     // Save the time of the latest data we have provided
     _lastCmigits3512Time = time3512;
     return(true);
   }
   return(false);
+}
+
+///////////////////////////////////////////////////////////////////
+// compute the true azimuth, elevation, etc. from platform
+// parameters using Testud's equations with their different
+// definitions of rotation angle, etc.
+//
+// see Wen-Chau Lee's paper
+// "Mapping of the Airborne Doppler Radar Data"
+
+void IwrfExport::_computeRadarAngles()
+  
+{
+  
+  double R = (_radarGeoref.roll_deg + _rollCorr) * DEG_TO_RAD;
+  double P = (_radarGeoref.pitch_deg + _pitchCorr) * DEG_TO_RAD;
+  double H = (_radarGeoref.heading_deg + _headingCorr) * DEG_TO_RAD;
+  double D = (_radarGeoref.drift_angle_deg + _driftCorr) * DEG_TO_RAD;
+  double T = H + D;
+  
+  double sinP = sin(P);
+  double cosP = cos(P);
+  double sinD = sin(D);
+  double cosD = cos(D);
+  
+  double theta_a = 
+    (_radarGeoref.rotation_angle_deg + _rotationCorr) * DEG_TO_RAD;
+  double tau_a =
+    (_radarGeoref.tilt_deg + _tiltCorr) * DEG_TO_RAD;
+  double sin_tau_a = sin(tau_a);
+  double cos_tau_a = cos(tau_a);
+  double sin_theta_rc = sin(theta_a + R); /* roll corrected rotation angle */
+  double cos_theta_rc = cos(theta_a + R); /* roll corrected rotation angle */
+  
+  double xsubt = (cos_theta_rc * sinD * cos_tau_a * sinP
+                  + cosD * sin_theta_rc * cos_tau_a
+                  -sinD * cosP * sin_tau_a);
+  
+  double ysubt = (-cos_theta_rc * cosD * cos_tau_a * sinP
+                  + sinD * sin_theta_rc * cos_tau_a
+                  + cosP * cosD * sin_tau_a);
+  
+  double zsubt = (cosP * cos_tau_a * cos_theta_rc
+                  + sinP * sin_tau_a);
+  
+  _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
+  _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
+  double lambda_t = atan2(xsubt, ysubt);
+  double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
+  double elevationRad = asin(zsubt);
+  
+  _pulseHdr.elevation = elevationRad * RAD_TO_DEG;
+  _pulseHdr.azimuth = azimuthRad * RAD_TO_DEG;
+  
 }
 
 /////////////////////////////////////////////////////////////////////////////
