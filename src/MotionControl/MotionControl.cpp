@@ -128,8 +128,27 @@ MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
 /////////////////////////////////////////////////////////////////////
 void
 MotionControl::setCorrectionEnabled(bool enabled) {
+    // Are we going from attitude correction enabled to disabled?
+    bool turningOff = _attitudeCorrectionEnabled && ! enabled;
+
     ILOG << "Attitude correction has been " << (enabled ? "enabled" : "disabled");
     _attitudeCorrectionEnabled = enabled;
+
+    // If we were correcting and correction was just turned off, make one last
+    // correction back to straight level attitude.
+    if (turningOff) {
+        switch (_antennaMode) {
+        case POINTING:
+            _adjustPointingForAttitude(0.0, 0.0, 0.0);
+            break;
+        case SCANNING:
+            // @TODO: Figure out how to handle this once corrected scanning
+            // is implemented...
+            WLOG << "***Need to implement scan cleanup when attitude correction "
+                "is disabled***";
+            break;
+        }
+    }
 }
 
 /////////////////////////////////////////////////////////////////////
