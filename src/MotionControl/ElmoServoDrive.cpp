@@ -392,7 +392,9 @@ ElmoServoDrive::_readReply() {
                     StatusReg statusRegister = qCmdReply.toInt(&ok);
                     if (ok) {
                         _driveStatusRegister = statusRegister;
-                        gettimeofday(&_lastStatusTime, NULL);
+                        // Assign the time that the SR request was issued to
+                        // the returned value.
+                        _lastSrTime = _srRequestTime;
                     } else {
                         WLOG << _driveName << ": bad SR reply '" <<
                                 cmdReply << "'";
@@ -614,7 +616,7 @@ bool
 ElmoServoDrive::_xqCompleted() {
     // If there is new status since we began XQ and the program is not running
     // on the drive, the XQ is complete.
-    return(timercmp(&_lastStatusTime, &_xqStartTime, >) &&
+    return(timercmp(&_lastSrTime, &_xqStartTime, >) &&
             ! SREG_programRunning(_driveStatusRegister));
 }
 
@@ -783,6 +785,12 @@ ElmoServoDrive::_collectStatus() {
     // Send commands to the drive to get back status values we want. The
     // status values will be parsed out and saved in _readReply when the
     // replies come back.
+
+    // Save the time at which we request SR. This time will be used to
+    // as the time tag for the reply.
+    gettimeofday(&_srRequestTime, NULL);
+
+    // Send the commands for the status values we want
     _execElmoCmd("SR", false);      // status register
     _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
     _execElmoCmd("PX", false);      // main position

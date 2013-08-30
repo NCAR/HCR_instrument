@@ -370,9 +370,15 @@ private:
     /// drive system time, microseconds
     uint32_t _driveSystemTime;
 
+    /// time the last SR command was issued
+    struct timeval _srRequestTime;
+
     /// drive status register
     StatusReg _driveStatusRegister;
-    struct timeval _lastStatusTime;
+
+    /// time of the current _driveStatusRegister (set to the value of
+    /// _srRequestTime when the reply to the SR command is received)
+    struct timeval _lastSrTime;
 
     /// minimum position count
     int _positionMinCnt;
