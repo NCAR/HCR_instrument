@@ -34,17 +34,21 @@ return
 function tiltHoming()
 	MO=0; UM=5;
 	
-	// For the tilt drive, the homing process must begin from the
-	// right limit switch. If we're not at the RLS, move there now.
+	// Move forward a bit if we're currently at the reverse limit switch
 	// (IP bit 11 tells if we're at the RLS)
-	if (! (IP & (1 << 11)))
+	if (IP & (1 << 11))
 		MO=1;
-		// Stop at RLS
-		HM[3]=7; HM[4]=0; HM[5]=2;
-		HM[1]=1;
-		JV=-10000; BG;
-		waitHoming();
+		PR=5000; BG;
+		waitMotion();
 	end
+
+	// Now move backward to and stop by the reverse limit switch before 
+	// beginning the rest of the homing process
+	MO=1;
+	HM[3]=7; HM[4]=0; HM[5]=2;
+	HM[1]=1;
+	JV=-10000; BG;
+	waitHoming();
 
 	// Finally, we can begin the generic homing process.
 	homing(10000);
