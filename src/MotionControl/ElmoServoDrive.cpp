@@ -25,6 +25,7 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _driveResponding(false),
     _driveInitialized(false),
     _driveHomed(false),
+    _homingInProgress(false),
     _waitingForSync(false),
     _replyTimer(),
     _statusTimer(),
@@ -569,6 +570,7 @@ ElmoServoDrive::homeDrive(int homeCounts) {
     // Call the drive homing function. The function sets the count value for
     // the home position to the number it finds in UI[1].
     _startXq(_xqHomingFunction());
+    _homingInProgress = true;
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
@@ -696,6 +698,7 @@ ElmoServoDrive::_testForHomingCompletion() {
     _execElmoCmd("MO=1");
 
 stop_timer:
+    _homingInProgress = false;
     _gpTimer.stop();
     _gpTimer.disconnect(this);
 }

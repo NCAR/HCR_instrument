@@ -96,6 +96,12 @@ public:
     /// @return true iff attitude correction is enabled.
     bool attitudeCorrectionEnabled() const { return(_attitudeCorrectionEnabled); }
 
+    /// @brief Return true iff homing is in progress for either drive.
+    /// @return true iff homing is in progress for either drive.
+    bool homingInProgress() const {
+        return(_rotDrive.homingInProgress() || _tiltDrive.homingInProgress());
+    }
+
     /// @brief Simple class to encapsulate status of a MotionControl object.
     class Status {
     public:

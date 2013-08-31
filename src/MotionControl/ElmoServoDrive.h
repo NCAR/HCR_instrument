@@ -26,7 +26,7 @@ class ElmoServoDrive : public QObject {
     Q_OBJECT
 public:
     /**
-     * Instantiate a connection to an Elmo servo drive on the named serial
+     * @brief Instantiate a connection to an Elmo servo drive on the named serial
      * device. The drive can optionally be given a nickname (e.g., "rotation"
      * or "tilt"), to make log messages more descriptive.
      * @param ttyDev the name serial port device connected to the Elmo drive
@@ -42,21 +42,21 @@ public:
     /// The Elmo drives have a 32-bit status register
     typedef int32_t StatusReg;
 
-    /// Tell the drive to find where home is, and assign the given count
+    /// @brief Tell the drive to find where home is, and assign the given count
     /// number to that location.
     /// @param homeCounts the count value to be assigned at the home location
     void homeDrive(int homeCounts = 0);
 
-    /// Move the drive to the given angle (deg)
+    /// @brief Move the drive to the given angle (deg)
     /// @param angle the desired drive angle, deg
     void moveTo(float angle);
 
-    /// Initialize table for scanning using PT mode.
+    /// @brief Initialize table for scanning using PT mode.
     /// @param p vector of positions, deg
     /// @param scanRate scan rate in deg/s
     void initScan(std::vector<int> p, float scanRate);
 
-    /// Initialize table for scanning using PT mode.
+    /// @brief Initialize table for scanning using PT mode.
     /// @param ccwLimit counterclockwise limit, deg
     /// @param cwLimit clockwise limit, deg
     /// @param scanRate scan rate in deg/s
@@ -65,28 +65,35 @@ public:
     /// @brief Put the drive to scanning according to the PVT table
     void scan();
 
-    /// Return the drive responding state. The state is true as long as replies
+    /// @brief Return the drive responding state. The state is true as long as replies
     /// to commands are being received from the drive.
     /// @return the drive responding state
     bool driveResponding() const { return _driveResponding; }
 
-    /// Return true iff the drive parameter initialization has been executed
+    /// @brief Return true iff the drive parameter initialization has been executed
     /// successfully.
     /// @return true iff the drive parameter initialization has been executed
     /// successfully.
     bool driveInitialized() const { return _driveInitialized; }
 
-    /// Return true iff the drive homing has been executed successfully.
+    /// @brief Return true iff the drive homing has been executed successfully.
     /// @return true iff the drive homing has been executed successfully.
     bool driveHomed() const { return _driveHomed; }
 
-    /// Get latest sampled drive status register value
+    /// @brief Return true iff drive homing is currently in progress.
+    /// @return true iff drive homing is currently in progress.
+    bool homingInProgress() const { return _homingInProgress; }
+
+    /// @brief Return the latest sampled drive status register value.
+    /// @return the latest sampled drive status register value.
     StatusReg driveStatusRegister() const { return _driveStatusRegister; }
 
-    /// Get latest sampled drive system time, in microseconds
+    /// @brief Return the latest sampled drive system time, in microseconds.
+    /// @return the latest sampled drive system time, in microseconds.
     uint32_t driveSystemTime() const { return _driveSystemTime; }
 
-    /// Get latest sampled drive angle, in degrees
+    /// @brief Return the latest sampled drive angle, in degrees.
+    /// @return the latest sampled drive angle, in degrees.
     float angle() const {
         if (_driveParamsGood()) {
             return(_angleCounts / countsPerDegree());
@@ -95,10 +102,12 @@ public:
         }
     }
 
-    /// Get latest sampled drive temperature, C
+    /// @brief Return the latest sampled drive temperature, deg C.
+    /// @return the latest sampled drive temperature, deg C.
     int driveTemperature() const { return _driveTemperature; }
 
-    /// Optical encoder counts per full circle.
+    /// @brief Return the number of optical encoder counts per full circle.
+    /// @return the number of optical encoder counts per full circle.
     uint32_t countsPerCircle() const { return(_positionMaxCnt - _positionMinCnt); }
 
     /// Optical encoder counts per degree
@@ -317,6 +326,9 @@ private:
 
     /// Boolean to tell if drive has been homed yet
     bool _driveHomed;
+
+    /// Boolean to tell if homing is in progress.
+    bool _homingInProgress;
 
     /// List of commands not yet acknowledged by the drive
     class CmdQueueEntry {

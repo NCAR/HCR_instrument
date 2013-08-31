@@ -220,6 +220,33 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////
+class HomingInProgressMethod : public xmlrpc_c::method
+{
+public:
+    HomingInProgressMethod() {
+        // The method takes no arguments, and returns a bool
+        this->_signature = "b:";
+        this->_help = "This method returns true iff drive homing is in progress";
+    }
+
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+        paramList.verifyEnd(0);
+
+        // Get current status of our MotionControl, pack it into an
+        // xmlrpc_c::value_struct, and return the struct.
+        *retvalP = xmlrpc_c::value_boolean(Control->homingInProgress());
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+    }
+};
+
+/////////////////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
 {
@@ -242,6 +269,7 @@ main(int argc, char** argv)
     myRegistry.addMethod("Scan", new DriveScanMethod);
     myRegistry.addMethod("Status", new StatusMethod);
     myRegistry.addMethod("SetCorrectionEnabled", new SetCorrectionEnabledMethod);
+    myRegistry.addMethod("HomingInProgress", new HomingInProgressMethod);
     xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
 
     // catch a control-C or kill to shut down cleanly

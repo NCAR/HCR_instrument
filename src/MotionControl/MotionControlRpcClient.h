@@ -47,10 +47,15 @@ public:
     /// @throws std::exception if there's a problem in the XML-RPC call.
     void setCorrectionEnabled(bool state) throw (std::exception);
 
-	/// @brief Get motion control status
-	/// @return a MotionControlStatus object
+    /// @brief Get motion control status
+    /// @return a MotionControlStatus object
     /// @throws std::exception if there's a problem in the XML-RPC call.
-	MotionControl::Status status() throw (std::exception);
+    MotionControl::Status status() throw (std::exception);
+
+    /// @brief Return true iff homing is in progress for either of the drives.
+    /// @return true iff homing is in progress for either of the drives.
+    /// @throws std::exception if there's a problem in the XML-RPC call.
+    bool homingInProgress() throw (std::exception);
 
 	/// @brief Return true iff the MotionControlDaemon is responding.
 	/// @return true iff the MotionControlDaemon is responding.
