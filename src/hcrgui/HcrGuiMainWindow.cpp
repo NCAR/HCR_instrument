@@ -289,39 +289,23 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         return;
     }
 
-    // We got confirmation, so set drive to home position
-	_mcClientThread.rpcClient().homeDrive();
+    // We got confirmation, so start the homing procedure.
+    _mcClientThread.rpcClient().homeDrive();
 
-	// Wait for Elmo drives to indicate that their homing programs have
-	// finished running, at which point both motors should be at their
-	// "official" zero positions.
-	ILOG << "Waiting for servo drives to complete homing";
-	uint32_t lastRotSysTime = _mcStatus.rotDriveSystemTime;
-	uint32_t lastTiltSysTime = _mcStatus.tiltDriveSystemTime;
-	while (true) {
-	    // Only check for program completion after we have new status from
-	    // both the rotation and tilt drives.
-	    if (_mcStatus.rotDriveSystemTime != lastRotSysTime &&
-	            _mcStatus.tiltDriveSystemTime != lastTiltSysTime) {
-	        ElmoServoDrive::StatusReg rotReg = _mcStatus.rotDriveStatusReg;
-	        ElmoServoDrive::StatusReg tiltReg = _mcStatus.tiltDriveStatusReg;
-	        if (! ElmoServoDrive::SREG_programRunning(rotReg) &&
-	                ! ElmoServoDrive::SREG_programRunning(tiltReg)) {
-	            break;
-	        }
-	        // Save the times so we can recognize when new status arrives
-	        lastRotSysTime = _mcStatus.rotDriveSystemTime;
-	        lastTiltSysTime = _mcStatus.tiltDriveSystemTime;
-	    }
-
+    // Poll until homing is complete
+    ILOG << "Waiting for servo drives to complete homing";
+    while (true) {
+        if (! _mcClientThread.rpcClient().homingInProgress()) {
+            break;
+        }
         // Let other things run for up to 200 ms
         QCoreApplication::processEvents(QEventLoop::AllEvents, 200);
-	}
+    }
 
-	// With the motors both at their zero positions, tell the Pentek to zero
-	// its position counts for both motors.
-	ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
-	_drxStatusThread.rpcClient().zeroPentekMotorCounts();
+    // With the motors both at their zero positions, tell the Pentek to zero
+    // its position counts for both motors.
+    ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
+    _drxStatusThread.rpcClient().zeroPentekMotorCounts();
 }
 
 /// Toggle motion control attitude correction
