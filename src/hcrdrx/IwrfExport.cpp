@@ -256,6 +256,13 @@ void IwrfExport::run()
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
     }
+    // Temporary for debugging
+    if (_pulseSeqNum % 10000 == 0) {
+        ILOG << "rotation H " << int(_pulseH->getRotMotorAngle()*400000) <<
+                ", V " << int(_pulseV->getRotMotorAngle()*400000) <<
+                " -- tilt H " << int(_pulseH->getTiltMotorAngle()*480000) <<
+                ", V " << int(_pulseV->getTiltMotorAngle()*480000);
+    }
     
     if (sendMeta) {
       _sendIwrfMetaData();
@@ -948,10 +955,8 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     _radarGeoref.vert_velocity_mps = velUp;
     _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
-    // TODO - get real angles from drives
-
-    _radarGeoref.drive_angle_1_deg = 88.88; // rotation
-    _radarGeoref.drive_angle_2_deg = 0.888; // tilt
+    _radarGeoref.drive_angle_1_deg = _pulseH->getRotMotorAngle();
+    _radarGeoref.drive_angle_2_deg = _pulseH->getTiltMotorAngle();
 
     _radarGeoref.rotation_angle_deg = _radarGeoref.drive_angle_1_deg;
     _radarGeoref.tilt_deg = 

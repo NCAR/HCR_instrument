@@ -23,12 +23,21 @@ public:
 
   virtual ~PulseData();
 
-  // set the data
-  
+  /// @brief Set the data in the object.
+  /// @param pulseSeqNum the pulse sequence number
+  /// @param timeSecs, pulse time, full seconds since the Epoch
+  /// @param nanoSecs, pulse time, nanoseconds after timeSecs
+  /// @param channelId, the channel ID
+  /// @param nGates, number of gates in the pulse data
+  /// @param rotMotorAngle, angle of the rotation motor, deg
+  /// @param tiltMotorAngle, angle of the tilt motor, deg
+  /// @para iq, I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
   void set(int64_t pulseSeqNum,
            time_t timeSecs,
            int nanoSecs,
            int channelId,
+           float rotMotorAngle,
+           float tiltMotorAngle,
            int nGates,
            const int16_t *iq);
 
@@ -43,6 +52,8 @@ public:
   inline time_t getTimeSecs() const { return _timeSecs; }
   inline int getNanoSecs() const { return _nanoSecs; }
   inline int getChannelId() const { return _channelId; }
+  inline float getRotMotorAngle() const { return _rotMotorAngle; }
+  inline float getTiltMotorAngle() const { return _tiltMotorAngle; }
   inline int getNGates() const { return _nGates; }
   inline const int16_t *getIq() const { return _iq; }
   inline int16_t *getIq() { return _iq; }
@@ -74,6 +85,12 @@ private:
 
   int _nGates;
   int _nGatesAlloc;
+
+  /// rotation motor angle
+  float _rotMotorAngle;
+
+  /// tilt motor angle
+  float _tiltMotorAngle;
 
   /**
    * IQ data
