@@ -77,6 +77,10 @@ void HcrDrxPub::run() {
         angleSocket->writeDatagram(datagram.data(), datagram.size(),
                 QHostAddress::Broadcast, 45454);
     }
+    // occasional debugging messages for rot and tilt angles
+    if ((_chanId == 0) && ! (count % 20000)) {
+        ILOG << "rotation " << rotMotorAngle << ", tilt " << tiltMotorAngle;
+    }
     _addToExport(reinterpret_cast<const int16_t *>(buf), pulsenum,
             rotMotorAngle, tiltMotorAngle);
   }
