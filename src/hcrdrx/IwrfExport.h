@@ -150,6 +150,11 @@ private:
   CmigitsSharedMemory _cmigitsShm;
   uint64_t _lastCmigits3512Time;    // time of last C-MIGITS 3512 message seen
 
+  // elevation and azimuth from antenna rotation and tilt
+
+  double _elevationDeg;
+  double _azimuthDeg;
+
   /// angle corrections
 
   double _rollCorr;

@@ -565,6 +565,9 @@ void IwrfExport::_assembleIwrfPulsePacket()
     _pulseHdr.fixed_el = _simElev;
     _pulseHdr.elevation = _simElev;
     _pulseHdr.azimuth = _simAz;
+  } else {
+    _pulseHdr.elevation = _elevationDeg;
+    _pulseHdr.azimuth = _azimuthDeg;
   }
   
   memcpy(_pulseBuf, &_pulseHdr, sizeof(_pulseHdr));
@@ -1036,8 +1039,8 @@ void IwrfExport::_computeRadarAngles()
   double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
   double elevationRad = asin(zsubt);
   
-  _pulseHdr.elevation = elevationRad * RAD_TO_DEG;
-  _pulseHdr.azimuth = azimuthRad * RAD_TO_DEG;
+  _elevationDeg = elevationRad * RAD_TO_DEG;
+  _azimuthDeg = azimuthRad * RAD_TO_DEG;
   
 }
 
