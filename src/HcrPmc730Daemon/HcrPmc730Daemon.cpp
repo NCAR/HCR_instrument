@@ -9,14 +9,15 @@
  */
 #include <csignal>
 #include <sys/time.h>
-#include <xmlrpc-c/registry.hpp>
-#include <xmlrpc-c/server_abyss.hpp>
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 #include <HcrPmc730.h>
 #include <HcrPmc730Status.h>
 #include <QCoreApplication>
+
+#include <xmlrpc-c/registry.hpp>
+#include <xmlrpc-c/server_abyss.hpp>
 
 LOGGING("HcrPmc730Daemon")
 
