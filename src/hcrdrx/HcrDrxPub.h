@@ -93,7 +93,10 @@ private:
   /// @param iq The raw buffer of data from the downconverter
   /// channel. It contains all Is and Qs
   /// @param pulseSeqNum The pulse number (will be zero for raw data).
-  void _addToExport(const int16_t *iq, int64_t pulseSeqNum);
+  /// @param rotMotorAngle The angle of the rotation motor, deg.
+  /// @param tiltMotorAngle The angle of the tilt motor, deg.
+  void _addToExport(const int16_t *iq, int64_t pulseSeqNum, float rotMotorAngle,
+          float tiltMotorAngle);
         
   /**
    * @brief Return true iff the current configuration is valid.

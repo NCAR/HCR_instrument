@@ -45,11 +45,11 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
         _ui.rotMotorInitializedIcon->setPixmap(mcStatus.rotDriveInitialized ?
                 _greenLED : _greenLED_off);
         amberLight = ESD::SREG_homingInProcess(sr);
-        _warningDetected = amberLight;
+        _warningDetected |= amberLight;
         _ui.rotMotorHomingIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
         _ui.rotMotorHomedIcon->setPixmap(mcStatus.rotDriveHomed ? _greenLED : _greenLED_off);
         amberLight = ESD::SREG_programRunning(sr);
-        _warningDetected = amberLight;
+        _warningDetected |= amberLight;
         _ui.rotProgramRunningIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
         _ui.rotMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
         // Drive problem?
@@ -108,11 +108,11 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		_ui.tiltMotorInitializedIcon->setPixmap(mcStatus.tiltDriveInitialized ?
 				_greenLED : _greenLED_off);
 		amberLight = ESD::SREG_homingInProcess(sr);
-		_warningDetected = amberLight;
+		_warningDetected |= amberLight;
 		_ui.tiltMotorHomingIcon->setPixmap(amberLight ?	_amberLED : _greenLED_off);
 		_ui.tiltMotorHomedIcon->setPixmap(mcStatus.tiltDriveHomed ? _greenLED : _greenLED_off);
         amberLight = ESD::SREG_programRunning(sr);
-        _warningDetected = amberLight;
+        _warningDetected |= amberLight;
 		_ui.tiltProgramRunningIcon->setPixmap(amberLight ? _amberLED : _greenLED_off);
 		_ui.tiltMotionStatusLabel->setText(QString::number(ESD::SREG_motionStatus(sr)));
 		// Drive problem?

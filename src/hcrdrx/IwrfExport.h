@@ -146,8 +146,23 @@ private:
   bool _newClient;
 
   /// Shared memory to access C-MIGITS data
+
   CmigitsSharedMemory _cmigitsShm;
   uint64_t _lastCmigits3512Time;    // time of last C-MIGITS 3512 message seen
+
+  // elevation and azimuth from antenna rotation and tilt
+
+  double _elevationDeg;
+  double _azimuthDeg;
+
+  /// angle corrections
+
+  double _rollCorr;
+  double _pitchCorr;
+  double _headingCorr;
+  double _driftCorr;
+  double _tiltCorr;
+  double _rotationCorr;
 
   /// simulation of antenna angles
 
@@ -180,6 +195,7 @@ private:
   
   bool _assembleIwrfGeorefPacket();
   int _sendIwrfGeorefPacket();
+  void _computeRadarAngles();
 
   int _openServer();
   int _checkClient();

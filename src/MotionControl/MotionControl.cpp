@@ -88,12 +88,16 @@ void MotionControl::correctForAttitude()
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::homeDrive()
+MotionControl::homeDrive(int rotHomeCounts, int tiltHomeCounts)
 {
     ILOG << "homeDrive";
-    // Set both drives to home position
-    _rotDrive.homeDrive();
-    _tiltDrive.homeDrive();
+    // Change mode to fixed pointing at 0 degrees. The mode will be retained
+    // after this method exits.
+    point(0.0);
+    // Set both drives to find home position. Note that these methods return
+    // before homing is complete.
+    _rotDrive.homeDrive(rotHomeCounts);
+    _tiltDrive.homeDrive(tiltHomeCounts);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -128,8 +132,27 @@ MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
 /////////////////////////////////////////////////////////////////////
 void
 MotionControl::setCorrectionEnabled(bool enabled) {
+    // Are we going from attitude correction enabled to disabled?
+    bool turningOff = _attitudeCorrectionEnabled && ! enabled;
+
     ILOG << "Attitude correction has been " << (enabled ? "enabled" : "disabled");
     _attitudeCorrectionEnabled = enabled;
+
+    // If we were correcting and correction was just turned off, make one last
+    // correction back to straight level attitude.
+    if (turningOff) {
+        switch (_antennaMode) {
+        case POINTING:
+            _adjustPointingForAttitude(0.0, 0.0, 0.0);
+            break;
+        case SCANNING:
+            // @TODO: Figure out how to handle this once corrected scanning
+            // is implemented...
+            WLOG << "***Need to implement scan cleanup when attitude correction "
+                "is disabled***";
+            break;
+        }
+    }
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -180,6 +203,14 @@ MotionControl::_adjustForAttitude(float & rot, float & tilt, float pitch,
 
     // tilt needs to be divided by 2!
     tilt = RadToDeg(asin(y_a)) / 2;
+
+    // KLUGE: The algorithm above isn't really right. As compensation for now,
+    // just change the sign of the corrected tilt if the desired rotation angle
+    // points downward, i.e., if its cosine is less than zero.
+    if (cosPoint < 0.0) {
+        tilt *= -1;
+    }
+
     // rotation needs to be in the range of 0-360
     rot  = RadToDeg(atan2(x_a, z_a));
     if (rot < 0) rot += 360.0;
@@ -214,12 +245,14 @@ MotionControl::Status::Status() :
     rotDriveStatusReg(0),
     rotDriveTemp(0),
     rotDriveAngle(0.0),
+    rotDriveSystemTime(0),
     tiltDriveResponding(false),
     tiltDriveInitialized(false),
     tiltDriveHomed(false),
     tiltDriveStatusReg(0),
     tiltDriveTemp(0),
     tiltDriveAngle(0.0),
+    tiltDriveSystemTime(0),
     antennaMode(POINTING),
     fixedPointingAngle(0.0),
     scanCcwLimit(0.0),
@@ -235,26 +268,20 @@ MotionControl::Status::Status(const MotionControl & mc) :
     rotDriveStatusReg(mc.rotationDrive().driveStatusRegister()),
     rotDriveTemp(mc.rotationDrive().driveTemperature()),
     rotDriveAngle(mc.rotationDrive().angle()),
+    rotDriveSystemTime(mc.rotationDrive().driveSystemTime()),
     tiltDriveResponding(mc.tiltDrive().driveResponding()),
     tiltDriveInitialized(mc.tiltDrive().driveInitialized()),
     tiltDriveHomed(mc.tiltDrive().driveHomed()),
     tiltDriveStatusReg(mc.tiltDrive().driveStatusRegister()),
     tiltDriveTemp(mc.tiltDrive().driveTemperature()),
     tiltDriveAngle(mc.tiltDrive().angle()),
+    tiltDriveSystemTime(mc.tiltDrive().driveSystemTime()),
     antennaMode(mc.antennaMode()),
     fixedPointingAngle(mc.fixedPointingAngle()),
     attitudeCorrectionEnabled(mc.attitudeCorrectionEnabled()) {
     // Use the MotionControl::getScanParams() method to get all three scan
     // parameters
     mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate);
-    DLOG << "rotDriveResponding: " << rotDriveResponding;
-    DLOG << "rotDriveInitialized: " << rotDriveInitialized;
-    DLOG << "rotDriveHomed: " << rotDriveHomed;
-    DLOG << "rotDriveTemp: " << rotDriveTemp;
-    DLOG << "tiltDriveResponding: " << tiltDriveResponding;
-    DLOG << "tiltDriveInitialized: " << tiltDriveInitialized;
-    DLOG << "tiltDriveHomed: " << tiltDriveHomed;
-    DLOG << "tiltDriveTemp: " << tiltDriveTemp;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -269,12 +296,20 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     rotDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveStatusReg"]);
     rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
     rotDriveAngle = static_cast<xmlrpc_c::value_double>(statusMap["rotDriveAngle"]);
+    // Unsigned time is in the XML as a signed int. Pull it out as int, then
+    // reinterpret as unsigned.
+    int signedTime = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveSystemTime"]);
+    rotDriveSystemTime = *(reinterpret_cast<uint32_t *>(&signedTime));
     tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
     tiltDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInitialized"]);
     tiltDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveHomed"]);
     tiltDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveStatusReg"]);
     tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
     tiltDriveAngle = static_cast<xmlrpc_c::value_double>(statusMap["tiltDriveAngle"]);
+    // Unsigned time is in the XML as a signed int. Pull it out as int, then
+    // reinterpret as unsigned.
+    signedTime = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveSystemTime"]);
+    tiltDriveSystemTime = *(reinterpret_cast<uint32_t *>(&signedTime));
     antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
     fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
     scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
@@ -299,12 +334,20 @@ MotionControl::Status::to_value_struct() const {
     dict["rotDriveStatusReg"] = xmlrpc_c::value_int(rotDriveStatusReg);
     dict["rotDriveTemp"] = xmlrpc_c::value_int(rotDriveTemp);
     dict["rotDriveAngle"] = xmlrpc_c::value_double(rotDriveAngle);
+    // We cannot pack unsigned 32-bit int into XML-RPC, so reinterpret it as
+    // signed and push it out that way.
+    int signedTime = *(reinterpret_cast<const int *>(&rotDriveSystemTime));
+    dict["rotDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
     dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
     dict["tiltDriveInitialized"] = xmlrpc_c::value_boolean(tiltDriveInitialized);
     dict["tiltDriveHomed"] = xmlrpc_c::value_boolean(tiltDriveHomed);
     dict["tiltDriveStatusReg"] = xmlrpc_c::value_int(tiltDriveStatusReg);
     dict["tiltDriveTemp"] = xmlrpc_c::value_int(tiltDriveTemp);
     dict["tiltDriveAngle"] = xmlrpc_c::value_double(tiltDriveAngle);
+    // We cannot pack unsigned 32-bit int into XML-RPC, so reinterpret it as
+    // signed and push it out that way.
+    signedTime = *(reinterpret_cast<const int *>(&tiltDriveSystemTime));
+    dict["tiltDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
     dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
     dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
     dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);

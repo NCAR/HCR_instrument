@@ -53,6 +53,10 @@ public:
     /// @param mode integer mode number for the HMC, 0-3
     void setHmcMode(int mode);
 
+    /// @brief Zero the Pentek's position counts for the two reflector
+    /// motors.
+    void zeroPentekMotorCounts();
+
     /**
      * @brief Send a "getStatus" command, filling a DrxStatus
      * object if we get status from the hcrdrx.

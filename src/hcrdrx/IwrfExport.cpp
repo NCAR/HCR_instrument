@@ -11,6 +11,7 @@
 #include <toolsa/pmu.h>
 #include <toolsa/uusleep.h>
 #include <toolsa/TaXml.hh>
+#include <toolsa/toolsa_macros.h>
 
 using namespace boost::posix_time;
 using namespace std;
@@ -137,6 +138,20 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   if (_config.prt1() != HcrDrxConfig::UNSET_DOUBLE) {
     _prt1 = _config.prt1();
   }
+  
+  /// beam angles
+  
+  _azimuthDeg = 0.0;
+  _elevationDeg = 0.0;
+
+  /// angle corrections
+
+  _rollCorr = 0.0;
+  _pitchCorr = 0.0;
+  _headingCorr = 0.0;
+  _driftCorr = 0.0;
+  _tiltCorr = 0.0;
+  _rotationCorr = 0.0;
 
   /// simulation of antenna angles
 
@@ -246,7 +261,7 @@ void IwrfExport::run()
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
     }
-    
+
     if (sendMeta) {
       _sendIwrfMetaData();
       metaDataInitialized = true;
@@ -555,6 +570,9 @@ void IwrfExport::_assembleIwrfPulsePacket()
     _pulseHdr.fixed_el = _simElev;
     _pulseHdr.elevation = _simElev;
     _pulseHdr.azimuth = _simAz;
+  } else {
+    _pulseHdr.elevation = _elevationDeg;
+    _pulseHdr.azimuth = _azimuthDeg;
   }
   
   memcpy(_pulseBuf, &_pulseHdr, sizeof(_pulseHdr));
@@ -942,21 +960,100 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     _radarGeoref.pitch_deg = pitch;
     _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
     _radarGeoref.roll_deg = roll;
-    _radarGeoref.rotation_angle_deg = 180.0;    // @TODO fixed at nadir for now
-    _radarGeoref.tilt_deg = 0.0;
     _radarGeoref.vert_velocity_mps = velUp;
     _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
+    // Angles of the reflector rotation and tilt motors.
+    float rotMotorAngle = _pulseH->getRotMotorAngle();
+    float tiltMotorAngle = _pulseH->getTiltMotorAngle();
+    _radarGeoref.drive_angle_1_deg = rotMotorAngle;
+    _radarGeoref.drive_angle_2_deg = tiltMotorAngle;
+
+    // Rotation and tilt of the radar beam w.r.t. the pod's longitudinal axis.
+    // Zero rotation means the beam points through the top of the pod and
+    // positive rotation moves clockwise as viewed looking from the back
+    // of the pod toward the front. Zero tilt means the beam points normal to
+    // the longitudinal axis, and positive tilt means the beam points
+    // forward.
+    //
+    // Beware of "rotation" and "tilt" terms here; the angles of the rotation
+    // motor and tilt motor do not map directly to rotation_angle_deg and
+    // tilt_deg! In HCR, the axis of the tilt motor is fixed w.r.t. the pod and
+    // corresponds with the pod's C-MIGITS pitch axis. The axis of the rotation
+    // motor is moved by the tilt motor, and is only parallel to the pod's
+    // longitudinal axis when the tilt motor angle is zero.
+    _radarGeoref.rotation_angle_deg = rotMotorAngle;
+    _radarGeoref.tilt_deg = ((2.0 * tiltMotorAngle) // x2 for reflection
+            * cos(rotMotorAngle * DEG_TO_RAD));
+    
     int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
     for (int i = 0; i < nUnused; i++) {
       _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
     }
+
+    // compute elevation and azimuth
+
+    _computeRadarAngles();
 
     // Save the time of the latest data we have provided
     _lastCmigits3512Time = time3512;
     return(true);
   }
   return(false);
+}
+
+///////////////////////////////////////////////////////////////////
+// compute the true azimuth, elevation, etc. from platform
+// parameters using Testud's equations with their different
+// definitions of rotation angle, etc.
+//
+// see Wen-Chau Lee's paper
+// "Mapping of the Airborne Doppler Radar Data"
+
+void IwrfExport::_computeRadarAngles()
+  
+{
+  
+  double R = (_radarGeoref.roll_deg + _rollCorr) * DEG_TO_RAD;
+  double P = (_radarGeoref.pitch_deg + _pitchCorr) * DEG_TO_RAD;
+  double H = (_radarGeoref.heading_deg + _headingCorr) * DEG_TO_RAD;
+  double D = (_radarGeoref.drift_angle_deg + _driftCorr) * DEG_TO_RAD;
+  double T = H + D;
+  
+  double sinP = sin(P);
+  double cosP = cos(P);
+  double sinD = sin(D);
+  double cosD = cos(D);
+  
+  double theta_a = 
+    (_radarGeoref.rotation_angle_deg + _rotationCorr) * DEG_TO_RAD;
+  double tau_a =
+    (_radarGeoref.tilt_deg + _tiltCorr) * DEG_TO_RAD;
+  double sin_tau_a = sin(tau_a);
+  double cos_tau_a = cos(tau_a);
+  double sin_theta_rc = sin(theta_a + R); /* roll corrected rotation angle */
+  double cos_theta_rc = cos(theta_a + R); /* roll corrected rotation angle */
+  
+  double xsubt = (cos_theta_rc * sinD * cos_tau_a * sinP
+                  + cosD * sin_theta_rc * cos_tau_a
+                  -sinD * cosP * sin_tau_a);
+  
+  double ysubt = (-cos_theta_rc * cosD * cos_tau_a * sinP
+                  + sinD * sin_theta_rc * cos_tau_a
+                  + cosP * cosD * sin_tau_a);
+  
+  double zsubt = (cosP * cos_tau_a * cos_theta_rc
+                  + sinP * sin_tau_a);
+  
+  _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
+  _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
+  double lambda_t = atan2(xsubt, ysubt);
+  double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
+  double elevationRad = asin(zsubt);
+  
+  _elevationDeg = elevationRad * RAD_TO_DEG;
+  _azimuthDeg = azimuthRad * RAD_TO_DEG;
+  
 }
 
 /////////////////////////////////////////////////////////////////////////////

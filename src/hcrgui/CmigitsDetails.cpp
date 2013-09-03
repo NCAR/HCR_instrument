@@ -42,9 +42,13 @@ CmigitsDetails::updateStatus(const CmigitsStatus & status) {
             positionFOM, velocityFOM, headingFOM, timeFOM,
             expectedHPosError, expectedVPosError, expectedVelocityError);
     _ui.statusTimeValue->setText(QDateTime::fromTime_t(uint32_t(statusTime)).toUTC().toString("hh:mm:ss"));
-    _ui.insValue->setPixmap(insAvailable ? _greenLED : _greenLED_off);
-    _ui.gpsValue->setPixmap(gpsAvailable ? _greenLED : _greenLED_off);
+    _ui.insValue->setPixmap(insAvailable ? _greenLED : _redLED);
+    _ui.gpsValue->setPixmap(gpsAvailable ? _greenLED : _redLED);
     _ui.coarsAlignValue->setPixmap(doingCoarseAlignment ? _amberLED : _greenLED_off);
+    // Green light for mode 7 or 8 (air or land navigation), amber for
+    // anything else
+    _ui.currentModeIcon->setPixmap((currentMode == 7 || currentMode == 8) ?
+            _greenLED : _amberLED);
     _ui.currentModeValue->setText(Cmigits::ModeName(currentMode).c_str());
     _ui.satCountValue->setText(QString::number(nSats));
     _ui.positionFOMValue->setText(Cmigits::PositionFOMString(positionFOM).c_str());
@@ -81,8 +85,8 @@ CmigitsDetails::updateStatus(const CmigitsStatus & status) {
     float heading = 0.0;
     status.msg3512Data(attitudeTime, pitch, roll, heading);
     _ui.attitudeTimeValue->setText(QDateTime::fromTime_t(uint32_t(attitudeTime)).toUTC().toString("hh:mm:ss"));
-    _ui.pitchValue->setText(QString::number(pitch, 'f', 1));
-    _ui.rollValue->setText(QString::number(roll, 'f', 1));
+    _ui.pitchValue->setText(QString::number(pitch, 'f', 2));
+    _ui.rollValue->setText(QString::number(roll, 'f', 2));
     _ui.headingValue->setText(QString::number(heading, 'f', 1));
 }
 

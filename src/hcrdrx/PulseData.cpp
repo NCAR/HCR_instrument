@@ -35,6 +35,8 @@ void PulseData::set(int64_t pulseSeqNum,
                     time_t timeSecs,
                     int nanoSecs,
                     int channelId,
+                    float rotMotorAngle,
+                    float tiltMotorAngle,
                     int nGates,
                     const int16_t *iq)
 
@@ -45,7 +47,12 @@ void PulseData::set(int64_t pulseSeqNum,
   _nanoSecs = nanoSecs;
 
   _channelId = channelId;
+
+  _rotMotorAngle = rotMotorAngle;
+  _tiltMotorAngle = tiltMotorAngle;
+
   _nGates = nGates;
+
   _allocIq();
   memcpy(_iq, iq, _nGates * 2 * sizeof(int16_t));
 

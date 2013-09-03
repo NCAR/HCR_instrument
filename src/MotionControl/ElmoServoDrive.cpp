@@ -25,6 +25,7 @@ ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string drive
     _driveResponding(false),
     _driveInitialized(false),
     _driveHomed(false),
+    _homingInProgress(false),
     _waitingForSync(false),
     _replyTimer(),
     _statusTimer(),
@@ -392,7 +393,9 @@ ElmoServoDrive::_readReply() {
                     StatusReg statusRegister = qCmdReply.toInt(&ok);
                     if (ok) {
                         _driveStatusRegister = statusRegister;
-                        gettimeofday(&_lastStatusTime, NULL);
+                        // Assign the time that the SR request was issued to
+                        // the returned value.
+                        _lastSrTime = _srRequestTime;
                     } else {
                         WLOG << _driveName << ": bad SR reply '" <<
                                 cmdReply << "'";
@@ -406,6 +409,22 @@ ElmoServoDrive::_readReply() {
                         _driveTemperature = temp;    // drive temperature, deg C
                     } else {
                         WLOG << _driveName << ": bad TI[1] reply '" <<
+                                cmdReply << "'";
+                    }
+                }
+
+                // Save reply from TM "system time" command
+                if (! cmd.compare("TM")) {
+                    // System time is actually a 32-bit unsigned count, but
+                    // the reply sends it as a signed value. We'll convert
+                    // to unsigned as long as the value parses as an int.
+                    int32_t time = qCmdReply.toInt(&ok);
+                    if (ok) {
+                        // Reinterpret the returned value as an *unsigned*
+                        // 32-bit int.
+                        _driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
+                    } else {
+                        WLOG << _driveName << ": bad TM reply '" <<
                                 cmdReply << "'";
                     }
                 }
@@ -536,16 +555,22 @@ ElmoServoDrive::_syncWaitExpired() {
 }
 
 void
-ElmoServoDrive::homeDrive() {
+ElmoServoDrive::homeDrive(int homeCounts) {
     // If drive is initialized, we can not home it
     if (!_driveInitialized) {
         return;
     }
+    _driveHomed = false;
 
-    // Call the drive method for homing based on _driveName
-    // @TODO Disable transmitter while homing, since antenna may move anywhere
-    // during this process
+    // Set UI[1] to the count value we want associated with the home position.
+    std::ostringstream cmdstream;
+    cmdstream << "UI[1]=" << homeCounts;
+    _execElmoCmd(cmdstream.str());
+
+    // Call the drive homing function. The function sets the count value for
+    // the home position to the number it finds in UI[1].
     _startXq(_xqHomingFunction());
+    _homingInProgress = true;
 
     // Set up a periodic timer to check whether the program we just started on
     // the drive has completed (or failed).
@@ -593,7 +618,7 @@ bool
 ElmoServoDrive::_xqCompleted() {
     // If there is new status since we began XQ and the program is not running
     // on the drive, the XQ is complete.
-    return(timercmp(&_lastStatusTime, &_xqStartTime, >) &&
+    return(timercmp(&_lastSrTime, &_xqStartTime, >) &&
             ! SREG_programRunning(_driveStatusRegister));
 }
 
@@ -673,6 +698,7 @@ ElmoServoDrive::_testForHomingCompletion() {
     _execElmoCmd("MO=1");
 
 stop_timer:
+    _homingInProgress = false;
     _gpTimer.stop();
     _gpTimer.disconnect(this);
 }
@@ -762,9 +788,16 @@ ElmoServoDrive::_collectStatus() {
     // Send commands to the drive to get back status values we want. The
     // status values will be parsed out and saved in _readReply when the
     // replies come back.
+
+    // Save the time at which we request SR. This time will be used to
+    // as the time tag for the reply.
+    gettimeofday(&_srRequestTime, NULL);
+
+    // Send the commands for the status values we want
     _execElmoCmd("SR", false);      // status register
     _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
     _execElmoCmd("PX", false);      // main position
+    _execElmoCmd("TM", false);		// system time
 }
 
 void

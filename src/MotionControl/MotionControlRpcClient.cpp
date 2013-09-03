@@ -85,22 +85,53 @@ throw (std::exception)
 }
 
 /////////////////////////////////////////////////////////////////////
+void
+MotionControlRpcClient::setCorrectionEnabled(bool state)
+throw (std::exception)
+{
+    ILOG << (state ? "enabling" : "disabling") << " attitude correction";
+    _daemonResponding = true;
+
+    try {
+        xmlrpc_c::value result;
+        _client.call(_daemonUrl, "SetCorrectionEnabled", "b", &result, state);
+    }
+    catch (std::exception & e) {
+        _daemonResponding = false;
+        WLOG << "XML-RPC error calling SetCorrectionEnabled(): " << e.what();
+    }
+}
+
+/////////////////////////////////////////////////////////////////////
 MotionControl::Status
 MotionControlRpcClient::status()
 throw (std::exception)
 {
-	_daemonResponding = true;
-	try {
-		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Status", "", &result);
-		// Construct an xmlrpc_c::value_struct from the result, and use that
-		// to construct the  MotionControl::Status which we return.
-		xmlrpc_c::value_struct vstruct(result);
-		return(MotionControl::Status(vstruct));
-	}
-	catch (std::exception & e) {
-		_daemonResponding = false;
-		WLOG << "XML-RPC error calling Status(): " << e.what();
-	}
-	return(MotionControl::Status());
+    _daemonResponding = true;
+    try {
+        xmlrpc_c::value result;
+        _client.call(_daemonUrl, "Status", "", &result);
+        // Construct an xmlrpc_c::value_struct from the result, and use that
+        // to construct the  MotionControl::Status which we return.
+        xmlrpc_c::value_struct vstruct(result);
+        return(MotionControl::Status(vstruct));
+    }
+    catch (std::exception & e) {
+        _daemonResponding = false;
+        WLOG << "XML-RPC error calling Status(): " << e.what();
+    }
+    return(MotionControl::Status());
+}
+
+/////////////////////////////////////////////////////////////////////
+bool
+MotionControlRpcClient::homingInProgress()
+throw (std::exception)
+{
+    xmlrpc_c::value result;
+    _client.call(_daemonUrl, "HomingInProgress", "", &result);
+    // Construct an xmlrpc_c::value_struct from the result, and use that
+    // to construct the  MotionControl::Status which we return.
+    xmlrpc_c::value_boolean boolResult(result);
+    return(bool(boolResult));
 }

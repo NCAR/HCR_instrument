@@ -34,17 +34,21 @@ return
 function tiltHoming()
 	MO=0; UM=5;
 	
-	// For the tilt drive, the homing process must begin from the
-	// right limit switch. If we're not at the RLS, move there now.
+	// Move forward a bit if we're currently at the reverse limit switch
 	// (IP bit 11 tells if we're at the RLS)
-	if (! (IP & (1 << 11)))
+	if (IP & (1 << 11))
 		MO=1;
-		// Stop at RLS
-		HM[3]=7; HM[4]=0; HM[5]=2;
-		HM[1]=1;
-		JV=-10000; BG;
-		waitHoming();
+		PR=5000; BG;
+		waitMotion();
 	end
+
+	// Now move backward to and stop by the reverse limit switch before 
+	// beginning the rest of the homing process
+	MO=1;
+	HM[3]=7; HM[4]=0; HM[5]=2;
+	HM[1]=1;
+	JV=-10000; BG;
+	waitHoming();
 
 	// Finally, we can begin the generic homing process.
 	homing(10000);
@@ -75,7 +79,9 @@ return
 
 /////////////////////////////////////////////////////////////////////
 //
-//	Put drive at a known position and set reference
+// Move drive to the first index mark in the positive direction from the home
+// sensor and set the count value for that location to the value currently in 
+// user integer UI[1].
 //		- jvSpeed: the jogging velocity (counts/sec)
 //
 function homing(int jvSpeed)
@@ -100,14 +106,15 @@ function homing(int jvSpeed)
 	PA=0; BG;
 	waitMotion();
 	
-	// Now jog to the first index mark forward of 'home' and move absolute 
-	// zero location there. This position should be consistent.
-	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0;
+	// Now jog to the first index mark forward of 'home' and assign the count
+	// value at that location to the user integer value found in UI[1] (which 
+	// should be set externally before the call here).
+	HM[2]=UI[1]; HM[3]=3; HM[4]=0; HM[5]=0;
 	HM[1]=1;
 	JV=jvSpeed; BG;
 	waitHoming();
 	
-	// Move the drive back to our new zero
+	// Finally, move the drive to the new zero count location.
 	PA=0; BG;
 	waitMotion();
 return

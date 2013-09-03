@@ -46,6 +46,7 @@ bool _simulate;                  ///< Set true for simulate mode
 int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of milliseconds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
+Pentek::p7142sd3c * _sd3c;
 
 std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
 int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
@@ -224,6 +225,17 @@ public:
     }
 };
 
+/// Xmlrpc++ method to zero the Pentek's position counts for the two reflector
+/// motors.
+class ZeroPentekMotorCountsMethod : public XmlRpcServerMethod {
+public:
+    ZeroPentekMotorCountsMethod() : XmlRpcServerMethod("zeroPentekMotorCounts") {}
+    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        ILOG << "Received 'zeroPentekMotorCounts' command";
+        _sd3c->zeroMotorCounts();
+    }
+};
+
 ///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
@@ -233,6 +245,7 @@ main(int argc, char** argv)
 
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
+    ILOG << "hcrdrx starting";
 
     // get the configuration parameters from the configuration file
     getConfigParams();
@@ -260,6 +273,7 @@ main(int argc, char** argv)
     // Initialize our RPC server on port 8081
     XmlRpc::XmlRpcServer rpcServer;
     rpcServer.addMethod(new GetStatusMethod());
+    rpcServer.addMethod(new ZeroPentekMotorCountsMethod());
     if (! rpcServer.bindAndListen(8081)) {
         ELOG << "Failed to initialize XmlRpcServer!";
         exit(1);
@@ -270,19 +284,19 @@ main(int argc, char** argv)
       ILOG << "*** Operating in simulation mode";
 
     // Instantiate our p7142sd3c
-    Pentek::p7142sd3c sd3c(_simulate, hcrConfig.tx_delay(),
+    _sd3c = new Pentek::p7142sd3c(_simulate, hcrConfig.tx_delay(),
         hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
         hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
         Pentek::p7142sd3c::DDC8DECIMATE, hcrConfig.start_on_1pps(), 
         _simPauseMS);
     
-    if (! sd3c.ok()) {
+    if (! _sd3c->ok()) {
         ELOG << "P7142 was not opened successfully!";
         abort();
     }
     
     // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(sd3c, _pmc730dHost, _pmc730dPort,
+    _hcrMonitor = new HcrMonitor(*_sd3c, _pmc730dHost, _pmc730dPort,
             _xmitdHost, _xmitdPort);
     _hcrMonitor->start();
 
@@ -293,12 +307,12 @@ main(int argc, char** argv)
     // The width of the modulation pulse is transmit pulse width + 272 ns,
     // where the 272 ns was empirically measured.
     double pulseModWidth = hcrConfig.tx_pulse_width() + 2.72e-7;
-    sd3c.setGPTimer0(hcrConfig.tx_pulse_mod_delay(), pulseModWidth);
+    _sd3c->setGPTimer0(hcrConfig.tx_pulse_mod_delay(), pulseModWidth);
     
     // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing.
     // Use 800 ns + transmit pulse width + transmit delay
     PMU_auto_register("timers enable");
-    sd3c.setGPTimer1(0.0, 
+    _sd3c->setGPTimer1(0.0,
         800e-9 + hcrConfig.tx_pulse_width() + hcrConfig.tx_delay());
     
     // Create (but don't yet start) the downconversion threads.
@@ -309,15 +323,15 @@ main(int argc, char** argv)
 
     for (int c = 0; c < _chans; c++) {
         ILOG << "*** Channel " << c << " ***";
-        downThreads[c] = new HcrDrxPub(sd3c, c, hcrConfig, _exporter, _tsLength,
+        downThreads[c] = new HcrDrxPub(*_sd3c, c, hcrConfig, _exporter, _tsLength,
                 _gaussianFile, _kaiserFile, _simWaveLength);
     }
 
     // Create the upConverter.
     // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
     PMU_auto_register("create upconverter");
-    Pentek::p7142Up & upConverter = *sd3c.addUpconverter(sd3c.adcFrequency(), 
-            sd3c.adcFrequency() / 4, 9);
+    Pentek::p7142Up & upConverter = *_sd3c->addUpconverter(_sd3c->adcFrequency(),
+            _sd3c->adcFrequency() / 4, 9);
 
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
@@ -347,19 +361,19 @@ main(int argc, char** argv)
     // all of the filters are started by any call to
     // start filters(). So just call it for channel 0
     PMU_auto_register("starting filters");
-    sd3c.startFilters();
+    _sd3c->startFilters();
 
     // Load the DAC memory bank 2, clear the DACM fifo, and enable the 
     // DAC memory counters. This must take place before the timers are started.
     PMU_auto_register("starting upconverter");
-    startUpConverter(upConverter, sd3c.txPulseWidthCounts());
+    startUpConverter(upConverter, _sd3c->txPulseWidthCounts());
 
     // start the IWRF export
     PMU_auto_register("start export");
     _exporter->start();
 
     // Start the timers, which will allow data to flow.
-    sd3c.timersStartStop(true);
+    _sd3c->timersStartStop(true);
 
     double startTime = nowTime();
 
@@ -443,8 +457,12 @@ main(int argc, char** argv)
     upConverter.stopDAC();
 
     // stop the timers
-    sd3c.timersStartStop(false);
+    _sd3c->timersStartStop(false);
+
+    delete(_sd3c);
     
+    ILOG << "hcrdrx is done";
+
     return(0);
 }
 

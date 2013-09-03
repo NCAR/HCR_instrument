@@ -72,6 +72,13 @@ HcrdrxRpcClient::setHmcMode(int mode) {
     _executeXmlRpcCommand("setHmcMode", args, result);
 }
 
+void
+HcrdrxRpcClient::zeroPentekMotorCounts() {
+    XmlRpc::XmlRpcValue null;
+    XmlRpc::XmlRpcValue result;
+    _executeXmlRpcCommand("zeroPentekMotorCounts", null, result);
+}
+
 bool
 HcrdrxRpcClient::getStatus(DrxStatus & status) {
     XmlRpc::XmlRpcValue null;

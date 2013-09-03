@@ -51,10 +51,10 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             pmcPort;
     _logMessage(ss.str());
 
-    // Disable the data system box and C-MIGITS box until we get status from
-    // HcrPmc730Daemon.
+    // Disable the data system box and CmigitsDetails dialog until we get
+    // status from hcrdrx.
     _ui.setHmcModeBox->setEnabled(false);
-    _ui.cmigitsBox->setEnabled(true);   // XXX this is always enabled for now
+    _cmigitsDetails.setEnabled(false);
 
     // Connect signals from our Pmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool)),
@@ -109,14 +109,11 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     _ui.setHmcModeBox->setEnabled(responding);
-    // XXX cmigitsBox is always enabled for now
-//    _ui.cmigitsBox->setEnabled(responding);
+    _cmigitsDetails.setEnabled(responding);
     if (! responding) {
         // Create a default (bad) DrxStatus, and set it as the last status
         // received.
         _setPmcStatus(HcrPmc730Status());
-        // Close the C-MIGITS status details dialog
-        _cmigitsDetails.accept();
     }
 }
 
@@ -287,8 +284,35 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         return;
     }
 
-    // We got confirmation, so set drive to home position
-	_mcClientThread.rpcClient().homeDrive();
+    // We got confirmation, so start the homing procedure.
+    _mcClientThread.rpcClient().homeDrive();
+
+    // Poll until homing is complete
+    ILOG << "Waiting for servo drives to complete homing";
+    while (true) {
+        if (! _mcClientThread.rpcClient().homingInProgress()) {
+            break;
+        }
+        // Let other things run for up to 200 ms
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 200);
+    }
+
+    QMessageBox bugBox;
+    bugBox.setText("BUG: Zeroing of motor counts on Pentek is not yet implemented!");
+    bugBox.exec();
+//    // With the motors both at their zero positions, tell the Pentek to zero
+//    // its position counts for both motors.
+//    ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
+//    _drxStatusThread.rpcClient().zeroPentekMotorCounts();
+}
+
+/// Toggle motion control attitude correction
+void
+HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
+    // Toggle the current state of attitude correction
+    bool correction = _mcStatus.attitudeCorrectionEnabled;
+    ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
+    _mcClientThread.rpcClient().setCorrectionEnabled(! correction);
 }
 
 void
@@ -493,6 +517,8 @@ HcrGuiMainWindow::_update() {
 
     if (_mcClientThread.serverIsResponding()) {
         _motionControlDetails.setEnabled(true);
+
+        // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
         case MotionControl::POINTING:
@@ -509,11 +535,29 @@ HcrGuiMainWindow::_update() {
             break;
         }
         _ui.antennaModeLabel->setText(ss.str().c_str());
-        _ui.antennaModeButton->setEnabled(true);
+
+        // Attitude correction
+        _ui.attitudeCorrectionFrame->setEnabled(true);
+        _ui.attitudeCorrectionIcon->setPixmap(
+                _mcStatus.attitudeCorrectionEnabled ?
+                _greenLED : _greenLED_off);
+
+        // Drive homing
+        if (_mcStatus.rotDriveHomed && _mcStatus.tiltDriveHomed) {
+            _ui.driveHomeButton->setText("Rehome the Drives");
+            _ui.driveHomeButton->setEnabled(true);
+        	_ui.antennaModeButton->setEnabled(true);
+        } else {
+            _ui.driveHomeButton->setText("Home the Drives");
+            _ui.driveHomeButton->setEnabled(true);
+            _ui.antennaModeButton->setEnabled(false);
+        }
     } else {
         _mcStatus = MotionControl::Status();    // go to an empty status
         _motionControlDetails.setEnabled(false);
         _ui.antennaModeLabel->setText("<font color='DarkRed'>MotionControlDaemon not responding</font>");
+        _ui.attitudeCorrectionFrame->setEnabled(false);
+        _ui.driveHomeButton->setEnabled(false);
         _ui.antennaModeButton->setEnabled(false);
     }
 }

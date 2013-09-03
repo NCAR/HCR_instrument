@@ -64,20 +64,22 @@ void HcrDrxPub::run() {
   int count = 0;
   while (1) {
     int64_t pulsenum;
-    float rotation;
-    float tilt;
-    char* buf = _down->getBeam(pulsenum, rotation, tilt);
+    float rotMotorAngle;
+    float tiltMotorAngle;
+    char* buf = _down->getBeam(pulsenum, rotMotorAngle, tiltMotorAngle);
     // Publish angles from channel 0 every 100 pulses.
     if (angleSocket && ! (count++ % 100)) {
-        // Put together a datagram containing rotation and tilt as IEEE 4-byte
-        // floats.
+        // Put together a datagram containing rotation and tilt motor angles
+        // as IEEE 4-byte floats.
         QByteArray datagram;
-        datagram.append(reinterpret_cast<char*>(&rotation), sizeof(float));
-        datagram.append(reinterpret_cast<char*>(&tilt), sizeof(float));
+        datagram.append(reinterpret_cast<char*>(&rotMotorAngle), sizeof(float));
+        datagram.append(reinterpret_cast<char*>(&tiltMotorAngle), sizeof(float));
         angleSocket->writeDatagram(datagram.data(), datagram.size(),
                 QHostAddress::Broadcast, 45454);
     }
-    _addToExport(reinterpret_cast<const int16_t *>(buf), pulsenum);
+
+    _addToExport(reinterpret_cast<const int16_t *>(buf), pulsenum,
+            rotMotorAngle, tiltMotorAngle);
   }
   // Delete the angle socket before we exit
   delete(angleSocket);
@@ -117,10 +119,9 @@ HcrDrxPub::_configIsValid() const {
 
 ////////////////////////////////////////////////////////////////////////////////
 void
-  HcrDrxPub::_addToExport(const int16_t *iq, int64_t pulseSeqNum)
-  
+HcrDrxPub::_addToExport(const int16_t *iq, int64_t pulseSeqNum,
+        float rotMotorAngle, float tiltMotorAngle)
 {
-
   time_duration timeFromEpoch = _sd3c.timeOfPulse(pulseSeqNum) - Epoch1970;
   time_t timeSecs = timeFromEpoch.total_seconds();
   int nanoSecs = timeFromEpoch.fractional_seconds() * 
@@ -135,7 +136,7 @@ void
   // set data in pulse object
 
   _pulseData->set(pulseSeqNum, timeSecs, nanoSecs,
-          _chanId,
+          _chanId, rotMotorAngle, tiltMotorAngle,
           _nGates, iq);
 
   // we write to the merge queue using one object,

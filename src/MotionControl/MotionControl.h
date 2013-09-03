@@ -26,8 +26,19 @@ public:
     /// @brief Destructor
     virtual ~MotionControl();
 
-    /// @brief Set drives to home position
-    void homeDrive();
+    /// @brief Find the home index position for each drive, setting the given
+    /// count values at the home locations. Home index is defined as the first
+    /// motor index mark in a positive direction from the home sensor of the
+    /// motor.
+    ///
+    /// Mode is set to point to 0 degrees when this method completes, so any
+    /// previously set scanning/pointing mode is overridden. The method will
+    /// generally return before homing is actually completed.
+    /// @param rotHomeCounts the count value to assign at rotation drive's home
+    /// index
+    /// @param tiltHomeCounts the count value to assign at tilt drive's home
+    /// index
+    void homeDrive(int rotHomeCounts, int tiltHomeCounts);
 
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
@@ -85,6 +96,12 @@ public:
     /// @return true iff attitude correction is enabled.
     bool attitudeCorrectionEnabled() const { return(_attitudeCorrectionEnabled); }
 
+    /// @brief Return true iff homing is in progress for either drive.
+    /// @return true iff homing is in progress for either drive.
+    bool homingInProgress() const {
+        return(_rotDrive.homingInProgress() || _tiltDrive.homingInProgress());
+    }
+
     /// @brief Simple class to encapsulate status of a MotionControl object.
     class Status {
     public:
@@ -138,6 +155,8 @@ public:
         int rotDriveTemp;
         /// Rotation angle, deg
         float rotDriveAngle;
+        /// Rotation drive system time (at last status collection)
+        uint32_t rotDriveSystemTime;
         /// Is the tilt drive responding?
         bool tiltDriveResponding;
         /// Is the tilt drive initialized?
@@ -150,6 +169,8 @@ public:
         int tiltDriveTemp;
         /// Tilt angle, deg
         float tiltDriveAngle;
+        /// Rotation drive system time (at last status collection)
+        uint32_t tiltDriveSystemTime;
         /// Antenna motion mode
         AntennaMode antennaMode;
         // Pointing angle for POINTING mode
