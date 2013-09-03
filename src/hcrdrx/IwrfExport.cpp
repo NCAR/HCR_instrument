@@ -256,14 +256,7 @@ void IwrfExport::run()
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
     }
-    // Temporary for debugging
-    if (_pulseSeqNum % 10000 == 0) {
-        ILOG << "rotation H " << int(_pulseH->getRotMotorAngle()*400000) <<
-                ", V " << int(_pulseV->getRotMotorAngle()*400000) <<
-                " -- tilt H " << int(_pulseH->getTiltMotorAngle()*480000) <<
-                ", V " << int(_pulseV->getTiltMotorAngle()*480000);
-    }
-    
+
     if (sendMeta) {
       _sendIwrfMetaData();
       metaDataInitialized = true;
@@ -955,13 +948,28 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     _radarGeoref.vert_velocity_mps = velUp;
     _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
-    _radarGeoref.drive_angle_1_deg = _pulseH->getRotMotorAngle();
-    _radarGeoref.drive_angle_2_deg = _pulseH->getTiltMotorAngle();
+    // Angles of the reflector rotation and tilt motors.
+    float rotMotorAngle = _pulseH->getRotMotorAngle();
+    float tiltMotorAngle = _pulseH->getTiltMotorAngle();
+    _radarGeoref.drive_angle_1_deg = rotMotorAngle;
+    _radarGeoref.drive_angle_2_deg = tiltMotorAngle;
 
-    _radarGeoref.rotation_angle_deg = _radarGeoref.drive_angle_1_deg;
-    _radarGeoref.tilt_deg = 
-      ((_radarGeoref.drive_angle_2_deg * 2.0) * 
-       cos(_radarGeoref.rotation_angle_deg * DEG_TO_RAD));
+    // Rotation and tilt of the radar beam w.r.t. the pod's longitudinal axis.
+    // Zero rotation means the beam points through the top of the pod and
+    // positive rotation moves clockwise as viewed looking from the back
+    // of the pod toward the front. Zero tilt means the beam points normal to
+    // the longitudinal axis, and positive tilt means the beam points
+    // forward.
+    //
+    // Beware of "rotation" and "tilt" terms here; the angles of the rotation
+    // motor and tilt motor do not map directly to rotation_angle_deg and
+    // tilt_deg! In HCR, the axis of the tilt motor is fixed w.r.t. the pod and
+    // corresponds with the pod's C-MIGITS pitch axis. The axis of the rotation
+    // motor is moved by the tilt motor, and is only parallel to the pod's
+    // longitudinal axis when the tilt motor angle is zero.
+    _radarGeoref.rotation_angle_deg = rotMotorAngle;
+    _radarGeoref.tilt_deg = ((2.0 * tiltMotorAngle) // x2 for reflection
+            * cos(rotMotorAngle * DEG_TO_RAD));
     
     int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
     for (int i = 0; i < nUnused; i++) {
