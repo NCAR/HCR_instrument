@@ -92,7 +92,7 @@ public:
      * at the last call to updateAnalogValues().
      */
     static double detectedRfPower() {
-        return _LookupMiWv950WPower(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
+        return _MiWv950WPower(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
     }
 
     /**
@@ -671,7 +671,7 @@ private:
      * @param voltage the voltage measured at the Mi-Wave 950W detector
      * @return the RF power measured at the Mi-Wave 950W detector, dBm
      */
-    static double _LookupMiWv950WPower(double voltage);
+    static double _MiWv950WPower(double voltage);
     
     /**
      * @brief Initialize the PMC730 for event counting using DIO channel 2.

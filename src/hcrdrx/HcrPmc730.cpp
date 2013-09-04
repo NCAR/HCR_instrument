@@ -259,84 +259,15 @@ HcrPmc730::_ttlBinaryForChannel(int channel) throw (BadTtlVoltage) {
     }
 }
 
-/*
- * Mi-Wave 950W finline RF power detector calibration measurements from
- * 7/21/2009, 94.4 GHz input power in dBm vs. output volts (into high impedance).
- */
-static const double MiWv950W_Cal[][2] = {
-    {-26.60, 3.20e-3},
-    {-23.65, 3.93e-3},
-    {-22.74, 5.01e-3},
-    {-21.86, 6.36e-3},
-    {-20.50, 7.83e-3},
-    {-19.85, 9.69e-3},
-    {-18.90, 11.9e-3},
-    {-17.96, 14.8e-3},
-    {-16.94, 18.0e-3},
-    {-15.99, 21.9e-3},
-    {-15.00, 26.6e-3},
-    {-14.01, 31.8e-3},
-    {-13.02, 38.3e-3},
-    {-12.04, 46.3e-3},
-    {-11.05, 55.0e-3},
-    {-10.05, 65.1e-3},
-    {-9.05, 76.7e-3},
-    {-8.04, 89.8e-3},
-    {-7.05, 105.e-3},
-    {-6.05, 123.e-3},
-    {-5.03, 142.e-3},
-    {-4.07, 165.e-3},
-    {-3.07, 191.e-3},
-    {-2.07, 219.e-3},
-    {-1.08, 252.e-3},
-    {-0.08, 288.e-3},
-    {0.92, 330.e-3},
-    {1.91, 383.e-3},
-    {2.89, 432.e-3},
-    {3.89, 495.e-3},
-    {4.88, 560.e-3},
-    {5.85, 632.e-3}
-};
-static const int MiWv950W_CalLen = (sizeof(MiWv950W_Cal) / (sizeof(*MiWv950W_Cal)));
-
 double
-HcrPmc730::_LookupMiWv950WPower(double voltage) {
+HcrPmc730::_MiWv950WPower(double voltage) {
     // The HCR breakout board provides a factor of 2 gain on the voltage
     // coming from the detector before sending the signal on to the PMC-730.
     // Remove that gain now.
     double detectorVoltage = 0.5 * voltage;
 
-    // If we're below the lowest voltage in the cal table, just return a
-    // really low power
-    if (detectorVoltage < MiWv950W_Cal[0][1]) {
-        return(-99.9);
-    }
-    // If we're above the highest voltage in the cal table, just return the
-    // highest power in the cal table.
-    if (detectorVoltage > MiWv950W_Cal[MiWv950W_CalLen - 1][1]) {
-        return(MiWv950W_Cal[MiWv950W_CalLen - 1][0]);
-    }
-    // OK, our voltage is somewhere in the table. Move up through the table,
-    // and interpolate between the two enclosing points.
-    for (int i = 0; i < MiWv950W_CalLen - 1; i++) {
-        double powerLow = MiWv950W_Cal[i][0];
-        double vLow = MiWv950W_Cal[i][1];
-        double powerHigh = MiWv950W_Cal[i + 1][0];
-        double vHigh = MiWv950W_Cal[i + 1][1];
-        if (vHigh < detectorVoltage)
-            continue;
-        // Convert powers to linear space, then interpolate to our input voltage
-        double powerLowLinear = pow(10.0, powerLow / 10.0);
-        double powerHighLinear = pow(10.0, powerHigh / 10.0);
-        double fraction = (detectorVoltage - vLow) / (vHigh - vLow);
-        double powerLinear = powerLowLinear +
-            (powerHighLinear - powerLowLinear) * fraction;
-        // Convert interpolated power back to dBm and return it.
-        return(10.0 * log10(powerLinear));
-    }
-    // Oops if we get here...
-    ELOG << __PRETTY_FUNCTION__ << ": Bad lookup for " << detectorVoltage << " V!";
-    abort();
+    // Apply the calibration formula supplied by Pei 8/23/2013
+    return(10.0 * log10(detectorVoltage + 0.007));
 }
 
 /*
