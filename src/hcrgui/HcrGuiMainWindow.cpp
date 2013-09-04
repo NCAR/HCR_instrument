@@ -6,6 +6,7 @@
  */
 #include "HcrGuiMainWindow.h"
 
+#include <cmath>
 #include <sstream>
 #include <unistd.h>
 #include <logx/Logging.h>
@@ -301,9 +302,22 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         // Let other things run for up to 200 ms
         QCoreApplication::processEvents(QEventLoop::AllEvents, 200);
     }
+    
+    // Update motion control status and verify drives are homed. Pop up
+    // a warning box if homing failed.
+    _mcStatus = _mcClientThread.rpcClient().status();
+    if (! _mcStatus.rotDriveHomed || ! _mcStatus.tiltDriveHomed) {
+        // Let the user know that homing failed
+        QMessageBox failureBox(QMessageBox::Warning, "Homing Failed",
+                "Drive homing failed!\nYou will need to try again.",
+                QMessageBox::Ok, this);
+        failureBox.exec();
+        // Just return now
+        return;
+    }
 
-    // With the motors both at their zero positions, tell the Pentek to zero
-    // its position counts for both motors.
+    // With the motors positioned at zero, tell the Pentek to zero *its* 
+    // position counts now for both motors.
     ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
     _drxStatusThread.rpcClient().zeroPentekMotorCounts();
 }
