@@ -575,7 +575,7 @@ HcrGuiMainWindow::_update() {
     // Make sure transmitter HV is turned off if the pressure in the pressure 
     // vessel drops below 760 hPa.
     if (_drxStatus.pvForePressure() < 760) {
-        // Disable the HV button
+        // Disable the HV button as long as pressure remains too low
         _ui.hvButton->setEnabled(false);
         
         // If HV is on, turn it off now
