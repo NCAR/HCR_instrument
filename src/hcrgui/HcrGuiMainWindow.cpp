@@ -571,6 +571,25 @@ HcrGuiMainWindow::_update() {
         _ui.driveHomeButton->setEnabled(false);
         _ui.antennaModeButton->setEnabled(false);
     }
+    
+    // Make sure transmitter HV is turned off if the pressure in the pressure 
+    // vessel drops below 760 hPa.
+    if (_drxStatus.pvForePressure() < 760) {
+        // Disable the HV button
+        _ui.hvButton->setEnabled(false);
+        
+        // If HV is on, turn it off now
+        if (_xmitterHvOn()) {
+            // Act as if the user clicked the HV button to turn off HV
+            on_hvButton_clicked();
+            // Warn the user that we have turned off HV
+            QMessageBox box(QMessageBox::Warning, "Turning Off Transmitter HV",
+                    "Turning off transmitter HV due to low pressure\n"
+                    "in the pressure vessel",
+                    QMessageBox::Ok, this);
+            box.exec();
+        }
+    }
 }
 
 void
