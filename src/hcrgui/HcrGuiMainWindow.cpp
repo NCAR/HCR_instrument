@@ -290,7 +290,15 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         return;
     }
 
-    // We got confirmation, so start the homing procedure.
+    // Save the current state of attitude correction, then disable correction
+    // until we exit. At exit, the current correction state will be restored.
+    // We disable correction because we need the motors to remain at their
+    // zero-count positions after homing long enough for us to also zero the
+    // motor counts on the Pentek.
+    bool savedState = _mcStatus.attitudeCorrectionEnabled;
+    _mcClientThread.rpcClient().setCorrectionEnabled(false);
+
+    // Start the drive homing program.
     _mcClientThread.rpcClient().homeDrive();
 
     // Poll until homing is complete
@@ -303,23 +311,29 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 200);
     }
     
-    // Update motion control status and verify drives are homed. Pop up
+    // Update motion control status and verify drives actually got homed. Pop up
     // a warning box if homing failed.
     _mcStatus = _mcClientThread.rpcClient().status();
     if (! _mcStatus.rotDriveHomed || ! _mcStatus.tiltDriveHomed) {
+        WLOG << "Homing failed";
         // Let the user know that homing failed
         QMessageBox failureBox(QMessageBox::Warning, "Homing Failed",
                 "Drive homing failed!\nYou will need to try again.",
                 QMessageBox::Ok, this);
         failureBox.exec();
-        // Just return now
-        return;
+        goto done;
     }
 
     // With the motors positioned at zero, tell the Pentek to zero *its* 
     // position counts now for both motors.
     ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
     _drxStatusThread.rpcClient().zeroPentekMotorCounts();
+
+done:
+    // Sleep momentarily, then restore the previous state for attitude
+    // correction
+    usleep(100000);
+    _mcClientThread.rpcClient().setCorrectionEnabled(savedState);
 }
 
 /// Toggle motion control attitude correction
