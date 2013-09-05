@@ -140,5 +140,8 @@ private:
 
     // time of last GUI update with new angles
     QDateTime _lastAngleUpdate;
+
+    // Have we disabled transmitter HV due to low pod pressure?
+    bool _hvDisabled;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/

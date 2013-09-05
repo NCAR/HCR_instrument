@@ -36,7 +36,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
     _nextLogIndex(0),
-    _lastAngleUpdate(QDateTime::currentDateTime()) {
+    _lastAngleUpdate(QDateTime::currentDateTime()),
+    _hvDisabled(false) {
     // Set up the UI
     _ui.setupUi(this);
     // Limit the log area to 1000 messages
@@ -596,13 +597,20 @@ HcrGuiMainWindow::_update() {
         if (_xmitterHvOn()) {
             // Act as if the user clicked the HV button to turn off HV
             on_hvButton_clicked();
-            // Warn the user that we have turned off HV
-            QMessageBox box(QMessageBox::Warning, "Turning Off Transmitter HV",
-                    "Turning off transmitter HV due to low pressure\n"
+        }
+
+        // Keep a member variable to note when we've disabled HV
+        if (! _hvDisabled) {
+            // Warn the user that we have disabled HV
+            QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
+                    "Disabling transmitter HV due to low pressure\n"
                     "in the pressure vessel",
                     QMessageBox::Ok, this);
             box.exec();
         }
+        _hvDisabled = true;
+    } else {
+        _hvDisabled = false;
     }
 }
 
