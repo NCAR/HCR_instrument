@@ -37,7 +37,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _greenLED_off(":/greenLED_off.png"),
     _nextLogIndex(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
-    _hvDisabled(false) {
+    _hvDisabledForPressure(true),
+    _goodPresStartTime(0) {
     // Set up the UI
     _ui.setupUi(this);
     // Limit the log area to 1000 messages
@@ -600,7 +601,7 @@ HcrGuiMainWindow::_update() {
         }
 
         // Keep a member variable to note when we've disabled HV
-        if (! _hvDisabled) {
+        if (! _hvDisabledForPressure) {
             // Warn the user that we have disabled HV
             QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
                     "Disabling transmitter HV due to low pressure\n"
@@ -608,9 +609,27 @@ HcrGuiMainWindow::_update() {
                     QMessageBox::Ok, this);
             box.exec();
         }
-        _hvDisabled = true;
+        // Remember that we've disabled HV
+        _hvDisabledForPressure = true;
+        // Mark as having no continuous good pressures
+        _goodPresStartTime = 0;
     } else {
-        _hvDisabled = false;
+        // If the last pressure was bad, mark now as the start of good
+        // pressures
+        time_t now = time(0);
+        if (! _goodPresStartTime) {
+            _goodPresStartTime = now;
+        }
+        // Allow HV again if we've had continuous good pressure values
+        // for more than 60 seconds
+        if ((now - _goodPresStartTime) > 60) {
+            _hvDisabledForPressure = false;
+            QMessageBox box(QMessageBox::Information, "HV Allowed",
+                    "Transmitter HV is now allowed, with 60 seconds\n"
+                    "of good pressures",
+                    QMessageBox::Ok, this);
+            box.exec();
+        }
     }
 }
 

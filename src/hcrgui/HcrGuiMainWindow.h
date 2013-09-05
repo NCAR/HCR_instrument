@@ -142,6 +142,9 @@ private:
     QDateTime _lastAngleUpdate;
 
     // Have we disabled transmitter HV due to low pod pressure?
-    bool _hvDisabled;
+    bool _hvDisabledForPressure;
+    // Time of the first good pressure in a period of continuous good pressures
+    // If zero, then the last pressure seen was bad.
+    time_t _goodPresStartTime;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/
