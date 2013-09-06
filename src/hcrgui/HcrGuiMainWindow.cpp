@@ -264,6 +264,20 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
+        // Do not change mode if we're transmitting. At this point, moving the
+        // reflector between pointing locations may steer the beam through the
+        // aircraft fuselage. If we do that while transmitting, the return signal
+        // will damage the radar.
+        if (_xmitterHvOn()) {
+            QMessageBox box(QMessageBox::Warning,
+                    "No Mode Change While Transmitting",
+                    "Reflector mode cannot be changed while transmitting.",
+                    QMessageBox::Ok, this);
+            box.setInformativeText(
+                    "Radar transmitter HV must be turned off before changing mode!");
+            return;
+        }
+
     	if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
     		float angle;
     		_antennaModeDialog.getPointingAngle(angle);
