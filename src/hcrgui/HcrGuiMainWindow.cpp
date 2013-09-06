@@ -600,19 +600,22 @@ HcrGuiMainWindow::_update() {
             on_hvButton_clicked();
         }
 
-        // Keep a member variable to note when we've disabled HV
-        if (! _hvDisabledForPressure) {
+        // Remember that we've disabled HV
+        bool stateChanged = ! _hvDisabledForPressure;
+        _hvDisabledForPressure = true;
+
+        // Mark as having no continuous good pressures
+        _goodPresStartTime = 0;
+
+        // Popup a message if we just changed the state of _hvDisabledForPressure
+        if (stateChanged) {
             // Warn the user that we have disabled HV
             QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
                     "Disabling transmitter HV due to low pressure\n"
-                    "in the pressure vessel",
+                    "in the pressure vessel (or hcrdrx shutdown)",
                     QMessageBox::Ok, this);
             box.exec();
         }
-        // Remember that we've disabled HV
-        _hvDisabledForPressure = true;
-        // Mark as having no continuous good pressures
-        _goodPresStartTime = 0;
     } else {
         // If the last pressure was bad, mark now as the start of good
         // pressures
@@ -622,7 +625,8 @@ HcrGuiMainWindow::_update() {
         }
         // Allow HV again if we've had continuous good pressure values
         // for more than 60 seconds
-        if ((now - _goodPresStartTime) > 60) {
+        if (_hvDisabledForPressure &&
+                _goodPresStartTime && ((now - _goodPresStartTime) > 60)) {
             _hvDisabledForPressure = false;
             QMessageBox box(QMessageBox::Information, "HV Allowed",
                     "Transmitter HV is now allowed, with 60 seconds\n"
