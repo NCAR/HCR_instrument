@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <stdexcept>
+#include <cstdio>
 #include <QSharedMemory>
 
 /// @brief Class which provides access to a shared memory segment intended to
@@ -225,6 +226,7 @@ private:
         float roll;             // deg
         float heading;          // deg clockwise from true north
     } * _shmContents;
+    FILE * _dataFile;
 };
 
 #endif /* CMIGITSSHAREDMEMORY_H_ */

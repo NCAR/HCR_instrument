@@ -19,10 +19,15 @@ const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
 inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
 inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
 
+// Set RECORD_CSV to true to record a CSV text file of all 3500, 3501, and
+// 3512 messages
+static const bool RECORD_CSV = false;
+
 CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     _qShm(CMIGITS_SHM_KEY),
     _writeAccess(writeAccess),
-    _shmContents(0) {
+    _shmContents(0),
+    _dataFile(0) {
     // Create and attach to the shared memory segment, which will hold our
     // private type struct _ShmContents
     int segsize = sizeof(struct _ShmContents);
@@ -89,6 +94,9 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         _shmContents->writerPid = getpid();
         _qShm.unlock();
     }
+    if (RECORD_CSV) {
+        _dataFile = fopen("/tmp/cmigitsData", "w+");
+    }
 }
 
 CmigitsSharedMemory::~CmigitsSharedMemory() {
@@ -135,6 +143,13 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
     _shmContents->vPosError = expectedVPosError;
     _shmContents->velocityError = expectedVelocityError;
     _qShm.unlock();
+    if (RECORD_CSV) {
+        fprintf(_dataFile, "3500,%lld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n", 
+                dataTime, currentMode, insAvailable, gpsAvailable, 
+                doingCoarseAlignment, nSats, positionFOM, velocityFOM, 
+                headingFOM, timeFOM, expectedHPosError, expectedVPosError,
+                expectedVelocityError);
+    }
 }
 
 void
@@ -177,7 +192,11 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, float latitude,
     _shmContents->velEast = velEast;
     _shmContents->velUp = velUp;
     _qShm.unlock();
-    return;
+    if (RECORD_CSV) {
+        fprintf(_dataFile, "3501,%lld,%f,%f,%f,%f,%f,%f\n", dataTime, 
+                latitude, longitude, altitude, velNorth, velEast, velUp);
+        return;
+    }
 }
 
 void
@@ -208,7 +227,11 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, float pitch,
     _shmContents->roll = roll;
     _shmContents->heading = heading;
     _qShm.unlock();
-    return;
+    if (RECORD_CSV) {
+        fprintf(_dataFile, "3512,%lld,%f,%f,%f\n", dataTime, pitch, roll, 
+                heading);
+        return;
+    }
 }
 
 void
