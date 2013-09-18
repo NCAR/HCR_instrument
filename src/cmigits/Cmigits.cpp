@@ -1207,7 +1207,7 @@ Cmigits::_doCurrentConfigPhase() {
         udata[0] |= 1 << 3;	// set date/time data
         udata[0] |= 1 << 4;	// set true heading
         udata[0] |= 1 << 5;	// set auto align/nav sequence data
-        udata[0] |= 1 << 8;	// setting auto GPS state
+        udata[0] |= 1 << 6;	// setting auto GPS state
 
         // Follow automatic mode sequencing, defined by the alignment/navigation
         // word below.
@@ -1282,7 +1282,7 @@ Cmigits::_doCurrentConfigPhase() {
         // Assume stationary (Fine Alignment) initialization if we're moving
         // less than 2 m/s, otherwise use moving initialization (Air Alignment).
         // NOTE: if the true airspeed is NaN, we assume we're stationary.
-	if (isnan(iwg1Tas)) {
+        if (isnan(iwg1Tas)) {
             iwg1Tas = 0.0;
             ILOG << "IWG1 true airspeed is NaN, setting to zero!";
         }
