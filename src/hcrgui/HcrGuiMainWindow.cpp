@@ -34,6 +34,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
+    _xmitStatus(),
+    _mcStatus(),
+    _pmcStatus(true),
     _nextLogIndex(0) {
     // Set up the UI
     _ui.setupUi(this);
