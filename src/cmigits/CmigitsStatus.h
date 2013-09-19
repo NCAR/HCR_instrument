@@ -161,7 +161,7 @@ private:
     }
 
     /// Static connection to the CmigitsSharedMemory segment
-    static CmigitsSharedMemory _Shm;
+    static CmigitsSharedMemory * _Shm;
 
     /// Time of last status information, seconds since 1970-01-01 00:00:00 UTC.
     /// This time applies to current mode, INS available, GPS available,

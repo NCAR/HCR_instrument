@@ -12,28 +12,33 @@
 LOGGING("CmigitsStatus")
 
 // Static connection to CmigitsSharedMemory
-CmigitsSharedMemory CmigitsStatus::_Shm;
+CmigitsSharedMemory * CmigitsStatus::_Shm = 0;
 
 CmigitsStatus::CmigitsStatus() {
+    // If we have no static connection to the shared memory segment, create
+    // it now.
+    if (! _Shm) {
+        _Shm = new CmigitsSharedMemory();
+    }
     // If a process is writing to CmigitsSharedMemory, get latest status from
     // there. Set our members from the latest 3500, 3501, and 3512 messages
     // from the C-MIGITS.
-    if (_Shm.getWriterPid()) {
+    if (_Shm->getWriterPid()) {
         uint64_t iTime;
         // Get the latest 3500 message data
-        _Shm.getLatest3500Data(iTime, _currentMode, _insAvailable,
+        _Shm->getLatest3500Data(iTime, _currentMode, _insAvailable,
                 _gpsAvailable, _doingCoarseAlignment, _nSats, _positionFOM,
                 _velocityFOM, _headingFOM, _timeFOM, _expectedHPosError,
                 _expectedVPosError, _expectedVelocityError);
         _statusTime = 0.001 * iTime;
 
         // Get the latest 3501 message data
-        _Shm.getLatest3501Data(iTime, _latitude, _longitude,
+        _Shm->getLatest3501Data(iTime, _latitude, _longitude,
                 _altitude, _velNorth, _velEast, _velUp);
         _navSolutionTime = 0.001 * iTime;
 
         // Get the latest 3512 message data
-        _Shm.getLatest3512Data(iTime, _pitch, _roll, _heading);
+        _Shm->getLatest3512Data(iTime, _pitch, _roll, _heading);
         _attitudeTime = 0.001 * iTime;
     } else {
         // Nobody's writing to the shared memory, so complain and fill the
