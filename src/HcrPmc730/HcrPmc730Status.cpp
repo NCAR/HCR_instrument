@@ -29,9 +29,44 @@ HcrPmc730Status::TemperatureList HcrPmc730Status::_CmigitsTemps;
 HcrPmc730Status::TemperatureList HcrPmc730Status::_TailconeTemps;
 
 
-HcrPmc730Status::HcrPmc730Status() {
-    // Construct from current values available from the card.
-    _getMultiIoValues();
+HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
+    _ploTemp(0.0),
+    _eikTemp(0.0),
+    _vLnaTemp(0.0),
+    _hLnaTemp(0.0),
+    _polarizationSwitchTemp(0.0),
+    _rfDetectorTemp(0.0),
+    _noiseSourceTemp(0.0),
+    _ps28VTemp(0.0),
+    _rdsInDuctTemp(0.0),
+    _cmigitsTemp(0.0),
+    _tiltMotorTemp(0.0),
+    _rotationMotorTemp(0.0),
+    _tailconeTemp(0.0),
+    _detectedRfPower(0.0),
+    _pvAftPressure(0.0),
+    _pvForePressure(0.0),
+    _psVoltage(0.0),
+    _locked15_5GHzPLO(false),
+    _locked1250MHzPLO(false),
+    _locked125MHzPLO(false),
+    _modPulseDisabled(false),
+    _emsErrorCount(0),
+    _emsError1(false),
+    _emsError2(false),
+    _emsError3(false),
+    _emsError4Or5(false),
+    _emsError6Or7(false),
+    _emsPowerError(false),
+    _radarPowerError(false),
+    _waveguideSwitchError(false),
+    _rdsXmitterFilamentOn(false),
+    _rdsXmitterHvOn(false),
+    _hmcMode(0) {
+    // If requested, get real values from the local static HcrPmc730 instance
+    if (! createEmptyInstance) {
+        _getMultiIoValues();
+    }
 }
 
 HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) {

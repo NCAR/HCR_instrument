@@ -20,8 +20,13 @@
 /// @brief Class to represent HCR digital receiver/remote data system status.
 class HcrPmc730Status {
 public:
-    /// @brief Default constructor.
-    HcrPmc730Status();
+    /// @brief Constructor, getting current values from the local singleton
+    /// HcrPmc730 instance if createEmptyInstance is true.
+    /// @param createEmptyInstance If true, the instance is created containing
+    /// all zero values. If false, current status values are obtained from the
+    /// local HcrPmc730 singleton instance (a PMC-730 card *must*
+    /// program if no PMC-730 card is on the machine where the call is made!
+    HcrPmc730Status(bool createEmptyInstance = false);
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
     /// by a call to the HcrPmc730Status::toXmlRpcValue() method.
