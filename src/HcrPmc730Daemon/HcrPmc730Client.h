@@ -30,29 +30,28 @@ public:
     /// @return true and fill the status object if status is obtained from
     /// HcrPmc730Daemon, otherwise return false and leave the status object
     /// unmodified.
-    /// @throws girerr::error if the RPC fails
-    bool getStatus(HcrPmc730Status & status) throw (girerr::error);
+    bool getStatus(HcrPmc730Status & status);
 
     /// @brief Send an "xmitFilamentOn" command to HcrPmc730Daemon
-    /// @throws girerr::error if the RPC fails
-    void xmitFilamentOn() throw (girerr::error);
+    /// @return true if the call is successful, false otherwise
+    bool xmitFilamentOn();
 
     /// @brief Send a "xmitFilamentOff" command to HcrPmc730Daemon
-    /// @throws girerr::error if the RPC fails
-    void xmitFilamentOff() throw (girerr::error);
+    /// @return true if the call is successful, false otherwise
+    bool xmitFilamentOff();
 
     /// @brief Send an "xmitHvOn" command to HcrPmc730Daemon
-    /// @throws girerr::error if the RPC fails
-    void xmitHvOn() throw (girerr::error);
+    /// @return true if the call is successful, false otherwise
+    bool xmitHvOn();
 
     /// @brief Send a "xmitHvOff" command to HcrPmc730Daemon
-    /// @throws girerr::error if the RPC fails
-    void xmitHvOff() throw (girerr::error);
+    /// @return true if the call is successful, false otherwise
+    bool xmitHvOff();
 
     /// @brief Send "setHmcMode" command to HcrPmc730Daemon
     /// @param mode integer mode number for the HMC, 0-7
-    /// @throws girerr::error if the RPC fails
-    void setHmcMode(int mode) throw (girerr::error);
+    /// @return true if the call is successful, false otherwise
+    bool setHmcMode(int mode);
 
 private:
     std::string _daemonHost;
