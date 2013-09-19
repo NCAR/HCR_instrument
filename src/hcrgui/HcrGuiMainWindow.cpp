@@ -717,8 +717,7 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	float scanRange = cwLimit - ccwLimit;
 	if (scanRange < 0)
 		scanRange += 360;
-	if (_mcStatus.rotDriveResponding &&
-		_mcStatus.antennaMode == MotionControl::SCANNING) {
+	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
 	   	painter.setBrush(QColor(0, 200, 80));
 	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -scanRange*16);
 	}
