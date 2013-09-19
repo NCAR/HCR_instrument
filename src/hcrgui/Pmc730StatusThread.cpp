@@ -41,7 +41,7 @@ Pmc730StatusThread::run() {
 
 void
 Pmc730StatusThread::_getStatus() {
-    HcrPmc730Status status;
+    HcrPmc730Status status(true);
     if (_client->getStatus(status)) {
         if (! _responsive) {
             _responsive = true;
