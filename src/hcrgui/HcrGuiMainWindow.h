@@ -71,6 +71,8 @@ private slots:
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _mcResponsivenessChange(bool responding);
+    /// @brief Slot to erase the angle display when angles are no longer valid
+    void _timeoutAngleDisplay();
 
 private:
     // Append latest messages from hcr_xmitd to our logging area
@@ -108,8 +110,12 @@ private:
 
     /// @brief Show rotation angle
     void _showRotAngle(float rotAngle);
+
     /// @brief Show tilt angle
     void _showTiltAngle(float tiltAngle);
+
+    /// @brief Clear the angle displays
+    void _clearAngleDisplay();
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
@@ -140,6 +146,9 @@ private:
 
     // time of last GUI update with new angles
     QDateTime _lastAngleUpdate;
+
+    // timer to erase angle display if time since new angles is too long
+    QTimer _anglesValidTimer;
 
     // Have we disabled transmitter HV due to low pod pressure?
     bool _hvDisabledForPressure;

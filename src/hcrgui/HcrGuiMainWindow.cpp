@@ -14,6 +14,9 @@
 #include <QDateTime>
 #include <QMessageBox>
 
+// Invalid angle used to erase display of reflector position
+static const float INVALID_ANGLE = -999.9;
+
 LOGGING("HcrGuiMainWindow")
 
 
@@ -37,6 +40,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _greenLED_off(":/greenLED_off.png"),
     _nextLogIndex(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
+    _anglesValidTimer(this),
     _hvDisabledForPressure(true),
     _goodPresStartTime(0) {
     // Set up the UI
@@ -87,13 +91,17 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
     connect(&_angleSocket, SIGNAL(readyRead()), this, SLOT(_readAngles()));
 
-    // Update every second
+    // Time out angle display if new angles stop arriving
+    _anglesValidTimer.setInterval(500);    // 1/2 second validity
+    _anglesValidTimer.setSingleShot(true);
+    connect(& _anglesValidTimer, SIGNAL(timeout()), this, SLOT(_timeoutAngleDisplay()));
+
+    // Update GUI every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
 
-    // Show rotation and tile angle display
-    _showRotAngle(0);
-    _showTiltAngle(0);
+    // Start with angle display cleared
+    _clearAngleDisplay();
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -673,6 +681,10 @@ HcrGuiMainWindow::_readAngles()
 
         memcpy(reinterpret_cast<char*>(&rotation), datagram.data(), 4);
         memcpy(reinterpret_cast<char*>(&tilt), datagram.data() + 4, 4);
+
+        // Start/restart the timer which will clear the angle display if
+        // angles stop arriving.
+        _anglesValidTimer.start();
     }
     // Only update the GUI if the time since last update is greater than 50 ms.
     // The test is klugy for now, since older QDateTime implementations do not
@@ -735,24 +747,26 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 			painter.drawLine(30, 0, 32, 0);
 		painter.rotate(10);
 	}
-	// Rot angle
-	if (_mcStatus.rotDriveResponding) {
-    	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
-    		pen.setColor("yellow");
-    		pen.setWidth(1);
-    		painter.setPen(pen);
-    		painter.rotate(ccwLimit-90);
-    		painter.drawLine(0, 0, 32, 0);
-    		painter.rotate(scanRange);
-    		painter.drawLine(0, 0, 32, 0);
-    		painter.rotate(90-cwLimit);
-    	}
-		pen.setColor("white");
-		pen.setWidth(2);
-		painter.setPen(pen);
-		painter.rotate(rotAngle-90);
-		painter.drawLine(0, 0, 32, 0);
+	// If we're scanning, indicate scanning limits
+	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
+	    pen.setColor("yellow");
+	    pen.setWidth(1);
+	    painter.setPen(pen);
+	    painter.rotate(ccwLimit-90);
+	    painter.drawLine(0, 0, 32, 0);
+	    painter.rotate(scanRange);
+	    painter.drawLine(0, 0, 32, 0);
+	    painter.rotate(90-cwLimit);
 	}
+
+    // Draw the current position if the angle is valid
+    if (rotAngle != INVALID_ANGLE) {
+        pen.setColor("white");
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.rotate(rotAngle-90);
+        painter.drawLine(0, 0, 32, 0);
+    }
 
 	painter.end();
 	_ui.rotAngleDisplay->setPixmap(*rotDisplay);
@@ -797,8 +811,9 @@ void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
 		rc++;
 	}
 	painter.rotate(54+6*rc);
-	// Tilt angle
-	if (_mcStatus.tiltDriveResponding) {
+
+	// Display current tilt angle, if the angle is valid
+	if (tiltAngle != INVALID_ANGLE) {
 		pen.setColor("white");
 		pen.setWidth(2);
 		painter.setPen(pen);
@@ -809,4 +824,18 @@ void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
 	painter.end();
 	_ui.tiltAngleDisplay->setPixmap(*tiltDisplay);
 	delete(tiltDisplay);
+}
+
+void
+HcrGuiMainWindow::_timeoutAngleDisplay() {
+    _logMessage("Angles from hcrdrx have stopped arriving");
+    _clearAngleDisplay();
+}
+
+void
+HcrGuiMainWindow::_clearAngleDisplay() {
+    _ui.rotationValue->setText("---");
+    _showRotAngle(INVALID_ANGLE);
+    _ui.tiltValue->setText("---");
+    _showTiltAngle(INVALID_ANGLE);
 }
