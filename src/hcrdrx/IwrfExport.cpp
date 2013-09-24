@@ -951,6 +951,10 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     _radarGeoref.vert_velocity_mps = velUp;
     _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
+    _radarInfo.latitude_deg = lat;
+    _radarInfo.longitude_deg = lon;
+    _radarInfo.altitude_m = alt;
+
     // Angles of the reflector rotation and tilt motors.
     float rotMotorAngle = _pulseH->getRotMotorAngle();
     float tiltMotorAngle = _pulseH->getTiltMotorAngle();
