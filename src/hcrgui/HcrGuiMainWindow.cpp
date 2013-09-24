@@ -283,6 +283,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
                     QMessageBox::Ok, this);
             box.setInformativeText(
                     "Radar transmitter HV must be turned off before changing mode!");
+            box.exec();
             return;
         }
 
