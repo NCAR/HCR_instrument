@@ -16,8 +16,8 @@ LOGGING("CmigitsSharedMemory")
 
 const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
 
-inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
-inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
+inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
+inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 
 // Set RECORD_CSV to true to record a CSV text file of all 3500, 3501, and
 // 3512 messages
@@ -123,8 +123,8 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
             bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
             uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
-            float expectedHPosError, float expectedVPosError,
-            float expectedVelocityError) throw(Exception) {
+            double expectedHPosError, double expectedVPosError,
+            double expectedVelocityError) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -157,8 +157,8 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
             bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
             uint16_t & nSats, uint16_t & positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
-            float & expectedHPosError, float & expectedVPosError,
-            float & expectedVelocityError) const {
+            double & expectedHPosError, double & expectedVPosError,
+            double & expectedVelocityError) const {
     _qShm.lock();
     dataTime = _shmContents->statusTime;
     currentMode = _shmContents->currentMode;
@@ -177,9 +177,9 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
 }
 
 void
-CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, float latitude,
-        float longitude, float altitude, float velNorth, float velEast,
-        float velUp) throw(Exception) {
+CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
+        double longitude, double altitude, double velNorth, double velEast,
+        double velUp) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -200,9 +200,9 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, float latitude,
 }
 
 void
-CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, float & latitude,
-        float & longitude, float & altitude, float & velNorth, float & velEast,
-        float & velUp) const {
+CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, double & latitude,
+        double & longitude, double & altitude, double & velNorth, double & velEast,
+        double & velUp) const {
     _qShm.lock();
     dataTime = _shmContents->navSolutionTime;
     latitude = _shmContents->latitude;
@@ -216,8 +216,8 @@ CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, float & latitude,
 }
 
 void
-CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, float pitch,
-        float roll, float heading) throw(Exception) {
+CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
+        double roll, double heading) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -235,8 +235,8 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, float pitch,
 }
 
 void
-CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, float & pitch,
-        float & roll, float & heading) const {
+CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, double & pitch,
+        double & roll, double & heading) const {
     _qShm.lock();
     dataTime = _shmContents->attitudeTime;
     pitch = _shmContents->pitch;
@@ -246,22 +246,22 @@ CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, float & pitch,
     return;
 }
 
-float
+double
 CmigitsSharedMemory::getEstimatedDriftAngle() const {
     _qShm.lock();
-    float heading = _shmContents->heading;
-    float velNorth = _shmContents->velNorth;
-    float velEast = _shmContents->velEast;
+    double heading = _shmContents->heading;
+    double velNorth = _shmContents->velNorth;
+    double velEast = _shmContents->velEast;
     _qShm.unlock();
 
     // Drift angle defaults to 0
-    float drift = 0.0;
+    double drift = 0.0;
 
     // Only calculate drift angle if ground velocity is a non-zero value.
     // We (arbitrarily) use 10 m/s as the threshold.
-    float groundSpd = sqrt(velNorth * velNorth + velEast * velEast);
+    double groundSpd = sqrt(velNorth * velNorth + velEast * velEast);
     if (groundSpd > 10.0) {
-        float groundTrk = 90 - RadToDeg(atan2(velNorth, velEast));
+        double groundTrk = 90 - RadToDeg(atan2(velNorth, velEast));
         drift = groundTrk - heading;
 
         // Normalize to range [-180,180]

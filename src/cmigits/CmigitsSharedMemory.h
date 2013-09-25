@@ -87,8 +87,8 @@ public:
             bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
             uint16_t & nSats, uint16_t &  positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
-            float & expectedHPosError, float & expectedVPosError,
-            float & expectedVelocityError) const;
+            double & expectedHPosError, double & expectedVPosError,
+            double & expectedVelocityError) const;
 
     /// @brief Get the latest 3501 (Navigation Solution) data available. If no
     /// 3501 message has been received yet, the data values will all be zero
@@ -101,9 +101,9 @@ public:
     /// @param[out] velNorth north component of velocity, m/s
     /// @param[out] velEast east component of velocity, m/s
     /// @param[out] velUp upward component of velocity, m/s
-    void getLatest3501Data(uint64_t & dataTime, float & latitude,
-            float & longitude, float & altitude, float & velNorth,
-            float & velEast, float & velUp) const;
+    void getLatest3501Data(uint64_t & dataTime, double & latitude,
+            double & longitude, double & altitude, double & velNorth,
+            double & velEast, double & velUp) const;
 
     /// @brief Get the latest 3512 (Flight Control) attitude data available.
     /// If no 3512 message has been received yet, the data values will all be
@@ -113,8 +113,8 @@ public:
     /// @param[out] pitch pitch, deg
     /// @param[out] roll roll, deg
     /// @param[out] heading heading, deg clockwise from true north
-    void getLatest3512Data(uint64_t & dataTime, float & pitch, float & roll,
-            float & heading) const;
+    void getLatest3512Data(uint64_t & dataTime, double & pitch, double & roll,
+            double & heading) const;
 
     /// @brief Get the time of the latest 3512 (Flight Control) data, in
     /// milliseconds since 1970-01-01 00:00:00 UTC.
@@ -135,7 +135,7 @@ public:
     ///
     /// If ground speed is less than 10 m/s, drift will be reported as zero.
     /// @return estimated drift angle in degrees, in range [-180.0,180.0].
-    float getEstimatedDriftAngle() const;
+    double getEstimatedDriftAngle() const;
 
 public slots:
     /// @brief Store the latest 3500 (System Status) data.
@@ -160,8 +160,8 @@ public slots:
             bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
             uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
-            float expectedHPosError, float expectedVPosError,
-            float expectedVelocityError) throw(Exception);
+            double expectedHPosError, double expectedVPosError,
+            double expectedVelocityError) throw(Exception);
 
     /// @brief Store the latest 3501 (Navigation Solution) data.
     /// @param dataTime date/time for position data, msecs since
@@ -174,8 +174,8 @@ public slots:
     /// @param velUp upward component of velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void storeLatest3501Data(uint64_t dataTime, float latitude, float longitude,
-            float altitude, float velNorth, float velEast, float velUp) throw(Exception);
+    void storeLatest3501Data(uint64_t dataTime, double latitude, double longitude,
+            double altitude, double velNorth, double velEast, double velUp) throw(Exception);
 
     /// @brief Store the latest 3512 (Flight Control) data.
     /// @param dataTime date/time for attitude data, msecs since
@@ -185,8 +185,8 @@ public slots:
     /// @param heading heading, deg clockwise from true north
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void storeLatest3512Data(uint64_t dataTime, float pitch, float roll,
-            float heading) throw(Exception);
+    void storeLatest3512Data(uint64_t dataTime, double pitch, double roll,
+            double heading) throw(Exception);
 
 private:
     /// Our QSharedMemory object. This is mutable because we need to be able to
@@ -209,22 +209,22 @@ private:
         uint16_t velocityFOM;   // velocity figure-of-merit value
         uint16_t headingFOM;    // heading figure-of-merit value
         uint16_t timeFOM;       // time figure-of-merit value
-        float hPosError;        // m
-        float vPosError;        // m
-        float velocityError;    // m/s
+        double hPosError;        // m
+        double vPosError;        // m
+        double velocityError;    // m/s
         // latest navigation solution data
         uint64_t navSolutionTime;  // msecs since 1970-01-01 00:00:00 UTC
-        float latitude;         // deg
-        float longitude;        // deg
-        float altitude;         // m above MSL
-        float velNorth;         // m/s
-        float velEast;          // m/s
-        float velUp;            // m/s
+        double latitude;         // deg
+        double longitude;        // deg
+        double altitude;         // m above MSL
+        double velNorth;         // m/s
+        double velEast;          // m/s
+        double velUp;            // m/s
         // latest attitude data
         uint64_t attitudeTime;  // msecs since 1970-01-01 00:00:00 UTC
-        float pitch;            // deg
-        float roll;             // deg
-        float heading;          // deg clockwise from true north
+        double pitch;            // deg
+        double roll;             // deg
+        double heading;          // deg clockwise from true north
     } * _shmContents;
     FILE * _dataFile;
 };

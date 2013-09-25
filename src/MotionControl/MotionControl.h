@@ -42,14 +42,14 @@ public:
 
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
-    void point(float angle);
+    void point(double angle);
 
     /// @brief Scan the antenna between the given counterclockwise and clockwise
     /// limits, at the given scan rate.
     /// @param ccwLimit the counterclockwise limit of the scan, deg
     /// @param cwLimit the clockwise limit of the scan, deg
     /// @pararm scanRate the scan rate, deg/s
-    void scan(float ccwLimit, float cwLimit, float scanRate);
+    void scan(double ccwLimit, double cwLimit, double scanRate);
 
     /// @brief Get current aircraft attitude and adjust drive position.
     /// This method does nothing when attitude correction is disabled.
@@ -75,14 +75,14 @@ public:
 
     /// @brief Return the fixed pointing angle, deg.
     /// @return the fixed pointing angle, deg.
-    float fixedPointingAngle() const { return(_fixedPointingAngle); }
+    double fixedPointingAngle() const { return(_fixedPointingAngle); }
 
     /// @brief Return the antenna scanning parameters
     /// @param[out] ccwLimit, counterclockwise scan limit, deg
     /// @param[out] cwLimit, clockwise scan limit, deg
     /// @param[out] scanRate, scan rate, deg/s
     /// @return the antenna scanning parameters.
-    void getScanParams(float & ccwLimit, float & cwLimit, float & scanRate) const {
+    void getScanParams(double & ccwLimit, double & cwLimit, double & scanRate) const {
         ccwLimit = _scanCcwLimit;
         cwLimit = _scanCwLimit;
         scanRate = _scanRate;
@@ -137,7 +137,7 @@ public:
          * @param[out] cwLimit the clockwise scan limit, deg
          * @param[out] rate the scan rate, deg/s
          */
-        void scanParameters(float & ccwLimit, float & cwLimit, float & rate) {
+        void scanParameters(double & ccwLimit, double & cwLimit, double & rate) {
             ccwLimit = scanCcwLimit;
             cwLimit = scanCwLimit;
             rate = scanRate;
@@ -154,7 +154,7 @@ public:
         /// Rotation drive temperature, deg C
         int rotDriveTemp;
         /// Rotation angle, deg
-        float rotDriveAngle;
+        double rotDriveAngle;
         /// Rotation drive system time (at last status collection)
         uint32_t rotDriveSystemTime;
         /// Is the tilt drive responding?
@@ -168,19 +168,19 @@ public:
         /// Tilt drive temperature, deg C
         int tiltDriveTemp;
         /// Tilt angle, deg
-        float tiltDriveAngle;
+        double tiltDriveAngle;
         /// Rotation drive system time (at last status collection)
         uint32_t tiltDriveSystemTime;
         /// Antenna motion mode
         AntennaMode antennaMode;
         // Pointing angle for POINTING mode
-        float fixedPointingAngle;
+        double fixedPointingAngle;
         // Scanning counterclockwise limit, deg
-        float scanCcwLimit;
+        double scanCcwLimit;
         // Scanning clockwise limit, deg
-        float scanCwLimit;
+        double scanCwLimit;
         // Scan rate, deg/s
-        float scanRate;
+        double scanRate;
         // Attitude correction enabled?
         bool attitudeCorrectionEnabled;
     };
@@ -200,20 +200,20 @@ private:
     // @param pitch the pod pitch, deg
     // @param roll the pod roll angle, deg
     // @param drift the pod drift angle, deg
-    void _adjustForAttitude(float & rot, float & tilt, float pitch, float roll,
-            float drift);
+    void _adjustForAttitude(double & rot, double & tilt, double pitch, double roll,
+            double drift);
 
     /// Adjust pointing position according to aircraft attitude
     /// @param pitch The aircraft pitch angle
     /// @param roll The aircraft roll angle
     /// @param drift The aircraft drift angle
-    void _adjustPointingForAttitude(float pitch, float roll, float drift);
+    void _adjustPointingForAttitude(double pitch, double roll, double drift);
 
     /// Adjust scanning table according to aircraft attitude
     /// @param pitch The aircraft pitch angle
     /// @param roll The aircraft roll angle
     /// @param drift The aircraft drift angle
-    void _adjustScanningForAttitude(float pitch, float roll, float drift);
+    void _adjustScanningForAttitude(double pitch, double roll, double drift);
 
     /// Rotation drive
     RotServoDrive _rotDrive;
@@ -224,16 +224,16 @@ private:
     AntennaMode _antennaMode;
 
     /// Current angle for fixed pointing
-    float _fixedPointingAngle;
+    double _fixedPointingAngle;
 
     /// Scanning counterclockwise limit, deg
-    float _scanCcwLimit;
+    double _scanCcwLimit;
 
     /// Scanning clockwise limit, deg
-    float _scanCwLimit;
+    double _scanCwLimit;
 
     /// Scan rate, deg/s
-    float _scanRate;
+    double _scanRate;
 
     /// Cmigits shared memory object
     CmigitsSharedMemory _cmigitsShm;

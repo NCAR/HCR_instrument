@@ -15,7 +15,7 @@
 #include <QMessageBox>
 
 // Invalid angle used to erase display of reflector position
-static const float INVALID_ANGLE = -999.9;
+static const double INVALID_ANGLE = -999.9;
 
 LOGGING("HcrGuiMainWindow")
 
@@ -526,9 +526,9 @@ HcrGuiMainWindow::_update() {
         uint16_t velocityFOM = 0;
         uint16_t headingFOM = 0;
         uint16_t timeFOM = 0;
-        float expectedHPosError = 0.0;
-        float expectedVPosError = 0.0;
-        float expectedVelError = 0.0;
+        double expectedHPosError = 0.0;
+        double expectedVPosError = 0.0;
+        double expectedVelError = 0.0;
         _drxStatus.cmigitsStatus(statusTime, mode, insAvailable, gpsAvailable,
                 doingCoarseAlignment, nSats, 
                 positionFOM, velocityFOM,  headingFOM, timeFOM,
@@ -670,8 +670,8 @@ HcrGuiMainWindow::_logMessage(std::string message) {
 void
 HcrGuiMainWindow::_readAngles()
 {
-    float rotation = 0.0;
-    float tilt = 0.0;
+    double rotation = 0.0;
+    double tilt = 0.0;
     while (_angleSocket.hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(_angleSocket.pendingDatagramSize());
@@ -713,9 +713,9 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.setBrush(QColor(0, 100, 0));
 	painter.drawRect(0, 0, 90, 90);
 	// Scan range
-	float ccwLimit = _mcStatus.scanCcwLimit;
-	float cwLimit = _mcStatus.scanCwLimit;
-	float scanRange = cwLimit - ccwLimit;
+	double ccwLimit = _mcStatus.scanCcwLimit;
+	double cwLimit = _mcStatus.scanCwLimit;
+	double scanRange = cwLimit - ccwLimit;
 	if (scanRange < 0)
 		scanRange += 360;
 	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
@@ -731,8 +731,8 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.translate(46, 45);
 	painter.setFont(QFont("arial", 5, QFont::Bold));
 	for (int r = 0; r < 360; r += 30) {
-		float theta = (r-90)*M_PI/180.0;
-		float dx = 0, dy = 0;
+		double theta = (r-90)*M_PI/180.0;
+		double dx = 0, dy = 0;
 		if (r == 0)   dx = -2;
 		if (r == 180) dx = -5;
 		if (r > 180)  dx = -13;
@@ -792,8 +792,8 @@ void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
 	painter.setFont(QFont("arial", 6, QFont::Bold));
 	for (int r = -36; r <= 36; r += 6) {
 		if (r/6 % 2 != 0) continue;
-		float theta = (r-90)*M_PI/180.0;
-		float dx = 0;
+		double theta = (r-90)*M_PI/180.0;
+		double dx = 0;
 		if (r < 0) dx = -5;
 		if (r == 0) dx = -2;
 		painter.drawText(QPointF(68*cos(theta)+dx, 68*sin(theta)), QString::number(r/6));

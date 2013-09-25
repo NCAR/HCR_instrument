@@ -114,8 +114,8 @@ signals:
     void new3500Data(uint64_t dataTime, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
             uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM, 
-            uint16_t headingFOM, uint16_t timeFOM, float expectedHPosError, 
-            float expectedVPosError, float expectedVelocityError);
+            uint16_t headingFOM, uint16_t timeFOM, double expectedHPosError,
+            double expectedVPosError, double expectedVelocityError);
 
     /// @brief Signal emitted when new 3501 message (Navigation Solution) data are
     /// available
@@ -126,8 +126,8 @@ signals:
     /// @param velNorth north component of velocity, m/s
     /// @param velEast east component of velocity, m/s
     /// @param velUp upward component of velocity, m/s
-    void new3501Data(uint64_t dataTime, float latitude, float longitude,
-            float altitude, float velNorth, float velEast, float velUp);
+    void new3501Data(uint64_t dataTime, double latitude, double longitude,
+            double altitude, double velNorth, double velEast, double velUp);
 
     /// @brief Signal emitted when new 3512 message (Flight Control) data are
     /// available
@@ -135,7 +135,7 @@ signals:
     /// @param pitch pitch, deg
     /// @param roll roll, deg
     /// @param heading heading, deg clockwise from true north
-    void new3512Data(uint64_t dataTime, float pitch, float roll, float heading);
+    void new3512Data(uint64_t dataTime, double pitch, double roll, double heading);
 
 private slots:
     /**
@@ -277,7 +277,7 @@ private:
     /// 2^binaryScaling.
     /// @param words pointer to the 32-bit data
     /// @param binaryScaling the binary scaling to be used in unpacking
-    static float _UnpackFloat32(const uint16_t * words, uint16_t binaryScaling);
+    static double _UnpackFloat32(const uint16_t * words, uint16_t binaryScaling);
 
     /// @brief Unpack a C-MIGITS 64-bit binary-scaled floating point value.
     ///
@@ -318,7 +318,7 @@ private:
     /// point to 4 writable bytes.
     /// @param value the floating point value to be packed
     /// @param binaryScaling the binary scaling factor to be used in packing
-    static void _PackFloat32(void * dest, float value, uint16_t binaryScaling);
+    static void _PackFloat32(void * dest, double value, uint16_t binaryScaling);
 
 
     /// @brief Convert second-of-day to the QDateTime nearest to now with the

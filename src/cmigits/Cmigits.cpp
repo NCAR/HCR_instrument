@@ -793,9 +793,9 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     uint16_t timeFOM = (fomInfo >> 12) & 0x0f;
 
     // Expected errors
-    float hPosError = _UnpackFloat32(msgWords + 15, 15);     // m
-    float vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
-    float velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
+    double hPosError = _UnpackFloat32(msgWords + 15, 15);     // m
+    double vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
+    double velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
 
     DLOG << "3500 time: " << msgTime.toString().toStdString() <<
             ", mode: " << ModeName(_currentMode) <<
@@ -843,20 +843,20 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
 
     // Unpack latitude, longitude, altitude
-    float latitude = 180.0 * _UnpackFloat32(msgWords + 9, 0);
-    float longitude = 180.0 * _UnpackFloat32(msgWords + 11, 0);
-    float altitude = _UnpackFloat32(msgWords + 13, 15);
+    double latitude = 180.0 * _UnpackFloat32(msgWords + 9, 0);
+    double longitude = 180.0 * _UnpackFloat32(msgWords + 11, 0);
+    double altitude = _UnpackFloat32(msgWords + 13, 15);
 
     // Unpack velocity components
-    float velocityNorth = _UnpackFloat32(msgWords + 15, 10);
-    float velocityEast = _UnpackFloat32(msgWords + 17, 10);
-    float velocityUp = _UnpackFloat32(msgWords + 19, 10);
+    double velocityNorth = _UnpackFloat32(msgWords + 15, 10);
+    double velocityEast = _UnpackFloat32(msgWords + 17, 10);
+    double velocityUp = _UnpackFloat32(msgWords + 19, 10);
 
 // Ignore attitude, since we get it at 100 Hz via 3512 messages
 //    // Unpack attitude components
-//    float pitch = 180.0 * _UnpackFloat32(msgWords + 21, 0);
-//    float roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
-//    float heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
+//    double pitch = 180.0 * _UnpackFloat32(msgWords + 21, 0);
+//    double roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
+//    double heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
 
     uint16_t decisecond = uint16_t(round(10 * fmod(utcSecondOfDay, 1.0)));
     decisecond %= 10;
@@ -890,9 +890,9 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
 
 
-    float pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
-    float roll = 180.0 * _UnpackFloat32(msgWords + 11, 0);
-    float heading = 180.0 * _UnpackFloat32(msgWords + 13, 0);
+    double pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
+    double roll = 180.0 * _UnpackFloat32(msgWords + 11, 0);
+    double heading = 180.0 * _UnpackFloat32(msgWords + 13, 0);
 
     int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
     centisecond %= 100;
@@ -937,9 +937,9 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // the right value, rather than truncating 15.999999999 to 15!
     _utcToGpsCorrection = int16_t(round(gpsSecondOfDay - utcSecondOfDay));
 
-    float lat = 180.0 * _UnpackFloat32(msgWords + 21, 0);
-    float lon = 180.0 * _UnpackFloat32(msgWords + 23, 0);
-    float alt = _UnpackFloat32(msgWords + 25, 15);
+    double lat = 180.0 * _UnpackFloat32(msgWords + 21, 0);
+    double lon = 180.0 * _UnpackFloat32(msgWords + 23, 0);
+    double alt = _UnpackFloat32(msgWords + 25, 15);
     DLOG << "3623 lat: " << lat << ", lon: " << lon << ", alt: " << alt <<
             " (" << msgWords[15] << " satellites)";
     // We can start configuration any time after we get the first 3623 message.
@@ -950,13 +950,13 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     }
 }
 
-float
+double
 Cmigits::_UnpackFloat32(const uint16_t * words, uint16_t binaryScaling) {
     // Get the 32-bit packed value as int32_t
     int32_t packedVal;
     memcpy(&packedVal, words, 4);
     // Apply the binary scaling factor to the packed value
-    float val = float(packedVal) / (1UL << (31 - binaryScaling));
+    double val = double(packedVal) / (1UL << (31 - binaryScaling));
     return(val);
 }
 
@@ -996,8 +996,8 @@ Cmigits::_unpackTimeTag(const uint16_t * words) {
 }
 
 void
-Cmigits::_PackFloat32(void * dest, float value, uint16_t binaryScaling) {
-    float fraction = value / (1 << binaryScaling);
+Cmigits::_PackFloat32(void * dest, double value, uint16_t binaryScaling) {
+    double fraction = value / (1 << binaryScaling);
     int32_t packedVal = int32_t(fraction * 0x80000000UL);
     memcpy(dest, &packedVal, 4);
 }

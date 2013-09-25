@@ -803,9 +803,9 @@ string IwrfExport::_assembleStatusXml()
   uint16_t velocityFOM = 0;     // see info for C-MIGITS 3500 message
   uint16_t headingFOM = 0;      // see info for C-MIGITS 3500 message
   uint16_t timeFOM = 0;         // see info for C-MIGITS 3500 message
-  float expectedHPosError = 0.0;      // m
-  float expectedVPosError = 0.0;      // m
-  float expectedVelocityError = 0.0;  // m/s
+  double expectedHPosError = 0.0;      // m
+  double expectedVPosError = 0.0;      // m
+  double expectedVelocityError = 0.0;  // m/s
 
   drxStatus.cmigitsStatus(statusTime, currentMode, insAvailable, gpsAvailable, 
           doingCoarseAlignment, nSats, positionFOM, velocityFOM, headingFOM, 
@@ -826,12 +826,12 @@ string IwrfExport::_assembleStatusXml()
 
   // current position/velocity (latest 3501 message from C-MIGITS)
   double navSolutionTime = 0.0; // seconds since 1970-01-01 00:00:00 UTC
-  float latitude = 0.0;         // deg
-  float longitude = 0.0;        // deg
-  float altitude = 0.0;         // m above MSL
-  float velNorth = 0.0;         // m/s
-  float velEast = 0.0;          // m/s
-  float velUp = 0.0;            // m/s
+  double latitude = 0.0;         // deg
+  double longitude = 0.0;        // deg
+  double altitude = 0.0;         // m above MSL
+  double velNorth = 0.0;         // m/s
+  double velEast = 0.0;          // m/s
+  double velUp = 0.0;            // m/s
 
   drxStatus.cmigitsNavSolution(navSolutionTime, latitude, longitude, altitude, 
           velNorth, velEast, velUp);
@@ -846,9 +846,9 @@ string IwrfExport::_assembleStatusXml()
 
   // current attitude (latest 3512 message from C-MIGITS)
   double attitudeTime = 0.0;    // seconds since 1970-01-01 00:00:00 UTC
-  float pitch = 0.0;            // deg
-  float roll = 0.0;             // deg
-  float heading = 0.0;          // deg clockwise from true north
+  double pitch = 0.0;            // deg
+  double roll = 0.0;             // deg
+  double heading = 0.0;          // deg clockwise from true north
   
   drxStatus.cmigitsAttitude(attitudeTime, pitch, roll, heading);
 
@@ -923,13 +923,13 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
 
   if (time3512 != _lastCmigits3512Time) {
     // Get data from the latest 3512 message, which contains attitude.
-    float pitch, roll, heading;
+    double pitch, roll, heading;
     _cmigitsShm.getLatest3512Data(time3512, pitch, roll, heading);
 
     // Get data from the latest 3501 message, which contains location and
     // velocity.
     uint64_t time3501;
-    float lat, lon, alt, velNorth, velEast, velUp;
+    double lat, lon, alt, velNorth, velEast, velUp;
     _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt, velNorth, velEast, velUp);
 
     iwrf_platform_georef_init(_radarGeoref);
