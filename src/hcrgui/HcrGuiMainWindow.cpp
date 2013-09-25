@@ -670,8 +670,11 @@ HcrGuiMainWindow::_logMessage(std::string message) {
 void
 HcrGuiMainWindow::_readAngles()
 {
-    double rotation = 0.0;
-    double tilt = 0.0;
+    // Note that these two *must* be 32-bit floats, since the data we memcpy
+    // into these variables from the UDP stream is 32-bit floats.
+    float rotation = 0.0;
+    float tilt = 0.0;
+
     while (_angleSocket.hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(_angleSocket.pendingDatagramSize());
