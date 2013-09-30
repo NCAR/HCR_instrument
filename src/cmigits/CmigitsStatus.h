@@ -17,11 +17,23 @@
 /// @brief Class which encapsulates data from the C-MIGITS.
 class CmigitsStatus {
 public:
+    /// @brief Construct a CmigitsStatus with all zero values.
     CmigitsStatus();
 
+    /// @brief Construct a CmigitsStatus from a xmlrpc_c::value_struct, as
+    /// returned by CmigitsStatus::toXmlRpcValue(). This constructor is 
+    /// typically used on the client side of an XML-RPC connection, to 
+    /// create a clone of a CmigitsStatus on the server side.
     CmigitsStatus(const xmlrpc_c::value_struct & statusDict);
 
     virtual ~CmigitsStatus();
+    
+    /// @brief Return a CmigitsStatus populated from current values in 
+    /// CmigitsSharedMemory. If there is no process writing to 
+    /// CmigitsSharedMemory (e.g., if this method is called on a machine
+    /// other than the one where cmigitsDaemon is running), the method
+    /// will return a CmigitsStatus created by the default constructor.
+    static CmigitsStatus StatusFromSharedMemory();
 
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value.

@@ -96,9 +96,8 @@ HcrMonitor::run() {
 void
 HcrMonitor::_getCmigitsStatus() {
     QMutexLocker locker(&_mutex);
-    // Default constructor for CmigitsStatus populates from current values in
-    // CmigitsSharedMemory
-    _cmigitsStatus = CmigitsStatus();
+    // Get a CmigitsStatus built from current values in CmigitsSharedMemory
+    _cmigitsStatus = CmigitsStatus::StatusFromSharedMemory();
 }
 
 void

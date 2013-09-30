@@ -109,8 +109,9 @@ public:
         stopXmlrpcWorkAlarm();
 
         ILOG << "Executing XML-RPC call to getStatus()";
-        CmigitsStatus status;   // default constructor gets latest data from CmigitsSharedMemory
-        *retvalP = status.toXmlRpcValue();
+        // Get the latest status from shared memory, and convert it to 
+        // an xmlrpc_c::value_struct dictionary.
+        *retvalP = CmigitsStatus::StatusFromSharedMemory().toXmlRpcValue();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
