@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <cstdio>
 #include <QSharedMemory>
+#include <QTimer>
 
 /// @brief Class which provides access to a shared memory segment intended to
 /// hold the most recent data acquired from a C-MIGITS INS/GPS navigation
@@ -65,9 +66,9 @@ public:
     /// shared memory segment. If there is no writer, zero is returned.
     pid_t getWriterPid() const;
 
-    /// @brief Get the latest 3500 (System Status) data. If no 3500 message
-    /// has been received yet, the data values will all be zero, and the
-    /// dataTime will be zero.
+    /// @brief Get the latest 3500 (System Status) data. If the most recent 3500
+    /// message is more than 1 second old, the data values will all be zero, and
+    /// the dataTime will be zero.
     /// @param[out] dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
     /// @param[out] currentMode current operating mode
     /// @param[out] insAvailable true iff INS measurements are available
@@ -90,9 +91,9 @@ public:
             double & expectedHPosError, double & expectedVPosError,
             double & expectedVelocityError) const;
 
-    /// @brief Get the latest 3501 (Navigation Solution) data available. If no
-    /// 3501 message has been received yet, the data values will all be zero
-    /// and the dataTime will be zero.
+    /// @brief Get the latest 3501 (Navigation Solution) data available. If the 
+    /// most recent 3501 message is more than 1 second old, the data values will
+    /// all be zero, and the dataTime will be zero.
     /// @param[out] dataTime date/time for navigation solution data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param[out] latitude latitude, deg
@@ -106,8 +107,8 @@ public:
             double & velEast, double & velUp) const;
 
     /// @brief Get the latest 3512 (Flight Control) attitude data available.
-    /// If no 3512 message has been received yet, the data values will all be
-    /// zero and the dataTime will be zero.
+    /// If the most recent 3512 message is more than 1 second old, the data 
+    /// values will all be zero, and the dataTime will be zero.
     /// @param[out] dataTime date/time for attitude data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param[out] pitch pitch, deg
@@ -187,13 +188,31 @@ public slots:
     /// access to the shared memory
     void storeLatest3512Data(uint64_t dataTime, double pitch, double roll,
             double heading) throw(Exception);
+    
+private slots:
+    /// @brief Zero the latest 3500 data in the shared memory
+    void _zero3500Data();
+    
+    /// @brief Zero the latest 3501 data in the shared memory
+    void _zero3501Data();
+    
+    /// @brief Zero the latest 3512 data in the shared memory
+    void _zero3512Data();
 
 private:
+    /// @brief Set the writer PID for the shared memory segment.
+    void _setWriterPid(pid_t pid);
     /// Our QSharedMemory object. This is mutable because we need to be able to
     /// lock and unlock the shared memory, even in our const methods.
     mutable QSharedMemory _qShm;
     /// Do we have write access to the shared memory?
     bool _writeAccess;
+    /// Timeout timer for 3500 data
+    QTimer _3500TimeoutTimer;
+    /// Timeout timer for 3501 data
+    QTimer _3501TimeoutTimer;
+    /// Timeout timer for 3512 data
+    QTimer _3512TimeoutTimer;
     /// The contents of the shared memory segment
     struct _ShmContents {
         pid_t writerPid;        // process ID of the current writer

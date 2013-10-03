@@ -26,6 +26,9 @@ static const bool RECORD_CSV = false;
 CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     _qShm(CMIGITS_SHM_KEY),
     _writeAccess(writeAccess),
+    _3500TimeoutTimer(),
+    _3501TimeoutTimer(),
+    _3512TimeoutTimer(),
     _shmContents(0),
     _dataFile(0) {
     // Create and attach to the shared memory segment, which will hold our
@@ -78,9 +81,10 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         throw(Exception(msgStream.str()));
     }
     _shmContents = static_cast<struct _ShmContents *>(_qShm.data());
-    // If write access has been requested, establish this instance as the 
-    // writer instance if possible.
+    
+    // Special setup for the writer
     if (_writeAccess) {
+        // Establish this instance as the writer instance if possible.
         pid_t writerPid = getWriterPid();
         if (writerPid != 0) {
             _qShm.detach();
@@ -90,9 +94,20 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
             throw(Exception(msgStream.str()));
         }
         // Set our process id as the writer id
-        _qShm.lock();
-        _shmContents->writerPid = getpid();
-        _qShm.unlock();
+        _setWriterPid(getpid());
+        // Set up timeout timers which will clear the shared memory if new
+        // data don't arrive within a second
+        _3500TimeoutTimer.setInterval(1000);
+        _3500TimeoutTimer.setSingleShot(true);
+        connect(&_3500TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3500Data()));
+        
+        _3501TimeoutTimer.setInterval(1000);
+        _3501TimeoutTimer.setSingleShot(true);
+        connect(&_3501TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3501Data()));
+        
+        _3512TimeoutTimer.setInterval(1000);
+        _3512TimeoutTimer.setSingleShot(true);
+        connect(&_3512TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3512Data()));
     }
     if (RECORD_CSV) {
         _dataFile = fopen("/tmp/cmigitsData", "w+");
@@ -102,10 +117,12 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
 CmigitsSharedMemory::~CmigitsSharedMemory() {
     // If this is the writer, clear the writer PID now
     if (_writeAccess) {
+        // Zero the C-MIGITS data in the segment
+        _zero3500Data();
+        _zero3501Data();
+        _zero3512Data();
         // Remove this object as writer (set the writer pid to zero)
-        _qShm.lock();
-        _shmContents->writerPid = 0;
-        _qShm.unlock();
+        _setWriterPid(0);
     }
     _qShm.detach();
 }
@@ -116,6 +133,13 @@ CmigitsSharedMemory::getWriterPid() const {
     pid_t writerPid = _shmContents->writerPid;
     _qShm.unlock();
     return(writerPid);
+}
+
+void
+CmigitsSharedMemory::_setWriterPid(pid_t pid) {
+    _qShm.lock();
+    _shmContents->writerPid = pid;
+    _qShm.unlock();
 }
 
 void
@@ -150,6 +174,8 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
                 headingFOM, timeFOM, expectedHPosError, expectedVPosError,
                 expectedVelocityError);
     }
+    // Time out the new data after a second
+    _3500TimeoutTimer.start();
 }
 
 void
@@ -195,8 +221,9 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
     if (RECORD_CSV) {
         fprintf(_dataFile, "3501,%lld,%f,%f,%f,%f,%f,%f\n", dataTime, 
                 latitude, longitude, altitude, velNorth, velEast, velUp);
-        return;
     }
+    // Time out the new data after a second
+    _3501TimeoutTimer.start();
 }
 
 void
@@ -230,8 +257,9 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
     if (RECORD_CSV) {
         fprintf(_dataFile, "3512,%lld,%f,%f,%f\n", dataTime, pitch, roll, 
                 heading);
-        return;
     }
+    // Time out the new data after a second
+    _3512TimeoutTimer.start();
 }
 
 void
@@ -274,4 +302,46 @@ CmigitsSharedMemory::getEstimatedDriftAngle() const {
     }
 
     return(drift);
+}
+
+void
+CmigitsSharedMemory::_zero3500Data() {
+    _qShm.lock();
+    _shmContents->statusTime = 0;
+    _shmContents->currentMode = 0;
+    _shmContents->insAvailable = 0;
+    _shmContents->gpsAvailable = 0;
+    _shmContents->doingCoarseAlignment = 0;
+    _shmContents->nSats = 0;
+    _shmContents->positionFOM = 0;
+    _shmContents->velocityFOM = 0;
+    _shmContents->headingFOM = 0;
+    _shmContents->timeFOM = 0;
+    _shmContents->hPosError = 0.0;
+    _shmContents->vPosError = 0.0;
+    _shmContents->velocityError = 0.0;
+    _qShm.unlock();
+}
+
+void
+CmigitsSharedMemory::_zero3501Data() {
+    _qShm.lock();
+    _shmContents->navSolutionTime = 0;
+    _shmContents->latitude = 0.0;
+    _shmContents->longitude = 0.0;
+    _shmContents->altitude = 0.0;
+    _shmContents->velNorth = 0.0;
+    _shmContents->velEast = 0.0;
+    _shmContents->velUp = 0.0;
+    _qShm.unlock();
+}
+
+void
+CmigitsSharedMemory::_zero3512Data() {
+    _qShm.lock();
+    _shmContents->attitudeTime = 0;
+    _shmContents->pitch = 0.0;
+    _shmContents->roll = 0.0;
+    _shmContents->heading = 0.0;
+    _qShm.unlock();
 }
