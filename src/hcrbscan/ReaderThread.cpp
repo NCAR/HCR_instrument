@@ -34,7 +34,7 @@ ReaderThread::run() {
         // Set up a timer to call _makeNextBscanRay() on a regular basis.
         QTimer rayTimer;
         connect(&rayTimer, SIGNAL(timeout()), this, SLOT(_makeNextBscanRay()));
-        rayTimer.start(100);
+        rayTimer.start(50);
         // Now just run the normal event loop
         exec();
     } else {
@@ -68,8 +68,8 @@ void
 ReaderThread::_makeNextBscanRay() {
         RadxRay * radxRay = _reader.readNextRay();
         if (! radxRay) {
-            std::cerr << "Out of data!" << std::endl;
-            exit(1);
+            exit(0);    // this is QThread::exit()!
+            return;
         }
         _radxBscanRaySource.makeBscanRay(*radxRay);
         delete(radxRay);
