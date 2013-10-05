@@ -103,7 +103,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   // initialize IWRF ts_processing struct from config
 
   iwrf_ts_processing_init(_tsProc);
-  _tsProc.xmit_rcv_mode = IWRF_SINGLE_POL;
+  _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
   _tsProc.xmit_phase_mode = IWRF_XMIT_PHASE_MODE_FIXED;
   _tsProc.prf_mode = IWRF_PRF_MODE_FIXED;
   _tsProc.pulse_type = IWRF_PULSE_TYPE_RECT;
