@@ -1037,8 +1037,8 @@ void IwrfExport::_computeRadarAngles()
   double zsubt = (cosP * cos_tau_a * cos_theta_rc
                   + sinP * sin_tau_a);
   
-  _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
-  _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
+  // _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
+  // _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
   double lambda_t = atan2(xsubt, ysubt);
   double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
   double elevationRad = asin(zsubt);
