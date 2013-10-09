@@ -18,6 +18,8 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 
+#include "HcrPmc730.h"
+
 using namespace XmlRpc;
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
@@ -264,12 +266,20 @@ public:
     double pentekBoardTemp() const { return(_pentekBoardTemp); }
     
     /**
-     * @brief Return the HMC operating mode number: 0-3
-     * 0 - normal operation, 1 - noise source cal, 2 - corner reflector cal,
-     * 3 - integration and testing
-     * @return the HMC operating mode number: 0-3
+     * @brief Return the HMC operating mode number: 0-7
+     * 
+     * 0 = transmit H, receive H and V
+     * 1 = transmit V, receive H and V
+     * 2 = transmit alternating H and V, receive H and V
+     * 3 = unused
+     * 4 = noise source calibration
+     * 5 = corner reflector calibration
+     * 6 = bench test
+     * 7 = unused
+     *
+     * @return the HMC operating mode number: 0-7
      */
-    int hmcMode() const { return(_hmcMode); }
+    HcrPmc730::HmcOperationMode hmcMode() const { return(static_cast<HcrPmc730::HmcOperationMode>(_hmcMode)); }
     
     /**
      * @brief Return the latest status information from the C-MIGITS
@@ -635,7 +645,9 @@ private:
     /// Pentek board temperature;
     double _pentekBoardTemp;
 
-    /// HMC operating mode
+    /// HMC operating mode. This value is actually of enumerated type
+    /// HcrPmc730::HmcOperationMode, but we keep it as an int for serialization
+    /// purposes.
     uint16_t _hmcMode;
     
     /// C-MIGITS time of last status information, seconds since 
