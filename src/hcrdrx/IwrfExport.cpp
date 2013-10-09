@@ -464,7 +464,6 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.seq_num = _packetSeqNum++;
   _tsProc.packet.time_secs_utc = _timeSecs;
   _tsProc.packet.time_nano_secs = _nanoSecs;
-  const DrxStatus drxStatus = _monitor.drxStatus();
 
   // set our polarization and calibration modes for processing
   
@@ -491,6 +490,7 @@ int IwrfExport::_sendIwrfMetaData()
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
         break;
     default:
+        WLOG << "Unhandled/unknown _hmcMode: " << _hmcMode;
         _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
         _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
