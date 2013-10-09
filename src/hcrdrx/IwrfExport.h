@@ -150,7 +150,10 @@ private:
   CmigitsSharedMemory _cmigitsShm;
   uint64_t _lastCmigits3512Time;    // time of last C-MIGITS 3512 message seen
 
-  // elevation and azimuth from antenna rotation and tilt
+  /// current HMC operation mode
+  HcrPmc730::HmcOperationMode _hmcMode;
+  
+  // elevation and azimuth from reflector rotation and tilt
 
   double _elevationDeg;
   double _azimuthDeg;

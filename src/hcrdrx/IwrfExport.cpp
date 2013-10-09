@@ -25,7 +25,8 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         _config(config),
         _monitor(monitor),
         _cmigitsShm(false),
-        _lastCmigits3512Time(0)
+        _lastCmigits3512Time(0),
+        _hmcMode(HcrPmc730::HMC_UNUSED_3)
 {
 
   // initialize
@@ -103,13 +104,13 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   // initialize IWRF ts_processing struct from config
 
   iwrf_ts_processing_init(_tsProc);
-  _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
+  _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
   _tsProc.xmit_phase_mode = IWRF_XMIT_PHASE_MODE_FIXED;
   _tsProc.prf_mode = IWRF_PRF_MODE_FIXED;
   _tsProc.pulse_type = IWRF_PULSE_TYPE_RECT;
   _tsProc.prt_usec = _config.prt1() * 1.0e6;
   _tsProc.prt2_usec = _config.prt2() * 1.0e6;
-  _tsProc.cal_type = IWRF_CAL_TYPE_CW_CAL;
+  _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
   _tsProc.burst_range_offset_m = 0.0;
   //   _tsProc.burst_range_offset_m =
   //     _config.burst_sample_delay() * lightSpeedMps / 2.0;
@@ -117,7 +118,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   const double SpeedOfLight = 2.99792458e8; // m/s
   _tsProc.gate_spacing_m = _config.digitizer_sample_width() * SpeedOfLight / 2;
   _tsProc.start_range_m = _config.range_to_gate0(); // center of gate 0
-  _tsProc.pol_mode = IWRF_POL_MODE_H;
+  _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
 
   // initialize IWRF scan segment for simulation angles
 
@@ -252,6 +253,10 @@ void IwrfExport::run()
     if (nGates != _nGates) {
       sendMeta = true;
       _nGates = nGates;
+    }
+    if (_monitor.drxStatus().hmcMode() != _hmcMode) {
+      sendMeta = true;
+      _hmcMode = _monitor.drxStatus().hmcMode();
     }
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
@@ -459,6 +464,38 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.seq_num = _packetSeqNum++;
   _tsProc.packet.time_secs_utc = _timeSecs;
   _tsProc.packet.time_nano_secs = _nanoSecs;
+  const DrxStatus drxStatus = _monitor.drxStatus();
+
+  // set our polarization and calibration modes for processing
+  
+  switch (_hmcMode) {
+    case HcrPmc730::HMC_TX_V_RX_HV:
+    case HcrPmc730::HMC_CORNER_REFLECTOR_CAL:
+    case HcrPmc730::HMC_BENCH_TEST:
+        _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_V;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
+        break;
+    case HcrPmc730::HMC_TX_H_RX_HV:
+        _tsProc.xmit_rcv_mode = IWRF_H_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_H;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
+        break;
+    case HcrPmc730::HMC_TX_HV_RX_HV:
+        _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
+        break;
+    case HcrPmc730::HMC_NOISE_SOURCE_CAL:
+        _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_V;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
+        break;
+    default:
+        _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
+        _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
+        break;
+  }
 
   iwrf_calibration_t calibStruct = _calib.getStruct();
   calibStruct.packet.seq_num = _packetSeqNum++;
