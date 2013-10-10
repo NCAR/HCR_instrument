@@ -15,6 +15,9 @@
 #include <climits>
 #include <cmath>
 #include <cstring>
+#include <logx/Logging.h>
+
+LOGGING("HcrDrxConfig");
 
 const double HcrDrxConfig::UNSET_DOUBLE = -INFINITY;
 const int HcrDrxConfig::UNSET_INT = INT_MIN;
@@ -116,8 +119,8 @@ valueFromLine(const std::string& line) {
 HcrDrxConfig::HcrDrxConfig(std::string configFile) {
     std::fstream infile(configFile.c_str(), std::ios_base::in);
     if (infile.fail()) {
-        std::cerr << "Error opening config file '" << configFile << "': " <<
-            strerror(errno) << std::endl;
+        ELOG << "Error opening config file '" << configFile << "': " <<
+            strerror(errno);
         exit(1);
     }
     // Read each line from the file, discarding empty lines and lines
@@ -125,11 +128,14 @@ HcrDrxConfig::HcrDrxConfig(std::string configFile) {
     // 
     // Other lines are parsed as "<key> <value>", and saved into
     // our dictionaries. Unknown keys will cause error exit.
+    ILOG << "Using hcrdrx config file '" << configFile << "'";
+    ILOG << "Config file contents: ";
     std::string line;
     while (true) {
         std::getline(infile, line);
         if (infile.eof())
             break;
+        ILOG << "    " << line;
         // Trim comments and leading and trailing space from the line
         line = trimmedString(line);
         // If there's nothing left, move to the next line
@@ -142,34 +148,35 @@ HcrDrxConfig::HcrDrxConfig(std::string configFile) {
         if (_DoubleLegalKeys.find(key) != _DoubleLegalKeys.end()) {
             double fVal;
             if ((valueStream >> fVal).fail()) {
-                std::cerr << "Bad double value '" << strValue << "' for key " <<
-                    key << " in config file" << std::endl;
+                WLOG << "Bad double value '" << strValue << "' for key " <<
+                    key << " in config file";
                 exit(1);
             }
             _doubleVals[key] = fVal;
         } else if (_IntLegalKeys.find(key) != _IntLegalKeys.end()) {
             int iVal;
             if ((valueStream >> iVal).fail()) {
-                std::cerr << "Bad int value '" << strValue << "' for key " <<
-                    key << " in config file" << std::endl;
+                WLOG << "Bad int value '" << strValue << "' for key " <<
+                    key << " in config file";
                 exit(1);
             }
             _intVals[key] = iVal;
         } else if (_BoolLegalKeys.find(key) != _BoolLegalKeys.end()) {
             bool bVal;
             if ((valueStream >> bVal).fail()) {
-                std::cerr << "Bad bool value '" << strValue << "' for key " <<
-                    key << " in config file" << std::endl;
+                WLOG << "Bad bool value '" << strValue << "' for key " <<
+                    key << " in config file";
                 exit(1);
             }
             _boolVals[key] = bVal;
         } else if (_StringLegalKeys.find(key) != _StringLegalKeys.end()) {
             _stringVals[key] = strValue;
         } else {
-            std::cerr << "Illegal key '" << key << "' in config file" << std::endl;
+            WLOG << "Illegal key '" << key << "' in config file";
             exit(1);
         }
     }
+    ILOG << "End of config file";
 }
 
 HcrDrxConfig::~HcrDrxConfig() {
@@ -180,119 +187,119 @@ HcrDrxConfig::isValid(bool verbose) const {
     bool valid = true;
     if (radar_id() == UNSET_STRING) {
         if (verbose)
-            std::cerr << "'radar_id' unset in DRX configuration" << std::endl;
+            WLOG << "'radar_id' unset in DRX configuration";
         valid = false;
     }
     if (calibration_file() == UNSET_STRING) {
         if (verbose)
-            std::cerr << "'calibration_file' unset in DRX configuration" << std::endl;
+            WLOG << "'calibration_file' unset in DRX configuration";
         valid = false;
     }
     if (gates() == UNSET_INT) {
         if (verbose)
-            std::cerr << "'gates' unset in DRX configuration" << std::endl;
+            WLOG << "'gates' unset in DRX configuration";
         valid = false;
     }
     if (staggered_prt() == UNSET_BOOL) {
         if (verbose)
-            std::cerr << "'staggered_prt' unset in DRX configuration" << std::endl;
+            WLOG << "'staggered_prt' unset in DRX configuration";
         valid = false;
     }
     if (prt1() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'prt1' unset in DRX configuration" << std::endl;
+            WLOG << "'prt1' unset in DRX configuration";
         valid = false;
     }
     if (staggered_prt() == 1 && prt2() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'prt2' unset in DRX configuration when "
-                "'staggered_prt' is true" << std::endl;
+            WLOG << "'prt2' unset in DRX configuration when "
+                "'staggered_prt' is true";
         valid = false;
     }
     if (digitizer_gate0_delay() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'rcvr_gate0_delay' unset in DRX configuration" << std::endl;
+            WLOG << "'rcvr_gate0_delay' unset in DRX configuration";
         valid = false;
     }
     if (digitizer_sample_width() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'digitizer_sample_width' unset in DRX configuration" << std::endl;
+            WLOG << "'digitizer_sample_width' unset in DRX configuration";
         valid = false;
     }
     if (tx_pulse_width() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'tx_pulse_width' unset in DRX configuration" << std::endl;
+            WLOG << "'tx_pulse_width' unset in DRX configuration";
         valid = false;
     }
     if (tx_delay() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'tx_delay' unset in DRX configuration" << std::endl;
+            WLOG << "'tx_delay' unset in DRX configuration";
         valid = false;
     }
     if (tx_latency() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'tx_latency' unset in DRX configuration" << std::endl;
+            WLOG << "'tx_latency' unset in DRX configuration";
         valid = false;
     }
     if (tx_pulse_mod_delay() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'tx_pulse_mod_delay' unset in DRX configuration" << std::endl;
+            WLOG << "'tx_pulse_mod_delay' unset in DRX configuration";
         valid = false;
     }
     if (iqcount_scale_for_mw() == UNSET_DOUBLE) {
         if (verbose)
-            std::cerr << "'iqcount_scale_for_mw' unset in DRX configuration" << std::endl;
+            WLOG << "'iqcount_scale_for_mw' unset in DRX configuration";
         valid = false;
     }
     if (merge_queue_size() == UNSET_INT) {
         if (verbose)
-            std::cerr << "'merge_queue_size' not set" << std::endl;
+            WLOG << "'merge_queue_size' not set";
         valid = false;
     }
     if (iwrf_server_tcp_port() == UNSET_INT) {
         if (verbose)
-            std::cerr << "'iwrf_server_tcp_port' not set" << std::endl;
+            WLOG << "'iwrf_server_tcp_port' not set";
         valid = false;
     }
     if (pulse_interval_per_iwrf_meta_data() == UNSET_INT) {
         if (verbose)
-            std::cerr << "'pulse_interval_per_iwrf_meta_data' not set" << std::endl;
+            WLOG << "'pulse_interval_per_iwrf_meta_data' not set";
         valid = false;
     }
     if (simulate_antenna_angles() == UNSET_BOOL) {
         if (verbose)
-            std::cerr << "'simulate_antenna_angles' unset in DRX configuration" << std::endl;
+            WLOG << "'simulate_antenna_angles' unset in DRX configuration";
         valid = false;
     }
     if (simulate_antenna_angles() == 1) {
         if (sim_n_elev() == UNSET_INT) {
             if (verbose)
-                std::cerr << "'simulate_antenna_angles' is true, but "
-                    "'sim_n_elev' is unset in DRX configuration" << std::endl;
+                WLOG << "'simulate_antenna_angles' is true, but "
+                    "'sim_n_elev' is unset in DRX configuration";
             valid = false;
         }
         if (sim_start_elev() == UNSET_DOUBLE) {
             if (verbose)
-                std::cerr << "'simulate_antenna_angles' is true, but "
-                    "'sim_start_elev' is unset in DRX configuration" << std::endl;
+                WLOG << "'simulate_antenna_angles' is true, but "
+                    "'sim_start_elev' is unset in DRX configuration";
             valid = false;
         }
         if (sim_delta_elev() == UNSET_DOUBLE) {
             if (verbose)
-                std::cerr << "'simulate_antenna_angles' is true, but "
-                    "'sim_delta_elev' is unset in DRX configuration" << std::endl;
+                WLOG << "'simulate_antenna_angles' is true, but "
+                    "'sim_delta_elev' is unset in DRX configuration";
             valid = false;
         }
         if (sim_az_rate() == UNSET_DOUBLE) {
             if (verbose)
-                std::cerr << "'simulate_antenna_angles' is true, but "
-                    "'sim_az_rate' is unset in DRX configuration" << std::endl;
+                WLOG << "'simulate_antenna_angles' is true, but "
+                    "'sim_az_rate' is unset in DRX configuration";
             valid = false;
         }
     }
     if (start_on_1pps() == UNSET_BOOL) {
         if (verbose)
-            std::cerr << "'start_on_1pps' unset in DRX configuration" << std::endl;
+            WLOG << "'start_on_1pps' unset in DRX configuration";
         valid = false;
     }
 
