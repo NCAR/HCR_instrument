@@ -78,6 +78,7 @@ ElmoServoDrive::_clearDriveParams() {
     _positionMinCnt = BAD_POSITION_CNT;
     _positionMaxCnt = BAD_POSITION_CNT;
     _pcSampleTime = 0.0;
+    _targetRadius = 0;
 }
 
 void
@@ -404,7 +405,7 @@ ElmoServoDrive::_readReply() {
 
                 // Save reply from TI[1] "temperature indicator 1" command
                 if (! cmd.compare("TI[1]")) {
-                    uint32_t temp = qCmdReply.toInt(&ok);
+                    int temp = qCmdReply.toInt(&ok);
                     if (ok) {
                         _driveTemperature = temp;    // drive temperature, deg C
                     } else {
@@ -425,6 +426,17 @@ ElmoServoDrive::_readReply() {
                         _driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
                     } else {
                         WLOG << _driveName << ": bad TM reply '" <<
+                                cmdReply << "'";
+                    }
+                }
+                
+                // Save reply from TR "target radius" command
+                if (! cmd.compare("TR")) {
+                    uint32_t tr = qCmdReply.toUInt(&ok);
+                    if (ok) {
+                        _targetRadius = tr;
+                    } else {
+                        WLOG << _driveName << ": bad TR reply '" <<
                                 cmdReply << "'";
                     }
                 }
@@ -578,6 +590,21 @@ ElmoServoDrive::homeDrive(int homeCounts) {
     _gpTimer.setSingleShot(false);
     connect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_testForHomingCompletion()));
     _gpTimer.start();
+}
+
+void
+ElmoServoDrive::setTargetRadius(uint32_t targetRadius) {
+    // Don't bother if the drive is not responding, is not initialized,
+    // or we don't have good drive parameters yet.
+    if (! _driveResponding || ! _driveInitialized || ! _driveParamsGood()) {
+        DLOG << _driveName << " not ready; ignoring setTargetRadius to " << 
+                targetRadius << " counts";
+        return;
+    }
+    // Convert target radius to drive counts, then build and send the TR command
+    std::ostringstream cmdstream;
+    cmdstream << "TR=" << targetRadius;
+    _execElmoCmd(cmdstream.str());
 }
 
 void
@@ -796,6 +823,7 @@ ElmoServoDrive::_collectStatus() {
     // Send the commands for the status values we want
     _execElmoCmd("SR", false);      // status register
     _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
+    _execElmoCmd("TR", false);      // target radius
     _execElmoCmd("PX", false);      // main position
     _execElmoCmd("TM", false);		// system time
 }
@@ -811,7 +839,7 @@ ElmoServoDrive::_collectDriveParams() {
     // Send commands to the drive to get back drive parameters we need. The
     // status values will be parsed out and saved in _readReply() when the
     // replies come back.
-    _execElmoCmd("XM[1]", false);    // position counter minimum value
-    _execElmoCmd("XM[2]", false);    // position counter maximum value
-    _execElmoCmd("WS[55]", false);    // sampling time of position controller
+    _execElmoCmd("XM[1]", false);   // position counter minimum value
+    _execElmoCmd("XM[2]", false);   // position counter maximum value
+    _execElmoCmd("WS[55]", false);  // sampling time of position controller
 }

@@ -214,6 +214,10 @@ private:
     /// @param roll The aircraft roll angle
     /// @param drift The aircraft drift angle
     void _adjustScanningForAttitude(double pitch, double roll, double drift);
+    
+    /// @brief Verify that the target radius for each of our drives matches 
+    /// our desired target radius. Set it if necessary.
+    void _verifyTargetRadius();
 
     /// Rotation drive
     RotServoDrive _rotDrive;
@@ -234,6 +238,9 @@ private:
 
     /// Scan rate, deg/s
     double _scanRate;
+    
+    /// Target radius for the drives, deg
+    double _targetRadius;
 
     /// Cmigits shared memory object
     CmigitsSharedMemory _cmigitsShm;
