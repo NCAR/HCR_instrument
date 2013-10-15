@@ -716,6 +716,11 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
   const DrxStatus drxStatus = _monitor.drxStatus();
+  
+  // ints
+  
+  xml += TaXml::writeInt
+    ("HmcMode", 2, drxStatus.hmcMode());
 
   // floats
 
