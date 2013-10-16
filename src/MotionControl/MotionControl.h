@@ -216,8 +216,8 @@ private:
     void _adjustScanningForAttitude(double pitch, double roll, double drift);
     
     /// @brief Verify that the target radius for each of our drives matches 
-    /// our desired target radius. Set it if necessary.
-    void _verifyTargetRadius();
+    /// our desired target radius, setting it if necessary.
+    void _setTargetRadius();
 
     /// Rotation drive
     RotServoDrive _rotDrive;
