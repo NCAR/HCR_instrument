@@ -430,13 +430,13 @@ ElmoServoDrive::_readReply() {
                     }
                 }
                 
-                // Save reply from TR "target radius" command
-                if (! cmd.compare("TR")) {
+                // Save reply from TR[1] "target radius" command
+                if (! cmd.compare("TR[1]")) {
                     uint32_t tr = qCmdReply.toUInt(&ok);
                     if (ok) {
                         _targetRadius = tr;
                     } else {
-                        WLOG << _driveName << ": bad TR reply '" <<
+                        WLOG << _driveName << ": bad TR[1] reply '" <<
                                 cmdReply << "'";
                     }
                 }
@@ -601,9 +601,10 @@ ElmoServoDrive::setTargetRadius(uint32_t targetRadius) {
                 targetRadius << " counts";
         return;
     }
-    // Convert target radius to drive counts, then build and send the TR command
+    // Convert target radius to drive counts, then build and send the TR[1] 
+    // command
     std::ostringstream cmdstream;
-    cmdstream << "TR=" << targetRadius;
+    cmdstream << "TR[1]=" << targetRadius;
     _execElmoCmd(cmdstream.str());
 }
 
@@ -823,7 +824,7 @@ ElmoServoDrive::_collectStatus() {
     // Send the commands for the status values we want
     _execElmoCmd("SR", false);      // status register
     _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
-    _execElmoCmd("TR", false);      // target radius
+    _execElmoCmd("TR[1]", false);      // target radius
     _execElmoCmd("PX", false);      // main position
     _execElmoCmd("TM", false);		// system time
 }
