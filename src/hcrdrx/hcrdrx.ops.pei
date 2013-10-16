@@ -5,22 +5,26 @@ radar_id                HCR
 calibration_file        /home/hcr/projDir/moments/params/hcr_cal.xml
 start_on_1pps		1
 
-gates                   500
 #gates                   60  
+#gates                   375
+gates                   700
 
 staggered_prt           0
 prt1                    1.01376e-4  # s
 
 digitizer_gate0_delay   2.232e-6  # s
-#digitizer_sample_width  6.4e-8  # s
-digitizer_sample_width  1.28e-7 # s
-#digitizer_sample_width  5.12e-7 # s  
+#digitizer_sample_width  64e-9  # s
+digitizer_sample_width  128e-9 # s
+#digitizer_sample_width  256e-9 # s
+#digitizer_sample_width  512e-9 # s  
+#digitizer_sample_width  1024e-9 # s
 
-tx_delay                3.36e-7 # s
-#tx_pulse_width          2.56e-7 # s
-tx_pulse_width          5.12e-7 # s  
-tx_pulse_mod_delay      4.32e-7 # s
-tx_latency              6.00e-7 # s
+tx_delay                336e-9 # s
+tx_pulse_width          256e-9 # s
+#tx_pulse_width          512e-9 # s  
+#tx_pulse_width          1024e-9 # s  
+tx_pulse_mod_delay      432e-9 # s
+tx_latency              600e-9 # s
 
 # iqcount_scale_for_mw: count scaling factor to easily get power in mW from
 # I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
