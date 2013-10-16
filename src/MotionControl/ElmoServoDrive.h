@@ -87,7 +87,7 @@ public:
     /// @brief Set the target radius for the drive, in drive counts. See ELMO
     /// documentation for the TR command to see the effects of the target
     /// radius.
-    /// @param targetRadiusDeg the desired target radius, deg
+    /// @param targetRadius the desired target radius, deg
     void setTargetRadius(uint32_t targetRadius);
     
     /// @brief Return the target radius for the drive, in drive counts.
