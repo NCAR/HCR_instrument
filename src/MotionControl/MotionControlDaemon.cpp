@@ -34,6 +34,12 @@ std::string PmuInstance = "ops";   ///< application instance
 // Set to true when it's time to terminate
 bool Terminate = false;
 
+// Count values to be assigned to the "home position" for each of the drives.
+// Optimally, these are set so that putting both drives at their zero positions
+// will cause the radar beam to be pointing exactly at zenith.
+static const int ROT_DRIVE_HOME_COUNTS = 3500;
+static const int TILT_DRIVE_HOME_COUNTS = -200;
+
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
 void
@@ -95,7 +101,7 @@ public:
 
         paramList.verifyEnd(0);
 
-        Control->homeDrive(3500, -200);
+        Control->homeDrive(ROT_DRIVE_HOME_COUNTS, TILT_DRIVE_HOME_COUNTS);
 
         *retvalP = xmlrpc_c::value_int(0);
 
