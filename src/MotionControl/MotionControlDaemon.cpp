@@ -37,8 +37,8 @@ bool Terminate = false;
 // Count values to be assigned to the "home position" for each of the drives.
 // Optimally, these are set so that putting both drives at their zero positions
 // will cause the radar beam to be pointing exactly at zenith.
-static const int ROT_DRIVE_HOME_COUNTS = 3500;
-static const int TILT_DRIVE_HOME_COUNTS = -200;
+static const int ROT_DRIVE_HOME_COUNTS = 3389;
+static const int TILT_DRIVE_HOME_COUNTS = -280;
 
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
