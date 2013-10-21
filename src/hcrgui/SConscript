@@ -18,6 +18,7 @@ hcrgui_sources = Split("""
 hcrgui.cpp
 AntennaModeDialog.cpp
 CmigitsDetails.cpp
+CmigitsStatusThread.cpp
 HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
 MotionControlDetails.cpp
@@ -48,6 +49,7 @@ hcrguiEnv.Qrc(qrcfiles)
 headers = Split("""
 AntennaModeDialog.h
 CmigitsDetails.h
+CmigitsStatusThread.h
 HcrdrxStatusThread.h
 HcrGuiMainWindow.h
 MotionControlDetails.h
