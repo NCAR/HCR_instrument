@@ -6,6 +6,7 @@
 
 #include <QApplication>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
 
@@ -69,9 +70,16 @@ int main(int argc, char *argv[]) {
         // Set up a reader getting its data from the Radx moments FMQ
         momReader = new IwrfMomReaderFmq("fmq/moments/wband/shmem_20000");
     }
+    
     RadxBscanRaySource bscanRaySource;
     ReaderThread readerThread(*momReader, bscanRaySource);
     readerThread.start();
+    
+    // Pop up an information box when no more data are available.
+    QMessageBox noMoreDataBox(QMessageBox::Information, "Information", 
+            "No more data", QMessageBox::Ok);
+    QObject::connect(&readerThread, SIGNAL(finished()), 
+            &noMoreDataBox, SLOT(exec()));
     
     QMainWindow* mainWindow = new BscanMainWindow(config);
     mainWindow->setWindowTitle("HCR bscan");
