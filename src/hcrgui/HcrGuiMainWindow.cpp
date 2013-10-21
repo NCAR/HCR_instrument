@@ -26,10 +26,10 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _xmitDetails(this),
     _antennaModeDialog(this),
     _motionControlDetails(this),
-    _xmitdStatusThread(xmitterHost, xmitterPort),
+    _cmigitsStatusThread(rdsHost, cmigitsPort),
     _mcClientThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
-    _cmigitsDaemonRpcClient(rdsHost, cmigitsPort),
+    _xmitdStatusThread(xmitterHost, xmitterPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
@@ -54,10 +54,24 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             pmcPort;
     _logMessage(ss.str());
 
-    // Disable the data system box and CmigitsDetails dialog until we get
-    // status from hcrdrx.
+    // Disable the HMC mode box until we get status from hcrdrx.
     _ui.setHmcModeBox->setEnabled(false);
+    
+    // Disable C-MIGITS details
     _cmigitsDetails.setEnabled(false);
+    // Connect and start the CmigitsStatusThread
+    connect(& _cmigitsStatusThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_cmigitsResponsivenessChange(bool)));
+    connect(& _cmigitsStatusThread, SIGNAL(newStatus(CmigitsStatus)),
+            this, SLOT(_setCmigitsStatus(CmigitsStatus)));
+    _cmigitsStatusThread.start();
+
+    // Connect and start the MotionControlStatusThread
+    connect(& _mcClientThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_mcResponsivenessChange(bool)));
+    connect(& _mcClientThread, SIGNAL(newStatus(MotionControl::Status)),
+            this, SLOT(_setMotionControlStatus(MotionControl::Status)));
+    _mcClientThread.start();
 
     // Connect signals from our Pmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool)),
@@ -75,13 +89,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             this, SLOT(_setXmitStatus(XmitStatus)));
     _xmitdStatusThread.start();
 
-    // Connect and start the MotionControlStatusThread
-    connect(& _mcClientThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_mcResponsivenessChange(bool)));
-    connect(& _mcClientThread, SIGNAL(newStatus(MotionControl::Status)),
-            this, SLOT(_setMotionControlStatus(MotionControl::Status)));
-    _mcClientThread.start();
-
     // QUdpSocket listening for broadcast of angles
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
     connect(&_angleSocket, SIGNAL(readyRead()), this, SLOT(_readAngles()));
@@ -95,8 +102,44 @@ HcrGuiMainWindow::~HcrGuiMainWindow() {
 }
 
 void
-HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
-    _pmcStatus = status;
+HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "cmigitsDaemon @ " <<
+            _cmigitsStatusThread.rpcClient().getDaemonHost() << ":" <<
+            _cmigitsStatusThread.rpcClient().getDaemonPort() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+
+    _cmigitsDetails.setEnabled(responding);
+    if (! responding) {
+        // Create a default (bad) CmigitsStatus, and set it as the last status
+        // received.
+        _setCmigitsStatus(CmigitsStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setCmigitsStatus(const CmigitsStatus & status) {
+    _cmigitsStatus = status;
+    _update();
+}
+
+void
+HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "MotionControlDaemon @ " <<
+            _mcClientThread.rpcClient().daemonUrl() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+}
+
+void
+HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
+    _mcStatus = status;
     _update();
 }
 
@@ -121,27 +164,8 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
 }
 
 void
-HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
-    // log the responsiveness change
-    std::ostringstream ss;
-    ss << "MotionControlDaemon @ " <<
-            _mcClientThread.rpcClient().daemonUrl() <<
-            (responding ? " is " : " is not ") <<
-            "responding";
-    _logMessage(ss.str().c_str());
-}
-
-void
-HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
-    _xmitStatus = status;
-    _update();
-    // Append new log messages from hcr_xmitd
-    _appendXmitdLogMsgs();
-}
-
-void
-HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
-    _mcStatus = status;
+HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
+    _pmcStatus = status;
     _update();
 }
 
@@ -165,6 +189,14 @@ HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
         // received.
         _setXmitStatus(XmitStatus());
     }
+}
+
+void
+HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
+    _xmitStatus = status;
+    _update();
+    // Append new log messages from hcr_xmitd
+    _appendXmitdLogMsgs();
 }
 
 bool
@@ -360,7 +392,7 @@ HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
     
     // We got confirmation, so send the XML-RPC command to begin initialization.
     try {
-        if (_cmigitsDaemonRpcClient.initializeUsingIwg1()) {
+        if (_cmigitsStatusThread.rpcClient().initializeUsingIwg1()) {
             QMessageBox msgBox(QMessageBox::Information,
                     "C-MIGITS initialization", "C-MIGITS initialization started",
                     QMessageBox::Close, this);
@@ -461,10 +493,6 @@ HcrGuiMainWindow::_update() {
     // HMC mode
     _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
 
-    // Instantiate a CmigitsStatus to get the latest values from
-    // CmigitsSharedMemory.
-    CmigitsStatus cmigitsStatus;
-
     // C-MIGITS status light
     {
         // Get C-MIGITS status
@@ -481,7 +509,7 @@ HcrGuiMainWindow::_update() {
         float expectedHPosError = 0.0;
         float expectedVPosError = 0.0;
         float expectedVelError = 0.0;
-        cmigitsStatus.msg3500Data(statusTime, mode, insAvailable, gpsAvailable,
+        _cmigitsStatus.msg3500Data(statusTime, mode, insAvailable, gpsAvailable,
                 doingCoarseAlignment, nSats,
                 positionFOM, velocityFOM,  headingFOM, timeFOM,
                 expectedHPosError, expectedVPosError, expectedVelError);
@@ -503,9 +531,8 @@ HcrGuiMainWindow::_update() {
     _xmitDetails.setEnabled(_xmitStatus.serialConnected());
     _xmitDetails.updateStatus(_xmitStatus);
 
-    // Update the C-MIGITS status details dialog. We instantiate CmigitsStatus()
-    // to get the current values from CmigitsSharedMemory.
-    _cmigitsDetails.updateStatus(cmigitsStatus);
+    // Update the C-MIGITS status details dialog.
+    _cmigitsDetails.updateStatus(_cmigitsStatus);
     
     // MotionControl status LED
     _motionControlDetails.updateStatus(_mcStatus);
