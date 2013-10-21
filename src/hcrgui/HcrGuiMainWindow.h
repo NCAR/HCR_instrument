@@ -78,6 +78,8 @@ private slots:
     /// @brief Save the last status received from hcr_xmitd.
     /// @param status the last status received from hcr_xmitd.
     void _setXmitStatus(XmitStatus status);
+    /// @brief Slot to erase the angle display when angles are no longer valid
+    void _timeoutAngleDisplay();
 
 private:
     // Append latest messages from hcr_xmitd to our logging area
@@ -115,8 +117,12 @@ private:
 
     /// @brief Show rotation angle
     void _showRotAngle(float rotAngle);
+
     /// @brief Show tilt angle
     void _showTiltAngle(float tiltAngle);
+
+    /// @brief Clear the angle displays
+    void _clearAngleDisplay();
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
@@ -152,5 +158,14 @@ private:
 
     // time of last GUI update with new angles
     QDateTime _lastAngleUpdate;
+
+    // timer to erase angle display if time since new angles is too long
+    QTimer _anglesValidTimer;
+
+    // Have we disabled transmitter HV due to low pod pressure?
+    bool _hvDisabledForPressure;
+    // Time of the first good pressure in a period of continuous good pressures
+    // If zero, then the last pressure seen was bad.
+    time_t _goodPresStartTime;
 };
 #endif /*HCRGUIMAINWINDOW_H_*/

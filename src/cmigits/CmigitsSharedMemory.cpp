@@ -16,13 +16,21 @@ LOGGING("CmigitsSharedMemory")
 
 const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
 
-inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
-inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
+inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
+inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
+
+// Set RECORD_CSV to true to record a CSV text file of all 3500, 3501, and
+// 3512 messages
+static const bool RECORD_CSV = false;
 
 CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     _qShm(CMIGITS_SHM_KEY),
     _writeAccess(writeAccess),
-    _shmContents(0) {
+    _3500TimeoutTimer(),
+    _3501TimeoutTimer(),
+    _3512TimeoutTimer(),
+    _shmContents(0),
+    _dataFile(0) {
     // Create and attach to the shared memory segment, which will hold our
     // private type struct _ShmContents
     int segsize = sizeof(struct _ShmContents);
@@ -73,9 +81,10 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         throw(Exception(msgStream.str()));
     }
     _shmContents = static_cast<struct _ShmContents *>(_qShm.data());
-    // If write access has been requested, establish this instance as the 
-    // writer instance if possible.
+    
+    // Special setup for the writer
     if (_writeAccess) {
+        // Establish this instance as the writer instance if possible.
         pid_t writerPid = getWriterPid();
         if (writerPid != 0) {
             _qShm.detach();
@@ -85,19 +94,35 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
             throw(Exception(msgStream.str()));
         }
         // Set our process id as the writer id
-        _qShm.lock();
-        _shmContents->writerPid = getpid();
-        _qShm.unlock();
+        _setWriterPid(getpid());
+        // Set up timeout timers which will clear the shared memory if new
+        // data don't arrive within a second
+        _3500TimeoutTimer.setInterval(1000);
+        _3500TimeoutTimer.setSingleShot(true);
+        connect(&_3500TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3500Data()));
+        
+        _3501TimeoutTimer.setInterval(1000);
+        _3501TimeoutTimer.setSingleShot(true);
+        connect(&_3501TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3501Data()));
+        
+        _3512TimeoutTimer.setInterval(1000);
+        _3512TimeoutTimer.setSingleShot(true);
+        connect(&_3512TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3512Data()));
+    }
+    if (RECORD_CSV) {
+        _dataFile = fopen("/tmp/cmigitsData", "w+");
     }
 }
 
 CmigitsSharedMemory::~CmigitsSharedMemory() {
     // If this is the writer, clear the writer PID now
     if (_writeAccess) {
+        // Zero the C-MIGITS data in the segment
+        _zero3500Data();
+        _zero3501Data();
+        _zero3512Data();
         // Remove this object as writer (set the writer pid to zero)
-        _qShm.lock();
-        _shmContents->writerPid = 0;
-        _qShm.unlock();
+        _setWriterPid(0);
     }
     _qShm.detach();
 }
@@ -111,12 +136,19 @@ CmigitsSharedMemory::getWriterPid() const {
 }
 
 void
+CmigitsSharedMemory::_setWriterPid(pid_t pid) {
+    _qShm.lock();
+    _shmContents->writerPid = pid;
+    _qShm.unlock();
+}
+
+void
 CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
             uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
-            float expectedHPosError, float expectedVPosError,
-            float expectedVelocityError) throw(Exception) {
+            double expectedHPosError, double expectedVPosError,
+            double expectedVelocityError) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -135,6 +167,15 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
     _shmContents->vPosError = expectedVPosError;
     _shmContents->velocityError = expectedVelocityError;
     _qShm.unlock();
+    if (RECORD_CSV) {
+        fprintf(_dataFile, "3500,%lld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n", 
+                dataTime, currentMode, insAvailable, gpsAvailable, 
+                doingCoarseAlignment, nSats, positionFOM, velocityFOM, 
+                headingFOM, timeFOM, expectedHPosError, expectedVPosError,
+                expectedVelocityError);
+    }
+    // Time out the new data after a second
+    _3500TimeoutTimer.start();
 }
 
 void
@@ -142,8 +183,8 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
             bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
             uint16_t & nSats, uint16_t & positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
-            float & expectedHPosError, float & expectedVPosError,
-            float & expectedVelocityError) const {
+            double & expectedHPosError, double & expectedVPosError,
+            double & expectedVelocityError) const {
     _qShm.lock();
     dataTime = _shmContents->statusTime;
     currentMode = _shmContents->currentMode;
@@ -162,9 +203,9 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
 }
 
 void
-CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, float latitude,
-        float longitude, float altitude, float velNorth, float velEast,
-        float velUp) throw(Exception) {
+CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
+        double longitude, double altitude, double velNorth, double velEast,
+        double velUp) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -177,13 +218,18 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, float latitude,
     _shmContents->velEast = velEast;
     _shmContents->velUp = velUp;
     _qShm.unlock();
-    return;
+    if (RECORD_CSV) {
+        fprintf(_dataFile, "3501,%lld,%f,%f,%f,%f,%f,%f\n", dataTime, 
+                latitude, longitude, altitude, velNorth, velEast, velUp);
+    }
+    // Time out the new data after a second
+    _3501TimeoutTimer.start();
 }
 
 void
-CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, float & latitude,
-        float & longitude, float & altitude, float & velNorth, float & velEast,
-        float & velUp) const {
+CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, double & latitude,
+        double & longitude, double & altitude, double & velNorth, double & velEast,
+        double & velUp) const {
     _qShm.lock();
     dataTime = _shmContents->navSolutionTime;
     latitude = _shmContents->latitude;
@@ -197,8 +243,8 @@ CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, float & latitude,
 }
 
 void
-CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, float pitch,
-        float roll, float heading) throw(Exception) {
+CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
+        double roll, double heading) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -208,12 +254,17 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, float pitch,
     _shmContents->roll = roll;
     _shmContents->heading = heading;
     _qShm.unlock();
-    return;
+    if (RECORD_CSV) {
+        fprintf(_dataFile, "3512,%lld,%f,%f,%f\n", dataTime, pitch, roll, 
+                heading);
+    }
+    // Time out the new data after a second
+    _3512TimeoutTimer.start();
 }
 
 void
-CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, float & pitch,
-        float & roll, float & heading) const {
+CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, double & pitch,
+        double & roll, double & heading) const {
     _qShm.lock();
     dataTime = _shmContents->attitudeTime;
     pitch = _shmContents->pitch;
@@ -223,22 +274,22 @@ CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, float & pitch,
     return;
 }
 
-float
+double
 CmigitsSharedMemory::getEstimatedDriftAngle() const {
     _qShm.lock();
-    float heading = _shmContents->heading;
-    float velNorth = _shmContents->velNorth;
-    float velEast = _shmContents->velEast;
+    double heading = _shmContents->heading;
+    double velNorth = _shmContents->velNorth;
+    double velEast = _shmContents->velEast;
     _qShm.unlock();
 
     // Drift angle defaults to 0
-    float drift = 0.0;
+    double drift = 0.0;
 
     // Only calculate drift angle if ground velocity is a non-zero value.
     // We (arbitrarily) use 10 m/s as the threshold.
-    float groundSpd = sqrt(velNorth * velNorth + velEast * velEast);
+    double groundSpd = sqrt(velNorth * velNorth + velEast * velEast);
     if (groundSpd > 10.0) {
-        float groundTrk = 90 - RadToDeg(atan2(velNorth, velEast));
+        double groundTrk = 90 - RadToDeg(atan2(velNorth, velEast));
         drift = groundTrk - heading;
 
         // Normalize to range [-180,180]
@@ -251,4 +302,46 @@ CmigitsSharedMemory::getEstimatedDriftAngle() const {
     }
 
     return(drift);
+}
+
+void
+CmigitsSharedMemory::_zero3500Data() {
+    _qShm.lock();
+    _shmContents->statusTime = 0;
+    _shmContents->currentMode = 0;
+    _shmContents->insAvailable = 0;
+    _shmContents->gpsAvailable = 0;
+    _shmContents->doingCoarseAlignment = 0;
+    _shmContents->nSats = 0;
+    _shmContents->positionFOM = 0;
+    _shmContents->velocityFOM = 0;
+    _shmContents->headingFOM = 0;
+    _shmContents->timeFOM = 0;
+    _shmContents->hPosError = 0.0;
+    _shmContents->vPosError = 0.0;
+    _shmContents->velocityError = 0.0;
+    _qShm.unlock();
+}
+
+void
+CmigitsSharedMemory::_zero3501Data() {
+    _qShm.lock();
+    _shmContents->navSolutionTime = 0;
+    _shmContents->latitude = 0.0;
+    _shmContents->longitude = 0.0;
+    _shmContents->altitude = 0.0;
+    _shmContents->velNorth = 0.0;
+    _shmContents->velEast = 0.0;
+    _shmContents->velUp = 0.0;
+    _qShm.unlock();
+}
+
+void
+CmigitsSharedMemory::_zero3512Data() {
+    _qShm.lock();
+    _shmContents->attitudeTime = 0;
+    _shmContents->pitch = 0.0;
+    _shmContents->roll = 0.0;
+    _shmContents->heading = 0.0;
+    _qShm.unlock();
 }

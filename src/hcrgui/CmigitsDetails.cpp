@@ -34,9 +34,9 @@ CmigitsDetails::updateStatus(const CmigitsStatus & status) {
     uint16_t velocityFOM = 0;
     uint16_t headingFOM = 0;
     uint16_t timeFOM = 0;
-    float expectedHPosError = 0.0;
-    float expectedVPosError = 0.0;
-    float expectedVelocityError = 0.0;
+    double expectedHPosError = 0.0;
+    double expectedVPosError = 0.0;
+    double expectedVelocityError = 0.0;
     status.msg3500Data(statusTime, currentMode, insAvailable,
             gpsAvailable, doingCoarseAlignment, nSats, 
             positionFOM, velocityFOM, headingFOM, timeFOM,
@@ -63,12 +63,12 @@ CmigitsDetails::updateStatus(const CmigitsStatus & status) {
     _ui.attitudeBox->setEnabled(enableBoxes);
 
     double navSolutionTime = 0.0;
-    float latitude = 0.0;
-    float longitude = 0.0;
-    float altitude = 0.0;
-    float velNorth = 0.0;
-    float velEast = 0.0;
-    float velUp = 0.0;
+    double latitude = 0.0;
+    double longitude = 0.0;
+    double altitude = 0.0;
+    double velNorth = 0.0;
+    double velEast = 0.0;
+    double velUp = 0.0;
     status.msg3501Data(navSolutionTime, latitude, longitude, altitude,
             velNorth, velEast, velUp);
     _ui.navSolutionTimeValue->setText(QDateTime::fromTime_t(uint32_t(navSolutionTime)).toUTC().toString("hh:mm:ss"));
@@ -80,9 +80,9 @@ CmigitsDetails::updateStatus(const CmigitsStatus & status) {
     _ui.velUpValue->setText(QString::number(velUp, 'f', 2));
 
     double attitudeTime = 0.0;
-    float pitch = 0.0;
-    float roll = 0.0;
-    float heading = 0.0;
+    double pitch = 0.0;
+    double roll = 0.0;
+    double heading = 0.0;
     status.msg3512Data(attitudeTime, pitch, roll, heading);
     _ui.attitudeTimeValue->setText(QDateTime::fromTime_t(uint32_t(attitudeTime)).toUTC().toString("hh:mm:ss"));
     _ui.pitchValue->setText(QString::number(pitch, 'f', 2));

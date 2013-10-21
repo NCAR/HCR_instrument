@@ -12,8 +12,8 @@
 
 LOGGING("MotionControl")
 
-inline float DegToRad(float deg) { return(M_PI * deg / 180.0); }
-inline float RadToDeg(float rad) { return(180.0 * rad / M_PI); }
+inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
+inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::MotionControl() :
@@ -21,6 +21,7 @@ MotionControl::MotionControl() :
     _tiltDrive("/dev/ttydp01"),
     _antennaMode(POINTING),
     _fixedPointingAngle(0),
+    _targetRadius(0.02),
     _cmigitsShm(),
     _fakeAttitude(false),
     _driveStartTime(QTime::currentTime())
@@ -49,10 +50,10 @@ void MotionControl::correctForAttitude()
      */
     // Get aircraft attitude
     uint64_t dataTime;
-    float pitch = 0.0;
-    float roll = 0.0;
-    float heading = 0.0;
-    float drift = 0.0;
+    double pitch = 0.0;
+    double roll = 0.0;
+    double heading = 0.0;
+    double drift = 0.0;
 
     if (_cmigitsShm.getWriterPid()) {
         // Get pitch, roll, and heading
@@ -64,7 +65,7 @@ void MotionControl::correctForAttitude()
     // Substitute fake attitude if requested
     if (_fakeAttitude) {
         // How many seconds since we started the drive?
-        float secsRunning = 0.001 * _driveStartTime.msecsTo(QTime::currentTime());
+        double secsRunning = 0.001 * _driveStartTime.msecsTo(QTime::currentTime());
         if (secsRunning < 0)
             secsRunning += 86400;	// secs per day
 
@@ -102,9 +103,13 @@ MotionControl::homeDrive(int rotHomeCounts, int tiltHomeCounts)
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::point(float angle)
+MotionControl::point(double angle)
 {
     ILOG << "Point to " << angle << " deg";
+    
+    // Make sure the target radius for the drives is what we want
+    _setTargetRadius();
+    
     // Set up for fixed antenna pointing
     _fixedPointingAngle = angle;
     _antennaMode = POINTING;
@@ -113,13 +118,16 @@ MotionControl::point(float angle)
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::scan(float ccwLimit, float cwLimit, float scanRate)
+MotionControl::scan(double ccwLimit, double cwLimit, double scanRate)
 {
     _scanCcwLimit = ccwLimit;
     _scanCwLimit = cwLimit;
     _scanRate = scanRate;
     ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
             scanRate << " deg/s";
+    
+    // Make sure the target radius for the drives is what we want
+    _setTargetRadius();
 
     _rotDrive.initScan(ccwLimit, cwLimit, scanRate);
 
@@ -157,11 +165,11 @@ MotionControl::setCorrectionEnabled(bool enabled) {
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::_adjustForAttitude(float & rot, float & tilt, float pitch,
-        float roll, float drift)
+MotionControl::_adjustForAttitude(double & rot, double & tilt, double pitch,
+        double roll, double drift)
 {
-    float desiredRot = rot;
-    float desiredTilt = tilt;
+    double desiredRot = rot;
+    double desiredTilt = tilt;
 
     double sinPitch = sin(DegToRad(pitch));
     double cosPitch = cos(DegToRad(pitch));
@@ -218,11 +226,11 @@ MotionControl::_adjustForAttitude(float & rot, float & tilt, float pitch,
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::_adjustPointingForAttitude(float pitch, float roll, float drift)
+MotionControl::_adjustPointingForAttitude(double pitch, double roll, double drift)
 {
     // Start with the desired track-relative rotation and tilt angles
-    float rot = _fixedPointingAngle;
-    float tilt = 0.0;
+    double rot = _fixedPointingAngle;
+    double tilt = 0.0;
     // Adjust to pod-relative rotation and tilt angles
     _adjustForAttitude(rot, tilt, pitch, roll, drift);
     // Move the drives to their new angles
@@ -232,9 +240,28 @@ MotionControl::_adjustPointingForAttitude(float pitch, float roll, float drift)
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::_adjustScanningForAttitude(float pitch, float roll, float drift)
+MotionControl::_adjustScanningForAttitude(double pitch, double roll, double drift)
 {
     DLOG << "_adjustScanningForAttitude not implemented";
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+MotionControl::_setTargetRadius()
+{
+    // rot drive
+    uint32_t rotTrCounts = uint32_t(_rotDrive.countsPerDegree() * _targetRadius);
+    if (_rotDrive.targetRadius() != rotTrCounts) {
+        ILOG << "Setting rot drive target radius to " << _targetRadius << " deg";
+        _rotDrive.setTargetRadius(rotTrCounts);
+    }
+    
+    // tilt drive
+    uint32_t tiltTrCounts = uint32_t(_tiltDrive.countsPerDegree() * _targetRadius);
+    if (_tiltDrive.targetRadius() != tiltTrCounts) {
+        ILOG << "Setting tilt drive target radius to " << _targetRadius << " deg";
+        _tiltDrive.setTargetRadius(tiltTrCounts);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////

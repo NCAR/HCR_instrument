@@ -42,16 +42,10 @@ HcrdrxStatusThread::run() {
 void
 HcrdrxStatusThread::_getStatus() {
     DrxStatus status;
-    if (_client->getStatus(status)) {
-        if (! _responsive) {
-            _responsive = true;
-            emit serverResponsive(true);
-        }
-        emit newStatus(status);
-    } else {
-        if (_responsive) {
-            _responsive = false;
-            emit serverResponsive(false);
-        }
+    bool gotResponse = _client->getStatus(status);
+    if (gotResponse != _responsive) {
+        _responsive = gotResponse;
+        emit serverResponsive(gotResponse);
     }
+    emit newStatus(status);
 }

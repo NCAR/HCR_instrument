@@ -70,8 +70,8 @@ public:
               bool & doingCoarseAlignment, uint16_t & nSats,
               uint16_t & positionFOM, uint16_t & velocityFOM,
               uint16_t & headingFOM, uint16_t & timeFOM,
-              float & expectedHPosError, float & expectedVPosError,
-              float & expectedVelocityError) const {
+              double & expectedHPosError, double & expectedVPosError,
+              double & expectedVelocityError) const {
         dataTime = _statusTime;
         currentMode = _currentMode;
         insAvailable = _insAvailable;
@@ -97,7 +97,7 @@ public:
      * @param[out] heading heading, deg clockwise from true north
      */
     void msg3512Data(double & dataTime,
-            float & pitch, float & roll, float & heading) const {
+            double & pitch, double & roll, double & heading) const {
         dataTime = _attitudeTime;
         pitch = _pitch;
         roll = _roll;
@@ -117,8 +117,8 @@ public:
      * @param[out] velUp upward component of velocity, m/s
      */
     void msg3501Data(double & dataTime,
-            float & latitude, float & longitude, float & altitude,
-            float & velNorth, float & velEast, float & velUp) const {
+            double & latitude, double & longitude, double & altitude,
+            double & velNorth, double & velEast, double & velUp) const {
         dataTime = _navSolutionTime;
         latitude = _latitude;
         longitude = _longitude;
@@ -199,38 +199,38 @@ private:
     /// time figure of merit (see documentation for the C-MIGITS 3500 message)
     uint16_t _timeFOM;
     /// expected horizontal position error, m
-    float _expectedHPosError;
+    double _expectedHPosError;
     /// expected vertical position error, m
-    float _expectedVPosError;
+    double _expectedVPosError;
     /// expected velocity error, m/s
-    float _expectedVelocityError;
+    double _expectedVelocityError;
 
     /// Time of last navigation solution, seconds since 1970-01-01 00:00:00 UTC.
     /// This time applies to latitude, longitude, altitude, north velocity
     /// component, east velocity component, and upward velocity component.
     double _navSolutionTime;
     /// latitude, deg
-    float _latitude;
+    double _latitude;
     /// longitude, deg
-    float _longitude;
+    double _longitude;
     /// altitude, m above MSL
-    float _altitude;
+    double _altitude;
     /// north component of velocity, m/s
-    float _velNorth;
+    double _velNorth;
     /// east component of velocity, m/s
-    float _velEast;
+    double _velEast;
     /// upward component of velocity, m/s
-    float _velUp;
+    double _velUp;
 
     /// Time of latest attitude information, seconds since 1970-01-01 00:00:00
     /// UTC. This time applies to pitch, roll, and heading.
     double _attitudeTime;
     /// C-MIGITS latest pitch, deg
-    float _pitch;
+    double _pitch;
     /// C-MIGITS latest roll, deg
-    float _roll;
+    double _roll;
     /// C-MIGITS latest heading, deg clockwise from true north
-    float _heading;
+    double _heading;
 };
 
 // Increment this class version number and update the serialize method above

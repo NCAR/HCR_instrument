@@ -25,7 +25,8 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         _config(config),
         _monitor(monitor),
         _cmigitsShm(false),
-        _lastCmigits3512Time(0)
+        _lastCmigits3512Time(0),
+        _hmcMode(HcrPmc730::HMC_UNUSED_3)
 {
 
   // initialize
@@ -103,13 +104,13 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   // initialize IWRF ts_processing struct from config
 
   iwrf_ts_processing_init(_tsProc);
-  _tsProc.xmit_rcv_mode = IWRF_SINGLE_POL;
+  _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
   _tsProc.xmit_phase_mode = IWRF_XMIT_PHASE_MODE_FIXED;
   _tsProc.prf_mode = IWRF_PRF_MODE_FIXED;
   _tsProc.pulse_type = IWRF_PULSE_TYPE_RECT;
   _tsProc.prt_usec = _config.prt1() * 1.0e6;
   _tsProc.prt2_usec = _config.prt2() * 1.0e6;
-  _tsProc.cal_type = IWRF_CAL_TYPE_CW_CAL;
+  _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
   _tsProc.burst_range_offset_m = 0.0;
   //   _tsProc.burst_range_offset_m =
   //     _config.burst_sample_delay() * lightSpeedMps / 2.0;
@@ -117,7 +118,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   const double SpeedOfLight = 2.99792458e8; // m/s
   _tsProc.gate_spacing_m = _config.digitizer_sample_width() * SpeedOfLight / 2;
   _tsProc.start_range_m = _config.range_to_gate0(); // center of gate 0
-  _tsProc.pol_mode = IWRF_POL_MODE_H;
+  _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
 
   // initialize IWRF scan segment for simulation angles
 
@@ -257,6 +258,10 @@ void IwrfExport::run()
     if (nGates != _nGates) {
       sendMeta = true;
       _nGates = nGates;
+    }
+    if (_monitor.drxStatus().hmcMode() != _hmcMode) {
+      sendMeta = true;
+      _hmcMode = _monitor.drxStatus().hmcMode();
     }
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
@@ -464,6 +469,38 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.seq_num = _packetSeqNum++;
   _tsProc.packet.time_secs_utc = _timeSecs;
   _tsProc.packet.time_nano_secs = _nanoSecs;
+
+  // set our polarization and calibration modes for processing
+  
+  switch (_hmcMode) {
+    case HcrPmc730::HMC_TX_V_RX_HV:
+    case HcrPmc730::HMC_CORNER_REFLECTOR_CAL:
+    case HcrPmc730::HMC_BENCH_TEST:
+        _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_V;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
+        break;
+    case HcrPmc730::HMC_TX_H_RX_HV:
+        _tsProc.xmit_rcv_mode = IWRF_H_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_H;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
+        break;
+    case HcrPmc730::HMC_TX_HV_RX_HV:
+        _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
+        break;
+    case HcrPmc730::HMC_NOISE_SOURCE_CAL:
+        _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_V;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
+        break;
+    default:
+        WLOG << "Unhandled/unknown _hmcMode: " << _hmcMode;
+        _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
+        _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
+        _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
+        break;
+  }
 
   iwrf_calibration_t calibStruct = _calib.getStruct();
   calibStruct.packet.seq_num = _packetSeqNum++;
@@ -685,6 +722,11 @@ string IwrfExport::_assembleStatusXml()
 
   // Start with status from the PMC-730 card
   const HcrPmc730Status pmc730Status = _monitor.pmc730Status();
+  
+  // ints
+  
+  xml += TaXml::writeInt
+    ("HmcMode", 2, pmc730Status.hmcMode());
 
   // floats
 
@@ -815,9 +857,9 @@ string IwrfExport::_assembleStatusXml()
   uint16_t velocityFOM = 0;     // see info for C-MIGITS 3500 message
   uint16_t headingFOM = 0;      // see info for C-MIGITS 3500 message
   uint16_t timeFOM = 0;         // see info for C-MIGITS 3500 message
-  float expectedHPosError = 0.0;      // m
-  float expectedVPosError = 0.0;      // m
-  float expectedVelocityError = 0.0;  // m/s
+  double expectedHPosError = 0.0;      // m
+  double expectedVPosError = 0.0;      // m
+  double expectedVelocityError = 0.0;  // m/s
 
   cmigitsStatus.msg3500Data(statusTime, currentMode, insAvailable, gpsAvailable,
           doingCoarseAlignment, nSats, positionFOM, velocityFOM, headingFOM, 
@@ -838,12 +880,12 @@ string IwrfExport::_assembleStatusXml()
 
   // current position/velocity (latest 3501 message from C-MIGITS)
   double navSolutionTime = 0.0; // seconds since 1970-01-01 00:00:00 UTC
-  float latitude = 0.0;         // deg
-  float longitude = 0.0;        // deg
-  float altitude = 0.0;         // m above MSL
-  float velNorth = 0.0;         // m/s
-  float velEast = 0.0;          // m/s
-  float velUp = 0.0;            // m/s
+  double latitude = 0.0;         // deg
+  double longitude = 0.0;        // deg
+  double altitude = 0.0;         // m above MSL
+  double velNorth = 0.0;         // m/s
+  double velEast = 0.0;          // m/s
+  double velUp = 0.0;            // m/s
 
   cmigitsStatus.msg3501Data(navSolutionTime, latitude, longitude, altitude,
           velNorth, velEast, velUp);
@@ -858,9 +900,9 @@ string IwrfExport::_assembleStatusXml()
 
   // current attitude (latest 3512 message from C-MIGITS)
   double attitudeTime = 0.0;    // seconds since 1970-01-01 00:00:00 UTC
-  float pitch = 0.0;            // deg
-  float roll = 0.0;             // deg
-  float heading = 0.0;          // deg clockwise from true north
+  double pitch = 0.0;            // deg
+  double roll = 0.0;             // deg
+  double heading = 0.0;          // deg clockwise from true north
   
   cmigitsStatus.msg3512Data(attitudeTime, pitch, roll, heading);
 
@@ -935,13 +977,13 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
 
   if (time3512 != _lastCmigits3512Time) {
     // Get data from the latest 3512 message, which contains attitude.
-    float pitch, roll, heading;
+    double pitch, roll, heading;
     _cmigitsShm.getLatest3512Data(time3512, pitch, roll, heading);
 
     // Get data from the latest 3501 message, which contains location and
     // velocity.
     uint64_t time3501;
-    float lat, lon, alt, velNorth, velEast, velUp;
+    double lat, lon, alt, velNorth, velEast, velUp;
     _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt, velNorth, velEast, velUp);
 
     iwrf_platform_georef_init(_radarGeoref);
@@ -962,6 +1004,10 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
     _radarGeoref.roll_deg = roll;
     _radarGeoref.vert_velocity_mps = velUp;
     _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
+
+    _radarInfo.latitude_deg = lat;
+    _radarInfo.longitude_deg = lon;
+    _radarInfo.altitude_m = alt;
 
     // Angles of the reflector rotation and tilt motors.
     float rotMotorAngle = _pulseH->getRotMotorAngle();
@@ -1045,8 +1091,8 @@ void IwrfExport::_computeRadarAngles()
   double zsubt = (cosP * cos_tau_a * cos_theta_rc
                   + sinP * sin_tau_a);
   
-  _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
-  _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
+  // _radarGeoref.rotation_angle_deg = atan2(xsubt, zsubt) * RAD_TO_DEG;
+  // _radarGeoref.tilt_deg = asin(ysubt) * RAD_TO_DEG;
   double lambda_t = atan2(xsubt, ysubt);
   double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
   double elevationRad = asin(zsubt);

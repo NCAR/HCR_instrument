@@ -6,6 +6,7 @@
  */
 #include "HcrGuiMainWindow.h"
 
+#include <cmath>
 #include <sstream>
 #include <unistd.h>
 
@@ -13,6 +14,10 @@
 #include <QMessageBox>
 
 #include <logx/Logging.h>
+
+// Invalid angle used to erase display of reflector position
+static const double INVALID_ANGLE = -999.9;
+
 LOGGING("HcrGuiMainWindow")
 
 
@@ -37,7 +42,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _xmitStatus(),
     _mcStatus(),
     _pmcStatus(true),
-    _nextLogIndex(0) {
+    _nextLogIndex(0),
+    _lastAngleUpdate(QDateTime::currentDateTime()),
+    _anglesValidTimer(this),
+    _hvDisabledForPressure(true),
+    _goodPresStartTime(0) {
     // Set up the UI
     _ui.setupUi(this);
     // Limit the log area to 1000 messages
@@ -93,9 +102,17 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
     connect(&_angleSocket, SIGNAL(readyRead()), this, SLOT(_readAngles()));
 
-    // Update every second
+    // Time out angle display if new angles stop arriving
+    _anglesValidTimer.setInterval(500);    // 1/2 second validity
+    _anglesValidTimer.setSingleShot(true);
+    connect(& _anglesValidTimer, SIGNAL(timeout()), this, SLOT(_timeoutAngleDisplay()));
+
+    // Update GUI every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
+
+    // Start with angle display cleared
+    _clearAngleDisplay();
 }
 
 HcrGuiMainWindow::~HcrGuiMainWindow() {
@@ -291,6 +308,21 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
+        // Do not change mode if we're transmitting. At this point, moving the
+        // reflector between pointing locations may steer the beam through the
+        // aircraft fuselage. If we do that while transmitting, the return signal
+        // will damage the radar.
+        if (_xmitterHvOn()) {
+            QMessageBox box(QMessageBox::Warning,
+                    "No Mode Change While Transmitting",
+                    "Reflector mode cannot be changed while transmitting.",
+                    QMessageBox::Ok, this);
+            box.setInformativeText(
+                    "Radar transmitter HV must be turned off before changing mode!");
+            box.exec();
+            return;
+        }
+
     	if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
     		float angle;
     		_antennaModeDialog.getPointingAngle(angle);
@@ -319,7 +351,15 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         return;
     }
 
-    // We got confirmation, so start the homing procedure.
+    // Save the current state of attitude correction, then disable correction
+    // until we exit. At exit, the current correction state will be restored.
+    // We disable correction because we need the motors to remain at their
+    // zero-count positions after homing long enough for us to also zero the
+    // motor counts on the Pentek.
+    bool savedState = _mcStatus.attitudeCorrectionEnabled;
+    _mcClientThread.rpcClient().setCorrectionEnabled(false);
+
+    // Start the drive homing program.
     _mcClientThread.rpcClient().homeDrive();
 
     // Poll until homing is complete
@@ -331,14 +371,33 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         // Let other things run for up to 200 ms
         QCoreApplication::processEvents(QEventLoop::AllEvents, 200);
     }
+    
+    // Update motion control status and verify drives actually got homed. Pop up
+    // a warning box if homing failed.
+    _mcStatus = _mcClientThread.rpcClient().status();
+    if (! _mcStatus.rotDriveHomed || ! _mcStatus.tiltDriveHomed) {
+        WLOG << "Homing failed";
+        // Let the user know that homing failed
+        QMessageBox failureBox(QMessageBox::Warning, "Homing Failed",
+                "Drive homing failed!\nYou will need to try again.",
+                QMessageBox::Ok, this);
+        failureBox.exec();
+        goto done;
+    }
 
-    QMessageBox bugBox;
-    bugBox.setText("BUG: Zeroing of motor counts on Pentek is not yet implemented!");
-    bugBox.exec();
 //    // With the motors both at their zero positions, tell the Pentek to zero
 //    // its position counts for both motors.
 //    ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
 //    _drxStatusThread.rpcClient().zeroPentekMotorCounts();
+
+done:
+    QMessageBox bugBox;
+    bugBox.setText("BUG: Zeroing of motor counts on Pentek is not yet implemented!");
+    bugBox.exec();
+    // Sleep momentarily, then restore the previous state for attitude
+    // correction
+    usleep(100000);
+    _mcClientThread.rpcClient().setCorrectionEnabled(savedState);
 }
 
 /// Toggle motion control attitude correction
@@ -506,9 +565,9 @@ HcrGuiMainWindow::_update() {
         uint16_t velocityFOM = 0;
         uint16_t headingFOM = 0;
         uint16_t timeFOM = 0;
-        float expectedHPosError = 0.0;
-        float expectedVPosError = 0.0;
-        float expectedVelError = 0.0;
+        double expectedHPosError = 0.0;
+        double expectedVPosError = 0.0;
+        double expectedVelError = 0.0;
         _cmigitsStatus.msg3500Data(statusTime, mode, insAvailable, gpsAvailable,
                 doingCoarseAlignment, nSats,
                 positionFOM, velocityFOM,  headingFOM, timeFOM,
@@ -590,6 +649,54 @@ HcrGuiMainWindow::_update() {
         _ui.driveHomeButton->setEnabled(false);
         _ui.antennaModeButton->setEnabled(false);
     }
+    
+    // Make sure transmitter HV is turned off if the pressure in the pressure 
+    // vessel drops below 760 hPa.
+    if (_pmcStatus.pvForePressure() < 760) {
+        // Disable the HV button as long as pressure remains too low
+        _ui.hvButton->setEnabled(false);
+        
+        // If HV is on, turn it off now
+        if (_xmitterHvOn()) {
+            // Act as if the user clicked the HV button to turn off HV
+            on_hvButton_clicked();
+        }
+
+        // Remember that we've disabled HV
+        bool stateChanged = ! _hvDisabledForPressure;
+        _hvDisabledForPressure = true;
+
+        // Mark as having no continuous good pressures
+        _goodPresStartTime = 0;
+
+        // Popup a message if we just changed the state of _hvDisabledForPressure
+        if (stateChanged) {
+            // Warn the user that we have disabled HV
+            QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
+                    "Disabling transmitter HV due to low pressure\n"
+                    "in the pressure vessel (or hcrdrx shutdown)",
+                    QMessageBox::Ok, this);
+            box.exec();
+        }
+    } else {
+        // If the last pressure was bad, mark now as the start of good
+        // pressures
+        time_t now = time(0);
+        if (! _goodPresStartTime) {
+            _goodPresStartTime = now;
+        }
+        // Allow HV again if we've had continuous good pressure values
+        // for more than 60 seconds
+        if (_hvDisabledForPressure &&
+                _goodPresStartTime && ((now - _goodPresStartTime) > 60)) {
+            _hvDisabledForPressure = false;
+            QMessageBox box(QMessageBox::Information, "HV Allowed",
+                    "Transmitter HV is now allowed, with 60 seconds\n"
+                    "of good pressures",
+                    QMessageBox::Ok, this);
+            box.exec();
+        }
+    }
 }
 
 void
@@ -602,8 +709,11 @@ HcrGuiMainWindow::_logMessage(std::string message) {
 void
 HcrGuiMainWindow::_readAngles()
 {
+    // Note that these two *must* be 32-bit floats, since the data we memcpy
+    // into these variables from the UDP stream is 32-bit floats.
     float rotation = 0.0;
     float tilt = 0.0;
+
     while (_angleSocket.hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(_angleSocket.pendingDatagramSize());
@@ -614,6 +724,10 @@ HcrGuiMainWindow::_readAngles()
 
         memcpy(reinterpret_cast<char*>(&rotation), datagram.data(), 4);
         memcpy(reinterpret_cast<char*>(&tilt), datagram.data() + 4, 4);
+
+        // Start/restart the timer which will clear the angle display if
+        // angles stop arriving.
+        _anglesValidTimer.start();
     }
     // Only update the GUI if the time since last update is greater than 50 ms.
     // The test is klugy for now, since older QDateTime implementations do not
@@ -641,13 +755,12 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.setBrush(QColor(0, 100, 0));
 	painter.drawRect(0, 0, 90, 90);
 	// Scan range
-	float ccwLimit = _mcStatus.scanCcwLimit;
-	float cwLimit = _mcStatus.scanCwLimit;
-	float scanRange = cwLimit - ccwLimit;
+	double ccwLimit = _mcStatus.scanCcwLimit;
+	double cwLimit = _mcStatus.scanCwLimit;
+	double scanRange = cwLimit - ccwLimit;
 	if (scanRange < 0)
 		scanRange += 360;
-	if (_mcStatus.rotDriveResponding &&
-		_mcStatus.antennaMode == MotionControl::SCANNING) {
+	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
 	   	painter.setBrush(QColor(0, 200, 80));
 	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -scanRange*16);
 	}
@@ -660,8 +773,8 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	painter.translate(46, 45);
 	painter.setFont(QFont("arial", 5, QFont::Bold));
 	for (int r = 0; r < 360; r += 30) {
-		float theta = (r-90)*M_PI/180.0;
-		float dx = 0, dy = 0;
+		double theta = (r-90)*M_PI/180.0;
+		double dx = 0, dy = 0;
 		if (r == 0)   dx = -2;
 		if (r == 180) dx = -5;
 		if (r > 180)  dx = -13;
@@ -676,24 +789,26 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 			painter.drawLine(30, 0, 32, 0);
 		painter.rotate(10);
 	}
-	// Rot angle
-	if (_mcStatus.rotDriveResponding) {
-    	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
-    		pen.setColor("yellow");
-    		pen.setWidth(1);
-    		painter.setPen(pen);
-    		painter.rotate(ccwLimit-90);
-    		painter.drawLine(0, 0, 32, 0);
-    		painter.rotate(scanRange);
-    		painter.drawLine(0, 0, 32, 0);
-    		painter.rotate(90-cwLimit);
-    	}
-		pen.setColor("white");
-		pen.setWidth(2);
-		painter.setPen(pen);
-		painter.rotate(rotAngle-90);
-		painter.drawLine(0, 0, 32, 0);
+	// If we're scanning, indicate scanning limits
+	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
+	    pen.setColor("yellow");
+	    pen.setWidth(1);
+	    painter.setPen(pen);
+	    painter.rotate(ccwLimit-90);
+	    painter.drawLine(0, 0, 32, 0);
+	    painter.rotate(scanRange);
+	    painter.drawLine(0, 0, 32, 0);
+	    painter.rotate(90-cwLimit);
 	}
+
+    // Draw the current position if the angle is valid
+    if (rotAngle != INVALID_ANGLE) {
+        pen.setColor("white");
+        pen.setWidth(2);
+        painter.setPen(pen);
+        painter.rotate(rotAngle-90);
+        painter.drawLine(0, 0, 32, 0);
+    }
 
 	painter.end();
 	_ui.rotAngleDisplay->setPixmap(*rotDisplay);
@@ -719,8 +834,8 @@ void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
 	painter.setFont(QFont("arial", 6, QFont::Bold));
 	for (int r = -36; r <= 36; r += 6) {
 		if (r/6 % 2 != 0) continue;
-		float theta = (r-90)*M_PI/180.0;
-		float dx = 0;
+		double theta = (r-90)*M_PI/180.0;
+		double dx = 0;
 		if (r < 0) dx = -5;
 		if (r == 0) dx = -2;
 		painter.drawText(QPointF(68*cos(theta)+dx, 68*sin(theta)), QString::number(r/6));
@@ -738,8 +853,9 @@ void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
 		rc++;
 	}
 	painter.rotate(54+6*rc);
-	// Tilt angle
-	if (_mcStatus.tiltDriveResponding) {
+
+	// Display current tilt angle, if the angle is valid
+	if (tiltAngle != INVALID_ANGLE) {
 		pen.setColor("white");
 		pen.setWidth(2);
 		painter.setPen(pen);
@@ -750,4 +866,18 @@ void HcrGuiMainWindow::_showTiltAngle(float tiltAngle)
 	painter.end();
 	_ui.tiltAngleDisplay->setPixmap(*tiltDisplay);
 	delete(tiltDisplay);
+}
+
+void
+HcrGuiMainWindow::_timeoutAngleDisplay() {
+    _logMessage("Angles from hcrdrx have stopped arriving");
+    _clearAngleDisplay();
+}
+
+void
+HcrGuiMainWindow::_clearAngleDisplay() {
+    _ui.rotationValue->setText("---");
+    _showRotAngle(INVALID_ANGLE);
+    _ui.tiltValue->setText("---");
+    _showTiltAngle(INVALID_ANGLE);
 }

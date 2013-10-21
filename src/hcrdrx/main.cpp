@@ -10,6 +10,7 @@
 #include <cerrno>
 #include <csignal>
 #include <cstdlib>
+#include <unistd.h>
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <XmlRpc.h>
@@ -418,15 +419,15 @@ main(int argc, char** argv)
         std::cout << std::endl;
 
         HcrPmc730Status status = _hcrMonitor->pmc730Status();
-//        std::cout << "detectedRfPower: " << status.detectedRfPower() << std::endl;
+        std::cout << "detectedRfPower: " << status.detectedRfPower() << std::endl;
         std::cout << "pvForePressure: " << status.pvForePressure() << std::endl;
-//        std::cout << "pvAftPressure: " << status.pvAftPressure() << std::endl;
+        std::cout << "pvAftPressure: " << status.pvAftPressure() << std::endl;
         std::cout << "ploTemp: " << status.ploTemp() << std::endl;
         std::cout << "eikTemp: " << status.eikTemp() << std::endl;
         std::cout << "vLnaTemp: " << status.vLnaTemp() << std::endl;
-//        std::cout << "hLnaTemp: " << status.hLnaTemp() << std::endl;
-//        std::cout << "polarizationSwitchTemp: " << status.polarizationSwitchTemp() << std::endl;
-//        std::cout << "rfDetectorTemp: " << status.rfDetectorTemp() << std::endl;
+        std::cout << "hLnaTemp: " << status.hLnaTemp() << std::endl;
+        std::cout << "polarizationSwitchTemp: " << status.polarizationSwitchTemp() << std::endl;
+        std::cout << "rfDetectorTemp: " << status.rfDetectorTemp() << std::endl;
         std::cout << "noiseSourceTemp: " << status.noiseSourceTemp() << std::endl;
         std::cout << "ps28VTemp: " << status.ps28VTemp() << std::endl;
         std::cout << "rdsInDuctTemp: " << status.rdsInDuctTemp() << std::endl;
@@ -435,10 +436,17 @@ main(int argc, char** argv)
         std::cout << "rotationMotorTemp: " << status.rotationMotorTemp() << std::endl;
         std::cout << "tailconeTemp: " << status.tailconeTemp() << std::endl;
         std::cout << "psVoltage: " << status.psVoltage() << std::endl;
+        std::cout << "locked125MHzPLO: " << status.locked125MHzPLO() << std::endl;
         std::cout << "locked15_5GHzPLO: " << status.locked15_5GHzPLO() << std::endl;
         std::cout << "locked1250MHzPLO: " << status.locked1250MHzPLO() << std::endl;
         std::cout << "modPulseDisabled: " << status.modPulseDisabled() << std::endl;
+        std::cout << "emsError1: " << status.emsError1() << std::endl;
+        std::cout << "emsError2: " << status.emsError2() << std::endl;
+        std::cout << "emsError3: " << status.emsError3() << std::endl;
+        std::cout << "emsError4Or5: " << status.emsError4Or5() << std::endl;
+        std::cout << "emsError6Or7: " << status.emsError6Or7() << std::endl;
         std::cout << "emsPowerError: " << status.emsPowerError() << std::endl;
+        std::cout << "emsErrorCount: " << status.emsErrorCount() << std::endl;
         std::cout << "waveguideSwitchError: " << status.waveguideSwitchError() << std::endl;
 //        std::cout << "rdsXmitterFilamentOn: " << status.rdsXmitterFilamentOn() << std::endl;
 //        std::cout << "rdsXmitterHvOn: " << status.rdsXmitterHvOn() << std::endl;

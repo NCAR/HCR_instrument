@@ -92,7 +92,7 @@ public:
      * at the last call to updateAnalogValues().
      */
     static double detectedRfPower() {
-        return _LookupMiWv950WPower(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
+        return _MiWv950WPower(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
     }
 
     /**
@@ -396,6 +396,26 @@ public:
     }
 
     /**
+     * @brief Set the state of the signal which zeros the Pentek's rotation
+     * counter.
+     * @param state While true, the Pentek will hold its rotation counter at
+     * zero
+     */
+    static void setPentekRotationZero(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_PENTEK_ZERO_ROT, state ? 1 : 0);
+    }
+
+    /**
+     * @brief Set the state of the signal which zeros the Pentek's tilt
+     * counter.
+     * @param state While true, the Pentek will hold its tilt counter at
+     * zero
+     */
+    static void setPentekTiltZero(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_PENTEK_ZERO_TILT, state ? 1 : 0);
+    }
+
+    /**
      * @brief Set the state of the transmitter klystron filament.
      * @param state If true, the klystron filament will be turned on, otherwise
      * off.
@@ -479,10 +499,10 @@ private:
      * Output DIO lines
      */
     typedef enum {
-        /// digital out line 8: Spare output line to Pentek
-        _HCR_DOUT_SPARE_PENTEK_3 = 8,
-        /// digital out line 9: Spare output line to Pentek
-        _HCR_DOUT_SPARE_PENTEK_2 = 9,
+        /// digital out line 8: tell Pentek to zero its tilt counter
+        _HCR_DOUT_PENTEK_ZERO_TILT = 8,
+        /// digital out line 9: tell Pentek to zero its rotation counter
+        _HCR_DOUT_PENTEK_ZERO_ROT = 9,
         /// digital out line 10: HMC status acknowledgment signal
         _HCR_DOUT_HMC_STATUS_ACK = 10,
         /// digital out line 11: HMC operation mode bit 2
@@ -651,7 +671,7 @@ private:
      * @param voltage the voltage measured at the Mi-Wave 950W detector
      * @return the RF power measured at the Mi-Wave 950W detector, dBm
      */
-    static double _LookupMiWv950WPower(double voltage);
+    static double _MiWv950WPower(double voltage);
     
     /**
      * @brief Initialize the PMC730 for event counting using DIO channel 2.

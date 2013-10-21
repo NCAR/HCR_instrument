@@ -18,6 +18,8 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 
+#include "HcrPmc730.h"
+
 using namespace XmlRpc;
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
@@ -264,12 +266,20 @@ public:
     double pentekBoardTemp() const { return(_pentekBoardTemp); }
     
     /**
-     * @brief Return the HMC operating mode number: 0-3
-     * 0 - normal operation, 1 - noise source cal, 2 - corner reflector cal,
-     * 3 - integration and testing
-     * @return the HMC operating mode number: 0-3
+     * @brief Return the HMC operating mode number: 0-7
+     * 
+     * 0 = transmit H, receive H and V
+     * 1 = transmit V, receive H and V
+     * 2 = transmit alternating H and V, receive H and V
+     * 3 = unused
+     * 4 = noise source calibration
+     * 5 = corner reflector calibration
+     * 6 = bench test
+     * 7 = unused
+     *
+     * @return the HMC operating mode number: 0-7
      */
-    int hmcMode() const { return(_hmcMode); }
+    HcrPmc730::HmcOperationMode hmcMode() const { return(static_cast<HcrPmc730::HmcOperationMode>(_hmcMode)); }
     
     /**
      * @brief Return the latest status information from the C-MIGITS
@@ -296,8 +306,8 @@ public:
               bool & doingCoarseAlignment, uint16_t & nSats,
               uint16_t & positionFOM, uint16_t & velocityFOM,
               uint16_t & headingFOM, uint16_t & timeFOM,
-              float & expectedHPosError, float & expectedVPosError,
-              float & expectedVelocityError) const {
+              double & expectedHPosError, double & expectedVPosError,
+              double & expectedVelocityError) const {
         dataTime = _cmigitsStatusTime;
         currentMode = _cmigitsCurrentMode;
         insAvailable = _cmigitsInsAvailable;
@@ -323,7 +333,7 @@ public:
      * @param[out] heading heading, deg clockwise from true north
      */
     void cmigitsAttitude(double & dataTime,
-            float & pitch, float & roll, float & heading) const {
+            double & pitch, double & roll, double & heading) const {
         dataTime = _cmigitsAttitudeTime;
         pitch = _cmigitsPitch;
         roll = _cmigitsRoll;
@@ -343,8 +353,8 @@ public:
      * @param[out] velUp upward component of velocity, m/s
      */
     void cmigitsNavSolution(double & dataTime,
-            float & latitude, float & longitude, float & altitude,
-            float & velNorth, float & velEast, float & velUp) const {
+            double & latitude, double & longitude, double & altitude,
+            double & velNorth, double & velEast, double & velUp) const {
         dataTime = _cmigitsNavSolutionTime;
         latitude = _cmigitsLatitude;
         longitude = _cmigitsLongitude;
@@ -635,7 +645,9 @@ private:
     /// Pentek board temperature;
     double _pentekBoardTemp;
 
-    /// HMC operating mode
+    /// HMC operating mode. This value is actually of enumerated type
+    /// HcrPmc730::HmcOperationMode, but we keep it as an int for serialization
+    /// purposes.
     uint16_t _hmcMode;
     
     /// C-MIGITS time of last status information, seconds since 
@@ -667,11 +679,11 @@ private:
     /// 3500 message)
     uint16_t _cmigitsTimeFOM;
     /// C-MIGITS expected horizontal position error, m
-    float _cmigitsHPosError;
+    double _cmigitsHPosError;
     /// C-MIGITS expected vertical position error, m
-    float _cmigitsVPosError;
+    double _cmigitsVPosError;
     /// C-MIGITS expected velocity error, m/s
-    float _cmigitsVelocityError;
+    double _cmigitsVelocityError;
     
     /// C-MIGITS time of last navigation solution, seconds since 
     /// 1970-01-01 00:00:00 UTC. This time applies to latitude, longitude,
@@ -679,28 +691,28 @@ private:
     /// upward velocity component
     double _cmigitsNavSolutionTime;
     /// C-MIGITS latitude, deg
-    float _cmigitsLatitude;
+    double _cmigitsLatitude;
     /// C-MIGITS longitude, deg
-    float _cmigitsLongitude;
+    double _cmigitsLongitude;
     /// C-MIGITS altitude, m above MSL
-    float _cmigitsAltitude;
+    double _cmigitsAltitude;
     /// C-MIGITS north component of velocity, m/s
-    float _cmigitsVelNorth;
+    double _cmigitsVelNorth;
     /// C-MIGITS east component of velocity, m/s
-    float _cmigitsVelEast;
+    double _cmigitsVelEast;
     /// C-MIGITS upward component of velocity, m/s
-    float _cmigitsVelUp;
+    double _cmigitsVelUp;
     
     /// C-MIGITS time of latest attitude information, seconds since 
     /// 1970-01-01 00:00:00 UTC. This time applies to pitch, roll, and
     /// heading.
     double _cmigitsAttitudeTime;
     /// C-MIGITS latest pitch, deg
-    float _cmigitsPitch;
+    double _cmigitsPitch;
     /// C-MIGITS latest roll, deg
-    float _cmigitsRoll;
+    double _cmigitsRoll;
     /// C-MIGITS latest heading, deg clockwise from true north
-    float _cmigitsHeading;
+    double _cmigitsHeading;
 };
 
 // Increment this class version number when member variables are changed.

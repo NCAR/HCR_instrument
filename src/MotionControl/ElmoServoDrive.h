@@ -83,7 +83,24 @@ public:
     /// @brief Return true iff drive homing is currently in progress.
     /// @return true iff drive homing is currently in progress.
     bool homingInProgress() const { return _homingInProgress; }
-
+    
+    /// @brief Set the target radius for the drive, in drive counts. See ELMO
+    /// documentation for the TR command to see the effects of the target
+    /// radius.
+    /// @param targetRadius the desired target radius, deg
+    void setTargetRadius(uint32_t targetRadius);
+    
+    /// @brief Return the target radius for the drive, in drive counts.
+    /// @return the target radius for the drive, in drive counts, or zero if 
+    /// the target radius is not known.
+    uint32_t targetRadius() {
+        if (_driveParamsGood()) {
+            return(_targetRadius);
+        } else {
+            return(0);
+        }
+    }
+    
     /// @brief Return the latest sampled drive status register value.
     /// @return the latest sampled drive status register value.
     StatusReg driveStatusRegister() const { return _driveStatusRegister; }
@@ -400,6 +417,9 @@ private:
 
     /// position controller sampling time, s
     float _pcSampleTime;
+    
+    /// target radius (see documentation for the TR command for details)
+    uint32_t _targetRadius;
 
     /// When did we begin the initialization process?
     struct timeval _xqStartTime;
