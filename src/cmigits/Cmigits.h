@@ -8,6 +8,7 @@
 #ifndef CMIGITS_H_
 #define CMIGITS_H_
 
+#include "CmigitsSharedMemory.h"
 #include <map>
 #include <string>
 #include <stdint.h>
@@ -30,8 +31,11 @@ public:
      * If special serial port name Cmigits::SIM_DEVICE
      * is used, existence of the C-MIGITS will be simulated.
      * @param ttyDev the name of the serial port connected to the C-MIGITS.
+     * @param shm pointer to a writable CmigitsSharedMemory, to which the
+     * Cmigits object should put incoming data. If NULL, the Cmigits object
+     * will not write to shared memory.
      */
-    Cmigits(std::string ttyDev);
+    Cmigits(std::string ttyDev, CmigitsSharedMemory * shm = 0);
     virtual ~Cmigits();
 
     /**
@@ -94,48 +98,6 @@ signals:
     /// @brief Signal emitted when INS availability changes
     /// @param newValue boolean telling the new state of INS availability
     void insAvailableChanged(bool newValue);
-    /// @brief Signal emitted when new 3500 message (System Status) data are
-    /// available.
-    /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
-    /// @param currentMode current operating mode
-    /// @param insAvailable true iff INS measurements are available
-    /// @param gpsAvailable true iff GPS time is valid and at least 4 satellites
-    /// are being used
-    /// @param doingCoarseAlignment true iff C-MIGITS is in "Coarse Alignment"
-    /// submode
-    /// @param nSats number of satellites currently tracked
-    /// @param positionFOM position figure-of-merit value
-    /// @param velocityFOM velocity figure-of-merit value
-    /// @param headingFOM heading figure-of-merit value
-    /// @param timeFOM time figure-of-merit value
-    /// @param expectedHPosError expected error in horizontal position, m
-    /// @param expectedVPosError expected error in vertical position, m
-    /// @param expectedVelocityError expected error in velocity, m/s
-    void new3500Data(uint64_t dataTime, uint16_t currentMode,
-            bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
-            uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM, 
-            uint16_t headingFOM, uint16_t timeFOM, double expectedHPosError,
-            double expectedVPosError, double expectedVelocityError);
-
-    /// @brief Signal emitted when new 3501 message (Navigation Solution) data are
-    /// available
-    /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
-    /// @param latitude latitude, deg
-    /// @param longitude longitude, deg
-    /// @param altitude altitude, m above MSL
-    /// @param velNorth north component of velocity, m/s
-    /// @param velEast east component of velocity, m/s
-    /// @param velUp upward component of velocity, m/s
-    void new3501Data(uint64_t dataTime, double latitude, double longitude,
-            double altitude, double velNorth, double velEast, double velUp);
-
-    /// @brief Signal emitted when new 3512 message (Flight Control) data are
-    /// available
-    /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
-    /// @param pitch pitch, deg
-    /// @param roll roll, deg
-    /// @param heading heading, deg clockwise from true north
-    void new3512Data(uint64_t dataTime, double pitch, double roll, double heading);
 
 private slots:
     /**
@@ -474,6 +436,9 @@ private:
 
     /// Does the C-MIGITS have GPS time and at least 4 satellites?
     bool _gpsAvailable;
+
+    /// Pointer to writable CmigitsSharedMemory
+    CmigitsSharedMemory * _shm;
 };
 
 #endif /* CMIGITS_H_ */

@@ -203,7 +203,7 @@ const std::string Cmigits::_TimeFOMStrings[] = {
         ">= 10000 µs"
 };
 
-Cmigits::Cmigits(std::string ttyDev) :
+Cmigits::Cmigits(std::string ttyDev, CmigitsSharedMemory * shm) :
                 QObject(),
                 _simulate(ttyDev == SIM_DEVICE),
                 _ttyDev(ttyDev),
@@ -224,7 +224,8 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _gpsDataTooOld(true),
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
-                _gpsAvailable(false) {
+                _gpsAvailable(false),
+                _shm(shm)  {
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
     uint16_t word = 0x0102;
@@ -810,11 +811,15 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
 
-    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
-    emit new3500Data(msecsSinceEpoch, _currentMode,
+    // Write to shared memory if we have access
+    if (_shm) {
+        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+       _shm->storeLatest3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
+    }
 }
 
 void
@@ -867,9 +872,13 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velocityEast << ", vel up: " << velocityUp;
     }
 
-    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
-    emit new3501Data(msecsSinceEpoch, latitude, longitude,
+    // Write to shared memory if we have access
+    if (_shm) {
+        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+        _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
             altitude, velocityNorth, velocityEast, velocityUp);
+    }
 }
 
 void
@@ -896,14 +905,19 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
     centisecond %= 100;
-    if (centisecond == 0) {
-        ILOG << "3512 time: " << msgTime.toString().toStdString() <<
+//    if (centisecond == 0) {
+        ILOG << "3512 time: " << 
+                msgTime.toString("hh:mm:ss.zzz").toStdString() <<
                 ", pitch: " << pitch <<
                 ", roll: " << roll << ", heading: " << heading;
-    }
+//    }
 
-    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
-    emit new3512Data(msecsSinceEpoch, pitch, roll, heading);
+    // Write to shared memory if we have access
+    if (_shm) {
+        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+        _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading);
+    }
 }
 
 void
