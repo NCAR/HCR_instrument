@@ -965,14 +965,15 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
 
   if (time3512 != _lastCmigits3512Time) {
     // Get data from the latest 3512 message, which contains attitude.
-    double pitch, roll, heading;
-    _cmigitsShm.getLatest3512Data(time3512, pitch, roll, heading);
+    double pitch, roll, heading, velNorth, velEast, velUp;
+    _cmigitsShm.getLatest3512Data(time3512, pitch, roll, heading,
+            velNorth, velEast, velUp);
 
     // Get data from the latest 3501 message, which contains location and
     // velocity.
     uint64_t time3501;
-    double lat, lon, alt, velNorth, velEast, velUp;
-    _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt, velNorth, velEast, velUp);
+    double lat, lon, alt;
+    _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt);
 
     iwrf_platform_georef_init(_radarGeoref);
 

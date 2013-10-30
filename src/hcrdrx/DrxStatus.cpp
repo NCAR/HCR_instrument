@@ -220,11 +220,11 @@ DrxStatus::_getCmigitsValues() {
     
     // Get navigation solution data
     _CmigitsShm->getLatest3501Data(dataTime, _cmigitsLatitude, _cmigitsLongitude,
-            _cmigitsAltitude, _cmigitsVelNorth, _cmigitsVelEast, _cmigitsVelUp);
+            _cmigitsAltitude);
     _cmigitsNavSolutionTime = dataTime * 0.001; // ms -> s
 
     // Get attitude data
     _CmigitsShm->getLatest3512Data(dataTime, _cmigitsPitch, _cmigitsRoll,
-            _cmigitsHeading);
+            _cmigitsHeading, _cmigitsVelNorth, _cmigitsVelEast, _cmigitsVelUp);
     _cmigitsAttitudeTime = dataTime * 0.001;    // ms -> s
 }

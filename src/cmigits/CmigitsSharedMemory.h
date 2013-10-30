@@ -99,12 +99,8 @@ public:
     /// @param[out] latitude latitude, deg
     /// @param[out] longitude longitude, deg
     /// @param[out] altitude altitude, m above MSL
-    /// @param[out] velNorth north component of velocity, m/s
-    /// @param[out] velEast east component of velocity, m/s
-    /// @param[out] velUp upward component of velocity, m/s
     void getLatest3501Data(uint64_t & dataTime, double & latitude,
-            double & longitude, double & altitude, double & velNorth,
-            double & velEast, double & velUp) const;
+            double & longitude, double & altitude) const;
 
     /// @brief Get the latest 3512 (Flight Control) attitude data available.
     /// If the most recent 3512 message is more than 1 second old, the data 
@@ -114,8 +110,12 @@ public:
     /// @param[out] pitch pitch, deg
     /// @param[out] roll roll, deg
     /// @param[out] heading heading, deg clockwise from true north
+    /// @param[out] velNorth north component of velocity, m/s
+    /// @param[out] velEast east component of velocity, m/s
+    /// @param[out] velUp upward component of velocity, m/s
     void getLatest3512Data(uint64_t & dataTime, double & pitch, double & roll,
-            double & heading) const;
+            double & heading, double & velNorth, double & velEast,
+            double & velUp) const;
 
     /// @brief Get the time of the latest 3512 (Flight Control) data, in
     /// milliseconds since 1970-01-01 00:00:00 UTC.
@@ -170,13 +170,10 @@ public slots:
     /// @param latitude latitude, deg
     /// @param longitude longitude, deg
     /// @param altitude altitude, m above MSL
-    /// @param velNorth north component of velocity, m/s
-    /// @param velEast east component of velocity, m/s
-    /// @param velUp upward component of velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void storeLatest3501Data(uint64_t dataTime, double latitude, double longitude,
-            double altitude, double velNorth, double velEast, double velUp) throw(Exception);
+    void storeLatest3501Data(uint64_t dataTime, double latitude,
+            double longitude, double altitude) throw(Exception);
 
     /// @brief Store the latest 3512 (Flight Control) data.
     /// @param dataTime date/time for attitude data, msecs since
@@ -184,10 +181,14 @@ public slots:
     /// @param pitch pitch, deg
     /// @param roll roll, deg
     /// @param heading heading, deg clockwise from true north
+    /// @param velNorth north component of velocity, m/s
+    /// @param velEast east component of velocity, m/s
+    /// @param velUp upward component of velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
     void storeLatest3512Data(uint64_t dataTime, double pitch, double roll,
-            double heading) throw(Exception);
+            double heading, double velNorth, double velEast,
+            double velUp) throw(Exception);
     
 private slots:
     /// @brief Zero the latest 3500 data in the shared memory

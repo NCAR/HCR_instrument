@@ -852,10 +852,11 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double longitude = 180.0 * _UnpackFloat32(msgWords + 11, 0);
     double altitude = _UnpackFloat32(msgWords + 13, 15);
 
-    // Unpack velocity components
-    double velocityNorth = _UnpackFloat32(msgWords + 15, 10);
-    double velocityEast = _UnpackFloat32(msgWords + 17, 10);
-    double velocityUp = _UnpackFloat32(msgWords + 19, 10);
+// Ignore velocity, since we get it at 100 Hz via 3512 messages
+//    // Unpack velocity components
+//    double velocityNorth = _UnpackFloat32(msgWords + 15, 10);
+//    double velocityEast = _UnpackFloat32(msgWords + 17, 10);
+//    double velocityUp = _UnpackFloat32(msgWords + 19, 10);
 
 // Ignore attitude, since we get it at 100 Hz via 3512 messages
 //    // Unpack attitude components
@@ -868,8 +869,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     if (decisecond == 0) {
         ILOG << "3501 time: " << msgTime.toString().toStdString() <<
                 ", lat: " << latitude << ", lon: " << longitude <<
-                ", alt: " << altitude << ", vel north: " << velocityNorth <<
-                ", vel east: " << velocityEast << ", vel up: " << velocityUp;
+                ", alt: " << altitude;
     }
 
     // Write to shared memory if we have access
@@ -877,7 +877,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
         _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
-            altitude, velocityNorth, velocityEast, velocityUp);
+            altitude);
     }
 }
 
@@ -898,25 +898,33 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
 
-
+    // Unpack attitude components
     double pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
     double roll = 180.0 * _UnpackFloat32(msgWords + 11, 0);
     double heading = 180.0 * _UnpackFloat32(msgWords + 13, 0);
 
+    // Unpack velocity components
+    double velNorth = _UnpackFloat32(msgWords + 15, 10);
+    double velEast = _UnpackFloat32(msgWords + 17, 10);
+    double velUp = _UnpackFloat32(msgWords + 19, 10);
+
+    // Log attitude and velocity once per second
     int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
     centisecond %= 100;
     if (centisecond == 0) {
         ILOG << "3512 time: " << 
                 msgTime.toString("hh:mm:ss.zzz").toStdString() <<
-                ", pitch: " << pitch <<
-                ", roll: " << roll << ", heading: " << heading;
+                ", pitch: " << pitch << ", roll: " << roll <<
+                ", heading: " << heading << ", vel morth: " << velNorth <<
+                ", vel east: " << velEast << ", vel up: " << velUp;
     }
 
     // Write to shared memory if we have access
     if (_shm) {
         uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
-        _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading);
+        _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
+            velNorth, velEast, velUp);
     }
 }
 
@@ -1138,14 +1146,14 @@ Cmigits::_doCurrentConfigPhase() {
         //      1) set serial communication rate to 115200 bps
         //      2) request that the C-MIGITS generate 3512 (Flight Control)
         //         messages containing aircraft attitude at 100 Hz rate
-        //      3) include only attitude data in 3512 messages
+        //      3) include attitude and velocity data in 3512 messages
 
         // set data validity bits
         udata[0] |= (1 << 0);		// set host vehicle transmit baud rate
         udata[0] |= (1 << 1);		// set host vehicle receive baud rate
         udata[0] |= (1 << 5);       // set Message 3501 transmit rate
         udata[0] |= (1 << 7);		// set Message 3512 transmit rate
-        udata[0] |= (1 << 8);		// set Message 3512 contents
+        udata[0] |= (1 << 8 || 1 << 9);		// set Message 3512 contents
 
         // set host vehicle baud rates
         udata[1] |= (1 << 0);		// transmit baud rate 1 -> 115200 bps

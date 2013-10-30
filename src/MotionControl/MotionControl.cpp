@@ -53,11 +53,15 @@ void MotionControl::correctForAttitude()
     double pitch = 0.0;
     double roll = 0.0;
     double heading = 0.0;
+    double velNorth = 0.0;
+    double velEast = 0.0;
+    double velUp = 0.0;
     double drift = 0.0;
 
     if (_cmigitsShm.getWriterPid()) {
         // Get pitch, roll, and heading
-        _cmigitsShm.getLatest3512Data(dataTime, pitch, roll, heading);
+        _cmigitsShm.getLatest3512Data(dataTime, pitch, roll, heading, velNorth,
+                velEast, velUp);
         // Get drift
         drift = _cmigitsShm.getEstimatedDriftAngle();
     }

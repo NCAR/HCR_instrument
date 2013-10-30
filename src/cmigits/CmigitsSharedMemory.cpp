@@ -204,8 +204,7 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
 
 void
 CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
-        double longitude, double altitude, double velNorth, double velEast,
-        double velUp) throw(Exception) {
+        double longitude, double altitude) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -214,13 +213,10 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
     _shmContents->latitude = latitude;
     _shmContents->longitude = longitude;
     _shmContents->altitude = altitude;
-    _shmContents->velNorth = velNorth;
-    _shmContents->velEast = velEast;
-    _shmContents->velUp = velUp;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3501,%lld,%f,%f,%f,%f,%f,%f\n", dataTime, 
-                latitude, longitude, altitude, velNorth, velEast, velUp);
+        fprintf(_dataFile, "3501,%lld,%f,%f,%f\n", dataTime,
+                latitude, longitude, altitude);
     }
     // Time out the new data after a second
     _3501TimeoutTimer.start();
@@ -228,23 +224,20 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
 
 void
 CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, double & latitude,
-        double & longitude, double & altitude, double & velNorth, double & velEast,
-        double & velUp) const {
+        double & longitude, double & altitude) const {
     _qShm.lock();
     dataTime = _shmContents->navSolutionTime;
     latitude = _shmContents->latitude;
     longitude = _shmContents->longitude;
     altitude = _shmContents->altitude;
-    velNorth = _shmContents->velNorth;
-    velEast = _shmContents->velEast;
-    velUp = _shmContents->velUp;
     _qShm.unlock();
     return;
 }
 
 void
 CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
-        double roll, double heading) throw(Exception) {
+        double roll, double heading, double velNorth, double velEast,
+        double velUp) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
@@ -253,10 +246,13 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
     _shmContents->pitch = pitch;
     _shmContents->roll = roll;
     _shmContents->heading = heading;
+    _shmContents->velNorth = velNorth;
+    _shmContents->velEast = velEast;
+    _shmContents->velUp = velUp;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3512,%lld,%f,%f,%f\n", dataTime, pitch, roll, 
-                heading);
+        fprintf(_dataFile, "3512,%lld,%f,%f,%f,%f,%f,%f\n", dataTime, pitch,
+                roll, heading, velNorth, velEast, velUp);
     }
     // Time out the new data after a second
     _3512TimeoutTimer.start();
@@ -264,12 +260,16 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
 
 void
 CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, double & pitch,
-        double & roll, double & heading) const {
+        double & roll, double & heading, double & velNorth, double & velEast,
+        double & velUp) const {
     _qShm.lock();
     dataTime = _shmContents->attitudeTime;
     pitch = _shmContents->pitch;
     roll = _shmContents->roll;
     heading = _shmContents->heading;
+    velNorth = _shmContents->velNorth;
+    velEast = _shmContents->velEast;
+    velUp = _shmContents->velUp;
     _qShm.unlock();
     return;
 }
