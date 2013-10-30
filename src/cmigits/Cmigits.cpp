@@ -905,12 +905,12 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
     centisecond %= 100;
-//    if (centisecond == 0) {
+    if (centisecond == 0) {
         ILOG << "3512 time: " << 
                 msgTime.toString("hh:mm:ss.zzz").toStdString() <<
                 ", pitch: " << pitch <<
                 ", roll: " << roll << ", heading: " << heading;
-//    }
+    }
 
     // Write to shared memory if we have access
     if (_shm) {
