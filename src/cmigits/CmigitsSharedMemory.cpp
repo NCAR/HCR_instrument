@@ -143,7 +143,7 @@ CmigitsSharedMemory::_setWriterPid(pid_t pid) {
 }
 
 void
-CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
+CmigitsSharedMemory::storeLatest3500Data(uint64_t time3500, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
             uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
@@ -153,7 +153,7 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
     _qShm.lock();
-    _shmContents->statusTime = dataTime;
+    _shmContents->time3500 = time3500;
     _shmContents->currentMode = currentMode;
     _shmContents->insAvailable = insAvailable;
     _shmContents->gpsAvailable = gpsAvailable;
@@ -169,7 +169,7 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
     _qShm.unlock();
     if (RECORD_CSV) {
         fprintf(_dataFile, "3500,%lld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n", 
-                dataTime, currentMode, insAvailable, gpsAvailable, 
+                time3500, currentMode, insAvailable, gpsAvailable,
                 doingCoarseAlignment, nSats, positionFOM, velocityFOM, 
                 headingFOM, timeFOM, expectedHPosError, expectedVPosError,
                 expectedVelocityError);
@@ -179,14 +179,14 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t dataTime, uint16_t currentMode
 }
 
 void
-CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMode,
+CmigitsSharedMemory::getLatest3500Data(uint64_t & time3500, uint16_t & currentMode,
             bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
             uint16_t & nSats, uint16_t & positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             double & expectedHPosError, double & expectedVPosError,
             double & expectedVelocityError) const {
     _qShm.lock();
-    dataTime = _shmContents->statusTime;
+    time3500 = _shmContents->time3500;
     currentMode = _shmContents->currentMode;
     insAvailable = _shmContents->insAvailable;
     gpsAvailable = _shmContents->gpsAvailable;
@@ -203,19 +203,19 @@ CmigitsSharedMemory::getLatest3500Data(uint64_t & dataTime, uint16_t & currentMo
 }
 
 void
-CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
+CmigitsSharedMemory::storeLatest3501Data(uint64_t time3501, double latitude,
         double longitude, double altitude) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
     _qShm.lock();
-    _shmContents->navSolutionTime = dataTime;
+    _shmContents->time3501 = time3501;
     _shmContents->latitude = latitude;
     _shmContents->longitude = longitude;
     _shmContents->altitude = altitude;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3501,%lld,%f,%f,%f\n", dataTime,
+        fprintf(_dataFile, "3501,%lld,%f,%f,%f\n", time3501,
                 latitude, longitude, altitude);
     }
     // Time out the new data after a second
@@ -223,10 +223,10 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t dataTime, double latitude,
 }
 
 void
-CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, double & latitude,
+CmigitsSharedMemory::getLatest3501Data(uint64_t & time3501, double & latitude,
         double & longitude, double & altitude) const {
     _qShm.lock();
-    dataTime = _shmContents->navSolutionTime;
+    time3501 = _shmContents->time3501;
     latitude = _shmContents->latitude;
     longitude = _shmContents->longitude;
     altitude = _shmContents->altitude;
@@ -235,14 +235,14 @@ CmigitsSharedMemory::getLatest3501Data(uint64_t & dataTime, double & latitude,
 }
 
 void
-CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
+CmigitsSharedMemory::storeLatest3512Data(uint64_t time3512, double pitch,
         double roll, double heading, double velNorth, double velEast,
         double velUp) throw(Exception) {
     if (! _writeAccess) {
         throw(Exception("Attempt to write shared memory with ReadOnly access"));
     }
     _qShm.lock();
-    _shmContents->attitudeTime = dataTime;
+    _shmContents->time3512 = time3512;
     _shmContents->pitch = pitch;
     _shmContents->roll = roll;
     _shmContents->heading = heading;
@@ -251,7 +251,7 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
     _shmContents->velUp = velUp;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3512,%lld,%f,%f,%f,%f,%f,%f\n", dataTime, pitch,
+        fprintf(_dataFile, "3512,%lld,%f,%f,%f,%f,%f,%f\n", time3512, pitch,
                 roll, heading, velNorth, velEast, velUp);
     }
     // Time out the new data after a second
@@ -259,11 +259,11 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t dataTime, double pitch,
 }
 
 void
-CmigitsSharedMemory::getLatest3512Data(uint64_t & dataTime, double & pitch,
+CmigitsSharedMemory::getLatest3512Data(uint64_t & time3512, double & pitch,
         double & roll, double & heading, double & velNorth, double & velEast,
         double & velUp) const {
     _qShm.lock();
-    dataTime = _shmContents->attitudeTime;
+    time3512 = _shmContents->time3512;
     pitch = _shmContents->pitch;
     roll = _shmContents->roll;
     heading = _shmContents->heading;
@@ -307,7 +307,7 @@ CmigitsSharedMemory::getEstimatedDriftAngle() const {
 void
 CmigitsSharedMemory::_zero3500Data() {
     _qShm.lock();
-    _shmContents->statusTime = 0;
+    _shmContents->time3500 = 0;
     _shmContents->currentMode = 0;
     _shmContents->insAvailable = 0;
     _shmContents->gpsAvailable = 0;
@@ -326,7 +326,7 @@ CmigitsSharedMemory::_zero3500Data() {
 void
 CmigitsSharedMemory::_zero3501Data() {
     _qShm.lock();
-    _shmContents->navSolutionTime = 0;
+    _shmContents->time3501 = 0;
     _shmContents->latitude = 0.0;
     _shmContents->longitude = 0.0;
     _shmContents->altitude = 0.0;
@@ -339,7 +339,7 @@ CmigitsSharedMemory::_zero3501Data() {
 void
 CmigitsSharedMemory::_zero3512Data() {
     _qShm.lock();
-    _shmContents->attitudeTime = 0;
+    _shmContents->time3512 = 0;
     _shmContents->pitch = 0.0;
     _shmContents->roll = 0.0;
     _shmContents->heading = 0.0;

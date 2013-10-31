@@ -69,11 +69,12 @@ public:
     /// @brief Get the latest 3500 (System Status) data. If the most recent 3500
     /// message is more than 1 second old, the data values will all be zero, and
     /// the dataTime will be zero.
-    /// @param[out] dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
+    /// @param[out] time3500 3500 message date/time, msecs since 1970-01-01
+    /// 00:00:00 UTC
     /// @param[out] currentMode current operating mode
     /// @param[out] insAvailable true iff INS measurements are available
-    /// @param[out] gpsAvailable true iff GPS time is valid and at least 4 satellites
-    /// are being used
+    /// @param[out] gpsAvailable true iff GPS time is valid and at least 4
+    /// satellites are being used
     /// @param[out] doingCoarseAlignment true iff C-MIGITS is in "Coarse
     /// Alignment" submode
     /// @param[out] nSats number of GPS satellites tracked
@@ -84,7 +85,7 @@ public:
     /// @param[out] expectedHPosError expected error in horizontal position, m
     /// @param[out] expectedVPosError expected error in vertical position, m
     /// @param[out] expectedVelocityError expected error in velocity, m/s
-    void getLatest3500Data(uint64_t & dataTime, uint16_t & currentMode,
+    void getLatest3500Data(uint64_t & time3500, uint16_t & currentMode,
             bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
             uint16_t & nSats, uint16_t &  positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
@@ -94,18 +95,18 @@ public:
     /// @brief Get the latest 3501 (Navigation Solution) data available. If the 
     /// most recent 3501 message is more than 1 second old, the data values will
     /// all be zero, and the dataTime will be zero.
-    /// @param[out] dataTime date/time for navigation solution data, msecs since
+    /// @param[out] time3501 date/time for 3501 message data, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param[out] latitude latitude, deg
     /// @param[out] longitude longitude, deg
     /// @param[out] altitude altitude, m above MSL
-    void getLatest3501Data(uint64_t & dataTime, double & latitude,
+    void getLatest3501Data(uint64_t & time3501, double & latitude,
             double & longitude, double & altitude) const;
 
     /// @brief Get the latest 3512 (Flight Control) attitude data available.
     /// If the most recent 3512 message is more than 1 second old, the data 
     /// values will all be zero, and the dataTime will be zero.
-    /// @param[out] dataTime date/time for attitude data, msecs since
+    /// @param[out] time3512 date/time for 3512 message, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param[out] pitch pitch, deg
     /// @param[out] roll roll, deg
@@ -113,7 +114,7 @@ public:
     /// @param[out] velNorth north component of velocity, m/s
     /// @param[out] velEast east component of velocity, m/s
     /// @param[out] velUp upward component of velocity, m/s
-    void getLatest3512Data(uint64_t & dataTime, double & pitch, double & roll,
+    void getLatest3512Data(uint64_t & time3512, double & pitch, double & roll,
             double & heading, double & velNorth, double & velEast,
             double & velUp) const;
 
@@ -125,7 +126,7 @@ public:
     /// milliseconds since 1970-01-01 00:00:00 UTC.
     uint64_t getLatest3512Time() const {
         _qShm.lock();
-        uint64_t time = _shmContents->attitudeTime;
+        uint64_t time = _shmContents->time3512;
         _qShm.unlock();
         return(time);
     }
@@ -140,7 +141,8 @@ public:
 
 public slots:
     /// @brief Store the latest 3500 (System Status) data.
-    /// @param dataTime data date/time, msecs since 1970-01-01 00:00:00 UTC
+    /// @param time3500 date/time for 3500 message, msecs since 1970-01-01
+    /// 00:00:00 UTC
     /// @param currentMode current operating mode
     /// @param insAvailable true iff INS measurements are available
     /// @param gpsAvailable true iff GPS time is valid and at least 4 satellites
@@ -157,7 +159,7 @@ public slots:
     /// @param expectedVelocityError expected error in velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void storeLatest3500Data(uint64_t dataTime, uint16_t currentMode,
+    void storeLatest3500Data(uint64_t time3500, uint16_t currentMode,
             bool insAvailable, bool gpsAvailable, bool doingCoarseAlignment,
             uint16_t nSats, uint16_t positionFOM, uint16_t velocityFOM,
             uint16_t headingFOM, uint16_t timeFOM,
@@ -165,18 +167,18 @@ public slots:
             double expectedVelocityError) throw(Exception);
 
     /// @brief Store the latest 3501 (Navigation Solution) data.
-    /// @param dataTime date/time for position data, msecs since
+    /// @param time3501 date/time for 3501 message, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param latitude latitude, deg
     /// @param longitude longitude, deg
     /// @param altitude altitude, m above MSL
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void storeLatest3501Data(uint64_t dataTime, double latitude,
+    void storeLatest3501Data(uint64_t time3501, double latitude,
             double longitude, double altitude) throw(Exception);
 
     /// @brief Store the latest 3512 (Flight Control) data.
-    /// @param dataTime date/time for attitude data, msecs since
+    /// @param time3512 date/time for 3512 message, msecs since
     /// 1970-01-01 00:00:00 UTC
     /// @param pitch pitch, deg
     /// @param roll roll, deg
@@ -186,7 +188,7 @@ public slots:
     /// @param velUp upward component of velocity, m/s
     /// @throws CmigitsSharedMemory::Exception if this object has ReadOnly
     /// access to the shared memory
-    void storeLatest3512Data(uint64_t dataTime, double pitch, double roll,
+    void storeLatest3512Data(uint64_t time3512, double pitch, double roll,
             double heading, double velNorth, double velEast,
             double velUp) throw(Exception);
     
@@ -219,7 +221,7 @@ private:
         pid_t writerPid;        // process ID of the current writer
         // Latest C-MIGITS status data from the C-MIGITS 3500 message.
         // For details
-        uint64_t statusTime;    ///< msecs since 1970-01-01 00:00:00 UTC
+        uint64_t time3500;      ///< msecs since 1970-01-01 00:00:00 UTC
         uint16_t currentMode;
         bool insAvailable;
         bool gpsAvailable;
@@ -232,16 +234,16 @@ private:
         double hPosError;       ///< m
         double vPosError;       ///< m
         double velocityError;   ///< m/s
-        // latest navigation solution data
-        uint64_t navSolutionTime;   ///< msecs since 1970-01-01 00:00:00 UTC
+        // latest 3501 message data
+        uint64_t time3501;      ///< msecs since 1970-01-01 00:00:00 UTC
         double latitude;        ///< deg
         double longitude;       ///< deg
         double altitude;        ///< m above MSL
         double velNorth;        ///< m/s
         double velEast;         ///< m/s
         double velUp;           ///< m/s
-        // latest attitude data
-        uint64_t attitudeTime;  ///< msecs since 1970-01-01 00:00:00 UTC
+        // latest 3512 message data
+        uint64_t time3512;      ///< msecs since 1970-01-01 00:00:00 UTC
         double pitch;           ///< deg
         double roll;            ///< deg
         double heading;         ///< deg clockwise from true north
