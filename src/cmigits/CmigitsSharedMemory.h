@@ -86,7 +86,7 @@ public:
     /// @param[out] expectedVPosError expected error in vertical position, m
     /// @param[out] expectedVelocityError expected error in velocity, m/s
     void getLatest3500Data(uint64_t & time3500, uint16_t & currentMode,
-            bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
+            bool & insAvailable, bool & gpsAvailable, bool & doingCoarseAlignment,
             uint16_t & nSats, uint16_t &  positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             double & expectedHPosError, double & expectedVPosError,
@@ -117,6 +117,32 @@ public:
     void getLatest3512Data(uint64_t & time3512, double & pitch, double & roll,
             double & heading, double & velNorth, double & velEast,
             double & velUp) const;
+
+    /// @brief Get the time of the latest 3500 (System Status) data, in
+    /// milliseconds since 1970-01-01 00:00:00 UTC.
+    ///
+    /// This method is inlined, since it may be called very frequently.
+    /// @return the time of the latest 3500 (System Status) data, in
+    /// milliseconds since 1970-01-01 00:00:00 UTC.
+    uint64_t getLatest3500Time() const {
+        _qShm.lock();
+        uint64_t time = _shmContents->time3500;
+        _qShm.unlock();
+        return(time);
+    }
+
+    /// @brief Get the time of the latest 3501 (Navigation Solution) data, in
+    /// milliseconds since 1970-01-01 00:00:00 UTC.
+    ///
+    /// This method is inlined, since it may be called very frequently.
+    /// @return the time of the latest 3501 (Navigation Solution) data, in
+    /// milliseconds since 1970-01-01 00:00:00 UTC.
+    uint64_t getLatest3501Time() const {
+        _qShm.lock();
+        uint64_t time = _shmContents->time3501;
+        _qShm.unlock();
+        return(time);
+    }
 
     /// @brief Get the time of the latest 3512 (Flight Control) data, in
     /// milliseconds since 1970-01-01 00:00:00 UTC.

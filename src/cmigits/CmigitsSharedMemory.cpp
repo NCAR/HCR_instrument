@@ -180,7 +180,7 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t time3500, uint16_t currentMode
 
 void
 CmigitsSharedMemory::getLatest3500Data(uint64_t & time3500, uint16_t & currentMode,
-            bool & insAvailable, bool & gpsAvailable, bool doingCoarseAlignment,
+            bool & insAvailable, bool & gpsAvailable, bool & doingCoarseAlignment,
             uint16_t & nSats, uint16_t & positionFOM, uint16_t & velocityFOM,
             uint16_t & headingFOM, uint16_t & timeFOM,
             double & expectedHPosError, double & expectedVPosError,
