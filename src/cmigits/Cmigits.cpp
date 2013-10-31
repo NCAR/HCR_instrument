@@ -798,7 +798,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
     double velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
 
-    DLOG << "3500 time: " << msgTime.toString().toStdString() <<
+    DLOG << "3500 time: " << msgTime.toString("hh:mm:ss.zzz").toStdString() <<
             ", mode: " << ModeName(_currentMode) <<
             ", GPS: " << _gpsAvailable <<
             ", INS: " << _insAvailable <<
@@ -867,7 +867,8 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     uint16_t decisecond = uint16_t(round(10 * fmod(utcSecondOfDay, 1.0)));
     decisecond %= 10;
     if (decisecond == 0) {
-        ILOG << "3501 time: " << msgTime.toString().toStdString() <<
+        ILOG << "3501 time: " << 
+                msgTime.toString("hh:mm:ss.zzz").toStdString() <<
                 ", lat: " << latitude << ", lon: " << longitude <<
                 ", alt: " << altitude;
     }
