@@ -889,9 +889,10 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         return;
 
     // 3512 message length is variable, but we configured it to contain only
-    // attitude data (6 words), giving a total message length of 16 words.
-    if (nMsgWords != 16) {
-        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 16!";
+    // attitude data (6 words) and velocity data (6 words), giving a total
+    // message length of 22 words.
+    if (nMsgWords != 22) {
+        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 22!";
         return;
     }
 
