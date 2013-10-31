@@ -219,32 +219,32 @@ private:
         pid_t writerPid;        // process ID of the current writer
         // Latest C-MIGITS status data from the C-MIGITS 3500 message.
         // For details
-        uint64_t statusTime;
+        uint64_t statusTime;    ///< msecs since 1970-01-01 00:00:00 UTC
         uint16_t currentMode;
         bool insAvailable;
         bool gpsAvailable;
         bool doingCoarseAlignment;
-        uint16_t nSats;         // number of GPS satellites tracked
-        uint16_t positionFOM;   // position figure-of-merit value
-        uint16_t velocityFOM;   // velocity figure-of-merit value
-        uint16_t headingFOM;    // heading figure-of-merit value
-        uint16_t timeFOM;       // time figure-of-merit value
-        double hPosError;        // m
-        double vPosError;        // m
-        double velocityError;    // m/s
+        uint16_t nSats;         ///< number of GPS satellites tracked
+        uint16_t positionFOM;   ///< position figure-of-merit value
+        uint16_t velocityFOM;   ///< velocity figure-of-merit value
+        uint16_t headingFOM;    ///< heading figure-of-merit value
+        uint16_t timeFOM;       ///< time figure-of-merit value
+        double hPosError;       ///< m
+        double vPosError;       ///< m
+        double velocityError;   ///< m/s
         // latest navigation solution data
-        uint64_t navSolutionTime;  // msecs since 1970-01-01 00:00:00 UTC
-        double latitude;         // deg
-        double longitude;        // deg
-        double altitude;         // m above MSL
-        double velNorth;         // m/s
-        double velEast;          // m/s
-        double velUp;            // m/s
+        uint64_t navSolutionTime;   ///< msecs since 1970-01-01 00:00:00 UTC
+        double latitude;        ///< deg
+        double longitude;       ///< deg
+        double altitude;        ///< m above MSL
+        double velNorth;        ///< m/s
+        double velEast;         ///< m/s
+        double velUp;           ///< m/s
         // latest attitude data
-        uint64_t attitudeTime;  // msecs since 1970-01-01 00:00:00 UTC
-        double pitch;            // deg
-        double roll;             // deg
-        double heading;          // deg clockwise from true north
+        uint64_t attitudeTime;  ///< msecs since 1970-01-01 00:00:00 UTC
+        double pitch;           ///< deg
+        double roll;            ///< deg
+        double heading;         ///< deg clockwise from true north
     } * _shmContents;
     FILE * _dataFile;
 };
