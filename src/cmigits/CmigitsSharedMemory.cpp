@@ -31,9 +31,9 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     _3512TimeoutTimer(),
     _shmContents(0),
     _dataFile(0) {
-    // Create and attach to the shared memory segment, which will hold our
-    // private type struct _ShmContents
-    int segsize = sizeof(struct _ShmContents);
+    // Create and attach to the shared memory segment, which holds a
+    // CmigitsShmStruct
+    int segsize = sizeof(ShmStruct);
     // Try to create the shared memory segment. Create the segment with
     // read/write access, even if this object will have read-only access.
     if (_qShm.create(segsize, QSharedMemory::ReadWrite)) {
@@ -71,16 +71,15 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
                 _qShm.errorString().toStdString() << " (" << _qShm.error() << ")";
         throw(Exception(msgStream.str()));
     }
-    // Contents of the shared memory data are defined by our private
-    // struct _ShmContents
-    if (_qShm.size() != sizeof(struct _ShmContents)) {
+    // Contents of the shared memory data are defined by CmigitsShmStruct
+    if (_qShm.size() != sizeof(ShmStruct)) {
         std::ostringstream msgStream;
         msgStream << "Actual shared memory size of " << _qShm.size() <<
                 "bytes does not match the expected size of " <<
-                sizeof(struct _ShmContents) << " bytes!";
+                sizeof(ShmStruct) << " bytes!";
         throw(Exception(msgStream.str()));
     }
-    _shmContents = static_cast<struct _ShmContents *>(_qShm.data());
+    _shmContents = static_cast<ShmStruct *>(_qShm.data());
     
     // Special setup for the writer
     if (_writeAccess) {
@@ -95,8 +94,8 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         }
         // Set our process id as the writer id
         _setWriterPid(getpid());
-        // Set up timeout timers which will clear the shared memory if new
-        // data don't arrive within a second
+        // Set up timeout timers which will clear pieces of the shared memory
+        // if new messages don't arrive within a second of the previous ones.
         _3500TimeoutTimer.setInterval(1000);
         _3500TimeoutTimer.setSingleShot(true);
         connect(&_3500TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3500Data()));
@@ -125,6 +124,14 @@ CmigitsSharedMemory::~CmigitsSharedMemory() {
         _setWriterPid(0);
     }
     _qShm.detach();
+}
+
+CmigitsSharedMemory::ShmStruct
+CmigitsSharedMemory::getContents() const {
+    _qShm.lock();
+    ShmStruct contents = *_shmContents;
+    _qShm.unlock();
+    return(contents);
 }
 
 pid_t
@@ -168,7 +175,7 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t time3500, uint16_t currentMode
     _shmContents->velocityError = expectedVelocityError;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3500,%lld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n", 
+        fprintf(_dataFile, "3500,%llu,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n",
                 time3500, currentMode, insAvailable, gpsAvailable,
                 doingCoarseAlignment, nSats, positionFOM, velocityFOM, 
                 headingFOM, timeFOM, expectedHPosError, expectedVPosError,
@@ -215,7 +222,7 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t time3501, double latitude,
     _shmContents->altitude = altitude;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3501,%lld,%f,%f,%f\n", time3501,
+        fprintf(_dataFile, "3501,%llu,%f,%f,%f\n", time3501,
                 latitude, longitude, altitude);
     }
     // Time out the new data after a second
@@ -251,7 +258,7 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t time3512, double pitch,
     _shmContents->velUp = velUp;
     _qShm.unlock();
     if (RECORD_CSV) {
-        fprintf(_dataFile, "3512,%lld,%f,%f,%f,%f,%f,%f\n", time3512, pitch,
+        fprintf(_dataFile, "3512,%llu,%f,%f,%f,%f,%f,%f\n", time3512, pitch,
                 roll, heading, velNorth, velEast, velUp);
     }
     // Time out the new data after a second

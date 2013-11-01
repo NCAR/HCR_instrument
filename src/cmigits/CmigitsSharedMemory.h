@@ -45,6 +45,39 @@ public:
         Exception(const std::string & what) : runtime_error(what) {}
     };
 
+    /// The struct defining the layout/contents of the shared memory segment
+    typedef struct _CmigitsShmStruct {
+        pid_t writerPid;        // process ID of the current writer
+        // Latest C-MIGITS status data from the C-MIGITS 3500 message.
+        // For details
+        uint64_t time3500;      ///< msecs since 1970-01-01 00:00:00 UTC
+        uint16_t currentMode;
+        bool insAvailable;
+        bool gpsAvailable;
+        bool doingCoarseAlignment;
+        uint16_t nSats;         ///< number of GPS satellites tracked
+        uint16_t positionFOM;   ///< position figure-of-merit value
+        uint16_t velocityFOM;   ///< velocity figure-of-merit value
+        uint16_t headingFOM;    ///< heading figure-of-merit value
+        uint16_t timeFOM;       ///< time figure-of-merit value
+        double hPosError;       ///< m
+        double vPosError;       ///< m
+        double velocityError;   ///< m/s
+        // latest 3501 message data
+        uint64_t time3501;      ///< msecs since 1970-01-01 00:00:00 UTC
+        double latitude;        ///< deg
+        double longitude;       ///< deg
+        double altitude;        ///< m above MSL
+        // latest 3512 message data
+        uint64_t time3512;      ///< msecs since 1970-01-01 00:00:00 UTC
+        double pitch;           ///< deg
+        double roll;            ///< deg
+        double heading;         ///< deg clockwise from true north
+        double velNorth;        ///< m/s
+        double velEast;         ///< m/s
+        double velUp;           ///< m/s
+    } ShmStruct;
+
     /// @brief Instantiate a connection to the shared memory used to distribute
     /// C-MIGITS information.
     ///
@@ -56,6 +89,12 @@ public:
     /// segment with the requested mode fails.
     CmigitsSharedMemory(bool writeAccess = false) throw(Exception);
     virtual ~CmigitsSharedMemory();
+
+    /// @brief Get a struct containing the current complete contents of the
+    /// C-MIGITS shared memory segment.
+    /// @return a struct containing the current complete contents of the
+    /// C-MIGITS shared memory segment.
+    ShmStruct getContents() const;
 
     /// String which serves as a key to identify our shared memory segment
     static const QString CMIGITS_SHM_KEY;
@@ -242,38 +281,8 @@ private:
     QTimer _3501TimeoutTimer;
     /// Timeout timer for 3512 data
     QTimer _3512TimeoutTimer;
-    /// The contents of the shared memory segment
-    struct _ShmContents {
-        pid_t writerPid;        // process ID of the current writer
-        // Latest C-MIGITS status data from the C-MIGITS 3500 message.
-        // For details
-        uint64_t time3500;      ///< msecs since 1970-01-01 00:00:00 UTC
-        uint16_t currentMode;
-        bool insAvailable;
-        bool gpsAvailable;
-        bool doingCoarseAlignment;
-        uint16_t nSats;         ///< number of GPS satellites tracked
-        uint16_t positionFOM;   ///< position figure-of-merit value
-        uint16_t velocityFOM;   ///< velocity figure-of-merit value
-        uint16_t headingFOM;    ///< heading figure-of-merit value
-        uint16_t timeFOM;       ///< time figure-of-merit value
-        double hPosError;       ///< m
-        double vPosError;       ///< m
-        double velocityError;   ///< m/s
-        // latest 3501 message data
-        uint64_t time3501;      ///< msecs since 1970-01-01 00:00:00 UTC
-        double latitude;        ///< deg
-        double longitude;       ///< deg
-        double altitude;        ///< m above MSL
-        double velNorth;        ///< m/s
-        double velEast;         ///< m/s
-        double velUp;           ///< m/s
-        // latest 3512 message data
-        uint64_t time3512;      ///< msecs since 1970-01-01 00:00:00 UTC
-        double pitch;           ///< deg
-        double roll;            ///< deg
-        double heading;         ///< deg clockwise from true north
-    } * _shmContents;
+    /// Pointer to the actual shared memory segment
+    ShmStruct * _shmContents;
     FILE * _dataFile;
 };
 
