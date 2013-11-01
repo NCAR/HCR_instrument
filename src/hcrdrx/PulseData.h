@@ -25,13 +25,13 @@ public:
 
   /// @brief Set the data in the object.
   /// @param pulseSeqNum the pulse sequence number
-  /// @param timeSecs, pulse time, full seconds since the Epoch
-  /// @param nanoSecs, pulse time, nanoseconds after timeSecs
-  /// @param channelId, the channel ID
-  /// @param nGates, number of gates in the pulse data
-  /// @param rotMotorAngle, angle of the rotation motor, deg
-  /// @param tiltMotorAngle, angle of the tilt motor, deg
-  /// @para iq, I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
+  /// @param timeSecs pulse time, full seconds since the Epoch
+  /// @param nanoSecs pulse time, nanoseconds after timeSecs
+  /// @param channelId the channel ID
+  /// @param nGates number of gates in the pulse data
+  /// @param rotMotorAngle angle of the rotation motor, deg
+  /// @param tiltMotorAngle angle of the tilt motor, deg
+  /// @param iq I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
   void set(int64_t pulseSeqNum,
            time_t timeSecs,
            int nanoSecs,
