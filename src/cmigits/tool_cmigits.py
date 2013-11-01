@@ -8,9 +8,9 @@ cmigitsDir = Dir('.').abspath
 env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(qt4modules)
 
-sources = ['Cmigits.cpp', 'CmigitsSharedMemory.cpp']
+sources = ['Cmigits.cpp', 'CmigitsSharedMemory.cpp', 'CmigitsWatchThread.cpp']
 
-headers = ['Cmigits.h',  'CmigitsSharedMemory.h']
+headers = ['Cmigits.h',  'CmigitsSharedMemory.h', 'CmigitsWatchThread.h']
 
 lib = env.Library('cmigits', sources)
 Default(lib)
