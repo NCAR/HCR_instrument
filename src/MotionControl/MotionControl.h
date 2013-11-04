@@ -48,7 +48,7 @@ public:
     /// limits, at the given scan rate.
     /// @param ccwLimit the counterclockwise limit of the scan, deg
     /// @param cwLimit the clockwise limit of the scan, deg
-    /// @pararm scanRate the scan rate, deg/s
+    /// @param scanRate the scan rate, deg/s
     void scan(double ccwLimit, double cwLimit, double scanRate);
 
     /// @brief Get current aircraft attitude and adjust drive position.

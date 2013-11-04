@@ -31,10 +31,6 @@ public:
      * or "tilt"), to make log messages more descriptive.
      * @param ttyDev the name serial port device connected to the Elmo drive
      * @param driveName nickname used for the drive in log messages
-     * @param xqInitFunction name of the drive-resident function to be called
-     *      to initialize drive parameters
-     * @param xqHomingFunction name of the drive-resident function to be called
-     *      to home the drive
      */
     ElmoServoDrive(const std::string ttyDev, const std::string driveName);
     virtual ~ElmoServoDrive();
