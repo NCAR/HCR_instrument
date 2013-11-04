@@ -1155,7 +1155,7 @@ Cmigits::_doCurrentConfigPhase() {
         udata[0] |= (1 << 1);		// set host vehicle receive baud rate
         udata[0] |= (1 << 5);       // set Message 3501 transmit rate
         udata[0] |= (1 << 7);		// set Message 3512 transmit rate
-        udata[0] |= (1 << 8 || 1 << 9);		// set Message 3512 contents
+        udata[0] |= (1 << 8);		// set Message 3512 contents
 
         // set host vehicle baud rates
         udata[1] |= (1 << 0);		// transmit baud rate 1 -> 115200 bps
@@ -1163,8 +1163,9 @@ Cmigits::_doCurrentConfigPhase() {
 
         // set Message Control word
         udata[4] |= (2 << 0);       // Message 3501 transmit rate 2 -> 10 Hz
-        udata[4] |= (3 << 4);		// Message 3512 transmit rate 3 -> 100 Hz
-        udata[4] |= (1 << 8);		// send attitude in Message 3512
+        udata[4] |= (3 << 4);       // Message 3512 transmit rate 3 -> 100 Hz
+        udata[4] |= (1 << 8);       // send attitude in Message 3512
+        udata[4] |= (1 << 9);       // send velocity in Message 3512
 
         // Send the 3504 message
         _sendMessage(3504, udata, 5);
