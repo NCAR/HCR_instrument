@@ -78,9 +78,9 @@ public:
     double fixedPointingAngle() const { return(_fixedPointingAngle); }
 
     /// @brief Return the antenna scanning parameters
-    /// @param[out] ccwLimit, counterclockwise scan limit, deg
-    /// @param[out] cwLimit, clockwise scan limit, deg
-    /// @param[out] scanRate, scan rate, deg/s
+    /// @param[out] ccwLimit counterclockwise scan limit, deg
+    /// @param[out] cwLimit clockwise scan limit, deg
+    /// @param[out] scanRate scan rate, deg/s
     /// @return the antenna scanning parameters.
     void getScanParams(double & ccwLimit, double & cwLimit, double & scanRate) const {
         ccwLimit = _scanCcwLimit;
