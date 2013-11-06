@@ -197,12 +197,20 @@ public:
     }
 
     /// @brief Calculate and return estimated drift angle in degrees, based on
-    /// latest heading and ground velocity values. The range returned is
-    /// [-180.0,180.0].
+    /// latest heading and ground velocity values in current shared memory
+    /// contents. The range returned is [-180.0,180.0].
     ///
     /// If ground speed is less than 10 m/s, drift will be reported as zero.
     /// @return estimated drift angle in degrees, in range [-180.0,180.0].
     double getEstimatedDriftAngle() const;
+
+    /// @brief Calculate and return estimated drift angle in degrees, based on
+    /// heading and ground velocity values in shmContents. The range
+    /// returned is [-180.0,180.0].
+    ///
+    /// If ground speed is less than 10 m/s, drift will be reported as zero.
+    /// @return estimated drift angle in degrees, in range [-180.0,180.0].
+    static double GetEstimatedDriftAngle(const ShmStruct * shmContents);
 
 public slots:
     /// @brief Store the latest 3500 (System Status) data.

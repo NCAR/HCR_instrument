@@ -284,10 +284,16 @@ CmigitsSharedMemory::getLatest3512Data(uint64_t & time3512, double & pitch,
 double
 CmigitsSharedMemory::getEstimatedDriftAngle() const {
     _qShm.lock();
-    double heading = _shmContents->heading;
-    double velNorth = _shmContents->velNorth;
-    double velEast = _shmContents->velEast;
+    double drift = GetEstimatedDriftAngle(_shmContents);
     _qShm.unlock();
+    return drift;
+}
+
+double
+CmigitsSharedMemory::GetEstimatedDriftAngle(const ShmStruct * shmContents) {
+    double heading = shmContents->heading;
+    double velNorth = shmContents->velNorth;
+    double velEast = shmContents->velEast;
 
     // Drift angle defaults to 0
     double drift = 0.0;
