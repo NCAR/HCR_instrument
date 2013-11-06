@@ -4,8 +4,9 @@
 #include "CircBuffer.h"
 #include "HcrDrxConfig.h"
 #include "HcrMonitor.h"
-#include <CmigitsSharedMemory.h>
+#include <CmigitsWatchThread.h>
 #include <PulseData.h>
+#include <deque>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
@@ -66,6 +67,11 @@ public:
   PulseData *writePulseV(PulseData *val);
 
   boost::mutex printMutex;
+
+private slots:
+  /// @brief This slot will be called each time a new set of data is available
+  /// from the C-MIGITS shared memory.
+  void _acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData);
 
 private:
 
@@ -145,11 +151,6 @@ private:
   Socket *_sock;
   bool _newClient;
 
-  /// Shared memory to access C-MIGITS data
-
-  CmigitsSharedMemory _cmigitsShm;
-  uint64_t _lastCmigits3512Time;    // time of last C-MIGITS 3512 message seen
-
   /// current HMC operation mode
   HcrPmc730::HmcOperationMode _hmcMode;
   
@@ -166,6 +167,9 @@ private:
   double _driftCorr;
   double _tiltCorr;
   double _rotationCorr;
+
+  /// deque of C-MIGITS data
+  std::deque<CmigitsSharedMemory::ShmStruct> _cmigitsDeque;
 
   /// simulation of antenna angles
 
