@@ -63,11 +63,12 @@ alarmHandler(int signal) {
 // xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
 void
 startXmlrpcWorkAlarm() {
-    //    const struct timeval tv = { 0, 500000 }; // 0.5s (2Hz)
-    //    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
-    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
-    //    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
-    //    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
+//    const struct timeval tv = { 0, 500000 };// 0.5s (2Hz)
+//    const struct timeval tv = { 0, 100000 };// 0.1s (10Hz)
+//    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
+    const struct timeval tv = { 0, 20000 };   // 0.02s (50Hz)
+//    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
+//    const struct timeval tv = { 0, 6667 };  // 0.0067s (150Hz)
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
