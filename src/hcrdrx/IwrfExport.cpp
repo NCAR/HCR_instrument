@@ -1,5 +1,4 @@
 #include "IwrfExport.h"
-#include <QCoreApplication>
 #include <logx/Logging.h>
 #include <sys/timeb.h>
 #include <cmath>
@@ -230,9 +229,6 @@ void IwrfExport::run()
 
   bool metaDataInitialized = false;
   while (true) {
-
-    // Handle any Qt events pending for this thread
-    QCoreApplication::processEvents();
 
     // read in next pulse
 
