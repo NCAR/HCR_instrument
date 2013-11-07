@@ -76,6 +76,34 @@ public:
         double velNorth;        ///< m/s
         double velEast;         ///< m/s
         double velUp;           ///< m/s
+
+        // Default initializer
+        _CmigitsShmStruct() :
+            writerPid(0),
+            time3500(0),
+            currentMode(0),
+            insAvailable(false),
+            gpsAvailable(false),
+            doingCoarseAlignment(false),
+            nSats(0),
+            positionFOM(0),
+            velocityFOM(0),
+            headingFOM(0),
+            timeFOM(0),
+            hPosError(0.0),
+            vPosError(0.0),
+            velocityError(0.0),
+            time3501(0),
+            latitude(0.0),
+            longitude(0.0),
+            altitude(0.0),
+            time3512(0),
+            pitch(0.0),
+            roll(0.0),
+            heading(0.0),
+            velNorth(0.0),
+            velEast(0.0),
+            velUp(0.0) {}
     } ShmStruct;
 
     /// @brief Instantiate a connection to the shared memory used to distribute
