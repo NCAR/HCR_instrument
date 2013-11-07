@@ -449,7 +449,7 @@ main(int argc, char** argv)
     double startTime = nowTime();
 
     while (1) {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 5000; i++) {
             // Process any queued Qt events
             app.processEvents();
             
@@ -457,7 +457,8 @@ main(int argc, char** argv)
             if (_terminate) {
                 break;
             }
-            // handle XML-RPC commands for 0.001 second
+            // Handle XML-RPC commands for 0.001 second (Actually, it mostly 
+            // runs for twice this long.)
             rpcServer.work(0.001);
         }
         if (_terminate) {
