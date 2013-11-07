@@ -231,6 +231,9 @@ void IwrfExport::run()
   bool metaDataInitialized = false;
   while (true) {
 
+    // Handle any Qt events pending for this thread
+    QCoreApplication::processEvents();
+
     // read in next pulse
 
     _readNextPulse();
@@ -298,8 +301,6 @@ void IwrfExport::run()
       }
     }
     
-    // Handle any Qt events pending for this thread
-    QCoreApplication::processEvents();
   } // while
 
 }
@@ -962,7 +963,7 @@ void IwrfExport::_allocStatusBuf()
 // pulse. Return true iff we create a new georef packet.
 bool IwrfExport::_assembleIwrfGeorefPacket() {
   // Convert pulse time to milliseconds since the Epoch
-  uint64_t pulseTime = _timeSecs * 1000 + _nanoSecs / 1000000;
+  uint64_t pulseTime = uint64_t(_timeSecs) * 1000 + _nanoSecs / 1000000;
 
   // Quick out if the C-MIGITS deque is empty
   if (_cmigitsDeque.empty()) {
@@ -974,7 +975,7 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
   // The C-MIGITS 3512 message comes out at 100 Hz, so use we its time as the
   // time for each shared memory struct.
   CmigitsSharedMemory::ShmStruct cmigits;
-  bool haveData = false;
+  bool haveData = false;    // does cmigits contain data earlier than the pulse time?
   CmigitsSharedMemory::ShmStruct nextCmigits = _cmigitsDeque.front();
   while (nextCmigits.time3512 < pulseTime) {
       cmigits = nextCmigits;
@@ -984,6 +985,8 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
       if (_cmigitsDeque.empty()) {
           break;
       }
+      // Check the next entry on the deque
+      nextCmigits = _cmigitsDeque.front();
   }
 
   // If we didn't find earlier C-MIGITS data, just return false now.
