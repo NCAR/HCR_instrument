@@ -16,6 +16,7 @@
 #include <XmlRpc.h>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
+#include <QCoreApplication>
 
 LOGGING("hcrdrx")
 
@@ -218,6 +219,7 @@ class GetStatusMethod : public XmlRpcServerMethod {
 public:
     GetStatusMethod() : XmlRpcServerMethod("getStatus") {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        DLOG << "Received 'getStatus' command";
         retvalP = _hcrMonitor->drxStatus().toXmlRpcValue();
     }
 };
@@ -438,19 +440,25 @@ main(int argc, char** argv)
     PMU_auto_register("start export");
     _exporter->start();
 
+    // QApplication
+    QCoreApplication app(argc, argv);
+
     // Start the timers, which will allow data to flow.
     _sd3c->timersStartStop(true);
 
     double startTime = nowTime();
 
     while (1) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
+            // Process any queued Qt events
+            app.processEvents();
+            
             // check for the termination request
             if (_terminate) {
                 break;
             }
-            // handle XML-RPC commands for 0.1 second
-            rpcServer.work(0.1);
+            // handle XML-RPC commands for 0.001 second
+            rpcServer.work(0.001);
         }
         if (_terminate) {
             break;
