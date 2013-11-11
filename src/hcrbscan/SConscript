@@ -48,7 +48,7 @@ bscan = env.Program('hcrbscan', bscanSources)
 env.InstallProgram(bscan)
 Default(bscan)
 
-html = env.Apidocs(bscanSources + bscanHeaders, DOXYFILE_FILE = "Doxyfile")
+html = env.Apidocs(bscanSources + bscanHeaders)
 Default(html)
 
 options = env.GlobalOptions()
