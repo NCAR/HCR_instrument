@@ -294,10 +294,10 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
         	_mcClientThread.rpcClient().point(angle);
     	}
     	else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
-    		float ccwLimit, cwLimit, scanRate;
-    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
+    		float ccwLimit, cwLimit, scanRate, beamTilt;
+    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate, beamTilt);
     		// Put the antenna to scan
-    		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate);
+    		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
     	}
     }
 }

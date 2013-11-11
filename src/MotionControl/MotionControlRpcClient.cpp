@@ -68,15 +68,18 @@ MotionControlRpcClient::point(float angle) throw (std::exception)
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControlRpcClient::scan(float ccwLimit, float cwLimit, float scanRate)
+MotionControlRpcClient::scan(float ccwLimit, float cwLimit, float scanRate,
+        float beamTilt)
 throw (std::exception)
 {
-	ILOG << "scan() between " << ccwLimit << " and " << cwLimit << " at " << scanRate << " deg/s";
+	ILOG << "scan() between " << ccwLimit << " and " << cwLimit << " at " << 
+	        scanRate << " deg/s, with beam tilt " << beamTilt;
 	_daemonResponding = true;
 
 	try {
 		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Scan", "ddd", &result, ccwLimit, cwLimit, scanRate);
+		_client.call(_daemonUrl, "Scan", "ddd", &result, ccwLimit, cwLimit, 
+		        scanRate, beamTilt);
 	}
 	catch (std::exception & e) {
 		_daemonResponding = false;

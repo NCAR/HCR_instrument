@@ -29,7 +29,7 @@ public:
     // Get antenna pointing angle
     void getPointingAngle(float& angle);
     // Get antenna scanning parameters
-    void getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate);
+    void getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate, float& beamTilt);
 
 private slots:
     void on_buttonBox_clicked();

@@ -28,10 +28,12 @@ AntennaModeDialog::getPointingAngle(float& angle) {
 }
 
 void
-AntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate) {
+AntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit, 
+        float& scanRate, float& beamTilt) {
 	ccwLimit = (float)_ui.ccwLimitSpinBox->value();
 	cwLimit  = (float)_ui.cwLimitSpinBox->value();
 	scanRate = (float)_ui.scanRateSpinBox->value();
+	beamTilt = (float)_ui.beamTiltSpinBox->value();
 }
 
 void
