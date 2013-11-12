@@ -295,8 +295,22 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
     	}
     	else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
     		float ccwLimit, cwLimit, scanRate, beamTilt;
-    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate, beamTilt);
-    		// Put the antenna to scan
+    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate,
+    		        beamTilt);
+    		// If beam tilt angle is not zero, confirm that it's intentional.
+    		if (beamTilt != 0.0) {
+    		    QMessageBox confirmBox(QMessageBox::Question,
+    		            "Confirm Non-Zero Tilt",
+    		            "A non-zero tilt angle was given for the scan.\n"
+    		            "Are you sure you want to continue?",
+    		            QMessageBox::Ok | QMessageBox::Cancel, this);
+    		    confirmBox.setInformativeText(
+    		            "Non-zero tilt is only useful for special scanning cases");
+    		    if (confirmBox.exec() == QMessageBox::Cancel) {
+    		        return;
+    		    }
+    		}
+    		// Start scanning
     		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
     	}
     }
@@ -634,8 +648,8 @@ HcrGuiMainWindow::_update() {
         if (stateChanged) {
             // Warn the user that we have disabled HV
             QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
-                    "Disabling transmitter HV due to low pressure\n"
-                    "in the pressure vessel (or hcrdrx shutdown)",
+                    "Disabling transmitter HV due to hcrdrx shutdown\n"
+                    "or low pressure in the pressure vessel",
                     QMessageBox::Ok, this);
             box.exec();
         }
