@@ -78,7 +78,7 @@ throw (std::exception)
 
 	try {
 		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Scan", "ddd", &result, ccwLimit, cwLimit, 
+		_client.call(_daemonUrl, "Scan", "dddd", &result, ccwLimit, cwLimit,
 		        scanRate, beamTilt);
 	}
 	catch (std::exception & e) {
