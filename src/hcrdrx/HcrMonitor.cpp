@@ -21,11 +21,11 @@
 
 LOGGING("HcrMonitor")
 
-HcrMonitor::HcrMonitor(const Pentek::p7142 & pentek,
+HcrMonitor::HcrMonitor(const Pentek::p7142 * pentek,
         std::string xmitdHost, int xmitdPort) :
     QThread(),
     _pentek(pentek),
-    _drxStatus(_pentek),
+    _drxStatus(*_pentek),
     _xmitClient(xmitdHost, xmitdPort),
     _mutex(QMutex::Recursive) {
 }
@@ -80,7 +80,7 @@ void
 HcrMonitor::_getDrxStatus() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
-    DrxStatus drxStatus(_pentek);
+    DrxStatus drxStatus(*_pentek);
 
     QMutexLocker locker(&_mutex);
     _drxStatus = drxStatus;

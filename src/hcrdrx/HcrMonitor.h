@@ -32,11 +32,12 @@ public:
      * @brief Construct a HcrMonitor which will read data on a regular basis from
      * the PMC-730 card, and get transmitter status from ka_xmitd
      * running on host xmitdHost/port xmitdPort.
-     * @param pentek the p7142 Pentek card to be monitored for temperatures
+     * @param pentek pointer to the p7142 Pentek card to be monitored for 
+     * temperatures
      * @param xmitdHost the name of the host on which hcr_xmitd is running
      * @param xmitdPort the port number hcr_xmitd is using for XmlRpc calls
      */
-    HcrMonitor(const Pentek::p7142 & pentek, std::string xmitdHost, int xmitdPort);
+    HcrMonitor(const Pentek::p7142 * pentek, std::string xmitdHost, int xmitdPort);
     
     virtual ~HcrMonitor();
     
@@ -67,7 +68,7 @@ private:
     void _getDrxStatus();
 
     /// The Pentek P7142 we're monitoring for temperatures
-    const Pentek::p7142 & _pentek;
+    const Pentek::p7142 * _pentek;
 
     /// Last DrxStatus we created
     DrxStatus _drxStatus;
