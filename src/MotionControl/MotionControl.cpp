@@ -117,8 +117,10 @@ MotionControl::point(double angle)
     
     // Set up for fixed antenna pointing
     _fixedPointingAngle = angle;
+    _beamTilt = 0.0;
     _antennaMode = POINTING;
     _rotDrive.moveTo(angle);
+    _tiltDrive.moveTo(_beamTilt);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -142,7 +144,7 @@ MotionControl::scan(double ccwLimit, double cwLimit, double scanRate,
     // only good for small scan widths!)
     double tiltDriveAngle = 0.0;
     double meanRot = (cwLimit + ccwLimit) / 2;
-    double sinTda = sin(DegToRad(beamTilt / 2)) / cos(DegToRad(meanRot));
+    double sinTda = -sin(DegToRad(beamTilt / 2)) / cos(DegToRad(meanRot));
     if (sinTda >= -1.0 && sinTda <= 1.0) {
         tiltDriveAngle = RadToDeg(asin(sinTda));
     } else {
@@ -158,7 +160,6 @@ MotionControl::scan(double ccwLimit, double cwLimit, double scanRate,
     // Set up for antenna scanning
     _antennaMode = SCANNING;
     _rotDrive.scan();
-    _tiltDrive.scan();
 }
 
 /////////////////////////////////////////////////////////////////////
