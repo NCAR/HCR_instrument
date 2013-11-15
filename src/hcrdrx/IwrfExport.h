@@ -6,6 +6,7 @@
 #include "HcrMonitor.h"
 #include "PulseData.h"
 #include <CmigitsSharedMemory.h>
+#include <HcrPmc730.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
