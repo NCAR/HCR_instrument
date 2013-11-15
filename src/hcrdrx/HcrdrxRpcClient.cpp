@@ -37,42 +37,6 @@ HcrdrxRpcClient::_executeXmlRpcCommand(const std::string cmd,
 }
 
 void
-HcrdrxRpcClient::xmitFilamentOn() {
-    XmlRpc::XmlRpcValue null;
-    XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("xmitFilamentOn", null, result);
-}
-
-void
-HcrdrxRpcClient::xmitFilamentOff() {
-    XmlRpc::XmlRpcValue null;
-    XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("xmitFilamentOff", null, result);
-}
-
-void
-HcrdrxRpcClient::xmitHvOn() {
-    XmlRpc::XmlRpcValue null;
-    XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("xmitHvOn", null, result);
-}
-
-void
-HcrdrxRpcClient::xmitHvOff() {
-    XmlRpc::XmlRpcValue null;
-    XmlRpc::XmlRpcValue result;
-    _executeXmlRpcCommand("xmitHvOff", null, result);
-}
-
-void
-HcrdrxRpcClient::setHmcMode(int mode) {
-    XmlRpc::XmlRpcValue args;
-    XmlRpc::XmlRpcValue result;
-    args[0] = XmlRpc::XmlRpcValue(mode);
-    _executeXmlRpcCommand("setHmcMode", args, result);
-}
-
-void
 HcrdrxRpcClient::zeroPentekMotorCounts() {
     XmlRpc::XmlRpcValue null;
     XmlRpc::XmlRpcValue result;

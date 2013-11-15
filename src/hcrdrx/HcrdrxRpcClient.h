@@ -37,22 +37,6 @@ public:
      */
     ClientConnectionState connectionState() const { return(_connectionState); }
 
-    /// @brief Send an "xmitFilamentOn" command to hcrdrx
-    void xmitFilamentOn();
-    
-    /// @brief Send a "xmitFilamentOff" command to hcrdrx
-    void xmitFilamentOff();
-    
-    /// @brief Send an "xmitHvOn" command to hcrdrx
-    void xmitHvOn();
-    
-    /// @brief Send a "xmitHvOff" command to hcrdrx
-    void xmitHvOff();
-    
-    /// @brief Send "setHmcMode" command to hcrdrx
-    /// @param mode integer mode number for the HMC, 0-3
-    void setHmcMode(int mode);
-
     /// @brief Zero the Pentek's position counts for the two reflector
     /// motors.
     void zeroPentekMotorCounts();
