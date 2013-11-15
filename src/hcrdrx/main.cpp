@@ -13,11 +13,8 @@
 #include <unistd.h>
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <XmlRpc.h>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
-
-LOGGING("hcrdrx")
 
 // For configuration management
 #include <QtConfig.h>
@@ -30,8 +27,13 @@ LOGGING("hcrdrx")
 #include "IwrfExport.h"
 #include "HcrMonitor.h"
 
+#include <xmlrpc-c/base.hpp>
+#include <xmlrpc-c/registry.hpp>
+#include <xmlrpc-c/server_abyss.hpp>
+
+LOGGING("hcrdrx")
+
 using namespace std;
-using namespace XmlRpc;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
 
@@ -191,11 +193,39 @@ void startUpConverter(Pentek::p7142Up& upConverter,
 
 }
 
+// Handler for SIGALRM signals.
+void
+alarmHandler(int signal) {
+    // Do nothing. This handler just assures that arrival of the signal doesn't
+    // terminate our process. The intention of the signal is to force the
+    // XML-RPC server runOnce() method to return occasionally, even if no
+    // request comes in.
+}
+
+// Create a periodic ALRM signal to break us out of
+// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
+void
+startXmlrpcWorkAlarm() {
+    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
+    const struct itimerval iv = { tv, tv };
+    setitimer(ITIMER_REAL, &iv, 0);
+}
+
+// Stop the alarm which breaks us out of xmlrpc_c::serverAbyss::runOnce()
+// while our server is actually processing an XML-RPC command.
+void
+stopXmlrpcWorkAlarm() {
+    // Stop the periodic timer.
+    const struct timeval tv = { 0, 0 }; // zero time stops the timer
+    const struct itimerval iv = { tv, tv };
+    setitimer(ITIMER_REAL, &iv, 0);
+}
+
 /**
- * @brief Xmlrpc++ method to get status from the hcrdrx process.
+ * @brief xmlrpc_c::method to get status from the hcrdrx process.
  *
- * The method returns a XmlRpc::XmlRpcValue struct (dictionary) mapping
- * std::string keys to XmlRpc::XmlRpcValue values. The dictionary should be
+ * The method returns a xmlrpc_c::value_struct (dictionary) mapping
+ * std::string keys to xmlrpc_c::value values. The dictionary should be
  * passed to the constructor for the DrxStatus class to create a DrxStatus
  * object.
  * 
@@ -218,22 +248,45 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     double cmigitsTemp = status.cmigitsTemp();
  * @endcode
  */
-class GetStatusMethod : public XmlRpcServerMethod {
+class GetStatusMethod : public xmlrpc_c::method {
 public:
-    GetStatusMethod() : XmlRpcServerMethod("getStatus") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        retvalP = _hcrMonitor->drxStatus().toXmlRpcValue();
+    GetStatusMethod() {
+        this->_signature = "S:";
+        this->_help = "This method returns the latest status from hcrdrx.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+        ILOG << "Received 'getStatus' command";
+        // Get the latest status from shared memory, and convert it to 
+        // an xmlrpc_c::value_struct dictionary.
+        *retvalP = DrxStatus(*_sd3c).toXmlRpcValue();
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
     }
 };
 
-/// Xmlrpc++ method to zero the Pentek's position counts for the two reflector
+/// xmlrpc_c::method to zero the Pentek's position counts for the two reflector
 /// motors.
-class ZeroPentekMotorCountsMethod : public XmlRpcServerMethod {
+class ZeroPentekMotorCountsMethod : public xmlrpc_c::method {
 public:
-    ZeroPentekMotorCountsMethod() : XmlRpcServerMethod("zeroPentekMotorCounts") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+    ZeroPentekMotorCountsMethod() {
+        this->_signature = "n:";
+        this->_help = "This method causes the Pentek to zero its counts for the reflector drives.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
         ILOG << "Received 'zeroPentekMotorCounts' command";
         _sd3c->zeroMotorCounts();
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
     }
 };
 
@@ -272,14 +325,16 @@ main(int argc, char** argv)
     }
 
     // Initialize our RPC server on port 8081
-    XmlRpc::XmlRpcServer rpcServer;
-    rpcServer.addMethod(new GetStatusMethod());
-    rpcServer.addMethod(new ZeroPentekMotorCountsMethod());
-    if (! rpcServer.bindAndListen(8081)) {
-        ELOG << "Failed to initialize XmlRpcServer!";
-        exit(1);
-    }
-    rpcServer.enableIntrospection(true);
+    xmlrpc_c::registry myRegistry;
+    myRegistry.addMethod("GetStatus", new GetStatusMethod);
+    myRegistry.addMethod("ZeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
+    xmlrpc_c::serverAbyss rpcServer(myRegistry, 8081);
+
+    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
+    // arrival causes the XML-RPC server's runOnce() method to return so that
+    // we can process Qt events on a regular basis.
+    signal(SIGALRM, alarmHandler);
+    startXmlrpcWorkAlarm();
 
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
@@ -386,8 +441,9 @@ main(int argc, char** argv)
             if (_terminate) {
                 break;
             }
-            // handle XML-RPC commands for 0.1 second
-            rpcServer.work(0.1);
+            // Waits for the next connection, accepts it, reads the HTTP
+            // request, executes the indicated RPC, and closes the connection.
+            rpcServer.runOnce();
         }
         if (_terminate) {
             break;

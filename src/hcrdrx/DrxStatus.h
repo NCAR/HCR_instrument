@@ -12,14 +12,10 @@
 #include <string>
 #include <numeric>
 #include <stdint.h>
-#include <XmlRpc.h>
+#include <xmlrpc-c/base.hpp>
 #include <p7142.h>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
-
-#include "HcrPmc730.h"
-
-using namespace XmlRpc;
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
 class DrxStatus {
@@ -34,21 +30,21 @@ public:
 
     /// @brief Construct from an XmlRpcValue dictionary as returned by a call
     /// to the DrxStatus::toXmlRpcValue() method.
-    /// @param statusDict an XmlRpcValue dictionary as returned by call to the
-    /// DrxStatus::toXmlRpcValue() method.
-    DrxStatus(XmlRpcValue & statusDict);
+    /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by 
+    /// call to the DrxStatus::toXmlRpcValue() method.
+    DrxStatus(xmlrpc_c::value_struct & statusDict);
 
     virtual ~DrxStatus();
 
     /// @brief Return an external representation of the object's state as
-    /// an XmlRpcValue dictionary.
+    /// an xmlrpc_c::value_struct dictionary.
     ///
     /// The returned value can be used on the other side of an XML-RPC
     /// connection to create an identical object via the
-    /// XmitStatus(const XmlRpcValue &) constructor.
+    /// XmitStatus(const xmlrpc_c::value_struct &) constructor.
     /// @return an external representation of the object's state as
-    /// an XmlRpcValue dictionary.
-    XmlRpcValue toXmlRpcValue() const;
+    /// an xmlrpc_c::value_struct dictionary.
+    xmlrpc_c::value_struct toXmlRpcValue() const;
 
     /**
      * @brief Return the signal processing FPGA temperature from the Pentek

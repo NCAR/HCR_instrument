@@ -6,7 +6,7 @@
  */
 
 #include "DrxStatus.h"
-#include "XmlRpcValueArchive.h"
+#include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <iomanip>
 
@@ -22,25 +22,25 @@ DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
     _pentekBoardTemp = pentek.circuitBoardTemp();
 }
 
-DrxStatus::DrxStatus(XmlRpcValue & statusDict) {
+DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) {
     // Create an input archiver wrapper around the XmlRpcValue dictionary,
     // and use serialize() to populate our members from its content.
-    XmlRpcValueIarchive iar(statusDict);
+    Iarchive_xmlrpc_c iar(statusDict);
     iar >> *this;
 }
 
 DrxStatus::~DrxStatus() {
 }
 
-XmlRpcValue
+xmlrpc_c::value_struct
 DrxStatus::toXmlRpcValue() const {
-    XmlRpcValue statusDict;
+    std::map<std::string, xmlrpc_c::value> statusDict;
     // Clone ourself to a non-const instance
     DrxStatus clone(*this);
     // Stuff our content into the statusDict, i.e., _serialize() to an 
     // output archiver wrapped around the statusDict.
-    XmlRpcValueOarchive oar(statusDict);
+    Oarchive_xmlrpc_c oar(statusDict);
     oar << clone;
     // Finally, return the statusDict
-    return(statusDict);
+    return(xmlrpc_c::value_struct(statusDict));
 }
