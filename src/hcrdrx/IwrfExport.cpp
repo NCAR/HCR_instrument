@@ -3,6 +3,7 @@
 #include <sys/timeb.h>
 #include <cmath>
 #include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <iostream>
 #include <iomanip>
