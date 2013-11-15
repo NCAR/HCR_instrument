@@ -7,19 +7,19 @@
 
 #include "DrxStatus.h"
 #include "XmlRpcValueArchive.h"
-#include <HcrPmc730.h>
 #include <logx/Logging.h>
 #include <iomanip>
 
 LOGGING("DrxStatus")
 
 DrxStatus::DrxStatus() :
-    _pentekFpgaTemp(-99.9),
-    _pentekBoardTemp(-99.9) {
+    _pentekFpgaTemp(-99),
+    _pentekBoardTemp(-99) {
 }
 
 DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
-    _getPentekValues(pentek);
+    _pentekFpgaTemp = pentek.fpgaTemp();
+    _pentekBoardTemp = pentek.circuitBoardTemp();
 }
 
 DrxStatus::DrxStatus(XmlRpcValue & statusDict) {
@@ -43,10 +43,4 @@ DrxStatus::toXmlRpcValue() const {
     oar << clone;
     // Finally, return the statusDict
     return(statusDict);
-}
-
-void
-DrxStatus::_getPentekValues(const Pentek::p7142 & pentek) {
-    _pentekFpgaTemp = pentek.fpgaTemp();
-    _pentekBoardTemp = pentek.circuitBoardTemp();
 }
