@@ -17,7 +17,6 @@ public:
      * Instantiate a connection to a tilt servo drive on the named serial
      * device. The drive's nickname will be set to "tilt".
      * @param ttyDev the name serial port device connected to the tilt drive
-     * @param driveName nickname used for the drive in log messages
      */
     TiltServoDrive(const std::string ttyDev) :
         ElmoServoDrive(ttyDev, "tilt") {}

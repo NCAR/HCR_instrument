@@ -145,6 +145,7 @@ ElmoServoDrive::moveTo(float angle) {
     }
 
     // Generate a command to move to the given absolute position
+    DLOG << _driveName << ": move to " << angle;
     std::ostringstream cmdstream;
     cmdstream << "PA=" << _angleToCounts(angle);
     _execElmoCmd(cmdstream.str());
@@ -184,7 +185,8 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
     // Add a point at either end for turn-around
     nScanPts += 2;
 
-    // Now build the table (including an extra point for turn-around on either side)
+    // Now build the table (including an extra point for turn-around on either 
+    // side)
     ILOG << "Building " << nScanPts << "-point PT table";
     ILOG << pointTime << " seconds per point";
     for (int i = 0; i < nScanPts; i++) {
@@ -219,12 +221,12 @@ ElmoServoDrive::scan() {
         return;
     }
 
-    //    _execElmoCmd("PV=1");
-    //    _execElmoCmd("TS=120");
-    //    _execElmoCmd("MP[4]=256");
+    ILOG << _driveName << " starting scan"; 
+
     // position to first point of scan
     _execElmoCmd("PA=QP[1]");
     _execElmoCmd("BG");
+
     // start the scan
     _execElmoCmd("PT=1");
     _execElmoCmd("BG");

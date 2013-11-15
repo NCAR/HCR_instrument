@@ -307,22 +307,24 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 /// Pop up the antenna mode editing dialog
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
+    // Don't pop up the dialog if we're transmitting. At this point, moving the
+    // reflector between pointing locations may steer the beam through the
+    // aircraft fuselage. If we do that while transmitting, the return signal
+    // could damage the radar.
+    if (_xmitterHvOn()) {
+        QMessageBox box(QMessageBox::Warning,
+                "No Mode Change While Transmitting",
+                "Reflector mode cannot be changed while transmitting.",
+                QMessageBox::Ok, this);
+        box.setInformativeText(
+                "Radar transmitter HV must be turned off before changing mode!");
+        box.exec();
+        return;
+    }
+    
+    // Pop up the antenna mode dialog, and apply the new mode if the dialog
+    // is accepted.
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
-        // Do not change mode if we're transmitting. At this point, moving the
-        // reflector between pointing locations may steer the beam through the
-        // aircraft fuselage. If we do that while transmitting, the return signal
-        // will damage the radar.
-        if (_xmitterHvOn()) {
-            QMessageBox box(QMessageBox::Warning,
-                    "No Mode Change While Transmitting",
-                    "Reflector mode cannot be changed while transmitting.",
-                    QMessageBox::Ok, this);
-            box.setInformativeText(
-                    "Radar transmitter HV must be turned off before changing mode!");
-            box.exec();
-            return;
-        }
-
     	if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
     		float angle;
     		_antennaModeDialog.getPointingAngle(angle);
@@ -330,10 +332,24 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
         	_mcClientThread.rpcClient().point(angle);
     	}
     	else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
-    		float ccwLimit, cwLimit, scanRate;
-    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate);
-    		// Put the antenna to scan
-    		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate);
+    		float ccwLimit, cwLimit, scanRate, beamTilt;
+    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate,
+    		        beamTilt);
+    		// If beam tilt angle is not zero, confirm that it's intentional.
+    		if (beamTilt != 0.0) {
+    		    QMessageBox confirmBox(QMessageBox::Question,
+    		            "Confirm Non-Zero Tilt",
+    		            "A non-zero tilt angle was given for the scan.\n"
+    		            "Are you sure you want to continue?",
+    		            QMessageBox::Ok | QMessageBox::Cancel, this);
+    		    confirmBox.setInformativeText(
+    		            "Non-zero tilt is only useful for special scanning cases");
+    		    if (confirmBox.exec() == QMessageBox::Cancel) {
+    		        return;
+    		    }
+    		}
+    		// Start scanning
+    		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
     	}
     }
 }
@@ -673,8 +689,8 @@ HcrGuiMainWindow::_update() {
         if (stateChanged) {
             // Warn the user that we have disabled HV
             QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
-                    "Disabling transmitter HV due to low pressure\n"
-                    "in the pressure vessel (or hcrdrx shutdown)",
+                    "Disabling transmitter HV due to hcrdrx shutdown\n"
+                    "or low pressure in the pressure vessel",
                     QMessageBox::Ok, this);
             box.exec();
         }

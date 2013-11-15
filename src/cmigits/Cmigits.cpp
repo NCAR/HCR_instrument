@@ -203,7 +203,7 @@ const std::string Cmigits::_TimeFOMStrings[] = {
         ">= 10000 µs"
 };
 
-Cmigits::Cmigits(std::string ttyDev) :
+Cmigits::Cmigits(std::string ttyDev, CmigitsSharedMemory * shm) :
                 QObject(),
                 _simulate(ttyDev == SIM_DEVICE),
                 _ttyDev(ttyDev),
@@ -224,7 +224,8 @@ Cmigits::Cmigits(std::string ttyDev) :
                 _gpsDataTooOld(true),
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
-                _gpsAvailable(false) {
+                _gpsAvailable(false),
+                _shm(shm)  {
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
     uint16_t word = 0x0102;
@@ -797,7 +798,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
     double velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
 
-    DLOG << "3500 time: " << msgTime.toString().toStdString() <<
+    DLOG << "3500 time: " << msgTime.toString("hh:mm:ss.zzz").toStdString() <<
             ", mode: " << ModeName(_currentMode) <<
             ", GPS: " << _gpsAvailable <<
             ", INS: " << _insAvailable <<
@@ -810,11 +811,15 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
             " m/s";
 
-    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
-    emit new3500Data(msecsSinceEpoch, _currentMode,
+    // Write to shared memory if we have access
+    if (_shm) {
+        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+       _shm->storeLatest3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
+    }
 }
 
 void
@@ -847,10 +852,11 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double longitude = 180.0 * _UnpackFloat32(msgWords + 11, 0);
     double altitude = _UnpackFloat32(msgWords + 13, 15);
 
-    // Unpack velocity components
-    double velocityNorth = _UnpackFloat32(msgWords + 15, 10);
-    double velocityEast = _UnpackFloat32(msgWords + 17, 10);
-    double velocityUp = _UnpackFloat32(msgWords + 19, 10);
+// Ignore velocity, since we get it at 100 Hz via 3512 messages
+//    // Unpack velocity components
+//    double velocityNorth = _UnpackFloat32(msgWords + 15, 10);
+//    double velocityEast = _UnpackFloat32(msgWords + 17, 10);
+//    double velocityUp = _UnpackFloat32(msgWords + 19, 10);
 
 // Ignore attitude, since we get it at 100 Hz via 3512 messages
 //    // Unpack attitude components
@@ -861,15 +867,19 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     uint16_t decisecond = uint16_t(round(10 * fmod(utcSecondOfDay, 1.0)));
     decisecond %= 10;
     if (decisecond == 0) {
-        ILOG << "3501 time: " << msgTime.toString().toStdString() <<
+        ILOG << "3501 time: " << 
+                msgTime.toString("hh:mm:ss.zzz").toStdString() <<
                 ", lat: " << latitude << ", lon: " << longitude <<
-                ", alt: " << altitude << ", vel north: " << velocityNorth <<
-                ", vel east: " << velocityEast << ", vel up: " << velocityUp;
+                ", alt: " << altitude;
     }
 
-    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
-    emit new3501Data(msecsSinceEpoch, latitude, longitude,
-            altitude, velocityNorth, velocityEast, velocityUp);
+    // Write to shared memory if we have access
+    if (_shm) {
+        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+        _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
+            altitude);
+    }
 }
 
 void
@@ -880,30 +890,44 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         return;
 
     // 3512 message length is variable, but we configured it to contain only
-    // attitude data (6 words), giving a total message length of 16 words.
-    if (nMsgWords != 16) {
-        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 16!";
+    // attitude data (6 words) and velocity data (6 words), giving a total
+    // message length of 22 words.
+    if (nMsgWords != 22) {
+        ELOG << "Type 3512 message has " << nMsgWords << " words; expecting 22!";
         return;
     }
 
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
 
-
+    // Unpack attitude components
     double pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
     double roll = 180.0 * _UnpackFloat32(msgWords + 11, 0);
     double heading = 180.0 * _UnpackFloat32(msgWords + 13, 0);
 
+    // Unpack velocity components
+    double velNorth = _UnpackFloat32(msgWords + 15, 10);
+    double velEast = _UnpackFloat32(msgWords + 17, 10);
+    double velUp = _UnpackFloat32(msgWords + 19, 10);
+
+    // Log attitude and velocity once per second
     int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
     centisecond %= 100;
     if (centisecond == 0) {
-        ILOG << "3512 time: " << msgTime.toString().toStdString() <<
-                ", pitch: " << pitch <<
-                ", roll: " << roll << ", heading: " << heading;
+        ILOG << "3512 time: " << 
+                msgTime.toString("hh:mm:ss.zzz").toStdString() <<
+                ", pitch: " << pitch << ", roll: " << roll <<
+                ", heading: " << heading << ", vel morth: " << velNorth <<
+                ", vel east: " << velEast << ", vel up: " << velUp;
     }
 
-    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + msgTime.time().msec();
-    emit new3512Data(msecsSinceEpoch, pitch, roll, heading);
+    // Write to shared memory if we have access
+    if (_shm) {
+        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+        _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
+            velNorth, velEast, velUp);
+    }
 }
 
 void
@@ -1124,7 +1148,7 @@ Cmigits::_doCurrentConfigPhase() {
         //      1) set serial communication rate to 115200 bps
         //      2) request that the C-MIGITS generate 3512 (Flight Control)
         //         messages containing aircraft attitude at 100 Hz rate
-        //      3) include only attitude data in 3512 messages
+        //      3) include attitude and velocity data in 3512 messages
 
         // set data validity bits
         udata[0] |= (1 << 0);		// set host vehicle transmit baud rate
@@ -1139,8 +1163,9 @@ Cmigits::_doCurrentConfigPhase() {
 
         // set Message Control word
         udata[4] |= (2 << 0);       // Message 3501 transmit rate 2 -> 10 Hz
-        udata[4] |= (3 << 4);		// Message 3512 transmit rate 3 -> 100 Hz
-        udata[4] |= (1 << 8);		// send attitude in Message 3512
+        udata[4] |= (3 << 4);       // Message 3512 transmit rate 3 -> 100 Hz
+        udata[4] |= (1 << 8);       // send attitude in Message 3512
+        udata[4] |= (1 << 9);       // send velocity in Message 3512
 
         // Send the 3504 message
         _sendMessage(3504, udata, 5);

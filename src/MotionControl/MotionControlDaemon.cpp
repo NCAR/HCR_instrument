@@ -63,11 +63,12 @@ alarmHandler(int signal) {
 // xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
 void
 startXmlrpcWorkAlarm() {
-    //    const struct timeval tv = { 0, 500000 }; // 0.5s (2Hz)
-    //    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
-    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
-    //    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
-    //    const struct timeval tv = { 0, 6667 }; // 0.0067s (150Hz)
+//    const struct timeval tv = { 0, 500000 };// 0.5s (2Hz)
+//    const struct timeval tv = { 0, 100000 };// 0.1s (10Hz)
+//    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
+    const struct timeval tv = { 0, 20000 };   // 0.02s (50Hz)
+//    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
+//    const struct timeval tv = { 0, 6667 };  // 0.0067s (150Hz)
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
@@ -144,9 +145,9 @@ class DriveScanMethod : public xmlrpc_c::method
 public:
     DriveScanMethod() {
         // The method has integer result and double arguments
-        this->_signature = "i:ddd";
+        this->_signature = "i:dddd";
         this->_help = "This method takes drive scan between given limits, "
-                "at the given scan rate";
+                "at the given scan rate and beam tilt angle";
     }
 
     void
@@ -158,9 +159,10 @@ public:
         double const ccwLimit(paramList.getDouble(0));
         double const cwLimit(paramList.getDouble(1));
         double const scanRate(paramList.getDouble(2));
-        paramList.verifyEnd(3);
+        double const beamTilt(paramList.getDouble(3));
+        paramList.verifyEnd(4);
 
-        Control->scan(ccwLimit, cwLimit, scanRate);
+        Control->scan(ccwLimit, cwLimit, scanRate, beamTilt);
 
         *retvalP = xmlrpc_c::value_int(0);
 

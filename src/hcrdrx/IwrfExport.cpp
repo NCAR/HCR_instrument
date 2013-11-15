@@ -25,8 +25,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         QThread(),
         _config(config),
         _monitor(monitor),
-        _cmigitsShm(false),
-        _lastCmigits3512Time(0),
         _hmcMode(HcrPmc730::HMC_UNUSED_3)
 {
 
@@ -145,6 +143,12 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   
   _azimuthDeg = 0.0;
   _elevationDeg = 0.0;
+
+  /// Pass new C-MIGITS data from the singleton CmigitsWatchThread to our
+  /// _acceptCmigitsData() slot.
+  CmigitsWatchThread & cwt = CmigitsWatchThread::GetInstance();
+  connect(&cwt, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
+          this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
 
   /// angle corrections
 
@@ -844,74 +848,6 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeDouble
     ("PentekBoardTemp", 2, drxStatus.pentekBoardTemp());
 
-  // Next is data from the C-MIGITS
-  const CmigitsStatus cmigitsStatus = _monitor.cmigitsStatus();
-
-  // C-MIGITS status info (latest 3500 message from C-MIGITS)
-  double statusTime = 0.0;      // seconds since 1970-01-01 00:00:00 UTC
-  uint16_t currentMode = 0;     // see info for C-MIGITS 3500 message
-  bool insAvailable = false;
-  bool gpsAvailable = false;
-  bool doingCoarseAlignment = false;
-  uint16_t nSats = 0;
-  uint16_t positionFOM = 0;     // see info for C-MIGITS 3500 message
-  uint16_t velocityFOM = 0;     // see info for C-MIGITS 3500 message
-  uint16_t headingFOM = 0;      // see info for C-MIGITS 3500 message
-  uint16_t timeFOM = 0;         // see info for C-MIGITS 3500 message
-  double expectedHPosError = 0.0;      // m
-  double expectedVPosError = 0.0;      // m
-  double expectedVelocityError = 0.0;  // m/s
-
-  cmigitsStatus.msg3500Data(statusTime, currentMode, insAvailable, gpsAvailable,
-          doingCoarseAlignment, nSats, positionFOM, velocityFOM, headingFOM, 
-          timeFOM, expectedHPosError, expectedVPosError, expectedVelocityError);
-
-  xml += TaXml::writeUtime("Cmigits3500Time", 2, time_t(statusTime));
-  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, currentMode);
-  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, insAvailable);
-  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, gpsAvailable);
-  xml += TaXml::writeInt("Cmigits3500NSats", 2, nSats);
-  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, positionFOM);
-  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, velocityFOM);
-  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, headingFOM);
-  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2, timeFOM);
-  xml += TaXml::writeDouble("Cmigits3500HPosError", 2, expectedHPosError);
-  xml += TaXml::writeDouble("Cmigits3500VPosError", 2, expectedVPosError);
-  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2, expectedVelocityError);
-
-  // current position/velocity (latest 3501 message from C-MIGITS)
-  double navSolutionTime = 0.0; // seconds since 1970-01-01 00:00:00 UTC
-  double latitude = 0.0;         // deg
-  double longitude = 0.0;        // deg
-  double altitude = 0.0;         // m above MSL
-  double velNorth = 0.0;         // m/s
-  double velEast = 0.0;          // m/s
-  double velUp = 0.0;            // m/s
-
-  cmigitsStatus.msg3501Data(navSolutionTime, latitude, longitude, altitude,
-          velNorth, velEast, velUp);
-
-  xml += TaXml::writeUtime("Cmigits3501Time", 2, time_t(navSolutionTime));
-  xml += TaXml::writeDouble("Cmigits3501Latitude", 2, latitude);
-  xml += TaXml::writeDouble("Cmigits3501Longitude", 2, longitude);
-  xml += TaXml::writeDouble("Cmigits3501Altitude", 2, altitude);
-  xml += TaXml::writeDouble("Cmigits3501VelNorth", 2, velNorth);
-  xml += TaXml::writeDouble("Cmigits3501VelEast", 2, velEast);
-  xml += TaXml::writeDouble("Cmigits3501VelUp", 2, velUp);
-
-  // current attitude (latest 3512 message from C-MIGITS)
-  double attitudeTime = 0.0;    // seconds since 1970-01-01 00:00:00 UTC
-  double pitch = 0.0;            // deg
-  double roll = 0.0;             // deg
-  double heading = 0.0;          // deg clockwise from true north
-  
-  cmigitsStatus.msg3512Data(attitudeTime, pitch, roll, heading);
-
-  xml += TaXml::writeUtime("Cmigits3512Time", 2, time_t(attitudeTime));
-  xml += TaXml::writeDouble("Cmigits3512Pitch", 2, pitch);
-  xml += TaXml::writeDouble("Cmigits3512Roll", 2, roll);
-  xml += TaXml::writeDouble("Cmigits3512Heading", 2, heading);
-
   // end receive status
 
   xml += TaXml::writeEndTag("HcrReceiverStatus", 1);
@@ -920,6 +856,66 @@ string IwrfExport::_assembleStatusXml()
   // HCR C-MIGITS block
 
   xml += TaXml::writeStartTag("HcrCmigitsData", 1);
+
+  // Get latest data from C-MIGITS (if any)
+  CmigitsSharedMemory::ShmStruct cmigits;
+  bool haveData = false;
+  if (! _cmigitsDeque.empty()) {
+      haveData = true;
+      cmigits = _cmigitsDeque.back();
+  }
+
+  // C-MIGITS status info (latest 3500 message from C-MIGITS)
+  xml += TaXml::writeDouble("Cmigits3500Time", 2,
+          haveData ? 0.001 * cmigits.time3500 : 0.0);
+  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2,
+          haveData ? cmigits.currentMode : false);
+  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2,
+          haveData ? cmigits.insAvailable : false);
+  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2,
+          haveData ? cmigits.gpsAvailable : false);
+  xml += TaXml::writeInt("Cmigits3500NSats", 2,
+          haveData ? cmigits.nSats : 0);
+  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2,
+          haveData ? cmigits.positionFOM : 0);
+  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2,
+          haveData ? cmigits.velocityFOM : 0);
+  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2,
+          haveData ? cmigits.headingFOM : 0);
+  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2,
+          haveData ? cmigits.timeFOM : 0);
+  xml += TaXml::writeDouble("Cmigits3500HPosError", 2,
+          haveData ? cmigits.hPosError : 0.0);
+  xml += TaXml::writeDouble("Cmigits3500VPosError", 2,
+          haveData ? cmigits.vPosError : 0.0);
+  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2,
+          haveData ? cmigits.velocityError : 0.0);
+
+  // current position/velocity (latest 3501 message from C-MIGITS)
+  xml += TaXml::writeDouble("Cmigits3501Time", 2,
+          haveData ? 0.001 * cmigits.time3501 : 0.0);
+  xml += TaXml::writeDouble("Cmigits3501Latitude", 2,
+          haveData ? cmigits.latitude : 0.0);
+  xml += TaXml::writeDouble("Cmigits3501Longitude", 2,
+          haveData ? cmigits.longitude : 0.0);
+  xml += TaXml::writeDouble("Cmigits3501Altitude", 2,
+          haveData ? cmigits.altitude : 0.0);
+
+  // current attitude (latest 3512 message from C-MIGITS)
+  xml += TaXml::writeDouble("Cmigits3512Time", 2,
+          haveData ? 0.001 * cmigits.time3512 : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512Pitch", 2,
+          haveData ? cmigits.pitch : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512Roll", 2,
+          haveData ? cmigits.roll : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512Heading", 2,
+          haveData ? cmigits.heading : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512VelNorth", 2,
+          haveData ? cmigits.velNorth : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512VelEast", 2,
+          haveData ? cmigits.velEast : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512VelUp", 2,
+          haveData ? cmigits.velUp : 0.0);
 
   // end C-MIGITS data
 
@@ -969,84 +965,107 @@ void IwrfExport::_allocStatusBuf()
 }
 
 //////////////////////////////////////////////////
-// Assemble IWRF georef packet if we have new georef data available from
-// the C-MIGITS. Return true iff we create a new georef packet.
+// Assemble IWRF georef packet if we have georef data earlier than the current
+// pulse. Return true iff we create a new georef packet.
 bool IwrfExport::_assembleIwrfGeorefPacket() {
-  // The 3512 message comes out at 100 Hz, so use we its time to determine if
-  // new georef data are available.
-  uint64_t time3512 = _cmigitsShm.getLatest3512Time();
+  // Convert pulse time to milliseconds since the Epoch
+  uint64_t pulseTime = uint64_t(_timeSecs) * 1000 + _nanoSecs / 1000000;
 
-  if (time3512 != _lastCmigits3512Time) {
-    // Get data from the latest 3512 message, which contains attitude.
-    double pitch, roll, heading;
-    _cmigitsShm.getLatest3512Data(time3512, pitch, roll, heading);
-
-    // Get data from the latest 3501 message, which contains location and
-    // velocity.
-    uint64_t time3501;
-    double lat, lon, alt, velNorth, velEast, velUp;
-    _cmigitsShm.getLatest3501Data(time3501, lat, lon, alt, velNorth, velEast, velUp);
-
-    iwrf_platform_georef_init(_radarGeoref);
-
-    _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
-    _radarGeoref.altitude_msl_km = alt * 0.001; // m -> km
-    _radarGeoref.drift_angle_deg = _cmigitsShm.getEstimatedDriftAngle();
-    _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
-    _radarGeoref.ew_velocity_mps = velEast;
-    _radarGeoref.heading_deg = heading;
-    _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
-    _radarGeoref.latitude = lat;
-    _radarGeoref.longitude = lon;
-    _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
-    _radarGeoref.ns_velocity_mps = velNorth;
-    _radarGeoref.pitch_deg = pitch;
-    _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
-    _radarGeoref.roll_deg = roll;
-    _radarGeoref.vert_velocity_mps = velUp;
-    _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
-
-    _radarInfo.latitude_deg = lat;
-    _radarInfo.longitude_deg = lon;
-    _radarInfo.altitude_m = alt;
-
-    // Angles of the reflector rotation and tilt motors.
-    float rotMotorAngle = _pulseH->getRotMotorAngle();
-    float tiltMotorAngle = _pulseH->getTiltMotorAngle();
-    _radarGeoref.drive_angle_1_deg = rotMotorAngle;
-    _radarGeoref.drive_angle_2_deg = tiltMotorAngle;
-
-    // Rotation and tilt of the radar beam w.r.t. the pod's longitudinal axis.
-    // Zero rotation means the beam points through the top of the pod and
-    // positive rotation moves clockwise as viewed looking from the back
-    // of the pod toward the front. Zero tilt means the beam points normal to
-    // the longitudinal axis, and positive tilt means the beam points
-    // forward.
-    //
-    // Beware of "rotation" and "tilt" terms here; the angles of the rotation
-    // motor and tilt motor do not map directly to rotation_angle_deg and
-    // tilt_deg! In HCR, the axis of the tilt motor is fixed w.r.t. the pod and
-    // corresponds with the pod's C-MIGITS pitch axis. The axis of the rotation
-    // motor is moved by the tilt motor, and is only parallel to the pod's
-    // longitudinal axis when the tilt motor angle is zero.
-    _radarGeoref.rotation_angle_deg = rotMotorAngle;
-    _radarGeoref.tilt_deg = ((2.0 * tiltMotorAngle) // x2 for reflection
-            * cos(rotMotorAngle * DEG_TO_RAD));
-    
-    int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
-    for (int i = 0; i < nUnused; i++) {
-      _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
-    }
-
-    // compute elevation and azimuth
-
-    _computeRadarAngles();
-
-    // Save the time of the latest data we have provided
-    _lastCmigits3512Time = time3512;
-    return(true);
+  // Quick out if the C-MIGITS deque is empty
+  if (_cmigitsDeque.empty()) {
+      return(false);
   }
-  return(false);
+
+  // Find the latest C-MIGITS entry in our deque which is earlier than the
+  // current pulse.
+  // The C-MIGITS 3512 message comes out at 100 Hz, so use we its time as the
+  // time for each shared memory struct.
+  CmigitsSharedMemory::ShmStruct cmigits;
+  bool haveData = false;    // does cmigits contain data earlier than the pulse time?
+  CmigitsSharedMemory::ShmStruct nextCmigits = _cmigitsDeque.front();
+  while (nextCmigits.time3512 < pulseTime) {
+      cmigits = nextCmigits;
+      haveData = true;
+      // We can remove this entry from the deque now
+      _cmigitsDeque.pop_front();
+      if (_cmigitsDeque.empty()) {
+          break;
+      }
+      // Check the next entry on the deque
+      nextCmigits = _cmigitsDeque.front();
+  }
+
+  // If we didn't find earlier C-MIGITS data, just return false now.
+  if (! haveData) {
+      return false;
+  }
+
+  // Initialize the georef packet
+  iwrf_platform_georef_init(_radarGeoref);
+  // Time tag the georef packet with the C-MIGITS 3512 message time
+  if ((cmigits.time3512 % 1000) / 10 == 0) {
+      DLOG << "New georef tagged " << (cmigits.time3512 / 1000) % 60 <<
+              "." << std::setw(3) << std::setfill('0') <<
+              cmigits.time3512 % 1000 << " for pulse tagged " <<
+              _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
+              _nanoSecs / 1000000;
+  }
+  _radarGeoref.packet.time_secs_utc = cmigits.time3512 / 1000;                 // seconds since Epoch
+  _radarGeoref.packet.time_nano_secs = (cmigits.time3512 % 1000) * 1000000;    // nsecs
+
+  _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
+  _radarGeoref.altitude_msl_km = cmigits.altitude * 0.001; // m -> km
+  _radarGeoref.drift_angle_deg = CmigitsSharedMemory::GetEstimatedDriftAngle(& cmigits);
+  _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
+  _radarGeoref.ew_velocity_mps = cmigits.velEast;
+  _radarGeoref.heading_deg = cmigits.heading;
+  _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
+  _radarGeoref.latitude = cmigits.latitude;
+  _radarGeoref.longitude = cmigits.longitude;
+  _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
+  _radarGeoref.ns_velocity_mps = cmigits.velNorth;
+  _radarGeoref.pitch_deg = cmigits.pitch;
+  _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
+  _radarGeoref.roll_deg = cmigits.roll;
+  _radarGeoref.vert_velocity_mps = cmigits.velUp;
+  _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
+
+  _radarInfo.latitude_deg = cmigits.latitude;
+  _radarInfo.longitude_deg = cmigits.longitude;
+  _radarInfo.altitude_m = cmigits.altitude;
+
+  // Angles of the reflector rotation and tilt motors.
+  float rotMotorAngle = _pulseH->getRotMotorAngle();
+  float tiltMotorAngle = _pulseH->getTiltMotorAngle();
+  _radarGeoref.drive_angle_1_deg = rotMotorAngle;
+  _radarGeoref.drive_angle_2_deg = tiltMotorAngle;
+
+  // Rotation and tilt of the radar *beam* w.r.t. the pod's longitudinal axis.
+  // Zero rotation means the beam points through the top of the pod and
+  // positive rotation moves clockwise as viewed looking from the back
+  // of the pod toward the front. Zero tilt means the beam points normal to
+  // the longitudinal axis, and positive tilt means the beam points
+  // forward.
+  //
+  // Beware of "rotation" and "tilt" terms here; the angles of the rotation
+  // motor and tilt motor do not map directly to rotation_angle_deg and
+  // tilt_deg! In HCR, the axis of the tilt motor is fixed w.r.t. the pod and
+  // corresponds with the pod's C-MIGITS pitch axis. The axis of the rotation
+  // motor is moved by the tilt motor, and is only parallel to the pod's
+  // longitudinal axis when the tilt motor angle is zero.
+  _radarGeoref.rotation_angle_deg = rotMotorAngle;
+  _radarGeoref.tilt_deg = ((2.0 * tiltMotorAngle) // x2 for reflection
+          * cos(rotMotorAngle * DEG_TO_RAD));
+
+  int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
+  for (int i = 0; i < nUnused; i++) {
+      _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
+  }
+
+  // compute elevation and azimuth
+  _computeRadarAngles();
+
+  return(true);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1208,4 +1227,15 @@ void IwrfExport::_closeSocketToClient()
   delete _sock;
   _sock = NULL;
 
+}
+
+//////////////////////////////////////////////////
+// Accept incoming new C-MIGITS data
+
+void IwrfExport::_acceptCmigitsData(CmigitsSharedMemory::ShmStruct data) {
+  _cmigitsDeque.push_back(data);
+  if (_cmigitsDeque.size() > 1000) {
+      ILOG << "clearing _cmigitsDeque because it's too big";
+      _cmigitsDeque.clear();
+  }
 }

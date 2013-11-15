@@ -48,8 +48,9 @@ public:
     /// limits, at the given scan rate.
     /// @param ccwLimit the counterclockwise limit of the scan, deg
     /// @param cwLimit the clockwise limit of the scan, deg
-    /// @pararm scanRate the scan rate, deg/s
-    void scan(double ccwLimit, double cwLimit, double scanRate);
+    /// @param scanRate the scan rate, deg/s
+    /// @param beamTilt beam tilt angle, deg
+    void scan(double ccwLimit, double cwLimit, double scanRate, double beamTilt);
 
     /// @brief Get current aircraft attitude and adjust drive position.
     /// This method does nothing when attitude correction is disabled.
@@ -78,14 +79,17 @@ public:
     double fixedPointingAngle() const { return(_fixedPointingAngle); }
 
     /// @brief Return the antenna scanning parameters
-    /// @param[out] ccwLimit, counterclockwise scan limit, deg
-    /// @param[out] cwLimit, clockwise scan limit, deg
-    /// @param[out] scanRate, scan rate, deg/s
+    /// @param[out] ccwLimit counterclockwise scan limit, deg
+    /// @param[out] cwLimit clockwise scan limit, deg
+    /// @param[out] scanRate scan rate, deg/s
+    /// @param[out] beamTilt beam tilt angle, deg
     /// @return the antenna scanning parameters.
-    void getScanParams(double & ccwLimit, double & cwLimit, double & scanRate) const {
+    void getScanParams(double & ccwLimit, double & cwLimit, double & scanRate,
+            double & beamTilt) const {
         ccwLimit = _scanCcwLimit;
         cwLimit = _scanCwLimit;
         scanRate = _scanRate;
+        beamTilt = _beamTilt;
     }
 
     /// @brief Set the state of attitude correction.
@@ -137,10 +141,12 @@ public:
          * @param[out] cwLimit the clockwise scan limit, deg
          * @param[out] rate the scan rate, deg/s
          */
-        void scanParameters(double & ccwLimit, double & cwLimit, double & rate) {
+        void scanParameters(double & ccwLimit, double & cwLimit, double & rate,
+                double & beamTilt) {
             ccwLimit = scanCcwLimit;
             cwLimit = scanCwLimit;
             rate = scanRate;
+            beamTilt = beamTilt;
         }
 
         /// Is the rotation drive responding?
@@ -181,6 +187,8 @@ public:
         double scanCwLimit;
         // Scan rate, deg/s
         double scanRate;
+        // Beam tilt, deg
+        double beamTilt;
         // Attitude correction enabled?
         bool attitudeCorrectionEnabled;
     };
@@ -238,6 +246,9 @@ private:
 
     /// Scan rate, deg/s
     double _scanRate;
+    
+    /// Beam tilt angle, deg
+    double _beamTilt;
     
     /// Target radius for the drives, deg
     double _targetRadius;

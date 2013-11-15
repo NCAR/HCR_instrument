@@ -150,25 +150,7 @@ main(int argc, char *argv[]) {
     // Open connection to the C-MIGITS device.
     PMU_auto_register("creating Cmigits instance");
     std::string devName(argv[1]);
-    Cm = new Cmigits(devName);
-
-    // Register uint16_t and uint64_t as a Qt metatype, since we need to use
-    // them as signal/slot arguments below.
-    qRegisterMetaType<uint16_t>("uint16_t");
-    qRegisterMetaType<uint64_t>("uint64_t");
-
-    // When new status arrives, stuff into shared memory.
-    QObject::connect(
-            Cm, SIGNAL(new3500Data(uint64_t, uint16_t, bool, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, double, double, double)),
-            &shm, SLOT(storeLatest3500Data(uint64_t, uint16_t, bool, bool, bool, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, double, double, double)));
-    // When new navigation solution arrives, stuff into shared memory.
-    QObject::connect(
-            Cm, SIGNAL(new3501Data(uint64_t, double, double, double, double, double, double)),
-            &shm, SLOT(storeLatest3501Data(uint64_t, double, double, double, double, double, double)));
-    // When new attitude arrives, stuff into shared memory.
-    QObject::connect(
-            Cm, SIGNAL(new3512Data(uint64_t, double, double, double)),
-            &shm, SLOT(storeLatest3512Data(uint64_t, double, double, double)));
+    Cm = new Cmigits(devName, &shm);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");

@@ -40,7 +40,6 @@ env = Environment(tools = ['default'] + tools)
 
 hcrdrx = env.Program('hcrdrx', sources)
 
-html = env.Apidocs(sources + headers, DOXYFILE_FILE = "Doxyfile")
+html = env.Apidocs(sources + headers)
 
 Default(hcrdrx, html)
-

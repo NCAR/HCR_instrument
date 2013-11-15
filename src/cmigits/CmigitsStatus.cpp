@@ -92,13 +92,13 @@ CmigitsStatus::StatusFromSharedMemory() {
 
         // Get the latest 3501 message data
         _Shm->getLatest3501Data(iTime, status._latitude, status._longitude,
-                status._altitude, status._velNorth, status._velEast, 
-                status._velUp);
+                status._altitude);
         status._navSolutionTime = 0.001 * iTime;
 
         // Get the latest 3512 message data
         _Shm->getLatest3512Data(iTime, status._pitch, status._roll, 
-                status._heading);
+                status._heading, status._velNorth, status._velEast, 
+                status._velUp);
         status._attitudeTime = 0.001 * iTime;
     } else {
         // Nobody's writing to the shared memory, so complain and just

@@ -15,6 +15,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
+#include <QCoreApplication>
 
 // For configuration management
 #include <QtConfig.h>
@@ -206,7 +207,7 @@ alarmHandler(int signal) {
 // xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
 void
 startXmlrpcWorkAlarm() {
-    const struct timeval tv = { 0, 100000 }; // 0.1s (10Hz)
+    const struct timeval tv = { 0, 1000 }; // 1 ms
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
@@ -352,7 +353,7 @@ main(int argc, char** argv)
     }
     
     // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(*_sd3c, _pmc730dHost, _pmc730dPort,
+    _hcrMonitor = new HcrMonitor(_sd3c, _pmc730dHost, _pmc730dPort,
             _xmitdHost, _xmitdPort);
     _hcrMonitor->start();
 
@@ -428,6 +429,9 @@ main(int argc, char** argv)
     PMU_auto_register("start export");
     _exporter->start();
 
+    // QApplication
+    QCoreApplication app(argc, argv);
+
     // Start the timers, which will allow data to flow.
     _sd3c->timersStartStop(true);
 
@@ -435,8 +439,10 @@ main(int argc, char** argv)
 
     while (1) {
         PMU_auto_register("running");
-
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
+            // Process any queued Qt events
+            app.processEvents();
+            
             // check for the termination request
             if (_terminate) {
                 break;

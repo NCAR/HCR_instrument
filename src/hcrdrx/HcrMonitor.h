@@ -32,16 +32,16 @@ class HcrMonitor : public QThread {
 public:
     /**
      * @brief Construct a HcrMonitor which will read data on a regular basis from
-     * the PMC-730 card, and get transmitter status from ka_xmitd
-     * running on host xmitdHost/port xmitdPort.
-     * @param pentek the p7142 Pentek card to be monitored for temperatures
+     * the PMC-730 card, and get transmitter status from hcr_xmitd.
+     * @param pentek pointer to the p7142 Pentek card to be monitored for 
+     * temperatures
      * @param pmc730dHost the name of the host on which HcrPmc730Dameon is
      *      running
      * @param pmc730dPort the port number HcrPmc730Daemon is using for XML-RPC
      * @param xmitdHost the name of the host on which hcr_xmitd is running
      * @param xmitdPort the port number hcr_xmitd is using for XML-RPC
      */
-    HcrMonitor(const Pentek::p7142 & pentek,
+    HcrMonitor(const Pentek::p7142 * pentek,
             std::string pmc730dHost, int pmc730dPort,
             std::string xmitdHost, int xmitdPort);
     
@@ -96,7 +96,7 @@ private:
     void _getXmitStatus();
 
     /// The Pentek P7142 we're monitoring for temperatures
-    const Pentek::p7142 & _pentek;
+    const Pentek::p7142 * _pentek;
 
     /// Last CmigitsStatus we obtained
     CmigitsStatus _cmigitsStatus;

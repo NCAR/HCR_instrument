@@ -39,8 +39,10 @@ public:
 	/// @param ccwLimit the counterclockwise limit of the scan, deg
 	/// @param cwLimit the clockwise limit of the scan, deg
 	/// @param scanRate the scan rate, deg/s
+    /// @param beamTilt the beam tilt angle, deg
     /// @throws std::exception if there's a problem in the XML-RPC call.
-	void scan(float ccwLimit, float cwLimit, float scanRate) throw (std::exception);
+	void scan(float ccwLimit, float cwLimit, float scanRate, 
+	        float beamTilt) throw (std::exception);
 
     /// @brief Set the on/off state of attitude correction
     /// @param state the desired state for attitude correction
