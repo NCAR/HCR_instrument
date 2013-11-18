@@ -33,6 +33,7 @@ int
 main(int argc, char *argv[]) {
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
+    ILOG << "hcrgui started";
     
     QApplication* app = new QApplication(argc, argv);
     
@@ -65,5 +66,7 @@ main(int argc, char *argv[]) {
             rdsHost, pmc730Port, cmigitsPort, motionControlPort);
     mainWindow->show();
     
-    return app->exec();
+    int retval = app->exec();
+    ILOG << "hcrgui stopped";
+    return(retval);
 }
