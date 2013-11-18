@@ -173,9 +173,9 @@ public:
 /// XML-RPC method to get current monitored values from the PMC-730. The
 /// returned xmlrpc_c::value_struct can be used to construct an HcrPmc730Status
 /// object.
-class GetHcrPmc730StatusMethod : public xmlrpc_c::method {
+class GetStatusMethod : public xmlrpc_c::method {
 public:
-    GetHcrPmc730StatusMethod() {
+    GetStatusMethod() {
         // Method takes no arguments, and returns an xmlrpc_c::value_struct
         // which can be used to construct an HcrPmc730Status object.
         this->_signature = "s:";
@@ -186,7 +186,7 @@ public:
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-        ILOG << "Executing XML-RPC call to getHcrPmc730Status()";
+        DLOG << "Executing XML-RPC call to getStatus()";
         paramList.verifyEnd(0);
         *retvalP = HcrPmc730Status().toXmlRpcValue();
 
@@ -197,6 +197,10 @@ public:
 
 int
 main(int argc, char * argv[]) {
+    // Let logx get and strip out its arguments
+    logx::ParseLogArgs(argc, argv);
+    ILOG << "HcrPmc730Daemon started";
+
     QCoreApplication app(argc, argv);
     app.setApplicationName("HcrPmc730Daemon");
 
@@ -221,7 +225,7 @@ main(int argc, char * argv[]) {
     myRegistry.addMethod("xmitHvOn", new XmitHvOnMethod);
     myRegistry.addMethod("xmitHvOff", new XmitHvOffMethod);
     myRegistry.addMethod("setHmcMode", new SetHmcModeMethod);
-    myRegistry.addMethod("getHcrPmc730Status", new GetHcrPmc730StatusMethod);
+    myRegistry.addMethod("getStatus", new GetStatusMethod);
     // We listen on port 8003 for XML-RPC calls
     quint16 serverPort = 8003;
     xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, serverPort);
