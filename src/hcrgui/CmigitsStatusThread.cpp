@@ -45,6 +45,12 @@ CmigitsStatusThread::_getStatus() {
     CmigitsStatus status;
     try {
         status = _client->getStatus();
+        // We got a response, so emit serverResponsive(true) if the server was
+        // not previously responding.
+        if (! _responsive) {
+            _responsive = true;
+            emit serverResponsive(true, QString("cmigitsDaemon is responding"));
+        }
     } catch (std::exception & e) {
         // As a rule, exceptions just mean the server is not responding. Emit
         // serverResponsive(false) if the server had previously been responding.
@@ -52,15 +58,10 @@ CmigitsStatusThread::_getStatus() {
             std::ostringstream oss;
             oss << "cmigitsDaemon failed to respond to getStatus(): " << e.what();
             _responsive = false;
-            emit serverResponsive(false, oss.str());
+            emit serverResponsive(false, QString(oss.str().c_str()));
+            return;
         }
     }
-    // We got a response, so emit serverResponsive(true) if the server was
-    // not previously responding.
-    if (! _responsive) {
-        _responsive = true;
-        emit serverResponsive(true, "cmigitsDaemon is responding");
-    }
-    // And emit the new status.
+    // Emit the new status.
     emit newStatus(status);
 }

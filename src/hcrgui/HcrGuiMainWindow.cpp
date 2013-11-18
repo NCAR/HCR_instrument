@@ -63,14 +63,19 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             pmcPort;
     _logMessage(ss.str());
 
-    // Disable the HMC mode box until we get status from hcrdrx.
+    ss.str("");
+    ss << "No response yet from CmigitsDaemon at " << rdsHost << ":" <<
+            cmigitsPort;
+    _logMessage(ss.str());
+
+    // Disable the HMC mode box until we get status from HcrPmc730Daemon.
     _ui.setHmcModeBox->setEnabled(false);
     
     // Disable C-MIGITS details
     _cmigitsDetails.setEnabled(false);
     // Connect and start the CmigitsStatusThread
-    connect(& _cmigitsStatusThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_cmigitsResponsivenessChange(bool)));
+    connect(& _cmigitsStatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_cmigitsResponsivenessChange(bool, QString)));
     connect(& _cmigitsStatusThread, SIGNAL(newStatus(CmigitsStatus)),
             this, SLOT(_setCmigitsStatus(CmigitsStatus)));
     _cmigitsStatusThread.start();
@@ -119,14 +124,14 @@ HcrGuiMainWindow::~HcrGuiMainWindow() {
 }
 
 void
-HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding) {
+HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "cmigitsDaemon @ " <<
             _cmigitsStatusThread.rpcClient().getDaemonHost() << ":" <<
             _cmigitsStatusThread.rpcClient().getDaemonPort() <<
             (responding ? " is " : " is not ") <<
-            "responding";
+            "responding: " << msg.toStdString();
     _logMessage(ss.str().c_str());
 
     _cmigitsDetails.setEnabled(responding);
@@ -172,7 +177,6 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     _ui.setHmcModeBox->setEnabled(responding);
-    _cmigitsDetails.setEnabled(responding);
     if (! responding) {
         // Create a default (bad) DrxStatus, and set it as the last status
         // received.
@@ -720,6 +724,7 @@ HcrGuiMainWindow::_logMessage(std::string message) {
     _ui.logArea->appendPlainText(
             QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh:mm:ss ") + 
             message.c_str());
+    ILOG << message;
 }
 
 void

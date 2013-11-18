@@ -42,7 +42,7 @@ signals:
     /// @param responsive true if the server has become responsive or false
     /// if the server has become unresponsive
     /// @param msg a message describing the associated event
-    void serverResponsive(bool responsive, std::string msg);
+    void serverResponsive(bool responsive, QString msg);
 
     /// @brief signal emitted when a new status is received from CmigitsDaemon
     /// @param status the new status received from CmigitsDaemon

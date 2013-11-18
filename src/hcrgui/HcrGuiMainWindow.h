@@ -56,7 +56,8 @@ private slots:
     
     /// @brief Slot to call when cmigitsDaemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
-    void _cmigitsResponsivenessChange(bool responding);
+    /// @param msg message describing the responsiveness change event
+    void _cmigitsResponsivenessChange(bool responding, QString msg);
     /// @brief Save the last status received from cmigitsDaemon.
     /// @param status the last status received from cmigitsDaemon.
     void _setCmigitsStatus(const CmigitsStatus & status);
