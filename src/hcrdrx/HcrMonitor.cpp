@@ -27,6 +27,7 @@ HcrMonitor::HcrMonitor(const Pentek::p7142 * pentek,
     QThread(),
     _pentek(pentek),
     _drxStatus(*_pentek),
+    _pmc730Status(true),	// empty status
     _pmc730Client(pmc730dHost, pmc730dPort),
     _xmitClient(xmitdHost, xmitdPort),
     _mutex(QMutex::Recursive) {
@@ -114,7 +115,7 @@ void
 HcrMonitor::_getPmc730Status() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
-    HcrPmc730Status status;
+    HcrPmc730Status status(true);
     _pmc730Client.getStatus(status);
 
     QMutexLocker locker(&_mutex);
