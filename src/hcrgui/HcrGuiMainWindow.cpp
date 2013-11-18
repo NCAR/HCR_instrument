@@ -89,9 +89,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
 
     // Connect signals from our Pmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_drxResponsivenessChange(bool)));
-    connect(& _pmcStatusThread, SIGNAL(newStatus(DrxStatus)),
-            this, SLOT(_setDrxStatus(DrxStatus)));
+            this, SLOT(_pmcResponsivenessChange(bool)));
+    connect(& _pmcStatusThread, SIGNAL(newStatus(HcrPmc730Status)),
+            this, SLOT(_setPmcStatus(HcrPmc730Status)));
     _pmcStatusThread.start();
 
     // Disable the transmitter box.
@@ -178,9 +178,9 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
 
     _ui.setHmcModeBox->setEnabled(responding);
     if (! responding) {
-        // Create a default (bad) DrxStatus, and set it as the last status
+        // Create an empty (bad) DrxStatus, and set it as the last status
         // received.
-        _setPmcStatus(HcrPmc730Status());
+        _setPmcStatus(HcrPmc730Status(true));
     }
 }
 
@@ -513,8 +513,8 @@ HcrGuiMainWindow::_update() {
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
-    _ui.filamentButton->setEnabled(_xmitStatus.psmPowerOn() &&
-            ! _xmitStatus.frontPanelCtlEnabled());
+    _ui.filamentButton->setEnabled(_pmcStatusThread.daemonIsResponding() &&
+            _xmitStatus.psmPowerOn() && ! _xmitStatus.frontPanelCtlEnabled());
     if (! _xmitterFilamentOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
@@ -528,7 +528,8 @@ HcrGuiMainWindow::_update() {
     _ui.hvIcon->setPixmap(_xmitterHvOn() ? _greenLED : _greenLED_off);
     // Enable the HV button as soon as filament delay has expired (and control
     // is not via the CMU front panel)
-    _ui.hvButton->setEnabled(! _xmitStatus.frontPanelCtlEnabled() &&
+    _ui.hvButton->setEnabled(_pmcStatusThread.daemonIsResponding() &&
+            ! _xmitStatus.frontPanelCtlEnabled() &&
             ! _xmitStatus.filamentDelayActive());
     _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
 
