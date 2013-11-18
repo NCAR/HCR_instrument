@@ -35,6 +35,10 @@ public:
     /// @return the HcrPmc730Client instance being used to talk to hcrdrx.
     HcrPmc730Client & rpcClient() { return *_client; }
 
+    /// @brief Return true iff the HcrPmc730Daemon is responding
+    /// @return true iff the HcrPmc730Daemon is responding
+    bool daemonIsResponding() { return _responsive; }
+
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
     /// becomes responsive or unresponsive.
