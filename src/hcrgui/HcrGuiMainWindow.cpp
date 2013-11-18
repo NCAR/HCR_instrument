@@ -16,7 +16,7 @@
 #include <logx/Logging.h>
 
 // Invalid angle used to erase display of reflector position
-static const double INVALID_ANGLE = -999.9;
+static const float INVALID_ANGLE = -999.9;
 
 LOGGING("HcrGuiMainWindow")
 
