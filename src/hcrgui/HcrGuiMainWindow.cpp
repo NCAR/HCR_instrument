@@ -248,10 +248,22 @@ HcrGuiMainWindow::_xmitting() const {
     if (!_xmitStatus.rdsCtlEnabled()) {
         return(_xmitStatus.rfOn());
     } else {
-        // We're transmitting if the filament is on, HV is on, and modulation
-        // pulses are being allowed through.
+        // We're transmitting if the filament is on, HV is on, modulation
+        // pulses are being allowed through, and we have no HV disabling fault.
+        bool hvDisableFault = _xmitStatus.bodyCurrentFault() ||
+                _xmitStatus.cathodeLorFault() ||
+                _xmitStatus.collectorCurrentFault() ||
+                _xmitStatus.eikInterlockFault() ||
+                _xmitStatus.externalInterlockFault() ||
+                _xmitStatus.filamentLorFault() ||
+                _xmitStatus.modulatorFault() ||
+                _xmitStatus.focusElectrodeLorFault() ||
+                _xmitStatus.inverterOverloadFault() ||
+                _xmitStatus.summaryFault() ||
+                _xmitStatus.waveguideArcFault() ||
+                _xmitStatus.xmitterTempFault();
         return(_xmitterFilamentOn() && _xmitterHvOn() &&
-                ! _pmcStatus.modPulseDisabled());
+                ! _pmcStatus.modPulseDisabled() && ! hvDisableFault);
     }
 }
 /// Toggle the current on/off state of the transmitter klystron filament
