@@ -327,8 +327,8 @@ main(int argc, char** argv)
 
     // Initialize our RPC server on port 8081
     xmlrpc_c::registry myRegistry;
-    myRegistry.addMethod("GetStatus", new GetStatusMethod);
-    myRegistry.addMethod("ZeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
+    myRegistry.addMethod("getStatus", new GetStatusMethod);
+    myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
     xmlrpc_c::serverAbyss rpcServer(myRegistry, 8081);
 
     // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
@@ -436,6 +436,12 @@ main(int argc, char** argv)
     _sd3c->timersStartStop(true);
 
     double startTime = nowTime();
+
+    // Set up an interval timer to deliver SIGALRM every 1 ms. The signal
+    // arrival causes the XML-RPC server's runOnce() method to return so that
+    // we can process Qt events on a regular basis.
+    signal(SIGALRM, alarmHandler);
+    startXmlrpcWorkAlarm();
 
     while (1) {
         PMU_auto_register("running");
