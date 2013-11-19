@@ -260,7 +260,7 @@ public:
         // Stop the work alarm while we're working.
         stopXmlrpcWorkAlarm();
 
-        ILOG << "Received 'getStatus' command";
+        DLOG << "Received 'getStatus' command";
         // Get the latest status from shared memory, and convert it to 
         // an xmlrpc_c::value_struct dictionary.
         *retvalP = DrxStatus(*_sd3c).toXmlRpcValue();
@@ -307,6 +307,9 @@ main(int argc, char** argv)
 
     // parse the command line options, substituting for config params.
     parseOptions(argc, argv);
+
+    // QApplication
+    QCoreApplication app(argc, argv);
 
     // Read the HCR configuration file
     HcrDrxConfig hcrConfig(_drxConfig);
@@ -428,9 +431,6 @@ main(int argc, char** argv)
     // start the IWRF export
     PMU_auto_register("start export");
     _exporter->start();
-
-    // QApplication
-    QCoreApplication app(argc, argv);
 
     // Start the timers, which will allow data to flow.
     _sd3c->timersStartStop(true);
