@@ -22,7 +22,7 @@ LOGGING("HcrGuiMainWindow")
 
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost, 
-    int xmitterPort, std::string rdsHost, int pmcPort,
+    int xmitterPort, std::string rdsHost, int drxPort, int pmcPort,
     int cmigitsPort, int motionControlPort) :
     QMainWindow(),
     _ui(),
@@ -32,6 +32,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _antennaModeDialog(this),
     _motionControlDetails(this),
     _cmigitsStatusThread(rdsHost, cmigitsPort),
+    _hcrdrxStatusThread(rdsHost, drxPort),
     _mcClientThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
     _xmitdStatusThread(xmitterHost, xmitterPort),
@@ -86,6 +87,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     connect(& _mcClientThread, SIGNAL(newStatus(MotionControl::Status)),
             this, SLOT(_setMotionControlStatus(MotionControl::Status)));
     _mcClientThread.start();
+
+    // Connect signals from our HcrdrxStatusThread object and start the thread.
+    connect(& _hcrdrxStatusThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_drxResponsivenessChange(bool)));
+    connect(& _hcrdrxStatusThread, SIGNAL(newStatus(DrxStatus)),
+            this, SLOT(_setDrxStatus(DrxStatus)));
+    _hcrdrxStatusThread.start();
 
     // Connect signals from our Pmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool)),
@@ -178,7 +186,7 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
 
     _ui.setHmcModeBox->setEnabled(responding);
     if (! responding) {
-        // Create an empty (bad) DrxStatus, and set it as the last status
+        // Create an empty (bad) HcrPmc730Status, and set it as the last status
         // received.
         _setPmcStatus(HcrPmc730Status(true));
     }
@@ -218,6 +226,30 @@ HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     _update();
     // Append new log messages from hcr_xmitd
     _appendXmitdLogMsgs();
+}
+
+void
+HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "hcrdrx @ " <<
+            _hcrdrxStatusThread.rpcClient().getHcrdrxHost() << ":" <<
+            _hcrdrxStatusThread.rpcClient().getHcrdrxPort() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+
+    if (! responding) {
+        // Create a default (bad) DrxStatus, and set it as the last status
+        // received.
+        _setDrxStatus(DrxStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
+    _drxStatus = status;
+    _update();
 }
 
 bool
@@ -417,15 +449,12 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
         goto done;
     }
 
-//    // With the motors both at their zero positions, tell the Pentek to zero
-//    // its position counts for both motors.
-//    ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
-//    _drxStatusThread.rpcClient().zeroPentekMotorCounts();
+    // With the motors both at their zero positions, tell the Pentek to zero
+    // its position counts for both motors.
+    ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
+    _hcrdrxStatusThread.rpcClient().zeroPentekMotorCounts();
 
 done:
-    QMessageBox bugBox;
-    bugBox.setText("BUG: Zeroing of motor counts on Pentek is not yet implemented!");
-    bugBox.exec();
     // Sleep momentarily, then restore the previous state for attitude
     // correction
     usleep(100000);

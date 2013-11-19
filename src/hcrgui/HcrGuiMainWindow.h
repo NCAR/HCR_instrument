@@ -17,6 +17,7 @@
 #include <QUdpSocket>
 
 #include "CmigitsStatusThread.h"
+#include "HcrdrxStatusThread.h"
 #include "MotionControlClientThread.h"
 #include "Pmc730StatusThread.h"
 #include "XmitdStatusThread.h"
@@ -33,7 +34,7 @@ class HcrGuiMainWindow : public QMainWindow {
 
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
-            std::string rdsHost, int pmcPort, int cmigitsPort,
+            std::string rdsHost, int drxPort, int pmcPort, int cmigitsPort,
             int motionControlPort);
     virtual ~HcrGuiMainWindow();
 
@@ -67,18 +68,24 @@ private slots:
     /// @brief Save the last status received from MotionControlDaemon.
     /// @param status the last status received from MotionControlDaemon.
     void _setMotionControlStatus(const MotionControl::Status & status);
-    /// @brief Slot to call when hcr_xmitd server responsiveness changes.
-    /// @param responding True iff the server is currently responsive.
     /// @brief Slot to call when HcrPmc730Daemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _pmcResponsivenessChange(bool responding);
     /// @brief Save the last status received from HcrPmc730Daemon.
     /// @param status the last status received from HcrPmc730Daemon.
     void _setPmcStatus(const HcrPmc730Status & status);
+    /// @brief Slot to call when hcr_xmitd server responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
     void _xmitdResponsivenessChange(bool responding);
     /// @brief Save the last status received from hcr_xmitd.
     /// @param status the last status received from hcr_xmitd.
     void _setXmitStatus(XmitStatus status);
+    /// @brief Slot to call when hcrdrx responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _drxResponsivenessChange(bool responding);
+    /// @brief Save the last status received from hcrdrx
+    /// @param status the last status received from hcrdrx
+    void _setDrxStatus(DrxStatus status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
 
@@ -134,6 +141,7 @@ private:
     
     // Threads to collect status from various daemons
     CmigitsStatusThread _cmigitsStatusThread;
+    HcrdrxStatusThread _hcrdrxStatusThread;
     MotionControlClientThread _mcClientThread;
     Pmc730StatusThread _pmcStatusThread;
     XmitdStatusThread _xmitdStatusThread;
@@ -150,6 +158,8 @@ private:
     HcrPmc730Status _pmcStatus;
     // Last status read from cmigitsDaemon
     CmigitsStatus _cmigitsStatus;
+    // Last status from hcrdrx
+    DrxStatus _drxStatus;
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;
