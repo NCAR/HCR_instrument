@@ -77,6 +77,7 @@ public:
 
         ILOG << "Executing XML-RPC call to xmitFilamentOn()";
         HcrPmc730::setXmitterFilamentOn(true);
+        *retvalP = xmlrpc_c::value_nil();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
@@ -98,6 +99,7 @@ public:
 
         ILOG << "Executing XML-RPC call to xmitFilamentOff()";
         HcrPmc730::setXmitterFilamentOn(false);
+        *retvalP = xmlrpc_c::value_nil();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
@@ -119,6 +121,7 @@ public:
 
         ILOG << "Executing XML-RPC call to xmitHvOn()";
         HcrPmc730::setXmitterHvOn(true);
+        *retvalP = xmlrpc_c::value_nil();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
@@ -140,6 +143,7 @@ public:
 
         ILOG << "Executing XML-RPC call to xmitHvOff()";
         HcrPmc730::setXmitterHvOn(false);
+        *retvalP = xmlrpc_c::value_nil();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
@@ -164,6 +168,7 @@ public:
         paramList.verifyEnd(1);
 
         HcrPmc730::setHmcOperationMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
+        *retvalP = xmlrpc_c::value_nil();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
