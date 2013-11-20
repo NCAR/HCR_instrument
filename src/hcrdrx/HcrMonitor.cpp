@@ -81,6 +81,9 @@ HcrMonitor::run() {
             usleep((1000 - msecsSinceUpdate) * 1000);
         }
         
+        // Get new status values from HcrPmc730Daemon
+        _getPmc730Status();
+        
         // Get new values from the C-MIGITS
         _getCmigitsStatus();
 
