@@ -513,7 +513,6 @@ main(int argc, char** argv)
     
     // Tell HcrPmc730Daemon to turn off transmitter high voltage
     HcrPmc730Client pmc730Client(_pmc730dHost, _pmc730dPort);
-    bool success = pmc730Client.xmitHvOff();
     if (pmc730Client.xmitHvOff()) {
         ILOG << "Turned off transmitter HV via HcrPmc730Daemon";
     } else {
