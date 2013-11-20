@@ -15,6 +15,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
+#include <HcrPmc730Client.h>
 #include <QCoreApplication>
 
 // For configuration management
@@ -510,6 +511,15 @@ main(int argc, char** argv)
 
     delete(_sd3c);
     
+    // Tell HcrPmc730Daemon to turn off transmitter high voltage
+    HcrPmc730Client pmc730Client(_pmc730dHost, _pmc730dPort);
+    bool success = pmc730Client.xmitHvOff();
+    if (pmc730Client.xmitHvOff()) {
+        ILOG << "Turned off transmitter HV via HcrPmc730Daemon";
+    } else {
+        WLOG << "Failed to turn off transmitter HV via HcrPmc730Daemon!";
+    }
+
     ILOG << "hcrdrx is done";
 
     return(0);
