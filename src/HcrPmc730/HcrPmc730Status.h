@@ -272,10 +272,8 @@ public:
     bool waveguideSwitchError() const { return(_waveguideSwitchError); }
 
     /**
-     * @brief Return the HMC operating mode number: 0-3
-     * 0 - normal operation, 1 - noise source cal, 2 - corner reflector cal,
-     * 3 - integration and testing
-     * @return the HMC operating mode number: 0-3
+     * @brief Return the HMC operating mode number: 0-7. 
+     * @see HcrPmc730::HmcOperationMode for a description of the values.
      */
     int hmcMode() const { return(_hmcMode); }
     
