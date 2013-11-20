@@ -51,10 +51,6 @@ bool Foreground = false;
 /// Instance name for procmap
 std::string InstanceName = "";
 
-/// Host and port for XMLRPC communication with the hcrdrx process
-std::string HcrdrxHost = "localhost";
-int HcrdrxPort = 8081;
-
 /**
  * @brief Xmlrpc++ method to get transmitter status from hcr_xmitd. 
  *
@@ -85,6 +81,7 @@ class GetStatusMethod : public XmlRpcServerMethod {
 public:
     GetStatusMethod(XmlRpcServer *s) : XmlRpcServerMethod("getStatus", s) {}
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+        DLOG << "Received 'getStatus' command";
         retvalP = Xmitter->getStatus().toXmlRpcValue();
     }
 } getStatusMethod(&RpcServer);
