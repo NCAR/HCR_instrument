@@ -10,9 +10,12 @@
 
 #include <string>
 #include <stdint.h>
+#include <QMutex>
+#include <QThread>
 #include "XmitStatus.h"
 
-class HcrXmitter {
+class HcrXmitter : public QThread {
+    Q_OBJECT
 public:
     /**
      * @brief Construct a HcrXmitter providing access to the HCR transmitter's
@@ -46,8 +49,12 @@ public:
     /**
      * @brief Get current status values from the transmitter.
      */
-    XmitStatus getStatus();
-    
+    XmitStatus getStatus() const {
+        QMutexLocker locker(& _mutex);
+        return(_latestStatus);
+    }
+
+
     /**
      * @brief Set filament state.
      * @param state boolean state: true to turn on filament, false to turn off
@@ -73,25 +80,29 @@ public:
      */
     static const std::string SIM_DEVICE;
 
+private slots:
+    /// @brief Slot called to query current status from the transmitter
+    void _queryForStatus();
+
 private:
-    /**
-     * Open and configure our tty connection to the transmitter
-     */
+    void run();
+
+    /// @brief Open and configure our tty connection to the transmitter
     void _openTty();
     
-    /**
-     * Send a command to the transmitter.
-     */
+    /// @brief Send a command to the transmitter.
     void _sendCommand(uint8_t desiredState);
     
-    /**
-     * Wait for input on our file descriptor, with a timeout specified in
-     * milliseconds. 
-     * @return 0 when input is ready, -1 if the select timed out, -2 on
-     *      select error
-     */
+    /// @brief Wait for input on our file descriptor, with a timeout specified
+    /// in milliseconds.
+    /// @return 0 when input is ready, -1 if the select timed out, -2 on
+    /// select error
     int _readSelect(unsigned int timeoutMsecs);
     
+    /// @brief Set the _latestStatus member.
+    /// @param status the status to assign to _latestStatus
+    void _setLatestStatus(const XmitStatus & status);
+
     /// Command byte 3: Filament on?
     static const uint8_t _FILAMENT_ON_BIT 		= 0x01;
     /// Command byte 3: HV on?
@@ -122,6 +133,13 @@ private:
 
     /// Intended transmitter state
     uint8_t _intendedState;
+
+    /// Mutex for thread-safe access to _latestStatus. We make it mutable so
+    /// that we can acquire the mutex in const methods.
+    mutable QMutex _mutex;
+
+    /// Latest status
+    XmitStatus _latestStatus;
 };
 
 #endif /* HCRXMITTER_H_ */

@@ -7,9 +7,11 @@ xmlrpc
 rapradar
 boost_program_options
 hcrpmc730client
+qt4
 """)
 
 xmitdEnv = Environment(tools = ['default'] + xmitdTools)
+xmitdEnv.EnableQt4Modules(['QtCore'])
 
 xmitd_sources = Split("""
 hcr_xmitd.cpp

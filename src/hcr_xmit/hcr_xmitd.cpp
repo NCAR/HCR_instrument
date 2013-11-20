@@ -17,10 +17,10 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <boost/program_options.hpp>
+#include <QCoreApplication>
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
-#include <HcrPmc730.h>
 #include <log4cpp/SyslogAppender.hh>
 #include <RecentHistoryAppender.h>
 
@@ -48,8 +48,15 @@ po::options_description OptionsDesc("Options");
 /// Run in foreground?
 bool Foreground = false;
 
-/// Instance name for procmap
+/// Default instance name for procmap
 std::string InstanceName = "";
+
+/// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
+bool Terminate = false;
+void sigHandler(int sig) {
+  ILOG << "Interrupt received...termination may take a few seconds";
+  Terminate = true;
+}
 
 /**
  * @brief Xmlrpc++ method to get transmitter status from hcr_xmitd. 
@@ -83,6 +90,8 @@ public:
     void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
         DLOG << "Received 'getStatus' command";
         retvalP = Xmitter->getStatus().toXmlRpcValue();
+        XmitStatus rStatus(retvalP);
+        DLOG << "returned status w/xmitter temp " << rStatus.xmitterTemp() << " deg C";
     }
 } getStatusMethod(&RpcServer);
 
@@ -230,6 +239,9 @@ main(int argc, char *argv[]) {
     // Get our local options
     parseOptions(argc, argv);
     
+    // We need a QCoreApplication
+    QCoreApplication app(argc, argv);
+
     // Append our log to local syslog
     log4cpp::SyslogAppender syslogAppender("SyslogAppender", "hcr_xmitd", LOG_DAEMON);
     log4cpp::Category::getRoot().addAppender(syslogAppender);
@@ -267,31 +279,45 @@ main(int argc, char *argv[]) {
                 InstanceName << "'";
     }
 
-    time_t now = time(0);
-    char timestring[40];
-    strftime(timestring, sizeof(timestring) - 1, "%F %T", gmtime(&now));
-    ILOG << "hcr_xmitd (" << getpid() << ") started " << timestring;
+    ILOG << "hcr_xmitd (" << getpid() << ") started";
 
-    // Instantiate our transmitter, communicating over the given serial port
+    // Instantiate and start our transmitter thread, communicating over the
+    // given serial port
     PMU_auto_register("instantiating HcrXmitter");
     Xmitter = new HcrXmitter(argv[1]);
+    Xmitter->start();
     
     // Initialize our RPC server
     PMU_auto_register("starting XML-RPC server");
     RpcServer.bindAndListen(atoi(argv[2]));
     RpcServer.enableIntrospection(true);
     
+    // catch a control-C or kill to shut down cleanly
+    signal(SIGINT, sigHandler);
+    signal(SIGTERM, sigHandler);
+
     /*
-     * Get current status. Listen for XML-RPC commands for a while. Repeat.
+     * Process Qt events. Listen briefly for XML-RPC commands. Repeat.
      */
     while (true) {
+        // Exit when we're told to
+        if (Terminate) {
+            break;
+        }
+
+        // Register with procmap
         PMU_auto_register("running");
+
+        // Process pending Qt events
+        app.processEvents();
+
         // Listen for XML-RPC commands.
         // Note that work() mostly goes for 2x the given time, but sometimes
         // goes for 1x the given time. Who knows why?
-        RpcServer.work(0.2);
+        RpcServer.work(0.01);
     }
     
     delete(Xmitter);
+    ILOG << "hcr_xmitd (" << getpid() << ") exiting";
     return 0;
 } 
