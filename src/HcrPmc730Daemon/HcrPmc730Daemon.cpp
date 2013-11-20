@@ -217,10 +217,10 @@ main(int argc, char * argv[]) {
     HcrPmc730::theHcrPmc730();
 
     // Initialize output lines: transmitter filament off, transmitter HV off,
-    // HMC in "corner reflector calibration" mode.
+    // HMC in "txV rxHV (attenuated)" mode.
     HcrPmc730::setXmitterFilamentOn(false);
     HcrPmc730::setXmitterHvOn(false);
-    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_CORNER_REFLECTOR_CAL);
+    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");

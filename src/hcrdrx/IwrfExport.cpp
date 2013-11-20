@@ -25,7 +25,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         QThread(),
         _config(config),
         _monitor(monitor),
-        _hmcMode(HcrPmc730::HMC_UNUSED_3)
+        _hmcMode(HcrPmc730::HMC_MODE_UNUSED_3)
 {
 
   // initialize
@@ -478,23 +478,23 @@ int IwrfExport::_sendIwrfMetaData()
   // set our polarization and calibration modes for processing
   
   switch (_hmcMode) {
-    case HcrPmc730::HMC_TX_V_RX_HV:
-    case HcrPmc730::HMC_CORNER_REFLECTOR_CAL:
-    case HcrPmc730::HMC_BENCH_TEST:
+    case HcrPmc730::HMC_MODE_V_HV:
+    case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
+    case HcrPmc730::HMC_MODE_BENCH_TEST:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_TX_H_RX_HV:
+    case HcrPmc730::HMC_MODE_H_HV:
         _tsProc.xmit_rcv_mode = IWRF_H_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_H;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_TX_HV_RX_HV:
+    case HcrPmc730::HMC_MODE_HV_HV:
         _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
         break;
-    case HcrPmc730::HMC_NOISE_SOURCE_CAL:
+    case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
