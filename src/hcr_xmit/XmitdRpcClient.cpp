@@ -26,7 +26,7 @@ XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd,
     const XmlRpc::XmlRpcValue & params, XmlRpc::XmlRpcValue & result) {
     DLOG << "Executing '" << cmd << "()' command";
     if (! execute(cmd.c_str(), params, result)) {
-        DLOG << "Error executing " << cmd << "() call to ka_xmitd";
+        DLOG << "Error executing " << cmd << "() call to hcr_xmitd";
         return(false);
     }
     if (isFault()) {
