@@ -85,6 +85,7 @@ HcrMonitor::_getStatus() {
     _getDrxStatus();
     _getXmitStatus();
 }
+
 void
 HcrMonitor::_getCmigitsStatus() {
     QMutexLocker locker(&_mutex);
