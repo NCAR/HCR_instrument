@@ -29,6 +29,7 @@ class HcrMonitorPriv;
 /// status available via the multi-IO card and transmitter status
 /// information obtained from the hcr_xmitd process.
 class HcrMonitor : public QThread {
+    Q_OBJECT
 public:
     /**
      * @brief Construct a HcrMonitor which will read data on a regular basis from
@@ -72,6 +73,11 @@ public:
      * @return the status collected from HcrPmc730Daemon.
      */
     HcrPmc730Status pmc730Status() const;
+private slots:
+    /**
+     * @brief Get current status from all sources
+     */
+    void _getStatus();
 
 private:
 

@@ -34,9 +34,11 @@ HcrMonitor::HcrMonitor(const Pentek::p7142 * pentek,
 }
 
 HcrMonitor::~HcrMonitor() {
-    terminate();
-    if (! wait(5000)) {
-        ELOG << "HcrMonitor thread failed to stop in 5 seconds. Exiting anyway.";
+    // Exit the event loop to stop the thread
+    quit();
+    // Wait a bit for it to complete.
+    if (! wait(1000)) {
+        ELOG << "HcrMonitor thread failed to quit in destructor. Exiting anyway.";
     }
 }
 
@@ -66,37 +68,23 @@ HcrMonitor::pmc730Status() const {
 
 void
 HcrMonitor::run() {
-    QDateTime lastUpdateTime(QDateTime::fromTime_t(0).toUTC());
+    // Set up a timer to call our _getStatus() method on a regular basis
+    QTimer updateTimer;
+    updateTimer.setInterval(1000);  // 1 Hz updates
+    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(_getStatus()));
+    updateTimer.start();
     
-    // Since we have no event loop, allow thread termination via the terminate()
-    // method.
-    setTerminationEnabled(true);
-
-    while (true) {
-        // Sleep if necessary to get ~1 second between updates
-        QDateTime now = QDateTime::currentDateTime().toUTC();
-        uint64_t msecsSinceUpdate = uint64_t(lastUpdateTime.daysTo(now)) * 1000 * 86400 + 
-            lastUpdateTime.time().msecsTo(now.time());
-        if (msecsSinceUpdate < 1000) {
-            usleep((1000 - msecsSinceUpdate) * 1000);
-        }
-        
-        // Get new status values from HcrPmc730Daemon
-        _getPmc730Status();
-        
-        // Get new values from the C-MIGITS
-        _getCmigitsStatus();
-
-        // Get new values from the multi-IO card and Pentek
-        _getDrxStatus();
-        
-        // Get transmitter status.
-        _getXmitStatus();
-
-        lastUpdateTime = QDateTime::currentDateTime().toUTC();
-    }
+    // Now just start our event loop
+    exec();
 }
 
+void
+HcrMonitor::_getStatus() {
+    _getPmc730Status();
+    _getCmigitsStatus();
+    _getDrxStatus();
+    _getXmitStatus();
+}
 void
 HcrMonitor::_getCmigitsStatus() {
     QMutexLocker locker(&_mutex);
