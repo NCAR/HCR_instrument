@@ -207,7 +207,7 @@ alarmHandler(int signal) {
 // xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
 void
 startXmlrpcWorkAlarm() {
-    const struct timeval tv = { 0, 1000 }; // 1 ms
+    const struct timeval tv = { 0, 100000 }; // 100 ms
     const struct itimerval iv = { tv, tv };
     setitimer(ITIMER_REAL, &iv, 0);
 }
@@ -445,7 +445,7 @@ main(int argc, char** argv)
 
     while (1) {
         PMU_auto_register("running");
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             // Process any queued Qt events
             app.processEvents();
             
