@@ -53,7 +53,7 @@ HcrXmitter::run() {
     // Create a timer and use it to generate _queryForStatus() calls on a
     // regular basis.
     QTimer statusQueryTimer;
-    statusQueryTimer.setInterval(500);  // 500 ms
+    statusQueryTimer.setInterval(1000);  // 1 Hz
     connect(&statusQueryTimer, SIGNAL(timeout()), this, SLOT(_queryForStatus()));
 
     statusQueryTimer.start();
