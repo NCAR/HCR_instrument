@@ -1,6 +1,7 @@
 # -*- python -*-
 
 hcrguiTools = Split("""
+hcrpmc730client
 cmigits
 cmigitsdaemonrpcclient
 doxygen
@@ -17,10 +18,12 @@ hcrgui_sources = Split("""
 hcrgui.cpp
 AntennaModeDialog.cpp
 CmigitsDetails.cpp
+CmigitsStatusThread.cpp
 HcrdrxStatusThread.cpp
 HcrGuiMainWindow.cpp
 MotionControlDetails.cpp
 MotionControlClientThread.cpp
+Pmc730StatusThread.cpp
 qrc_HcrGuiMainWindow.cc
 XmitDetails.cpp
 XmitdStatusThread.cpp
@@ -46,10 +49,12 @@ hcrguiEnv.Qrc(qrcfiles)
 headers = Split("""
 AntennaModeDialog.h
 CmigitsDetails.h
+CmigitsStatusThread.h
 HcrdrxStatusThread.h
 HcrGuiMainWindow.h
 MotionControlDetails.h
 MotionControlClientThread.h
+Pmc730StatusThread.h
 XmitDetails.h
 XmitdStatusThread.h
 """)

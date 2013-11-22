@@ -1,0 +1,26 @@
+# -*- python -*-
+
+tools = Split("""
+doxygen
+hcrpmc730
+logx
+qt4
+rapradar
+xmlrpc_server_abyss++
+""")
+
+# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
+# via the hcrdrxrpcclient tool
+sources = Split("""
+HcrPmc730Daemon.cpp
+""")
+
+env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtCore', 'QtGui'])
+
+HcrPmc730Daemon = env.Program('HcrPmc730Daemon', sources)
+
+html = env.Apidocs(sources)
+
+Default(HcrPmc730Daemon, html)
+

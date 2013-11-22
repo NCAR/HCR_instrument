@@ -10,6 +10,7 @@
 
 #include <xmlrpc-c/client_simple.hpp>
 #include <string>
+#include <CmigitsStatus.h>
 
 /**
  * CmigitsDaemonRpcClient encapsulates an XML-RPC connection to a cmigitsDaemon
@@ -18,8 +19,8 @@
 class CmigitsDaemonRpcClient {
 public:
     /**
-     * Instantiate CmigitsDaemonRpcClient to communicate with a cmigitsDaemon
-     * process running on host daemonHost and using port
+     * @brief Construct a CmigitsDaemonRpcClient to communicate with a 
+     * cmigitsDaemon process running on host daemonHost and using port
      * daemonPort.
      * @param daemonHost the name of the host on which cmigitsDaemon is running
      * @param daemonPort the port number being used by cmigitsDaemon
@@ -28,13 +29,21 @@ public:
     virtual ~CmigitsDaemonRpcClient();
 
     /**
-     * Send InitializeUsingIwg1() command and return the result.
-     * @return the result of InitializeUsingIwg1() XML-RPC command sent to the
-     * cmigitsDaemon process.
-     * @throws std::exception if there's a client-side problem in the XML-RPC
+     * @brief Send InitializeUsingIwg1() command and return the result.
+     * @return true if the initialization process is started.
+     * @throws std::exception if there's a problem executing the XML-RPC
      * call.
      */
-    bool initializeUsingIwg1() throw(std::exception);
+    bool initializeUsingIwg1() throw (std::exception);
+    
+    /**
+     * @brief Get current status from the cmigitsDaemon via a getStatus() 
+     * XML-RPC call.
+     * @return current CmigitsStatus from the cmigitsDaemon
+     * @throws std::exception if there's a problem executing the XML-RPC
+     * call.
+     */
+    CmigitsStatus getStatus() throw (std::exception);
     
     /**
      * Get the port number of the associated cmigitsDaemon.
@@ -48,18 +57,18 @@ public:
      */
     std::string getDaemonHost() { return(_daemonHost); }
     
-    /**
-     * Get log messages from the associated cmigitsDaemon at and after a selected
-     * index.
-     * @param[in] firstIndex the first message index to include in the returned
-     * log messages
-     * @param[out] msgs all log messages at or later than the selected start index
-     * will be appended to msgs
-     * @param[out] nextLogIndex the index of the next log message after the last
-     * available message is returned in nextLogIndex
-     */
-    void getLogMessages(unsigned int firstIndex, std::string & msgs, 
-            unsigned int  & nextLogIndex);
+//    /**
+//     * Get log messages from the associated cmigitsDaemon at and after a selected
+//     * index.
+//     * @param[in] firstIndex the first message index to include in the returned
+//     * log messages
+//     * @param[out] msgs all log messages at or later than the selected start index
+//     * will be appended to msgs
+//     * @param[out] nextLogIndex the index of the next log message after the last
+//     * available message is returned in nextLogIndex
+//     */
+//    void getLogMessages(unsigned int firstIndex, std::string & msgs, 
+//            unsigned int  & nextLogIndex);
 private:
     std::string _daemonHost;
     int _daemonPort;

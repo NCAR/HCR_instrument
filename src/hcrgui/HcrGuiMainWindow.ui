@@ -361,21 +361,21 @@
              <item>
               <widget class="QComboBox" name="hmcModeCombo">
                <property name="currentIndex">
-                <number>5</number>
+                <number>0</number>
                </property>
                <item>
                 <property name="text">
-                 <string>Transmit H, Receive HV</string>
+                 <string>tx H, rx HV</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>Transmit V, Receive HV</string>
+                 <string>tx V, rx HV</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>Transmit HV, Receive HV</string>
+                 <string>tx HV, rx HV</string>
                 </property>
                </item>
                <item>
@@ -390,7 +390,7 @@
                </item>
                <item>
                 <property name="text">
-                 <string>Corner Reflector Calibration</string>
+                 <string>tx V, rx HV (attenuated)</string>
                 </property>
                </item>
                <item>

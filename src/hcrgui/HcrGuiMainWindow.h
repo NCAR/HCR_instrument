@@ -9,7 +9,6 @@
 #include <map>
 #include <deque>
 #include <ctime>
-#include <CmigitsDaemonRpcClient.h>
 
 #include <QMainWindow>
 #include <QPixmap>
@@ -17,9 +16,11 @@
 #include <QTimer>
 #include <QUdpSocket>
 
-#include "XmitdStatusThread.h"
-#include "MotionControlClientThread.h"
+#include "CmigitsStatusThread.h"
 #include "HcrdrxStatusThread.h"
+#include "MotionControlClientThread.h"
+#include "Pmc730StatusThread.h"
+#include "XmitdStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
 
@@ -33,7 +34,7 @@ class HcrGuiMainWindow : public QMainWindow {
 
 public:
     HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
-            std::string rdsHost, int hcrdrxPort, int cmigitsPort, 
+            std::string rdsHost, int drxPort, int pmcPort, int cmigitsPort,
             int motionControlPort);
     virtual ~HcrGuiMainWindow();
 
@@ -49,28 +50,42 @@ private slots:
     void on_mcDetailsButton_clicked();
     void on_attitudeCorrectionButton_clicked();
 
-    /// @brief Update GUI state based on _xmitStatus and _drxStatus
+    /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
     /// @brief read angle(s) available on the broadcast port
     void _readAngles();
-    /// @brief Save the last status received from hcrdrx.
-    /// @param status the last status received from hcrdrx.
-    void _setDrxStatus(DrxStatus status);
-    /// @brief Slot to call when hcrdrx server responsiveness changes.
+    
+    /// @brief Slot to call when cmigitsDaemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
-    void _drxResponsivenessChange(bool responding);
-    /// @brief Save the last status received from hcr_xmitd.
-    /// @param status the last status received from hcr_xmitd.
-    void _setXmitStatus(XmitStatus status);
-    /// @brief Save the last status received from MotionControlDaemon.
-    /// @param status the last status received from MotionControlDaemon.
-    void _setMotionControlStatus(const MotionControl::Status & status);
-    /// @brief Slot to call when hcr_xmitd server responsiveness changes.
-    /// @param responding True iff the server is currently responsive.
-    void _xmitdResponsivenessChange(bool responding);
+    /// @param msg message describing the responsiveness change event
+    void _cmigitsResponsivenessChange(bool responding, QString msg);
+    /// @brief Save the last status received from cmigitsDaemon.
+    /// @param status the last status received from cmigitsDaemon.
+    void _setCmigitsStatus(const CmigitsStatus & status);
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _mcResponsivenessChange(bool responding);
+    /// @brief Save the last status received from MotionControlDaemon.
+    /// @param status the last status received from MotionControlDaemon.
+    void _setMotionControlStatus(const MotionControl::Status & status);
+    /// @brief Slot to call when HcrPmc730Daemon server responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _pmcResponsivenessChange(bool responding);
+    /// @brief Save the last status received from HcrPmc730Daemon.
+    /// @param status the last status received from HcrPmc730Daemon.
+    void _setPmcStatus(const HcrPmc730Status & status);
+    /// @brief Slot to call when hcr_xmitd server responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _xmitdResponsivenessChange(bool responding);
+    /// @brief Save the last status received from hcr_xmitd.
+    /// @param status the last status received from hcr_xmitd.
+    void _setXmitStatus(XmitStatus status);
+    /// @brief Slot to call when hcrdrx responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _drxResponsivenessChange(bool responding);
+    /// @brief Save the last status received from hcrdrx
+    /// @param status the last status received from hcrdrx
+    void _setDrxStatus(DrxStatus status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
 
@@ -123,10 +138,14 @@ private:
     XmitDetails _xmitDetails;
     AntennaModeDialog _antennaModeDialog;
     MotionControlDetails _motionControlDetails;
-    XmitdStatusThread _xmitdStatusThread;
+    
+    // Threads to collect status from various daemons
+    CmigitsStatusThread _cmigitsStatusThread;
+    HcrdrxStatusThread _hcrdrxStatusThread;
     MotionControlClientThread _mcClientThread;
-    HcrdrxStatusThread _drxStatusThread;
-    CmigitsDaemonRpcClient _cmigitsDaemonRpcClient;
+    Pmc730StatusThread _pmcStatusThread;
+    XmitdStatusThread _xmitdStatusThread;
+    
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
@@ -135,7 +154,11 @@ private:
     XmitStatus _xmitStatus;
     // Last status from the MotionControlDaemon
     MotionControl::Status _mcStatus;
-    // Last status read from hcrdrx
+    // Last status read from HcrPmc730Daemon
+    HcrPmc730Status _pmcStatus;
+    // Last status read from cmigitsDaemon
+    CmigitsStatus _cmigitsStatus;
+    // Last status from hcrdrx
     DrxStatus _drxStatus;
     
     // next log index to get from hcr_xmitd

@@ -6,8 +6,11 @@
  */
 
 #include "HcrdrxStatusThread.h"
+#include <logx/Logging.h>
 #include <QMetaType>
 #include <QTimer>
+
+LOGGING("HcrdrxStatusThread")
 
 HcrdrxStatusThread::HcrdrxStatusThread(std::string drxHost, int drxPort) :
     _responsive(false),
@@ -24,13 +27,18 @@ HcrdrxStatusThread::HcrdrxStatusThread(std::string drxHost, int drxPort) :
 }
 
 HcrdrxStatusThread::~HcrdrxStatusThread() {
+    quit();
+    // Wait up to a second for thread completion
+    if (! wait(1000)) {
+        WLOG << "HcrdrxStatusThread did not stop. Exiting anyway.";
+    }
 }
 
 void
 HcrdrxStatusThread::run() {
     // Instantiate the HcrdrxRpcClient
     _client = new HcrdrxRpcClient(_drxHost, _drxPort);
-    // Set up a 1 s timer to call _getStatus()
+    // Set up a 1 Hz timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
     timer.start(1000);

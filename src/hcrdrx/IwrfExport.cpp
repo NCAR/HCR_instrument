@@ -3,6 +3,7 @@
 #include <sys/timeb.h>
 #include <cmath>
 #include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <iostream>
 #include <iomanip>
@@ -24,7 +25,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         QThread(),
         _config(config),
         _monitor(monitor),
-        _hmcMode(HcrPmc730::HMC_UNUSED_3)
+        _hmcMode(HcrPmc730::HMC_MODE_UNUSED_3)
 {
 
   // initialize
@@ -137,6 +138,11 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   if (_config.prt1() != HcrDrxConfig::UNSET_DOUBLE) {
     _prt1 = _config.prt1();
   }
+  
+  /// beam angles
+  
+  _azimuthDeg = 0.0;
+  _elevationDeg = 0.0;
 
   /// Pass new C-MIGITS data from the singleton CmigitsWatchThread to our
   /// _acceptCmigitsData() slot.
@@ -258,9 +264,9 @@ void IwrfExport::run()
       sendMeta = true;
       _nGates = nGates;
     }
-    if (_monitor.drxStatus().hmcMode() != _hmcMode) {
+    if (_monitor.pmc730Status().hmcMode() != _hmcMode) {
       sendMeta = true;
-      _hmcMode = _monitor.drxStatus().hmcMode();
+      _hmcMode = static_cast<HcrPmc730::HmcOperationMode>(_monitor.pmc730Status().hmcMode());
     }
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
@@ -472,23 +478,23 @@ int IwrfExport::_sendIwrfMetaData()
   // set our polarization and calibration modes for processing
   
   switch (_hmcMode) {
-    case HcrPmc730::HMC_TX_V_RX_HV:
-    case HcrPmc730::HMC_CORNER_REFLECTOR_CAL:
-    case HcrPmc730::HMC_BENCH_TEST:
+    case HcrPmc730::HMC_MODE_V_HV:
+    case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
+    case HcrPmc730::HMC_MODE_BENCH_TEST:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_TX_H_RX_HV:
+    case HcrPmc730::HMC_MODE_H_HV:
         _tsProc.xmit_rcv_mode = IWRF_H_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_H;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_TX_HV_RX_HV:
+    case HcrPmc730::HMC_MODE_HV_HV:
         _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
         break;
-    case HcrPmc730::HMC_NOISE_SOURCE_CAL:
+    case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
@@ -719,124 +725,128 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeStartTag("HcrReceiverStatus", 1);
 
-  const DrxStatus drxStatus = _monitor.drxStatus();
+  // Start with status from the PMC-730 card
+  const HcrPmc730Status pmc730Status = _monitor.pmc730Status();
   
   // ints
   
   xml += TaXml::writeInt
-    ("HmcMode", 2, drxStatus.hmcMode());
+    ("HmcMode", 2, pmc730Status.hmcMode());
 
   // floats
 
   xml += TaXml::writeDouble
-    ("DetectedRfPower", 2, drxStatus.detectedRfPower());
+    ("DetectedRfPower", 2, pmc730Status.detectedRfPower());
 
   xml += TaXml::writeDouble
-    ("PvForePressure", 2, drxStatus.pvForePressure());
+    ("PvForePressure", 2, pmc730Status.pvForePressure());
 
   xml += TaXml::writeDouble
-    ("PvAftPressure", 2, drxStatus.pvAftPressure());
+    ("PvAftPressure", 2, pmc730Status.pvAftPressure());
 
   xml += TaXml::writeDouble
-    ("PloTemp", 2, drxStatus.ploTemp());
+    ("PloTemp", 2, pmc730Status.ploTemp());
 
   xml += TaXml::writeDouble
-    ("EikTemp", 2, drxStatus.eikTemp());
+    ("EikTemp", 2, pmc730Status.eikTemp());
 
   xml += TaXml::writeDouble
-    ("VLnaTemp", 2, drxStatus.vLnaTemp());
+    ("VLnaTemp", 2, pmc730Status.vLnaTemp());
 
   xml += TaXml::writeDouble
-    ("HLnaTemp", 2, drxStatus.hLnaTemp());
+    ("HLnaTemp", 2, pmc730Status.hLnaTemp());
 
   xml += TaXml::writeDouble
-    ("PolarizationSwitchTemp", 2, drxStatus.polarizationSwitchTemp());
+    ("PolarizationSwitchTemp", 2, pmc730Status.polarizationSwitchTemp());
 
   xml += TaXml::writeDouble
-    ("RfDetectorTemp", 2, drxStatus.rfDetectorTemp());
+    ("RfDetectorTemp", 2, pmc730Status.rfDetectorTemp());
 
   xml += TaXml::writeDouble
-    ("NoiseSourceTemp", 2, drxStatus.noiseSourceTemp());
+    ("NoiseSourceTemp", 2, pmc730Status.noiseSourceTemp());
 
   xml += TaXml::writeDouble
-    ("Ps28VTemp", 2, drxStatus.ps28VTemp());
+    ("Ps28VTemp", 2, pmc730Status.ps28VTemp());
 
   xml += TaXml::writeDouble
-    ("RdsInDuctTemp", 2, drxStatus.rdsInDuctTemp());
+    ("RdsInDuctTemp", 2, pmc730Status.rdsInDuctTemp());
 
   xml += TaXml::writeDouble
-    ("RotationMotorTemp", 2, drxStatus.rotationMotorTemp());
+    ("RotationMotorTemp", 2, pmc730Status.rotationMotorTemp());
 
   xml += TaXml::writeDouble
-    ("TiltMotorTemp", 2, drxStatus.tiltMotorTemp());
+    ("TiltMotorTemp", 2, pmc730Status.tiltMotorTemp());
 
   xml += TaXml::writeDouble
-    ("CmigitsTemp", 2, drxStatus.cmigitsTemp());
+    ("CmigitsTemp", 2, pmc730Status.cmigitsTemp());
 
   xml += TaXml::writeDouble
-    ("TailconeTemp", 2, drxStatus.tailconeTemp());
+    ("TailconeTemp", 2, pmc730Status.tailconeTemp());
 
   xml += TaXml::writeDouble
-    ("PsVoltage", 2, drxStatus.psVoltage());
+    ("PsVoltage", 2, pmc730Status.psVoltage());
+
+  // booleans
+
+  xml += TaXml::writeBoolean
+    ("NoiseSourceSelected", 2, pmc730Status.noiseSourceSelected());
+
+  xml += TaXml::writeBoolean
+    ("TerminationSelected", 2, pmc730Status.terminationSelected());
+
+  xml += TaXml::writeBoolean
+    ("Locked15_5GHzPLO", 2, pmc730Status.locked15_5GHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("Locked1250MHzPLO", 2, pmc730Status.locked1250MHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("Locked125MHzPLO", 2, pmc730Status.locked125MHzPLO());
+
+  xml += TaXml::writeBoolean
+    ("ModPulseDisabled", 2, pmc730Status.modPulseDisabled());
+  
+  xml += TaXml::writeBoolean
+    ("RdsXmitterFilamentOn", 2, pmc730Status.rdsXmitterFilamentOn());
+
+  xml += TaXml::writeBoolean
+    ("RdsXmitterHvOn", 2, pmc730Status.rdsXmitterHvOn());
+
+  xml += TaXml::writeBoolean
+    ("RadarPowerError", 2, pmc730Status.radarPowerError());
+  
+  xml += TaXml::writeInt
+    ("EmsErrorCount", 2, pmc730Status.emsErrorCount());
+
+  xml += TaXml::writeBoolean
+    ("EmsError1", 2, pmc730Status.emsError1());
+
+  xml += TaXml::writeBoolean
+    ("EmsError2", 2, pmc730Status.emsError2());
+
+  xml += TaXml::writeBoolean
+    ("EmsError3", 2, pmc730Status.emsError3());
+
+  xml += TaXml::writeBoolean
+    ("EmsError4Or5", 2, pmc730Status.emsError4Or5());
+
+  xml += TaXml::writeBoolean
+    ("EmsError16Or7", 2, pmc730Status.emsError6Or7());
+
+  xml += TaXml::writeBoolean
+    ("EmsPowerError", 2, pmc730Status.emsPowerError());
+
+  xml += TaXml::writeBoolean
+    ("WaveguideSwitchError", 2, pmc730Status.waveguideSwitchError());
+
+  // Status from hcrdrx
+  const DrxStatus drxStatus = _monitor.drxStatus();
 
   xml += TaXml::writeDouble
     ("PentekFpgaTemp", 2, drxStatus.pentekFpgaTemp());
 
   xml += TaXml::writeDouble
     ("PentekBoardTemp", 2, drxStatus.pentekBoardTemp());
-
-  // booleans
-
-  xml += TaXml::writeBoolean
-    ("NoiseSourceSelected", 2, drxStatus.noiseSourceSelected());
-
-  xml += TaXml::writeBoolean
-    ("TerminationSelected", 2, drxStatus.terminationSelected());
-
-  xml += TaXml::writeBoolean
-    ("Locked15_5GHzPLO", 2, drxStatus.locked15_5GHzPLO());
-
-  xml += TaXml::writeBoolean
-    ("Locked1250MHzPLO", 2, drxStatus.locked1250MHzPLO());
-
-  xml += TaXml::writeBoolean
-    ("Locked125MHzPLO", 2, drxStatus.locked125MHzPLO());
-
-  xml += TaXml::writeBoolean
-    ("ModPulseDisabled", 2, drxStatus.modPulseDisabled());
-  
-  xml += TaXml::writeBoolean
-    ("RdsXmitterFilamentOn", 2, drxStatus.rdsXmitterFilamentOn());
-
-  xml += TaXml::writeBoolean
-    ("RdsXmitterHvOn", 2, drxStatus.rdsXmitterHvOn());
-
-  xml += TaXml::writeBoolean
-    ("RadarPowerError", 2, drxStatus.radarPowerError());
-  
-  xml += TaXml::writeInt
-    ("EmsErrorCount", 2, drxStatus.emsErrorCount());
-
-  xml += TaXml::writeBoolean
-    ("EmsError1", 2, drxStatus.emsError1());
-
-  xml += TaXml::writeBoolean
-    ("EmsError2", 2, drxStatus.emsError2());
-
-  xml += TaXml::writeBoolean
-    ("EmsError3", 2, drxStatus.emsError3());
-
-  xml += TaXml::writeBoolean
-    ("EmsError4Or5", 2, drxStatus.emsError4Or5());
-
-  xml += TaXml::writeBoolean
-    ("EmsError16Or7", 2, drxStatus.emsError6Or7());
-
-  xml += TaXml::writeBoolean
-    ("EmsPowerError", 2, drxStatus.emsPowerError());
-
-  xml += TaXml::writeBoolean
-    ("WaveguideSwitchError", 2, drxStatus.waveguideSwitchError());
 
   // end receive status
 

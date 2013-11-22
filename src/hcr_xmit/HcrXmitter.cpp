@@ -7,6 +7,7 @@
 
 #include "HcrXmitter.h"
 
+#include <QTimer>
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
@@ -41,6 +42,22 @@ HcrXmitter::HcrXmitter(std::string ttyDev) :
 }
 
 HcrXmitter::~HcrXmitter() {
+    quit();
+    if (! wait(1000)) {
+        WLOG << "HcrXmitter thread did not quit in the destructor. Exiting anyway.";
+    }
+}
+
+void
+HcrXmitter::run() {
+    // Create a timer and use it to generate _queryForStatus() calls on a
+    // regular basis.
+    QTimer statusQueryTimer;
+    statusQueryTimer.setInterval(1000);  // 1 Hz
+    connect(&statusQueryTimer, SIGNAL(timeout()), this, SLOT(_queryForStatus()));
+
+    statusQueryTimer.start();
+    exec();
 }
 
 void
@@ -79,18 +96,16 @@ HcrXmitter::setHvState(bool hvState) {
     return;
 }
 
-XmitStatus
-HcrXmitter::getStatus() {
+void
+HcrXmitter::_queryForStatus() {
     // Special handling if we're simulating...
     if (_simulate) {
-        return(XmitStatus::simulatedStatus(_simFilamentOn, _simHvOn));
+        _setLatestStatus(XmitStatus::simulatedStatus(_simFilamentOn, _simHvOn));
+        return;
     }
     
-    // This must be the real thing, so get status from the transmitter
-    XmitStatus status;
-
-	// Reply from the transmitter, which will be parsed to build the Status
-	// struct.
+	// Buffer for reply from the transmitter, which will be parsed to build the
+    // XmitStatus.
 	static const int REPLYSIZE = 20;
 	uint8_t reply[REPLYSIZE];
 
@@ -134,7 +149,8 @@ HcrXmitter::getStatus() {
     			usleep(5000);
     		} else if (result < 0) {
     			ELOG << "Status reply read error: " << strerror(errno);
-    			return(status);
+    			_setLatestStatus(XmitStatus());   // empty/bad status
+    			return;
     		} else {
     			nBytesRead += result;
     		}
@@ -152,7 +168,10 @@ HcrXmitter::getStatus() {
     	// If this byte indicates an error, the rest of the returned status can't
     	// be trusted, so go back and try again.
     	try {
-    	    return(XmitStatus(reply));
+    	    // parse the string into an XmitStatus object, and set that as our
+    	    // latest status
+    	    _setLatestStatus(XmitStatus(reply));
+    	    return;
     	} catch(XmitStatus::ConstructError & e) {
             // Report the error.
     	    ELOG << e.what();
@@ -169,8 +188,8 @@ HcrXmitter::getStatus() {
         WLOG << "Only 'bad communication' replies in " << MAX_ATTEMPTS <<
                 " attempts to get status";
     }
-    
-    return(XmitStatus());
+    _setLatestStatus(XmitStatus());
+    return;
 }
 
 void
@@ -303,4 +322,10 @@ HcrXmitter::_readSelect(unsigned int waitMsecs)
     }
     // Oops, shouldn't get here!
     return -3;
+}
+
+void
+HcrXmitter::_setLatestStatus(const XmitStatus & status) {
+    QMutexLocker locker(& _mutex);
+    _latestStatus = status;
 }

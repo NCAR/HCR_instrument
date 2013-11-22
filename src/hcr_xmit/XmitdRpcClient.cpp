@@ -7,6 +7,7 @@
 
 #include "XmitdRpcClient.h"
 
+#include <cerrno>
 #include <cstdlib>
 #include <logx/Logging.h>
 
@@ -25,15 +26,25 @@ bool
 XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd, 
     const XmlRpc::XmlRpcValue & params, XmlRpc::XmlRpcValue & result) {
     DLOG << "Executing '" << cmd << "()' command";
-    if (! execute(cmd.c_str(), params, result)) {
-        DLOG << "Error executing " << cmd << "() call to ka_xmitd";
-        return(false);
+    while (true) {
+        if (execute(cmd.c_str(), params, result)) {
+            return(true);
+        } else {
+            if (isFault()) {
+                // Report the problem and return false
+                WLOG << "XML-RPC fault while executing " << cmd << "() call";
+            } else {
+                // Retry the call if it was interrupted
+                if (errno == EINTR) {
+                    ILOG << "Retrying interrupted '" << cmd << "()' command";
+                    continue;   // go back and try again
+                }
+                // Otherwise note an error and return false
+                WLOG << "Unknown error executing '" << cmd << "()'";
+            }
+            return(false);
+        }
     }
-    if (isFault()) {
-        ELOG << "XML-RPC fault on " << cmd << "() call";
-        abort();
-    }
-    return true;  
 }
 
 void

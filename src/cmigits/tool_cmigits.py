@@ -1,16 +1,26 @@
 #
 # Rules to build libcmigits.a and export it as a SCons tool
 #
-tools = ['doxygen', 'logx', 'qt4']
+tools = ['doxygen', 'logx', 'qt4', 'archive_xmlrpc_c']
 qt4modules = ['QtGui', 'QtNetwork', 'QtCore']
 cmigitsDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(qt4modules)
 
-sources = ['Cmigits.cpp', 'CmigitsSharedMemory.cpp', 'CmigitsWatchThread.cpp']
+sources = Split('''
+    Cmigits.cpp
+    CmigitsSharedMemory.cpp
+    CmigitsStatus.cpp
+    CmigitsWatchThread.cpp
+''')
 
-headers = ['Cmigits.h',  'CmigitsSharedMemory.h', 'CmigitsWatchThread.h']
+headers = Split('''
+    Cmigits.h
+    CmigitsSharedMemory.h
+    CmigitsStatus.h
+    CmigitsWatchThread.h
+''')
 
 lib = env.Library('cmigits', sources)
 Default(lib)

@@ -4,8 +4,9 @@
 #include "CircBuffer.h"
 #include "HcrDrxConfig.h"
 #include "HcrMonitor.h"
+#include "PulseData.h"
 #include <CmigitsWatchThread.h>
-#include <PulseData.h>
+#include <HcrPmc730.h>
 #include <deque>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>

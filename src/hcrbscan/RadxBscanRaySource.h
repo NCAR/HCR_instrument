@@ -33,7 +33,7 @@ public slots:
     /**
      * Make a BscanRay from an incoming RadxRay and emit a newBscanRay() signal 
      * for the new ray.
-     * @param item the RadxRay to be converted to a BscanRay
+     * @param radxRay the RadxRay to be converted to a BscanRay
      */
     void makeBscanRay(RadxRay & radxRay) const;
 };

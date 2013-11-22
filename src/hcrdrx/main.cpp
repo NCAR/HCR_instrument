@@ -8,22 +8,19 @@
 #include <sys/timeb.h>
 #include <ctime>
 #include <cerrno>
+#include <csignal>
 #include <cstdlib>
 #include <unistd.h>
 #include <boost/program_options.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <csignal>
-#include <XmlRpc.h>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
+#include <HcrPmc730Client.h>
 #include <QCoreApplication>
-
-LOGGING("hcrdrx")
 
 // For configuration management
 #include <QtConfig.h>
 
-#include "HcrPmc730.h"
 #include "HcrDrxPub.h"
 #include "p7142sd3c.h"
 #include "p7142Up.h"
@@ -32,8 +29,13 @@ LOGGING("hcrdrx")
 #include "IwrfExport.h"
 #include "HcrMonitor.h"
 
+#include <xmlrpc-c/base.hpp>
+#include <xmlrpc-c/registry.hpp>
+#include <xmlrpc-c/server_abyss.hpp>
+
+LOGGING("hcrdrx")
+
 using namespace std;
-using namespace XmlRpc;
 using namespace boost::posix_time;
 namespace po = boost::program_options;
 
@@ -51,8 +53,11 @@ double _simPauseMS;              ///< The number of milliseconds to pause when r
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 Pentek::p7142sd3c * _sd3c;
 
-std::string _xmitdHost("archiver");///< The host on which hcr_xmitd is running
-int _xmitdPort = 8000;           ///< The port on which hcr_xmitd is listening
+std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
+int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
+
+std::string _pmc730dHost("localhost");  ///< The host on which HcrPmc730Daemon is running
+int _pmc730dPort = 8003;                ///< HcrPmc730Daemon's XML-RPC port
 
 bool _terminate = false;         ///< set true to signal the main loop to terminate
 
@@ -109,7 +114,9 @@ void parseOptions(int argc,
         ("simulate", "Enable simulation")
         ("simPauseMS",  po::value<double>(&_simPauseMS), "Simulation pause interval between beams (ms)")
         ("xmitdHost", po::value<std::string>(&_xmitdHost), "Host machine for hcr_xmitd")
-        ("xmitdPort", po::value<int>(&_xmitdPort), "Port for contacting hcr_xmitd")
+        ("xmitdPort", po::value<int>(&_xmitdPort), "hcr_xmitd's XML-RPC port")
+        ("pmc730dHost", po::value<std::string>(&_pmc730dHost), "Host machine for HcrPmc730Daemon")
+        ("pmc730dPort", po::value<int>(&_pmc730dPort), "HcrPmc730Daemon's XML-RPC port")
         ;
     // If we get an option on the command line with no option name, it
     // is treated like --drxConfig=<option> was given.
@@ -188,11 +195,39 @@ void startUpConverter(Pentek::p7142Up& upConverter,
 
 }
 
+// Handler for SIGALRM signals.
+void
+alarmHandler(int signal) {
+    // Do nothing. This handler just assures that arrival of the signal doesn't
+    // terminate our process. The intention of the signal is to force the
+    // XML-RPC server runOnce() method to return occasionally, even if no
+    // request comes in.
+}
+
+// Create a periodic ALRM signal to break us out of
+// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
+void
+startXmlrpcWorkAlarm() {
+    const struct timeval tv = { 0, 100000 }; // 100 ms
+    const struct itimerval iv = { tv, tv };
+    setitimer(ITIMER_REAL, &iv, 0);
+}
+
+// Stop the alarm which breaks us out of xmlrpc_c::serverAbyss::runOnce()
+// while our server is actually processing an XML-RPC command.
+void
+stopXmlrpcWorkAlarm() {
+    // Stop the periodic timer.
+    const struct timeval tv = { 0, 0 }; // zero time stops the timer
+    const struct itimerval iv = { tv, tv };
+    setitimer(ITIMER_REAL, &iv, 0);
+}
+
 /**
- * @brief Xmlrpc++ method to get status from the hcrdrx process.
+ * @brief xmlrpc_c::method to get status from the hcrdrx process.
  *
- * The method returns a XmlRpc::XmlRpcValue struct (dictionary) mapping
- * std::string keys to XmlRpc::XmlRpcValue values. The dictionary should be
+ * The method returns a xmlrpc_c::value_struct (dictionary) mapping
+ * std::string keys to xmlrpc_c::value values. The dictionary should be
  * passed to the constructor for the DrxStatus class to create a DrxStatus
  * object.
  * 
@@ -215,75 +250,45 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  *     double cmigitsTemp = status.cmigitsTemp();
  * @endcode
  */
-class GetStatusMethod : public XmlRpcServerMethod {
+class GetStatusMethod : public xmlrpc_c::method {
 public:
-    GetStatusMethod() : XmlRpcServerMethod("getStatus") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+    GetStatusMethod() {
+        this->_signature = "S:";
+        this->_help = "This method returns the latest status from hcrdrx.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
         DLOG << "Received 'getStatus' command";
-        retvalP = _hcrMonitor->drxStatus().toXmlRpcValue();
+        // Get the latest status from shared memory, and convert it to 
+        // an xmlrpc_c::value_struct dictionary.
+        *retvalP = DrxStatus(*_sd3c).toXmlRpcValue();
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
     }
 };
 
-/// Xmlrpc++ method to turn on the transmitter klystron filament.
-class XmitFilamentOnMethod : public XmlRpcServerMethod {
-public:
-    XmitFilamentOnMethod() : XmlRpcServerMethod("xmitFilamentOn") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitFilamentOn' command";
-        HcrPmc730::setXmitterFilamentOn(true);
-    }
-};
-
-/// Xmlrpc++ method to turn off the transmitter klystron filament.
-class XmitFilamentOffMethod : public XmlRpcServerMethod {
-public:
-    XmitFilamentOffMethod() : XmlRpcServerMethod("xmitFilamentOff") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitFilamentOff' command";
-        HcrPmc730::setXmitterFilamentOn(false);
-    }
-};
-
-/// Xmlrpc++ method to turn on the transmitter high voltage.
-class XmitHvOnMethod : public XmlRpcServerMethod {
-public:
-    XmitHvOnMethod() : XmlRpcServerMethod("xmitHvOn") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitHvOn' command";
-        HcrPmc730::setXmitterHvOn(true);
-    }
-};
-
-/// Xmlrpc++ method to turn off the transmitter high voltage.
-class XmitHvOffMethod : public XmlRpcServerMethod {
-public:
-    XmitHvOffMethod() : XmlRpcServerMethod("xmitHvOff") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
-        ILOG << "Received 'xmitHvOff' command";
-        HcrPmc730::setXmitterHvOn(false);
-    }
-};
-
-/// Xmlrpc++ method to set HMC mode.
-class SetHmcModeMethod : public XmlRpcServerMethod {
-public:
-    SetHmcModeMethod() : XmlRpcServerMethod("setHmcMode") {}
-    void execute(XmlRpcValue & args, XmlRpcValue & retvalP) {
-        int iMode = int(args[0]);
-        HcrPmc730::HmcOperationMode mode = static_cast<HcrPmc730::HmcOperationMode>(int(iMode));
-        ILOG << "Received 'setHmcMode(" << iMode << ")' command";
-        HcrPmc730::setHmcOperationMode(mode);
-    }
-};
-
-/// Xmlrpc++ method to zero the Pentek's position counts for the two reflector
+/// xmlrpc_c::method to zero the Pentek's position counts for the two reflector
 /// motors.
-class ZeroPentekMotorCountsMethod : public XmlRpcServerMethod {
+class ZeroPentekMotorCountsMethod : public xmlrpc_c::method {
 public:
-    ZeroPentekMotorCountsMethod() : XmlRpcServerMethod("zeroPentekMotorCounts") {}
-    void execute(XmlRpcValue & paramList, XmlRpcValue & retvalP) {
+    ZeroPentekMotorCountsMethod() {
+        this->_signature = "n:";
+        this->_help = "This method causes the Pentek to zero its counts for the reflector drives.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
         ILOG << "Received 'zeroPentekMotorCounts' command";
         _sd3c->zeroMotorCounts();
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
     }
 };
 
@@ -304,6 +309,9 @@ main(int argc, char** argv)
     // parse the command line options, substituting for config params.
     parseOptions(argc, argv);
 
+    // QApplication
+    QCoreApplication app(argc, argv);
+
     // Read the HCR configuration file
     HcrDrxConfig hcrConfig(_drxConfig);
     if (! hcrConfig.isValid()) {
@@ -311,19 +319,6 @@ main(int argc, char** argv)
         exit(1);
     }
     
-    // Make sure our KaPmc730 is created in simulation mode if requested
-    HcrPmc730::doSimulate(hcrConfig.simulate_pmc730());
-    
-    // Just refer to theHcrPmc730() to instantiate the singleton.
-    HcrPmc730::theHcrPmc730();
-    
-    // Initialize output lines.
-    HcrPmc730::setPentekRotationZero(false);
-    HcrPmc730::setPentekTiltZero(false);
-    HcrPmc730::setXmitterFilamentOn(false);
-    HcrPmc730::setXmitterHvOn(false);
-    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_CORNER_REFLECTOR_CAL);
-
     // set to ignore SIGPIPE errors which occur when sockets
     // are broken between client and server
     signal(SIGPIPE, SIG_IGN);
@@ -335,19 +330,16 @@ main(int argc, char** argv)
     }
 
     // Initialize our RPC server on port 8081
-    XmlRpc::XmlRpcServer rpcServer;
-    rpcServer.addMethod(new GetStatusMethod());
-    rpcServer.addMethod(new XmitFilamentOnMethod());
-    rpcServer.addMethod(new XmitFilamentOffMethod());
-    rpcServer.addMethod(new XmitHvOnMethod());
-    rpcServer.addMethod(new XmitHvOffMethod());
-    rpcServer.addMethod(new SetHmcModeMethod());
-    rpcServer.addMethod(new ZeroPentekMotorCountsMethod());
-    if (! rpcServer.bindAndListen(8081)) {
-        ELOG << "Failed to initialize XmlRpcServer!";
-        exit(1);
-    }
-    rpcServer.enableIntrospection(true);
+    xmlrpc_c::registry myRegistry;
+    myRegistry.addMethod("getStatus", new GetStatusMethod);
+    myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
+    xmlrpc_c::serverAbyss rpcServer(myRegistry, 8081);
+
+    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
+    // arrival causes the XML-RPC server's runOnce() method to return so that
+    // we can process Qt events on a regular basis.
+    signal(SIGALRM, alarmHandler);
+    startXmlrpcWorkAlarm();
 
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
@@ -365,7 +357,8 @@ main(int argc, char** argv)
     }
     
     // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(_sd3c, _xmitdHost, _xmitdPort);
+    _hcrMonitor = new HcrMonitor(_sd3c, _pmc730dHost, _pmc730dPort,
+            _xmitdHost, _xmitdPort);
     _hcrMonitor->start();
 
     // create the export object
@@ -440,16 +433,20 @@ main(int argc, char** argv)
     PMU_auto_register("start export");
     _exporter->start();
 
-    // QApplication
-    QCoreApplication app(argc, argv);
-
     // Start the timers, which will allow data to flow.
     _sd3c->timersStartStop(true);
 
     double startTime = nowTime();
 
+    // Set up an interval timer to deliver SIGALRM every 1 ms. The signal
+    // arrival causes the XML-RPC server's runOnce() method to return so that
+    // we can process Qt events on a regular basis.
+    signal(SIGALRM, alarmHandler);
+    startXmlrpcWorkAlarm();
+
     while (1) {
-        for (int i = 0; i < 5000; i++) {
+        PMU_auto_register("running");
+        for (int i = 0; i < 100; i++) {
             // Process any queued Qt events
             app.processEvents();
             
@@ -457,9 +454,9 @@ main(int argc, char** argv)
             if (_terminate) {
                 break;
             }
-            // Handle XML-RPC commands for 0.001 second (Actually, it mostly 
-            // runs for twice this long.)
-            rpcServer.work(0.001);
+            // Waits for the next connection, accepts it, reads the HTTP
+            // request, executes the indicated RPC, and closes the connection.
+            rpcServer.runOnce();
         }
         if (_terminate) {
             break;
@@ -492,40 +489,9 @@ main(int argc, char** argv)
         }
         std::cout << std::endl;
 
-        DrxStatus status = _hcrMonitor->drxStatus();
-        std::cout << "detectedRfPower: " << status.detectedRfPower() << std::endl;
-        std::cout << "pvForePressure: " << status.pvForePressure() << std::endl;
-        std::cout << "pvAftPressure: " << status.pvAftPressure() << std::endl;
-        std::cout << "ploTemp: " << status.ploTemp() << std::endl;
-        std::cout << "eikTemp: " << status.eikTemp() << std::endl;
-        std::cout << "vLnaTemp: " << status.vLnaTemp() << std::endl;
-        std::cout << "hLnaTemp: " << status.hLnaTemp() << std::endl;
-        std::cout << "polarizationSwitchTemp: " << status.polarizationSwitchTemp() << std::endl;
-        std::cout << "rfDetectorTemp: " << status.rfDetectorTemp() << std::endl;
-        std::cout << "noiseSourceTemp: " << status.noiseSourceTemp() << std::endl;
-        std::cout << "ps28VTemp: " << status.ps28VTemp() << std::endl;
-        std::cout << "rdsInDuctTemp: " << status.rdsInDuctTemp() << std::endl;
-        std::cout << "cmigitsTemp: " << status.cmigitsTemp() << std::endl;
-        std::cout << "tiltMotorTemp: " << status.tiltMotorTemp() << std::endl;
-        std::cout << "rotationMotorTemp: " << status.rotationMotorTemp() << std::endl;
-        std::cout << "tailconeTemp: " << status.tailconeTemp() << std::endl;
-        std::cout << "pentekBoardTemp: " << status.pentekBoardTemp() << std::endl;
-        std::cout << "pentekFpgaTemp: " << status.pentekFpgaTemp() << std::endl;
-        std::cout << "psVoltage: " << status.psVoltage() << std::endl;
-        std::cout << "locked125MHzPLO: " << status.locked125MHzPLO() << std::endl;
-        std::cout << "locked15_5GHzPLO: " << status.locked15_5GHzPLO() << std::endl;
-        std::cout << "locked1250MHzPLO: " << status.locked1250MHzPLO() << std::endl;
-        std::cout << "modPulseDisabled: " << status.modPulseDisabled() << std::endl;
-        std::cout << "emsError1: " << status.emsError1() << std::endl;
-        std::cout << "emsError2: " << status.emsError2() << std::endl;
-        std::cout << "emsError3: " << status.emsError3() << std::endl;
-        std::cout << "emsError4Or5: " << status.emsError4Or5() << std::endl;
-        std::cout << "emsError6Or7: " << status.emsError6Or7() << std::endl;
-        std::cout << "emsPowerError: " << status.emsPowerError() << std::endl;
-        std::cout << "emsErrorCount: " << status.emsErrorCount() << std::endl;
-        std::cout << "waveguideSwitchError: " << status.waveguideSwitchError() << std::endl;
-//        std::cout << "rdsXmitterFilamentOn: " << status.rdsXmitterFilamentOn() << std::endl;
-//        std::cout << "rdsXmitterHvOn: " << status.rdsXmitterHvOn() << std::endl;
+        DrxStatus status(*_sd3c);
+        ILOG << "Pentek board temp: " << status.pentekBoardTemp();
+        ILOG << "Pentek FPGA temp: " << status.pentekFpgaTemp();
     }
     
     ILOG << "Shutting down...";
@@ -545,6 +511,20 @@ main(int argc, char** argv)
 
     delete(_sd3c);
     
+    // Tell HcrPmc730Daemon to turn off transmitter high voltage and set the
+    // HMC operating mode to "txV, rxHV (attenuated)" before we exit.
+    HcrPmc730Client pmc730Client(_pmc730dHost, _pmc730dPort);
+    if (pmc730Client.xmitHvOff()) {
+        ILOG << "Turned off transmitter HV via HcrPmc730Daemon";
+    } else {
+        WLOG << "Failed to turn off transmitter HV via HcrPmc730Daemon!";
+    }
+    if (pmc730Client.setHmcMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED)) {
+        ILOG << "Set HMC mode to 'txV rxHV (attenuated)' via HcrPmc730Daemon";
+    } else {
+        WLOG << "Failed to set HMC mode to 'txV rxHV (attenuated)' via HcrPmc730Daemon!";
+    }
+
     ILOG << "hcrdrx is done";
 
     return(0);

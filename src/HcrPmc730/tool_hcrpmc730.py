@@ -1,15 +1,13 @@
 #
-# Rules to build HcrdrxRpcClient class and export it (and its header) as a tool
+# Rules to build HcrPmc730 class and export it (and its header) as a tool
 #
 import os
 
 tools = Split("""
-    cmigits
-    hcrpmc730
-    logx
-    pentek
-    xmlrpc
+    archive_xmlrpc_c
     boost_serialization
+    logx
+    pmc730
 """)
 env = Environment(tools=['default'] + tools)
 
@@ -18,15 +16,22 @@ tooldir = env.Dir('.').srcnode().abspath    # this directory
 includeDir = tooldir
 
 sources = Split('''
-DrxStatus.cpp
-HcrdrxRpcClient.cpp
-XmlRpcValueArchive.cpp
+HcrPmc730.cpp
+HcrPmc730Status.cpp
 ''')
-lib = env.Library('hcrdrxrpcclient', sources)
+
+headers = Split('''
+HcrPmc730.h
+HcrPmc730Status.h
+''')
+lib = env.Library('hcrpmc730', sources)
+
+doxref = env.Apidocs(sources + headers)
     
-def hcrdrxrpcclient(env):
+def hcrpmc730(env):
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
+    env.AppendDoxref(doxref[0])
     env.Require(tools)
 
-Export('hcrdrxrpcclient')
+Export('hcrpmc730')

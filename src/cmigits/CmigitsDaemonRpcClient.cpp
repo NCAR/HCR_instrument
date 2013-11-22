@@ -31,10 +31,32 @@ CmigitsDaemonRpcClient::~CmigitsDaemonRpcClient() {
 
 bool
 CmigitsDaemonRpcClient::initializeUsingIwg1() throw (std::exception) {
-    xmlrpc_c::value result;
-    // _client.call() may throw a girerr::error exception (a subclass
-    // of std::exception). If so, we allow it to move up the chain.
-    _client.call(_daemonUrl, "initializeUsingIwg1", "", &result);
-    const bool ok((xmlrpc_c::value_boolean(result)));
-    return(ok);
+    try {
+        xmlrpc_c::value result;
+        // _client.call() may throw a girerr::error exception (a subclass
+        // of std::exception). If so, we allow it to move up the chain.
+        _client.call(_daemonUrl, "initializeUsingIwg1", "", &result);
+        return(xmlrpc_c::value_boolean(result));
+    } catch (std::exception & e) {
+        WLOG << "XML-RPC call to initializeUsingIwg1() failed: " << e.what();
+        throw; // rethrow the exception
+    }
+}
+
+CmigitsStatus
+CmigitsDaemonRpcClient::getStatus() throw (std::exception) {
+    try {
+        xmlrpc_c::value result;
+        // _client.call() may throw a girerr::error exception (a subclass
+        // of std::exception). If so, we allow it to move up the chain.
+        _client.call(_daemonUrl, "getStatus", "", &result);
+        // The getStatus() XML-RPC method returns xmlrpc_c::value_struct, 
+        // which we can use to (re)construct the CmigitsStatus.
+        xmlrpc_c::value_struct dict(result);
+        CmigitsStatus status(dict);
+        return(status);
+    } catch (std::exception & e) {
+        WLOG << "XML-RPC call to initializeUsingIwg1() failed: " << e.what();
+        throw; // rethrow the exception
+    }
 }

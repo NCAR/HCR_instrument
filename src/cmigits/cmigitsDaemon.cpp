@@ -11,6 +11,7 @@
 #include <QApplication>
 #include <QMetaType>
 #include <Cmigits.h>
+#include <CmigitsStatus.h>
 #include <CmigitsSharedMemory.h>
 #include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>
@@ -67,7 +68,7 @@ stopXmlrpcWorkAlarm() {
     // Stop the periodic timer.
     const struct timeval tv = { 0, 0 }; // zero time stops the timer
     const struct itimerval iv = { tv, tv };
-   setitimer(ITIMER_REAL, &iv, 0);
+    setitimer(ITIMER_REAL, &iv, 0);
 }
 
 
@@ -90,6 +91,27 @@ public:
             WLOG << "C-MIGITS initializeUsingIwg1() failed!";
         }
         *retvalP = xmlrpc_c::value_boolean(ok);
+
+        // Restart the work alarm.
+        startXmlrpcWorkAlarm();
+    }
+};
+
+class GetStatusMethod : public xmlrpc_c::method {
+public:
+    GetStatusMethod() {
+        this->_signature = "b:";
+        this->_help = "This method returns latest status/data from the C-MIGITS.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Stop the work alarm while we're working.
+        stopXmlrpcWorkAlarm();
+
+        DLOG << "Executing XML-RPC call to getStatus()";
+        // Get the latest status from shared memory, and convert it to 
+        // an xmlrpc_c::value_struct dictionary.
+        *retvalP = CmigitsStatus::StatusFromSharedMemory().toXmlRpcValue();
 
         // Restart the work alarm.
         startXmlrpcWorkAlarm();
@@ -134,6 +156,7 @@ main(int argc, char *argv[]) {
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("initializeUsingIwg1", new InitializeUsingIwg1Method);
+    myRegistry.addMethod("getStatus", new GetStatusMethod);
     xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
         
     // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal

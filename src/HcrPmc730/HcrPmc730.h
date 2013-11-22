@@ -38,21 +38,21 @@ public:
      */
     typedef enum _HmcOperationMode {
         /// 0 = transmit H, receive H and V
-        HMC_TX_H_RX_HV = 0,
+        HMC_MODE_H_HV = 0,
         /// 1 = transmit V, receive H and V
-        HMC_TX_V_RX_HV = 1,
+        HMC_MODE_V_HV = 1,
         /// 2 = transmit alternating H and V, receive H and V
-        HMC_TX_HV_RX_HV = 2,
+        HMC_MODE_HV_HV = 2,
         /// 3 = unused
-        HMC_UNUSED_3 = 3,
+        HMC_MODE_UNUSED_3 = 3,
         /// 4 = noise source calibration
-        HMC_NOISE_SOURCE_CAL = 4,
-        /// 5 = corner reflector calibration
-        HMC_CORNER_REFLECTOR_CAL = 5,
+        HMC_MODE_NOISE_SOURCE_CAL = 4,
+        /// 5 = transmit V, receive H and V (attenuated)
+        HMC_MODE_V_HV_ATTENUATED = 5,
         /// 6 = bench test
-        HMC_BENCH_TEST = 6,
+        HMC_MODE_BENCH_TEST = 6,
         /// 7 = unused
-        HMC_UNUSED_7 = 7
+        HMC_MODE_UNUSED_7 = 7
     } HmcOperationMode;
 
     /**
