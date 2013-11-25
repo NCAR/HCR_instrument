@@ -17,6 +17,10 @@
 using namespace boost::posix_time;
 using namespace std;
 
+// Time out the latest entry in the _cmigitsDeque when it is more than
+// CMIGITS_TIMEOUT_MSECS old.
+static const int CMIGITS_TIMEOUT_MSECS = 1000;
+
 LOGGING("IwrfExport")
 
 ///////////////////////////////////////////////////////////////////////////
@@ -986,11 +990,20 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
   while (nextCmigits.time3512 < pulseTime) {
       cmigits = nextCmigits;
       haveData = true;
-      // We can remove this entry from the deque now
-      _cmigitsDeque.pop_front();
-      if (_cmigitsDeque.empty()) {
+      // Break out if we just looked at the last entry in the deque. Remove the
+      // entry from the deque only if it's older than CMIGITS_TIMEOUT_SECS. We 
+      // wait that long since we generally want the last entry in the deque so 
+      // that _assembleStatusXml() has C-MIGITS data to put into the status.
+      if (_cmigitsDeque.size() == 1) {
+          // Only remove the last entry if it is older than CMIGITS_TIMEOUT_MSECS
+          if ((pulseTime - cmigits.time3512) > CMIGITS_TIMEOUT_MSECS) {
+              _cmigitsDeque.pop_front();
+          }
+          // No later entries to look at, so break out
           break;
       }
+      // Remove this entry so we can look at the next one
+      _cmigitsDeque.pop_front();
       // Check the next entry on the deque
       nextCmigits = _cmigitsDeque.front();
   }
