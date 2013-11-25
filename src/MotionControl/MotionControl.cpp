@@ -21,7 +21,7 @@ MotionControl::MotionControl() :
     _tiltDrive("/dev/ttydp01"),
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
-    _beamTilt(0.0),
+    _scanBeamTilt(0.0),
     _targetRadius(0.02),
     _cmigitsShm(),
     _fakeAttitude(false),
@@ -117,10 +117,10 @@ MotionControl::point(double angle)
     
     // Set up for fixed antenna pointing
     _fixedPointingAngle = angle;
-    _beamTilt = 0.0;
+    _scanBeamTilt = 0.0;
     _antennaMode = POINTING;
     _rotDrive.moveTo(angle);
-    _tiltDrive.moveTo(_beamTilt);
+    _tiltDrive.moveTo(_scanBeamTilt);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ MotionControl::scan(double ccwLimit, double cwLimit, double scanRate,
     _scanCcwLimit = ccwLimit;
     _scanCwLimit = cwLimit;
     _scanRate = scanRate;
-    _beamTilt = beamTilt;
+    _scanBeamTilt = beamTilt;
     ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
             scanRate << " deg/s, with beam tilt " << beamTilt << " deg";
     
@@ -255,7 +255,7 @@ MotionControl::_adjustPointingForAttitude(double pitch, double roll, double drif
 {
     // Start with the desired track-relative rotation and tilt angles
     double rot = _fixedPointingAngle;
-    double tilt = _beamTilt;
+    double tilt = _scanBeamTilt;
     // Adjust to pod-relative rotation and tilt angles
     _adjustForAttitude(rot, tilt, pitch, roll, drift);
     // Move the drives to their new angles
@@ -310,7 +310,7 @@ MotionControl::Status::Status() :
     scanCcwLimit(0.0),
     scanCwLimit(0.0),
     scanRate(0.0),
-    beamTilt(0.0),
+    scanBeamTilt(0.0),
     attitudeCorrectionEnabled(false) {}
 
 /////////////////////////////////////////////////////////////////////
@@ -334,7 +334,7 @@ MotionControl::Status::Status(const MotionControl & mc) :
     attitudeCorrectionEnabled(mc.attitudeCorrectionEnabled()) {
     // Use the MotionControl::getScanParams() method to get all three scan
     // parameters
-    mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate, beamTilt);
+    mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate, scanBeamTilt);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -368,7 +368,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
     scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
     scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
-    beamTilt = static_cast<xmlrpc_c::value_double>(statusMap["beamTilt"]);
+    scanBeamTilt = static_cast<xmlrpc_c::value_double>(statusMap["scanBeamTilt"]);
     attitudeCorrectionEnabled = static_cast<xmlrpc_c::value_boolean>(statusMap["attitudeCorrectionEnabled"]);
 }
 
@@ -407,7 +407,7 @@ MotionControl::Status::to_value_struct() const {
     dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);
     dict["scanCwLimit"] = xmlrpc_c::value_double(scanCwLimit);
     dict["scanRate"] = xmlrpc_c::value_double(scanRate);
-    dict["beamTilt"] = xmlrpc_c::value_double(beamTilt);
+    dict["scanBeamTilt"] = xmlrpc_c::value_double(scanBeamTilt);
     dict["attitudeCorrectionEnabled"] = xmlrpc_c::value_boolean(attitudeCorrectionEnabled);
     // Construct an xmlrpc_c::value_struct from the map and return it.
     return(xmlrpc_c::value_struct(dict));

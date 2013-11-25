@@ -89,7 +89,7 @@ public:
         ccwLimit = _scanCcwLimit;
         cwLimit = _scanCwLimit;
         scanRate = _scanRate;
-        beamTilt = _beamTilt;
+        beamTilt = _scanBeamTilt;
     }
 
     /// @brief Set the state of attitude correction.
@@ -140,13 +140,14 @@ public:
          * @param[out] ccwLimit the counterclockwise scan limit, deg
          * @param[out] cwLimit the clockwise scan limit, deg
          * @param[out] rate the scan rate, deg/s
+         * @param[out] beamTilt the beam tilt angle, deg
          */
         void scanParameters(double & ccwLimit, double & cwLimit, double & rate,
                 double & beamTilt) {
             ccwLimit = scanCcwLimit;
             cwLimit = scanCwLimit;
             rate = scanRate;
-            beamTilt = beamTilt;
+            beamTilt = scanBeamTilt;
         }
 
         /// Is the rotation drive responding?
@@ -188,7 +189,7 @@ public:
         // Scan rate, deg/s
         double scanRate;
         // Beam tilt, deg
-        double beamTilt;
+        double scanBeamTilt;
         // Attitude correction enabled?
         bool attitudeCorrectionEnabled;
     };
@@ -248,7 +249,7 @@ private:
     double _scanRate;
     
     /// Beam tilt angle, deg
-    double _beamTilt;
+    double _scanBeamTilt;
     
     /// Target radius for the drives, deg
     double _targetRadius;
