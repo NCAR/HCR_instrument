@@ -35,6 +35,10 @@ public:
     /// @return the HcrdrxRpcClient instance being used to talk to hcrdrx.
     HcrdrxRpcClient & rpcClient() { return *_client; }
 
+    /// @brief Return true iff the server responded to the last XML-RPC command.
+    /// @return true iff the server responded to the last XML-RPC command.
+    bool serverIsResponding() { return(_responsive); }
+
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
     /// becomes responsive or unresponsive.
