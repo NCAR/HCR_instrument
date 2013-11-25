@@ -919,7 +919,7 @@ string IwrfExport::_assembleStatusXml()
 
   // end C-MIGITS data
 
-  xml += TaXml::writeEndTag("CmigitsData", 1);
+  xml += TaXml::writeEndTag("HcrCmigitsData", 1);
 
   ////////////////////////////////////////////////
   // close
