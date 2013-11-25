@@ -38,7 +38,7 @@ public:
 
     /// @brief Return true iff the server responded to the last XML-RPC command.
     /// @return true iff the server responded to the last XML-RPC command.
-    bool serverIsResponding() { return(_responsive); }
+    bool serverIsResponding() const { return(_responsive); }
 
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
