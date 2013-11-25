@@ -253,33 +253,67 @@ HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
 }
 
 bool
-HcrGuiMainWindow::_xmitterFilamentOn() const {
-    // If transmitter control is via RS-232 or front panel, we can trust the
-    // "filament on" bit in the transmitter's status. Otherwise, we just test
-    // if the HcrPmc730Daemon is commanding "filament on" via its RDS control
-    // line.
-    return(_xmitStatus.rdsCtlEnabled() ?
-            _pmcStatus.rdsXmitterFilamentOn() : _xmitStatus.filamentOn());
+HcrGuiMainWindow::_xmitterFilamentIsOn() const {
+    bool filamentOn;
+    // If RDS is in control, we have to use the state of the RDS control lines
+    // from the PMC-730. The status reported directly by the transmitter will 
+    // *not* reflect the correct state when RDS is in control.
+    //
+    // If the control source is unknown (this is true when hcr_xmitd is not
+    // responding), we assume RDS control since that's effectively always true
+    // for HCR.
+    switch (_xmitStatus.controlSource()) {
+    case XmitStatus::RDSControl:
+    case XmitStatus::UnknownControl:
+        filamentOn = _pmcStatus.rdsXmitterFilamentOn();
+        break;
+    default:
+        // The "filament on" bit from transmitter status is only meaningful
+        // if the transmitter is *not* under RDS control.
+        filamentOn = _xmitStatus.filamentOn();
+        break;
+    }
+    return(filamentOn);
 }
 
 bool
-HcrGuiMainWindow::_xmitterHvOn() const {
-    // If transmitter control is via RS-232 or front panel, we can trust the
-    // "filament on" bit in the transmitter's status. Otherwise, we just test
-    // if the hcrHcrPmc730Daemon is commanding "filament on" via its RDS control
-    // line.
-    return(_xmitStatus.rdsCtlEnabled() ?
-            _pmcStatus.rdsXmitterHvOn() : _xmitStatus.highVoltageOn());
+HcrGuiMainWindow::_xmitterHvIsOn() const {
+    bool hvOn;
+    // If RDS is in control, we have to use the state of the RDS control lines
+    // from the PMC-730. The status reported directly by the transmitter will 
+    // *not* reflect the correct state when RDS is in control.
+    //
+    // If the control source is unknown (this is true when hcr_xmitd is not
+    // responding), we assume RDS control since that's effectively always true
+    // for HCR.
+    switch (_xmitStatus.controlSource()) {
+    case XmitStatus::RDSControl:
+    case XmitStatus::UnknownControl:
+        hvOn = _pmcStatus.rdsXmitterHvOn();
+        break;
+    default:
+        // The "HV on" bit from transmitter status is only meaningful
+        // if the transmitter is *not* under RDS control.
+        hvOn = _xmitStatus.highVoltageOn();
+        break;
+    }
+    return(hvOn);
 }
 
 bool
 HcrGuiMainWindow::_xmitting() const {
-    // If transmitter control is via RS-232 or front panel, we can trust the
-    // "RF on" status bit to tell us we're transmitting. Otherwise, we need
-    // to cobble together information provided by the RDS.
-    if (!_xmitStatus.rdsCtlEnabled()) {
-        return(_xmitStatus.rfOn());
-    } else {
+    bool xmitting;
+    // If RDS is in control, we have to use the state of the RDS control lines
+    // from the PMC-730. The status reported directly by the transmitter will 
+    // *not* reflect the correct state when RDS is in control.
+    //
+    // If the control source is unknown (this is true when hcr_xmitd is not
+    // responding), we assume RDS control since that's effectively always true
+    // for HCR.
+    switch (_xmitStatus.controlSource()) {
+    case XmitStatus::RDSControl:
+    case XmitStatus::UnknownControl:
+    {
         // We're transmitting if the filament is on, HV is on, modulation
         // pulses are being allowed through, and we have no HV disabling fault.
         bool hvDisableFault = _xmitStatus.bodyCurrentFault() ||
@@ -294,55 +328,48 @@ HcrGuiMainWindow::_xmitting() const {
                 _xmitStatus.summaryFault() ||
                 _xmitStatus.waveguideArcFault() ||
                 _xmitStatus.xmitterTempFault();
-        return(_xmitterFilamentOn() && _xmitterHvOn() &&
-                ! _pmcStatus.modPulseDisabled() && ! hvDisableFault);
+        xmitting = _xmitterFilamentIsOn() && _xmitterHvIsOn() &&
+                ! _pmcStatus.modPulseDisabled() && ! hvDisableFault;
+        break;
     }
+    default:
+        // If transmitter is not under RDS control, we can just use the
+        // "RF on" status bit to tell us we're transmitting.
+        xmitting = _xmitStatus.rfOn();
+        break;
+    }
+    return(xmitting);
 }
+
 /// Toggle the current on/off state of the transmitter klystron filament
 void
 HcrGuiMainWindow::on_filamentButton_clicked() {
-    if (_xmitStatus.rs232CtlEnabled()) {
-        // If RS-232 control is enabled, then transmitter commands go
-        // to hcr_xmitd, which owns the serial line talking to the transmitter
-        // CMU.
-        if (_xmitterFilamentOn()) {
-            _xmitdStatusThread.rpcClient().xmitFilamentOff();
-        } else {
-            _xmitdStatusThread.rpcClient().xmitFilamentOn();
-        }
-    } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to HcrPmc730Daemon
-        // (i.e., the Remote Data System), since it owns the digital lines
-        // controlling the transmitter.
-        if (_xmitterFilamentOn()) {
-            _pmcStatusThread.rpcClient().xmitFilamentOff();
-        } else {
-            _pmcStatusThread.rpcClient().xmitFilamentOn();
-        }
+    // Send the command to toggle HV state to both hcr_xmitd and 
+    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
+    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
+    // HV line is handled by hcr_xmitd. We need to cover both cases.
+    if (_xmitterFilamentIsOn()) {
+        _xmitdStatusThread.rpcClient().xmitFilamentOff();
+        _pmcStatusThread.rpcClient().xmitFilamentOff();
+    } else {
+        _xmitdStatusThread.rpcClient().xmitFilamentOn();
+        _pmcStatusThread.rpcClient().xmitFilamentOn();
     }
 }
 
 /// Toggle the current on/off state of the transmitter high voltage
 void
 HcrGuiMainWindow::on_hvButton_clicked() {
-    if (_xmitStatus.rs232CtlEnabled()) {
-        // If RS-232 control is enabled, then transmitter commands go
-        // to hcr_xmitd, which owns the serial line talking to the transmitter
-        // CMU.
-        if (_xmitterHvOn()) {
-            _xmitdStatusThread.rpcClient().xmitHvOff();
-        } else {
-            _xmitdStatusThread.rpcClient().xmitHvOn();
-        }
-    } else if (_xmitStatus.rdsCtlEnabled()) {
-        // If RDS control is enabled, then transmitter commands go to HcrPmc730Daemon
-        // (i.e., the Remote Data System), since it owns the digital lines
-        // controlling the transmitter.
-        if (_xmitterHvOn()) {
-            _pmcStatusThread.rpcClient().xmitHvOff();
-        } else {
-            _pmcStatusThread.rpcClient().xmitHvOn();
-        }
+    // Send the command to toggle HV state to both hcr_xmitd and 
+    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
+    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
+    // HV line is handled by hcr_xmitd. We need to cover both cases.
+    if (_xmitterHvIsOn()) {
+        _xmitdStatusThread.rpcClient().xmitHvOff();
+        _pmcStatusThread.rpcClient().xmitHvOff();
+    } else {
+        _xmitdStatusThread.rpcClient().xmitHvOn();
+        _pmcStatusThread.rpcClient().xmitHvOn();
     }
 }
 
@@ -359,7 +386,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
     // reflector between pointing locations may steer the beam through the
     // aircraft fuselage. If we do that while transmitting, the return signal
     // could damage the radar.
-    if (_xmitterHvOn()) {
+    if (_xmitterHvIsOn()) {
         QMessageBox box(QMessageBox::Warning,
                 "No Mode Change While Transmitting",
                 "Reflector mode cannot be changed while transmitting.",
@@ -552,11 +579,11 @@ HcrGuiMainWindow::_update() {
     // Update transmitter control
     _ui.xmitterBox->setEnabled(_xmitStatus.serialConnected());
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
-    _ui.filamentIcon->setPixmap(_xmitterFilamentOn() ? _greenLED : _greenLED_off);
+    _ui.filamentIcon->setPixmap(_xmitterFilamentIsOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
     _ui.filamentButton->setEnabled(_pmcStatusThread.daemonIsResponding() &&
             _xmitStatus.psmPowerOn() && ! _xmitStatus.frontPanelCtlEnabled());
-    if (! _xmitterFilamentOn()) {
+    if (! _xmitterFilamentIsOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
         _ui.filamentWarmupLabel->setText("Filament warmup");
@@ -566,7 +593,7 @@ HcrGuiMainWindow::_update() {
         _ui.filamentWarmupLabel->setText(_xmitStatus.filamentDelayActive() ?
                 "Waiting for warmup" : "Filament is warm");
     }
-    _ui.hvIcon->setPixmap(_xmitterHvOn() ? _greenLED : _greenLED_off);
+    _ui.hvIcon->setPixmap(_xmitterHvIsOn() ? _greenLED : _greenLED_off);
     // Enable the HV button as soon as filament delay has expired (and control
     // is not via the CMU front panel)
     _ui.hvButton->setEnabled(_pmcStatusThread.daemonIsResponding() &&
@@ -719,7 +746,7 @@ HcrGuiMainWindow::_update() {
         _ui.hvButton->setEnabled(false);
         
         // If HV is on, turn it off now
-        if (_xmitterHvOn()) {
+        if (_xmitterHvIsOn()) {
             // Act as if the user clicked the HV button to turn off HV
             on_hvButton_clicked();
         }

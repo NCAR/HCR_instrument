@@ -101,14 +101,14 @@ private:
      *  @return true iff our latest status indicates that the transmitter
      *  filament is on.
      */
-    bool _xmitterFilamentOn() const;
+    bool _xmitterFilamentIsOn() const;
     /**
      *  @brief Return true iff our latest status indicates that the transmitter
      *  high voltage is on.
      *  @return true iff our latest status indicates that the transmitter
      *  high voltage is on.
      */
-    bool _xmitterHvOn() const;
+    bool _xmitterHvIsOn() const;
     /**
      * @brief Return true iff the transmitter is actually transmitting.
      * @return true iff the transmitter is actually transmitting.
