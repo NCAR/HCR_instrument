@@ -1,0 +1,142 @@
+//
+//	Rotation Drive Functions
+//
+
+/////////////////////////////////////////////////////////////////////
+function rotHoming()
+	MO=0; UM=5;
+	homing(80000);
+return
+
+/////////////////////////////////////////////////////////////////////
+function rotInit()
+	// Counts per full cycle (360 deg)
+	int fullCycle;
+	fullCycle = CA[18]*100;
+	
+	// Set AC and DC to 90 deg/s2
+	AC=fullCycle/4; DC=AC;
+	
+	// Set counting range for the main feedback (PX)
+	XM[1]=0; XM[2]=fullCycle;
+	ER[3]=XM[2]/4-1;
+	
+	// Set speed (max speed is VH[2])
+	SP=VH[2]*0.75;
+	MO=1;
+return
+
+//
+//	Tilt Drive Functions
+//
+
+/////////////////////////////////////////////////////////////////////
+function tiltHoming()
+	MO=0; UM=5;
+	
+	// Move forward a bit if we're currently at the reverse limit switch
+	// (IP bit 11 tells if we're at the RLS)
+	if (IP & (1 << 11))
+		MO=1;
+		PR=5000; BG;
+		waitMotion();
+	end
+
+	// Now move backward to and stop by the reverse limit switch before 
+	// beginning the rest of the homing process
+	MO=1;
+	HM[3]=7; HM[4]=0; HM[5]=2;
+	HM[1]=1;
+	JV=-10000; BG;
+	waitHoming();
+
+	// Finally, we can begin the generic homing process.
+	homing(10000);
+return
+
+/////////////////////////////////////////////////////////////////////
+function tiltInit()
+	// Counts per full cycle (360 deg)
+	int fullCycle;
+	fullCycle = CA[18]*240;
+	
+	// Set AC and DC to 90 deg/s2
+	AC=fullCycle/4; DC=AC;
+	
+	// Set counting range for the main feedback (PX)
+	XM[1]=-fullCycle/2; XM[2]=fullCycle/2;
+	ER[3]=XM[2]/4-1;
+	
+	// Set speed (max speed is VH[2])
+	SP=VH[2]*0.75;
+	MO=1;
+return
+
+
+//
+//	Shared Functions
+//
+
+/////////////////////////////////////////////////////////////////////
+//
+// Move drive to the first index mark in the positive direction from the home
+// sensor and set the count value for that location to the value currently in 
+// user integer UI[1].
+//		- jvSpeed: the jogging velocity (counts/sec)
+//
+function homing(int jvSpeed)
+	MO=1;
+
+	// Back up a bit if we're currently on the home sensor (digital input 5)
+	// (IP bit 20 tells the state of digital input 5)
+	if (IP & (1 << 20))
+		PR=-10000; BG;
+		waitMotion();
+	end
+
+	// Jog forward and set zero absolute position where we first
+	// see the home sensor. This position may vary a bit since the
+	// home sensor for the rotation motor has a wide field of view.
+	HM[2]=0; HM[3]=17; HM[4]=0; HM[5]=0;
+	HM[1]=1;
+	JV=jvSpeed; BG;
+	waitHoming();
+	
+	// Back up to the zero mark we just set
+	PA=0; BG;
+	waitMotion();
+	
+	// Now jog to the first index mark forward of 'home' and assign the count
+	// value at that location to the user integer value found in UI[1] (which 
+	// should be set externally before the call here).
+	HM[2]=UI[1]; HM[3]=3; HM[4]=0; HM[5]=0;
+	HM[1]=1;
+	JV=jvSpeed; BG;
+	waitHoming();
+	
+	// Finally, move the drive to the new zero count location.
+	PA=0; BG;
+	waitMotion();
+return
+
+/////////////////////////////////////////////////////////////////////
+//
+// Wait until homing (and residual motion after homing) is complete
+//
+function waitHoming()
+	while (HM[1])
+		wait(5);
+	end
+	waitMotion();
+return
+
+/////////////////////////////////////////////////////////////////////
+//
+// Wait until motion completes
+//
+function waitMotion()
+	// wait for motion to complete
+	while (MS == 2)
+		wait(5);
+	end
+return

@@ -1,0 +1,33 @@
+# -*- python -*-
+
+xmitdTools = Split("""
+logx
+doxygen
+xmlrpc
+rapradar
+boost_program_options
+pmc730
+""")
+
+xmitdEnv = Environment(tools = ['default'] + xmitdTools)
+
+xmitd_sources = Split("""
+hcr_xmitd.cpp
+HcrXmitter.cpp
+XmitStatus.cpp
+""")
+
+# We need HcrPmc730 from hcrdrx
+hcrPmc730 = xmitdEnv.Object(target='HcrPmc730.o', source='../hcrdrx/HcrPmc730.cpp')
+
+hcr_xmitd = xmitdEnv.Program('hcr_xmitd', xmitd_sources + hcrPmc730)
+Default(hcr_xmitd)
+
+
+headers = Split("""
+HcrXmitter.h
+XmitStatus.h
+""")
+
+html = xmitdEnv.Apidocs(xmitd_sources + headers)
+Default(html)
