@@ -15,7 +15,7 @@ LOGGING("CmigitsStatus")
 CmigitsSharedMemory * CmigitsStatus::_Shm = 0;
 
 CmigitsStatus::CmigitsStatus() :
-    _statusTime(0.0),
+    _time3500(0.0),
     _currentMode(0),
     _nSats(0),
     _insAvailable(false),
@@ -28,14 +28,14 @@ CmigitsStatus::CmigitsStatus() :
     _expectedHPosError(0.0),
     _expectedVPosError(0.0),
     _expectedVelocityError(0.0),
-    _navSolutionTime(0.0),
+    _time3501(0.0),
     _latitude(0.0),
     _longitude(0.0),
     _altitude(0.0),
     _velNorth(0.0),
     _velEast(0.0),
     _velUp(0.0),
-    _attitudeTime(0.0),
+    _time3512(0.0),
     _pitch(0.0),
     _roll(0.0),
     _heading(0.0) {}
@@ -88,18 +88,18 @@ CmigitsStatus::StatusFromSharedMemory() {
                 status._positionFOM, status._velocityFOM, status._headingFOM, 
                 status._timeFOM, status._expectedHPosError,
                 status._expectedVPosError, status._expectedVelocityError);
-        status._statusTime = 0.001 * iTime;
+        status._time3500 = 0.001 * iTime;
 
         // Get the latest 3501 message data
         _Shm->getLatest3501Data(iTime, status._latitude, status._longitude,
                 status._altitude);
-        status._navSolutionTime = 0.001 * iTime;
+        status._time3501 = 0.001 * iTime;
 
         // Get the latest 3512 message data
         _Shm->getLatest3512Data(iTime, status._pitch, status._roll, 
                 status._heading, status._velNorth, status._velEast, 
                 status._velUp);
-        status._attitudeTime = 0.001 * iTime;
+        status._time3512 = 0.001 * iTime;
     } else {
         // Nobody's writing to the shared memory, so complain and just
         // return the status from the default constructor.
