@@ -69,25 +69,25 @@ CmigitsDetails::updateStatus(const CmigitsStatus & status) {
     double velNorth = 0.0;
     double velEast = 0.0;
     double velUp = 0.0;
-    status.msg3501Data(navSolutionTime, latitude, longitude, altitude,
-            velNorth, velEast, velUp);
+    status.msg3501Data(navSolutionTime, latitude, longitude, altitude);
     _ui.navSolutionTimeValue->setText(QDateTime::fromTime_t(uint32_t(navSolutionTime)).toUTC().toString("hh:mm:ss"));
     _ui.latitudeValue->setText(QString::number(latitude, 'f', 4));
     _ui.longitudeValue->setText(QString::number(longitude, 'f', 4));
     _ui.altitudeValue->setText(QString::number(altitude, 'f', 0));
-    _ui.velNorthValue->setText(QString::number(velNorth, 'f', 1));
-    _ui.velEastValue->setText(QString::number(velEast, 'f', 1));
-    _ui.velUpValue->setText(QString::number(velUp, 'f', 2));
 
     double attitudeTime = 0.0;
     double pitch = 0.0;
     double roll = 0.0;
     double heading = 0.0;
-    status.msg3512Data(attitudeTime, pitch, roll, heading);
+    status.msg3512Data(attitudeTime, pitch, roll, heading, velNorth, velEast, 
+            velUp);
     _ui.attitudeTimeValue->setText(QDateTime::fromTime_t(uint32_t(attitudeTime)).toUTC().toString("hh:mm:ss"));
     _ui.pitchValue->setText(QString::number(pitch, 'f', 2));
     _ui.rollValue->setText(QString::number(roll, 'f', 2));
     _ui.headingValue->setText(QString::number(heading, 'f', 1));
+    _ui.velNorthValue->setText(QString::number(velNorth, 'f', 1));
+    _ui.velEastValue->setText(QString::number(velEast, 'f', 1));
+    _ui.velUpValue->setText(QString::number(velUp, 'f', 2));
 }
 
 void
