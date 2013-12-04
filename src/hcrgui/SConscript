@@ -19,7 +19,9 @@ hcrgui.cpp
 AntennaModeDialog.cpp
 CmigitsDetails.cpp
 CmigitsStatusThread.cpp
+HcrdrxDetails.cpp
 HcrdrxStatusThread.cpp
+HcrGuiLogWindow.cpp
 HcrGuiMainWindow.cpp
 MotionControlDetails.cpp
 MotionControlClientThread.cpp
@@ -34,6 +36,8 @@ Default(hcrgui)
 uifiles = Split("""
 AntennaModeDialog.ui
 CmigitsDetails.ui
+HcrdrxDetails.ui
+HcrGuiLogWindow.ui
 HcrGuiMainWindow.ui
 MotionControlDetails.ui
 XmitDetails.ui
@@ -50,7 +54,9 @@ headers = Split("""
 AntennaModeDialog.h
 CmigitsDetails.h
 CmigitsStatusThread.h
+HcrdrxDetails.h
 HcrdrxStatusThread.h
+HcrGuiLogWindow.h
 HcrGuiMainWindow.h
 MotionControlDetails.h
 MotionControlClientThread.h

@@ -27,10 +27,12 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     QMainWindow(),
     _ui(),
     _updateTimer(this),
+    _logWindow(this),
     _cmigitsDetails(this),
     _xmitDetails(this),
-    _antennaModeDialog(this),
     _motionControlDetails(this),
+    _hcrdrxDetails(this),
+    _antennaModeDialog(this),
     _cmigitsStatusThread(rdsHost, cmigitsPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
     _mcClientThread(rdsHost, motionControlPort),
@@ -50,8 +52,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _goodPresStartTime(0) {
     // Set up the UI
     _ui.setupUi(this);
-    // Limit the log area to 1000 messages
-    _ui.logArea->setMaximumBlockCount(1000);
+
     _logMessage("hcrgui started");
     
     std::ostringstream ss;
@@ -70,7 +71,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _logMessage(ss.str());
 
     // Disable the HMC mode box until we get status from HcrPmc730Daemon.
-    _ui.setHmcModeBox->setEnabled(false);
+    _ui.hmcModeCombo->setEnabled(false);
+    
+    // No status from any daemons yet
+    _ui.xmitterStatusIcon->setPixmap(_redLED);
+    _ui.mcStatusIcon->setPixmap(_redLED);
+    _ui.cmigitsStatusIcon->setPixmap(_redLED);
+    _ui.hcrdrxStatusIcon->setPixmap(_redLED);
     
     // Disable C-MIGITS details
     _cmigitsDetails.setEnabled(false);
@@ -102,8 +109,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
             this, SLOT(_setPmcStatus(HcrPmc730Status)));
     _pmcStatusThread.start();
 
-    // Disable the transmitter box.
-    _ui.xmitterBox->setEnabled(false);
     // Connect signals from our XmitdStatusThread object and start the thread.
     connect(& _xmitdStatusThread, SIGNAL(serverResponsive(bool)),
             this, SLOT(_xmitdResponsivenessChange(bool)));
@@ -153,6 +158,9 @@ HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding, QString msg) {
 void
 HcrGuiMainWindow::_setCmigitsStatus(const CmigitsStatus & status) {
     _cmigitsStatus = status;
+    // Update the C-MIGITS status details dialog.
+    _cmigitsDetails.updateStatus(_cmigitsStatus);
+    // Update the main GUI
     _update();
 }
 
@@ -170,6 +178,9 @@ HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
 void
 HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
     _mcStatus = status;
+    // Update the details dialog
+    _motionControlDetails.updateStatus(_mcStatus);
+    // Update the main GUI
     _update();
 }
 
@@ -184,7 +195,7 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
             "responding";
     _logMessage(ss.str().c_str());
 
-    _ui.setHmcModeBox->setEnabled(responding);
+    _ui.hmcModeCombo->setEnabled(responding);
     if (! responding) {
         // Create an empty (bad) HcrPmc730Status, and set it as the last status
         // received.
@@ -209,7 +220,6 @@ HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
             "responding";
     _logMessage(ss.str().c_str());
 
-    _ui.xmitterBox->setEnabled(responding);
     if (! responding) {
         // If we lose contact with hcr_xmitd, reset _nextLogIndex to zero so we
         // start fresh when we connect again
@@ -223,6 +233,10 @@ HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
 void
 HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     _xmitStatus = status;
+    // Update the transmitter status details dialog
+    _xmitDetails.setEnabled(_xmitStatus.serialConnected());
+    _xmitDetails.updateStatus(_xmitStatus);
+    // Update the main GUI
     _update();
     // Append new log messages from hcr_xmitd
     _appendXmitdLogMsgs();
@@ -249,6 +263,9 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
 void
 HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
     _drxStatus = status;
+    // Update the details dialog
+    _hcrdrxDetails.updateStatus(_drxStatus);
+    // Update the main GUI
     _update();
 }
 
@@ -503,7 +520,7 @@ HcrGuiMainWindow::_appendXmitdLogMsgs() {
     std::string msgs;
     _xmitdStatusThread.rpcClient().getLogMessages(firstIndex, msgs, _nextLogIndex);
     if (_nextLogIndex != firstIndex) {
-        _ui.logArea->appendPlainText(msgs.c_str());
+        _logWindow.appendPlainText(msgs.c_str());
     }
 }
 
@@ -569,6 +586,16 @@ HcrGuiMainWindow::on_mcDetailsButton_clicked() {
 }
 
 void
+HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
+    _hcrdrxDetails.show();
+}
+
+void
+HcrGuiMainWindow::on_showLogButton_clicked() {
+    _logWindow.show();
+}
+
+void
 HcrGuiMainWindow::_update() {
     // Update the current time string
     char timestring[32];
@@ -577,7 +604,6 @@ HcrGuiMainWindow::_update() {
     _ui.clockLabel->setText(timestring);
     
     // Update transmitter control
-    _ui.xmitterBox->setEnabled(_xmitStatus.serialConnected());
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentIsOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
@@ -628,15 +654,7 @@ HcrGuiMainWindow::_update() {
     faultCount += _xmitStatus.externalInterlockFault() ? 1 : 0;
     faultCount += _xmitStatus.eikInterlockFault() ? 1 : 0;
 
-    if (faultCount > 0) {
-        std::ostringstream ss;
-        ss << faultCount << " Transmitter Fault(s)";
-        _ui.xmitterStatusSummaryLabel->setText(ss.str().c_str());
-        _ui.xmitterStatusSummaryIcon->setPixmap(_redLED);
-    } else {
-        _ui.xmitterStatusSummaryLabel->setText("Transmitter OK");
-        _ui.xmitterStatusSummaryIcon->setPixmap(_greenLED);
-    }
+    _ui.xmitterStatusIcon->setPixmap((faultCount > 0) ? _redLED : _greenLED);
 
     // HMC mode
     _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
@@ -644,28 +662,13 @@ HcrGuiMainWindow::_update() {
     // C-MIGITS status light
     {
         // Get C-MIGITS status
-        double statusTime = 0.0;
-        uint16_t mode = 0;
-        bool insAvailable = 0;
-        bool gpsAvailable = 0;
-        bool doingCoarseAlignment = 0;
-        uint16_t nSats = 0;
-        uint16_t positionFOM = 0;
-        uint16_t velocityFOM = 0;
-        uint16_t headingFOM = 0;
-        uint16_t timeFOM = 0;
-        double expectedHPosError = 0.0;
-        double expectedVPosError = 0.0;
-        double expectedVelError = 0.0;
-        _cmigitsStatus.msg3500Data(statusTime, mode, insAvailable, gpsAvailable,
-                doingCoarseAlignment, nSats,
-                positionFOM, velocityFOM,  headingFOM, timeFOM,
-                expectedHPosError, expectedVPosError, expectedVelError);
+        uint16_t mode = _cmigitsStatus.currentMode();
         QPixmap light;
         if (mode == 7 || mode == 8) {
             // Green light if mode is "Air Navigation" or "Land Navigation"
             light = _greenLED;
-        } else if (insAvailable && gpsAvailable) {
+        } else if (_cmigitsStatus.insAvailable() && 
+                _cmigitsStatus.gpsAvailable()) {
             // Amber light if we have both INS and GPS
             light = _amberLED;
         } else {
@@ -675,15 +678,7 @@ HcrGuiMainWindow::_update() {
         _ui.cmigitsStatusIcon->setPixmap(light);
     }
 
-    // Update the transmitter status details dialog
-    _xmitDetails.setEnabled(_xmitStatus.serialConnected());
-    _xmitDetails.updateStatus(_xmitStatus);
-
-    // Update the C-MIGITS status details dialog.
-    _cmigitsDetails.updateStatus(_cmigitsStatus);
-    
     // MotionControl status LED
-    _motionControlDetails.updateStatus(_mcStatus);
     if (! _mcClientThread.serverIsResponding() ||
             _motionControlDetails.errorDetected()) {
         _ui.mcStatusIcon->setPixmap(_redLED);
@@ -715,7 +710,7 @@ HcrGuiMainWindow::_update() {
         _ui.antennaModeLabel->setText(ss.str().c_str());
 
         // Attitude correction
-        _ui.attitudeCorrectionFrame->setEnabled(true);
+        _ui.attitudeCorrectionWidget->setEnabled(true);
         _ui.attitudeCorrectionIcon->setPixmap(
                 _mcStatus.attitudeCorrectionEnabled ?
                 _greenLED : _greenLED_off);
@@ -734,11 +729,15 @@ HcrGuiMainWindow::_update() {
         _mcStatus = MotionControl::Status();    // go to an empty status
         _motionControlDetails.setEnabled(false);
         _ui.antennaModeLabel->setText("<font color='DarkRed'>MotionControlDaemon not responding</font>");
-        _ui.attitudeCorrectionFrame->setEnabled(false);
+        _ui.attitudeCorrectionWidget->setEnabled(false);
         _ui.driveHomeButton->setEnabled(false);
         _ui.antennaModeButton->setEnabled(false);
     }
     
+    // hcrdrx status LED
+    _ui.hcrdrxStatusIcon->setPixmap(_hcrdrxStatusThread.serverIsResponding() ?
+            _greenLED : _redLED);
+
     // Make sure transmitter HV is turned off if the pressure in the pressure 
     // vessel drops below 760 hPa.
     if (_pmcStatus.pvForePressure() < 760) {
@@ -790,7 +789,7 @@ HcrGuiMainWindow::_update() {
 
 void
 HcrGuiMainWindow::_logMessage(std::string message) {
-    _ui.logArea->appendPlainText(
+    _logWindow.appendPlainText(
             QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh:mm:ss ") + 
             message.c_str());
     ILOG << message;

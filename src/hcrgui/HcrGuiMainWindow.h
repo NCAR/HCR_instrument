@@ -24,10 +24,13 @@
 
 #include "ui_HcrGuiMainWindow.h"
 
+#include "HcrGuiLogWindow.h"
+
 #include "CmigitsDetails.h"
-#include "AntennaModeDialog.h"
+#include "HcrdrxDetails.h"
 #include "MotionControlDetails.h"
 #include "XmitDetails.h"
+#include "AntennaModeDialog.h"
 
 class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
@@ -48,6 +51,8 @@ private slots:
     void on_antennaModeButton_clicked();
     void on_driveHomeButton_clicked();
     void on_mcDetailsButton_clicked();
+    void on_hcrdrxDetailsButton_clicked();
+    void on_showLogButton_clicked();
     void on_attitudeCorrectionButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
@@ -134,10 +139,15 @@ private:
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
+    
+    HcrGuiLogWindow _logWindow;
+    
     CmigitsDetails _cmigitsDetails;
     XmitDetails _xmitDetails;
-    AntennaModeDialog _antennaModeDialog;
     MotionControlDetails _motionControlDetails;
+    HcrdrxDetails _hcrdrxDetails;
+    
+    AntennaModeDialog _antennaModeDialog;
     
     // Threads to collect status from various daemons
     CmigitsStatusThread _cmigitsStatusThread;
