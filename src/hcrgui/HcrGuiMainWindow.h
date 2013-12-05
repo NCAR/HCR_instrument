@@ -17,6 +17,7 @@
 #include <QUdpSocket>
 
 #include "CmigitsStatusThread.h"
+#include "DataMapperStatusThread.h"
 #include "HcrdrxStatusThread.h"
 #include "MotionControlClientThread.h"
 #include "Pmc730StatusThread.h"
@@ -91,6 +92,12 @@ private slots:
     /// @brief Save the last status received from hcrdrx
     /// @param status the last status received from hcrdrx
     void _setDrxStatus(DrxStatus status);
+    /// @brief Slot to call when DataMapper responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _dataMapperResponsivenessChange(bool responding);
+    /// @brief Save the last time-series data status received from DataMapper
+    /// @param status the last time-series data status received from DataMapper
+    void _setDataMapperStatus(DMAP_info_t status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
 
@@ -151,6 +158,7 @@ private:
     
     // Threads to collect status from various daemons
     CmigitsStatusThread _cmigitsStatusThread;
+    DataMapperStatusThread _dataMapperStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     MotionControlClientThread _mcClientThread;
     Pmc730StatusThread _pmcStatusThread;
@@ -170,6 +178,8 @@ private:
     CmigitsStatus _cmigitsStatus;
     // Last status from hcrdrx
     DrxStatus _drxStatus;
+    // Last status from DataMapper
+    DMAP_info_t _dmapStatus;
     
     // next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;

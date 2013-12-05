@@ -7,6 +7,7 @@
 #include "HcrGuiMainWindow.h"
 
 #include <cmath>
+#include <cstring>
 #include <sstream>
 #include <unistd.h>
 
@@ -34,6 +35,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _hcrdrxDetails(this),
     _antennaModeDialog(this),
     _cmigitsStatusThread(rdsHost, cmigitsPort),
+    _dataMapperStatusThread(),
     _hcrdrxStatusThread(rdsHost, drxPort),
     _mcClientThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
@@ -45,6 +47,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _xmitStatus(),
     _mcStatus(),
     _pmcStatus(true),
+    _cmigitsStatus(),
+    _drxStatus(),
+    _dmapStatus(),
     _nextLogIndex(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
     _anglesValidTimer(this),
@@ -69,6 +74,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     ss << "No response yet from CmigitsDaemon at " << rdsHost << ":" <<
             cmigitsPort;
     _logMessage(ss.str());
+
+    ss.str("");
+    ss << "No response yet from hcrdrx at " << rdsHost << ":" << drxPort;
+    _logMessage(ss.str());
+    
+    _logMessage("No response yet from DataMapper");
+    memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
     // Disable the HMC mode box until we get status from HcrPmc730Daemon.
     _ui.hmcModeCombo->setEnabled(false);
@@ -115,6 +127,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     connect(& _xmitdStatusThread, SIGNAL(newStatus(XmitStatus)),
             this, SLOT(_setXmitStatus(XmitStatus)));
     _xmitdStatusThread.start();
+
+    // Connect signals from our DataMapperStatusThread object and start the thread.
+    connect(& _dataMapperStatusThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_dataMapperResponsivenessChange(bool)));
+    connect(& _dataMapperStatusThread, SIGNAL(newStatus(DMAP_info_t)),
+            this, SLOT(_setDataMapperStatus(DMAP_info_t)));
+    _dataMapperStatusThread.start();
 
     // QUdpSocket listening for broadcast of angles
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
@@ -265,6 +284,30 @@ HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
     _drxStatus = status;
     // Update the details dialog
     _hcrdrxDetails.updateStatus(_drxStatus);
+    // Update the main GUI
+    _update();
+}
+
+void
+HcrGuiMainWindow::_dataMapperResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "DataMapper " << (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+
+    if (! responding) {
+        // Create a bad DMAP_info_t, and set it as the last status
+        // received.
+        _setDataMapperStatus(_dataMapperStatusThread.badStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t status) {
+    _dmapStatus = status;
+    // Update the details dialog
+//    _dmapDetails.updateStatus(_dmapStatus);
     // Update the main GUI
     _update();
 }
