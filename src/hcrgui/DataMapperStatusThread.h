@@ -47,9 +47,10 @@ signals:
     /// @param msg a message describing the associated event
     void serverResponsive(bool responsive, QString msg);
 
-    /// @brief signal emitted when a new status is received from DataMapper
-    /// @param status the new status received from DataMapper
-    void newStatus(DMAP_info_t status);
+    /// @brief signal emitted when a new time series write rate is calculated
+    /// for DataMapper
+    /// @param writeRate the current time series write rate in MiB/s.
+    void newStatus(double writeRate);
 
 private slots:
     /// @brief Try to get latest status from DataMapper, and emit a 
@@ -64,7 +65,10 @@ private:
     
     /// True iff the client had a successful connection with the DataMapper
     /// on the last call.
-    bool _responsive;    
+    bool _responsive;
+    
+    /// The last info we got from DataMapper
+    DMAP_info_t _lastInfo;
 };
 
 #endif /* DATAMAPPERSTATUSTHREAD_H_ */

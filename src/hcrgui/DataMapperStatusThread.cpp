@@ -12,7 +12,10 @@
 #include <QDateTime>
 #include <QMetaType>
 #include <QTimer>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <logx/Logging.h>
+
+using namespace boost::posix_time;
 
 LOGGING("DataMapperStatusThread")
 
@@ -22,10 +25,11 @@ static const std::string DATA_DIR = "time_series/wband/save";
 DataMapperStatusThread::DataMapperStatusThread(std::string dmapHost) :
     _dmapHost(dmapHost),
     _dmapAccess(),
-    _responsive(false) {
-    // We need to register DataMapper as a metatype, since we'll be passing
-    // it as an argument in a signal.
-    qRegisterMetaType<DMAP_info_t>("DMAP_info_t");
+    _responsive(false){
+    
+    // Zero out _lastInfo
+    memset(&_lastInfo, 0, sizeof(_lastInfo));
+    
     // Change thread affinity to self instead of our parent's thread.
     // This makes the calls to _getStatus() execute in *this* thread, which is
     // what we want.
@@ -33,16 +37,6 @@ DataMapperStatusThread::DataMapperStatusThread(std::string dmapHost) :
 }
 
 DataMapperStatusThread::~DataMapperStatusThread() {
-}
-
-DMAP_info_t
-DataMapperStatusThread::badStatus() const {
-    DMAP_info_t status;
-    memset(&status, 0, sizeof(status));
-    strncpy(status.hostname, _dmapHost.c_str(), sizeof(status.hostname));
-    strncpy(status.datatype, DATA_TYPE.c_str(), sizeof(status.datatype));
-    strncpy(status.dir, DATA_TYPE.c_str(), sizeof(status.dir));
-    return(status);
 }
 
 void
@@ -81,31 +75,50 @@ DataMapperStatusThread::_getStatus() {
 
     // Extract the status we just requested, or build a "nothing written" status
     // if zero entries were returned.
-    DMAP_info_t status;
+    DMAP_info_t info = _lastInfo;
+    
     int nInfo = _dmapAccess.getNInfo();
     switch (nInfo) {
     case 0:
-        // Nobody has registered to write our DATA_TYPE to DATA_DIR. Build
-        // a status with zero data written.
-        status = badStatus();
+        // Nobody has registered to write our DATA_TYPE to DATA_DIR.
+        // Continue using _lastInfo.
         break;
     case 1:
-        // This should generally be the case.
-        status = _dmapAccess.getInfo(0);
+        // This is the common case; we should almost always get 1 info block.
+        // Get the block.
+        info = _dmapAccess.getInfo(0);
         break;
     default:
         WLOG << "Got " << nInfo << " info entries when expecting 1. " <<
             "Using first entry.";
-        status = _dmapAccess.getInfo(0);
+        info = _dmapAccess.getInfo(0);
         break;
     }
     
+    // Calculate the write rate between this info block and the previous one.
+    // Only calculate the rate if the delta time between the two blocks is
+    // greater than zero and less than 1 minute. Otherwise report a 0 MiB/s
+    // rate.
+    double writeRate = 0.0; // MiB/s
+    ptime lastTime = boost::posix_time::from_time_t(_lastInfo.latest_time);
+    ptime infoTime = boost::posix_time::from_time_t(info.latest_time);
+    time_duration delta = infoTime - lastTime;
+    
+    // If the time difference is less than a minute, calculate the data
+    // rate between the two times. Otherwise return a rate of zero.
+    if ((delta == time_duration(0, 0, 0)) || (delta < time_duration(0, 1, 0))) {
+        writeRate = 0.0;
+    } else {
+        double wroteMiB = (info.total_bytes - _lastInfo.total_bytes) / 
+                (1024 * 1024);
+        writeRate = wroteMiB / (delta.total_milliseconds() * 0.001);
+    }
+    
+    // Save this info block
+    _lastInfo = info;
+    
     // Emit the new status.
-    int GiB = 1024 * 1024 * 1024;
-    QDateTime latestDataTime = QDateTime::fromTime_t(status.latest_time).toTimeSpec(Qt::UTC);
-    DLOG << "Time series as of " << 
-            latestDataTime.toString("yyyy/MM/dd hh:mm:ss: ").toStdString() << 
-            status.nfiles << " files, " << 
-            std::fixed << std::setprecision(3) << status.total_bytes / GiB << " GiB";
-    emit newStatus(status);
+    DLOG << boost::posix_time::to_simple_string(infoTime) << 
+            ": writing time series at " << writeRate << " MiB/s";
+    emit newStatus(writeRate);
 }

@@ -49,7 +49,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _pmcStatus(true),
     _cmigitsStatus(),
     _drxStatus(),
-    _dmapStatus(),
+    _dmapWriteRate(0.0),
     _nextLogIndex(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
     _anglesValidTimer(this),
@@ -80,7 +80,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _logMessage(ss.str());
     
     _logMessage("No response yet from DataMapper");
-    memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
     // Disable the HMC mode box until we get status from HcrPmc730Daemon.
     _ui.hmcModeCombo->setEnabled(false);
@@ -297,15 +296,14 @@ HcrGuiMainWindow::_dataMapperResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     if (! responding) {
-        // Create a bad DMAP_info_t, and set it as the last status
-        // received.
-        _setDataMapperStatus(_dataMapperStatusThread.badStatus());
+        // Set data rate to 0.0 MiB/s
+        _setDataMapperStatus(0.0);
     }
 }
 
 void
-HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t status) {
-    _dmapStatus = status;
+HcrGuiMainWindow::_setDataMapperStatus(double tsWriteRate) {
+    _dmapWriteRate = tsWriteRate;
     // Update the details dialog
 //    _dmapDetails.updateStatus(_dmapStatus);
     // Update the main GUI

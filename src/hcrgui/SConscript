@@ -3,6 +3,7 @@
 # Beware tool ordering here! In particular, rapradar must be *after* 
 # xmitdrpcclient. Reasons are unclear...
 hcrguiTools = Split("""
+boost_date_time
 hcrpmc730client
 cmigits
 cmigitsdaemonrpcclient
