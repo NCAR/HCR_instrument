@@ -32,9 +32,10 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _updateTimer(this),
     _logWindow(this),
     _cmigitsDetails(this),
-    _xmitDetails(this),
-    _motionControlDetails(this),
     _hcrdrxDetails(this),
+    _motionControlDetails(this),
+    _pmc730Details(this),
+    _xmitDetails(this),
     _antennaModeDialog(this),
     _cmigitsStatusThread(rdsHost, cmigitsPort),
     _dataMapperStatusThread(),
@@ -227,6 +228,9 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
 void
 HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
     _pmcStatus = status;
+    // Update the details dialog
+    _pmc730Details.updateStatus(_pmcStatus);
+    // Update the main GUI
     _update();
 }
 
@@ -402,44 +406,6 @@ HcrGuiMainWindow::_xmitting() const {
     return(xmitting);
 }
 
-/// Toggle the current on/off state of the transmitter klystron filament
-void
-HcrGuiMainWindow::on_filamentButton_clicked() {
-    // Send the command to toggle HV state to both hcr_xmitd and 
-    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
-    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
-    // HV line is handled by hcr_xmitd. We need to cover both cases.
-    if (_xmitterFilamentIsOn()) {
-        _xmitdStatusThread.rpcClient().xmitFilamentOff();
-        _pmcStatusThread.rpcClient().xmitFilamentOff();
-    } else {
-        _xmitdStatusThread.rpcClient().xmitFilamentOn();
-        _pmcStatusThread.rpcClient().xmitFilamentOn();
-    }
-}
-
-/// Toggle the current on/off state of the transmitter high voltage
-void
-HcrGuiMainWindow::on_hvButton_clicked() {
-    // Send the command to toggle HV state to both hcr_xmitd and 
-    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
-    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
-    // HV line is handled by hcr_xmitd. We need to cover both cases.
-    if (_xmitterHvIsOn()) {
-        _xmitdStatusThread.rpcClient().xmitHvOff();
-        _pmcStatusThread.rpcClient().xmitHvOff();
-    } else {
-        _xmitdStatusThread.rpcClient().xmitHvOn();
-        _pmcStatusThread.rpcClient().xmitHvOn();
-    }
-}
-
-/// Set HMC mode
-void
-HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
-    _pmcStatusThread.rpcClient().setHmcMode(index);
-}
-
 /// Pop up the antenna mode editing dialog
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
@@ -461,32 +427,92 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
     // Pop up the antenna mode dialog, and apply the new mode if the dialog
     // is accepted.
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
-    	if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
-    		float angle;
-    		_antennaModeDialog.getPointingAngle(angle);
-    		// Point the antenna to the angle
-        	_mcClientThread.rpcClient().point(angle);
-    	}
-    	else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
-    		float ccwLimit, cwLimit, scanRate, beamTilt;
-    		_antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate,
-    		        beamTilt);
-    		// If beam tilt angle is not zero, confirm that it's intentional.
-    		if (beamTilt != 0.0) {
-    		    QMessageBox confirmBox(QMessageBox::Question,
-    		            "Confirm Non-Zero Tilt",
-    		            "A non-zero tilt angle was given for the scan.\n"
-    		            "Are you sure you want to continue?",
-    		            QMessageBox::Ok | QMessageBox::Cancel, this);
-    		    confirmBox.setInformativeText(
-    		            "Non-zero tilt is only useful for special scanning cases");
-    		    if (confirmBox.exec() == QMessageBox::Cancel) {
-    		        return;
-    		    }
-    		}
-    		// Start scanning
-    		_mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
-    	}
+        if (_antennaModeDialog.getMode() == AntennaModeDialog::POINTING) {
+            float angle;
+            _antennaModeDialog.getPointingAngle(angle);
+            // Point the antenna to the angle
+            _mcClientThread.rpcClient().point(angle);
+        }
+        else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
+            float ccwLimit, cwLimit, scanRate, beamTilt;
+            _antennaModeDialog.getScanningParam(ccwLimit, cwLimit, scanRate,
+                    beamTilt);
+            // If beam tilt angle is not zero, confirm that it's intentional.
+            if (beamTilt != 0.0) {
+                QMessageBox confirmBox(QMessageBox::Question,
+                        "Confirm Non-Zero Tilt",
+                        "A non-zero tilt angle was given for the scan.\n"
+                        "Are you sure you want to continue?",
+                        QMessageBox::Ok | QMessageBox::Cancel, this);
+                confirmBox.setInformativeText(
+                        "Non-zero tilt is only useful for special scanning cases");
+                if (confirmBox.exec() == QMessageBox::Cancel) {
+                    return;
+                }
+            }
+            // Start scanning
+            _mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
+        }
+    }
+}
+
+/// Toggle motion control attitude correction
+void
+HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
+    // Toggle the current state of attitude correction
+    bool correction = _mcStatus.attitudeCorrectionEnabled;
+    ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
+    _mcClientThread.rpcClient().setCorrectionEnabled(! correction);
+}
+
+void
+HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
+    _cmigitsDetails.show();
+}
+
+void
+HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
+    // Confirm that it's OK to begin initialization
+    QMessageBox confirmBox(QMessageBox::Question, "Confirm Initialization",
+            "Continue with C-MIGITS initialization?", 
+            QMessageBox::Ok | QMessageBox::Cancel, this);
+    confirmBox.setInformativeText("Criteria for initialization are:\n\n"
+            "Aircraft is stationary and will remain stationary\n"
+            "for two minutes.\n"
+            "\n"
+            "OR\n"
+            "\n"
+            "Aircraft is flying straight and level, and will continue\n"
+            "straight and level until the C-MIGITS leaves 'Coarse\n"
+            "Alignment' submode, *followed* by an acceleration\n"
+            "(speed change or turn).");
+    if (confirmBox.exec() == QMessageBox::Cancel) {
+        return;
+    }
+    
+    // We got confirmation, so send the XML-RPC command to begin initialization.
+    try {
+        if (_cmigitsStatusThread.rpcClient().initializeUsingIwg1()) {
+            QMessageBox msgBox(QMessageBox::Information,
+                    "C-MIGITS initialization", "C-MIGITS initialization started",
+                    QMessageBox::Close, this);
+            msgBox.exec();
+        } else {
+            QMessageBox msgBox(QMessageBox::Warning,
+                    "C-MIGITS initialization", "Failed to start C-MIGITS initialization",
+                    QMessageBox::Close, this);
+            msgBox.setInformativeText("This generally happens if the C-MIGITS "
+                    "is not getting IWG1 packets.");
+            msgBox.exec();
+        }
+    } catch (std::exception & e) {
+        std::ostringstream ss;
+        ss << "XML-RPC error calling initializeUsingIwg1(): " << e.what();
+        _logMessage(ss.str());
+        QMessageBox msgBox(QMessageBox::Warning, "cmigitsDaemon XML-RPC Error",
+                "Error calling initializeUsingIwg1()", QMessageBox::Close, this);
+        msgBox.setDetailedText(e.what());
+        msgBox.exec();
     }
 }
 
@@ -549,13 +575,73 @@ done:
     _mcClientThread.rpcClient().setCorrectionEnabled(savedState);
 }
 
-/// Toggle motion control attitude correction
+/// Toggle the current on/off state of the transmitter klystron filament
 void
-HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
-    // Toggle the current state of attitude correction
-    bool correction = _mcStatus.attitudeCorrectionEnabled;
-    ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
-    _mcClientThread.rpcClient().setCorrectionEnabled(! correction);
+HcrGuiMainWindow::on_filamentButton_clicked() {
+    // Send the command to toggle HV state to both hcr_xmitd and 
+    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
+    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
+    // HV line is handled by hcr_xmitd. We need to cover both cases.
+    if (_xmitterFilamentIsOn()) {
+        _xmitdStatusThread.rpcClient().xmitFilamentOff();
+        _pmcStatusThread.rpcClient().xmitFilamentOff();
+    } else {
+        _xmitdStatusThread.rpcClient().xmitFilamentOn();
+        _pmcStatusThread.rpcClient().xmitFilamentOn();
+    }
+}
+
+void
+HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
+    _hcrdrxDetails.show();
+}
+
+/// Set HMC mode
+void
+HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
+    _pmcStatusThread.rpcClient().setHmcMode(index);
+}
+
+/// Toggle the current on/off state of the transmitter high voltage
+void
+HcrGuiMainWindow::on_hvButton_clicked() {
+    // Send the command to toggle HV state to both hcr_xmitd and 
+    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
+    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
+    // HV line is handled by hcr_xmitd. We need to cover both cases.
+    if (_xmitterHvIsOn()) {
+        _xmitdStatusThread.rpcClient().xmitHvOff();
+        _pmcStatusThread.rpcClient().xmitHvOff();
+    } else {
+        _xmitdStatusThread.rpcClient().xmitHvOn();
+        _pmcStatusThread.rpcClient().xmitHvOn();
+    }
+}
+
+void
+HcrGuiMainWindow::on_mcDetailsButton_clicked() {
+    _motionControlDetails.show();
+}
+
+void
+HcrGuiMainWindow::on_pmc730DetailsButton_clicked() {
+    _pmc730Details.show();
+}
+
+void
+HcrGuiMainWindow::on_recordingButton_clicked() {
+    _toggleTsWriteEnabled();
+    _update();
+}
+
+void
+HcrGuiMainWindow::on_showLogButton_clicked() {
+    _logWindow.show();
+}
+
+void
+HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
+    _xmitDetails.show();
 }
 
 void
@@ -566,83 +652,6 @@ HcrGuiMainWindow::_appendXmitdLogMsgs() {
     if (_nextLogIndex != firstIndex) {
         _logWindow.appendPlainText(msgs.c_str());
     }
-}
-
-void
-HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
-    _xmitDetails.show();
-}
-
-void
-HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
-    _cmigitsDetails.show();
-}
-
-void
-HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
-    // Confirm that it's OK to begin initialization
-    QMessageBox confirmBox(QMessageBox::Question, "Confirm Initialization",
-            "Continue with C-MIGITS initialization?", 
-            QMessageBox::Ok | QMessageBox::Cancel, this);
-    confirmBox.setInformativeText("Criteria for initialization are:\n\n"
-            "Aircraft is stationary and will remain stationary\n"
-            "for two minutes.\n"
-            "\n"
-            "OR\n"
-            "\n"
-            "Aircraft is flying straight and level, and will continue\n"
-            "straight and level until the C-MIGITS leaves 'Coarse\n"
-            "Alignment' submode, *followed* by an acceleration\n"
-            "(speed change or turn).");
-    if (confirmBox.exec() == QMessageBox::Cancel) {
-        return;
-    }
-    
-    // We got confirmation, so send the XML-RPC command to begin initialization.
-    try {
-        if (_cmigitsStatusThread.rpcClient().initializeUsingIwg1()) {
-            QMessageBox msgBox(QMessageBox::Information,
-                    "C-MIGITS initialization", "C-MIGITS initialization started",
-                    QMessageBox::Close, this);
-            msgBox.exec();
-        } else {
-            QMessageBox msgBox(QMessageBox::Warning,
-                    "C-MIGITS initialization", "Failed to start C-MIGITS initialization",
-                    QMessageBox::Close, this);
-            msgBox.setInformativeText("This generally happens if the C-MIGITS "
-                    "is not getting IWG1 packets.");
-            msgBox.exec();
-        }
-    } catch (std::exception & e) {
-        std::ostringstream ss;
-        ss << "XML-RPC error calling initializeUsingIwg1(): " << e.what();
-        _logMessage(ss.str());
-        QMessageBox msgBox(QMessageBox::Warning, "cmigitsDaemon XML-RPC Error",
-                "Error calling initializeUsingIwg1()", QMessageBox::Close, this);
-        msgBox.setDetailedText(e.what());
-        msgBox.exec();
-    }
-}
-
-void
-HcrGuiMainWindow::on_mcDetailsButton_clicked() {
-    _motionControlDetails.show();
-}
-
-void
-HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
-    _hcrdrxDetails.show();
-}
-
-void
-HcrGuiMainWindow::on_showLogButton_clicked() {
-    _logWindow.show();
-}
-
-void
-HcrGuiMainWindow::on_recordingButton_clicked() {
-    _toggleTsWriteEnabled();
-    _update();
 }
 
 void

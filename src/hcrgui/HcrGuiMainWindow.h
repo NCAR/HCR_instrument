@@ -30,6 +30,7 @@
 #include "CmigitsDetails.h"
 #include "HcrdrxDetails.h"
 #include "MotionControlDetails.h"
+#include "Pmc730Details.h"
 #include "XmitDetails.h"
 #include "AntennaModeDialog.h"
 
@@ -43,19 +44,20 @@ public:
     virtual ~HcrGuiMainWindow();
 
 private slots:
+    void on_antennaModeButton_clicked();
+    void on_attitudeCorrectionButton_clicked();
     void on_cmigitsDetailsButton_clicked();
     void on_cmigitsInitButton_clicked();
-    void on_filamentButton_clicked();
-    void on_hvButton_clicked();
-    void on_xmitterDetailsButton_clicked();
-    void on_hmcModeCombo_activated(int index);
-    void on_antennaModeButton_clicked();
     void on_driveHomeButton_clicked();
-    void on_mcDetailsButton_clicked();
+    void on_filamentButton_clicked();
     void on_hcrdrxDetailsButton_clicked();
-    void on_showLogButton_clicked();
-    void on_attitudeCorrectionButton_clicked();
+    void on_hmcModeCombo_activated(int index);
+    void on_hvButton_clicked();
+    void on_mcDetailsButton_clicked();
+    void on_pmc730DetailsButton_clicked();
     void on_recordingButton_clicked();
+    void on_showLogButton_clicked();
+    void on_xmitterDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
@@ -161,9 +163,10 @@ private:
     HcrGuiLogWindow _logWindow;
     
     CmigitsDetails _cmigitsDetails;
-    XmitDetails _xmitDetails;
-    MotionControlDetails _motionControlDetails;
     HcrdrxDetails _hcrdrxDetails;
+    MotionControlDetails _motionControlDetails;
+    Pmc730Details _pmc730Details;
+    XmitDetails _xmitDetails;
     
     AntennaModeDialog _antennaModeDialog;
     
