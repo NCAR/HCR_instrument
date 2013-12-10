@@ -19,7 +19,7 @@ using namespace std;
 
 // Time out the latest entry in the _cmigitsDeque when it is more than
 // CMIGITS_TIMEOUT_MSECS old.
-static const int CMIGITS_TIMEOUT_MSECS = 1000;
+static const uint32_t CMIGITS_TIMEOUT_MSECS = 1000;
 
 LOGGING("IwrfExport")
 
