@@ -5,7 +5,6 @@
  *      Author: hcr
  */
 
-#include "HcrPmc730.h"
 #include "HcrPmc730Status.h"
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>

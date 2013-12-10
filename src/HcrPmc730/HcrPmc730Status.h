@@ -8,6 +8,8 @@
 #ifndef HCRPMC730STATUS_H_
 #define HCRPMC730STATUS_H_
 
+#include "HcrPmc730.h"
+
 #include <deque>
 #include <exception>
 #include <string>
@@ -272,10 +274,14 @@ public:
     bool waveguideSwitchError() const { return(_waveguideSwitchError); }
 
     /**
-     * @brief Return the HMC operating mode number: 0-7. 
+     * @brief Return the HMC operating mode. 
      * @see HcrPmc730::HmcOperationMode for a description of the values.
      */
-    int hmcMode() const { return(_hmcMode); }
+    HcrPmc730::HmcOperationMode hmcMode() const {
+        // Cast _hmcMode back to its original HcrPmc730::HmcOperationMode
+        // enum type.
+        return(static_cast<HcrPmc730::HmcOperationMode>(_hmcMode));
+    }
     
 private:
     /**
@@ -517,9 +523,11 @@ private:
     /// Is there one or more EMS errors of type 6 or 7 in the error count?
     bool _emsError6Or7;
 
-    /// HMC operating mode
+    /// HMC operating mode. We keep it as an int, rather than as the
+    /// HcrPmc730::HmcOperationMode enum, so that our serialize() method above
+    /// has an easier type to work with.
     uint16_t _hmcMode;
-    };
+};
 
 // Increment this class version number when member variables are changed.
 BOOST_CLASS_VERSION(HcrPmc730Status, 0)
