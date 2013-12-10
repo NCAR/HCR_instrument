@@ -887,9 +887,9 @@ HcrGuiMainWindow::_readAngles()
     QDateTime now = QDateTime::currentDateTime();
     if (_lastAngleUpdate.secsTo(now) > 0 ||
             _lastAngleUpdate.time().msecsTo(now.time()) > 50) {
-        _ui.rotationValue->setText(QString::number(rotation, 'f', 1));
+        _ui.rotationValue->setText(QString::number(rotation, 'f', 2));
         _showRotAngle(rotation);
-        _ui.tiltValue->setText(QString::number(tilt, 'f', 1));
+        _ui.tiltValue->setText(QString::number(tilt, 'f', 2));
         _showTiltAngle(tilt);
 
         _lastAngleUpdate = now;
