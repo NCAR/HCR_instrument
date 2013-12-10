@@ -28,7 +28,7 @@ HcrPmc730::HmcModeNames[] = {
         "tx V, rx HV",
         "tx HV, rx HV",
         "unused (3)",
-        "Noise Source Calibration",
+        "Noise Source Cal",
         "tx V, rx HV (ATTENUATED)",
         "Bench Test",
         "unused (7)"
