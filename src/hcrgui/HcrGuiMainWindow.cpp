@@ -6,8 +6,10 @@
  */
 #include "HcrGuiMainWindow.h"
 
+#include <cerrno>
 #include <cmath>
 #include <cstring>
+#include <fstream>
 #include <sstream>
 #include <unistd.h>
 
@@ -54,7 +56,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _lastAngleUpdate(QDateTime::currentDateTime()),
     _anglesValidTimer(this),
     _hvDisabledForPressure(true),
-    _goodPresStartTime(0) {
+    _goodPresStartTime(0),
+    _tsWriteEnableFileName("/tmp/TsSmartSave.flag.wband") {
     // Set up the UI
     _ui.setupUi(this);
 
@@ -637,6 +640,12 @@ HcrGuiMainWindow::on_showLogButton_clicked() {
 }
 
 void
+HcrGuiMainWindow::on_recordingButton_clicked() {
+    _toggleTsWriteEnabled();
+    _update();
+}
+
+void
 HcrGuiMainWindow::_update() {
     // Update the current time string
     char timestring[32];
@@ -648,7 +657,7 @@ HcrGuiMainWindow::_update() {
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentIsOn() ? _greenLED : _greenLED_off);
     // filament button disabled if control is from the CMU front panel
-    _ui.filamentButton->setEnabled(_pmcStatusThread.daemonIsResponding() &&
+    _ui.filamentButton->setEnabled(_pmcStatusThread.serverIsResponding() &&
             _xmitStatus.psmPowerOn() && ! _xmitStatus.frontPanelCtlEnabled());
     if (! _xmitterFilamentIsOn()) {
         // Turn off warmup LED if the filament is not on
@@ -663,7 +672,7 @@ HcrGuiMainWindow::_update() {
     _ui.hvIcon->setPixmap(_xmitterHvIsOn() ? _greenLED : _greenLED_off);
     // Enable the HV button as soon as filament delay has expired (and control
     // is not via the CMU front panel)
-    _ui.hvButton->setEnabled(_pmcStatusThread.daemonIsResponding() &&
+    _ui.hvButton->setEnabled(_pmcStatusThread.serverIsResponding() &&
             ! _xmitStatus.frontPanelCtlEnabled() &&
             ! _xmitStatus.filamentDelayActive());
     _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
@@ -778,7 +787,15 @@ HcrGuiMainWindow::_update() {
     // hcrdrx status LED
     _ui.hcrdrxStatusIcon->setPixmap(_hcrdrxStatusThread.serverIsResponding() ?
             _greenLED : _redLED);
+    
+    // Time-series data recording enabled LED
+    _ui.recordingEnabledIcon->setPixmap(_tsWriteEnabled() ? 
+            _greenLED : _greenLED_off);
 
+    // HcrPmc730Daemon status LED
+    _ui.pmc730StatusIcon->setPixmap(_pmcStatusThread.serverIsResponding() ?
+            _greenLED : _redLED);
+    
     // Make sure transmitter HV is turned off if the pressure in the pressure 
     // vessel drops below 760 hPa.
     if (_pmcStatus.pvForePressure() < 760) {
@@ -826,6 +843,10 @@ HcrGuiMainWindow::_update() {
             box.exec();
         }
     }
+    
+    // DataMapper status LED
+    _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
+            _greenLED : _redLED);
 }
 
 void
@@ -1010,4 +1031,60 @@ HcrGuiMainWindow::_clearAngleDisplay() {
     _showRotAngle(INVALID_ANGLE);
     _ui.tiltValue->setText("---");
     _showTiltAngle(INVALID_ANGLE);
+}
+
+bool
+HcrGuiMainWindow::_tsWriteEnabled() {
+    // If the file named by _tsWriteEnableFileName exists, writing is enabled.
+    struct stat buf;
+    if (stat(_tsWriteEnableFileName.c_str(), &buf)) {
+        // Log a message if the error is something other than "No such file or 
+        // directory".
+        if (errno != ENOENT) {
+            ELOG << "Error testing for existence of '" << 
+                    _tsWriteEnableFileName << "': " << strerror(errno);
+        }
+        // We didn't find the file, so consider writing disabled.
+        return(false);
+    }
+    
+    bool exists = S_ISREG(buf.st_mode);
+    return(exists);
+}
+
+void
+HcrGuiMainWindow::_setTsWriteEnabled(bool state) {
+    // If desired state is already in effect, just return
+    if (state == _tsWriteEnabled()) {
+        return;
+    }
+    // If we're enabling writing, create the write enable file, otherwise
+    // delete it.
+    if (state) {
+        std::ofstream ofs(_tsWriteEnableFileName.c_str(), std::ios_base::out);
+        if (ofs.fail()) {
+            // Could not create the write enable file...
+            ELOG << "Failed to create write enable file '" << 
+                    _tsWriteEnableFileName << "': " << strerror(errno);
+            ELOG << "Time-series writing was not enabled!";
+            return;
+        }
+        // The file just needs to exist, but we write a line to the file to 
+        // describe its purpose.
+        ofs << "When file " << _tsWriteEnableFileName << " exists, " <<
+                "TsSmartSave.wband will write time-series data to disk.";
+        ofs.close();
+    } else {
+        if (unlink(_tsWriteEnableFileName.c_str()) != 0) {
+            ELOG << "Failed to remove write enable file '" <<
+                    _tsWriteEnableFileName << "': " << strerror(errno);
+            ELOG << "Time-series writing was not disabled!";
+            return;
+        }
+    }
+}
+
+void
+HcrGuiMainWindow::_toggleTsWriteEnabled() {
+    _setTsWriteEnabled(! _tsWriteEnabled());
 }

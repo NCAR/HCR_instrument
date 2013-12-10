@@ -89,8 +89,8 @@ DataMapperStatusThread::_getStatus() {
         info = _dmapAccess.getInfo(0);
         break;
     default:
-        WLOG << "Got " << nInfo << " info entries when expecting 1. " <<
-            "Using first entry.";
+        WLOG << "Got " << nInfo << " info entries from DataMapper, but " <<
+            "expected 1. Using first entry.";
         info = _dmapAccess.getInfo(0);
         break;
     }
@@ -106,11 +106,16 @@ DataMapperStatusThread::_getStatus() {
     
     // If the time difference is less than a minute, calculate the data
     // rate between the two times. Otherwise return a rate of zero.
-    if ((delta == time_duration(0, 0, 0)) || (delta < time_duration(0, 1, 0))) {
+    if (delta.total_milliseconds() == 0) {
+        DLOG << "Delta is ZERO";
+        writeRate = 0.0;
+    } else if (delta.total_milliseconds() > 60000) {
+        WLOG << "Delta over 1 minute: " << delta.total_seconds() << " s";
         writeRate = 0.0;
     } else {
+        ILOG << "Good delta of " << 0.001 * delta.total_milliseconds() << " ms";
         double wroteMiB = (info.total_bytes - _lastInfo.total_bytes) / 
-                (1024 * 1024);
+                /* (1024 * 1024) */ 1.0;
         writeRate = wroteMiB / (delta.total_milliseconds() * 0.001);
     }
     

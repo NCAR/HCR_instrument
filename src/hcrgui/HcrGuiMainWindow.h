@@ -55,6 +55,7 @@ private slots:
     void on_hcrdrxDetailsButton_clicked();
     void on_showLogButton_clicked();
     void on_attitudeCorrectionButton_clicked();
+    void on_recordingButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
@@ -143,6 +144,16 @@ private:
 
     /// @brief Clear the angle displays
     void _clearAngleDisplay();
+    
+    /// @brief Return true iff time-series data writing is enabled
+    bool _tsWriteEnabled();
+    
+    /// @brief Set the state of time-series data writing.
+    /// @param state true if writing is to be enabled, false otherwise
+    void _setTsWriteEnabled(bool state);
+    
+    /// @brief Toggle the state of time-series data writing.
+    void _toggleTsWriteEnabled();
 
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
@@ -168,35 +179,42 @@ private:
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
-    // Last status read from the transmitter
+    /// Last status read from the transmitter
     XmitStatus _xmitStatus;
-    // Last status from the MotionControlDaemon
+    /// Last status from the MotionControlDaemon
     MotionControl::Status _mcStatus;
-    // Last status read from HcrPmc730Daemon
+    /// Last status read from HcrPmc730Daemon
     HcrPmc730Status _pmcStatus;
-    // Last status read from cmigitsDaemon
+    /// Last status read from cmigitsDaemon
     CmigitsStatus _cmigitsStatus;
-    // Last status from hcrdrx
+    /// Last status from hcrdrx
     DrxStatus _drxStatus;
-    // Last status from DataMapper
+    /// Last status from DataMapper
     double _dmapWriteRate;
     
-    // next log index to get from hcr_xmitd
+    /// next log index to get from hcr_xmitd
     unsigned int _nextLogIndex;
 
-    // socket listening to angle broadcast
+    /// socket listening to angle broadcast
     QUdpSocket _angleSocket;
 
-    // time of last GUI update with new angles
+    /// time of last GUI update with new angles
     QDateTime _lastAngleUpdate;
 
-    // timer to erase angle display if time since new angles is too long
+    /// timer to erase angle display if time since new angles is too long
     QTimer _anglesValidTimer;
 
-    // Have we disabled transmitter HV due to low pod pressure?
+    /// Have we disabled transmitter HV due to low pod pressure?
     bool _hvDisabledForPressure;
-    // Time of the first good pressure in a period of continuous good pressures
-    // If zero, then the last pressure seen was bad.
+    
+    /// Time of the first good pressure in a period of continuous good pressures
+    /// If zero, then the last pressure seen was bad.
     time_t _goodPresStartTime;
+    
+    /// Time-series write enable filename. This file is created/removed to
+    /// enable/disable writing of time-series files by TsSmartSave. (The
+    /// name here *must* match the name in the TsSmartSave parameter file!)
+    std::string _tsWriteEnableFileName;
+    
 };
 #endif /*HCRGUIMAINWINDOW_H_*/

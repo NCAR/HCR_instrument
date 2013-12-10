@@ -37,7 +37,7 @@ public:
 
     /// @brief Return true iff the HcrPmc730Daemon is responding
     /// @return true iff the HcrPmc730Daemon is responding
-    bool daemonIsResponding() { return _responsive; }
+    bool serverIsResponding() { return _responsive; }
 
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
