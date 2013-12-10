@@ -55,6 +55,11 @@ public:
         HMC_MODE_UNUSED_7 = 7
     } HmcOperationMode;
 
+	/**
+	 * Mode name strings mapped to the HmcOperationMode enum
+	 */
+    static std::string HmcModeNames[];
+
     /**
      * @brief Static method to change whether the singleton instance will be created
      * as a simulated PMC-730. This must be called before the singleton is

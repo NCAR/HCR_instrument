@@ -21,6 +21,19 @@ extern "C" {
 
 LOGGING("HcrPmc730");
 
+// HMC mode names (mapped to the HmcOperationMode enum)
+std::string
+HcrPmc730::HmcModeNames[] = {
+        "tx H, rx HV",
+        "tx V, rx HV",
+        "tx HV, rx HV",
+        "unused (3)",
+        "Noise Source Calibration",
+        "tx V, rx HV (ATTENUATED)",
+        "Bench Test",
+        "unused (7)"
+};
+
 // Static to tell whether the singleton is created as a simulated PMC-730
 bool HcrPmc730::_DoSimulate = false;
 
