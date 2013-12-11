@@ -30,6 +30,7 @@ bool ExitRequested = false;
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
+    ILOG << "Exiting on signal " << signal;
     ExitRequested = true;
 }
 
@@ -240,6 +241,10 @@ main(int argc, char * argv[]) {
     // we can process Qt events on a regular basis.
     signal(SIGALRM, alarmHandler);
     startXmlrpcWorkAlarm();
+
+    // Catch SIGINT and SIGTERM to arrange for clean shutdown
+    signal(SIGINT, exitHandler);
+    signal(SIGTERM, exitHandler);
 
     // set up registration with procmap
     PMU_auto_init("HcrPmc730Daemon", _instance.c_str(), PROCMAP_REGISTER_INTERVAL);
