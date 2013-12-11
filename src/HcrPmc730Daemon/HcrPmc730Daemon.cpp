@@ -209,10 +209,23 @@ main(int argc, char * argv[]) {
 
     QCoreApplication app(argc, argv);
     app.setApplicationName("HcrPmc730Daemon");
+    
+    // Check for --simulate in the arg list
+    bool simulate = false;
+    if (argc > 2) {
+        ELOG << "Bad arg(s). Only '--simulate' is allowed.";
+        exit(1);
+    } else if (argc == 2) {
+        if (! strcmp(argv[1], "--simulate")) {
+            simulate = true;
+        } else {
+            ELOG << "Bad arg. Only '--simulate' is allowed.";
+            exit(1);
+        }
+    }
 
     // Make sure the HcrPmc730 gets instantiated in simulation mode if requested
-//    HcrPmc730::doSimulate(hcrConfig.simulate_pmc730());
-    HcrPmc730::doSimulate(false);
+    HcrPmc730::doSimulate(simulate);
 
     // Just refer to theHcrPmc730() to instantiate the singleton.
     HcrPmc730::theHcrPmc730();
