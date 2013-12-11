@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>613</width>
-    <height>352</height>
+    <height>347</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -439,7 +439,7 @@
          <string>Miscellaneous</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_5">
-         <item row="15" column="2">
+         <item row="13" column="2">
           <widget class="QLabel" name="psVoltageLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -466,22 +466,6 @@
           </widget>
          </item>
          <item row="6" column="2">
-          <widget class="QLabel" name="termSelLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Termination Selected</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="2">
           <widget class="QLabel" name="rfPowerLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -516,7 +500,7 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="2">
+         <item row="7" column="2">
           <widget class="QLabel" name="vesselPresAftLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -564,20 +548,7 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="3">
-          <widget class="QLabel" name="termSelIcon">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="9" column="3">
+         <item row="7" column="3">
           <widget class="QLabel" name="vesselPresAftValue">
            <property name="text">
             <string>---</string>
@@ -600,7 +571,7 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="3">
+         <item row="6" column="3">
           <widget class="QLabel" name="rfPowerValue">
            <property name="minimumSize">
             <size>
@@ -616,7 +587,7 @@
            </property>
           </widget>
          </item>
-         <item row="10" column="2">
+         <item row="8" column="2">
           <widget class="QLabel" name="vesselPresForeLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -632,39 +603,10 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="2">
-          <widget class="QLabel" name="noiseSourceSelLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Noise Source Selected</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="3">
+         <item row="8" column="3">
           <widget class="QLabel" name="vesselPresForeValue">
            <property name="text">
             <string>---</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="3">
-          <widget class="QLabel" name="noiseSourceSelIcon">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -687,7 +629,7 @@
            </property>
           </widget>
          </item>
-         <item row="15" column="3">
+         <item row="13" column="3">
           <widget class="QLabel" name="psVoltageValue">
            <property name="text">
             <string>---</string>
@@ -720,7 +662,7 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="2">
+         <item row="5" column="2">
           <widget class="QLabel" name="modPulseDisabledLabel">
            <property name="text">
             <string>Mod Pulse Disabled</string>
@@ -730,7 +672,7 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="3">
+         <item row="5" column="3">
           <widget class="QLabel" name="modPulseDisabledIcon">
            <property name="text">
             <string/>
@@ -769,28 +711,28 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="4">
+         <item row="6" column="4">
           <widget class="QLabel" name="rfPowerUnits">
            <property name="text">
             <string>dBm</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="4">
+         <item row="7" column="4">
           <widget class="QLabel" name="vesselPresAftUnits">
            <property name="text">
             <string>hPa</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="4">
+         <item row="8" column="4">
           <widget class="QLabel" name="vesselPresForeUnits">
            <property name="text">
             <string>hPa</string>
            </property>
           </widget>
          </item>
-         <item row="15" column="4">
+         <item row="13" column="4">
           <widget class="QLabel" name="label_4">
            <property name="text">
             <string>V</string>

@@ -46,8 +46,6 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     _pvAftPressure(0.0),
     _pvForePressure(0.0),
     _psVoltage(0.0),
-    _noiseSourceSelected(false),
-    _terminationSelected(false),
     _locked15_5GHzPLO(false),
     _locked1250MHzPLO(false),
     _locked125MHzPLO(false),

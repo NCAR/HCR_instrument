@@ -793,12 +793,6 @@ string IwrfExport::_assembleStatusXml()
   // booleans
 
   xml += TaXml::writeBoolean
-    ("NoiseSourceSelected", 2, pmc730Status.noiseSourceSelected());
-
-  xml += TaXml::writeBoolean
-    ("TerminationSelected", 2, pmc730Status.terminationSelected());
-
-  xml += TaXml::writeBoolean
     ("Locked15_5GHzPLO", 2, pmc730Status.locked15_5GHzPLO());
 
   xml += TaXml::writeBoolean

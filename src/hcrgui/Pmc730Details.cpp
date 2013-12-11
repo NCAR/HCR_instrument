@@ -131,20 +131,6 @@ Pmc730Details::updateStatus(const HcrPmc730Status & status) {
     _ui.hvOnIcon->setPixmap(status.rdsXmitterHvOn() ?
             _greenLED : _greenLED_off);
     
-    if (status.noiseSourceSelected()) {
-        _warnState = true;
-        _ui.noiseSourceSelIcon->setPixmap(_amberLED);
-    } else {
-        _ui.noiseSourceSelIcon->setPixmap(_greenLED_off);
-    }
-    
-    if (status.terminationSelected()) {
-        _warnState = true;
-        _ui.termSelIcon->setPixmap(_amberLED);
-    } else {
-        _ui.termSelIcon->setPixmap(_greenLED_off);
-    }
-
     _ui.rfPowerValue->setText(QString::number(status.detectedRfPower(), 'f', 1));
     _ui.vesselPresAftValue->
         setText(QString::number(status.pvAftPressure(), 'f', 0));

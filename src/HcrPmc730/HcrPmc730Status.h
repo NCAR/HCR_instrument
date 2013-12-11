@@ -163,16 +163,6 @@ public:
      */
     double psVoltage() const { return(_psVoltage); }
     /**
-     * @brief Return true iff waveguide switch is in the "noise source" position
-     * @return true iff waveguide switch is in the "noise source" position
-     */
-    bool noiseSourceSelected() const { return(_noiseSourceSelected); }
-    /**
-     * @brief Return true iff waveguide switch is in "termination" position
-     * @return true iff waveguide switch is in "termination" position
-     */
-    bool terminationSelected() const { return(_terminationSelected); }
-    /**
      * @brief Return true iff 15.5 GHz PLO is phase locked
      * @return true iff 15.5 GHz PLO is phase locked
      */
@@ -364,7 +354,6 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_locked125MHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_locked15_5GHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_modPulseDisabled);
-            ar & BOOST_SERIALIZATION_NVP(_noiseSourceSelected);
             ar & BOOST_SERIALIZATION_NVP(_noiseSourceTemp);
             ar & BOOST_SERIALIZATION_NVP(_ploTemp);
             ar & BOOST_SERIALIZATION_NVP(_polarizationSwitchTemp);
@@ -379,7 +368,6 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_rfDetectorTemp);
             ar & BOOST_SERIALIZATION_NVP(_rotationMotorTemp);
             ar & BOOST_SERIALIZATION_NVP(_tailconeTemp);
-            ar & BOOST_SERIALIZATION_NVP(_terminationSelected);
             ar & BOOST_SERIALIZATION_NVP(_tiltMotorTemp);
             ar & BOOST_SERIALIZATION_NVP(_vLnaTemp);
             ar & BOOST_SERIALIZATION_NVP(_waveguideSwitchError);
@@ -471,12 +459,6 @@ private:
 
     /// measured voltage from 5V power supply
     double _psVoltage;
-
-    /// Is waveguide switch A set to the noise source?
-    bool _noiseSourceSelected;
-
-    /// Is waveguide switch B set to termination?
-    bool _terminationSelected;
 
     /// 15.5 GHz oscillator phase locked?
     bool _locked15_5GHzPLO;
