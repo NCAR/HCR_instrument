@@ -392,7 +392,7 @@ private:
     // Keep static lists of temperatures sampled from the multi-IO card so that
     // we can time-average to reduce noise in the sampling. Values are added to
     // the lists on each call to the constructor which samples new values, i.e.,
-    // HcrPmc730Status(const Pentek::p7142 &).
+    // HcrPmc730Status(false).
 
     /// 93 GHz PLO temperature list
     static TemperatureList _PloTemps;
