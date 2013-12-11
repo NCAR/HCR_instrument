@@ -144,19 +144,11 @@ Pmc730Details::updateStatus(const HcrPmc730Status & status) {
     } else {
         _ui.termSelIcon->setPixmap(_greenLED_off);
     }
-    QString valString = QString::number(status.detectedRfPower(), 'f', 1);
-    valString += " dBm";
-    _ui.rfPowerValue->setText(valString);
-    
-    valString = QString::number(status.pvAftPressure(), 'f', 0);
-    valString += " hPa";
-    _ui.vesselPresAftValue->setText(valString);
-    
-    valString = QString::number(status.pvForePressure(), 'f', 0);
-    valString += " hPa";
-    _ui.vesselPresForeValue->setText(valString);
-    
-    valString = QString::number(status.psVoltage(), 'f', 2);
-    valString += " V";
-    _ui.psVoltageValue->setText(valString);
+
+    _ui.rfPowerValue->setText(QString::number(status.detectedRfPower(), 'f', 1));
+    _ui.vesselPresAftValue->
+        setText(QString::number(status.pvAftPressure(), 'f', 0));
+    _ui.vesselPresForeValue->
+        setText(QString::number(status.pvForePressure(), 'f', 0));
+    _ui.psVoltageValue->setText(QString::number(status.psVoltage(), 'f', 2));
 }
