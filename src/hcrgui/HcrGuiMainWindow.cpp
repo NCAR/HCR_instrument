@@ -656,6 +656,9 @@ HcrGuiMainWindow::_appendXmitdLogMsgs() {
 
 void
 HcrGuiMainWindow::_update() {
+    // convenience variable
+    QPixmap light;
+
     // Update the current time string
     char timestring[32];
     time_t now = time(0);
@@ -719,23 +722,18 @@ HcrGuiMainWindow::_update() {
     _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
 
     // C-MIGITS status light
-    {
-        // Get C-MIGITS status
-        uint16_t mode = _cmigitsStatus.currentMode();
-        QPixmap light;
-        if (mode == 7 || mode == 8) {
-            // Green light if mode is "Air Navigation" or "Land Navigation"
-            light = _greenLED;
-        } else if (_cmigitsStatus.insAvailable() && 
-                _cmigitsStatus.gpsAvailable()) {
-            // Amber light if we have both INS and GPS
-            light = _amberLED;
-        } else {
-            // Otherwise red light
-            light = _redLED;
-        }
-        _ui.cmigitsStatusIcon->setPixmap(light);
+    // Get C-MIGITS status
+    light = _redLED;
+    uint16_t mode = _cmigitsStatus.currentMode();
+    if (mode == 7 || mode == 8) {
+        // Green light if mode is "Air Navigation" or "Land Navigation"
+        light = _greenLED;
+    } else if (_cmigitsStatus.insAvailable() &&
+            _cmigitsStatus.gpsAvailable()) {
+        // Amber light if we have both INS and GPS
+        light = _amberLED;
     }
+    _ui.cmigitsStatusIcon->setPixmap(light);
 
     // MotionControl status LED
     if (! _mcClientThread.serverIsResponding() ||
@@ -802,8 +800,13 @@ HcrGuiMainWindow::_update() {
             _greenLED : _greenLED_off);
 
     // HcrPmc730Daemon status LED
-    _ui.pmc730StatusIcon->setPixmap(_pmcStatusThread.serverIsResponding() ?
-            _greenLED : _redLED);
+    light = _greenLED;
+    if (! _pmcStatusThread.serverIsResponding() || _pmc730Details.errState()) {
+        light = _redLED;
+    } else if (_pmc730Details.warnState()) {
+        light = _amberLED;
+    }
+    _ui.pmc730StatusIcon->setPixmap(light);
     
     // Make sure transmitter HV is turned off if the pressure in the pressure 
     // vessel drops below 760 hPa.
