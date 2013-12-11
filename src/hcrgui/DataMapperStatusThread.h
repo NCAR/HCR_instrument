@@ -49,8 +49,8 @@ signals:
 
     /// @brief signal emitted when a new time series write rate is calculated
     /// for DataMapper
-    /// @param writeRate the current time series write rate in MiB/s.
-    void newStatus(double writeRate);
+    /// @param tsInfo the current time series data information struct.
+    void newStatus(DMAP_info_t & tsInfo);
 
 private slots:
     /// @brief Try to get latest status from DataMapper, and emit a 
@@ -67,8 +67,8 @@ private:
     /// on the last call.
     bool _responsive;
     
-    /// The last info we got from DataMapper
-    DMAP_info_t _lastInfo;
+    /// The last time-series data info we got from DataMapper
+    DMAP_info_t _lastTsInfo;
 };
 
 #endif /* DATAMAPPERSTATUSTHREAD_H_ */

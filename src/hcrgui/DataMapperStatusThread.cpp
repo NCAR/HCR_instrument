@@ -27,8 +27,12 @@ DataMapperStatusThread::DataMapperStatusThread(std::string dmapHost) :
     _dmapAccess(),
     _responsive(false){
     
-    // Zero out _lastInfo
-    memset(&_lastInfo, 0, sizeof(_lastInfo));
+    // We need to register DMAP_info_t as a metatype, since we'll be passing
+    // it as an argument in a signal.
+    qRegisterMetaType<DMAP_info_t>("DMAP_info_t");
+
+    // Zero out _lastTsInfo
+    memset(&_lastTsInfo, 0, sizeof(_lastTsInfo));
     
     // Change thread affinity to self instead of our parent's thread.
     // This makes the calls to _getStatus() execute in *this* thread, which is
@@ -75,13 +79,13 @@ DataMapperStatusThread::_getStatus() {
 
     // Extract the status we just requested, or build a "nothing written" status
     // if zero entries were returned.
-    DMAP_info_t info = _lastInfo;
+    DMAP_info_t info = _lastTsInfo;
     
     int nInfo = _dmapAccess.getNInfo();
     switch (nInfo) {
     case 0:
         // Nobody has registered to write our DATA_TYPE to DATA_DIR.
-        // Continue using _lastInfo.
+        // Continue using _lastTsInfo.
         break;
     case 1:
         // This is the common case; we should almost always get 1 info block.
@@ -95,35 +99,12 @@ DataMapperStatusThread::_getStatus() {
         break;
     }
     
-    // Calculate the write rate between this info block and the previous one.
-    // Only calculate the rate if the delta time between the two blocks is
-    // greater than zero and less than 1 minute. Otherwise report a 0 MiB/s
-    // rate.
-    double writeRate = 0.0; // MiB/s
-    ptime lastTime = boost::posix_time::from_time_t(_lastInfo.latest_time);
-    ptime infoTime = boost::posix_time::from_time_t(info.latest_time);
-    time_duration delta = infoTime - lastTime;
-    
-    // If the time difference is less than a minute, calculate the data
-    // rate between the two times. Otherwise return a rate of zero.
-    if (delta.total_milliseconds() == 0) {
-        DLOG << "Delta is ZERO";
-        writeRate = 0.0;
-    } else if (delta.total_milliseconds() > 60000) {
-        WLOG << "Delta over 1 minute: " << delta.total_seconds() << " s";
-        writeRate = 0.0;
-    } else {
-        ILOG << "Good delta of " << 0.001 * delta.total_milliseconds() << " ms";
-        double wroteMiB = (info.total_bytes - _lastInfo.total_bytes) / 
-                /* (1024 * 1024) */ 1.0;
-        writeRate = wroteMiB / (delta.total_milliseconds() * 0.001);
-    }
-    
     // Save this info block
-    _lastInfo = info;
+    _lastTsInfo = info;
     
     // Emit the new status.
-    DLOG << boost::posix_time::to_simple_string(infoTime) << 
-            ": writing time series at " << writeRate << " MiB/s";
-    emit newStatus(writeRate);
+    ptime tsTime = boost::posix_time::from_time_t(_lastTsInfo.latest_time);
+    DLOG << "Latest time-series data time written: " <<
+            boost::posix_time::to_simple_string(tsTime);
+    emit newStatus(_lastTsInfo);
 }
