@@ -26,7 +26,7 @@ Pmc730Details::updateStatus(const HcrPmc730Status & status) {
     _errState = false;
     
     _ui.statusLabel->setText(QString("Status updated ") + 
-            QDateTime::currentDateTimeUtc().toString("HH:mm:ss"));
+            QDateTime::currentDateTime().toUTC().toString("HH:mm:ss"));
     // HMC mode
     _ui.hmcModeValue->setText(HcrPmc730::HmcModeNames[status.hmcMode()].c_str());
     
