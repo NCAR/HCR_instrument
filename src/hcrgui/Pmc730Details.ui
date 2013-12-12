@@ -6,14 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
-    <height>347</height>
+    <width>622</width>
+    <height>376</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>PMC-730 Details</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string>&lt;font color='DarkRed'&gt;no status&lt;/font&gt;</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QWidget" name="hmcModeBox" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -62,13 +69,13 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="hBox" native="true">
+    <widget class="QWidget" name="mainBox" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="margin">
        <number>0</number>
       </property>
       <item>
-       <widget class="QGroupBox" name="tempBox">
+       <widget class="QGroupBox" name="tempGroup">
         <property name="title">
          <string>Temperatures</string>
         </property>
@@ -434,7 +441,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="miscBox">
+       <widget class="QGroupBox" name="miscGroup">
         <property name="title">
          <string>Miscellaneous</string>
         </property>
@@ -743,7 +750,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="errorBox">
+       <widget class="QGroupBox" name="errorGroup">
         <property name="title">
          <string>Errors</string>
         </property>

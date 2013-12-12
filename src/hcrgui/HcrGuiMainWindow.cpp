@@ -218,11 +218,9 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     _ui.hmcModeCombo->setEnabled(responding);
-    if (! responding) {
-        // Create an empty (bad) HcrPmc730Status, and set it as the last status
-        // received.
-        _setPmcStatus(HcrPmc730Status(true));
-    }
+    
+    // Let the details widget know
+    _pmc730Details.daemonResponsivenessChange(responding);
 }
 
 void

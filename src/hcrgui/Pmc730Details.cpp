@@ -16,8 +16,8 @@ Pmc730Details::Pmc730Details(QWidget *parent) :
     _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
-    // Initialize from an empty HcrPmc730Status instance
-    updateStatus(HcrPmc730Status(true));
+    // Assume the daemon isn't yet responding
+    daemonResponsivenessChange(false);
 }
 
 void
@@ -25,6 +25,8 @@ Pmc730Details::updateStatus(const HcrPmc730Status & status) {
     _warnState = false;
     _errState = false;
     
+    _ui.statusLabel->setText(QString("Status updated ") + 
+            QDateTime::currentDateTimeUtc().toString("HH:mm:ss"));
     // HMC mode
     _ui.hmcModeValue->setText(HcrPmc730::HmcModeNames[status.hmcMode()].c_str());
     
@@ -137,4 +139,18 @@ Pmc730Details::updateStatus(const HcrPmc730Status & status) {
     _ui.vesselPresForeValue->
         setText(QString::number(status.pvForePressure(), 'f', 0));
     _ui.psVoltageValue->setText(QString::number(status.psVoltage(), 'f', 2));
+}
+
+void
+Pmc730Details::daemonResponsivenessChange(bool daemonResponsive) {
+    if (daemonResponsive) {
+        _ui.statusLabel->setText("No status received yet");
+        _ui.mainBox->setEnabled(true);
+        _ui.hmcModeBox->setEnabled(true);
+    } else {
+        _ui.mainBox->setEnabled(false);
+        _ui.hmcModeBox->setEnabled(false);
+        updateStatus(HcrPmc730Status(true)); // populate with empty status
+        _ui.statusLabel->setText("<font color='DarkRed'>HcrPmc730Daemon is not responding!</font>");
+    }
 }
