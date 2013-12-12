@@ -8,6 +8,9 @@
 #include "Pmc730StatusThread.h"
 #include <QMetaType>
 #include <QTimer>
+#include <logx/Logging.h>
+
+LOGGING("Pmc730StatusThread")
 
 Pmc730StatusThread::Pmc730StatusThread(std::string drxHost, int drxPort) :
     _responsive(false),
@@ -43,12 +46,14 @@ void
 Pmc730StatusThread::_getStatus() {
     HcrPmc730Status status(true);
     if (_client->getStatus(status)) {
+        DLOG << "Got new status";
         if (! _responsive) {
             _responsive = true;
             emit serverResponsive(true);
         }
         emit newStatus(status);
     } else {
+        DLOG << "Failed to get status";
         if (_responsive) {
             _responsive = false;
             emit serverResponsive(false);
