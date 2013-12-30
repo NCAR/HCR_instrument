@@ -31,8 +31,6 @@ ymax = 4.0;
 ystep = 0.025;
 yi = [ymin:ystep:ymax]';
 
-%Z = NaN(int32(floor((xmax - xmin) / xstep + 1)), int32(floor((ymax - ymin) / ystep + 1)))
-
 Z = griddata(az, el, rcvdPower, xi, yi, 'linear');
 
 %Plot it
