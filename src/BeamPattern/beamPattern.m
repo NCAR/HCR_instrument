@@ -24,13 +24,14 @@ az = data(:,4);
 el = data(:,6);
 
 % regular az/el grid to which we'll interpolate
-azmin = 0.0;
-azmax = 2.6;
+azmin = input('Minimum azimuth for the plot: ');
+azmax = input('Maximum azimuth for the plot: ');
+fprintf('\n');
 azstep = 0.05;
 azi = [azmin:azstep:azmax];
 
-elmin = 0.8;
-elmax = 4.3;
+elmin = input('Minimum elevation for the plot: ');
+elmax = input('Maximum elevation for the plot: ');
 elstep = 0.05;
 eli = [elmin:elstep:elmax]';
 
@@ -68,7 +69,7 @@ Z = PowerSum ./ SumCount;
 Z(isnan(Z)) = interp1(find(~isnan(Z)), Z(~isnan(Z)), find(isnan(Z)), 'linear');
 
 % filter to smooth things a bit
-lightFilter = true
+lightFilter = true;
 if (lightFilter)
     % mild 3x3 filter
     h = [.06 .12 .06; .12 .28 .12; .06 .12 .06];
