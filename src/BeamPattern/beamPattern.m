@@ -11,7 +11,10 @@ data = csvread("/tmp/beamPattern.csv");
 time = data(:,1);
 
 % power, dBm
-rcvdPower = data(:,2);
+dbmPower = data(:,2);
+
+% power, mW
+linPower = exp(log(10) * (dbmPower * 0.1));
 
 % Column 4 contains beam tilt angle, which we use for azimuth when doing 
 % HCR ground-based corner reflector beam pattern measurement.
@@ -21,19 +24,77 @@ az = data(:,4);
 el = data(:,6);
 
 % regular az/el grid to which we'll interpolate
-xmin = -1.3;
-xmax = 1.5;
-xstep = 0.025;
-xi = [xmin:xstep:xmax];
+azmin = 0.0;
+azmax = 2.6;
+azstep = 0.05;
+azi = [azmin:azstep:azmax];
 
-ymin = 1.2;
-ymax = 4.0;
-ystep = 0.025;
-yi = [ymin:ystep:ymax]';
+elmin = 0.8;
+elmax = 4.3;
+elstep = 0.05;
+eli = [elmin:elstep:elmax]';
 
-Z = griddata(az, el, rcvdPower, xi, yi, 'linear');
+naz = length(azi);
+nel = length(eli);
+
+PowerSum = NaN(naz, nel);
+SumCount = zeros(naz, nel);
+for i = 1:size(time)
+    % Get the array indices closest to the current az/el
+    ix = int16((az(i) - azmin) / azstep) + 1;
+    if (ix < 1 || ix > naz)
+        continue
+    end
+    
+    iy = int16((el(i) - elmin) / elstep) + 1;
+    if (iy < 1 || iy > nel)
+        continue
+    end
+    
+    % Add to the power sum for this point, and increment the count of values 
+    % contained in the sum
+    if (SumCount(ix, iy) == 0)
+        PowerSum(ix, iy) = linPower(i);
+    else
+        PowerSum(ix, iy) += linPower(i);
+    end
+    SumCount(ix, iy)++;
+end
+
+% Elementwise division to go from summed power to average power at each point
+Z = PowerSum ./ SumCount;
+
+% interpolate to fill in NaNs
+Z(isnan(Z)) = interp1(find(~isnan(Z)), Z(~isnan(Z)), find(isnan(Z)), 'linear');
+
+% filter to smooth things a bit
+lightFilter = true
+if (lightFilter)
+    % mild 3x3 filter
+    h = [.06 .12 .06; .12 .28 .12; .06 .12 .06];
+else
+    % moderate 5x5 filter
+    h = [.00 .02 .03 .02 .00;
+         .02 .06 .08 .06 .02;
+         .03 .08 .16 .08 .03;
+         .02 .06 .08 .06 .02;
+         .00 .02 .03 .02 .00]
+end
+Z = filter2(h, Z);
+
+% convert from mW to dBm
+Z = 10 * log10(Z);
 
 %Plot it
 figure;
-surf(Z, 'EdgeColor', 'None');
-view(2);
+surf(eli, azi, Z, 'EdgeColor', 'None');
+plotwidth = max(azmax - azmin, elmax - elmin);
+axis([elmin elmin+plotwidth azmin azmin+plotwidth -120 -40]);
+set(gca, 'CLim', [-120 -40]);
+xlabel('elevation')
+ylabel('azimuth')
+zlabel('dBm')
+%% The following two lines add a colorbar, but note that adding a colorbar 
+%% disables dragging on the plot to change the view.
+%bar = colorbar;
+%xlabel(bar, 'dBm')
