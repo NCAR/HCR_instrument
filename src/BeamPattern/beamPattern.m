@@ -5,7 +5,7 @@
 %    4 - tilt angle, deg
 %    5 - azimuth, deg
 %    6 - elevation, deg
-data = csvread("/tmp/beamPattern.csv");
+data = csvread('beamPattern.csv');
 
 % time
 time = data(:,1);
@@ -57,9 +57,9 @@ for i = 1:size(time)
     if (SumCount(ix, iy) == 0)
         PowerSum(ix, iy) = linPower(i);
     else
-        PowerSum(ix, iy) += linPower(i);
+        PowerSum(ix, iy) = PowerSum(ix, iy) + linPower(i);
     end
-    SumCount(ix, iy)++;
+    SumCount(ix, iy) = SumCount(ix, iy) + 1;
 end
 
 % Elementwise division to go from summed power to average power at each point
@@ -79,7 +79,7 @@ else
          .02 .06 .08 .06 .02;
          .03 .08 .16 .08 .03;
          .02 .06 .08 .06 .02;
-         .00 .02 .03 .02 .00]
+         .00 .02 .03 .02 .00];
 end
 Z = filter2(h, Z);
 
