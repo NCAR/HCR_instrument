@@ -10,6 +10,13 @@ data = csvread('beamPattern.csv');
 % time
 time = data(:,1);
 
+% get strings for earliest and latest times of the data
+unixEpoch = datenum('1970/01/01', 'yyyy/mm/dd');
+minTime = unixEpoch + min(time) / 86400.;
+minTimeStr = datestr(minTime);
+maxTime = unixEpoch + max(time) / 86400.;
+maxTimeStr = datestr(maxTime);
+
 % power, dBm
 dbmPower = data(:,2);
 
@@ -24,14 +31,14 @@ az = data(:,4);
 el = data(:,6);
 
 % regular az/el grid to which we'll interpolate
-azmin = input('Minimum azimuth for the plot: ');
-azmax = input('Maximum azimuth for the plot: ');
+azmin = input('Minimum azimuth for the grid: ');
+azmax = input('Maximum azimuth for the grid: ');
 fprintf('\n');
 azstep = 0.05;
 azi = [azmin:azstep:azmax];
 
-elmin = input('Minimum elevation for the plot: ');
-elmax = input('Maximum elevation for the plot: ');
+elmin = input('Minimum elevation for the grid: ');
+elmax = input('Maximum elevation for the grid: ');
 elstep = 0.05;
 eli = [elmin:elstep:elmax]';
 
@@ -68,19 +75,8 @@ Z = PowerSum ./ SumCount;
 % interpolate to fill in NaNs
 Z(isnan(Z)) = interp1(find(~isnan(Z)), Z(~isnan(Z)), find(isnan(Z)), 'linear');
 
-% filter to smooth things a bit
-lightFilter = true;
-if (lightFilter)
-    % mild 3x3 filter
-    h = [.06 .12 .06; .12 .28 .12; .06 .12 .06];
-else
-    % moderate 5x5 filter
-    h = [.00 .02 .03 .02 .00;
-         .02 .06 .08 .06 .02;
-         .03 .08 .16 .08 .03;
-         .02 .06 .08 .06 .02;
-         .00 .02 .03 .02 .00];
-end
+% smooth things a bit, using a mild 3x3 filter
+h = [.06 .12 .06; .12 .28 .12; .06 .12 .06];
 Z = filter2(h, Z);
 
 % convert from mW to dBm
@@ -92,10 +88,11 @@ surf(eli, azi, Z, 'EdgeColor', 'None');
 plotwidth = max(azmax - azmin, elmax - elmin);
 axis([elmin elmin+plotwidth azmin azmin+plotwidth -120 -40]);
 set(gca, 'CLim', [-120 -40]);
+title(sprintf('Beam Pattern %s to %s', minTimeStr, maxTimeStr));
 xlabel('elevation')
 ylabel('azimuth')
 zlabel('dBm')
-%% The following two lines add a colorbar, but note that adding a colorbar 
-%% disables dragging on the plot to change the view.
-%bar = colorbar;
-%xlabel(bar, 'dBm')
+% The following two lines add a colorbar, but note that adding a colorbar 
+% in Octave disables dragging on the plot to change the view.
+bar = colorbar;
+xlabel(bar, 'dBm')
