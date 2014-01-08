@@ -130,6 +130,11 @@ figure;
 surf(azi, eli, smoothZ, 'EdgeColor', 'None');
 plotwidth = max(azmax - azmin, elmax - elmin);
 axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
+% Draw contours every 5 dB (this will show up in MATLAB, but not in Octave)
+hold on;
+contour3(azi, eli, smoothZ, -150:5:100, 'k');
+hold off;
+% Color limits and annotations
 set(gca, 'CLim', [-120 -40]);
 title(sprintf('Interpolated Beam Pattern %s to %s', minTimeStr, maxTimeStr));
 xlabel('azimuth')
