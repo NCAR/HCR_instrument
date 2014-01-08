@@ -1,3 +1,5 @@
+% Read CSV data from beamPattern.csv and plot it.
+%
 % Each row of the CSV file is data for a single time, and columns contain:
 %    1 - time, seconds since 1970-01-01 00:00:00.0 UTC
 %    2 - power value, dBm
@@ -5,12 +7,17 @@
 %    4 - tilt angle, deg
 %    5 - azimuth, deg
 %    6 - elevation, deg
+
+% Are we running Octave or MATLAB?
+isOctave = exist('OCTAVE_VERSION') ~= 0;
+
+% Read the CSV file
 data = csvread('beamPattern.csv');
 
 % time
 time = data(:,1);
 
-% get strings for earliest and latest times of the data
+% create strings for earliest and latest times of the data
 unixEpoch = datenum('1970/01/01', 'yyyy/mm/dd');
 minTime = unixEpoch + min(time) / 86400.;
 minTimeStr = datestr(minTime);
@@ -90,13 +97,15 @@ end
 %Plot the non-NaN points from the raw gridded data
 figure;
 plot3(goodAz, goodEl, 10 * log10(goodPower), '.');
+% Set plot x and y limits to give us a square aspect ratio in azimuth and
+% elevation, and big enough to hold the whole grid
 plotwidth = max(azmax - azmin, elmax - elmin);
 axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
+% Color limits and annotations
 set(gca, 'CLim', [-120 -40]);
-title(sprintf('Gridded and averaged powers %s to %s', minTimeStr, maxTimeStr));
+title({ 'Gridded and Averaged Powers', sprintf('%s to %s', minTimeStr, maxTimeStr) });
 xlabel('azimuth')
 ylabel('elevation')
-zlabel('dBm')
 
 % Now rebuild the scattered good data points into a 2-d array using griddata.
 % This will perform a 2-d interpolation to fill points without data.
@@ -110,37 +119,23 @@ smoothZ = filter2(h, smoothZ);
 Z = 10 * log10(Z);
 smoothZ = real(10 * log10(smoothZ));
 
-%%Plot raw gridded data surface
-%figure;
-%surf(azi, eli, Z, 'EdgeColor', 'None');
-%plotwidth = max(azmax - azmin, elmax - elmin);
-%axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
-%set(gca, 'CLim', [-120 -40]);
-%title(sprintf('Raw Beam Pattern %s to %s', minTimeStr, maxTimeStr));
-%xlabel('azimuth')
-%ylabel('elevation')
-%zlabel('dBm')
-%%% The following two lines add a colorbar, but note that adding a colorbar 
-%%% in Octave disables dragging on the plot to change the view.
-%%bar = colorbar;
-%%xlabel(bar, 'dBm')
-
 %Plot the interpolated/smoothed data
 figure;
-surf(azi, eli, smoothZ, 'EdgeColor', 'None');
+surf(azi, eli, smoothZ, 'FaceColor', 'interp', 'EdgeColor', 'none');
+% Draw contours every 5 dB. We disable this for Octave, since it does not
+% deal with hiding contours that are behind the surface.
+if (~isOctave)
+    hold on
+    contour3(azi, eli, smoothZ, -150:5:100, 'k');
+    hold off
+end
+% Set plot x and y limits to give us a square aspect ratio in azimuth and
+% elevation, and big enough to hold the whole grid
 plotwidth = max(azmax - azmin, elmax - elmin);
 axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
-% Draw contours every 5 dB (this will show up in MATLAB, but not in Octave)
-hold on;
-contour3(azi, eli, smoothZ, -150:5:100, 'k');
-hold off;
 % Color limits and annotations
 set(gca, 'CLim', [-120 -40]);
-title(sprintf('Interpolated Beam Pattern %s to %s', minTimeStr, maxTimeStr));
+title({ 'Interpolated Beam Pattern', sprintf('%s to %s', minTimeStr, maxTimeStr) });
 xlabel('azimuth')
 ylabel('elevation')
 zlabel('dBm')
-%% The following two lines add a colorbar, but note that adding a colorbar 
-%% in Octave disables dragging on the plot to change the view.
-%bar = colorbar;
-%xlabel(bar, 'dBm')
