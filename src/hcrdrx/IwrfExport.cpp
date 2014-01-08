@@ -861,6 +861,8 @@ string IwrfExport::_assembleStatusXml()
   if (! _cmigitsDeque.empty()) {
       haveData = true;
       cmigits = _cmigitsDeque.back();
+  } else {
+      WLOG << "Nothing in _cmigitsDeque; putting bad C-MIGITS data in XML.";
   }
 
   // C-MIGITS status info (latest 3500 message from C-MIGITS)
@@ -991,6 +993,9 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
       if (_cmigitsDeque.size() == 1) {
           // Only remove the last entry if it is older than CMIGITS_TIMEOUT_MSECS
           if ((pulseTime - cmigits.time3512) > CMIGITS_TIMEOUT_MSECS) {
+              int delta = pulseTime - cmigits.time3512;
+              ILOG << "Removing last deque entry with delta = " << delta <<
+                  " and " << _cmigitsDeque.size() << " left in deque";
               _cmigitsDeque.pop_front();
           }
           // No later entries to look at, so break out
