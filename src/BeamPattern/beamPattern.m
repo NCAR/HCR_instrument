@@ -45,54 +45,97 @@ eli = [elmin:elstep:elmax]';
 naz = length(azi);
 nel = length(eli);
 
-PowerSum = NaN(naz, nel);
-SumCount = zeros(naz, nel);
-for i = 1:size(time)
+% Sum the data onto the nearest points of a regularly spaced grid. Also keep a 
+% count at each point so we can calculate average power where we have
+% multiple data values for a single grid point.
+PowerSum = NaN(nel, naz);
+SumCount = zeros(nel, naz);
+for i = 1:length(time)
     % Get the array indices closest to the current az/el
-    ix = int16((az(i) - azmin) / azstep) + 1;
-    if (ix < 1 || ix > naz)
+    ic = int16((az(i) - azmin) / azstep) + 1;
+    if (ic < 1 || ic > naz)
         continue
     end
     
-    iy = int16((el(i) - elmin) / elstep) + 1;
-    if (iy < 1 || iy > nel)
+    ir = int16((el(i) - elmin) / elstep) + 1;
+    if (ir < 1 || ir > nel)
         continue
     end
     
     % Add to the power sum for this point, and increment the count of values 
     % contained in the sum
-    if (SumCount(ix, iy) == 0)
-        PowerSum(ix, iy) = linPower(i);
+    if (SumCount(ir, ic) == 0)
+        PowerSum(ir, ic) = linPower(i);
     else
-        PowerSum(ix, iy) = PowerSum(ix, iy) + linPower(i);
+        PowerSum(ir, ic) = PowerSum(ir, ic) + linPower(i);
     end
-    SumCount(ix, iy) = SumCount(ix, iy) + 1;
+    SumCount(ir, ic) = SumCount(ir, ic) + 1;
 end
 
-% Elementwise division to go from summed power to average power at each point
+% Elementwise division to go from summed power to average power at each grid 
+% point
 Z = PowerSum ./ SumCount;
 
-% interpolate to fill in NaNs
-Z(isnan(Z)) = interp1(find(~isnan(Z)), Z(~isnan(Z)), find(isnan(Z)), 'linear');
+% Pull the non-NaN data from the grid into 1-d arrays of azimuth, elevation, 
+% and linear power.
+[Y, X] = find(~isnan(Z));
+for i = 1:length(X)
+    ic = X(i);
+    ir = Y(i);
+    goodAz(i) = azmin + (ic - 1) * azstep;
+    goodEl(i) = elmin + (ir - 1) * elstep;
+    goodPower(i) = Z(ir, ic);
+end
 
-% smooth things a bit, using a mild 3x3 filter
+%Plot the non-NaN points from the raw gridded data
+figure;
+plot3(goodAz, goodEl, 10 * log10(goodPower), '.');
+plotwidth = max(azmax - azmin, elmax - elmin);
+axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
+set(gca, 'CLim', [-120 -40]);
+title(sprintf('Gridded and averaged powers %s to %s', minTimeStr, maxTimeStr));
+xlabel('azimuth')
+ylabel('elevation')
+zlabel('dBm')
+
+% Now rebuild the scattered good data points into a 2-d array using griddata.
+% This will perform a 2-d interpolation to fill points without data.
+smoothZ = griddata(goodAz, goodEl, goodPower, azi, eli);
+
+% Smooth things a bit, using a mild 3x3 filter
 h = [.06 .12 .06; .12 .28 .12; .06 .12 .06];
-Z = filter2(h, Z);
+smoothZ = filter2(h, smoothZ);
 
 % convert from mW to dBm
 Z = 10 * log10(Z);
+smoothZ = real(10 * log10(smoothZ));
 
-%Plot it
+%%Plot raw gridded data surface
+%figure;
+%surf(azi, eli, Z, 'EdgeColor', 'None');
+%plotwidth = max(azmax - azmin, elmax - elmin);
+%axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
+%set(gca, 'CLim', [-120 -40]);
+%title(sprintf('Raw Beam Pattern %s to %s', minTimeStr, maxTimeStr));
+%xlabel('azimuth')
+%ylabel('elevation')
+%zlabel('dBm')
+%%% The following two lines add a colorbar, but note that adding a colorbar 
+%%% in Octave disables dragging on the plot to change the view.
+%%bar = colorbar;
+%%xlabel(bar, 'dBm')
+
+%Plot the interpolated/smoothed data
 figure;
-surf(eli, azi, Z, 'EdgeColor', 'None');
+surf(azi, eli, smoothZ, 'EdgeColor', 'None');
 plotwidth = max(azmax - azmin, elmax - elmin);
-axis([elmin elmin+plotwidth azmin azmin+plotwidth -120 -40]);
+axis([azmin azmin+plotwidth elmin elmin+plotwidth -120 -40]);
 set(gca, 'CLim', [-120 -40]);
-title(sprintf('Beam Pattern %s to %s', minTimeStr, maxTimeStr));
-xlabel('elevation')
-ylabel('azimuth')
+title(sprintf('Interpolated Beam Pattern %s to %s', minTimeStr, maxTimeStr));
+xlabel('azimuth')
+ylabel('elevation')
 zlabel('dBm')
-% The following two lines add a colorbar, but note that adding a colorbar 
-% in Octave disables dragging on the plot to change the view.
-bar = colorbar;
-xlabel(bar, 'dBm')
+%% The following two lines add a colorbar, but note that adding a colorbar 
+%% in Octave disables dragging on the plot to change the view.
+%bar = colorbar;
+%xlabel(bar, 'dBm')
