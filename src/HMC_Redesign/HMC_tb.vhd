@@ -356,7 +356,7 @@ BEGIN
 			STATUS_ACK <= '0';
 -- Ops Mode, horizontal tx
 			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV tx, simultaneous receive
+			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV V tx, simultaneous receive
 			BIT_EMS <= "0101001";
 			wait for 1168 ns;
 			BIT_EMS <= "1010010";
@@ -366,17 +366,17 @@ BEGIN
 			STATUS_ACK <= '0';	
 -- Ops Mode, HHVV
 			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV tx, simultaneous receive
-			BIT_EMS <= "0101001";
+			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV H tx, simultaneous receive
+			BIT_EMS <= "0101110";
 			wait for 1168 ns;
-			BIT_EMS <= "1010010";
+			BIT_EMS <= "1010011";
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
 			STATUS_ACK <= '0';	
 
 			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV tx, simultaneous receive
+			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV H tx, simultaneous receive
 			BIT_EMS <= "0101001";
 			wait for 1168 ns;
 			BIT_EMS <= "1010010";
@@ -386,10 +386,10 @@ BEGIN
 			STATUS_ACK <= '0';
 			
 			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV tx, simultaneous receive
-			BIT_EMS <= "0101110";
+			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV V tx, simultaneous receive
+			BIT_EMS <= "0101001";
 			wait for 1168 ns;
-			BIT_EMS <= "1010011";
+			BIT_EMS <= "1010010";
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;

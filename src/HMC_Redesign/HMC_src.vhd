@@ -1156,37 +1156,47 @@ begin
 	end if;
 end process;
 
-T0_DLY: process(EXT_CLK, RESET, T0)
-begin
-	if (RESET = '0') then
-      t0_d1 <= '0';		-- T0 delayed by 1 clock cycle 
-   elsif (rising_edge (EXT_CLK)) then
-		t0_d1 <= T0;
-	else
-		t0_d1 <= t0_d1;
-	end if;
-end process;
-
-T0_RISING_EDGE: process(EXT_CLK, RESET, T0, t0_d1)
-begin
-	if (RESET = '0') then
-      t0_rising <= '0';		-- T0 delayed by 1 clock cycle 
-   elsif (rising_edge (EXT_CLK)) then
-		t0_rising <= T0 AND NOT t0_d1;
-	else
-		t0_rising <= t0_rising;
-	end if;
-end process;
-
-
+--T0_DLY: process(EXT_CLK, RESET, T0)
+--begin
+--	if (RESET = '0') then
+--      t0_d1 <= '0';		-- T0 delayed by 1 clock cycle 
+--   elsif (rising_edge (EXT_CLK)) then
+--		t0_d1 <= T0;
+--	else
+--		t0_d1 <= t0_d1;
+--	end if;
+--end process;
+--
+--T0_RISING_EDGE: process(EXT_CLK, RESET, T0, t0_d1)
+--begin
+--	if (RESET = '0') then
+--      t0_rising <= '0';		-- T0 delayed by 1 clock cycle 
+--   elsif (rising_edge (EXT_CLK)) then
+--		t0_rising <= T0 AND NOT t0_d1;
+--	else
+--		t0_rising <= t0_rising;
+--	end if;
+--end process;
 
 -- Defines full polarimetric operation
-HHVV: process (EXT_CLK, RESET, t0_rising, ops_mode)
+
+--HHVV: process (EXT_CLK, RESET, t0_rising, ops_mode)
+--begin
+--	if (RESET = '0') then
+--      pol_state <= "11";	-- initial polarization state := V tx
+--   elsif (rising_edge (EXT_CLK)) then
+--		if (ops_mode = "010" AND t0_rising = '1') then
+--			pol_state <= pol_state + 1;  -- cycle through polarization states
+--		end if;
+--	end if;
+--end process;
+
+HHVV: process (EXT_CLK, RESET, end_cycle, ops_mode)
 begin
 	if (RESET = '0') then
       pol_state <= "11";	-- initial polarization state := V tx
    elsif (rising_edge (EXT_CLK)) then
-		if (ops_mode = "010" AND t0_rising = '1') then
+		if (ops_mode = "010" AND end_cycle = '1') then
 			pol_state <= pol_state + 1;  -- cycle through polarization states
 		end if;
 	end if;
@@ -1280,8 +1290,24 @@ begin
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
-				cmd_wg_sw_pos <= '0';				
-				
+				cmd_wg_sw_pos <= '0';
+			
+			elsif (ops_mode = "010") then -- Alternating HHVV
+				if (pol_state = "11") then -- V tx, receive both (initial HHVV state)
+					EMS_OUT(2) <= '0';	
+				elsif (pol_state = "00") then -- H tx, receive both
+					EMS_OUT(1) <= '0';	
+					EMS_OUT(3) <= '1';	
+				elsif (pol_state = "01") then -- H tx, receive both
+					EMS_OUT(3) <= '1';								
+				elsif (pol_state = "10") then -- V tx, receive both
+					EMS_OUT(1) <= '1';	
+					EMS_OUT(2) <= '0';		
+				end if;
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
+				NOISE_SOURCE_EN <= '0';
+				cmd_wg_sw_pos <= '0';					
 			else
 				EMS_OUT <= "0000000";
 				WG_SW_CTRL_TERM <= '0';
