@@ -12,7 +12,8 @@
 isOctave = exist('OCTAVE_VERSION') ~= 0;
 
 % Read the CSV file
-data = csvread('beamPattern.csv');
+csvfile = input('CSV file: ', 's');
+data = csvread(csvfile);
 
 % time
 time = data(:,1);
