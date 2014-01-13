@@ -684,6 +684,71 @@ begin
 					end if;
 				when others =>
 				end case;
+
+		when "011" => -- Corner reflector horizontal transmit, receive both		
+		-- Transmit
+			if (BIT_EMS = "0101001") then
+				ems_tx_stat <= '1';
+			else
+				ems_tx_stat <= '0';
+			end if;
+			if (BIT_EMS(1)) = '1' then
+				ems_1_tx_stat <= '0';
+			else
+				ems_1_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(2)) = '0' then
+				ems_2_tx_stat <= '0';
+			else
+				ems_2_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(3)) = '0' then
+				ems_3_tx_stat <= '0';
+			else
+				ems_3_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(5 downto 4)) = "01" then
+				ems_45_tx_stat <= '0';
+			else
+				ems_45_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(7 downto 6)) = "01" then
+				ems_67_tx_stat <= '0';
+			else
+				ems_67_tx_stat <= '1';
+			end if;
+			
+		-- Receive
+			if (BIT_EMS = "0000010") then
+				ems_rx_stat <= '1';
+			else
+				ems_rx_stat <= '0';
+			end if;
+			if (BIT_EMS(1)) = '0' then
+				ems_1_rx_stat <= '0';
+			else
+				ems_1_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(2)) = '1' then
+				ems_2_rx_stat <= '0';
+			else
+				ems_2_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(3)) = '0' then
+				ems_3_rx_stat <= '0';
+			else
+				ems_3_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(5 downto 4)) = "00" then
+				ems_45_rx_stat <= '0';
+			else
+				ems_45_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(7 downto 6)) = "00" then
+				ems_67_rx_stat <= '0';
+			else
+				ems_67_rx_stat <= '1';
+			end if;				
 			
 		when "100" => -- Noise source cal, no tx
 		-- Transmit
@@ -748,7 +813,7 @@ begin
 			else
 				ems_67_rx_stat <= '1';
 			end if;					
-		when "101" =>	-- Corner reflector cal, vertical tx w/reduced power
+		when "101" =>	-- Corner reflector cal, vertical tx w/increased NF
 		-- Transmit
 			if (BIT_EMS = "0101110") then
 				ems_tx_stat <= '1';
@@ -1214,12 +1279,16 @@ begin
 			when s0 =>
 				if (ops_mode = "110" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1' AND wg_stat = '1') then   -- Test Mode
 					state <= s1;
+				elsif (ops_mode = "100" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1' AND wg_stat = '1') then   -- Noise source cal
+					state <= s1;
 				elsif(EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1' AND wg_stat = '1') then
 					state <= s1;
 				end if;		
 			when s1 =>
 				if (ops_mode = "110" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Test Mode
 					state <= s2;
+				elsif (ops_mode = "100" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Noise source cal
+					state <= s2;					
 				elsif(ems_tx_ok = '1' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s2;
 --				elsif(ems_tx_ok = '0' AND rx_dly = '0' AND tx_dly = '1' ) then
@@ -1232,6 +1301,8 @@ begin
 					state <=s0;
 				elsif(ops_mode = "010" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
 					state <=s0;					
+				elsif(ops_mode = "011" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
+					state <=s0;										
 				elsif(ops_mode = "100" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then			-- Noise source cal; is this correct?
 					state <=s0;
 				elsif(ops_mode = "101" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
@@ -1240,6 +1311,8 @@ begin
 			when s2 =>
 				if (ops_mode = "110" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Test Mode
 					state <= s3;
+				elsif (ops_mode = "100" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Noise source cal
+					state <= s3;					
 				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s3;
 				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '0' AND ems_pwr_ok = '1') then
@@ -1282,8 +1355,17 @@ begin
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
 				cmd_wg_sw_pos <= '0';
-				
-			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
+
+			elsif (ops_mode = "011") then -- Corner reflector cal, horizontal tx w/increased NF
+				EMS_OUT(3) <= '1';		
+				EMS_OUT(5) <= '1';
+				EMS_OUT(7) <= '1';				
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
+				NOISE_SOURCE_EN <= '0';
+				cmd_wg_sw_pos <= '0';				
+
+			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/increased NF
 				EMS_OUT(2) <= '0';
 				EMS_OUT(5) <= '1';
 				EMS_OUT(7) <= '1';				
@@ -1396,6 +1478,19 @@ begin
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';				
 				end if;
+			elsif (ops_mode = "011") then -- Corner reflector horizontal tx w/increased NF
+				MOD_PULSE_HMC <= '0';
+				EMS_OUT(1) <= EMS_TRIG;
+				EMS_OUT(2) <= NOT EMS_TRIG;
+				EMS_OUT(3) <= '0';
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= '0';
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
+				NOISE_SOURCE_EN <= '0';
+				cmd_wg_sw_pos <= '0';	
 			elsif (ops_mode = "100") then -- Noise source cal, no tx
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0101101";
@@ -1403,7 +1498,7 @@ begin
 				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
-			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
+			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/increased NF
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
@@ -1518,6 +1613,19 @@ begin
 					NOISE_SOURCE_EN <= '0';
 					cmd_wg_sw_pos <= '0';				
 				end if;				
+			elsif (ops_mode = "011") then -- Corner reflector cal Horizontal tx w/increased NF
+				MOD_PULSE_HMC <= MOD_PULSE;
+				EMS_OUT(1) <= EMS_TRIG;
+				EMS_OUT(2) <= NOT EMS_TRIG;
+				EMS_OUT(3) <= '0';
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= '0';
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
+				NOISE_SOURCE_EN <= '0';
+				cmd_wg_sw_pos <= '0';			
 			elsif (ops_mode = "100") then -- Noise source cal, no tx
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0101101";
@@ -1525,7 +1633,7 @@ begin
 				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
-			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
+			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/increased NF
 				MOD_PULSE_HMC <= MOD_PULSE;
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
@@ -1641,7 +1749,20 @@ begin
 						NOISE_SOURCE_EN <= '0';
 						cmd_wg_sw_pos <= '0';
 					when others =>
-				end case;								
+				end case;
+			elsif (ops_mode = "011") then -- Corner reflector cal, horizontal tx w/increased NF
+				MOD_PULSE_HMC <= MOD_PULSE;
+				EMS_OUT(1) <= EMS_TRIG;
+				EMS_OUT(2) <= NOT EMS_TRIG;
+				EMS_OUT(3) <= '0';
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= '0';
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= '0';
+				WG_SW_CTRL_TERM <= '0';
+				WG_SW_CTRL_NOISE <= '1';
+				NOISE_SOURCE_EN <= '0';
+				cmd_wg_sw_pos <= '0';									
 			elsif (ops_mode = "100") then -- Noise source cal, no tx
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0101101";
@@ -1649,7 +1770,7 @@ begin
 				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
-			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/reduced power
+			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/increased NF
 				MOD_PULSE_HMC <= MOD_PULSE;
 				EMS_OUT(1) <= NOT EMS_TRIG;
 				EMS_OUT(2) <= '1';
