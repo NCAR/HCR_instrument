@@ -17,8 +17,37 @@
 <UserProgram>
 	<Program>/////////////////////////////////////////////////////////////////////
 function rotHoming()
-	MO=0; UM=5;
-	homing(80000);
+	MO=0; UM=5; MO=1;
+
+	// Back up a bit if we're currently on the home sensor (digital input 5)
+	// (IP bit 20 tells the state of digital input 5)
+	if (IP & (1 << 20))
+		PR=-10000; BG;
+		waitMotion();
+	end
+
+	// Jog forward and set zero absolute position where we first
+	// see the home sensor. This position may vary a bit since the
+	// home sensor for the rotation motor has a wide field of view.
+	HM[2]=0; HM[3]=17; HM[4]=0; HM[5]=0;
+	HM[1]=1;
+	JV=80000; BG;
+	waitHoming();
+	
+	// Back up to the zero mark we just set
+	PA=0; BG;
+	waitMotion();
+	
+	// Now jog to the first index mark forward of 'home' and move absolute 
+	// zero location there. This position should be consistent.
+	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0;
+	HM[1]=1;
+	JV=80000; BG;
+	waitHoming();
+	
+	// Move the drive back to our new zero
+	PA=0; BG;
+	waitMotion();
 return
 
 /////////////////////////////////////////////////////////////////////
@@ -37,45 +66,6 @@ function rotInit()
 	// Set speed (max speed is VH[2])
 	SP=VH[2]*0.75;
 	MO=1;
-return
-
-/////////////////////////////////////////////////////////////////////
-//
-//	Put drive at a known position and set reference
-//		- jvSpeed: the jogging velocity (counts/sec)
-//
-function homing(int jvSpeed)
-	MO=1;
-
-	// Back up a bit if we're currently on the home sensor (digital input 5)
-	// (IP bit 20 tells the state of digital input 5)
-	if (IP & (1 << 20))
-		PR=-10000; BG;
-		waitMotion();
-	end
-
-	// Jog forward and set zero absolute position where we first
-	// see the home sensor. This position may vary a bit since the
-	// home sensor for the rotation motor has a wide field of view.
-	HM[2]=0; HM[3]=17; HM[4]=0; HM[5]=0;
-	HM[1]=1;
-	JV=jvSpeed; BG;
-	waitHoming();
-	
-	// Back up to the zero mark we just set
-	PA=0; BG;
-	waitMotion();
-	
-	// Now jog to the first index mark forward of 'home' and move absolute 
-	// zero location there. This position should be consistent.
-	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0;
-	HM[1]=1;
-	JV=jvSpeed; BG;
-	waitHoming();
-	
-	// Move the drive back to our new zero
-	PA=0; BG;
-	waitMotion();
 return
 
 /////////////////////////////////////////////////////////////////////
