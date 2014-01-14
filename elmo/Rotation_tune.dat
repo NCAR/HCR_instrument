@@ -15,11 +15,7 @@
 	<sManufacture>Kvaser<end_sManufacture>
 <end_Communication>
 <UserProgram>
-	<Program>//
-//	Rotation Drive Functions
-//
-
-/////////////////////////////////////////////////////////////////////
+	<Program>/////////////////////////////////////////////////////////////////////
 function rotHoming()
 	MO=0; UM=5;
 	homing(80000);
@@ -42,53 +38,6 @@ function rotInit()
 	SP=VH[2]*0.75;
 	MO=1;
 return
-
-//
-//	Tilt Drive Functions
-//
-
-/////////////////////////////////////////////////////////////////////
-function tiltHoming()
-	MO=0; UM=5;
-	
-	// For the tilt drive, the homing process must begin from the
-	// right limit switch. If we're not at the RLS, move there now.
-	// (IP bit 11 tells if we're at the RLS)
-	if (! (IP & (1 << 11)))
-		MO=1;
-		// Stop at RLS
-		HM[3]=7; HM[4]=0; HM[5]=2;
-		HM[1]=1;
-		JV=-10000; BG;
-		waitHoming();
-	end
-
-	// Finally, we can begin the generic homing process.
-	homing(10000);
-return
-
-/////////////////////////////////////////////////////////////////////
-function tiltInit()
-	// Counts per full cycle (360 deg)
-	int fullCycle;
-	fullCycle = CA[18]*240;
-	
-	// Set AC and DC to 90 deg/s2
-	AC=fullCycle/4; DC=AC;
-	
-	// Set counting range for the main feedback (PX)
-	XM[1]=-fullCycle/2; XM[2]=fullCycle/2;
-	ER[3]=XM[2]/4-1;
-	
-	// Set speed (max speed is VH[2])
-	SP=VH[2]*0.75;
-	MO=1;
-return
-
-
-//
-//	Shared Functions
-//
 
 /////////////////////////////////////////////////////////////////////
 //
