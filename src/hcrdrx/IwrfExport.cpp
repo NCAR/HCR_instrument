@@ -29,7 +29,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
         QThread(),
         _config(config),
         _monitor(monitor),
-        _hmcMode(HcrPmc730::HMC_MODE_UNUSED_3)
+        _hmcMode(HcrPmc730::HMC_MODE_INVALID)
 {
 
   // initialize

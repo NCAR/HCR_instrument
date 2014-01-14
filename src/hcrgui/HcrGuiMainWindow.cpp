@@ -150,6 +150,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     // Update GUI every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
+    
+    // Populate the HMC mode combo box
+    for (int i = 0; i < HcrPmc730::HMC_NMODES; i++) {
+        _ui.hmcModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i); 
+    }
 
     // Start with angle display cleared
     _clearAngleDisplay();

@@ -543,42 +543,7 @@
                </property>
                <item>
                 <property name="text">
-                 <string>tx H, rx HV</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>tx V, rx HV</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>tx HV, rx HV</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Unused (3)</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Noise Source Calibration</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>tx V, rx HV (attenuated)</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Bench Test</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Unused (7)</string>
+                 <string/>
                 </property>
                </item>
               </widget>

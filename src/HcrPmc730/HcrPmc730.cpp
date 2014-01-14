@@ -27,11 +27,12 @@ HcrPmc730::HmcModeNames[] = {
         "tx H, rx HV",
         "tx V, rx HV",
         "tx HV, rx HV",
-        "unused (3)",
+        "tx H, rx HV (ATTENUATED)",
         "Noise Source Cal",
         "tx V, rx HV (ATTENUATED)",
         "Bench Test",
-        "unused (7)"
+        "unused (7)",
+        "INVALID"
 };
 
 // Static to tell whether the singleton is created as a simulated PMC-730

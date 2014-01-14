@@ -43,8 +43,8 @@ public:
         HMC_MODE_V_HV = 1,
         /// 2 = transmit alternating H and V, receive H and V
         HMC_MODE_HV_HV = 2,
-        /// 3 = unused
-        HMC_MODE_UNUSED_3 = 3,
+        /// 3 = transmit H, receive H and V (attenuated)
+        HMC_MODE_H_HV_ATTENUATED = 3,
         /// 4 = noise source calibration
         HMC_MODE_NOISE_SOURCE_CAL = 4,
         /// 5 = transmit V, receive H and V (attenuated)
@@ -52,7 +52,10 @@ public:
         /// 6 = bench test
         HMC_MODE_BENCH_TEST = 6,
         /// 7 = unused
-        HMC_MODE_UNUSED_7 = 7
+        HMC_MODE_UNUSED_7 = 7,
+        /// mode count (and a representation for an invalid mode)
+        HMC_NMODES = 8,
+        HMC_MODE_INVALID = HMC_NMODES
     } HmcOperationMode;
 
 	/**
