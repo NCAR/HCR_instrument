@@ -6,6 +6,7 @@
  */
 
 #include "DrxStatus.h"
+#include <p7142.h>
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <iomanip>

@@ -13,9 +13,12 @@
 #include <numeric>
 #include <stdint.h>
 #include <xmlrpc-c/base.hpp>
-#include <p7142.h>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
+
+namespace Pentek {
+    class p7142;
+}
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
 class DrxStatus {
