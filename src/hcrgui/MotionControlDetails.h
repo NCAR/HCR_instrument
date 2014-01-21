@@ -7,7 +7,6 @@
 
 #include <QDialog>
 #include <QPixmap>
-#include <DrxStatus.h>
 #include <MotionControl.h>
 
 #include "ui_MotionControlDetails.h"
