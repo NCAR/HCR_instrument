@@ -242,10 +242,6 @@ main(int argc, char *argv[]) {
     // We need a QCoreApplication
     QCoreApplication app(argc, argv);
 
-    // Append our log to local syslog
-    log4cpp::SyslogAppender syslogAppender("SyslogAppender", "hcr_xmitd", LOG_DAEMON);
-    log4cpp::Category::getRoot().addAppender(syslogAppender);
-    
     // Append our log to the recent history
     log4cpp::Category::getRoot().addAppender(RecentLogHistory);
 
