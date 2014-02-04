@@ -228,6 +228,8 @@ signal cmd_wg_sw_pos: STD_LOGIC;							-- commanded waveguide switch position
 signal t0_d1: STD_LOGIC;
 signal t0_rising: STD_LOGIC;
 
+signal hv_flag: STD_LOGIC;									-- H/V Flag to be sent to Pentek for housekeeping
+
 -- State machine declarations
 type state_type is (s0,s1,s2,s3);
 signal state: state_type;
@@ -971,7 +973,9 @@ end process;
 
 -- Assign test signals to SPARE outputs for debug
 
-	SPARE1 <= wg_dly;
+
+	SPARE1 <= hv_flag;
+--	SPARE1 <= wg_dly;
 ----	SPARE2 <= tx_dly;
 ----	SPARE3 <= rx_dly;
 	SPARE2 <= wg_stat;
@@ -1407,6 +1411,7 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
+				hv_flag <= '0';			-- H
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
@@ -1420,6 +1425,7 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
+				hv_flag <= '1';			-- V				
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
@@ -1434,6 +1440,7 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
+					hv_flag <= '0';			-- H					
 					WG_SW_CTRL_TERM <= '0';
 					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
@@ -1447,6 +1454,7 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
+					hv_flag <= '0';			-- H
 					WG_SW_CTRL_TERM <= '0';
 					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
@@ -1460,6 +1468,7 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
+					hv_flag <= '1';			-- V					
 					WG_SW_CTRL_TERM <= '0';
 					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
@@ -1473,6 +1482,7 @@ begin
 					EMS_OUT(5) <= NOT EMS_TRIG;
 					EMS_OUT(6) <= EMS_TRIG;
 					EMS_OUT(7) <= NOT EMS_TRIG;
+					hv_flag <= '1';			-- V					
 					WG_SW_CTRL_TERM <= '0';
 					WG_SW_CTRL_NOISE <= '1';
 					NOISE_SOURCE_EN <= '0';
@@ -1487,6 +1497,7 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
+				hv_flag <= '0';			-- H
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
@@ -1498,6 +1509,7 @@ begin
 				WG_SW_CTRL_NOISE <= '0';
 				NOISE_SOURCE_EN <= '1';
 				cmd_wg_sw_pos <= '1';
+				hv_flag <= '0';			-- H
 			elsif (ops_mode = "101") then -- Corner reflector cal, vertical tx w/increased NF
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT(1) <= NOT EMS_TRIG;
@@ -1507,6 +1519,7 @@ begin
 				EMS_OUT(5) <= '0';
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= '0';
+				hv_flag <= '1';			-- V
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
@@ -1520,6 +1533,7 @@ begin
 				EMS_OUT(5) <= NOT EMS_TRIG;
 				EMS_OUT(6) <= EMS_TRIG;
 				EMS_OUT(7) <= NOT EMS_TRIG;
+				hv_flag <= '0';			-- H
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
@@ -1530,7 +1544,8 @@ begin
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
-				cmd_wg_sw_pos <= '0';					
+				cmd_wg_sw_pos <= '0';
+				hv_flag <= '0';			-- H				
 			end if;
 		when S2 =>
 			if (ops_mode = "000") then -- Horizontal tx, receive both
