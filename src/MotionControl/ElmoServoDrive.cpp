@@ -5,6 +5,8 @@
  *      Author: burghart
  */
 #include "ElmoServoDrive.h"
+#include "TtyElmoConnection.h"
+//#include "CanElmoConnection.h"
 
 #include <sstream>
 #include <string>
@@ -13,109 +15,148 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <logx/Logging.h>
-#include <QCoreApplication>
 
 LOGGING("ElmoServoDrive")
 
-ElmoServoDrive::ElmoServoDrive(const std::string ttyDev, const std::string driveName) :
-    _ttyDev(ttyDev),
-    _driveName(driveName),
-    _fd(-1),
-    _readNotifier(0),
-    _driveResponding(false),
+ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
+    QObject(),
+    _driveConn(0),
     _driveInitialized(false),
     _driveHomed(false),
     _homingInProgress(false),
-    _waitingForSync(false),
-    _replyTimer(),
     _statusTimer(),
-    _gpTimer(),
-    _syncReplyReceived(false),
-    _rawReplyLen(0) {
+    _scanPoints() {
     // Start with bad values for drive count range and position controller
     // sample time. We query the real values from the drive after it's
     // initialized.
-    _clearDriveParams();
-
-    // Open the serial port to the drive
-    DLOG << "Instantiating ElmoServoDrive '" << _driveName << "' on device " <<
-            _ttyDev;
-    _openTty();
-
-    // Use our notifier to call _readReply() whenever the servo drive sends
-    // a reply.
-    _readNotifier = new QSocketNotifier(_fd, QSocketNotifier::Read);
-    connect(_readNotifier, SIGNAL(activated(int)), this, SLOT(_readReply()));
-
-    // If replies from the servo drive do not arrive within a specified
-    // interval, call _replyTimedOut().
-    _replyTimer.setInterval(REPLY_TIMEOUT_MSECS);
-    _replyTimer.setSingleShot(true);
-    connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
+    _clearQueriedParams();
+    
+    // Create our connection to the drive
+    _driveConn = new TtyElmoConnection(ttyDev, driveName);
+    connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
+            this, SLOT(_onReadyToExecChanged(bool)));
+    connect(_driveConn, SIGNAL(replyFromExec(std::string, ElmoConnection::ReplyType, int, float)),
+            this, SLOT(_onReplyFromExec(std::string, ElmoConnection::ReplyType, int, float)));
 
     // Collect status information every STATUS_PERIOD_MSECS milliseconds.
     _statusTimer.setInterval(STATUS_PERIOD_MSECS);
     connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
     _statusTimer.start();
-
-    // Send a null command just to get a reply from the drive.
-    _execElmoCmd("");
-    ILOG << "Waiting for first response from " << _driveName << " drive";
 }
 
 ElmoServoDrive::~ElmoServoDrive() {
-    delete(_readNotifier);
     // Stop the motor
-    _execElmoCmd("MO=0");
+    _driveConn->execElmoCmd("MO", 0);
     // Turn on echo again. Elmo's Composer software requires echo on in order
     // to function, so we try to leave the servo drive in a state to talk to
     // Composer.
-    _execElmoCmd("EO=1");
+    _driveConn->execElmoCmd("EO", 1);
 }
 
 void
-ElmoServoDrive::_clearDriveParams() {
-    _positionMinCnt = BAD_POSITION_CNT;
-    _positionMaxCnt = BAD_POSITION_CNT;
-    _pcSampleTime = 0.0;
-    _targetRadius = 0;
+ElmoServoDrive::_onReadyToExecChanged(bool isReady) {
+    if (isReady) {
+        _initDrive();
+    } else {
+        // Assume we know nothing accurate about the state of the drive and
+        // its motor at this point.
+        _clearQueriedParams();
+        
+        // If we had already done our initialization or homing, mark those
+        // as undone.
+//        // as undone and reinitialize our connection.
+        if (_driveInitialized || _driveHomed) {
+            _driveInitialized = false;
+            _driveHomed = false;
+//            // Reinitialize the connection
+//            ELOG << driveName() << ": reinitializing connection";
+//            _driveConn->reinitialize();
+        }
+    }
 }
 
 void
-ElmoServoDrive::_openTty() {
-    DLOG << "Opening " << _ttyDev;
-    if ((_fd = open(_ttyDev.c_str(), O_RDWR)) == -1) {
-        ELOG << _driveName << " drive: error opening " << _ttyDev << ": " <<
-                strerror(errno);
-        exit(1);
+ElmoServoDrive::_onReplyFromExec(std::string cmd, 
+        ElmoConnection::ReplyType replyType, int iVal, float fVal) {
+    switch (replyType) {
+    case ElmoConnection::ErrorReply:
+        if (iVal > 0) {
+            ELOG << driveName() << ": command '" << cmd << "' generated " <<
+                    "Elmo SimplIQ error code " << iVal;
+            
+        } else {
+            ELOG << driveName() << ": command '" << cmd << "' generated " <<
+                    "ElmoConnection internal error " << iVal;
+        }
+        
+        // Special handling for errors on XQ commands
+        if (cmd.compare(0, 2, "XQ") == 0) {
+            _xqError = true;
+            return;
+        }
+        
+        ELOG << driveName() << " connection will be reinitialized";
+        _driveConn->reinitialize();
+        return;
+    case ElmoConnection::IntReply:
+        // Look for replies to status requests we've made, and stash
+        // the returned values.
+    
+        // Save reply from SR "status register" command
+        if (! cmd.compare("SR")) {
+            _driveStatusRegister = iVal;
+            // Assign the time that the SR request was issued to
+            // the returned value.
+            _lastSrTime = _srRequestTime;
+        }
+        // Save reply from TI[1] "temperature indicator 1" command
+        else if (! cmd.compare("TI[1]")) {
+            _driveTemperature = iVal;    // drive temperature, deg C
+        }
+        // Save reply from TM "system time" command
+        else if (! cmd.compare("TM")) {
+            // System time is actually a 32-bit unsigned count, but the reply sends 
+            // it as a signed value. Reinterpret the returned value as an *unsigned*
+            // 32-bit int.
+            _driveSystemTime = *(reinterpret_cast<uint32_t*>(&iVal));
+        }
+        // Save reply from TR[1] "target radius" command
+        else if (! cmd.compare("TR[1]")) {
+            _targetRadius = iVal;
+        }
+        // Save reply from PX "main position" command
+        else if (! cmd.compare("PX")) {
+            // PX is reported in counts in the range [XM[1],XM[2]-1]
+            _angleCounts = iVal;
+        }
+        // Save reply from XM[1] "position counter min count" command
+        else if (! cmd.compare("XM[1]")) {
+            _positionMinCnt = iVal; // minimum position count
+            ILOG << driveName() << " XM[1] is " << _positionMinCnt;
+        }
+        // Save reply from XM[2] "position counter max count" command
+        else if (! cmd.compare("XM[2]")) {
+            _positionMaxCnt = iVal; // maximum position count
+            ILOG << driveName() << " XM[2] is " << _positionMaxCnt;
+        }
+        // Save reply from WS[55] "position controller sample time" command
+        else if (! cmd.compare("WS[55]")) {
+            _pcSampleTime = 1.0e-6 * iVal;  // convert sample time in us to s
+            ILOG << driveName() << " position controller sample time is " <<
+                    _pcSampleTime << " s";
+        }
+        // Note other non-empty replies
+        else {
+            ILOG << driveName() << " integer reply to '" << cmd << "' was " <<
+                    iVal;
+        }
+        break;
+    case ElmoConnection::FloatReply:
+        ILOG << driveName() << " float reply to '" << cmd << "' was " << fVal;
+        break;
+    case ElmoConnection::EmptyReply:
+        DLOG << driveName() << " reply to '" << cmd << "' was empty";
     }
-
-    // Make the port 8 data bits, 1 stop bit, no parity, "raw"
-    struct termios ios;
-    if (tcgetattr(_fd, &ios) == -1) {
-        ELOG << _driveName << " drive: error getting " << _ttyDev <<
-                " attributes: " << strerror(errno);
-        exit(1);
-    }
-    cfmakeraw(&ios);
-
-    // No parity
-    ios.c_cflag &= ~PARENB;  // enable parity
-
-    // Set a 0.2 second timeout for reads
-    ios.c_cc[VMIN] = 0;
-    ios.c_cc[VTIME] = 2;    // 0.2 seconds
-
-    if (tcsetattr(_fd, TCSAFLUSH, &ios) == -1) {
-        ELOG << _driveName  << " drive: error setting " << _ttyDev <<
-                " attributes: " << strerror(errno);
-        exit(1);
-    }
-
-    // Start at 19200 baud
-    _setBaud(B19200);
-
-    DLOG << "Done configuring " << _ttyDev;
 }
 
 int
@@ -139,17 +180,16 @@ void
 ElmoServoDrive::moveTo(float angle) {
     // Don't bother if the drive is not responding, is not initialized,
     // or we don't have drive parameters yet.
-    if (! _driveResponding || ! _driveInitialized || ! _driveHomed || ! _driveParamsGood()) {
-        DLOG << _driveName << " ignoring moveTo " << angle;
+    if (! _driveConn->readyToExec() || ! _driveInitialized || ! _driveHomed || 
+            ! _driveParamsGood()) {
+        DLOG << driveName() << " ignoring moveTo " << angle;
         return;
     }
 
     // Generate a command to move to the given absolute position
-    DLOG << _driveName << ": move to " << angle;
-    std::ostringstream cmdstream;
-    cmdstream << "PA=" << _angleToCounts(angle);
-    _execElmoCmd(cmdstream.str());
-    _execElmoCmd("BG");
+    DLOG << driveName() << ": move to " << angle;
+    _driveConn->execElmoAssignCmd("PA", _angleToCounts(angle));
+    _driveConn->execElmoCmd("BG");
 }
 
 void
@@ -169,9 +209,7 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
         pcSampTimesPerPoint = 255;
 
     // Set sample times per point on the drive
-    cmdstream.str("");
-    cmdstream << "MP[4]=" << pcSampTimesPerPoint;
-    _execElmoCmd(cmdstream.str());
+    _driveConn->execElmoAssignCmd("MP", 4, pcSampTimesPerPoint);
 
     // Actual time between points.
     float pointTime = _pcSampleTime * pcSampTimesPerPoint;
@@ -189,6 +227,7 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
     // side)
     ILOG << "Building " << nScanPts << "-point PT table";
     ILOG << pointTime << " seconds per point";
+    _scanPoints.clear();
     for (int i = 0; i < nScanPts; i++) {
         float degPerPoint = scanRate * pointTime;
         float pos = ccwLimit + (i - 1) * degPerPoint;
@@ -197,375 +236,36 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
             pos = ccwLimit + newi * degPerPoint;
         }
         int ipos = _angleToCounts(pos);
+        _scanPoints.push_back(ipos);
 
         // Set position point
-        ILOG << pos << ":" << ipos;
-        cmdstream.str("");
-        cmdstream << "QP[" << i + 1 << "]=" << ipos;
-        _execElmoCmd(cmdstream.str());
+        ILOG << pos << ":" << _scanPoints[i];
+        _driveConn->execElmoAssignCmd("QP", i + 1, ipos);
     }
     // Set PT motion parameters
-    _execElmoCmd("MP[1]=1");
-
-    cmdstream.str("");
-    cmdstream << "MP[2]=" << nScanPts;
-    _execElmoCmd(cmdstream.str());
-
-    _execElmoCmd("MP[3]=1");
+    _driveConn->execElmoAssignCmd("MP", 1, 1);
+    _driveConn->execElmoAssignCmd("MP", 2, nScanPts);
+    _driveConn->execElmoAssignCmd("MP", 3, 1);
 }
 
 void
 ElmoServoDrive::scan() {
     // Don't bother if the drive is not responding
-    if (! _driveResponding) {
+    if (! _driveConn->readyToExec()) {
         return;
     }
 
-    ILOG << _driveName << " starting scan"; 
+    ILOG << driveName() << " starting scan"; 
 
     // position to first point of scan
-    _execElmoCmd("PA=QP[1]");
-    _execElmoCmd("BG");
+    _driveConn->execElmoAssignCmd("PA", _scanPoints[0]);
+    _driveConn->execElmoCmd("BG");
 
+    // TODO wait for motion completion here?
+    
     // start the scan
-    _execElmoCmd("PT=1");
-    _execElmoCmd("BG");
-}
-
-bool
-ElmoServoDrive::_execElmoCmd(const std::string cmd, bool emptyReplyExpected) {
-    // TODO: verify that we got a single command, with no terminator characters
-    // (or exactly one terminator at the end of the command)
-
-    // Don't send commands while we're waiting to establish command/reply
-    // synchronization.
-    if (_waitingForSync) {
-        DLOG << _driveName << ": dropping command '" << cmd << "', waiting for sync";
-        return(false);
-    }
-
-    std::string tcmd = cmd + ";"; // copy of the command with terminator appended
-    int tcmdlen = tcmd.length();
-
-    // Write the command to our file descriptor
-    int result = write(_fd, tcmd.c_str(), tcmdlen);
-    if (result < 0) {
-        ELOG << _driveName << " drive: error on write: " << strerror(errno);
-        return(false);
-    } else if (result != tcmdlen) {
-        ELOG << _driveName << " drive: wrote " << result <<
-                " bytes instead of " << tcmdlen;
-        return(false);
-    }
-
-    // Start our reply timer if it isn't already running.
-    if (! _replyTimer.isActive()) {
-        _replyTimer.start();
-    }
-
-    // Add this command to our queue of commands not yet acknowledged
-    CmdQueueEntry entry(cmd, emptyReplyExpected);
-    _unackedCmds.push(entry);
-
-    DLOG << _driveName << ": sent command '" << cmd << "' (" <<
-            _unackedCmds.size() << " unacked)";
-    return(true);
-}
-
-void
-ElmoServoDrive::_readReply() {
-    /*
-     * Drop reply after we read it if this is the first response from the
-     * drive, or if we're waiting for a reply to establish command/reply
-     * synchronization.
-     */
-    bool dropReply = _waitingForSync || ! _driveResponding;
-
-    /*
-     * Stop the reply timer and note that the drive is now responding.
-     */
-    _replyTimer.stop();
-    if (! _driveResponding) {
-        ILOG << _driveName << " drive is now responding";
-        _startCommandReplySync();
-    } else if (_waitingForSync) {
-        _syncReplyReceived = true;
-    }
-    /*
-     * Read what's available on the serial port
-     */
-    int maxRead = _ELMO_REPLY_BUFFER_SIZE - _rawReplyLen;
-    int nread = read(_fd, _rawReply + _rawReplyLen, maxRead);
-    if (nread < 0) {
-        ELOG << __PRETTY_FUNCTION__ << ": read error: " << strerror(errno);
-        return;
-    }
-    _rawReplyLen += nread;
-
-    /*
-     * If we completely filled our reply buffer, it's a problem since there's
-     * probably some unread reply bytes! Do our best to deal with it.
-     */
-    if (_rawReplyLen == _ELMO_REPLY_BUFFER_SIZE) {
-        ELOG << "BUG: reply buffer overflow for " << _driveName << " drive. " <<
-                ". Increase size of _ELMO_REPLY_BUFFER_SIZE!";
-        ELOG << "Attempting to resynchronize commands and replies.";
-        // Reset and start over...
-        _startCommandReplySync();
-        return;
-    }
-
-    // If requested, just drop the reply and return.
-    if (dropReply) {
-        _rawReply[_rawReplyLen] = '\0';
-        DLOG << _driveName << " dropping reply '" << _rawReply << "'";
-        _rawReplyLen = 0;
-        return;
-    }
-
-    _rawReply[_rawReplyLen] = '\0';
-    DLOG << _driveName << " raw reply '" << _rawReply << "', with " <<
-            _unackedCmds.size() << " unacked";
-
-    // Pointer to the last found terminator character ";"
-    uint8_t * term = 0;
-
-    // Parse replies in order by finding their semicolon terminators, removing
-    // the associated commands from our unacknowledged queue.
-    int startNdx = 0;
-    while (startNdx < _rawReplyLen) {
-        // Find the next semicolon terminator at or after startNdx
-        term = static_cast<uint8_t *>(memchr(_rawReply + startNdx, ';', _rawReplyLen - startNdx));
-
-        if (! term)
-            break;
-
-        // Get the next unacknowledged command
-        std::string cmd = _unackedCmds.front().cmdText;
-        bool emptyReplyExpected = _unackedCmds.front().emptyReplyExpected;
-
-        int replySize = term - (_rawReply + startNdx);
-        if (replySize == 0) {
-            if (emptyReplyExpected) {
-                // Empty reply indicates success
-                DLOG << _driveName << " command '" << cmd << "' succeeded";
-            } else {
-                ELOG << _driveName << ": No value included in reply to '" <<
-                        cmd << "' command. Resynchronizing commands and replies.";
-                // Reset and start over...
-                this->_startCommandReplySync();
-                return;
-            }
-        } else {
-            // Copy out the reply to the command into a null-terminated
-            // uint8_t array.
-            uint8_t * cmdReply = new uint8_t[replySize + 1];
-            memcpy(cmdReply, _rawReply + startNdx, replySize);
-            cmdReply[replySize] = 0;
-
-            // If the last character of the reply is a '?', it indicates an
-            // error, with the error code in the preceding character.
-            if (cmdReply[replySize - 1] == '?') {
-                uint16_t errorCode = uint16_t(cmdReply[replySize - 2]);
-                ELOG << _driveName << " command '" << cmd << "' gave error " <<
-                        errorCode;
-                // Special handling for errors from XQ commands
-                if (! cmd.compare(0, 2, "XQ")) {
-                    _xqError = true;
-                }
-            } else {
-                if (! emptyReplyExpected) {
-                    DLOG << _driveName << " command '" << cmd << "' replied '" <<
-                            cmdReply << "'";
-                } else {
-                    ELOG << _driveName << " command '" << cmd << "' " <<
-                            "gave unexpected reply '" << cmdReply << "'. " <<
-                            "Resynchronizing commands and replies.";
-                    _startCommandReplySync();
-                    return;
-                }
-
-                QString qCmdReply(reinterpret_cast<char*>(cmdReply));
-                bool ok;
-
-                // Look for replies to status requests we've made, and stash
-                // the returned values.
-
-                // Save reply from SR "status register" command
-                if (! cmd.compare("SR")) {
-                    StatusReg statusRegister = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        _driveStatusRegister = statusRegister;
-                        // Assign the time that the SR request was issued to
-                        // the returned value.
-                        _lastSrTime = _srRequestTime;
-                    } else {
-                        WLOG << _driveName << ": bad SR reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-
-                // Save reply from TI[1] "temperature indicator 1" command
-                if (! cmd.compare("TI[1]")) {
-                    int temp = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        _driveTemperature = temp;    // drive temperature, deg C
-                    } else {
-                        WLOG << _driveName << ": bad TI[1] reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-
-                // Save reply from TM "system time" command
-                if (! cmd.compare("TM")) {
-                    // System time is actually a 32-bit unsigned count, but
-                    // the reply sends it as a signed value. We'll convert
-                    // to unsigned as long as the value parses as an int.
-                    int32_t time = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        // Reinterpret the returned value as an *unsigned*
-                        // 32-bit int.
-                        _driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
-                    } else {
-                        WLOG << _driveName << ": bad TM reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-                
-                // Save reply from TR[1] "target radius" command
-                if (! cmd.compare("TR[1]")) {
-                    uint32_t tr = qCmdReply.toUInt(&ok);
-                    if (ok) {
-                        _targetRadius = tr;
-                    } else {
-                        WLOG << _driveName << ": bad TR[1] reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-
-                // Save reply from PX "main position" command
-                if (! cmd.compare("PX")) {
-                    // PX is reported in counts in the range [XM[1],XM[2]-1]
-                    int32_t counts = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        _angleCounts = counts;
-                    } else {
-                        WLOG << _driveName << ": bad PX reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-
-                // Save reply from XM[1] "position counter min count" command
-                if (! cmd.compare("XM[1]")) {
-                    uint32_t count = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        _positionMinCnt = count;    // minimum position count
-                        ILOG << _driveName << " XM[1] is " << _positionMinCnt;
-                    } else {
-                        WLOG << _driveName << ": bad XM[1] reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-
-                // Save reply from XM[2] "position counter max count" command
-                if (! cmd.compare("XM[2]")) {
-                    uint32_t count = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        _positionMaxCnt = count;    // maximum position count
-                        ILOG << _driveName << " XM[2] is " << _positionMaxCnt;
-                    } else {
-                        WLOG << _driveName << ": bad XM[2] reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-
-                // Save reply from WS[55] "position controller sample time" command
-                if (! cmd.compare("WS[55]")) {
-                    int microsecs = qCmdReply.toInt(&ok);
-                    if (ok) {
-                        _pcSampleTime = 1.0e-6 * microsecs;    // convert sample time to s
-                        ILOG << _driveName <<
-                                " position controller sample time is " <<
-                                _pcSampleTime << " s";
-                    } else {
-                        WLOG << _driveName << ": bad WS[55] reply '" <<
-                                cmdReply << "'";
-                    }
-                }
-            }
-            delete(cmdReply);
-        }
-        // Remove the front command from our unacknowledged queue; it's now
-        // acknowledged.
-        _unackedCmds.pop();
-
-        // Move past the reply we just parsed
-        startNdx += replySize + 1;
-    }
-
-    // If the buffer did not end with a terminator, save the remainder for next
-    // time around.
-    if (term) {
-        // We parsed it all
-        _rawReplyLen = 0;
-    } else {
-        // Shift the stuff we didn't parse to the beginning of _rawReply.
-        int nkeep = _rawReplyLen - startNdx;
-        memmove(_rawReply, _rawReply + startNdx, nkeep);
-        _rawReplyLen = nkeep;
-        _rawReply[_rawReplyLen] = 0;
-        DLOG << _driveName << ": " << nkeep << " unparsed reply bytes. " <<
-                "Remainder is '" <<    _rawReply << "'";
-    }
-
-    return;
-}
-
-void
-ElmoServoDrive::_startCommandReplySync() {
-    // Make sure echo is disabled, since we require echo off when sync'ing
-    // replies with our queue of unacknowledged commands.
-    _execElmoCmd("EO=0");
-
-    // No more commands will be sent while _waitingForReplySync is true.
-    // Wait long enough for all pending replies to be received, then
-    // command/reply synchronization should be established.
-    _rawReplyLen = 0;
-    _driveResponding = true;
-    _waitingForSync = true;
-    _syncReplyReceived = false;
-
-    // Assume that all replies from the drive, up to and including the reply
-    // to the command issued above, will arrive within REPLY_TIMEOUT_MSECS.
-    _gpTimer.setInterval(REPLY_TIMEOUT_MSECS);
-    _gpTimer.setSingleShot(true);
-    connect(& _gpTimer, SIGNAL(timeout()), this, SLOT(_syncWaitExpired()));
-    _gpTimer.start();
-}
-
-void
-ElmoServoDrive::_syncWaitExpired() {
-    // Disconnect the timer signal from this slot. This was a one-time deal!
-    _gpTimer.stop();
-    _gpTimer.disconnect(this);
-
-    // Empty the list of unacknowledged commands
-    while (! _unackedCmds.empty()) {
-        _unackedCmds.pop();
-    }
-    // We're done waiting for sync reply. Let commands go to the drive again.
-    _waitingForSync = false;
-
-    // If we got no replies while we were waiting, treat it as a reply timeout.
-    // Otherwise, command/reply synchronization has been achieved!
-    if (! _syncReplyReceived) {
-        ILOG << _driveName << " sync reply not received";
-        _replyTimedOut();
-    } else {
-        ILOG << _driveName << " commands and replies are now synced";
-        // We can now tell the drive to initialize its parameters
-        _initDrive();
-    }
+    _driveConn->execElmoAssignCmd("PT", 1);
+    _driveConn->execElmoCmd("BG");
 }
 
 void
@@ -577,9 +277,7 @@ ElmoServoDrive::homeDrive(int homeCounts) {
     _driveHomed = false;
 
     // Set UI[1] to the count value we want associated with the home position.
-    std::ostringstream cmdstream;
-    cmdstream << "UI[1]=" << homeCounts;
-    _execElmoCmd(cmdstream.str());
+    _driveConn->execElmoAssignCmd("UI", 1, homeCounts);
 
     // Call the drive homing function. The function sets the count value for
     // the home position to the number it finds in UI[1].
@@ -598,16 +296,13 @@ void
 ElmoServoDrive::setTargetRadius(uint32_t targetRadius) {
     // Don't bother if the drive is not responding, is not initialized,
     // or we don't have good drive parameters yet.
-    if (! _driveResponding || ! _driveInitialized || ! _driveParamsGood()) {
-        DLOG << _driveName << " not ready; ignoring setTargetRadius to " << 
+    if (! _driveConn->readyToExec() || ! _driveInitialized || ! _driveParamsGood()) {
+        DLOG << driveName() << " not ready; ignoring setTargetRadius to " << 
                 targetRadius << " counts";
         return;
     }
-    // Convert target radius to drive counts, then build and send the TR[1] 
-    // command
-    std::ostringstream cmdstream;
-    cmdstream << "TR[1]=" << targetRadius;
-    _execElmoCmd(cmdstream.str());
+    // Send the TR[1]=<targetRadius> command.
+    _driveConn->execElmoAssignCmd("TR", 1, targetRadius);
 }
 
 void
@@ -627,18 +322,17 @@ void
 ElmoServoDrive::_startXq(std::string function) {
     // Before executing a drive program, stop any program running on the 
     // drive and disarm any homing which may be in progress.
-    _execElmoCmd("KL");
-    _execElmoCmd("HM[1]=0");
+    _driveConn->execElmoCmd("KL");
+    _driveConn->execElmoAssignCmd("HM", 1, 0);
     usleep(100000); // sleep 0.1 s
 
     // Clear our XQ error indicator before we begin
     _xqError = false;
 
     // Use XQ to execute the given function on the drive
-    std::ostringstream cmdstream;
-    cmdstream << "XQ##" << function;
-    _execElmoCmd(cmdstream.str());
-    ILOG << _driveName << " executing drive-resident function: " << cmdstream.str();
+    std::string cmd = std::string("XQ##") + function;
+    _driveConn->execElmoCmd(cmd);
+    ILOG << driveName() << " executing drive-resident function: " << cmd;
 
     // Save the time the XQ was started
     gettimeofday(&_xqStartTime, NULL);
@@ -654,12 +348,12 @@ ElmoServoDrive::_xqCompleted() {
 
 void
 ElmoServoDrive::_testForInitCompletion() {
-    ILOG << _driveName << " test for init completion";
+    ILOG << driveName() << " test for init completion";
     // If there was an error executing the program on the drive, restart
     // the initialization process.
     if (_xqError) {
-        ELOG << _driveName << " initialization failed on XQ. Restarting.";
-        _startCommandReplySync();
+        ELOG << driveName() << " initialization XQ failed. Restarting connection.";
+        _driveConn->reinitialize();
         goto stop_timer;
     }
 
@@ -670,10 +364,9 @@ ElmoServoDrive::_testForInitCompletion() {
         // call here.
         time_t now = time(0);
         if ((now - _xqStartTime.tv_sec) > 10) {
-            ELOG << _driveName << " initialization timed out. Starting over.";
-            _execElmoCmd("KL"); // halt program execution and stop the motor
-            _driveResponding = false;
-            _execElmoCmd("");
+            ELOG << driveName() << " initialization timed out. Starting over.";
+            _driveConn->execElmoCmd("KL");
+            _driveConn->reinitialize();
             goto stop_timer;
         } else {
             // Nope, not done yet. Just return.
@@ -682,7 +375,7 @@ ElmoServoDrive::_testForInitCompletion() {
     }
 
     // The initialization/homing program on the drive finished.
-    ILOG << _driveName << " initialization complete";
+    ILOG << driveName() << " initialization complete";
     _driveInitialized = true;
 
     // Once the drive is initialized, we can query it for drive parameters.
@@ -695,12 +388,12 @@ stop_timer:
 
 void
 ElmoServoDrive::_testForHomingCompletion() {
-    ILOG << _driveName << " test for homing completion";
+    ILOG << driveName() << " test for homing completion";
     // If there was an error executing the program on the drive, restart
     // the initialization process.
     if (_xqError) {
-        ELOG << _driveName << " homing failed on XQ. Restarting.";
-        _startCommandReplySync();
+        ELOG << driveName() << " homing failed on XQ. Restarting.";
+        _driveConn->reinitialize();
         goto stop_timer;
     }
 
@@ -711,10 +404,9 @@ ElmoServoDrive::_testForHomingCompletion() {
         // call here.
         time_t now = time(0);
         if ((now - _xqStartTime.tv_sec) > 10) {
-            ELOG << _driveName << " homing timed out. Starting over.";
-            _execElmoCmd("KL"); // halt program execution and stop the motor
-            _driveResponding = false;
-            _execElmoCmd("");
+            ELOG << driveName() << " homing timed out. Starting over.";
+            _driveConn->execElmoCmd("KL"); // halt program execution and stop the motor
+            _driveConn->reinitialize();
             goto stop_timer;
         } else {
             // Nope, not done yet. Just return.
@@ -723,94 +415,14 @@ ElmoServoDrive::_testForHomingCompletion() {
     }
 
     // The initialization/homing program on the drive finished.
-    ILOG << _driveName << " homing complete";
+    ILOG << driveName() << " homing complete";
     _driveHomed = true;
-    _execElmoCmd("MO=1");
+    _driveConn->execElmoAssignCmd("MO", 1);
 
 stop_timer:
     _homingInProgress = false;
     _gpTimer.stop();
     _gpTimer.disconnect(this);
-}
-
-void
-ElmoServoDrive::_setBaud(speed_t baudValue) {
-    if (baudValue != B9600 && baudValue != B19200 && baudValue != B38400 &&
-            baudValue != B57600) {
-        ELOG << __PRETTY_FUNCTION__ << ": bad baud value 0" << std::oct <<
-                baudValue << std::dec << " (octal), using B9600";
-        baudValue = B9600;
-    }
-    // Get current settings, change the port speed, and send the new settings.
-    struct termios ios;
-    if (tcgetattr(_fd, &ios) == -1) {
-        ELOG << __PRETTY_FUNCTION__ << ": error getting " << _ttyDev <<
-                " attributes: " << strerror(errno);
-        exit(1);
-    }
-
-    // Change speed if the current speed is not the same as the requested one
-    if (cfgetispeed(&ios) == baudValue && cfgetospeed(&ios) == baudValue) {
-        DLOG << __PRETTY_FUNCTION__ << ": requested baud rate matches current";
-    } else {
-        ILOG << "Changing speed on " << _ttyDev << " to " << _BaudToText(baudValue);
-        cfsetspeed(&ios, baudValue);
-
-        // Send new I/O settings
-        if (tcsetattr(_fd, TCSAFLUSH, &ios) == -1) {
-            ELOG << __PRETTY_FUNCTION__ << ": error setting " << _ttyDev <<
-                    " attributes: " << strerror(errno);
-            exit(1);
-        }
-    }
-}
-
-std::string
-ElmoServoDrive::_BaudToText(speed_t baudValue) {
-    std::string speedTxt("unknown");
-    switch (baudValue) {
-    case B4800:
-        speedTxt = "B4800";
-        break;
-    case B9600:
-        speedTxt = "B9600";
-        break;
-    case B19200:
-        speedTxt = "B19200";
-        break;
-    case B38400:
-        speedTxt = "B38400";
-        break;
-    case B57600:
-        speedTxt = "B57600";
-        break;
-    }
-    return(speedTxt);
-}
-
-void
-ElmoServoDrive::_replyTimedOut() {
-    // Ignore reply timeouts while we're waiting for synchronization
-    if (_waitingForSync) {
-        ILOG << _driveName <<
-                " ignoring reply timeout while waiting for synchronization";
-        return;
-    }
-
-    // If the drive had been responding, note that it is no longer responding.
-    if (_driveResponding) {
-        ELOG << _driveName << " servo drive is no longer responding";
-        // We need to consider the drive uninitialized, since there's a chance
-        // it lost power.
-        _driveInitialized = false;
-        _driveHomed = false;
-    }
-
-    _driveResponding = false;
-    _resetStatus();
-
-    // Send a null command to try again for a response
-    _execElmoCmd("");
 }
 
 void
@@ -824,25 +436,32 @@ ElmoServoDrive::_collectStatus() {
     gettimeofday(&_srRequestTime, NULL);
 
     // Send the commands for the status values we want
-    _execElmoCmd("SR", false);      // status register
-    _execElmoCmd("TI[1]", false);   // "temperature indicator 1", drive temperature
-    _execElmoCmd("TR[1]", false);      // target radius
-    _execElmoCmd("PX", false);      // main position
-    _execElmoCmd("TM", false);		// system time
-}
-
-void
-ElmoServoDrive::_resetStatus() {
-    _driveTemperature = 0;
-    _driveStatusRegister = 0;
+    _driveConn->execElmoCmd("SR");      // status register
+    _driveConn->execElmoCmd("TI", 1);   // "temperature indicator 1", drive temperature
+    _driveConn->execElmoCmd("TR", 1);   // target radius
+    _driveConn->execElmoCmd("PX");      // main position
+    _driveConn->execElmoCmd("TM");      // system time
 }
 
 void
 ElmoServoDrive::_collectDriveParams() {
     // Send commands to the drive to get back drive parameters we need. The
-    // status values will be parsed out and saved in _readReply() when the
-    // replies come back.
-    _execElmoCmd("XM[1]", false);   // position counter minimum value
-    _execElmoCmd("XM[2]", false);   // position counter maximum value
-    _execElmoCmd("WS[55]", false);  // sampling time of position controller
+    // status values will be saved in _readReply() when the replies come back.
+    _driveConn->execElmoCmd("XM", 1);   // XM[1]: position counter minimum value
+    _driveConn->execElmoCmd("XM", 2);   // XM[2]: position counter maximum value
+    _driveConn->execElmoCmd("WS", 55);  // sampling time of position controller
+}
+
+void
+ElmoServoDrive::_clearQueriedParams() {
+    _positionMinCnt = BAD_POSITION_CNT;
+    _positionMaxCnt = BAD_POSITION_CNT;
+    _pcSampleTime = 0.0;
+    _driveStatusRegister = 0;
+    _lastSrTime.tv_sec = 0;
+    _lastSrTime.tv_usec = 0;
+    _driveTemperature = 0;
+    _targetRadius = 0;
+    _angleCounts = 0;
+    _driveSystemTime = 0;
 }

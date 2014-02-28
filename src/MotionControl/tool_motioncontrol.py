@@ -14,17 +14,21 @@ env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtNetwork'])
 
 sources = Split('''
+    ElmoConnection.cpp
     ElmoServoDrive.cpp
     MotionControl.cpp
     MotionControlRpcClient.cpp
+    TtyElmoConnection.cpp
 ''')
 
 headers = Split('''
+    ElmoConnection.h
     ElmoServoDrive.h
     MotionControl.h
     MotionControlRpcClient.h
     RotServoDrive.h
     TiltServoDrive.h
+    TtyElmoConnection.h
 ''')
 
 lib = env.Library('motioncontrol', sources)
