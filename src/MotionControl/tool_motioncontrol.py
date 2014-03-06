@@ -2,6 +2,7 @@
 # Rules to build libmotioncontrolrpcclient.a and export it as a SCons tool
 #
 tools = Split('''
+    canfestival
     cmigits
     doxygen
     logx
@@ -14,6 +15,7 @@ env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtNetwork'])
 
 sources = Split('''
+    CanElmoConnection.cpp
     ElmoConnection.cpp
     ElmoServoDrive.cpp
     MotionControl.cpp
@@ -22,6 +24,7 @@ sources = Split('''
 ''')
 
 headers = Split('''
+    CanElmoConnection.h
     ElmoConnection.h
     ElmoServoDrive.h
     MotionControl.h
