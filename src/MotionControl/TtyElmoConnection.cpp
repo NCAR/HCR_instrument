@@ -78,7 +78,7 @@ TtyElmoConnection::_cmdIsValid(std::string cmd) {
 }
 
 bool
-TtyElmoConnection::execElmoCmd(std::string cmd, int index) {
+TtyElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     // Make sure the command's OK
     if (! _cmdIsValid(cmd)) {
         return(false);
@@ -98,7 +98,7 @@ TtyElmoConnection::execElmoCmd(std::string cmd, int index) {
 }
 
 bool
-TtyElmoConnection::execElmoAssignCmd(std::string cmd, int index, int value) {
+TtyElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index, int value) {
     // Make sure the command's OK
     if (! _cmdIsValid(cmd)) {
         return(false);

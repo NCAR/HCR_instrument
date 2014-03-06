@@ -41,7 +41,7 @@ public:
     /// @param index the command index (set to zero if the SimplIQ command is 
     ///     not indexed).
     /// @return true iff command execution was initiated
-    virtual bool execElmoCmd(std::string cmd, int index);
+    virtual bool execElmoCmd(std::string cmd, uint16_t index);
     
     /// @brief Execute the given SimplIQ assignment for command cmd on the 
     /// servo drive. If the index is zero, "<cmd>=<value>" will be executed,
@@ -53,7 +53,7 @@ public:
     /// @param value the integer value to be assigned to "<cmd>" (or 
     ///     "<cmd>[<index>]")
     /// @return true iff command execution was initiated
-    virtual bool execElmoAssignCmd(std::string cmd, int index, int value);
+    virtual bool execElmoAssignCmd(std::string cmd, uint16_t index, int value);
     
     /// @brief Return true iff the object is ready to execute commands via the
     /// execElmoCmd() method.

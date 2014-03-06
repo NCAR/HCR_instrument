@@ -8,7 +8,8 @@
 #ifndef ELMOCONNECTION_H_
 #define ELMOCONNECTION_H_
 
-#include <qobject.h>
+#include <inttypes.h>
+#include <QObject>
 
 /// @brief Interface class providing a connection for sending commands to 
 /// an Elmo servo drive. Classes which use this interface must provide 
@@ -25,11 +26,11 @@ public:
     
     /// @brief Execute the given SimplIQ command cmd on the servo drive.
     /// @param cmd the two-letter Elmo SimplIQ command (or legal 
-    /// XQ##&lt;function&gt;) command to execute 
+    /// "XQ##<function>") command to execute 
     /// @param index the command index (set to zero if the SimplIQ command is 
     ///     not indexed).
     /// @return true iff command execution was initiated
-    virtual bool execElmoCmd(std::string cmd, int index) = 0;
+    virtual bool execElmoCmd(std::string cmd, uint16_t index) = 0;
     
     /// @brief Execute the given SimpleIQ non-indexed command cmd on the
     /// servo drive. This is equivalent to execElmoCmd(cmd, 0).
@@ -37,22 +38,22 @@ public:
     virtual bool execElmoCmd(std::string cmd) { return(execElmoCmd(cmd, 0)); }
     
     /// @brief Execute the given SimplIQ assignment for command cmd on the 
-    /// servo drive. If the index is zero, &lt;cmd&gt;=&lt;value&gt; will be 
-    /// executed, otherwise &lt;cmd&gt;[&lt;index&gt;]=&lt;value&gt;.
+    /// servo drive. If the index is zero, "<cmd>=<value>" will be 
+    /// executed, otherwise "<cmd>[<index>]=<value>".
     ///
     /// @param cmd the two-letter Elmo SimplIQ command to execute
     /// @param index the command index (set to zero if the SimplIQ command is 
     ///     not indexed).
-    /// @param value the integer value to be assigned to &lt;cmd&gt; (or 
-    ///     &lt;cmd&gt;[&lt;index&gt;])
+    /// @param value the integer value to be assigned to "<cmd>" (or 
+    ///     "<cmd>[<index>]")
     /// @return true iff command execution was initiated
-    virtual bool execElmoAssignCmd(std::string cmd, int index, int value) = 0;
+    virtual bool execElmoAssignCmd(std::string cmd, uint16_t index, int value) = 0;
     
     /// @brief Execute the given SimplIQ assignment for non-indexed command cmd 
     /// on the servo drive. This is equivalent to execElmoAssignCmd(cmd, 0, value).
     /// @param cmd the two-letter Elmo SimplIQ command to execute
-    /// @param value the integer value to be assigned to &lt;cmd&gt; (or 
-    ///     &lt;cmd&gt;[&lt;index&gt;])
+    /// @param value the integer value to be assigned to "<cmd>" (or 
+    ///     "<cmd>[<index>]")
     /// @return true iff command execution was initiated
     virtual bool execElmoAssignCmd(std::string cmd, int value) {
         return(execElmoAssignCmd(cmd, 0, value));
