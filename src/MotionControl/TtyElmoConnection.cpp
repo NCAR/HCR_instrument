@@ -50,10 +50,14 @@ TtyElmoConnection::~TtyElmoConnection() {
     delete(_readNotifier);
     // Stop the motor
     _execElmoCmd("MO=0");
+    
     // Turn on echo again. Elmo's Composer software requires echo on in order
     // to function, so we try to leave the servo drive in a state to talk to
     // Composer.
     _execElmoCmd("EO=1");
+    
+    // Close the tty device
+    close(_fd);
 }
 
 bool
