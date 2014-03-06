@@ -50,8 +50,8 @@ public:
     /// @param cmd the two-letter Elmo SimplIQ command to execute
     /// @param index the command index (set to zero if the SimplIQ command is 
     ///     not indexed).
-    /// @param value the integer value to be assigned to <cmd> (or 
-    ///     <cmd>[<index>])
+    /// @param value the integer value to be assigned to "<cmd>" (or 
+    ///     "<cmd>[<index>]")
     /// @return true iff command execution was initiated
     virtual bool execElmoAssignCmd(std::string cmd, int index, int value);
     
