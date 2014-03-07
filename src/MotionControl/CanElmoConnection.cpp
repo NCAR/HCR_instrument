@@ -39,6 +39,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     _elmoNodeId(nodeId),
     _driveName(driveName),
     _initPhase(Uninitialized),
+    _replyTimer(),
+    _replyTimerCommand(),
     _readyToExec(false) {
     size_t nConnections = _AllConnections.size();
     // Perform class initialization if this is the first instance
@@ -94,18 +96,23 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
             break;
         }
     }
-    
+
     if (! _myRpdo) {
         ELOG << "BUG: CanElmoConnection could not find an available RPDO";
         exit(1);
     }
     
-    // Send a reset message to our Elmo's node ID to get a boot reply, which 
-    // will cause the rest of our initialization to proceed.
-    masterSendNMTstateChange(_MasterNodeData, _elmoNodeId, NMT_Reset_Node);
-    
+    // If replies from the servo drive do not arrive within a specified
+    // interval, call _replyTimedOut().
+    _replyTimer.setInterval(REPLY_TIMEOUT_MSECS);
+    _replyTimer.setSingleShot(true);
+    connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
+
     // Add this instance to the list of CanElmoConnection-s
     _AllConnections.push_back(this);
+    
+    // Begin the initialization process
+    _doNextInitializeStep();
 }
 
 CanElmoConnection::~CanElmoConnection() {
@@ -221,7 +228,7 @@ CanElmoConnection::_CompleteSDO(CO_Data* d, UNS8 nodeId)
                 abortCode;
         success = false;
     } else {
-        ILOG << "SDO to node " <<  int(nodeId) << " was successful!";
+        DLOG << "SDO to node " <<  int(nodeId) << " was successful!";
         success = true;
     }
     
@@ -258,8 +265,35 @@ CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused,
     return(conn->_handleElmoPDOReply());
 }
 
+std::string
+CanElmoConnection::_AssembleCommandString(std::string cmd, uint16_t index) {
+    if (index == 0) {
+        return(cmd);
+    } else {
+        // for non-zero index, append "[<index>]"
+        std::ostringstream os;
+        os << cmd << "[" << index << "]";
+        return(os.str());
+    }
+}
+
+std::string
+CanElmoConnection::_AssembleAssignString(std::string cmd, uint16_t index, 
+        int value) {
+    // Build the base command
+    std::string cmdString = _AssembleCommandString(cmd, index);
+    
+    // Append "=<value>"
+    std::ostringstream os;
+    os << cmdString << "=" << value;
+    return(os.str());
+}
+
 UNS32
 CanElmoConnection::_handleElmoPDOReply() {
+    // A reply came in, so stop the reply timer.
+    _stopReplyTimer();
+    
     // The 8-byte Elmo PDO reply was mapped to variable ElmoMaster_PDOReplies 
     // at index (_myRpdo - 1).
     uint8_t replyIndex = _myRpdo - 1;  // PDO num [1-4] -> array index [0-3]
@@ -285,11 +319,7 @@ CanElmoConnection::_handleElmoPDOReply() {
     int32_t iVal;
     memcpy(&iVal, reply + 4, 4);
 
-    std::ostringstream cmdStream;
-    cmdStream << cmd[0] << cmd[1];
-    if (cmdIndex > 0) {
-        cmdStream << "[" << cmdIndex << "]";
-    }
+    std::string fullCommand = _AssembleCommandString(cmd, cmdIndex);
     
     std::ostringstream valStream;
     if (isFloat) {
@@ -299,18 +329,18 @@ CanElmoConnection::_handleElmoPDOReply() {
                 iVal;
     }
     
-    DLOG << "PDO reply for commmand " << cmdStream.str() << ", " <<
+    DLOG << "PDO reply for commmand " << fullCommand << ", " <<
             "type " << (isFloat ? "float" : "int") << ", " << 
             (isError ? "ERR" : "no err") << ", " <<
             "value " << valStream.str();
     
     // Emit the appropriate replyFromExec() signal
     if (isError) {
-        emit(replyFromExec(cmdStream.str(), ErrorReply, iVal, 0.0));
+        emit(replyFromExec(fullCommand, ErrorReply, iVal, 0.0));
     } else if (isFloat) {
-        emit(replyFromExec(cmdStream.str(), FloatReply, 0, fVal));
+        emit(replyFromExec(fullCommand, FloatReply, 0, fVal));
     } else {
-        emit(replyFromExec(cmdStream.str(), IntReply, iVal, 0.0));
+        emit(replyFromExec(fullCommand, IntReply, iVal, 0.0));
     }
     // Report no error in interpreting the reply
     return(0);
@@ -318,13 +348,14 @@ CanElmoConnection::_handleElmoPDOReply() {
 
 void
 CanElmoConnection::_TimerStartCallback(CO_Data* d, UNS32 id) {
-    ILOG << "CanElmoConnection::_TimerStartCallback for node " << id;
+    DLOG << "CanElmoConnection::_TimerStartCallback for node " << id;
+    // Move to pre-operational state once the timer is started
     setState(_MasterNodeData, Pre_operational);
 }
 
 void
 CanElmoConnection::_TimerStopCallback(CO_Data* d, UNS32 id) {
-    ILOG << "CanElmoConnection::_TimerStopCallback for node " << id;
+    DLOG << "CanElmoConnection::_TimerStopCallback for node " << id;
 }
 
 void
@@ -340,7 +371,7 @@ CanElmoConnection::_HeartbeatErrorCallback(CO_Data* d, UNS8 nodeId) {
 
 void
 CanElmoConnection::_InitialisationCallback(CO_Data * d) {
-    ILOG << "CanElmoConnection::_InitialisationCallback";
+    DLOG << "CanElmoConnection::_InitialisationCallback";
     // Set our node ID to 1, which is the master node ID expected by Elmo
     // drives
     setNodeId(d, 1);
@@ -348,14 +379,14 @@ CanElmoConnection::_InitialisationCallback(CO_Data * d) {
 
 void
 CanElmoConnection::_PreOperationalCallback(CO_Data* d) {
-    ILOG << "CanElmoConnection::_PreOperationalCallback";
-    // Move on to Operational state
+    DLOG << "CanElmoConnection::_PreOperationalCallback";
+    // Just move on to Operational state
     setState(d, Operational);
 }
 
 void
 CanElmoConnection::_OperationalCallback(CO_Data* d) {
-    ILOG << "CanElmoConnection::_OperationalCallback";
+    DLOG << "CanElmoConnection master node is now operational";
 }
 
 void
@@ -380,14 +411,14 @@ CanElmoConnection::_PostSlaveBootupCallback(CO_Data* d, UNS8 nodeId) {
     // initialization process.
     CanElmoConnection * conn = _GetConnectionForId(nodeId);
     if (conn) {
-        conn->reinitialize();
+        conn->_onElmoBootup();
     }
 }
 
 void
 CanElmoConnection::_StoreODSubindexCallback(CO_Data* d, UNS16 index, 
         UNS8 subindex) {
-    ILOG << "CanElmoConnection::_OnStoreODSubindex: 0x" << 
+    ILOG << "CanElmoConnection::_StoreODSubindexCallback: 0x" << 
             std::hex <<
             index << "[0x" << subindex << "]";
 }
@@ -422,10 +453,11 @@ CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
             false);         // block mode?
     if (res != 0) {
         ELOG << _driveName << ": Error " << res << " sending " <<
-                "'set producer heartbeat interval' to node " << _elmoNodeId;
+                "'set producer heartbeat interval' to node " << int(_elmoNodeId);
         return(false);
     }
     
+    _startReplyTimer("<set producer heartbeat interval>");
     return(true);
 }
 
@@ -449,8 +481,16 @@ CanElmoConnection::_doNextInitializeStep() {
     switch (_initPhase) {
     case Uninitialized:
         std::cerr << "BUG: shouldn't be 'Uninitialized' at this point!" << std::endl;
-        // Increment and fall through...
-        _initPhase = static_cast<InitPhase>(int(_initPhase) + 1);
+        exit(1);
+    case ResetSlaveNode:
+        // Send a reset message to our Elmo's node ID. That will generate a
+        // boot-up message, caught by _onElmoBootup(), which will cause the 
+        // rest of our initialization to proceed.
+        ILOG << _driveName << ": initiating reset of Elmo drive node " << 
+            int(_elmoNodeId);
+        masterSendNMTstateChange(_MasterNodeData, _elmoNodeId, NMT_Reset_Node);
+        _startReplyTimer("<CANopen reset node>");
+        break;
 #ifdef USE_CANOPEN_HEARTBEAT
     case SetHeartbeat:
         if (! _sendSetHeartbeatInterval(1000)) {    // set up 1000 ms heartbeat
@@ -461,7 +501,7 @@ CanElmoConnection::_doNextInitializeStep() {
         break;
 #endif
     case OSImmediateEval:
-        // Set our Elmo to immediately evaluate received commands
+        // Set our Elmo to immediately evaluate received commands. 
         if (! _sendSetImmediateEvaluation()) {
             // On failure, we have no SDO proceeding which will continue our
             // initialization via _CompleteSDO(). Just bail out completely...
@@ -469,8 +509,8 @@ CanElmoConnection::_doNextInitializeStep() {
         }
         break;
     case Complete:
-        // Make the node operational
-        masterSendNMTstateChange(&ElmoMaster_Data, 0, NMT_Start_Node);
+        // Make the Elmo node operational
+        masterSendNMTstateChange(_MasterNodeData, _elmoNodeId, NMT_Start_Node);
         // Start accepting execElmo*() calls
         _readyToExec = true;
         emit(readyToExecChanged(_readyToExec));
@@ -497,10 +537,11 @@ CanElmoConnection::_sendSetImmediateEvaluation() {
             false);             // block mode?
     if (res != 0) {
         ELOG << _driveName << ": Error " << res << " sending " <<
-                "'set immediate evaluation' to node " << _elmoNodeId;
+                "'set immediate evaluation' to node " << int(_elmoNodeId);
         return(false);
     }
     
+    _startReplyTimer("<set Evaluate Immediately>");
     return(true);
 }
 
@@ -531,12 +572,8 @@ CanElmoConnection::_CmdIsXqRequest(std::string cmd) {
 bool
 CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     if (! _readyToExec) {
-        std::ostringstream fullcmd;
-        fullcmd << cmd;
-        if (index) {
-            fullcmd << "[" << index << "]";
-        }
-        WLOG << "Not yet ready to exec. Rejecting '" << fullcmd.str() << "'";
+        WLOG << "Not yet ready to exec. Rejecting '" << 
+                _AssembleCommandString(cmd, index) << "'";
         return(false);
     }
     
@@ -544,6 +581,9 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     if (! _CmdIsValid(cmd)) {
         return(false);
     }
+  
+    // Start the reply timer
+    _startReplyTimer(_AssembleCommandString(cmd, index));
     
     // XQ## commands must be sent via SDO, and require special handling
     if (_CmdIsXqRequest(cmd)) {
@@ -581,13 +621,8 @@ bool
 CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index, 
         int value) {
     if (! _readyToExec) {
-        std::ostringstream fullcmd;
-        fullcmd << cmd;
-        if (index) {
-            fullcmd << "[" << index << "]";
-        }
-        fullcmd << "=" << value;
-        WLOG << "Not yet ready to exec. Rejecting '" << fullcmd.str() << "'";
+        WLOG << "Not yet ready to exec. Rejecting '" << 
+                _AssembleAssignString(cmd, index, value) << "'";
         return(false);
     }
     
@@ -595,6 +630,9 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     if (! _CmdIsValid(cmd)) {
         return(false);
     }
+    
+    // Start the reply timer
+    _startReplyTimer(_AssembleAssignString(cmd, index, value));
     
     // XQ## commands must be sent via SDO, and require special handling
     if (_CmdIsXqRequest(cmd)) {
@@ -632,13 +670,16 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
 
 void
 CanElmoConnection::_postSDO(bool success) {
+    // A reply came in, so stop the reply timer.
+    _stopReplyTimer();
+    
     // If we're in the middle of initialization, continue the initialization,
     // or start over if the SDO failed.
     if (_initPhase != Complete) {
         // If the SDO failed, restart the initialization from the beginning.
         if (! success) {
             WLOG << _driveName << ": Restarting initialization for node id " <<
-                    _elmoNodeId << " after SDO failure";
+                    int(_elmoNodeId) << " after SDO failure";
             _initPhase = Uninitialized;
         }
         // Proceed to the next initialization step
@@ -669,10 +710,55 @@ CanElmoConnection::_initiateXq(std::string cmd) {
             false);             // block mode?
     if (res != 0) {
         ELOG << _driveName << ": Error " << res << " sending " <<
-                "'" << cmd << "' to node " << _elmoNodeId;
+                "'" << cmd << "' to node " << int(_elmoNodeId);
         return(false);
     }
     
     
     return true;
+}
+
+void
+CanElmoConnection::_onElmoBootup() {
+    // We consider a bootup message to be a reply, so stop the reply timer.
+    _stopReplyTimer();
+    
+    // If we're not in the ResetSlaveNode part of our initialization when
+    // the boot message comes, then something weird happened on our Elmo...
+    if (_initPhase != ResetSlaveNode) {
+        WLOG << _driveName << ": Unexpected bootup message from node " << 
+                int(_elmoNodeId) << ". Reinitializing the drive.";
+        _initPhase = ResetSlaveNode;
+    } else {
+        ILOG << _driveName << ": CANopen bootup message received for node " <<
+                int(_elmoNodeId);
+    }
+    // Move on in our initialization
+    _doNextInitializeStep();
+}
+
+void
+CanElmoConnection::_startReplyTimer(std::string cmd) {
+    // If reply timer is currently in use, just return
+    if (_replyTimer.isActive()) {
+        DLOG << _driveName << ": Not timing reply to '" << cmd << 
+                "'; reply timer is already in use.";
+        return;
+    }
+    _replyTimerCommand = cmd;
+    _replyTimer.start();
+}
+
+void
+CanElmoConnection::_stopReplyTimer() {
+    _replyTimer.stop();
+    _replyTimerCommand = "";
+}
+void
+CanElmoConnection::_replyTimedOut() {
+    ELOG << _driveName << ": No response to '" << _replyTimerCommand <<
+            " in " << REPLY_TIMEOUT_MSECS << " ms. Re-initializing the drive.";
+
+    // Re-initialize
+    reinitialize();
 }

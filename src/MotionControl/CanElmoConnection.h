@@ -10,8 +10,9 @@
 
 #include "ElmoConnection.h"
 #include <vector>
-#include <canfestival.h>
 #include <stdint.h>
+#include <canfestival.h>
+#include <QTimer>
 #include "ElmoMaster.h"  // Object Dictionary ElmoMaster
 
 /// @brief Class implementing the ElmoConnection interface, providing a
@@ -69,6 +70,10 @@ public:
 
     /// @brief Force re-initialization of the connection.
     virtual void reinitialize();
+
+private slots:
+    /// @brief Slot to be called when _replyTimer expires
+    void _replyTimedOut();
     
 private:
     /// Static list of all instantiated CanElmoConnection-s.
@@ -82,6 +87,7 @@ private:
     
     typedef enum _InitPhase {
         Uninitialized,
+        ResetSlaveNode,
 #if USE_CANOPEN_HEARTBEAT
         SetHeartbeat,
 #endif
@@ -214,6 +220,26 @@ private:
     /// @return true iff the given string starts with "XQ##"
     static bool _CmdIsXqRequest(std::string cmd);
     
+    /// @brief Return an assignment string of the form "<cmd>" for zero index, 
+    /// or "<cmd>[<index>]" if index is non-zero.
+    /// given the command, index, and value.
+    /// @param cmd the SimplIQ command
+    /// @param index the index
+    /// @return an assignment string of the form "<cmd>" for zero index, 
+    /// or "<cmd>[<index>]" if index is non-zero.
+    static std::string _AssembleCommandString(std::string cmd, uint16_t index);
+    
+    /// @brief Return an assignment string of the form "<cmd>=<value>" for 
+    /// zero index, or "<cmd>[<index>]=<value>" if index is non-zero.
+    /// given the command, index, and value.
+    /// @param cmd the SimplIQ command
+    /// @param index the index
+    /// @param value the value
+    /// @return an assignment string of the form "<cmd>=<value>" for 
+    /// zero index, or "<cmd>[<index>]=<value>" if index is non-zero.
+    static std::string _AssembleAssignString(std::string cmd, uint16_t index,
+            int value);
+    
     /// @brief Set the CANopen heartbeat interval of our Elmo drive to the 
     /// the heartbeat. Return true iff the SDO is initiated successfully.
     /// @param intervalMs the desired heartbeat interval in ms. Setting to zero
@@ -233,6 +259,19 @@ private:
     /// connection is completed.
     /// @param success true iff the SDO was completed successfully
     void _postSDO(bool success);
+    
+    /// @brief Method called from _PostSlaveBootupCallback() when a boot
+    /// message is received from our Elmo drive.
+    void _onElmoBootup();
+    
+    /// @brief Start the reply timer, waiting for reponse to the given command.
+    /// If the timer is already in use, this command just returns immediately.
+    /// @param cmd the command for which a response is expected
+    void _startReplyTimer(std::string cmd);
+    
+    /// @brief Stop the reply timer. This command has no effect if the timer
+    /// is not currently in use.
+    void _stopReplyTimer();
     
     /// @brief Proceed with the next initialization step for this connection.
     void _doNextInitializeStep();
@@ -255,6 +294,15 @@ private:
     
     /// Current initialization phase
     InitPhase _initPhase;
+    
+    /// Timer to assure that replies arrive in a reasonable time
+    QTimer _replyTimer;
+    
+    /// Reply timeout in milliseconds
+    static const uint16_t REPLY_TIMEOUT_MSECS = 1000;
+    
+    /// Command for which the reply timer was started
+    std::string _replyTimerCommand;
     
     /// Are we ready to accept execElmoCommand() calls?
     bool _readyToExec;
