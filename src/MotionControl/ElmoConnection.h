@@ -10,6 +10,7 @@
 
 #include <inttypes.h>
 #include <QObject>
+#include <QMetaType>
 
 /// @brief Interface class providing a connection for sending commands to 
 /// an Elmo servo drive. Classes which use this interface must provide 
@@ -94,6 +95,10 @@ signals:
     /// @param fVal the returned floating-point value if replyType is FloatReply
     void replyFromExec(std::string cmd, ElmoConnection::ReplyType replyType, 
             int iVal, float fVal);
+protected:
+    // Default constructor just registers std::string as a QMetaType, since
+    // we use it in the replyFromExec() signal.
+    ElmoConnection() { qRegisterMetaType<std::string>("std::string"); }
 };
 
 #endif /* ELMOCONNECTION_H_ */
