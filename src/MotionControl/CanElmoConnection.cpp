@@ -18,6 +18,13 @@ LOGGING("CanElmoConnection")
 // node
 CO_Data * CanElmoConnection::_MasterNodeData = &ElmoMaster_Data;
 
+// Static member holding a list of pointers to all instantiated 
+// CanElmoConnection-s
+std::vector<CanElmoConnection*> CanElmoConnection::_AllConnections;
+
+// Static member holding the handle for our loaded CanFestival library
+LIB_HANDLE CanElmoConnection::_Driver = 0;
+
 // Make sure that the CANFESTIVAL_LIBDIR macro has been defined. We need it 
 // when loading a CanFestival dynamically loadable driver library below.
 // You can add -DCANFESTIVAL_LIBDIR='"<path>"' to your compilation options,
@@ -70,6 +77,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
         if (std::find(usedRPDOs.begin(), usedRPDOs.end(), r) == usedRPDOs.end()) {
             // Stash the RPDO number we're taking
             _myRpdo = r;
+            DLOG << "CanElmoConnection '" << _driveName << "' will use RPDO" <<
+                    int(_myRpdo);
             
             // Write to the master node's object dictionary to set up the RPDO 
             // to receive stuff our drive's TPDO2. Elmo uses TPDO2 to transmit
@@ -77,7 +86,7 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
             uint32_t driveTPDO2_COBid = 0x40000280 + _elmoNodeId;   // COB-ID used by drive's TPDO2
             uint32_t size_COBid = 4;    // COB-ID is 4 bytes long
             writeLocalDict(_MasterNodeData, // data object for the master node
-                    0x1400 + _myRpdo,       // object dict index for our RPDO
+                    0x1400 + _myRpdo - 1,   // object dict index for our RPDO
                     1,                      // subindex 1 (COB-ID)
                     &driveTPDO2_COBid,      // COB-ID used by drive's TPDO2
                     &size_COBid,            // size of COB-ID
@@ -166,7 +175,7 @@ CanElmoConnection::_ClassInitialize() {
     ElmoMaster_Data.storeODSubIndex = _StoreODSubindexCallback;
     ElmoMaster_Data.post_emcy = _PostEmcyCallback;
 
-    // Register callbacks for after Elmo PDO[1-4] replies are written to our 
+    // Register callbacks for after Elmo PDO replies are written to our 
     // object dictionary (at index 0x2000).
     RegisterSetODentryCallBack(&ElmoMaster_Data, 0x2000, 1, _PDOReplyCallback);
     RegisterSetODentryCallBack(&ElmoMaster_Data, 0x2000, 2, _PDOReplyCallback);
@@ -208,23 +217,33 @@ CanElmoConnection::_CompleteSDO(CO_Data* d, UNS8 nodeId)
     // Regardless of result, we must finalize the SDO transfer with this node
     closeSDOtransfer(d, nodeId, SDO_CLIENT);
     
-//    // If we're in the middle of initialization, continue the initialization,
-//    // or start over if the SDO failed.
-//    if (NodeInitPhase[nodeId] != Complete) {
-//        // If the SDO failed, restart the initialization from the beginning.
-//        if (! success) {
-//            NodeInitPhase[nodeId] = Uninitialized;
-//        }
-//        // Proceed to the next initialization step
-//        _nextInitializeStep(d, nodeId);
-//    }
+    // Find the CanElmoConnection associated with this node ID
+    CanElmoConnection * conn = _GetConnectionForId(nodeId);
+    if (! conn) {
+        WLOG << "Handled SDO completion with node id " << nodeId << 
+                ", but no known connection exists!";
+        return;
+    }
+    
+    // If we're in the middle of initialization, continue the initialization,
+    // or start over if the SDO failed.
+    if (conn->_initPhase != Complete) {
+        // If the SDO failed, restart the initialization from the beginning.
+        if (! success) {
+            WLOG << "Restarting initialization for node id " << nodeId << 
+                    " (" << conn->driveName() << ") after SDO failure";
+            conn->_initPhase = Uninitialized;
+        }
+        // Proceed to the next initialization step
+        conn->_doNextInitializeStep();
+    }
 }
 
 UNS32
 CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused, 
         UNS8 subindex) {
-    // The subindex is the number of our RPDO (1-4) which received the Elmo 
-    // reply. That translates to the CanElmoConnection instance which should 
+    // The subindex indicates the RPDO number (1-4) which got the incoming
+    // reply. Translate that to the CanElmoConnection instance which should 
     // handle the reply.
     for (size_t i = 0; i < _AllConnections.size(); i++) {
         if (_AllConnections[i]->_myRpdo == subindex) {
@@ -233,7 +252,8 @@ CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused,
         }
     }
     // We did not find an instance to go with the reply. Complain and return 1.
-    WLOG << "No CanElmoConnection found expecting PDO reply on RPDO" << subindex;
+    WLOG << "No CanElmoConnection found expecting PDO reply on RPDO" << 
+            int(subindex);
     return(1);
 }
 
@@ -298,7 +318,7 @@ CanElmoConnection::_handleElmoPDOReply() {
 void
 CanElmoConnection::_TimerStartCallback(CO_Data* d, UNS32 id) {
     ILOG << "CanElmoConnection::_TimerStartCallback for node " << id;
-    setState(d, Pre_operational);
+    setState(_MasterNodeData, Pre_operational);
 }
 
 void
@@ -525,7 +545,61 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     uint16_t indexAndFlags = index;
     indexAndFlags |= 1 << 14;   // set the is-a-query bit
     memcpy(pdo.data + 2, &indexAndFlags, 2);
+    // total data length is 4 bytes
     pdo.len = 4;
+    
+    // Send the PDO
+    UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
+    if (result != 0) {
+        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << result;
+    }
+    return(result);
+}
+
+bool
+CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index, 
+        int value) {
+    if (! _readyToExec) {
+        std::ostringstream fullcmd;
+        fullcmd << cmd;
+        if (index) {
+            fullcmd << "[" << index << "]";
+        }
+        fullcmd << "=" << value;
+        WLOG << "Not yet ready to exec. Rejecting '" << fullcmd.str() << "'";
+        return(false);
+    }
+    
+    // Make sure the command is valid
+    if (! _CmdIsValid(cmd)) {
+        return(false);
+    }
+    
+    // XQ## commands must be sent via SDO, and require special handling
+    if (_CmdIsXqRequest(cmd)) {
+        ELOG << "XQ## command makes no sense in execElmoAssignCmd()!";
+        return(1);
+    }
+    
+    // Build a PDO for the command
+    Message pdo;
+    memset(&pdo, 0, sizeof(pdo));       // start with an all-zero message
+    // Set the COB-ID to that used by the Elmo's RPDO2
+    pdo.cob_id = 0x300 + _elmoNodeId;
+    // Elmos do not respond to a CANopen PDO "remote transmitting request"
+    pdo.rtr = NOT_A_REQUEST;
+    // First two data bytes are the two-letter command
+    memcpy(pdo.data, cmd.c_str(), 2);
+    // Next two data bytes are the 14-bit command index (zero for non-indexed 
+    // commands), and flags for "is-a-query" and "is-float" in the upper two 
+    // bits. (The "is-float" flag is only meaningful for assignments, not for 
+    // queries)
+    uint16_t indexAndFlags = index;
+    memcpy(pdo.data + 2, &indexAndFlags, 2);
+    // Data bytes 4-7 hold the integer value
+    memcpy(pdo.data + 4, static_cast<void*>(&value), 4);
+    // Total data length is 8 bytes
+    pdo.len = 8;
     
     // Send the PDO
     UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
