@@ -59,17 +59,17 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     // Build a list of RPDOs already used by existing CanElmoConnection-s
     std::vector<uint8_t> usedRPDOs;
     for (size_t i = 0; i < nConnections; i++) {
-        usedRPDOs.push_back(_AllConnections[i]->_myRPDO);
+        usedRPDOs.push_back(_AllConnections[i]->_myRpdo);
     }
     
     // Use the lowest available RPDO (1-4) from the master node to get PDO
     // replies from our Elmo drive
-    _myRPDO = 0;
+    _myRpdo = 0;
     for (uint8_t r = 1; r < 5; r++) {
         // If this RPDO is not in the list of used ones, we'll take it.
         if (std::find(usedRPDOs.begin(), usedRPDOs.end(), r) == usedRPDOs.end()) {
             // Stash the RPDO number we're taking
-            _myRPDO = r;
+            _myRpdo = r;
             
             // Write to the master node's object dictionary to set up the RPDO 
             // to receive stuff our drive's TPDO2. Elmo uses TPDO2 to transmit
@@ -77,7 +77,7 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
             uint32_t driveTPDO2_COBid = 0x40000280 + _elmoNodeId;   // COB-ID used by drive's TPDO2
             uint32_t size_COBid = 4;    // COB-ID is 4 bytes long
             writeLocalDict(_MasterNodeData, // data object for the master node
-                    0x1400 + _myRPDO,       // object dict index for our RPDO
+                    0x1400 + _myRpdo,       // object dict index for our RPDO
                     1,                      // subindex 1 (COB-ID)
                     &driveTPDO2_COBid,      // COB-ID used by drive's TPDO2
                     &size_COBid,            // size of COB-ID
@@ -86,7 +86,7 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
         }
     }
     
-    if (! _myRPDO) {
+    if (! _myRpdo) {
         ELOG << "BUG: CanElmoConnection could not find an available RPDO";
         exit(1);
     }
@@ -227,7 +227,7 @@ CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused,
     // reply. That translates to the CanElmoConnection instance which should 
     // handle the reply.
     for (size_t i = 0; i < _AllConnections.size(); i++) {
-        if (_AllConnections[i]->_myRPDO == subindex) {
+        if (_AllConnections[i]->_myRpdo == subindex) {
             // We found the right instance. Let it handle the reply.
             return(_AllConnections[i]->_handleElmoPDOReply());
         }
@@ -240,8 +240,8 @@ CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused,
 UNS32
 CanElmoConnection::_handleElmoPDOReply() {
     // The 8-byte Elmo PDO reply was mapped to variable ElmoMaster_PDOReplies 
-    // at index (_myRPDO - 1).
-    uint8_t replyIndex = _myRPDO - 1;  // PDO num [1-4] -> array index [0-3]
+    // at index (_myRpdo - 1).
+    uint8_t replyIndex = _myRpdo - 1;  // PDO num [1-4] -> array index [0-3]
     uint8_t *reply = reinterpret_cast<uint8_t*>(&ElmoMaster_PDOReplies[replyIndex]);
 
     // Elmo PDO reply bytes 0-1 are the 2-character command
@@ -486,7 +486,7 @@ CanElmoConnection::_CmdIsXqRequest(std::string cmd) {
 }
 
 bool
-CanElmoConnection::execElmoCmd(std::string cmd, int index) {
+CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     if (! _readyToExec) {
         std::ostringstream fullcmd;
         fullcmd << cmd;
