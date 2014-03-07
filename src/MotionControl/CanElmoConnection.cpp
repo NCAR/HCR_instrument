@@ -195,8 +195,19 @@ CanElmoConnection::_GetConnectionForId(UNS8 nodeId) {
         }
     }
 
-    ILOG << __PRETTY_FUNCTION__ << "No CanElmoConnection found for node " << 
-            int(nodeId);
+    WLOG << "No CanElmoConnection found for node " << int(nodeId);
+    return(0);
+}
+
+CanElmoConnection*
+CanElmoConnection::_GetConnectionForRpdo(UNS8 rpdoNum) {
+    for (unsigned int i = 0; i < _AllConnections.size(); i++) {
+        if (_AllConnections[i]->_myRpdo == rpdoNum) {
+            return(_AllConnections[i]);
+        }
+    }
+
+    WLOG << "No CanElmoConnection found for RPDO" << int(rpdoNum);
     return(0);
 }
 
@@ -236,16 +247,15 @@ CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused,
     // The subindex indicates the RPDO number (1-4) which got the incoming
     // reply. Translate that to the CanElmoConnection instance which should 
     // handle the reply.
-    for (size_t i = 0; i < _AllConnections.size(); i++) {
-        if (_AllConnections[i]->_myRpdo == subindex) {
-            // We found the right instance. Let it handle the reply.
-            return(_AllConnections[i]->_handleElmoPDOReply());
-        }
+    CanElmoConnection * conn = _GetConnectionForRpdo(subindex);
+    if (! conn) {      
+        WLOG << "No CanElmoConnection found expecting PDO reply on RPDO" << 
+                int(subindex);
+        return(1);
     }
-    // We did not find an instance to go with the reply. Complain and return 1.
-    WLOG << "No CanElmoConnection found expecting PDO reply on RPDO" << 
-            int(subindex);
-    return(1);
+    
+    // Let the associated instance handle the PDO reply
+    return(conn->_handleElmoPDOReply());
 }
 
 UNS32
@@ -275,9 +285,10 @@ CanElmoConnection::_handleElmoPDOReply() {
     int32_t iVal;
     memcpy(&iVal, reply + 4, 4);
 
-    std::ostringstream indexStream;
+    std::ostringstream cmdStream;
+    cmdStream << cmd[0] << cmd[1];
     if (cmdIndex > 0) {
-        indexStream << "[" << cmdIndex << "]";
+        cmdStream << "[" << cmdIndex << "]";
     }
     
     std::ostringstream valStream;
@@ -288,19 +299,18 @@ CanElmoConnection::_handleElmoPDOReply() {
                 iVal;
     }
     
-    ILOG << "PDO reply " <<
-            "for commmand " << cmd[0] << cmd[1] << indexStream.str() << ", " <<
+    DLOG << "PDO reply for commmand " << cmdStream.str() << ", " <<
             "type " << (isFloat ? "float" : "int") << ", " << 
             (isError ? "ERR" : "no err") << ", " <<
             "value " << valStream.str();
     
     // Emit the appropriate replyFromExec() signal
     if (isError) {
-        emit(replyFromExec(cmd, ErrorReply, iVal, 0.0));
+        emit(replyFromExec(cmdStream.str(), ErrorReply, iVal, 0.0));
     } else if (isFloat) {
-        emit(replyFromExec(cmd, FloatReply, 0, fVal));
+        emit(replyFromExec(cmdStream.str(), FloatReply, 0, fVal));
     } else {
-        emit(replyFromExec(cmd, IntReply, iVal, 0.0));
+        emit(replyFromExec(cmdStream.str(), IntReply, iVal, 0.0));
     }
     // Report no error in interpreting the reply
     return(0);
