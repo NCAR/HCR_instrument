@@ -96,9 +96,12 @@ signals:
     void replyFromExec(std::string cmd, ElmoConnection::ReplyType replyType, 
             int iVal, float fVal);
 protected:
-    // Default constructor just registers std::string as a QMetaType, since
-    // we use it in the replyFromExec() signal.
-    ElmoConnection() { qRegisterMetaType<std::string>("std::string"); }
+    // Default constructor
+    ElmoConnection() {
+        // Register types we use in signals as QMetaType-s.
+        qRegisterMetaType<std::string>("std::string");
+        qRegisterMetaType<ReplyType>("ElmoConnection::ReplyType");
+    }
 };
 
 #endif /* ELMOCONNECTION_H_ */
