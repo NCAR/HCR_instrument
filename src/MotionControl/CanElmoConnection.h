@@ -94,10 +94,18 @@ private:
     static void _ClassInitialize();
     
     /// @brief Return a pointer to the CanElmoConnection object associated with 
-    /// the given node ID.
+    /// the given node ID. A null pointer is returned if no match is found.
     /// @return a pointer to the CanElmoConnection object associated with 
-    /// the given node ID.
+    /// the given node ID. A null pointer is returned if no match is found.
     static CanElmoConnection* _GetConnectionForId(UNS8 nodeId);
+    
+    /// @brief Return a pointer to the CanElmoConnection object associated with 
+    /// the given master node RPDO number (1-4). A null pointer is returned if 
+    /// no match is found.
+    /// @return a pointer to the CanElmoConnection object associated with 
+    /// the given master node RPDO number (1-4). A null pointer is returned if 
+    /// no match is found.
+    static CanElmoConnection* _GetConnectionForRpdo(UNS8 rpdoNum);
     
     /// @brief Static method for callback from CanFestival when timer loop 
     /// associated with a given node ID is started.
@@ -176,9 +184,8 @@ private:
             UNS8 errReg);
     
     /// @brief Static method for callback from CanFestival to complete an SDO 
-    /// transfer. If the SDO is related to a CanElmoConnection which is not
-    /// yet fully initialized, this method will also proceed with that 
-    /// connection's next initialization step.
+    /// transfer. After completing the SDO, the _postSDO() method of the
+    /// associated CanElmoConnection object is called.
     /// @param d pointer to the CanFestival node data
     /// @param nodeId the CANopen node ID for the server (i.e., Elmo drive)
     ///     responding to our SDO request
@@ -208,18 +215,24 @@ private:
     static bool _CmdIsXqRequest(std::string cmd);
     
     /// @brief Set the CANopen heartbeat interval of our Elmo drive to the 
-    /// specified interval in milliseconds. An interval of zero disables
-    /// the heartbeat.
+    /// the heartbeat. Return true iff the SDO is initiated successfully.
     /// @param intervalMs the desired heartbeat interval in ms. Setting to zero
     ///     will disable heartbeat.
-    void _setHeartbeatInterval(UNS32 intervalMs);
+    /// @return true iff the SDO is initiated successfully.
+    bool _sendSetHeartbeatInterval(UNS32 intervalMs);
     
     /// @brief Send SDO request our Elmo drive to set up immediate evaluation 
-    /// of incoming commands.
-    void _setImmediateEvaluation();
+    /// of incoming commands. Return true iff the SDO is initiated successfully.
+    /// @return true iff the SDO is initiated successfully.
+    bool _sendSetImmediateEvaluation();
     
     /// @brief Handle a PDO reply from our Elmo drive.
     UNS32 _handleElmoPDOReply();
+    
+    /// @brief Method called from _CompleteSDO() after an SDO from this 
+    /// connection is completed.
+    /// @param success true iff the SDO was completed successfully
+    void _postSDO(bool success);
     
     /// @brief Proceed with the next initialization step for this connection.
     void _doNextInitializeStep();

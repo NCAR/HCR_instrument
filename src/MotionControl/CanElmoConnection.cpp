@@ -113,7 +113,7 @@ CanElmoConnection::~CanElmoConnection() {
     // Stop heartbeat from our associated node
     if (_nodeInitPhase != Uninitialized) {
         ILOG << "Stopping heartbeat for node " << int(_elmoNodeId);
-        _setHeartbeatInterval(_elmoNodeId, 0);   // turn off heartbeat
+        _sendSetHeartbeatInterval(0);   // turn off heartbeat
     }
     usleep(50000); // Sleep briefly to allow for SDO completion
 #endif
@@ -220,23 +220,14 @@ CanElmoConnection::_CompleteSDO(CO_Data* d, UNS8 nodeId)
     // Find the CanElmoConnection associated with this node ID
     CanElmoConnection * conn = _GetConnectionForId(nodeId);
     if (! conn) {
-        WLOG << "Handled SDO completion with node id " << nodeId << 
-                ", but no known connection exists!";
+        WLOG << "BUG: Handled SDO completion with node id " << nodeId << 
+                ", but no associated CanElmoConnection exists!";
         return;
     }
     
-    // If we're in the middle of initialization, continue the initialization,
-    // or start over if the SDO failed.
-    if (conn->_initPhase != Complete) {
-        // If the SDO failed, restart the initialization from the beginning.
-        if (! success) {
-            WLOG << "Restarting initialization for node id " << nodeId << 
-                    " (" << conn->driveName() << ") after SDO failure";
-            conn->_initPhase = Uninitialized;
-        }
-        // Proceed to the next initialization step
-        conn->_doNextInitializeStep();
-    }
+    // Tell the associated CanElmoConnection that the SDO is complete, and
+    // pass on the success status.
+    conn->_postSDO(success);
 }
 
 UNS32
@@ -265,7 +256,7 @@ CanElmoConnection::_handleElmoPDOReply() {
     uint8_t *reply = reinterpret_cast<uint8_t*>(&ElmoMaster_PDOReplies[replyIndex]);
 
     // Elmo PDO reply bytes 0-1 are the 2-character command
-    char cmd[2];
+    char cmd[] = "--";
     memcpy(cmd, reply, 2);
     
     // Elmo PDO reply bytes 2-3 contain the 14-bit command array index, the 
@@ -400,8 +391,8 @@ CanElmoConnection::_PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode,
             ", Error register 0x" << errReg;
 }
 
-void
-CanElmoConnection::_setHeartbeatInterval(UNS32 intervalMs) {
+bool
+CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
     UNS8 res;
     char SDOdata[8];
 
@@ -419,6 +410,13 @@ CanElmoConnection::_setHeartbeatInterval(UNS32 intervalMs) {
             SDOdata,        // void * data
             _CompleteSDO,   // SDOCallback_t
             false);         // block mode?
+    if (res != 0) {
+        ELOG << _driveName << ": Error " << res << " sending " <<
+                "'set producer heartbeat interval' to node " << _elmoNodeId;
+        return(false);
+    }
+    
+    return(true);
 }
 
 void
@@ -445,12 +443,20 @@ CanElmoConnection::_doNextInitializeStep() {
         _initPhase = static_cast<InitPhase>(int(_initPhase) + 1);
 #ifdef USE_CANOPEN_HEARTBEAT
     case SetHeartbeat:
-        _setHeartbeatInterval(_elmoNodeId, 1000);    // set up 1000 ms heartbeat
+        if (! _sendSetHeartbeatInterval(1000)) {    // set up 1000 ms heartbeat
+            // On failure, we have no SDO proceeding which will continue our
+            // initialization via _CompleteSDO(). Just bail out completely...
+            exit(1);
+        }
         break;
 #endif
     case OSImmediateEval:
         // Set our Elmo to immediately evaluate received commands
-        _setImmediateEvaluation();
+        if (! _sendSetImmediateEvaluation()) {
+            // On failure, we have no SDO proceeding which will continue our
+            // initialization via _CompleteSDO(). Just bail out completely...
+            exit(1);
+        }
         break;
     case Complete:
         // Make the node operational
@@ -463,8 +469,8 @@ CanElmoConnection::_doNextInitializeStep() {
     }
 }
 
-void
-CanElmoConnection::_setImmediateEvaluation() {
+bool
+CanElmoConnection::_sendSetImmediateEvaluation() {
     UNS8 res;
     char SDOdata[8];
 
@@ -479,6 +485,13 @@ CanElmoConnection::_setImmediateEvaluation() {
             SDOdata,            // void * data
             _CompleteSDO,       // SDOCallback_t
             false);             // block mode?
+    if (res != 0) {
+        ELOG << _driveName << ": Error " << res << " sending " <<
+                "'set immediate evaluation' to node " << _elmoNodeId;
+        return(false);
+    }
+    
+    return(true);
 }
 
 bool
@@ -524,9 +537,7 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     
     // XQ## commands must be sent via SDO, and require special handling
     if (_CmdIsXqRequest(cmd)) {
-//        return(_initiateXq(cmd));
-        WLOG << "XQ commands not yet handled!";
-        return(1);
+        return(_initiateXq(cmd));
     }
     
     // Build a PDO for the command
@@ -607,4 +618,51 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
         ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << result;
     }
     return(result);
+}
+
+void
+CanElmoConnection::_postSDO(bool success) {
+    // If we're in the middle of initialization, continue the initialization,
+    // or start over if the SDO failed.
+    if (_initPhase != Complete) {
+        // If the SDO failed, restart the initialization from the beginning.
+        if (! success) {
+            WLOG << _driveName << ": Restarting initialization for node id " <<
+                    _elmoNodeId << " after SDO failure";
+            _initPhase = Uninitialized;
+        }
+        // Proceed to the next initialization step
+        _doNextInitializeStep();
+    }
+}
+
+bool
+CanElmoConnection::_initiateXq(std::string cmd) {
+    if (! _CmdIsXqRequest(cmd)) {
+        return false;
+    }
+    
+    // Send an SDO containing the 'XQ##' command to the command interpreter.
+    // Note that we must send 'XQ##' commands via SDO (see Elmo's CANopen 
+    // Implementation Guide).
+    ILOG << _driveName << ": Sending '" << cmd << "'";
+    UNS32 cmdlen = cmd.length();
+    char * cmdData = const_cast<char*>(cmd.c_str());
+    UNS8 res = writeNetworkDictCallBack(&ElmoMaster_Data, 
+            _elmoNodeId,        // CANopen node ID
+            0x1023,             // object dictionary index for command interpreter
+            0x1,                // subindex where command is written
+            cmdlen,             // data size, bytes
+            0,                  // data type
+            cmdData,            // void * data
+            _CompleteSDO,       // SDOCallback_t
+            false);             // block mode?
+    if (res != 0) {
+        ELOG << _driveName << ": Error " << res << " sending " <<
+                "'" << cmd << "' to node " << _elmoNodeId;
+        return(false);
+    }
+    
+    
+    return true;
 }
