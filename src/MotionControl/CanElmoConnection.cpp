@@ -74,7 +74,7 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     // Use the lowest available RPDO (1-4) from the master node to get PDO
     // replies from our Elmo drive
     _myRpdo = 0;
-    for (uint8_t r = 1; r < 5; r++) {
+    for (uint8_t r = 1; r <= 4; r++) {
         // If this RPDO is not in the list of used ones, we'll take it.
         if (std::find(usedRPDOs.begin(), usedRPDOs.end(), r) == usedRPDOs.end()) {
             // Stash the RPDO number we're taking
@@ -102,8 +102,28 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
         exit(1);
     }
     
-    // If replies from the servo drive do not arrive within a specified
-    // interval, call _replyTimedOut().
+    // Set up as a heartbeat consumer for the Elmo drive, timing out at
+    // 1.2 * the Elmo's heartbeat interval
+    uint16_t timeoutMs = uint16_t(1.2 * ELMO_HEARTBEAT_MSECS);
+    
+    // Consumer heartbeat value is a 4-byte little-endian value, with the 
+    // timeout time in ms in bits 0-15, and the producer node ID in bits
+    // 16-22.
+    uint32_t heartbeatValue = (_elmoNodeId << 16) | timeoutMs;
+    
+    // Write to the master node's object dictionary to set up the the 
+    // timeout in milliseconds before we consider a heartbeat from the Elmo
+    // to be late.
+    uint32_t dataSize = 4;          // data size, bytes
+    writeLocalDict(_MasterNodeData, // data object for the master node
+            0x1016,                 // object dict index for consumer heartbeat time
+            _myRpdo,                // subindex, we use our RPDO number (1-4)
+            &heartbeatValue,        // heartbeat timeout and producer node ID
+            &dataSize,              // size of timeoutMs
+            true);                  // check access
+    
+    // Set up a timer to verify that replies from the servo drive arrive within 
+    // a specified interval, or _replyTimedOut() will be called.
     _replyTimer.setInterval(REPLY_TIMEOUT_MSECS);
     _replyTimer.setSingleShot(true);
     connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
@@ -116,14 +136,26 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
 }
 
 CanElmoConnection::~CanElmoConnection() {
-#if USE_CANOPEN_HEARTBEAT
+    // Write to the master node's object dictionary to remove heartbeat
+    // testing for this Elmo
+    uint32_t heartbeatValue = 0;    // 0 disables heartbeat timeout
+    uint32_t dataSize = 4;          // data size, bytes
+    writeLocalDict(_MasterNodeData, // data object for the master node
+            0x1016,                 // object dict index for consumer heartbeat time
+            _myRpdo,                // subindex, use our RPDO number (1-4)
+            &heartbeatValue,        // heartbeat timeout in milliseconds
+            &dataSize,              // size of timeoutMs
+            true);                  // check access
+    if (! _myRpdo) {
+        ELOG << "BUG: CanElmoConnection could not find an available RPDO";
+        exit(1);
+    }
+    
     // Stop heartbeat from our associated node
-    if (_nodeInitPhase != Uninitialized) {
-        ILOG << "Stopping heartbeat for node " << int(_elmoNodeId);
+    if (_initPhase != Uninitialized) {
         _sendSetHeartbeatInterval(0);   // turn off heartbeat
     }
     usleep(50000); // Sleep briefly to allow for SDO completion
-#endif
 
     // Remove ourself from the list of CanElmoConnection-s
     std::vector<CanElmoConnection*>::iterator it;
@@ -360,7 +392,7 @@ CanElmoConnection::_TimerStopCallback(CO_Data* d, UNS32 id) {
 
 void
 CanElmoConnection::_HeartbeatErrorCallback(CO_Data* d, UNS8 nodeId) {
-    WLOG << "CANopen heartbeat error for node " << nodeId;
+    WLOG << "CANopen heartbeat error for node " << int(nodeId);
     CanElmoConnection * conn = _GetConnectionForId(nodeId);
     if (conn) {
         WLOG << "Reinitializing node's connection";
@@ -437,8 +469,13 @@ CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
     UNS8 res;
     char SDOdata[8];
 
-    ILOG << "Setting node " << int(_elmoNodeId) << " to generate " << 
-            intervalMs << " ms heartbeat";
+    if (intervalMs) {
+        ILOG << _driveName << ": Setting node " << int(_elmoNodeId) << 
+                " to generate " << intervalMs << " ms heartbeat";
+    } else {
+        ILOG << _driveName << ": Stopping heartbeat from node " << 
+                int(_elmoNodeId);
+    }
     // Send an SDO to the Elmo to change its heartbeat interval
     SDOdata[0] = 0;
     memcpy(SDOdata, static_cast<void*>(&intervalMs), 4);
@@ -491,15 +528,13 @@ CanElmoConnection::_doNextInitializeStep() {
         masterSendNMTstateChange(_MasterNodeData, _elmoNodeId, NMT_Reset_Node);
         _startReplyTimer("<CANopen reset node>");
         break;
-#ifdef USE_CANOPEN_HEARTBEAT
     case SetHeartbeat:
-        if (! _sendSetHeartbeatInterval(1000)) {    // set up 1000 ms heartbeat
+        if (! _sendSetHeartbeatInterval(ELMO_HEARTBEAT_MSECS)) {
             // On failure, we have no SDO proceeding which will continue our
             // initialization via _CompleteSDO(). Just bail out completely...
             exit(1);
         }
         break;
-#endif
     case OSImmediateEval:
         // Set our Elmo to immediately evaluate received commands. 
         if (! _sendSetImmediateEvaluation()) {
@@ -694,7 +729,7 @@ CanElmoConnection::_initiateXq(std::string cmd) {
     }
     
     // Send an SDO containing the 'XQ##' command to the command interpreter.
-    // Note that we must send 'XQ##' commands via SDO (see Elmo's CANopen 
+    // Note that we can only send 'XQ##' commands via SDO (see Elmo's CANopen 
     // Implementation Guide).
     ILOG << _driveName << ": Sending '" << cmd << "'";
     UNS32 cmdlen = cmd.length();

@@ -88,9 +88,7 @@ private:
     typedef enum _InitPhase {
         Uninitialized,
         ResetSlaveNode,
-#if USE_CANOPEN_HEARTBEAT
         SetHeartbeat,
-#endif
         OSImmediateEval,
         Complete
     } InitPhase;
@@ -281,6 +279,10 @@ private:
     /// @param cmd the command to be executed, which must begin with "XQ##"
     /// @return true iff the command is initiated successfully.
     bool _initiateXq(std::string cmd);
+    
+    /// Set the Elmo drive to generate a CANopen heartbeat at this interval.
+    /// Heartbeat is disabled if the interval is zero.
+    static const uint16_t ELMO_HEARTBEAT_MSECS = 250;
     
     /// Our Elmo's CANopen node ID
     uint8_t _elmoNodeId;
