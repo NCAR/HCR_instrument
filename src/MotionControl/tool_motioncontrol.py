@@ -14,9 +14,14 @@ motionControlDir = Dir('.').abspath
 env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtNetwork'])
 
+# Create the CanFestival object dictionary implementation files ElmoMasterNode.c 
+# and ElmoMasterNode.h from ElmoMasterNode.od
+env.canfestivalObjdictImpl('ElmoMasterNode.od')
+
 sources = Split('''
     CanElmoConnection.cpp
     ElmoConnection.cpp
+    ElmoMasterNode.c
     ElmoServoDrive.cpp
     MotionControl.cpp
     MotionControlRpcClient.cpp
@@ -26,6 +31,7 @@ sources = Split('''
 headers = Split('''
     CanElmoConnection.h
     ElmoConnection.h
+    ElmoMasterNode.h
     ElmoServoDrive.h
     MotionControl.h
     MotionControlRpcClient.h
