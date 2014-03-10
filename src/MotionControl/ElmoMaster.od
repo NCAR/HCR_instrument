@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<!DOCTYPE PyObject SYSTEM "PyObjects.dtd">
+<PyObject module="node" class="Node" id="48879664">
+<attr name="Profile" type="dict" id="50341072" >
+</attr>
+<attr name="Description" type="string">CANopen master for Elmo servo drives</attr>
+<attr name="Dictionary" type="dict" id="50364544" >
+  <entry>
+    <key type="numeric" value="4096" />
+    <val type="numeric" value="0" />
+  </entry>
+  <entry>
+    <key type="numeric" value="4736" />
+    <val type="list" id="48879592" >
+      <item type="numeric" value="1661" />
+      <item type="numeric" value="1533" />
+      <item type="numeric" value="125" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4738" />
+    <val type="list" id="48879736" >
+      <item type="numeric" value="1663" />
+      <item type="numeric" value="1535" />
+      <item type="numeric" value="127" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5123" />
+    <val type="list" id="48879808" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="8192" />
+    <val type="list" id="48879952" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4101" />
+    <val type="numeric" value="128" />
+  </entry>
+  <entry>
+    <key type="numeric" value="5120" />
+    <val type="list" id="48879880" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4097" />
+    <val type="numeric" value="0" />
+  </entry>
+  <entry>
+    <key type="numeric" value="5122" />
+    <val type="list" id="48880024" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5121" />
+    <val type="list" id="48880528" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5634" />
+    <val type="list" id="48880168" >
+      <item type="numeric" value="536871744" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5635" />
+    <val type="list" id="48880240" >
+      <item type="numeric" value="536872000" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5633" />
+    <val type="list" id="48880312" >
+      <item type="numeric" value="536871488" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5632" />
+    <val type="list" id="48880096" >
+      <item type="numeric" value="536871232" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4120" />
+    <val type="list" id="48880456" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4118" />
+    <val type="list" id="48880384" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4737" />
+    <val type="list" id="48880600" >
+      <item type="numeric" value="1662" />
+      <item type="numeric" value="1534" />
+      <item type="numeric" value="126" />
+    </val>
+  </entry>
+</attr>
+<attr name="SpecificMenu" type="list" id="48880672" >
+</attr>
+<attr name="DefaultStringSize" type="numeric" value="10" />
+<attr name="ParamsDictionary" type="dict" id="50363760" >
+  <entry>
+    <key type="numeric" value="4736" />
+    <val type="dict" id="50364048" >
+      <entry>
+        <key type="string" value="callback" />
+        <val type="False" value="" />
+      </entry>
+      <entry>
+        <key type="numeric" value="2" />
+        <val type="dict" id="50370224" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">server -&gt; client SDO COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="3" />
+        <val type="dict" id="50370512" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">server node ID</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50370800" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">client -&gt; server SDO COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5120" />
+    <val type="dict" id="50371088" >
+      <entry>
+        <key type="string" value="callback" />
+        <val type="False" value="" />
+      </entry>
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50371376" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">drive 0's TPDO2 COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4738" />
+    <val type="dict" id="50371664" >
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50371952" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">client -&gt; server SDO COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="2" />
+        <val type="dict" id="50372240" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">server -&gt; client SDO COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="3" />
+        <val type="dict" id="50372528" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">server node ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5123" />
+    <val type="dict" id="50372816" >
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50373104" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">drive 3's TPDO2 COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="8192" />
+    <val type="dict" id="50373392" >
+      <entry>
+        <key type="string" value="callback" />
+        <val type="True" value="" />
+      </entry>
+      <entry>
+        <key type="numeric" value="2" />
+        <val type="dict" id="50373680" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">8-byte PDO reply from drive 1</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="3" />
+        <val type="dict" id="50373968" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">8-byte PDO reply from drive 2</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="4" />
+        <val type="dict" id="50374256" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">8-byte PDO reply from drive 3</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50374544" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">8-byte PDO reply from drive 0</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5121" />
+    <val type="dict" id="50374832" >
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50375120" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">drive 1's TPDO2 COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5122" />
+    <val type="dict" id="50376192" >
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50376480" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">drive 2's TPDO2 COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5632" />
+    <val type="dict" id="50376768" >
+      <entry>
+        <key type="string" value="callback" />
+        <val type="False" value="" />
+      </entry>
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4737" />
+    <val type="dict" id="50377056" >
+      <entry>
+        <key type="numeric" value="1" />
+        <val type="dict" id="50377344" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">client -&gt; server SDO COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="2" />
+        <val type="dict" id="50377632" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">server -&gt; client SDO COB-ID</val>
+          </entry>
+        </val>
+      </entry>
+      <entry>
+        <key type="numeric" value="3" />
+        <val type="dict" id="50377920" >
+          <entry>
+            <key type="string" value="comment" />
+            <val type="string">server node ID</val>
+          </entry>
+        </val>
+      </entry>
+    </val>
+  </entry>
+</attr>
+<attr name="UserMapping" type="dict" id="50378992" >
+  <entry>
+    <key type="numeric" value="8192" />
+    <val type="dict" id="50379280" >
+      <entry>
+        <key type="string" value="need" />
+        <val type="False" value="" />
+      </entry>
+      <entry>
+        <key type="string" value="values" />
+        <val type="list" id="48880744" >
+          <item type="dict" id="50379568" >
+            <entry>
+              <key type="string" value="access" />
+              <val type="string" value="ro" />
+            </entry>
+            <entry>
+              <key type="string" value="pdo" />
+              <val type="False" value="" />
+            </entry>
+            <entry>
+              <key type="string" value="type" />
+              <val type="numeric" value="5" />
+            </entry>
+            <entry>
+              <key type="string" value="name" />
+              <val type="string" value="Number of Entries" />
+            </entry>
+          </item>
+          <item type="dict" id="50379856" >
+            <entry>
+              <key type="string" value="access" />
+              <val type="string" value="rw" />
+            </entry>
+            <entry>
+              <key type="string" value="pdo" />
+              <val type="True" value="" />
+            </entry>
+            <entry>
+              <key type="string" value="type" />
+              <val type="numeric" value="27" />
+            </entry>
+            <entry>
+              <key type="string" value="name" />
+              <val type="string">ElmoMaster_PDOReplies %d[(sub)]</val>
+            </entry>
+            <entry>
+              <key type="string" value="nbmax" />
+              <val type="numeric" value="254" />
+            </entry>
+          </item>
+        </val>
+      </entry>
+      <entry>
+        <key type="string" value="name" />
+        <val type="string">ElmoMaster_PDOReplies</val>
+      </entry>
+      <entry>
+        <key type="string" value="struct" />
+        <val type="numeric" value="7" />
+      </entry>
+    </val>
+  </entry>
+</attr>
+<attr name="DS302" type="dict" id="50367136" >
+</attr>
+<attr name="ProfileName" type="string" value="None" />
+<attr name="Type" type="string" value="master" />
+<attr name="ID" type="numeric" value="0" />
+<attr name="Name" type="string">ElmoMaster</attr>
+</PyObject>
