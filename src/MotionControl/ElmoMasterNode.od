@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE PyObject SYSTEM "PyObjects.dtd">
-<PyObject module="node" class="Node" id="48879664">
-<attr name="Profile" type="dict" id="50341072" >
+<PyObject module="node" class="Node" id="50210216">
+<attr name="Profile" type="dict" id="51165360" >
 </attr>
 <attr name="Description" type="string">CANopen master for Elmo servo drives</attr>
-<attr name="Dictionary" type="dict" id="50364544" >
+<attr name="Dictionary" type="dict" id="51187456" >
   <entry>
     <key type="numeric" value="4096" />
     <val type="numeric" value="0" />
   </entry>
   <entry>
     <key type="numeric" value="4736" />
-    <val type="list" id="48879592" >
+    <val type="list" id="50210144" >
       <item type="numeric" value="1661" />
       <item type="numeric" value="1533" />
       <item type="numeric" value="125" />
@@ -19,7 +19,7 @@
   </entry>
   <entry>
     <key type="numeric" value="4738" />
-    <val type="list" id="48879736" >
+    <val type="list" id="50210288" >
       <item type="numeric" value="1663" />
       <item type="numeric" value="1535" />
       <item type="numeric" value="127" />
@@ -27,7 +27,7 @@
   </entry>
   <entry>
     <key type="numeric" value="5123" />
-    <val type="list" id="48879808" >
+    <val type="list" id="50210360" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
@@ -38,7 +38,7 @@
   </entry>
   <entry>
     <key type="numeric" value="8192" />
-    <val type="list" id="48879952" >
+    <val type="list" id="50210504" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
@@ -51,7 +51,7 @@
   </entry>
   <entry>
     <key type="numeric" value="5120" />
-    <val type="list" id="48879880" >
+    <val type="list" id="50210432" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
@@ -66,9 +66,51 @@
   </entry>
   <entry>
     <key type="numeric" value="5122" />
-    <val type="list" id="48880024" >
+    <val type="list" id="50210576" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5632" />
+    <val type="list" id="50211080" >
+      <item type="numeric" value="536871232" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5634" />
+    <val type="list" id="50210720" >
+      <item type="numeric" value="536871744" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5635" />
+    <val type="list" id="50210792" >
+      <item type="numeric" value="536872000" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="5633" />
+    <val type="list" id="50210864" >
+      <item type="numeric" value="536871488" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4118" />
+    <val type="list" id="50210936" >
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+      <item type="numeric" value="0" />
+    </val>
+  </entry>
+  <entry>
+    <key type="numeric" value="4120" />
+    <val type="list" id="50211008" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
@@ -77,51 +119,9 @@
   </entry>
   <entry>
     <key type="numeric" value="5121" />
-    <val type="list" id="48880528" >
+    <val type="list" id="50210648" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-    </val>
-  </entry>
-  <entry>
-    <key type="numeric" value="5634" />
-    <val type="list" id="48880168" >
-      <item type="numeric" value="536871744" />
-    </val>
-  </entry>
-  <entry>
-    <key type="numeric" value="5635" />
-    <val type="list" id="48880240" >
-      <item type="numeric" value="536872000" />
-    </val>
-  </entry>
-  <entry>
-    <key type="numeric" value="5633" />
-    <val type="list" id="48880312" >
-      <item type="numeric" value="536871488" />
-    </val>
-  </entry>
-  <entry>
-    <key type="numeric" value="5632" />
-    <val type="list" id="48880096" >
-      <item type="numeric" value="536871232" />
-    </val>
-  </entry>
-  <entry>
-    <key type="numeric" value="4120" />
-    <val type="list" id="48880456" >
-      <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-      <item type="numeric" value="0" />
-    </val>
-  </entry>
-  <entry>
-    <key type="numeric" value="4118" />
-    <val type="list" id="48880384" >
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
       <item type="numeric" value="0" />
@@ -130,27 +130,27 @@
   </entry>
   <entry>
     <key type="numeric" value="4737" />
-    <val type="list" id="48880600" >
+    <val type="list" id="50211152" >
       <item type="numeric" value="1662" />
       <item type="numeric" value="1534" />
       <item type="numeric" value="126" />
     </val>
   </entry>
 </attr>
-<attr name="SpecificMenu" type="list" id="48880672" >
+<attr name="SpecificMenu" type="list" id="50211224" >
 </attr>
 <attr name="DefaultStringSize" type="numeric" value="10" />
-<attr name="ParamsDictionary" type="dict" id="50363760" >
+<attr name="ParamsDictionary" type="dict" id="51186672" >
   <entry>
     <key type="numeric" value="4736" />
-    <val type="dict" id="50364048" >
+    <val type="dict" id="51186960" >
       <entry>
         <key type="string" value="callback" />
         <val type="False" value="" />
       </entry>
       <entry>
         <key type="numeric" value="2" />
-        <val type="dict" id="50370224" >
+        <val type="dict" id="51188736" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">server -&gt; client SDO COB-ID</val>
@@ -159,7 +159,7 @@
       </entry>
       <entry>
         <key type="numeric" value="3" />
-        <val type="dict" id="50370512" >
+        <val type="dict" id="51189168" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">server node ID</val>
@@ -168,7 +168,7 @@
       </entry>
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50370800" >
+        <val type="dict" id="51189456" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">client -&gt; server SDO COB-ID</val>
@@ -179,14 +179,14 @@
   </entry>
   <entry>
     <key type="numeric" value="5120" />
-    <val type="dict" id="50371088" >
+    <val type="dict" id="51189744" >
       <entry>
         <key type="string" value="callback" />
         <val type="False" value="" />
       </entry>
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50371376" >
+        <val type="dict" id="51190032" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">drive 0's TPDO2 COB-ID</val>
@@ -197,10 +197,10 @@
   </entry>
   <entry>
     <key type="numeric" value="4738" />
-    <val type="dict" id="50371664" >
+    <val type="dict" id="51190320" >
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50371952" >
+        <val type="dict" id="51196000" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">client -&gt; server SDO COB-ID</val>
@@ -209,7 +209,7 @@
       </entry>
       <entry>
         <key type="numeric" value="2" />
-        <val type="dict" id="50372240" >
+        <val type="dict" id="51196288" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">server -&gt; client SDO COB-ID</val>
@@ -218,7 +218,7 @@
       </entry>
       <entry>
         <key type="numeric" value="3" />
-        <val type="dict" id="50372528" >
+        <val type="dict" id="51196576" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">server node ID</val>
@@ -229,10 +229,10 @@
   </entry>
   <entry>
     <key type="numeric" value="5123" />
-    <val type="dict" id="50372816" >
+    <val type="dict" id="51196864" >
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50373104" >
+        <val type="dict" id="51197152" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">drive 3's TPDO2 COB-ID</val>
@@ -243,14 +243,14 @@
   </entry>
   <entry>
     <key type="numeric" value="8192" />
-    <val type="dict" id="50373392" >
+    <val type="dict" id="51197440" >
       <entry>
         <key type="string" value="callback" />
         <val type="True" value="" />
       </entry>
       <entry>
         <key type="numeric" value="2" />
-        <val type="dict" id="50373680" >
+        <val type="dict" id="51197728" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">8-byte PDO reply from drive 1</val>
@@ -259,7 +259,7 @@
       </entry>
       <entry>
         <key type="numeric" value="3" />
-        <val type="dict" id="50373968" >
+        <val type="dict" id="51198016" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">8-byte PDO reply from drive 2</val>
@@ -268,7 +268,7 @@
       </entry>
       <entry>
         <key type="numeric" value="4" />
-        <val type="dict" id="50374256" >
+        <val type="dict" id="51198304" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">8-byte PDO reply from drive 3</val>
@@ -277,7 +277,7 @@
       </entry>
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50374544" >
+        <val type="dict" id="51198592" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">8-byte PDO reply from drive 0</val>
@@ -288,10 +288,10 @@
   </entry>
   <entry>
     <key type="numeric" value="5121" />
-    <val type="dict" id="50374832" >
+    <val type="dict" id="51198880" >
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50375120" >
+        <val type="dict" id="51199168" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">drive 1's TPDO2 COB-ID</val>
@@ -302,10 +302,10 @@
   </entry>
   <entry>
     <key type="numeric" value="5122" />
-    <val type="dict" id="50376192" >
+    <val type="dict" id="51200240" >
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50376480" >
+        <val type="dict" id="51200528" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">drive 2's TPDO2 COB-ID</val>
@@ -316,7 +316,7 @@
   </entry>
   <entry>
     <key type="numeric" value="5632" />
-    <val type="dict" id="50376768" >
+    <val type="dict" id="51200816" >
       <entry>
         <key type="string" value="callback" />
         <val type="False" value="" />
@@ -325,10 +325,10 @@
   </entry>
   <entry>
     <key type="numeric" value="4737" />
-    <val type="dict" id="50377056" >
+    <val type="dict" id="51201104" >
       <entry>
         <key type="numeric" value="1" />
-        <val type="dict" id="50377344" >
+        <val type="dict" id="51201392" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">client -&gt; server SDO COB-ID</val>
@@ -337,7 +337,7 @@
       </entry>
       <entry>
         <key type="numeric" value="2" />
-        <val type="dict" id="50377632" >
+        <val type="dict" id="51201680" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">server -&gt; client SDO COB-ID</val>
@@ -346,7 +346,7 @@
       </entry>
       <entry>
         <key type="numeric" value="3" />
-        <val type="dict" id="50377920" >
+        <val type="dict" id="51201968" >
           <entry>
             <key type="string" value="comment" />
             <val type="string">server node ID</val>
@@ -356,18 +356,18 @@
     </val>
   </entry>
 </attr>
-<attr name="UserMapping" type="dict" id="50378992" >
+<attr name="UserMapping" type="dict" id="51203040" >
   <entry>
     <key type="numeric" value="8192" />
-    <val type="dict" id="50379280" >
+    <val type="dict" id="51203328" >
       <entry>
         <key type="string" value="need" />
         <val type="False" value="" />
       </entry>
       <entry>
         <key type="string" value="values" />
-        <val type="list" id="48880744" >
-          <item type="dict" id="50379568" >
+        <val type="list" id="50211296" >
+          <item type="dict" id="51203616" >
             <entry>
               <key type="string" value="access" />
               <val type="string" value="ro" />
@@ -385,7 +385,7 @@
               <val type="string" value="Number of Entries" />
             </entry>
           </item>
-          <item type="dict" id="50379856" >
+          <item type="dict" id="51203904" >
             <entry>
               <key type="string" value="access" />
               <val type="string" value="rw" />
@@ -420,10 +420,10 @@
     </val>
   </entry>
 </attr>
-<attr name="DS302" type="dict" id="50367136" >
+<attr name="DS302" type="dict" id="51192912" >
 </attr>
 <attr name="ProfileName" type="string" value="None" />
 <attr name="Type" type="string" value="master" />
 <attr name="ID" type="numeric" value="0" />
-<attr name="Name" type="string">ElmoMaster</attr>
+<attr name="Name" type="string">ElmoMasterNode</attr>
 </PyObject>
