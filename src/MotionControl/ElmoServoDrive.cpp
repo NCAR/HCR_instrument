@@ -6,7 +6,7 @@
  */
 #include "ElmoServoDrive.h"
 #include "TtyElmoConnection.h"
-//#include "CanElmoConnection.h"
+#include "CanElmoConnection.h"
 
 #include <sstream>
 #include <string>
@@ -44,6 +44,32 @@ ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
     _statusTimer.start();
 }
 
+ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName) :
+    QObject(),
+    _driveConn(0),
+    _driveInitialized(false),
+    _driveHomed(false),
+    _homingInProgress(false),
+    _statusTimer(),
+    _scanPoints() {
+    // Start with bad values for drive count range and position controller
+    // sample time. We query the real values from the drive after it's
+    // initialized.
+    _clearQueriedParams();
+    
+    // Create our connection to the drive
+    _driveConn = new CanElmoConnection(nodeId, driveName);
+    connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
+            this, SLOT(_onReadyToExecChanged(bool)));
+    connect(_driveConn, SIGNAL(replyFromExec(std::string, ElmoConnection::ReplyType, int, float)),
+            this, SLOT(_onReplyFromExec(std::string, ElmoConnection::ReplyType, int, float)));
+
+    // Collect status information every STATUS_PERIOD_MSECS milliseconds.
+    _statusTimer.setInterval(STATUS_PERIOD_MSECS);
+    connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
+    _statusTimer.start();
+}
+
 ElmoServoDrive::~ElmoServoDrive() {
     // Stop the motor
     _driveConn->execElmoCmd("MO", 0);
@@ -51,6 +77,8 @@ ElmoServoDrive::~ElmoServoDrive() {
     // to function, so we try to leave the servo drive in a state to talk to
     // Composer.
     _driveConn->execElmoCmd("EO", 1);
+    // Destroy the drive connection
+    delete(_driveConn);
 }
 
 void
@@ -147,12 +175,12 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
         }
         // Note other non-empty replies
         else {
-            ILOG << driveName() << " integer reply to '" << cmd << "' was " <<
+            DLOG << driveName() << " integer reply to '" << cmd << "' was " <<
                     iVal;
         }
         break;
     case ElmoConnection::FloatReply:
-        ILOG << driveName() << " float reply to '" << cmd << "' was " << fVal;
+        DLOG << driveName() << " float reply to '" << cmd << "' was " << fVal;
         break;
     case ElmoConnection::EmptyReply:
         DLOG << driveName() << " reply to '" << cmd << "' was empty";
@@ -340,10 +368,21 @@ ElmoServoDrive::_startXq(std::string function) {
 
 bool
 ElmoServoDrive::_xqCompleted() {
-    // If there is new status since we began XQ and the program is not running
-    // on the drive, the XQ is complete.
-    return(timercmp(&_lastSrTime, &_xqStartTime, >) &&
-            ! SREG_programRunning(_driveStatusRegister));
+    // (last status time - XQ start time), in microseconds 
+    int32_t diffUs = 1000000 * (_lastSrTime.tv_sec - _xqStartTime.tv_sec) +
+            (_lastSrTime.tv_usec - _xqStartTime.tv_usec);
+    // If the latest status is from at least 0.1 second after we began XQ and 
+    // the program is not running on the drive, the XQ is complete.
+    // We put in the 0.1 s cushion because it is possible to collect status
+    // immediately after XQ has been initiated but *before* the "program 
+    // running" bit is set, and hence we could report the program has completed
+    // before it even starts.
+    bool completed = (diffUs > 100000) && 
+            ! SREG_programRunning(_driveStatusRegister);
+    if (completed) {
+        DLOG << "Status is from " << diffUs << " us after XQ was started";
+    }
+    return(completed);
 }
 
 void
@@ -427,6 +466,10 @@ stop_timer:
 
 void
 ElmoServoDrive::_collectStatus() {
+    if (! _driveConn->readyToExec()) {
+        DLOG << "Skipping status collection; drive is not ready.";
+        return;
+    }
     // Send commands to the drive to get back status values we want. The
     // status values will be parsed out and saved in _readReply when the
     // replies come back.

@@ -23,14 +23,21 @@
 class ElmoServoDrive : public QObject {
     Q_OBJECT
 public:
-    /**
-     * @brief Instantiate a connection to an Elmo servo drive on the named serial
-     * device. The drive can optionally be given a nickname (e.g., "rotation"
-     * or "tilt"), to make log messages more descriptive.
-     * @param ttyDev the name serial port device connected to the Elmo drive
-     * @param driveName nickname used for the drive in log messages
-     */
+
+    /// @brief Instantiate a connection to an Elmo servo drive on the named 
+    /// serial device. The drive is also given a nickname (e.g., "rotation"
+    /// or "tilt"), to make log messages more descriptive.
+    /// @param ttyDev the name serial port device connected to the Elmo drive
+    /// @param driveName nickname used for the drive in log messages
     ElmoServoDrive(std::string ttyDev, std::string driveName);
+
+    /// @brief Instantiate a connection to the Elmo servo drive at the given
+    /// CANopen node ID. The drive is also given a nickname (e.g., "rotation"
+    /// or "tilt"), to make log messages more descriptive.
+    /// @param nodeId the CANopen node ID of the Elmo drive
+    /// @param driveName nickname used for the drive in log messages
+    ElmoServoDrive(uint8_t nodeId, std::string driveName);
+    
     virtual ~ElmoServoDrive();
 
     /// The Elmo drives have a 32-bit status register
