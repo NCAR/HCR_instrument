@@ -438,12 +438,14 @@ CanElmoConnection::_PostTPDOCallback(CO_Data* d) {
 
 void
 CanElmoConnection::_PostSlaveBootupCallback(CO_Data* d, UNS8 nodeId) {
-    ILOG << "CANopen node " << std::hex << int(nodeId) << " has reset";
-    // Find the associated CanElmoConnection instance and start its 
-    // initialization process.
+    // Find the associated CanElmoConnection instance and call its 
+    // _onElmoBootup() method.
     CanElmoConnection * conn = _GetConnectionForId(nodeId);
     if (conn) {
         conn->_onElmoBootup();
+    } else {
+        WLOG << "NMT boot-up message received from unknown CANopen node " << 
+                int(nodeId);
     }
 }
 
@@ -512,12 +514,12 @@ CanElmoConnection::reinitialize() {
 
 void
 CanElmoConnection::_doNextInitializeStep() {
-    // Proceed to the next initialization phase
+    // Increment the initialization phase
     _initPhase = static_cast<InitPhase>(int(_initPhase) + 1);
 
     switch (_initPhase) {
     case Uninitialized:
-        std::cerr << "BUG: shouldn't be 'Uninitialized' at this point!" << std::endl;
+        ELOG << "BUG: shouldn't be 'Uninitialized' at this point!";
         exit(1);
     case ResetSlaveNode:
         // Send a reset message to our Elmo's node ID. That will generate a
@@ -559,7 +561,8 @@ CanElmoConnection::_sendSetImmediateEvaluation() {
     UNS8 res;
     char SDOdata[8];
 
-    ILOG << "Setting node " << int(_elmoNodeId) << " to evaluate cmds immediately";
+    ILOG << "Setting node " << int(_elmoNodeId) << 
+            " to evaluate commands immediately";
     SDOdata[0] = 0;
     res = writeNetworkDictCallBack(&ElmoMaster_Data, 
             _elmoNodeId,        // CANopen node ID
