@@ -13,7 +13,6 @@
 #include <stdint.h>
 #include <canfestival.h>
 #include <QTimer>
-#include "ElmoMaster.h"  // Object Dictionary ElmoMaster
 
 /// @brief Class implementing the ElmoConnection interface, providing a
 /// connection to an Elmo servo drive via CANopen protocol.

@@ -6,6 +6,7 @@
  */
 
 #include "CanElmoConnection.h"
+#include "ElmoMasterNode.h"  // CanFestival CANopen node ElmoMasterNode
 #include <cstdlib>
 #include <algorithm>
 #include <iomanip>
@@ -16,7 +17,7 @@ LOGGING("CanElmoConnection")
 
 // Static member pointing to the CanFestival data object for our master CANopen
 // node
-CO_Data * CanElmoConnection::_MasterNodeData = &ElmoMaster_Data;
+CO_Data * CanElmoConnection::_MasterNodeData = &ElmoMasterNode_Data;
 
 // Static member holding a list of pointers to all instantiated 
 // CanElmoConnection-s
@@ -171,7 +172,7 @@ CanElmoConnection::~CanElmoConnection() {
         StopTimerLoop(_TimerStopCallback);
         TimerCleanup();
 
-        canClose(&ElmoMaster_Data);
+        canClose(_MasterNodeData);
         UnLoadCanDriver(_Driver);        
     }
 }
@@ -195,7 +196,7 @@ CanElmoConnection::_ClassInitialize() {
     board.baudrate = baudrate;
 
     ILOG << "Opening bus " << busname << " at " << baudrate << " bits/s";
-    CAN_PORT canPort = canOpen(&board, &ElmoMaster_Data);
+    CAN_PORT canPort = canOpen(&board, _MasterNodeData);
     if (canPort == NULL) {
         ELOG << __PRETTY_FUNCTION__ << ": Failed to open CAN bus " << 
                 board.busname << " at " << board.baudrate << " bits/s";
@@ -203,23 +204,23 @@ CanElmoConnection::_ClassInitialize() {
     }
 
     // set up callback functions for ElmoMaster_Data
-    ElmoMaster_Data.initialisation = _InitialisationCallback;
-    ElmoMaster_Data.heartbeatError = _HeartbeatErrorCallback;
-    ElmoMaster_Data.preOperational = _PreOperationalCallback;
-    ElmoMaster_Data.operational = _OperationalCallback;
-    ElmoMaster_Data.stopped = _StoppedCallback;
-    ElmoMaster_Data.post_sync = _PostSyncCallback;
-    ElmoMaster_Data.post_SlaveBootup = _PostSlaveBootupCallback;
-    ElmoMaster_Data.post_TPDO = _PostTPDOCallback;
-    ElmoMaster_Data.storeODSubIndex = _StoreODSubindexCallback;
-    ElmoMaster_Data.post_emcy = _PostEmcyCallback;
+    _MasterNodeData->initialisation = _InitialisationCallback;
+    _MasterNodeData->heartbeatError = _HeartbeatErrorCallback;
+    _MasterNodeData->preOperational = _PreOperationalCallback;
+    _MasterNodeData->operational = _OperationalCallback;
+    _MasterNodeData->stopped = _StoppedCallback;
+    _MasterNodeData->post_sync = _PostSyncCallback;
+    _MasterNodeData->post_SlaveBootup = _PostSlaveBootupCallback;
+    _MasterNodeData->post_TPDO = _PostTPDOCallback;
+    _MasterNodeData->storeODSubIndex = _StoreODSubindexCallback;
+    _MasterNodeData->post_emcy = _PostEmcyCallback;
 
     // Register callbacks for after Elmo PDO replies are written to our 
     // object dictionary (at index 0x2000).
-    RegisterSetODentryCallBack(&ElmoMaster_Data, 0x2000, 1, _PDOReplyCallback);
-    RegisterSetODentryCallBack(&ElmoMaster_Data, 0x2000, 2, _PDOReplyCallback);
-    RegisterSetODentryCallBack(&ElmoMaster_Data, 0x2000, 3, _PDOReplyCallback);
-    RegisterSetODentryCallBack(&ElmoMaster_Data, 0x2000, 4, _PDOReplyCallback);
+    RegisterSetODentryCallBack(_MasterNodeData, 0x2000, 1, _PDOReplyCallback);
+    RegisterSetODentryCallBack(_MasterNodeData, 0x2000, 2, _PDOReplyCallback);
+    RegisterSetODentryCallBack(_MasterNodeData, 0x2000, 3, _PDOReplyCallback);
+    RegisterSetODentryCallBack(_MasterNodeData, 0x2000, 4, _PDOReplyCallback);
     
     // Start timer thread
     TimerInit();
@@ -564,7 +565,7 @@ CanElmoConnection::_sendSetImmediateEvaluation() {
     ILOG << "Setting node " << int(_elmoNodeId) << 
             " to evaluate commands immediately";
     SDOdata[0] = 0;
-    res = writeNetworkDictCallBack(&ElmoMaster_Data, 
+    res = writeNetworkDictCallBack(_MasterNodeData, 
             _elmoNodeId,        // CANopen node ID
             0x1024,             // object dictionary index
             0x0,                // object dictionary subindex
@@ -737,7 +738,7 @@ CanElmoConnection::_initiateXq(std::string cmd) {
     ILOG << _driveName << ": Sending '" << cmd << "'";
     UNS32 cmdlen = cmd.length();
     char * cmdData = const_cast<char*>(cmd.c_str());
-    UNS8 res = writeNetworkDictCallBack(&ElmoMaster_Data, 
+    UNS8 res = writeNetworkDictCallBack(_MasterNodeData, 
             _elmoNodeId,        // CANopen node ID
             0x1023,             // object dictionary index for command interpreter
             0x1,                // subindex where command is written
