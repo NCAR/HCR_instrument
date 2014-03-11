@@ -9,8 +9,9 @@
 #define TILTSERVODRIVE_H_
 #include "ElmoServoDrive.h"
 
-/// @brief Class to connect to and control a tilt servo drive on a given
-/// serial port. This is a very thin wrapper around the ElmoServoDrive class.
+/// @brief Class to connect to and control a tilt servo drive at a given
+/// CANopen node ID. This is a very thin wrapper around the ElmoServoDrive 
+/// class.
 class TiltServoDrive : public ElmoServoDrive {
 public:
     /// Instantiate a connection to the HCR tilt servo drive at the given 

@@ -15,8 +15,8 @@
 #include <QSocketNotifier>
 #include <QTimer>
 
-/// Class implementing the ElmoConnection interface, providing an RS-232 serial
-/// connection to an Elmo servo drive.
+/// @brief Class implementing the ElmoConnection interface, providing an RS-232
+/// serial connection to an Elmo servo drive.
 class TtyElmoConnection: public ElmoConnection {
     Q_OBJECT
 public:

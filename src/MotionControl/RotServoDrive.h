@@ -9,8 +9,9 @@
 #define ROTSERVODRIVE_H_
 #include "ElmoServoDrive.h"
 
-/// @brief Class to connect to and control a rotation servo drive on a given
-/// serial port. This is a very thin wrapper around the ElmoServoDrive class.
+/// @brief Class to connect to and control a rotation servo drive at a given
+/// CANopen node ID. This is a very thin wrapper around the ElmoServoDrive 
+/// class.
 class RotServoDrive : public ElmoServoDrive {
 public:
     /// Instantiate a connection the HCR rotation servo drive at the given 
