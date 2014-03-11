@@ -15,10 +15,15 @@ LOGGING("MotionControl")
 inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
 inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 
+/// CANopen node ID for the rotation drive
+static const int ROT_DRIVE_NODE_ID = 126;
+/// CANopen node ID for the tilt drive
+static const int TILT_DRIVE_NODE_ID = 125;
+
 /////////////////////////////////////////////////////////////////////
 MotionControl::MotionControl() :
-    _rotDrive("/dev/ttydp00"),
-    _tiltDrive("/dev/ttydp01"),
+    _rotDrive(ROT_DRIVE_NODE_ID),
+    _tiltDrive(TILT_DRIVE_NODE_ID),
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
