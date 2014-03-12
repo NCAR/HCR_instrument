@@ -289,8 +289,6 @@ CanElmoConnection::_PDOReplyCallback(CO_Data* d, const indextable *unused,
     // handle the reply.
     CanElmoConnection * conn = _GetConnectionForRpdo(subindex);
     if (! conn) {      
-        WLOG << "No CanElmoConnection found expecting PDO reply on RPDO" << 
-                int(subindex);
         return(1);
     }
     
