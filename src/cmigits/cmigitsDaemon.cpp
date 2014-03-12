@@ -142,15 +142,10 @@ main(int argc, char *argv[]) {
     
     ILOG << "Started cmigitsDaemon";
 
-    // Get a writable connection to the shared memory segment where we will
-    // put C-MIGITS data.
-    PMU_auto_register("opening shared memory segment");
-    CmigitsSharedMemory shm(true);
-    
     // Open connection to the C-MIGITS device.
     PMU_auto_register("creating Cmigits instance");
     std::string devName(argv[1]);
-    Cm = new Cmigits(devName, &shm);
+    Cm = new Cmigits(devName, true);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");

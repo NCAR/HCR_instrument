@@ -31,11 +31,10 @@ public:
      * If special serial port name Cmigits::SIM_DEVICE
      * is used, existence of the C-MIGITS will be simulated.
      * @param ttyDev the name of the serial port connected to the C-MIGITS.
-     * @param shm pointer to a writable CmigitsSharedMemory, to which the
-     * Cmigits object should put incoming data. If NULL, the Cmigits object
-     * will not write to shared memory.
+     * @param useShm true iff this object should write incoming data to
+     * a CmigitsSharedMemory shared memory segment.
      */
-    Cmigits(std::string ttyDev, CmigitsSharedMemory * shm = 0);
+    Cmigits(std::string ttyDev, bool useShm);
     virtual ~Cmigits();
 
     /**

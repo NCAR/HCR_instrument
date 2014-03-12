@@ -203,7 +203,7 @@ const std::string Cmigits::_TimeFOMStrings[] = {
         ">= 10000 µs"
 };
 
-Cmigits::Cmigits(std::string ttyDev, CmigitsSharedMemory * shm) :
+Cmigits::Cmigits(std::string ttyDev, bool useShm) :
                 QObject(),
                 _simulate(ttyDev == SIM_DEVICE),
                 _ttyDev(ttyDev),
@@ -225,7 +225,11 @@ Cmigits::Cmigits(std::string ttyDev, CmigitsSharedMemory * shm) :
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
                 _gpsAvailable(false),
-                _shm(shm)  {
+                _shm(NULL) {
+    // Open CmigitsSharedMemory with write access if we're told to use it
+    if (useShm) {
+        _shm = new CmigitsSharedMemory(true);
+    }
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
     uint16_t word = 0x0102;
@@ -253,6 +257,7 @@ Cmigits::Cmigits(std::string ttyDev, CmigitsSharedMemory * shm) :
 }
 
 Cmigits::~Cmigits() {
+    delete(_shm);
     delete(_gpsTimeoutTimer);
     delete(_handshakeTimer);
     delete(_readTimer);
