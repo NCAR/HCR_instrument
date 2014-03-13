@@ -21,11 +21,37 @@
 #include <CmigitsSharedMemory.h>
 #include <QCoreApplication>
 
+// Should we terminate processing?
 bool Terminate = false;
 
-void
-sigHandler(int signum) {
-    std::cout << "Stopping on signal!" << std::endl;
+// Count of pulses processed
+int PulseCount = 0;
+// Count of writes to CmigitsSharedMemory
+int ShmWriteCount = 0;
+// Count of delayed pulses
+int DelayedPulseCount = 0;
+// Total time slept waiting to deliver pulse data
+int SleepSumUsecs = 0;
+// Sum of delay time for all delayed pulses
+int DelaySumUsecs = 0;
+
+static void
+_showStats(int signum = -1) {
+    std::cout << "\nProcessed " << PulseCount << " pulses, with " <<
+            ShmWriteCount << " CmigitsSharedMemory writes" << std::endl;
+    std::cout << "Average sleep per pulse " <<
+            float(SleepSumUsecs) / PulseCount << " us" << std::endl;
+    std::cout << DelayedPulseCount << " pulses (" <<
+            std::fixed << std::setprecision(2) <<
+            100 * (float(DelayedPulseCount) / PulseCount) <<
+            "%) were delayed, with average delay of " <<
+            std::setprecision(1) <<
+            float(DelaySumUsecs) / DelayedPulseCount << " us" << std::endl;
+}
+
+static void
+_shutdownHandler(int signum) {
+    std::cerr << "Stopping on signal" << signum;
     Terminate = true;
 }
 
@@ -51,16 +77,14 @@ main(int argc, char * argv[]) {
     CmigitsSharedMemory cmigitsShm(true);
 
     // Bail out gracefully on TERM or INT signals
-    signal(SIGINT, sigHandler);
-    signal(SIGTERM, sigHandler);
+    signal(SIGINT, _shutdownHandler);
+    signal(SIGTERM, _shutdownHandler);
+
+    // Show statistics on SIGUSR1
+    signal(SIGUSR1, _showStats);
 
     // Now loop through pulses from our reader
     IwrfTsPulse * pulse = 0;
-    int pulseCount = 0;
-    int shmWrites = 0;
-    int delayedPulses = 0;
-    int sleepSumUsecs = 0;
-    int delaySumUsecs = 0;
 
     double lastPulseTime = 0.0;
     double lastSendTime = 0.0;
@@ -74,17 +98,17 @@ main(int argc, char * argv[]) {
     while ((pulse = reader.getNextPulse()) != NULL  && ! Terminate) {
         app.processEvents();
 
+        PulseCount++;
+        double pulseTime = pulse->getFTime();
+
         // If georef updates are not active, there's nothing we can write
         // to CmigitsSharedMemory, so just bail out now.
         if (! pulse->getGeorefActive()) {
-            std::cerr << "No active georef at pulse " << pulseCount <<
+            std::cerr << "No active georef at pulse " << PulseCount <<
                     ", so there's nothing to write to CmigitsSharedMemory!" <<
                     std::endl;
             break;
         }
-
-        pulseCount++;
-        double pulseTime = pulse->getFTime();
 
         struct timespec nowTimeSpec;
         clock_gettime(CLOCK_REALTIME, &nowTimeSpec);
@@ -102,13 +126,13 @@ main(int argc, char * argv[]) {
 
         if (sleepTimeUsecs > 0) {
             // Sleep until it's time to deliver this pulse
-            sleepSumUsecs += sleepTimeUsecs;
+            SleepSumUsecs += sleepTimeUsecs;
             usleep(sleepTimeUsecs);
         } else if (sleepTimeUsecs < 0) {
             // Negative sleep implies we've fallen behind. Keep track of
             // delayed pulses and total delay time.
-            delayedPulses++;
-            delaySumUsecs += -sleepTimeUsecs;
+            DelayedPulseCount++;
+            DelaySumUsecs += -sleepTimeUsecs;
         }
 
         // Keep our last send and pulse time
@@ -139,7 +163,7 @@ main(int argc, char * argv[]) {
                     georef.ns_velocity_mps, georef.ew_velocity_mps,
                     georef.vert_velocity_mps);
 
-            shmWrites++;
+            ShmWriteCount++;
 
             lastPitch = georef.pitch_deg;
             lastRoll = georef.roll_deg;
@@ -153,15 +177,6 @@ main(int argc, char * argv[]) {
         delete(pulse);
     }
 
-    std::cout << "Processed " << pulseCount << " pulses, with " <<
-            shmWrites << " CmigitsSharedMemory writes" << std::endl;
-    std::cout << "Average sleep per pulse " <<
-            float(sleepSumUsecs) / pulseCount << " us" << std::endl;
-    std::cout << delayedPulses << " pulses (" <<
-            std::fixed << std::setprecision(2) <<
-            100 * (float(delayedPulses) / pulseCount) <<
-            "%) were delayed, with average delay of " <<
-            std::setprecision(1) <<
-            float(delaySumUsecs) / delayedPulses << " us" << std::endl;
+    _showStats();
     return(0);
 }
