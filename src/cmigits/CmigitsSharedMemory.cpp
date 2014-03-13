@@ -5,6 +5,7 @@
  *      Author: burghart
  */
 
+#include <csignal>
 #include <sstream>
 #include <iostream>
 #include <unistd.h>
@@ -86,11 +87,18 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         // Establish this instance as the writer instance if possible.
         pid_t writerPid = getWriterPid();
         if (writerPid != 0) {
-            _qShm.detach();
-            std::ostringstream msgStream;
-            msgStream << "An object in pid " << writerPid <<
-                    " already claims write access to shared memory";
-            throw(Exception(msgStream.str()));
+            // If the process exists, then throw an exception, otherwise
+            // we fall through and replace the now-dead process as the writer.
+            if (kill(writerPid, 0) == 0) {
+                _qShm.detach();
+                std::ostringstream msgStream;
+                msgStream << "An object in pid " << writerPid <<
+                        " already claims write access to shared memory";
+                throw(Exception(msgStream.str()));
+            } else {
+                WLOG << "CmigitsSharedMemory: Replacing now-dead process " <<
+                        writerPid << " as shared memory writer.";
+            }
         }
         // Set our process id as the writer id
         _setWriterPid(getpid());
