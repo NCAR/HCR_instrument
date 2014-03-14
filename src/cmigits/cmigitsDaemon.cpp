@@ -13,6 +13,7 @@
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
 #include <CmigitsSharedMemory.h>
+#include <Ts2CmigitsShmThread.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
@@ -27,6 +28,9 @@ QCoreApplication * App = 0;
 
 // Our Cmigits instance
 Cmigits * Cm = 0;
+
+// Are we playing back from time-series files?
+bool Playback;
 
 // PMU application instance name
 std::string PmuInstance = "ops";   ///< application instance
@@ -45,12 +49,18 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        ILOG << "Executing XML-RPC call to initializeUsingIwg1()";
-        bool ok = (Cm && Cm->initializeUsingIwg1());
-        if (ok) {
-            ILOG << "C-MIGITS beginning initialization using IWG1 data";
+        bool ok;
+        if (Playback) {
+            ILOG << "XML-RPC initializeUsingIwg1() ignored in playback mode";
+            ok = true;
         } else {
-            WLOG << "C-MIGITS initializeUsingIwg1() failed!";
+            ILOG << "Executing XML-RPC call to initializeUsingIwg1()";
+            ok = (Cm && Cm->initializeUsingIwg1());
+            if (ok) {
+                ILOG << "C-MIGITS beginning initialization using IWG1 data";
+            } else {
+                WLOG << "C-MIGITS initializeUsingIwg1() failed!";
+            }
         }
         *retvalP = xmlrpc_c::value_boolean(ok);
     }
@@ -82,23 +92,50 @@ main(int argc, char *argv[]) {
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
 
+    // If the first argument is "--playback", play back from the given list of
+    // IWRF time series files instead of getting data from the C-MIGITS
+    Playback = false;
+    bool goodargs = (argc == 2);
+    if (argc > 1 && ! strcmp(argv[1], "--playback")) {
+        Playback = true;
+        goodargs = (argc > 2);
+    }
+
+    if (! goodargs) {
+    	std::cerr << "Usage: " << argv[0] << " <tty_dev>" << std::endl;
+        std::cerr << "            or" << std::endl;
+        std::cerr << "       " << argv[0] << " --playback <ts_file> [...]" << std::endl;
+    	exit(1);
+    }
+
     // set up registration with procmap if instance is specified
     if (PmuInstance.size() > 0) {
       PMU_auto_init("cmigitsDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
-      ILOG << "will register with procmap, instance: " << PmuInstance;
+      ILOG << "procmap instance '" << PmuInstance << "'";
     }
 
-    if (argc != 2) {
-    	std::cerr << "Usage: " << argv[0] << " <tty_dev>" << std::endl;
-    	exit(1);
-    }
-    
-    ILOG << "Started cmigitsDaemon";
+    ILOG << "Started cmigitsDaemon" << (Playback ? " in playback mode" : "");
 
-    // Open connection to the C-MIGITS device.
-    PMU_auto_register("creating Cmigits instance");
-    std::string devName(argv[1]);
-    Cm = new Cmigits(devName, true);
+    // Open connection to the C-MIGITS device (or a Ts2CmigitsShmThread for
+    // time-series file playback)
+    Ts2CmigitsShmThread * playbackThread = NULL;
+    if (Playback) {
+        PMU_auto_register("creating Ts2CmigitsShmThread for playback");
+        // Build a vector of file names from the command line
+        std::vector<std::string> fileList;
+        for (int i = 2; i < argc; i++) {
+            fileList.push_back(argv[i]);
+        }
+        // Create and start the Ts2CmigitsShmThread
+        playbackThread = new Ts2CmigitsShmThread(fileList);
+        playbackThread->start();
+        // Stop the application when the reader thread is done
+        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
+    } else {
+        PMU_auto_register("creating Cmigits instance");
+        std::string devName(argv[1]);
+        Cm = new Cmigits(devName, true);
+    }
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
@@ -113,6 +150,7 @@ main(int argc, char *argv[]) {
     PMU_auto_register("exiting");
     
     delete(Cm);
+    delete(playbackThread);
 
     return 0;
 }

@@ -8,8 +8,14 @@ tools = ['cmigits', 'qt4', 'QXmlRpcServerAbyss', 'rapradar']
 env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui'])
 
-daemon = env.Program('cmigitsDaemon', 'cmigitsDaemon.cpp')
-Default(daemon)
+sources = Split('''
+cmigitsDaemon.cpp
+Ts2CmigitsShmThread.cpp
+''')
 
-playback = env.Program('Ts2CmigitsShm', 'Ts2CmigitsShm.cpp')
-Default(playback)
+headers = Split('''
+Ts2CmigitsShmThread.h
+''')
+
+daemon = env.Program('cmigitsDaemon', sources)
+Default(daemon)
