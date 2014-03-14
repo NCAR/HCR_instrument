@@ -15,6 +15,7 @@
 #include <CmigitsSharedMemory.h>
 #include <Ts2CmigitsShmThread.h>
 #include <xmlrpc-c/registry.hpp>
+#include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
@@ -81,6 +82,12 @@ public:
     }
 };
 
+void
+updatePMURegistration() {
+    // Make sure we remain registered with PMU, so it knows we're alive
+    PMU_auto_register("running");
+}
+
 int
 main(int argc, char *argv[]) {
     App = new QCoreApplication(argc, argv);
@@ -144,6 +151,16 @@ main(int argc, char *argv[]) {
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
         
+    // Create a QFunctionWrapper around the updatePMURegistration() function,
+    // as well as a QTimer, and use them to cause a call to the function on
+    // a periodic basis so that PMU knows we're still alive.
+    QFunctionWrapper registrationWrapper(&updatePMURegistration);
+    QTimer registrationTimer;
+    registrationTimer.setInterval(10000);   // 10 s
+    QObject::connect(&registrationTimer, SIGNAL(timeout()),
+            &registrationWrapper, SLOT(callFunction()));
+    registrationTimer.start();
+
     // Fire up the Qt event loop
     App->exec();
     
