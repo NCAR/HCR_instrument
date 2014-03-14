@@ -13,9 +13,8 @@
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
 #include <CmigitsSharedMemory.h>
-#include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>
-#include <xmlrpc-c/server_abyss.hpp>
+#include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 LOGGING("cmigitsDaemon")
@@ -29,48 +28,14 @@ QCoreApplication * App = 0;
 // Our Cmigits instance
 Cmigits * Cm = 0;
 
-// Flag set when exit is requested.
-bool ExitRequested = false;
-
 // PMU application instance name
 std::string PmuInstance = "ops";   ///< application instance
 
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
-    ExitRequested = true;
+    App->quit();
 }
-
-// Handler for SIGALRM signals.
-void
-alarmHandler(int signal) {
-    // Do nothing. This handler just assures that arrival of the signal doesn't 
-    // terminate our process. The intention of the signal is to force the
-    // XML-RPC server runOnce() method to return occasionally, even if no
-    // request comes in.
-    DLOG << "Got itimer ALRM signal";
-}
-
-// Create a periodic ALRM signal to break us out of
-// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
-void
-startXmlrpcWorkAlarm() {
-    const struct timeval tv = { 0, 100000 }; // 0.1 s
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
-}
-
-
-// Stop the alarm which breaks us out of xmlrpc_c::serverAbyss::runOnce()
-// while our server is actually processing an XML-RPC command.
-void
-stopXmlrpcWorkAlarm() {
-    // Stop the periodic timer.
-    const struct timeval tv = { 0, 0 }; // zero time stops the timer
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
-}
-
 
 class InitializeUsingIwg1Method : public xmlrpc_c::method {
 public:
@@ -80,9 +45,6 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Executing XML-RPC call to initializeUsingIwg1()";
         bool ok = (Cm && Cm->initializeUsingIwg1());
         if (ok) {
@@ -91,9 +53,6 @@ public:
             WLOG << "C-MIGITS initializeUsingIwg1() failed!";
         }
         *retvalP = xmlrpc_c::value_boolean(ok);
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -105,16 +64,10 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         DLOG << "Executing XML-RPC call to getStatus()";
         // Get the latest status from shared memory, and convert it to 
         // an xmlrpc_c::value_struct dictionary.
         *retvalP = CmigitsStatus::StatusFromSharedMemory().toXmlRpcValue();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -152,31 +105,14 @@ main(int argc, char *argv[]) {
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("initializeUsingIwg1", new InitializeUsingIwg1Method);
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
         
-    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
-    // arrival causes the XML-RPC server's runOnce() method to return so that 
-    // we can process Qt events on a regular basis.
-    signal(SIGALRM, alarmHandler);
-    startXmlrpcWorkAlarm();
-    
-    // Now enter our processing loop
-    while (1) {
-        PMU_auto_register("running");
-
-        // Handle the next XML-RPC request, or return after receiving a SIGALRM
-        // from our timer above
-        xmlrpcServer.runOnce();
-        
-        // Exit when the exit flag gets raised
-        if (ExitRequested)
-            break;
-        
-        // Process Qt events
-        App->processEvents();
-    }
+    // Fire up the Qt event loop
+    App->exec();
     
     PMU_auto_register("exiting");
     
+    delete(Cm);
+
     return 0;
 }

@@ -3,7 +3,7 @@
 # Build cmigitsDaemon
 #
 
-tools = ['cmigits', 'qt4', 'xmlrpc_server_abyss++', 'rapradar']
+tools = ['cmigits', 'qt4', 'QXmlRpcServerAbyss', 'rapradar']
 
 env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui'])
