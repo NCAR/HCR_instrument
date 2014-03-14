@@ -1,6 +1,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <fcntl.h>
 #include <stdio.h>
 #include <math.h>
@@ -29,9 +30,9 @@
 #include "IwrfExport.h"
 #include "HcrMonitor.h"
 
-#include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>
-#include <xmlrpc-c/server_abyss.hpp>
+#include <QFunctionWrapper.h>
+#include <QXmlRpcServerAbyss.h>
 
 LOGGING("hcrdrx")
 
@@ -43,6 +44,7 @@ std::string _drxConfig;          ///< DRX configuration file
 std::string _instance = "ops";   ///< application instance
 HcrMonitor * _hcrMonitor;        ///< HcrMonitor instance
 int _chans = 2;                  ///< number of channels
+std::vector<HcrDrxPub*> _downThreads(_chans);   // per-channel publishers
 int _tsLength;                   ///< The time series length
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
@@ -52,6 +54,7 @@ int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of milliseconds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
 Pentek::p7142sd3c * _sd3c;
+QCoreApplication * _app;
 
 std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
 int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
@@ -59,12 +62,10 @@ int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
 std::string _pmc730dHost("localhost");  ///< The host on which HcrPmc730Daemon is running
 int _pmc730dPort = 8003;                ///< HcrPmc730Daemon's XML-RPC port
 
-bool _terminate = false;         ///< set true to signal the main loop to terminate
-
 /////////////////////////////////////////////////////////////////////
 void sigHandler(int sig) {
   ILOG << "Interrupt received...termination may take a few seconds";
-  _terminate = true;
+  _app->quit();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -143,28 +144,6 @@ void parseOptions(int argc,
 }
 
 ///////////////////////////////////////////////////////////
-/// If the user has root privileges, make the process real-time.
-void
-makeRealTime()
-{
-    uid_t id = getuid();
-
-    // don't even try if we are not root.
-    if (id != 0) {
-        ELOG << "Not root, unable to change scheduling priority";
-        return;
-    }
-
-    sched_param sparam;
-    sparam.sched_priority = 50;
-
-    if (sched_setscheduler(0, SCHED_RR, &sparam)) {
-        ELOG << "warning, unable to set scheduler parameters: ";
-        ELOG << strerror(errno);
-    }
-}
-
-///////////////////////////////////////////////////////////
 /// @return The current time, in seconds since Jan. 1, 1970.
 double nowTime()
 {
@@ -193,34 +172,6 @@ void startUpConverter(Pentek::p7142Up& upConverter,
     // start the upconverter
     upConverter.startDAC();
 
-}
-
-// Handler for SIGALRM signals.
-void
-alarmHandler(int signal) {
-    // Do nothing. This handler just assures that arrival of the signal doesn't
-    // terminate our process. The intention of the signal is to force the
-    // XML-RPC server runOnce() method to return occasionally, even if no
-    // request comes in.
-}
-
-// Create a periodic ALRM signal to break us out of
-// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
-void
-startXmlrpcWorkAlarm() {
-    const struct timeval tv = { 0, 100000 }; // 100 ms
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
-}
-
-// Stop the alarm which breaks us out of xmlrpc_c::serverAbyss::runOnce()
-// while our server is actually processing an XML-RPC command.
-void
-stopXmlrpcWorkAlarm() {
-    // Stop the periodic timer.
-    const struct timeval tv = { 0, 0 }; // zero time stops the timer
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
 }
 
 /**
@@ -258,16 +209,10 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         DLOG << "Received 'getStatus' command";
         // Get the latest status from shared memory, and convert it to 
         // an xmlrpc_c::value_struct dictionary.
         *retvalP = DrxStatus(*_sd3c).toXmlRpcValue();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -281,24 +226,43 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Received 'zeroPentekMotorCounts' command";
         _sd3c->zeroMotorCounts();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
 ///////////////////////////////////////////////////////////
+// How frequently will we call printStatsAndUpdateRegistration?
+static const int UPDATE_INTERVAL_SECS = 10;
+
+void
+printStatsAndUpdateRegistration() {
+    // Make sure we remain registered with PMU, so it knows we're alive
+    PMU_auto_register("running");
+
+    // Print data rates and other interesting tidbits
+    std::ostringstream ss;
+    for (int c = 0; c < _chans; c++) {
+        Pentek::p7142sd3cDn * down = _downThreads[c]->downconverter();
+        if (c != 0) {
+            ss << "  ";
+        }
+        ss << std::setprecision(3) << std::setw(5)
+           << "chan " << c << " -- "
+           << down->bytesRead() / 1000000.0 / float(UPDATE_INTERVAL_SECS) << " MB/s "
+           << " drop:" << down->droppedPulses()
+           << " sync:" << down->syncErrors();
+    }
+    ILOG << ss.str();
+
+    DrxStatus status(*_sd3c);
+    ILOG << "Pentek board temp: " << status.pentekBoardTemp();
+    ILOG << "Pentek FPGA temp: " << status.pentekFpgaTemp();
+}
+///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
 {
-    // try to change scheduling to real-time
-    makeRealTime();
-
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
     ILOG << "hcrdrx starting";
@@ -310,7 +274,7 @@ main(int argc, char** argv)
     parseOptions(argc, argv);
 
     // QApplication
-    QCoreApplication app(argc, argv);
+    _app = new QCoreApplication(argc, argv);
 
     // Read the HCR configuration file
     HcrDrxConfig hcrConfig(_drxConfig);
@@ -333,13 +297,7 @@ main(int argc, char** argv)
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
-    xmlrpc_c::serverAbyss rpcServer(myRegistry, 8081);
-
-    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
-    // arrival causes the XML-RPC server's runOnce() method to return so that
-    // we can process Qt events on a regular basis.
-    signal(SIGALRM, alarmHandler);
-    startXmlrpcWorkAlarm();
+    QXmlRpcServerAbyss rpcServer(&myRegistry, 8081);
 
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
@@ -380,11 +338,9 @@ main(int argc, char** argv)
     
     // Create the down converter threads. The threads are not run at creation, 
     // but they do instantiate the down converters.
-    std::vector<HcrDrxPub*> downThreads(_chans);
-
     for (int c = 0; c < _chans; c++) {
         ILOG << "*** Channel " << c << " ***";
-        downThreads[c] = new HcrDrxPub(*_sd3c, c, hcrConfig, _exporter, _tsLength,
+        _downThreads[c] = new HcrDrxPub(*_sd3c, c, hcrConfig, _exporter, _tsLength,
                 _gaussianFile, _kaiserFile, _simWaveLength);
     }
 
@@ -403,7 +359,7 @@ main(int argc, char** argv)
         // thread code to call the run() method, which will
         // start reading data, but should block on the first
         // read since the timers and filters are not running yet.
-        downThreads[c]->start();
+        _downThreads[c]->start();
         ILOG << "processing enabled on channel " << c;
     }
 
@@ -436,71 +392,27 @@ main(int argc, char** argv)
     // Start the timers, which will allow data to flow.
     _sd3c->timersStartStop(true);
 
-    double startTime = nowTime();
+    // Set up a periodic timer to print statistics and maintain registration
+    // with PMU
+    QTimer updateTimer;
+    updateTimer.setInterval(UPDATE_INTERVAL_SECS * 1000); // interval in ms
+    QFunctionWrapper updateFuncWrapper(&printStatsAndUpdateRegistration);
+    QObject::connect(&updateTimer, SIGNAL(timeout()),
+            &updateFuncWrapper, SLOT(callFunction()));
+    updateTimer.start();
 
-    // Set up an interval timer to deliver SIGALRM every 1 ms. The signal
-    // arrival causes the XML-RPC server's runOnce() method to return so that
-    // we can process Qt events on a regular basis.
-    signal(SIGALRM, alarmHandler);
-    startXmlrpcWorkAlarm();
-
-    while (1) {
-        PMU_auto_register("running");
-        for (int i = 0; i < 100; i++) {
-            // Process any queued Qt events
-            app.processEvents();
-            
-            // check for the termination request
-            if (_terminate) {
-                break;
-            }
-            // Waits for the next connection, accepts it, reads the HTTP
-            // request, executes the indicated RPC, and closes the connection.
-            rpcServer.runOnce();
-        }
-        if (_terminate) {
-            break;
-        }
-
-        double currentTime = nowTime();
-        double elapsed = currentTime - startTime;
-        startTime = currentTime;
-
-        std::vector<long> bytes(_chans);
-        std::vector<unsigned long> droppedPulses(_chans);
-        std::vector<unsigned long> syncErrors(_chans);
-        
-        for (int c = 0; c < _chans; c++) {
-            Pentek::p7142sd3cDn * down = downThreads[c]->downconverter();
-            bytes[c] = down->bytesRead();
-            droppedPulses[c] = down->droppedPulses();
-            syncErrors[c] = down->syncErrors();
-        }
-        
-        for (int c = 0; c < _chans; c++) {
-            if (c != 0) {
-                std::cout << "  ";
-            }
-            std::cout << std::setprecision(3) << std::setw(5)
-                      << "chan " << c << " -- "
-                      << bytes[c]/1000000.0/elapsed << " MB/s "
-                      << " drop:" << droppedPulses[c]
-                      << " sync:" << syncErrors[c];
-        }
-        std::cout << std::endl;
-
-        DrxStatus status(*_sd3c);
-        ILOG << "Pentek board temp: " << status.pentekBoardTemp();
-        ILOG << "Pentek FPGA temp: " << status.pentekFpgaTemp();
-    }
+    // Now just run the QCoreApplication until somebody stops us, usually via
+    // a 'kill' command or ^C
+    _app->exec();
     
+    // We're done
     ILOG << "Shutting down...";
     
     // Stop the downconverter threads
     for (int c = 0; c < _chans; c++) {
         ILOG << "Stopping thread for channel " << c;
-        downThreads[c]->terminate();
-        downThreads[c]->wait(1000);    // wait up to a second for termination
+        _downThreads[c]->terminate();
+        _downThreads[c]->wait(1000);    // wait up to a second for termination
     }
 
     // stop the DAC
