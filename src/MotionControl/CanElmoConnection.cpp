@@ -179,6 +179,16 @@ CanElmoConnection::~CanElmoConnection() {
 
 void
 CanElmoConnection::_ClassInitialize() {
+    // Much of the implementation for this class assumes local byte ordering is
+    // little-endian. Verify this.
+    uint16_t word = 0x0102;
+    char * c = reinterpret_cast<char*>(&word);
+    if (c[0] != 0x02) {
+        ELOG << "BUG: Implementation of class CanElmoConnection only works " <<
+                "on little-endian machines, and this machine isn't!";
+        abort();
+    }
+
     const char soFile[] = CANFESTIVAL_LIBDIR "/libcanfestival_can_socket.so";
     _Driver = LoadCanDriver(soFile);
     if (_Driver == NULL) {
