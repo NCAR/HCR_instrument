@@ -7,14 +7,15 @@
 
 #include <csignal>
 #include <iostream>
-#include <QtGui>
+#include <QCoreApplication>
+#include <QTimer>
 #include "svnInfo.h"
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
-#include <xmlrpc-c/base.hpp>
 #include <xmlrpc-c/registry.hpp>
-#include <xmlrpc-c/server_abyss.hpp>
+#include <QFunctionWrapper.h>
+#include <QXmlRpcServerAbyss.h>
 
 #include "MotionControl.h"
 
@@ -31,9 +32,6 @@ MotionControl * Control = 0;
 // PMU application instance name
 std::string PmuInstance = "ops";   ///< application instance
 
-// Set to true when it's time to terminate
-bool Terminate = false;
-
 // Count values to be assigned to the "home position" for each of the drives.
 // Optimally, these are set so that putting both drives at their zero positions
 // will cause the radar beam to be pointing exactly at zenith.
@@ -45,43 +43,7 @@ static const int TILT_DRIVE_HOME_COUNTS = -280;
 void
 shutdownHandler(int signal) {
     ILOG << "Shutting down!";
-    Terminate = true;
-}
-
-/////////////////////////////////////////////////////////////////////
-// Handler for SIGALRM signals.
-void
-alarmHandler(int signal) {
-    // Do nothing. This handler just assures that arrival of the signal doesn't
-    // terminate our process. The intention of the signal is to force the
-    // XML-RPC server runOnce() method to return occasionally, even if no
-    // request comes in.
-}
-
-/////////////////////////////////////////////////////////////////////
-// Create a periodic ALRM signal to break us out of
-// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
-void
-startXmlrpcWorkAlarm() {
-//    const struct timeval tv = { 0, 500000 };// 0.5s (2Hz)
-//    const struct timeval tv = { 0, 100000 };// 0.1s (10Hz)
-//    const struct timeval tv = { 0, 50000 }; // 0.05s (20Hz)
-    const struct timeval tv = { 0, 20000 };   // 0.02s (50Hz)
-//    const struct timeval tv = { 0, 10000 }; // 0.01s (100Hz)
-//    const struct timeval tv = { 0, 6667 };  // 0.0067s (150Hz)
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
-}
-
-/////////////////////////////////////////////////////////////////////
-// Stop the alarm which breaks us out of xmlrpc_c::serverAbyss::runOnce()
-// while our server is actually processing an XML-RPC command.
-void
-stopXmlrpcWorkAlarm() {
-    // Stop the periodic timer.
-    const struct timeval tv = { 0, 0 }; // zero time stops the timer
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
+    App->quit();
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -97,17 +59,11 @@ public:
     void
     execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
     {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         paramList.verifyEnd(0);
 
         Control->homeDrive(ROT_DRIVE_HOME_COUNTS, TILT_DRIVE_HOME_COUNTS);
 
         *retvalP = xmlrpc_c::value_int(0);
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -124,18 +80,12 @@ public:
     void
     execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
     {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         double const angle(paramList.getDouble(0));
         paramList.verifyEnd(1);
 
         Control->point(angle);
 
         *retvalP = xmlrpc_c::value_int(0);
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -153,9 +103,6 @@ public:
     void
     execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
     {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         double const ccwLimit(paramList.getDouble(0));
         double const cwLimit(paramList.getDouble(1));
         double const scanRate(paramList.getDouble(2));
@@ -165,9 +112,6 @@ public:
         Control->scan(ccwLimit, cwLimit, scanRate, beamTilt);
 
         *retvalP = xmlrpc_c::value_int(0);
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -184,18 +128,12 @@ public:
     void
     execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
     {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         paramList.verifyEnd(0);
 
         // Get current status of our MotionControl, pack it into an
         // xmlrpc_c::value_struct, and return the struct.
         xmlrpc_c::value_struct dict = Control->status().to_value_struct();
         *retvalP = dict;
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -212,18 +150,12 @@ public:
     void
     execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
     {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         bool const enabled(paramList.getBoolean(0));
         paramList.verifyEnd(1);
 
         Control->setCorrectionEnabled(enabled);
 
         *retvalP = xmlrpc_c::value_int(0);
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -240,19 +172,20 @@ public:
     void
     execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
     {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         paramList.verifyEnd(0);
 
         // Get current status of our MotionControl, pack it into an
         // xmlrpc_c::value_struct, and return the struct.
         *retvalP = xmlrpc_c::value_boolean(Control->homingInProgress());
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
+
+/////////////////////////////////////////////////////////////////////
+void
+updatePMURegistration() {
+    // Make sure we remain registered with PMU, so it knows we're alive
+    PMU_auto_register("running");
+}
 
 /////////////////////////////////////////////////////////////////////
 int
@@ -271,6 +204,12 @@ main(int argc, char** argv)
     App = new QCoreApplication(argc, argv);
     Control = new MotionControl();
 
+    // Create a periodic timer to apply attitude corrections on a regular basis
+    QTimer correctionTimer;
+    correctionTimer.setInterval(20);    // 20 ms -> 150 Hz
+    QObject::connect(&correctionTimer, SIGNAL(timeout()), Control, SLOT(correctForAttitude()));
+    correctionTimer.start();
+
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("Home", new DriveHomeMethod);
     myRegistry.addMethod("Point", new DrivePointMethod);
@@ -278,34 +217,19 @@ main(int argc, char** argv)
     myRegistry.addMethod("Status", new StatusMethod);
     myRegistry.addMethod("SetCorrectionEnabled", new SetCorrectionEnabledMethod);
     myRegistry.addMethod("HomingInProgress", new HomingInProgressMethod);
-    xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, ServerPort);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
+
+    // Create a QFunctionWrapper around the updatePMURegistration() function,
+    // and use it to call the function every time the correctionTimer times out.
+    QFunctionWrapper registrationWrapper(&updatePMURegistration);
+    QObject::connect(&correctionTimer, SIGNAL(timeout()),
+            &registrationWrapper, SLOT(callFunction()));
 
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, shutdownHandler);
     signal(SIGTERM, shutdownHandler);
 
-    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
-    // arrival causes the XML-RPC server's runOnce() method to return so that
-    // we can process Qt events on a regular basis.
-    signal(SIGALRM, alarmHandler);
-    startXmlrpcWorkAlarm();
-
-    while (true) {
-        PMU_auto_register("running");
-
-        if (Terminate)
-            break;
-
-        // Waits for the next connection, accepts it, reads the HTTP
-        // request, executes the indicated RPC, and closes the connection.
-        xmlrpcServer.runOnce();
-
-        // update aircraft attitude
-        Control->correctForAttitude();
-
-        // Process Qt events
-        App->processEvents();
-    }
+    App->exec();
 
     delete(Control);
     delete(App);
