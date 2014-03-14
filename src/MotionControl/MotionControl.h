@@ -52,10 +52,6 @@ public:
     /// @param beamTilt beam tilt angle, deg
     void scan(double ccwLimit, double cwLimit, double scanRate, double beamTilt);
 
-    /// @brief Get current aircraft attitude and adjust drive position.
-    /// This method does nothing when attitude correction is disabled.
-    void correctForAttitude();
-
     /// @brief Return a reference to the rotation drive.
     /// @return a reference to the rotation drive.
     const ElmoServoDrive & rotationDrive() const { return(_rotDrive); }
@@ -198,6 +194,11 @@ public:
     /// status.
     /// @return a MotionControl::Status object containing current status.
     Status status() const { return(Status(*this)); }
+
+public slots:
+    /// @brief Get current aircraft attitude and adjust drive position.
+    /// This method does nothing when attitude correction is disabled.
+    void correctForAttitude();
 
 private:
     // Given desired rotation and tilt angles, adjust to pod-relative angles
