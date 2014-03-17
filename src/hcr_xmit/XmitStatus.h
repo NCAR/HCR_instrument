@@ -11,9 +11,9 @@
 #include <exception>
 #include <string>
 #include <stdint.h>
-#include <XmlRpc.h>
-
-using namespace XmlRpc;
+#include <xmlrpc-c/base.hpp>
+#include <boost/serialization/nvp.hpp>
+#include <boost/serialization/version.hpp>
 
 /// @brief Class to represent HCR transmitter status.
 class XmitStatus {
@@ -46,26 +46,26 @@ public:
     /// from the transmitter.
     XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError);
 
-    /// @brief Construct from an XmlRpcValue dictionary as returned by a call
-    /// to the XmitStatus::toXmlRpcValue() method.
-    /// @param statusDict an XmlRpcValue dictionary as returned by call to the
-    /// XmitStatus::toXmlRpcValue() method.
+    /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
+    /// by a call to the XmitStatus::toXmlRpcValue() method.
+    /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by
+    /// call to the XmitStatus::toXmlRpcValue() method.
     /// @throws ContructError if there is a problem unpacking the given
-    /// XmlRpcValue into an XmitStatus.
-    XmitStatus(XmlRpcValue & statusDict) throw(ConstructError);
+    /// xmlrpc_c::value_struct into an XmitStatus.
+    XmitStatus(xmlrpc_c::value_struct & statusDict) throw(ConstructError);
 
     /// @brief destructor
     virtual ~XmitStatus();
 
     /// @brief Return an external representation of the object's state as
-    /// an XmlRpcValue dictionary.
+    /// an xmlrpc_c::value_struct dictionary.
     ///
     /// The returned value can be used on the other side of an XML-RPC
     /// connection to create an identical object via the
-    /// XmitStatus(const XmlRpcValue &) constructor.
+    /// XmitStatus(const xmlrpc_c::value_struct &) constructor.
     /// @return an external representation of the object's state as
-    /// an XmlRpcValue dictionary.
-    XmlRpcValue toXmlRpcValue() const;
+    /// an xmlrpc_c::value_struct dictionary.
+    xmlrpc_c::value_struct toXmlRpcValue() const;
     
     /// @brief Return a std::string representation of this object rendered as
     /// XML via the TaXml class, using the given indentation depth.
@@ -94,7 +94,9 @@ public:
 
     /// @brief Return the control source selected on the CMU front panel.
     /// @return the control source selected on the CMU front panel.
-    ControlSource controlSource() const { return(_controlSource); }
+    ControlSource controlSource() const {
+        return(static_cast<ControlSource>(_controlSource));
+    }
 
     /// @brief Return true iff serial communication to the transmitter is connected
     /// @return true iff serial connection to the transmitter is connected
@@ -397,32 +399,78 @@ public:
      */
     static XmitStatus simulatedStatus(bool filamentOn, bool highVoltageOn);
 private:
-    /// @brief Return the boolean value associated with statusDict[key]
-    /// @param statusDict the XmlRpcValue status dictionary
-    /// @param key the key for the desired value
-    /// @return the boolean value associated with statusDict[key]
-    /// @throws ConstructError if the key does not exist in the dictionary or
-    /// there is another problem with the XmlRpcValue
-    static bool _StatusBool(XmlRpcValue & statusDict,
-            std::string key) throw(ConstructError);
-
-    /// @brief Return the int value associated with statusDict[key]
-    /// @param statusDict the XmlRpcValue status dictionary
-    /// @param key the key for the desired value
-    /// @return the int value associated with statusDict[key]
-    /// @throws ConstructError if the key does not exist in the dictionary or
-    /// there is another problem with the XmlRpcValue
-    static int _StatusInt(XmlRpcValue & statusDict,
-            std::string key) throw(ConstructError);
-
-    /// @brief Return the double value associated with statusDict[key]
-    /// @param statusDict the XmlRpcValue status dictionary
-    /// @param key the key for the desired value
-    /// @return the double value associated with statusDict[key]
-    /// @throws ConstructError if the key does not exist in the dictionary or
-    /// there is another problem with the XmlRpcValue
-    static double _StatusDouble(XmlRpcValue & statusDict,
-            std::string key) throw(ConstructError);
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize our members to a boost save (output) archive or populate
+     * our members from a boost load (input) archive.
+     * @param ar the archive to load from or save to.
+     * @param version the version
+     */
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) {
+        using boost::serialization::make_nvp;
+        // Version 0 (see BOOST_CLASS_VERSION macro below for latest version)
+        if (version >= 0) {
+            // Map named entries to our member variables using serialization's
+            // name/value pairs (nvp).
+            ar & BOOST_SERIALIZATION_NVP(_serialConnected);
+            ar & BOOST_SERIALIZATION_NVP(_badChecksumReceived);
+            ar & BOOST_SERIALIZATION_NVP(_filamentOn);
+            ar & BOOST_SERIALIZATION_NVP(_highVoltageOn);
+            ar & BOOST_SERIALIZATION_NVP(_rfOn);
+            ar & BOOST_SERIALIZATION_NVP(_modPulseExternal);
+            ar & BOOST_SERIALIZATION_NVP(_syncPulseExternal);
+            ar & BOOST_SERIALIZATION_NVP(_filamentDelayActive);
+            ar & BOOST_SERIALIZATION_NVP(_psmPowerOn);
+            ar & BOOST_SERIALIZATION_NVP(_controlSource);
+            ar & BOOST_SERIALIZATION_NVP(_summaryFault);
+            ar & BOOST_SERIALIZATION_NVP(_SummaryFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_SummaryFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_modulatorFault);
+            ar & BOOST_SERIALIZATION_NVP(_ModulatorFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_ModulatorFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_syncFault);
+            ar & BOOST_SERIALIZATION_NVP(_SyncFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_SyncFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_xmitterTempFault);
+            ar & BOOST_SERIALIZATION_NVP(_XmitterTempFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_XmitterTempFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_waveguideArcFault);
+            ar & BOOST_SERIALIZATION_NVP(_WaveguideArcFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_WaveguideArcFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_collectorCurrentFault);
+            ar & BOOST_SERIALIZATION_NVP(_CollectorCurrentFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_CollectorCurrentFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_bodyCurrentFault);
+            ar & BOOST_SERIALIZATION_NVP(_BodyCurrentFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_BodyCurrentFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_filamentLorFault);
+            ar & BOOST_SERIALIZATION_NVP(_FilamentLorFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_FilamentLorFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_focusElectrodeLorFault);
+            ar & BOOST_SERIALIZATION_NVP(_FocusElectrodeLorFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_FocusElectrodeLorFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_cathodeLorFault);
+            ar & BOOST_SERIALIZATION_NVP(_CathodeLorFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_CathodeLorFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_inverterOverloadFault);
+            ar & BOOST_SERIALIZATION_NVP(_InverterOverloadFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_InverterOverloadFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_externalInterlockFault);
+            ar & BOOST_SERIALIZATION_NVP(_ExternalInterlockFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_ExternalInterlockFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_eikInterlockFault);
+            ar & BOOST_SERIALIZATION_NVP(_EikInterlockFaultCount);
+            ar & BOOST_SERIALIZATION_NVP(_EikInterlockFaultTime);
+            ar & BOOST_SERIALIZATION_NVP(_cathodeVoltage);
+            ar & BOOST_SERIALIZATION_NVP(_bodyCurrent);
+            ar & BOOST_SERIALIZATION_NVP(_collectorCurrent);
+            ar & BOOST_SERIALIZATION_NVP(_xmitterTemp);
+        }
+        if (version >= 1) {
+            // Version 1 stuff will go here...
+        }
+    }
 
     /// Status byte 3: Filament on?
     static const uint8_t _FILAMENT_ON_BIT       = 0x01;
@@ -515,7 +563,7 @@ private:
     bool _badChecksumReceived;
 
     /// Which control source is selected on the front panel?
-    ControlSource _controlSource;
+    uint16_t _controlSource;
 
     /// EIK filament on?
     bool _filamentOn;
@@ -579,5 +627,8 @@ private:
     /// Front panel PRF selector value (0-15)
     uint16_t _prfSelector;
 };
+
+// Increment this class version number when member variables are changed.
+BOOST_CLASS_VERSION(XmitStatus, 1)
 
 #endif /* XMITSTATUS_H_ */

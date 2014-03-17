@@ -7,6 +7,7 @@
 
 #include "XmitStatus.h"
 #include <cstdlib>
+#include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <toolsa/TaXml.hh>
 
@@ -263,62 +264,11 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     _PrevStatus = *this;
 }
 
-XmitStatus::XmitStatus(XmlRpcValue & statusDict) throw(ConstructError) {
-    // Unpack the XmlRpcValue dictionary into our members
-    _serialConnected = _StatusBool(statusDict, "serialConnected");
-    _badChecksumReceived = _StatusBool(statusDict, "badChecksumReceived");
-    _filamentOn = _StatusBool(statusDict, "filamentOn");
-    _highVoltageOn = _StatusBool(statusDict, "highVoltageOn");
-    _rfOn = _StatusBool(statusDict, "rfOn");
-    _modPulseExternal = _StatusBool(statusDict, "modPulseExternal");
-    _syncPulseExternal = _StatusBool(statusDict, "syncPulseExternal");
-    _filamentDelayActive = _StatusBool(statusDict, "filamentDelayActive");
-    _psmPowerOn = _StatusBool(statusDict, "psmPowerOn");
-    _controlSource = static_cast<ControlSource>(_StatusInt(statusDict, "controlSource"));
-    _summaryFault = _StatusBool(statusDict, "summaryFault");
-    _SummaryFaultCount = _StatusInt(statusDict, "summaryFaultCount");
-    _SummaryFaultTime = _StatusInt(statusDict, "summaryFaultTime");
-    _modulatorFault = _StatusBool(statusDict, "modulatorFault");
-    _ModulatorFaultCount = _StatusInt(statusDict, "modulatorFaultCount");
-    _ModulatorFaultTime = _StatusInt(statusDict, "modulatorFaultTime");
-    _syncFault = _StatusBool(statusDict, "syncFault");
-    _SyncFaultCount = _StatusInt(statusDict, "syncFaultCount");
-    _SyncFaultTime = _StatusInt(statusDict, "syncFaultTime");
-    _xmitterTempFault = _StatusBool(statusDict, "xmitterTempFault");
-    _XmitterTempFaultCount = _StatusInt(statusDict, "xmitterTempFaultCount");
-    _XmitterTempFaultTime = _StatusInt(statusDict, "xmitterTempFaultTime");
-    _waveguideArcFault = _StatusBool(statusDict, "waveguideArcFault");
-    _WaveguideArcFaultCount = _StatusInt(statusDict, "waveguideArcFaultCount");
-    _WaveguideArcFaultTime = _StatusInt(statusDict, "waveguideArcFaultTime");
-    _collectorCurrentFault = _StatusBool(statusDict, "collectorCurrentFault");
-    _CollectorCurrentFaultCount = _StatusInt(statusDict, "collectorCurrentFaultCount");
-    _CollectorCurrentFaultTime = _StatusInt(statusDict, "collectorCurrentFaultTime");
-    _bodyCurrentFault = _StatusBool(statusDict, "bodyCurrentFault");
-    _BodyCurrentFaultCount = _StatusInt(statusDict, "bodyCurrentFaultCount");
-    _BodyCurrentFaultTime = _StatusInt(statusDict, "bodyCurrentFaultTime");
-    _filamentLorFault = _StatusBool(statusDict, "filamentLorFault");
-    _FilamentLorFaultCount = _StatusInt(statusDict, "filamentLorFaultCount");
-    _FilamentLorFaultTime = _StatusInt(statusDict, "filamentLorFaultTime");
-    _focusElectrodeLorFault = _StatusBool(statusDict, "focusElectrodeLorFault");
-    _FocusElectrodeLorFaultCount = _StatusInt(statusDict, "focusElectrodeLorFaultCount");
-    _FocusElectrodeLorFaultTime = _StatusInt(statusDict, "focusElectrodeLorFaultTime");
-    _cathodeLorFault = _StatusBool(statusDict, "cathodeLorFault");
-    _CathodeLorFaultCount = _StatusInt(statusDict, "cathodeLorFaultCount");
-    _CathodeLorFaultTime = _StatusInt(statusDict, "cathodeLorFaultTime");
-    _inverterOverloadFault = _StatusBool(statusDict, "inverterOverloadFault");
-    _InverterOverloadFaultCount = _StatusInt(statusDict, "inverterOverloadFaultCount");
-    _InverterOverloadFaultTime = _StatusInt(statusDict, "inverterOverloadFaultTime");
-    _externalInterlockFault = _StatusBool(statusDict, "externalInterlockFault");
-    _ExternalInterlockFaultCount = _StatusInt(statusDict, "externalInterlockFaultCount");
-    _ExternalInterlockFaultTime = _StatusInt(statusDict, "externalInterlockFaultTime");
-    _eikInterlockFault = _StatusBool(statusDict, "eikInterlockFault");
-    _EikInterlockFaultCount = _StatusInt(statusDict, "eikInterlockFaultCount");
-    _EikInterlockFaultTime = _StatusInt(statusDict, "eikInterlockFaultTime");
-
-    _cathodeVoltage = _StatusDouble(statusDict, "cathodeVoltage");
-    _bodyCurrent = _StatusDouble(statusDict, "bodyCurrent");
-    _collectorCurrent = _StatusDouble(statusDict, "collectorCurrent");
-    _xmitterTemp = _StatusDouble(statusDict, "xmitterTemp");
+XmitStatus::XmitStatus(xmlrpc_c::value_struct & statusDict) throw(ConstructError) {
+    // Create an input archiver wrapper around the xmlrpc_c::value_struct
+    // dictionary, and use serialize() to populate our members from its content.
+    Iarchive_xmlrpc_c iar(statusDict);
+    iar >> *this;
 }
 
 XmitStatus::~XmitStatus() {
@@ -338,67 +288,17 @@ XmitStatus::simulatedStatus(bool filamentOn, bool highVoltageOn) {
     return simStatus;
 }
 
-XmlRpcValue
+xmlrpc_c::value_struct
 XmitStatus::toXmlRpcValue() const {
-    XmlRpcValue statusDict;
-
-    // Save state into our XML-RPC statusDict
-    statusDict["serialConnected"] = XmlRpcValue(_serialConnected);
-    statusDict["badChecksumReceived"] = XmlRpcValue(_badChecksumReceived);
-    statusDict["filamentOn"] = XmlRpcValue(_filamentOn);
-    statusDict["highVoltageOn"] = XmlRpcValue(_highVoltageOn);
-    statusDict["rfOn"] = XmlRpcValue(_rfOn);
-    statusDict["modPulseExternal"] = XmlRpcValue(_modPulseExternal);
-    statusDict["syncPulseExternal"] = XmlRpcValue(_syncPulseExternal);
-    statusDict["filamentDelayActive"] = XmlRpcValue(_filamentDelayActive);
-    statusDict["psmPowerOn"] = XmlRpcValue(_psmPowerOn);
-    statusDict["controlSource"] = XmlRpcValue(_controlSource);
-    statusDict["summaryFault"] = XmlRpcValue(_summaryFault);
-    statusDict["summaryFaultCount"] = XmlRpcValue(_SummaryFaultCount);
-    statusDict["summaryFaultTime"] = XmlRpcValue(int(_SummaryFaultTime));
-    statusDict["modulatorFault"] = XmlRpcValue(_modulatorFault);
-    statusDict["modulatorFaultCount"] = XmlRpcValue(_ModulatorFaultCount);
-    statusDict["modulatorFaultTime"] = XmlRpcValue(int(_ModulatorFaultTime));
-    statusDict["syncFault"] = XmlRpcValue(_syncFault);
-    statusDict["syncFaultCount"] = XmlRpcValue(_SyncFaultCount);
-    statusDict["syncFaultTime"] = XmlRpcValue(int(_SyncFaultTime));
-    statusDict["xmitterTempFault"] = XmlRpcValue(_xmitterTempFault);
-    statusDict["xmitterTempFaultCount"] = XmlRpcValue(_XmitterTempFaultCount);
-    statusDict["xmitterTempFaultTime"] = XmlRpcValue(int(_XmitterTempFaultTime));
-    statusDict["waveguideArcFault"] = XmlRpcValue(_waveguideArcFault);
-    statusDict["waveguideArcFaultCount"] = XmlRpcValue(_WaveguideArcFaultCount);
-    statusDict["waveguideArcFaultTime"] = XmlRpcValue(int(_WaveguideArcFaultTime));
-    statusDict["collectorCurrentFault"] = XmlRpcValue(_collectorCurrentFault);
-    statusDict["collectorCurrentFaultCount"] = XmlRpcValue(_CollectorCurrentFaultCount);
-    statusDict["collectorCurrentFaultTime"] = XmlRpcValue(int(_CollectorCurrentFaultTime));
-    statusDict["bodyCurrentFault"] = XmlRpcValue(_bodyCurrentFault);
-    statusDict["bodyCurrentFaultCount"] = XmlRpcValue(_BodyCurrentFaultCount);
-    statusDict["bodyCurrentFaultTime"] = XmlRpcValue(int(_BodyCurrentFaultTime));
-    statusDict["filamentLorFault"] = XmlRpcValue(_filamentLorFault);
-    statusDict["filamentLorFaultCount"] = XmlRpcValue(_FilamentLorFaultCount);
-    statusDict["filamentLorFaultTime"] = XmlRpcValue(int(_FilamentLorFaultTime));
-    statusDict["focusElectrodeLorFault"] = XmlRpcValue(_focusElectrodeLorFault);
-    statusDict["focusElectrodeLorFaultCount"] = XmlRpcValue(_FocusElectrodeLorFaultCount);
-    statusDict["focusElectrodeLorFaultTime"] = XmlRpcValue(int(_FocusElectrodeLorFaultTime));
-    statusDict["cathodeLorFault"] = XmlRpcValue(_cathodeLorFault);
-    statusDict["cathodeLorFaultCount"] = XmlRpcValue(_CathodeLorFaultCount);
-    statusDict["cathodeLorFaultTime"] = XmlRpcValue(int(_CathodeLorFaultTime));
-    statusDict["inverterOverloadFault"] = XmlRpcValue(_inverterOverloadFault);
-    statusDict["inverterOverloadFaultCount"] = XmlRpcValue(_InverterOverloadFaultCount);
-    statusDict["inverterOverloadFaultTime"] = XmlRpcValue(int(_InverterOverloadFaultTime));
-    statusDict["externalInterlockFault"] = XmlRpcValue(_externalInterlockFault);
-    statusDict["externalInterlockFaultCount"] = XmlRpcValue(_ExternalInterlockFaultCount);
-    statusDict["externalInterlockFaultTime"] = XmlRpcValue(int(_ExternalInterlockFaultTime));
-    statusDict["eikInterlockFault"] = XmlRpcValue(_eikInterlockFault);
-    statusDict["eikInterlockFaultCount"] = XmlRpcValue(_EikInterlockFaultCount);
-    statusDict["eikInterlockFaultTime"] = XmlRpcValue(int(_EikInterlockFaultTime));
-
-    statusDict["cathodeVoltage"] = XmlRpcValue(_cathodeVoltage);
-    statusDict["bodyCurrent"] = XmlRpcValue(_bodyCurrent);
-    statusDict["collectorCurrent"] = XmlRpcValue(_collectorCurrent);
-    statusDict["xmitterTemp"] = XmlRpcValue(_xmitterTemp);
-
-    return(statusDict);
+    std::map<std::string, xmlrpc_c::value> statusDict;
+    // Clone ourself to a non-const instance
+    XmitStatus clone(*this);
+    // Stuff our content into the statusDict, i.e., _serialize() to an
+    // output archiver wrapped around the statusDict.
+    Oarchive_xmlrpc_c oar(statusDict);
+    oar << clone;
+    // Finally, return the statusDict
+    return(xmlrpc_c::value_struct(statusDict));
 }
 
 std::string
@@ -526,40 +426,4 @@ XmitStatus::toTaXmlString(int depth) const {
 
 
     return xml;
-}
-
-bool
-XmitStatus::_StatusBool(XmlRpc::XmlRpcValue & statusDict,
-        std::string key) throw(ConstructError) {
-    if (! statusDict.hasMember(key)) {
-        std::ostringstream ss;
-        ss << "XML-RPC status dictionary does not contain key '" << key << "'";
-        throw(ConstructError(ss.str()));
-    } else {
-        return(bool(statusDict[key]));
-    }
-}
-
-int
-XmitStatus::_StatusInt(XmlRpc::XmlRpcValue & statusDict,
-        std::string key) throw(ConstructError) {
-    if (! statusDict.hasMember(key)) {
-        std::ostringstream ss;
-        ss << "XML-RPC status dictionary does not contain key '" << key << "'";
-        throw(ConstructError(ss.str()));
-    } else {
-        return(int(statusDict[key]));
-    }
-}
-
-double
-XmitStatus::_StatusDouble(XmlRpc::XmlRpcValue & statusDict,
-        std::string key) throw(ConstructError) {
-    if (! statusDict.hasMember(key)) {
-        std::ostringstream ss;
-        ss << "XML-RPC status dictionary does not contain key '" << key << "'";
-        throw(ConstructError(ss.str()));
-    } else {
-        return(double(statusDict[key]));
-    }
 }

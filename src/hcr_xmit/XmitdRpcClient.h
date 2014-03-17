@@ -8,7 +8,7 @@
 #ifndef XMITDRPCCLIENT_H_
 #define XMITDRPCCLIENT_H_
 
-#include <XmlRpc.h>
+#include <xmlrpc-c/client_simple.hpp>
 #include <string>
 #include "XmitStatus.h"
 
@@ -16,7 +16,7 @@
  * XmitdRpcClient encapsulates an XML-RPC connection to a hcr_xmitd daemon 
  * process which is controlling the HCR transmitter.
  */
-class XmitdRpcClient : private XmlRpc::XmlRpcClient {
+class XmitdRpcClient : private xmlrpc_c::clientSimple {
 public:
     /**
      * Instantiate XmitdRpcClient to communicate with a hcr_xmitd process running
@@ -27,16 +27,6 @@ public:
     XmitdRpcClient(std::string xmitdHost, int xmitdPort);
     virtual ~XmitdRpcClient();
     
-    /**
-     * @brief Return the current ClientConnectionState connection state, which
-     * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
-     * READ_RESPONSE, or IDLE.
-     * @return the current ClientConnectionState connection state, which
-     * can be: NO_CONNECTION, CONNECTING, WRITE_REQUEST, READ_HEADER,
-     * READ_RESPONSE, or IDLE.
-     */
-    ClientConnectionState connectionState() const { return _connectionState; }
-
     /**
      * @brief Send a "getStatus" command, creating an XmitStatus
      * object if we get status from the hcr_xmitd.
@@ -79,31 +69,20 @@ public:
      */
     void xmitHvOff();
 
-    /**
-     * Get log messages from the associated hcr_xmitd at and after a selected
-     * index.
-     * @param firstIndex[in] the first message index to include in the returned
-     * log messages
-     * @param msgs[out] all log messages at or later than the selected start index
-     * will be appended to msgs
-     * @param nextLogIndex[out] the index of the next log message after the last
-     * available message is returned in nextLogIndex
-     */
-    void getLogMessages(unsigned int firstIndex, std::string & msgs, 
-            unsigned int  & nextLogIndex);
 private:
     /**
      * Execute an XML-RPC command in hcr_xmitd and get the result.
      * @param cmd the XML-RPC command to execute
-     * @param params XmlRpc::XmlRpcValue list of parameters for the command
-     * @param result reference to XmlRpc::XmlRpcValue to hold the command result
+     * @param params xmlrpc_c::value list of parameters for the command
+     * @param result pointer to xmlrpc_c::value to hold the command result
      * @return true iff the command was executed successfully
      */
     bool _executeXmlRpcCommand(const std::string cmd, 
-        const XmlRpc::XmlRpcValue & params, XmlRpc::XmlRpcValue & result);
+        const xmlrpc_c::value & params, xmlrpc_c::value * result);
     
     std::string _xmitdHost;
     int _xmitdPort;
+    std::string _xmitdUrl;
 };
 
 #endif /* XMITDRPCCLIENT_H_ */

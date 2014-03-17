@@ -1,13 +1,15 @@
 # -*- python -*-
 
 xmitdTools = Split("""
-logx
-doxygen
-xmlrpc
-rapradar
+archive_xmlrpc_c
 boost_program_options
+doxygen
 hcrpmc730client
+logx
+QFunctionWrapper
 qt4
+QXmlRpcServerAbyss
+rapradar
 """)
 
 xmitdEnv = Environment(tools = ['default'] + xmitdTools)
