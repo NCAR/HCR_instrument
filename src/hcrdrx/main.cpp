@@ -178,27 +178,24 @@ void startUpConverter(Pentek::p7142Up& upConverter,
  * @brief xmlrpc_c::method to get status from the hcrdrx process.
  *
  * The method returns a xmlrpc_c::value_struct (dictionary) mapping
- * std::string keys to xmlrpc_c::value values. The dictionary should be
+ * std::string keys to xmlrpc_c::value values. The dictionary can be
  * passed to the constructor for the DrxStatus class to create a DrxStatus
  * object.
  * 
  * Example client usage, where hcrdrx is running on machine `drxhost`:
  * @code
- *     #include <XmlRpc.h>
+ *     #include <xmlrpc-c/client_simple.hpp>
+ *     #include <DrxStatus.h>
  *     ...
  *
- *     // Get the DrxStatus from hcrdrx on drxhost.local.net on port 8081
- *     XmlRpc::XmlRpcClient client("drxhost.local.net", 8081);
- *     const XmlRpc::XmlRpcValue nullParams;
- *     XmlRpc::XmlRpcValue statusDict;
- *     client.execute("getStatus", nullParams, statusDict);
+ *     // Execute "getStatus" on drxhost/port 8081
+ *     xmlrpc_c::clientSimple client;
+ *     xmlrpc_c::value result;
+ *     client.call("http://drxhost:8081/RPC2", "getStatus", "", &result);
  *     
  *     // Instantiate a DrxStatus using the returned dictionary
+ *     xmlrpc_c::value_struct statusDict(result);
  *     DrxStatus status(statusDict);
- *
- *     // extract a value from the status
- *     bool bVal = bool(statusDict["some_bool"]));
- *     double cmigitsTemp = status.cmigitsTemp();
  * @endcode
  */
 class GetStatusMethod : public xmlrpc_c::method {
