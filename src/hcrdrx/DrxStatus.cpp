@@ -24,8 +24,8 @@ DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
 }
 
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) {
-    // Create an input archiver wrapper around the XmlRpcValue dictionary,
-    // and use serialize() to populate our members from its content.
+    // Create an input archiver wrapper around the xmlrpc_c::value_struct
+    // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);
     iar >> *this;
 }

@@ -31,8 +31,8 @@ public:
     /// @param pentek the Pentek::p7142 device from which to get status
     DrxStatus(const Pentek::p7142 & pentek);
 
-    /// @brief Construct from an XmlRpcValue dictionary as returned by a call
-    /// to the DrxStatus::toXmlRpcValue() method.
+    /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
+    /// by a call to the DrxStatus::toXmlRpcValue() method.
     /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by 
     /// call to the DrxStatus::toXmlRpcValue() method.
     DrxStatus(xmlrpc_c::value_struct & statusDict);
