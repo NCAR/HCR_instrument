@@ -8,7 +8,7 @@ tools = Split("""
     hcrpmc730
     logx
     pentek
-    xmlrpc
+    xmlrpc_client++
     boost_serialization
 """)
 env = Environment(tools=['default'] + tools)
@@ -20,7 +20,6 @@ includeDir = tooldir
 sources = Split('''
 DrxStatus.cpp
 HcrdrxRpcClient.cpp
-XmlRpcValueArchive.cpp
 ''')
 lib = env.Library('hcrdrxrpcclient', sources)
     
