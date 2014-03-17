@@ -105,8 +105,6 @@ private slots:
     void _timeoutAngleDisplay();
 
 private:
-    // Append latest messages from hcr_xmitd to our logging area
-    void _appendXmitdLogMsgs();
     // Log a message
     void _logMessage(std::string message);
 
@@ -195,9 +193,6 @@ private:
     /// Last status from DataMapper
     double _dmapWriteRate;
     
-    /// next log index to get from hcr_xmitd
-    unsigned int _nextLogIndex;
-
     /// socket listening to angle broadcast
     QUdpSocket _angleSocket;
 

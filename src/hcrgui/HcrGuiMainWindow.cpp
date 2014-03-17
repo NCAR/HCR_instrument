@@ -53,7 +53,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _cmigitsStatus(),
     _drxStatus(),
     _dmapWriteRate(0.0),
-    _nextLogIndex(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
     _anglesValidTimer(this),
     _hvDisabledForPressure(true),
@@ -249,9 +248,6 @@ HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     if (! responding) {
-        // If we lose contact with hcr_xmitd, reset _nextLogIndex to zero so we
-        // start fresh when we connect again
-        _nextLogIndex = 0;
         // Create a default (bad) XmitStatus, and set it as the last status
         // received.
         _setXmitStatus(XmitStatus());
@@ -266,8 +262,6 @@ HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     _xmitDetails.updateStatus(_xmitStatus);
     // Update the main GUI
     _update();
-    // Append new log messages from hcr_xmitd
-    _appendXmitdLogMsgs();
 }
 
 void
@@ -645,16 +639,6 @@ HcrGuiMainWindow::on_showLogButton_clicked() {
 void
 HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
     _xmitDetails.show();
-}
-
-void
-HcrGuiMainWindow::_appendXmitdLogMsgs() {
-    unsigned int firstIndex = _nextLogIndex;
-    std::string msgs;
-    _xmitdStatusThread.rpcClient().getLogMessages(firstIndex, msgs, _nextLogIndex);
-    if (_nextLogIndex != firstIndex) {
-        _logWindow.appendPlainText(msgs.c_str());
-    }
 }
 
 void
