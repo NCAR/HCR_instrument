@@ -5,7 +5,6 @@
 hcrguiTools = Split("""
 boost_date_time
 hcrpmc730client
-cmigits
 cmigitsdaemonrpcclient
 doxygen
 hcrdrxrpcclient
