@@ -396,7 +396,7 @@ main(int argc, char** argv)
     // with PMU
     QTimer updateTimer;
     updateTimer.setInterval(UPDATE_INTERVAL_SECS * 1000); // interval in ms
-    QFunctionWrapper updateFuncWrapper(&printStatsAndUpdateRegistration);
+    QFunctionWrapper updateFuncWrapper(printStatsAndUpdateRegistration);
     QObject::connect(&updateTimer, SIGNAL(timeout()),
             &updateFuncWrapper, SLOT(callFunction()));
     updateTimer.start();
