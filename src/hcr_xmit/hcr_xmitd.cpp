@@ -284,6 +284,7 @@ main(int argc, char *argv[]) {
     QFunctionWrapper updateFuncWrapper(updateRegistration);
     QObject::connect(&registerTimer, SIGNAL(timeout()),
             &updateFuncWrapper, SLOT(callFunction()));
+    registerTimer.start();
 
     // Now just run the application until sombody or something interrupts it
     App->exec();
