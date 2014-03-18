@@ -6,7 +6,8 @@ hcrpmc730
 logx
 qt4
 rapradar
-xmlrpc_server_abyss++
+QFunctionWrapper
+QXmlRpcServerAbyss
 """)
 
 # Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled

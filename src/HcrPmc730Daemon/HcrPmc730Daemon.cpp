@@ -15,52 +15,26 @@
 #include <HcrPmc730.h>
 #include <HcrPmc730Status.h>
 #include <QCoreApplication>
+#include <QTimer>
+#include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
-#include <xmlrpc-c/server_abyss.hpp>
+#include <QXmlRpcServerAbyss.h>
 
 LOGGING("HcrPmc730Daemon")
 
+
+/// Our Qt application
+QCoreApplication *App = 0;
+
 /// Application instance name, for procmap
 std::string _instance = "ops";
-
-/// Global boolean set when exit from the application has been requested
-bool ExitRequested = false;
 
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
     ILOG << "Exiting on signal " << signal;
-    ExitRequested = true;
-}
-
-// Handler for SIGALRM signals.
-void
-alarmHandler(int signal) {
-    // Do nothing. This handler just assures that arrival of the signal doesn't
-    // terminate our process. The intention of the signal is to force the
-    // XML-RPC server runOnce() method to return occasionally, even if no
-    // request comes in.
-    DLOG << "Got itimer ALRM signal";
-}
-
-// Generate a periodic ALRM signal to break us out of
-// xmlrpc_c::serverAbyss::runOnce() so we can process Qt stuff.
-void
-startXmlrpcWorkAlarm() {
-    const struct timeval tv = { 0, 100000 }; // 0.1 s
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
-}
-
-// While our server is actually processing an XML-RPC command, disable the alarm
-// which breaks us out of xmlrpc_c::serverAbyss::runOnce().
-void
-stopXmlrpcWorkAlarm() {
-    // Stop the periodic timer.
-    const struct timeval tv = { 0, 0 }; // zero time stops the timer
-    const struct itimerval iv = { tv, tv };
-    setitimer(ITIMER_REAL, &iv, 0);
+    App->quit();
 }
 
 // XML-RPC method to turn on transmitter filament
@@ -73,15 +47,9 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Executing XML-RPC call to xmitFilamentOn()";
         HcrPmc730::setXmitterFilamentOn(true);
         *retvalP = xmlrpc_c::value_nil();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -95,15 +63,9 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Executing XML-RPC call to xmitFilamentOff()";
         HcrPmc730::setXmitterFilamentOn(false);
         *retvalP = xmlrpc_c::value_nil();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -117,15 +79,9 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Executing XML-RPC call to xmitHvOn()";
         HcrPmc730::setXmitterHvOn(true);
         *retvalP = xmlrpc_c::value_nil();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -139,15 +95,9 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Executing XML-RPC call to xmitHvOff()";
         HcrPmc730::setXmitterHvOn(false);
         *retvalP = xmlrpc_c::value_nil();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -161,18 +111,12 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         ILOG << "Executing XML-RPC call to setHmcMode()";
         int mode = paramList.getInt(0);
         paramList.verifyEnd(1);
 
         HcrPmc730::setHmcOperationMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
         *retvalP = xmlrpc_c::value_nil();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
 
@@ -189,17 +133,17 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // Stop the work alarm while we're working.
-        stopXmlrpcWorkAlarm();
-
         DLOG << "Executing XML-RPC call to getStatus()";
         paramList.verifyEnd(0);
         *retvalP = HcrPmc730Status().toXmlRpcValue();
-
-        // Restart the work alarm.
-        startXmlrpcWorkAlarm();
     }
 };
+
+void
+updatePMURegistration() {
+    // Make sure we remain registered with PMU, so it knows we're alive
+    PMU_auto_register("running");
+}
 
 int
 main(int argc, char * argv[]) {
@@ -207,8 +151,8 @@ main(int argc, char * argv[]) {
     logx::ParseLogArgs(argc, argv);
     ILOG << "HcrPmc730Daemon started";
 
-    QCoreApplication app(argc, argv);
-    app.setApplicationName("HcrPmc730Daemon");
+    App = new QCoreApplication(argc, argv);
+    App->setApplicationName("HcrPmc730Daemon");
     
     // Check for --simulate in the arg list
     bool simulate = false;
@@ -245,40 +189,30 @@ main(int argc, char * argv[]) {
     myRegistry.addMethod("xmitHvOff", new XmitHvOffMethod);
     myRegistry.addMethod("setHmcMode", new SetHmcModeMethod);
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    // We listen on port 8003 for XML-RPC calls
-    quint16 serverPort = 8003;
-    xmlrpc_c::serverAbyss xmlrpcServer(myRegistry, serverPort);
-
-    // Set up an interval timer to deliver SIGALRM every 0.01 s. The signal
-    // arrival causes the XML-RPC server's runOnce() method to return so that
-    // we can process Qt events on a regular basis.
-    signal(SIGALRM, alarmHandler);
-    startXmlrpcWorkAlarm();
+    int serverPort = 8003;
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, serverPort);
 
     // Catch SIGINT and SIGTERM to arrange for clean shutdown
     signal(SIGINT, exitHandler);
     signal(SIGTERM, exitHandler);
 
-    // set up registration with procmap
+    // Initialize registration with procmap, and set up a periodic timer to
+    // send a registration on a regular basis.
     PMU_auto_init("HcrPmc730Daemon", _instance.c_str(), PROCMAP_REGISTER_INTERVAL);
     ILOG << "HcrPmc730Daemon will register with procmap as instance: " << _instance;
 
-    // Now enter our processing loop
-    while (1) {
-        PMU_auto_register("running");
+    QFunctionWrapper registrationWrapper(updatePMURegistration);
+    QTimer registrationTimer;
+    registrationTimer.setInterval(10000);   // 10000 ms -> 10 s
+    QObject::connect(&registrationTimer, SIGNAL(timeout()),
+            &registrationWrapper, SLOT(callFunction()));
+    registrationTimer.start();
 
-        // Handle the next XML-RPC request, or return after receiving a SIGALRM
-        // from our timer above
-        xmlrpcServer.runOnce();
+    // Start the app, which also starts our XML-RPC server. The app runs until
+    // stopped via INT or TERM signal caught by our exitHandler().
+    App->exec();
 
-        // Exit when the exit flag gets raised
-        if (ExitRequested)
-            break;
-
-        // Process Qt events
-        app.processEvents();
-    }
-
+    delete(App);
     PMU_auto_register("exiting");
 
     return 0;
