@@ -154,7 +154,7 @@ main(int argc, char *argv[]) {
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // as well as a QTimer, and use them to cause a call to the function on
     // a periodic basis so that PMU knows we're still alive.
-    QFunctionWrapper registrationWrapper(&updatePMURegistration);
+    QFunctionWrapper registrationWrapper(updatePMURegistration);
     QTimer registrationTimer;
     registrationTimer.setInterval(10000);   // 10 s
     QObject::connect(&registrationTimer, SIGNAL(timeout()),
