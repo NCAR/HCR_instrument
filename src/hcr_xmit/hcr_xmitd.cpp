@@ -286,7 +286,7 @@ main(int argc, char *argv[]) {
             &updateFuncWrapper, SLOT(callFunction()));
     registerTimer.start();
 
-    // Now just run the application until sombody or something interrupts it
+    // Now just run the application until somebody or something interrupts it
     App->exec();
 
     // Clean up before exit
