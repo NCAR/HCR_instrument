@@ -27,7 +27,6 @@ MotionControl::MotionControl() :
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
-    _targetRadius(0.02),
     _cmigitsShm(),
     _fakeAttitude(false),
     _driveStartTime(QTime::currentTime())
@@ -117,9 +116,6 @@ MotionControl::point(double angle)
 {
     ILOG << "Point to " << angle << " deg";
     
-    // Make sure the target radius for the drives is what we want
-    _setTargetRadius();
-    
     // Set up for fixed antenna pointing
     _fixedPointingAngle = angle;
     _scanBeamTilt = 0.0;
@@ -140,9 +136,6 @@ MotionControl::scan(double ccwLimit, double cwLimit, double scanRate,
     ILOG << "Scan from " << ccwLimit << " CCW to " << cwLimit << " CW at " <<
             scanRate << " deg/s, with beam tilt " << beamTilt << " deg";
     
-    // Make sure the target radius for the drives is what we want
-    _setTargetRadius();
-
     _rotDrive.initScan(ccwLimit, cwLimit, scanRate);
     
     // Tilt drive angle (This uses for the mean rotation angle only, so is
@@ -273,25 +266,6 @@ void
 MotionControl::_adjustScanningForAttitude(double pitch, double roll, double drift)
 {
     DLOG << "_adjustScanningForAttitude not implemented";
-}
-
-/////////////////////////////////////////////////////////////////////
-void
-MotionControl::_setTargetRadius()
-{
-    // rot drive
-    uint32_t rotTrCounts = uint32_t(_rotDrive.countsPerDegree() * _targetRadius);
-    if (_rotDrive.targetRadius() != rotTrCounts) {
-        ILOG << "Setting rot drive target radius to " << _targetRadius << " deg";
-        _rotDrive.setTargetRadius(rotTrCounts);
-    }
-    
-    // tilt drive
-    uint32_t tiltTrCounts = uint32_t(_tiltDrive.countsPerDegree() * _targetRadius);
-    if (_tiltDrive.targetRadius() != tiltTrCounts) {
-        ILOG << "Setting tilt drive target radius to " << _targetRadius << " deg";
-        _tiltDrive.setTargetRadius(tiltTrCounts);
-    }
 }
 
 /////////////////////////////////////////////////////////////////////
