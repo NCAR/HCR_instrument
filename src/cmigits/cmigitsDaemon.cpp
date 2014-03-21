@@ -39,6 +39,7 @@ std::string PmuInstance = "ops";   ///< application instance
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
+    ILOG << "cmigitsDaemon stopping on signal " << signal;
     App->quit();
 }
 
