@@ -147,10 +147,6 @@ CanElmoConnection::~CanElmoConnection() {
             &heartbeatValue,        // heartbeat timeout in milliseconds
             &dataSize,              // size of timeoutMs
             true);                  // check access
-    if (! _myRpdo) {
-        ELOG << "BUG: CanElmoConnection could not find an available RPDO";
-        exit(1);
-    }
     
     // Stop heartbeat from our associated node
     if (_initPhase != Uninitialized) {
@@ -158,7 +154,7 @@ CanElmoConnection::~CanElmoConnection() {
     }
     usleep(50000); // Sleep briefly to allow for SDO completion
 
-    // Remove ourself from the list of CanElmoConnection-s
+    // Remove ourself from the static list of CanElmoConnection-s
     std::vector<CanElmoConnection*>::iterator it;
     for (it = _AllConnections.begin(); it != _AllConnections.end(); it++) {
         if (*it == this) {
@@ -169,6 +165,7 @@ CanElmoConnection::~CanElmoConnection() {
 
     // If we were the last connection, do the final CanFestival cleanup
     if (_AllConnections.size() == 0) {
+        DLOG << "Performing CanFestival cleanup";
         StopTimerLoop(_TimerStopCallback);
         TimerCleanup();
 
@@ -801,6 +798,7 @@ CanElmoConnection::_stopReplyTimer() {
     _replyTimer.stop();
     _replyTimerCommand = "";
 }
+
 void
 CanElmoConnection::_replyTimedOut() {
     ELOG << _driveName << ": No response to '" << _replyTimerCommand <<
