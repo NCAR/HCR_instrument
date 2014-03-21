@@ -103,16 +103,17 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         // Set our process id as the writer id
         _setWriterPid(getpid());
         // Set up timeout timers which will clear pieces of the shared memory
-        // if new messages don't arrive within a second of the previous ones.
-        _3500TimeoutTimer.setInterval(1000);
+        // if new messages don't arrive within a reasonable span after previous
+        // ones.
+        _3500TimeoutTimer.setInterval(2500);    // allow up to 2.5 s
         _3500TimeoutTimer.setSingleShot(true);
         connect(&_3500TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3500Data()));
         
-        _3501TimeoutTimer.setInterval(1000);
+        _3501TimeoutTimer.setInterval(500);     // allow up to 0.5 s
         _3501TimeoutTimer.setSingleShot(true);
         connect(&_3501TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3501Data()));
         
-        _3512TimeoutTimer.setInterval(1000);
+        _3512TimeoutTimer.setInterval(500);      // allow up to 0.5 s
         _3512TimeoutTimer.setSingleShot(true);
         connect(&_3512TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3512Data()));
     }
