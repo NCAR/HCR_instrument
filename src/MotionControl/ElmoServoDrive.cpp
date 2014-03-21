@@ -31,7 +31,7 @@ ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
     // initialized.
     _clearQueriedParams();
     
-    // Create our connection to the drive
+    // Create our serial port connection to the drive
     _driveConn = new TtyElmoConnection(ttyDev, driveName);
     connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
             this, SLOT(_onReadyToExecChanged(bool)));
@@ -57,7 +57,7 @@ ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName) :
     // initialized.
     _clearQueriedParams();
     
-    // Create our connection to the drive
+    // Create our CANopen connection to the drive
     _driveConn = new CanElmoConnection(nodeId, driveName);
     connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
             this, SLOT(_onReadyToExecChanged(bool)));
@@ -72,11 +72,13 @@ ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName) :
 
 ElmoServoDrive::~ElmoServoDrive() {
     // Stop the motor
-    _driveConn->execElmoCmd("MO", 0);
-    // Turn on echo again. Elmo's Composer software requires echo on in order
+    DLOG << "Turning off motor for " << _driveConn->driveName();
+    _driveConn->execElmoAssignCmd("MO", 0, 0);
+    // Turn on echo. Elmo's Composer software requires echo on in order
     // to function, so we try to leave the servo drive in a state to talk to
     // Composer.
-    _driveConn->execElmoCmd("EO", 1);
+    DLOG << "Turning on echo for " << _driveConn->driveName();
+    _driveConn->execElmoAssignCmd("EO", 0, 1);
     // Destroy the drive connection
     delete(_driveConn);
 }
@@ -480,8 +482,8 @@ ElmoServoDrive::_collectStatus() {
 
     // Send the commands for the status values we want
     _driveConn->execElmoCmd("SR");      // status register
-    _driveConn->execElmoCmd("TI", 1);   // "temperature indicator 1", drive temperature
-    _driveConn->execElmoCmd("TR", 1);   // target radius
+    _driveConn->execElmoCmd("TI", 1);   // TI[1]: drive temperature
+    _driveConn->execElmoCmd("TR", 1);   // TR[1]: target radius counts
     _driveConn->execElmoCmd("PX");      // main position
     _driveConn->execElmoCmd("TM");      // system time
 }
@@ -492,7 +494,7 @@ ElmoServoDrive::_collectDriveParams() {
     // status values will be saved in _readReply() when the replies come back.
     _driveConn->execElmoCmd("XM", 1);   // XM[1]: position counter minimum value
     _driveConn->execElmoCmd("XM", 2);   // XM[2]: position counter maximum value
-    _driveConn->execElmoCmd("WS", 55);  // sampling time of position controller
+    _driveConn->execElmoCmd("WS", 55);  // WS[55]: sampling time of position controller
 }
 
 void
