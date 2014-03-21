@@ -15,6 +15,7 @@
 #include <termios.h>
 #include <QMutex>
 #include <QObject>
+#include <QSocketNotifier>
 #include <QThread>
 #include <QTime>
 #include <QTimer>
@@ -385,9 +386,9 @@ private:
     /// @brief Count of consecutive rejections of the same command.
     int16_t _rejectRetryCount;
 
-    /// @brief Zero-interval timer used to schedule a new read whenever the
-    /// work thread is not busy
-    QTimer * _readTimer;
+    /// @brief QSocketNotifier used to detect when data are available for
+    /// reading on the C-MIGITS serial port.
+    QSocketNotifier * _dataReadyNotifier;
     
     /// @brief QTimer used to prevent waiting too long for message handshake
     /// reply

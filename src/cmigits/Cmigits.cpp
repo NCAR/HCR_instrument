@@ -218,9 +218,9 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm) :
                 _mutex(QMutex::Recursive),
                 _awaitingHandshake(-1),
                 _rejectRetryCount(0),
-                _readTimer(),
-                _handshakeTimer(),
-                _gpsTimeoutTimer(),
+                _dataReadyNotifier(0),
+                _handshakeTimer(0),
+                _gpsTimeoutTimer(0),
                 _gpsDataTooOld(true),
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
@@ -257,27 +257,25 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm) :
 }
 
 Cmigits::~Cmigits() {
-    delete(_shm);
-    delete(_gpsTimeoutTimer);
-    delete(_handshakeTimer);
-    delete(_readTimer);
     _myThread.quit();
     if (! _myThread.wait(1000)) {
         ELOG << __PRETTY_FUNCTION__ << ": wait for _myThread termination timed out!";
     }
+    delete(_shm);
+    delete(_gpsTimeoutTimer);
+    delete(_handshakeTimer);
+    delete(_dataReadyNotifier);
 }
 
 void
 Cmigits::_threadStartInitialize() {
-    // Create a zero-interval timer to schedule a read whenever our thread
-    // is not busy doing something else. This timer and the _doRead() slot
-    // are how the work of reading data from the C-MIGITS gets done.
-    _readTimer = new QTimer();
-    _readTimer->setInterval(0);
-    connect(_readTimer, SIGNAL(timeout()), this, SLOT(_doRead()));
-    ILOG << "READ TIMER CREATED";
-    _readTimer->start();
-    ILOG << "READ TIMER STARTED";
+    // Create a QSocketNotifier to let us know when data come in from the
+    // C-MIGITS. This notifier and the _doRead() slot are how the work of
+    // reading data from the C-MIGITS gets done.
+    _dataReadyNotifier = new QSocketNotifier(_fd, QSocketNotifier::Read, this);
+    connect(_dataReadyNotifier, SIGNAL(activated(int)), this, SLOT(_doRead()));
+    _dataReadyNotifier->setEnabled(true);
+    ILOG << "DATA READY NOTIFIER CREATED";
 
     // Create a single-shot timer to limit the time we wait for a handshake 
     // message from the C-MIGITS. The timer is started after we send a
@@ -458,41 +456,6 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
 void 
 Cmigits::_doRead() {
     QMutexLocker locker(&_mutex);
-
-    /*
-     * Set up to check _fd file descriptor
-     */
-    fd_set readFds;
-    FD_ZERO(&readFds);
-    FD_SET(_fd, &readFds);
-
-    /*
-     * Set up timeval structure for select timeout
-     */
-    uint16_t timeoutMsecs = 100;
-    struct timeval wait;
-    wait.tv_sec = timeoutMsecs / 1000;
-    wait.tv_usec = (timeoutMsecs % 1000) * 1000;
-
-    /*
-     * Wait up to our timeout interval for data on the serial line. Return
-     * immediately on timeout or error.
-     */
-    int nready = select(_fd + 1, &readFds, NULL, NULL, &wait);
-    if (nready <= 0) {
-        if (nready == 0) {
-            // timeout
-            ELOG << __PRETTY_FUNCTION__ << ": select timeout";
-        } else {
-            if (errno == EINTR) {
-                /* system call was interrupted */
-                ELOG << __PRETTY_FUNCTION__ << ": select() call interrupted";
-            } else {
-                ELOG << __PRETTY_FUNCTION__ << ": select error: " << strerror(errno);
-            }
-        }
-        return;
-    } 
     /*
      * Read what's available on the serial port
      */
@@ -803,18 +766,22 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double vPosError = _UnpackFloat32(msgWords + 17, 15);     // m
     double velocityError = _UnpackFloat32(msgWords + 19, 10); // m/s
 
-    DLOG << "3500 time: " << msgTime.toString("hh:mm:ss.zzz").toStdString() <<
-            ", mode: " << ModeName(_currentMode) <<
-            ", GPS: " << _gpsAvailable <<
-            ", INS: " << _insAvailable <<
-            ", # satellites tracked: " << nSats;
-    DLOG << "3500 position FOM: " << PositionFOMString(positionFOM) <<
-            ", velocity FOM: " << VelocityFOMString(velocityFOM) <<
-            ", heading FOM: " << HeadingFOMString(headingFOM) <<
-            ", time FOM: " << TimeFOMString(timeFOM);
-    DLOG << "3500 expected errors - h pos: " << hPosError <<
-            " m, v pos: " << vPosError << " m, velocity: " << velocityError <<
-            " m/s";
+    // Log status every 5 seconds
+    int second = int(round(utcSecondOfDay));
+    if ((second % 5) == 0) {
+        ILOG << "3500 time: " << msgTime.toString("hh:mm:ss.zzz").toStdString() <<
+                ", mode: " << ModeName(_currentMode) <<
+                ", GPS: " << _gpsAvailable <<
+                ", INS: " << _insAvailable <<
+                ", sats tracked: " << nSats;
+//        ILOG << "3500 position FOM: " << PositionFOMString(positionFOM) <<
+//                ", velocity FOM: " << VelocityFOMString(velocityFOM) <<
+//                ", heading FOM: " << HeadingFOMString(headingFOM) <<
+//                ", time FOM: " << TimeFOMString(timeFOM);
+//        ILOG << "3500 expected errors - h pos: " << hPosError << " m"
+//                ", v pos: " << vPosError << " m"
+//                ", velocity: " << velocityError << " m/s";
+    }
 
     // Write to shared memory if we have access
     if (_shm) {
@@ -869,9 +836,9 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 //    double roll = 180.0 * _UnpackFloat32(msgWords + 23, 0);
 //    double heading = 180.0 * _UnpackFloat32(msgWords + 25, 0);
 
-    uint16_t decisecond = uint16_t(round(10 * fmod(utcSecondOfDay, 1.0)));
-    decisecond %= 10;
-    if (decisecond == 0) {
+    // Log position every 5 seconds
+    int decisecond = int(round(10 * utcSecondOfDay));
+    if ((decisecond % 50) == 0) {
         ILOG << "3501 time: " << 
                 msgTime.toString("hh:mm:ss.zzz").toStdString() <<
                 ", lat: " << latitude << ", lon: " << longitude <<
@@ -915,14 +882,13 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     double velEast = _UnpackFloat32(msgWords + 17, 10);
     double velUp = _UnpackFloat32(msgWords + 19, 10);
 
-    // Log attitude and velocity once per second
-    int centisecond = int(round(fmod(utcSecondOfDay, 1.0) * 100));
-    centisecond %= 100;
-    if (centisecond == 0) {
+    // Log attitude and velocity every 5 seconds
+    int centisecond = int(round(utcSecondOfDay * 100));
+    if ((centisecond % 500) == 0) {
         ILOG << "3512 time: " << 
                 msgTime.toString("hh:mm:ss.zzz").toStdString() <<
                 ", pitch: " << pitch << ", roll: " << roll <<
-                ", heading: " << heading << ", vel morth: " << velNorth <<
+                ", heading: " << heading << ", vel north: " << velNorth <<
                 ", vel east: " << velEast << ", vel up: " << velUp;
     }
 
@@ -1137,9 +1103,9 @@ Cmigits::_doCurrentConfigPhase() {
         // the C-MIGITS into Initialization mode
 
         // set data validity bits
-        udata[0] |= 1 << 0;	// set mode
+        udata[0] |= 1 << 0; // set mode
         // set the mode to 2 -> initialization mode
-        udata[1] = 2;        // mode: 2 -> initialization mode
+        udata[1] = 2;       // mode: 2 -> initialization mode
 
         _sendMessage(3510, udata, 21);
         break;
