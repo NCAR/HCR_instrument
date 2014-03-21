@@ -206,7 +206,7 @@ main(int argc, char** argv)
 
     // Create a periodic timer to apply attitude corrections on a regular basis
     QTimer correctionTimer;
-    correctionTimer.setInterval(20);    // 20 ms -> 150 Hz
+    correctionTimer.setInterval(50);    // 50 ms -> 20 Hz
     QObject::connect(&correctionTimer, SIGNAL(timeout()), Control, SLOT(correctForAttitude()));
     correctionTimer.start();
 
