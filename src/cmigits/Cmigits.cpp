@@ -144,7 +144,10 @@ const std::string Cmigits::_ModeNames[]  = {
         "Transfer Alignment",
         "Air Navigation",
         "Land Navigation",
-        "GPS Only"
+        "GPS Only",
+        // The following mode is not a real C-MIGITS operating mode, but
+        // is added for our own internal testing.
+        "Data Replay"
 };
 
 // Position figure-of-merit strings, indexed by position figure-of-merit integer value
