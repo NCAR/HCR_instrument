@@ -220,10 +220,13 @@ main(int argc, char** argv)
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
 
     // Create a QFunctionWrapper around the updatePMURegistration() function,
-    // and use it to call the function every time the correctionTimer times out.
+    // and and create a timer to call it periodically.
     QFunctionWrapper registrationWrapper(&updatePMURegistration);
-    QObject::connect(&correctionTimer, SIGNAL(timeout()),
+    QTimer registrationTimer;
+    registrationTimer.setInterval(15000);   // 15000 ms -> 15 s
+    QObject::connect(&registrationTimer, SIGNAL(timeout()),
             &registrationWrapper, SLOT(callFunction()));
+    registrationTimer.start();
 
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, shutdownHandler);
