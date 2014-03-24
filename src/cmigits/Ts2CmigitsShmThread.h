@@ -19,7 +19,7 @@
 /// Data written into shared memory is tagged with current time rather than
 /// the time from the data.
 
-class Ts2CmigitsShmThread : public QThread {
+class Ts2CmigitsShmThread : public QObject {
     Q_OBJECT
 public:
     /// @brief Construct using the given list of IWRF time-series files.
@@ -27,26 +27,40 @@ public:
     Ts2CmigitsShmThread(std::vector<std::string> fileList);
     virtual ~Ts2CmigitsShmThread();
 
-    void run();
-
+public slots:
+    /// @brief Start the work thread.
+    void start();
+    
+signals:
+    /// @ brief Signal emitted when our work is complete.
+    void finished();
+    
 private slots:
     /// @brief Slot called to read a pulse and handle it at the correct interval
     /// relative to the previous pulse.
     void _doNextPulse();
-
+    
+    /// @brief Generate a fake C-MIGITS 3500 message and push it into the
+    /// CmigitsSharedMemory.
+    void _generateFake3500Msg();
+    
 private:
+    
     /// @brief Show statistics for reading, writing to shared memory, and
     /// timing.
     void _showStats();
 
+    /// Work thread where the heavy lifting will be done
+    QThread _workThread;
+    
+    /// QTimer controlling generation of fake C-MIGITS 3500 messages
+    QTimer _fake3500Timer;
+    
     /// Reader for IWRF time-series files
     IwrfTsReaderFile _reader;
 
     /// Connection to the C-MIGITS shared memory segment
     CmigitsSharedMemory _shm;
-
-    /// Timer to control pulse processing rate
-    QTimer _processingTimer;
 
     /// The last pulse from the reader
     IwrfTsPulse * _pulse;
@@ -66,16 +80,16 @@ private:
     /// Sum of delay time for all delayed pulses
     int _delaySumUsecs;
 
-    /// Data time from last pulse processed, seconds since 1970-01-01
+    /// Data time from previous pulse processed, seconds since 1970-01-01
     /// 00:00:00 UTC
-    double _lastPulseDataTime;
+    double _prevPulseDataTime;
 
-    /// Georef info from the last pulse processed
-    iwrf_platform_georef_t _lastPulseGeoref;
+    /// Georef info from the previous pulse processed
+    iwrf_platform_georef_t _prevPulseGeoref;
 
-    /// Time at which last pulse was processed, seconds since 1970-01-01
+    /// Time at which previous pulse was processed, seconds since 1970-01-01
     /// 00:00:00 UTC
-    double _lastPulseProcessTime;
+    double _prevPulseProcessTime;
 };
 
 #endif /* TS2CMIGITSSHMTHREAD_H_ */

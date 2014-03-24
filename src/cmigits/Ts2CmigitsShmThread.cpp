@@ -13,49 +13,63 @@
 LOGGING("Ts2CmigitsShmThread")
 
 Ts2CmigitsShmThread::Ts2CmigitsShmThread(std::vector<std::string> fileList) :
-    QThread(),
+    _workThread(this),
+    _fake3500Timer(),
     _reader(fileList, IWRF_DEBUG_OFF),
     _shm(true), // open CmigitsSharedMemory with write access
-    _processingTimer(),
     _pulseCount(0),
     _shmWriteCount(0),
     _sleepSumUsecs(0),
     _delayedPulseCount(0),
     _delaySumUsecs(0),
-    _lastPulseDataTime(0.0),
-    _lastPulseProcessTime(0.0) {
-    // Fill the last pulse georef with zeros
-    memset(&_lastPulseGeoref, 0, sizeof(_lastPulseGeoref));
+    _prevPulseDataTime(0.0),
+    _prevPulseProcessTime(0.0) {
+    // Change our thread affinity to the work thread.
+    moveToThread(&_workThread);
+
+    // Fill the previous pulse georef with zeros
+    memset(&_prevPulseGeoref, 0, sizeof(_prevPulseGeoref));
+
+    // Read a pulse before the first call to _doNextPulse().
+    _pulse = _reader.getNextPulse();
+    if (! _pulse) {
+        ELOG << "Unable to read first pulse!";
+        exit(1);
+    }
+    
+    // Execute _doNextPulse() when the worker thread starts
+    connect(&_workThread, SIGNAL(started()), this, SLOT(_doNextPulse()));
+    
+    // Execute _onThreadExit() and perform cleanup via deleteLater() when
+    // the work thread is finished.
+    connect(&_workThread, SIGNAL(finished()), this, SLOT(deleteLater()));
+    
+    // Start up the periodic timer for generating fake 3500 messages. The
+    // real C-MIGITS generates them a 1 Hz, so we'll do that, too.
+    _fake3500Timer.setInterval(1000);   // 1000 ms -> 1 s
+    connect(&_fake3500Timer, SIGNAL(timeout()), this, SLOT(_generateFake3500Msg()));
+    _fake3500Timer.start();
 }
 
 Ts2CmigitsShmThread::~Ts2CmigitsShmThread() {
-    quit();
+    // Show our processing statistics
+    _showStats();
+    
+    // Shut down the work thread
+    if (_workThread.isRunning()) {
+        DLOG << "Stopping work thread";
+        _workThread.quit();
+        if (! _workThread.wait(500)) {
+            WLOG << "Work thread not finished after 500 ms!";
+        }
+    } else {
+        DLOG << "Work thread is already stopped";
+    }
 }
 
 void
-Ts2CmigitsShmThread::run() {
-    // Get the first pulse
-    _pulse = _reader.getNextPulse();
-    if (! _pulse) {
-        return;
-    }
-
-    // We use a zero-interval timer to call _doNextPulse() whenever the thread
-    // is not otherwise busy.
-    _processingTimer.setInterval(0);
-    connect(&_processingTimer, SIGNAL(timeout()), this, SLOT(_doNextPulse()));
-
-    // Stop the processing timer when the thread exits
-    connect(this, SIGNAL(finished()), &_processingTimer, SLOT(stop()));
-
-    // Start the processing timer
-    _processingTimer.start();
-
-    // Start the thread
-    exec();
-
-    // Print stats at exit
-    _showStats();
+Ts2CmigitsShmThread::start() {
+    _workThread.start();
 }
 
 void
@@ -74,47 +88,55 @@ Ts2CmigitsShmThread::_showStats() {
 
 void
 Ts2CmigitsShmThread::_doNextPulse() {
+    // Increment our count of processed pulses
     _pulseCount++;
-    double pulseDataTime = _pulse->getFTime();
+    if (! (_pulseCount % 10000)) {
+        DLOG << "_doNextPulse running in thread " << 
+                QThread::currentThread();
+    }
 
+    // Get the pulse time
+    double pulseDataTime = _pulse->getFTime();
+    
     // If georef updates are not active, there's nothing we can write
     // to CmigitsSharedMemory, so just bail out now.
     if (! _pulse->getGeorefActive()) {
         std::cerr << "No active georef at pulse " << _pulseCount <<
                 ", so there's nothing to write to CmigitsSharedMemory!" <<
                 std::endl;
-        quit();
+        emit(finished());
+        return;
     }
 
     struct timespec nowTimeSpec;
     clock_gettime(CLOCK_REALTIME, &nowTimeSpec);
     double nowTime = nowTimeSpec.tv_sec + 1.0e-9 * nowTimeSpec.tv_nsec;
 
-    if (! _lastPulseProcessTime) {
-        _lastPulseProcessTime = nowTime;
-        _lastPulseDataTime = pulseDataTime;
+    if (! _prevPulseProcessTime) {
+        _prevPulseProcessTime = nowTime;
+        _prevPulseDataTime = pulseDataTime;
     }
 
     // Sleep long enough to get the inter-pulse period right.
-    double pulseInterval = pulseDataTime - _lastPulseDataTime;
+    double pulseInterval = pulseDataTime - _prevPulseDataTime;
     static const double MAX_PULSE_INTERVAL = 1.0;
-    double pulseProcessTime = _lastPulseProcessTime + pulseInterval;
+    double pulseProcessTime = _prevPulseProcessTime + pulseInterval;
 
     if (pulseInterval < 0.0) {
         WLOG << "Pulse time went backwards by " << pulseInterval << " s " <<
                 "at pulse " << _pulseCount;
-        pulseProcessTime = _lastPulseProcessTime;
+        pulseProcessTime = _prevPulseProcessTime;
     } else if (pulseInterval > MAX_PULSE_INTERVAL) {
         WLOG << pulseInterval << " s gap between pulses collapsed to zero " <<
                 "at pulse" << _pulseCount;
-        pulseProcessTime = _lastPulseProcessTime;
+        pulseProcessTime = _prevPulseProcessTime;
     } else {
         int sleepTimeUsecs = 1000000 * (pulseProcessTime - nowTime);
 
         if (sleepTimeUsecs > 0) {
             // Sleep until it's time to deliver this pulse
             _sleepSumUsecs += sleepTimeUsecs;
-            QThread::usleep(sleepTimeUsecs);
+            usleep(sleepTimeUsecs);
         } else if (sleepTimeUsecs < 0) {
             // Negative sleep implies we've fallen behind. Keep track of
             // delayed pulses and total delay time.
@@ -124,20 +146,20 @@ Ts2CmigitsShmThread::_doNextPulse() {
     }
 
     // Keep the processing time for this pulse and its data time
-    _lastPulseProcessTime = pulseProcessTime;
-    _lastPulseDataTime = pulseDataTime;
+    _prevPulseProcessTime = pulseProcessTime;
+    _prevPulseDataTime = pulseDataTime;
 
     // If any georef data changes, put the data from the pulse into
     // CmigitsSharedMemory
     iwrf_platform_georef_t georef = _pulse->getPlatformGeoref();
 
-    bool doWrite = (georef.pitch_deg != _lastPulseGeoref.pitch_deg)
-            || (georef.roll_deg != _lastPulseGeoref.roll_deg)
-            || (georef.heading_deg != _lastPulseGeoref.heading_deg)
-            || (georef.ns_velocity_mps != _lastPulseGeoref.ns_velocity_mps)
-            || (georef.ew_velocity_mps != _lastPulseGeoref.ew_velocity_mps)
-            || (georef.vert_velocity_mps != _lastPulseGeoref.vert_velocity_mps);
-    _lastPulseGeoref = georef;
+    bool doWrite = (georef.pitch_deg != _prevPulseGeoref.pitch_deg)
+            || (georef.roll_deg != _prevPulseGeoref.roll_deg)
+            || (georef.heading_deg != _prevPulseGeoref.heading_deg)
+            || (georef.ns_velocity_mps != _prevPulseGeoref.ns_velocity_mps)
+            || (georef.ew_velocity_mps != _prevPulseGeoref.ew_velocity_mps)
+            || (georef.vert_velocity_mps != _prevPulseGeoref.vert_velocity_mps);
+    _prevPulseGeoref = georef;
 
     if (doWrite) {
         // Tag the data going to CmigitsSharedMemory with current time
@@ -160,11 +182,31 @@ Ts2CmigitsShmThread::_doNextPulse() {
 
     // Get the next pulse
     if ((_pulse = _reader.getNextPulse()) == NULL) {
-        ILOG << "Hit end of data";
-        // Stop this thread
-        quit();
-        if (! wait(500)) {
-            WLOG << "Thread did not finish in 500 ms!";
-        }
+        // Out of data. We're done!
+        emit(finished());
+    } else {
+        // Set a single-shot zero-interval timer to call this method again when
+        // the thread is not otherwise busy.
+        QTimer::singleShot(0, this, SLOT(_doNextPulse()));
     }
+}
+
+void
+Ts2CmigitsShmThread::_generateFake3500Msg() {
+    DLOG << "_generateFake3500Msg()";
+    
+    // Tag the data going to CmigitsSharedMemory with current time
+    struct timespec nowTimeSpec;
+    clock_gettime(CLOCK_REALTIME, &nowTimeSpec);
+    double nowTime = nowTimeSpec.tv_sec + 1.0e-9 * nowTimeSpec.tv_nsec;
+    uint64_t tagMsecsSinceEpoch(1000 * nowTime);
+    
+    // Build a fake 3500 message saying that GPS and INS are available and
+    // using our own special mode 10 to indicate data playback.
+    bool gpsAvailable = true;
+    bool insAvailable = true;
+    int mode = 10;
+    _shm.storeLatest3500Data(tagMsecsSinceEpoch, mode, insAvailable, 
+            gpsAvailable, false, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0);
+    
 }
