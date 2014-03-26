@@ -45,7 +45,7 @@ public:
     
     /**
      * @brief Return a string describing the given operating mode number, which
-     * must be in the range [1,10].
+     * must be in the range [1,9].
      * @param mode the operating mode number of interest
      * @return a string describing the given operating mode number
      */
@@ -429,8 +429,6 @@ private:
     /// 7 = Air Navigation
     /// 8 = Land Navigation
     /// 9 = GPS Only
-    /// 10 = Data Replay (this is not a real C-MIGITS mode, but used for our
-    ///                   own testing)
     uint16_t _currentMode;
 
     /// Is the C-MIGITS getting INS sensor data?
