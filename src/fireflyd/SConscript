@@ -1,0 +1,26 @@
+# -*- python -*-
+
+tools = Split("""
+doxygen
+firefly
+logx
+qt4
+QFunctionWrapper
+QXmlRpcServerAbyss
+rapradar
+""")
+
+# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
+# via the hcrdrxrpcclient tool
+sources = Split("""
+fireflyd.cpp
+""")
+
+env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtCore'])
+
+fireflyd = env.Program('fireflyd', sources)
+Default(fireflyd)
+
+html = env.Apidocs(sources)
+Default(html)
