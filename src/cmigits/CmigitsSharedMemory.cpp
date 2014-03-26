@@ -58,7 +58,8 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
         // AlreadyExists is OK, anything else is a problem...
         if (_qShm.error() != QSharedMemory::AlreadyExists) {
             std::ostringstream msgStream;
-            msgStream << "Shared memory create failed: " << _qShm.errorString().toStdString();
+            msgStream << "Shared memory create error " << _qShm.error() << 
+                    ": " << _qShm.errorString().toStdString();
             throw(Exception(msgStream.str()));
         }
     }
@@ -68,8 +69,8 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
             QSharedMemory::ReadWrite : QSharedMemory::ReadOnly;
     if (! _qShm.isAttached() && ! _qShm.attach(accessMode)) {
         std::ostringstream msgStream;
-        msgStream << "Shared memory attach error: " <<
-                _qShm.errorString().toStdString() << " (" << _qShm.error() << ")";
+        msgStream << "Shared memory attach error " << _qShm.error() << ": " <<
+                _qShm.errorString().toStdString();
         throw(Exception(msgStream.str()));
     }
     // Contents of the shared memory data are defined by CmigitsShmStruct
@@ -129,6 +130,7 @@ CmigitsSharedMemory::~CmigitsSharedMemory() {
         _zero3500Data();
         _zero3501Data();
         _zero3512Data();
+        
         // Remove this object as writer (set the writer pid to zero)
         _setWriterPid(0);
     }
