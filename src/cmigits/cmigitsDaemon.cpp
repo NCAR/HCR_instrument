@@ -134,9 +134,10 @@ main(int argc, char *argv[]) {
         for (int i = 2; i < argc; i++) {
             fileList.push_back(argv[i]);
         }
-        // Create and start the Ts2CmigitsShmThread
+        
+        // Create the Ts2CmigitsShmThread, which begins working immediately.
         playbackThread = new Ts2CmigitsShmThread(fileList);
-        playbackThread->start();
+
         // Stop the application when the reader thread is done
         QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
     } else {

@@ -13,10 +13,10 @@
 LOGGING("Ts2CmigitsShmThread")
 
 Ts2CmigitsShmThread::Ts2CmigitsShmThread(std::vector<std::string> fileList) :
-    _workThread(this),
-    _fake3500Timer(),
+    _workThread(),
+    _fake3500Timer(NULL),
     _reader(fileList, IWRF_DEBUG_OFF),
-    _shm(true), // open CmigitsSharedMemory with write access
+    _shm(NULL),
     _pulseCount(0),
     _shmWriteCount(0),
     _sleepSumUsecs(0),
@@ -24,31 +24,18 @@ Ts2CmigitsShmThread::Ts2CmigitsShmThread(std::vector<std::string> fileList) :
     _delaySumUsecs(0),
     _prevPulseDataTime(0.0),
     _prevPulseProcessTime(0.0) {
+    // Get a connection to CmigitsSharedMemory with write access
+    _shm = new CmigitsSharedMemory(true);
+    
     // Change our thread affinity to the work thread.
     moveToThread(&_workThread);
 
-    // Fill the previous pulse georef with zeros
-    memset(&_prevPulseGeoref, 0, sizeof(_prevPulseGeoref));
-
-    // Read a pulse before the first call to _doNextPulse().
-    _pulse = _reader.getNextPulse();
-    if (! _pulse) {
-        ELOG << "Unable to read first pulse!";
-        exit(1);
-    }
+    // Perform initialization which must happen within the work thread on
+    // a started() signal from the thread.
+    connect(&_workThread, SIGNAL(started()), this, SLOT(_onThreadStart()));
     
-    // Execute _doNextPulse() when the worker thread starts
-    connect(&_workThread, SIGNAL(started()), this, SLOT(_doNextPulse()));
-    
-    // Execute _onThreadExit() and perform cleanup via deleteLater() when
-    // the work thread is finished.
-    connect(&_workThread, SIGNAL(finished()), this, SLOT(deleteLater()));
-    
-    // Start up the periodic timer for generating fake 3500 messages. The
-    // real C-MIGITS generates them a 1 Hz, so we'll do that, too.
-    _fake3500Timer.setInterval(1000);   // 1000 ms -> 1 s
-    connect(&_fake3500Timer, SIGNAL(timeout()), this, SLOT(_generateFake3500Msg()));
-    _fake3500Timer.start();
+    // Start the work thread
+    _workThread.start();
 }
 
 Ts2CmigitsShmThread::~Ts2CmigitsShmThread() {
@@ -56,24 +43,40 @@ Ts2CmigitsShmThread::~Ts2CmigitsShmThread() {
     _showStats();
     
     // Shut down the work thread
-    if (_workThread.isRunning()) {
-        DLOG << "Stopping work thread";
-        _workThread.quit();
-        if (! _workThread.wait(500)) {
-            WLOG << "Work thread not finished after 500 ms!";
-        }
-    } else {
-        DLOG << "Work thread is already stopped";
+    DLOG << "Stopping work thread";
+    _workThread.quit();
+    if (! _workThread.wait(500)) {
+        WLOG << "Work thread did not finish within 500 ms!";
     }
+    
+    // Clean up dynamically allocated members
+    delete(_shm);
+    delete(_fake3500Timer);
 }
 
 void
-Ts2CmigitsShmThread::start() {
-    _workThread.start();
+Ts2CmigitsShmThread::_onThreadStart() {
+    // Instantiate and start the periodic timer for generating fake 3500 
+    // messages. The real C-MIGITS generates them a 1 Hz, so we'll do that, too.
+    _fake3500Timer = new QTimer();
+    _fake3500Timer->setInterval(1000);   // 1000 ms -> 1 s
+    connect(_fake3500Timer, SIGNAL(timeout()), this, SLOT(_generateFake3500Msg()));
+    _fake3500Timer->start();
+
+    // We need a pulse before the first call to _doNextPulse().
+    _pulse = _reader.getNextPulse();
+    if (! _pulse) {
+        ELOG << "Unable to read first pulse!";
+        exit(1);
+    }
+    
+    // Start the processing...
+    _doNextPulse();
 }
 
 void
 Ts2CmigitsShmThread::_showStats() {
+    // Print information about what we processed.
     ILOG << "Processed " << _pulseCount << " pulses, with " <<
             _shmWriteCount << " CmigitsSharedMemory writes";
     ILOG << "Average sleep per pulse " <<
@@ -149,38 +152,30 @@ Ts2CmigitsShmThread::_doNextPulse() {
     _prevPulseProcessTime = pulseProcessTime;
     _prevPulseDataTime = pulseDataTime;
 
-    // If any georef data changes, put the data from the pulse into
-    // CmigitsSharedMemory
+    // Get the georef data (including C-MIGITS data) for this pulse
     iwrf_platform_georef_t georef = _pulse->getPlatformGeoref();
 
-    bool doWrite = (georef.pitch_deg != _prevPulseGeoref.pitch_deg)
-            || (georef.roll_deg != _prevPulseGeoref.roll_deg)
-            || (georef.heading_deg != _prevPulseGeoref.heading_deg)
-            || (georef.ns_velocity_mps != _prevPulseGeoref.ns_velocity_mps)
-            || (georef.ew_velocity_mps != _prevPulseGeoref.ew_velocity_mps)
-            || (georef.vert_velocity_mps != _prevPulseGeoref.vert_velocity_mps);
-    _prevPulseGeoref = georef;
+    // Tag the data going to CmigitsSharedMemory with current time
+    // rather than the time from the data.
+    uint64_t tagMsecsSinceEpoch(1000 * pulseProcessTime);
+    
+    // Pull out the 3501 and 3512 message data from the iwrf_platform_georef_t
+    // and write it all into the shared memory.
+    _shm->storeLatest3501Data(tagMsecsSinceEpoch,
+            georef.latitude, georef.longitude,
+            1000.0 * georef.altitude_msl_km);
+    _shm->storeLatest3512Data(tagMsecsSinceEpoch,
+            georef.pitch_deg, georef.roll_deg, georef.heading_deg,
+            georef.ns_velocity_mps, georef.ew_velocity_mps,
+            georef.vert_velocity_mps);
 
-    if (doWrite) {
-        // Tag the data going to CmigitsSharedMemory with current time
-        // rather than the time from the data.
-        uint64_t tagMsecsSinceEpoch(1000 * pulseProcessTime);
-
-        _shm.storeLatest3501Data(tagMsecsSinceEpoch,
-                georef.latitude, georef.longitude,
-                1000.0 * georef.altitude_msl_km);
-        _shm.storeLatest3512Data(tagMsecsSinceEpoch,
-                georef.pitch_deg, georef.roll_deg, georef.heading_deg,
-                georef.ns_velocity_mps, georef.ew_velocity_mps,
-                georef.vert_velocity_mps);
-
-        _shmWriteCount++;
-    }
+    _shmWriteCount++;
 
     // Delete the pulse
     delete(_pulse);
 
-    // Get the next pulse
+    // Try to get the next pulse. If we get one, schedule the next call here,
+    // otherwise let the outside world we're done.
     if ((_pulse = _reader.getNextPulse()) == NULL) {
         // Out of data. We're done!
         emit(finished());
@@ -202,11 +197,11 @@ Ts2CmigitsShmThread::_generateFake3500Msg() {
     uint64_t tagMsecsSinceEpoch(1000 * nowTime);
     
     // Build a fake 3500 message saying that GPS and INS are available and
-    // using our own special mode 10 to indicate data playback.
+    // that the C-MIGITS is in "Air Navigation" mode.
     bool gpsAvailable = true;
     bool insAvailable = true;
-    int mode = 10;
-    _shm.storeLatest3500Data(tagMsecsSinceEpoch, mode, insAvailable, 
+    int mode = 7;   // Air Navigation mode
+    _shm->storeLatest3500Data(tagMsecsSinceEpoch, mode, insAvailable, 
             gpsAvailable, false, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0);
     
 }
