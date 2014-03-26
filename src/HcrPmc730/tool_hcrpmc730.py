@@ -5,7 +5,6 @@ import os
 
 tools = Split("""
     archive_xmlrpc_c
-    boost_serialization
     logx
     pmc730
 """)
