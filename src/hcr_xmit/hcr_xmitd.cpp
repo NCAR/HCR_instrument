@@ -289,6 +289,9 @@ main(int argc, char *argv[]) {
     // Now just run the application until somebody or something interrupts it
     App->exec();
 
+    // Unregister with procmap
+    PMU_auto_unregister();
+
     // Clean up before exit
     delete(Xmitter);
     ILOG << "hcr_xmitd (" << getpid() << ") exiting";

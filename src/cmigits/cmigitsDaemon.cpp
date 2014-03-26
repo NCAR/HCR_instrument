@@ -166,7 +166,8 @@ main(int argc, char *argv[]) {
     // Fire up the Qt event loop
     App->exec();
     
-    PMU_auto_register("exiting");
+    // Tell procmap we're done
+    PMU_auto_unregister();
     
     delete(Cm);
     delete(playbackThread);

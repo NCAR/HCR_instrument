@@ -232,7 +232,12 @@ main(int argc, char** argv)
     signal(SIGINT, shutdownHandler);
     signal(SIGTERM, shutdownHandler);
 
+    // Run the event loop until it's stopped, generally via a "kill" command
+    // or ^C
     App->exec();
+
+    // Unregister with procmap
+    PMU_auto_unregister();
 
     delete(Control);
     delete(App);

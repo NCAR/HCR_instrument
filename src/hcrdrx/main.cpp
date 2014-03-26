@@ -434,6 +434,9 @@ main(int argc, char** argv)
         WLOG << "Failed to set HMC mode to 'txV rxHV (attenuated)' via HcrPmc730Daemon!";
     }
 
+    // Unregister with procmap
+    PMU_auto_unregister();
+
     ILOG << "hcrdrx is done";
 
     return(0);

@@ -213,7 +213,7 @@ main(int argc, char * argv[]) {
     App->exec();
 
     delete(App);
-    PMU_auto_register("exiting");
+    PMU_auto_unregister();
 
     return 0;
 }
