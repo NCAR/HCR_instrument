@@ -68,9 +68,6 @@ private:
     /// Count of pulses processed
     int _pulseCount;
 
-    /// Count of writes to CmigitsSharedMemory
-    int _shmWriteCount;
-
     /// Total time slept waiting to deliver pulse data at the correct interval
     int _sleepSumUsecs;
 

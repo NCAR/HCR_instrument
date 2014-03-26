@@ -18,7 +18,6 @@ Ts2CmigitsShmThread::Ts2CmigitsShmThread(std::vector<std::string> fileList) :
     _reader(fileList, IWRF_DEBUG_OFF),
     _shm(NULL),
     _pulseCount(0),
-    _shmWriteCount(0),
     _sleepSumUsecs(0),
     _delayedPulseCount(0),
     _delaySumUsecs(0),
@@ -77,10 +76,8 @@ Ts2CmigitsShmThread::_onThreadStart() {
 void
 Ts2CmigitsShmThread::_showStats() {
     // Print information about what we processed.
-    ILOG << "Processed " << _pulseCount << " pulses, with " <<
-            _shmWriteCount << " CmigitsSharedMemory writes";
-    ILOG << "Average sleep per pulse " <<
-            float(_sleepSumUsecs) / _pulseCount << " us";
+    ILOG << "Processed " << _pulseCount << " pulses, with average sleep of " <<
+            float(_sleepSumUsecs) / _pulseCount << " us per pulse";
     ILOG << _delayedPulseCount << " pulses (" <<
             std::fixed << std::setprecision(2) <<
             100 * (float(_delayedPulseCount) / _pulseCount) <<
@@ -168,8 +165,6 @@ Ts2CmigitsShmThread::_doNextPulse() {
             georef.pitch_deg, georef.roll_deg, georef.heading_deg,
             georef.ns_velocity_mps, georef.ew_velocity_mps,
             georef.vert_velocity_mps);
-
-    _shmWriteCount++;
 
     // Delete the pulse
     delete(_pulse);
