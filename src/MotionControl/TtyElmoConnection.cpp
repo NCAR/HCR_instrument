@@ -263,24 +263,12 @@ TtyElmoConnection::_readReply() {
 
         // Get the next unacknowledged command
         std::string cmd = _unackedCmds.front().cmdText;
-//        bool emptyReplyExpected = _unackedCmds.front().emptyReplyExpected;
 
         int replySize = term - (_rawReply + startNdx);
         if (replySize == 0) {
             DLOG << _driveName << " command '" << cmd << 
                     "' returned an empty reply";
             emit(replyFromExec(cmd, EmptyReply, 0, 0.0));
-//            if (emptyReplyExpected) {
-//                // Empty reply indicates success
-//                DLOG << _driveName << " command '" << cmd << "' succeeded";
-//                emit(replyFromExec(cmd, EmptyReply, 0, 0.0));
-//            } else {
-//                ELOG << _driveName << ": No value included in reply to '" <<
-//                        cmd << "' command. Resynchronizing commands and replies.";
-//                // Reset and start over...
-//                _startCommandReplySync();
-//                return;
-//            }
         } else {
             // Copy out the reply to the command into a null-terminated
             // uint8_t array.
@@ -295,22 +283,7 @@ TtyElmoConnection::_readReply() {
                 ELOG << _driveName << " command '" << cmd << "' gave error " <<
                         errorCode;
                 emit(replyFromExec(cmd, ErrorReply, errorCode, 0.0));
-//                // Special handling for errors from XQ commands
-//                if (! cmd.compare(0, 2, "XQ")) {
-//                    _xqError = true;
-//                }
             } else {
-//                if (! emptyReplyExpected) {
-//                    DLOG << _driveName << " command '" << cmd << "' replied '" <<
-//                            cmdReply << "'";
-//                } else {
-//                    ELOG << _driveName << " command '" << cmd << "' " <<
-//                            "gave unexpected reply '" << cmdReply << "'. " <<
-//                            "Resynchronizing commands and replies.";
-//                    _startCommandReplySync();
-//                    return;
-//                }
-
                 // The reply should parse as either an int or a float. Do
                 // the parsing and emit a signal with the value returned.
                 QString qCmdReply(reinterpret_cast<char*>(cmdReply));
@@ -334,111 +307,6 @@ TtyElmoConnection::_readReply() {
                         emit(replyFromExec(cmd, ErrorReply, -1, 0.0));
                     }
                 }
-
-//                // Look for replies to status requests we've made, and stash
-//                // the returned values.
-//
-//                // Save reply from SR "status register" command
-//                if (! cmd.compare("SR")) {
-//                    StatusReg statusRegister = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        _driveStatusRegister = statusRegister;
-//                        // Assign the time that the SR request was issued to
-//                        // the returned value.
-//                        _lastSrTime = _srRequestTime;
-//                    } else {
-//                        WLOG << _driveName << ": bad SR reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//
-//                // Save reply from TI[1] "temperature indicator 1" command
-//                if (! cmd.compare("TI[1]")) {
-//                    int temp = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        _driveTemperature = temp;    // drive temperature, deg C
-//                    } else {
-//                        WLOG << _driveName << ": bad TI[1] reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//
-//                // Save reply from TM "system time" command
-//                if (! cmd.compare("TM")) {
-//                    // System time is actually a 32-bit unsigned count, but
-//                    // the reply sends it as a signed value. We'll convert
-//                    // to unsigned as long as the value parses as an int.
-//                    int32_t time = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        // Reinterpret the returned value as an *unsigned*
-//                        // 32-bit int.
-//                        _driveSystemTime = *(reinterpret_cast<uint32_t*>(&time));
-//                    } else {
-//                        WLOG << _driveName << ": bad TM reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//                
-//                // Save reply from TR[1] "target radius" command
-//                if (! cmd.compare("TR[1]")) {
-//                    uint32_t tr = qCmdReply.toUInt(&ok);
-//                    if (ok) {
-//                        _targetRadius = tr;
-//                    } else {
-//                        WLOG << _driveName << ": bad TR[1] reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//
-//                // Save reply from PX "main position" command
-//                if (! cmd.compare("PX")) {
-//                    // PX is reported in counts in the range [XM[1],XM[2]-1]
-//                    int32_t counts = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        _angleCounts = counts;
-//                    } else {
-//                        WLOG << _driveName << ": bad PX reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//
-//                // Save reply from XM[1] "position counter min count" command
-//                if (! cmd.compare("XM[1]")) {
-//                    uint32_t count = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        _positionMinCnt = count;    // minimum position count
-//                        ILOG << _driveName << " XM[1] is " << _positionMinCnt;
-//                    } else {
-//                        WLOG << _driveName << ": bad XM[1] reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//
-//                // Save reply from XM[2] "position counter max count" command
-//                if (! cmd.compare("XM[2]")) {
-//                    uint32_t count = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        _positionMaxCnt = count;    // maximum position count
-//                        ILOG << _driveName << " XM[2] is " << _positionMaxCnt;
-//                    } else {
-//                        WLOG << _driveName << ": bad XM[2] reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
-//
-//                // Save reply from WS[55] "position controller sample time" command
-//                if (! cmd.compare("WS[55]")) {
-//                    int microsecs = qCmdReply.toInt(&ok);
-//                    if (ok) {
-//                        _pcSampleTime = 1.0e-6 * microsecs;    // convert sample time to s
-//                        ILOG << _driveName <<
-//                                " position controller sample time is " <<
-//                                _pcSampleTime << " s";
-//                    } else {
-//                        WLOG << _driveName << ": bad WS[55] reply '" <<
-//                                cmdReply << "'";
-//                    }
-//                }
             }
             delete(cmdReply);
         }
