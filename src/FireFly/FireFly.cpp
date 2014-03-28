@@ -44,6 +44,9 @@ FireFly::FireFly(std::string ttyDev) :
 
     // Upon thread start, call _tryRead()
     connect(this, SIGNAL(started()), this, SLOT(_tryRead()));
+
+    // Start our thread
+    start();
 }
 
 FireFly::~FireFly() {
@@ -80,7 +83,6 @@ FireFly::run() {
     _deviceRespondingTimer->start();
 
     // Queue our first sync status request immediately
-    _queueCommand("foo");
     _queueCommand(_SYNC_INFO_CMD);
 
     // Set up a single shot timer to make the first call to _tryRead().

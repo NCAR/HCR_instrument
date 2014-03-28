@@ -122,7 +122,7 @@ main(int argc, char *argv[]) {
     // given serial port
     PMU_auto_register("instantiating FireFly");
     Firefly = new FireFly(argv[1]);
-    Firefly->start();
+//    Firefly->start();
     
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
