@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <QMetaType>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <logx/Logging.h>
 
 LOGGING("FireFly")
@@ -224,12 +225,27 @@ FireFly::_handleReply(bool cmdError, std::string reply) {
         ELOG << "FireFly reported 'Command Error' for command: '" <<
                 _lastCommandSent << "'";
     } else {
-        // Remove trailing whitespace from the reply
+        // Remove trailing whitespace from the reply, then split it into lines
+        // at any combination of '\r' and/or '\n'.
         boost::trim_right(reply);
+        std::vector<std::string> replyLines;
+        boost::split(replyLines, reply, boost::is_any_of("\r\n"),
+                boost::token_compress_on);
+
+        // The first line should match _lastCommandSent, or we're out of sync...
+        if (_lastCommandSent != replyLines[0]) {
+            WLOG << "Got reply for '" << replyLines[0] << "' " <<
+                    "when expecting a reply for '" << _lastCommandSent << "'" <<
+                    "; dropping reply";
+            throw(new std::exception());
+        }
+
+        // Remove the command echo from the reply.
+        replyLines.erase(replyLines.begin());
 
         // Handle reply based on the last command sent
         if (_lastCommandSent == _SYNC_INFO_CMD) {
-            _parseSyncInfoReply(reply);
+            _parseSyncInfoReply(replyLines);
         } else if (_lastCommandSent.length() == 0) {
             if (reply.length() > 0) {
                 WLOG << "Dropping unexpected reply to empty command: '" <<
@@ -241,14 +257,17 @@ FireFly::_handleReply(bool cmdError, std::string reply) {
         }
     }
 
-    // We got a reply, so send the next queued command now
+    // We got a reply, so stop _replyTimeoutTimer and note that we are no longer
+    // awaiting a reply.
     _replyTimeoutTimer->stop();
     _awaitingReply = false;
+
+    // Finally, send the next queued command.
     _sendNextCommand();
 }
 
 void
-FireFly::_parseSyncInfoReply(std::string reply) {
+FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
     // Example FireFly reply to "SYNC?" command:
     //    1PPS SOURCE MODE  : GPS
     //    1PPS SOURCE STATE : GPS
@@ -259,9 +278,10 @@ FireFly::_parseSyncInfoReply(std::string reply) {
     //    FREQ ERROR ESTIMATE 7.59E-12
     //    TIME INTERVAL DIFFERENCE 7.465E-09
     //    HEALTH STATUS : 0x0
-    //
-    //    scpi >
-    ILOG << "Parsing SYNC? reply";
+    ILOG << "Parsing SYNC? reply:";
+    for (size_t i = 0; i < replyLines.size(); i++) {
+        ILOG << "line " << i << ": " << replyLines[i];
+    }
 //    	// Byte 17 is non-zero if the transmitter received a bad communication.
 //    	// If this byte indicates an error, the rest of the returned status can't
 //    	// be trusted, so go back and try again.

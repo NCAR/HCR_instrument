@@ -10,6 +10,7 @@
 
 #include <queue>
 #include <string>
+#include <vector>
 #include <stdint.h>
 #include <QMutex>
 #include <QThread>
@@ -73,7 +74,7 @@ private:
 
 
     /// @brief Parse the reply to a "SYNC?" command
-    void _parseSyncInfoReply(std::string reply);
+    void _parseSyncInfoReply(const std::vector<std::string> & replyLines);
 
     /// @brief Set the _latestStatus member.
     /// @param status the status to assign to _latestStatus
