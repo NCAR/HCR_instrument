@@ -12,7 +12,6 @@
 #include <string>
 #include <stdint.h>
 #include <QMutex>
-#include <QSocketNotifier>
 #include <QThread>
 #include <QTimer>
 #include "FireFlyStatus.h"
@@ -35,22 +34,35 @@ public:
         return(_latestStatus);
     }
     
-private slots:
-    /// @brief Read data which have arrived on the serial port
-    void _doRead();
-
+private Q_SLOTS:
     /// @brief Slot called when a reply has not arrived in the expected time.
     void _replyTimedOut();
 
     /// @brief Queue a status query
     void _queueStatusQuery();
 
-private:
-    void run();
+    /// @brief Wait briefly for input to be available on our file descriptor
+    /// and call _doRead if something comes along before we time out.
+    void _tryRead();
 
+    /// @brief Handle a reply from the FireFly
+    /// @param cmdError true iff a command error was indicated
+    /// @param reply The null-terminated reply string
+    void _handleReply(bool cmdError, std::string reply);
+
+    /// @brief Slot called when the device is not responding.
+    void _deviceNotResponding();
+
+private:
     /// @brief Open and configure our tty connection to the FireFly
     void _openTty();
     
+    /// @brief Our QThread run() method.
+    void run();
+
+    /// @brief Read and process input from the FireFly.
+    void _doRead();
+
     /// @brief Queue a command to be sent to the FireFly, and send the command
     /// at the head of the queue if we can.
     /// @param cmd the FireFly command to queue
@@ -67,55 +79,56 @@ private:
     /// @param status the status to assign to _latestStatus
     void _setLatestStatus(const FireFlyStatus & status);
 
-    /// @brief Handle a reply from the FireFly
-    /// @param reply The null-terminated reply string
-    void _handleReply(std::string reply);
+    /// @brief The prompt string which is sent by the FireFly. We use it to
+    /// delineate the end of a command response.
+    static const std::string _FIREFLY_PROMPT;
 
-    /// @brief The prompt string which is sent by the FireFly.
-    static const char * _FIREFLY_PROMPT;
-
-    /// @brief Reply returned by the FireFly on command error
-    static const char * _FIREFLY_CMD_ERR_REPLY;
+    /// @brief Reply returned by the FireFly on command error.
+    static const std::string _FIREFLY_CMD_ERR_REPLY;
 
     /// @brief Text string for the sync info command
-    static const char * _SYNC_INFO_CMD;
+    static const std::string _SYNC_INFO_CMD;
 
-    /// Our serial port device name (may be SIM_DEVICE)
+    /// @brief Our serial port device name (may be SIM_DEVICE)
     std::string _ttyDev;
     
-    /// File descriptor for the open serial port
+    /// @brief File descriptor for the open serial port
     int _fd;
 
-    /// Is the device responding to us?
+    /// @brief Is the device responding to us?
     bool _deviceResponding;
 
-    /// Last command sent to the FireFly
+    /// @brief Last command sent to the FireFly
     std::string _lastCommandSent;
 
-    /// Queue of commands waiting to be sent to the FireFly
+    /// @brief Are we waiting for a reply to the last command sent?
+    bool _awaitingReply;
+
+    /// @brief Queue of commands waiting to be sent to the FireFly
     std::queue<std::string> _commandQueue;
 
-    /// QSocketNotifier to let us know when bytes are ready to be read from _fd.
-    QSocketNotifier * _readReadyNotifier;
-
-    /// Timer started when we send a command to assure that we don't wait
-    /// forever for a reply.
+    /// @brief Single shot timer started when we send a command to assure that
+    /// we get a reply in a reasonably short time.
     QTimer * _replyTimeoutTimer;
 
-    /// Mutex for thread-safe access to _latestStatus. We make it mutable so
-    /// that we can acquire the mutex in const methods.
+    /// @brief Timer used to mark the device as unresponsive after a period with no
+    /// responses.
+    QTimer * _deviceRespondingTimer;
+
+    /// @brief Mutex for thread-safe access to _latestStatus. We make it
+    /// mutable so that we can acquire the mutex in const methods.
     mutable QMutex _mutex;
 
-    /// Reply buffer, big enough to hold the largest reply we expect from a
-    /// command.
+    /// @brief Latest status
+    FireFlyStatus _latestStatus;
+
+    /// @brief Reply buffer, big enough to hold the largest reply we expect
+    /// from a command.
     static const int _REPLY_BUFFER_SIZE = 1024;
     char _rawReply[_REPLY_BUFFER_SIZE];
 
-    /// How many bytes are currently contained in _replyBuffer
+    /// @brief How many bytes are currently contained in _replyBuffer
     uint16_t _rawReplyLen;
-
-    /// Latest status
-    FireFlyStatus _latestStatus;
 };
 
 #endif /* FIREFLY_H_ */

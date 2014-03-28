@@ -10,109 +10,158 @@
 #include <cerrno>
 #include <termios.h>
 #include <fcntl.h>
-#include <QTimer>
+#include <QMetaType>
 #include <boost/algorithm/string/trim.hpp>
 #include <logx/Logging.h>
 
 LOGGING("FireFly")
 
 // The prompt string returned from the FireFly
-const char * FireFly::_FIREFLY_PROMPT = "scpi > ";
+const std::string FireFly::_FIREFLY_PROMPT("scpi > ");
 
 // The reply returned on command error
-const char * FireFly::_FIREFLY_CMD_ERR_REPLY = "Command Error\r\n";
+const std::string FireFly::_FIREFLY_CMD_ERR_REPLY("Command Error\r\n");
 
 // Command to get sync info
-const char * FireFly::_SYNC_INFO_CMD = "SYNC?";
+const std::string FireFly::_SYNC_INFO_CMD("SYNC?");
 
 FireFly::FireFly(std::string ttyDev) :
         _ttyDev(ttyDev),
         _fd(-1),
         _deviceResponding(false),
         _lastCommandSent(),
+        _awaitingReply(false),
         _commandQueue(),
-        _rawReplyLen(0),
-        _latestStatus() {
+        _replyTimeoutTimer(NULL),
+        _latestStatus(),
+        _rawReplyLen(0) {
     ILOG << "FireFly on device " << _ttyDev;
     // Open the serial port
     _openTty();
+
+    // We send std::string in signals, so register it as a QMetaType
+    qRegisterMetaType<std::string>("std::string");
+
+    // Upon thread start, call _tryRead()
+    connect(this, SIGNAL(started()), this, SLOT(_tryRead()));
 }
 
 FireFly::~FireFly() {
     quit();
     if (! wait(1000)) {
-        WLOG << "FireFly thread did not quit in the destructor. Exiting anyway.";
+        WLOG << "FireFly thread did not quit in 1 second. Exiting anyway.";
     }
 }
 
 void
 FireFly::run() {
-    // Create a timer and use it to generate _queryForStatus() calls on a
-    // regular basis.
-    QTimer statusQueryTimer;
-    statusQueryTimer.setInterval(2000);  // 1/2 Hz
-    connect(&statusQueryTimer, SIGNAL(timeout()), this, SLOT(_queueStatusQuery()));
-    statusQueryTimer.start();
+    // Set up a timer to queue up status query commands on a regular basis.
+    QTimer * statusQueryTimer = new QTimer();
+    statusQueryTimer->setInterval(2000);  // 1/2 Hz
+    connect(statusQueryTimer, SIGNAL(timeout()), this, SLOT(_queueStatusQuery()));
+    statusQueryTimer->start();
 
     // Create a timer used to make sure replies from the FireFly arrive
     // in a reasonable time. The timer is started when we send a command, and
     // stopped when a complete reply is received. If not stopped before it
     // expires, a call to _replyTimedOut() is initiated.
     _replyTimeoutTimer = new QTimer();
-    _replyTimeoutTimer->setInterval(1000);   // allow up to 1 s for a reply
+    _replyTimeoutTimer->setInterval(250);   // allow up to 250 ms for a reply
     _replyTimeoutTimer->setSingleShot(true);
     connect(_replyTimeoutTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
 
-    // Create a QSocketNotifier which watches our tty's file descriptor and
-    // lets us know when something is available to read.
-    _readReadyNotifier = new QSocketNotifier(_fd, QSocketNotifier::Read);
-    connect(_readReadyNotifier, SIGNAL(activated(int)), this, SLOT(_doRead()));
-    _readReadyNotifier->setEnabled(false);
-    ILOG << "readReadyNotifier is " <<
-            (_readReadyNotifier->isEnabled() ? "enabled" : "disabled");
+    // Create a timer which will mark the device as unresponsive if we get no
+    // replies at all for a while. The timer is restarted whenever a response
+    // is received from the device.
+    _deviceRespondingTimer = new QTimer();
+    _deviceRespondingTimer->setInterval(10000);     // 10 s
+    connect(_deviceRespondingTimer, SIGNAL(timeout()),
+            this, SLOT(_deviceNotResponding()));
+    _deviceRespondingTimer->start();
 
-    _queueCommand("");
+    // Queue our first sync status request immediately
+    _queueCommand("foo");
     _queueCommand(_SYNC_INFO_CMD);
 
+    // Set up a single shot timer to make the first call to _tryRead().
+    QTimer::singleShot(0, this, SLOT(_tryRead()));
+
+    // Start the event loop, which generally runs until our destructor is
+    // called.
     exec();
+
+	delete(_deviceRespondingTimer);
+    delete(_replyTimeoutTimer);
+    delete(statusQueryTimer);
+}
+
+void
+FireFly::_tryRead()
+{
+    uint16_t timeoutMsecs = 100;    // Wait up to 0.1 second for available input
+
+    // select for read on _fd file descriptor
+    fd_set readFds;
+    FD_ZERO(&readFds);
+    FD_SET(_fd, &readFds);
+
+    // Looping only occurs here if we get an EINTR error from select, in which
+    // case we come back and try again.
+    while (true) {
+        /*
+         * set timeval structure
+         */
+        struct timeval timeout;
+        timeout.tv_sec = timeoutMsecs / 1000;
+        timeout.tv_usec = (timeoutMsecs % 1000) * 1000;
+
+        int nready = select(_fd + 1, &readFds, NULL, NULL, &timeout);
+        if (nready == 1) {
+            // Something's available. Go read it.
+            _doRead();
+            break;
+        } else if (nready == 0) {
+            DLOG << "select timeout";
+            break;
+        } else {
+            if (errno == EINTR) /* system call was interrupted */
+                continue;
+
+            ELOG << "select error: " << strerror(errno);
+
+            break;
+        }
+    }
+
+    // Set a zero-interval single shot timer to call back here after any
+    // pending event processing occurs.
+    QTimer::singleShot(0, this, SLOT(_tryRead()));
+
+    return;
 }
 
 void
 FireFly::_doRead() {
-    ILOG << "_doRead";
-
-    _readReadyNotifier->setEnabled(false);
-    ILOG << "readReadyNotifier is " <<
-            (_readReadyNotifier->isEnabled() ? "enabled" : "disabled");
-
-    bool gotReply = false;
-
-    // If the device had not been responding, note that it is responding now
-    if (! _deviceResponding) {
-        _deviceResponding = true;
-        ILOG << "FireFly-IIA is now responding";
-    }
-
-    // Read what's available on the serial port
+    // Read what's available on the serial port and append it to our _rawReply
+    // buffer.
     int maxRead = _REPLY_BUFFER_SIZE - _rawReplyLen;
     int nread = read(_fd, _rawReply + _rawReplyLen, maxRead);
 
     // Check for read error
     if (nread < 0) {
         ELOG << "Read error: " << strerror(errno);
-        _readReadyNotifier->setEnabled(true);
-        ILOG << "readReadyNotifier is " <<
-                (_readReadyNotifier->isEnabled() ? "enabled" : "disabled");
-
         return;
     }
     _rawReplyLen += nread;
 
-    // If we completely filled our reply buffer, it's a problem since there's
-    // probably some unread reply bytes! Do our best to deal with it.
+    // Mark the device as responsive, and reset the _deviceRespondingTimer
+    _deviceResponding = true;
+    _deviceRespondingTimer->start();
+
+    // If we completely filled our reply buffer, there's a problem.
     if (_rawReplyLen == _REPLY_BUFFER_SIZE) {
-        ELOG << "BUG: reply buffer overflow for FireFly; " << _rawReplyLen <<
-                " reply bytes will be dropped. Increase _REPLY_BUFFER_SIZE!";
+        ELOG << "BUG: reply buffer overflow for FireFly; " <<
+                " Increase _REPLY_BUFFER_SIZE!";
         throw(new std::exception());
     }
 
@@ -120,28 +169,38 @@ FireFly::_doRead() {
     DLOG << "appended '" << _rawReply + _rawReplyLen - nread << "'";
 
     // See if there's been a command error reported
-    bool cmdError = (strstr(_rawReply, _FIREFLY_CMD_ERR_REPLY) != NULL);
+    char * cmdErrorPtr = strstr(_rawReply, _FIREFLY_CMD_ERR_REPLY.c_str());
+    bool cmdError = (cmdErrorPtr != NULL);
     if (cmdError) {
-        WLOG << "FireFly reported an error for command '" << _lastCommandSent
-                << "'";
-        // Empty the reply buffer
-        _rawReplyLen = 0;
+        // "Command error" counts as a reply, so call the handler.
+        _handleReply(true, "");
+        // Move anything after the "Command Error" message to the head of our
+        // _rawReply buffer.
+        int afterErrorIndex = (cmdErrorPtr - _rawReply) +
+                _FIREFLY_CMD_ERR_REPLY.length();
+        _rawReplyLen -= afterErrorIndex;
+        if (_rawReplyLen) {
+            memmove(_rawReply, _rawReply + afterErrorIndex, _rawReplyLen);
+            _rawReply[_rawReplyLen] = '\0';
+            WLOG << _rawReplyLen <<
+                    " extra bytes retained after command error report";
+        }
+        return;
     }
 
     // Look for the FireFly prompt within the raw reply. If we find it,
-    // everything up to the prompt is the complete reply.
-    char * prompt = strstr(_rawReply, _FIREFLY_PROMPT);
+    // everything up to the prompt is the complete reply to our last command.
+    char * prompt = strstr(_rawReply, _FIREFLY_PROMPT.c_str());
     if (prompt) {
-        gotReply = true;
         // Replace the first byte of the prompt with a NULL character, and
         // pass the resulting null-terminated reply string to our reply parser.
         int promptIndex = prompt - _rawReply;
         _rawReply[promptIndex] = '\0';
-        _handleReply(_rawReply);
+        _handleReply(false, std::string(_rawReply));
 
         // Now move bytes (if any) remaining after the prompt to the beginning
         // of the _rawReply buffer.
-        int afterPromptIndex = promptIndex + strlen(_FIREFLY_PROMPT);
+        int afterPromptIndex = promptIndex + _FIREFLY_PROMPT.length();
         _rawReplyLen -= afterPromptIndex;
         if (_rawReplyLen) {
             memmove(_rawReply, _rawReply + afterPromptIndex, _rawReplyLen);
@@ -151,39 +210,39 @@ FireFly::_doRead() {
         }
     }
 
-    if (gotReply) {
-        _replyTimeoutTimer->stop();
-    } else {
-        _readReadyNotifier->setEnabled(true);
-        ILOG << "readReadyNotifier is " <<
-                (_readReadyNotifier->isEnabled() ? "enabled" : "disabled");
-    }
-
-    // After we get a reply to a command, we can send the next one.
-    if (! _readReadyNotifier->isEnabled()) {
-        _sendNextCommand();
-    }
-
     return;
 }
 
 void
-FireFly::_handleReply(std::string reply) {
-    // Remove trailing whitespace from the reply
-    boost::trim_right(reply);
-
-    // Handle reply based on the last command sent
-    if (_lastCommandSent == _SYNC_INFO_CMD) {
-        _parseSyncInfoReply(reply);
-    } else if (_lastCommandSent.length() == 0) {
-        if (reply.length() > 0) {
-            WLOG << "Dropping unexpected reply to empty command: '" <<
-                    reply << "'";
-        }
+FireFly::_handleReply(bool cmdError, std::string reply) {
+    if (! _awaitingReply) {
+        WLOG << "Dropping unexpected reply (could have arrived after timeout)";
+    } else if (cmdError){
+        // Just note a command error
+        ELOG << "FireFly reported 'Command Error' for command: '" <<
+                _lastCommandSent << "'";
     } else {
-        ELOG << "Don't know how to parse the reply to '" << _lastCommandSent <<
-                "' command!";
+        // Remove trailing whitespace from the reply
+        boost::trim_right(reply);
+
+        // Handle reply based on the last command sent
+        if (_lastCommandSent == _SYNC_INFO_CMD) {
+            _parseSyncInfoReply(reply);
+        } else if (_lastCommandSent.length() == 0) {
+            if (reply.length() > 0) {
+                WLOG << "Dropping unexpected reply to empty command: '" <<
+                        reply << "'";
+            }
+        } else {
+            ELOG << "Don't know how to parse the reply to '" <<
+                    _lastCommandSent << "' command!";
+        }
     }
+
+    // We got a reply, so send the next queued command now
+    _replyTimeoutTimer->stop();
+    _awaitingReply = false;
+    _sendNextCommand();
 }
 
 void
@@ -232,32 +291,32 @@ FireFly::_parseSyncInfoReply(std::string reply) {
 void
 FireFly::_queueCommand(const std::string & cmd) {
     // Queue this command
-    ILOG << "Queuing command '" << cmd << "'";
+    DLOG << "Queuing command '" << cmd << "'";
     _commandQueue.push(cmd);
 
     // If we're not waiting for a reply from a previous command, send the
     // next one from the queue
-    if (! _readReadyNotifier->isEnabled()) {
+    if (! _awaitingReply) {
         _sendNextCommand();
     }
 }
 
 void
 FireFly::_sendNextCommand() {
-    ILOG << "_sendNextCommand";
     // If the queue is empty, just return
     if (_commandQueue.empty()) {
+        DLOG << "_sendNextCommand() exiting with no commands queued";
         return;
     }
     // No sending a command while we're awaiting a reply from a previous one
-    if (_readReadyNotifier->isEnabled()) {
+    if (_awaitingReply) {
         WLOG << "Attempt to _sendNextCommand() while waiting for a reply.";
         return;
     }
     // Pop the command from the head of the queue
     std::string cmd = _commandQueue.front();
     _commandQueue.pop();
-    ILOG << "Sending command '" << cmd << "'";
+    DLOG << "Sending command '" << cmd << "'";
 
     // Append a "\r\n" terminator and send the command
     std::string cmdWithTerm = std::string(cmd) + "\r\n";
@@ -268,9 +327,7 @@ FireFly::_sendNextCommand() {
 
     // The command is off, so we're waiting for a reply
     _lastCommandSent = cmd;
-    _readReadyNotifier->setEnabled(true);
-    ILOG << "readReadyNotifier is " <<
-            (_readReadyNotifier->isEnabled() ? "enabled" : "disabled");
+    _awaitingReply = true;
     _replyTimeoutTimer->start();
 }
 
@@ -314,13 +371,17 @@ FireFly::_setLatestStatus(const FireFlyStatus & status) {
 void
 FireFly::_replyTimedOut() {
     WLOG << "Timeout waiting for reply to command '" << _lastCommandSent << "'";
-    _readReadyNotifier->setEnabled(false);
-    ILOG << "readReadyNotifier is " <<
-            (_readReadyNotifier->isEnabled() ? "enabled" : "disabled");
+    _awaitingReply = false;
     _sendNextCommand();
 }
 
 void
 FireFly::_queueStatusQuery() {
     _queueCommand(_SYNC_INFO_CMD);
+}
+
+void
+FireFly::_deviceNotResponding() {
+    WLOG << "Device is " << (_deviceResponding ? "no longer" : "not") << " responding!";
+    _deviceResponding = false;
 }
