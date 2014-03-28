@@ -6,6 +6,7 @@ import os
 
 tools = Split("""
     archive_xmlrpc_c
+    boost
     logx
     pmc730
     qt4
