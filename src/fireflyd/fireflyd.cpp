@@ -144,7 +144,13 @@ main(int argc, char *argv[]) {
     registerTimer.start();
 
     // Now just run the application until somebody or something interrupts it
-    App->exec();
+    try {
+        App->exec();
+    } catch (std::exception & e) {
+        ELOG << "Bailing out on exception: " << e.what();
+    } catch (...) {
+        ELOG << "Bailing out on exception";
+    }
 
     // Unregister with procmap
     PMU_auto_unregister();
