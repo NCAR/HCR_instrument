@@ -123,8 +123,8 @@ private:
     /// @brief Latest status
     FireFlyStatus _latestStatus;
 
-    /// @brief Reply buffer, big enough to hold the largest reply we expect
-    /// from a command.
+    /// @brief Reply buffer. We need it big enough to hold the largest expected
+    /// output (which is generally a bunch of bytes spewed at power-up).
     static const int _REPLY_BUFFER_SIZE = 1024;
     char _rawReply[_REPLY_BUFFER_SIZE];
 
