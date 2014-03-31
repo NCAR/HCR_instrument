@@ -124,11 +124,10 @@ FireFly::_tryRead()
             _doRead();
             break;
         } else if (nready == 0) {
-            DLOG << "select timeout";
-            break;
+            break;  // select() timed out
         } else {
-            if (errno == EINTR) /* system call was interrupted */
-                continue;
+            if (errno == EINTR) // system call was interrupted
+                continue;   // go back and try again
 
             ELOG << "select error: " << strerror(errno);
 
@@ -169,7 +168,22 @@ FireFly::_doRead() {
     }
 
     _rawReply[_rawReplyLen] = '\0';
-    DLOG << "appended '" << _rawReply + _rawReplyLen - nread << "'";
+    DLOG << "appended " << nread << ": '" << _rawReply + _rawReplyLen - nread <<
+            "'";
+
+    // If there are NULL characters in the reply (can happen when the unit
+    // is first powered up), only keep everything after the last NULL read.
+    int nChopped = 0;
+    while (strlen(_rawReply) < _rawReplyLen) {
+        int nRemove = strlen(_rawReply) + 1;
+        _rawReplyLen -= nRemove;
+        memmove(_rawReply, _rawReply + nRemove, _rawReplyLen);
+        nChopped += nRemove;
+    }
+    if (nChopped) {
+        DLOG << "Chopped " << nChopped << " bytes for nulls, leaving " <<
+                _rawReplyLen;
+    }
 
     // See if there's been a command error reported
     char * cmdErrorPtr = strstr(_rawReply, _FIREFLY_CMD_ERR_REPLY.c_str());
@@ -233,11 +247,13 @@ FireFly::_handleReply(bool cmdError, std::string reply) {
                 boost::token_compress_on);
 
         // The first line should match _lastCommandSent, or we're out of sync...
+        // If we lose sync (e.g., if FireFly power is cycled while we're
+        // running), we'll usually be back in sync for commands after this.
         if (_lastCommandSent != replyLines[0]) {
             WLOG << "Got reply for '" << replyLines[0] << "' " <<
                     "when expecting a reply for '" << _lastCommandSent << "'" <<
                     "; dropping reply";
-            throw(new std::exception());
+            return;
         }
 
         // Remove the command echo from the reply.
@@ -268,6 +284,9 @@ FireFly::_handleReply(bool cmdError, std::string reply) {
 
 void
 FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
+    // Have we detected an error in FireFly-IIA configuration?
+    bool configError = false;
+
     // Example FireFly reply to "SYNC?" command:
     //    1PPS SOURCE MODE  : GPS
     //    1PPS SOURCE STATE : GPS
@@ -278,36 +297,107 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
     //    FREQ ERROR ESTIMATE 7.59E-12
     //    TIME INTERVAL DIFFERENCE 7.465E-09
     //    HEALTH STATUS : 0x0
-    ILOG << "Parsing SYNC? reply:";
-    for (size_t i = 0; i < replyLines.size(); i++) {
-        ILOG << "line " << i << ": " << replyLines[i];
+    if (replyLines.size() != 9) {
+        WLOG << "Got " << replyLines.size() << " lines in reply to '" <<
+                _SYNC_INFO_CMD << "' but expected 9. Entire reply dropped.";
+        for (size_t i = 0; i < replyLines.size(); i++) {
+            WLOG << "line " << i << ": " << replyLines[i];
+        }
+        return;
     }
-//    	// Byte 17 is non-zero if the transmitter received a bad communication.
-//    	// If this byte indicates an error, the rest of the returned status can't
-//    	// be trusted, so go back and try again.
-//    	try {
-//    	    // parse the string into an FireFlyStatus object, and set that as our
-//    	    // latest status
-//    	    _setLatestStatus(FireFlyStatus(reply));
-//    	    return;
-//    	} catch(FireFlyStatus::ConstructError & e) {
-//            // Report the error.
-//    	    ELOG << e.what();
-//    	    // Go back and try again.
-//    	    continue;
-//    	}
-//    }
-//
-//    // If we used up our tries, we just return an empty status
-//    if (nReplies == 0) {
-//        WLOG << "No status reply in " << MAX_ATTEMPTS <<
-//                " tries; Is the transmitter CMU turned on?";
-//    } else {
-//        WLOG << "Only 'bad communication' replies in " << MAX_ATTEMPTS <<
-//                " attempts to get status";
-//    }
-//    _setLatestStatus(FireFlyStatus());
-//    return;
+
+    // Line 0 holds 1 PPS source mode, which should be 'GPS'. Complain if it's
+    // not.
+    char sourceMode1Pps[32];
+    if (sscanf(replyLines[0].data(), "1PPS SOURCE MODE  : %s",
+            sourceMode1Pps) != 1) {
+        WLOG << "Bad '1 PPS source mode' line: " <<
+                "'" << replyLines[0] << "'. Entire reply dropped.";
+        return;
+    }
+    if (strncmp(sourceMode1Pps, "GPS", 3)) {
+        WLOG << "1 PPS source mode should be 'GPS', but is " <<
+                "'" << sourceMode1Pps << "'!";
+        configError = true;
+    }
+
+    // Line 1 holds 1 PPS source state. Skip it.
+
+    // Line 2 holds 1 PPS lock status (0|1)
+    int iState;
+    if (sscanf(replyLines[2].data(), "1PPS LOCK STATUS  : %d", &iState) != 1) {
+        WLOG << "Bad '1 PPS lock status' line: " <<
+                "'" << replyLines[2] << "'. Entire reply dropped.";
+        return;
+    }
+    bool locked1Pps = iState;
+    DLOG << "1 PPS locked: " << (locked1Pps ? "TRUE" : "FALSE");
+
+    // Line 3 tells whether 1 PPS is output immediately after reset (before
+    // GPS lock). This should be 'OFF'!
+    char ppsOutputOnReset[32];
+    if (sscanf(replyLines[3].data(), "1PPS OUTPUT ON RESET : %s",
+            ppsOutputOnReset) != 1) {
+        WLOG << "Bad '1 PPS output on reset' line: " <<
+                "'" << replyLines[3] << "'. Entire reply dropped.";
+        return;
+    }
+    if (strncmp(ppsOutputOnReset, "OFF", 3)) {
+        WLOG << "1 PPS output on reset should be 'OFF', but is " <<
+                "'" << ppsOutputOnReset << "'!";
+        configError = true;
+    }
+
+    // Line 4 tells holdover state (ON|NONE), but the next line tells us that
+    // and more. Skip this one.
+
+    // Line 5 tells holdover duration in seconds (for current holdover if the
+    // unit is in holdover, otherwise for previous holdover), and whether the
+    // unit is currently in holdover.
+    int lastHoldoverDurationSecs;
+    if (sscanf(replyLines[5].data(), "LAST HOLDOVER DURATION %d,%d",
+            &lastHoldoverDurationSecs, &iState) != 2) {
+        WLOG << "Bad 'holdover duration' line: " <<
+                "'" << replyLines[5] << "'. Entire reply dropped.";
+        return;
+    }
+    bool inHoldover = iState;
+    DLOG << "Last holdover duration: " << lastHoldoverDurationSecs << " s. " <<
+            "In holdover: " << (inHoldover ? "TRUE" : "FALSE");
+
+    // Line 6 gives the frequency error estimate
+    float freqErrorEstimate;
+    if (sscanf(replyLines[6].data(), "FREQ ERROR ESTIMATE %f",
+            &freqErrorEstimate) != 1) {
+        WLOG << "Bad 'frequency error estimate' line: " <<
+                "'" << replyLines[6] << "'. Entire reply dropped.";
+        return;
+    }
+    DLOG << "Frequency error estimate: " << freqErrorEstimate;
+
+    // Line 7 gives the time difference between the FireFly-IIA 1 PPS output
+    // and the GPS time 1 PPS.
+    float timeDiff1Pps;
+    if (sscanf(replyLines[7].data(), "TIME INTERVAL DIFFERENCE %f",
+            &timeDiff1Pps) != 1) {
+        WLOG << "Bad '1 PPS time difference' line: " <<
+                "'" << replyLines[7] << "'. Entire reply dropped.";
+        return;
+    }
+    DLOG << "1 PPS time difference: " << timeDiff1Pps;
+
+    // Line 8 gives health status. Zero is good. See FireFly-IIA documentation
+    // for details of the status bits.
+    int healthStatus;
+    if (sscanf(replyLines[8].data(), "HEALTH STATUS : %x",
+            &healthStatus) != 1) {
+        WLOG << "Bad 'health status' line: " <<
+                "'" << replyLines[8] << "'. Entire reply dropped.";
+        return;
+    }
+    DLOG << "health status: 0x" << std::hex << healthStatus;
+
+    DLOG << "FireFly config error: " << (configError ? "TRUE" : "FALSE");
 }
 
 void
@@ -399,6 +489,7 @@ FireFly::_replyTimedOut() {
 
 void
 FireFly::_queueStatusQuery() {
+    // Send the "SYNC?" command to get synchronization status
     _queueCommand(_SYNC_INFO_CMD);
 }
 
