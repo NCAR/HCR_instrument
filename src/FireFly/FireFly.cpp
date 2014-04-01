@@ -34,7 +34,7 @@ FireFly::FireFly(std::string ttyDev) :
         _awaitingReply(false),
         _commandQueue(),
         _replyTimeoutTimer(NULL),
-        _latestStatus(),
+        _status(),
         _rawReplyLen(0) {
     ILOG << "FireFly on device " << _ttyDev;
     // Open the serial port
@@ -303,21 +303,23 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
         for (size_t i = 0; i < replyLines.size(); i++) {
             WLOG << "line " << i << ": " << replyLines[i];
         }
+        _setBadStatus();
         return;
     }
 
     // Line 0 holds 1 PPS source mode, which should be 'GPS'. Complain if it's
     // not.
-    char sourceMode1Pps[32];
+    char sourceMode1PPS[32];
     if (sscanf(replyLines[0].data(), "1PPS SOURCE MODE  : %s",
-            sourceMode1Pps) != 1) {
+            sourceMode1PPS) != 1) {
         WLOG << "Bad '1 PPS source mode' line: " <<
                 "'" << replyLines[0] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
-    if (strncmp(sourceMode1Pps, "GPS", 3)) {
+    if (strncmp(sourceMode1PPS, "GPS", 3)) {
         WLOG << "1 PPS source mode should be 'GPS', but is " <<
-                "'" << sourceMode1Pps << "'!";
+                "'" << sourceMode1PPS << "'!";
         configError = true;
     }
 
@@ -328,10 +330,11 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
     if (sscanf(replyLines[2].data(), "1PPS LOCK STATUS  : %d", &iState) != 1) {
         WLOG << "Bad '1 PPS lock status' line: " <<
                 "'" << replyLines[2] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
-    bool locked1Pps = iState;
-    DLOG << "1 PPS locked: " << (locked1Pps ? "TRUE" : "FALSE");
+    bool locked1PPS = iState;
+    DLOG << "1 PPS locked: " << (locked1PPS ? "TRUE" : "FALSE");
 
     // Line 3 tells whether 1 PPS is output immediately after reset (before
     // GPS lock). This should be 'OFF'!
@@ -340,6 +343,7 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
             ppsOutputOnReset) != 1) {
         WLOG << "Bad '1 PPS output on reset' line: " <<
                 "'" << replyLines[3] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
     if (strncmp(ppsOutputOnReset, "OFF", 3)) {
@@ -348,7 +352,7 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
         configError = true;
     }
 
-    // Line 4 tells holdover state (ON|NONE), but the next line tells us that
+    // Line 4 tells holdover state (ON|NONE), but line 5 tells us that
     // and more. Skip this one.
 
     // Line 5 tells holdover duration in seconds (for current holdover if the
@@ -359,6 +363,7 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
             &lastHoldoverDurationSecs, &iState) != 2) {
         WLOG << "Bad 'holdover duration' line: " <<
                 "'" << replyLines[5] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
     bool inHoldover = iState;
@@ -371,20 +376,22 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
             &freqErrorEstimate) != 1) {
         WLOG << "Bad 'frequency error estimate' line: " <<
                 "'" << replyLines[6] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
     DLOG << "Frequency error estimate: " << freqErrorEstimate;
 
     // Line 7 gives the time difference between the FireFly-IIA 1 PPS output
     // and the GPS time 1 PPS.
-    float timeDiff1Pps;
+    float timeDiff1PPS;
     if (sscanf(replyLines[7].data(), "TIME INTERVAL DIFFERENCE %f",
-            &timeDiff1Pps) != 1) {
+            &timeDiff1PPS) != 1) {
         WLOG << "Bad '1 PPS time difference' line: " <<
                 "'" << replyLines[7] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
-    DLOG << "1 PPS time difference: " << timeDiff1Pps;
+    DLOG << "1 PPS time difference: " << timeDiff1PPS;
 
     // Line 8 gives health status. Zero is good. See FireFly-IIA documentation
     // for details of the status bits.
@@ -393,11 +400,17 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
             &healthStatus) != 1) {
         WLOG << "Bad 'health status' line: " <<
                 "'" << replyLines[8] << "'. Entire reply dropped.";
+        _setBadStatus();
         return;
     }
     DLOG << "health status: 0x" << std::hex << healthStatus;
 
     DLOG << "FireFly config error: " << (configError ? "TRUE" : "FALSE");
+
+    // Parsing was successful. Build the current status.
+    _status = FireFlyStatus(_deviceResponding, locked1PPS,
+            lastHoldoverDurationSecs, inHoldover, freqErrorEstimate,
+            timeDiff1PPS, healthStatus, configError);
 }
 
 void
@@ -475,12 +488,6 @@ FireFly::_openTty() {
 }
 
 void
-FireFly::_setLatestStatus(const FireFlyStatus & status) {
-    QMutexLocker locker(& _mutex);
-    _latestStatus = status;
-}
-
-void
 FireFly::_replyTimedOut() {
     WLOG << "Timeout waiting for reply to command '" << _lastCommandSent << "'";
     _awaitingReply = false;
@@ -497,4 +504,6 @@ void
 FireFly::_deviceNotResponding() {
     WLOG << "Device is " << (_deviceResponding ? "no longer" : "not") << " responding!";
     _deviceResponding = false;
+    // Set the latest status to a default bad/not-responding status
+    _setBadStatus();
 }

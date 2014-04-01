@@ -32,7 +32,7 @@ public:
      */
     FireFlyStatus getStatus() const {
         QMutexLocker locker(& _mutex);
-        return(_latestStatus);
+        return(_status);
     }
     
 private Q_SLOTS:
@@ -53,6 +53,9 @@ private Q_SLOTS:
 
     /// @brief Slot called when the device is not responding.
     void _deviceNotResponding();
+
+    /// @brief Set our latest status as undefined/bad.
+    void _setBadStatus() { _status = FireFlyStatus(); }
 
 private:
     /// @brief Open and configure our tty connection to the FireFly
@@ -75,10 +78,6 @@ private:
 
     /// @brief Parse the reply to a "SYNC?" command
     void _parseSyncInfoReply(const std::vector<std::string> & replyLines);
-
-    /// @brief Set the _latestStatus member.
-    /// @param status the status to assign to _latestStatus
-    void _setLatestStatus(const FireFlyStatus & status);
 
     /// @brief The prompt string which is sent by the FireFly. We use it to
     /// delineate the end of a command response.
@@ -116,12 +115,12 @@ private:
     /// responses.
     QTimer * _deviceRespondingTimer;
 
-    /// @brief Mutex for thread-safe access to _latestStatus. We make it
+    /// @brief Mutex for thread-safe access to _status. We make it
     /// mutable so that we can acquire the mutex in const methods.
     mutable QMutex _mutex;
 
     /// @brief Latest status
-    FireFlyStatus _latestStatus;
+    FireFlyStatus _status;
 
     /// @brief Reply buffer. We need it big enough to hold the largest expected
     /// output (which is generally a bunch of bytes spewed at power-up).
