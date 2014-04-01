@@ -25,6 +25,7 @@ env = Environment(tools = ['default'],
 svnInfo = env.SvnInfo('svnInfo.h', '#')
 
 SConscript("cmigits/SConscript")
+SConscript("fireflyd/SConscript")
 SConscript("hcr_xmit/SConscript")
 SConscript("hcrbscan/SConscript")
 SConscript("hcrgui/SConscript")
