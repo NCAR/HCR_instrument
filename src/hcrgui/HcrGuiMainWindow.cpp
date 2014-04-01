@@ -24,14 +24,15 @@ static const float INVALID_ANGLE = -999.9;
 LOGGING("HcrGuiMainWindow")
 
 
-HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost, 
-    int xmitterPort, std::string rdsHost, int drxPort, int pmcPort,
-    int cmigitsPort, int motionControlPort) :
+HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
+    int xmitterPort, int fireflydPort, std::string rdsHost, int drxPort,
+    int pmcPort, int cmigitsPort, int motionControlPort) :
     QMainWindow(),
     _ui(),
     _updateTimer(this),
     _logWindow(this),
     _cmigitsDetails(this),
+    _fireflydDetails(this),
     _hcrdrxDetails(this),
     _motionControlDetails(this),
     _pmc730Details(this),
@@ -39,15 +40,17 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _antennaModeDialog(this),
     _cmigitsStatusThread(rdsHost, cmigitsPort),
     _dataMapperStatusThread(),
+    _fireflydStatusThread(archiverHost, fireflydPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
     _mcClientThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
-    _xmitdStatusThread(xmitterHost, xmitterPort),
+    _xmitdStatusThread(archiverHost, xmitterPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
     _xmitStatus(),
+    _fireflydStatus(),
     _mcStatus(),
     _pmcStatus(true),
     _cmigitsStatus(),
@@ -64,8 +67,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     _logMessage("hcrgui started");
     
     std::ostringstream ss;
-    ss << "No response yet from hcr_xmitd at " << xmitterHost << ":" <<
+    ss << "No response yet from hcr_xmitd at " << archiverHost << ":" <<
             xmitterPort;
+    _logMessage(ss.str());
+
+    ss.str("");
+    ss << "No response yet from fireflyd at " << archiverHost << ":" <<
+            fireflydPort;
     _logMessage(ss.str());
 
     ss.str("");
@@ -136,6 +144,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string xmitterHost,
     connect(& _dataMapperStatusThread, SIGNAL(newStatus(DMAP_info_t)),
             this, SLOT(_setDataMapperStatus(DMAP_info_t)));
     _dataMapperStatusThread.start();
+
+    // Connect signals from our FireflydStatusThread object and start the thread.
+    connect(& _fireflydStatusThread, SIGNAL(serverResponsive(bool)),
+            this, SLOT(_fireflydResponsivenessChange(bool)));
+    connect(& _fireflydStatusThread, SIGNAL(newStatus(FireFlyStatus)),
+            this, SLOT(_setFireFlyStatus(FireFlyStatus)));
+    _xmitdStatusThread.start();
 
     // QUdpSocket listening for broadcast of angles
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
@@ -260,6 +275,33 @@ HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     // Update the transmitter status details dialog
     _xmitDetails.setEnabled(_xmitStatus.serialConnected());
     _xmitDetails.updateStatus(_xmitStatus);
+    // Update the main GUI
+    _update();
+}
+
+void
+HcrGuiMainWindow::_fireflydResponsivenessChange(bool responding) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "fireflyd @ " <<
+            _fireflydStatusThread.rpcClient().getFireflydHost() << ":" <<
+            _fireflydStatusThread.rpcClient().getFireflydPort() <<
+            (responding ? " is " : " is not ") <<
+            "responding";
+    _logMessage(ss.str().c_str());
+
+    if (! responding) {
+        // Create a default (bad) FireFlyStatus, and set it as the last status
+        // received.
+        _setFireFlyStatus(FireFlyStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setFireFlyStatus(FireFlyStatus status) {
+    _fireflydStatus = status;
+    // Update the fireflyd status details dialog
+    _fireflydDetails.updateStatus(_fireflydStatus);
     // Update the main GUI
     _update();
 }
@@ -639,6 +681,11 @@ HcrGuiMainWindow::on_showLogButton_clicked() {
 void
 HcrGuiMainWindow::on_xmitterDetailsButton_clicked() {
     _xmitDetails.show();
+}
+
+void
+HcrGuiMainWindow::on_fireflydDetailsButton_clicked() {
+    _fireflydDetails.show();
 }
 
 void

@@ -7,6 +7,7 @@ boost_date_time
 hcrpmc730client
 cmigitsdaemonrpcclient
 doxygen
+fireflydrpcclient
 hcrdrxrpcclient
 logx
 motioncontrol
@@ -23,6 +24,8 @@ AntennaModeDialog.cpp
 CmigitsDetails.cpp
 CmigitsStatusThread.cpp
 DataMapperStatusThread.cpp
+FireflydDetails.cpp
+FireflydStatusThread.cpp
 HcrdrxDetails.cpp
 HcrdrxStatusThread.cpp
 HcrGuiLogWindow.cpp
@@ -41,6 +44,7 @@ Default(hcrgui)
 uifiles = Split("""
 AntennaModeDialog.ui
 CmigitsDetails.ui
+FireflydDetails.ui
 HcrdrxDetails.ui
 HcrGuiLogWindow.ui
 HcrGuiMainWindow.ui
@@ -61,6 +65,8 @@ AntennaModeDialog.h
 CmigitsDetails.h
 CmigitsStatusThread.h
 DataMapperStatusThread.h
+FireflydDetails.h
+FireflydStatusThread.h
 HcrdrxDetails.h
 HcrdrxStatusThread.h
 HcrGuiLogWindow.h

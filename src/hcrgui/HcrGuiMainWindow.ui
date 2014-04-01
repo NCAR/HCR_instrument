@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
-    <height>466</height>
+    <width>426</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -220,30 +220,6 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="dmStatusIcon">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLabel" name="dmStatusLabel">
-               <property name="text">
-                <string>DataMapper</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="QToolButton" name="dmDetailsButton">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
              <item row="5" column="0">
               <widget class="QLabel" name="pmc730StatusIcon">
                <property name="text">
@@ -256,12 +232,15 @@
              </item>
              <item row="5" column="2">
               <widget class="QToolButton" name="pmc730DetailsButton">
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
                <property name="text">
                 <string>...</string>
                </property>
               </widget>
              </item>
-             <item row="6" column="1">
+             <item row="8" column="1">
               <spacer name="verticalSpacer">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -273,6 +252,56 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="fireflydStatusIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLabel" name="fireflydStatusLabel">
+               <property name="text">
+                <string>FireFly-IIA</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QToolButton" name="fireflydDetailsButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QLabel" name="dmStatusLabel">
+               <property name="text">
+                <string>DataMapper</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="dmStatusIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>

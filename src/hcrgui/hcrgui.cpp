@@ -36,6 +36,7 @@ main(int argc, char *argv[]) {
     // Hosts and ports for the daemons we'll be talking to
     char archiverHost[] = "archiver";
     int xmitdPort = 8000;
+    int fireflydPort = 8001;
 
     char rdsHost[] = "rds";
     int cmigitsPort = 8002;
@@ -44,7 +45,8 @@ main(int argc, char *argv[]) {
     int hcrdrxPort = 8081;
 
     QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, xmitdPort,
-            rdsHost, hcrdrxPort, pmc730Port, cmigitsPort, motionControlPort);
+            fireflydPort, rdsHost, hcrdrxPort, pmc730Port, cmigitsPort,
+            motionControlPort);
     mainWindow->show();
     
     int retval = app->exec();

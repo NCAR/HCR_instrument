@@ -18,6 +18,7 @@
 
 #include "CmigitsStatusThread.h"
 #include "DataMapperStatusThread.h"
+#include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
 #include "MotionControlClientThread.h"
 #include "Pmc730StatusThread.h"
@@ -28,6 +29,7 @@
 #include "HcrGuiLogWindow.h"
 
 #include "CmigitsDetails.h"
+#include "FireflydDetails.h"
 #include "HcrdrxDetails.h"
 #include "MotionControlDetails.h"
 #include "Pmc730Details.h"
@@ -38,9 +40,9 @@ class HcrGuiMainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    HcrGuiMainWindow(std::string xmitterHost, int xmitterPort,
-            std::string rdsHost, int drxPort, int pmcPort, int cmigitsPort,
-            int motionControlPort);
+    HcrGuiMainWindow(std::string archivererHost, int xmitterPort,
+            int fireflydPort, std::string rdsHost, int drxPort, int pmcPort,
+            int cmigitsPort, int motionControlPort);
     virtual ~HcrGuiMainWindow();
 
 private slots:
@@ -58,6 +60,7 @@ private slots:
     void on_recordingButton_clicked();
     void on_showLogButton_clicked();
     void on_xmitterDetailsButton_clicked();
+    void on_fireflydDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
@@ -101,6 +104,12 @@ private slots:
     /// @brief Save the last time-series write rate received from DataMapper
     /// @param tsWriteRate the last time-series write rate from DataMapper, MiB/s
     void _setDataMapperStatus(double tsWriteRate);
+    /// @brief Slot to call when fireflyd server responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _fireflydResponsivenessChange(bool responding);
+    /// @brief Save the last status received from fireflyd.
+    /// @param status the last status received from fireflyd.
+    void _setFireFlyStatus(FireFlyStatus status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
 
@@ -161,6 +170,7 @@ private:
     HcrGuiLogWindow _logWindow;
     
     CmigitsDetails _cmigitsDetails;
+    FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
     MotionControlDetails _motionControlDetails;
     Pmc730Details _pmc730Details;
@@ -171,6 +181,7 @@ private:
     // Threads to collect status from various daemons
     CmigitsStatusThread _cmigitsStatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
+    FireflydStatusThread _fireflydStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     MotionControlClientThread _mcClientThread;
     Pmc730StatusThread _pmcStatusThread;
@@ -182,6 +193,8 @@ private:
     QPixmap _greenLED_off;
     /// Last status read from the transmitter
     XmitStatus _xmitStatus;
+    /// Last status obtained from fireflyd
+    FireFlyStatus _fireflydStatus;
     /// Last status from the MotionControlDaemon
     MotionControl::Status _mcStatus;
     /// Last status read from HcrPmc730Daemon
