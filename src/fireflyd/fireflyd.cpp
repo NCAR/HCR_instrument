@@ -45,6 +45,18 @@ updateRegistration() {
     PMU_auto_register("running");
 }
 
+void
+logStatus() {
+    FireFlyStatus status = Firefly->getStatus();
+    if (status.deviceResponding()) {
+        ILOG << "1 PPS " << (status.locked1PPS() ? "locked" : "NOT LOCKED") <<
+                ", health status: 0x" << std::hex << status.healthStatus() <<
+                (status.configError() ? ", DEVICE CONFIG ERROR!" : "");
+    } else {
+        ILOG << "FireFly-IIA device is not currently responding!";
+    }
+}
+
 /// @brief xmlrpc_c::method to get status from the fireflyd process.
 ///
 /// The method returns a xmlrpc_c::value_struct (dictionary) mapping
@@ -75,7 +87,7 @@ updateRegistration() {
 ///     status = FireFlyStatus(resultStruct);
 ///
 ///     // extract a value from the status
-///     bool locked10Mhz = status.locked10Mhz();;
+///     bool locked1PPS = status.locked1PPS();;
 /// @endcode
 class GetStatusMethod : public xmlrpc_c::method {
 public:
@@ -118,11 +130,9 @@ main(int argc, char *argv[]) {
 
     ILOG << "fireflyd (" << getpid() << ") started";
 
-    // Instantiate and start our transmitter thread, communicating over the
-    // given serial port
+    // Instantiate a FireFly communication thread, using the given serial port
     PMU_auto_register("instantiating FireFly");
     Firefly = new FireFly(argv[1]);
-//    Firefly->start();
     
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
@@ -142,6 +152,14 @@ main(int argc, char *argv[]) {
     QObject::connect(&registerTimer, SIGNAL(timeout()),
             &updateFuncWrapper, SLOT(callFunction()));
     registerTimer.start();
+
+    // Set up a timer to report status information occasionally
+    QTimer statusTimer;
+    statusTimer.setInterval(15000); // 15 s
+    QFunctionWrapper statusFuncWrapper(logStatus);
+    QObject::connect(&statusTimer, SIGNAL(timeout()),
+            &statusFuncWrapper, SLOT(callFunction()));
+    statusTimer.start();
 
     // Now just run the application until somebody or something interrupts it
     try {
