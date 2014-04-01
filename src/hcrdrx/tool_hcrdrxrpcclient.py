@@ -4,12 +4,11 @@
 import os
 
 tools = Split("""
-    cmigits
-    hcrpmc730
+    archive_xmlrpc_c
+    boost_serialization
     logx
     pentek
     xmlrpc_client++
-    boost_serialization
 """)
 env = Environment(tools=['default'] + tools)
 
