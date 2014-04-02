@@ -29,20 +29,6 @@ CmigitsDaemonRpcClient::CmigitsDaemonRpcClient(std::string daemonHost,
 CmigitsDaemonRpcClient::~CmigitsDaemonRpcClient() {
 }
 
-bool
-CmigitsDaemonRpcClient::initializeUsingIwg1() throw (std::exception) {
-    try {
-        xmlrpc_c::value result;
-        // _client.call() may throw a girerr::error exception (a subclass
-        // of std::exception). If so, we allow it to move up the chain.
-        _client.call(_daemonUrl, "initializeUsingIwg1", "", &result);
-        return(xmlrpc_c::value_boolean(result));
-    } catch (std::exception & e) {
-        WLOG << "XML-RPC call to initializeUsingIwg1() failed: " << e.what();
-        throw; // rethrow the exception
-    }
-}
-
 CmigitsStatus
 CmigitsDaemonRpcClient::getStatus() throw (std::exception) {
     try {
@@ -56,7 +42,7 @@ CmigitsDaemonRpcClient::getStatus() throw (std::exception) {
         CmigitsStatus status(dict);
         return(status);
     } catch (std::exception & e) {
-        WLOG << "XML-RPC call to initializeUsingIwg1() failed: " << e.what();
+        WLOG << "XML-RPC call to getStatus() failed: " << e.what();
         throw; // rethrow the exception
     }
 }

@@ -29,14 +29,6 @@ public:
     virtual ~CmigitsDaemonRpcClient();
 
     /**
-     * @brief Send InitializeUsingIwg1() command and return the result.
-     * @return true if the initialization process is started.
-     * @throws std::exception if there's a problem executing the XML-RPC
-     * call.
-     */
-    bool initializeUsingIwg1() throw (std::exception);
-    
-    /**
      * @brief Get current status from the cmigitsDaemon via a getStatus() 
      * XML-RPC call.
      * @return current CmigitsStatus from the cmigitsDaemon

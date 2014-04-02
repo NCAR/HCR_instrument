@@ -43,31 +43,6 @@ exitHandler(int signal) {
     App->quit();
 }
 
-class InitializeUsingIwg1Method : public xmlrpc_c::method {
-public:
-    InitializeUsingIwg1Method() {
-        this->_signature = "b:";
-        this->_help = "This method causes the C-MIGITS to initialize using IWG1 data.";
-    }
-    void
-    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        bool ok;
-        if (Playback) {
-            ILOG << "XML-RPC initializeUsingIwg1() ignored in playback mode";
-            ok = true;
-        } else {
-            ILOG << "Executing XML-RPC call to initializeUsingIwg1()";
-            ok = (Cm && Cm->initializeUsingIwg1());
-            if (ok) {
-                ILOG << "C-MIGITS beginning initialization using IWG1 data";
-            } else {
-                WLOG << "C-MIGITS initializeUsingIwg1() failed!";
-            }
-        }
-        *retvalP = xmlrpc_c::value_boolean(ok);
-    }
-};
-
 class GetStatusMethod : public xmlrpc_c::method {
 public:
     GetStatusMethod() {
@@ -149,7 +124,6 @@ main(int argc, char *argv[]) {
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
-    myRegistry.addMethod("initializeUsingIwg1", new InitializeUsingIwg1Method);
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
         
