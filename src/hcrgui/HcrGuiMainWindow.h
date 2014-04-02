@@ -49,7 +49,6 @@ private slots:
     void on_antennaModeButton_clicked();
     void on_attitudeCorrectionButton_clicked();
     void on_cmigitsDetailsButton_clicked();
-    void on_cmigitsInitButton_clicked();
     void on_driveHomeButton_clicked();
     void on_filamentButton_clicked();
     void on_hcrdrxDetailsButton_clicked();

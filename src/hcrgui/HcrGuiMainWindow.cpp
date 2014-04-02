@@ -509,52 +509,6 @@ HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
     _cmigitsDetails.show();
 }
 
-void
-HcrGuiMainWindow::on_cmigitsInitButton_clicked() {
-    // Confirm that it's OK to begin initialization
-    QMessageBox confirmBox(QMessageBox::Question, "Confirm Initialization",
-            "Continue with C-MIGITS initialization?", 
-            QMessageBox::Ok | QMessageBox::Cancel, this);
-    confirmBox.setInformativeText("Criteria for initialization are:\n\n"
-            "Aircraft is stationary and will remain stationary\n"
-            "for two minutes.\n"
-            "\n"
-            "OR\n"
-            "\n"
-            "Aircraft is flying straight and level, and will continue\n"
-            "straight and level until the C-MIGITS leaves 'Coarse\n"
-            "Alignment' submode, *followed* by an acceleration\n"
-            "(speed change or turn).");
-    if (confirmBox.exec() == QMessageBox::Cancel) {
-        return;
-    }
-    
-    // We got confirmation, so send the XML-RPC command to begin initialization.
-    try {
-        if (_cmigitsStatusThread.rpcClient().initializeUsingIwg1()) {
-            QMessageBox msgBox(QMessageBox::Information,
-                    "C-MIGITS initialization", "C-MIGITS initialization started",
-                    QMessageBox::Close, this);
-            msgBox.exec();
-        } else {
-            QMessageBox msgBox(QMessageBox::Warning,
-                    "C-MIGITS initialization", "Failed to start C-MIGITS initialization",
-                    QMessageBox::Close, this);
-            msgBox.setInformativeText("This generally happens if the C-MIGITS "
-                    "is not getting IWG1 packets.");
-            msgBox.exec();
-        }
-    } catch (std::exception & e) {
-        std::ostringstream ss;
-        ss << "XML-RPC error calling initializeUsingIwg1(): " << e.what();
-        _logMessage(ss.str());
-        QMessageBox msgBox(QMessageBox::Warning, "cmigitsDaemon XML-RPC Error",
-                "Error calling initializeUsingIwg1()", QMessageBox::Close, this);
-        msgBox.setDetailedText(e.what());
-        msgBox.exec();
-    }
-}
-
 /// Set drives to home position
 void
 HcrGuiMainWindow::on_driveHomeButton_clicked() {
