@@ -7,7 +7,6 @@
 
 #include "FireFlyStatus.h"
 #include <cstdlib>
-#include <ctime>
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 
@@ -16,7 +15,7 @@ LOGGING("FireFlyStatus")
 FireFlyStatus::FireFlyStatus() :
     _statusTime(time(0)),
     _deviceResponding(false),
-    _locked1PPS(false),
+    _pllLocked(false),
     _lastHoldoverDuration(0),
     _inHoldover(false),
     _freqErrorEstimate(1.0),
@@ -25,12 +24,12 @@ FireFlyStatus::FireFlyStatus() :
     _configError(false) {
 }
 
-FireFlyStatus::FireFlyStatus(bool deviceResponding, bool locked1PPS,
+FireFlyStatus::FireFlyStatus(bool deviceResponding, bool pllLocked,
         int lastHoldoverDuration, bool inHoldover, float freqErrorEstimate,
         float timeDiff1PPS, uint16_t healthStatus, bool configError):
     _statusTime(time(0)),
     _deviceResponding(deviceResponding),
-    _locked1PPS(locked1PPS),
+    _pllLocked(pllLocked),
     _lastHoldoverDuration(lastHoldoverDuration),
     _inHoldover(inHoldover),
     _freqErrorEstimate(freqErrorEstimate),
@@ -60,4 +59,24 @@ FireFlyStatus::toXmlRpcValue() const {
     oar << clone;
     // Finally, return the statusDict
     return(xmlrpc_c::value_struct(statusDict));
+}
+
+FireFlyStatus::Severity
+FireFlyStatus::overallStatus() {
+    // Error if:
+    //    1) the device is not responding
+    //    2) PLL is not locked
+    //    3) a health bit is set which we consider to be an error bit
+    if (! _deviceResponding || ! _pllLocked || (_healthStatus & _ErrorBits)) {
+        return(ERROR);
+    }
+    // Warning if:
+    //   1) The unit is in GPS holdover
+    //   2) a health bit is set which we consider to be a warning bit
+    if (_inHoldover || (_healthStatus & _WarningBits)) {
+        return(WARNING);
+    }
+
+    // Otherwise, consider everything OK
+    return(OK);
 }

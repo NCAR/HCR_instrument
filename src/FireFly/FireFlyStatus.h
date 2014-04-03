@@ -8,6 +8,7 @@
 #ifndef FIREFLYSTATUS_H_
 #define FIREFLYSTATUS_H_
 
+#include <ctime>
 #include <exception>
 #include <string>
 #include <stdint.h>
@@ -26,7 +27,7 @@ public:
     /// @brief Construct from given status values, assigning current time
     /// as the status time.
     /// @param deviceResponding true iff the FireFly-IIA device is responding
-    /// @param locked1PPS true iff output 1 PPS is locked to 1 PPS from GPS
+    /// @param pllLocked true iff the PLL is locked
     /// @param lastHoldoverDuration last holdover duration, in seconds
     /// @param inHoldover true iff the FireFly-IIA is in holdover
     /// @param freqErrorEstimate frequency error estimate
@@ -35,7 +36,7 @@ public:
     /// @param healthStatus health status value
     /// @param configError true iff the FireFly class has detected a problem
     /// in the device's configuration
-    FireFlyStatus(bool deviceResponding, bool locked1PPS,
+    FireFlyStatus(bool deviceResponding, bool pllLocked,
             int lastHoldoverDuration, bool inHoldover, float freqErrorEstimate,
             float timeDiff1PPS, uint16_t healthStatus, bool configError);
 
@@ -48,6 +49,13 @@ public:
     /// @brief destructor
     virtual ~FireFlyStatus();
 
+    /// @brief Severity indication values
+    typedef enum {
+        OK = 0,
+        WARNING = 1,
+        ERROR = 2
+    } Severity;
+
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.
     ///
@@ -58,6 +66,16 @@ public:
     /// an xmlrpc_c::value_struct dictionary.
     xmlrpc_c::value_struct toXmlRpcValue() const;
     
+    /// @brief Return an evaluation of the overall status as one of the
+    /// Severity states defined by the class.
+    /// @return an evaluation of the overall status as one of the
+    /// Severity states defined by the class.
+    Severity overallStatus();
+
+    /// @brief Return the status time, seconds since 1970-01-01 00:00:00 UTC.
+    /// @return the status time, seconds since 1970-01-01 00:00:00 UTC.
+    time_t statusTime() const { return(_statusTime); }
+
     /// @brief Return true iff replies are being received from the  FireFly-IIA.
     /// @return true iff replies are being received from the  FireFly-IIA.
     bool deviceResponding() const { return(_deviceResponding); }
@@ -66,7 +84,7 @@ public:
     /// locked to 1 PPS from GPS.
     /// @return true iff the FireFly-IIA's 1 PPS output is currently
     /// locked to 1 PPS from GPS.
-    bool locked1PPS() const { return(_locked1PPS); }
+    bool pllLocked() const { return(_pllLocked); }
 
     /// @brief Return true iff the device is in holdover
     /// @return true iff the device is in holdover
@@ -98,73 +116,154 @@ public:
     bool configError() const { return(_configError); }
 
     /// @brief Return true iff the "OCXO coarse-DAC is at max" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "OCXO coarse-DAC is at max" bit of health
     /// status is set.
-    bool coarseDacIsAtMax() { return(_healthStatus & 0x001); }
+    bool coarseDacIsAtMax(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x001, severity));
+    }
 
     /// @brief Return true iff the "OCXO coarse-DAC is at min" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "OCXO coarse-DAC is at min" bit of health
     /// status is set.
-    bool coarseDacIsAtMin() { return(_healthStatus & 0x002); }
+    bool coarseDacIsAtMin(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x002, severity));
+    }
 
     /// @brief Return true iff the "phase offset > 250 ns" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "phase offset > 250 ns" bit of health
     /// status is set.
-    bool phaseOffsetLarge() { return(_healthStatus & 0x004); }
+    bool phaseOffsetLarge(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x004, severity));
+    }
 
     /// @brief Return true iff the "run time < 300 s" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "run time < 300 s" bit of health
     /// status is set.
-    bool runTimeUnder300Sec() { return(_healthStatus & 0x008); }
+    bool runTimeUnder300Sec(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x008, severity));
+    }
 
     /// @brief Return true iff the "holdover > 60 s" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "holdover > 60 s" bit of health
     /// status is set.
-    bool longHoldover() { return(_healthStatus & 0x010); }
+    bool longHoldover(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x010, severity));
+    }
 
     /// @brief Return true iff the "frequency error estimate out-of-bounds" bit
-    /// of health status is set.
+    /// of health status is set. If severity pointer is non-null, return the
+    /// relative severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "frequency error estimate out-of-bounds" bit
     /// of health status is set.
-    bool badFreqErrorEstimate() { return(_healthStatus & 0x020); }
+    bool freqErrEstOutOfBounds(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x020, severity));
+    }
 
     /// @brief Return true iff the "OCXO voltage too high" bit of health status
-    /// is set.
+    /// is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "OCXO voltage too high" bit of health status
     /// is set.
-    bool oscVoltageTooHigh() { return(_healthStatus & 0x040); }
+    bool oscVoltageTooHigh(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x040, severity));
+    }
 
     /// @brief Return true iff the "OCXO voltage too low" bit of health status
-    /// is set.
+    /// is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "OCXO voltage too low" bit of health status
     /// is set.
-    bool oscVoltageTooLow() { return(_healthStatus & 0x080); }
+    bool oscVoltageTooLow(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x080, severity));
+    }
 
     /// @brief Return true iff the "short-term drive > 100 ns" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "short-term drive > 100 ns" bit of health
     /// status is set.
-    bool shortTermDriftLarge() { return(_healthStatus & 0x100); }
+    bool shortTermDriftLarge(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x100, severity));
+    }
 
     /// @brief Return true iff the "phase-reset or coarsedac change in last
-    /// 7 minutes" bit of health status is set.
+    /// 7 minutes" bit of health status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "phase-reset or coarsedac change in last
     /// 7 minutes" bit of health status is set.
-    bool recentPhaseResetOrCoarsedacChange() { return(_healthStatus & 0x200); }
+    bool recentPhaseResetOrCoarseDacChange(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x200, severity));
+    }
 
     /// @brief Return true iff the "strong GPS jamming" bit of health
-    /// status is set.
+    /// status is set. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param severity if non-null, the severity associated with this bit will
+    /// be returned here.
     /// @return true iff the "strong GPS jamming" bit of health
     /// status is set.
-    bool strongGpsJamming() { return(_healthStatus & 0x800); }
+    bool strongGpsJamming(Severity * severity = NULL) const {
+        return(_checkHealthBits(0x800, severity));
+    }
 
 private:
     friend class boost::serialization::access;
+
+    /// @brief Mask of health status bits we consider to be errors
+    static const int16_t _ErrorBits = 0x1f7;
+
+    /// @brief Mask of health status bits we treat as warnings
+    static const uint16_t _WarningBits = 0x808;
+
+    /// @brief Return true iff the given flag bit(s) are set in the health
+    /// status. If severity pointer is non-null, return the relative
+    /// severity associated with the bit(s).
+    /// @param bits the flag bit(s) to be tested
+    /// @param severity if non-null, the severity associated with the flag
+    /// bits will be returned here.
+    /// @return true iff the given flag bit(s) are set in the health status
+    bool _checkHealthBits(uint16_t bits, Severity * severity) const {
+        if (severity) {
+            if (bits & _ErrorBits) {
+                *severity = ERROR;
+            } else if (bits & _WarningBits) {
+                *severity = WARNING;
+            } else {
+                *severity = OK;
+            }
+        }
+        return(_healthStatus & bits);
+    }
 
     /// @brief Serialize our members to a boost save/output archive or
     /// populate our members from a boost load/input archive.
@@ -177,8 +276,9 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
+            ar & BOOST_SERIALIZATION_NVP(_statusTime);
             ar & BOOST_SERIALIZATION_NVP(_deviceResponding);
-            ar & BOOST_SERIALIZATION_NVP(_locked1PPS);
+            ar & BOOST_SERIALIZATION_NVP(_pllLocked);
             ar & BOOST_SERIALIZATION_NVP(_lastHoldoverDuration);
             ar & BOOST_SERIALIZATION_NVP(_inHoldover);
             ar & BOOST_SERIALIZATION_NVP(_freqErrorEstimate);
@@ -197,8 +297,8 @@ private:
     /// Is the FireFly-IIA responding on the serial port?
     bool _deviceResponding;
     
-    /// Is the 1 PPS locked to GPS?
-    bool _locked1PPS;
+    /// Is the PLL locked?
+    bool _pllLocked;
 
     /// Duration of the last holdover, s. (Note that this is the duration of
     /// the current holdover when the device is in holdover).
