@@ -811,10 +811,26 @@ HcrGuiMainWindow::_update() {
     _ui.pmc730StatusIcon->setPixmap(light);
     
     // fireflyd status LED
-    light = _redLED;
-    if (_fireflydStatusThread.serverIsResponding() &&
-            _fireflydStatus.deviceResponding()) {
-        light = _greenLED;
+    if (! _fireflydStatusThread.serverIsResponding()) {
+        light = _redLED;
+    } else {
+        // If we have a good status, use its overallStatus() value
+        switch (_fireflydStatus.overallStatus()) {
+        case FireFlyStatus::OK:
+            light = _greenLED;
+            break;
+        case FireFlyStatus::WARNING:
+            light = _amberLED;
+            break;
+        case FireFlyStatus::ERROR:
+            light = _redLED;
+            break;
+        default:
+            ELOG << "Unknown FireFlyStatus severity " <<
+                _fireflydStatus.overallStatus() << " treated as an error";
+            light = _redLED;
+            break;
+        }
     }
     _ui.fireflydStatusIcon->setPixmap(light);
 
