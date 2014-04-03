@@ -49,7 +49,7 @@ void
 logStatus() {
     FireFlyStatus status = Firefly->getStatus();
     if (status.deviceResponding()) {
-        ILOG << "1 PPS " << (status.locked1PPS() ? "locked" : "NOT LOCKED") <<
+        ILOG << "PLL " << (status.pllLocked() ? "locked" : "NOT LOCKED") <<
                 ", health status: 0x" << std::hex << status.healthStatus() <<
                 (status.configError() ? ", DEVICE CONFIG ERROR!" : "");
     } else {
@@ -87,7 +87,7 @@ logStatus() {
 ///     status = FireFlyStatus(resultStruct);
 ///
 ///     // extract a value from the status
-///     bool locked1PPS = status.locked1PPS();;
+///     bool pllLocked = status.pllLocked();;
 /// @endcode
 class GetStatusMethod : public xmlrpc_c::method {
 public:
