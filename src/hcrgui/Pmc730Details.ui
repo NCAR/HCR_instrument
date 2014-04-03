@@ -6,14 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>381</height>
+    <width>613</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>PMC-730 Details</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="daemonRespondingLabel">
+     <property name="text">
+      <string>HcrPmc730Daemon</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QWidget" name="mainBox" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -1042,26 +1049,6 @@
            </property>
           </widget>
          </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="statusLabel">
-           <property name="text">
-            <string>&lt;font color='DarkRed'&gt;no status&lt;/font&gt;</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -1083,7 +1070,7 @@
  <resources>
   <include location="HcrGuiMainWindow.qrc"/>
   <include location="HcrGuiMainWindow.qrc"/>
-  <include location="../../../../../h/eol/burghart/.designer/backup/HcrGuiMainWindow.qrc"/>
+  <include location="HcrGuiMainWindow.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -20,8 +20,12 @@ public:
 
     void noStatus();
 public slots:
-    void updateStatus(const FireFlyStatus & status);
+    void updateStatus(bool daemonResponding, const FireFlyStatus & status);
 private:
     Ui::FireflydDetails _ui;
+    QPixmap _redLED;
+    QPixmap _amberLED;
+    QPixmap _greenLED;
+    QPixmap _greenLED_off;
 };
 #endif /* FIREFLYDDETAILS_H_*/

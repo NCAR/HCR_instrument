@@ -27,12 +27,9 @@ public:
     
 public slots:
     /// @brief Slot to call to populate with new status
+    /// @param daemonResponding true iff the daemon is responding
     /// @param status the new status to be displayed
-    void updateStatus(const HcrPmc730Status & status);
-    
-    /// @brief Slot to be called when daemon responsiveness changes
-    /// @param daemonResponsive true iff the daemon is currently responding
-    void daemonResponsivenessChange(bool daemonResponsive);
+    void updateStatus(bool daemonResponding, const HcrPmc730Status & status);
     
 private:
     Ui::Pmc730Details _ui;

@@ -17,12 +17,20 @@ MotionControlDetails::MotionControlDetails(QWidget *parent) :
     _redLED(":/redLED.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
-    // Initialize with empty status
-    updateStatus(MotionControl::Status());
+    // Initialize with no daemon response and empty status
+    updateStatus(false, MotionControl::Status());
 }
 
 void
-MotionControlDetails::updateStatus(const MotionControl::Status & mcStatus) {
+MotionControlDetails::updateStatus(bool daemonResponding,
+        const MotionControl::Status & mcStatus) {
+    // Based on whether the daemon is responding, set the "daemon responding"
+    // label, and set the enabled state for the rest of the components.
+    _ui.daemonRespondingLabel->setText(daemonResponding ?
+            "" : "<font color='DarkRed'>No MotionControlDaemon!</font>");
+    _ui.statusFrame->setEnabled(daemonResponding);
+
+    // Fill in the rest from the status we were given
     _warningDetected = false;
 	_errorDetected = false;
 	_doRotStatus(mcStatus);

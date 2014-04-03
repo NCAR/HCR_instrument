@@ -6,60 +6,75 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>237</width>
-    <height>87</height>
+    <width>182</width>
+    <height>102</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>hcrdrx Details</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
-    <widget class="QLabel" name="pentekBoardTempValue">
-     <property name="text">
-      <string>---</string>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0" colspan="3">
+    <widget class="QFrame" name="statusFrame">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="pentekFpgaTempValue">
-     <property name="text">
-      <string>---</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="pentekBoardTempLabel">
-     <property name="text">
-      <string>Pentek Board Temp</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="pentekFpgaTempLabel">
-     <property name="text">
-      <string>Pentek FPGA Temp</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="unitLabel">
-     <property name="text">
-      <string>deg C</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QLabel" name="unitLabel_2">
-     <property name="text">
-      <string>deg C</string>
-     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="pentekFpgaTempLabel">
+        <property name="text">
+         <string>Pentek FPGA Temp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="pentekFpgaTempValue">
+        <property name="text">
+         <string>---</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="pentekBoardTempLabel">
+        <property name="text">
+         <string>Pentek Board Temp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="unitLabel">
+        <property name="text">
+         <string>deg C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="unitLabel_2">
+        <property name="text">
+         <string>deg C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="pentekBoardTempValue">
+        <property name="text">
+         <string>---</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="2" column="2">
@@ -72,9 +87,24 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="daemonRespondingLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>hcrdrx</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="HcrGuiMainWindow.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

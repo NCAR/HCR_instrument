@@ -23,7 +23,14 @@ CmigitsDetails::CmigitsDetails(QWidget *parent) :
 }
 
 void
-CmigitsDetails::updateStatus(const CmigitsStatus & status) {
+CmigitsDetails::updateStatus(bool daemonResponding,
+        const CmigitsStatus & status) {
+    // Based on whether the daemon is responding, set the "daemon responding"
+    // label, and set the enabled state for the rest of the components.
+    _ui.daemonRespondingLabel->setText(daemonResponding ?
+            "" : "<font color='DarkRed'>No CmigitsDaemon!</font>");
+    _ui.infoFrame->setEnabled(daemonResponding);
+
     double statusTime = 0.0;
     uint16_t currentMode = 0;
     bool insAvailable = false;

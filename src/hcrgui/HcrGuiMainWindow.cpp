@@ -96,13 +96,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.hmcModeCombo->setEnabled(false);
     
     // No status from any daemons yet
-    _ui.xmitterStatusIcon->setPixmap(_redLED);
-    _ui.mcStatusIcon->setPixmap(_redLED);
     _ui.cmigitsStatusIcon->setPixmap(_redLED);
+    _ui.fireflydStatusIcon->setPixmap(_redLED);
     _ui.hcrdrxStatusIcon->setPixmap(_redLED);
+    _ui.mcStatusIcon->setPixmap(_redLED);
+    _ui.pmc730StatusIcon->setPixmap(_redLED);
+    _ui.xmitterStatusIcon->setPixmap(_redLED);
     
-    // Disable C-MIGITS details
-    _cmigitsDetails.setEnabled(false);
     // Connect and start the CmigitsStatusThread
     connect(& _cmigitsStatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_cmigitsResponsivenessChange(bool, QString)));
@@ -150,7 +150,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_fireflydResponsivenessChange(bool)));
     connect(& _fireflydStatusThread, SIGNAL(newStatus(FireFlyStatus)),
             this, SLOT(_setFireFlyStatus(FireFlyStatus)));
-    _xmitdStatusThread.start();
+    _fireflydStatusThread.start();
 
     // QUdpSocket listening for broadcast of angles
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
@@ -188,7 +188,6 @@ HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding, QString msg) {
             "responding: " << msg.toStdString();
     _logMessage(ss.str().c_str());
 
-    _cmigitsDetails.setEnabled(responding);
     if (! responding) {
         // Create a default (bad) CmigitsStatus, and set it as the last status
         // received.
@@ -200,7 +199,8 @@ void
 HcrGuiMainWindow::_setCmigitsStatus(const CmigitsStatus & status) {
     _cmigitsStatus = status;
     // Update the C-MIGITS status details dialog.
-    _cmigitsDetails.updateStatus(_cmigitsStatus);
+    _cmigitsDetails.updateStatus(_cmigitsStatusThread.serverIsResponding(),
+            _cmigitsStatus);
     // Update the main GUI
     _update();
 }
@@ -214,13 +214,20 @@ HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
             (responding ? " is " : " is not ") <<
             "responding";
     _logMessage(ss.str().c_str());
+
+    if (! responding) {
+        // Create a default (bad) MotionControl::Status, and set it as the
+        // last status received.
+        _setMotionControlStatus(MotionControl::Status());
+    }
 }
 
 void
 HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
     _mcStatus = status;
     // Update the details dialog
-    _motionControlDetails.updateStatus(_mcStatus);
+    _motionControlDetails.updateStatus(_mcClientThread.serverIsResponding(),
+            _mcStatus);
     // Update the main GUI
     _update();
 }
@@ -238,15 +245,19 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
 
     _ui.hmcModeCombo->setEnabled(responding);
     
-    // Let the details widget know
-    _pmc730Details.daemonResponsivenessChange(responding);
+    if (! responding) {
+        // Create a default (bad) Pmc730Status, and set it as the last status
+        // received.
+        _setPmcStatus(HcrPmc730Status(true));
+    }
 }
 
 void
 HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
     _pmcStatus = status;
     // Update the details dialog
-    _pmc730Details.updateStatus(_pmcStatus);
+    _pmc730Details.updateStatus(_pmcStatusThread.serverIsResponding(),
+            _pmcStatus);
     // Update the main GUI
     _update();
 }
@@ -273,8 +284,8 @@ void
 HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
     _xmitStatus = status;
     // Update the transmitter status details dialog
-    _xmitDetails.setEnabled(_xmitStatus.serialConnected());
-    _xmitDetails.updateStatus(_xmitStatus);
+    _xmitDetails.updateStatus(_xmitdStatusThread.serverIsResponding(),
+            _xmitStatus);
     // Update the main GUI
     _update();
 }
@@ -301,7 +312,8 @@ void
 HcrGuiMainWindow::_setFireFlyStatus(FireFlyStatus status) {
     _fireflydStatus = status;
     // Update the fireflyd status details dialog
-    _fireflydDetails.updateStatus(_fireflydStatus);
+    _fireflydDetails.updateStatus(_fireflydStatusThread.serverIsResponding(),
+            _fireflydStatus);
     // Update the main GUI
     _update();
 }
@@ -328,7 +340,8 @@ void
 HcrGuiMainWindow::_setDrxStatus(DrxStatus status) {
     _drxStatus = status;
     // Update the details dialog
-    _hcrdrxDetails.updateStatus(_drxStatus);
+    _hcrdrxDetails.updateStatus(_hcrdrxStatusThread.serverIsResponding(),
+            _drxStatus);
     // Update the main GUI
     _update();
 }
@@ -350,7 +363,7 @@ HcrGuiMainWindow::_dataMapperResponsivenessChange(bool responding) {
 void
 HcrGuiMainWindow::_setDataMapperStatus(double tsWriteRate) {
     _dmapWriteRate = tsWriteRate;
-    // Update the details dialog
+//    // Update the details dialog
 //    _dmapDetails.updateStatus(_dmapStatus);
     // Update the main GUI
     _update();
@@ -704,13 +717,17 @@ HcrGuiMainWindow::_update() {
     faultCount += _xmitStatus.externalInterlockFault() ? 1 : 0;
     faultCount += _xmitStatus.eikInterlockFault() ? 1 : 0;
 
-    _ui.xmitterStatusIcon->setPixmap((faultCount > 0) ? _redLED : _greenLED);
+    // Set the overall transmitter status LED
+    if (! _xmitStatus.serialConnected() || (faultCount > 0)) {
+        _ui.xmitterStatusIcon->setPixmap(_redLED);
+    } else {
+        _ui.xmitterStatusIcon->setPixmap(_greenLED);
+    }
 
     // HMC mode
     _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
 
     // C-MIGITS status light
-    // Get C-MIGITS status
     light = _redLED;
     uint16_t mode = _cmigitsStatus.currentMode();
     if (mode == 7 || mode == 8) {
@@ -734,8 +751,6 @@ HcrGuiMainWindow::_update() {
     }
 
     if (_mcClientThread.serverIsResponding()) {
-        _motionControlDetails.setEnabled(true);
-
         // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
@@ -772,7 +787,6 @@ HcrGuiMainWindow::_update() {
         }
     } else {
         _mcStatus = MotionControl::Status();    // go to an empty status
-        _motionControlDetails.setEnabled(false);
         _ui.antennaModeLabel->setText("<font color='DarkRed'>MotionControlDaemon not responding</font>");
         _ui.attitudeCorrectionWidget->setEnabled(false);
         _ui.driveHomeButton->setEnabled(false);
@@ -796,6 +810,14 @@ HcrGuiMainWindow::_update() {
     }
     _ui.pmc730StatusIcon->setPixmap(light);
     
+    // fireflyd status LED
+    light = _redLED;
+    if (_fireflydStatusThread.serverIsResponding() &&
+            _fireflydStatus.deviceResponding()) {
+        light = _greenLED;
+    }
+    _ui.fireflydStatusIcon->setPixmap(light);
+
     // Make sure transmitter HV is turned off if the pressure in the pressure 
     // vessel drops below 760 hPa.
     if (_pmcStatus.pvForePressure() < 760) {

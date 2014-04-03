@@ -15,10 +15,30 @@ XmitDetails::XmitDetails(QWidget *parent) :
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png") {
     _ui.setupUi(this);
+    // Initialize with no daemon response and a default/bad status.
+    updateStatus(false, XmitStatus());
 }
 
 void
-XmitDetails::updateStatus(const XmitStatus & xmitStatus) {
+XmitDetails::updateStatus(bool daemonResponding,
+        const XmitStatus & xmitStatus) {
+    // Based on whether the daemon is responding and the CMU is responding to
+    // the daemon, set the "responding" label, and set the enabled state for
+    // the rest of the components.
+    if (daemonResponding && xmitStatus.serialConnected()) {
+        _ui.respondingLabel->setText("");
+        _ui.statusFrame->setEnabled(true);
+    } else {
+        if (daemonResponding) {
+            _ui.respondingLabel->setText("<font color='DarkRed'>"
+                    "CMU not responding to hcr_xmitd!</font>");
+        } else {
+            _ui.respondingLabel->setText("<font color='DarkRed'>"
+                    "No hcr_xmitd!</font>");
+        }
+        _ui.statusFrame->setEnabled(false);
+    }
+
     // fault lights
     _ui.modulatorFaultIcon->
         setPixmap(xmitStatus.modulatorFault() ? _redLED : _greenLED);

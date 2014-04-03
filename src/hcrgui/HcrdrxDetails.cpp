@@ -17,7 +17,14 @@ HcrdrxDetails::HcrdrxDetails(QWidget *parent) :
 }
 
 void
-HcrdrxDetails::updateStatus(const DrxStatus & status) {
+HcrdrxDetails::updateStatus(bool daemonResponding, const DrxStatus & status) {
+    // Based on whether the daemon is responding, set the "daemon responding"
+    // label, and set the enabled state for the rest of the components.
+    _ui.daemonRespondingLabel->setText(daemonResponding ?
+            "" : "<font color='DarkRed'>No hcrdrx!</font>");
+    _ui.statusFrame->setEnabled(daemonResponding);
+
+    // Fill in with info from the DrxStatus
     _ui.pentekFpgaTempValue->setText(QString::number(status.pentekFpgaTemp()));
     _ui.pentekBoardTempValue->setText(QString::number(status.pentekBoardTemp()));
 }

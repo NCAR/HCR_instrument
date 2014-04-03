@@ -16,17 +16,27 @@ Pmc730Details::Pmc730Details(QWidget *parent) :
     _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
-    // Assume the daemon isn't yet responding
-    daemonResponsivenessChange(false);
+    // Initialize with no daemon response and default/bad status
+    updateStatus(false, HcrPmc730Status(true));
 }
 
 void
-Pmc730Details::updateStatus(const HcrPmc730Status & status) {
+Pmc730Details::updateStatus(bool daemonResponding,
+        const HcrPmc730Status & status) {
+    // Disable the status boxes if the daemon is not responding
+    _ui.mainBox->setEnabled(daemonResponding);
+    _ui.hmcModeBox->setEnabled(daemonResponding);
+
+    // Set status label
+    if (daemonResponding) {
+        _ui.daemonRespondingLabel->setText(QString("Status updated ") +
+                QDateTime::currentDateTime().toUTC().toString("HH:mm:ss"));
+    } else {
+        _ui.daemonRespondingLabel->setText("<font color='DarkRed'>No HcrPmc730Daemon!</font>");
+    }
     _warnState = false;
     _errState = false;
     
-    _ui.statusLabel->setText(QString("Status updated ") + 
-            QDateTime::currentDateTime().toUTC().toString("HH:mm:ss"));
     // HMC mode
     _ui.hmcModeValue->setText(HcrPmc730::HmcModeNames[status.hmcMode()].c_str());
     
@@ -139,18 +149,4 @@ Pmc730Details::updateStatus(const HcrPmc730Status & status) {
     _ui.vesselPresForeValue->
         setText(QString::number(status.pvForePressure(), 'f', 0));
     _ui.psVoltageValue->setText(QString::number(status.psVoltage(), 'f', 2));
-}
-
-void
-Pmc730Details::daemonResponsivenessChange(bool daemonResponsive) {
-    if (daemonResponsive) {
-        _ui.statusLabel->setText("No status received yet");
-        _ui.mainBox->setEnabled(true);
-        _ui.hmcModeBox->setEnabled(true);
-    } else {
-        _ui.mainBox->setEnabled(false);
-        _ui.hmcModeBox->setEnabled(false);
-        updateStatus(HcrPmc730Status(true)); // populate with empty status
-        _ui.statusLabel->setText("<font color='DarkRed'>HcrPmc730Daemon is not responding!</font>");
-    }
 }

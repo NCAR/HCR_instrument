@@ -32,7 +32,7 @@ public:
     bool warningDetected() const { return(_warningDetected); }
 
 public slots:
-    void updateStatus(const MotionControl::Status & mcStatus);
+    void updateStatus(bool daemonResponding, const MotionControl::Status & mcStatus);
 private:
     void _doRotStatus(const MotionControl::Status & mcStatus);
 

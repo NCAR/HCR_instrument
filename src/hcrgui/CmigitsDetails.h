@@ -21,7 +21,7 @@ public:
 
     void noStatus();
 public slots:
-    void updateStatus(const CmigitsStatus & status);
+    void updateStatus(bool daemonResponding, const CmigitsStatus & status);
 private:
     Ui::CmigitsDetails _ui;
     CmigitsSharedMemory _cmigitsShm;

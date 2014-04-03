@@ -18,7 +18,7 @@ public:
     XmitDetails(QWidget *parent);
     virtual ~XmitDetails() {}
 
-    void updateStatus(const XmitStatus & xmitStatus);
+    void updateStatus(bool daemonResponding, const XmitStatus & xmitStatus);
     void noStatus();
 
 protected:
