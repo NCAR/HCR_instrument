@@ -68,6 +68,10 @@ public:
     /// locked to 1 PPS from GPS.
     bool locked1PPS() const { return(_locked1PPS); }
 
+    /// @brief Return true iff the device is in holdover
+    /// @return true iff the device is in holdover
+    bool inHoldover() const { return(_inHoldover); }
+
     /// @brief Return the last holdover duration in seconds. Note that this is
     /// also the *current* holdover duration when the unit is in holdover.
     /// @return the last holdover duration in seconds. Note that this is also
