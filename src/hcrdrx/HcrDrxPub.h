@@ -28,21 +28,22 @@ class HcrDrxPub : public QThread {
 public:
 
   /**
-   * Enumerated values for the Hcr receive channels.
-   * HCR_H_CHANNEL is the horizontal data channel
-   * HCR_V_CHANNEL is the vertical data channel
-   * HCR_N_CHANNELS provides the total count of Hcr channels
+   * Enumerated data types for the HCR receive channels.
+   * H_CHANNEL is the horizontal data channel
+   * V_CHANNEL is the vertical data channel
+   * N_CHANNELS provides the total count of HCR channels
    */
     typedef enum {
-      HCR_H_CHANNEL,
-      HCR_V_CHANNEL,
-      HCR_N_CHANNELS
-    } HcrChannel;
+      H_CHANNEL,
+      V_CHANNEL,
+      N_CHANNELS
+    } DataChannelType;
         
   /**
    * @brief Constructor.
    * @param sd3c reference to the p7142sd3c object for our P7142 card
-   * @param chanId the P7142 channel this thread will read
+   * @param pentekChanNum the P7142 channel this thread will read
+   * @param chanType the data type to be delivered on this channel
    * @param config HcrDrxConfig defining the desired configuration.
    * @param exporter the IwrfExport object to be used for merging and publishing
    *     data
@@ -56,7 +57,8 @@ public:
    */
   HcrDrxPub(
           Pentek::p7142sd3c & sd3c,
-          int chanId,
+          int pentekChanNum,
+          DataChannelType chanType,
           const HcrDrxConfig& config,
           IwrfExport *exporter,
           int tsLength,
@@ -79,9 +81,10 @@ public:
   Pentek::p7142sd3cDn* downconverter() { return _down; }
 
 private:
-
-  static const double _RAD_TO_DEG;
-
+  /// Array of instance pointers for each type, to make sure we only create
+  /// one instance per channel type.
+  static HcrDrxPub * InstanceForType[N_CHANNELS];
+  
   const HcrDrxConfig &_config;
 
   /// @brief Return the current time in seconds since 1970/01/01 00:00:00 UTC.
@@ -106,10 +109,13 @@ private:
         
   /// Our associated p7142sd3c
   Pentek::p7142sd3c& _sd3c;
+
+  /// Receiver channel number
+  unsigned int _pentekChanNum;
         
-  /// Receiver channel
-  unsigned int _chanId;
-        
+  /// Data channel type
+  DataChannelType _chanType;
+  
   /// Our associated Pentek downconverter
   Pentek::p7142sd3cDn* _down;
 

@@ -13,10 +13,13 @@ using namespace boost::posix_time;
 
 LOGGING("HcrDrxPub")
 
+HcrDrxPub * HcrDrxPub::InstanceForType[] = { NULL, NULL };
+
 //////////////////////////////////////////////////////////////////////////////////
 HcrDrxPub::HcrDrxPub(
                 Pentek::p7142sd3c& sd3c,
-                int chanId,
+                int pentekChanNum,
+                DataChannelType chanType,
                 const HcrDrxConfig& config,
                 IwrfExport *exporter,
                 int tsLength,
@@ -26,7 +29,8 @@ HcrDrxPub::HcrDrxPub(
      QThread(),
      _config(config),
      _sd3c(sd3c),
-     _chanId(chanId),
+     _pentekChanNum(pentekChanNum),
+     _chanType(chanType),
      _down(0),
      _nGates(sd3c.gates()),
      _exporter(exporter),
@@ -36,12 +40,22 @@ HcrDrxPub::HcrDrxPub(
     if (! _configIsValid())
         abort();
 
+    // If there's already an instance for this channel type, it's a problem...
+    // Otherwise, we mark our spot as owner of this channel type.
+    if (InstanceForType[_chanType]) {
+        ELOG << "Attempt to instantiate multiple HcrDrxPub-s " << 
+                "for channel type " << _chanType;
+        exit(1);
+    } else {
+        InstanceForType[_chanType] = this;
+    }
+    
     // scaling between A2D counts and volts
     _iqScaleForMw = config.iqcount_scale_for_mw();
 
     // Create our associated downconverter.
     bool useInternalClock = false;
-    _down = sd3c.addDownconverter(_chanId, 4 * 512 * 1024, false, tsLength,
+    _down = sd3c.addDownconverter(_pentekChanNum, 4 * 512 * 1024, false, tsLength,
         config.digitizer_gate0_delay(), config.digitizer_sample_width(),
         gaussianFile, kaiserFile, simWavelength, useInternalClock);
 }
@@ -55,10 +69,10 @@ HcrDrxPub::~HcrDrxPub() {
 void HcrDrxPub::run() {
   int bl = _down->beamLength();
   
-  ILOG << "Channel " << _chanId << " beam length is " << bl <<
+  ILOG << "Channel " << _pentekChanNum << " beam length is " << bl <<
     ", waiting for data...";
   // Socket for broadcasting angles. This is only used by channel 0.
-  QUdpSocket * angleSocket = (_chanId == 0) ? new QUdpSocket() : 0;
+  QUdpSocket * angleSocket = (_pentekChanNum == 0) ? new QUdpSocket() : 0;
 
   // start the loop. The thread will block on getBeam()
   int count = 0;
@@ -136,16 +150,18 @@ HcrDrxPub::_addToExport(const int16_t *iq, int64_t pulseSeqNum,
   // set data in pulse object
 
   _pulseData->set(pulseSeqNum, timeSecs, nanoSecs,
-          _chanId, rotMotorAngle, tiltMotorAngle,
+          _pentekChanNum, rotMotorAngle, tiltMotorAngle,
           _nGates, iq);
 
-  // we write to the merge queue using one object,
-  // and get back another for reuse
-
-  if (_chanId == HCR_H_CHANNEL) {
+  // Write our current object into the merge queue, and get back another to use
+  switch (_chanType) {
+  case H_CHANNEL:
       _pulseData = _exporter->writePulseH(_pulseData);
-  } else if (_chanId == HCR_V_CHANNEL) {
+      break;
+  case V_CHANNEL:
       _pulseData = _exporter->writePulseV(_pulseData);
+      break;
+  default:
+      ELOG << "Dropping pulse for channel type " << _chanType;
   }
-
 }

@@ -2,10 +2,9 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <fcntl.h>
-#include <stdio.h>
-#include <math.h>
-#include <sched.h>
+#include <cstdio>
+#include <cmath>
+#include <cassert>
 #include <sys/timeb.h>
 #include <ctime>
 #include <cerrno>
@@ -44,11 +43,13 @@ std::string _drxConfig;          ///< DRX configuration file
 std::string _instance = "ops";   ///< application instance
 HcrMonitor * _hcrMonitor;        ///< HcrMonitor instance
 
-/// Pentek channels to use for H and V. We choose channels 0 and 2 because
+/// Pentek channels to use for H and V. We use channels 0 and 2 because
 /// they exhibit lower noise than channels 1 and 3 when using the DDC8 bitstream
-int _chanNums[] = { 0, 2 };      ///< H and V. We use channels 0 and 2 because
+int _chanNums[] = { 0, 2 };
 int _nChans = sizeof(_chanNums) / sizeof(*_chanNums);   ///< number of channels
-std::vector<HcrDrxPub*> _downThreads(_nChans);  // per-channel publishers
+
+std::vector<HcrDrxPub*> _downThreads(_nChans);  ///< per-channel publishers
+
 int _tsLength;                   ///< The time series length
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
@@ -244,7 +245,7 @@ printStatsAndUpdateRegistration() {
     // Print data rates and other interesting tidbits
     std::ostringstream ss;
     for (int c = 0; c < _nChans; c++) {
-        Pentek::p7142sd3cDn * down = _downThreads[_chanNums[c]]->downconverter();
+        Pentek::p7142sd3cDn * down = _downThreads[c]->downconverter();
         if (c != 0) {
             ss << "  ";
         }
@@ -339,9 +340,11 @@ main(int argc, char** argv)
     
     // Create the down converter threads. The threads are not started at
     // creation, but they do instantiate the down converters.
+    assert(_nChans <= HcrDrxPub::N_CHANNELS);
     for (int c = 0; c < _nChans; c++) {
-        ILOG << "*** Channel " << _chanNums[c] << " ***";
-        _downThreads[c] = new HcrDrxPub(*_sd3c, _chanNums[c], hcrConfig,
+        ILOG << "*** Pentek channel " << _chanNums[c] << " ***";
+        _downThreads[c] = new HcrDrxPub(*_sd3c, _chanNums[c], 
+                HcrDrxPub::DataChannelType(c), hcrConfig,
                 _exporter, _tsLength, _gaussianFile, _kaiserFile,
                 _simWaveLength);
     }
@@ -362,7 +365,7 @@ main(int argc, char** argv)
         // start reading data, but should block on the first
         // read since the timers and filters are not running yet.
         _downThreads[c]->start();
-        ILOG << "processing enabled on channel " << c;
+        ILOG << "processing enabled on Pentek channel " << _chanNums[c];
     }
 
     // wait awhile, so that the threads can all get to the first read.
