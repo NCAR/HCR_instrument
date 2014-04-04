@@ -43,8 +43,12 @@ namespace po = boost::program_options;
 std::string _drxConfig;          ///< DRX configuration file
 std::string _instance = "ops";   ///< application instance
 HcrMonitor * _hcrMonitor;        ///< HcrMonitor instance
-int _chans = 2;                  ///< number of channels
-std::vector<HcrDrxPub*> _downThreads(_chans);   // per-channel publishers
+
+/// Pentek channels to use for H and V. We choose channels 0 and 2 because
+/// they exhibit lower noise than channels 1 and 3 when using the DDC8 bitstream
+int _chanNums[] = { 0, 2 };      ///< H and V. We use channels 0 and 2 because
+int _nChans = sizeof(_chanNums) / sizeof(*_chanNums);   ///< number of channels
+std::vector<HcrDrxPub*> _downThreads(_nChans);  // per-channel publishers
 int _tsLength;                   ///< The time series length
 std::string _gaussianFile = "";  ///< gaussian filter coefficient file
 std::string _kaiserFile = "";    ///< kaiser filter coefficient file
@@ -239,13 +243,13 @@ printStatsAndUpdateRegistration() {
 
     // Print data rates and other interesting tidbits
     std::ostringstream ss;
-    for (int c = 0; c < _chans; c++) {
-        Pentek::p7142sd3cDn * down = _downThreads[c]->downconverter();
+    for (int c = 0; c < _nChans; c++) {
+        Pentek::p7142sd3cDn * down = _downThreads[_chanNums[c]]->downconverter();
         if (c != 0) {
             ss << "  ";
         }
         ss << std::setprecision(3) << std::setw(5)
-           << "chan " << c << " -- "
+           << "chan " << _chanNums[c] << " -- "
            << down->bytesRead() / 1000000.0 / float(UPDATE_INTERVAL_SECS) << " MB/s "
            << " drop:" << down->droppedPulses()
            << " sync:" << down->syncErrors();
@@ -333,12 +337,13 @@ main(int argc, char** argv)
     
     // Create (but don't yet start) the downconversion threads.
     
-    // Create the down converter threads. The threads are not run at creation, 
-    // but they do instantiate the down converters.
-    for (int c = 0; c < _chans; c++) {
-        ILOG << "*** Channel " << c << " ***";
-        _downThreads[c] = new HcrDrxPub(*_sd3c, c, hcrConfig, _exporter, _tsLength,
-                _gaussianFile, _kaiserFile, _simWaveLength);
+    // Create the down converter threads. The threads are not started at
+    // creation, but they do instantiate the down converters.
+    for (int c = 0; c < _nChans; c++) {
+        ILOG << "*** Channel " << _chanNums[c] << " ***";
+        _downThreads[c] = new HcrDrxPub(*_sd3c, _chanNums[c], hcrConfig,
+                _exporter, _tsLength, _gaussianFile, _kaiserFile,
+                _simWaveLength);
     }
 
     // Create the upConverter.
@@ -351,7 +356,7 @@ main(int argc, char** argv)
     signal(SIGINT, sigHandler);
     signal(SIGTERM, sigHandler);
 
-    for (int c = 0; c < _chans; c++) {
+    for (int c = 0; c < _nChans; c++) {
         // run the downconverter thread. This will cause the
         // thread code to call the run() method, which will
         // start reading data, but should block on the first
@@ -406,8 +411,8 @@ main(int argc, char** argv)
     ILOG << "Shutting down...";
     
     // Stop the downconverter threads
-    for (int c = 0; c < _chans; c++) {
-        ILOG << "Stopping thread for channel " << c;
+    for (int c = 0; c < _nChans; c++) {
+        ILOG << "Stopping thread for channel " << _chanNums[c];
         _downThreads[c]->terminate();
         _downThreads[c]->wait(1000);    // wait up to a second for termination
     }
