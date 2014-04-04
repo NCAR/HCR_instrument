@@ -36,10 +36,10 @@ Default(dox)
 # named the same as this one.
 doxdir = os.path.basename(tooldir)
     
-def firefly(env):
+def FireFly(env):
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
     env.AppendDoxref(doxdir)
     env.Require(tools)
 
-Export('firefly')
+Export('FireFly')

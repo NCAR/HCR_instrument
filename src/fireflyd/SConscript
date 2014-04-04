@@ -2,7 +2,7 @@
 
 tools = Split("""
 doxygen
-firefly
+FireFly
 logx
 qt4
 QFunctionWrapper

@@ -20,9 +20,9 @@ fireflydRpcClient.cpp
 ''')
 lib = env.Library('fireflydrpcclient', sources)
     
-def fireflydrpcclient(env):
+def fireflydRpcClient(env):
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
     env.Require(tools)
 
-Export('fireflydrpcclient')
+Export('fireflydRpcClient')

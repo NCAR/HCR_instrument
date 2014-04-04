@@ -7,7 +7,7 @@ boost_date_time
 hcrpmc730client
 cmigitsdaemonrpcclient
 doxygen
-fireflydrpcclient
+fireflydRpcClient
 hcrdrxrpcclient
 logx
 motioncontrol
