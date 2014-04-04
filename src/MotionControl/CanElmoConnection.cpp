@@ -497,7 +497,7 @@ CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
             _CompleteSDO,   // SDOCallback_t
             false);         // block mode?
     if (res != 0) {
-        ELOG << _driveName << ": Error " << res << " sending " <<
+        ELOG << _driveName << ": Error " << int(res) << " sending " <<
                 "'set producer heartbeat interval' to node " << int(_elmoNodeId);
         return(false);
     }
@@ -580,7 +580,7 @@ CanElmoConnection::_sendSetImmediateEvaluation() {
             _CompleteSDO,       // SDOCallback_t
             false);             // block mode?
     if (res != 0) {
-        ELOG << _driveName << ": Error " << res << " sending " <<
+        ELOG << _driveName << ": Error " << int(res) << " sending " <<
                 "'set immediate evaluation' to node " << int(_elmoNodeId);
         return(false);
     }
@@ -656,7 +656,7 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     // Send the PDO
     UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
     if (result != 0) {
-        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << result;
+        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << int(result);
     }
     return(result);
 }
@@ -707,7 +707,7 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     // Send the PDO
     UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
     if (result != 0) {
-        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << result;
+        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << int(result);
     }
     return(result);
 }
@@ -753,7 +753,7 @@ CanElmoConnection::_initiateXq(std::string cmd) {
             _CompleteSDO,       // SDOCallback_t
             false);             // block mode?
     if (res != 0) {
-        ELOG << _driveName << ": Error " << res << " sending " <<
+        ELOG << _driveName << ": Error " << int(res) << " sending " <<
                 "'" << cmd << "' to node " << int(_elmoNodeId);
         return(false);
     }
