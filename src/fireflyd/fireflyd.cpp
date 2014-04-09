@@ -7,6 +7,8 @@
 
 #include <unistd.h>
 #include <csignal>
+#include <sstream>
+#include <boost/program_options.hpp>
 #include <QCoreApplication>
 #include <QTimer>
 
@@ -21,14 +23,13 @@
 
 LOGGING("fireflyd")
 
+namespace po = boost::program_options;
+
 /// Our FireFly
 FireFly *Firefly = 0;
 
 /// Our QApplication
 QCoreApplication *App = 0;
-
-/// Default instance name for procmap
-std::string InstanceName = "ops";
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
@@ -104,7 +105,6 @@ public:
     }
 };
 
-
 int
 main(int argc, char *argv[]) {
     // Let logx get and strip out its arguments
@@ -113,32 +113,61 @@ main(int argc, char *argv[]) {
     // Instantiate our QCoreApplication
     App = new QCoreApplication(argc, argv);
 
-    // Remaining args should just be serial device attached to the FireFly and
-    // port number we should use.
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <tty_dev> <xmlrpc_portnum>" <<
-                std::endl;
+    // tty device name
+    std::string devName("/dev/ttyS2");
+
+    // XML-RPC server port number
+    int xmlrpcPortNum = 8001;
+
+    // procmap instance name
+    std::string instanceName("ops");
+
+    // Get fireflyd's options
+    po::options_description opts("Options");
+    opts.add_options()
+        ("help,h", "Describe options")
+        ("instance,i", po::value<std::string>(&instanceName)->default_value(""),
+                "instance name for procmap connection")
+        ("devName,d", po::value<std::string>(&devName)->default_value("/dev/ttyS2"),
+                "tty device name for FireFly-IIA connection")
+        ("xmlrpcPortNum,x", po::value<int>(&xmlrpcPortNum)->default_value(8001),
+                "XML-RPC server port number")
+        ;
+    bool argError = false;
+    po::variables_map vm;
+    try {
+        po::store(po::command_line_parser(argc, argv).options(opts).run(), vm);
+        po::notify(vm);
+    } catch (...) {
+        argError = true;
+    }
+
+    // Give usage information and exit if 1) help was requested, or 2) there
+    // is an argument error
+    if (vm.count("help") || argError) {
+        std::cout << "Usage: " << argv[0] <<
+                  " [OPTION]..." << std::endl;
+        std::cout << opts << std::endl;
         exit(1);
     }
     
     // Initialize registration with procmap if instance is specified
-    if (InstanceName.size() > 0) {
-        PMU_auto_init("fireflyd", InstanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
+    if (instanceName.size() > 0) {
+        PMU_auto_init("fireflyd", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
         ILOG << "Initializing procmap registration as instance '" << 
-                InstanceName << "'";
+                instanceName << "'";
     }
 
     ILOG << "fireflyd (" << getpid() << ") started";
 
     // Instantiate a FireFly communication thread, using the given serial port
     PMU_auto_register("instantiating FireFly");
-    Firefly = new FireFly(argv[1]);
+    Firefly = new FireFly(devName);
     
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    int serverPort = atoi(argv[2]);
-    QXmlRpcServerAbyss rpcServer(&myRegistry, serverPort);
+    QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);

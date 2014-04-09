@@ -1,6 +1,7 @@
 # -*- python -*-
 
 tools = Split("""
+boost_program_options
 doxygen
 FireFly
 logx
