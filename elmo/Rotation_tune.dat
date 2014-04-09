@@ -16,6 +16,11 @@
 <end_Communication>
 <UserProgram>
 	<Program>/////////////////////////////////////////////////////////////////////
+//
+// Move drive to the first index mark in the positive direction from the home
+// sensor and set the count value for that location to the value currently in
+// user integer UI[1].
+//
 function rotHoming()
 	MO=0; UM=5; MO=1;
 
@@ -38,13 +43,17 @@ function rotHoming()
 	PA=0; BG;
 	waitMotion();
 	
-	// Now jog to the first index mark forward of 'home' and move absolute 
-	// zero location there. This position should be consistent.
-	HM[2]=0; HM[3]=3; HM[4]=0; HM[5]=0;
+	// Now jog to the first index mark forward of 'home'. This position should
+	// be extremely consistent.
+	//
+	// We assign the user integer value found in UI[1] (which must be set 
+	// externally before the call here) as the absolute count value at this 
+	// location.
+	HM[2]=UI[1]; HM[3]=3; HM[4]=0; HM[5]=0;
 	HM[1]=1;
 	JV=80000; BG;
 	waitHoming();
-	
+
 	// Move the drive back to our new zero
 	PA=0; BG;
 	waitMotion();
