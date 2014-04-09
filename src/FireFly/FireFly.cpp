@@ -8,8 +8,10 @@
 #include "FireFly.h"
 
 #include <cerrno>
+#include <cstdlib>
 #include <termios.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
 #include <QMetaType>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -462,7 +464,14 @@ FireFly::_openTty() {
     if ((_fd = open(_ttyDev.c_str(), O_RDWR)) == -1) {
         ELOG << __PRETTY_FUNCTION__ << ": error opening " << _ttyDev << ": " <<
                 strerror(errno);
-        exit(1);
+        ::exit(1);
+    }
+
+    // We want exclusive access to the device
+    if (ioctl(_fd, TIOCEXCL)) {
+        ELOG << __PRETTY_FUNCTION__ << ": error setting exclusive access to " <<
+                _ttyDev << ": " << strerror(errno);
+        ::exit(1);
     }
 
     // Make the port 115200 8N1, "raw"
@@ -470,7 +479,7 @@ FireFly::_openTty() {
     if (tcgetattr(_fd, &ios) == -1) {
         ELOG << __PRETTY_FUNCTION__ << ": error getting " << _ttyDev << 
                 " attributes: " << strerror(errno);
-        exit(1);
+        ::exit(1);
     }
     cfmakeraw(&ios);
     cfsetspeed(&ios, B115200);
@@ -482,7 +491,7 @@ FireFly::_openTty() {
     if (tcsetattr(_fd, TCSAFLUSH, &ios) == -1) {
         ELOG << __PRETTY_FUNCTION__ << ": error setting " << _ttyDev << 
                 " attributes: " << strerror(errno);
-        exit(1);
+        ::exit(1);
     }
     DLOG << "Done configuring " << _ttyDev;
 }
