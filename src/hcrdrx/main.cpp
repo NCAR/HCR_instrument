@@ -261,6 +261,24 @@ printStatsAndUpdateRegistration() {
     ILOG << "Pentek board temp: " << status.pentekBoardTemp();
     ILOG << "Pentek FPGA temp: " << status.pentekFpgaTemp();
 }
+
+///////////////////////////////////////////////////////////
+// Function called if we wait too long for first data
+void
+dataWaitTimedOut() {
+    ELOG << "First data not seen in 1 second. " << 
+            "Likely there was no 1 PPS signal to start timers!";
+    _app->quit();
+}
+
+///////////////////////////////////////////////////////////
+// Function called if when first data arrive
+void
+onFirstData() {
+    DLOG << "First data seen at " << 
+            to_simple_string(microsec_clock::universal_time());
+}
+
 ///////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
@@ -396,6 +414,24 @@ main(int argc, char** argv)
 
     // Start the timers, which will allow data to flow.
     _sd3c->timersStartStop(true);
+
+    // Set up a one-shot timer to make sure we see first data within a 
+    // reasonable time. If we're starting on a 1 PPS trigger, data should show
+    // up within a second, otherwise it should start flowing immediately.
+    // (Neglecting latency in filling the Pentek DMA buffer).
+    //
+    // We stop the timer as soon as data are seen on _downThreads[0].
+    QTimer dataWaitTimeoutTimer;
+    dataWaitTimeoutTimer.setInterval(1000);     // 1000 ms -> 1 s
+    QFunctionWrapper dataWaitFuncWrapper(dataWaitTimedOut);
+    QFunctionWrapper onFirstDataFuncWrapper(onFirstData);
+    QObject::connect(&dataWaitTimeoutTimer, SIGNAL(timeout()),
+            &dataWaitFuncWrapper, SLOT(callFunction()));
+    QObject::connect(_downThreads[0], SIGNAL(firstDataSeen(int)),
+            &dataWaitTimeoutTimer, SLOT(stop()));
+    QObject::connect(_downThreads[0], SIGNAL(firstDataSeen(int)),
+            &onFirstDataFuncWrapper, SLOT(callFunction()));
+    dataWaitTimeoutTimer.start();
 
     // Set up a periodic timer to print statistics and maintain registration
     // with PMU
