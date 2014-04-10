@@ -34,9 +34,10 @@ std::string PmuInstance = "ops";   ///< application instance
 
 // Count values to be assigned to the "home position" for each of the drives.
 // Optimally, these are set so that putting both drives at their zero positions
-// will cause the radar beam to be pointing exactly at zenith.
-static const int ROT_DRIVE_HOME_COUNTS = 3611;
-static const int TILT_DRIVE_HOME_COUNTS = -280;
+// will cause the radar beam to be pointing exactly at zenith when the C-MIGITS
+// is reporting zero roll and zero pitch.
+static const int ROT_DRIVE_HOME_COUNTS = 3800;
+static const int TILT_DRIVE_HOME_COUNTS = 250;
 
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
