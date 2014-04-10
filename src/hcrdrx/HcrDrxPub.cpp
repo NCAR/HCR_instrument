@@ -34,7 +34,8 @@ HcrDrxPub::HcrDrxPub(
      _down(0),
      _nGates(sd3c.gates()),
      _exporter(exporter),
-     _pulseData(NULL)
+     _pulseData(NULL),
+     _dataSeen(false)
 {
     // Bail out if we're not configured legally.
     if (! _configIsValid())
@@ -81,6 +82,13 @@ void HcrDrxPub::run() {
     float rotMotorAngle;
     float tiltMotorAngle;
     char* buf = _down->getBeam(pulsenum, rotMotorAngle, tiltMotorAngle);
+    
+    // Emit a signal when we first see data
+    if (! _dataSeen) {
+        _dataSeen = true;
+        emit(firstDataSeen(_pentekChanNum));
+    }
+    
     // Publish angles from channel 0 every 100 pulses.
     if (angleSocket && ! (count++ % 100)) {
         // Put together a datagram containing rotation and tilt motor angles

@@ -79,10 +79,15 @@ public:
   /// @brief Return a pointer to our downconverter object
   /// @return a pointer to our downconverter object
   Pentek::p7142sd3cDn* downconverter() { return _down; }
+  
+Q_SIGNALS:
+  /// @brief Signal emitted when the first data is seen from the downconverter.
+  /// @param pentekChanNum the Pentek channel from which data was read
+  void firstDataSeen(int pentekChanNum);
 
 private:
-  /// Array of instance pointers for each type, to make sure we only create
-  /// one instance per channel type.
+  /// @brief Static array of instance pointers for each type, to make sure we 
+  /// only create one instance per channel type.
   static HcrDrxPub * InstanceForType[N_CHANNELS];
   
   const HcrDrxConfig &_config;
@@ -142,6 +147,8 @@ private:
   /// PulseData instance to be filled and passed to our exporter
   PulseData *_pulseData;
 
+  /// Have we seen data from our downconverter yet?
+  bool _dataSeen;
 };
 
 #endif /*P7142DNTHREAD_H_*/
