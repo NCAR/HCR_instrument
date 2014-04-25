@@ -148,7 +148,7 @@ public:
     /**
      * @brief Return the latest attitude data from the C-MIGITS (information
      * from the C-MIGITS 3512 message)
-     * @param[out] dataTime time of the attitude data, seconds since
+     * @param[out] time3512 time of the attitude data, seconds since
      * 1970-01-01 00:00:00 UTC
      * @param[out] pitch pitch, deg
      * @param[out] roll roll, deg
