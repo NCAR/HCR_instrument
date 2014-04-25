@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
+#include <unistd.h>
 #include <logx/Logging.h>
 
 LOGGING("TtyElmoConnection")

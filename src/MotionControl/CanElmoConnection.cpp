@@ -8,6 +8,7 @@
 #include "CanElmoConnection.h"
 #include "ElmoMasterNode.h"  // CanFestival CANopen node ElmoMasterNode
 #include <cstdlib>
+#include <unistd.h>
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
