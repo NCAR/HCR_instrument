@@ -143,6 +143,9 @@ Pmc730Details::updateStatus(bool daemonResponding,
     _ui.hvOnIcon->setPixmap(status.rdsXmitterHvOn() ?
             _greenLED : _greenLED_off);
     
+    _ui.modPulseDisabledIcon->setPixmap(status.modPulseDisabled() ?
+            _greenLED : _greenLED_off);
+    
     _ui.rfPowerValue->setText(QString::number(status.detectedRfPower(), 'f', 1));
     _ui.vesselPresAftValue->
         setText(QString::number(status.pvAftPressure(), 'f', 0));
