@@ -340,6 +340,7 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
+            ar & BOOST_SERIALIZATION_NVP(_cmigitsTemp);
             ar & BOOST_SERIALIZATION_NVP(_detectedRfPower);
             ar & BOOST_SERIALIZATION_NVP(_eikTemp);
             ar & BOOST_SERIALIZATION_NVP(_emsError1);
@@ -347,6 +348,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_emsError3);
             ar & BOOST_SERIALIZATION_NVP(_emsError4Or5);
             ar & BOOST_SERIALIZATION_NVP(_emsError6Or7);
+            ar & BOOST_SERIALIZATION_NVP(_emsErrorCount);
             ar & BOOST_SERIALIZATION_NVP(_emsPowerError);
             ar & BOOST_SERIALIZATION_NVP(_hLnaTemp);
             ar & BOOST_SERIALIZATION_NVP(_hmcMode);
