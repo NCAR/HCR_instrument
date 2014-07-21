@@ -41,7 +41,9 @@ bool HcrPmc730::_DoSimulate = false;
 // Our singleton instance
 HcrPmc730 * HcrPmc730::_theHcrPmc730 = 0;
 
-HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0) {
+HcrPmc730::HcrPmc730() : Pmc730(_DoSimulate ? -1 : 0),
+        _analogValues(),
+        _emsErrorCount(0) {
     // For HCR, DIO lines 0-7 are used for input, 8-15 for output
     setDioDirection0_7(DIO_INPUT);
     setDioDirection8_15(DIO_OUTPUT);
@@ -425,25 +427,28 @@ HcrPmc730::_initEventCounter() {
 }
 
 uint32_t
-HcrPmc730::_emsErrorCount() const {
-    // If simulating, just return the current second modulo 100, for a rolling
-    // count from 0 to 99.
+HcrPmc730::_updateEmsErrorCount() {
+    // If simulating, just increment the error count by 1
     if (_simulate) {
-        return(uint32_t(time(0) % 100));
+        _emsErrorCount += 1;
+        return(_emsErrorCount);
     }
-    // Read the current count value from the counter readback register.
+
+    // Read the current event count from the counter readback register.
     int32_t signedCount = input_long(_card.nHandle, 
         (long*)&_card.brd_ptr->CounterReadBack);
-    // We get a signed 32-bit value from input_long, but the counter readback
-    // register is actually unsigned. Reinterpret the result to get the full
-    // (unsigned) resolution.
-    uint32_t* countPtr = reinterpret_cast<uint32_t*>(&signedCount);
-    return(*countPtr);
-}
 
-void
-HcrPmc730::_resetEmsErrorCount() {
-    // Stop and restart the counter to reset the count.
+    // We got a *signed* 32-bit value from input_long, but the real value is
+    // actually *unsigned*. Reinterpret the result to get the full
+    // (unsigned) resolution.
+    uint32_t unsignedCount = *(reinterpret_cast<uint32_t*>(&signedCount));
+
+    // Add the count we read to the running sum
+    _emsErrorCount += unsignedCount;
+
+    // Stop and restart the counter to reset the event count on the card.
     StopCounter(&_card);
-    StartCounter(&_card);    
+    StartCounter(&_card);
+
+    return(_emsErrorCount);
 }

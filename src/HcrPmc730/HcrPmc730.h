@@ -457,17 +457,10 @@ public:
     static void setHmcOperationMode(HmcOperationMode mode);
 
     /**
-     * @brief Get the current value in the PMC730 event counter.
+     * @brief Update and return the current count of EMS errors.
      */
     static uint32_t emsErrorCount() {
-        return theHcrPmc730()._emsErrorCount();
-    }
-    
-    /**
-     * @brief Reset the PMC730 event counter.
-     */
-    static void resetEmsErrorCount() {
-        theHcrPmc730()._resetEmsErrorCount();
+        return theHcrPmc730()._updateEmsErrorCount();
     }
     
 private:
@@ -685,16 +678,14 @@ private:
      * @brief Initialize the PMC730 for event counting using DIO channel 2.
      */
     void _initEventCounter();
-    
+
     /**
-     * @brief Get the current value in the PMC730 event counter.
+     * @brief Read the event counter register from the PMC730 and increment
+     * the running error count by this value, then reset the card event counter.
+     * Return the running EMS error count.
+     * @return the running EMS error count.
      */
-    uint32_t _emsErrorCount() const;
-    
-    /**
-     * @brief Reset the PMC730 event counter.
-     */
-    void _resetEmsErrorCount();
+    uint32_t _updateEmsErrorCount();
     
     /**
      * @brief Raise the HMC's 'status_ack' line momentarily to reset the state of
@@ -708,6 +699,11 @@ private:
      */
     std::vector<float> _analogValues;
     
+    /**
+     * Running sum of EMS errors, from time of instantiation.
+     */
+    uint32_t _emsErrorCount;
+
     /**
      * @brief The singleton instance of HcrPmc730.
      */
