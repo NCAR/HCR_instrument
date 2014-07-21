@@ -490,6 +490,7 @@ int IwrfExport::_sendIwrfMetaData()
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
     case HcrPmc730::HMC_MODE_H_HV:
+    case HcrPmc730::HMC_MODE_H_HV_ATTENUATED:
         _tsProc.xmit_rcv_mode = IWRF_H_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_H;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
