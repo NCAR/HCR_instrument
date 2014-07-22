@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
+    <width>646</width>
     <height>366</height>
    </rect>
   </property>
@@ -765,7 +765,8 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>EMS Error Count</string>
+            <string>Pulses With
+EMS Errors</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -989,7 +990,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>0</string>
+            <string>0000000</string>
            </property>
           </widget>
          </item>
