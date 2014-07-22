@@ -460,7 +460,7 @@ public:
      * @brief Update and return the current count of EMS errors.
      */
     static uint32_t emsErrorCount() {
-        return theHcrPmc730()._updateEmsErrorCount();
+        return theHcrPmc730()._emsErrorCount();
     }
     
 private:
@@ -680,12 +680,11 @@ private:
     void _initEventCounter();
 
     /**
-     * @brief Read the event counter register from the PMC730 and increment
-     * the running error count by this value, then reset the card event counter.
-     * Return the running EMS error count.
-     * @return the running EMS error count.
+     * @brief Read the event counter register from the PMC730, which is a count
+     * of radar pulses for which one or more EMS errors was recorded.
+     * @return the count of pulses with EMS errors.
      */
-    uint32_t _updateEmsErrorCount();
+    uint32_t _emsErrorCount() const;
     
     /**
      * @brief Raise the HMC's 'status_ack' line momentarily to reset the state of
@@ -699,11 +698,6 @@ private:
      */
     std::vector<float> _analogValues;
     
-    /**
-     * Running sum of EMS errors, from time of instantiation.
-     */
-    uint32_t _emsErrorCount;
-
     /**
      * @brief The singleton instance of HcrPmc730.
      */
