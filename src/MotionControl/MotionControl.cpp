@@ -271,6 +271,7 @@ MotionControl::_adjustScanningForAttitude(double pitch, double roll, double drif
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status() :
     rotDriveResponding(false),
+    rotDriveInhibitActive(false),
     rotDriveInitialized(false),
     rotDriveHomed(false),
     rotDriveStatusReg(0),
@@ -278,6 +279,7 @@ MotionControl::Status::Status() :
     rotDriveAngle(0.0),
     rotDriveSystemTime(0),
     tiltDriveResponding(false),
+    tiltDriveInhibitActive(false),
     tiltDriveInitialized(false),
     tiltDriveHomed(false),
     tiltDriveStatusReg(0),
@@ -295,6 +297,7 @@ MotionControl::Status::Status() :
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status(const MotionControl & mc) :
     rotDriveResponding(mc.rotationDrive().driveResponding()),
+    rotDriveInhibitActive(mc.rotationDrive().inhibitActive()),
     rotDriveInitialized(mc.rotationDrive().driveInitialized()),
     rotDriveHomed(mc.rotationDrive().driveHomed()),
     rotDriveStatusReg(mc.rotationDrive().driveStatusRegister()),
@@ -302,6 +305,7 @@ MotionControl::Status::Status(const MotionControl & mc) :
     rotDriveAngle(mc.rotationDrive().angle()),
     rotDriveSystemTime(mc.rotationDrive().driveSystemTime()),
     tiltDriveResponding(mc.tiltDrive().driveResponding()),
+    tiltDriveInhibitActive(mc.tiltDrive().inhibitActive()),
     tiltDriveInitialized(mc.tiltDrive().driveInitialized()),
     tiltDriveHomed(mc.tiltDrive().driveHomed()),
     tiltDriveStatusReg(mc.tiltDrive().driveStatusRegister()),
@@ -323,6 +327,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     std::map<std::string, xmlrpc_c::value> statusMap =
             static_cast<std::map<std::string, xmlrpc_c::value> >(statusDict);
     rotDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveResponding"]);
+    rotDriveInhibitActive = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveInhibitActive"]);
     rotDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveInitialized"]);
     rotDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveHomed"]);
     rotDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveStatusReg"]);
@@ -332,7 +337,9 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     // reinterpret as unsigned.
     int signedTime = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveSystemTime"]);
     rotDriveSystemTime = *(reinterpret_cast<uint32_t *>(&signedTime));
+
     tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
+    tiltDriveInhibitActive = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInhibitActive"]);
     tiltDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInitialized"]);
     tiltDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveHomed"]);
     tiltDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveStatusReg"]);
@@ -342,6 +349,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     // reinterpret as unsigned.
     signedTime = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveSystemTime"]);
     tiltDriveSystemTime = *(reinterpret_cast<uint32_t *>(&signedTime));
+
     antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
     fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
     scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
@@ -361,7 +369,9 @@ MotionControl::Status::to_value_struct() const {
     // Stuff our content into a dictionary mapping string to
     // xmlrpc_c::value.
     std::map<std::string, xmlrpc_c::value> dict;
+
     dict["rotDriveResponding"] = xmlrpc_c::value_boolean(rotDriveResponding);
+    dict["rotDriveInhibitActive"] = xmlrpc_c::value_boolean(rotDriveInhibitActive);
     dict["rotDriveInitialized"] = xmlrpc_c::value_boolean(rotDriveInitialized);
     dict["rotDriveHomed"] = xmlrpc_c::value_boolean(rotDriveHomed);
     dict["rotDriveStatusReg"] = xmlrpc_c::value_int(rotDriveStatusReg);
@@ -371,7 +381,9 @@ MotionControl::Status::to_value_struct() const {
     // signed and push it out that way.
     int signedTime = *(reinterpret_cast<const int *>(&rotDriveSystemTime));
     dict["rotDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
+
     dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
+    dict["tiltDriveInhibitActive"] = xmlrpc_c::value_boolean(tiltDriveInhibitActive);
     dict["tiltDriveInitialized"] = xmlrpc_c::value_boolean(tiltDriveInitialized);
     dict["tiltDriveHomed"] = xmlrpc_c::value_boolean(tiltDriveHomed);
     dict["tiltDriveStatusReg"] = xmlrpc_c::value_int(tiltDriveStatusReg);
@@ -381,6 +393,7 @@ MotionControl::Status::to_value_struct() const {
     // signed and push it out that way.
     signedTime = *(reinterpret_cast<const int *>(&tiltDriveSystemTime));
     dict["tiltDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
+
     dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
     dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
     dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);

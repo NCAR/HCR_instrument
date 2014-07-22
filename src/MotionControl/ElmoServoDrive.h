@@ -75,6 +75,10 @@ public:
     /// @return the drive responding state
     bool driveResponding() const { return _driveConn->readyToExec(); }
 
+    /// @brief Return true iff the drive is inhibited via external signal.
+    /// @return true iff the drive is inhibited via external signal.
+    bool inhibitActive() const { return _inhibitActive; }
+
     /// @brief Return true iff the drive parameter initialization has been executed
     /// successfully.
     /// @return true iff the drive parameter initialization has been executed
@@ -296,6 +300,9 @@ private:
 
     /// Drive connection
     ElmoConnection * _driveConn;
+
+    /// Boolean to tell if drive is inhibited via external signal
+    bool _inhibitActive;
 
     /// Boolean to tell if drive has been initialized
     bool _driveInitialized;

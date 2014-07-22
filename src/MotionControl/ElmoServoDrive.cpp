@@ -21,6 +21,7 @@ LOGGING("ElmoServoDrive")
 ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
     QObject(),
     _driveConn(0),
+    _inhibitActive(false),
     _driveInitialized(false),
     _driveHomed(false),
     _homingInProgress(false),
@@ -47,6 +48,7 @@ ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
 ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName) :
     QObject(),
     _driveConn(0),
+    _inhibitActive(false),
     _driveInitialized(false),
     _driveHomed(false),
     _homingInProgress(false),
@@ -174,6 +176,12 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
             _pcSampleTime = 1.0e-6 * iVal;  // convert sample time in us to s
             ILOG << driveName() << " position controller sample time is " <<
                     _pcSampleTime << " s";
+        }
+        // Save the state of the external inhibit bit
+        else if (! cmd.compare("IB[12]")) {
+            _inhibitActive = iVal;
+            ILOG << driveName() << " external inhibit is " <<
+                    (_inhibitActive ? "true" : "false");
         }
         // Note other non-empty replies
         else {
@@ -495,6 +503,7 @@ ElmoServoDrive::_collectDriveParams() {
     _driveConn->execElmoCmd("XM", 1);   // XM[1]: position counter minimum value
     _driveConn->execElmoCmd("XM", 2);   // XM[2]: position counter maximum value
     _driveConn->execElmoCmd("WS", 55);  // WS[55]: sampling time of position controller
+    _driveConn->execElmoCmd("IB", 12);  // IB[12]: external inhibit line state
 }
 
 void

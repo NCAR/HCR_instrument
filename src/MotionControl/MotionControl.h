@@ -148,6 +148,8 @@ public:
 
         /// Is the rotation drive responding?
         bool rotDriveResponding;
+        /// Is external inhibit active for the rotation drive?
+        bool rotDriveInhibitActive;
         /// Is the rotation drive initialized?
         bool rotDriveInitialized;
         /// Is the rotation drive homed?
@@ -162,6 +164,8 @@ public:
         uint32_t rotDriveSystemTime;
         /// Is the tilt drive responding?
         bool tiltDriveResponding;
+        /// Is external inhibit active for the tilt drive?
+        bool tiltDriveInhibitActive;
         /// Is the tilt drive initialized?
         bool tiltDriveInitialized;
         /// Is the tilt drive homed?
