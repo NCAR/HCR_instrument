@@ -16,7 +16,8 @@
 #include <QTimer>
 #include <QUdpSocket>
 
-#include "CmigitsStatusThread.h"
+#include <CmigitsStatusThread.h>
+
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"

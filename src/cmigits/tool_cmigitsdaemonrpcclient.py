@@ -6,9 +6,15 @@ cmigitsDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
 
-sources = ['CmigitsDaemonRpcClient.cpp']
+sources = Split('''
+CmigitsDaemonRpcClient.cpp
+CmigitsStatusThread.cpp
+''')
 
-headers = ['CmigitsDaemonRpcClient.h']
+headers = Split('''
+CmigitsDaemonRpcClient.h
+CmigitsStatusThread.h
+''')
 
 lib = env.Library('cmigitsdaemonrpcclient', sources)
 Default(lib)

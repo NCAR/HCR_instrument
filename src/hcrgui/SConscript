@@ -22,7 +22,6 @@ hcrgui_sources = Split("""
 hcrgui.cpp
 AntennaModeDialog.cpp
 CmigitsDetails.cpp
-CmigitsStatusThread.cpp
 DataMapperStatusThread.cpp
 FireflydDetails.cpp
 FireflydStatusThread.cpp
@@ -63,7 +62,6 @@ hcrguiEnv.Qrc(qrcfiles)
 headers = Split("""
 AntennaModeDialog.h
 CmigitsDetails.h
-CmigitsStatusThread.h
 DataMapperStatusThread.h
 FireflydDetails.h
 FireflydStatusThread.h
