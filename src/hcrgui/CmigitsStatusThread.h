@@ -10,10 +10,11 @@
 #include <CmigitsDaemonRpcClient.h>
 #include <QThread>
 
-/// @brief Class providing a thread which gets cmigitsDaemon status on a regular
-/// basis using a CmigitsDaemonRpcClient connection.
+/// @brief Qt class providing a thread which gets cmigitsDaemon status on a
+/// regular basis and emits a signal when new status is received. It also emits
+/// a signal when cmigitsDaemon server responsiveness changes.
 ///
-/// This class uses the given CmigitsDaemonRpcClient connection to poll for 
+/// This class creates a CmigitsDaemonRpcClient connection to poll for
 /// status from cmigitsDaemon on a ~1 Hz basis (when connected). When new status
 /// is received, newStatus(CmigitsStatus) signal is emitted. The class also 
 /// provides a useful way to test for good connection to the cmigitsDaemon RPC 
