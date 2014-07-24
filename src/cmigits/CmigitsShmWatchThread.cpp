@@ -1,11 +1,11 @@
-#include "CmigitsWatchThread.h"
+#include "CmigitsShmWatchThread.h"
 #include <QMetaType>
 #include <QTimer>
 #include <logx/Logging.h>
 
-LOGGING("CmigitsWatchThread")
+LOGGING("CmigitsShmWatchThread")
 
-CmigitsWatchThread::CmigitsWatchThread() :
+CmigitsShmWatchThread::CmigitsShmWatchThread() :
     _cmigitsShm(),
     _last3512Time(0) {
     // We need to register CmigitsSharedMemory::ShmStruct as a metatype,
@@ -13,7 +13,7 @@ CmigitsWatchThread::CmigitsWatchThread() :
     qRegisterMetaType<CmigitsSharedMemory::ShmStruct>("CmigitsSharedMemory::ShmStruct");
 }
 
-CmigitsWatchThread::~CmigitsWatchThread() {
+CmigitsShmWatchThread::~CmigitsShmWatchThread() {
     DLOG << "destructor";
     if (isRunning()) {
         DLOG << "Stopping thread";
@@ -24,7 +24,7 @@ CmigitsWatchThread::~CmigitsWatchThread() {
 //
 // Thread run method
 void
-CmigitsWatchThread::run()
+CmigitsShmWatchThread::run()
 {
     // Poll shared memory on a frequent basis to look for (and act
     // on) new C-MIGITS data. The C-MIGITS data come at up to 100 Hz, so
@@ -40,7 +40,7 @@ CmigitsWatchThread::run()
 }
 
 void
-CmigitsWatchThread::_pollSharedMemory() {
+CmigitsShmWatchThread::_pollSharedMemory() {
     CmigitsSharedMemory::ShmStruct cmigitsData = _cmigitsShm.getContents();
     // Since 3512 messages come in most frequently, we use the time of the
     // latest 3512 message to see if new content is in the shared memory.
@@ -51,6 +51,6 @@ CmigitsWatchThread::_pollSharedMemory() {
 }
 
 void
-CmigitsWatchThread::quit() {
-    WLOG << "Singleton CmigitsWatchThread() not quitting, as others may be using it.";
+CmigitsShmWatchThread::quit() {
+    WLOG << "Singleton CmigitsShmWatchThread() not quitting, as others may be using it.";
 }

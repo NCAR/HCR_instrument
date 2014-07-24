@@ -1,30 +1,30 @@
-#ifndef CMIGITS_WATCH_THREAD_H_
-#define CMIGITS_WATCH_THREAD_H_
+#ifndef CMIGITS_SHM_WATCH_THREAD_H_
+#define CMIGITS_SHM_WATCH_THREAD_H_
 
 #include "CmigitsSharedMemory.h"
 #include <stdint.h>
 #include <QThread>
 
-/// CmigitsWatchThread polls CmigitsSharedMemory and emits newData() when new
+/// CmigitsShmWatchThread polls CmigitsSharedMemory and emits newData() when new
 /// data is seen in the shared memory.
 
-class CmigitsWatchThread : public QThread {
+class CmigitsShmWatchThread : public QThread {
 
     Q_OBJECT
 
 public:
     /// Destructor
-    virtual ~CmigitsWatchThread();
+    virtual ~CmigitsShmWatchThread();
 
     /// @brief Return a reference to the singleton instance, instantiating it
     /// and starting it on first use.
-    static CmigitsWatchThread & GetInstance() {
-        static CmigitsWatchThread instance;
+    static CmigitsShmWatchThread & GetInstance() {
+        static CmigitsShmWatchThread instance;
         instance.start();
         return(instance);
     }
 
-    /// @brief The quit() method for CmigitsWatchThread does nothing but print
+    /// @brief The quit() method for CmigitsShmWatchThread does nothing but print
     /// a warning, since stopping the thread would affect others using the
     /// singleton instance.
     void quit();
@@ -40,10 +40,10 @@ private slots:
 private:
     /// @brief The constructor is private since this class creates a singleton.
     /// @see GetInstance().
-    CmigitsWatchThread();
+    CmigitsShmWatchThread();
 
-    CmigitsWatchThread(const CmigitsWatchThread &); // Don't implement for singleton
-    void operator=(const CmigitsWatchThread &);     // Don't implement for singleton
+    CmigitsShmWatchThread(const CmigitsShmWatchThread &); // Don't implement for singleton
+    void operator=(const CmigitsShmWatchThread &);     // Don't implement for singleton
 
     /// thread run method
     void run();

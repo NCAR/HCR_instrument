@@ -148,9 +148,9 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
   _azimuthDeg = 0.0;
   _elevationDeg = 0.0;
 
-  /// Pass new C-MIGITS data from the singleton CmigitsWatchThread to our
+  /// Pass new C-MIGITS data from the singleton CmigitsShmWatchThread to our
   /// _acceptCmigitsData() slot.
-  CmigitsWatchThread & cwt = CmigitsWatchThread::GetInstance();
+  CmigitsShmWatchThread & cwt = CmigitsShmWatchThread::GetInstance();
   connect(&cwt, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
           this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
 
