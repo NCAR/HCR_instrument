@@ -12,14 +12,14 @@
 
 /// @brief Qt class providing a thread which gets cmigitsDaemon status on a
 /// regular basis and emits a signal when new status is received. It also emits
-/// a signal when cmigitsDaemon server responsiveness changes.
+/// a signal when cmigitsDaemon XML-RPC server responsiveness changes.
 ///
 /// This class creates a CmigitsDaemonRpcClient connection to poll for
-/// status from cmigitsDaemon on a ~1 Hz basis (when connected). When new status
-/// is received, newStatus(CmigitsStatus) signal is emitted. The class also 
-/// provides a useful way to test for good connection to the cmigitsDaemon RPC 
-/// server, via serverResponsive(bool) signals emitted when connection/
-/// disconnection is detected.
+/// status from cmigitsDaemon on a periodic basis when connected (default 1 Hz).
+/// When new status is received, newStatus(CmigitsStatus) signal is emitted.
+/// The class also provides a useful way to test for good connection to the
+/// cmigitsDaemon XML-RPC server, via serverResponsive(bool) signals emitted
+/// when connection/disconnection is detected.
 class CmigitsStatusThread : public QThread {
     Q_OBJECT
 
