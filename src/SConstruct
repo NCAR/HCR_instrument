@@ -24,6 +24,7 @@ env = Environment(tools = ['default'],
                   GLOBAL_TOOLS = ['prefixoptions', 'buildmode', 'svninfo', HcrSetup])
 svnInfo = env.SvnInfo('svnInfo.h', '#')
 
+SConscript("AltitudeMonitorDaemon/SConscript")
 SConscript("cmigits/SConscript")
 SConscript("fireflyd/SConscript")
 SConscript("hcr_xmit/SConscript")
