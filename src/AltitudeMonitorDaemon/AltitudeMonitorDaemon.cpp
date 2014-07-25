@@ -17,7 +17,7 @@
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
-#include <CmigitsShmWatchThread.h>
+#include <CmigitsSharedMemory.h>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
@@ -36,8 +36,14 @@ void sigHandler(int sig) {
   App->quit();
 }
 
-// Function to update our registration with PMU.
-static const int UPDATE_INTERVAL_SECS = 60;
+// Update our registration with PMU at this interval.
+static const int REGISTRATION_INTERVAL_SECS = 60;
+
+// Log a brief status message at this interval.
+static const int LOG_STATUS_INTERVAL_SECS = 15;
+
+// Update position at this interval.
+static const int POSITION_UPDATE_INTERVAL_MS = 500;
 
 void
 updateRegistration() {
@@ -50,20 +56,19 @@ logStatus() {
     ILOG << "AltitudeMonitorDaemon still running...";
 }
 
+// Our access to the C-MIGITS data shared memory segment.
 CmigitsSharedMemory CmShm;
-uint64_t Last3501Time = 0;
+
 void
-onNewCmigitsData() {
-//    // We get called for all updates in the shared memory, but we really only
-//    // care about a new C-MIGITS 3501 message.
-//    uint64_t current3501Time = CmShm.getLatest3501Time();
-//    if (current3501Time == Last3501Time)
-//        return;
-//
-//    if (! ((current3501Time / 100) % 10)) {
-//        ILOG << "New 3501 @ " << current3501Time;
-//    }
-//    Last3501Time = current3501Time;
+updatePosition() {
+    uint64_t time3501;
+    double latitude;
+    double longitude;
+    double altitudeMSL;
+    CmShm.getLatest3501Data(time3501, latitude, longitude, altitudeMSL);
+
+    ILOG << time3501 << ", lat: " << latitude << ", lon: " << longitude <<
+            ", altMSL: " << altitudeMSL;
 }
 
 /// @brief xmlrpc_c::method to get status from the AltitudeMonitorDaemon process.
@@ -169,14 +174,6 @@ main(int argc, char *argv[]) {
 
     PMU_auto_register("initializing");
 
-    // Connect singleton CmigitsShmWatchThread newData() signal to our
-    // onNewCmigitsData() function.
-    QFunctionWrapper cmigitsFuncWrapper(onNewCmigitsData);
-    QObject::connect(&CmigitsShmWatchThread::GetInstance(),
-            SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-            &cmigitsFuncWrapper,
-            SLOT(callFunction()));
-    
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
@@ -188,20 +185,29 @@ main(int argc, char *argv[]) {
 
     /// Set up a timer to periodically register with PMU so it knows we're still
     /// alive.
-    QTimer registerTimer;
-    registerTimer.setInterval(UPDATE_INTERVAL_SECS * 1000);   // interval in ms
-    QFunctionWrapper updateFuncWrapper(updateRegistration);
-    QObject::connect(&registerTimer, SIGNAL(timeout()),
-            &updateFuncWrapper, SLOT(callFunction()));
-    registerTimer.start();
+    QTimer registrationTimer;
+    registrationTimer.setInterval(REGISTRATION_INTERVAL_SECS * 1000);   // interval in ms
+    QFunctionWrapper registrationFuncWrapper(updateRegistration);
+    QObject::connect(&registrationTimer, SIGNAL(timeout()),
+            &registrationFuncWrapper, SLOT(callFunction()));
+    registrationTimer.start();
 
     // Set up a timer to report status information occasionally
     QTimer statusTimer;
-    statusTimer.setInterval(15000); // 15 s
+    statusTimer.setInterval(LOG_STATUS_INTERVAL_SECS * 1000);
     QFunctionWrapper statusFuncWrapper(logStatus);
     QObject::connect(&statusTimer, SIGNAL(timeout()),
             &statusFuncWrapper, SLOT(callFunction()));
     statusTimer.start();
+    
+    // Set up a timer to periodically get current position and decide about
+    // protective measures.
+    QTimer positionUpdateTimer;
+    positionUpdateTimer.setInterval(POSITION_UPDATE_INTERVAL_MS);
+    QFunctionWrapper updateFuncWrapper(updatePosition);
+    QObject::connect(&positionUpdateTimer, SIGNAL(timeout()),
+            &updateFuncWrapper, SLOT(callFunction()));
+    positionUpdateTimer.start();
 
     // Now just run the application until somebody or something interrupts it
     try {
