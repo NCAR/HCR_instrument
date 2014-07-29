@@ -100,7 +100,7 @@ public:
      * at the last call to updateAnalogValues().
      */
     static double detectedRfPower() {
-        return _MiWv950WPower(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
+        return _MillitechDET10Power(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
     }
 
     /**
@@ -673,6 +673,14 @@ private:
      * @return the RF power measured at the Mi-Wave 950W detector, dBm
      */
     static double _MiWv950WPower(double voltage);
+    
+    /**
+     * @brief Convert the given voltage to measured RF power from
+     * Millitech DET-10 RF detector.
+     * @param voltage the voltage measured at the Millitech DET-10 detector
+     * @return the RF power measured at the Millitech DET-10 detector, dBm
+     */
+    static double _MillitechDET10Power(double voltage);
     
     /**
      * @brief Initialize the PMC730 for event counting using DIO channel 2.

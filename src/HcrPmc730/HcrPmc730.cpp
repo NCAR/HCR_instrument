@@ -286,6 +286,30 @@ HcrPmc730::_MiWv950WPower(double voltage) {
     return(10.0 * log10(detectorVoltage + 0.007));
 }
 
+double
+HcrPmc730::_MillitechDET10Power(double voltage) {
+    // The HCR breakout board provides a factor of 2 gain on the voltage
+    // coming from the detector before sending the signal on to the PMC-730.
+    // Remove that gain now.
+    double detV = 0.5 * voltage;
+
+    // Cubic fit from Pei for calibration of 20140611 (dBm to mV):
+    //
+    //    mV = 363.919 + 47.7939 * dBm + 2.45847 * dBm^2 + 0.0479937 * dBm^3
+    //
+    // However, we need the inverse, to go from V to dBm (and don't at the
+    // moment have the original raw measured points available). The formula 
+    // above was used to generate a set of points every 1 dB from -19 dBm to 
+    // 6 dBm, then a Matlab polyfit was applied to come up with the inverse 
+    // cubic:
+    //
+    //    dBm = -19.00 + 112.0 * V - 212.3 * V^2 + 145.4 * V^3
+    return(-19.00 
+           + 112.0 * detV
+           - 212.3 * detV * detV
+           + 145.4 * detV * detV * detV);
+}
+
 /*
  * Map from Pt1000 resistance to temperature, generated on the first call to
  * _Pt1000Temperature()
