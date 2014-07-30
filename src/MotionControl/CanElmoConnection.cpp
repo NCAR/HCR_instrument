@@ -100,7 +100,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     }
 
     if (! _myRpdo) {
-        ELOG << "BUG: CanElmoConnection could not find an available RPDO";
+        ELOG << _driveName << 
+                ": BUG: CanElmoConnection could not find an available RPDO";
         exit(1);
     }
     
@@ -166,7 +167,7 @@ CanElmoConnection::~CanElmoConnection() {
 
     // If we were the last connection, do the final CanFestival cleanup
     if (_AllConnections.size() == 0) {
-        DLOG << "Performing CanFestival cleanup";
+        DLOG << _driveName << ": Performing CanFestival cleanup";
         StopTimerLoop(_TimerStopCallback);
         TimerCleanup();
 
@@ -368,7 +369,7 @@ CanElmoConnection::_handleElmoPDOReply() {
                 iVal;
     }
     
-    DLOG << "PDO reply for commmand " << fullCommand << ", " <<
+    DLOG << _driveName << ": PDO reply for commmand " << fullCommand << ", " <<
             "type " << (isFloat ? "float" : "int") << ", " << 
             (isError ? "ERR" : "no err") << ", " <<
             "value " << valStream.str();
@@ -467,8 +468,8 @@ CanElmoConnection::_StoreODSubindexCallback(CO_Data* d, UNS16 index,
 void
 CanElmoConnection::_PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode, 
         UNS8 errReg) {
-    ILOG << "CanElmoConnection received EMCY message. Node: " << int(nodeId) <<
-            std::hex <<
+    ILOG << "Received CANbus EMCY message. Node: " << int(nodeId) <<
+    		std::hex << 
             ", Error code 0x" << errCode <<
             ", Error register 0x" << errReg;
 }
@@ -526,7 +527,8 @@ CanElmoConnection::_doNextInitializeStep() {
 
     switch (_initPhase) {
     case Uninitialized:
-        ELOG << "BUG: shouldn't be 'Uninitialized' at this point!";
+        ELOG << _driveName << 
+            ": BUG: shouldn't be 'Uninitialized' at this point!";
         exit(1);
     case ResetSlaveNode:
         // Send a reset message to our Elmo's node ID. That will generate a
@@ -558,8 +560,8 @@ CanElmoConnection::_doNextInitializeStep() {
         // Start accepting execElmo*() calls
         _readyToExec = true;
         emit(readyToExecChanged(_readyToExec));
-        ILOG << "CanElmoConnection for node " << int(_elmoNodeId) << 
-                " initialization is complete";
+        ILOG << _driveName << ": CanElmoConnection for node " << 
+                int(_elmoNodeId) << " initialization is complete";
     }
 }
 
@@ -568,7 +570,7 @@ CanElmoConnection::_sendSetImmediateEvaluation() {
     UNS8 res;
     char SDOdata[8];
 
-    ILOG << "Setting node " << int(_elmoNodeId) << 
+    ILOG << _driveName << ": Setting node " << int(_elmoNodeId) << 
             " to evaluate commands immediately";
     SDOdata[0] = 0;
     res = writeNetworkDictCallBack(_MasterNodeData, 
@@ -602,8 +604,8 @@ CanElmoConnection::_CmdIsValid(std::string cmd) {
         ok = ok && _CmdIsXqRequest(cmd);
     
     if (! ok) {
-        ELOG << "execElmo*() command must be exactly two upper case " <<
-                "letters or start with XQ##. " <<
+        ELOG << _driveName << ": execElmo*() command must be exactly two " <<
+                "upper case letters or start with XQ##. " <<
                 "Bad command: '" << cmd << "'";
     }
     return(ok);
@@ -617,7 +619,7 @@ CanElmoConnection::_CmdIsXqRequest(std::string cmd) {
 bool
 CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     if (! _readyToExec) {
-        WLOG << "Not yet ready to exec. Rejecting '" << 
+        WLOG << _driveName << ": Not yet ready to exec. Rejecting '" << 
                 _AssembleCommandString(cmd, index) << "'";
         return(false);
     }
@@ -657,7 +659,8 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     // Send the PDO
     UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
     if (result != 0) {
-        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << int(result);
+        ELOG << _driveName << ": " << __PRETTY_FUNCTION__ << 
+                ": canSend() error " << int(result);
     }
     return(result);
 }
@@ -666,7 +669,7 @@ bool
 CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index, 
         int value) {
     if (! _readyToExec) {
-        WLOG << "Not yet ready to exec. Rejecting '" << 
+        WLOG << _driveName << ": Not yet ready to exec. Rejecting '" << 
                 _AssembleAssignString(cmd, index, value) << "'";
         return(false);
     }
@@ -681,7 +684,8 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     
     // XQ## commands must be sent via SDO, and require special handling
     if (_CmdIsXqRequest(cmd)) {
-        ELOG << "XQ## command makes no sense in execElmoAssignCmd()!";
+        ELOG << _driveName << 
+                ": XQ## command makes no sense in execElmoAssignCmd()!";
         return(1);
     }
     
@@ -708,7 +712,8 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     // Send the PDO
     UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
     if (result != 0) {
-        ELOG << __PRETTY_FUNCTION__ << ": canSend() error " << int(result);
+        ELOG << _driveName << ": " << __PRETTY_FUNCTION__ << 
+                ": canSend() error " << int(result);
     }
     return(result);
 }
