@@ -163,7 +163,12 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
         }
         // Save the state of the external inhibit bit
         else if (! cmd.compare("IB[12]")) {
-            _inhibitActive = iVal;
+            bool inhibit(iVal);
+            if (inhibit != _inhibitActive) {
+                ILOG << driveName() << " external inhibit is now " << 
+                        (inhibit ? "enabled" : "disabled");
+            }
+            _inhibitActive = inhibit;
         }
         // Note other non-empty replies
         // Save reply from XM[1] "position counter min count" command
