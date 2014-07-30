@@ -161,6 +161,11 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
             // PX is reported in counts in the range [XM[1],XM[2]-1]
             _angleCounts = iVal;
         }
+        // Save the state of the external inhibit bit
+        else if (! cmd.compare("IB[12]")) {
+            _inhibitActive = iVal;
+        }
+        // Note other non-empty replies
         // Save reply from XM[1] "position counter min count" command
         else if (! cmd.compare("XM[1]")) {
             _positionMinCnt = iVal; // minimum position count
@@ -177,13 +182,6 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
             ILOG << driveName() << " position controller sample time is " <<
                     _pcSampleTime << " s";
         }
-        // Save the state of the external inhibit bit
-        else if (! cmd.compare("IB[12]")) {
-            _inhibitActive = iVal;
-            ILOG << driveName() << " external inhibit is " <<
-                    (_inhibitActive ? "true" : "false");
-        }
-        // Note other non-empty replies
         else {
             DLOG << driveName() << " integer reply to '" << cmd << "' was " <<
                     iVal;
@@ -493,6 +491,7 @@ ElmoServoDrive::_collectStatus() {
     _driveConn->execElmoCmd("TI", 1);   // TI[1]: drive temperature
     _driveConn->execElmoCmd("TR", 1);   // TR[1]: target radius counts
     _driveConn->execElmoCmd("PX");      // main position
+    _driveConn->execElmoCmd("IB", 12);  // IB[12]: external inhibit line state
     _driveConn->execElmoCmd("TM");      // system time
 }
 
@@ -503,7 +502,6 @@ ElmoServoDrive::_collectDriveParams() {
     _driveConn->execElmoCmd("XM", 1);   // XM[1]: position counter minimum value
     _driveConn->execElmoCmd("XM", 2);   // XM[2]: position counter maximum value
     _driveConn->execElmoCmd("WS", 55);  // WS[55]: sampling time of position controller
-    _driveConn->execElmoCmd("IB", 12);  // IB[12]: external inhibit line state
 }
 
 void
