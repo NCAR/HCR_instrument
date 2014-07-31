@@ -68,8 +68,8 @@ HcrPmc730::HcrPmc730() :
                 " are not all set for input!";
         abort();
     }
-    if (getDioDirection(_HCR_DOUT_PENTEK_ZERO_TILT) != DIO_OUTPUT ||
-            getDioDirection(_HCR_DOUT_PENTEK_ZERO_ROT) != DIO_OUTPUT ||
+    // Verify that our defined output DIO lines are all actually set for output
+    if (getDioDirection(_HCR_DOUT_APS_PRES_ENABLE) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_STATUS_ACK) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT2) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_TX_FILAMENT_OFF) != DIO_OUTPUT ||
@@ -77,8 +77,7 @@ HcrPmc730::HcrPmc730() :
             getDioDirection( _HCR_DOUT_TX_HV_OFF) != DIO_OUTPUT ||
             getDioDirection(_HCR_DOUT_HMC_OPS_MODE_BIT1) != DIO_OUTPUT) {
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
-                _HCR_DOUT_PENTEK_ZERO_TILT << ", " <<
-                _HCR_DOUT_PENTEK_ZERO_ROT << ", " <<
+                _HCR_DOUT_APS_PRES_ENABLE << ", " <<
                 _HCR_DOUT_HMC_STATUS_ACK << ", " <<
                 _HCR_DOUT_HMC_OPS_MODE_BIT2 << ", " <<
                 _HCR_DOUT_TX_FILAMENT_OFF << ", " <<
@@ -87,7 +86,8 @@ HcrPmc730::HcrPmc730() :
                 _HCR_DOUT_HMC_OPS_MODE_BIT1 << " are not all set for output!";
         abort();
     }
-    // Initialize the PMC730's event counter, which uses DIO channel 2
+    // Initialize the PMC730's event counter (DIO channel 2), which is used to
+    // count pulses with EMS errors.
     _initEventCounter();
 }
 

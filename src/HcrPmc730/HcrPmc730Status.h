@@ -91,6 +91,20 @@ public:
      */
     double pvAftPressure() const { return(_pvAftPressure); }
     /**
+     * @brief Return the pressure on the low-pressure side of the Active
+     * Pressurization System regulator, PSI
+     * @return the pressure on the low-pressure side of the Active
+     * Pressurization System regulator, PSI
+     */
+    double apsLowSidePressurePsi() const { return(_apsLowSidePressurePsi); }
+    /**
+     * @brief Return the pressure on the high-pressure side of the Active
+     * Pressurization System regulator, PSI
+     * @return the pressure on the high-pressure side of the Active
+     * Pressurization System regulator, PSI
+     */
+    double apsHighSidePressurePsi() const { return(_apsHighSidePressurePsi); }
+    /**
      * @brief Return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
      * @return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
      */
@@ -363,8 +377,11 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_psVoltage);
             ar & BOOST_SERIALIZATION_NVP(_pvAftPressure);
             ar & BOOST_SERIALIZATION_NVP(_pvForePressure);
+            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressurePsi);
+            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressurePsi);
             ar & BOOST_SERIALIZATION_NVP(_radarPowerError);
             ar & BOOST_SERIALIZATION_NVP(_rdsInDuctTemp);
+            ar & BOOST_SERIALIZATION_NVP(_apsValveOpen);
             ar & BOOST_SERIALIZATION_NVP(_rdsXmitterFilamentOn);
             ar & BOOST_SERIALIZATION_NVP(_rdsXmitterHvOn);
             ar & BOOST_SERIALIZATION_NVP(_rfDetectorTemp);
@@ -459,6 +476,12 @@ private:
     /// pressure vessel fore pressure
     double _pvForePressure;
 
+    /// Active Pressurization System regulator low side pressure, PSI
+    double _apsLowSidePressurePsi;
+
+    /// Active Pressurization System regulator high side pressure, PSI
+    double _apsHighSidePressurePsi;
+
     /// measured voltage from 5V power supply
     double _psVoltage;
 
@@ -473,6 +496,9 @@ private:
 
     /// Is modulator pulse passthrough disabled at the HMC?
     bool _modPulseDisabled;
+
+    /// Is the Active Pressurization System valve open?
+    bool _apsValveOpen;
 
     /// Is "filament on" being commanded via the RDS control line to the transmitter?
     bool _rdsXmitterFilamentOn;

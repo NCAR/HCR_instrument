@@ -45,11 +45,14 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     _detectedRfPower(0.0),
     _pvAftPressure(0.0),
     _pvForePressure(0.0),
+    _apsLowSidePressurePsi(0.0),
+    _apsHighSidePressurePsi(0.0),
     _psVoltage(0.0),
     _locked15_5GHzPLO(false),
     _locked1250MHzPLO(false),
     _locked125MHzPLO(false),
     _modPulseDisabled(false),
+    _apsValveOpen(false),
     _rdsXmitterFilamentOn(false),
     _rdsXmitterHvOn(false),
     _radarPowerError(false),
@@ -135,6 +138,8 @@ HcrPmc730Status::_getMultiIoValues() {
     _detectedRfPower = HcrPmc730::detectedRfPower();
     _pvAftPressure = HcrPmc730::pvAftPressure();
     _pvForePressure = HcrPmc730::pvForePressure();
+    _apsLowSidePressurePsi = HcrPmc730::apsLowSidePressurePsi();
+    _apsHighSidePressurePsi = HcrPmc730::apsHighSidePressurePsi();
     _psVoltage = HcrPmc730::ps5vVoltage();
     _locked15_5GHzPLO = HcrPmc730::locked15_5GHzPLO();
     _locked1250MHzPLO = HcrPmc730::locked1250MHzPLO();
@@ -149,6 +154,7 @@ HcrPmc730Status::_getMultiIoValues() {
     _emsPowerError = HcrPmc730::emsPowerError();
     _radarPowerError = HcrPmc730::radarPowerError();
     _waveguideSwitchError = HcrPmc730::waveguideSwitchError();
+    _apsValveOpen = HcrPmc730::apsValveOpen();
     _rdsXmitterFilamentOn = HcrPmc730::xmitterFilamentOn();
     _rdsXmitterHvOn = HcrPmc730::xmitterHvOn();
     _hmcMode = HcrPmc730::hmcMode();

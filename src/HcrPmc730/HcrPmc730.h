@@ -124,6 +124,30 @@ public:
     }
 
     /**
+     * @brief Return the pressure in PSI on the low-pressure side of the Active
+     * Pressurization System regulator at the last call to updateAnalogValues().
+     * @return the pressure in PSI on the low-pressure side of the Active
+     * Pressurization System regulator at the last call to updateAnalogValues().
+     */
+    static double apsLowSidePressurePsi() {
+        static const double VoltsPerPsi = 0.097947; // from Kulite calibration dated 2014-05-05
+        return(theHcrPmc730()._analogValues[_HCR_AIN_APS_LOW_SIDE_PRESSURE] /
+                VoltsPerPsi);
+    }
+
+    /**
+     * @brief Return the pressure in PSI on the high-pressure side of the Active
+     * Pressurization System regulator at the last call to updateAnalogValues().
+     * @return the pressure in PSI on the high-pressure side of the Active
+     * Pressurization System regulator at the last call to updateAnalogValues().
+     */
+    static double apsHighSidePressurePsi() {
+        static const double VoltsPerPsi = 0.002461; // from Kulite calibration dated 2014-05-05
+        return(theHcrPmc730()._analogValues[_HCR_AIN_APS_HIGH_SIDE_PRESSURE] /
+                VoltsPerPsi);
+    }
+
+    /**
      * @brief Return the measured voltage from the 5V power supply at the last
      * call to updateAnalogValues().
      * @return the measured voltage from the 5V power supply at the last
@@ -365,6 +389,16 @@ public:
     static bool emsError6Or7();
 
     /**
+     * @brief Return true iff the Active Pressurization System valve is open
+     * to add pressure to the pod.
+     * @return true iff the Active Pressurization System valve is open
+     * to add pressure to the pod.
+     */
+    static bool apsValveOpen() {
+        return(! theHcrPmc730().getDioLine(_HCR_DOUT_APS_PRES_ENABLE));
+    }
+
+    /**
      * @brief Return true iff we are currently commanding "filament on" via
      * the RDS filament control line going to the transmitter.
      * @return true iff we are currently commanding "filament on" via
@@ -404,23 +438,11 @@ public:
     }
 
     /**
-     * @brief Set the state of the signal which zeros the Pentek's rotation
-     * counter.
-     * @param state While true, the Pentek will hold its rotation counter at
-     * zero
+     * @brief Set the state Active Pressurization System valve.
+     * @param state If true, the valve will be opened, otherwise closed.
      */
-    static void setPentekRotationZero(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_PENTEK_ZERO_ROT, state ? 1 : 0);
-    }
-
-    /**
-     * @brief Set the state of the signal which zeros the Pentek's tilt
-     * counter.
-     * @param state While true, the Pentek will hold its tilt counter at
-     * zero
-     */
-    static void setPentekTiltZero(bool state) {
-        theHcrPmc730().setDioLine(_HCR_DOUT_PENTEK_ZERO_TILT, state ? 1 : 0);
+    static void setApsValveOpen(bool state) {
+        theHcrPmc730().setDioLine(_HCR_DOUT_APS_PRES_ENABLE, state ? 1 : 0);
     }
 
     /**
@@ -500,10 +522,8 @@ private:
      * Output DIO lines
      */
     typedef enum {
-        /// digital out line 8: tell Pentek to zero its tilt counter
-        _HCR_DOUT_PENTEK_ZERO_TILT = 8,
-        /// digital out line 9: tell Pentek to zero its rotation counter
-        _HCR_DOUT_PENTEK_ZERO_ROT = 9,
+        /// digital out line 9: open Active Pressurization System valve
+        _HCR_DOUT_APS_PRES_ENABLE = 9,
         /// digital out line 10: HMC status acknowledgment signal
         _HCR_DOUT_HMC_STATUS_ACK = 10,
         /// digital out line 11: HMC operation mode bit 2
@@ -583,10 +603,10 @@ private:
         _HCR_AIN_TTL_WG_SWITCH_ERROR = 28,
         /// analog input 29: spare connected to HMC FPGA
         _HCR_AIN_HMC_SPARE_0 = 29,
-        /// analog input 30: spare connected to HMC FPGA
-        _HCR_AIN_HMC_SPARE_1 = 30,
-        /// analog input 31: spare connected to breakout board
-        _HCR_AIN_BREAKOUT_SPARE_0 = 31
+        /// analog input 30: Active Pressurization System low side pressure (50 PSI transducer)
+        _HCR_AIN_APS_LOW_SIDE_PRESSURE = 30,
+        /// analog input 31: Active Pressurization System high side pressure (2000 PSI transducer)
+        _HCR_AIN_APS_HIGH_SIDE_PRESSURE = 31
     } AinLine_t;
     
     /**

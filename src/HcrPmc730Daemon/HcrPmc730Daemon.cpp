@@ -174,8 +174,10 @@ main(int argc, char * argv[]) {
     // Just refer to theHcrPmc730() to instantiate the singleton.
     HcrPmc730::theHcrPmc730();
 
-    // Initialize output lines: transmitter filament off, transmitter HV off,
-    // HMC in "txV rxHV (attenuated)" mode.
+    // Initialize output lines: Active Pressurization System valve closed,
+    // transmitter filament off, transmitter HV off, HMC in
+    // "txV rxHV (attenuated)" mode.
+    HcrPmc730::setApsValveOpen(false);
     HcrPmc730::setXmitterFilamentOn(false);
     HcrPmc730::setXmitterHvOn(false);
     HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
