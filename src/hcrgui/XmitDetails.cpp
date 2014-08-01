@@ -39,6 +39,10 @@ XmitDetails::updateStatus(bool daemonResponding,
         _ui.statusFrame->setEnabled(false);
     }
 
+    // PSM power
+    _ui.psmPowerIcon->
+        setPixmap(xmitStatus.psmPowerOn() ? _greenLED : _redLED);
+
     // fault lights
     _ui.modulatorFaultIcon->
         setPixmap(xmitStatus.modulatorFault() ? _redLED : _greenLED);

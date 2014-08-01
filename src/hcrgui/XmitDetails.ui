@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
-    <height>482</height>
+    <width>324</width>
+    <height>504</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,30 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0" colspan="3">
+   <item row="3" column="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="respondingLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>response status here...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" rowspan="2" colspan="3">
     <widget class="QFrame" name="statusFrame">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -30,7 +53,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QGroupBox" name="xmitterFaultDetailsBox">
+       <widget class="QGroupBox" name="powerAndFaultsBox">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -41,7 +64,7 @@
          </sizepolicy>
         </property>
         <property name="title">
-         <string>Faults</string>
+         <string>Status</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -56,14 +79,14 @@
          <property name="margin">
           <number>4</number>
          </property>
-         <item row="10" column="1">
+         <item row="12" column="1">
           <widget class="QLabel" name="inverterOverloadFaultLabel">
            <property name="text">
             <string>Inverter Overload</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
+         <item row="4" column="3">
           <widget class="QLabel" name="syncFaultTime">
            <property name="text">
             <string/>
@@ -73,7 +96,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="2" column="2">
           <widget class="QLabel" name="faultCountColumnTitle">
            <property name="font">
             <font>
@@ -83,15 +106,14 @@
             </font>
            </property>
            <property name="text">
-            <string>FAULT
-COUNT</string>
+            <string>&lt;em&gt;FAULT&lt;br&gt;COUNT&lt;/em&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="2" column="3">
           <widget class="QLabel" name="faultTimeColumnTitle">
            <property name="font">
             <font>
@@ -99,7 +121,7 @@ COUNT</string>
             </font>
            </property>
            <property name="text">
-            <string>TIME OF LAST FAULT</string>
+            <string>&lt;em&gt;TIME OF LAST FAULT&lt;/em&gt;</string>
            </property>
            <property name="scaledContents">
             <bool>false</bool>
@@ -109,7 +131,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="modulatorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -123,9 +145,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="3" column="1">
           <widget class="QLabel" name="modulatorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -141,7 +166,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="3" column="2">
           <widget class="QLabel" name="modulatorFaultCount">
            <property name="text">
             <string>0</string>
@@ -151,7 +176,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="3" column="3">
           <widget class="QLabel" name="modulatorFaultTime">
            <property name="text">
             <string/>
@@ -161,7 +186,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="syncFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -175,9 +200,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="4" column="1">
           <widget class="QLabel" name="syncFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -190,7 +218,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
+         <item row="4" column="2">
           <widget class="QLabel" name="syncFaultCount">
            <property name="text">
             <string>0</string>
@@ -200,7 +228,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="xmitterTempFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -214,9 +242,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="5" column="1">
           <widget class="QLabel" name="xmitterTempFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -229,7 +260,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
+         <item row="5" column="2">
           <widget class="QLabel" name="xmitterTempFaultCount">
            <property name="text">
             <string>0</string>
@@ -239,7 +270,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="3">
+         <item row="5" column="3">
           <widget class="QLabel" name="xmitterTempFaultTime">
            <property name="text">
             <string/>
@@ -249,7 +280,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="6" column="0">
           <widget class="QLabel" name="wgArcFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -263,9 +294,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="6" column="1">
           <widget class="QLabel" name="wgArcFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -278,7 +312,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="2">
+         <item row="6" column="2">
           <widget class="QLabel" name="wgArcFaultCount">
            <property name="text">
             <string>0</string>
@@ -288,7 +322,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="3">
+         <item row="6" column="3">
           <widget class="QLabel" name="wgArcFaultTime">
            <property name="text">
             <string/>
@@ -298,7 +332,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="collectorCurrFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -312,9 +346,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="7" column="1">
           <widget class="QLabel" name="collectorCurrFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -327,7 +364,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="2">
+         <item row="7" column="2">
           <widget class="QLabel" name="collectorCurrFaultCount">
            <property name="text">
             <string>0</string>
@@ -337,7 +374,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="3">
+         <item row="7" column="3">
           <widget class="QLabel" name="collectorCurrFaultTime">
            <property name="text">
             <string/>
@@ -347,7 +384,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="bodyCurrFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -361,9 +398,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="8" column="1">
           <widget class="QLabel" name="bodyCurrFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -376,7 +416,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="2">
+         <item row="8" column="2">
           <widget class="QLabel" name="bodyCurrFaultCount">
            <property name="text">
             <string>0</string>
@@ -386,7 +426,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="3">
+         <item row="8" column="3">
           <widget class="QLabel" name="bodyCurrFaultTime">
            <property name="text">
             <string/>
@@ -396,7 +436,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="9" column="0">
           <widget class="QLabel" name="filamentLorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -410,9 +450,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="7" column="2">
+         <item row="9" column="2">
           <widget class="QLabel" name="filamentLorFaultCount">
            <property name="text">
             <string>0</string>
@@ -422,7 +465,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="3">
+         <item row="9" column="3">
           <widget class="QLabel" name="filamentLorFaultTime">
            <property name="text">
             <string/>
@@ -432,7 +475,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item row="10" column="0">
           <widget class="QLabel" name="focusElectrodeLorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -446,9 +489,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="10" column="1">
           <widget class="QLabel" name="focusElectrodeLorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -461,7 +507,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="2">
+         <item row="10" column="2">
           <widget class="QLabel" name="focusElectrodeLorFaultCount">
            <property name="text">
             <string>0</string>
@@ -471,7 +517,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="3">
+         <item row="10" column="3">
           <widget class="QLabel" name="focusElectrodeLorFaultTime">
            <property name="text">
             <string/>
@@ -481,7 +527,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
+         <item row="11" column="0">
           <widget class="QLabel" name="cathodeLorFaultIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -495,9 +541,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="9" column="1">
+         <item row="11" column="1">
           <widget class="QLabel" name="cathodeLorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -510,7 +559,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="2">
+         <item row="11" column="2">
           <widget class="QLabel" name="cathodeLorFaultCount">
            <property name="text">
             <string>0</string>
@@ -520,7 +569,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="3">
+         <item row="11" column="3">
           <widget class="QLabel" name="cathodeLorFaultTime">
            <property name="text">
             <string/>
@@ -530,7 +579,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="0">
+         <item row="12" column="0">
           <widget class="QLabel" name="inverterOverloadFaultIcon">
            <property name="text">
             <string/>
@@ -538,9 +587,12 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="10" column="2">
+         <item row="12" column="2">
           <widget class="QLabel" name="inverterOverloadFaultCount">
            <property name="text">
             <string>0</string>
@@ -550,7 +602,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="3">
+         <item row="12" column="3">
           <widget class="QLabel" name="inverterOverloadFaultTime">
            <property name="text">
             <string/>
@@ -560,7 +612,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="0">
+         <item row="13" column="0">
           <widget class="QLabel" name="extInterlockFaultIcon">
            <property name="text">
             <string/>
@@ -568,16 +620,19 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="11" column="1">
+         <item row="13" column="1">
           <widget class="QLabel" name="extInterlockFaultLabel">
            <property name="text">
             <string>External Interlock</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="2">
+         <item row="13" column="2">
           <widget class="QLabel" name="extInterlockFaultCount">
            <property name="text">
             <string>0</string>
@@ -587,7 +642,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="3">
+         <item row="13" column="3">
           <widget class="QLabel" name="extInterlockFaultTime">
            <property name="text">
             <string/>
@@ -597,7 +652,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="0">
+         <item row="14" column="0">
           <widget class="QLabel" name="eikInterlockFaultIcon">
            <property name="text">
             <string/>
@@ -605,16 +660,19 @@ COUNT</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
-         <item row="12" column="1">
+         <item row="14" column="1">
           <widget class="QLabel" name="eikInterlockFaultLabel">
            <property name="text">
             <string>EIK Interlock</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="2">
+         <item row="14" column="2">
           <widget class="QLabel" name="eikInterlockFaultCount">
            <property name="text">
             <string>0</string>
@@ -624,7 +682,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="3">
+         <item row="14" column="3">
           <widget class="QLabel" name="eikInterlockFaultTime">
            <property name="text">
             <string/>
@@ -634,7 +692,7 @@ COUNT</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="9" column="1">
           <widget class="QLabel" name="filamentLorFaultLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -644,6 +702,39 @@ COUNT</string>
            </property>
            <property name="text">
             <string>Filament LOR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="psmPowerIcon">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="psmPowerLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>PSM Power</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>&lt;b&gt;Faults&lt;/b&gt;</string>
            </property>
           </widget>
          </item>
@@ -831,29 +922,6 @@ COUNT</string>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="respondingLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>response status here...</string>
-     </property>
     </widget>
    </item>
   </layout>
