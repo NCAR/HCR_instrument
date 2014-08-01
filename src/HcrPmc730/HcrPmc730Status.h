@@ -99,6 +99,11 @@ public:
     /// Pressurization System regulator, PSI
     double apsHighSidePressurePsi() const { return(_apsHighSidePressurePsi); }
 
+    /// @brief Return true iff Active Pressurization System valve is currently
+    /// open.
+    /// @return true iff Active Pressurization System valve is currently open.
+    bool apsValveOpen() const { return(_apsValveOpen); }
+
     /// @brief Return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
     /// @return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
     double ploTemp() const { return(_ploTemp); }
