@@ -94,13 +94,27 @@ public:
     }
 
     /**
-     * @brief Return the detected RF power in dBm from the crystal RF detector
-     * at the last call to updateAnalogValues().
-     * @return the detected RF power in dBm from the crystal RF detector
-     * at the last call to updateAnalogValues().
+     * @brief Return the detected RF power in dBm at the last call to 
+     * updateAnalogValues(), adjusted to reflect power at the antenna port. 
+     * @return the detected RF power in dBm at the last call to 
+     * updateAnalogValues(), adjusted to reflect power at the antenna port.
      */
     static double detectedRfPower() {
-        return _MillitechDET10Power(theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF]);
+        // The HCR breakout board provides a factor of 2 gain on the voltage
+        // coming from the detector before sending the signal on to the PMC-730.
+        // Remove that gain now.
+        double detV = 0.5 * theHcrPmc730()._analogValues[_HCR_AIN_CRYSTAL_DET_RF];
+
+        // Convert to power at the detector
+        double detectorPower = _MillitechDET10Power(detV);
+        
+        // Coupling losses between antenna port and detector. This is an
+        // empirically determined value measured from the components.
+        static const double DETECTOR_COUPLING_LOSSES = 66.5; // dB
+        
+        // Add the coupling losses into the detected power to obtain power at
+        // the antenna port.
+        return(detectorPower + DETECTOR_COUPLING_LOSSES);
     }
 
     /**

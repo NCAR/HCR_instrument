@@ -288,11 +288,6 @@ HcrPmc730::_MiWv950WPower(double voltage) {
 
 double
 HcrPmc730::_MillitechDET10Power(double voltage) {
-    // The HCR breakout board provides a factor of 2 gain on the voltage
-    // coming from the detector before sending the signal on to the PMC-730.
-    // Remove that gain now.
-    double detV = 0.5 * voltage;
-
     // Cubic fit from Pei for calibration of 20140611 (dBm to mV):
     //
     //    mV = 363.919 + 47.7939 * dBm + 2.45847 * dBm^2 + 0.0479937 * dBm^3
@@ -305,9 +300,9 @@ HcrPmc730::_MillitechDET10Power(double voltage) {
     //
     //    dBm = -19.00 + 112.0 * V - 212.3 * V^2 + 145.4 * V^3
     return(-19.00 
-           + 112.0 * detV
-           - 212.3 * detV * detV
-           + 145.4 * detV * detV * detV);
+           + 112.0 * voltage
+           - 212.3 * voltage * voltage
+           + 145.4 * voltage * voltage * voltage);
 }
 
 /*
