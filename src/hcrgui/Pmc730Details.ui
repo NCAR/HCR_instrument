@@ -427,7 +427,7 @@
             <item row="1" column="1">
              <widget class="QLabel" name="lowSideValue">
               <property name="text">
-               <string>xx.x</string>
+               <string>00.0</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -456,8 +456,14 @@
             </item>
             <item row="0" column="1">
              <widget class="QLabel" name="highSideValue">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="text">
-               <string>xxxx</string>
+               <string>0000</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -487,7 +493,7 @@
                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
