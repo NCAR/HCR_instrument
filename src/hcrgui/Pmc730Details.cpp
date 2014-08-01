@@ -115,6 +115,12 @@ Pmc730Details::updateStatus(bool daemonResponding,
     
     _ui.emsErrorCountValue->setText(QString::number(status.emsErrorCount()));
     
+    // Active Pressurization System
+    _ui.highSideValue->setText(QString::number(status.apsHighSidePressurePsi(), 'f', 0));
+    _ui.lowSideValue->setText(QString::number(status.apsLowSidePressurePsi(), 'f', 1));
+    _ui.pressurizingIcon->setPixmap(status.apsValveOpen() ?
+            _greenLED : _greenLED_off);
+
     // miscellaneous
     if (status.locked125MHzPLO()) {
         _ui.locked125MHzIcon->setPixmap(_greenLED);
