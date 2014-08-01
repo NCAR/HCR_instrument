@@ -75,212 +75,166 @@ public:
     /// an xmlrpc_c::value_struct dictionary.
     xmlrpc_c::value_struct toXmlRpcValue() const;
 
-    /**
-     * @brief Return the transmit pulse power from the QuinStar power detector, dBm
-     * @return the transmit pulse power from the QuinStar power detector, dBm
-     */
+    /// @brief Return the transmit pulse power from the QuinStar power detector, dBm
+    /// @return the transmit pulse power from the QuinStar power detector, dBm
     double detectedRfPower() const { return(_detectedRfPower); }
-    /**
-     * @brief Return the pressure measured at the fore end of the pressure vessel, hPa
-     * @return the pressure measured at the fore end of the pressure vessel, hPa
-     */
+
+    /// @brief Return the pressure measured at the fore end of the pressure vessel, hPa
+    /// @return the pressure measured at the fore end of the pressure vessel, hPa
     double pvForePressure() const { return(_pvForePressure); }
-    /**
-     * @brief Return the pressure measured at the aft end of the pressure vessel, hPa
-     * @return the pressure measured at the aft end of the pressure vessel, hPa
-     */
+
+    /// @brief Return the pressure measured at the aft end of the pressure vessel, hPa
+    /// @return the pressure measured at the aft end of the pressure vessel, hPa
     double pvAftPressure() const { return(_pvAftPressure); }
-    /**
-     * @brief Return the pressure on the low-pressure side of the Active
-     * Pressurization System regulator, PSI
-     * @return the pressure on the low-pressure side of the Active
-     * Pressurization System regulator, PSI
-     */
+
+    /// @brief Return the pressure on the low-pressure side of the Active
+    /// Pressurization System regulator, PSI
+    /// @return the pressure on the low-pressure side of the Active
+    /// Pressurization System regulator, PSI
     double apsLowSidePressurePsi() const { return(_apsLowSidePressurePsi); }
-    /**
-     * @brief Return the pressure on the high-pressure side of the Active
-     * Pressurization System regulator, PSI
-     * @return the pressure on the high-pressure side of the Active
-     * Pressurization System regulator, PSI
-     */
+
+    /// @brief Return the pressure on the high-pressure side of the Active
+    /// Pressurization System regulator, PSI
+    /// @return the pressure on the high-pressure side of the Active
+    /// Pressurization System regulator, PSI
     double apsHighSidePressurePsi() const { return(_apsHighSidePressurePsi); }
-    /**
-     * @brief Return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
-     * @return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
-     */
+
+    /// @brief Return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
+    /// @return the temperature of the 93 GHz phase-locked oscillator (PLO), deg C
     double ploTemp() const { return(_ploTemp); }
-    /**
-     * @brief Return the temperature of the Extended Interaction Klystron (EIK), deg C
-     * @return the temperature of the Extended Interaction Klystron (EIK), deg C
-     */
+
+    /// @brief Return the temperature of the Extended Interaction Klystron (EIK), deg C
+    /// @return the temperature of the Extended Interaction Klystron (EIK), deg C
     double eikTemp() const { return(_eikTemp); }
-    /**
-     * @brief Return the temperature of the vertical channel LNA, deg C
-     * @return the temperature of the vertical channel LNA, deg C
-     */
+
+    /// @brief Return the temperature of the vertical channel LNA, deg C
+    /// @return the temperature of the vertical channel LNA, deg C
     double vLnaTemp() const { return(_vLnaTemp); }
-    /**
-     * @brief Return the temperature of the horizontal channel LNA, deg C
-     * @return the temperature of the horizontal channel LNA, deg C
-     */
+
+    /// @brief Return the temperature of the horizontal channel LNA, deg C
+    /// @return the temperature of the horizontal channel LNA, deg C
     double hLnaTemp() const { return(_hLnaTemp); }
-    /**
-     * @brief Return the temperature of the polarization switch, deg C
-     * @return the temperature of the polarization switch, deg C
-     */
+
+    /// @brief Return the temperature of the polarization switch, deg C
+    /// @return the temperature of the polarization switch, deg C
     double polarizationSwitchTemp() const { return(_polarizationSwitchTemp); }
-    /**
-     * @brief Return the temperature of the Mi-Wave 950W RF detector, deg C
-     * @return the temperature of the Mi-Wave 950W RF detector, deg C
-     */
+
+    /// @brief Return the temperature of the Mi-Wave 950W RF detector, deg C
+    /// @return the temperature of the Mi-Wave 950W RF detector, deg C
     double rfDetectorTemp() const { return(_rfDetectorTemp); }
-    /**
-     * @brief Return the temperature of the noise source, deg C
-     * @return the temperature of the noise source, deg C
-     */
+
+    /// @brief Return the temperature of the noise source, deg C
+    /// @return the temperature of the noise source, deg C
     double noiseSourceTemp() const { return(_noiseSourceTemp); }
-    /**
-     * @brief Return the temperature of 28V power supply, deg C
-     * @return the temperature of the 28V power supply, deg C
-     */
+
+    /// @brief Return the temperature of 28V power supply, deg C
+    /// @return the temperature of the 28V power supply, deg C
     double ps28VTemp() const { return(_ps28VTemp); }
-    /**
-     * @brief Return the temperature at the input air duct for the remote data
-     * system (RDS), deg C
-     * @return the temperature at the input air duct for the remote data system
-     * (RDS), deg C
-     */
+
+    /// @brief Return the temperature at the input air duct for the remote data
+    /// system (RDS), deg C
+    /// @return the temperature at the input air duct for the remote data system
+    /// (RDS), deg C
     double rdsInDuctTemp() const { return(_rdsInDuctTemp); }
-    /**
-     * @brief Return the temperature of the reflector rotation motor, deg C
-     * @return the temperature of the reflector rotation motor, deg C
-     */
+
+    /// @brief Return the temperature of the reflector rotation motor, deg C
+    /// @return the temperature of the reflector rotation motor, deg C
     double rotationMotorTemp() const { return(_rotationMotorTemp); }
-    /**
-     * @brief Return the temperature of the reflector tilt motor, deg C
-     * @return the temperature of the reflector tilt motor, deg C
-     */
+
+    /// @brief Return the temperature of the reflector tilt motor, deg C
+    /// @return the temperature of the reflector tilt motor, deg C
     double tiltMotorTemp() const { return(_tiltMotorTemp); }
-    /**
-     * @brief Return the temperature of the C-MIGITS inertial navigation system, deg C
-     * @return the temperature of the C-MIGITS inertial navigation system, deg C
-     */
+
+    /// @brief Return the temperature of the C-MIGITS inertial navigation system, deg C
+    /// @return the temperature of the C-MIGITS inertial navigation system, deg C
     double cmigitsTemp() const { return(_cmigitsTemp); }
-    /**
-     * @brief Return the ambient temperature in the tailcone, deg C
-     * @return the ambient temperature in the tailcone, deg C
-     */
+
+    /// @brief Return the ambient temperature in the tailcone, deg C
+    /// @return the ambient temperature in the tailcone, deg C
     double tailconeTemp() const { return(_tailconeTemp); }
-    /**
-     * @brief Return the measured voltage from the 5V power supply.
-     * @return the measured voltage from the 5V power supply, V
-     */
+
+    /// @brief Return the measured voltage from the 5V power supply.
+    /// @return the measured voltage from the 5V power supply, V
     double psVoltage() const { return(_psVoltage); }
-    /**
-     * @brief Return true iff 15.5 GHz PLO is phase locked
-     * @return true iff 15.5 GHz PLO is phase locked
-     */
+
+    /// @brief Return true iff 15.5 GHz PLO is phase locked
+    /// @return true iff 15.5 GHz PLO is phase locked
     bool locked15_5GHzPLO() const { return(_locked15_5GHzPLO); }
-    /**
-     * @brief Return true iff 1250 MHz PLO is phase locked
-     * @return true iff 1250 MHz PLO is phase locked
-     */
+
+    /// @brief Return true iff 1250 MHz PLO is phase locked
+    /// @return true iff 1250 MHz PLO is phase locked
     bool locked1250MHzPLO() const { return(_locked1250MHzPLO); }
-    /**
-     * @brief Return true iff 125 MHz PLO is phase locked
-     * @return true iff 125 MHz PLO is phase locked
-     */
+
+    /// @brief Return true iff 125 MHz PLO is phase locked
+    /// @return true iff 125 MHz PLO is phase locked
     bool locked125MHzPLO() const { return(_locked125MHzPLO); }
-    /**
-     * @brief Return true iff modulation pulses are being stopped at the HMC and not
-     * passed through to the transmitter
-     * @return true iff modulation pulses are being stopped at the HMC and not
-     * passed through to the transmitter
-     */
+
+    /// @brief Return true iff modulation pulses are being stopped at the HMC and not
+    /// passed through to the transmitter
+    /// @return true iff modulation pulses are being stopped at the HMC and not
+    /// passed through to the transmitter
     bool modPulseDisabled() const { return(_modPulseDisabled); }
-    /**
-     * @brief Return true iff we are currently commanding "filament on" via
-     * the RDS filament control line going to the transmitter.
-     * @return true iff we are currently commanding "filament on" via
-     * the RDS filament control line going to the transmitter.
-     */
+
+    /// @brief Return true iff we are currently commanding "filament on" via
+    /// the RDS filament control line going to the transmitter.
+    /// @return true iff we are currently commanding "filament on" via
+    /// the RDS filament control line going to the transmitter.
     bool rdsXmitterFilamentOn() const { return(_rdsXmitterFilamentOn); }
-    /**
-     * @brief Return true iff we are currently commanding "high voltage on" via
-     * the RDS HV control line going to the transmitter.
-     * @return true iff we are currently commanding "high voltage on" via
-     * the RDS HV control line going to the transmitter.
-     */
+
+    /// @brief Return true iff we are currently commanding "high voltage on" via
+    /// the RDS HV control line going to the transmitter.
+    /// @return true iff we are currently commanding "high voltage on" via
+    /// the RDS HV control line going to the transmitter.
     bool rdsXmitterHvOn() const { return(_rdsXmitterHvOn); }
 
-    /**
-     * @brief Return true iff radar power error is being reported.
-     * @return true iff iff radar power error is being reported.
-     */
+    /// @brief Return true iff radar power error is being reported.
+    /// @return true iff iff radar power error is being reported.
     bool radarPowerError() const { return(_radarPowerError); }
 
-    /**
-     * @brief Return the count of EMC error events.
-     * @return the count of EMC error events.
-     */
+    /// @brief Return the count of EMC error events.
+    /// @return the count of EMC error events.
     uint32_t emsErrorCount() const { return(_emsErrorCount); }
     
-    /**
-     * @brief Return true iff there is one or more EMS error of type 1 in
-     * the current error count.
-     * @return true iff there is one or more EMS error of type 1 in
-     * the current error count.
-     */
+    /// @brief Return true iff there is one or more EMS error of type 1 in
+    /// the current error count.
+    /// @return true iff there is one or more EMS error of type 1 in
+    /// the current error count.
     bool emsError1() const { return(_emsError1); }
 
-    /**
-     * @brief Return true iff there is one or more EMS error of type 2 in
-     * the current error count.
-     * @return true iff there is one or more EMS error of type 2 in
-     * the current error count.
-     */
+    /// @brief Return true iff there is one or more EMS error of type 2 in
+    /// the current error count.
+    /// @return true iff there is one or more EMS error of type 2 in
+    /// the current error count.
     bool emsError2() const { return(_emsError2); }
 
-    /**
-     * @brief Return true iff there is one or more EMS error of type 3 in
-     * the current error count.
-     * @return true iff there is one or more EMS error of type 3 in
-     * the current error count.
-     */
+    /// @brief Return true iff there is one or more EMS error of type 3 in
+    /// the current error count.
+    /// @return true iff there is one or more EMS error of type 3 in
+    /// the current error count.
     bool emsError3() const { return(_emsError3); }
 
-    /**
-     * @brief Return true iff there is one or more EMS error of type 4 or 5 in
-     * the current error count.
-     * @return true iff there is one or more EMS error of type 4 or 5 in
-     * the current error count.
-     */
+    /// @brief Return true iff there is one or more EMS error of type 4 or 5 in
+    /// the current error count.
+    /// @return true iff there is one or more EMS error of type 4 or 5 in
+    /// the current error count.
     bool emsError4Or5() const { return(_emsError4Or5); }
 
-    /**
-     * @brief Return true iff there is one or more EMS error of type 6 or 7 in
-     * the current error count.
-     * @return true iff there is one or more EMS error of type 6 or 7 in
-     * the current error count.
-     */
+    /// @brief Return true iff there is one or more EMS error of type 6 or 7 in
+    /// the current error count.
+    /// @return true iff there is one or more EMS error of type 6 or 7 in
+    /// the current error count.
     bool emsError6Or7() const { return(_emsError6Or7); }
 
-    /**
-     * @brief Return true iff EMS power error is being reported.
-     * @return true iff iff EMS power error is being reported.
-     */
+    /// @brief Return true iff EMS power error is being reported.
+    /// @return true iff iff EMS power error is being reported.
     bool emsPowerError() const { return(_emsPowerError); }
 
-    /**
-     * @brief Return true iff the HMC is reporting polarization switching error
-     * @return true iff the HMC is reporting polarization switching error
-     */
+    /// @brief Return true iff the HMC is reporting polarization switching error
+    /// @return true iff the HMC is reporting polarization switching error
     bool waveguideSwitchError() const { return(_waveguideSwitchError); }
 
-    /**
-     * @brief Return the HMC operating mode. 
-     * @see HcrPmc730::HmcOperationMode for a description of the values.
-     */
+    /// @brief Return the HMC operating mode.
+    /// @see HcrPmc730::HmcOperationMode for a description of the values.
     HcrPmc730::HmcOperationMode hmcMode() const {
         // Cast _hmcMode back to its original HcrPmc730::HmcOperationMode
         // enum type.
@@ -288,34 +242,28 @@ public:
     }
     
 private:
-    /**
-     * @brief Simple class implementing a list of temperatures with a maximum
-     * size. When a temperature is added which causes the maximum size to be
-     * exceeded, the oldest item in the list will be removed to bring the size
-     * back to the maximum.
-     */
+    /// @brief Simple class implementing a list of temperatures with a maximum
+    /// size. When a temperature is added which causes the maximum size to be
+    /// exceeded, the oldest item in the list will be removed to bring the size
+    /// back to the maximum.
     class TemperatureList {
     public:
-        /**
-         * @brief Constructor.
-         */
+        /// @brief Constructor.
         TemperatureList() : _items() {}
-        /**
-         * @brief Add a temperature to the list.
-         * @param val the temperature to add to the list
-         */
+
+        /// @brief Add a temperature to the list.
+        /// @param val the temperature to add to the list
         void addTemperature(double val) {
             _items.push_front(val);
             if (_items.size() > _MAX_SIZE) {
                 _items.pop_back();
             }
         }
-        /**
-         * @brief Return the mean of the values in the list, or -99.9 if
-         * the list is empty.
-         * @return the mean of the values in the list, or -99.9 if
-         * the list is empty.
-         */
+
+        /// @brief Return the mean of the values in the list, or -99.9 if
+        /// the list is empty.
+        /// @return the mean of the values in the list, or -99.9 if
+        /// the list is empty.
         double mean() const {
             if (_items.empty())
                 return(-99.9);
@@ -329,24 +277,19 @@ private:
         std::deque<double> _items;
     };
 
-    /**
-     * @brief Get new values for all of our sensor data supplied via the PMC730
-     * multi-IO card.
-     */
+    /// @brief Get new values for all of our sensor data supplied via the PMC730
+    /// multi-IO card.
     void _getMultiIoValues();
 
-    /**
-     * @brief Get latest available data from the C-MIGITS
-     */
+    /// @brief Get latest available data from the C-MIGITS
     void _getCmigitsValues();
     
     friend class boost::serialization::access;
-    /**
-     * @brief Serialize our members to a boost save (output) archive or populate
-     * our members from a boost load (input) archive.
-     * @param ar the archive to load from or save to.
-     * @param version the version 
-     */
+
+    /// @brief Serialize our members to a boost save (output) archive or populate
+    /// our members from a boost load (input) archive.
+    /// @param ar the archive to load from or save to.
+    /// @param version the version
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
         using boost::serialization::make_nvp;
