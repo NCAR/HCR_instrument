@@ -409,7 +409,7 @@ public:
      * to add pressure to the pod.
      */
     static bool apsValveOpen() {
-        return(! theHcrPmc730().getDioLine(_HCR_DOUT_APS_PRES_ENABLE));
+        return(theHcrPmc730().getDioLine(_HCR_DOUT_APS_PRES_ENABLE));
     }
 
     /**
