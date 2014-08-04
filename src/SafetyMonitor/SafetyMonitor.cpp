@@ -14,7 +14,10 @@
 
 #include <unistd.h>
 #include <csignal>
+#include <iomanip>
+#include <map>
 #include <sstream>
+#include <string>
 #include <boost/program_options.hpp>
 #include <QCoreApplication>
 #include <QTimer>
@@ -24,6 +27,7 @@
 #include <CmigitsSharedMemory.h>
 #include <QFunctionWrapper.h>
 
+#include <xmlrpc-c/client_simple.hpp>
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
@@ -46,8 +50,14 @@ static const int REGISTRATION_INTERVAL_SECS = 60;
 // Log a brief status message at this interval.
 static const int LOG_STATUS_INTERVAL_SECS = 15;
 
-// Update position at this interval.
-static const int POSITION_UPDATE_INTERVAL_MS = 500;
+// Check state at this interval.
+static const int CHECK_INTERVAL_MSECS = 1000;
+
+// XML-RPC client instance
+xmlrpc_c::clientSimple _XmlRpcClient;
+
+// TerrainHtServer XML-RPC URL
+std::string _TerrainHtServerURL = "http://archiver:9090/RPC2";
 
 void
 updateRegistration() {
@@ -60,19 +70,92 @@ logStatus() {
     ILOG << "SafetyMonitor still running...";
 }
 
-// Our access to the C-MIGITS data shared memory segment.
-CmigitsSharedMemory CmShm;
+// Access to the C-MIGITS data shared memory segment.
+CmigitsSharedMemory _CmShm;
 
+// Surface types
+typedef enum {
+    SURFACE_LAND,
+    SURFACE_WATER,
+    SURFACE_UNKNOWN
+} SurfaceType;
+
+static const double BAD_AGL_ALTITUDE = -999.;
+
+// Variables to be included in SafetyMonitor's status
+double _AltitudeAGL = BAD_AGL_ALTITUDE;
+SurfaceType _SurfType = SURFACE_UNKNOWN;
+bool _TransmitRestrictedByAlt = false;
+
+// Check aircraft altitude AGL and respond if it's low enough for ground return
+// to damage the receiver LNAs.
 void
-updatePosition() {
+checkAltitude() {
+    _AltitudeAGL = BAD_AGL_ALTITUDE;
+    _SurfType = SURFACE_UNKNOWN;
+    
+    // Get latitude, longitude, and instrument MSL altitude from the C-MIGITS
     uint64_t time3501;
     double latitude;
     double longitude;
     double altitudeMSL;
-    CmShm.getLatest3501Data(time3501, latitude, longitude, altitudeMSL);
+    _CmShm.getLatest3501Data(time3501, latitude, longitude, altitudeMSL);
+    if (time3501 == 0) {
+        WLOG << "No current data available from C-MIGITS";
+    } else {
+        ILOG << time3501 << ", lat: " << latitude << ", lon: " << longitude <<
+                ", altMSL: " << altitudeMSL;
 
-    ILOG << time3501 << ", lat: " << latitude << ", lon: " << longitude <<
-            ", altMSL: " << altitudeMSL;
+        // Get surface altitude MSL from the TerrainHtServer
+        try {
+            xmlrpc_c::value result;
+            _XmlRpcClient.call(_TerrainHtServerURL, "get.height", "dd", &result, 
+                    latitude, longitude);
+            
+            // The value returned should be a dictionary
+            std::map<std::string, xmlrpc_c::value> dict =
+              static_cast<std::map<std::string, xmlrpc_c::value> >(xmlrpc_c::value_struct(result));
+            
+            // First see if TerrainHtServer reported an error
+            bool error = xmlrpc_c::value_boolean(dict["isError"]);
+            if (error) {
+                WLOG << std::fixed << std::setprecision(4) << 
+                        "TerrainHtServer returned an error for lat " << latitude << 
+                        "/lon " << longitude;
+            } else {
+                // Get the surface altitude above MSL then calculate aircraft height 
+                // above the surface
+                double surfaceAltMSL = xmlrpc_c::value_double(dict["heightM"]);
+                _AltitudeAGL = altitudeMSL - surfaceAltMSL;
+                
+                // Over land or water?
+                bool overWater = xmlrpc_c::value_boolean(dict["isWater"]);
+                _SurfType = overWater ? SURFACE_WATER : SURFACE_LAND;
+                
+                // Log what we got
+                ILOG << "Sensor height AGL " << _AltitudeAGL << " m (over " << 
+                        (overWater ? "water" : "land") << ")";
+            }
+        } catch (std::exception & e) {
+            WLOG << "Error on TerrainHtServer get.height() call: " << e.what();
+        }
+    }
+}
+
+// Check pressure vessel pressure and respond if it's too low for transmitter
+// operation.
+void
+checkPVPressure() {
+    ILOG << "No checkPVPressure() implementation yet!";
+}
+
+// Perform the periodic safety checks
+void
+doChecks() {
+    // Check aircraft AGL altitude
+    checkAltitude();
+    // Check pressure vessel pressure
+    checkPVPressure();
 }
 
 /// @brief xmlrpc_c::method to get status from the SafetyMonitor process.
@@ -134,7 +217,7 @@ main(int argc, char *argv[]) {
     // XML-RPC server port number
     static const int DEFAULT_XMLRPC_PORT = 8004;
     int xmlrpcPortNum;
-
+    
     // procmap instance name
     std::string instanceName("ops");
 
@@ -204,14 +287,14 @@ main(int argc, char *argv[]) {
             &statusFuncWrapper, SLOT(callFunction()));
     statusTimer.start();
     
-    // Set up a timer to periodically get current position and decide about
+    // Set up a timer to periodically get current state and decide about
     // protective measures.
-    QTimer positionUpdateTimer;
-    positionUpdateTimer.setInterval(POSITION_UPDATE_INTERVAL_MS);
-    QFunctionWrapper updateFuncWrapper(updatePosition);
-    QObject::connect(&positionUpdateTimer, SIGNAL(timeout()),
-            &updateFuncWrapper, SLOT(callFunction()));
-    positionUpdateTimer.start();
+    QTimer checkTimer;
+    checkTimer.setInterval(CHECK_INTERVAL_MSECS);
+    QFunctionWrapper doChecksFuncWrapper(doChecks);
+    QObject::connect(&checkTimer, SIGNAL(timeout()),
+            &doChecksFuncWrapper, SLOT(callFunction()));
+    checkTimer.start();
 
     // Now just run the application until somebody or something interrupts it
     try {
