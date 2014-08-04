@@ -6,6 +6,7 @@
 tools = Split('''
 boost_program_options
 cmigits
+doxygen
 qt4
 QFunctionWrapper
 QXmlRpcServerAbyss
@@ -16,11 +17,15 @@ env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui'])
 
 sources = Split('''
-AltitudeMonitorDaemon.cpp
+SafetyMonitor.cpp
 ''')
 
 headers = Split('''
 ''')
 
-daemon = env.Program('AltitudeMonitorDaemon', sources)
+daemon = env.Program('SafetyMonitor', sources)
 Default(daemon)
+
+env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "cmigits library" })
+doxref = env.Apidocs(sources + headers)
+Default(doxref)

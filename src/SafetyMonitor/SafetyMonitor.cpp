@@ -1,8 +1,12 @@
 /*
- * AltitudeMonitorDaemon.cpp
+ * SafetyMonitor.cpp
  *
- * Daemon which monitors aircraft altitude and acts to protect the radar
- * receiver depending on altitude and whether flying over land or water.
+ * Daemon which performs some basic monitoring and reacts if necessary to 
+ * protect the HCR transmitter and its receiver LNAs. For the transmitter, 
+ * high voltage will be disabled if pressure vessel pressure drops below a 
+ * set threshold in order to prevent transmitter arcing. For the LNAs, steps
+ * are taken to prevent transmitting toward the ground when aircraft
+ * altitude above the surface is low enough that returns might damage the LNAs.
  *
  * Created on: Jul 24, 2014
  *      Author: burghart
@@ -23,7 +27,7 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
-LOGGING("AltitudeMonitorDaemon")
+LOGGING("SafetyMonitor")
 
 namespace po = boost::program_options;
 
@@ -32,7 +36,7 @@ QCoreApplication *App = 0;
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
-  ILOG << "Signal received; stopping AltitudeMonitorDaemon.";
+  ILOG << "Signal received; stopping SafetyMonitor.";
   App->quit();
 }
 
@@ -53,7 +57,7 @@ updateRegistration() {
 
 void
 logStatus() {
-    ILOG << "AltitudeMonitorDaemon still running...";
+    ILOG << "SafetyMonitor still running...";
 }
 
 // Our access to the C-MIGITS data shared memory segment.
@@ -71,23 +75,23 @@ updatePosition() {
             ", altMSL: " << altitudeMSL;
 }
 
-/// @brief xmlrpc_c::method to get status from the AltitudeMonitorDaemon process.
+/// @brief xmlrpc_c::method to get status from the SafetyMonitor process.
 ///
 /// The method returns a xmlrpc_c::value_struct (dictionary) mapping
 /// std::string keys to xmlrpc_c::value values. Pass the dictionary
-/// to the AltitudeMonitorStatus(xmlrpc_c::value_struct & dict) constructor to
-/// create a usable AltitudeMonitorStatus object.
+/// to the SafetyMonitorStatus(xmlrpc_c::value_struct & dict) constructor to
+/// create a usable SafetyMonitorStatus object.
 ///
-/// Example client usage, where AltitudeMonitorDaemon is running on machine
-/// `amdserver`:
+/// Example client usage, where SafetyMonitor is running on machine
+/// `smserver`:
 /// @code
 ///     #include <xmlrpc-c/client_simple.hpp>
 ///     ...
 ///
-///     // Get the status from AltitudeMonitorDaemon on amdserver.local.net
+///     // Get the status from SafetyMonitor on smserver.local.net
 ///     // on port 8004
 ///     xmlrpc_c::simpleClient client;
-///     std::string daemonUrl = "http://amdserver.local.net:8004/RPC2")
+///     std::string daemonUrl = "http://smserver.local.net:8004/RPC2")
 ///
 ///     xmlrpc_c::value result;
 ///     try {
@@ -97,9 +101,9 @@ updatePosition() {
 ///         exit(1);
 ///     }
 ///
-///     // create an AltitudeMonitorStatus object from the returned dictionary
+///     // create a SafetyMonitorStatus object from the returned dictionary
 ///     xmlrpc_c::value_struct resultStruct(result);
-///     status = AltitudeMonitorStatus(resultStruct);
+///     status = SafetyMonitorStatus(resultStruct);
 ///
 ///     // extract a value from the status
 ///     bool pllLocked = status.pllLocked();;
@@ -108,7 +112,7 @@ class GetStatusMethod : public xmlrpc_c::method {
 public:
     GetStatusMethod() {
         this->_signature = "S:";
-        this->_help = "This method returns the latest status from AltitudeMonitorDaemon.";
+        this->_help = "This metSafetyMonitort status from SafetyMonitor.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
@@ -134,7 +138,7 @@ main(int argc, char *argv[]) {
     // procmap instance name
     std::string instanceName("ops");
 
-    // Get AltitudeMonitorDaemon's options
+    // Get SafetyMonitor's options
     po::options_description opts("Options");
     opts.add_options()
         ("help,h", "Describe options")
@@ -165,12 +169,12 @@ main(int argc, char *argv[]) {
     
     // Initialize registration with procmap if instance is specified
     if (instanceName.size() > 0) {
-        PMU_auto_init("AltitudeMonitorDaemon", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
+        PMU_auto_init("SafetyMonitor", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
         ILOG << "Initializing procmap registration as instance '" << 
                 instanceName << "'";
     }
 
-    ILOG << "AltitudeMonitorDaemon (" << getpid() << ") started";
+    ILOG << "SafetyMonitor (" << getpid() << ") started";
 
     PMU_auto_register("initializing");
 
@@ -222,6 +226,6 @@ main(int argc, char *argv[]) {
     PMU_auto_unregister();
 
     // Clean up before exit
-    ILOG << "AltitudeMonitorDaemon (" << getpid() << ") exiting";
+    ILOG << "SafetyMonitor (" << getpid() << ") exiting";
     return 0;
 } 
