@@ -11,6 +11,7 @@ qt4
 QFunctionWrapper
 QXmlRpcServerAbyss
 rapradar
+xmlrpc_client++
 ''')
 
 env = Environment(tools = ['default'] + tools)
