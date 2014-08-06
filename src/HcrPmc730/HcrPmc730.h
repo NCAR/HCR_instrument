@@ -617,10 +617,10 @@ private:
         _HCR_AIN_TTL_WG_SWITCH_ERROR = 28,
         /// analog input 29: spare connected to HMC FPGA
         _HCR_AIN_HMC_SPARE_0 = 29,
-        /// analog input 30: Active Pressurization System low side pressure (50 PSI transducer)
-        _HCR_AIN_APS_LOW_SIDE_PRESSURE = 30,
-        /// analog input 31: Active Pressurization System high side pressure (2000 PSI transducer)
-        _HCR_AIN_APS_HIGH_SIDE_PRESSURE = 31
+        /// analog input 30: Active Pressurization System high side pressure (2000 PSI transducer)
+        _HCR_AIN_APS_HIGH_SIDE_PRESSURE = 30,
+        /// analog input 31: Active Pressurization System low side pressure (50 PSI transducer)
+        _HCR_AIN_APS_LOW_SIDE_PRESSURE = 31
     } AinLine_t;
     
     /**
