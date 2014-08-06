@@ -4,18 +4,18 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-PulseData::PulseData()
-{
-
-  _pulseSeqNum = -9999;
-  _timeSecs = 0;
-  _nanoSecs = 0;
-  _channelId = -9999;
-  _nGates = 0;
-  _nGatesAlloc = 0;
-  _iq = NULL;
-
-}
+PulseData::PulseData() :
+    _pulseSeqNum(-9999),
+    _timeSecs(0),
+    _nanoSecs(0),
+    _channelId(-9999),
+    _nGates(0),
+    _nGatesAlloc(0),
+    _rotMotorAngle(0.0),
+    _tiltMotorAngle(0.0),
+    _xmitPolarization(XMIT_POL_HORIZONTAL),
+    _iq(NULL)
+{}
 
 /////////////////////////////////////////////////////////////////////////////
 PulseData::~PulseData()
@@ -37,6 +37,7 @@ void PulseData::set(int64_t pulseSeqNum,
                     int channelId,
                     float rotMotorAngle,
                     float tiltMotorAngle,
+                    XmitPolarization_t xmitPol,
                     int nGates,
                     const int16_t *iq)
 

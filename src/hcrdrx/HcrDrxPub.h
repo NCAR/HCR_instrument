@@ -103,8 +103,10 @@ private:
   /// @param pulseSeqNum The pulse number (will be zero for raw data).
   /// @param rotMotorAngle The angle of the rotation motor, deg.
   /// @param tiltMotorAngle The angle of the tilt motor, deg.
+  /// @param xmitPolHorizontal True if transmit polarization is horizontal,
+  ///    false if vertical.
   void _addToExport(const int16_t *iq, int64_t pulseSeqNum, float rotMotorAngle,
-          float tiltMotorAngle);
+          float tiltMotorAngle, bool xmitPolHorizontal);
         
   /**
    * @brief Return true iff the current configuration is valid.

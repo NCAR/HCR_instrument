@@ -23,14 +23,21 @@ public:
 
   virtual ~PulseData();
 
+  /// Transmit polarization enumeration
+  typedef enum {
+      XMIT_POL_VERTICAL,
+      XMIT_POL_HORIZONTAL,
+  } XmitPolarization_t;
+
   /// @brief Set the data in the object.
   /// @param pulseSeqNum the pulse sequence number
   /// @param timeSecs pulse time, full seconds since the Epoch
   /// @param nanoSecs pulse time, nanoseconds after timeSecs
   /// @param channelId the channel ID
-  /// @param nGates number of gates in the pulse data
   /// @param rotMotorAngle angle of the rotation motor, deg
   /// @param tiltMotorAngle angle of the tilt motor, deg
+  /// @param xmitPol transmit polarization for the pulse
+  /// @param nGates number of gates in the pulse data
   /// @param iq I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
   void set(int64_t pulseSeqNum,
            time_t timeSecs,
@@ -38,6 +45,7 @@ public:
            int channelId,
            float rotMotorAngle,
            float tiltMotorAngle,
+           XmitPolarization_t xmitPol,
            int nGates,
            const int16_t *iq);
 
@@ -54,6 +62,7 @@ public:
   inline int getChannelId() const { return _channelId; }
   inline float getRotMotorAngle() const { return _rotMotorAngle; }
   inline float getTiltMotorAngle() const { return _tiltMotorAngle; }
+  inline XmitPolarization_t getXmitPolarization() const { return _xmitPolarization; }
   inline int getNGates() const { return _nGates; }
   inline const int16_t *getIq() const { return _iq; }
   inline int16_t *getIq() { return _iq; }
@@ -91,6 +100,9 @@ private:
 
   /// tilt motor angle
   float _tiltMotorAngle;
+
+  /// transmit polarization for the pulse
+  XmitPolarization_t _xmitPolarization;
 
   /**
    * IQ data

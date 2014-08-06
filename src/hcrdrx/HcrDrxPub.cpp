@@ -81,7 +81,9 @@ void HcrDrxPub::run() {
     int64_t pulsenum;
     float rotMotorAngle;
     float tiltMotorAngle;
-    char* buf = _down->getBeam(pulsenum, rotMotorAngle, tiltMotorAngle);
+    bool xmitPolHorizontal;
+    char* buf = _down->getBeam(pulsenum, rotMotorAngle, tiltMotorAngle,
+            xmitPolHorizontal);
     
     // Emit a signal when we first see data
     if (! _dataSeen) {
@@ -101,7 +103,7 @@ void HcrDrxPub::run() {
     }
 
     _addToExport(reinterpret_cast<const int16_t *>(buf), pulsenum,
-            rotMotorAngle, tiltMotorAngle);
+            rotMotorAngle, tiltMotorAngle, xmitPolHorizontal);
   }
   // Delete the angle socket before we exit
   delete(angleSocket);
@@ -142,7 +144,7 @@ HcrDrxPub::_configIsValid() const {
 ////////////////////////////////////////////////////////////////////////////////
 void
 HcrDrxPub::_addToExport(const int16_t *iq, int64_t pulseSeqNum,
-        float rotMotorAngle, float tiltMotorAngle)
+        float rotMotorAngle, float tiltMotorAngle, bool xmitPolHorizontal)
 {
   time_duration timeFromEpoch = _sd3c.timeOfPulse(pulseSeqNum) - Epoch1970;
   time_t timeSecs = timeFromEpoch.total_seconds();
@@ -156,9 +158,10 @@ HcrDrxPub::_addToExport(const int16_t *iq, int64_t pulseSeqNum,
   }
 
   // set data in pulse object
-
+  PulseData::XmitPolarization_t xmitPol =
+          xmitPolHorizontal ? PulseData::XMIT_POL_HORIZONTAL : PulseData::XMIT_POL_VERTICAL;
   _pulseData->set(pulseSeqNum, timeSecs, nanoSecs,
-          _pentekChanNum, rotMotorAngle, tiltMotorAngle,
+          _pentekChanNum, rotMotorAngle, tiltMotorAngle, xmitPol,
           _nGates, iq);
 
   // Write our current object into the merge queue, and get back another to use

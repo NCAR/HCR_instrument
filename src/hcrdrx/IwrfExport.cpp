@@ -585,7 +585,10 @@ void IwrfExport::_assembleIwrfPulsePacket()
   _pulseHdr.n_gates = _nGates;
   _pulseHdr.n_channels = NCHANNELS;
   _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI16;
-  _pulseHdr.hv_flag = 1;
+  // Pulse transmit polarization should be the same in both the H and V
+  // receiver data. We just get it from _pulseH receiver data.
+  _pulseHdr.hv_flag =
+          (_pulseH->getXmitPolarization() == PulseData::XMIT_POL_HORIZONTAL) ? 1 : 0;
   _pulseHdr.phase_cohered = true;
   _pulseHdr.n_data = _nGates * NCHANNELS * 2;
   _pulseHdr.iq_offset[0] = 0;
