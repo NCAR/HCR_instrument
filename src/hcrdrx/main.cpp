@@ -467,15 +467,18 @@ main(int argc, char** argv)
     // Tell HcrPmc730Daemon to turn off transmitter high voltage and set the
     // HMC operating mode to "txV, rxHV (attenuated)" before we exit.
     HcrPmc730Client pmc730Client(_pmc730dHost, _pmc730dPort);
-    if (pmc730Client.xmitHvOff()) {
+    try {
+        pmc730Client.xmitHvOff();
         ILOG << "Turned off transmitter HV via HcrPmc730Daemon";
-    } else {
-        WLOG << "Failed to turn off transmitter HV via HcrPmc730Daemon!";
+    } catch (std::exception & e) {
+        WLOG << "Failed to turn off transmitter HV via HcrPmc730Daemon!: " << e.what();
     }
-    if (pmc730Client.setHmcMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED)) {
+    try {
+        pmc730Client.setHmcMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
         ILOG << "Set HMC mode to 'txV rxHV (attenuated)' via HcrPmc730Daemon";
-    } else {
-        WLOG << "Failed to set HMC mode to 'txV rxHV (attenuated)' via HcrPmc730Daemon!";
+    } catch (std::exception & e) {
+        WLOG << "Failed to set HMC mode to 'txV rxHV (attenuated)' " <<
+                "via HcrPmc730Daemon: " << e.what();
     }
 
     // Unregister with procmap

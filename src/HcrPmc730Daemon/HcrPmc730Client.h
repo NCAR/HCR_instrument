@@ -24,34 +24,32 @@ public:
     /// @return the daemon port number
     int getDaemonPort() const { return(_daemonPort); }
 
-    /// @brief Send a "getStatus" command, filling a HcrPmc730Status
-    /// object if we get status from the HcrPmc730Daemon.
-    /// @param status the HcrPmc730Status object to be filled
-    /// @return true and fill the status object if status is obtained from
-    /// HcrPmc730Daemon, otherwise return false and leave the status object
-    /// unmodified.
-    bool getStatus(HcrPmc730Status & status);
+    /// @brief Send a "getStatus" command and return a HcrPmc730Status object.
+    /// @throws exception on XML-RPC error
+    /// @return Return status obtained from HcrPmc730Daemon. On XML-RPC error,
+    /// an exception is thrown.
+    HcrPmc730Status getStatus();
 
     /// @brief Send an "xmitFilamentOn" command to HcrPmc730Daemon
-    /// @return true if the call is successful, false otherwise
-    bool xmitFilamentOn();
+    /// @throws exception on XML-RPC error
+    void xmitFilamentOn();
 
     /// @brief Send a "xmitFilamentOff" command to HcrPmc730Daemon
-    /// @return true if the call is successful, false otherwise
-    bool xmitFilamentOff();
+    /// @throws exception on XML-RPC error
+    void xmitFilamentOff();
 
     /// @brief Send an "xmitHvOn" command to HcrPmc730Daemon
-    /// @return true if the call is successful, false otherwise
-    bool xmitHvOn();
+    /// @throws exception on XML-RPC error
+    void xmitHvOn();
 
     /// @brief Send a "xmitHvOff" command to HcrPmc730Daemon
-    /// @return true if the call is successful, false otherwise
-    bool xmitHvOff();
+    /// @throws exception on XML-RPC error
+    void xmitHvOff();
 
     /// @brief Send "setHmcMode" command to HcrPmc730Daemon
     /// @param mode integer mode number for the HMC, 0-7
-    /// @return true if the call is successful, false otherwise
-    bool setHmcMode(int mode);
+    /// @throws exception on XML-RPC error
+    void setHmcMode(int mode);
 
 private:
     std::string _daemonHost;

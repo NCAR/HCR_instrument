@@ -43,8 +43,9 @@ signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
     /// becomes responsive or unresponsive.
     /// @param responsive true if the server has become responsive or false
+    /// @param msg a message describing the associated event
     /// if the server has become unresponsive
-    void serverResponsive(bool responsive);
+    void serverResponsive(bool responsive, QString msg);
 
     /// @brief signal emitted when a new status is received from HcrPmc730Daemon
     /// @param status the new status received from HcrPmc730Daemon

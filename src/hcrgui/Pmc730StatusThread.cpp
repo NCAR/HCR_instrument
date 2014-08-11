@@ -44,19 +44,24 @@ Pmc730StatusThread::run() {
 
 void
 Pmc730StatusThread::_getStatus() {
-    HcrPmc730Status status(true);
-    if (_client->getStatus(status)) {
-        DLOG << "Got new status";
+    try {
+        HcrPmc730Status status = _client->getStatus();
+        // We got a response, so emit serverResponsive(true) if the server was
+        // not previously responding.
         if (! _responsive) {
             _responsive = true;
-            emit serverResponsive(true);
+            emit serverResponsive(true, QString("HcrPmc730Daemon is responding"));
         }
+        // Emit the new status.
         emit newStatus(status);
-    } else {
-        DLOG << "Failed to get status";
+    } catch (std::exception & e) {
+        // As a rule, exceptions just mean the server is not responding. Emit
+        // serverResponsive(false) if the server had previously been responding.
         if (_responsive) {
+            std::ostringstream oss;
+            oss << "HcrPmc730 failed to respond to getStatus(): " << e.what();
             _responsive = false;
-            emit serverResponsive(false);
+            emit serverResponsive(false, QString(oss.str().c_str()));
         }
     }
 }

@@ -108,7 +108,11 @@ HcrMonitor::_getPmc730Status() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
     HcrPmc730Status status(true);
-    _pmc730Client.getStatus(status);
+    try {
+        status = _pmc730Client.getStatus();
+    } catch (std::exception & e) {
+        WLOG << "Error getting HcrPmc730Daemon status: " << e.what();
+    }
 
     QMutexLocker locker(&_mutex);
     _pmc730Status = status;
