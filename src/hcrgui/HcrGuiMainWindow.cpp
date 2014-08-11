@@ -125,8 +125,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _hcrdrxStatusThread.start();
 
     // Connect signals from our Pmc730StatusThread object and start the thread.
-    connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_pmcResponsivenessChange(bool)));
+    connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_pmcResponsivenessChange(bool, QString)));
     connect(& _pmcStatusThread, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_setPmcStatus(HcrPmc730Status)));
     _pmcStatusThread.start();
@@ -233,14 +233,14 @@ HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) 
 }
 
 void
-HcrGuiMainWindow::_pmcResponsivenessChange(bool responding) {
+HcrGuiMainWindow::_pmcResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "HcrPmc730Daemon @ " <<
             _pmcStatusThread.rpcClient().getDaemonHost() << ":" <<
             _pmcStatusThread.rpcClient().getDaemonPort() <<
             (responding ? " is " : " is not ") <<
-            "responding";
+            "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
 
     _ui.hmcModeCombo->setEnabled(responding);

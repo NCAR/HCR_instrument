@@ -82,7 +82,8 @@ private slots:
     void _setMotionControlStatus(const MotionControl::Status & status);
     /// @brief Slot to call when HcrPmc730Daemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
-    void _pmcResponsivenessChange(bool responding);
+    /// @param msg Text message describing responsiveness change.
+    void _pmcResponsivenessChange(bool responding, QString msg);
     /// @brief Save the last status received from HcrPmc730Daemon.
     /// @param status the last status received from HcrPmc730Daemon.
     void _setPmcStatus(const HcrPmc730Status & status);
