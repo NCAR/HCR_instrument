@@ -2,7 +2,7 @@
 
 tools = Split("""
 doxygen
-hcrpmc730
+hcrpmc730client
 logx
 qt4
 rapradar
