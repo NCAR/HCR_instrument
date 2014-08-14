@@ -313,7 +313,8 @@ HcrPmc730::_MillitechDET10Power(double voltage) {
     // voltage is outside the calibrated range, we set indices to extrapolate
     // using the closest two points.
     int indexLow = 0;
-    while ((indexLow < CalTableLen - 1) && (voltage > CalTable[indexLow + 1])) {
+    while ((indexLow < CalTableLen - 1) && 
+            (voltage > CalTable[indexLow + 1].volts)) {
         indexLow++;
     }
 
