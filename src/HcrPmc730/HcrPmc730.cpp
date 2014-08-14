@@ -288,21 +288,44 @@ HcrPmc730::_MiWv950WPower(double voltage) {
 
 double
 HcrPmc730::_MillitechDET10Power(double voltage) {
-    // Cubic fit from Pei for calibration of 20140611 (dBm to mV):
-    //
-    //    mV = 363.919 + 47.7939 * dBm + 2.45847 * dBm^2 + 0.0479937 * dBm^3
-    //
-    // However, we need the inverse, to go from V to dBm (and don't at the
-    // moment have the original raw measured points available). The formula 
-    // above was used to generate a set of points every 1 dB from -19 dBm to 
-    // 6 dBm, then a Matlab polyfit was applied to come up with the inverse 
-    // cubic:
-    //
-    //    dBm = -19.00 + 112.0 * V - 212.3 * V^2 + 145.4 * V^3
-    return(-19.00 
-           + 112.0 * voltage
-           - 212.3 * voltage * voltage
-           + 145.4 * voltage * voltage * voltage);
+    // Detector calibration lookup table (measured 20140813)
+    // Note that this table must be sorted from lowest voltage to highest.
+    typedef struct {
+        double volts;
+        double dBm;
+    } TablePoint;
+    static const TablePoint CalTable[] = {
+            //    V,   dBm
+            { 0.195, -4.25 },
+            { 0.241, -3.25 },
+            { 0.290, -2.25 },
+            { 0.344, -1.25 },
+            { 0.401, -0.25 },
+            { 0.461,  0.75 },
+            { 0.531,  1.75 },
+            { 0.601,  2.75 },
+            { 0.684,  3.75 },
+            { 0.764,  4.75 }
+    };
+    static const int CalTableLen = sizeof(CalTable) / sizeof(*CalTable);
+
+    // Figure out the table indices bounding the incoming voltage. If the
+    // voltage is outside the calibrated range, we set indices to extrapolate
+    // using the closest two points.
+    int indexLow = 0;
+    while ((indexLow < CalTableLen - 1) && (voltage > CalTable[indexLow + 1])) {
+        indexLow++;
+    }
+
+    // Interpolate (or extrapolate) using closest two points from the table.
+    double x0 = CalTable[indexLow].volts;
+    double y0 = CalTable[indexLow].dBm;
+    double x1 = CalTable[indexLow + 1].volts;
+    double y1 = CalTable[indexLow + 1].dBm;
+    double slope = (y1 - y0) / (x1 - x0);
+    double intercept = y0 - x0 * slope;
+
+    return((slope * voltage) + intercept);
 }
 
 /*
