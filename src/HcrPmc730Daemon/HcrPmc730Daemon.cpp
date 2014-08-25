@@ -139,6 +139,38 @@ public:
     }
 };
 
+// XML-RPC method to open the Active Pressurization System (APS) valve.
+class OpenApsValveMethod : public xmlrpc_c::method {
+public:
+    OpenApsValveMethod() {
+        // Method takes no arguments, returns nil
+        this->_signature = "n:";
+        this->_help = "This method opens the Active Pressurization System valve.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        ILOG << "Executing XML-RPC call to openApsValve()";
+        HcrPmc730::setApsValveOpen(true);
+        *retvalP = xmlrpc_c::value_nil();
+    }
+};
+
+// XML-RPC method to close the Active Pressurization System (APS) valve.
+class CloseApsValveMethod : public xmlrpc_c::method {
+public:
+    CloseApsValveMethod() {
+        // Method takes no arguments, returns nil
+        this->_signature = "n:";
+        this->_help = "This method closes the Active Pressurization System valve.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        ILOG << "Executing XML-RPC call to closeApsValve()";
+        HcrPmc730::setApsValveOpen(false);
+        *retvalP = xmlrpc_c::value_nil();
+    }
+};
+
 void
 updatePMURegistration() {
     // Make sure we remain registered with PMU, so it knows we're alive
@@ -191,6 +223,8 @@ main(int argc, char * argv[]) {
     myRegistry.addMethod("xmitHvOff", new XmitHvOffMethod);
     myRegistry.addMethod("setHmcMode", new SetHmcModeMethod);
     myRegistry.addMethod("getStatus", new GetStatusMethod);
+    myRegistry.addMethod("openApsValve", new OpenApsValveMethod);
+    myRegistry.addMethod("closeApsValve", new CloseApsValveMethod);
     int serverPort = 8003;
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, serverPort);
 
