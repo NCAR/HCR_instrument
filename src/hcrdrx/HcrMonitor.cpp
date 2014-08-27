@@ -21,7 +21,7 @@
 
 LOGGING("HcrMonitor")
 
-HcrMonitor::HcrMonitor(const Pentek::p7142 * pentek,
+HcrMonitor::HcrMonitor(const Pentek::p7142sd3c * pentek,
         std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort) :
     QThread(),

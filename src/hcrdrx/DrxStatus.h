@@ -17,7 +17,7 @@
 #include <boost/serialization/version.hpp>
 
 namespace Pentek {
-    class p7142;
+    class p7142sd3c;
 }
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
@@ -27,9 +27,9 @@ public:
     DrxStatus();
 
     /// @brief Construct a DrxStatus using data from the given 
-    /// Pentek::p7142 device.
-    /// @param pentek the Pentek::p7142 device from which to get status
-    DrxStatus(const Pentek::p7142 & pentek);
+    /// Pentek::p7142sd3c object.
+    /// @param pentek the Pentek::p7142sd3c object from which to get status
+    DrxStatus(const Pentek::p7142sd3c & pentek);
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
     /// by a call to the DrxStatus::toXmlRpcValue() method.
@@ -64,11 +64,6 @@ public:
     int pentekBoardTemp() const { return(_pentekBoardTemp); }
     
 private:
-    /**
-     * @brief Get new sensor data from the Pentek P7142 card.
-     */
-    void _getPentekValues(const Pentek::p7142 & pentek);
-    
     friend class boost::serialization::access;
     /**
      * @brief Serialize our members to a boost save (output) archive or populate

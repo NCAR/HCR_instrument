@@ -6,7 +6,7 @@
  */
 
 #include "DrxStatus.h"
-#include <p7142.h>
+#include <p7142sd3c.h>
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <iomanip>
@@ -18,7 +18,7 @@ DrxStatus::DrxStatus() :
     _pentekBoardTemp(-99) {
 }
 
-DrxStatus::DrxStatus(const Pentek::p7142 & pentek) {
+DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
     _pentekFpgaTemp = pentek.fpgaTemp();
     _pentekBoardTemp = pentek.circuitBoardTemp();
 }
