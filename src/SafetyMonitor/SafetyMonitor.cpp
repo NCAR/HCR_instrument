@@ -25,6 +25,7 @@
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 #include <CmigitsSharedMemory.h>
+#include <HcrPmc730Client.h>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/client_simple.hpp>
@@ -57,7 +58,7 @@ static const int CHECK_INTERVAL_MSECS = 1000;
 xmlrpc_c::clientSimple _XmlRpcClient;
 
 // TerrainHtServer XML-RPC URL
-std::string _TerrainHtServerURL = "http://archiver:9090/RPC2";
+const std::string _TerrainHtServerURL = "http://archiver:9090/RPC2";
 
 void
 updateRegistration() {
@@ -87,14 +88,14 @@ double _AltitudeAGL = BAD_AGL_ALTITUDE;
 SurfaceType _SurfType = SURFACE_UNKNOWN;
 bool _TransmitRestrictedByAlt = false;
 
-// Check aircraft altitude AGL and respond if it's low enough for ground return
+// Check aircraft altitude AGL and react if it's low enough for ground return
 // to damage the receiver LNAs.
 void
 checkAltitude() {
     _AltitudeAGL = BAD_AGL_ALTITUDE;
     _SurfType = SURFACE_UNKNOWN;
     
-    // Get latitude, longitude, and instrument MSL altitude from the C-MIGITS
+    // Get instrument latitude, longitude, and MSL altitude from the C-MIGITS
     uint64_t time3501;
     double latitude;
     double longitude;
@@ -142,11 +143,37 @@ checkAltitude() {
     }
 }
 
-// Check pressure vessel pressure and respond if it's too low for transmitter
+// Pointer to current status from HcrPmc730, or NULL if status is too old.
+HcrPmc730Status * _HcrPmc730Status = 0;
+
+// Check pressure vessel pressure and react if it's too low for transmitter
 // operation.
 void
 checkPVPressure() {
-    ILOG << "No checkPVPressure() implementation yet!";
+    if (_HcrPmc730Status) {
+        ILOG << "PV pressure " << _HcrPmc730Status->pvForePressure() << " hPa";
+    } else {
+        WLOG << "No current HcrPmc730 status for PV pressure";
+    }
+}
+
+
+void
+updateHcrPmc730Status() {
+    static HcrPmc730Client * client = 0;
+    static HcrPmc730Status status(true);
+    
+    if (! client) {
+        client = new HcrPmc730Client("rds", 8003);
+    }
+    
+    try {
+        status = client->getStatus();
+        _HcrPmc730Status = & status;
+    } catch (std::exception & e) { 
+        WLOG << "Failed to get HcrPmc730 status: " << e.what();
+        _HcrPmc730Status = NULL;
+    }
 }
 
 // Perform the periodic safety checks
@@ -154,6 +181,8 @@ void
 doChecks() {
     // Check aircraft AGL altitude
     checkAltitude();
+    // Get status from HcrPmc730Daemon
+    updateHcrPmc730Status();
     // Check pressure vessel pressure
     checkPVPressure();
 }
@@ -195,7 +224,7 @@ class GetStatusMethod : public xmlrpc_c::method {
 public:
     GetStatusMethod() {
         this->_signature = "S:";
-        this->_help = "This metSafetyMonitort status from SafetyMonitor.";
+        this->_help = "This method returns status from SafetyMonitor.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
@@ -287,8 +316,8 @@ main(int argc, char *argv[]) {
             &statusFuncWrapper, SLOT(callFunction()));
     statusTimer.start();
     
-    // Set up a timer to periodically get current state and decide about
-    // protective measures.
+    // Set up a timer to periodically get current state and apply protective 
+    // measures if necessary.
     QTimer checkTimer;
     checkTimer.setInterval(CHECK_INTERVAL_MSECS);
     QFunctionWrapper doChecksFuncWrapper(doChecks);
@@ -300,9 +329,9 @@ main(int argc, char *argv[]) {
     try {
         App->exec();
     } catch (std::exception & e) {
-        ELOG << "Bailing out on exception: " << e.what();
+        ELOG << "Application stopped on exception: " << e.what();
     } catch (...) {
-        ELOG << "Bailing out on exception";
+        ELOG << "Application stopped on unknown exception";
     }
 
     // Unregister with procmap

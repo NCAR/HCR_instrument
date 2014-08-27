@@ -4,6 +4,7 @@
 #
 
 tools = Split('''
+hcrpmc730client
 boost_program_options
 cmigits
 doxygen
