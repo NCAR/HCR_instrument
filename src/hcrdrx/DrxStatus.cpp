@@ -7,6 +7,7 @@
 
 #include "DrxStatus.h"
 #include <p7142sd3c.h>
+#include <p7142sd3cDn.h>
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <iomanip>
@@ -15,12 +16,24 @@ LOGGING("DrxStatus")
 
 DrxStatus::DrxStatus() :
     _pentekFpgaTemp(-99),
-    _pentekBoardTemp(-99) {
+    _pentekBoardTemp(-99),
+    _xmitPulseWidth(0.0),
+    _prt(0.0),
+    _nGates(0),
+    _gateSpacing(0.0) {
 }
 
 DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
     _pentekFpgaTemp = pentek.fpgaTemp();
     _pentekBoardTemp = pentek.circuitBoardTemp();
+    _nGates = pentek.gates();
+    _prt = pentek.prt();
+    _xmitPulseWidth = pentek.txPulseWidth();
+    // Get the channel 0 downconverter and cast it to p7142sd3cDn*
+    const Pentek::p7142sd3cDn* downconverter = 
+            dynamic_cast<const Pentek::p7142sd3cDn*>(pentek.downconverter(0));
+    // Get the gate spacing from the downconverter
+    _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
 }
 
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) {

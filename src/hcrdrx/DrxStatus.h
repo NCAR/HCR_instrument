@@ -49,28 +49,38 @@ public:
     /// an xmlrpc_c::value_struct dictionary.
     xmlrpc_c::value_struct toXmlRpcValue() const;
 
-    /**
-     * @brief Return the signal processing FPGA temperature from the Pentek
-     * card, deg C
-     * @return the signal processing FPGA temperature from the Pentek
-     * card, deg C
-     */
+    /// @brief Return the signal processing FPGA temperature from the Pentek
+    /// card, deg C
+    /// @return the signal processing FPGA temperature from the Pentek
+    /// card, deg C
     int pentekFpgaTemp() const { return(_pentekFpgaTemp); }
     
-    /**
-     * @brief Return the PCB temperature from the Pentek card, deg C
-     * @return the PCB temperature from the Pentek card, deg C
-     */
+    /// @brief Return the PCB temperature from the Pentek card, deg C
+    /// @return the PCB temperature from the Pentek card, deg C
     int pentekBoardTemp() const { return(_pentekBoardTemp); }
+    
+    /// @brief Return the number of gates being sampled
+    /// @return the number of gates being sampled
+    uint16_t nGates() const { return(_nGates); }
+    
+    /// @brief Return the PRT (pulse repetition time), s
+    /// @return the PRT (pulse repetition time), s
+    double prt() const { return(_prt); }
+    
+    /// @brief Return the gate spacing, m
+    /// @return the gate spacing, m
+    double gateSpacing() const { return(_gateSpacing); }
+    
+    /// @brief Return the transmitter pulse width, s
+    /// @return the transmitter pulse width, s
+    double xmitPulseWidth() const { return(_xmitPulseWidth); }
     
 private:
     friend class boost::serialization::access;
-    /**
-     * @brief Serialize our members to a boost save (output) archive or populate
-     * our members from a boost load (input) archive.
-     * @param ar the archive to load from or save to.
-     * @param version the version 
-     */
+    /// @brief Serialize our members to a boost save (output) archive or populate
+    /// our members from a boost load (input) archive.
+    /// @param ar the archive to load from or save to.
+    /// @param version the version 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
         using boost::serialization::make_nvp;
@@ -80,6 +90,10 @@ private:
             // name/value pairs (nvp).
             ar & BOOST_SERIALIZATION_NVP(_pentekBoardTemp);
             ar & BOOST_SERIALIZATION_NVP(_pentekFpgaTemp);
+            ar & BOOST_SERIALIZATION_NVP(_xmitPulseWidth);
+            ar & BOOST_SERIALIZATION_NVP(_prt);
+            ar & BOOST_SERIALIZATION_NVP(_nGates);
+            ar & BOOST_SERIALIZATION_NVP(_gateSpacing);
         }
         if (version >= 1) {
             // Version 1 stuff will go here...
@@ -89,12 +103,24 @@ private:
     /// Pentek FPGA temperature
     int _pentekFpgaTemp;
 
-    /// Pentek board temperature;
+    /// Pentek board temperature
     int _pentekBoardTemp;
+    
+    /// transmit pulse width, s
+    double _xmitPulseWidth;
 
+    /// pulse repetition time, s
+    double _prt;
+    
+    /// Number of gates being sampled
+    uint16_t _nGates;
+    
+    /// gate spacing, m
+    double _gateSpacing;
+    
 };
 
 // Increment this class version number when member variables are changed.
-BOOST_CLASS_VERSION(DrxStatus, 1)
+BOOST_CLASS_VERSION(DrxStatus, 0)
 
 #endif /* DRXSTATUS_H_ */
