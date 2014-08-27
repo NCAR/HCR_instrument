@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>182</width>
-    <height>102</height>
+    <width>249</width>
+    <height>192</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,14 +27,51 @@
        <number>0</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="pentekFpgaTempLabel">
+       <widget class="QLabel" name="pulsewidthLabel">
         <property name="text">
-         <string>Pentek FPGA Temp</string>
+         <string>Transmitter Pulsewidth</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="pulsewidthUnits">
+        <property name="text">
+         <string>µs</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="pentekFpgaTempValue">
+       <widget class="QLabel" name="pulsewidthValue">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>0.000</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="pentekFpgaTempUnits">
+        <property name="text">
+         <string>deg C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="pentekBoardTempUnits">
+        <property name="text">
+         <string>deg C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="pentekBoardTempValue">
         <property name="text">
          <string>---</string>
         </property>
@@ -44,33 +81,91 @@
        </widget>
       </item>
       <item row="1" column="0">
+       <widget class="QLabel" name="prtLabel">
+        <property name="text">
+         <string>PRT</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="prtValue">
+        <property name="text">
+         <string>000.000</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="nGatesValue">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="nGatesLabel">
+        <property name="text">
+         <string>Number of Gates</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="prtUnits">
+        <property name="text">
+         <string>µs</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="pentekFpgaTempValue">
+        <property name="text">
+         <string>---</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="QLabel" name="pentekBoardTempLabel">
         <property name="text">
          <string>Pentek Board Temp</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="unitLabel">
+      <item row="4" column="0">
+       <widget class="QLabel" name="pentekFpgaTempLabel">
         <property name="text">
-         <string>deg C</string>
+         <string>Pentek FPGA Temp</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="unitLabel_2">
+      <item row="3" column="0">
+       <widget class="QLabel" name="gateSpacingLabel">
         <property name="text">
-         <string>deg C</string>
+         <string>Gate Spacing</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="pentekBoardTempValue">
+      <item row="3" column="1">
+       <widget class="QLabel" name="gateSpacingValue">
         <property name="text">
-         <string>---</string>
+         <string>0</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="gateSpacingUnits">
+        <property name="text">
+         <string>m</string>
         </property>
        </widget>
       </item>

@@ -25,12 +25,21 @@ HcrdrxDetails::updateStatus(bool daemonResponding, const DrxStatus & status) {
     _ui.statusFrame->setEnabled(daemonResponding);
 
     // Fill in with info from the DrxStatus
+    QString text;
+    _ui.pulsewidthValue->setText(text.sprintf("%.3f", 1.0e6 * status.xmitPulseWidth()));
+    _ui.prtValue->setText(text.sprintf("%.3f", 1.0e6 * status.prt()));
+    _ui.nGatesValue->setText(QString::number(status.nGates()));
+    _ui.gateSpacingValue->setText(text.sprintf("%.0f", status.gateSpacing()));    
     _ui.pentekFpgaTempValue->setText(QString::number(status.pentekFpgaTemp()));
     _ui.pentekBoardTempValue->setText(QString::number(status.pentekBoardTemp()));
 }
 
 void
 HcrdrxDetails::noStatus() {
+    _ui.pulsewidthValue->setText("0.0");
+    _ui.prtValue->setText("0.0");
+    _ui.nGatesValue->setText("0");
+    _ui.gateSpacingValue->setText("0");
     _ui.pentekFpgaTempValue->setText("---");
     _ui.pentekBoardTempValue->setText("---");
 }
