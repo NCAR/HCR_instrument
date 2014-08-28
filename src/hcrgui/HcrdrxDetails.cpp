@@ -29,7 +29,7 @@ HcrdrxDetails::updateStatus(bool daemonResponding, const DrxStatus & status) {
     _ui.pulsewidthValue->setText(text.sprintf("%.3f", 1.0e6 * status.xmitPulseWidth()));
     _ui.prtValue->setText(text.sprintf("%.3f", 1.0e6 * status.prt()));
     _ui.nGatesValue->setText(QString::number(status.nGates()));
-    _ui.gateSpacingValue->setText(text.sprintf("%.0f", status.gateSpacing()));    
+    _ui.gateSpacingValue->setText(text.sprintf("%.1f", status.gateSpacing()));
     _ui.pentekFpgaTempValue->setText(QString::number(status.pentekFpgaTemp()));
     _ui.pentekBoardTempValue->setText(QString::number(status.pentekBoardTemp()));
 }
