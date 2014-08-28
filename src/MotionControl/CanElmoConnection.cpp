@@ -106,8 +106,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     }
     
     // Set up as a heartbeat consumer for the Elmo drive, timing out at
-    // 1.2 * the Elmo's heartbeat interval
-    uint16_t timeoutMs = uint16_t(1.2 * ELMO_HEARTBEAT_MSECS);
+    // 2 * the Elmo's heartbeat interval
+    uint16_t timeoutMs = uint16_t(2 * ELMO_HEARTBEAT_MSECS);
     
     // Consumer heartbeat value is a 4-byte little-endian value, with the 
     // timeout time in ms in bits 0-15, and the producer node ID in bits
@@ -402,11 +402,10 @@ void
 CanElmoConnection::_HeartbeatErrorCallback(CO_Data* d, UNS8 nodeId) {
     WLOG << "CANopen heartbeat error for node " << int(nodeId);
     CanElmoConnection * conn = _GetConnectionForId(nodeId);
-    if (conn) {
-        WLOG << "Reinitializing node's connection";
-        // If we have a connection for this node, reinitialize it
-        conn->reinitialize();
-    }
+    std::ostringstream os;
+    os << "Heartbeat error for " << conn->_driveName << " drive (node " << 
+            conn->_elmoNodeId << ")";
+    throw std::runtime_error(os.str());
 }
 
 void
