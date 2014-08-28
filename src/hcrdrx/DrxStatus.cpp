@@ -29,10 +29,12 @@ DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
     _nGates = pentek.gates();
     _prt = pentek.prt();
     _xmitPulseWidth = pentek.txPulseWidth();
-    // Get the channel 0 downconverter and cast it to p7142sd3cDn*
-    const Pentek::p7142sd3cDn* downconverter = 
-            dynamic_cast<const Pentek::p7142sd3cDn*>(pentek.downconverter(0));
-    // Get the gate spacing from the downconverter
+    // Search channel-by-channel until we find a downconverter, then query it
+    // to find gate spacing.
+    const Pentek::p7142sd3cDn* downconverter = NULL;
+    for (int chan = 0; chan < 4 && downconverter == NULL; chan++) {
+        downconverter = dynamic_cast<const Pentek::p7142sd3cDn*>(pentek.downconverter(chan));
+    }
     _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
 }
 
