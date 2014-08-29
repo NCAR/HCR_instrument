@@ -250,6 +250,11 @@ private:
     /// @return true iff the SDO is initiated successfully.
     bool _sendSetImmediateEvaluation();
     
+    /// @brief Send a CANopen message. Return 0 on success, or 1 on failure.
+    /// @param msg The CanFestival message object to send
+    /// @return true on success or false on failure
+    bool _sendCanOpenMessage(Message & msg);
+    
     /// @brief Handle a PDO reply from our Elmo drive.
     UNS32 _handleElmoPDOReply();
     

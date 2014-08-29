@@ -7,7 +7,9 @@
 
 #include "CanElmoConnection.h"
 #include "ElmoMasterNode.h"  // CanFestival CANopen node ElmoMasterNode
+#include <cerrno>
 #include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <algorithm>
 #include <iomanip>
@@ -517,6 +519,42 @@ CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
     return(true);
 }
 
+bool
+CanElmoConnection::_sendCanOpenMessage(Message & msg) {
+    // We occasionally see "No buffer space available" errors when sending 
+    // messages quickly, so try up to MAX_ATTEMPTS times to send the 
+    // message, with brief waits inserted before each attempt after the first.
+    const int MAX_ATTEMPTS = 4;
+    for (int i = 0; i < MAX_ATTEMPTS; i++) {
+        UNS8 result = canSend(_MasterNodeData->canHandle, &msg);
+        if (result == 0) {
+            if (i > 0) {
+                ILOG << _driveName << ": Sent message after " << i << 
+                        " failed attempts";
+            }
+            return(true);
+        } else {
+            // Although canSend() does not return error details, errno should 
+            // still hold the error from canSend()'s failed call to the system 
+            // send() function. If the error from the device was ENOBUFS, we 
+            // sleep briefly and try again. Otherwise we report the error 
+            // and fail immediately.
+            if (errno == ENOBUFS) {
+                // The sleep time of 25 ms has been determined empirically,
+                // occasionally yielding up to 2 failed attempts before success.
+                usleep(25000);
+            } else {
+                ELOG << _driveName << ": " << __PRETTY_FUNCTION__ << 
+                                ": canSend() error: " << strerror(errno);
+                return(false);
+            }
+        }
+    }
+    ELOG << _driveName << ": failed to send message via canSend() after " <<
+            MAX_ATTEMPTS << " attempts";
+    return(false);
+}
+
 void
 CanElmoConnection::reinitialize() {
     QMutexLocker lock(&_mutex);
@@ -674,12 +712,7 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     pdo.len = 4;
     
     // Send the PDO
-    UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
-    if (result != 0) {
-        ELOG << _driveName << ": " << __PRETTY_FUNCTION__ << 
-                ": canSend() error " << int(result);
-    }
-    return(result);
+    return(_sendCanOpenMessage(pdo));
 }
 
 bool
@@ -729,12 +762,7 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     pdo.len = 8;
     
     // Send the PDO
-    UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
-    if (result != 0) {
-        ELOG << _driveName << ": " << __PRETTY_FUNCTION__ << 
-                ": canSend() error " << int(result);
-    }
-    return(result);
+    return(_sendCanOpenMessage(pdo));
 }
 
 void
