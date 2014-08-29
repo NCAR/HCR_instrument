@@ -145,8 +145,6 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
 }
 
 CanElmoConnection::~CanElmoConnection() {
-    QMutexLocker lock(&_mutex);
-    
     // Write to the master node's object dictionary to remove heartbeat
     // testing for this Elmo
     uint32_t heartbeatValue = 0;    // 0 disables heartbeat timeout
