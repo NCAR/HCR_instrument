@@ -608,7 +608,7 @@ CanElmoConnection::_sendSetImmediateEvaluation() {
 }
 
 bool
-CanElmoConnection::_CmdIsValid(std::string cmd) {
+CanElmoConnection::_cmdIsValid(std::string cmd) {
     // Verify that the command is either two characters long or that
     // it begins with "XQ##".
     bool ok = (cmd.length() >= 2);
@@ -642,7 +642,7 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     }
     
     // Make sure the command is valid
-    if (! _CmdIsValid(cmd)) {
+    if (! _cmdIsValid(cmd)) {
         return(false);
     }
   
@@ -694,7 +694,7 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     }
     
     // Make sure the command is valid
-    if (! _CmdIsValid(cmd)) {
+    if (! _cmdIsValid(cmd)) {
         return(false);
     }
     

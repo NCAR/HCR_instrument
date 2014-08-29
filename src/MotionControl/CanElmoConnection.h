@@ -206,13 +206,6 @@ private:
     static UNS32 _PDOReplyCallback(CO_Data* d, const indextable* unused, 
             UNS8 nodeId);
     
-    /// @brief Return true iff the given string is either exactly two upper-case 
-    /// letters, or starts with "XQ##".
-    /// @param cmd the command string to be verified
-    /// @return true iff the given string is either exactly two upper-case 
-    /// letters, or starts with "XQ##".
-    bool _CmdIsValid(std::string cmd);
-    
     /// @brief Return true iff the given string starts with "XQ##"
     /// @param cmd the command string to be verified
     /// @return true iff the given string starts with "XQ##"
@@ -237,6 +230,13 @@ private:
     /// zero index, or "<cmd>[<index>]=<value>" if index is non-zero.
     static std::string _AssembleAssignString(std::string cmd, uint16_t index,
             int value);
+    
+    /// @brief Return true iff the given string is either exactly two upper-case 
+    /// letters, or starts with "XQ##".
+    /// @param cmd the command string to be verified
+    /// @return true iff the given string is either exactly two upper-case 
+    /// letters, or starts with "XQ##".
+    bool _cmdIsValid(std::string cmd);
     
     /// @brief Set the CANopen heartbeat interval of our Elmo drive to the 
     /// the heartbeat. Return true iff the SDO is initiated successfully.
