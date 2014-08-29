@@ -116,10 +116,10 @@
           <number>1</number>
          </property>
          <property name="minimum">
-          <double>-45.000000000000000</double>
+          <double>-180.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>225.000000000000000</double>
+          <double>360.000000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.100000000000000</double>
@@ -132,10 +132,10 @@
           <number>1</number>
          </property>
          <property name="minimum">
-          <double>-45.000000000000000</double>
+          <double>-180.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>225.000000000000000</double>
+          <double>360.000000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.100000000000000</double>
@@ -169,6 +169,9 @@
         <widget class="QDoubleSpinBox" name="scanRateSpinBox">
          <property name="decimals">
           <number>1</number>
+         </property>
+         <property name="maximum">
+          <double>200.000000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.100000000000000</double>
