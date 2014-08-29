@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <sstream>
 #include <logx/Logging.h>
+#include <QMutexLocker>
 
 LOGGING("CanElmoConnection")
 
@@ -38,12 +39,15 @@ LIB_HANDLE CanElmoConnection::_Driver = 0;
 #endif
 
 CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
+    _mutex(QMutex::Recursive),
     _elmoNodeId(nodeId),
     _driveName(driveName),
     _initPhase(Uninitialized),
     _replyTimer(),
     _replyTimerCommand(),
     _readyToExec(false) {
+    QMutexLocker lock(&_mutex);
+    
     size_t nConnections = _AllConnections.size();
     // Perform class initialization if this is the first instance
     if (nConnections == 0) {
@@ -106,8 +110,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     }
     
     // Set up as a heartbeat consumer for the Elmo drive, timing out at
-    // 2 * the Elmo's heartbeat interval
-    uint16_t timeoutMs = uint16_t(2 * ELMO_HEARTBEAT_MSECS);
+    // 2.5 * the Elmo's heartbeat interval
+    uint16_t timeoutMs = uint16_t(2.5 * ELMO_HEARTBEAT_MSECS);
     
     // Consumer heartbeat value is a 4-byte little-endian value, with the 
     // timeout time in ms in bits 0-15, and the producer node ID in bits
@@ -139,6 +143,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
 }
 
 CanElmoConnection::~CanElmoConnection() {
+    QMutexLocker lock(&_mutex);
+    
     // Write to the master node's object dictionary to remove heartbeat
     // testing for this Elmo
     uint32_t heartbeatValue = 0;    // 0 disables heartbeat timeout
@@ -331,6 +337,8 @@ CanElmoConnection::_AssembleAssignString(std::string cmd, uint16_t index,
 
 UNS32
 CanElmoConnection::_handleElmoPDOReply() {
+    QMutexLocker lock(&_mutex);
+    
     // A reply came in, so stop the reply timer.
     _stopReplyTimer();
     
@@ -404,7 +412,7 @@ CanElmoConnection::_HeartbeatErrorCallback(CO_Data* d, UNS8 nodeId) {
     CanElmoConnection * conn = _GetConnectionForId(nodeId);
     std::ostringstream os;
     os << "Heartbeat error for " << conn->_driveName << " drive (node " << 
-            conn->_elmoNodeId << ")";
+            int(nodeId) << ")";
     throw std::runtime_error(os.str());
 }
 
@@ -475,6 +483,8 @@ CanElmoConnection::_PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode,
 
 bool
 CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
+    QMutexLocker lock(&_mutex);
+    
     UNS8 res;
     char SDOdata[8];
 
@@ -509,6 +519,8 @@ CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
 
 void
 CanElmoConnection::reinitialize() {
+    QMutexLocker lock(&_mutex);
+    
     // Stop accepting execElmo*() calls until we're initialized
     if (_readyToExec) {
         _readyToExec = false;
@@ -521,6 +533,8 @@ CanElmoConnection::reinitialize() {
 
 void
 CanElmoConnection::_doNextInitializeStep() {
+    QMutexLocker lock(&_mutex);
+    
     // Increment the initialization phase
     _initPhase = static_cast<InitPhase>(int(_initPhase) + 1);
 
@@ -566,6 +580,8 @@ CanElmoConnection::_doNextInitializeStep() {
 
 bool
 CanElmoConnection::_sendSetImmediateEvaluation() {
+    QMutexLocker lock(&_mutex);
+    
     UNS8 res;
     char SDOdata[8];
 
@@ -617,6 +633,8 @@ CanElmoConnection::_CmdIsXqRequest(std::string cmd) {
 
 bool
 CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
+    QMutexLocker lock(&_mutex);
+    
     if (! _readyToExec) {
         WLOG << _driveName << ": Not yet ready to exec. Rejecting '" << 
                 _AssembleCommandString(cmd, index) << "'";
@@ -667,6 +685,8 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
 bool
 CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index, 
         int value) {
+    QMutexLocker lock(&_mutex);
+    
     if (! _readyToExec) {
         WLOG << _driveName << ": Not yet ready to exec. Rejecting '" << 
                 _AssembleAssignString(cmd, index, value) << "'";
@@ -719,6 +739,8 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
 
 void
 CanElmoConnection::_postSDO(bool success) {
+    QMutexLocker lock(&_mutex);
+    
     // A reply came in, so stop the reply timer.
     _stopReplyTimer();
     
@@ -738,6 +760,8 @@ CanElmoConnection::_postSDO(bool success) {
 
 bool
 CanElmoConnection::_initiateXq(std::string cmd) {
+    QMutexLocker lock(&_mutex);
+    
     if (! _CmdIsXqRequest(cmd)) {
         return false;
     }
@@ -769,6 +793,8 @@ CanElmoConnection::_initiateXq(std::string cmd) {
 
 void
 CanElmoConnection::_onElmoBootup() {
+    QMutexLocker lock(&_mutex);
+    
     // We consider a bootup message to be a reply, so stop the reply timer.
     _stopReplyTimer();
     
@@ -788,6 +814,8 @@ CanElmoConnection::_onElmoBootup() {
 
 void
 CanElmoConnection::_startReplyTimer(std::string cmd) {
+    QMutexLocker lock(&_mutex);
+    
     // If reply timer is currently in use, just return
     if (_replyTimer.isActive()) {
         DLOG << _driveName << ": Not timing reply to '" << cmd << 
@@ -800,12 +828,16 @@ CanElmoConnection::_startReplyTimer(std::string cmd) {
 
 void
 CanElmoConnection::_stopReplyTimer() {
+    QMutexLocker lock(&_mutex);
+    
     _replyTimer.stop();
     _replyTimerCommand = "";
 }
 
 void
 CanElmoConnection::_replyTimedOut() {
+    QMutexLocker lock(&_mutex);
+    
     ELOG << _driveName << ": No response to '" << _replyTimerCommand <<
             " in " << REPLY_TIMEOUT_MSECS << " ms. Re-initializing the drive.";
 

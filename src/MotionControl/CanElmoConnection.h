@@ -12,6 +12,7 @@
 #include <vector>
 #include <stdint.h>
 #include <canfestival.h>
+#include <QMutex>
 #include <QTimer>
 
 /// @brief Class implementing the ElmoConnection interface, providing a
@@ -282,6 +283,9 @@ private:
     /// Set the Elmo drive to generate a CANopen heartbeat at this interval.
     /// Heartbeat is disabled if the interval is zero.
     static const uint16_t ELMO_HEARTBEAT_MSECS = 250;
+    
+    /// Mutex for thread-safe access to members
+    QMutex _mutex;
     
     /// Our Elmo's CANopen node ID
     uint8_t _elmoNodeId;
