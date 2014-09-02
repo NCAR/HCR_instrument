@@ -240,10 +240,10 @@ private:
     friend class boost::serialization::access;
 
     /// @brief Mask of health status bits we consider to be errors
-    static const int16_t _ErrorBits = 0x1f7;
+    static const int16_t _ErrorBits = 0x1f3;
 
     /// @brief Mask of health status bits we treat as warnings
-    static const uint16_t _WarningBits = 0x808;
+    static const uint16_t _WarningBits = 0x80c;
 
     /// @brief Return true iff the given flag bit(s) are set in the health
     /// status. If severity pointer is non-null, return the relative
