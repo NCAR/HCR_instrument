@@ -61,9 +61,10 @@ public:
     /// @param ccwLimit counterclockwise limit, deg
     /// @param cwLimit clockwise limit, deg
     /// @param scanRate scan rate in deg/s
+    /// @throws std::runtime_error if the scan initialization fails
     void initScan(float ccwLimit, float cwLimit, float scanRate);
 
-    /// @brief Put the drive to scanning according to the PVT table
+    /// @brief Start the currently configured scan.
     void scan();
 
     /// @brief Return the nickname of the drive

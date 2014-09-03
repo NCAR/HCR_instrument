@@ -110,9 +110,13 @@ public:
         double const beamTilt(paramList.getDouble(3));
         paramList.verifyEnd(4);
 
-        Control->scan(ccwLimit, cwLimit, scanRate, beamTilt);
-
-        *retvalP = xmlrpc_c::value_int(0);
+        try {
+            Control->scan(ccwLimit, cwLimit, scanRate, beamTilt);
+            *retvalP = xmlrpc_c::value_int(0);
+        } catch (const std::runtime_error & e) {
+            ELOG << "XML-RPC 'scan' method failed: " << e.what();
+            *retvalP = xmlrpc_c::value_int(1);
+        }
     }
 };
 

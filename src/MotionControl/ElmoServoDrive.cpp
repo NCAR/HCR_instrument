@@ -96,13 +96,9 @@ ElmoServoDrive::_onReadyToExecChanged(bool isReady) {
         
         // If we had already done our initialization or homing, mark those
         // as undone.
-//        // as undone and reinitialize our connection.
         if (_driveInitialized || _driveHomed) {
             _driveInitialized = false;
             _driveHomed = false;
-//            // Reinitialize the connection
-//            ELOG << driveName() << ": reinitializing connection";
-//            _driveConn->reinitialize();
         }
     }
 }
@@ -249,9 +245,6 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
     if (pcSampTimesPerPoint > 255)
         pcSampTimesPerPoint = 255;
 
-    // Set sample times per point on the drive
-    _driveConn->execElmoAssignCmd("MP", 4, pcSampTimesPerPoint);
-
     // Actual time between points.
     float pointTime = _pcSampleTime * pcSampTimesPerPoint;
 
@@ -263,6 +256,20 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
 
     // Add a point at either end for turn-around
     nScanPts += 2;
+
+    // Throw an exception if the required scan table will not fit on the drive
+    if (nScanPts > 1024) {
+        std::ostringstream errmsg;
+        ELOG << driveName() << ": initScan failed";
+        errmsg << "Requested scan would require a " << nScanPts << 
+                "-point table, but the maximum is 1024 points.";
+        ELOG << driveName() << ": " << errmsg.str();
+        _scanPoints.clear();
+        throw std::runtime_error(errmsg.str());
+    }
+
+    // Set number of position controller sample times per point in the table
+    _driveConn->execElmoAssignCmd("MP", 4, pcSampTimesPerPoint);
 
     // Now build the table (including an extra point for turn-around on either 
     // side)
@@ -280,13 +287,13 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
         _scanPoints.push_back(ipos);
 
         // Set position point
-        ILOG << pos << ":" << _scanPoints[i];
+        DLOG << pos << ":" << _scanPoints[i];
         _driveConn->execElmoAssignCmd("QP", i + 1, ipos);
     }
     // Set PT motion parameters
-    _driveConn->execElmoAssignCmd("MP", 1, 1);
-    _driveConn->execElmoAssignCmd("MP", 2, nScanPts);
-    _driveConn->execElmoAssignCmd("MP", 3, 1);
+    _driveConn->execElmoAssignCmd("MP", 1, 1);          // start at index 1
+    _driveConn->execElmoAssignCmd("MP", 2, nScanPts);   // finish at index nScanPts
+    _driveConn->execElmoAssignCmd("MP", 3, 1);          // repeat
 }
 
 void
