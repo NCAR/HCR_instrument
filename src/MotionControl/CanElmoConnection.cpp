@@ -481,6 +481,49 @@ CanElmoConnection::_PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode,
             ", Error register 0x" << errReg;
 }
 
+std::string
+CanElmoConnection::_PdoToString(const Message & pdo) {
+    std::ostringstream oss;
+    
+    // The first two data bytes are the two-character Elmo command
+    oss << char(pdo.data[0]) << char(pdo.data[1]);
+    
+    // The command index (if any) and flags are in bytes 2 and 3.
+    uint16_t indexAndFlags;
+    memcpy(&indexAndFlags, pdo.data + 2, 2);
+    
+    // Index is the lower 14 bits
+    uint16_t index = indexAndFlags & 0x3fff;    // index is bits 0-13
+    bool isQuery = indexAndFlags & 0x4000;      // is-a-query is bit 14
+    bool isFloat = indexAndFlags & 0x8000;      // is-float is bit 15 (only valid for assignments)
+    
+    
+    // If index is non-zero, add it to the text string
+    if (index) {
+        oss << "[" << index << "]";
+    }
+    
+    // For assignments we have to add "=<value>" to the string
+    if (! isQuery) {
+        // This is an assignment command
+        oss << "=";
+        
+        // Handle float values and int values separately
+        if (isFloat) {
+            float fVal;
+            memcpy(&fVal, pdo.data + 4, 4);
+            oss << fVal;
+        } else {
+            int32_t iVal;
+            memcpy(&iVal, pdo.data + 4, 4);
+            oss << iVal;
+        }
+    }
+    
+    // Done. Return the string.
+    return oss.str();
+}
+
 bool
 CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
     QMutexLocker lock(&_mutex);
@@ -518,17 +561,17 @@ CanElmoConnection::_sendSetHeartbeatInterval(UNS32 intervalMs) {
 }
 
 bool
-CanElmoConnection::_sendCanOpenMessage(Message & msg) {
+CanElmoConnection::_sendCanOpenPdo(Message & pdo) {
     // We occasionally see "No buffer space available" errors when sending 
     // messages quickly, so try up to MAX_ATTEMPTS times to send the 
     // message, with brief waits inserted before each attempt after the first.
     const int MAX_ATTEMPTS = 4;
     for (int i = 0; i < MAX_ATTEMPTS; i++) {
-        UNS8 result = canSend(_MasterNodeData->canHandle, &msg);
+        UNS8 result = canSend(_MasterNodeData->canHandle, &pdo);
         if (result == 0) {
             if (i > 0) {
-                ILOG << _driveName << ": Sent message after " << i << 
-                        " failed attempts";
+                ILOG << _driveName << ": Sent message '" << _PdoToString(pdo) <<
+                        "' after " << i << " failed attempts";
             }
             return(true);
         } else {
@@ -543,13 +586,14 @@ CanElmoConnection::_sendCanOpenMessage(Message & msg) {
                 usleep(25000);
             } else {
                 ELOG << _driveName << ": " << __PRETTY_FUNCTION__ << 
-                                ": canSend() error: " << strerror(errno);
+                        ": error sending command '" << _PdoToString(pdo) <<
+                        "': " << strerror(errno);
                 return(false);
             }
         }
     }
-    ELOG << _driveName << ": failed to send message via canSend() after " <<
-            MAX_ATTEMPTS << " attempts";
+    ELOG << _driveName << ": failed to send command '" << _PdoToString(pdo) << 
+            "' after " << MAX_ATTEMPTS << " attempts";
     return(false);
 }
 
@@ -710,7 +754,7 @@ CanElmoConnection::execElmoCmd(std::string cmd, uint16_t index) {
     pdo.len = 4;
     
     // Send the PDO
-    return(_sendCanOpenMessage(pdo));
+    return(_sendCanOpenPdo(pdo));
 }
 
 bool
@@ -760,7 +804,7 @@ CanElmoConnection::execElmoAssignCmd(std::string cmd, uint16_t index,
     pdo.len = 8;
     
     // Send the PDO
-    return(_sendCanOpenMessage(pdo));
+    return(_sendCanOpenPdo(pdo));
 }
 
 void

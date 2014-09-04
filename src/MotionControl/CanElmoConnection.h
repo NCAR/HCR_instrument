@@ -231,6 +231,12 @@ private:
     static std::string _AssembleAssignString(std::string cmd, uint16_t index,
             int value);
     
+    /// @brief Convert a CanFestival Message object containing a PDO for an 
+    /// Elmo drive into a text representation of the equivalent command.
+    /// @return a text representation of the Elmo PDO contained in the given
+    /// CanFestival Message object.
+    static std::string _PdoToString(const Message & pdo);
+    
     /// @brief Return true iff the given string is either exactly two upper-case 
     /// letters, or starts with "XQ##".
     /// @param cmd the command string to be verified
@@ -250,10 +256,10 @@ private:
     /// @return true iff the SDO is initiated successfully.
     bool _sendSetImmediateEvaluation();
     
-    /// @brief Send a CANopen message. Return 0 on success, or 1 on failure.
-    /// @param msg The CanFestival message object to send
+    /// @brief Send a CANopen PDO message. Return 0 on success, or 1 on failure.
+    /// @param pdo The CanFestival PDO message object to send
     /// @return true on success or false on failure
-    bool _sendCanOpenMessage(Message & msg);
+    bool _sendCanOpenPdo(Message & pdo);
     
     /// @brief Handle a PDO reply from our Elmo drive.
     UNS32 _handleElmoPDOReply();
