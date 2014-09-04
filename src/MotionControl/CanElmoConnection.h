@@ -13,7 +13,6 @@
 #include <stdint.h>
 #include <canfestival.h>
 #include <QMutex>
-#include <QTimer>
 
 /// @brief Class implementing the ElmoConnection interface, providing a
 /// connection to an Elmo servo drive via CANopen protocol.
@@ -27,7 +26,6 @@
 /// dedicated CANopen Receive Process Data Object (RPDO), and 3) Each CANopen 
 /// device has exactly 4 RPDOs available.
 class CanElmoConnection: public ElmoConnection {
-    Q_OBJECT
 public:
     /// @brief Instantiate a connection to an Elmo servo drive using the given
     /// node ID. A nickname (e.g., "rotation" or "tilt") is assigned to 
@@ -71,10 +69,6 @@ public:
     /// @brief Force re-initialization of the connection.
     virtual void reinitialize();
 
-private slots:
-    /// @brief Slot to be called when _replyTimer expires
-    void _replyTimedOut();
-    
 private:
     /// Static list of all instantiated CanElmoConnection-s.
     static std::vector<CanElmoConnection*> _AllConnections;
@@ -187,6 +181,12 @@ private:
     static void _PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode, 
             UNS8 errReg);
     
+    /// @brief Static method for callback upon timeout waiting for a command 
+    /// reply.
+    /// @param d pointer to the CanFestival node data
+    /// @param timerId the id of the reply timer which has expired
+    static void _ReplyTimeoutCallback(CO_Data* d, UNS32 timerId);
+    
     /// @brief Static method for callback from CanFestival to complete an SDO 
     /// transfer. After completing the SDO, the _postSDO() method of the
     /// associated CanElmoConnection object is called.
@@ -291,6 +291,9 @@ private:
     /// @return true iff the command is initiated successfully.
     bool _initiateXq(std::string cmd);
     
+    /// @brief Method to be called by _ReplyTimeoutCallback when _replyTimer expires
+    void _replyTimedOut();
+    
     /// Set the Elmo drive to generate a CANopen heartbeat at this interval.
     /// Heartbeat is disabled if the interval is zero.
     static const uint16_t ELMO_HEARTBEAT_MSECS = 250;
@@ -312,7 +315,7 @@ private:
     InitPhase _initPhase;
     
     /// Timer to assure that replies arrive in a reasonable time
-    QTimer _replyTimer;
+    TIMER_HANDLE _replyTimer;
     
     /// Reply timeout in milliseconds
     static const uint16_t REPLY_TIMEOUT_MSECS = 1000;

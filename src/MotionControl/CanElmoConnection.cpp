@@ -16,6 +16,7 @@
 #include <sstream>
 #include <logx/Logging.h>
 #include <QMutexLocker>
+#include <QThread>
 
 LOGGING("CanElmoConnection")
 
@@ -45,7 +46,7 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     _elmoNodeId(nodeId),
     _driveName(driveName),
     _initPhase(Uninitialized),
-    _replyTimer(),
+    _replyTimer(TIMER_NONE),
     _replyTimerCommand(),
     _readyToExec(false) {
     QMutexLocker lock(&_mutex);
@@ -131,12 +132,6 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
             &dataSize,              // size of timeoutMs
             true);                  // check access
     
-    // Set up a timer to verify that replies from the servo drive arrive within 
-    // a specified interval, or _replyTimedOut() will be called.
-    _replyTimer.setInterval(REPLY_TIMEOUT_MSECS);
-    _replyTimer.setSingleShot(true);
-    connect(& _replyTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
-
     // Add this instance to the list of CanElmoConnection-s
     _AllConnections.push_back(this);
     
@@ -479,6 +474,19 @@ CanElmoConnection::_PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode,
     		std::hex << 
             ", Error code 0x" << errCode <<
             ", Error register 0x" << errReg;
+}
+
+void
+CanElmoConnection::_ReplyTimeoutCallback(CO_Data* d, UNS32 id) {
+    // The timer id should be the node id of the associated CanElmoConnection
+    // instance.
+    UNS8 nodeId = static_cast<UNS8>(id);
+    CanElmoConnection * conn = _GetConnectionForId(nodeId);
+    if (conn) {
+        conn->_replyTimedOut();
+    } else {
+        ELOG << "BUG: Reply timeout for unknown CANopen node " << id;
+    }
 }
 
 std::string
@@ -886,22 +894,28 @@ void
 CanElmoConnection::_startReplyTimer(std::string cmd) {
     QMutexLocker lock(&_mutex);
     
-    // If reply timer is currently in use, just return
-    if (_replyTimer.isActive()) {
+    // If a reply timer is already in place, just return
+    if (_replyTimer != TIMER_NONE) {
         DLOG << _driveName << ": Not timing reply to '" << cmd << 
                 "'; reply timer is already in use.";
         return;
     }
     _replyTimerCommand = cmd;
-    _replyTimer.start();
+    
+    // We use a CanFestival timer rather than a QTimer because reply timer start
+    // and stop may occur in different threads, and QTimer requires that start/
+    // stop must occur from the same thread.
+    _replyTimer = SetAlarm(_MasterNodeData, _elmoNodeId, _ReplyTimeoutCallback, 
+            MS_TO_TIMEVAL(REPLY_TIMEOUT_MSECS), MS_TO_TIMEVAL(REPLY_TIMEOUT_MSECS));
 }
 
 void
 CanElmoConnection::_stopReplyTimer() {
     QMutexLocker lock(&_mutex);
     
-    _replyTimer.stop();
-    _replyTimerCommand = "";
+    // Stop the reply timer
+    DelAlarm(_replyTimer);
+    _replyTimer = TIMER_NONE;
 }
 
 void
@@ -910,6 +924,9 @@ CanElmoConnection::_replyTimedOut() {
     
     ELOG << _driveName << ": No response to '" << _replyTimerCommand <<
             " in " << REPLY_TIMEOUT_MSECS << " ms. Re-initializing the drive.";
+    
+    // Stop the reply timer, since it's periodic (not a one-shot)
+    _stopReplyTimer();
 
     // Re-initialize
     reinitialize();
