@@ -59,6 +59,8 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 
         _ui.rotMotorInitializedIcon->setPixmap(mcStatus.rotDriveInitialized ?
                 _greenLED : _greenLED_off);
+        
+        _ui.rotAngleValue->setText(QString::number(mcStatus.rotDriveAngle, 'f', 2));
 
         amberLight = ESD::SREG_homingInProcess(sr);
         _warningDetected |= amberLight;
@@ -109,6 +111,7 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		_ui.rotMotorFailureIcon->setPixmap(_greenLED_off);
 		_ui.rotUnitModeLabel->setText("");
 		_ui.rotMotorInitializedIcon->setPixmap(_greenLED_off);
+		_ui.rotAngleValue->setText("x.xx");
 		_ui.rotMotorHomingIcon->setPixmap(_greenLED_off);
 		_ui.rotMotorHomedIcon->setPixmap(_greenLED_off);
 		_ui.rotProgramRunningIcon->setPixmap(_greenLED_off);
@@ -140,6 +143,8 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 
 		_ui.tiltMotorInitializedIcon->setPixmap(mcStatus.tiltDriveInitialized ?
 				_greenLED : _greenLED_off);
+
+        _ui.tiltAngleValue->setText(QString::number(mcStatus.tiltDriveAngle, 'f', 2));
 
 		amberLight = ESD::SREG_homingInProcess(sr);
 		_warningDetected |= amberLight;
@@ -190,6 +195,7 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		_ui.tiltMotorFailureIcon->setPixmap(_greenLED_off);
 		_ui.tiltUnitModeLabel->setText("");
 		_ui.tiltMotorInitializedIcon->setPixmap(_greenLED_off);
+        _ui.tiltAngleValue->setText("x.xx");
 		_ui.tiltMotorHomingIcon->setPixmap(_greenLED_off);
 		_ui.tiltMotorHomedIcon->setPixmap(_greenLED_off);
 		_ui.tiltProgramRunningIcon->setPixmap(_greenLED_off);
