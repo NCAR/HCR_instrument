@@ -146,7 +146,7 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 				_greenLED : _greenLED_off);
 
         _ui.tiltAngleValue->setText(QString::number(mcStatus.tiltDriveAngle, 'f', 2));
-        _ui.rotTempValue->setText(QString::number(mcStatus.rotDriveTemp));
+        _ui.tiltTempValue->setText(QString::number(mcStatus.tiltDriveTemp));
 
 		amberLight = ESD::SREG_homingInProcess(sr);
 		_warningDetected |= amberLight;
