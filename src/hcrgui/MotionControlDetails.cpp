@@ -61,6 +61,7 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
                 _greenLED : _greenLED_off);
         
         _ui.rotAngleValue->setText(QString::number(mcStatus.rotDriveAngle, 'f', 2));
+        _ui.rotTempValue->setText(QString::number(mcStatus.rotDriveTemp));
 
         amberLight = ESD::SREG_homingInProcess(sr);
         _warningDetected |= amberLight;
@@ -145,6 +146,7 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 				_greenLED : _greenLED_off);
 
         _ui.tiltAngleValue->setText(QString::number(mcStatus.tiltDriveAngle, 'f', 2));
+        _ui.rotTempValue->setText(QString::number(mcStatus.rotDriveTemp));
 
 		amberLight = ESD::SREG_homingInProcess(sr);
 		_warningDetected |= amberLight;
