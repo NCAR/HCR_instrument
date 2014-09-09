@@ -29,14 +29,29 @@ public:
     /// or "tilt"), to make log messages more descriptive.
     /// @param ttyDev the name serial port device connected to the Elmo drive
     /// @param driveName nickname used for the drive in log messages
-    ElmoServoDrive(std::string ttyDev, std::string driveName);
+    /// @param countsPerCircle number of encoder counts per full circle of motor
+    /// @param lowerAngleLimit lower limit of motor angle position, in degrees
+    /// from zero position
+    /// @param upperAngleLimit upper limit of motor angle position, in degrees
+    /// from zero position
+    ElmoServoDrive(std::string ttyDev, std::string driveName, 
+            uint32_t countsPerCircle, float lowerAngleLimit = -360.0, 
+            float upperAngleLimit = 360.0);
 
     /// @brief Instantiate a connection to the Elmo servo drive at the given
     /// CANopen node ID. The drive is also given a nickname (e.g., "rotation"
     /// or "tilt"), to make log messages more descriptive.
     /// @param nodeId the CANopen node ID of the Elmo drive
     /// @param driveName nickname used for the drive in log messages
-    ElmoServoDrive(uint8_t nodeId, std::string driveName);
+    /// @param countsPerCircle number of encoder counts per full circle of motor
+    /// motion
+    /// @param lowerAngleLimit lower limit of motor angle position, in degrees
+    /// from zero position
+    /// @param upperAngleLimit upper limit of motor angle position, in degrees
+    /// from zero position
+    ElmoServoDrive(uint8_t nodeId, std::string driveName, 
+            uint32_t countsPerCircle, float lowerAngleLimit = -360.0, 
+            float upperAngleLimit = 360.0);
     
     virtual ~ElmoServoDrive();
 
@@ -103,13 +118,7 @@ public:
     /// @brief Return the target radius for the drive, in drive counts.
     /// @return the target radius for the drive, in drive counts, or zero if 
     /// the target radius is not known.
-    uint32_t targetRadius() {
-        if (_driveParamsGood()) {
-            return(_targetRadius);
-        } else {
-            return(0);
-        }
-    }
+    uint32_t targetRadius() const { return(_targetRadius); }
     
     /// @brief Return the latest sampled drive status register value.
     /// @return the latest sampled drive status register value.
@@ -121,13 +130,7 @@ public:
 
     /// @brief Return the latest sampled drive angle, in degrees.
     /// @return the latest sampled drive angle, in degrees.
-    float angle() const {
-        if (_driveParamsGood()) {
-            return(_angleCounts / countsPerDegree());
-        } else {
-            return(0.0);
-        }
-    }
+    float angle() const { return(_angleCounts / countsPerDegree()); }
 
     /// @brief Return the latest sampled drive temperature, deg C.
     /// @return the latest sampled drive temperature, deg C.
@@ -135,7 +138,7 @@ public:
 
     /// @brief Return the number of optical encoder counts per full circle.
     /// @return the number of optical encoder counts per full circle.
-    uint32_t countsPerCircle() const { return(_positionMaxCnt - _positionMinCnt); }
+    uint32_t countsPerCircle() const { return(_countsPerCircle); }
 
     /// Optical encoder counts per degree
     float countsPerDegree() const { return(countsPerCircle() / 360.0); }
@@ -240,6 +243,9 @@ private slots:
     void _collectStatus();
 
 private:
+    /// Common initialization for construction
+    void _finishConstruction();
+    
     /**
      * Reset all status values to a "status unknown" state
      */
@@ -268,25 +274,25 @@ private:
     /// controller sample time to bad values.
     void _clearQueriedParams();
 
-    /// @brief Return true iff drive's count range and position controller
-    /// sample time have been obtained from the drive.
-    static const int BAD_POSITION_CNT = INT_MAX;
-    bool _driveParamsGood() const {
-    	return(_positionMinCnt != BAD_POSITION_CNT &&
-    			_positionMaxCnt != BAD_POSITION_CNT &&
-    			_pcSampleTime != 0.0);
-    }
-
     /// @brief Request needed drive parameters.
     ///
     /// This method sends commands to collect the drive parameters, and the
     /// replies will be parsed out in _readReply().
     void _collectDriveParams();
 
-    /// @brief Convert an angle in degrees to drive counts.
+    /// @brief Return a motor counts value which yields the given angle and, if
+    /// possible, is within the interval [_lowerLimitCounts,_upperLimitCounts].
     /// @param angleDeg angle to be converted, in degrees
-    int _angleToCounts(float angleDeg);
+    /// @return a motor counts value which yields the given angle and, if
+    /// possible, is within the interval [_lowerLimitCounts,_upperLimitCounts].
+    int _angleToCounts(float angleDeg) const;
 
+    /// @brief Return true iff the drive is allowed to position the motor to
+    /// the given count value.
+    /// @return true iff the drive is allowed to position the motor to the 
+    /// given count value.
+    bool _canMoveToCount(int count) const;
+    
     /// @brief Return the name of the drive-resident function to be called
     /// to initialize drive parameters.
     /// @return the name of the drive-resident function to be called
@@ -346,12 +352,15 @@ private:
     /// time of the current _driveStatusRegister (set to the value of
     /// _srRequestTime when the reply to the SR command is received)
     struct timeval _lastSrTime;
+    
+    /// Number of encoder counts per full circle of motor motion
+    uint32_t _countsPerCircle;
+    
+    /// lower limit of allowed motor position count
+    int _lowerLimitCounts;
 
-    /// minimum position count
-    int _positionMinCnt;
-
-    /// maximum position count
-    int _positionMaxCnt;
+    /// upper limit of allowed motor position count
+    int _upperLimitCounts;
 
     /// position controller sampling time, s
     float _pcSampleTime;

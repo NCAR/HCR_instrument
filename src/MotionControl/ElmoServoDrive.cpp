@@ -18,7 +18,8 @@
 
 LOGGING("ElmoServoDrive")
 
-ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
+ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName,
+        uint32_t countsPerCircle, float lowerAngleLimit, float upperAngleLimit) :
     QObject(),
     _driveConn(0),
     _inhibitActive(false),
@@ -26,26 +27,18 @@ ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName) :
     _driveHomed(false),
     _homingInProgress(false),
     _statusTimer(),
+    _countsPerCircle(countsPerCircle),
+    _lowerLimitCounts((lowerAngleLimit / 360.0) * _countsPerCircle),
+    _upperLimitCounts((upperAngleLimit / 360.0) * _countsPerCircle),
     _scanPoints() {
-    // Start with bad values for drive count range and position controller
-    // sample time. We query the real values from the drive after it's
-    // initialized.
-    _clearQueriedParams();
-    
     // Create our serial port connection to the drive
     _driveConn = new TtyElmoConnection(ttyDev, driveName);
-    connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
-            this, SLOT(_onReadyToExecChanged(bool)));
-    connect(_driveConn, SIGNAL(replyFromExec(std::string, ElmoConnection::ReplyType, int, float)),
-            this, SLOT(_onReplyFromExec(std::string, ElmoConnection::ReplyType, int, float)));
-
-    // Collect status information every STATUS_PERIOD_MSECS milliseconds.
-    _statusTimer.setInterval(STATUS_PERIOD_MSECS);
-    connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
-    _statusTimer.start();
+    // Complete our construction
+    _finishConstruction();
 }
 
-ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName) :
+ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName,
+        uint32_t countsPerCircle, float lowerAngleLimit, float upperAngleLimit) :
     QObject(),
     _driveConn(0),
     _inhibitActive(false),
@@ -53,23 +46,14 @@ ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName) :
     _driveHomed(false),
     _homingInProgress(false),
     _statusTimer(),
+    _countsPerCircle(countsPerCircle),
+    _lowerLimitCounts((lowerAngleLimit / 360.0) * _countsPerCircle),
+    _upperLimitCounts((upperAngleLimit / 360.0) * _countsPerCircle),
     _scanPoints() {
-    // Start with bad values for drive count range and position controller
-    // sample time. We query the real values from the drive after it's
-    // initialized.
-    _clearQueriedParams();
-    
     // Create our CANopen connection to the drive
     _driveConn = new CanElmoConnection(nodeId, driveName);
-    connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
-            this, SLOT(_onReadyToExecChanged(bool)));
-    connect(_driveConn, SIGNAL(replyFromExec(std::string, ElmoConnection::ReplyType, int, float)),
-            this, SLOT(_onReplyFromExec(std::string, ElmoConnection::ReplyType, int, float)));
-
-    // Collect status information every STATUS_PERIOD_MSECS milliseconds.
-    _statusTimer.setInterval(STATUS_PERIOD_MSECS);
-    connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
-    _statusTimer.start();
+    // Complete our construction
+    _finishConstruction();
 }
 
 ElmoServoDrive::~ElmoServoDrive() {
@@ -83,6 +67,23 @@ ElmoServoDrive::~ElmoServoDrive() {
     _driveConn->execElmoAssignCmd("EO", 0, 1);
     // Destroy the drive connection
     delete(_driveConn);
+}
+
+void
+ElmoServoDrive::_finishConstruction() {
+    // Clear values which will be queried from the drive
+    _clearQueriedParams();
+    
+    // Catch some signals from our drive connection
+    connect(_driveConn, SIGNAL(readyToExecChanged(bool)), 
+            this, SLOT(_onReadyToExecChanged(bool)));
+    connect(_driveConn, SIGNAL(replyFromExec(std::string, ElmoConnection::ReplyType, int, float)),
+            this, SLOT(_onReplyFromExec(std::string, ElmoConnection::ReplyType, int, float)));
+
+    // Collect status information every STATUS_PERIOD_MSECS milliseconds.
+    _statusTimer.setInterval(STATUS_PERIOD_MSECS);
+    connect(& _statusTimer, SIGNAL(timeout()), this, SLOT(_collectStatus()));
+    _statusTimer.start();
 }
 
 void
@@ -166,16 +167,13 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
             }
             _inhibitActive = inhibit;
         }
-        // Note other non-empty replies
-        // Save reply from XM[1] "position counter min count" command
+        // Log reply from XM[1] "position counter min count" command
         else if (! cmd.compare("XM[1]")) {
-            _positionMinCnt = iVal; // minimum position count
-            ILOG << driveName() << " XM[1] is " << _positionMinCnt;
+            ILOG << driveName() << " XM[1] is " << iVal;
         }
-        // Save reply from XM[2] "position counter max count" command
+        // Log reply from XM[2] "position counter max count" command
         else if (! cmd.compare("XM[2]")) {
-            _positionMaxCnt = iVal; // maximum position count
-            ILOG << driveName() << " XM[2] is " << _positionMaxCnt;
+            ILOG << driveName() << " XM[2] is " << iVal;
         }
         // Save reply from WS[55] "position controller sample time" command
         else if (! cmd.compare("WS[55]")) {
@@ -193,23 +191,37 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
         break;
     case ElmoConnection::EmptyReply:
         DLOG << driveName() << " reply to '" << cmd << "' was empty";
+        break;
     }
 }
 
 int
-ElmoServoDrive::_angleToCounts(float angleDeg) {
+ElmoServoDrive::_angleToCounts(float angleDeg) const {
     // Normalize the angle into range -360,360
     angleDeg = fmodf(angleDeg, 360.0);
 
     // Convert angle to drive counts
-    int counts = int(countsPerDegree() * angleDeg);
-
-    // Normalize into _posCountMin to (_posCountMax-1) range
-    if (counts < _positionMinCnt) {
-        counts += countsPerCircle();
-    } else if (counts > (_positionMaxCnt - 1)) {
-        counts -= countsPerCircle();
+    int counts = int(roundf(countsPerDegree() * angleDeg));
+    
+    // If the count is outside our allowed motion range, try to shift it into 
+    // the allowed range.
+    if (! _canMoveToCount(counts)) {
+        // Find the smallest shift in full circles which gets us 
+        // above the lower limit or below the upper limit, and calculate a new 
+        // count with equivalent position.
+        int diff = (counts < _lowerLimitCounts) ? 
+                (_lowerLimitCounts - counts) : (_upperLimitCounts - counts);
+        int nCircles = int(truncf(diff / _countsPerCircle)) + 1;
+        int newCounts = counts + nCircles * _countsPerCircle;
+        
+        // Apply the new count if it's a position we can get to
+        if (_canMoveToCount(newCounts)) {
+            counts = newCounts;
+        }
     }
+    
+    // The counts value now contains a value in counts yielding the given angle,
+    // and, if possible, within the interval [_lowerLimitCounts,_upperLimitCounts].
     return(counts);
 }
 
@@ -218,11 +230,21 @@ ElmoServoDrive::moveTo(float angle) {
     // Don't bother if the drive is not responding, is not initialized,
     // or we don't have drive parameters yet.
     if (! _driveConn->readyToExec() || ! _driveInitialized || ! _driveHomed || 
-            ! _driveParamsGood()) {
+            (_pcSampleTime == 0.0)) {
         DLOG << driveName() << " ignoring moveTo " << angle;
         return;
     }
 
+    // Convert angle to counts and complain if we can't move there
+    int counts = _angleToCounts(angle);
+    if (! _canMoveToCount(counts)) {
+        ELOG << driveName() << " cannot move to angle " << angle << 
+                ", which is outside motion boundaries (" <<
+                _lowerLimitCounts / countsPerDegree() << " to " << 
+                _upperLimitCounts / countsPerDegree() << ")";
+        return;
+    }
+    
     // Generate a command to move to the given absolute position
     DLOG << driveName() << ": move to " << angle;
     _driveConn->execElmoAssignCmd("PA", _angleToCounts(angle));
@@ -233,7 +255,8 @@ void
 ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
     std::ostringstream cmdstream;
 
-    float scanWidth = cwLimit - ccwLimit;
+    // Calculate the scan width, normalized into the interval [0,360)
+    float scanWidth = fmodf(cwLimit - ccwLimit, 360.0);
     if (scanWidth < 0) {
         scanWidth += 360.0;
     }
@@ -273,8 +296,8 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
 
     // Now build the table (including an extra point for turn-around on either 
     // side)
-    ILOG << "Building " << nScanPts << "-point PT table";
-    ILOG << pointTime << " seconds per point";
+    DLOG << "Building " << nScanPts << "-point PT table";
+    DLOG << pointTime << " seconds per point";
     _scanPoints.clear();
     for (int i = 0; i < nScanPts; i++) {
         float degPerPoint = scanRate * pointTime;
@@ -284,12 +307,26 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
             pos = ccwLimit + newi * degPerPoint;
         }
         int ipos = _angleToCounts(pos);
+        if (! _canMoveToCount(ipos)) {
+            ELOG << driveName() << ": problem at angle " << pos << 
+                    " (" << ipos << " counts)";
+            std::ostringstream errmsg;
+            errmsg << "Requested scan extends outside motion boundaries (" <<
+                    _lowerLimitCounts / countsPerDegree() << " to " << 
+                    _upperLimitCounts / countsPerDegree() << ")";
+            ELOG << driveName() << ": initScan() failed: " << errmsg.str();
+            _scanPoints.clear();
+            throw std::runtime_error(errmsg.str());            
+        }
         _scanPoints.push_back(ipos);
-
-        // Set position point
-        DLOG << pos << ":" << _scanPoints[i];
-        _driveConn->execElmoAssignCmd("QP", i + 1, ipos);
     }
+    
+    // Put the scan position points into the drive's QP array
+    for (int i = 0; i < nScanPts; i++) {
+        // Set position point
+        _driveConn->execElmoAssignCmd("QP", i + 1, _scanPoints[i]);        
+    }
+    
     // Set PT motion parameters
     _driveConn->execElmoAssignCmd("MP", 1, 1);          // start at index 1
     _driveConn->execElmoAssignCmd("MP", 2, nScanPts);   // finish at index nScanPts
@@ -303,13 +340,18 @@ ElmoServoDrive::scan() {
         return;
     }
 
+    if (_scanPoints.empty()) {
+        ELOG << driveName() << ": scan() failure; no scan has been defined!";
+        return;
+    }
+    
     ILOG << driveName() << " starting scan"; 
 
     // position to first point of scan
     _driveConn->execElmoAssignCmd("PA", _scanPoints[0]);
     _driveConn->execElmoCmd("BG");
 
-    // TODO wait for motion completion here?
+    // TODO we need to wait for motion completion here before starting the scan
     
     // start the scan
     _driveConn->execElmoAssignCmd("PT", 1);
@@ -344,7 +386,8 @@ void
 ElmoServoDrive::setTargetRadius(uint32_t targetRadius) {
     // Don't bother if the drive is not responding, is not initialized,
     // or we don't have good drive parameters yet.
-    if (! _driveConn->readyToExec() || ! _driveInitialized || ! _driveParamsGood()) {
+    if (! _driveConn->readyToExec() || ! _driveInitialized || 
+            (_pcSampleTime == 0.0)) {
         DLOG << driveName() << " not ready; ignoring setTargetRadius to " << 
                 targetRadius << " counts";
         return;
@@ -436,9 +479,29 @@ ElmoServoDrive::_testForInitCompletion() {
     // The initialization/homing program on the drive finished.
     ILOG << driveName() << " initialization complete";
     _driveInitialized = true;
+    
+    // One-time query to get the position controller sample time, using the
+    // "WS[55]" command. The returned value will be extracted in 
+    // _onReplyFromExec().
+    _driveConn->execElmoCmd("WS", 55);
+    
+    // Turn off motor for setting XM[1], XM[2], LL[3], and HL[3]
+    _driveConn->execElmoAssignCmd("MO", 0, 0);
 
-    // Once the drive is initialized, we can query it for drive parameters.
-    _collectDriveParams();
+    // Override minimum and maximum position counts to their default values
+    // of essentially +/- infinity. This disables angle modulo arithmetic on 
+    // the servo drive, which is necessary to create an enforceable "keep-out" 
+    // wedge.
+    _driveConn->execElmoAssignCmd("XM", 1, -1000000000);
+    _driveConn->execElmoAssignCmd("XM", 2, 1000000000);
+    
+    // Load the lower and upper limits for motor position which were specified
+    // in the constructor
+    _driveConn->execElmoAssignCmd("LL", 3, _lowerLimitCounts);
+    _driveConn->execElmoAssignCmd("HL", 3, _upperLimitCounts);
+    
+    // Turn motor back on
+    _driveConn->execElmoAssignCmd("MO", 0, 1);
 
 stop_timer:
     _gpTimer.stop();
@@ -508,18 +571,7 @@ ElmoServoDrive::_collectStatus() {
 }
 
 void
-ElmoServoDrive::_collectDriveParams() {
-    // Send commands to the drive to get back drive parameters we need. The
-    // status values will be saved in _readReply() when the replies come back.
-    _driveConn->execElmoCmd("XM", 1);   // XM[1]: position counter minimum value
-    _driveConn->execElmoCmd("XM", 2);   // XM[2]: position counter maximum value
-    _driveConn->execElmoCmd("WS", 55);  // WS[55]: sampling time of position controller
-}
-
-void
 ElmoServoDrive::_clearQueriedParams() {
-    _positionMinCnt = BAD_POSITION_CNT;
-    _positionMaxCnt = BAD_POSITION_CNT;
     _pcSampleTime = 0.0;
     _driveStatusRegister = 0;
     _lastSrTime.tv_sec = 0;
@@ -528,4 +580,14 @@ ElmoServoDrive::_clearQueriedParams() {
     _targetRadius = 0;
     _angleCounts = 0;
     _driveSystemTime = 0;
+}
+
+bool
+ElmoServoDrive::_canMoveToCount(int count) const {
+    // We apply a small cushion angle on either side to narrow the interval 
+    // [_lowerLimitCounts,_upperLimitCounts]. This allows for moderate
+    // imprecision in positioning without triggering motor faults.
+    const int CUSHION_COUNTS = 0.5 * countsPerDegree();
+    return((count >= (_lowerLimitCounts + CUSHION_COUNTS)) && 
+           (count <= (_upperLimitCounts - CUSHION_COUNTS)));
 }

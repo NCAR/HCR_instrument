@@ -14,11 +14,15 @@
 /// class.
 class RotServoDrive : public ElmoServoDrive {
 public:
+    /// Our rotation motor has 400000 encoder counts per full circle
+    static const uint32_t ROT_DRIVE_COUNTS_PER_CIRCLE = 400000;
+    
     /// Instantiate a connection the HCR rotation servo drive at the given 
     /// CANopen node ID. The drive's nickname will be set to "rotation".
     /// @param nodeId the CANopen node ID of the servo drive
     RotServoDrive(uint8_t nodeId) :
-        ElmoServoDrive(nodeId, "rotation") {}
+        ElmoServoDrive(nodeId, "rotation", ROT_DRIVE_COUNTS_PER_CIRCLE,
+                -45.0, 225.0) {}
     virtual ~RotServoDrive() {}
 private:
     std::string _xqInitFunction() const { return("rotInit"); }
