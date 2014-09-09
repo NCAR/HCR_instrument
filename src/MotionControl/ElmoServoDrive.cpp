@@ -197,8 +197,11 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
 
 int
 ElmoServoDrive::_angleToCounts(float angleDeg) const {
-    // Normalize the angle into range -360,360
+    // Normalize the angle into interval [0,360)
     angleDeg = fmodf(angleDeg, 360.0);
+    if (angleDeg < 0.0) {
+        angleDeg += 360.0;
+    }
 
     // Convert angle to drive counts
     int counts = int(roundf(countsPerDegree() * angleDeg));
@@ -206,15 +209,12 @@ ElmoServoDrive::_angleToCounts(float angleDeg) const {
     // If the count is outside our allowed motion range, try to shift it into 
     // the allowed range.
     if (! _canMoveToCount(counts)) {
-        // Find the smallest shift in full circles which gets us 
-        // above the lower limit or below the upper limit, and calculate a new 
-        // count with equivalent position.
-        int diff = (counts < _lowerLimitCounts) ? 
-                (_lowerLimitCounts - counts) : (_upperLimitCounts - counts);
-        int nCircles = int(truncf(diff / _countsPerCircle)) + 1;
-        int newCounts = counts + nCircles * _countsPerCircle;
+        // Try shifting up or down one circle, depending on which side of the 
+        // limits we're on.
+        int shiftSign = (counts < _lowerLimitCounts) ? 1 : -1;
+        int newCounts = counts + shiftSign * _countsPerCircle;
         
-        // Apply the new count if it's a position we can get to
+        // Apply the new counts if it's a position we can get to
         if (_canMoveToCount(newCounts)) {
             counts = newCounts;
         }
@@ -308,8 +308,8 @@ ElmoServoDrive::initScan(float ccwLimit, float cwLimit, float scanRate) {
         }
         int ipos = _angleToCounts(pos);
         if (! _canMoveToCount(ipos)) {
-            ELOG << driveName() << ": problem at angle " << pos << 
-                    " (" << ipos << " counts)";
+            ELOG << driveName() << ": problem at index " << i << 
+                    ", angle " << pos << " (" << ipos << " counts)";
             std::ostringstream errmsg;
             errmsg << "Requested scan extends outside motion boundaries (" <<
                     _lowerLimitCounts / countsPerDegree() << " to " << 
