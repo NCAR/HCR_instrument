@@ -473,7 +473,7 @@ CanElmoConnection::_PostEmcyCallback(CO_Data* d, UNS8 nodeId, UNS16 errCode,
     ILOG << "Received CANbus EMCY message. Node: " << int(nodeId) <<
     		std::hex << 
             ", Error code 0x" << errCode <<
-            ", Error register 0x" << errReg;
+            ", Error register 0x" << int(errReg);
 }
 
 void
