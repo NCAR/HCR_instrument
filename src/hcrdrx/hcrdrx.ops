@@ -6,25 +6,42 @@ calibration_file        /home/hcr/projDir/moments/params/hcr_cal.xml
 start_on_1pps		1
 
 #gates                   60  
-gates                    175
-#gates                   400
+#gates                   175
+gates                   400
 
 staggered_prt           0
 prt1                    1.01376e-4  # s
 
-digitizer_gate0_delay   2.232e-6  # s
-digitizer_sample_width  64e-9  # s
-#digitizer_sample_width  128e-9 # s
-#digitizer_sample_width  256e-9 # s
-#digitizer_sample_width  512e-9 # s  
-#digitizer_sample_width  1024e-9 # s
+# digitizer_gate0_delay is the time in seconds from T0 until digitizer sampling
+# begins. This number is effectively:
+#    tx_delay + tx_latency + 0.5 * tx_pulse_width + (downcoverter latency) + 
+#         (desired offset of gate0 w.r.t. the transmit pulse) 
+# The downconverter latency is quite large, so the timing can look 
+# like we don't sample until *well after* the transmitted pulse, yet we 
+# actually see the transmitted pulse in the data.
+digitizer_gate0_delay   2.232e-6
 
-tx_delay                336e-9 # s
-#tx_pulse_width          256e-9 # s
-tx_pulse_width          512e-9 # s  
-#tx_pulse_width          1024e-9 # s  
+# Digitizer sample width, seconds (gate spacing = 0.5 * c * sample width)
+#digitizer_sample_width    64e-9
+digitizer_sample_width   128e-9
+#digitizer_sample_width   256e-9
+#digitizer_sample_width   512e-9  
+#digitizer_sample_width  1024e-9
+
+# tx_delay is the delay in seconds from T0 to the start of generation of the 
+# DAC waveform which goes to the EIK
+tx_delay                 336e-9
+#tx_pulse_width           256e-9
+tx_pulse_width           512e-9  
+#tx_pulse_width          1024e-9 
+
+# tx_pulse_mod_delay is the delay in seconds from T0 to the start of the
+# modulation pulse signal to the transmitter
 tx_pulse_mod_delay      432e-9 # s
-tx_latency              600e-9 # s
+
+# tx_latency is the measured time in seconds between arrival of the DAC 
+# signal at the EIK and actual output of the transmit pulse
+tx_latency              600e-9
 
 # iqcount_scale_for_mw: count scaling factor to easily get power in mW from
 # I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
