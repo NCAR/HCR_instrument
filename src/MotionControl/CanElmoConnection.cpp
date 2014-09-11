@@ -113,8 +113,8 @@ CanElmoConnection::CanElmoConnection(uint8_t nodeId, std::string driveName) :
     }
     
     // Set up as a heartbeat consumer for the Elmo drive, timing out at
-    // 2.5 * the Elmo's heartbeat interval
-    uint16_t timeoutMs = uint16_t(2.5 * ELMO_HEARTBEAT_MSECS);
+    // 4.0 * the Elmo's heartbeat interval
+    uint16_t timeoutMs = uint16_t(4.0 * ELMO_HEARTBEAT_MSECS);
     
     // Consumer heartbeat value is a 4-byte little-endian value, with the 
     // timeout time in ms in bits 0-15, and the producer node ID in bits
