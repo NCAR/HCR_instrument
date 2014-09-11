@@ -663,6 +663,7 @@ CanElmoConnection::_doNextInitializeStep() {
         emit(readyToExecChanged(_readyToExec));
         ILOG << _driveName << ": CanElmoConnection for node " << 
                 int(_elmoNodeId) << " initialization is complete";
+        break;
     }
 }
 
