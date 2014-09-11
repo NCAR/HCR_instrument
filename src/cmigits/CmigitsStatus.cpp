@@ -40,7 +40,31 @@ CmigitsStatus::CmigitsStatus() :
     _roll(0.0),
     _heading(0.0) {}
 
-CmigitsStatus::CmigitsStatus(const xmlrpc_c::value_struct & statusDict) {
+CmigitsStatus::CmigitsStatus(const xmlrpc_c::value_struct & statusDict) :
+    _time3500(0.0),
+    _currentMode(0),
+    _nSats(0),
+    _insAvailable(false),
+    _gpsAvailable(false),
+    _doingCoarseAlignment(false),
+    _positionFOM(0),
+    _velocityFOM(0),
+    _headingFOM(0),
+    _timeFOM(0),
+    _expectedHPosError(0.0),
+    _expectedVPosError(0.0),
+    _expectedVelocityError(0.0),
+    _time3501(0.0),
+    _latitude(0.0),
+    _longitude(0.0),
+    _altitude(0.0),
+    _velNorth(0.0),
+    _velEast(0.0),
+    _velUp(0.0),
+    _time3512(0.0),
+    _pitch(0.0),
+    _roll(0.0),
+    _heading(0.0) {
     // Create an input archiver wrapper around the map from std::string to
     // xmlrpc_c::value, and use serialize() to populate our members from its
     // content.

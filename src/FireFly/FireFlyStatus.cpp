@@ -38,7 +38,16 @@ FireFlyStatus::FireFlyStatus(bool deviceResponding, bool pllLocked,
     _configError(configError) {
 }
 
-FireFlyStatus::FireFlyStatus(xmlrpc_c::value_struct & statusDict) {
+FireFlyStatus::FireFlyStatus(xmlrpc_c::value_struct & statusDict):
+    _statusTime(time(0)),
+    _deviceResponding(false),
+    _pllLocked(false),
+    _lastHoldoverDuration(0),
+    _inHoldover(false),
+    _freqErrorEstimate(0.0),
+    _timeDiff1PPS(0.0),
+    _healthStatus(0),
+    _configError(false) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);

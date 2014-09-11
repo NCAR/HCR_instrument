@@ -38,7 +38,13 @@ DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
     _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
 }
 
-DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) {
+DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
+    _pentekFpgaTemp(-99),
+    _pentekBoardTemp(-99),
+    _xmitPulseWidth(0.0),
+    _prt(0.0),
+    _nGates(0),
+    _gateSpacing(0.0) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);
