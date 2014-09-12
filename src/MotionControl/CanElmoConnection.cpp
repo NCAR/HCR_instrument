@@ -408,7 +408,7 @@ CanElmoConnection::_HeartbeatErrorCallback(CO_Data* d, UNS8 nodeId) {
     std::ostringstream os;
     os << "Heartbeat error for " << conn->_driveName << " drive (node " << 
             int(nodeId) << ")";
-    throw std::runtime_error(os.str());
+//    throw std::runtime_error(os.str());
 }
 
 void
