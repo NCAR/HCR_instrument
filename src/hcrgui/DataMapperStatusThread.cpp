@@ -33,11 +33,6 @@ DataMapperStatusThread::DataMapperStatusThread(std::string dmapHost) :
 
     // Zero out _lastTsInfo
     memset(&_lastTsInfo, 0, sizeof(_lastTsInfo));
-    
-    // Change thread affinity to self instead of our parent's thread.
-    // This makes the calls to _getStatus() execute in *this* thread, which is
-    // what we want.
-    moveToThread(this);
 }
 
 DataMapperStatusThread::~DataMapperStatusThread() {
