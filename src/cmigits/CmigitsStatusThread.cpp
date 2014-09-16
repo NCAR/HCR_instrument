@@ -18,6 +18,9 @@ CmigitsStatusThread::CmigitsStatusThread(std::string cmigitsHost, int cmigitsPor
     // We need to register CmigitsStatus as a metatype, since we'll be passing
     // it as an argument in a signal.
     qRegisterMetaType<CmigitsStatus>("CmigitsStatus");
+    // Set thread affinity to self, so that signals connected to our slot(s)
+    // will execute the slots in this thread, and not our parent's.
+    moveToThread(this);
 }
 
 CmigitsStatusThread::~CmigitsStatusThread() {

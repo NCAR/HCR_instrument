@@ -33,6 +33,10 @@ DataMapperStatusThread::DataMapperStatusThread(std::string dmapHost) :
 
     // Zero out _lastTsInfo
     memset(&_lastTsInfo, 0, sizeof(_lastTsInfo));
+    
+    // Set thread affinity to self, so that signals connected to our slot(s)
+    // will execute the slots in this thread, and not our parent's.
+    moveToThread(this);
 }
 
 DataMapperStatusThread::~DataMapperStatusThread() {

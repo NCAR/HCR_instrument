@@ -17,6 +17,9 @@ XmitdStatusThread::XmitdStatusThread(std::string xmitdHost, int xmitdPort) :
     // We need to register XmitStatus as a metatype, since we'll be passing it
     // as an argument in a signal.
     qRegisterMetaType<XmitStatus>("XmitStatus");
+    // Set thread affinity to self, so that signals connected to our slot(s)
+    // will execute the slots in this thread, and not our parent's.
+    moveToThread(this);
 }
 
 XmitdStatusThread::~XmitdStatusThread() {

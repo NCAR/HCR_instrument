@@ -21,6 +21,9 @@ FireflydStatusThread::FireflydStatusThread(std::string fireflydHost,
     // We need to register FireFlyStatus as a metatype, since we'll be passing
     // it as an argument in a signal.
     qRegisterMetaType<FireFlyStatus>("FireFlyStatus");
+    // Set thread affinity to self, so that signals connected to our slot(s)
+    // will execute the slots in this thread, and not our parent's.
+    moveToThread(this);
 }
 
 FireflydStatusThread::~FireflydStatusThread() {

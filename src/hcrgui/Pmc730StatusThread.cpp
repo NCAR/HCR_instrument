@@ -20,6 +20,9 @@ Pmc730StatusThread::Pmc730StatusThread(std::string drxHost, int drxPort) :
     // We need to register HcrPmc730Status as a metatype, since we'll be passing
     // it as an argument in a signal.
     qRegisterMetaType<HcrPmc730Status>("HcrPmc730Status");
+    // Set thread affinity to self, so that signals connected to our slot(s)
+    // will execute the slots in this thread, and not our parent's.
+    moveToThread(this);
 }
 
 Pmc730StatusThread::~Pmc730StatusThread() {
@@ -55,7 +58,7 @@ Pmc730StatusThread::_getStatus() {
         // serverResponsive(false) if the server had previously been responding.
         if (_responsive) {
             std::ostringstream oss;
-            oss << "HcrPmc730 failed to respond to getStatus(): " << e.what();
+            oss << "HcrPmc730Daemon failed to respond to getStatus(): " << e.what();
             _responsive = false;
             emit serverResponsive(false, QString(oss.str().c_str()));
         }
