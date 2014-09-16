@@ -590,10 +590,18 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     // HV line is handled by hcr_xmitd. We need to cover both cases.
     if (_xmitterFilamentIsOn()) {
         _xmitdStatusThread.rpcClient().xmitFilamentOff();
-        _pmcStatusThread.rpcClient().xmitFilamentOff();
+        try {
+            _pmcStatusThread.rpcClient().xmitFilamentOff();
+        } catch (std::exception & e) {
+            WLOG << "Could not tell HcrPmc730Daemon to turn off filament";
+        }
     } else {
         _xmitdStatusThread.rpcClient().xmitFilamentOn();
-        _pmcStatusThread.rpcClient().xmitFilamentOn();
+        try {
+            _pmcStatusThread.rpcClient().xmitFilamentOn();
+        } catch (std::exception & e) {
+            WLOG << "Could not tell HcrPmc730Daemon to turn on filament";
+        }
     }
 }
 
@@ -605,7 +613,11 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
 /// Set HMC mode
 void
 HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
-    _pmcStatusThread.rpcClient().setHmcMode(index);
+    try {
+        _pmcStatusThread.rpcClient().setHmcMode(index);
+    } catch (std::exception & e) {
+        WLOG << "Could not tell HcrPmc730Daemon to change to HMC mode " << index;
+    }
 }
 
 /// Toggle the current on/off state of the transmitter high voltage
@@ -617,10 +629,18 @@ HcrGuiMainWindow::on_hvButton_clicked() {
     // HV line is handled by hcr_xmitd. We need to cover both cases.
     if (_xmitterHvIsOn()) {
         _xmitdStatusThread.rpcClient().xmitHvOff();
-        _pmcStatusThread.rpcClient().xmitHvOff();
+        try {
+        	_pmcStatusThread.rpcClient().xmitHvOff();
+        } catch (std::exception & e) {
+            WLOG << "Could not tell HcrPmc730Daemon to turn off HV";
+        }
     } else {
         _xmitdStatusThread.rpcClient().xmitHvOn();
-        _pmcStatusThread.rpcClient().xmitHvOn();
+        try {
+        	_pmcStatusThread.rpcClient().xmitHvOn();
+        } catch (std::exception & e) {
+            WLOG << "Could not tell HcrPmc730Daemon to turn on HV";
+        }
     }
 }
 
