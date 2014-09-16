@@ -113,6 +113,13 @@ Pmc730Details::updateStatus(bool daemonResponding,
         _ui.emsError6Or7Icon->setPixmap(_greenLED_off);
     }
     
+    if (status.emsPowerError()) {
+        _errState = true;
+        _ui.emsPowerErrorIcon->setPixmap(_redLED);
+    } else {
+        _ui.emsPowerErrorIcon->setPixmap(_greenLED_off);
+    }
+    
     _ui.emsErrorCountValue->setText(QString::number(status.emsErrorCount()));
     
     // Active Pressurization System
