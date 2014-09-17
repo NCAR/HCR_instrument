@@ -29,8 +29,8 @@ XmitdRpcClient::~XmitdRpcClient() {
 }
 
 bool
-XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd, 
-    const xmlrpc_c::value & params, xmlrpc_c::value * result) {
+XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd,
+        xmlrpc_c::value * result) {
     try {
         DLOG << "Executing '" << cmd << "()' call";
         call(_xmitdUrl, cmd, "", result);
@@ -43,37 +43,32 @@ XmitdRpcClient::_executeXmlRpcCommand(const std::string cmd,
 
 void
 XmitdRpcClient::xmitFilamentOn() {
-    xmlrpc_c::value null;
     xmlrpc_c::value result;
-    _executeXmlRpcCommand("xmitFilamentOn", null, &result);
+    _executeXmlRpcCommand("xmitFilamentOn", &result);
 }
 
 void
 XmitdRpcClient::xmitFilamentOff() {
-    xmlrpc_c::value null;
     xmlrpc_c::value result;
-    _executeXmlRpcCommand("xmitFilamentOff", null, &result);
+    _executeXmlRpcCommand("xmitFilamentOff", &result);
 }
 
 void
 XmitdRpcClient::xmitHvOn() {
-    xmlrpc_c::value null;
     xmlrpc_c::value result;
-    _executeXmlRpcCommand("xmitHvOn", null, &result);
+    _executeXmlRpcCommand("xmitHvOn", &result);
 }
 
 void
 XmitdRpcClient::xmitHvOff() {
-    xmlrpc_c::value null;
     xmlrpc_c::value result;
-    _executeXmlRpcCommand("xmitHvOff", null, &result);
+    _executeXmlRpcCommand("xmitHvOff", &result);
 }
 
 bool
 XmitdRpcClient::getStatus(XmitStatus & status) {
-    xmlrpc_c::value null;
     xmlrpc_c::value result;
-    if (! _executeXmlRpcCommand("getStatus", null, &result)) {
+    if (! _executeXmlRpcCommand("getStatus", &result)) {
         WLOG << __PRETTY_FUNCTION__ << ": getStatus failed!";
         return(false);
     }

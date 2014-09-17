@@ -73,12 +73,10 @@ private:
     /**
      * Execute an XML-RPC command in hcr_xmitd and get the result.
      * @param cmd the XML-RPC command to execute
-     * @param params xmlrpc_c::value list of parameters for the command
      * @param result pointer to xmlrpc_c::value to hold the command result
      * @return true iff the command was executed successfully
      */
-    bool _executeXmlRpcCommand(const std::string cmd, 
-        const xmlrpc_c::value & params, xmlrpc_c::value * result);
+    bool _executeXmlRpcCommand(const std::string cmd, xmlrpc_c::value * result);
     
     std::string _xmitdHost;
     int _xmitdPort;
