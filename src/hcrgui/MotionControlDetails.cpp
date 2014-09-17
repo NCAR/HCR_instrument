@@ -113,6 +113,7 @@ MotionControlDetails::_doRotStatus(const MotionControl::Status & mcStatus) {
 		_ui.rotUnitModeLabel->setText("");
 		_ui.rotMotorInitializedIcon->setPixmap(_greenLED_off);
 		_ui.rotAngleValue->setText("x.xx");
+		_ui.rotTempValue->setText("xx");
 		_ui.rotMotorHomingIcon->setPixmap(_greenLED_off);
 		_ui.rotMotorHomedIcon->setPixmap(_greenLED_off);
 		_ui.rotProgramRunningIcon->setPixmap(_greenLED_off);
@@ -198,6 +199,7 @@ MotionControlDetails::_doTiltStatus(const MotionControl::Status & mcStatus) {
 		_ui.tiltUnitModeLabel->setText("");
 		_ui.tiltMotorInitializedIcon->setPixmap(_greenLED_off);
         _ui.tiltAngleValue->setText("x.xx");
+        _ui.tiltTempValue->setText("xx");
 		_ui.tiltMotorHomingIcon->setPixmap(_greenLED_off);
 		_ui.tiltMotorHomedIcon->setPixmap(_greenLED_off);
 		_ui.tiltProgramRunningIcon->setPixmap(_greenLED_off);
