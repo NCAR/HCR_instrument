@@ -32,109 +32,85 @@ MotionControlRpcClient::~MotionControlRpcClient()
 {
 }
 
-/////////////////////////////////////////////////////////////////////
-void
-MotionControlRpcClient::homeDrive() throw (std::exception)
+xmlrpc_c::value
+MotionControlRpcClient::_execXmlRpcCall(std::string methodName, 
+        xmlrpc_c::paramList params)
 {
-	ILOG << "homeDrive()";
-	_daemonResponding = true;
-
-	try {
-		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Home", &result);
-	}
-	catch (std::exception & e) {
-		_daemonResponding = false;
-		WLOG << "XML-RPC error calling Home(): " << e.what();
-	}
+    try {
+        xmlrpc_c::value result;
+        _client.call(_daemonUrl, methodName, params, &result);
+        _daemonResponding = true;
+        return(result);
+    }
+    catch (std::exception & e) {
+        WLOG << "XML-RPC error calling " << methodName << "(): " << e.what();
+        throw;
+    }
 }
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControlRpcClient::point(float angle) throw (std::exception)
+MotionControlRpcClient::homeDrive()
+{
+	ILOG << "homeDrive()";
+	_execXmlRpcCall("Home");
+}
+
+/////////////////////////////////////////////////////////////////////
+void
+MotionControlRpcClient::point(float angle)
 {
 	ILOG << "point() to " << angle;
-	_daemonResponding = true;
 
-	try {
-		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Point", "d", &result, angle);
-	}
-	catch (std::exception & e) {
-		_daemonResponding = false;
-		WLOG << "XML-RPC error calling Point(): " << e.what();
-	}
+	xmlrpc_c::paramList params;
+	params.add(xmlrpc_c::value_double(angle));
+	_execXmlRpcCall("Point", params);
 }
 
 /////////////////////////////////////////////////////////////////////
 void
 MotionControlRpcClient::scan(float ccwLimit, float cwLimit, float scanRate,
         float beamTilt)
-throw (std::exception)
 {
 	ILOG << "scan() between " << ccwLimit << " and " << cwLimit << " at " << 
 	        scanRate << " deg/s, with beam tilt " << beamTilt;
-	_daemonResponding = true;
-
-	try {
-		xmlrpc_c::value result;
-		_client.call(_daemonUrl, "Scan", "dddd", &result, ccwLimit, cwLimit,
-		        scanRate, beamTilt);
-	}
-	catch (std::exception & e) {
-		_daemonResponding = false;
-		WLOG << "XML-RPC error calling Scan(): " << e.what();
-	}
+	
+	xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_double(ccwLimit));
+    params.add(xmlrpc_c::value_double(cwLimit));
+    params.add(xmlrpc_c::value_double(scanRate));
+    params.add(xmlrpc_c::value_double(beamTilt));
+	_execXmlRpcCall("Scan", params);
 }
 
 /////////////////////////////////////////////////////////////////////
 void
 MotionControlRpcClient::setCorrectionEnabled(bool state)
-throw (std::exception)
 {
     ILOG << (state ? "enabling" : "disabling") << " attitude correction";
-    _daemonResponding = true;
-
-    try {
-        xmlrpc_c::value result;
-        _client.call(_daemonUrl, "SetCorrectionEnabled", "b", &result, state);
-    }
-    catch (std::exception & e) {
-        _daemonResponding = false;
-        WLOG << "XML-RPC error calling SetCorrectionEnabled(): " << e.what();
-    }
+    
+    xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_boolean(state));
+    _execXmlRpcCall("SetCorrectionEnabled", params);
 }
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status
 MotionControlRpcClient::status()
-throw (std::exception)
 {
-    _daemonResponding = true;
-    try {
-        xmlrpc_c::value result;
-        _client.call(_daemonUrl, "Status", "", &result);
-        // Construct an xmlrpc_c::value_struct from the result, and use that
-        // to construct the  MotionControl::Status which we return.
-        xmlrpc_c::value_struct vstruct(result);
-        return(MotionControl::Status(vstruct));
-    }
-    catch (std::exception & e) {
-        _daemonResponding = false;
-        WLOG << "XML-RPC error calling Status(): " << e.what();
-    }
-    return(MotionControl::Status());
+    xmlrpc_c::value result = _execXmlRpcCall("Status");
+    // Construct an xmlrpc_c::value_struct from the result, and use that
+    // to construct the  MotionControl::Status which we return.
+    xmlrpc_c::value_struct vStruct(result);
+    return(MotionControl::Status(vStruct));
 }
 
 /////////////////////////////////////////////////////////////////////
 bool
 MotionControlRpcClient::homingInProgress()
-throw (std::exception)
 {
-    xmlrpc_c::value result;
-    _client.call(_daemonUrl, "HomingInProgress", "", &result);
-    // Construct an xmlrpc_c::value_struct from the result, and use that
-    // to construct the  MotionControl::Status which we return.
-    xmlrpc_c::value_boolean boolResult(result);
-    return(bool(boolResult));
+    xmlrpc_c::value result = _execXmlRpcCall("HomingInProgress");
+    // Construct an xmlrpc_c::value_boolean from the result, and return
+    // the associated C boolean value.
+    return(bool(xmlrpc_c::value_boolean(result)));
 }

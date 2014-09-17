@@ -27,26 +27,30 @@ HcrdrxRpcClient::~HcrdrxRpcClient() {
 }
 
 bool
-HcrdrxRpcClient::zeroPentekMotorCounts() {
-    xmlrpc_c::value result;
+HcrdrxRpcClient::_execXmlRpcCall(std::string methodName, 
+        xmlrpc_c::value & result) {
     try {
-        _client.call(_daemonUrl, "zeroPentekMotorCounts", "", &result);
+        _client.call(_daemonUrl, methodName, "", &result);
     } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC zeroPentekMotorCounts() call: " << e.what();
+        WLOG << "Error on XML-RPC " << methodName << "() call: " << e.what();
         return(false);
     }
     return(true);
 }
 
 bool
+HcrdrxRpcClient::zeroPentekMotorCounts() {
+    xmlrpc_c::value result;
+    return(_execXmlRpcCall("zeroPentekMotorCounts", result));
+}
+
+bool
 HcrdrxRpcClient::getStatus(DrxStatus & status) {
     xmlrpc_c::value result;
-    try {
-        _client.call(_daemonUrl, "getStatus", "", &result);
-    } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC getStatus() call: " << e.what();
+    if (! _execXmlRpcCall("getStatus", result)) {
         return(false);
     }
+    // Convert the result into a DrxStatus object and return it in status
     xmlrpc_c::value_struct resultStruct(result);
     status = DrxStatus(resultStruct);
     return(true);

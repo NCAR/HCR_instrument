@@ -24,72 +24,50 @@ HcrPmc730Client::HcrPmc730Client(std::string daemonHost, int daemonPort) :
 HcrPmc730Client::~HcrPmc730Client() {
 }
 
-void
-HcrPmc730Client::xmitFilamentOn() {
+xmlrpc_c::value
+HcrPmc730Client::_execXmlRpcCall(std::string methodName, 
+        xmlrpc_c::paramList params) {
     try {
         xmlrpc_c::value result;
-        _client.call(_daemonUrl, "xmitFilamentOn", "", &result);
+        _client.call(_daemonUrl, methodName, params, &result);
+        return(result);
     } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC xmitFilamentOn() call: " << e.what();
+        WLOG << "Error on XML-RPC " << methodName << "() call: " << e.what();
         throw; // rethrow the exception
     }
+}
+
+void
+HcrPmc730Client::xmitFilamentOn() {
+    _execXmlRpcCall("xmitFilamentOn");
 }
 
 void
 HcrPmc730Client::xmitFilamentOff() {
-    try {
-        xmlrpc_c::value result;
-        _client.call(_daemonUrl, "xmitFilamentOff", "", &result);
-    } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC xmitFilamentOff() call: " << e.what();
-        throw; // rethrow the exception
-    }
+    _execXmlRpcCall("xmitFilamentOn");
 }
 
 void
 HcrPmc730Client::xmitHvOn() {
-    try {
-        xmlrpc_c::value result;
-        _client.call(_daemonUrl, "xmitHvOn", "", &result);
-    } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC xmitHvOn() call: " << e.what();
-        throw; // rethrow the exception
-    }
+    _execXmlRpcCall("xmitHvOn");
 }
 
 void
 HcrPmc730Client::xmitHvOff() {
-    try {
-        xmlrpc_c::value result;
-        _client.call(_daemonUrl, "xmitHvOff", "", &result);
-    } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC xmitHvOff() call: " << e.what();
-        throw; // rethrow the exception
-    }
+    _execXmlRpcCall("xmitHvOff");
 }
 
 void
 HcrPmc730Client::setHmcMode(int mode) {
-    try {
-        xmlrpc_c::value result;
-        _client.call(_daemonUrl, "setHmcMode", "i", &result, mode);
-    } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC setHmcMode() call: " << e.what();
-        throw; // rethrow the exception
-    }
+    xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_int(mode));
+    _execXmlRpcCall("setHmcMode", params);
 }
 
 HcrPmc730Status
 HcrPmc730Client::getStatus() {
-    try {
-        xmlrpc_c::value result;
-        // _client.call() will throw a girerr::error exception on RPC failure
-        _client.call(_daemonUrl, "getStatus", "", &result);
-        xmlrpc_c::value_struct statusDict = xmlrpc_c::value_struct(result);
-        HcrPmc730Status status(statusDict);
-        return(status);
-    } catch (std::exception & e) {
-        WLOG << "Error on XML-RPC getStatus() call: " << e.what();
-        throw; // rethrow the exception
-    }
+    xmlrpc_c::value result = _execXmlRpcCall("getStatus");
+    xmlrpc_c::value_struct statusDict = xmlrpc_c::value_struct(result);
+    HcrPmc730Status status(statusDict);
+    return(status);
 }

@@ -27,12 +27,12 @@ public:
 
     /// @brief Set drives to home position
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    void homeDrive() throw (std::exception);
+    void homeDrive();
 
     /// @brief Point the antenna to a specific angle
     /// @param angle The angle that the antenna points to
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    void point(float angle) throw (std::exception);
+    void point(float angle);
 
 	/// @brief Scan the antenna between the given counterclockwise and clockwise
 	/// limits, at the given scan rate.
@@ -42,22 +42,22 @@ public:
     /// @param beamTilt the beam tilt angle, deg
     /// @throws std::exception if there's a problem in the XML-RPC call.
 	void scan(float ccwLimit, float cwLimit, float scanRate, 
-	        float beamTilt) throw (std::exception);
+	        float beamTilt);
 
     /// @brief Set the on/off state of attitude correction
     /// @param state the desired state for attitude correction
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    void setCorrectionEnabled(bool state) throw (std::exception);
+    void setCorrectionEnabled(bool state);
 
     /// @brief Get motion control status
     /// @return a MotionControlStatus object
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    MotionControl::Status status() throw (std::exception);
+    MotionControl::Status status();
 
     /// @brief Return true iff homing is in progress for either of the drives.
     /// @return true iff homing is in progress for either of the drives.
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    bool homingInProgress() throw (std::exception);
+    bool homingInProgress();
 
 	/// @brief Return true iff the MotionControlDaemon is responding.
 	/// @return true iff the MotionControlDaemon is responding.
@@ -68,6 +68,14 @@ public:
 	std::string daemonUrl() const { return(_daemonUrl); }
 
 private:
+    /// @brief Execute an XML-RPC method call and return the result.
+    /// @param methodName the name of the XML-RPC method to execute
+    /// @param params the list of params to pass for the method
+    /// @return the result
+    /// @throw std::exception if there's an error executing the XML-RPC request
+    xmlrpc_c::value _execXmlRpcCall(std::string methodName, 
+            xmlrpc_c::paramList = xmlrpc_c::paramList());
+    
 	bool _daemonResponding;
 	std::string _daemonUrl;
     xmlrpc_c::clientSimple _client;

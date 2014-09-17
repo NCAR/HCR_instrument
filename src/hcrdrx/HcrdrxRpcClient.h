@@ -56,6 +56,14 @@ public:
     std::string getHcrdrxHost() { return(_hcrdrxHost); }
     
 private:
+    /// @brief Execute an XML-RPC method call and return the result.
+    /// @param[in] methodName the name of the XML-RPC method to execute
+    /// @param[out] result if the call is successful, the returned value is
+    /// written in result
+    /// @return true and write the returned value in result iff the XML-RPC 
+    /// call was successful
+    bool _execXmlRpcCall(std::string methodName, xmlrpc_c::value & result);
+    
     std::string _hcrdrxHost;
     int _hcrdrxPort;
     std::string _daemonUrl;

@@ -52,6 +52,14 @@ public:
     void setHmcMode(int mode);
 
 private:
+    /// @brief Execute an XML-RPC method call and return the result.
+    /// @param methodName the name of the XML-RPC method to execute
+    /// @param params the list of params to pass for the method
+    /// @return the result
+    /// @throw std::exception if there's an error executing the XML-RPC request
+    xmlrpc_c::value _execXmlRpcCall(std::string methodName, 
+            xmlrpc_c::paramList = xmlrpc_c::paramList());
+    
     std::string _daemonHost;
     int _daemonPort;
     std::string _daemonUrl;
