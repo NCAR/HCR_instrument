@@ -22,7 +22,7 @@
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
 #include "MotionControlClientThread.h"
-#include "Pmc730StatusThread.h"
+#include "HcrPmc730StatusThread.h"
 #include "XmitdStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
@@ -185,7 +185,7 @@ private:
     FireflydStatusThread _fireflydStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     MotionControlClientThread _mcClientThread;
-    Pmc730StatusThread _pmcStatusThread;
+    HcrPmc730StatusThread _pmcStatusThread;
     XmitdStatusThread _xmitdStatusThread;
     
     QPixmap _redLED;

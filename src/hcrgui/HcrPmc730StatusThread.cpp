@@ -1,18 +1,18 @@
 /*
- * Pmc730StatusThread.cpp
+ * HcrPmc730StatusThread.cpp
  *
  *  Created on: Sep 10, 2012
  *      Author: hcr
  */
 
-#include "Pmc730StatusThread.h"
+#include "HcrPmc730StatusThread.h"
 #include <QMetaType>
 #include <QTimer>
 #include <logx/Logging.h>
 
 LOGGING("Pmc730StatusThread")
 
-Pmc730StatusThread::Pmc730StatusThread(std::string drxHost, int drxPort) :
+HcrPmc730StatusThread::HcrPmc730StatusThread(std::string drxHost, int drxPort) :
     _responsive(false),
     _drxHost(drxHost),
     _drxPort(drxPort),
@@ -25,11 +25,11 @@ Pmc730StatusThread::Pmc730StatusThread(std::string drxHost, int drxPort) :
     moveToThread(this);
 }
 
-Pmc730StatusThread::~Pmc730StatusThread() {
+HcrPmc730StatusThread::~HcrPmc730StatusThread() {
 }
 
 void
-Pmc730StatusThread::run() {
+HcrPmc730StatusThread::run() {
     // Instantiate the HcrPmc730Client
     _client = new HcrPmc730Client(_drxHost, _drxPort);
     // Set up a 1 s timer to call _getStatus()
@@ -42,7 +42,7 @@ Pmc730StatusThread::run() {
 }
 
 void
-Pmc730StatusThread::_getStatus() {
+HcrPmc730StatusThread::_getStatus() {
     try {
         HcrPmc730Status status = _client->getStatus();
         // We got a response, so emit serverResponsive(true) if the server was

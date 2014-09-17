@@ -124,7 +124,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_setDrxStatus(DrxStatus)));
     _hcrdrxStatusThread.start();
 
-    // Connect signals from our Pmc730StatusThread object and start the thread.
+    // Connect signals from our HcrPmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_pmcResponsivenessChange(bool, QString)));
     connect(& _pmcStatusThread, SIGNAL(newStatus(HcrPmc730Status)),
