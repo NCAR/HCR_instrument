@@ -49,18 +49,6 @@ public:
      */
     std::string getDaemonHost() { return(_daemonHost); }
     
-//    /**
-//     * Get log messages from the associated cmigitsDaemon at and after a selected
-//     * index.
-//     * @param[in] firstIndex the first message index to include in the returned
-//     * log messages
-//     * @param[out] msgs all log messages at or later than the selected start index
-//     * will be appended to msgs
-//     * @param[out] nextLogIndex the index of the next log message after the last
-//     * available message is returned in nextLogIndex
-//     */
-//    void getLogMessages(unsigned int firstIndex, std::string & msgs, 
-//            unsigned int  & nextLogIndex);
 private:
     std::string _daemonHost;
     int _daemonPort;
