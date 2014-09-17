@@ -7,8 +7,8 @@
 #ifndef CMIGITSSTATUSTHREAD_H_
 #define CMIGITSSTATUSTHREAD_H_
 
-#include <CmigitsDaemonRpcClient.h>
 #include <QThread>
+#include "CmigitsDaemonRpcClient.h"
 
 /// @brief Qt class providing a thread which gets cmigitsDaemon status on a
 /// regular basis and emits a signal when new status is received. It also emits

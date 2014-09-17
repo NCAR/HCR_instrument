@@ -13,12 +13,12 @@
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
 #include <CmigitsSharedMemory.h>
-#include <Ts2CmigitsShmThread.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
+#include "Ts2CmigitsShmThread.h"
 LOGGING("cmigitsDaemon")
 
 
