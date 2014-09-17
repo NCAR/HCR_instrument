@@ -44,6 +44,7 @@ MotionControlRpcClient::_execXmlRpcCall(std::string methodName,
     }
     catch (std::exception & e) {
         WLOG << "XML-RPC error calling " << methodName << "(): " << e.what();
+        _daemonResponding = false;
         throw;
     }
 }
