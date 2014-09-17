@@ -39,17 +39,19 @@ MotionControlClientThread::run() {
 
 void
 MotionControlClientThread::_getStatus() {
-    MotionControl::Status status = _client->status();
-    if (_client->daemonResponding()) {
-        if (! _responsive) {
-            _responsive = true;
-            emit serverResponsive(true);
-        }
+    // If we can get status, emit a newStatus() signal
+    try {
+        MotionControl::Status status = _client->status();
         emit newStatus(status);
-    } else {
-        if (_responsive) {
-            _responsive = false;
-            emit serverResponsive(false);
-        }
+    } catch (std::exception & e) {
+        // do nothing
+    }
+    
+    // If daemon responsiveness has changed, emit a new serverResponsive()
+    // signal.
+    bool daemonResponding = _client->daemonResponding();
+    if (daemonResponding != _responsive) {
+        _responsive = daemonResponding;
+        emit serverResponsive(_responsive);
     }
 }
