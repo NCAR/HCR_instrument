@@ -1,10 +1,11 @@
 #
 # Rules to build libcmigitsdaemonrpcclient.a and export it as a SCons tool
 #
-tools = ['doxygen', 'logx', 'xmlrpc_client++', 'cmigits']
+tools = ['doxygen', 'logx', 'xmlrpc_client++', 'cmigits', 'qt4']
 cmigitsDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
+env.EnableQt4Modules(['QtCore'])
 
 sources = Split('''
 CmigitsDaemonRpcClient.cpp
