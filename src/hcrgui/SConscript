@@ -32,7 +32,6 @@ HcrGuiMainWindow.cpp
 MotionControlDetails.cpp
 MotionControlClientThread.cpp
 Pmc730Details.cpp
-HcrPmc730StatusThread.cpp
 qrc_HcrGuiMainWindow.cc
 XmitDetails.cpp
 XmitdStatusThread.cpp
@@ -72,7 +71,6 @@ HcrGuiMainWindow.h
 MotionControlDetails.h
 MotionControlClientThread.h
 Pmc730Details.h
-HcrPmc730StatusThread.h
 XmitDetails.h
 XmitdStatusThread.h
 """)

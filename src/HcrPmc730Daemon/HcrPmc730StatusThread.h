@@ -8,8 +8,8 @@
 #ifndef HCRPMC730STATUSTHREAD_H_
 #define HCRPMC730STATUSTHREAD_H_
 
-#include <HcrPmc730Client.h>
 #include <QThread>
+#include "HcrPmc730Client.h"
 
 /// @brief Class providing a thread which gets hcrdrx status on a regular
 /// basis using a HcrPmc730Client connection.
