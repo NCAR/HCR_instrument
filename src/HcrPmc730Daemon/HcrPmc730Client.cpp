@@ -44,7 +44,7 @@ HcrPmc730Client::xmitFilamentOn() {
 
 void
 HcrPmc730Client::xmitFilamentOff() {
-    _execXmlRpcCall("xmitFilamentOn");
+    _execXmlRpcCall("xmitFilamentOff");
 }
 
 void
