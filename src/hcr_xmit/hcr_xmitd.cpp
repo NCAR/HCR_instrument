@@ -121,6 +121,7 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Received 'xmitFilamentOn' command";
         Xmitter->setFilamentState(true);    // turn filament on
+        *retvalP = xmlrpc_c::value_nil();
     }
 };
 
@@ -135,6 +136,7 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Received 'xmitFilamentOff' command";
         Xmitter->setFilamentState(false);    // turn filament off
+        *retvalP = xmlrpc_c::value_nil();
     }
 };
 
@@ -149,6 +151,7 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Received 'xmitHvOn' command";
         Xmitter->setHvState(true);    // turn HV on
+        *retvalP = xmlrpc_c::value_nil();
     }
 };
 
@@ -163,6 +166,7 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Received 'xmitHvOff' command";
         Xmitter->setHvState(false);    // turn HV off
+        *retvalP = xmlrpc_c::value_nil();
     }
 };
 
