@@ -245,11 +245,25 @@ main(int argc, char * argv[]) {
     registrationTimer.start();
 
     // Start the app, which also starts our XML-RPC server. The app runs until
-    // stopped via INT or TERM signal caught by our exitHandler().
-    App->exec();
+    // stopped via INT or TERM signal caught by our exitHandler(), or an 
+    // exception is raised.
+    try {
+        App->exec();
+    } catch (std::exception & e) {
+        ELOG << "Exiting on exception: " << e.what();
+    } catch (...) {
+        ELOG << "Exiting on unknown exception";
+    }
 
+    // Explicitly set things to a safe state when we exit
+    HcrPmc730::setXmitterHvOn(false);
+    HcrPmc730::setXmitterFilamentOn(false);
+    HcrPmc730::setApsValveOpen(false);
+   
     delete(App);
     PMU_auto_unregister();
+    
+    ILOG << "HcrPmc730Daemon stopped";
 
     return 0;
 }
