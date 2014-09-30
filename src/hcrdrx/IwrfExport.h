@@ -11,8 +11,8 @@
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
+#include <QReadWriteLock>
 #include <QThread>
-#include <boost/thread/mutex.hpp>
 
 /// IwrfExport merges data from the H and V channels, 
 /// converts to IWRF time series format and writes the IWRF data to a client
@@ -67,14 +67,15 @@ public:
   
   PulseData *writePulseV(PulseData *val);
 
-  boost::mutex printMutex;
-
 private slots:
   /// @brief This slot will be called each time a new set of data is available
   /// from the C-MIGITS shared memory.
   void _acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData);
 
 private:
+  /// Lock for thread-safe member access
+  
+  QReadWriteLock _accessLock;
 
   /// configuration
 
