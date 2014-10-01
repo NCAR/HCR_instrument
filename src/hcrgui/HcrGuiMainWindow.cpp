@@ -57,6 +57,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _drxStatus(),
     _dmapStatus(),
     _dmapWriteRate(0.0),
+    _dmapWriteRateTime(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
     _anglesValidTimer(this),
     _hvDisabledForPressure(true),
@@ -368,14 +369,19 @@ HcrGuiMainWindow::_dataMapperResponsivenessChange(bool responding) {
 
 void
 HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t dmapStatus) {
-    // Calculate write rate using incoming and previous status
-    ti32 deltaTime = dmapStatus.check_time - _dmapStatus.check_time;
+    // Calculate write rate using incoming and previous status if the status
+    // time has changed.
+    ti32 deltaTime = dmapStatus.last_reg_time - _dmapStatus.last_reg_time;
     if (deltaTime > 0) {
         double mbWritten = (dmapStatus.total_bytes - _dmapStatus.total_bytes) /
                 1.0e6;
         _dmapWriteRate = mbWritten / deltaTime; // MB/s
+        _dmapWriteRateTime = time(0);
     } else {
-        _dmapWriteRate = 0.0;
+        // Time out the old write rate after 60 seconds
+        if ((time(0) - _dmapWriteRateTime) > 60) {
+            _dmapWriteRate = 0.0;
+        }
     }
     // Store incoming status
     _dmapStatus = dmapStatus;

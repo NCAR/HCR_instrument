@@ -208,6 +208,8 @@ private:
     DMAP_info_t _dmapStatus;
     /// Data write rate calculated from DataMapper information
     double _dmapWriteRate;
+    /// Time at which last write rate was computed
+    time_t _dmapWriteRateTime;
     
     /// socket listening to angle broadcast
     QUdpSocket _angleSocket;
