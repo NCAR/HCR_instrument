@@ -371,6 +371,8 @@ void
 HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t dmapStatus) {
     // Calculate write rate using incoming and previous status if the status
     // time has changed.
+    time_t now = time(0);
+    
     ti32 deltaTime = dmapStatus.last_reg_time - _dmapStatus.last_reg_time;
     if (deltaTime > 0) {
         double mbWritten = (dmapStatus.total_bytes - _dmapStatus.total_bytes) /
@@ -378,9 +380,11 @@ HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t dmapStatus) {
         _dmapWriteRate = mbWritten / deltaTime; // MB/s
         _dmapWriteRateTime = time(0);
     } else {
-        // Time out the old write rate after 60 seconds
-        if ((time(0) - _dmapWriteRateTime) > 60) {
+        const int TIMEOUT_SECS = 60;
+        // Time out the old write rate after TIMEOUT_SECS
+        if ((time(0) - _dmapWriteRateTime) > TIMEOUT_SECS) {
             _dmapWriteRate = 0.0;
+            _dmapWriteRateTime = time(0);
         }
     }
     // Store incoming status
