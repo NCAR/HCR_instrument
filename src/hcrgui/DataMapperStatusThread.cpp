@@ -31,8 +31,8 @@ DataMapperStatusThread::DataMapperStatusThread(std::string dmapHost) :
     // it as an argument in a signal.
     qRegisterMetaType<DMAP_info_t>("DMAP_info_t");
 
-    // Zero out _lastTsInfo
-    memset(&_lastTsInfo, 0, sizeof(_lastTsInfo));
+    // Zero out _dmInfo
+    memset(&_dmInfo, 0, sizeof(_dmInfo));
     
     // Set thread affinity to self, so that signals connected to our slot(s)
     // will execute the slots in this thread, and not our parent's.
@@ -64,9 +64,8 @@ DataMapperStatusThread::_getStatus() {
     if (fail) {
         if (_responsive) {
             _responsive = false;
-            std::ostringstream oss;
-            oss << "Bad (or no) response from DataMapper @ " << _dmapHost;
-            emit serverResponsive(false, QString(oss.str().c_str()));
+            WLOG << "Bad (or no) response from DataMapper @ " << _dmapHost;
+            emit serverResponsive(false);
         }
         return;
     }
@@ -75,18 +74,19 @@ DataMapperStatusThread::_getStatus() {
     // became responsive.
     if (! _responsive) {
         _responsive = true;
-        emit serverResponsive(true, QString("DataMapper is responding"));
+        ILOG << "DataMapper is now responding";
+        emit serverResponsive(true);
     }
 
     // Extract the status we just requested, or build a "nothing written" status
     // if zero entries were returned.
-    DMAP_info_t info = _lastTsInfo;
+    DMAP_info_t info = _dmInfo;
     
     int nInfo = _dmapAccess.getNInfo();
     switch (nInfo) {
     case 0:
         // Nobody has registered to write our DATA_TYPE to DATA_DIR.
-        // Continue using _lastTsInfo.
+        // Continue using _dmInfo.
         break;
     case 1:
         // This is the common case; we should almost always get 1 info block.
@@ -101,11 +101,8 @@ DataMapperStatusThread::_getStatus() {
     }
     
     // Save this info block
-    _lastTsInfo = info;
+    _dmInfo = info;
     
     // Emit the new status.
-    ptime tsTime = boost::posix_time::from_time_t(_lastTsInfo.latest_time);
-    DLOG << "Latest time-series data time written: " <<
-            boost::posix_time::to_simple_string(tsTime);
-    emit newStatus(_lastTsInfo);
+    emit newStatus(_dmInfo);
 }

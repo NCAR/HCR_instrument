@@ -45,12 +45,11 @@ signals:
     /// @param responsive true if the server has become responsive or false
     /// if the server has become unresponsive
     /// @param msg a message describing the associated event
-    void serverResponsive(bool responsive, QString msg);
+    void serverResponsive(bool responsive);
 
-    /// @brief signal emitted when a new time series write rate is calculated
-    /// for DataMapper
-    /// @param tsInfo the current time series data information struct.
-    void newStatus(DMAP_info_t & tsInfo);
+    /// @brief signal emitted when a new status is received from DataMapper
+    /// @param dmStatus the new DataMapper information struct.
+    void newStatus(DMAP_info_t dmStatus);
 
 private slots:
     /// @brief Try to get latest status from DataMapper, and emit a 
@@ -67,8 +66,8 @@ private:
     /// on the last call.
     bool _responsive;
     
-    /// The last time-series data info we got from DataMapper
-    DMAP_info_t _lastTsInfo;
+    /// The last info we got from DataMapper
+    DMAP_info_t _dmInfo;
 };
 
 #endif /* DATAMAPPERSTATUSTHREAD_H_ */
