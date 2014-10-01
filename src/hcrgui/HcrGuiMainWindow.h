@@ -104,7 +104,7 @@ private slots:
     void _dataMapperResponsivenessChange(bool responding);
     /// @brief Save the last time-series write rate received from DataMapper
     /// @param tsWriteRate the last time-series write rate from DataMapper, MiB/s
-    void _setDataMapperStatus(double tsWriteRate);
+    void _setDataMapperStatus(DMAP_info_t dmapperInfo);
     /// @brief Slot to call when fireflyd server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _fireflydResponsivenessChange(bool responding);
@@ -205,6 +205,8 @@ private:
     /// Last status from hcrdrx
     DrxStatus _drxStatus;
     /// Last status from DataMapper
+    DMAP_info_t _dmapStatus;
+    /// Data write rate calculated from DataMapper information
     double _dmapWriteRate;
     
     /// socket listening to angle broadcast

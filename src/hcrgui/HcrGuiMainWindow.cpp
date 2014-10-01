@@ -55,6 +55,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _pmcStatus(true),
     _cmigitsStatus(),
     _drxStatus(),
+    _dmapStatus(),
     _dmapWriteRate(0.0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
     _anglesValidTimer(this),
@@ -91,6 +92,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _logMessage(ss.str());
     
     _logMessage("No response yet from DataMapper");
+    
+    // Start with all-zero DataMapper status
+    memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
     // Disable the HMC mode box until we get status from HcrPmc730Daemon.
     _ui.hmcModeCombo->setEnabled(false);
@@ -355,14 +359,27 @@ HcrGuiMainWindow::_dataMapperResponsivenessChange(bool responding) {
     _logMessage(ss.str().c_str());
 
     if (! responding) {
-        // Set data rate to 0.0 MiB/s
-        _setDataMapperStatus(0.0);
+        // Set current status to all zero values
+        DMAP_info_t emptyDmapStatus;
+        memset(&emptyDmapStatus, 0, sizeof(emptyDmapStatus));
+        _setDataMapperStatus(emptyDmapStatus);
     }
 }
 
 void
-HcrGuiMainWindow::_setDataMapperStatus(double tsWriteRate) {
-    _dmapWriteRate = tsWriteRate;
+HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t dmapStatus) {
+    // Calculate write rate using incoming and previous status
+    ti32 deltaTime = dmapStatus.check_time - _dmapStatus.check_time;
+    if (deltaTime > 0) {
+        static const double MIBYTE = 1024. * 1024.;
+        double mbWritten = (dmapStatus.total_bytes - _dmapStatus.total_bytes) /
+                MIBYTE;
+        _dmapWriteRate = mbWritten / deltaTime; // MiB/s
+    } else {
+        _dmapWriteRate = 0.0;
+    }
+    // Store incoming status
+    _dmapStatus = dmapStatus;
 //    // Update the details dialog
 //    _dmapDetails.updateStatus(_dmapStatus);
     // Update the main GUI
