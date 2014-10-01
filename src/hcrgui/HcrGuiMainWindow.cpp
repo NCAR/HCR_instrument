@@ -371,10 +371,9 @@ HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t dmapStatus) {
     // Calculate write rate using incoming and previous status
     ti32 deltaTime = dmapStatus.check_time - _dmapStatus.check_time;
     if (deltaTime > 0) {
-        static const double MIBYTE = 1024. * 1024.;
         double mbWritten = (dmapStatus.total_bytes - _dmapStatus.total_bytes) /
-                MIBYTE;
-        _dmapWriteRate = mbWritten / deltaTime; // MiB/s
+                1.0e6;
+        _dmapWriteRate = mbWritten / deltaTime; // MB/s
     } else {
         _dmapWriteRate = 0.0;
     }
@@ -922,9 +921,7 @@ HcrGuiMainWindow::_update() {
     // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
             _greenLED : _redLED);
-    QString rateText("Recording ");
-    rateText += QString::number(_dmapWriteRate, 'f', 2) + " MiB/s";
-    _ui.writeRateLabel->setText(rateText);
+    _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 2));
 }
 
 void
