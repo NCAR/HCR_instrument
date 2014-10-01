@@ -919,9 +919,12 @@ HcrGuiMainWindow::_update() {
         }
     }
     
-    // DataMapper status LED
+    // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
             _greenLED : _redLED);
+    QString rateText("Recording ");
+    rateText += QString::number(_dmapWriteRate, 'f', 2) + " MiB/s";
+    _ui.writeRateLabel->setText(rateText);
 }
 
 void
