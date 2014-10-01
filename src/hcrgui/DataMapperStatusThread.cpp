@@ -44,10 +44,12 @@ DataMapperStatusThread::~DataMapperStatusThread() {
 
 void
 DataMapperStatusThread::run() {
-    // Set up a 1 s timer to call _getStatus()
+    // Get first-time status
+    _getStatus();
+    // Set up a 5 second timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
-    timer.start(1000);
+    timer.start(5000);
     // Start the event loop
     exec();
     return;
