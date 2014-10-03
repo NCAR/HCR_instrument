@@ -4,7 +4,6 @@ xmitdTools = Split("""
 archive_xmlrpc_c
 boost_program_options
 doxygen
-hcrpmc730client
 logx
 QFunctionWrapper
 qt4
