@@ -206,58 +206,122 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
 
     // Update fault counts and times
     time_t now = time(0);
-
-    if (_summaryFault && ! _PrevStatus._summaryFault) {
-        _SummaryFaultCount++;
-        _SummaryFaultTime = now;
+    if (_summaryFault != _PrevStatus._summaryFault) {
+        if (_summaryFault) {
+            WLOG << "summary fault detected";
+            _SummaryFaultCount++;
+            _SummaryFaultTime = now;
+        } else {
+            ILOG << "summary fault has cleared";
+        }
     }
-    if (_modulatorFault && ! _PrevStatus._modulatorFault) {
-        _ModulatorFaultCount++;
-        _ModulatorFaultTime = now;
+    if (_modulatorFault != _PrevStatus._modulatorFault) {
+        if (_modulatorFault) {
+            WLOG << "modulator fault detected";
+            _ModulatorFaultCount++;
+            _ModulatorFaultTime = now;
+        } else {
+            ILOG << "modulator fault has cleared";
+        }
     }
-    if (_syncFault && ! _PrevStatus._syncFault) {
-        _SyncFaultCount++;
-        _SyncFaultTime = now;
+    if (_syncFault != _PrevStatus._syncFault) {
+        if (_syncFault) {
+            WLOG << "sync fault detected";
+            _SyncFaultCount++;
+            _SyncFaultTime = now;
+        } else {
+            ILOG << "sync fault has cleared";
+        }
     }
-    if (_xmitterTempFault && ! _PrevStatus._xmitterTempFault) {
-        _XmitterTempFaultCount++;
-        _XmitterTempFaultTime = now;
+    if (_xmitterTempFault != _PrevStatus._xmitterTempFault) {
+        if (_xmitterTempFault) {
+            WLOG << "transmitter temperature fault detected";
+            _XmitterTempFaultCount++;
+            _XmitterTempFaultTime = now;
+        } else {
+            ILOG << "xmitterTemp fault has cleared";
+        }
     }
-    if (_waveguideArcFault && ! _PrevStatus._waveguideArcFault) {
-        _WaveguideArcFaultCount++;
-        _WaveguideArcFaultTime = now;
+    if (_waveguideArcFault != _PrevStatus._waveguideArcFault) {
+        if (_waveguideArcFault) {
+            WLOG << "waveguide arc fault detected";
+            _WaveguideArcFaultCount++;
+            _WaveguideArcFaultTime = now;
+        } else {
+            ILOG << "waveguideArc fault has cleared";
+        }
     }
-    if (_collectorCurrentFault && ! _PrevStatus._collectorCurrentFault) {
-        _CollectorCurrentFaultCount++;
-        _CollectorCurrentFaultTime = now;
+    if (_collectorCurrentFault != _PrevStatus._collectorCurrentFault) {
+        if (_collectorCurrentFault) {
+            WLOG << "collector current fault detected";
+            _CollectorCurrentFaultCount++;
+            _CollectorCurrentFaultTime = now;
+        } else {
+            ILOG << "collectorCurrent fault has cleared";
+        }
     }
-    if (_bodyCurrentFault && ! _PrevStatus._bodyCurrentFault) {
-        _BodyCurrentFaultCount++;
-        _BodyCurrentFaultTime = now;
+    if (_bodyCurrentFault != _PrevStatus._bodyCurrentFault) {
+        if (_bodyCurrentFault) {
+            WLOG << "body current fault detected";
+            _BodyCurrentFaultCount++;
+            _BodyCurrentFaultTime = now;
+        } else {
+            ILOG << "bodyCurrent fault has cleared";
+        }
     }
-    if (_filamentLorFault && ! _PrevStatus._filamentLorFault) {
-        _FilamentLorFaultCount++;
-        _FilamentLorFaultTime = now;
+    if (_filamentLorFault != _PrevStatus._filamentLorFault) {
+        if (_filamentLorFault) {
+            WLOG << "filament LOR fault detected";
+            _FilamentLorFaultCount++;
+            _FilamentLorFaultTime = now;
+        } else {
+            ILOG << "filamentLor fault has cleared";
+        }
     }
-    if (_focusElectrodeLorFault && ! _PrevStatus._focusElectrodeLorFault) {
-        _FocusElectrodeLorFaultCount++;
-        _FocusElectrodeLorFaultTime = now;
+    if (_focusElectrodeLorFault != _PrevStatus._focusElectrodeLorFault) {
+        if (_focusElectrodeLorFault) {
+            WLOG << "focus electrode LOR fault detected";
+            _FocusElectrodeLorFaultCount++;
+            _FocusElectrodeLorFaultTime = now;
+        } else {
+            ILOG << "focusElectrodeLor fault has cleared";
+        }
     }
-    if (_cathodeLorFault && ! _PrevStatus._cathodeLorFault) {
-        _CathodeLorFaultCount++;
-        _CathodeLorFaultTime = now;
+    if (_cathodeLorFault != _PrevStatus._cathodeLorFault) {
+        if (_cathodeLorFault) {
+            WLOG << "cathode LOR fault detected";
+            _CathodeLorFaultCount++;
+            _CathodeLorFaultTime = now;
+        } else {
+            ILOG << "cathode LOR fault has cleared";
+        }
     }
-    if (_inverterOverloadFault && ! _PrevStatus._inverterOverloadFault) {
-        _InverterOverloadFaultCount++;
-        _InverterOverloadFaultTime = now;
+    if (_inverterOverloadFault != _PrevStatus._inverterOverloadFault) {
+        if (_inverterOverloadFault) {
+            WLOG << "inverter overload fault detected";
+            _InverterOverloadFaultCount++;
+            _InverterOverloadFaultTime = now;
+        } else {
+            ILOG << "inverter overload fault has cleared";
+        }
     }
-    if (_externalInterlockFault && ! _PrevStatus._externalInterlockFault) {
-        _ExternalInterlockFaultCount++;
-        _ExternalInterlockFaultTime = now;
+    if (_externalInterlockFault != _PrevStatus._externalInterlockFault) {
+        if (_externalInterlockFault) {
+            WLOG << "external interlock is engaged";
+            _ExternalInterlockFaultCount++;
+            _ExternalInterlockFaultTime = now;
+        } else {
+            ILOG << "external interlock is disengaged";
+        }
     }
-    if (_eikInterlockFault && ! _PrevStatus._eikInterlockFault) {
-        _EikInterlockFaultCount++;
-        _EikInterlockFaultTime = now;
+    if (_eikInterlockFault != _PrevStatus._eikInterlockFault) {
+        if (_eikInterlockFault) {
+            WLOG << "EIK interlock fault detected";
+            _EikInterlockFaultCount++;
+            _EikInterlockFaultTime = now;
+        } else {
+            ILOG << "EIK interlock fault has cleared";
+        }
     }
 
     // And now we become the previous status...
