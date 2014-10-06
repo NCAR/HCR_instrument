@@ -194,6 +194,8 @@ private:
     QPixmap _greenLED_off;
     /// Last status read from the transmitter
     XmitStatus _xmitStatus;
+    /// Is the transmitter under RDS control?
+    bool _rdsXmitControl;
     /// Last status obtained from fireflyd
     FireFlyStatus _fireflydStatus;
     /// Last status from the MotionControlDaemon

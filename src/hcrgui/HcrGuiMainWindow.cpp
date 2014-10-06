@@ -50,6 +50,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
     _xmitStatus(),
+    _rdsXmitControl(true),
     _fireflydStatus(),
     _mcStatus(),
     _pmcStatus(true),
@@ -282,15 +283,57 @@ HcrGuiMainWindow::_xmitdResponsivenessChange(bool responding) {
         // Create a default (bad) XmitStatus, and set it as the last status
         // received.
         _setXmitStatus(XmitStatus());
+    } else {
+        // For a newly responding hcr_xmitd, assume RDS is under control until
+        // we get a new status
+        _rdsXmitControl = true;
     }
 }
 
 void
-HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {
+HcrGuiMainWindow::_setXmitStatus(XmitStatus status) {  
     _xmitStatus = status;
+    
+    // If the CMU switch for control source is set to anything other than
+    // "RDS", let the user know immediately.
+    switch (_xmitStatus.controlSource()) {
+    case XmitStatus::RDSControl:
+        if (! _rdsXmitControl) {
+            _rdsXmitControl = true;
+            QMessageBox box(QMessageBox::Information,
+                    "Transmitter Under RDS Control",
+                    "The transmitter CMU control switch is now set to 'RDS'.",
+                    QMessageBox::Ok, this);
+            box.setInformativeText(
+                    "GUI control of the transmitter should now function normally.");
+            box.exec();
+        }
+        break;
+    case XmitStatus::RS232Control:
+    case XmitStatus::FrontPanelControl:
+        if (_rdsXmitControl) {
+            _rdsXmitControl = false;
+            QMessageBox box(QMessageBox::Warning,
+                    "Bad Transmitter Control Source",
+                    "The transmitter CMU control switch is not set to 'RDS'.",
+                    QMessageBox::Ok, this);
+            box.setInformativeText(
+                    "GUI control of the transmitter will generate unexpected results!");
+            box.exec();
+        }
+        break;
+    case XmitStatus::UnknownControl:
+    default:
+        // Do nothing if the controller for the transmitter is unknown. This
+        // is the case when the transmitter CMU is not replying to status 
+        // requests on its RS-232 interface.
+        break;
+    }
+    
     // Update the transmitter status details dialog
     _xmitDetails.updateStatus(_xmitdStatusThread.serverIsResponding(),
             _xmitStatus);
+    
     // Update the main GUI
     _update();
 }
@@ -409,16 +452,12 @@ HcrGuiMainWindow::_xmitterFilamentIsOn() const {
     // If the control source is unknown (this is true when hcr_xmitd is not
     // responding), we assume RDS control since that's effectively always true
     // for HCR.
-    switch (_xmitStatus.controlSource()) {
-    case XmitStatus::RDSControl:
-    case XmitStatus::UnknownControl:
+    if (_rdsXmitControl) {
         filamentOn = _pmcStatus.rdsXmitterFilamentOn();
-        break;
-    default:
+    } else {
         // The "filament on" bit from transmitter status is only meaningful
         // if the transmitter is *not* under RDS control.
         filamentOn = _xmitStatus.filamentOn();
-        break;
     }
     return(filamentOn);
 }
@@ -433,16 +472,12 @@ HcrGuiMainWindow::_xmitterHvIsOn() const {
     // If the control source is unknown (this is true when hcr_xmitd is not
     // responding), we assume RDS control since that's effectively always true
     // for HCR.
-    switch (_xmitStatus.controlSource()) {
-    case XmitStatus::RDSControl:
-    case XmitStatus::UnknownControl:
+    if (_rdsXmitControl) {
         hvOn = _pmcStatus.rdsXmitterHvOn();
-        break;
-    default:
+    } else {
         // The "HV on" bit from transmitter status is only meaningful
         // if the transmitter is *not* under RDS control.
         hvOn = _xmitStatus.highVoltageOn();
-        break;
     }
     return(hvOn);
 }
@@ -457,10 +492,7 @@ HcrGuiMainWindow::_xmitting() const {
     // If the control source is unknown (this is true when hcr_xmitd is not
     // responding), we assume RDS control since that's effectively always true
     // for HCR.
-    switch (_xmitStatus.controlSource()) {
-    case XmitStatus::RDSControl:
-    case XmitStatus::UnknownControl:
-    {
+    if (_rdsXmitControl) {
         // We're transmitting if the filament is on, HV is on, modulation
         // pulses are being allowed through, and we have no HV disabling fault.
         bool hvDisableFault = _xmitStatus.bodyCurrentFault() ||
@@ -477,13 +509,10 @@ HcrGuiMainWindow::_xmitting() const {
                 _xmitStatus.xmitterTempFault();
         xmitting = _xmitterFilamentIsOn() && _xmitterHvIsOn() &&
                 ! _pmcStatus.modPulseDisabled() && ! hvDisableFault;
-        break;
-    }
-    default:
+    } else {
         // If transmitter is not under RDS control, we can just use the
         // "RF on" status bit to tell us we're transmitting.
         xmitting = _xmitStatus.rfOn();
-        break;
     }
     return(xmitting);
 }
@@ -719,10 +748,7 @@ HcrGuiMainWindow::_update() {
     // Update transmitter control
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_xmitterFilamentIsOn() ? _greenLED : _greenLED_off);
-    // filament button disabled if control is from the CMU front panel
-    _ui.filamentButton->setEnabled(_pmcStatusThread.serverIsResponding() &&
-            _xmitStatus.psmPowerOn() && ! _xmitStatus.frontPanelCtlEnabled());
-    if (! _xmitterFilamentIsOn()) {
+   if (! _xmitterFilamentIsOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
         _ui.filamentWarmupLabel->setText("Filament warmup");
@@ -733,23 +759,27 @@ HcrGuiMainWindow::_update() {
                 "Waiting for warmup" : "Filament is warm");
     }
     _ui.hvIcon->setPixmap(_xmitterHvIsOn() ? _greenLED : _greenLED_off);
-    // Enable the HV button as soon as filament delay has expired (and control
-    // is not via the CMU front panel)
+    // Enable the HV button as soon as filament delay has expired and 
+    // transmit control is via RDS
     _ui.hvButton->setEnabled(_pmcStatusThread.serverIsResponding() &&
-            ! _xmitStatus.frontPanelCtlEnabled() &&
-            ! _xmitStatus.filamentDelayActive());
+            _rdsXmitControl && ! _xmitStatus.filamentDelayActive());
     _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
 
     // Which control source is enabled?
-    if (_xmitStatus.frontPanelCtlEnabled()) {
+    switch (_xmitStatus.controlSource()) {
+    case XmitStatus::FrontPanelControl:
         _ui.controlSourceLabel->setText("Control via <b>Front Panel</b>");
-    } else if (_xmitStatus.rs232CtlEnabled()) {
+        break;
+    case XmitStatus::RS232Control:
         _ui.controlSourceLabel->setText("Control via <b>RS-232</b>");
-    } else if (_xmitStatus.rdsCtlEnabled()) {
+        break;
+    case XmitStatus::RDSControl:
         _ui.controlSourceLabel->setText("Control via <b>RDS</b>");
-    } else {
+        break;
+    default:
         // Unknown control source. Show "Unknown" in dark red text.
         _ui.controlSourceLabel->setText("Control via <b><font color=#880000>Unknown</font></b>");
+        break;
     }
 
     // Status summary: "OK" or "<n> Faults".
