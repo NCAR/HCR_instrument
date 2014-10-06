@@ -53,9 +53,6 @@ void sigHandler(int sig) {
   App->quit();
 }
 
-// Function to update our registration with PMU.
-static const int UPDATE_INTERVAL_SECS = 10;
-
 void
 updateRegistration() {
     // Make sure we remain registered with PMU, so it knows we're alive
