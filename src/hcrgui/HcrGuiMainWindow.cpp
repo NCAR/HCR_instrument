@@ -368,27 +368,31 @@ HcrGuiMainWindow::_dataMapperResponsivenessChange(bool responding) {
 }
 
 void
-HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t dmapStatus) {
-    // Calculate write rate using incoming and previous status if the status
-    // time has changed.
+HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t newStatus) {
     time_t now = time(0);
     
-    ti32 deltaTime = dmapStatus.last_reg_time - _dmapStatus.last_reg_time;
+    // If the status time has changed, calculate write rate using incoming and
+    // previous status.
+    ti32 deltaTime = newStatus.end_time - _dmapStatus.end_time;
     if (deltaTime > 0) {
-        double mbWritten = (dmapStatus.total_bytes - _dmapStatus.total_bytes) /
+        double mbWritten = (newStatus.total_bytes - _dmapStatus.total_bytes) /
                 1.0e6;
         _dmapWriteRate = mbWritten / deltaTime; // MB/s
-        _dmapWriteRateTime = time(0);
+        _dmapWriteRateTime = now;
+        DLOG << mbWritten << " bytes written in " << deltaTime << "s";
+        DLOG << "New write rate for " << newStatus.end_time << " (@ " <<
+                now << "): " << _dmapWriteRate;
     } else {
-        const int TIMEOUT_SECS = 60;
         // Time out the old write rate after TIMEOUT_SECS
-        if ((time(0) - _dmapWriteRateTime) > TIMEOUT_SECS) {
+        const int TIMEOUT_SECS = 60;
+        if ((now - _dmapWriteRateTime) > TIMEOUT_SECS) {
+            WLOG << _dmapWriteRateTime << " write rate has timed out";
             _dmapWriteRate = 0.0;
-            _dmapWriteRateTime = time(0);
+            _dmapWriteRateTime = now;
         }
     }
     // Store incoming status
-    _dmapStatus = dmapStatus;
+    _dmapStatus = newStatus;
 //    // Update the details dialog
 //    _dmapDetails.updateStatus(_dmapStatus);
     // Update the main GUI
@@ -931,7 +935,8 @@ HcrGuiMainWindow::_update() {
     // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
             _greenLED : _redLED);
-    _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 2));
+    _ui.dataRateIcon->setPixmap(_dmapWriteRate > 0 ? _greenLED : _amberLED);
+    _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 }
 
 void
