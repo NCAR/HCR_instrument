@@ -763,6 +763,11 @@ HcrGuiMainWindow::_update() {
     // transmit control is via RDS
     _ui.hvButton->setEnabled(_pmcStatusThread.serverIsResponding() &&
             _rdsXmitControl && ! _xmitStatus.filamentDelayActive());
+    // Regardless of other conditions, force the HV button to be enabled if
+    // HV is on, so that it can be turned off.
+    if (_xmitterHvIsOn()) {
+        _ui.hvButton->setEnabled(true);
+    }
     _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
 
     // Which control source is enabled?
