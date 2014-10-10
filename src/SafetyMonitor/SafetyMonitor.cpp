@@ -19,18 +19,19 @@
 #include <sstream>
 #include <string>
 #include <boost/program_options.hpp>
-#include <QCoreApplication>
-#include <QTimer>
 
-#include <toolsa/pmu.h>
-#include <logx/Logging.h>
 #include <CmigitsSharedMemory.h>
-#include <HcrPmc730Client.h>
+#include <HcrPmc730StatusThread.h>
+#include <logx/Logging.h>
+#include <QCoreApplication>
 #include <QFunctionWrapper.h>
-
+#include <QTimer>
+#include <QXmlRpcServerAbyss.h>
+#include <toolsa/pmu.h>
 #include <xmlrpc-c/client_simple.hpp>
 #include <xmlrpc-c/registry.hpp>
-#include <QXmlRpcServerAbyss.h>
+
+#include "ApsControl.h"
 
 LOGGING("SafetyMonitor")
 
@@ -51,8 +52,14 @@ static const int REGISTRATION_INTERVAL_SECS = 60;
 // Log a brief status message at this interval.
 static const int LOG_STATUS_INTERVAL_SECS = 15;
 
-// Check state at this interval.
+// Perform safety checks at this interval.
 static const int CHECK_INTERVAL_MSECS = 1000;
+
+// Consider a daemon unresponsive if we don't get an update in this period.
+static const int DAEMON_TIMEOUT_MSECS = 1500;
+
+// Update timer for HcrPmc730Daemon responses.
+QTimer * HcrPmc730TimeoutTimer = 0;
 
 // XML-RPC client instance
 xmlrpc_c::clientSimple _XmlRpcClient;
@@ -144,34 +151,21 @@ checkAltitude() {
 }
 
 // Pointer to current status from HcrPmc730, or NULL if status is too old.
-HcrPmc730Status * _HcrPmc730Status = 0;
+HcrPmc730Status * _HcrPmc730Status = NULL;
 
-// Check pressure vessel pressure and react if it's too low for transmitter
-// operation.
 void
-checkPVPressure() {
-    if (_HcrPmc730Status) {
-        ILOG << "PV pressure " << _HcrPmc730Status->pvForePressure() << " hPa";
-    } else {
-        WLOG << "No current HcrPmc730 status for PV pressure";
-    }
+newHcrPmc730Status(HcrPmc730Status status) {
+    static HcrPmc730Status LastStatus(true);
+    
+    LastStatus = status;
+    _HcrPmc730Status = & LastStatus;
 }
 
-
 void
-updateHcrPmc730Status() {
-    static HcrPmc730Client * client = 0;
-    static HcrPmc730Status status(true);
-    
-    if (! client) {
-        client = new HcrPmc730Client("rds", 8003);
-    }
-    
-    try {
-        status = client->getStatus();
-        _HcrPmc730Status = & status;
-    } catch (std::exception & e) { 
-        WLOG << "Failed to get HcrPmc730 status: " << e.what();
+onHcrPmc730ResponsivenessChange(bool responsive, QString message) {
+    ILOG << "responsiveness change: " << message.toStdString();
+    // If HcrPmc730Daemon is no longer responding, remove old status if any.
+    if (! responsive) {
         _HcrPmc730Status = NULL;
     }
 }
@@ -181,10 +175,6 @@ void
 doChecks() {
     // Check aircraft AGL altitude
     checkAltitude();
-    // Get status from HcrPmc730Daemon
-    updateHcrPmc730Status();
-    // Check pressure vessel pressure
-    checkPVPressure();
 }
 
 /// @brief xmlrpc_c::method to get status from the SafetyMonitor process.
@@ -295,12 +285,21 @@ main(int argc, char *argv[]) {
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
+    // Start up a thread to get HcrPmc730Daemon status on a regular basis.
+    HcrPmc730StatusThread hcrPmc730StatusThread("localhost", 8003);
+    hcrPmc730StatusThread.start();
+    
+    // Instantiate the object which will monitor pressure and control the
+    // Active Pressurization System (APS)
+    ApsControl apsControl(hcrPmc730StatusThread);
+    
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
     signal(SIGTERM, sigHandler);
 
-    /// Set up a timer to periodically register with PMU so it knows we're still
-    /// alive.
+    // 
+    // Set up a timer to periodically register with PMU so it knows we're still
+    // alive.
     QTimer registrationTimer;
     registrationTimer.setInterval(REGISTRATION_INTERVAL_SECS * 1000);   // interval in ms
     QFunctionWrapper registrationFuncWrapper(updateRegistration);
@@ -308,7 +307,7 @@ main(int argc, char *argv[]) {
             &registrationFuncWrapper, SLOT(callFunction()));
     registrationTimer.start();
 
-    // Set up a timer to report status information occasionally
+    // Set up a timer to log status information occasionally
     QTimer statusTimer;
     statusTimer.setInterval(LOG_STATUS_INTERVAL_SECS * 1000);
     QFunctionWrapper statusFuncWrapper(logStatus);
