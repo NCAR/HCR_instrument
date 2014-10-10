@@ -21,10 +21,12 @@ env.EnableQt4Modules(['QtCore', 'QtGui'])
 sources = Split('''
 ApsControl.cpp
 SafetyMonitor.cpp
+TransmitControl.cpp
 ''')
 
 headers = Split('''
 ApsControl.h
+TransmitControl.h
 ''')
 
 daemon = env.Program('SafetyMonitor', sources)
