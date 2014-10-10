@@ -19,7 +19,7 @@ static inline double HpaToPsi(double pres_hpa) {
 ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
     _pmc730Client("localhost", 8003),
     _holdOpen(false) {
-    // Call checkPvPressure when new status from HcrPmc730Daemon is available
+    // Call _checkPvPressure() when new status from HcrPmc730Daemon arrives
     connect(& hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_checkPvPressure(HcrPmc730Status)));
 }

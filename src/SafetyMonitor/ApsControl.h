@@ -13,9 +13,9 @@
 
 class HcrPmc730StatusThread;
 
-/// Class which provides control of HCR's Active Pressurization 
+/// Class which provides implementation for HCR's Active Pressurization 
 /// System (APS).
-class ApsControl: public QObject {
+class ApsControl : public QObject {
     Q_OBJECT
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source 
