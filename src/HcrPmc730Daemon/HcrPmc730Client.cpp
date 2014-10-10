@@ -71,3 +71,13 @@ HcrPmc730Client::getStatus() {
     HcrPmc730Status status(statusDict);
     return(status);
 }
+
+void
+HcrPmc730Client::openApsValve() {
+    _execXmlRpcCall("openApsValve");
+}
+
+void
+HcrPmc730Client::closeApsValve() {
+    _execXmlRpcCall("closeApsValve");
+}

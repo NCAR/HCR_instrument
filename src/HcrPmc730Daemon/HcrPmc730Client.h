@@ -50,6 +50,12 @@ public:
     /// @param mode integer mode number for the HMC, 0-7
     /// @throws exception on XML-RPC error
     void setHmcMode(int mode);
+    
+    /// @brief Open the Active Pressurization System solenoid valve
+    void openApsValve();
+    
+    /// @brief Close the Active Pressurization System solenoid valve
+    void closeApsValve();
 
 private:
     /// @brief Execute an XML-RPC method call and return the result.
