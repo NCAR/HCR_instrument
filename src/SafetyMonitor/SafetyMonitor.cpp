@@ -42,7 +42,7 @@ QCoreApplication *App = 0;
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
-  ILOG << "Signal received; stopping SafetyMonitor.";
+  ILOG << "Stopping SafetyMonitor on signal " << sig;
   App->quit();
 }
 
@@ -338,5 +338,6 @@ main(int argc, char *argv[]) {
 
     // Clean up before exit
     ILOG << "SafetyMonitor (" << getpid() << ") exiting";
+    hcrPmc730StatusThread.quit();
     return 0;
 } 
