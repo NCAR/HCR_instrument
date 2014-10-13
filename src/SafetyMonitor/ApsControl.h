@@ -36,6 +36,14 @@ private slots:
     /// @param status the new HcrPmc730Status
     void _checkPvPressure(HcrPmc730Status status);
 private:
+    /// @brief The APS valve is opened when pressure vessel pressure drops
+    /// below this value.
+    static const double VALVE_OPEN_PRESSURE_PSI = 15.0;
+    
+    /// @brief The APS valve is closed when pressure vessel pressure exceeds
+    /// this value.
+    static const double VALVE_CLOSE_PRESSURE_PSI = 16.0;
+    
     /// @brief Command HcrPmc730Daemon to open the APS valve
     void _openApsValve();
     

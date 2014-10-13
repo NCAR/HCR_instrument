@@ -55,11 +55,16 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     double pvPresPsi = HpaToPsi(status730.pvForePressure());
     ILOG << "PV pressure " << pvPresPsi << " PSI";
     
-    // Open the solenoid valve if the pressure vessel drops below 15 PSI and
-    // close it when it goes above 16 PSI
-    if (pvPresPsi < 15.0) {
+    // Open the solenoid valve if the pressure vessel drops below 
+    // VALVE_OPEN_PRESSURE_PSI and close the valve when it exceeds 
+    // VALVE_CLOSE_PRESSURE_PSI
+    if (pvPresPsi < VALVE_OPEN_PRESSURE_PSI && 
+            ! status730.apsValveOpen()) {
+        ILOG << "Opening APS valve with PV pressure = " << pvPresPsi << " PSI";
         _openApsValve();
-    } else if (pvPresPsi > 16.0) {
+    } else if (pvPresPsi > VALVE_CLOSE_PRESSURE_PSI && 
+            status730.apsValveOpen()) {
+        ILOG << "Closing APS valve with PV pressure = " << pvPresPsi << " PSI";
         _closeApsValve();
     }
 }
