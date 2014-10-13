@@ -45,7 +45,7 @@ private:
     
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.
-    void _performMonitoringTests();
+    void _performMonitorTests();
     
     /// Latest status received from HcrPmc730Daemon.
     HcrPmc730Status * _hcrPmc730Status;
@@ -55,11 +55,11 @@ private:
     
     /// Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
-    static const float PV_MINIMUM_PRESSURE_PSI = 11.0;
+    static const float _PV_MINIMUM_PRESSURE_PSI = 11.0;
     
     /// Minimum time of acceptable pressure in the pressure vessel before
     /// turning on transmitter high voltage is allowed.
-    static const int PV_PRESSURE_WAIT_SECONDS = 60;
+    static const int _PV_PRESSURE_WAIT_SECONDS = 60;
     
     /// Timer to allow transmitter high voltage only after pressure vessel
     /// pressure has been acceptably high for PV_PRESSURE_WAIT seconds.

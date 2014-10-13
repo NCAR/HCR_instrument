@@ -7,8 +7,11 @@
 
 #include "TransmitControl.h"
 
+#include <logx/Logging.h>
 #include <HcrPmc730StatusThread.h>
 #include <sstream>
+
+LOGGING("TransmitControl")
 
 // Convert pressure in hPa to PSI
 static inline double HpaToPsi(double pres_hpa) {
@@ -28,10 +31,10 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread) 
             this, SLOT(_setHcrPmc730DaemonResponding(bool)));
     
     // Set up the timer to allow transmitter high voltage only after pressure 
-    // vessel pressure has been acceptably high for PV_PRESSURE_WAIT_SECONDS
+    // vessel pressure has been acceptably high for _PV_PRESSURE_WAIT_SECONDS
     // seconds.
     _pvGoodPressureWaitTimer.setSingleShot(true);
-    _pvGoodPressureWaitTimer.setInterval(1000 * PV_PRESSURE_WAIT_SECONDS);
+    _pvGoodPressureWaitTimer.setInterval(1000 * _PV_PRESSURE_WAIT_SECONDS);
     connect(&_pvGoodPressureWaitTimer, SIGNAL(timeout()),
             this, SLOT(_pvPressureWaitExpired()));
      
@@ -42,14 +45,16 @@ TransmitControl::~TransmitControl() {
 
 void
 TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
-    // Allocate space for a copy of the status if necessary.
-    if (! _hcrPmc730Status) {
-        _hcrPmc730Status = new HcrPmc730Status(true);   // empty/bogus status
+    // If we have already allocated our _hcrPmc730Status member, copy the
+    // incoming status into the already allocated space, otherwise allocate a 
+    // new HcrPmc730Status using the copy constructor.
+    if (_hcrPmc730Status) {
+        *_hcrPmc730Status = status;
+    } else {
+        _hcrPmc730Status = new HcrPmc730Status(status);
     }
-    // Copy the incoming status.
-    *_hcrPmc730Status = status;
 
-    _performMonitoringTests();
+    _performMonitorTests();
 }
 
 void
@@ -60,6 +65,7 @@ TransmitControl::_clearHcrPmc730Status() {
 
 void
 TransmitControl::_onHcrPmc730ResponsivenessChange(bool responding) {
+    ILOG << "HcrPmc730Daemon is " << (responding ? "" : "not ") << "responding";
     // If the daemon has become unresponsive, delete the old status and
     // redo the monitoring tests.
     if (! responding) {
@@ -68,17 +74,20 @@ TransmitControl::_onHcrPmc730ResponsivenessChange(bool responding) {
         // Stop the good pressure wait timer if it's running
         _pvGoodPressureWaitTimer.stop();
         
-        _performMonitoringTests();
+        _performMonitorTests();
     }
 }
 
 void
 TransmitControl::_pvPressureWaitExpired() {
+    ILOG << "PV pressure has maintained " << _PV_MINIMUM_PRESSURE_PSI <<
+            " PSI for for more than " << _PV_PRESSURE_WAIT_SECONDS << 
+            " seconds, so transmit is allowed.";
     _pvPressureOK = true;
 }
 
 void
-TransmitControl::_performMonitoringTests() {
+TransmitControl::_performMonitorTests() {
     // Clear the list of reasons high voltage is disallowed
     _hvDisallowedReasons.clear();
     
@@ -87,7 +96,7 @@ TransmitControl::_performMonitoringTests() {
         double pvPressurePsi = HpaToPsi(_hcrPmc730Status->pvForePressure());
 
         // Evaluate the pressure vessel pressure
-        if (pvPressurePsi > PV_MINIMUM_PRESSURE_PSI) {
+        if (pvPressurePsi > _PV_MINIMUM_PRESSURE_PSI) {
             // Pressure is good. If our good pressure wait timer has not been 
             // started yet, start it now.
             if (! _pvGoodPressureWaitTimer.isActive()) {
@@ -97,7 +106,12 @@ TransmitControl::_performMonitoringTests() {
             // Stop the timer if we were in a good pressure waiting period
             _pvGoodPressureWaitTimer.stop();
             // Pressure is too low
-            _pvPressureOK = false;
+            if (_pvPressureOK) {
+                WLOG << "Pressure vessel pressure has dropped below " <<
+                        _PV_MINIMUM_PRESSURE_PSI << " PSI, so transmit " <<
+                        "is not allowed.";
+                _pvPressureOK = false;
+            }
         }
         
         // Disallow high voltage if pressure vessel pressure is too low or if
@@ -106,10 +120,10 @@ TransmitControl::_performMonitoringTests() {
             std::ostringstream oss;
             if (_pvGoodPressureWaitTimer.isActive()) {
                 oss << "Waiting for PV pressure to be above " << 
-                        PV_MINIMUM_PRESSURE_PSI << " PSI for more than " <<
-                        PV_PRESSURE_WAIT_SECONDS << " seconds";
+                        _PV_MINIMUM_PRESSURE_PSI << " PSI for more than " <<
+                        _PV_PRESSURE_WAIT_SECONDS << " seconds";
             } else {
-                oss << "PV pressure is lower than " << PV_MINIMUM_PRESSURE_PSI <<
+                oss << "PV pressure is lower than " << _PV_MINIMUM_PRESSURE_PSI <<
                         " PSI";
             }
             _hvDisallowedReasons.push_back(oss.str());
