@@ -32,6 +32,7 @@
 #include <xmlrpc-c/registry.hpp>
 
 #include "ApsControl.h"
+#include "TransmitControl.h"
 
 LOGGING("SafetyMonitor")
 
@@ -273,6 +274,10 @@ main(int argc, char *argv[]) {
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
     ApsControl apsControl(hcrPmc730StatusThread);
+    
+    // Instantiate the object which will implement safety monitoring for the
+    // transmitter
+    TransmitControl transmitContro(hcrPmc730StatusThread);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
