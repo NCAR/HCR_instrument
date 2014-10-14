@@ -19,12 +19,14 @@ static inline double HpaToPsi(double pres_hpa) {
     return(0.0145037738 * pres_hpa);
 }
 
-const time_t TransmitControl::START_TIME_BAD = std::numeric_limits<time_t>::max();
+const float TransmitControl::_PV_MINIMUM_PRESSURE_PSI = 11.0;
+const int TransmitControl::_PV_GOOD_PRESSURE_WAIT_SECONDS = 60;
+const time_t TransmitControl::_START_TIME_BAD = std::numeric_limits<time_t>::max();
 
 TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
     _hcrPmc730Status(NULL),
     _xmitDisallowedReasons(0),
-    _pvGoodPressureStartTime(START_TIME_BAD) {
+    _pvGoodPressureStartTime(_START_TIME_BAD) {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_updateHcrPmc730Status(HcrPmc730Status)));
@@ -79,18 +81,18 @@ TransmitControl::_performMonitorTests() {
             
             // If we don't have a good pressure start time yet, set it to now
             time_t now = time(0);
-            if (_pvGoodPressureStartTime == START_TIME_BAD) {
+            if (_pvGoodPressureStartTime == _START_TIME_BAD) {
                 _pvGoodPressureStartTime = now;
             }
             
             // Test if we've had good pressure for a long enough period
             time_t goodPressureTime = now - _pvGoodPressureStartTime;
-            if (goodPressureTime >= _PV_PRESSURE_WAIT_SECONDS) {
+            if (goodPressureTime >= _PV_GOOD_PRESSURE_WAIT_SECONDS) {
                 // We've had good pressure for a long enough period
                 if (_xmitDisallowedReasons & DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT) {
                     ILOG << "PV pressure has maintained " << _PV_MINIMUM_PRESSURE_PSI <<
-                            " PSI for for more than " << _PV_PRESSURE_WAIT_SECONDS << 
-                            " seconds, so transmit is allowed.";
+                            " PSI for for more than " << _PV_GOOD_PRESSURE_WAIT_SECONDS << 
+                            " seconds. Transmit is allowed.";
                     // Remove the pressure wait disallowance
                     _xmitDisallowedReasons &= ~DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT;
                 }
@@ -112,7 +114,7 @@ TransmitControl::_performMonitorTests() {
         }
     } else /* _hcrPmc730Status is NULL */ {
         // Erase knowledge of any good pressures
-        _pvGoodPressureStartTime = START_TIME_BAD;
+        _pvGoodPressureStartTime = _START_TIME_BAD;
         
         // Disallow transmit if we have no status from HcrPmc730Daemon
         _xmitDisallowedReasons |= DISALLOW_FOR_NO_HCRPMC730DAEMON;
@@ -135,7 +137,7 @@ TransmitControl::_performMonitorTests() {
         }
         if (_xmitDisallowedReasons & DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT) {
             WLOG << ++disallowCount << ") waiting for good PV pressure " <<
-                    "period > " << _PV_PRESSURE_WAIT_SECONDS << " seconds";
+                    "period > " << _PV_GOOD_PRESSURE_WAIT_SECONDS << " seconds";
         }
         if (_xmitDisallowedReasons & DISALLOW_FOR_NO_MOTIONCONTROLDAEMON) {
             WLOG << ++disallowCount << ") no status available from MotionControlDaemon";

@@ -63,14 +63,14 @@ private:
     
     /// Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
-    static const float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+    static const float _PV_MINIMUM_PRESSURE_PSI;
     
     /// Minimum time of acceptable pressure in the pressure vessel before
     /// turning on transmitter high voltage is allowed.
-    static const int _PV_PRESSURE_WAIT_SECONDS = 60;
+    static const int _PV_GOOD_PRESSURE_WAIT_SECONDS;
     
     /// Use the highest value for type time_t to mark a bad start time
-    static const time_t START_TIME_BAD;
+    static const time_t _START_TIME_BAD;
     
     /// Start time of continuous good pressure in the pressure vessel. This is
     /// set to zero if last pressure seen was bad.
