@@ -196,8 +196,8 @@ public:
     /// @return true iff iff radar power error is being reported.
     bool radarPowerError() const { return(_radarPowerError); }
 
-    /// @brief Return the count of EMC error events.
-    /// @return the count of EMC error events.
+    /// @brief Return the count of pulses with EMS error events.
+    /// @return the count of pulses with EMS error events.
     uint32_t emsErrorCount() const { return(_emsErrorCount); }
     
     /// @brief Return true iff there is one or more EMS error of type 1 in
