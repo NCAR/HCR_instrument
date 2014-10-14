@@ -27,7 +27,7 @@ LOGGING("IwrfExport")
 
 ///////////////////////////////////////////////////////////////////////////
 
-IwrfExport::IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor) :
+IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor) :
         QThread(),
         _accessLock(QReadWriteLock::NonRecursive),
         _config(config),

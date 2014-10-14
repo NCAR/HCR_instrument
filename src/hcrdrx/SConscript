@@ -22,10 +22,10 @@ xmitdrpcclient
 sources = Split("""
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
-HcrMonitor.cpp
 IwrfExport.cpp
 main.cpp
 PulseData.cpp
+StatusGrabber.cpp
 """)
 
 headers = Split("""
@@ -33,9 +33,9 @@ DrxStatus.h
 HcrDrxConfig.h
 HcrDrxPub.h
 HcrdrxRpcClient.h
-HcrMonitor.h
 IwrfExport.h
 PulseData.h
+StatusGrabber.h
 """)
 
 env = Environment(tools = ['default'] + tools)

@@ -27,7 +27,7 @@
 
 #include "HcrDrxConfig.h"
 #include "IwrfExport.h"
-#include "HcrMonitor.h"
+#include "StatusGrabber.h"
 
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>
@@ -41,7 +41,7 @@ namespace po = boost::program_options;
 
 std::string _drxConfig;          ///< DRX configuration file
 std::string _instance = "ops";   ///< application instance
-HcrMonitor * _hcrMonitor;        ///< HcrMonitor instance
+StatusGrabber * _statusGrabber;        ///< StatusGrabber instance
 
 /// Pentek channels to use for H and V. We use channels 0 and 2 because
 /// they exhibit lower noise than channels 1 and 3 when using the DDC8 bitstream
@@ -335,12 +335,12 @@ main(int argc, char** argv)
     }
     
     // Start our status monitoring thread.
-    _hcrMonitor = new HcrMonitor(_sd3c, _pmc730dHost, _pmc730dPort,
+    _statusGrabber = new StatusGrabber(_sd3c, _pmc730dHost, _pmc730dPort,
             _xmitdHost, _xmitdPort);
-    _hcrMonitor->start();
+    _statusGrabber->start();
 
     // create the export object
-    _exporter = new IwrfExport(hcrConfig, *_hcrMonitor);
+    _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
 
     // We use SD3C's first general purpose timer for transmit pulse modulation
     // The width of the modulation pulse is transmit pulse width + 272 ns,

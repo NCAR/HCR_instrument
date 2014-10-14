@@ -1,12 +1,11 @@
 /*
- * HcrMonitor.cpp
+ * StatusGrabber.cpp
  *
  *  Created on: Oct 29, 2010
  *      Author: burghart
  */
 
-#include "HcrMonitor.h"
-#include "HcrPmc730.h"
+#include "StatusGrabber.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -19,9 +18,9 @@
 
 #include <logx/Logging.h>
 
-LOGGING("HcrMonitor")
+LOGGING("StatusGrabber")
 
-HcrMonitor::HcrMonitor(const Pentek::p7142sd3c * pentek,
+StatusGrabber::StatusGrabber(const Pentek::p7142sd3c * pentek,
         std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort) :
     QThread(),
@@ -33,41 +32,41 @@ HcrMonitor::HcrMonitor(const Pentek::p7142sd3c * pentek,
     _mutex(QMutex::Recursive) {
 }
 
-HcrMonitor::~HcrMonitor() {
+StatusGrabber::~StatusGrabber() {
     // Exit the event loop to stop the thread
     quit();
     // Wait a bit for it to complete.
     if (! wait(1000)) {
-        ELOG << "HcrMonitor thread failed to quit in destructor. Exiting anyway.";
+        ELOG << "StatusGrabber thread failed to quit in destructor. Exiting anyway.";
     }
 }
 
 XmitStatus
-HcrMonitor::transmitterStatus() const {
+StatusGrabber::transmitterStatus() const {
     QMutexLocker locker(&_mutex);
     return(_xmitStatus);
 }
 
 CmigitsStatus
-HcrMonitor::cmigitsStatus() const {
+StatusGrabber::cmigitsStatus() const {
     QMutexLocker locker(&_mutex);
     return(_cmigitsStatus);
 }
 
 DrxStatus
-HcrMonitor::drxStatus() const {
+StatusGrabber::drxStatus() const {
     QMutexLocker locker(&_mutex);
     return(_drxStatus);
 }
 
 HcrPmc730Status
-HcrMonitor::pmc730Status() const {
+StatusGrabber::pmc730Status() const {
     QMutexLocker locker(&_mutex);
     return(_pmc730Status);
 }
 
 void
-HcrMonitor::run() {
+StatusGrabber::run() {
     // Set up a timer to call our _getStatus() method on a regular basis
     QTimer updateTimer;
     updateTimer.setInterval(1000);  // 1 Hz updates
@@ -79,7 +78,7 @@ HcrMonitor::run() {
 }
 
 void
-HcrMonitor::_getStatus() {
+StatusGrabber::_getStatus() {
     _getPmc730Status();
     _getCmigitsStatus();
     _getDrxStatus();
@@ -87,14 +86,14 @@ HcrMonitor::_getStatus() {
 }
 
 void
-HcrMonitor::_getCmigitsStatus() {
+StatusGrabber::_getCmigitsStatus() {
     QMutexLocker locker(&_mutex);
     // Get a CmigitsStatus built from current values in CmigitsSharedMemory
     _cmigitsStatus = CmigitsStatus::StatusFromSharedMemory();
 }
 
 void
-HcrMonitor::_getDrxStatus() {
+StatusGrabber::_getDrxStatus() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
     DrxStatus drxStatus(*_pentek);
@@ -104,7 +103,7 @@ HcrMonitor::_getDrxStatus() {
 }
 
 void
-HcrMonitor::_getPmc730Status() {
+StatusGrabber::_getPmc730Status() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
     HcrPmc730Status status(true);
@@ -119,7 +118,7 @@ HcrMonitor::_getPmc730Status() {
 }
 
 void
-HcrMonitor::_getXmitStatus() {
+StatusGrabber::_getXmitStatus() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
     XmitStatus xmitStatus;

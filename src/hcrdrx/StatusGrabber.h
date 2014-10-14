@@ -1,5 +1,5 @@
 /*
- * HcrMonitor.h
+ * StatusGrabber.h
  *
  *  Created on: Dec 13, 2010
  *      Author: burghart
@@ -23,16 +23,14 @@
 
 #include "DrxStatus.h"
 
-class HcrMonitorPriv;
-
-/// @brief QThread object which handles HCR monitoring, regularly sampling all
-/// status available via the multi-IO card and transmitter status
-/// information obtained from the hcr_xmitd process.
-class HcrMonitor : public QThread {
+/// @brief QThread object which regularly polls for status from HcrPmc730Daemon,
+/// hcr_xmitd, CmigitsDaemon, and the Pentek card. The API provides access to 
+/// the latest status obtained from each of these.
+class StatusGrabber : public QThread {
     Q_OBJECT
 public:
     /**
-     * @brief Construct a HcrMonitor which will read data on a regular basis from
+     * @brief Construct a StatusGrabber which will read data on a regular basis from
      * the PMC-730 card, and get transmitter status from hcr_xmitd.
      * @param pentek pointer to the p7142sd3c Pentek card to be monitored
      * @param pmc730dHost the name of the host on which HcrPmc730Dameon is
@@ -41,11 +39,11 @@ public:
      * @param xmitdHost the name of the host on which hcr_xmitd is running
      * @param xmitdPort the port number hcr_xmitd is using for XML-RPC
      */
-    HcrMonitor(const Pentek::p7142sd3c * pentek,
+    StatusGrabber(const Pentek::p7142sd3c * pentek,
             std::string pmc730dHost, int pmc730dPort,
             std::string xmitdHost, int xmitdPort);
     
-    virtual ~HcrMonitor();
+    virtual ~StatusGrabber();
     
     void run();
 

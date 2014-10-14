@@ -3,7 +3,7 @@
 
 #include "CircBuffer.h"
 #include "HcrDrxConfig.h"
-#include "HcrMonitor.h"
+#include "StatusGrabber.h"
 #include "PulseData.h"
 #include <CmigitsShmWatchThread.h>
 #include <HcrPmc730.h>
@@ -41,11 +41,11 @@ public:
   /**
    * Constructor.
    * @param config HcrDrxConfig defining the desired configuration.
-   * @param monitor reference to a HcrMonitor thread which will be the source
+   * @param monitor reference to a StatusGrabber thread which will be the source
    * of monitoring status information
    */
 
-    IwrfExport(const HcrDrxConfig& config, const HcrMonitor& monitor);
+    IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor);
   
   /// Destructor
   
@@ -81,9 +81,9 @@ private:
 
   const HcrDrxConfig &_config;
   
-  /// HcrMonitor which will supply status information
+  /// StatusGrabber which will supply status information
 
-  const HcrMonitor &_monitor;
+  const StatusGrabber &_monitor;
 
   /// The queue size - for buffering IQ data
 
