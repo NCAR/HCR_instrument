@@ -42,8 +42,9 @@ QCoreApplication *App = 0;
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
-  ILOG << "Stopping SafetyMonitor on signal " << sig;
-  App->quit();
+    ILOG << "Stopping SafetyMonitor on signal " << sig << 
+            " (" << strsignal(sig) << ")";
+    App->quit();
 }
 
 // Update our registration with PMU at this interval.
@@ -147,26 +148,6 @@ checkAltitude() {
         } catch (std::exception & e) {
             WLOG << "Error on TerrainHtServer get.height() call: " << e.what();
         }
-    }
-}
-
-// Pointer to current status from HcrPmc730, or NULL if status is too old.
-HcrPmc730Status * _HcrPmc730Status = NULL;
-
-void
-newHcrPmc730Status(HcrPmc730Status status) {
-    static HcrPmc730Status LastStatus(true);
-    
-    LastStatus = status;
-    _HcrPmc730Status = & LastStatus;
-}
-
-void
-onHcrPmc730ResponsivenessChange(bool responsive, QString message) {
-    ILOG << "responsiveness change: " << message.toStdString();
-    // If HcrPmc730Daemon is no longer responding, remove old status if any.
-    if (! responsive) {
-        _HcrPmc730Status = NULL;
     }
 }
 
