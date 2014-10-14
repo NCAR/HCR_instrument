@@ -112,7 +112,7 @@ checkAltitude() {
     if (time3501 == 0) {
         WLOG << "No current data available from C-MIGITS";
     } else {
-        ILOG << time3501 << ", lat: " << latitude << ", lon: " << longitude <<
+        DLOG << time3501 << ", lat: " << latitude << ", lon: " << longitude <<
                 ", altMSL: " << altitudeMSL;
 
         // Get surface altitude MSL from the TerrainHtServer
@@ -142,7 +142,7 @@ checkAltitude() {
                 _SurfType = overWater ? SURFACE_WATER : SURFACE_LAND;
                 
                 // Log what we got
-                ILOG << "Sensor height AGL " << _AltitudeAGL << " m (over " << 
+                DLOG << "Sensor height AGL " << _AltitudeAGL << " m (over " << 
                         (overWater ? "water" : "land") << ")";
             }
         } catch (std::exception & e) {
