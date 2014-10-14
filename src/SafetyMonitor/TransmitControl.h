@@ -19,6 +19,7 @@ class HcrPmc730StatusThread;
 /// (filament and high voltage), including monitoring for whether conditions
 /// allow for safe transmission.
 class TransmitControl : public QObject {
+    Q_OBJECT
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source 
     /// of status from HcrPmc730Daemon.
@@ -34,11 +35,9 @@ private slots:
     /// @brief Note a responsiveness change for HcrPmc730Daemon
     /// @param responding true if the daemon is now responsive, false if it's
     /// now unresponsive
-    void _onHcrPmc730ResponsivenessChange(bool responding);
+    /// @param msg a string describing the responsiveness change
+    void _onHcrPmc730ResponsivenessChange(bool responding, QString msg);
     
-    /// @brief Slot to be called when PV pressure has been good long 
-    /// enough to allow for transmitter high voltage.
-    void _pvPressureWaitExpired();
 private:
     /// @brief Clear any existing status from HcrPmc730Daemon
     void _clearHcrPmc730Status();
@@ -51,15 +50,15 @@ private:
     HcrPmc730Status * _hcrPmc730Status;
     
     /// Reasons transmit may be disallowed
-    enum _XmitDisallowReason {
-        DISALLOW_FOR_NO_HCRPMC730DAEMON =       1 << 0,
-        DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT =    1 << 1,
-        DISALLOW_FOR_PV_PRESSURE_LOW =          1 << 2,
-        DISALLOW_FOR_NO_MOTIONCONTROLDAEMON =   1 << 3,
-        DISALLOW_FOR_DRIVES_NOT_HOMED =         1 << 4
+    enum _NoXmitReasonBit {
+        _NOXMIT_NO_HCRPMC730DAEMON      = 1 << 0,
+        _NOXMIT_PV_GOOD_PRESSURE_WAIT   = 1 << 1,
+        _NOXMIT_PV_PRESSURE_LOW         = 1 << 2,
+        _NOXMIT_NO_MOTIONCONTROLDAEMON  = 1 << 3,
+        _NOXMIT_DRIVES_NOT_HOMED        = 1 << 4
     };
     /// Mask of reasons transmit is currently disallowed
-    int _xmitDisallowedReasons;
+    uint32_t _noXmitReasons;
     
     /// Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
@@ -69,11 +68,11 @@ private:
     /// turning on transmitter high voltage is allowed.
     static const int _PV_GOOD_PRESSURE_WAIT_SECONDS;
     
-    /// Use the highest value for type time_t to mark a bad start time
+    /// Value used to mark a bad start time
     static const time_t _START_TIME_BAD;
     
     /// Start time of continuous good pressure in the pressure vessel. This is
-    /// set to zero if last pressure seen was bad.
+    /// reset to _START_TIME_BAD whenever a bad pressure is seen.
     int _pvGoodPressureStartTime;
 };
 

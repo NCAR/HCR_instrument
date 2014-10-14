@@ -21,18 +21,18 @@ static inline double HpaToPsi(double pres_hpa) {
 
 const float TransmitControl::_PV_MINIMUM_PRESSURE_PSI = 11.0;
 const int TransmitControl::_PV_GOOD_PRESSURE_WAIT_SECONDS = 60;
-const time_t TransmitControl::_START_TIME_BAD = std::numeric_limits<time_t>::max();
+const time_t TransmitControl::_START_TIME_BAD = -1;
 
 TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
     _hcrPmc730Status(NULL),
-    _xmitDisallowedReasons(0),
+    _noXmitReasons(0),
     _pvGoodPressureStartTime(_START_TIME_BAD) {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_updateHcrPmc730Status(HcrPmc730Status)));
     // Call _setHcrPmc730Responding when we get a responsiveness change signal
-    connect(&hcrPmc730StatusThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_setHcrPmc730DaemonResponding(bool)));
+    connect(&hcrPmc730StatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_onHcrPmc730ResponsivenessChange(bool, QString)));
 }
 
 TransmitControl::~TransmitControl() {
@@ -53,11 +53,11 @@ TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
 }
 
 void
-TransmitControl::_onHcrPmc730ResponsivenessChange(bool responding) {
+TransmitControl::_onHcrPmc730ResponsivenessChange(bool responding, QString msg) {
     if (responding) {
         ILOG << "Got a response from HcrPmc730Daemon";
     } else {
-        WLOG << "HcrPmc730Daemon is not responding!";
+        WLOG << "HcrPmc730Daemon is not responding: " << msg.toStdString();
         // Remove old status
         delete(_hcrPmc730Status);
         _hcrPmc730Status = NULL;
@@ -77,7 +77,7 @@ TransmitControl::_performMonitorTests() {
         // Evaluate the pressure vessel pressure
         if (pvPressurePsi > _PV_MINIMUM_PRESSURE_PSI) {
             // Pressure is high enough. Remove the low pressure disallowance.
-            _xmitDisallowedReasons &= ~DISALLOW_FOR_PV_PRESSURE_LOW;
+            _noXmitReasons &= ~_NOXMIT_PV_PRESSURE_LOW;
             
             // If we don't have a good pressure start time yet, set it to now
             time_t now = time(0);
@@ -89,27 +89,27 @@ TransmitControl::_performMonitorTests() {
             time_t goodPressureTime = now - _pvGoodPressureStartTime;
             if (goodPressureTime >= _PV_GOOD_PRESSURE_WAIT_SECONDS) {
                 // We've had good pressure for a long enough period
-                if (_xmitDisallowedReasons & DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT) {
-                    ILOG << "PV pressure has maintained " << _PV_MINIMUM_PRESSURE_PSI <<
-                            " PSI for for more than " << _PV_GOOD_PRESSURE_WAIT_SECONDS << 
+                if (_noXmitReasons & _NOXMIT_PV_GOOD_PRESSURE_WAIT) {
+                    ILOG << "PV pressure > " << _PV_MINIMUM_PRESSURE_PSI <<
+                            " PSI for for over " << _PV_GOOD_PRESSURE_WAIT_SECONDS << 
                             " seconds. Transmit is allowed.";
                     // Remove the pressure wait disallowance
-                    _xmitDisallowedReasons &= ~DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT;
+                    _noXmitReasons &= ~_NOXMIT_PV_GOOD_PRESSURE_WAIT;
                 }
             } else {
                 // Disallow transmit while we're waiting for a long enough 
                 // period of good pressure
-                _xmitDisallowedReasons |= DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT;
+                _noXmitReasons |= _NOXMIT_PV_GOOD_PRESSURE_WAIT;
             }
         } else {
             // PV pressure is too low
-            if (! (_xmitDisallowedReasons & DISALLOW_FOR_PV_PRESSURE_LOW)) {
+            if (! (_noXmitReasons & _NOXMIT_PV_PRESSURE_LOW)) {
                 WLOG << "PV pressure is lower than " << 
                         _PV_MINIMUM_PRESSURE_PSI << " PSI";
                 // Disallow transmit because of low pressure
-                _xmitDisallowedReasons |= DISALLOW_FOR_PV_PRESSURE_LOW;
+                _noXmitReasons |= _NOXMIT_PV_PRESSURE_LOW;
                 // No longer in the good pressure waiting period
-                _xmitDisallowedReasons &= ~DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT;
+                _noXmitReasons &= ~_NOXMIT_PV_GOOD_PRESSURE_WAIT;
             }
         }
     } else /* _hcrPmc730Status is NULL */ {
@@ -117,33 +117,38 @@ TransmitControl::_performMonitorTests() {
         _pvGoodPressureStartTime = _START_TIME_BAD;
         
         // Disallow transmit if we have no status from HcrPmc730Daemon
-        _xmitDisallowedReasons |= DISALLOW_FOR_NO_HCRPMC730DAEMON;
-        _xmitDisallowedReasons &= ~DISALLOW_FOR_PV_PRESSURE_LOW;
-        _xmitDisallowedReasons &= ~DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT;
+        _noXmitReasons |= _NOXMIT_NO_HCRPMC730DAEMON;
+        _noXmitReasons &= ~_NOXMIT_PV_PRESSURE_LOW;
+        _noXmitReasons &= ~_NOXMIT_PV_GOOD_PRESSURE_WAIT;
     }
     
     // TODO: test MotionControlDaemon status for any reasons to disallow HV
     
     // If high voltage is disallowed for any reason, turn it off now
-    if (_xmitDisallowedReasons != 0) {
+    if (_noXmitReasons != 0) {
         // Log all reasons for disallowing transmit
         WLOG << "Transmit disallowed because: ";
         int disallowCount = 0;
-        if (_xmitDisallowedReasons & DISALLOW_FOR_NO_HCRPMC730DAEMON) {
-            WLOG << ++disallowCount << ") no status available from HcrPmc730Daemon";
+        if (_noXmitReasons & _NOXMIT_NO_HCRPMC730DAEMON) {
+            WLOG << "  " << ++disallowCount << ") " << 
+                    "no status available from HcrPmc730Daemon";
         }
-        if (_xmitDisallowedReasons & DISALLOW_FOR_PV_PRESSURE_LOW) {
-            WLOG << ++disallowCount << ") PV pressure is too low";
+        if (_noXmitReasons & _NOXMIT_PV_PRESSURE_LOW) {
+            WLOG << "  " << ++disallowCount << ") " << 
+                    "PV pressure is too low";
         }
-        if (_xmitDisallowedReasons & DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT) {
-            WLOG << ++disallowCount << ") waiting for good PV pressure " <<
-                    "period > " << _PV_GOOD_PRESSURE_WAIT_SECONDS << " seconds";
+        if (_noXmitReasons & _NOXMIT_PV_GOOD_PRESSURE_WAIT) {
+            WLOG << "  " << ++disallowCount << ") " << 
+                    "waiting for good PV pressure period > " << 
+                    _PV_GOOD_PRESSURE_WAIT_SECONDS << " seconds";
         }
-        if (_xmitDisallowedReasons & DISALLOW_FOR_NO_MOTIONCONTROLDAEMON) {
-            WLOG << ++disallowCount << ") no status available from MotionControlDaemon";
+        if (_noXmitReasons & _NOXMIT_NO_MOTIONCONTROLDAEMON) {
+            WLOG << "  " << ++disallowCount << ") " << 
+                    "no status available from MotionControlDaemon";
         }
-        if (_xmitDisallowedReasons & DISALLOW_FOR_DRIVES_NOT_HOMED) {
-            WLOG << ++disallowCount << ") drives not homed; motor positions are unknown";
+        if (_noXmitReasons & _NOXMIT_DRIVES_NOT_HOMED) {
+            WLOG << "  " << ++disallowCount << ") " << 
+                    "drives not homed; motor positions are unknown";
         }
         
         // Disable transmit
