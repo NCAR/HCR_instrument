@@ -810,6 +810,9 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeInt
     ("HmcMode", 2, pmc730Status.hmcMode());
 
+  xml += TaXml::writeInt
+    ("EmsErrorCount", 2, pmc730Status.emsErrorCount());
+
   // floats
 
   xml += TaXml::writeDouble
@@ -820,6 +823,12 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeDouble
     ("PvAftPressure", 2, pmc730Status.pvAftPressure());
+
+  xml += TaXml::writeDouble
+    ("ApsLowSidePressurePsi", 2, pmc730Status.apsLowSidePressurePsi());
+
+  xml += TaXml::writeDouble
+    ("ApsHighSidePressurePsi", 2, pmc730Status.apsHighSidePressurePsi());
 
   xml += TaXml::writeDouble
     ("PloTemp", 2, pmc730Status.ploTemp());
@@ -866,6 +875,9 @@ string IwrfExport::_assembleStatusXml()
   // booleans
 
   xml += TaXml::writeBoolean
+    ("ApsValveOpen", 2, pmc730Status.apsValveOpen());
+
+  xml += TaXml::writeBoolean
     ("Locked15_5GHzPLO", 2, pmc730Status.locked15_5GHzPLO());
 
   xml += TaXml::writeBoolean
@@ -886,9 +898,6 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeBoolean
     ("RadarPowerError", 2, pmc730Status.radarPowerError());
   
-  xml += TaXml::writeInt
-    ("EmsErrorCount", 2, pmc730Status.emsErrorCount());
-
   xml += TaXml::writeBoolean
     ("EmsError1", 2, pmc730Status.emsError1());
 
