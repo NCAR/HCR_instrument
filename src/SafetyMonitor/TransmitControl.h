@@ -50,8 +50,16 @@ private:
     /// Latest status received from HcrPmc730Daemon.
     HcrPmc730Status * _hcrPmc730Status;
     
-    /// List of reasons high voltage is currently disallowed
-    std::vector<std::string> _hvDisallowedReasons;
+    /// Reasons transmit may be disallowed
+    enum _XmitDisallowReason {
+        DISALLOW_FOR_NO_HCRPMC730DAEMON =       1 << 0,
+        DISALLOW_FOR_PV_GOOD_PRESSURE_WAIT =    1 << 1,
+        DISALLOW_FOR_PV_PRESSURE_LOW =          1 << 2,
+        DISALLOW_FOR_NO_MOTIONCONTROLDAEMON =   1 << 3,
+        DISALLOW_FOR_DRIVES_NOT_HOMED =         1 << 4
+    };
+    /// Mask of reasons transmit is currently disallowed
+    int _xmitDisallowedReasons;
     
     /// Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
@@ -61,13 +69,12 @@ private:
     /// turning on transmitter high voltage is allowed.
     static const int _PV_PRESSURE_WAIT_SECONDS = 60;
     
-    /// Timer to allow transmitter high voltage only after pressure vessel
-    /// pressure has been acceptably high for PV_PRESSURE_WAIT seconds.
-    QTimer _pvGoodPressureWaitTimer;
+    /// Use the highest value for type time_t to mark a bad start time
+    static const time_t START_TIME_BAD;
     
-    /// Is pressure vessel pressure high enough to allow high voltage on the
-    /// transmitter?
-    bool _pvPressureOK;
+    /// Start time of continuous good pressure in the pressure vessel. This is
+    /// set to zero if last pressure seen was bad.
+    int _pvGoodPressureStartTime;
 };
 
 #endif /* TRANSMITCONTROL_H_ */
