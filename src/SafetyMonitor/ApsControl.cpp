@@ -35,25 +35,29 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     // Close the APS solenoid valve if high side pressure drops below 50 PSI.
     // XXX (This check should become unnecessary when we have a check valve 
     // to prevent backflow from the pressure vessel into the APS.)
-    if (apsHighPresPsi < 50 && status730.apsValveOpen()) {
-        ILOG << "Closing APS valve because high side pressure " <<
-                "has dropped to " << apsHighPresPsi << " PSI";
-        _closeApsValve();
+    if (apsHighPresPsi < 50) {
+        if (status730.apsValveOpen()) {
+            ILOG << "Closing APS valve because high side pressure " <<
+                    "has dropped to " << apsHighPresPsi << " PSI";
+            _closeApsValve();
+        }
 
         // Skip all other tests
         return;
     }
     
-    // Open the solenoid valve if we've gotten an explicit command to do so
-    if (_holdOpen && ! status730.apsValveOpen()) {
-        _openApsValve();
+    // If we're in "Hold Open" mode, make sure the solenoid valve is open.
+    if (_holdOpen) {
+        if (! status730.apsValveOpen()) {
+            WLOG << "APS valve got closed while in 'Hold Open' mode. Opening valve again.";
+            _openApsValve();
+        }
         // Skip all other tests
         return;
     }
     
-    // Pressure vessel pressure is reported in hPa; convert it to PSI.
+    // Vessel pressure is reported in hPa; convert it to PSI.
     double pvPresPsi = HpaToPsi(status730.pvForePressure());
-    ILOG << "PV pressure " << pvPresPsi << " PSI";
     
     // Open the solenoid valve if the pressure vessel drops below 
     // VALVE_OPEN_PRESSURE_PSI and close the valve when it exceeds 
