@@ -30,7 +30,7 @@ ApsControl::~ApsControl() {
 void
 ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     // Active pressurization system high side pressure, PSI
-    double apsHighPresPsi = status730.apsHighSidePressurePsi();
+    double apsHighPresPsi = HpaToPsi(status730.apsHighSidePressure());
     
     // Close the APS solenoid valve if high side pressure drops below 50 PSI.
     // XXX (This check should become unnecessary when we have a check valve 

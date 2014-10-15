@@ -825,10 +825,10 @@ string IwrfExport::_assembleStatusXml()
     ("PvAftPressure", 2, pmc730Status.pvAftPressure());
 
   xml += TaXml::writeDouble
-    ("ApsLowSidePressurePsi", 2, pmc730Status.apsLowSidePressurePsi());
+    ("ApsLowSidePressure", 2, pmc730Status.apsLowSidePressure());
 
   xml += TaXml::writeDouble
-    ("ApsHighSidePressurePsi", 2, pmc730Status.apsHighSidePressurePsi());
+    ("ApsHighSidePressure", 2, pmc730Status.apsHighSidePressure());
 
   xml += TaXml::writeDouble
     ("PloTemp", 2, pmc730Status.ploTemp());

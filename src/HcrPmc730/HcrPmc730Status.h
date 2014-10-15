@@ -88,16 +88,16 @@ public:
     double pvAftPressure() const { return(_pvAftPressure); }
 
     /// @brief Return the pressure on the low-pressure side of the Active
-    /// Pressurization System regulator, PSI
+    /// Pressurization System regulator, hPa
     /// @return the pressure on the low-pressure side of the Active
-    /// Pressurization System regulator, PSI
-    double apsLowSidePressurePsi() const { return(_apsLowSidePressurePsi); }
+    /// Pressurization System regulator, hPa
+    double apsLowSidePressure() const { return(_apsLowSidePressure); }
 
     /// @brief Return the pressure on the high-pressure side of the Active
-    /// Pressurization System regulator, PSI
+    /// Pressurization System regulator, hPa
     /// @return the pressure on the high-pressure side of the Active
-    /// Pressurization System regulator, PSI
-    double apsHighSidePressurePsi() const { return(_apsHighSidePressurePsi); }
+    /// Pressurization System regulator, hPa
+    double apsHighSidePressure() const { return(_apsHighSidePressure); }
 
     /// @brief Return true iff Active Pressurization System valve is currently
     /// open.
@@ -325,8 +325,8 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_psVoltage);
             ar & BOOST_SERIALIZATION_NVP(_pvAftPressure);
             ar & BOOST_SERIALIZATION_NVP(_pvForePressure);
-            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressurePsi);
-            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressurePsi);
+            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressure);
+            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressure);
             ar & BOOST_SERIALIZATION_NVP(_radarPowerError);
             ar & BOOST_SERIALIZATION_NVP(_rdsInDuctTemp);
             ar & BOOST_SERIALIZATION_NVP(_apsValveOpen);
@@ -425,10 +425,10 @@ private:
     double _pvForePressure;
 
     /// Active Pressurization System regulator low side pressure, PSI
-    double _apsLowSidePressurePsi;
+    double _apsLowSidePressure;
 
     /// Active Pressurization System regulator high side pressure, PSI
-    double _apsHighSidePressurePsi;
+    double _apsHighSidePressure;
 
     /// measured voltage from 5V power supply
     double _psVoltage;

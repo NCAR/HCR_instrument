@@ -137,28 +137,37 @@ public:
         return _30PSI_A_4V_Pres(theHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE]);
     }
 
-    /**
-     * @brief Return the pressure in PSI on the low-pressure side of the Active
-     * Pressurization System regulator at the last call to updateAnalogValues().
-     * @return the pressure in PSI on the low-pressure side of the Active
-     * Pressurization System regulator at the last call to updateAnalogValues().
-     */
-    static double apsLowSidePressurePsi() {
-        static const double VoltsPerPsi = 0.097947; // from Kulite calibration dated 2014-05-05
-        return(theHcrPmc730()._analogValues[_HCR_AIN_APS_LOW_SIDE_PRESSURE] /
-                VoltsPerPsi);
+    /// @brief Convert pressure in PSI to hPa
+    /// @param presPsi the pressure in PSI to be converted
+    /// @return equivalent pressure in hPa
+    static double PsiToHpa(double presPsi) {
+        return(68.9475729 * presPsi);
     }
 
     /**
-     * @brief Return the pressure in PSI on the high-pressure side of the Active
+     * @brief Return the pressure in hPa on the low-pressure side of the Active
      * Pressurization System regulator at the last call to updateAnalogValues().
-     * @return the pressure in PSI on the high-pressure side of the Active
+     * @return the pressure in hPa on the low-pressure side of the Active
      * Pressurization System regulator at the last call to updateAnalogValues().
      */
-    static double apsHighSidePressurePsi() {
+    static double apsLowSidePressure() {
+        static const double VoltsPerPsi = 0.097947; // from Kulite calibration dated 2014-05-05
+        double presPsi = theHcrPmc730()._analogValues[_HCR_AIN_APS_LOW_SIDE_PRESSURE] /
+                VoltsPerPsi;
+        return(PsiToHpa(presPsi));
+    }
+
+    /**
+     * @brief Return the pressure in hPa on the high-pressure side of the Active
+     * Pressurization System regulator at the last call to updateAnalogValues().
+     * @return the pressure in hPa on the high-pressure side of the Active
+     * Pressurization System regulator at the last call to updateAnalogValues().
+     */
+    static double apsHighSidePressure() {
         static const double VoltsPerPsi = 0.002461; // from Kulite calibration dated 2014-05-05
-        return(theHcrPmc730()._analogValues[_HCR_AIN_APS_HIGH_SIDE_PRESSURE] /
-                VoltsPerPsi);
+        double presPsi = theHcrPmc730()._analogValues[_HCR_AIN_APS_HIGH_SIDE_PRESSURE] /
+                VoltsPerPsi;
+        return(PsiToHpa(presPsi));
     }
 
     /**

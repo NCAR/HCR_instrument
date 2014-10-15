@@ -7,6 +7,12 @@
 #include "Pmc730Details.h"
 #include <QDateTime>
 
+// Convert pressure in hPa to PSI
+static double
+HpaToPsi(double presHpa) {
+    return(0.0145037738 * presHpa);
+}
+
 Pmc730Details::Pmc730Details(QWidget *parent) :
     QDialog(parent),
     _ui(),
@@ -123,8 +129,10 @@ Pmc730Details::updateStatus(bool daemonResponding,
     _ui.emsErrorCountValue->setText(QString::number(status.emsErrorCount()));
     
     // Active Pressurization System
-    _ui.highSideValue->setText(QString::number(status.apsHighSidePressurePsi(), 'f', 0));
-    _ui.lowSideValue->setText(QString::number(status.apsLowSidePressurePsi(), 'f', 1));
+    double highSidePresPsi = HpaToPsi(status.apsHighSidePressure());
+    _ui.highSideValue->setText(QString::number(highSidePresPsi, 'f', 0));
+    double lowSidePresPsi = HpaToPsi(status.apsHighSidePressure());
+    _ui.lowSideValue->setText(QString::number(lowSidePresPsi, 'f', 1));
     _ui.pressurizingIcon->setPixmap(status.apsValveOpen() ?
             _greenLED : _greenLED_off);
 
@@ -160,9 +168,12 @@ Pmc730Details::updateStatus(bool daemonResponding,
             _greenLED : _greenLED_off);
     
     _ui.rfPowerValue->setText(QString::number(status.detectedRfPower(), 'f', 1));
+    
+    double aftPresPsi = HpaToPsi(status.pvAftPressure());
     _ui.vesselPresAftValue->
-        setText(QString::number(status.pvAftPressure(), 'f', 0));
+        setText(QString::number(aftPresPsi, 'f', 0));
+    double forePresPsi = HpaToPsi(status.pvForePressure());
     _ui.vesselPresForeValue->
-        setText(QString::number(status.pvForePressure(), 'f', 0));
+        setText(QString::number(forePresPsi, 'f', 0));
     _ui.psVoltageValue->setText(QString::number(status.psVoltage(), 'f', 2));
 }

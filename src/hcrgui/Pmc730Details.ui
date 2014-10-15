@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>646</width>
-    <height>423</height>
+    <width>664</width>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -788,14 +788,14 @@
             <item row="7" column="4">
              <widget class="QLabel" name="vesselPresAftUnits">
               <property name="text">
-               <string>hPa</string>
+               <string>PSI</string>
               </property>
              </widget>
             </item>
             <item row="8" column="4">
              <widget class="QLabel" name="vesselPresForeUnits">
               <property name="text">
-               <string>hPa</string>
+               <string>PSI</string>
               </property>
              </widget>
             </item>

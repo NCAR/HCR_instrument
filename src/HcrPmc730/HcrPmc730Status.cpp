@@ -45,8 +45,8 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     _detectedRfPower(0.0),
     _pvAftPressure(0.0),
     _pvForePressure(0.0),
-    _apsLowSidePressurePsi(0.0),
-    _apsHighSidePressurePsi(0.0),
+    _apsLowSidePressure(0.0),
+    _apsHighSidePressure(0.0),
     _psVoltage(0.0),
     _locked15_5GHzPLO(false),
     _locked1250MHzPLO(false),
@@ -88,8 +88,8 @@ HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) :
     _detectedRfPower(0.0),
     _pvAftPressure(0.0),
     _pvForePressure(0.0),
-    _apsLowSidePressurePsi(0.0),
-    _apsHighSidePressurePsi(0.0),
+    _apsLowSidePressure(0.0),
+    _apsHighSidePressure(0.0),
     _psVoltage(0.0),
     _locked15_5GHzPLO(false),
     _locked1250MHzPLO(false),
@@ -174,8 +174,8 @@ HcrPmc730Status::_getMultiIoValues() {
     _detectedRfPower = HcrPmc730::detectedRfPower();
     _pvAftPressure = HcrPmc730::pvAftPressure();
     _pvForePressure = HcrPmc730::pvForePressure();
-    _apsLowSidePressurePsi = HcrPmc730::apsLowSidePressurePsi();
-    _apsHighSidePressurePsi = HcrPmc730::apsHighSidePressurePsi();
+    _apsLowSidePressure = HcrPmc730::apsLowSidePressure();
+    _apsHighSidePressure = HcrPmc730::apsHighSidePressure();
     _psVoltage = HcrPmc730::ps5vVoltage();
     _locked15_5GHzPLO = HcrPmc730::locked15_5GHzPLO();
     _locked1250MHzPLO = HcrPmc730::locked1250MHzPLO();
