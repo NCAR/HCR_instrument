@@ -91,13 +91,13 @@ main(int argc, char *argv[]) {
     	exit(1);
     }
 
+    ILOG << "Started cmigitsDaemon" << (Playback ? " in playback mode" : "");
+
     // set up registration with procmap if instance is specified
     if (PmuInstance.size() > 0) {
       PMU_auto_init("cmigitsDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
       ILOG << "procmap instance '" << PmuInstance << "'";
     }
-
-    ILOG << "Started cmigitsDaemon" << (Playback ? " in playback mode" : "");
 
     // Open connection to the C-MIGITS device (or a Ts2CmigitsShmThread for
     // time-series file playback)
