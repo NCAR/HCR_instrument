@@ -37,30 +37,57 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     int segsize = sizeof(ShmStruct);
     // Try to create the shared memory segment. Create the segment with
     // read/write access, even if this object will have read-only access.
-    if (_qShm.create(segsize, QSharedMemory::ReadWrite)) {
-        DLOG << "Created shared memory segment '" << CMIGITS_SHM_KEY.toStdString() << "'";
-        _qShm.lock();
-        // Zero the segment.
-        memset(_qShm.data(), 0, segsize);
-        _qShm.unlock();
-        // This bit is bogus, but necessary to re-attach ReadOnly if we just
-        // created the shared memory segment.
-        // Create a temporary QSharedMemory object and attach it to the
-        // shared memory segment so that we can detach momentarily and
-        // re-attach ReadOnly without the segment being destroyed.
-        if (! _writeAccess) {
-            QSharedMemory tempShmObj(CMIGITS_SHM_KEY);
-            tempShmObj.attach();
-            _qShm.detach();           // detach ourselves
-            _qShm.attach(QSharedMemory::ReadOnly);   // re-attach with ReadOnly access
-        }
-    } else {
-        // AlreadyExists is OK, anything else is a problem...
-        if (_qShm.error() != QSharedMemory::AlreadyExists) {
-            std::ostringstream msgStream;
-            msgStream << "Shared memory create error " << _qShm.error() << 
-                    ": " << _qShm.errorString().toStdString();
-            throw(Exception(msgStream.str()));
+    bool shmCreated = false;
+    int keyErrorRetries = 0;
+    while (! shmCreated) {
+        if (_qShm.create(segsize, QSharedMemory::ReadWrite)) {
+            shmCreated = true;
+            DLOG << "Created shared memory segment '" << 
+                    CMIGITS_SHM_KEY.toStdString() << "'";
+            _qShm.lock();
+            // Zero the segment.
+            memset(_qShm.data(), 0, segsize);
+            _qShm.unlock();
+            // This bit is bogus, but necessary to re-attach ReadOnly if we just
+            // created the shared memory segment.
+            // Create a temporary QSharedMemory object and attach it to the
+            // shared memory segment so that we can detach momentarily and
+            // re-attach ReadOnly without the segment being destroyed.
+            if (! _writeAccess) {
+                QSharedMemory tempShmObj(CMIGITS_SHM_KEY);
+                tempShmObj.attach();
+                _qShm.detach();           // detach ourselves
+                _qShm.attach(QSharedMemory::ReadOnly);   // re-attach with ReadOnly access
+            }
+        } else {
+            switch (_qShm.error()) {
+            case QSharedMemory::AlreadyExists:
+                // It's OK if the shared memory segment already exists
+                shmCreated = true;
+                break;
+            case QSharedMemory::KeyError:
+                // We occasionally get a KeyError: 
+                //   QSharedMemoryPrivate::initKey: unable to set key on lock
+                //
+                // Retry up to three times if we get this error.
+                if (keyErrorRetries < 3) {
+                    keyErrorRetries++;
+                    // Sleep very briefly, then go back and try again
+                    WLOG << "KeyError on shared memory creation, trying again...";
+                    usleep(1000);
+                    break;
+                } else {
+                    WLOG << "Too many key errors";
+                }
+                // fall through to log details of the error and throw an exception
+            default:
+                // Treat all other errors as fatal
+                std::ostringstream msgStream;
+                msgStream << "Shared memory create error " << _qShm.error() << 
+                        ": " << _qShm.errorString().toStdString();
+                WLOG << msgStream.str();
+                throw(Exception(msgStream.str()));
+            }
         }
     }
     // If we didn't create and attach above, attach to the shared memory with
