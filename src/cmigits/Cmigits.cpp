@@ -637,6 +637,10 @@ Cmigits::_processResponseMessage(const uint16_t * msgWords) {
     // First response to a command is ACK or NAK. If we got a NAK, we can
     // just try the same command again.
     if (nak) {
+        // On NAK of a command, we should not expect the handshake reply.
+        _handshakeTimer->stop();
+        _awaitingHandshake = -1;
+        // Try again
         ILOG << "Re-doing configuration phase " << _configPhase <<
                 " after NAK of " << msgId << " command";
         _doCurrentConfigPhase();
