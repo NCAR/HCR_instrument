@@ -131,7 +131,7 @@ Pmc730Details::updateStatus(bool daemonResponding,
     // Active Pressurization System
     double highSidePresPsi = HpaToPsi(status.apsHighSidePressure());
     _ui.highSideValue->setText(QString::number(highSidePresPsi, 'f', 0));
-    double lowSidePresPsi = HpaToPsi(status.apsHighSidePressure());
+    double lowSidePresPsi = HpaToPsi(status.apsLowSidePressure());
     _ui.lowSideValue->setText(QString::number(lowSidePresPsi, 'f', 1));
     _ui.pressurizingIcon->setPixmap(status.apsValveOpen() ?
             _greenLED : _greenLED_off);
@@ -171,9 +171,9 @@ Pmc730Details::updateStatus(bool daemonResponding,
     
     double aftPresPsi = HpaToPsi(status.pvAftPressure());
     _ui.vesselPresAftValue->
-        setText(QString::number(aftPresPsi, 'f', 0));
+        setText(QString::number(aftPresPsi, 'f', 1));
     double forePresPsi = HpaToPsi(status.pvForePressure());
     _ui.vesselPresForeValue->
-        setText(QString::number(forePresPsi, 'f', 0));
+        setText(QString::number(forePresPsi, 'f', 1));
     _ui.psVoltageValue->setText(QString::number(status.psVoltage(), 'f', 2));
 }
