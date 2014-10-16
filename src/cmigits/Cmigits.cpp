@@ -1007,8 +1007,8 @@ Cmigits::_sendMessage(uint16_t msgId, const uint16_t * dataWords,
     // Don't send a message if we're waiting for a handshake for a previous
     // message.
     if (_awaitingHandshake >= 0) {
-        ELOG << "Awaiting handshake for last " << _awaitingHandshake <<
-                "msg; cannot send " << msgId << " message.";
+        ELOG << "Awaiting handshake for previous " << _awaitingHandshake <<
+                " msg; cannot send " << msgId << " msg.";
         abort();
     }
 
