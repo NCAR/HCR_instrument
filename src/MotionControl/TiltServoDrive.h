@@ -21,7 +21,8 @@ public:
     /// CANopen node ID. The drive's nickname will be set to "tilt".
     /// @param nodeId the CANopen node ID of the servo drive
     TiltServoDrive(uint8_t nodeId) :
-        ElmoServoDrive(nodeId, "tilt", TILT_DRIVE_COUNTS_PER_CIRCLE) {}
+        ElmoServoDrive(nodeId, "tilt", TILT_DRIVE_COUNTS_PER_CIRCLE, 
+                -4.0, 4.0) {}
     virtual ~TiltServoDrive() {}
 private:
     std::string _xqInitFunction() const { return("tiltInit"); }
