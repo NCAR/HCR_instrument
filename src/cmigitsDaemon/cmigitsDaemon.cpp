@@ -8,6 +8,7 @@
 #include <cerrno>
 #include <cstdlib>
 #include <csignal>
+#include <unistd.h>
 #include <QApplication>
 #include <QMetaType>
 #include <Cmigits.h>
@@ -39,7 +40,7 @@ std::string PmuInstance = "ops";   ///< application instance
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
-    ILOG << "cmigitsDaemon stopping on signal " << signal;
+    ILOG << "cmigitsDaemon (" << getpid() << ") stopping on signal " << signal;
     App->quit();
 }
 
@@ -91,7 +92,8 @@ main(int argc, char *argv[]) {
     	exit(1);
     }
 
-    ILOG << "Started cmigitsDaemon" << (Playback ? " in playback mode" : "");
+    ILOG << "Started cmigitsDaemon (" << getpid() << ")" << 
+            (Playback ? " in playback mode" : "");
 
     // set up registration with procmap if instance is specified
     if (PmuInstance.size() > 0) {
