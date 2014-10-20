@@ -14,6 +14,7 @@
 #include <toolsa/TaXml.hh>
 #include <toolsa/toolsa_macros.h>
 
+#include <QCoreApplication>
 #include <QWriteLocker>
 
 using namespace boost::posix_time;
@@ -151,12 +152,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _azimuthDeg = 0.0;
   _elevationDeg = 0.0;
 
-  /// Pass new C-MIGITS data from the singleton CmigitsShmWatchThread to our
-  /// _acceptCmigitsData() slot.
-  CmigitsShmWatchThread & cwt = CmigitsShmWatchThread::GetInstance();
-  connect(&cwt, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-          this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
-
   /// angle corrections
 
   _rollCorr = 0.0;
@@ -238,10 +233,22 @@ void IwrfExport::run()
 
   setTerminationEnabled(true);
   
+  // Create a thread to watch for new data in CmigitsSharedMemory, connect
+  // it to put new data into our _cmigitsDeque, and start it.
+
+  CmigitsShmWatchThread cwt;
+  connect(&cwt, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
+          this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
+  cwt.start();
+  
   // start the loop
 
   bool metaDataInitialized = false;
   while (true) {
+
+    // Process pending Qt events for this thread
+      
+    QCoreApplication::processEvents();
 
     // read in next pulse
 

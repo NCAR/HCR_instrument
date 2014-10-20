@@ -5,9 +5,18 @@
 
 LOGGING("CmigitsShmWatchThread")
 
-CmigitsShmWatchThread::CmigitsShmWatchThread() :
+CmigitsShmWatchThread::CmigitsShmWatchThread(int pollIntervalMs) :
+    _pollIntervalMs(pollIntervalMs),
     _cmigitsShm(),
     _last3512Time(0) {
+    // Don't allow a polling interval less than 4 ms, since faster polling
+    // makes our thread a significant CPU hog, and 4 ms is fast enough to 
+    // catch all all new C-MIGITS data even at its maximum rate of 100 Hz
+    // (or 10 ms update interval).
+    if (_pollIntervalMs < 4) {
+        WLOG << "Polling interval was changed to minimum value of 4 ms";
+        _pollIntervalMs = 4;
+    }
     // We need to register CmigitsSharedMemory::ShmStruct as a metatype,
     // since we'll be passing it as an argument in a signal.
     qRegisterMetaType<CmigitsSharedMemory::ShmStruct>("CmigitsSharedMemory::ShmStruct");
@@ -26,13 +35,9 @@ CmigitsShmWatchThread::~CmigitsShmWatchThread() {
 void
 CmigitsShmWatchThread::run()
 {
-    // Poll shared memory on a frequent basis to look for (and act
-    // on) new C-MIGITS data. The C-MIGITS data come at up to 100 Hz, so
-    // we poll at a 4 ms interval to catch all changes quickly.
-    // (Beware setting the timer interval lower, as this thread becomes
-    // a CPU hog with the interval set at 1-2 ms).
+    // Set up and start our timer for polling shared memory.
     QTimer pollTimer;
-    pollTimer.setInterval(4);
+    pollTimer.setInterval(_pollIntervalMs);
     connect(& pollTimer, SIGNAL(timeout()), this, SLOT(_pollSharedMemory()));
     pollTimer.start();
     // The poll timer is running, so just fire up the event loop.
@@ -48,9 +53,4 @@ CmigitsShmWatchThread::_pollSharedMemory() {
         _last3512Time = cmigitsData.time3512;
         emit newData(cmigitsData);
     }
-}
-
-void
-CmigitsShmWatchThread::quit() {
-    WLOG << "Singleton CmigitsShmWatchThread() not quitting, as others may be using it.";
 }
