@@ -33,7 +33,9 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _accessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
-        _hmcMode(HcrPmc730::HMC_MODE_INVALID)
+        _hmcMode(HcrPmc730::HMC_MODE_INVALID),
+        _cmigitsWatchThread(),
+        _cmigitsDeque()
 {
 
   // initialize
@@ -194,6 +196,13 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _sock = NULL;
   _newClient = false;
 
+  // Connect _cmigitsWatchThread to put new data into our _cmigitsDeque
+
+  connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
+          this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
+  
+  // Start _cmigitsWatchThread after this thread is started
+  connect(this, SIGNAL(started()), &_cmigitsWatchThread, SLOT(start()));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -232,14 +241,6 @@ void IwrfExport::run()
   // allow thread termination via the terminate() method.
 
   setTerminationEnabled(true);
-  
-  // Create a thread to watch for new data in CmigitsSharedMemory, connect
-  // it to put new data into our _cmigitsDeque, and start it.
-
-  CmigitsShmWatchThread cwt;
-  connect(&cwt, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-          this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
-  cwt.start();
   
   // start the loop
 

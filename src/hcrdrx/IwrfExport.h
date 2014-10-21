@@ -170,6 +170,10 @@ private:
   double _tiltCorr;
   double _rotationCorr;
 
+  /// Thread which polls the CmigitsSharedMemory segment and emits a signal
+  /// when new data are available
+  CmigitsShmWatchThread _cmigitsWatchThread;
+  
   /// deque of C-MIGITS data
   std::deque<CmigitsSharedMemory::ShmStruct> _cmigitsDeque;
 
