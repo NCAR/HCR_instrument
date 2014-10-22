@@ -5,10 +5,13 @@
 
 LOGGING("CmigitsShmWatchThread")
 
-CmigitsShmWatchThread::CmigitsShmWatchThread(int pollIntervalMs) :
+CmigitsShmWatchThread::CmigitsShmWatchThread(int pollIntervalMs,
+        int dataTimeoutMs) :
     _pollIntervalMs(pollIntervalMs),
     _cmigitsShm(),
-    _last3512Time(0) {
+    _last3512Time(0),
+    _dataTimeoutTimer(),
+    _dataTimeoutMs(dataTimeoutMs) {
     // Don't allow a polling interval less than 4 ms, since faster polling
     // makes our thread a significant CPU hog, and 4 ms is fast enough to 
     // catch all all new C-MIGITS data even at its maximum rate of 100 Hz
@@ -16,6 +19,12 @@ CmigitsShmWatchThread::CmigitsShmWatchThread(int pollIntervalMs) :
     if (_pollIntervalMs < 4) {
         WLOG << "Polling interval was changed to minimum value of 4 ms";
         _pollIntervalMs = 4;
+    }
+    // Don't allow a data timeout period less than 10 ms, since maximum
+    // data rate from the C-MIGITS is 100 Hz (i.e., every 10 ms)
+    if (_dataTimeoutMs < 10) {
+        WLOG << "Data timeout period was changed to minimum value of 10 ms";
+        _dataTimeoutMs = 10;
     }
     // We need to register CmigitsSharedMemory::ShmStruct as a metatype,
     // since we'll be passing it as an argument in a signal.
@@ -26,7 +35,7 @@ CmigitsShmWatchThread::~CmigitsShmWatchThread() {
     DLOG << "destructor";
     if (isRunning()) {
         DLOG << "Stopping thread";
-        QThread::quit();
+        quit();
     }
 }
 
@@ -35,12 +44,20 @@ CmigitsShmWatchThread::~CmigitsShmWatchThread() {
 void
 CmigitsShmWatchThread::run()
 {
+    // Set up and start the data timeout timer
+    _dataTimeoutTimer.setInterval(_dataTimeoutMs);
+    _dataTimeoutTimer.setSingleShot(true);
+    connect(&_dataTimeoutTimer, SIGNAL(timeout()), 
+            this, SIGNAL(dataTimeout()));   // emit our dataTimeout() signal
+    _dataTimeoutTimer.start();
+    
     // Set up and start our timer for polling shared memory.
     QTimer pollTimer;
     pollTimer.setInterval(_pollIntervalMs);
     connect(& pollTimer, SIGNAL(timeout()), this, SLOT(_pollSharedMemory()));
     pollTimer.start();
-    // The poll timer is running, so just fire up the event loop.
+    
+    // The timers are running, so just fire up the event loop.
     exec();
 }
 
@@ -50,6 +67,10 @@ CmigitsShmWatchThread::_pollSharedMemory() {
     // Since 3512 messages come in most frequently, we use the time of the
     // latest 3512 message to see if new content is in the shared memory.
     if (cmigitsData.time3512 > _last3512Time) {
+        // (re)start the data timeout timer
+        _dataTimeoutTimer.start();
+        
+        // Mark the new time and emit the data
         _last3512Time = cmigitsData.time3512;
         emit newData(cmigitsData);
     }
