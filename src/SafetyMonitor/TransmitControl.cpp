@@ -29,7 +29,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
         MotionControlStatusThread & mcStatusThread) :
     _xmlrpcClient(),
     _hcrPmc730Responsive(false),
-    _hcrPmc730Status(),
+    _hcrPmc730Status(true),
     _motionControlResponsive(false),
     _motionControlStatus(),
     _cmigitsWatchThread(CMIGITS_POLL_INTERVAL_MS, CMIGITS_DATA_TIMEOUT_MS),
@@ -49,8 +49,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     
     // Call _updateMotionControlStatus when new status from MotionControlDaemon 
     // arrives
-    connect(&mcStatusThread, SIGNAL(newStatus(MotionControlStatus)),
-            this, SLOT(_updateMotionControlStatus(MotionControlStatus)));
+    connect(&mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
+            this, SLOT(_updateMotionControlStatus(MotionControl::Status)));
     
     // Call _setMotionControlResponding when we get a responsiveness change signal
     connect(&mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
@@ -58,15 +58,22 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     
     // Call _updateCmigitsData when we get new C-MIGITS data
     connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-            this, SLOT(_updateCmigitsData(CmigitsSharedMemory::ShmStruct)));
+            this, SLOT(_updateAglAltitude(CmigitsSharedMemory::ShmStruct)));
     
     // Mark cmigitsDaemon as unresponsive when the watch thread emits its
     // dataTimeout() signal.
     connect(&_cmigitsWatchThread, SIGNAL(dataTimeout()),
             this, SLOT(_markCmigitsUnresponsive()));
+    
+    // Start the CmigitsShmWatchThread
+    _cmigitsWatchThread.start();
+    
+    // Finally, do our checks
+    _doChecks();
 }
 
 TransmitControl::~TransmitControl() {
+    _cmigitsWatchThread.quit();
 }
 
 void
@@ -143,7 +150,8 @@ TransmitControl::_doChecks() {
 
     if (pvPressurePsi < _PV_MINIMUM_PRESSURE_PSI) {
         std::ostringstream oss;
-        oss << "PV pressure is below minimum operating pressure of " <<
+        oss << "PV pressure (" << pvPressurePsi << 
+                " PSI) is below minimum operating pressure of " <<
                 _PV_MINIMUM_PRESSURE_PSI << " PSI";
         _disableTransmit(oss.str());
         return;
@@ -181,7 +189,10 @@ TransmitControl::_doChecks() {
 
 void
 TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) {
-    _cmigitsResponsive = true;
+    if (! _cmigitsResponsive) {
+        ILOG << "Got a response from cmigitsDaemon";
+        _cmigitsResponsive = true;
+    }
     
     // Get instrument latitude, longitude, and MSL altitude from the 
     // C-MIGITS data
