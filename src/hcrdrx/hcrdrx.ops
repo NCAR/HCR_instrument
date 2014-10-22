@@ -2,7 +2,7 @@
 
 #instance                ops
 radar_id                HCR
-calibration_file        /home/hcr/projDir/moments/params/hcr_cal.xml
+calibration_file        /home/hcr/projDir/moments/params/fallback_cal.xml
 start_on_1pps		1
 
 #gates                   60  
