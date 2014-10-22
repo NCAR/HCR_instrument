@@ -8,10 +8,14 @@
 #ifndef TRANSMITCONTROL_H_
 #define TRANSMITCONTROL_H_
 
+#include <vector>
+
+#include <CmigitsShmWatchThread.h>
 #include <HcrPmc730Client.h>
+#include <MotionControlStatusThread.h>
 #include <QObject>
 #include <QTimer>
-#include <vector>
+#include <xmlrpc-c/client_simple.hpp>
 
 class HcrPmc730StatusThread;
 
@@ -25,55 +29,101 @@ public:
     /// of status from HcrPmc730Daemon.
     /// @param hcrPmc730StatusThread the HcrPmc730StatusThread which will 
     /// provide status from HcrPmc730Daemon
-    TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread);
+    /// @param mcStatusThread the MotionControlStatusThread which will provide
+    /// status from MotionControlDaemon
+    TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
+            MotionControlStatusThread & mcStatusThread);
     virtual ~TransmitControl();
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
     /// @param status the new status from HcrPmc730Daemon
     void _updateHcrPmc730Status(HcrPmc730Status status);
-    
+
     /// @brief Note a responsiveness change for HcrPmc730Daemon
     /// @param responding true if the daemon is now responsive, false if it's
     /// now unresponsive
     /// @param msg a string describing the responsiveness change
-    void _onHcrPmc730ResponsivenessChange(bool responding, QString msg);
+    void _updateHcrPmc730Responsive(bool responding, QString msg);
+
+    /// @brief Accept a new status from MotionControlDaemon and react if necessary
+    /// @param status the new status from MotionControlDaemon
+    void _updateMotionControlStatus(MotionControl::Status status);
+
+    /// @brief Note a responsiveness change for MotionControlDaemon
+    /// @param responding true if the daemon is now responsive, false if it's
+    /// now unresponsive
+    /// @param msg a string describing the responsiveness change
+    void _updateMotionControlResponsive(bool responding, QString msg);
+
+    /// @brief Mark the cmigitsDaemon as unresponsive
+    void _markCmigitsUnresponsive();
+    
+    /// @brief Update AGL altitude using new location from C-MIGITS data
+    void _updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData);
     
 private:
-    /// @brief Clear any existing status from HcrPmc730Daemon
-    void _clearHcrPmc730Status();
+    /// @brief How frequently will we poll CmigitsSharedMemory for new data?
+    static const int CMIGITS_POLL_INTERVAL_MS = 1000;
+    
+    /// @brief After what period do we consider C-MIGITS data too old?
+    static const int CMIGITS_DATA_TIMEOUT_MS = 1100;
+    
+    /// @brief Minimum pressure vessel pressure for allowing high voltage in the
+    /// transmitter.
+    static const float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+    
+    /// @brief Minimum altitude AGL for near-nadir transmit over land
+    static const int _XMIT_AGL_ALT_LIMIT_LAND = 1000;   // meters
+    
+    /// @brief Minimum altitude AGL for near-nadir transmit over land
+    static const int _XMIT_AGL_ALT_LIMIT_WATER = 1500;  // meters
+    
+    /// @brief AGL altitude below which we should attenuate receive if over water
+    static const int _ATTENUATED_AGL_ALT_LIMIT_LAND = 1800; // meters
+    
+    /// @brief AGL altitude below which we should attenuate receive if over water
+    static const int _ATTENUATED_AGL_ALT_LIMIT_WATER = 4800; // meters
+    
+    /// @brief Disable transmit
+    /// @param reason a string describing the reason transmit is disabled
+    void _disableTransmit(std::string reason);
     
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.
-    void _performMonitorTests();
+    void _doChecks();
     
-    /// Latest status received from HcrPmc730Daemon.
-    HcrPmc730Status * _hcrPmc730Status;
+    /// @brief Basic XML-RPC client instance
+    xmlrpc_c::clientSimple _xmlrpcClient;
     
-    /// Reasons transmit may be disallowed
-    enum _NoXmitReasonBit {
-        _NOXMIT_NO_HCRPMC730DAEMON      = 1 << 0,
-        _NOXMIT_PV_GOOD_PRESSURE_WAIT   = 1 << 1,
-        _NOXMIT_PV_PRESSURE_LOW         = 1 << 2,
-        _NOXMIT_NO_MOTIONCONTROLDAEMON  = 1 << 3,
-        _NOXMIT_DRIVES_NOT_HOMED        = 1 << 4
-    };
-    /// Mask of reasons transmit is currently disallowed
-    uint32_t _noXmitReasons;
+    /// @brief Is HcrPmc730Daemon currently responsive?
+    bool _hcrPmc730Responsive;
     
-    /// Minimum pressure vessel pressure for allowing high voltage in the
-    /// transmitter.
-    static const float _PV_MINIMUM_PRESSURE_PSI;
+    /// @brief Latest status received from HcrPmc730Daemon.
+    HcrPmc730Status _hcrPmc730Status;
     
-    /// Minimum time of acceptable pressure in the pressure vessel before
-    /// turning on transmitter high voltage is allowed.
-    static const int _PV_GOOD_PRESSURE_WAIT_SECONDS;
+    /// @brief Is MotionControlDaemon currently responsive?
+    bool _motionControlResponsive;
     
-    /// Value used to mark a bad start time
-    static const time_t _START_TIME_BAD;
+    /// @brief Latest status received from HcrPmc730Daemon.
+    MotionControl::Status _motionControlStatus;
     
-    /// Start time of continuous good pressure in the pressure vessel. This is
-    /// reset to _START_TIME_BAD whenever a bad pressure is seen.
-    int _pvGoodPressureStartTime;
+    /// @brief Thread which monitors the CmigitsSharedMemory segment
+    CmigitsShmWatchThread _cmigitsWatchThread;
+
+    /// @brief Is new data showing up in CmigitsSharedMemory?
+    bool _cmigitsResponsive;
+    
+    /// @brief Is the TerrainHtServer responsive?
+    bool _terrainHtServerResponsive;
+    
+    /// @brief last AGL altitude
+    double _aglAltitude;
+    
+    /// @brief Are we over water?
+    bool _overWater;
+    
+    /// @brief User's intended state for transmitter high voltage
+    bool _hvRequested;
 };
 
 #endif /* TRANSMITCONTROL_H_ */

@@ -23,6 +23,7 @@
 #include <CmigitsSharedMemory.h>
 #include <HcrPmc730StatusThread.h>
 #include <logx/Logging.h>
+#include <MotionControlStatusThread.h>
 #include <QCoreApplication>
 #include <QFunctionWrapper.h>
 #include <QTimer>
@@ -54,21 +55,6 @@ static const int REGISTRATION_INTERVAL_SECS = 60;
 // Log a brief status message at this interval.
 static const int LOG_STATUS_INTERVAL_SECS = 15;
 
-// Perform safety checks at this interval.
-static const int CHECK_INTERVAL_MSECS = 1000;
-
-// Consider a daemon unresponsive if we don't get an update in this period.
-static const int DAEMON_TIMEOUT_MSECS = 1500;
-
-// Update timer for HcrPmc730Daemon responses.
-QTimer * HcrPmc730TimeoutTimer = 0;
-
-// XML-RPC client instance
-xmlrpc_c::clientSimple _XmlRpcClient;
-
-// TerrainHtServer XML-RPC URL
-const std::string _TerrainHtServerURL = "http://archiver:9090/RPC2";
-
 void
 updateRegistration() {
     // Make sure we remain registered with PMU, so it knows we're alive
@@ -78,85 +64,6 @@ updateRegistration() {
 void
 logStatus() {
     ILOG << "SafetyMonitor still running...";
-}
-
-// Access to the C-MIGITS data shared memory segment.
-CmigitsSharedMemory _CmShm;
-
-// Surface types
-typedef enum {
-    SURFACE_LAND,
-    SURFACE_WATER,
-    SURFACE_UNKNOWN
-} SurfaceType;
-
-static const double BAD_AGL_ALTITUDE = -999.;
-
-// Variables to be included in SafetyMonitor's status
-double _AltitudeAGL = BAD_AGL_ALTITUDE;
-SurfaceType _SurfType = SURFACE_UNKNOWN;
-bool _TransmitRestrictedByAlt = false;
-
-// Check aircraft altitude AGL and react if it's low enough for ground return
-// to damage the receiver LNAs.
-void
-checkAltitude() {
-    _AltitudeAGL = BAD_AGL_ALTITUDE;
-    _SurfType = SURFACE_UNKNOWN;
-    
-    // Get instrument latitude, longitude, and MSL altitude from the C-MIGITS
-    uint64_t time3501;
-    double latitude;
-    double longitude;
-    double altitudeMSL;
-    _CmShm.getLatest3501Data(time3501, latitude, longitude, altitudeMSL);
-    if (time3501 == 0) {
-        WLOG << "No current data available from C-MIGITS";
-    } else {
-        DLOG << time3501 << ", lat: " << latitude << ", lon: " << longitude <<
-                ", altMSL: " << altitudeMSL;
-
-        // Get surface altitude MSL from the TerrainHtServer
-        try {
-            xmlrpc_c::value result;
-            _XmlRpcClient.call(_TerrainHtServerURL, "get.height", "dd", &result, 
-                    latitude, longitude);
-            
-            // The value returned should be a dictionary
-            std::map<std::string, xmlrpc_c::value> dict =
-              static_cast<std::map<std::string, xmlrpc_c::value> >(xmlrpc_c::value_struct(result));
-            
-            // First see if TerrainHtServer reported an error
-            bool error = xmlrpc_c::value_boolean(dict["isError"]);
-            if (error) {
-                WLOG << std::fixed << std::setprecision(4) << 
-                        "TerrainHtServer returned an error for lat " << latitude << 
-                        "/lon " << longitude;
-            } else {
-                // Get the surface altitude above MSL then calculate aircraft height 
-                // above the surface
-                double surfaceAltMSL = xmlrpc_c::value_double(dict["heightM"]);
-                _AltitudeAGL = altitudeMSL - surfaceAltMSL;
-                
-                // Over land or water?
-                bool overWater = xmlrpc_c::value_boolean(dict["isWater"]);
-                _SurfType = overWater ? SURFACE_WATER : SURFACE_LAND;
-                
-                // Log what we got
-                DLOG << "Sensor height AGL " << _AltitudeAGL << " m (over " << 
-                        (overWater ? "water" : "land") << ")";
-            }
-        } catch (std::exception & e) {
-            WLOG << "Error on TerrainHtServer get.height() call: " << e.what();
-        }
-    }
-}
-
-// Perform the periodic safety checks
-void
-doChecks() {
-    // Check aircraft AGL altitude
-    checkAltitude();
 }
 
 /// @brief xmlrpc_c::method to get status from the SafetyMonitor process.
@@ -267,9 +174,13 @@ main(int argc, char *argv[]) {
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
-    // Start up a thread to get HcrPmc730Daemon status on a regular basis.
+    // Start a thread to get HcrPmc730Daemon status on a regular basis.
     HcrPmc730StatusThread hcrPmc730StatusThread("localhost", 8003);
     hcrPmc730StatusThread.start();
+    
+    // Start a thread to get MotionControlDaemon status on a regular basis
+    MotionControlStatusThread mcStatusThread("localhost", 8080);
+//    mcStatusThread.start();
     
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
@@ -277,13 +188,12 @@ main(int argc, char *argv[]) {
     
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
-    TransmitControl transmitContro(hcrPmc730StatusThread);
+    TransmitControl transmitControl(hcrPmc730StatusThread, mcStatusThread);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
     signal(SIGTERM, sigHandler);
-
-    // 
+ 
     // Set up a timer to periodically register with PMU so it knows we're still
     // alive.
     QTimer registrationTimer;
@@ -301,15 +211,6 @@ main(int argc, char *argv[]) {
             &statusFuncWrapper, SLOT(callFunction()));
     statusTimer.start();
     
-    // Set up a timer to periodically get current state and apply protective 
-    // measures if necessary.
-    QTimer checkTimer;
-    checkTimer.setInterval(CHECK_INTERVAL_MSECS);
-    QFunctionWrapper doChecksFuncWrapper(doChecks);
-    QObject::connect(&checkTimer, SIGNAL(timeout()),
-            &doChecksFuncWrapper, SLOT(callFunction()));
-    checkTimer.start();
-
     // Now just run the application until somebody or something interrupts it
     try {
         App->exec();
