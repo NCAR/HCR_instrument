@@ -180,7 +180,7 @@ main(int argc, char *argv[]) {
     
     // Start a thread to get MotionControlDaemon status on a regular basis
     MotionControlStatusThread mcStatusThread("localhost", 8080);
-//    mcStatusThread.start();
+    mcStatusThread.start();
     
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
