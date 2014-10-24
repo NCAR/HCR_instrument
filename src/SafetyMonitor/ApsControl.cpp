@@ -18,7 +18,7 @@ static inline double HpaToPsi(double pres_hpa) {
 
 ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
     _pmc730Client("localhost", 8003),
-    _holdOpen(false) {
+    _valveControlState(VALVE_AUTOMATIC) {
     // Call _checkPvPressure() when new status from HcrPmc730Daemon arrives
     connect(& hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_checkPvPressure(HcrPmc730Status)));
@@ -47,7 +47,7 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     }
     
     // If we're in "Hold Open" mode, make sure the solenoid valve is open.
-    if (_holdOpen) {
+    if (_valveControlState) {
         if (! status730.apsValveOpen()) {
             WLOG << "APS valve got closed while in 'Hold Open' mode. Opening valve again.";
             _openApsValve();
@@ -74,15 +74,30 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
 }
 
 void
-ApsControl::setHoldOpen(bool holdOpen) {
-    _holdOpen = holdOpen;
-    ILOG << "Setting 'hold open' to " << (_holdOpen ? "true" : "false") <<
-            " and " << (_holdOpen ? "opening" : "closing") << " the APS valve";
+ApsControl::setValveControl(ValveControlState state) {
+    _valveControlState = state;
+    std::string stateName;
+    if (_valveControlState == VALVE_AUTOMATIC) {
+        stateName = "automatic";
+    } else if (_valveControlState == VALVE_ALWAYS_OPEN) {
+        stateName = "always open";
+    } else if (_valveControlState == VALVE_ALWAYS_CLOSED) {
+        stateName = "always closed";
+    } else {
+        ELOG << "Unknown valve control state " << _valveControlState <<
+            ", changing to 'automatic'";
+        _valveControlState = VALVE_AUTOMATIC;
+        stateName = "automatic";
+    }
     
     // Explicitly open or close the valve now based on the given choice.
-    // If _holdOpen is now false, normal control will resume on the next call
-    // to _checkPvPressure().
-    if (_holdOpen) {
+    // For VALVE_AUTOMATIC, we close the valve now, and normal control will 
+    // resume on the next call to _checkPvPressure().
+    bool openValveNow = (_valveControlState == VALVE_ALWAYS_OPEN);
+    ILOG << "Setting valve control state to '" << stateName <<
+            " and " << (openValveNow ? "opening" : "closing") << " the APS valve";
+    
+    if (openValveNow) {
         _openApsValve();
     } else {
         _closeApsValve();
