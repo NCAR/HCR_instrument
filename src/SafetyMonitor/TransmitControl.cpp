@@ -166,23 +166,23 @@ TransmitControl::_noXmitReasonText() {
     case XMIT_ALLOWED:
         return("Transmit allowed: All tests passed");
     case NOXMIT_NO_HCRPMC730_DATA:
-        return("Transmit disallowed: No data from HcrPmc730Daemon");
+        return("Transmit not allowed: No data from HcrPmc730Daemon");
     case NOXMIT_NO_CMIGITS_DATA:
-        return("Transmit disallowed: No data from cmigitsDaemon");
+        return("Transmit not allowed: No data from cmigitsDaemon");
     case NOXMIT_NO_TERRAINHTSERVER_DATA:
-        return("Transmit disallowed: TerrainHtServer not responding or returned an error");
+        return("Transmit not allowed: TerrainHtServer not responding or returned an error");
     case NOXMIT_NO_MOTIONCONTROL_DATA:
-        return("Transmit disallowed: No data from MotionControlDaemon");
+        return("Transmit not allowed: No data from MotionControlDaemon");
     case NOXMIT_PV_PRESSURE_LOW:
-        oss << "Transmit disallowed: PV pressure is below minimum " <<
+        oss << "Transmit not allowed: PV pressure is below minimum " <<
             "operating pressure of " << _PV_MINIMUM_PRESSURE_PSI << " PSI";
         return(oss.str());
     case NOXMIT_TOO_LOW_FOR_NONZENITH:
-        oss << "Transmit disallowed: Non-zenith pointing/scanning and AGL " <<
+        oss << "Transmit not allowed: Non-zenith pointing/scanning and AGL " <<
                 "altitude < " << _XMIT_NONZENITH_AGL_LIMIT << " m";
         return(oss.str());
     case NOXMIT_TOO_LOW_FOR_NADIR_POINTING:
-        oss << "Transmit disallowed: Near-nadir pointing/scanning and AGL " << 
+        oss << "Transmit not allowed: Near-nadir pointing/scanning and AGL " << 
             "altitude over " << (_overWater ? "water" : "land") << " < " << 
             _xmitNadirAglMinimum() << " m";
         return(oss.str());
