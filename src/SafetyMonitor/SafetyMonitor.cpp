@@ -225,6 +225,10 @@ main(int argc, char *argv[]) {
 
     // Clean up before exit
     ILOG << "SafetyMonitor (" << getpid() << ") exiting";
+    
+    statusTimer.stop();
+    registrationTimer.stop();
+    mcStatusThread.quit();
     hcrPmc730StatusThread.quit();
     return 0;
 } 
