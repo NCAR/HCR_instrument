@@ -34,6 +34,20 @@ public:
     TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
             MotionControlStatusThread & mcStatusThread);
     virtual ~TransmitControl();
+    
+    /// @brief Enum of reasons that transmit may be disabled
+    typedef enum {
+        XMIT_ALLOWED,                   ///< OK to transmit
+        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _noXmitReason
+        NOXMIT_NO_HCRPMC730_DATA,       ///< HcrPmc730Daemon is not providing data
+        NOXMIT_NO_CMIGITS_DATA,         ///< cmigitsDaemon is not providing data
+        NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
+        NOXMIT_NO_MOTIONCONTROL_DATA,   ///< MotionControlDaemon is not providing data
+        NOXMIT_PV_PRESSURE_LOW,         ///< Pressure vessel pressure is too low
+        NOXMIT_TOO_LOW_FOR_NONZENITH,   ///< AGL altitude too low for non-zenith pointing
+        NOXMIT_TOO_LOW_FOR_NADIR_POINTING,       ///< AGL altitude too low for near-nadir pointing
+    } NoXmitReasonCode;
+    
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
     /// @param status the new status from HcrPmc730Daemon
@@ -76,7 +90,7 @@ private:
     /// @param ccwLimit2 counterclockwise limit of the second arc
     /// @param cwLimit2 clockwise limit of the second arc
     /// @return true iff the two arcs overlap
-    static double _ArcOverlapsArc(double ccwLimit1, double cwLimit1, 
+    static double _ArcsOverlap(double ccwLimit1, double cwLimit1, 
             double ccwLimit2, double cwLimit2);
     
     /// @brief Return true iff the given arc contains the given angle
@@ -85,11 +99,11 @@ private:
     /// @param angle the angle to be tested
     /// @return Return true iff the given arc contains the given angle
     static double _ArcContainsAngle(double ccwLimit, double cwLimit, double angle) {
-        return(_ArcOverlapsArc(ccwLimit, cwLimit, angle, angle));
+        return(_ArcsOverlap(ccwLimit, cwLimit, angle, angle));
     }
     
-    /// @brief Return true iff the first given arc completely contains the
-    /// second given arc. 
+    /// @brief Return true iff the first arc completely contains the
+    /// second arc. 
     /// @param ccwLimit1 counterclockwise limit of the first arc
     /// @param cwLimit1 clockwise limit of the first arc
     /// @param ccwLimit2 counterclockwise limit of the second arc
@@ -98,6 +112,30 @@ private:
     static double _ArcContainsArc(double ccwLimit1, double cwLimit1, 
             double ccwLimit2, double cwLimit2);
     
+    /// @brief Test if transmit is currently allowed and return the appropriate
+    /// NoXmitReasonCode.
+    /// @return the currently appropriate NoXmitReasonCode
+    NoXmitReasonCode _testIfTransmitIsAllowed();
+    
+    /// @brief Return a string describing the the current _noXmitReason
+    /// @return a string describing the the current _noXmitReason
+    std::string _noXmitReasonText();
+    
+    /// @brief Return true iff attenuated receive mode is currently required,
+    /// and set the given message to describe the result of the test.
+    /// @param[out] msg the returned message string describing the result of
+    /// the test
+    /// @return true iff attenuated receive mode is currently required
+    bool _testIfAttenuationIsRequired(std::string & msg);
+    
+    /// @brief Return the minimum AGL altitude (m) for transmitting when 
+    /// pointing near nadir.
+    /// @return the minimum AGL altitude (m) for transmitting when pointing
+    /// near nadir.
+    double _xmitNadirAglMinimum() {
+        return(_overWater ? _XMIT_NADIR_AGL_LIMIT_WATER : _XMIT_NADIR_AGL_LIMIT_LAND);
+    }
+
     /// @brief Return true if pointing near zenith or scanning strictly through
     /// near-zenith angles.
     bool _allNearZenithPointing();
@@ -137,22 +175,9 @@ private:
     /// @brief AGL altitude below which we should attenuate receive if over water
     static const int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800; // meters
     
-    /// @brief Enum of reasons that transmit may be disabled
-    typedef enum {
-        XMIT_ALLOWED,                   ///< OK to transmit
-        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _noXmitReason
-        NOXMIT_NO_HCRPMC730_DATA,       ///< HcrPmc730Daemon is not providing data
-        NOXMIT_NO_CMIGITS_DATA,         ///< cmigitsDaemon is not providing data
-        NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
-        NOXMIT_NO_MOTIONCONTROL_DATA,   ///< MotionControlDaemon is not providing data
-        NOXMIT_PV_PRESSURE_LOW,         ///< Pressure vessel pressure is too low
-        NOXMIT_TOO_LOW_FOR_NONZENITH,   ///< AGL altitude too low for non-zenith pointing
-        NOXMIT_TOO_LOW_FOR_NADIR,       ///< AGL altitude too low for near-nadir pointing
-    } NoXmitReasonCode;
-    
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.
-    void _doChecks();
+    void _handleNewStatus();
     
     /// @brief Basic XML-RPC client instance
     xmlrpc_c::clientSimple _xmlrpcClient;
@@ -190,6 +215,9 @@ private:
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
     NoXmitReasonCode _noXmitReason;
+    
+    /// @brief Is an attenuated receive mode required by current conditions?
+    bool _attenuate;
 };
 
 #endif /* TRANSMITCONTROL_H_ */

@@ -70,7 +70,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _cmigitsWatchThread.start();
     
     // Finally, do our checks
-    _doChecks();
+    _handleNewStatus();
 }
 
 TransmitControl::~TransmitControl() {
@@ -80,7 +80,7 @@ TransmitControl::~TransmitControl() {
 void
 TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
     _hcrPmc730Status = status;
-    _doChecks();
+    _handleNewStatus();
 }
 
 void
@@ -92,13 +92,13 @@ TransmitControl::_updateHcrPmc730Responsive(bool responding, QString msg) {
         WLOG << "HcrPmc730Daemon is not responding: " << msg.toStdString();
     }
     // Redo the monitoring tests
-    _doChecks();
+    _handleNewStatus();
 }
 
 void
 TransmitControl::_updateMotionControlStatus(MotionControl::Status status) {
     _motionControlStatus = status;
-    _doChecks();
+    _handleNewStatus();
 }
 
 void
@@ -110,123 +110,138 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
         WLOG << "MotionControlDaemon is not responding: " << msg.toStdString();
     }
     // Redo the monitoring tests
-    _doChecks();
+    _handleNewStatus();
 }
 
 void
 TransmitControl::_markCmigitsUnresponsive() {
     _cmigitsResponsive = false;
-    _doChecks();
+    _handleNewStatus();
+}
+
+TransmitControl::NoXmitReasonCode
+TransmitControl::_testIfTransmitIsAllowed() {
+    if (! _hcrPmc730Responsive) {
+        return(NOXMIT_NO_HCRPMC730_DATA);
+    }
+    
+    if (! _cmigitsResponsive) {
+        return(NOXMIT_NO_CMIGITS_DATA);
+    }
+    
+    if (! _terrainHtServerResponsive) {
+        return(NOXMIT_NO_TERRAINHTSERVER_DATA);
+    }
+    
+    if (! _motionControlResponsive) {
+        return(NOXMIT_NO_MOTIONCONTROL_DATA);
+    }
+    
+    // Convert pressure vessel pressure from hPa to PSI and test if it 
+    // does not meet our minimum pressure criterion.
+    double pvPressurePsi = HpaToPsi(_hcrPmc730Status.pvForePressure());
+    if (pvPressurePsi < _PV_MINIMUM_PRESSURE_PSI) {
+        return(NOXMIT_PV_PRESSURE_LOW);
+    }
+    
+    // No transmit allowed if altitude is below _XMIT_NONZENITH_AGL_LIMIT and 
+    // not scanning/pointing near zenith.
+    if (_aglAltitude < _XMIT_NONZENITH_AGL_LIMIT && ! _allNearZenithPointing()) {
+        return(NOXMIT_TOO_LOW_FOR_NONZENITH);
+    }
+
+    // Test for AGL altitude below our nadir limit if we're nadir pointing
+    if (_anyNearNadirPointing() && _aglAltitude < _xmitNadirAglMinimum()) {
+        return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
+    }
+    
+    // All tests passed, transmit is allowed!
+    return(XMIT_ALLOWED);
+}
+
+std::string
+TransmitControl::_noXmitReasonText() {
+    std::ostringstream oss;
+    switch (_noXmitReason) {
+    case XMIT_ALLOWED:
+        return("Transmit allowed: All tests passed");
+    case NOXMIT_NO_HCRPMC730_DATA:
+        return("Transmit disallowed: No data from HcrPmc730Daemon");
+    case NOXMIT_NO_CMIGITS_DATA:
+        return("Transmit disallowed: No data from cmigitsDaemon");
+    case NOXMIT_NO_TERRAINHTSERVER_DATA:
+        return("Transmit disallowed: TerrainHtServer not responding or returned an error");
+    case NOXMIT_NO_MOTIONCONTROL_DATA:
+        return("Transmit disallowed: No data from MotionControlDaemon");
+    case NOXMIT_PV_PRESSURE_LOW:
+        oss << "Transmit disallowed: PV pressure is below minimum " <<
+            "operating pressure of " << _PV_MINIMUM_PRESSURE_PSI << " PSI";
+        return(oss.str());
+    case NOXMIT_TOO_LOW_FOR_NONZENITH:
+        oss << "Transmit disallowed: Non-zenith pointing/scanning and AGL " <<
+                "altitude < " << _XMIT_NONZENITH_AGL_LIMIT << " m";
+        return(oss.str());
+    case NOXMIT_TOO_LOW_FOR_NADIR_POINTING:
+        oss << "Transmit disallowed: Near-nadir pointing/scanning and AGL " << 
+            "altitude over " << (_overWater ? "water" : "land") << " < " << 
+            _xmitNadirAglMinimum() << " m";
+        return(oss.str());
+    default:
+        std::ostringstream oss;
+        oss << "Oops, no text for NoXmitReasonCode " << _noXmitReason;
+        return(oss.str());
+    }
+}
+
+bool
+TransmitControl::_testIfAttenuationIsRequired(std::string & msg) {
+    int attenuatedNadirAglLimit = _overWater ?
+            _ATTENUATED_NADIR_AGL_LIMIT_WATER : _ATTENUATED_NADIR_AGL_LIMIT_LAND;
+    if (_anyNearNadirPointing() && _aglAltitude < attenuatedNadirAglLimit) {
+        std::ostringstream oss;
+        oss << "Attenuated receive required: " <<
+                "Near-nadir pointing/scanning and AGL altitude over " << 
+                (_overWater ? "water" : "land") << " < " << 
+                attenuatedNadirAglLimit << " m";
+        msg = oss.str();
+        return(true);
+    } else {
+        msg = "Attenuated receive mode is not required";
+        return(false);
+    }
 }
 
 void
-TransmitControl::_doChecks() {
-    // Allow transmit unless a test below fails.
-    NoXmitReasonCode newNoXmitReason = XMIT_ALLOWED;
-    std::string noXmitReasonMsg("Transmit tests all passed.");
+TransmitControl::_handleNewStatus() {
+    // Test if transmit is currently allowed
+    NoXmitReasonCode noXmitReason = _testIfTransmitIsAllowed();
     
-    if (newNoXmitReason == XMIT_ALLOWED && ! _hcrPmc730Responsive) {
-        newNoXmitReason = NOXMIT_NO_HCRPMC730_DATA;
-        noXmitReasonMsg = "No data from HcrPmc730Daemon";
+    if (noXmitReason != _noXmitReason) {
+        _noXmitReason = noXmitReason;
+        ILOG << _noXmitReasonText();
     }
     
-    if (newNoXmitReason == XMIT_ALLOWED && ! _cmigitsResponsive) {
-        newNoXmitReason = NOXMIT_NO_CMIGITS_DATA;
-        noXmitReasonMsg = "No data from cmigitsDaemon";
+    // Test if attenuated receive is required
+    std::string msg;
+    bool attenuate = _testIfAttenuationIsRequired(msg);
+    if (attenuate != _attenuate) {
+        _attenuate = attenuate;
+        ILOG << msg;
     }
     
-    if (newNoXmitReason == XMIT_ALLOWED && ! _terrainHtServerResponsive) {
-        newNoXmitReason = NOXMIT_NO_TERRAINHTSERVER_DATA;
-        noXmitReasonMsg = "TerrainHtServer not responding or returned an error";
-    }
-    
-    if (newNoXmitReason == XMIT_ALLOWED && ! _motionControlResponsive) {
-        newNoXmitReason = NOXMIT_NO_MOTIONCONTROL_DATA;
-        noXmitReasonMsg = "No data from MotionControlDaemon";
-    }
-    
-    bool attenuate = false;
-    std::string attenuateReasonMsg;
-    
-    // Convert pressure vessel pressure from hPa to PSI and make sure it 
-    // exceeds our minimum pressure criterion.
-    double pvPressurePsi = HpaToPsi(_hcrPmc730Status.pvForePressure());
-
-    if (newNoXmitReason == XMIT_ALLOWED && 
-            pvPressurePsi < _PV_MINIMUM_PRESSURE_PSI) {
-        std::ostringstream oss;
-        oss << "PV pressure (" << pvPressurePsi << 
-                " PSI) is below minimum operating pressure of " <<
-                _PV_MINIMUM_PRESSURE_PSI << " PSI";
-        newNoXmitReason = NOXMIT_PV_PRESSURE_LOW;
-        noXmitReasonMsg = oss.str();
-    }
-    
-    // Depending on beamDirection, altitude AGL, and surface cover, we may:
-    //   1) transmit normally
-    //   2) transmit normally, but use an attenuated receive mode
-    //   3) not transmit
-    std::string surfaceType = _overWater ? "water" : "land";
-    int xmitNadirAglLimit = _overWater ? 
-            _XMIT_NADIR_AGL_LIMIT_WATER : _XMIT_NADIR_AGL_LIMIT_LAND;
-    int attenuatedNadirAglLimit = _overWater ?
-            _ATTENUATED_NADIR_AGL_LIMIT_WATER : _ATTENUATED_NADIR_AGL_LIMIT_LAND;
-    
-    if (newNoXmitReason == XMIT_ALLOWED &&
-            ! _allNearZenithPointing() && _aglAltitude < _XMIT_NONZENITH_AGL_LIMIT) {
-        // No transmit allowed if below _XMIT_NONZENITH_AGL_LIMIT and not
-        // always pointing near zenith.
-        std::ostringstream oss;
-        oss << "Non-zenith pointing and AGL altitude is less than " << 
-                _XMIT_NONZENITH_AGL_LIMIT << " m";
-        newNoXmitReason = NOXMIT_TOO_LOW_FOR_NONZENITH;
-        noXmitReasonMsg = oss.str();
-    }
-
-    if (newNoXmitReason == XMIT_ALLOWED && 
-            _anyNearNadirPointing() && _aglAltitude < xmitNadirAglLimit) {
-        // No transmit allowed if below xmitNadirAglLimit and pointing near 
-        // nadir at any time.
-        std::ostringstream oss;
-        oss << "Near-nadir pointing and AGL altitude over " << surfaceType << 
-                " is less than " << xmitNadirAglLimit << " m";
-        newNoXmitReason = NOXMIT_TOO_LOW_FOR_NADIR;
-        noXmitReasonMsg = oss.str();
-    } else if (_anyNearNadirPointing() && _aglAltitude < attenuatedNadirAglLimit) {
-        // We need to attenuate the received signal
-        std::ostringstream oss;
-        oss << "Near-nadir pointing and AGL altitude over " << surfaceType << 
-                " is less than " << attenuatedNadirAglLimit << " m";
-        attenuate = true;
-        attenuateReasonMsg = oss.str();
-    }
-
-    // If the result of our transmit tests changed from last time, log the 
-    // change and save the new result.
-    if (newNoXmitReason != _noXmitReason) {
-        _noXmitReason = newNoXmitReason;
-        ILOG << "Transmit is " << 
-                ((_noXmitReason == XMIT_ALLOWED) ? "allowed" : "disallowed") <<
-                noXmitReasonMsg;
-    }
-    
-    // Disable transmit if a test above failed, otherwise we can turn on high 
-    // voltage now if it's been requested.
-    if (_noXmitReason != XMIT_ALLOWED) {
-        // TODO: actually disable HV here!
-    } else {
-        if (_hvRequested){
-            // If we need to attenuate received signal, set that up before we 
-            // turn on high voltage
-            if (attenuate) {
-                // Change to an attenuated receive mode if required
-                WLOG << "Attenuated receive required: " << attenuateReasonMsg;
-                WLOG << "IMPLEMENTATION FOR ATTENUATED MODE IS NEEDED!";
-            }
-            // TODO: turn on HV here!
+    // Turn on HV if it's requested and allowed, otherwise turn it off
+    if (_hvRequested && _noXmitReason == XMIT_ALLOWED) {
+        // If we need to attenuate received signal, set that up before we 
+        // turn on high voltage
+        if (_attenuate) {
+            // TODO: actually attenuate receive here!
+            WLOG << "IMPLEMENTATION FOR ATTENUATED MODE IS NEEDED!";
         }
-        
-        // TODO: actually attenuate receive here!
+        // TODO: actually enable HV here!
+        WLOG << "IMPLEMENTATION FOR HV ENABLE IS NEEDED";
+    } else {
+        // TODO: turn off HV here!
+        WLOG << "IMPLEMENTATION FOR HV DISABLE IS NEEDED";
     }
 }
 
@@ -291,11 +306,11 @@ TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) 
     } while (false);    // do exactly once
 
     // Do checks using new state
-    _doChecks();
+    _handleNewStatus();
 }
 
 double
-TransmitControl::_ArcOverlapsArc(double ccwLimit1, double cwLimit1, 
+TransmitControl::_ArcsOverlap(double ccwLimit1, double cwLimit1, 
         double ccwLimit2, double cwLimit2) {
     // Normalize all endpoints relative to the ccw side of the first arc
     double a = _NormalizeAngle(ccwLimit1);
@@ -339,7 +354,7 @@ TransmitControl::_anyNearNadirPointing() {
         // scanning
         double scanCcwLimit = _motionControlStatus.scanCcwLimit;
         double scanCwLimit = _motionControlStatus.scanCwLimit;
-        return(_ArcOverlapsArc(nearNadirCcwLimit, nearNadirCwLimit,
+        return(_ArcsOverlap(nearNadirCcwLimit, nearNadirCwLimit,
                 scanCcwLimit, scanCwLimit));
     }
 }
