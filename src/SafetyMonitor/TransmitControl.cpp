@@ -32,12 +32,13 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _hcrPmc730Status(true),
     _motionControlResponsive(false),
     _motionControlStatus(),
-    _cmigitsWatchThread(CMIGITS_POLL_INTERVAL_MS, CMIGITS_DATA_TIMEOUT_MS),
+    _cmigitsWatchThread(_CMIGITS_POLL_INTERVAL_MS, _CMIGITS_DATA_TIMEOUT_MS),
     _cmigitsResponsive(false),
     _terrainHtServerResponsive(false),
     _aglAltitude(0.0),
     _overWater(false),
-    _hvRequested(false)
+    _hvRequested(false),
+    _noXmitReason(NOXMIT_UNSPECIFIED)
 {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
@@ -119,42 +120,46 @@ TransmitControl::_markCmigitsUnresponsive() {
 }
 
 void
-TransmitControl::_disableTransmit(std::string reason) {
-    ILOG << "Disabling transmit: " << reason;
-    WLOG << "ACTUAL IMPLEMENTATION OF _disableTransmit() DOES NOT EXIST YET!";
-}
-
-void
 TransmitControl::_doChecks() {
-    if (! _hcrPmc730Responsive) {
-        _disableTransmit("No data from HcrPmc730Daemon");
-        return;
+    // Allow transmit unless a test below fails.
+    NoXmitReasonCode newNoXmitReason = XMIT_ALLOWED;
+    std::string noXmitReasonMsg("Transmit tests all passed.");
+    
+    if (newNoXmitReason == XMIT_ALLOWED && ! _hcrPmc730Responsive) {
+        newNoXmitReason = NOXMIT_NO_HCRPMC730_DATA;
+        noXmitReasonMsg = "No data from HcrPmc730Daemon";
     }
     
-    if (! _cmigitsResponsive) {
-        _disableTransmit("No data from cmigitsDaemon");
-        return;
+    if (newNoXmitReason == XMIT_ALLOWED && ! _cmigitsResponsive) {
+        newNoXmitReason = NOXMIT_NO_CMIGITS_DATA;
+        noXmitReasonMsg = "No data from cmigitsDaemon";
     }
     
-    if (! _terrainHtServerResponsive) {
-        _disableTransmit("TerrainHtServer not responding or returned an error");
-        return;
+    if (newNoXmitReason == XMIT_ALLOWED && ! _terrainHtServerResponsive) {
+        newNoXmitReason = NOXMIT_NO_TERRAINHTSERVER_DATA;
+        noXmitReasonMsg = "TerrainHtServer not responding or returned an error";
+    }
+    
+    if (newNoXmitReason == XMIT_ALLOWED && ! _motionControlResponsive) {
+        newNoXmitReason = NOXMIT_NO_MOTIONCONTROL_DATA;
+        noXmitReasonMsg = "No data from MotionControlDaemon";
     }
     
     bool attenuate = false;
-    std::string attenuateReason;
+    std::string attenuateReasonMsg;
     
     // Convert pressure vessel pressure from hPa to PSI and make sure it 
     // exceeds our minimum pressure criterion.
     double pvPressurePsi = HpaToPsi(_hcrPmc730Status.pvForePressure());
 
-    if (pvPressurePsi < _PV_MINIMUM_PRESSURE_PSI) {
+    if (newNoXmitReason == XMIT_ALLOWED && 
+            pvPressurePsi < _PV_MINIMUM_PRESSURE_PSI) {
         std::ostringstream oss;
         oss << "PV pressure (" << pvPressurePsi << 
                 " PSI) is below minimum operating pressure of " <<
                 _PV_MINIMUM_PRESSURE_PSI << " PSI";
-        _disableTransmit(oss.str());
-        return;
+        newNoXmitReason = NOXMIT_PV_PRESSURE_LOW;
+        noXmitReasonMsg = oss.str();
     }
     
     // Depending on beamDirection, altitude AGL, and surface cover, we may:
@@ -162,28 +167,66 @@ TransmitControl::_doChecks() {
     //   2) transmit normally, but use an attenuated receive mode
     //   3) not transmit
     std::string surfaceType = _overWater ? "water" : "land";
-    int xmitLimitAlt = _overWater ? _XMIT_AGL_ALT_LIMIT_WATER : _XMIT_AGL_ALT_LIMIT_LAND;
-    int attenuatedLimitAlt = _overWater ?
-            _ATTENUATED_AGL_ALT_LIMIT_WATER : _ATTENUATED_AGL_ALT_LIMIT_LAND;
+    int xmitNadirAglLimit = _overWater ? 
+            _XMIT_NADIR_AGL_LIMIT_WATER : _XMIT_NADIR_AGL_LIMIT_LAND;
+    int attenuatedNadirAglLimit = _overWater ?
+            _ATTENUATED_NADIR_AGL_LIMIT_WATER : _ATTENUATED_NADIR_AGL_LIMIT_LAND;
     
-    if (_aglAltitude < xmitLimitAlt) {
+    if (newNoXmitReason == XMIT_ALLOWED &&
+            ! _allNearZenithPointing() && _aglAltitude < _XMIT_NONZENITH_AGL_LIMIT) {
+        // No transmit allowed if below _XMIT_NONZENITH_AGL_LIMIT and not
+        // always pointing near zenith.
         std::ostringstream oss;
-        oss << "AGL altitude over " << surfaceType << " is less than " << 
-                xmitLimitAlt << " m";
-        _disableTransmit(oss.str());
-        return;
-    } else if (_aglAltitude < attenuatedLimitAlt) {
-        // Note that we should attenuate if we pass other transmit tests
-        std::ostringstream oss;
-        oss << "AGL altitude over " << surfaceType << " is less than " << 
-                attenuatedLimitAlt << " m";
-        attenuate = true;
-        attenuateReason = oss.str();
+        oss << "Non-zenith pointing and AGL altitude is less than " << 
+                _XMIT_NONZENITH_AGL_LIMIT << " m";
+        newNoXmitReason = NOXMIT_TOO_LOW_FOR_NONZENITH;
+        noXmitReasonMsg = oss.str();
     }
 
-    if (attenuate) {
-        WLOG << "Attenuated receive required: " << attenuateReason;
-        WLOG << "IMPLEMENTATION FOR ATTENUATED MODE IS NEEDED!";
+    if (newNoXmitReason == XMIT_ALLOWED && 
+            _anyNearNadirPointing() && _aglAltitude < xmitNadirAglLimit) {
+        // No transmit allowed if below xmitNadirAglLimit and pointing near 
+        // nadir at any time.
+        std::ostringstream oss;
+        oss << "Near-nadir pointing and AGL altitude over " << surfaceType << 
+                " is less than " << xmitNadirAglLimit << " m";
+        newNoXmitReason = NOXMIT_TOO_LOW_FOR_NADIR;
+        noXmitReasonMsg = oss.str();
+    } else if (_anyNearNadirPointing() && _aglAltitude < attenuatedNadirAglLimit) {
+        // We need to attenuate the received signal
+        std::ostringstream oss;
+        oss << "Near-nadir pointing and AGL altitude over " << surfaceType << 
+                " is less than " << attenuatedNadirAglLimit << " m";
+        attenuate = true;
+        attenuateReasonMsg = oss.str();
+    }
+
+    // If the result of our transmit tests changed from last time, log the 
+    // change and save the new result.
+    if (newNoXmitReason != _noXmitReason) {
+        _noXmitReason = newNoXmitReason;
+        ILOG << "Transmit is " << 
+                ((_noXmitReason == XMIT_ALLOWED) ? "allowed" : "disallowed") <<
+                noXmitReasonMsg;
+    }
+    
+    // Disable transmit if a test above failed, otherwise we can turn on high 
+    // voltage now if it's been requested.
+    if (_noXmitReason != XMIT_ALLOWED) {
+        // TODO: actually disable HV here!
+    } else {
+        if (_hvRequested){
+            // If we need to attenuate received signal, set that up before we 
+            // turn on high voltage
+            if (attenuate) {
+                // Change to an attenuated receive mode if required
+                WLOG << "Attenuated receive required: " << attenuateReasonMsg;
+                WLOG << "IMPLEMENTATION FOR ATTENUATED MODE IS NEEDED!";
+            }
+            // TODO: turn on HV here!
+        }
+        
+        // TODO: actually attenuate receive here!
     }
 }
 
@@ -249,4 +292,80 @@ TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) 
 
     // Do checks using new state
     _doChecks();
+}
+
+double
+TransmitControl::_ArcOverlapsArc(double ccwLimit1, double cwLimit1, 
+        double ccwLimit2, double cwLimit2) {
+    // Normalize all endpoints relative to the ccw side of the first arc
+    double a = _NormalizeAngle(ccwLimit1);
+    double b = _NormalizeAngle(cwLimit1 - a);
+    double c = _NormalizeAngle(ccwLimit2 - a);
+    double d = _NormalizeAngle(cwLimit2 - a);
+    // Now it's a (mathematically) simple test...
+    return((b >= c) || (d < c));
+}
+
+double
+TransmitControl::_ArcContainsArc(double ccwLimit1, double cwLimit1, 
+        double ccwLimit2, double cwLimit2) {
+    // Normalize all endpoints relative to the ccw side of the first arc
+    double a = _NormalizeAngle(ccwLimit1);
+    double b = _NormalizeAngle(cwLimit1 - a);
+    double c = _NormalizeAngle(ccwLimit2 - a);
+    double d = _NormalizeAngle(cwLimit2 - a);
+    // Now it's a (mathematically) simple test...
+    return((b >= d) && (d >= c));
+}
+
+bool
+TransmitControl::_anyNearNadirPointing() {
+    // For pointing, return true if the pointing angle is contained in the arc 
+    // defining "near-nadir". 
+    //
+    // For scanning, return true if the scanning arc overlaps the arc defining 
+    // "near-nadir".
+    //
+    // We cheat and only look at the rotation angle, because tilt should 
+    // remain small.
+    double nearNadirCcwLimit = 180 - _NEAR_NADIR_TOLERANCE_DEG;
+    double nearNadirCwLimit = 180 + _NEAR_NADIR_TOLERANCE_DEG;
+
+    if (_motionControlStatus.antennaMode == MotionControl::POINTING) {
+        // pointing
+        return(_ArcContainsAngle(nearNadirCcwLimit, nearNadirCwLimit,
+                _motionControlStatus.fixedPointingAngle));
+    } else {
+        // scanning
+        double scanCcwLimit = _motionControlStatus.scanCcwLimit;
+        double scanCwLimit = _motionControlStatus.scanCwLimit;
+        return(_ArcOverlapsArc(nearNadirCcwLimit, nearNadirCwLimit,
+                scanCcwLimit, scanCwLimit));
+    }
+}
+
+bool
+TransmitControl::_allNearZenithPointing() {
+    // For pointing, return true if the pointing angle is contained in the arc 
+    // defining "near-zenith". 
+    //
+    // For scanning, return true if the arc defining "near-zenith" completely 
+    // contains the scanned arc.
+    //
+    // We cheat and only look at the rotation angle, because tilt should 
+    // remain small.
+    double nearZenithCcwLimit = -_NEAR_ZENITH_TOLERANCE_DEG;
+    double nearZenithCwLimit = _NEAR_ZENITH_TOLERANCE_DEG;
+
+    if (_motionControlStatus.antennaMode == MotionControl::POINTING) {
+        // pointing
+        return(_ArcContainsAngle(nearZenithCcwLimit, nearZenithCwLimit,
+                _motionControlStatus.fixedPointingAngle));
+    } else {
+        // scanning
+        double scanCcwLimit = _motionControlStatus.scanCcwLimit;
+        double scanCwLimit = _motionControlStatus.scanCwLimit;
+        return(_ArcContainsArc(nearZenithCcwLimit, nearZenithCwLimit,
+                scanCcwLimit, scanCwLimit));
+    }    
 }

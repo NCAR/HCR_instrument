@@ -19,9 +19,9 @@
 
 class HcrPmc730StatusThread;
 
-/// Class providing implementation for handling transmitter control lines
-/// (filament and high voltage), including monitoring for whether conditions
-/// allow for safe transmission.
+/// Class providing implementation for handling the transmitter high voltage 
+/// enable line, monitoring for whether conditions allow for safe 
+/// transmission.
 class TransmitControl : public QObject {
     Q_OBJECT
 public:
@@ -62,31 +62,93 @@ private slots:
     void _updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData);
     
 private:
+    /// @brief Normalize the given angle in degrees into the interval [0, 360)
+    /// @param angle the angle in degrees to be normalized
+    /// @return the given angle normalized into the interval [0, 360)
+    static double _NormalizeAngle(double angle) {
+        angle = fmod(angle, 360.0);
+        return(angle < 0 ? (angle + 360.0) : angle);
+    }
+    
+    /// @brief Return true iff the two given arcs on a circle overlap
+    /// @param ccwLimit1 counterclockwise limit of the first arc
+    /// @param cwLimit1 clockwise limit of the first arc
+    /// @param ccwLimit2 counterclockwise limit of the second arc
+    /// @param cwLimit2 clockwise limit of the second arc
+    /// @return true iff the two arcs overlap
+    static double _ArcOverlapsArc(double ccwLimit1, double cwLimit1, 
+            double ccwLimit2, double cwLimit2);
+    
+    /// @brief Return true iff the given arc contains the given angle
+    /// @param ccwLimit counterclockwise limit of the arc, deg
+    /// @param cwLimit clockwise limit of the arc, deg
+    /// @param angle the angle to be tested
+    /// @return Return true iff the given arc contains the given angle
+    static double _ArcContainsAngle(double ccwLimit, double cwLimit, double angle) {
+        return(_ArcOverlapsArc(ccwLimit, cwLimit, angle, angle));
+    }
+    
+    /// @brief Return true iff the first given arc completely contains the
+    /// second given arc. 
+    /// @param ccwLimit1 counterclockwise limit of the first arc
+    /// @param cwLimit1 clockwise limit of the first arc
+    /// @param ccwLimit2 counterclockwise limit of the second arc
+    /// @param cwLimit2 clockwise limit of the second arc
+    /// @return true iff arc1 completely contains arc2
+    static double _ArcContainsArc(double ccwLimit1, double cwLimit1, 
+            double ccwLimit2, double cwLimit2);
+    
+    /// @brief Return true if pointing near zenith or scanning strictly through
+    /// near-zenith angles.
+    bool _allNearZenithPointing();
+    
+    /// @brief Return true if pointing near nadir or scanning through *any* 
+    /// near-nadir angles.
+    bool _anyNearNadirPointing();
+    
     /// @brief How frequently will we poll CmigitsSharedMemory for new data?
-    static const int CMIGITS_POLL_INTERVAL_MS = 1000;
+    static const int _CMIGITS_POLL_INTERVAL_MS = 1000;
     
     /// @brief After what period do we consider C-MIGITS data too old?
-    static const int CMIGITS_DATA_TIMEOUT_MS = 1100;
+    static const int _CMIGITS_DATA_TIMEOUT_MS = 1100;
+    
+    /// @brief Tolerance for near-zenith pointing, deg
+    static const float _NEAR_ZENITH_TOLERANCE_DEG = 45.0;
+    
+    /// @brief Tolerance for near-nadir pointing, deg
+    static const float _NEAR_NADIR_TOLERANCE_DEG = 45.0;
     
     /// @brief Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
     static const float _PV_MINIMUM_PRESSURE_PSI = 11.0;
     
-    /// @brief Minimum altitude AGL for near-nadir transmit over land
-    static const int _XMIT_AGL_ALT_LIMIT_LAND = 1000;   // meters
+    /// @brief Minimum altitude AGL for non-zenith transmit
+    static const int _XMIT_NONZENITH_AGL_LIMIT = 1000;  // meters
     
     /// @brief Minimum altitude AGL for near-nadir transmit over land
-    static const int _XMIT_AGL_ALT_LIMIT_WATER = 1500;  // meters
+    static const int _XMIT_NADIR_AGL_LIMIT_LAND = 1000; // meters
+    
+    /// @brief Minimum altitude AGL for near-nadir transmit over land
+    static const int _XMIT_NADIR_AGL_LIMIT_WATER = 1500;    // meters
     
     /// @brief AGL altitude below which we should attenuate receive if over water
-    static const int _ATTENUATED_AGL_ALT_LIMIT_LAND = 1800; // meters
+    static const int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1800;   // meters
     
     /// @brief AGL altitude below which we should attenuate receive if over water
-    static const int _ATTENUATED_AGL_ALT_LIMIT_WATER = 4800; // meters
+    static const int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800; // meters
     
-    /// @brief Disable transmit
-    /// @param reason a string describing the reason transmit is disabled
-    void _disableTransmit(std::string reason);
+    /// @brief Enum of reasons that transmit may be disabled
+    typedef enum {
+        XMIT_ALLOWED,                   ///< OK to transmit
+        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _noXmitReason
+        NOXMIT_NO_HCRPMC730_DATA,       ///< HcrPmc730Daemon is not providing data
+        NOXMIT_NO_CMIGITS_DATA,         ///< cmigitsDaemon is not providing data
+        NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
+        NOXMIT_NO_MOTIONCONTROL_DATA,   ///< MotionControlDaemon is not providing data
+        NOXMIT_PV_PRESSURE_LOW,         ///< Pressure vessel pressure is too low
+        NOXMIT_TOO_LOW_FOR_NONZENITH,   ///< AGL altitude too low for non-zenith pointing
+        NOXMIT_TOO_LOW_FOR_NADIR,       ///< AGL altitude too low for near-nadir pointing
+    } NoXmitReasonCode;
     
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.
@@ -124,6 +186,10 @@ private:
     
     /// @brief User's intended state for transmitter high voltage
     bool _hvRequested;
+    
+    /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
+    /// is currently allowed)
+    NoXmitReasonCode _noXmitReason;
 };
 
 #endif /* TRANSMITCONTROL_H_ */
