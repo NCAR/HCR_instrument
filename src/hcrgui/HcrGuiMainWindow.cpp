@@ -42,7 +42,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _dataMapperStatusThread(),
     _fireflydStatusThread(archiverHost, fireflydPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
-    _mcClientThread(rdsHost, motionControlPort),
+    _mcStatusThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
     _xmitdStatusThread(archiverHost, xmitterPort),
     _redLED(":/redLED.png"),
@@ -117,11 +117,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _cmigitsStatusThread.start();
 
     // Connect and start the MotionControlStatusThread
-    connect(& _mcClientThread, SIGNAL(serverResponsive(bool)),
+    connect(& _mcStatusThread, SIGNAL(serverResponsive(bool)),
             this, SLOT(_mcResponsivenessChange(bool)));
-    connect(& _mcClientThread, SIGNAL(newStatus(MotionControl::Status)),
+    connect(& _mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
             this, SLOT(_setMotionControlStatus(MotionControl::Status)));
-    _mcClientThread.start();
+    _mcStatusThread.start();
 
     // Connect signals from our HcrdrxStatusThread object and start the thread.
     connect(& _hcrdrxStatusThread, SIGNAL(serverResponsive(bool)),
@@ -215,8 +215,8 @@ void
 HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
     // log the responsiveness change
     std::ostringstream ss;
-    ss << "MotionControlDaemon @ " <<
-            _mcClientThread.rpcClient().daemonUrl() <<
+    ss << "MotionControlDaemon " <<
+            _mcStatusThread.rpcClient().daemonUrl() <<
             (responding ? " is " : " is not ") <<
             "responding";
     _logMessage(ss.str().c_str());
@@ -232,7 +232,7 @@ void
 HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
     _mcStatus = status;
     // Update the details dialog
-    _motionControlDetails.updateStatus(_mcClientThread.serverIsResponding(),
+    _motionControlDetails.updateStatus(_mcStatusThread.serverIsResponding(),
             _mcStatus);
     // Update the main GUI
     _update();
@@ -542,7 +542,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
             float angle;
             _antennaModeDialog.getPointingAngle(angle);
             // Point the antenna to the angle
-            _mcClientThread.rpcClient().point(angle);
+            _mcStatusThread.rpcClient().point(angle);
         }
         else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
             float ccwLimit, cwLimit, scanRate, beamTilt;
@@ -562,7 +562,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
                 }
             }
             // Start scanning
-            _mcClientThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
+            _mcStatusThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
         }
     }
 }
@@ -573,7 +573,7 @@ HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
     // Toggle the current state of attitude correction
     bool correction = _mcStatus.attitudeCorrectionEnabled;
     ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
-    _mcClientThread.rpcClient().setCorrectionEnabled(! correction);
+    _mcStatusThread.rpcClient().setCorrectionEnabled(! correction);
 }
 
 void
@@ -600,15 +600,15 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     // zero-count positions after homing long enough for us to also zero the
     // motor counts on the Pentek.
     bool savedState = _mcStatus.attitudeCorrectionEnabled;
-    _mcClientThread.rpcClient().setCorrectionEnabled(false);
+    _mcStatusThread.rpcClient().setCorrectionEnabled(false);
 
     // Start the drive homing program.
-    _mcClientThread.rpcClient().homeDrive();
+    _mcStatusThread.rpcClient().homeDrive();
 
     // Poll until homing is complete
     ILOG << "Waiting for servo drives to complete homing";
     while (true) {
-        if (! _mcClientThread.rpcClient().homingInProgress()) {
+        if (! _mcStatusThread.rpcClient().homingInProgress()) {
             break;
         }
         // Let other things run for up to 200 ms
@@ -617,7 +617,7 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     
     // Update motion control status and verify drives actually got homed. Pop up
     // a warning box if homing failed.
-    _mcStatus = _mcClientThread.rpcClient().status();
+    _mcStatus = _mcStatusThread.rpcClient().status();
     if (! _mcStatus.rotDriveHomed || ! _mcStatus.tiltDriveHomed) {
         WLOG << "Homing failed";
         // Let the user know that homing failed
@@ -637,7 +637,7 @@ done:
     // Sleep momentarily, then restore the previous state for attitude
     // correction
     usleep(100000);
-    _mcClientThread.rpcClient().setCorrectionEnabled(savedState);
+    _mcStatusThread.rpcClient().setCorrectionEnabled(savedState);
 }
 
 /// Toggle the current on/off state of the transmitter klystron filament
@@ -826,7 +826,7 @@ HcrGuiMainWindow::_update() {
     _ui.cmigitsStatusIcon->setPixmap(light);
 
     // MotionControl status LED
-    if (! _mcClientThread.serverIsResponding() ||
+    if (! _mcStatusThread.serverIsResponding() ||
             _motionControlDetails.errorDetected()) {
         _ui.mcStatusIcon->setPixmap(_redLED);
     } else if (_motionControlDetails.warningDetected()) {
@@ -835,7 +835,7 @@ HcrGuiMainWindow::_update() {
         _ui.mcStatusIcon->setPixmap(_greenLED);
     }
 
-    if (_mcClientThread.serverIsResponding()) {
+    if (_mcStatusThread.serverIsResponding()) {
         // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {

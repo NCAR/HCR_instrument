@@ -30,7 +30,6 @@ HcrdrxStatusThread.cpp
 HcrGuiLogWindow.cpp
 HcrGuiMainWindow.cpp
 MotionControlDetails.cpp
-MotionControlClientThread.cpp
 Pmc730Details.cpp
 qrc_HcrGuiMainWindow.cc
 XmitDetails.cpp
@@ -69,7 +68,6 @@ HcrdrxStatusThread.h
 HcrGuiLogWindow.h
 HcrGuiMainWindow.h
 MotionControlDetails.h
-MotionControlClientThread.h
 Pmc730Details.h
 XmitDetails.h
 XmitdStatusThread.h

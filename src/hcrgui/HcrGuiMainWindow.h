@@ -17,12 +17,12 @@
 #include <QUdpSocket>
 
 #include <CmigitsStatusThread.h>
+#include <MotionControlStatusThread.h>
 #include <HcrPmc730StatusThread.h>
 
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
-#include "MotionControlClientThread.h"
 #include "XmitdStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
@@ -184,7 +184,7 @@ private:
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
-    MotionControlClientThread _mcClientThread;
+    MotionControlStatusThread _mcStatusThread;
     HcrPmc730StatusThread _pmcStatusThread;
     XmitdStatusThread _xmitdStatusThread;
     
