@@ -1,5 +1,5 @@
 /*
- * SafetyMonitor.cpp
+ * HcrMonitor.cpp
  *
  * Daemon which performs some basic monitoring and reacts if necessary to 
  * protect the HCR transmitter and its receiver LNAs. For the transmitter, 
@@ -35,7 +35,7 @@
 #include "ApsControl.h"
 #include "TransmitControl.h"
 
-LOGGING("SafetyMonitor")
+LOGGING("HcrMonitor")
 
 namespace po = boost::program_options;
 
@@ -44,7 +44,7 @@ QCoreApplication *App = 0;
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
-    ILOG << "Stopping SafetyMonitor on signal " << sig << 
+    ILOG << "Stopping HcrMonitor on signal " << sig << 
             " (" << strsignal(sig) << ")";
     App->quit();
 }
@@ -63,26 +63,25 @@ updateRegistration() {
 
 void
 logStatus() {
-    ILOG << "SafetyMonitor still running...";
+    ILOG << "HcrMonitor still running...";
 }
 
-/// @brief xmlrpc_c::method to get status from the SafetyMonitor process.
+/// @brief xmlrpc_c::method to get status from the HcrMonitor process.
 ///
 /// The method returns a xmlrpc_c::value_struct (dictionary) mapping
 /// std::string keys to xmlrpc_c::value values. Pass the dictionary
-/// to the SafetyMonitorStatus(xmlrpc_c::value_struct & dict) constructor to
-/// create a usable SafetyMonitorStatus object.
+/// to the HcrMonitorStatus(xmlrpc_c::value_struct & dict) constructor to
+/// create a usable HcrMonitorStatus object.
 ///
-/// Example client usage, where SafetyMonitor is running on machine
-/// `smserver`:
+/// Example client usage, where HcrMonitor is running on machine
+/// `rds`:
 /// @code
 ///     #include <xmlrpc-c/client_simple.hpp>
 ///     ...
 ///
-///     // Get the status from SafetyMonitor on smserver.local.net
-///     // on port 8004
+///     // Get the status from HcrMonitor on rds on port 8004
 ///     xmlrpc_c::simpleClient client;
-///     std::string daemonUrl = "http://smserver.local.net:8004/RPC2")
+///     std::string daemonUrl = "http://rds:8004/RPC2")
 ///
 ///     xmlrpc_c::value result;
 ///     try {
@@ -92,9 +91,9 @@ logStatus() {
 ///         exit(1);
 ///     }
 ///
-///     // create a SafetyMonitorStatus object from the returned dictionary
+///     // create a HcrMonitorStatus object from the returned dictionary
 ///     xmlrpc_c::value_struct resultStruct(result);
-///     status = SafetyMonitorStatus(resultStruct);
+///     status = HcrMonitorStatus(resultStruct);
 ///
 ///     // extract a value from the status
 ///     bool pllLocked = status.pllLocked();;
@@ -103,7 +102,7 @@ class GetStatusMethod : public xmlrpc_c::method {
 public:
     GetStatusMethod() {
         this->_signature = "S:";
-        this->_help = "This method returns status from SafetyMonitor.";
+        this->_help = "This method returns status from HcrMonitor.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
@@ -129,7 +128,7 @@ main(int argc, char *argv[]) {
     // procmap instance name
     std::string instanceName("ops");
 
-    // Get SafetyMonitor's options
+    // Get HcrMonitor's options
     po::options_description opts("Options");
     opts.add_options()
         ("help,h", "Describe options")
@@ -160,12 +159,12 @@ main(int argc, char *argv[]) {
     
     // Initialize registration with procmap if instance is specified
     if (instanceName.size() > 0) {
-        PMU_auto_init("SafetyMonitor", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
+        PMU_auto_init("HcrMonitor", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
         ILOG << "Initializing procmap registration as instance '" << 
                 instanceName << "'";
     }
 
-    ILOG << "SafetyMonitor (" << getpid() << ") started";
+    ILOG << "HcrMonitor (" << getpid() << ") started";
 
     PMU_auto_register("initializing");
 
@@ -224,7 +223,7 @@ main(int argc, char *argv[]) {
     PMU_auto_unregister();
 
     // Clean up before exit
-    ILOG << "SafetyMonitor (" << getpid() << ") exiting";
+    ILOG << "HcrMonitor (" << getpid() << ") exiting";
     
     statusTimer.stop();
     registrationTimer.stop();

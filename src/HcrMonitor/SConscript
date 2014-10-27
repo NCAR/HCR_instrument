@@ -22,7 +22,7 @@ env.EnableQt4Modules(['QtCore', 'QtGui'])
 sources = Split('''
 ApsControl.cpp
 HcrMonitorStatus.cpp
-SafetyMonitor.cpp
+HcrMonitor.cpp
 TransmitControl.cpp
 ''')
 
@@ -32,9 +32,8 @@ HcrMonitorStatus.h
 TransmitControl.h
 ''')
 
-daemon = env.Program('SafetyMonitor', sources)
+daemon = env.Program('HcrMonitor', sources)
 Default(daemon)
 
-env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "cmigits library" })
 doxref = env.Apidocs(sources + headers)
 Default(doxref)
