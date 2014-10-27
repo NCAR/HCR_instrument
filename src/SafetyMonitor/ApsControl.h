@@ -17,6 +17,7 @@ class HcrPmc730StatusThread;
 /// System (APS).
 class ApsControl : public QObject {
     Q_OBJECT
+    friend class HcrMonitorStatus;
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source 
     /// of status from HcrPmc730Daemon.
