@@ -28,6 +28,7 @@ const std::string TERRAIN_HT_SERVER_URL = "http://archiver:9090/RPC2";
 TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
         MotionControlStatusThread & mcStatusThread) :
     _xmlrpcClient(),
+    _hcrPmc730Client(hcrPmc730StatusThread.rpcClient()),
     _hcrPmc730Responsive(false),
     _hcrPmc730Status(true),
     _motionControlResponsive(false),
@@ -216,6 +217,8 @@ TransmitControl::_handleNewStatus() {
     // Test if transmit is currently allowed
     XmitAllowedStatus noXmitReason = _testIfTransmitIsAllowed();
     
+    // If transmit status changed from previous testing, store the new value
+    // and log the change
     if (noXmitReason != _xmitAllowedStatus) {
         _xmitAllowedStatus = noXmitReason;
         ILOG << _xmitAllowedStatusText();
@@ -240,8 +243,11 @@ TransmitControl::_handleNewStatus() {
         // TODO: actually enable HV here!
         WLOG << "IMPLEMENTATION FOR HV ENABLE IS NEEDED";
     } else {
-        // TODO: turn off HV here!
-        WLOG << "IMPLEMENTATION FOR HV DISABLE IS NEEDED";
+        // If high voltage is on, turn it off
+        if (_hcrPmc730Status.rdsXmitterHvOn()) {
+            ILOG << "Turning off transmitter high voltage";
+            _hcrPmc730Client.xmitHvOff();
+        }
     }
 }
 

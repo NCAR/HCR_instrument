@@ -179,8 +179,11 @@ private:
     /// appropriately.
     void _handleNewStatus();
     
-    /// @brief Basic XML-RPC client instance
+    /// @brief Basic XML-RPC client instance used for TerrainHtServer
     xmlrpc_c::clientSimple _xmlrpcClient;
+    
+    /// @brief HcrPmc730Client instance
+    HcrPmc730Client & _hcrPmc730Client;
     
     /// @brief Is HcrPmc730Daemon currently responsive?
     bool _hcrPmc730Responsive;
