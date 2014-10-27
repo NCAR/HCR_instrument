@@ -38,7 +38,7 @@ public:
     /// @brief Enum of reasons that transmit may be disabled
     typedef enum {
         XMIT_ALLOWED,                   ///< OK to transmit
-        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _noXmitReason
+        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _xmitAllowedStatus
         NOXMIT_NO_HCRPMC730_DATA,       ///< HcrPmc730Daemon is not providing data
         NOXMIT_NO_CMIGITS_DATA,         ///< cmigitsDaemon is not providing data
         NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
@@ -46,7 +46,7 @@ public:
         NOXMIT_PV_PRESSURE_LOW,         ///< Pressure vessel pressure is too low
         NOXMIT_TOO_LOW_FOR_NONZENITH,   ///< AGL altitude too low for non-zenith pointing
         NOXMIT_TOO_LOW_FOR_NADIR_POINTING,       ///< AGL altitude too low for near-nadir pointing
-    } NoXmitReasonCode;
+    } XmitAllowedStatus;
     
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
@@ -113,13 +113,13 @@ private:
             double ccwLimit2, double cwLimit2);
     
     /// @brief Test if transmit is currently allowed and return the appropriate
-    /// NoXmitReasonCode.
-    /// @return the currently appropriate NoXmitReasonCode
-    NoXmitReasonCode _testIfTransmitIsAllowed();
+    /// XmitAllowedStatus.
+    /// @return the currently appropriate XmitAllowedStatus
+    XmitAllowedStatus _testIfTransmitIsAllowed();
     
-    /// @brief Return a string describing the the current _noXmitReason
-    /// @return a string describing the the current _noXmitReason
-    std::string _noXmitReasonText();
+    /// @brief Return a string describing the the current _xmitAllowedStatus
+    /// @return a string describing the the current _xmitAllowedStatus
+    std::string _xmitAllowedStatusText();
     
     /// @brief Return true iff attenuated receive mode is currently required,
     /// and set the given message to describe the result of the test.
@@ -214,7 +214,7 @@ private:
     
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
-    NoXmitReasonCode _noXmitReason;
+    XmitAllowedStatus _xmitAllowedStatus;
     
     /// @brief Is an attenuated receive mode required by current conditions?
     bool _attenuate;

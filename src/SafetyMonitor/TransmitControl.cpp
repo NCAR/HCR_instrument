@@ -38,7 +38,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _aglAltitude(0.0),
     _overWater(false),
     _hvRequested(false),
-    _noXmitReason(NOXMIT_UNSPECIFIED)
+    _xmitAllowedStatus(NOXMIT_UNSPECIFIED)
 {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
@@ -119,7 +119,7 @@ TransmitControl::_markCmigitsUnresponsive() {
     _handleNewStatus();
 }
 
-TransmitControl::NoXmitReasonCode
+TransmitControl::XmitAllowedStatus
 TransmitControl::_testIfTransmitIsAllowed() {
     if (! _hcrPmc730Responsive) {
         return(NOXMIT_NO_HCRPMC730_DATA);
@@ -160,9 +160,9 @@ TransmitControl::_testIfTransmitIsAllowed() {
 }
 
 std::string
-TransmitControl::_noXmitReasonText() {
+TransmitControl::_xmitAllowedStatusText() {
     std::ostringstream oss;
-    switch (_noXmitReason) {
+    switch (_xmitAllowedStatus) {
     case XMIT_ALLOWED:
         return("Transmit allowed: All tests passed");
     case NOXMIT_NO_HCRPMC730_DATA:
@@ -188,7 +188,7 @@ TransmitControl::_noXmitReasonText() {
         return(oss.str());
     default:
         std::ostringstream oss;
-        oss << "Oops, no text for NoXmitReasonCode " << _noXmitReason;
+        oss << "Oops, no text for NoXmitReasonCode " << _xmitAllowedStatus;
         return(oss.str());
     }
 }
@@ -214,11 +214,11 @@ TransmitControl::_testIfAttenuationIsRequired(std::string & msg) {
 void
 TransmitControl::_handleNewStatus() {
     // Test if transmit is currently allowed
-    NoXmitReasonCode noXmitReason = _testIfTransmitIsAllowed();
+    XmitAllowedStatus noXmitReason = _testIfTransmitIsAllowed();
     
-    if (noXmitReason != _noXmitReason) {
-        _noXmitReason = noXmitReason;
-        ILOG << _noXmitReasonText();
+    if (noXmitReason != _xmitAllowedStatus) {
+        _xmitAllowedStatus = noXmitReason;
+        ILOG << _xmitAllowedStatusText();
     }
     
     // Test if attenuated receive is required
@@ -230,7 +230,7 @@ TransmitControl::_handleNewStatus() {
     }
     
     // Turn on HV if it's requested and allowed, otherwise turn it off
-    if (_hvRequested && _noXmitReason == XMIT_ALLOWED) {
+    if (_hvRequested && _xmitAllowedStatus == XMIT_ALLOWED) {
         // If we need to attenuate received signal, set that up before we 
         // turn on high voltage
         if (_attenuate) {
