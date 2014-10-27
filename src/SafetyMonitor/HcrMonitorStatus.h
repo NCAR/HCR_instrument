@@ -16,7 +16,8 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 
-class ApsControl;
+#include "ApsControl.h"
+
 class TransmitControl;
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
@@ -51,31 +52,11 @@ public:
     /// an xmlrpc_c::value_struct dictionary.
     xmlrpc_c::value_struct toXmlRpcValue() const;
 
-    /// @brief Return the signal processing FPGA temperature from the Pentek
-    /// card, deg C
-    /// @return the signal processing FPGA temperature from the Pentek
-    /// card, deg C
-    int pentekFpgaTemp() const { return(_pentekFpgaTemp); }
-    
-    /// @brief Return the PCB temperature from the Pentek card, deg C
-    /// @return the PCB temperature from the Pentek card, deg C
-    int pentekBoardTemp() const { return(_pentekBoardTemp); }
-    
-    /// @brief Return the number of gates being sampled
-    /// @return the number of gates being sampled
-    uint16_t nGates() const { return(_nGates); }
-    
-    /// @brief Return the PRT (pulse repetition time), s
-    /// @return the PRT (pulse repetition time), s
-    double prt() const { return(_prt); }
-    
-    /// @brief Return the gate spacing, m
-    /// @return the gate spacing, m
-    double gateSpacing() const { return(_gateSpacing); }
-    
-    /// @brief Return the transmitter pulse width, s
-    /// @return the transmitter pulse width, s
-    double xmitPulseWidth() const { return(_xmitPulseWidth); }
+    /// @brief Return the APS valve control state
+    /// @return the APS valve control state
+    ApsControl::ValveControlState apsValveControlState() const { 
+        return(_apsValveControlState);
+    }
     
 private:
     friend class boost::serialization::access;
@@ -90,35 +71,15 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
-            ar & BOOST_SERIALIZATION_NVP(_pentekBoardTemp);
-            ar & BOOST_SERIALIZATION_NVP(_pentekFpgaTemp);
-            ar & BOOST_SERIALIZATION_NVP(_xmitPulseWidth);
-            ar & BOOST_SERIALIZATION_NVP(_prt);
-            ar & BOOST_SERIALIZATION_NVP(_nGates);
-            ar & BOOST_SERIALIZATION_NVP(_gateSpacing);
+            ar & BOOST_SERIALIZATION_NVP(_apsValveControlState);
         }
         if (version >= 1) {
             // Version 1 stuff will go here...
         }
     }
 
-    /// Pentek FPGA temperature
-    int _pentekFpgaTemp;
-
-    /// Pentek board temperature
-    int _pentekBoardTemp;
-    
-    /// transmit pulse width, s
-    double _xmitPulseWidth;
-
-    /// pulse repetition time, s
-    double _prt;
-    
-    /// Number of gates being sampled
-    uint16_t _nGates;
-    
-    /// gate spacing, m
-    double _gateSpacing;
+    /// @brief APS valve control state: automatic, always open, or always closed
+    ApsControl::ValveControlState _apsValveControlState;
     
 };
 

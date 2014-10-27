@@ -15,25 +15,16 @@
 LOGGING("HcrMonitorStatus")
 
 HcrMonitorStatus::HcrMonitorStatus() :
-    _pentekFpgaTemp(-99),
-    _pentekBoardTemp(-99),
-    _xmitPulseWidth(0.0),
-    _prt(0.0),
-    _nGates(0),
-    _gateSpacing(0.0) {
+    _apsValveControlState(ApsControl::VALVE_AUTOMATIC) {
 }
 
 HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         const TransmitControl & transmitControl) {
+    _apsValveControlState = apsControl._valveControlState;
 }
 
 HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) :
-    _pentekFpgaTemp(-99),
-    _pentekBoardTemp(-99),
-    _xmitPulseWidth(0.0),
-    _prt(0.0),
-    _nGates(0),
-    _gateSpacing(0.0) {
+    _apsValveControlState() {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);
