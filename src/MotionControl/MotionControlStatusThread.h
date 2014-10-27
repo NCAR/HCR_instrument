@@ -31,6 +31,12 @@ public:
 
     void run();
 
+    /// @brief Return the MotionControlRpcClient instance being used to talk to
+    /// MotionControlDaemon.
+    /// @return the MotionControlRpcClient instance being used to talk to
+    /// MotionControlDaemon.
+    MotionControlRpcClient & rpcClient() { return *_client; }
+
     /// @brief Return true iff the MotionControlDaemon is responding
     /// @return true iff the MotionControlDaemon is responding
     bool serverIsResponding() { return _responsive; }
