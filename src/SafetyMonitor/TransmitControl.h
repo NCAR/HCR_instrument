@@ -24,6 +24,7 @@ class HcrPmc730StatusThread;
 /// transmission.
 class TransmitControl : public QObject {
     Q_OBJECT
+    friend class HcrMonitorStatus;
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source 
     /// of status from HcrPmc730Daemon.
@@ -169,10 +170,12 @@ private:
     /// @brief Minimum altitude AGL for near-nadir transmit over land
     static const int _XMIT_NADIR_AGL_LIMIT_WATER = 1500;    // meters
     
-    /// @brief AGL altitude below which we should attenuate receive if over water
-    static const int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1800;   // meters
+    /// @brief AGL altitude below which we should attenuate receive for
+    /// near-nadir pointing over land
+    static const int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1500;   // meters
     
-    /// @brief AGL altitude below which we should attenuate receive if over water
+    /// @brief AGL altitude below which we should attenuate receive for
+    /// near-nadir pointing over water
     static const int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800; // meters
     
     /// @brief Perform monitoring tests based on latest status and react 
