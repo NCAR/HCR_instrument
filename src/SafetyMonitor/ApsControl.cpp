@@ -46,11 +46,16 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
         return;
     }
     
-    // If we're in "Hold Open" mode, make sure the solenoid valve is open.
-    if (_valveControlState) {
-        if (! status730.apsValveOpen()) {
+    // If we're in a manual mode, make sure the solenoid valve is in the
+    // manually commanded state
+    if (_valveControlState != VALVE_AUTOMATIC) {
+        bool valveOpen = status730.apsValveOpen();
+        if (_valveControlState == VALVE_ALWAYS_OPEN && ! valveOpen) {
             WLOG << "APS valve got closed while in 'Hold Open' mode. Opening valve again.";
             _openApsValve();
+        } else if (_valveControlState == VALVE_ALWAYS_CLOSED && valveOpen) {
+            WLOG << "APS valve got opened while in 'Hold Closed' mode. Closing valve again.";
+            _closeApsValve();
         }
         // Skip all other tests
         return;
