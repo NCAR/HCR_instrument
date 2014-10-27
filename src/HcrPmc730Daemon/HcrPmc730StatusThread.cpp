@@ -2,7 +2,7 @@
  * HcrPmc730StatusThread.cpp
  *
  *  Created on: Sep 10, 2012
- *      Author: hcr
+ *      Author: burghart
  */
 
 #include "HcrPmc730StatusThread.h"
@@ -12,10 +12,11 @@
 
 LOGGING("Pmc730StatusThread")
 
-HcrPmc730StatusThread::HcrPmc730StatusThread(std::string drxHost, int drxPort) :
+HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost, 
+        int daemonPort) :
     _responsive(false),
-    _drxHost(drxHost),
-    _drxPort(drxPort),
+    _daemonHost(daemonHost),
+    _daemonPort(daemonPort),
     _client(0) {
     // We need to register HcrPmc730Status as a metatype, since we'll be passing
     // it as an argument in a signal.
@@ -31,7 +32,7 @@ HcrPmc730StatusThread::~HcrPmc730StatusThread() {
 void
 HcrPmc730StatusThread::run() {
     // Instantiate the HcrPmc730Client
-    _client = new HcrPmc730Client(_drxHost, _drxPort);
+    _client = new HcrPmc730Client(_daemonHost, _daemonPort);
     // Set up a 1 s timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
