@@ -7,32 +7,12 @@ tools = Split("""
     cmigits
     motioncontrol
     QFunctionWrapper
-    qt4
     QXmlRpcServerAbyss
     rapradar
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtGui', 'QtNetwork'])
+env.EnableQt4Modules(['QtCore'])
 
-uisources = ['ClientMainWindow.ui']
-env.Uic4(uisources)
-
-serversources = Split("""
-	MotionControlDaemon.cpp
-""")
-
-daemon = env.Program('MotionControlDaemon', serversources)
+daemon = env.Program('MotionControlDaemon', 'MotionControlDaemon.cpp')
 env.Default(daemon)
-
-clientsources = Split("""
-	ClientMain.cpp
-	ClientMainWindow.cpp
-""")
-
-clientheaders = Split("""
-	ClientMainWindow.h
-""")
-
-client = env.Program('MotionControlClient', clientsources)
-env.Default(client)
