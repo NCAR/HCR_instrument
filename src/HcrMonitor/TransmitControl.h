@@ -24,7 +24,7 @@ class HcrPmc730StatusThread;
 /// transmission.
 class TransmitControl : public QObject {
     Q_OBJECT
-    friend class HcrMonitorStatus;
+    friend class TransmitControlStatus;
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source 
     /// of status from HcrPmc730Daemon.
@@ -223,7 +223,7 @@ private:
     XmitAllowedStatus _xmitAllowedStatus;
     
     /// @brief Is an attenuated receive mode required by current conditions?
-    bool _attenuate;
+    bool _attenuationRequired;
 };
 
 #endif /* TRANSMITCONTROL_H_ */

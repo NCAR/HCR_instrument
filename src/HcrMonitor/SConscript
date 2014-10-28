@@ -6,34 +6,25 @@
 tools = Split('''
 hcrpmc730client
 boost_program_options
-cmigits
 doxygen
+hcrmonitor
 motioncontrol
 qt4
+rapradar
 QFunctionWrapper
 QXmlRpcServerAbyss
-rapradar
 xmlrpc_client++
 ''')
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtGui'])
+env.EnableQt4Modules(['QtCore'])
 
 sources = Split('''
-ApsControl.cpp
-HcrMonitorStatus.cpp
 HcrMonitor.cpp
-TransmitControl.cpp
 ''')
 
 headers = Split('''
-ApsControl.h
-HcrMonitorStatus.h
-TransmitControl.h
 ''')
 
 daemon = env.Program('HcrMonitor', sources)
 Default(daemon)
-
-doxref = env.Apidocs(sources + headers)
-Default(doxref)

@@ -33,6 +33,7 @@
 #include <xmlrpc-c/registry.hpp>
 
 #include "ApsControl.h"
+#include "HcrMonitorStatus.h"
 #include "TransmitControl.h"
 
 LOGGING("HcrMonitor")
@@ -40,7 +41,13 @@ LOGGING("HcrMonitor")
 namespace po = boost::program_options;
 
 /// Our QApplication
-QCoreApplication *App = 0;
+QCoreApplication * App = 0;
+
+// APS control
+ApsControl * TheApsControl = 0;
+
+// Transmit control
+TransmitControl * TheTransmitControl = 0;
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
@@ -109,7 +116,7 @@ public:
         DLOG << "Received 'getStatus' command";
         // Get the latest status from shared memory, and convert it to
         // an xmlrpc_c::value_struct dictionary.
-//        *retvalP = Firefly->getStatus().toXmlRpcValue();
+        *retvalP = HcrMonitorStatus(*TheApsControl, *TheTransmitControl).toXmlRpcValue();
     }
 };
 
@@ -183,11 +190,11 @@ main(int argc, char *argv[]) {
     
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
-    ApsControl apsControl(hcrPmc730StatusThread);
+    TheApsControl = new ApsControl(hcrPmc730StatusThread);
     
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
-    TransmitControl transmitControl(hcrPmc730StatusThread, mcStatusThread);
+    TheTransmitControl = new TransmitControl(hcrPmc730StatusThread, mcStatusThread);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);

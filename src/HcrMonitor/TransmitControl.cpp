@@ -39,7 +39,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _aglAltitude(0.0),
     _overWater(false),
     _hvRequested(false),
-    _xmitAllowedStatus(NOXMIT_UNSPECIFIED)
+    _xmitAllowedStatus(NOXMIT_UNSPECIFIED),
+    _attenuationRequired(false)
 {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
@@ -227,8 +228,10 @@ TransmitControl::_handleNewStatus() {
     // Test if attenuated receive is required
     std::string msg;
     bool attenuate = _testIfAttenuationIsRequired(msg);
-    if (attenuate != _attenuate) {
-        _attenuate = attenuate;
+    // If need for attenuation changed from previous check, save the new
+    // state and log the change
+    if (attenuate != _attenuationRequired) {
+        _attenuationRequired = attenuate;
         ILOG << msg;
     }
     
@@ -236,7 +239,7 @@ TransmitControl::_handleNewStatus() {
     if (_hvRequested && _xmitAllowedStatus == XMIT_ALLOWED) {
         // If we need to attenuate received signal, set that up before we 
         // turn on high voltage
-        if (_attenuate) {
+        if (_attenuationRequired) {
             // TODO: actually attenuate receive here!
             WLOG << "IMPLEMENTATION FOR ATTENUATED MODE IS NEEDED!";
         }

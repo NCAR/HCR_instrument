@@ -17,6 +17,7 @@
 #include <boost/serialization/version.hpp>
 
 #include "ApsControl.h"
+#include "TransmitControlStatus.h"
 
 class TransmitControl;
 
@@ -72,14 +73,21 @@ private:
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
             ar & BOOST_SERIALIZATION_NVP(_apsValveControlState);
+            ar & BOOST_SERIALIZATION_NVP(_transmitControlStatus);
         }
         if (version >= 1) {
             // Version 1 stuff will go here...
         }
+        // Map named entries to our member variables using serialization's
+        // name/value pairs (nvp).
+        ar & BOOST_SERIALIZATION_NVP(_apsValveControlState);
     }
 
     /// @brief APS valve control state: automatic, always open, or always closed
     ApsControl::ValveControlState _apsValveControlState;
+    
+    /// @brief TransmitControl status
+    TransmitControlStatus _transmitControlStatus;
     
 };
 
