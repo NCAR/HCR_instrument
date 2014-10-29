@@ -178,15 +178,35 @@ private:
     /// @brief APS valve control state: automatic, always open, or always closed
     ApsControl::ValveControlState _apsValveControlState;
     
+    /// @brief Is HcrPmc730Daemon responsive?
     bool _hcrPmc730Responsive;
+    
+    /// @brief Is MotionControlDaemon responsive?
     bool _motionControlResponsive;
+    
+    /// @brief Is cmigitsDaemon responsive?
     bool _cmigitsResponsive;
+    
+    /// @brief Is TerrainHtServer responsive?
     bool _terrainHtServerResponsive;
+    
+    /// @brief Latest AGL altitude
     double _aglAltitude;
+    
+    /// @brief Are we over water?
     bool _overWater;
+    
+    /// @brief Has a user requested that transmitter high voltage be turned on?
     bool _hvRequested;
+    
+    /// @brief Current allowed/disallowed status for transmitting
     TransmitControl::XmitAllowedStatus _xmitAllowedStatus;
+    
+    /// @brief Text describing the currend allowed/disallowed status for 
+    /// transmitting
     std::string _xmitAllowedStatusText;
+    
+    /// @brief Do we currently need to receive using an attenuated mode?
     bool _attenuationRequired;
     
 };
