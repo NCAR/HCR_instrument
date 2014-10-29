@@ -140,9 +140,9 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
             
             // KLUGE: special handling for members with enumerated types. We 
-            // explicitly cast to int when saving to an output stream, and 
+            // explicitly cast to int when saving to an output archive, and 
             // explicitly cast back to the desired enum when loading from an 
-            // input stream. It is hoped that later improvements in the
+            // input archive. It is hoped that later improvements in the
             // Archive_xmlrpc_c classes will remove the need for this...
             
             // _apsValveControlState
