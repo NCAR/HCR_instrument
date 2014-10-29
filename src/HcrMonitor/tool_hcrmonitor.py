@@ -1,5 +1,5 @@
 #
-# Rules to build libmotioncontrolrpcclient.a and export it as a SCons tool
+# Rules to build libhcrmonitor.a and export it as a SCons tool
 #
 tools = Split('''
 hcrpmc730client
@@ -9,7 +9,7 @@ motioncontrol
 qt4
 xmlrpc_client++
 ''')
-motionControlDir = Dir('.').abspath
+hcrMonitorDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(['QtCore'])
@@ -20,16 +20,18 @@ env.canfestivalObjdictImpl('ElmoMasterNode.od')
 
 sources = Split('''
     ApsControl.cpp
+    HcrMonitorRpcClient.cpp
     HcrMonitorStatus.cpp
+    HcrMonitorStatusThread.cpp
     TransmitControl.cpp
-    TransmitControlStatus.cpp
 ''')
 
 headers = Split('''
     ApsControl.h
+    HcrMonitorRpcClient.h
     HcrMonitorStatus.h
+    HcrMonitorStatusThread.h
     TransmitControl.h
-    TransmitControlStatus.h
 ''')
 
 lib = env.Library('hcrmonitor', sources)
@@ -39,11 +41,9 @@ env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "HcrMonitor library" })
 doxref = env.Apidocs(sources + headers)
 
 def hcrmonitor(env):
-    env.AppendUnique(CPPPATH = motionControlDir)
+    env.AppendUnique(CPPPATH = hcrMonitorDir)
     env.Append(LIBS=[lib])
     env.AppendDoxref(doxref[0])
     env.Require(tools)
 
 Export('hcrmonitor')
-
-
