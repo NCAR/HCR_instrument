@@ -27,6 +27,9 @@ HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost,
 }
 
 HcrPmc730StatusThread::~HcrPmc730StatusThread() {
+    // Stop the thread, and wait up to 1 second for the thread to finish.
+    quit();
+    wait(1000);
 }
 
 void
