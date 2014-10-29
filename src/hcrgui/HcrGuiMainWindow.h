@@ -17,8 +17,9 @@
 #include <QUdpSocket>
 
 #include <CmigitsStatusThread.h>
-#include <MotionControlStatusThread.h>
 #include <HcrPmc730StatusThread.h>
+#include <HcrMonitorStatusThread.h>
+#include <MotionControlStatusThread.h>
 
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
@@ -43,7 +44,7 @@ class HcrGuiMainWindow : public QMainWindow {
 public:
     HcrGuiMainWindow(std::string archivererHost, int xmitterPort,
             int fireflydPort, std::string rdsHost, int drxPort, int pmcPort,
-            int cmigitsPort, int motionControlPort);
+            int cmigitsPort, int motionControlPort, int hcrMonitorPort);
     virtual ~HcrGuiMainWindow();
 
 private slots:
@@ -100,6 +101,13 @@ private slots:
     /// @brief Save the last status received from hcrdrx
     /// @param status the last status received from hcrdrx
     void _setDrxStatus(DrxStatus status);
+    /// @brief Slot to call when HcrMonitor responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    /// @param msg message describing the responsiveness change event
+    void _hcrMonitorResponsivenessChange(bool responding, QString msg);
+    /// @brief Save the last status received from HcrMonitor
+    /// @param status the last status received from HcrMonitor
+    void _setHcrMonitorStatus(HcrMonitorStatus status);
     /// @brief Slot to call when DataMapper responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _dataMapperResponsivenessChange(bool responding);
@@ -185,6 +193,7 @@ private:
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
+    HcrMonitorStatusThread _hcrMonitorStatusThread;
     MotionControlStatusThread _mcStatusThread;
     HcrPmc730StatusThread _pmcStatusThread;
     XmitdStatusThread _xmitdStatusThread;
@@ -209,6 +218,8 @@ private:
     DrxStatus _drxStatus;
     /// Last status from DataMapper
     DMAP_info_t _dmapStatus;
+    /// Last status from HcrMonitor
+    HcrMonitorStatus _hcrMonitorStatus;
     /// Data write rate calculated from DataMapper information
     double _dmapWriteRate;
     /// Time at which last write rate was computed

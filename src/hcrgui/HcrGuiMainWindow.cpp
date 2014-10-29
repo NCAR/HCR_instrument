@@ -26,7 +26,7 @@ LOGGING("HcrGuiMainWindow")
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, std::string rdsHost, int drxPort,
-    int pmcPort, int cmigitsPort, int motionControlPort) :
+    int pmcPort, int cmigitsPort, int motionControlPort, int hcrMonitorPort) :
     QMainWindow(),
     _ui(),
     _updateTimer(this),
@@ -42,6 +42,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _dataMapperStatusThread(),
     _fireflydStatusThread(archiverHost, fireflydPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
+    _hcrMonitorStatusThread(rdsHost, hcrMonitorPort),
     _mcStatusThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
     _xmitdStatusThread(archiverHost, xmitterPort),
@@ -129,6 +130,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     connect(& _hcrdrxStatusThread, SIGNAL(newStatus(DrxStatus)),
             this, SLOT(_setDrxStatus(DrxStatus)));
     _hcrdrxStatusThread.start();
+
+    // Connect signals from our HcrMonitorStatusThread object and start the thread.
+    connect(& _hcrMonitorStatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_hcrMonitorResponsivenessChange(bool, QString)));
+    connect(& _hcrMonitorStatusThread, SIGNAL(newStatus(HcrMonitorStatus)),
+            this, SLOT(_setHcrMonitorStatus(HcrMonitorStatus)));
+    _hcrMonitorStatusThread.start();
 
     // Connect signals from our HcrPmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool, QString)),
@@ -364,6 +372,34 @@ HcrGuiMainWindow::_setFireFlyStatus(FireFlyStatus status) {
             _fireflydStatus);
     // Update the main GUI
     _update();
+}
+
+void
+HcrGuiMainWindow::_hcrMonitorResponsivenessChange(bool responding, QString msg) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "HcrMonitor @ " <<
+            _hcrMonitorStatusThread.daemonHost() << ":" <<
+            _hcrMonitorStatusThread.daemonPort() <<
+            (responding ? " is " : " is not ") <<
+            "responding (" << msg.toStdString() << ")";
+    _logMessage(ss.str().c_str());
+
+    if (! responding) {
+        // Create a default (bad) DrxStatus, and set it as the last status
+        // received.
+        _setDrxStatus(DrxStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setHcrMonitorStatus(HcrMonitorStatus status) {
+    _hcrMonitorStatus = status;
+//    // Update the details dialog
+//    _hcrdrxDetails.updateStatus(_hcrdrxStatusThread.serverIsResponding(),
+//            _drxStatus);
+//    // Update the main GUI
+//    _update();
 }
 
 void

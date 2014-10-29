@@ -43,10 +43,11 @@ main(int argc, char *argv[]) {
     int pmc730Port = 8003;
     int motionControlPort = 8080;
     int hcrdrxPort = 8081;
+    int hcrMonitorPort = 8004;
 
     QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, xmitdPort,
             fireflydPort, rdsHost, hcrdrxPort, pmc730Port, cmigitsPort,
-            motionControlPort);
+            motionControlPort, hcrMonitorPort);
     mainWindow->show();
     
     int retval = app->exec();

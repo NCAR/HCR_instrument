@@ -9,6 +9,7 @@ cmigitsdaemonrpcclient
 doxygen
 fireflydRpcClient
 hcrdrxrpcclient
+hcrmonitor
 logx
 motioncontrol
 xmitdrpcclient
