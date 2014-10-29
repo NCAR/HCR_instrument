@@ -76,7 +76,8 @@ private slots:
     void _setCmigitsStatus(const CmigitsStatus & status);
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
-    void _mcResponsivenessChange(bool responding);
+    /// @param msg message describing the responsiveness change event
+    void _mcResponsivenessChange(bool responding, QString msg);
     /// @brief Save the last status received from MotionControlDaemon.
     /// @param status the last status received from MotionControlDaemon.
     void _setMotionControlStatus(const MotionControl::Status & status);

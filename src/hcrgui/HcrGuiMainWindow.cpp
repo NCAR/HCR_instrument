@@ -117,8 +117,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _cmigitsStatusThread.start();
 
     // Connect and start the MotionControlStatusThread
-    connect(& _mcStatusThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_mcResponsivenessChange(bool)));
+    connect(& _mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_mcResponsivenessChange(bool, QString)));
     connect(& _mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
             this, SLOT(_setMotionControlStatus(MotionControl::Status)));
     _mcStatusThread.start();
@@ -212,13 +212,13 @@ HcrGuiMainWindow::_setCmigitsStatus(const CmigitsStatus & status) {
 }
 
 void
-HcrGuiMainWindow::_mcResponsivenessChange(bool responding) {
+HcrGuiMainWindow::_mcResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "MotionControlDaemon " <<
             _mcStatusThread.rpcClient().daemonUrl() <<
             (responding ? " is " : " is not ") <<
-            "responding";
+            "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
 
     if (! responding) {
