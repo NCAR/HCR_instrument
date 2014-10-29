@@ -162,7 +162,7 @@ TransmitControl::_testIfTransmitIsAllowed() {
 }
 
 std::string
-TransmitControl::_xmitAllowedStatusText() {
+TransmitControl::_xmitAllowedStatusText() const {
     std::ostringstream oss;
     switch (_xmitAllowedStatus) {
     case XMIT_ALLOWED:

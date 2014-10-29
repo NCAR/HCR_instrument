@@ -24,7 +24,9 @@ class HcrPmc730StatusThread;
 /// transmission.
 class TransmitControl : public QObject {
     Q_OBJECT
-    friend class TransmitControlStatus;
+    
+    // Give HcrMonitorStatus direct access to our members
+    friend class HcrMonitorStatus;
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source 
     /// of status from HcrPmc730Daemon.
@@ -120,7 +122,7 @@ private:
     
     /// @brief Return a string describing the the current _xmitAllowedStatus
     /// @return a string describing the the current _xmitAllowedStatus
-    std::string _xmitAllowedStatusText();
+    std::string _xmitAllowedStatusText() const;
     
     /// @brief Return true iff attenuated receive mode is currently required,
     /// and set the given message to describe the result of the test.
@@ -133,7 +135,7 @@ private:
     /// pointing near nadir.
     /// @return the minimum AGL altitude (m) for transmitting when pointing
     /// near nadir.
-    double _xmitNadirAglMinimum() {
+    double _xmitNadirAglMinimum() const {
         return(_overWater ? _XMIT_NADIR_AGL_LIMIT_WATER : _XMIT_NADIR_AGL_LIMIT_LAND);
     }
 
