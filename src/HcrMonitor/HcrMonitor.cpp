@@ -230,11 +230,13 @@ main(int argc, char *argv[]) {
     PMU_auto_unregister();
 
     // Clean up before exit
-    ILOG << "HcrMonitor (" << getpid() << ") exiting";
-    
-    statusTimer.stop();
-    registrationTimer.stop();
+    delete(TheTransmitControl);
+    delete(TheApsControl);
+
     mcStatusThread.quit();
     hcrPmc730StatusThread.quit();
+
+    ILOG << "HcrMonitor (" << getpid() << ") exiting";
+    
     return 0;
 } 
