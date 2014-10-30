@@ -25,6 +25,8 @@ ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
 }
 
 ApsControl::~ApsControl() {
+    ILOG << "Closing APS valve on exit";
+    _closeApsValve();
 }
 
 void
@@ -32,10 +34,9 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     // Active pressurization system high side pressure, PSI
     double apsHighPresPsi = HpaToPsi(status730.apsHighSidePressure());
     
-    // Close the APS solenoid valve if high side pressure drops below 50 PSI.
-    // XXX (This check should become unnecessary when we have a check valve 
-    // to prevent backflow from the pressure vessel into the APS.)
-    if (apsHighPresPsi < 50) {
+    // Close the APS solenoid valve if high side pressure drops below 
+    // HIGH_SIDE_MINIMUM_PSI.
+    if (apsHighPresPsi < HIGH_SIDE_MINIMUM_PSI) {
         if (status730.apsValveOpen()) {
             ILOG << "Closing APS valve because high side pressure " <<
                     "has dropped to " << apsHighPresPsi << " PSI";
