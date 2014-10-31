@@ -19,7 +19,6 @@ env.EnableQt4Modules(['QtCore'])
 env.canfestivalObjdictImpl('ElmoMasterNode.od')
 
 sources = Split('''
-    ApsControl.cpp
     HcrMonitorRpcClient.cpp
     HcrMonitorStatus.cpp
     HcrMonitorStatusThread.cpp
@@ -27,7 +26,6 @@ sources = Split('''
 ''')
 
 headers = Split('''
-    ApsControl.h
     HcrMonitorRpcClient.h
     HcrMonitorStatus.h
     HcrMonitorStatusThread.h

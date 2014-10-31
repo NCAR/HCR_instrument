@@ -13,6 +13,7 @@ qt4
 rapradar
 QFunctionWrapper
 QXmlRpcServerAbyss
+xercesc
 xmlrpc_client++
 ''')
 
@@ -20,10 +21,14 @@ env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore'])
 
 sources = Split('''
-HcrMonitor.cpp
+    ApsControl.cpp
+    HcrMonitor.cpp
+    MaxPowerClient.cpp
 ''')
 
 headers = Split('''
+    ApsControl.h
+    MaxPowerClient.h
 ''')
 
 daemon = env.Program('HcrMonitor', sources)
