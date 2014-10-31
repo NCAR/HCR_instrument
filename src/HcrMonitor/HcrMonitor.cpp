@@ -34,6 +34,7 @@
 
 #include "ApsControl.h"
 #include "HcrMonitorStatus.h"
+#include "MaxPowerClient.h"
 #include "TransmitControl.h"
 
 LOGGING("HcrMonitor")
@@ -188,6 +189,10 @@ main(int argc, char *argv[]) {
     MotionControlStatusThread mcStatusThread("localhost", 8080);
     mcStatusThread.start();
     
+    // MaxPowerClient instance
+    MaxPowerClient maxPowerClient("localhost", 8111);
+    maxPowerClient.start();
+    
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
     TheApsControl = new ApsControl(hcrPmc730StatusThread);
@@ -233,10 +238,14 @@ main(int argc, char *argv[]) {
     delete(TheTransmitControl);
     delete(TheApsControl);
 
+    maxPowerClient.quit();
+    maxPowerClient.wait(500);
     mcStatusThread.quit();
+    mcStatusThread.wait(500);
     hcrPmc730StatusThread.quit();
+    hcrPmc730StatusThread.wait(500);
 
     ILOG << "HcrMonitor (" << getpid() << ") exiting";
-    
+
     return 0;
 } 
