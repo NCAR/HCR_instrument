@@ -8,7 +8,10 @@
 #include "MaxPowerClient.h"
 #include <exception>
 #include <logx/Logging.h>
+#include <QDateTime>
+#include <QMetaType>
 #include <QTcpSocket>
+#include <QTimer>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 
@@ -28,8 +31,9 @@ MaxPowerClient::MaxPowerClient(std::string serverHost,
         _serverResponsive(false),
         _unparsedData(),
         _xmlParser(NULL) {
+    // Initialize the Xerces-c infrastructure for XML parsing
     try {
-        XMLPlatformUtils::Initialize();  // Initialize Xerces infrastructure
+        XMLPlatformUtils::Initialize();
     } catch (XMLException & e ) {
         char* msg = XMLString::transcode(e.getMessage());
         ELOG << "XML toolkit initialization error: " << msg;
@@ -37,8 +41,20 @@ MaxPowerClient::MaxPowerClient(std::string serverHost,
         XMLString::release(&msg);
         throw runtimeErr;
     }
+    // Register QAbstractSocket::SocketError as a metatype, since we
+    // receive it as an argument to a slot.
+    qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
 
+    // Our XML DOM parser
     _xmlParser = new XercesDOMParser();
+    
+    // Connect signals from our socket which will be connected to the server
+    connect(&_socket, SIGNAL(connected()), this, SLOT(_onConnect()));
+    connect(&_socket, SIGNAL(disconnected()), this, SLOT(_onDisconnect()));
+    connect(&_socket, SIGNAL(error(QAbstractSocket::SocketError)), 
+            this, SLOT(_onSocketError(QAbstractSocket::SocketError)));
+    connect(&_socket, SIGNAL(readyRead()), this, SLOT(_readData()));
+    
 }
 
 MaxPowerClient::~MaxPowerClient() {
@@ -50,94 +66,25 @@ MaxPowerClient::~MaxPowerClient() {
 
 void
 MaxPowerClient::run() {
-    _socket = new QTcpSocket();
-    
-    // Create the socket to get data from the server, and connect its signals.
-    connect(_socket, SIGNAL(connected()), this, SLOT(_onConnect()));
-    connect(_socket, SIGNAL(disconnected()), this, SLOT(_onDisconnect()));
-    connect(_socket, SIGNAL(onReadyRead()), this, SLOT(_readData()));
-    
-    // Open a read-only connection to the server
-    _socket->connectToHost(QString(_serverHost.c_str()), _serverPort, 
-            QIODevice::ReadOnly);
-    
-    // XXX TODO REMOVE THIS. One-time file parse test for now.
-    _unparsedData = 
-            "<TsPrintMaxPower> \n"
-            "  <time>2014-10-17T21:39:00</time>\n"
-            "  <msecs>848</msecs>\n"
-            "  <prf>9864.27</prf>\n"
-            "  <nSamples>1000</nSamples>\n"
-            "  <startGate>30</startGate>\n"
-            "  <nGates>670</nGates>\n"
-            "  <el>-88.9096</el>\n"
-            "  <az>185.969</az>\n"
-            "  <maxDbm0>-44.7249</maxDbm0>\n"
-            "  <maxDbm1>-52.216</maxDbm1>\n"
-            "  <rangeToMax0>2539.84</rangeToMax0>\n"
-            "  <rangeToMax1>2539.84</rangeToMax1>\n"
-            "</TsPrintMaxPower>\n"
-            "\n"
-            "<TsPrintMaxPower>\n"
-            "  <time>2014-10-17T21:39:00</time>\n"
-            "  <msecs>950</msecs>\n"
-            "  <prf>9864.27</prf>\n"
-            "  <nSamples>1000</nSamples>\n"
-            "  <startGate>30</startGate>\n"
-            "  <nGates>670</nGates>\n"
-            "  <el>-88.9096</el>\n"
-            "  <az>185.969</az>\n"
-            "  <maxDbm0>-43.9097</maxDbm0>\n"
-            "  <maxDbm1>-52.3913</maxDbm1>\n"
-            "  <rangeToMax0>2539.84</rangeToMax0>\n"
-            "  <rangeToMax1>2539.84</rangeToMax1>\n"
-            "</TsPrintMaxPower>\n"
-            "\n"
-            "<TsPrintMaxPower>\n"
-            "  <time>2014-10-17T21:39:01</time>\n"
-            "  <msecs>51</msecs>\n"
-            "  <prf>9864.27</prf>\n"
-            "  <nSamples>1000</nSamples>\n"
-            "  <startGate>30</startGate>\n"
-            "  <nGates>670</nGates>\n"
-            "  <el>-88.9096</el>\n"
-            "  <az>185.969</az>\n"
-            "  <maxDbm0>-45.2106</maxDbm0>\n"
-            "  <maxDbm1>-52.3038</maxDbm1>\n"
-            "  <rangeToMax0>2539.84</rangeToMax0>\n"
-            "  <rangeToMax1>2539.84</rangeToMax1>\n"
-            "</TsPrintMaxPower>\n"
-            "\n"
-            "<TsPrintMaxPower>\n"
-            "  <time>2014-10-17T21:39:01</time>\n"
-            "  <msecs>153</msecs>\n"
-            "  <prf>9864.27</prf>\n"
-            "  <nSamples>1000</nSamples>\n"
-            "  <startGate>30</startGate>\n"
-            "  <nGates>670</nGates>\n"
-            "  <el>-88.9096</el>\n"
-            "  <az>185.969</az>\n"
-            "  <maxDbm0>-45.9284</maxDbm0>\n"
-            "  <maxDbm1>-52.3559</maxDbm1>\n"
-            "  <rangeToMax0>2539.84</rangeToMax0>\n"
-            "  <rangeToMax1>2539.84</rangeToMax1>\n"
-            "</TsPrintMaxPower>\n"
-            "\n";
-
-    _parseUnparsedData();
-
-//    _xmlParser->parse("maxpower.xml");
-//    DOMElement * doc = _xmlParser->getDocument()->getDocumentElement();
-//    ILOG << "Root element has " << doc->getChildElementCount() << " child elements";
-//    for (DOMElement * element = doc->getFirstElementChild(); element; 
-//            element = element->getNextElementSibling()) {
-//        ILOG << "Element '" << XMLString::transcode(element->getTagName()) << "'";
-//        ILOG << "    has " << element->getChildElementCount() << " child elements";
-//        ILOG << "    and its time is " << XMLString::transcode(element->getElementsByTagName(XMLString::transcode("time"))->item(0)->getTextContent());
-//    }
+    // Start a connection attempt the server
+    _tryToConnect();
     
     // Start the event loop
     exec();
+    
+    _socket.disconnectFromHost();
+}
+
+void
+MaxPowerClient::_tryToConnect() {
+    // Try to establish a connection with the server if we're not currently
+    // connected.
+    if (_socket.state() == QAbstractSocket::UnconnectedState) {
+        ILOG << "Trying to connect to " << _serverHost << ":" << _serverPort;
+        // Open a read-only connection to the TsPrint max_power_server's port
+        _socket.connectToHost(QString(_serverHost.c_str()), _serverPort, 
+                QIODevice::ReadOnly);
+    }
 }
 
 void
@@ -151,23 +98,57 @@ MaxPowerClient::_onConnect() {
 void
 MaxPowerClient::_onDisconnect() {
     _serverResponsive = false;
-    std::string msg("Connection established to max power server");
+    std::string msg("Socket to max power server is disconnected");
     ILOG << msg;
     emit serverResponsive(_serverResponsive, QString(msg.c_str()));
+    
+    // Try for a connection again in a bit
+    _setUpDelayedConnectRetry();
 }
 
 void
 MaxPowerClient::_readData() {
-    ILOG << "Max power server data arrived";
-    _unparsedData.append(_socket->readAll());
+    // Append any new data to the end of _unparsedData, then process what we can
+    _unparsedData.append(_socket.readAll());
     _parseUnparsedData();
 }
 
 void
+MaxPowerClient::_onSocketError(QAbstractSocket::SocketError error) {
+    switch (error) {
+    case QAbstractSocket::ConnectionRefusedError:
+        WLOG << "Connection refused to " << _serverHost << ":" << _serverPort;
+        break;
+    case QAbstractSocket::RemoteHostClosedError:
+        WLOG << "Server at " << _serverHost << ":" << _serverPort << 
+            " closed connection";
+        break;
+    default:
+        WLOG << "Got QAbstractSocket::SocketError " << error;
+        break;
+    }
+    // If we're not connected, try for a connection again in a bit
+    if (_socket.state() == QAbstractSocket::UnconnectedState) {
+        _setUpDelayedConnectRetry();
+    }
+}
+
+void
+MaxPowerClient::_setUpDelayedConnectRetry() {
+    const int CONNECT_RETRY_SECONDS = 2;
+    QTimer::singleShot(1000 * CONNECT_RETRY_SECONDS, this, SLOT(_tryToConnect()));
+    ILOG << "...will attempt to connect again in " << CONNECT_RETRY_SECONDS <<
+            " seconds";
+}
+
+void
 MaxPowerClient::_parseUnparsedData() {
-    // Loop through the unparsed data to find the last element of the form:
+    // Loop through the unparsed data to find the last element (if any) of the 
+    // form:
+    //
     //     <TsPrintMaxPower>...</TsPrintMaxPower>
-    // and if found, pass it to _parseMaxPowerElement().
+    //
+    // If found, extract it and pass it to _parseMaxPowerElement().
     int lastMaxPwrStart = 0;
     int lastMaxPwrLen = 0;
     int elementsFound = 0;
@@ -185,9 +166,6 @@ MaxPowerClient::_parseUnparsedData() {
                 // _unparsedData in case it's an incomplete start tag and 
                 // return.
                 _unparsedData = _unparsedData.right(ELEMENT_START_TEXT.size() - 1);
-                if (_unparsedData.size()) {
-                    ILOG << "_unparsedData is now:\n" << _unparsedData.data();
-                }
                 return;
             } else {
                 // We have the bounds of the last complete <TsPrintMaxPower> 
@@ -205,9 +183,6 @@ MaxPowerClient::_parseUnparsedData() {
                 // No complete element was found. Drop everything in 
                 // _unparsedData before the start tag we just found and return.
                 _unparsedData = _unparsedData.right(_unparsedData.size() - startTagIndex);
-                if (_unparsedData.size()) {
-                    ILOG << "_unparsedData is now:\n" << _unparsedData.data();
-                }
                 return;
             } else {
                 // We have the bounds of the last complete <TsPrintMaxPower> 
@@ -241,13 +216,27 @@ MaxPowerClient::_parseUnparsedData() {
     // _unparsedData and return.
     _unparsedData = _unparsedData.right(_unparsedData.size() - 
             (lastMaxPwrStart + lastMaxPwrLen));
-    if (_unparsedData.size()) {
-        ILOG << "_unparsedData is now:\n" << _unparsedData.data();
-    }
+}
+
+QString
+MaxPowerClient::_DocElementText(DOMElement * doc, std::string elementName) {
+    // We have to use transcode() to move back and forth between Xerces-friendly
+    // chars and native. Every time we do this, we have to explicitly release
+    // the memory returned by transcode(). Pain in the butt.
+    XMLCh * xercesElementName = XMLString::transcode(elementName.c_str());
+    DOMElement * childElement = 
+            dynamic_cast<DOMElement*>(doc->getElementsByTagName(xercesElementName)->item(0));
+    XMLString::release(&xercesElementName);
+    
+    char * textContent = XMLString::transcode(childElement->getTextContent());
+    QString elementText(textContent);
+    XMLString::release(&textContent);
+    return(elementText);
 }
 
 void
 MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
+    ILOG << "Max power element: \n" << text.data();
     // The text we're given must begin with ELEMENT_START_TEXT and end with
     // ELEMENT_END_TEXT.
     if (text.indexOf(ELEMENT_START_TEXT) != 0 ||
@@ -260,23 +249,44 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
         throw std::runtime_error(oss.str());
     }
     
-    // Map the element text into a MemBufInputSource and have Xerces
+    // Map the incoming text into a MemBufInputSource and have Xerces
     // parse from that.
     const XMLByte * srcData = reinterpret_cast<const XMLByte*>(text.data());
     MemBufInputSource src(srcData, text.size(), "foo");
     _xmlParser->parse(src);
     
-    // Get the document, which is the TsPrintMaxPower element
+    // Get the document, which is the parsed contents of the incoming text
     DOMElement * doc = _xmlParser->getDocument()->getDocumentElement();
-    DOMElement * timeElement = dynamic_cast<DOMElement*>(
-            doc->getElementsByTagName(XMLString::transcode("time"))->item(0));
-    const char * timeText = XMLString::transcode(timeElement->getTextContent());
-    ILOG << "TsPrintMaxPower element time is " << timeText;
     
-//    for (DOMElement * element = doc->getFirstElementChild(); element; 
-//            element = element->getNextElementSibling()) {
-//        ILOG << "Element '" << XMLString::transcode(element->getTagName()) << "'";
-//        ILOG << "    has " << element->getChildElementCount() << " child elements";
-//        ILOG << "    and its time is " << XMLString::transcode(element->getElementsByTagName(XMLString::transcode("time"))->item(0)->getTextContent());
-//    }    
+    // Initialize dataTime from the "time" child element (ISO time to the 
+    // second)
+    QString timeText = _DocElementText(doc, "time");
+    QDateTime dataTime = QDateTime::fromString(timeText, Qt::ISODate);
+    
+    // Unpack the parsed "msecs" element, which is the milliseconds portion of 
+    // the data time, and add it to dataTime.
+    int msecs = _DocElementText(doc, "msecs").toInt();
+    dataTime = dataTime.addMSecs(msecs);
+    
+    // Get H channel max power from "maxDbm0" element
+    double maxDbmH = _DocElementText(doc, "maxDbm0").toDouble();
+    
+    // Get V channel max power from "maxDbm1" element
+    double maxDbmV = _DocElementText(doc, "maxDbm1").toDouble();
+    
+    // Get range to H channel max power from "rangeToMax0" element
+    double rangeToMaxH = _DocElementText(doc, "rangeToMax0").toDouble();
+    
+    // Get range to V channel max power from "rangeToMax1" element
+    double rangeToMaxV = _DocElementText(doc, "rangeToMax1").toDouble();
+    
+    // Figure out which max is *really* max
+    double maxDbm = (maxDbmH > maxDbmV) ? maxDbmH : maxDbmV;
+    double rangeToMax = (maxDbmH > maxDbmV) ? rangeToMaxH : rangeToMaxV;
+    
+    // Emit newMaxPower() signal
+    ILOG << "New max power at " << 
+            dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
+            ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
+    emit(newMaxPower(0.001 * dataTime.toMSecsSinceEpoch(), maxDbm, rangeToMax)); 
 }
