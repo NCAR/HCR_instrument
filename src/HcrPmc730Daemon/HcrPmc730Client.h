@@ -47,9 +47,9 @@ public:
     void xmitHvOff();
 
     /// @brief Send "setHmcMode" command to HcrPmc730Daemon
-    /// @param mode integer mode number for the HMC, 0-7
+    /// @param mode the desired HmcOperationMode
     /// @throws exception on XML-RPC error
-    void setHmcMode(int mode);
+    void setHmcMode(HcrPmc730::HmcOperationMode mode);
     
     /// @brief Open the Active Pressurization System solenoid valve
     void openApsValve();

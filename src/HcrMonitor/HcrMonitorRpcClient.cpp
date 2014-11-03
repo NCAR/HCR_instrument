@@ -14,7 +14,6 @@
 
 LOGGING("HcrMonitorRpcClient")
 
-/////////////////////////////////////////////////////////////////////
 HcrMonitorRpcClient::HcrMonitorRpcClient(
 		std::string daemonHost,
         int daemonPort) :
@@ -27,7 +26,6 @@ HcrMonitorRpcClient::HcrMonitorRpcClient(
     ILOG << "HcrMonitorRpcClient talking to " << _daemonUrl;
 }
 
-/////////////////////////////////////////////////////////////////////
 HcrMonitorRpcClient::~HcrMonitorRpcClient() {
 }
 
@@ -48,17 +46,24 @@ HcrMonitorRpcClient::_execXmlRpcCall(std::string methodName,
     }
 }
 
-/////////////////////////////////////////////////////////////////////
 void
 HcrMonitorRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
-	ILOG << "set APS valve control to " << state;
+    ILOG << "set APS valve control to " << state;
 
-	xmlrpc_c::paramList params;
-	params.add(xmlrpc_c::value_int(state));
-	_execXmlRpcCall("setApsValveControl", params);
+    xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_int(state));
+    _execXmlRpcCall("setApsValveControl", params);
 }
 
-/////////////////////////////////////////////////////////////////////
+void
+HcrMonitorRpcClient::setHmcMode(HcrPmc730::HmcOperationMode mode) {
+    ILOG << "set HMC mode to " << mode;
+
+    xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_int(mode));
+    _execXmlRpcCall("setHmcMode", params);
+}
+
 HcrMonitorStatus
 HcrMonitorRpcClient::status() {
     xmlrpc_c::value result = _execXmlRpcCall("getStatus");

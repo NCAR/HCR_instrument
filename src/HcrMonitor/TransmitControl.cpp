@@ -336,7 +336,6 @@ TransmitControl::_handleNewStatus() {
             ILOG << "Turning off transmitter high voltage";
             _hcrPmc730Client.xmitHvOff();
         }
-        return;
     }
     
     // Set HMC mode
@@ -344,10 +343,21 @@ TransmitControl::_handleNewStatus() {
         _hcrPmc730Client.setHmcMode(hmcMode);
     }
     
-    // Tell the HcrPmc730 to turn on (or keep on) transmitter HV. We assume
-    // we get here often enough that this call will happen with frequency
-    // that HcrPmc730Daemon requires for "HV on" heartbeat.
-    _hcrPmc730Client.xmitHvOn();
+    // Set transmitter HV state
+    if (_hvRequested && transmitAllowed()) {
+        // Send xmitHvOn() even if it's already on, since a HcrPmc730Daemon
+        // requires a heartbeat to keep HV on.
+        if (! _hcrPmc730Status.rdsXmitterHvOn()) {
+            // Log if we're changing HV state
+            ILOG << "Turning on transmitter high voltage";
+        }
+        _hcrPmc730Client.xmitHvOn();
+    } else {
+        if (_hcrPmc730Status.rdsXmitterHvOn()) {
+            ILOG << "Turning off transmitter high voltage";
+            _hcrPmc730Client.xmitHvOff();
+        }
+    }
 }
 
 void
@@ -510,6 +520,10 @@ TransmitControl::_EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode) {
     case HcrPmc730::HMC_MODE_V_HV:
     case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
         return(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
+    case HcrPmc730::HMC_MODE_BENCH_TEST:
+        return(HcrPmc730::HMC_MODE_BENCH_TEST);
+    case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
+        return(HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL);
     default:
         return(HcrPmc730::HMC_MODE_INVALID);
     }

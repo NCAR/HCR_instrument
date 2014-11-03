@@ -223,7 +223,7 @@ private:
     
     /// @brief Return the attenuated version of the given mode if it exists, 
     /// otherwise HcrPmc730::HMC_MODE_INVALID. If the given mode is already 
-    /// attenuated, the same mode is returned.
+    /// attenuated (or a non-transmitting mode), the same mode is returned.
     /// @param mode the mode to be tested
     /// @return the attenuated version of the given mode if it exists, 
     /// otherwise HcrPmc730::HMC_MODE_INVALID.
