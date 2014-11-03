@@ -299,6 +299,8 @@ TransmitControl::_xmitTestStatusText() const {
             "altitude over " << (_overWater ? "water" : "land") << " < " << 
             _xmitNadirAglMinimum() << " m";
         return(oss.str());
+    case NOXMIT_DRIVES_NOT_HOMED:
+        return("Transmit not allowed: drives not homed, reflector position unknown");
     case NOXMIT_RCVD_POWER_TOO_HIGH:
         oss << "Transmit not allowed: Received power in attenuated mode " <<
             "exceeded " << _RECEIVED_POWER_THRESHOLD << " dBm";
@@ -306,7 +308,7 @@ TransmitControl::_xmitTestStatusText() const {
     case NOXMIT_ATTENUATE_BUG:
         return("BUG: Attenuated mode is required but is not available.");
     default:
-        oss << "Oops, no text for NoXmitReasonCode " << _xmitTestStatus;
+        oss << "Oops, no text for XmitTestStatus " << _xmitTestStatus;
         return(oss.str());
     }
 }
