@@ -203,14 +203,14 @@ main(int argc, char *argv[]) {
     
     // Start a thread to get HcrPmc730Daemon status on a regular basis.
     HcrPmc730StatusThread hcrPmc730StatusThread("localhost", 8003);
-//    hcrPmc730StatusThread.start();
+    hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
     MotionControlStatusThread mcStatusThread("localhost", 8080);
-//    mcStatusThread.start();
+    mcStatusThread.start();
     
     // MaxPowerClient instance
-    MaxPowerClient maxPowerClient("localhost", 13000);
+    MaxPowerClient maxPowerClient("archiver", 13000);
     maxPowerClient.start();
     
     // Instantiate the object which will monitor pressure and control the
