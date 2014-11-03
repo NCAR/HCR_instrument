@@ -34,6 +34,11 @@ public:
     /// @param mode the desired HmcOperationMode
     /// @throws std::exception if there's a problem in the XML-RPC call.
     void setHmcMode(HcrPmc730::HmcOperationMode mode);
+    
+    /// @brief Set the requested state for transmitter high voltage
+    /// @param hvRequested true if high voltage is desired, false otherwise
+    /// @throws std::exception if there's a problem in the XML-RPC call.
+    void setHvRequested(bool hvRequested);
 
     /// @brief Get motion control status
     /// @return a HcrMonitorStatus object

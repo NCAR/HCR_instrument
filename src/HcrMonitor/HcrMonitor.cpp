@@ -133,9 +133,26 @@ public:
         // Get the requested mode
         int const mode(paramList.getInt(0));
         paramList.verifyEnd(1);
-        DLOG << "Received 'requestHmcMode(" << mode << ")' command";
 
         TheTransmitControl->setRequestedHmcMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
+        *retvalP = xmlrpc_c::value_nil();
+    }
+};
+
+/// @brief xmlrpc_c::method to set whether transmitter high voltage is requested
+class SetHvRequestedMethod : public xmlrpc_c::method {
+public:
+    SetHvRequestedMethod() {
+        this->_signature = "n:b";
+        this->_help = "This method chooses if transmitter high voltage is requested.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Get the requested mode
+        bool const hvRequested(paramList.getBoolean(0));
+        paramList.verifyEnd(1);
+
+        TheTransmitControl->setHvRequested(hvRequested);
         *retvalP = xmlrpc_c::value_nil();
     }
 };

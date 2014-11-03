@@ -64,6 +64,15 @@ HcrMonitorRpcClient::setHmcMode(HcrPmc730::HmcOperationMode mode) {
     _execXmlRpcCall("setHmcMode", params);
 }
 
+void
+HcrMonitorRpcClient::setHvRequested(bool hvRequested) {
+    ILOG << "set HV requested to " << (hvRequested ? "true" : "false");
+
+    xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_boolean(hvRequested));
+    _execXmlRpcCall("setHvRequested", params);
+}
+
 HcrMonitorStatus
 HcrMonitorRpcClient::status() {
     xmlrpc_c::value result = _execXmlRpcCall("getStatus");

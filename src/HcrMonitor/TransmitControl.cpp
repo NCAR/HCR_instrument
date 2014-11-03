@@ -535,6 +535,13 @@ TransmitControl::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
 }
 
 void
+TransmitControl::setHvRequested(bool hvRequested) {
+    ILOG << "Setting 'HV requested' to " << (hvRequested ? "true" : "false");
+    _hvRequested = hvRequested;
+    _updateControlState();
+}
+
+void
 TransmitControl::_xmitHvOn() {
     // Log only if we're changing HV state
     if (! _hcrPmc730Status.rdsXmitterHvOn()) {
@@ -575,4 +582,3 @@ TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
                 ") failed: " << e.what();
     }
 }
-

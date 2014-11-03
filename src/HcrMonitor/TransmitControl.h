@@ -81,8 +81,13 @@ public:
                 _xmitTestStatus < BEGIN_NOXMIT_MODES);
     }
     
-    /// @brief Set the (requested) HMC mode
+    /// @brief Set the requested HMC mode
+    /// @param mode the requested HMC mode
     void setRequestedHmcMode(HcrPmc730::HmcOperationMode mode);
+    
+    /// @brief Set the requested high voltage on state
+    /// @param hvRequested true if HV on is desired, false if HV off is desired
+    void setHvRequested(bool hvRequested);
     
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
