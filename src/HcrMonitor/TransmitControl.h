@@ -17,9 +17,8 @@
 #include <QTimer>
 #include <xmlrpc-c/client_simple.hpp>
 
-#include "MaxPowerClient.h"
-
 class HcrPmc730StatusThread;
+class MaxPowerClient;
 
 /// Class providing implementation for handling the transmitter high voltage 
 /// enable line, monitoring for whether conditions allow for safe 
