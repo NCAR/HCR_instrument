@@ -236,7 +236,6 @@ MaxPowerClient::_DocElementText(DOMElement * doc, std::string elementName) {
 
 void
 MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
-    ILOG << "Max power element: \n" << text.data();
     // The text we're given must begin with ELEMENT_START_TEXT and end with
     // ELEMENT_END_TEXT.
     if (text.indexOf(ELEMENT_START_TEXT) != 0 ||
@@ -285,7 +284,7 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
     double rangeToMax = (maxDbmH > maxDbmV) ? rangeToMaxH : rangeToMaxV;
     
     // Emit newMaxPower() signal
-    ILOG << "New max power at " << 
+    DLOG << "New max power at " << 
             dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
             ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
     double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
