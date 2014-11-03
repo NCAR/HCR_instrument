@@ -97,8 +97,8 @@ public:
     
     /// @brief Return the current allowed/disallowed state for transmitting.
     /// @return the current allowed/disallowed state for transmitting.
-    TransmitControl::XmitAllowedStatus xmitAllowedStatus() const { 
-        return(_xmitAllowedStatus); 
+    TransmitControl::XmitTestStatus xmitAllowedStatus() const { 
+        return(_xmitTestStatus); 
     }
     
     /// @brief Return a string describing the current allowed/disallowed state 
@@ -106,7 +106,7 @@ public:
     /// @return a string describing the current allowed/disallowed state 
     /// for transmitting.
     std::string xmitAllowedStatusText() const { 
-        return(_xmitAllowedStatusText);
+        return(_xmitTestStatusText);
     }
     
     /// @brief Return true iff current conditions require operating with an
@@ -136,7 +136,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
             ar & BOOST_SERIALIZATION_NVP(_overWater);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
-            ar & BOOST_SERIALIZATION_NVP(_xmitAllowedStatusText);
+            ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
             ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
             
             // KLUGE: special handling for members with enumerated types. We 
@@ -157,16 +157,16 @@ private:
                         static_cast<ApsControl::ValveControlState>(intValveControlState);
             }
             
-            // _xmitAllowedStatus
+            // _xmitTestStatus
             {
-                // Before output, convert _xmitAllowedState to an int
-                int intXmitAllowedStatus = static_cast<int>(_xmitAllowedStatus);
+                // Before output, convert _xmitTestStatus to an int
+                int intXmitTestStatus = static_cast<int>(_xmitTestStatus);
                 // This will save intControlState on output or load a value 
                 // there on input.
-                ar & BOOST_SERIALIZATION_NVP(intXmitAllowedStatus);
+                ar & BOOST_SERIALIZATION_NVP(intXmitTestStatus);
                 // After input, convert the loaded int back to ApsControl::ValveControlState
-                _xmitAllowedStatus = 
-                        static_cast<TransmitControl::XmitAllowedStatus>(intXmitAllowedStatus);
+                _xmitTestStatus = 
+                        static_cast<TransmitControl::XmitTestStatus>(intXmitTestStatus);
             }
             
         }
@@ -200,11 +200,14 @@ private:
     bool _hvRequested;
     
     /// @brief Current allowed/disallowed status for transmitting
-    TransmitControl::XmitAllowedStatus _xmitAllowedStatus;
+    TransmitControl::XmitTestStatus _xmitTestStatus;
     
     /// @brief Text describing the currend allowed/disallowed status for 
     /// transmitting
-    std::string _xmitAllowedStatusText;
+    std::string _xmitTestStatusText;
+    
+    /// @brief Is transmit currently allowed?
+    bool _transmitAllowed;
     
     /// @brief Do we currently need to receive using an attenuated mode?
     bool _attenuationRequired;

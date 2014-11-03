@@ -26,21 +26,25 @@ const std::string TERRAIN_HT_SERVER_URL = "http://archiver:9090/RPC2";
 
 
 TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
-        MotionControlStatusThread & mcStatusThread) :
+        MotionControlStatusThread & mcStatusThread,
+        MaxPowerClient & maxPowerThread) :
     _xmlrpcClient(),
     _hcrPmc730Client(hcrPmc730StatusThread.rpcClient()),
     _hcrPmc730Responsive(false),
     _hcrPmc730Status(true),
     _motionControlResponsive(false),
     _motionControlStatus(),
+    _maxPowerResponsive(false),
+    _maxPowerDataTime(0.0),
+    _maxPower(99.9),
+    _rangeToMaxPower(0.0),
     _cmigitsWatchThread(_CMIGITS_POLL_INTERVAL_MS, _CMIGITS_DATA_TIMEOUT_MS),
     _cmigitsResponsive(false),
     _terrainHtServerResponsive(false),
     _aglAltitude(0.0),
     _overWater(false),
     _hvRequested(false),
-    _xmitAllowedStatus(NOXMIT_UNSPECIFIED),
-    _attenuationRequired(false)
+    _xmitTestStatus(NOXMIT_UNSPECIFIED)
 {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
@@ -58,6 +62,15 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     // Call _setMotionControlResponding when we get a responsiveness change signal
     connect(&mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_updateMotionControlResponsive(bool, QString)));
+    
+    // Call _updateMaxPower when new max powers arrive from the TsPrint max
+    // power server
+    connect(&maxPowerThread, SIGNAL(newMaxPower(double, double, double)),
+            this, SLOT(_updateMaxPower(double, double, double)));
+    
+    // Call _setMaxPowerResponding when we get a responsiveness change signal
+    connect(&maxPowerThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
     // Call _updateCmigitsData when we get new C-MIGITS data
     connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
@@ -116,13 +129,40 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
 }
 
 void
+TransmitControl::_updateMaxPower(double dataTime, double maxPower, 
+        double rangeToMax) {
+    _maxPowerDataTime = dataTime;
+    _maxPower = maxPower;
+    _rangeToMaxPower = rangeToMax;
+    _handleNewStatus();
+}
+
+void
+TransmitControl::_updateMaxPowerResponsive(bool responding, QString msg) {
+    _maxPowerResponsive = responding;
+    if (_maxPowerResponsive) {
+        ILOG << "Got a response from TsPrint max power server";
+    } else {
+        WLOG << "TsPrint max power server is not responding: " << msg.toStdString();
+    }
+    // Redo the monitoring tests
+    _handleNewStatus();
+}
+
+void
 TransmitControl::_markCmigitsUnresponsive() {
     _cmigitsResponsive = false;
     _handleNewStatus();
 }
 
-TransmitControl::XmitAllowedStatus
-TransmitControl::_testIfTransmitIsAllowed() {
+TransmitControl::XmitTestStatus
+TransmitControl::_runTransmitTests() {
+    // Provisional test status, which may be XMIT_ALLOWED or one of the
+    // "attenuation required" status values. Any test which disallows transmit
+    // will be returned immediately.
+    XmitTestStatus provisionalStatus = XMIT_ALLOWED;
+    
+    // Perform all tests to see if transmit is allowed.
     if (! _hcrPmc730Responsive) {
         return(NOXMIT_NO_HCRPMC730_DATA);
     }
@@ -137,6 +177,10 @@ TransmitControl::_testIfTransmitIsAllowed() {
     
     if (! _motionControlResponsive) {
         return(NOXMIT_NO_MOTIONCONTROL_DATA);
+    }
+    
+    if (! _maxPowerResponsive) {
+        return(NOXMIT_NO_MAXPOWER_DATA);
     }
     
     // Convert pressure vessel pressure from hPa to PSI and test if it 
@@ -157,16 +201,70 @@ TransmitControl::_testIfTransmitIsAllowed() {
         return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
     }
     
-    // All tests passed, transmit is allowed!
-    return(XMIT_ALLOWED);
+    // Test against AGL altitude limits for attenuated receive
+    if (_anyNearNadirPointing() && _aglAltitude < _unattenuatedNadirAglMinimum()) {
+        if (! _attenuatedModeAvailable()) {
+            // If there is not attenuated mode we can use, we have to disable
+            // transmit.
+            return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
+        } else {
+            // Mark that we'll have to switch to an attenuated mode if we
+            // make it through remaining tests.
+            if (provisionalStatus == XMIT_ALLOWED) {
+                provisionalStatus = ATTENUATE_TOO_LOW_FOR_NADIR_POINTING;
+            }
+        }
+    }
+    
+    // If received power exceeds our safety threshold, attenuate if possible 
+    // otherwise disable transmit.
+    if (_maxPower > _RECEIVED_POWER_THRESHOLD) {
+        // If we're already attenuated or there's no viable attenuated mode
+        // available, we have to disable transmit. 
+        if (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) ||
+                ! _attenuatedModeAvailable()) {
+            return(NOXMIT_RCVD_POWER_TOO_HIGH);
+        } else {
+            // Mark that we'll have to switch to an attenuated mode if we
+            // make it through remaining tests.
+            if (provisionalStatus == XMIT_ALLOWED) {
+                provisionalStatus = ATTENUATE_RCVD_POWER_TOO_HIGH;
+            }
+        }
+    }
+    
+    // If we made it here, transmit is allowed, although it may require 
+    // attenuated receive.
+    return(provisionalStatus);
+}
+
+void
+TransmitControl::_setXmitTestStatus(XmitTestStatus status) {
+    // If transmit status changed from previous testing, store the new value
+    // and log the change
+    if (status != _xmitTestStatus) {
+        _xmitTestStatus = status;
+        // Log the change
+        ILOG << _xmitTestStatusText();
+    }
 }
 
 std::string
-TransmitControl::_xmitAllowedStatusText() const {
+TransmitControl::_xmitTestStatusText() const {
     std::ostringstream oss;
-    switch (_xmitAllowedStatus) {
+    switch (_xmitTestStatus) {
     case XMIT_ALLOWED:
         return("Transmit allowed: All tests passed");
+       
+    case ATTENUATE_TOO_LOW_FOR_NADIR_POINTING:
+        oss << "Attenuation required: Nadir pointing and AGL altitude < " << 
+                _unattenuatedNadirAglMinimum() << " m over " << 
+                (_overWater ? "water" : "land");
+        return(oss.str());
+    case ATTENUATE_RCVD_POWER_TOO_HIGH:
+        oss << "Attenuation required: Unattenuated max received power " <<
+            "exceeded " << _RECEIVED_POWER_THRESHOLD << " dBm";
+        return(oss.str());
     case NOXMIT_NO_HCRPMC730_DATA:
         return("Transmit not allowed: No data from HcrPmc730Daemon");
     case NOXMIT_NO_CMIGITS_DATA:
@@ -175,6 +273,8 @@ TransmitControl::_xmitAllowedStatusText() const {
         return("Transmit not allowed: TerrainHtServer not responding or returned an error");
     case NOXMIT_NO_MOTIONCONTROL_DATA:
         return("Transmit not allowed: No data from MotionControlDaemon");
+    case NOXMIT_NO_MAXPOWER_DATA:
+        return("Transmit not allowed: No data from TsPrint max power server");
     case NOXMIT_PV_PRESSURE_LOW:
         oss << "Transmit not allowed: PV pressure is below minimum " <<
             "operating pressure of " << _PV_MINIMUM_PRESSURE_PSI << " PSI";
@@ -188,70 +288,55 @@ TransmitControl::_xmitAllowedStatusText() const {
             "altitude over " << (_overWater ? "water" : "land") << " < " << 
             _xmitNadirAglMinimum() << " m";
         return(oss.str());
-    default:
-        std::ostringstream oss;
-        oss << "Oops, no text for NoXmitReasonCode " << _xmitAllowedStatus;
+    case NOXMIT_RCVD_POWER_TOO_HIGH:
+        oss << "Transmit not allowed: Received power in attenuated mode " <<
+            "exceeded " << _RECEIVED_POWER_THRESHOLD << " dBm";
         return(oss.str());
-    }
-}
-
-bool
-TransmitControl::_testIfAttenuationIsRequired(std::string & msg) {
-    int attenuatedNadirAglLimit = _overWater ?
-            _ATTENUATED_NADIR_AGL_LIMIT_WATER : _ATTENUATED_NADIR_AGL_LIMIT_LAND;
-    if (_anyNearNadirPointing() && _aglAltitude < attenuatedNadirAglLimit) {
-        std::ostringstream oss;
-        oss << "Attenuated receive required: " <<
-                "Near-nadir pointing/scanning and AGL altitude over " << 
-                (_overWater ? "water" : "land") << " < " << 
-                attenuatedNadirAglLimit << " m";
-        msg = oss.str();
-        return(true);
-    } else {
-        msg = "Attenuated receive mode is not required";
-        return(false);
+    case NOXMIT_ATTENUATE_BUG:
+        return("BUG: Attenuated mode is required but is not available.");
+    default:
+        oss << "Oops, no text for NoXmitReasonCode " << _xmitTestStatus;
+        return(oss.str());
     }
 }
 
 void
 TransmitControl::_handleNewStatus() {
-    // Test if transmit is currently allowed
-    XmitAllowedStatus noXmitReason = _testIfTransmitIsAllowed();
+    // Test if transmit is currently allowed and set _xmitTestStatus to the
+    // result.
+    _setXmitTestStatus(_runTransmitTests());
     
-    // If transmit status changed from previous testing, store the new value
-    // and log the change
-    if (noXmitReason != _xmitAllowedStatus) {
-        _xmitAllowedStatus = noXmitReason;
-        ILOG << _xmitAllowedStatusText();
+    // Figure out the HMC mode to use if attenuation is required and the 
+    // requested HMC mode is not attenuated.
+    HcrPmc730::HmcOperationMode hmcMode = attenuationRequired() ? 
+            _EquivalentAttenuatedMode(_requestedHmcMode) : _requestedHmcMode;
+
+    // We should have a valid HMC mode now. If not, it's a bug and
+    // we'll have to disable transmit...
+    if (hmcMode == HcrPmc730::HMC_MODE_INVALID) {
+        _setXmitTestStatus(NOXMIT_ATTENUATE_BUG);
+        ELOG << _xmitTestStatusText();
     }
-    
-    // Test if attenuated receive is required
-    std::string msg;
-    bool attenuate = _testIfAttenuationIsRequired(msg);
-    // If need for attenuation changed from previous check, save the new
-    // state and log the change
-    if (attenuate != _attenuationRequired) {
-        _attenuationRequired = attenuate;
-        ILOG << msg;
-    }
-    
-    // Turn on HV if it's requested and allowed, otherwise turn it off
-    if (_hvRequested && _xmitAllowedStatus == XMIT_ALLOWED) {
-        // If we need to attenuate received signal, set that up before we 
-        // turn on high voltage
-        if (_attenuationRequired) {
-            // TODO: actually attenuate receive here!
-            WLOG << "IMPLEMENTATION FOR ATTENUATED MODE IS NEEDED!";
-        }
-        // TODO: actually enable HV here!
-        WLOG << "IMPLEMENTATION FOR HV ENABLE IS NEEDED";
-    } else {
+        
+    // Turn off HV if it's not requested or if we're not allowed to transmit
+    if (! _hvRequested || ! transmitAllowed()) {
         // If high voltage is on, turn it off
         if (_hcrPmc730Status.rdsXmitterHvOn()) {
             ILOG << "Turning off transmitter high voltage";
             _hcrPmc730Client.xmitHvOff();
         }
+        return;
     }
+    
+    // Set HMC mode
+    if (_hcrPmc730Status.hmcMode() != hmcMode) {
+        _hcrPmc730Client.setHmcMode(hmcMode);
+    }
+    
+    // Tell the HcrPmc730 to turn on (or keep on) transmitter HV. We assume
+    // we get here often enough that this call will happen with frequency
+    // that HcrPmc730Daemon requires for "HV on" heartbeat.
+    _hcrPmc730Client.xmitHvOn();
 }
 
 void
@@ -392,4 +477,29 @@ TransmitControl::_allNearZenithPointing() {
         return(_ArcContainsArc(nearZenithCcwLimit, nearZenithCwLimit,
                 scanCcwLimit, scanCwLimit));
     }    
+}
+
+bool
+TransmitControl::_HmcModeIsAttenuated(HcrPmc730::HmcOperationMode mode) {
+    return(mode == HcrPmc730::HMC_MODE_H_HV_ATTENUATED ||
+            mode == HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
+}
+
+bool
+TransmitControl::_attenuatedModeAvailable() {
+    return(_EquivalentAttenuatedMode(_requestedHmcMode) != HcrPmc730::HMC_MODE_INVALID);
+}
+
+HcrPmc730::HmcOperationMode
+TransmitControl::_EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode) {
+    switch (mode) {
+    case HcrPmc730::HMC_MODE_H_HV:
+    case HcrPmc730::HMC_MODE_H_HV_ATTENUATED:
+        return(HcrPmc730::HMC_MODE_H_HV_ATTENUATED);
+    case HcrPmc730::HMC_MODE_V_HV:
+    case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
+        return(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
+    default:
+        return(HcrPmc730::HMC_MODE_INVALID);
+    }
 }

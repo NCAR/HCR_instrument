@@ -17,6 +17,8 @@
 #include <QTimer>
 #include <xmlrpc-c/client_simple.hpp>
 
+#include "MaxPowerClient.h"
+
 class HcrPmc730StatusThread;
 
 /// Class providing implementation for handling the transmitter high voltage 
@@ -34,22 +36,51 @@ public:
     /// provide status from HcrPmc730Daemon
     /// @param mcStatusThread the MotionControlStatusThread which will provide
     /// status from MotionControlDaemon
+    /// @param maxPowerThread the MaxPowerClient thread which will provide
+    /// updates on maximum received power
     TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
-            MotionControlStatusThread & mcStatusThread);
+            MotionControlStatusThread & mcStatusThread, 
+            MaxPowerClient & maxPowerThread);
     virtual ~TransmitControl();
     
-    /// @brief Enum of reasons that transmit may be disabled
+    /// @brief Enum for status of tests of whether we can transmit
     typedef enum {
         XMIT_ALLOWED,                   ///< OK to transmit
-        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _xmitAllowedStatus
+        
+        BEGIN_ATTENUATE_MODES,  // Modes which require attenuation between here
+                                // and BEGIN_NOXMIT_MODES
+        
+        ATTENUATE_TOO_LOW_FOR_NADIR_POINTING,   ///< AGL altitude is too low for nadir pointing
+        ATTENUATE_RCVD_POWER_TOO_HIGH,          ///< max received power is too high
+        
+        BEGIN_NOXMIT_MODES,    // ALL NO TRANSMIT MODES *MUST* BE BELOW THIS LINE!
+        
+        NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _xmitTestStatus
         NOXMIT_NO_HCRPMC730_DATA,       ///< HcrPmc730Daemon is not providing data
         NOXMIT_NO_CMIGITS_DATA,         ///< cmigitsDaemon is not providing data
         NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
         NOXMIT_NO_MOTIONCONTROL_DATA,   ///< MotionControlDaemon is not providing data
+        NOXMIT_NO_MAXPOWER_DATA,        ///< TsPrint max power server is not providing data
         NOXMIT_PV_PRESSURE_LOW,         ///< Pressure vessel pressure is too low
         NOXMIT_TOO_LOW_FOR_NONZENITH,   ///< AGL altitude too low for non-zenith pointing
-        NOXMIT_TOO_LOW_FOR_NADIR_POINTING,       ///< AGL altitude too low for near-nadir pointing
-    } XmitAllowedStatus;
+        NOXMIT_TOO_LOW_FOR_NADIR_POINTING,  ///< AGL altitude too low for near-nadir pointing
+        NOXMIT_DRIVES_NOT_HOMED,        ///< MotionControl drives not homed, so pointing angle is unknown
+        NOXMIT_RCVD_POWER_TOO_HIGH,     ///< Received power is too high
+        NOXMIT_ATTENUATE_BUG,           ///< Bug in TransmitControl
+    } XmitTestStatus;
+    
+    /// @brief Return true iff transmit is currently allowed
+    /// @return true iff transmit is currently allowed
+    bool transmitAllowed() const {
+        return(_xmitTestStatus < BEGIN_NOXMIT_MODES);
+    }
+    
+    /// @brief Return true iff attenuated receive mode is required
+    /// @return true iff attenuated receive mode is required
+    bool attenuationRequired() const {
+        return(_xmitTestStatus > BEGIN_ATTENUATE_MODES && 
+                _xmitTestStatus < BEGIN_NOXMIT_MODES);
+    }
     
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
@@ -71,6 +102,20 @@ private slots:
     /// now unresponsive
     /// @param msg a string describing the responsiveness change
     void _updateMotionControlResponsive(bool responding, QString msg);
+
+    /// @brief Accept a new max power from the TsPrint max power server and 
+    /// react if necessary
+    /// @param dataTime the time for the max power report, seconds since
+    /// 1970-01-01 00:00:00 UTC
+    /// @param maxPower the maximum power received, dBm
+    /// @param rangeToMax the range to the maximum received power, m
+    void _updateMaxPower(double dataTime, double maxPower, double rangeToMax);
+
+    /// @brief Note a responsiveness change for the TsPrint max power server
+    /// @param responding true if the server is now responsive, false if it's
+    /// now unresponsive
+    /// @param msg a string describing the responsiveness change
+    void _updateMaxPowerResponsive(bool responding, QString msg);
 
     /// @brief Mark the cmigitsDaemon as unresponsive
     void _markCmigitsUnresponsive();
@@ -116,13 +161,17 @@ private:
             double ccwLimit2, double cwLimit2);
     
     /// @brief Test if transmit is currently allowed and return the appropriate
-    /// XmitAllowedStatus.
-    /// @return the currently appropriate XmitAllowedStatus
-    XmitAllowedStatus _testIfTransmitIsAllowed();
+    /// XmitTestStatus.
+    /// @return the currently appropriate XmitTestStatus
+    XmitTestStatus _runTransmitTests();
     
-    /// @brief Return a string describing the the current _xmitAllowedStatus
-    /// @return a string describing the the current _xmitAllowedStatus
-    std::string _xmitAllowedStatusText() const;
+    /// @brief Return a string describing the the current _xmitTestStatus
+    /// @return a string describing the the current _xmitTestStatus
+    std::string _xmitTestStatusText() const;
+    
+    /// @brief Set the _xmitTestStatus member with a log message if its
+    /// value is changed.
+    void _setXmitTestStatus(XmitTestStatus status);
     
     /// @brief Return true iff attenuated receive mode is currently required,
     /// and set the given message to describe the result of the test.
@@ -139,13 +188,44 @@ private:
         return(_overWater ? _XMIT_NADIR_AGL_LIMIT_WATER : _XMIT_NADIR_AGL_LIMIT_LAND);
     }
 
-    /// @brief Return true if pointing near zenith or scanning strictly through
+    /// @brief Return the minimum AGL altitude (m) for unattenuated receive when 
+    /// pointing near nadir.
+    /// @return the minimum AGL altitude (m) for unattenuated receive when 
+    /// pointing near nadir.
+    double _unattenuatedNadirAglMinimum() const {
+        return(_overWater ? _ATTENUATED_NADIR_AGL_LIMIT_WATER : _ATTENUATED_NADIR_AGL_LIMIT_LAND);
+    }
+
+    /// @brief Return true iff pointing near zenith or scanning strictly through
+    /// near-zenith angles.
+    /// @return true iff pointing near zenith or scanning strictly through
     /// near-zenith angles.
     bool _allNearZenithPointing();
     
-    /// @brief Return true if pointing near nadir or scanning through *any* 
+    /// @brief Return true iff pointing near nadir or scanning through *any* 
+    /// near-nadir angles.
+    /// @return true iff pointing near nadir or scanning through *any* 
     /// near-nadir angles.
     bool _anyNearNadirPointing();
+    
+    /// @brief Return true iff the given HMC mode is an attenuated mode.
+    /// @param mode the mode to be tested
+    /// @return true iff the given HMC mode is an attenuated mode.
+    static bool _HmcModeIsAttenuated(HcrPmc730::HmcOperationMode mode);
+    
+    /// @brief Return true iff the requested HMC mode is attenuated or has a
+    /// matching attenuated mode.
+    /// @return true iff the requested HMC mode is attenuated or has a
+    /// matching attenuated mode.
+    bool _attenuatedModeAvailable();
+    
+    /// @brief Return the attenuated version of the given mode if it exists, 
+    /// otherwise HcrPmc730::HMC_MODE_INVALID. If the given mode is already 
+    /// attenuated, the same mode is returned.
+    /// @param mode the mode to be tested
+    /// @return the attenuated version of the given mode if it exists, 
+    /// otherwise HcrPmc730::HMC_MODE_INVALID.
+    static HcrPmc730::HmcOperationMode _EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode);
     
     /// @brief How frequently will we poll CmigitsSharedMemory for new data?
     static const int _CMIGITS_POLL_INTERVAL_MS = 1000;
@@ -163,22 +243,26 @@ private:
     /// transmitter.
     static const float _PV_MINIMUM_PRESSURE_PSI = 11.0;
     
-    /// @brief Minimum altitude AGL for non-zenith transmit
-    static const int _XMIT_NONZENITH_AGL_LIMIT = 1000;  // meters
+    /// @brief Received power threshold at which we shift to attenuated mode
+    /// or disallow transmit, dBm
+    static const float _RECEIVED_POWER_THRESHOLD = -34.0;
     
-    /// @brief Minimum altitude AGL for near-nadir transmit over land
-    static const int _XMIT_NADIR_AGL_LIMIT_LAND = 1000; // meters
+    /// @brief Minimum altitude AGL for non-zenith transmit, m
+    static const int _XMIT_NONZENITH_AGL_LIMIT = 1000;
     
-    /// @brief Minimum altitude AGL for near-nadir transmit over land
-    static const int _XMIT_NADIR_AGL_LIMIT_WATER = 1500;    // meters
+    /// @brief Minimum altitude AGL for near-nadir transmit over land, m
+    static const int _XMIT_NADIR_AGL_LIMIT_LAND = 1000;
+    
+    /// @brief Minimum altitude AGL for near-nadir transmit over land, m
+    static const int _XMIT_NADIR_AGL_LIMIT_WATER = 1500;
     
     /// @brief AGL altitude below which we should attenuate receive for
-    /// near-nadir pointing over land
-    static const int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1500;   // meters
+    /// near-nadir pointing over land, m
+    static const int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1500;
     
     /// @brief AGL altitude below which we should attenuate receive for
-    /// near-nadir pointing over water
-    static const int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800; // meters
+    /// near-nadir pointing over water, m
+    static const int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800;
     
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.
@@ -202,6 +286,18 @@ private:
     /// @brief Latest status received from HcrPmc730Daemon.
     MotionControl::Status _motionControlStatus;
     
+    /// @brief Is TsPrint max power server currently responsive?
+    bool _maxPowerResponsive;
+    
+    /// @brief data time for max power values, seconds since 1970-01-01 00:00:00 UTC
+    double _maxPowerDataTime;
+    
+    /// @brief latest max received power, dBm
+    double _maxPower;
+    
+    /// @brief range to latest max received power, m
+    double _rangeToMaxPower;
+    
     /// @brief Thread which monitors the CmigitsSharedMemory segment
     CmigitsShmWatchThread _cmigitsWatchThread;
 
@@ -220,12 +316,12 @@ private:
     /// @brief User's intended state for transmitter high voltage
     bool _hvRequested;
     
+    /// @brief User's intended HMC mode
+    HcrPmc730::HmcOperationMode _requestedHmcMode;
+    
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
-    XmitAllowedStatus _xmitAllowedStatus;
-    
-    /// @brief Is an attenuated receive mode required by current conditions?
-    bool _attenuationRequired;
+    XmitTestStatus _xmitTestStatus;
 };
 
 #endif /* TRANSMITCONTROL_H_ */

@@ -23,7 +23,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _aglAltitude(-999.0),
         _overWater(false),
         _hvRequested(false),
-        _xmitAllowedStatus(TransmitControl::NOXMIT_UNSPECIFIED),
+        _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _attenuationRequired(false) {
 }
 
@@ -37,7 +37,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _aglAltitude(-999.0),
         _overWater(false),
         _hvRequested(false),
-        _xmitAllowedStatus(TransmitControl::NOXMIT_UNSPECIFIED),
+        _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _attenuationRequired(false) {
     // Get ApsControl status
     _apsValveControlState = apsControl._valveControlState;
@@ -50,9 +50,10 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _aglAltitude = transmitControl._aglAltitude;
     _overWater = transmitControl._overWater;
     _hvRequested = transmitControl._hvRequested;
-    _xmitAllowedStatus = transmitControl._xmitAllowedStatus;
-    _xmitAllowedStatusText = transmitControl._xmitAllowedStatusText();
-    _attenuationRequired = transmitControl._attenuationRequired;
+    _xmitTestStatus = transmitControl._xmitTestStatus;
+    _xmitTestStatusText = transmitControl._xmitTestStatusText();
+    _transmitAllowed = transmitControl.transmitAllowed();
+    _attenuationRequired = transmitControl.attenuationRequired();
 }
 
 HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) {

@@ -199,7 +199,8 @@ main(int argc, char *argv[]) {
     
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
-    TheTransmitControl = new TransmitControl(hcrPmc730StatusThread, mcStatusThread);
+    TheTransmitControl = new TransmitControl(hcrPmc730StatusThread, 
+            mcStatusThread, maxPowerClient);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
