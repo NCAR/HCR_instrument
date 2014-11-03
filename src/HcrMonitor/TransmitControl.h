@@ -82,7 +82,7 @@ public:
     }
     
     /// @brief Set the (requested) HMC mode
-    void setHmcMode(HcrPmc730::HmcOperationMode mode);
+    void setRequestedHmcMode(HcrPmc730::HmcOperationMode mode);
     
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
@@ -228,6 +228,16 @@ private:
     /// @return the attenuated version of the given mode if it exists, 
     /// otherwise HcrPmc730::HMC_MODE_INVALID.
     static HcrPmc730::HmcOperationMode _EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode);
+    
+    /// @brief Tell HcrPmc730Daemon to turn on transmitter HV
+    void _xmitHvOn();
+    
+    /// @brief Tell HcrPmc730Daemon to turn off transmitter HV
+    void _xmitHvOff();
+    
+    /// @brief Set the HMC mode on HcrPmc730Daemon
+    /// @param mode the HMC mode to use
+    void _setHmcMode(HcrPmc730::HmcOperationMode mode);
     
     /// @brief How frequently will we poll CmigitsSharedMemory for new data?
     static const int _CMIGITS_POLL_INTERVAL_MS = 1000;

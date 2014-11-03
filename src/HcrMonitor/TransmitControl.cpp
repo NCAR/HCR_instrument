@@ -334,26 +334,22 @@ TransmitControl::_updateControlState() {
     if (! _hvRequested || ! transmitAllowed()) {
         // If high voltage is on, turn it off
         if (_hcrPmc730Status.rdsXmitterHvOn()) {
-            ILOG << "Turning off transmitter high voltage";
-            _hcrPmc730Client.xmitHvOff();
+            _xmitHvOff();
         }
     }
     
     // Set HMC mode
     if (_hcrPmc730Status.hmcMode() != hmcMode) {
-        _hcrPmc730Client.setHmcMode(hmcMode);
+        _setHmcMode(hmcMode);
     }
     
     // Set transmitter HV state
     if (_hvRequested && transmitAllowed()) {
-        // Send xmitHvOn() even if it's already on, since a HcrPmc730Daemon
+        // Call _xmitHvOn() even if it's already on, since a HcrPmc730Daemon
         // requires a heartbeat to keep HV on.
-        if (! _hcrPmc730Status.rdsXmitterHvOn()) {
-            // Log if we're changing HV state
-            ILOG << "Turning on transmitter high voltage";
-        }
-        _hcrPmc730Client.xmitHvOn();
+        _xmitHvOn();
     } else {
+        // Turn off HV if it's currently on
         if (_hcrPmc730Status.rdsXmitterHvOn()) {
             ILOG << "Turning off transmitter high voltage";
             _hcrPmc730Client.xmitHvOff();
@@ -531,7 +527,51 @@ TransmitControl::_EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode) {
 }
 
 void
-TransmitControl::setHmcMode(HcrPmc730::HmcOperationMode mode) {
+TransmitControl::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
+    ILOG << "Setting requested HMC mode to " << mode;
     _requestedHmcMode = mode;
     _updateControlState();
 }
+
+void
+TransmitControl::_xmitHvOn() {
+    // Log only if we're changing HV state
+    if (! _hcrPmc730Status.rdsXmitterHvOn()) {
+        ILOG << "Turning on transmitter high voltage";
+    }
+    // Send the command
+    try {
+        _hcrPmc730Client.xmitHvOn();
+    } catch (std::exception & e) {
+        ELOG << "XML-RPC call to HcrPmc730Daemon xmitHvOn() failed: " << e.what();
+    }
+}
+
+void
+TransmitControl::_xmitHvOff() {
+    // Log only if we're changing HV state
+    if (_hcrPmc730Status.rdsXmitterHvOn()) {
+        ILOG << "Turning off transmitter high voltage";
+    }
+    // Send the command
+    try {
+        _hcrPmc730Client.xmitHvOff();
+    } catch (std::exception & e) {
+        ELOG << "XML-RPC call to HcrPmc730Daemon xmitHvOf() failed: " << e.what();
+    }
+}
+
+void
+TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
+    // Log only if we're changing mode
+    if (_hcrPmc730Status.hmcMode() != mode) {
+        ILOG << "Changing HMC mode to " << mode;
+    }
+    try {
+        _hcrPmc730Client.setHmcMode(mode);
+    } catch (std::exception & e) {
+        ELOG << "XML-RPC call to HcrPmc730Daemon setHmcMode(" << mode << 
+                ") failed: " << e.what();
+    }
+}
+

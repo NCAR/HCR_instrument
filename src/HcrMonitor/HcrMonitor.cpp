@@ -135,7 +135,7 @@ public:
         paramList.verifyEnd(1);
         DLOG << "Received 'requestHmcMode(" << mode << ")' command";
 
-        TheTransmitControl->setHmcMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
+        TheTransmitControl->setRequestedHmcMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
         *retvalP = xmlrpc_c::value_nil();
     }
 };
@@ -198,7 +198,7 @@ main(int argc, char *argv[]) {
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    myRegistry.addMethod("setHmcMode", new SetHmcModeMethod);
+    myRegistry.addMethod("setRequestedHmcMode", new SetHmcModeMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
     // Start a thread to get HcrPmc730Daemon status on a regular basis.
@@ -210,7 +210,7 @@ main(int argc, char *argv[]) {
     mcStatusThread.start();
     
     // MaxPowerClient instance
-    MaxPowerClient maxPowerClient("archiver", 13000);
+    MaxPowerClient maxPowerClient("localhost", 13000);
     maxPowerClient.start();
     
     // Instantiate the object which will monitor pressure and control the
