@@ -325,6 +325,7 @@ TransmitControl::_updateControlState() {
     // We should have a valid HMC mode now. If not, it's a bug and
     // we'll have to disable transmit...
     if (hmcMode == HcrPmc730::HMC_MODE_INVALID) {
+        hmcMode = _requestedHmcMode;
         _setXmitTestStatus(NOXMIT_ATTENUATE_BUG);
         ELOG << _xmitTestStatusText();
     }
