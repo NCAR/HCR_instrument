@@ -331,10 +331,13 @@ TransmitControl::_updateControlState() {
         _setXmitTestStatus(NOXMIT_ATTENUATE_BUG);
         ELOG << _xmitTestStatusText();
     }
-        
-    // Turn off HV if it's not requested or if we're not allowed to transmit
-    if (! _hvRequested || ! transmitAllowed()) {
-        // If high voltage is on, turn it off
+
+    // We'll be turning on high voltage if it's both requested and allowed
+    bool enablingHv = _hvRequested && transmitAllowed();
+    
+    // If we're turning off HV, do it before we change HMC mode, since our
+    // tests validated our chosen mode assuming HV is off.
+    if (! enablingHv) {
         if (_hcrPmc730Status.rdsXmitterHvOn()) {
             _xmitHvOff();
         }
@@ -345,17 +348,13 @@ TransmitControl::_updateControlState() {
         _setHmcMode(hmcMode);
     }
     
-    // Set transmitter HV state
-    if (_hvRequested && transmitAllowed()) {
+    // If we're turning on HV, do it after we change HMC mode, since we only
+    // validated that HV on is OK with our chosen mode, and not the previous 
+    // one.
+    if (enablingHv) {
         // Call _xmitHvOn() even if it's already on, since a HcrPmc730Daemon
         // requires a heartbeat to keep HV on.
         _xmitHvOn();
-    } else {
-        // Turn off HV if it's currently on
-        if (_hcrPmc730Status.rdsXmitterHvOn()) {
-            ILOG << "Turning off transmitter high voltage";
-            _hcrPmc730Client.xmitHvOff();
-        }
     }
 }
 
