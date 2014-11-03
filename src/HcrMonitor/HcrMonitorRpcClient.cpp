@@ -48,7 +48,7 @@ HcrMonitorRpcClient::_execXmlRpcCall(std::string methodName,
 
 void
 HcrMonitorRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
-    ILOG << "set APS valve control to " << state;
+    ILOG << "Setting APS valve control to " << state;
 
     xmlrpc_c::paramList params;
     params.add(xmlrpc_c::value_int(state));
@@ -66,7 +66,7 @@ HcrMonitorRpcClient::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
 
 void
 HcrMonitorRpcClient::setHvRequested(bool hvRequested) {
-    ILOG << "set HV requested to " << (hvRequested ? "true" : "false");
+    ILOG << "Setting 'HV requested' to " << (hvRequested ? "true" : "false");
 
     xmlrpc_c::paramList params;
     params.add(xmlrpc_c::value_boolean(hvRequested));
