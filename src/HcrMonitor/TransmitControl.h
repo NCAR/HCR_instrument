@@ -82,7 +82,7 @@ public:
     }
     
     /// @brief Set the (requested) HMC mode
-    void setHmcMode(HcrPmc730::HmcOperationMode mode) { _requestedHmcMode = mode; }
+    void setHmcMode(HcrPmc730::HmcOperationMode mode);
     
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
@@ -268,7 +268,7 @@ private:
     
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.
-    void _handleNewStatus();
+    void _updateControlState();
     
     /// @brief Basic XML-RPC client instance used for TerrainHtServer
     xmlrpc_c::clientSimple _xmlrpcClient;

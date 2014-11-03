@@ -86,7 +86,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _cmigitsWatchThread.start();
     
     // Finally, do our checks
-    _handleNewStatus();
+    _updateControlState();
 }
 
 TransmitControl::~TransmitControl() {
@@ -96,7 +96,7 @@ TransmitControl::~TransmitControl() {
 void
 TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
     _hcrPmc730Status = status;
-    _handleNewStatus();
+    _updateControlState();
 }
 
 void
@@ -108,13 +108,13 @@ TransmitControl::_updateHcrPmc730Responsive(bool responding, QString msg) {
         WLOG << "HcrPmc730Daemon is not responding: " << msg.toStdString();
     }
     // Redo the monitoring tests
-    _handleNewStatus();
+    _updateControlState();
 }
 
 void
 TransmitControl::_updateMotionControlStatus(MotionControl::Status status) {
     _motionControlStatus = status;
-    _handleNewStatus();
+    _updateControlState();
 }
 
 void
@@ -126,7 +126,7 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
         WLOG << "MotionControlDaemon is not responding: " << msg.toStdString();
     }
     // Redo the monitoring tests
-    _handleNewStatus();
+    _updateControlState();
 }
 
 void
@@ -135,7 +135,7 @@ TransmitControl::_updateMaxPower(double dataTime, double maxPower,
     _maxPowerDataTime = dataTime;
     _maxPower = maxPower;
     _rangeToMaxPower = rangeToMax;
-    _handleNewStatus();
+    _updateControlState();
 }
 
 void
@@ -147,13 +147,13 @@ TransmitControl::_updateMaxPowerResponsive(bool responding, QString msg) {
         WLOG << "TsPrint max power server is not responding: " << msg.toStdString();
     }
     // Redo the monitoring tests
-    _handleNewStatus();
+    _updateControlState();
 }
 
 void
 TransmitControl::_markCmigitsUnresponsive() {
     _cmigitsResponsive = false;
-    _handleNewStatus();
+    _updateControlState();
 }
 
 TransmitControl::XmitTestStatus
@@ -312,7 +312,7 @@ TransmitControl::_xmitTestStatusText() const {
 }
 
 void
-TransmitControl::_handleNewStatus() {
+TransmitControl::_updateControlState() {
     // Test if transmit is currently allowed and set _xmitTestStatus to the
     // result.
     _setXmitTestStatus(_runTransmitTests());
@@ -421,7 +421,7 @@ TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) 
     } while (false);    // do exactly once
 
     // Do checks using new state
-    _handleNewStatus();
+    _updateControlState();
 }
 
 double
@@ -527,4 +527,10 @@ TransmitControl::_EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode) {
     default:
         return(HcrPmc730::HMC_MODE_INVALID);
     }
+}
+
+void
+TransmitControl::setHmcMode(HcrPmc730::HmcOperationMode mode) {
+    _requestedHmcMode = mode;
+    _updateControlState();
 }
