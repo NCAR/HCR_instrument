@@ -81,6 +81,9 @@ public:
                 _xmitTestStatus < BEGIN_NOXMIT_MODES);
     }
     
+    /// @brief Set the (requested) HMC mode
+    void setHmcMode(HcrPmc730::HmcOperationMode mode) { _requestedHmcMode = mode; }
+    
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
     /// @param status the new status from HcrPmc730Daemon
