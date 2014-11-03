@@ -288,5 +288,6 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
     ILOG << "New max power at " << 
             dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
             ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
-    emit(newMaxPower(0.001 * dataTime.toMSecsSinceEpoch(), maxDbm, rangeToMax)); 
+    double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
+    emit(newMaxPower(secondsSinceEpoch, maxDbm, rangeToMax));
 }
