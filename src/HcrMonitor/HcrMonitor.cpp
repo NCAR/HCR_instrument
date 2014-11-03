@@ -216,6 +216,7 @@ main(int argc, char *argv[]) {
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("setRequestedHmcMode", new SetHmcModeMethod);
+    myRegistry.addMethod("setHvRequested", new SetHvRequestedMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
     // Start a thread to get HcrPmc730Daemon status on a regular basis.
