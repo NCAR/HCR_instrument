@@ -684,14 +684,12 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
     // HV line is handled by hcr_xmitd. We need to cover both cases.
     if (_xmitterFilamentIsOn()) {
-        _xmitdStatusThread.rpcClient().xmitFilamentOff();
         try {
             _pmcStatusThread.rpcClient().xmitFilamentOff();
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrPmc730Daemon to turn off filament";
         }
     } else {
-        _xmitdStatusThread.rpcClient().xmitFilamentOn();
         try {
             _pmcStatusThread.rpcClient().xmitFilamentOn();
         } catch (std::exception & e) {
@@ -708,6 +706,7 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
 /// Set HMC mode via HcrMonitor
 void
 HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
+    // Set a new requested HMC mode on HcrMonitor
     HcrPmc730::HmcOperationMode mode =
             static_cast<HcrPmc730::HmcOperationMode>(index);
     try {
@@ -720,23 +719,18 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
 /// Toggle the current on/off state of the transmitter high voltage
 void
 HcrGuiMainWindow::on_hvButton_clicked() {
-    // Send the command to toggle HV state to both hcr_xmitd and 
-    // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
-    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
-    // HV line is handled by hcr_xmitd. We need to cover both cases.
+    // Send the command to request toggle of HV state to HcrMonitor.
     if (_xmitterHvIsOn()) {
-        _xmitdStatusThread.rpcClient().xmitHvOff();
         try {
-        	_pmcStatusThread.rpcClient().xmitHvOff();
+        	_hcrMonitorStatusThread.rpcClient().setHvRequested(false);
         } catch (std::exception & e) {
-            WLOG << "Could not tell HcrPmc730Daemon to turn off HV";
+            WLOG << "Could not tell HcrMonitor to turn off HV";
         }
     } else {
-        _xmitdStatusThread.rpcClient().xmitHvOn();
         try {
-        	_pmcStatusThread.rpcClient().xmitHvOn();
+        	_hcrMonitorStatusThread.rpcClient().setHvRequested(true);
         } catch (std::exception & e) {
-            WLOG << "Could not tell HcrPmc730Daemon to turn on HV";
+            WLOG << "Could not tell HcrMonitor to turn on HV";
         }
     }
 }
