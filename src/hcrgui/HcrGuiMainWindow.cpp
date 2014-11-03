@@ -711,7 +711,7 @@ HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
     HcrPmc730::HmcOperationMode mode =
             static_cast<HcrPmc730::HmcOperationMode>(index);
     try {
-        _hcrMonitorStatusThread.rpcClient().setHmcMode(mode);
+        _hcrMonitorStatusThread.rpcClient().setRequestedHmcMode(mode);
     } catch (std::exception & e) {
         WLOG << "Could not tell HcrMonitor to change to HMC mode " << mode;
     }
