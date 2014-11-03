@@ -6,6 +6,7 @@
  */
 
 #include "TransmitControl.h"
+#include "MaxPowerClient.h"
 
 #include <iomanip>
 #include <limits>
@@ -158,8 +159,7 @@ TransmitControl::_markCmigitsUnresponsive() {
 TransmitControl::XmitTestStatus
 TransmitControl::_runTransmitTests() {
     // Provisional test status, which may be XMIT_ALLOWED or one of the
-    // "attenuation required" status values. Any test which disallows transmit
-    // will be returned immediately.
+    // "attenuation required" status values.
     XmitTestStatus provisionalStatus = XMIT_ALLOWED;
     
     // Perform all tests to see if transmit is allowed.
@@ -183,6 +183,13 @@ TransmitControl::_runTransmitTests() {
         return(NOXMIT_NO_MAXPOWER_DATA);
     }
     
+    // No transmit allowed if MotionControl does not know which way the
+    // radar beam is pointing.
+    if (! _motionControlStatus.rotDriveHomed ||
+            ! _motionControlStatus.tiltDriveHomed) {
+        return(NOXMIT_DRIVES_NOT_HOMED);
+    }
+
     // Convert pressure vessel pressure from hPa to PSI and test if it 
     // does not meet our minimum pressure criterion.
     double pvPressurePsi = HpaToPsi(_hcrPmc730Status.pvForePressure());
@@ -218,8 +225,12 @@ TransmitControl::_runTransmitTests() {
     
     // If received power exceeds our safety threshold, attenuate if possible 
     // otherwise disable transmit.
+    // TODO: After switching in attenuation, the next max power report we get
+    // may still be of non-attenuated data. Maybe delay reaction to turn off
+    // transmit completely in this case (NOT GREAT), or include info from
+    // the max power server to indicate if data are attenuated (BETTER).
     if (_maxPower > _RECEIVED_POWER_THRESHOLD) {
-        // If we're already attenuated or there's no viable attenuated mode
+        // If we're already attenuated or if there's no viable attenuated mode
         // available, we have to disable transmit. 
         if (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) ||
                 ! _attenuatedModeAvailable()) {
