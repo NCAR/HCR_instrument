@@ -125,7 +125,7 @@ public:
 class SetHmcModeMethod : public xmlrpc_c::method {
 public:
     SetHmcModeMethod() {
-        this->_signature = ":i";
+        this->_signature = "n:i";
         this->_help = "This method sets the requested HMC mode.";
     }
     void
