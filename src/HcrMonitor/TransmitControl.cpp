@@ -45,6 +45,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _aglAltitude(0.0),
     _overWater(false),
     _hvRequested(false),
+    _requestedHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST),
     _xmitTestStatus(NOXMIT_UNSPECIFIED)
 {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
@@ -90,6 +91,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
 }
 
 TransmitControl::~TransmitControl() {
+    ILOG << "TransmitControl destructor setting HMC mode to Bench Test";
+    _hcrPmc730Client.setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
     _cmigitsWatchThread.quit();
 }
 
