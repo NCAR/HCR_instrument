@@ -226,17 +226,25 @@ TransmitControl::_runTransmitTests() {
         }
     }
     
-    // If received power exceeds our safety threshold, attenuate if possible 
-    // otherwise disable transmit.
+    // If user has requested HV on and received power exceeds our safety 
+    // threshold, attenuate if possible otherwise force _hvRequested to false 
+    // to disable transmit until the user acts.
     // TODO: After switching in attenuation, the next max power report we get
     // may still be of non-attenuated data. Maybe delay reaction to turn off
     // transmit completely in this case (NOT GREAT), or include info from
     // the max power server to indicate if data are attenuated (BETTER).
-    if (_maxPower > _RECEIVED_POWER_THRESHOLD) {
+    if (_hvRequested && _maxPower > _RECEIVED_POWER_THRESHOLD) {
         // If we're already attenuated or if there's no viable attenuated mode
         // available, we have to disable transmit. 
         if (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) ||
                 ! _attenuatedModeAvailable()) {
+            // Change _hvRequested to false to disable transmit, and force the 
+            // user to act to try transmitting again.
+            WLOG << "Forcing high voltage request to OFF, to protect the " <<
+                    "receiver after seeing max power of " << _maxPower << 
+                    " dBm in HMC mode: " << 
+                    HcrPmc730::HmcModeNames[_hcrPmc730Status.hmcMode()];
+            _hvRequested = false;
             return(NOXMIT_RCVD_POWER_TOO_HIGH);
         } else {
             // Mark that we'll have to switch to an attenuated mode if we
