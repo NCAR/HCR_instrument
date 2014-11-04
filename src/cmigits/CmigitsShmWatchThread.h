@@ -4,7 +4,8 @@
 #include "CmigitsSharedMemory.h"
 #include <stdint.h>
 #include <QThread>
-#include <QTimer>
+
+class QTimer;
 
 /// CmigitsShmWatchThread polls CmigitsSharedMemory and emits newData() when new
 /// data is seen in the shared memory.
@@ -45,7 +46,7 @@ private:
     int _pollIntervalMs;                ///< shared memory polling interval, ms
     CmigitsSharedMemory _cmigitsShm;    ///< C-MIGITS shared memory connection
     uint64_t _last3512Time;             ///< time of last C-MIGITS 3512 message seen
-    QTimer _dataTimeoutTimer;           ///< timer used to note when data stop updating
+    QTimer * _dataTimeoutTimer;         ///< timer used to note when data stop updating
     int _dataTimeoutMs;                 ///< data timeout period, milliseconds
 };
 

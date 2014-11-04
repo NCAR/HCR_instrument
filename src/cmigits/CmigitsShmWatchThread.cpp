@@ -10,7 +10,7 @@ CmigitsShmWatchThread::CmigitsShmWatchThread(int pollIntervalMs,
     _pollIntervalMs(pollIntervalMs),
     _cmigitsShm(),
     _last3512Time(0),
-    _dataTimeoutTimer(),
+    _dataTimeoutTimer(NULL),
     _dataTimeoutMs(dataTimeoutMs) {
     // Don't allow a polling interval less than 4 ms, since faster polling
     // makes our thread a significant CPU hog, and 4 ms is fast enough to 
@@ -45,11 +45,12 @@ void
 CmigitsShmWatchThread::run()
 {
     // Set up and start the data timeout timer
-    _dataTimeoutTimer.setInterval(_dataTimeoutMs);
-    _dataTimeoutTimer.setSingleShot(true);
-    connect(&_dataTimeoutTimer, SIGNAL(timeout()), 
+    _dataTimeoutTimer = new QTimer();
+    _dataTimeoutTimer->setInterval(_dataTimeoutMs);
+    _dataTimeoutTimer->setSingleShot(true);
+    connect(_dataTimeoutTimer, SIGNAL(timeout()), 
             this, SIGNAL(dataTimeout()));   // emit our dataTimeout() signal
-    _dataTimeoutTimer.start();
+    _dataTimeoutTimer->start();
     
     // Set up and start our timer for polling shared memory.
     QTimer pollTimer;
@@ -68,7 +69,7 @@ CmigitsShmWatchThread::_pollSharedMemory() {
     // latest 3512 message to see if new content is in the shared memory.
     if (cmigitsData.time3512 > _last3512Time) {
         // (re)start the data timeout timer
-        _dataTimeoutTimer.start();
+        _dataTimeoutTimer->start();
         
         // Mark the new time and emit the data
         _last3512Time = cmigitsData.time3512;
