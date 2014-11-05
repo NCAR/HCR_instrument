@@ -89,6 +89,10 @@ public:
     /// @return true iff current location is over water
     bool overWater() const { return(_overWater); }
     
+    /// @brief Return the requested HMC mode.
+    /// @return the requested HMC mode.
+    HcrPmc730::HmcOperationMode requestedHmcMode() const { return(_requestedHmcMode); }
+    
     /// @brief Return true iff a user has requested that high voltage be 
     /// turned on.
     /// @return true iff a user has requested that high voltage be 
@@ -135,6 +139,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_terrainHtServerResponsive);
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
             ar & BOOST_SERIALIZATION_NVP(_overWater);
+            ar & BOOST_SERIALIZATION_NVP(_requestedHmcMode);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
             ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
             ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
@@ -195,6 +200,9 @@ private:
     
     /// @brief Are we over water?
     bool _overWater;
+    
+    /// @brief Requested HMC mode
+    HcrPmc730::HmcOperationMode _requestedHmcMode;
     
     /// @brief Has a user requested that transmitter high voltage be turned on?
     bool _hvRequested;

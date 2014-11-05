@@ -22,6 +22,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _terrainHtServerResponsive(false),
         _aglAltitude(-999.0),
         _overWater(false),
+        _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _transmitAllowed(false),
@@ -37,6 +38,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _terrainHtServerResponsive(false),
         _aglAltitude(-999.0),
         _overWater(false),
+        _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _transmitAllowed(false),
@@ -51,6 +53,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _terrainHtServerResponsive = transmitControl._terrainHtServerResponsive;
     _aglAltitude = transmitControl._aglAltitude;
     _overWater = transmitControl._overWater;
+    _requestedHmcMode = transmitControl._requestedHmcMode;
     _hvRequested = transmitControl._hvRequested;
     _xmitTestStatus = transmitControl._xmitTestStatus;
     _xmitTestStatusText = transmitControl._xmitTestStatusText();
