@@ -20,6 +20,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _motionControlResponsive(false),
         _cmigitsResponsive(false),
         _terrainHtServerResponsive(false),
+        _mslAltitude(-999.0),
         _aglAltitude(-999.0),
         _overWater(false),
         _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
@@ -36,6 +37,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _motionControlResponsive(false),
         _cmigitsResponsive(false),
         _terrainHtServerResponsive(false),
+        _mslAltitude(-999.0),
         _aglAltitude(-999.0),
         _overWater(false),
         _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
@@ -51,6 +53,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _motionControlResponsive = transmitControl._motionControlResponsive;
     _cmigitsResponsive = transmitControl._cmigitsResponsive;
     _terrainHtServerResponsive = transmitControl._terrainHtServerResponsive;
+    _mslAltitude = transmitControl._mslAltitude;
     _aglAltitude = transmitControl._aglAltitude;
     _overWater = transmitControl._overWater;
     _requestedHmcMode = transmitControl._requestedHmcMode;

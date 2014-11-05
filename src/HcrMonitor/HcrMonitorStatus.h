@@ -81,6 +81,10 @@ public:
     /// TerrainHtServer.
     bool terrainHtServerResponsive() const { return(_terrainHtServerResponsive); }
     
+    /// @brief Return MSL altitude, meters
+    /// @return MSL altitude, meters
+    double mslAltitude() const { return(_mslAltitude); }
+    
     /// @brief Return AGL altitude, meters
     /// @return AGL altitude, meters
     double aglAltitude() const { return(_aglAltitude); }
@@ -195,7 +199,10 @@ private:
     /// @brief Is TerrainHtServer responsive?
     bool _terrainHtServerResponsive;
     
-    /// @brief Latest AGL altitude
+    /// @brief Latest MSL altitude, m
+    double _mslAltitude;
+    
+    /// @brief Latest AGL altitude, m
     double _aglAltitude;
     
     /// @brief Are we over water?
