@@ -64,7 +64,7 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     _emsError3(false),
     _emsError4Or5(false),
     _emsError6Or7(false),
-    _hmcMode(0) {
+    _hmcMode(HcrPmc730::HMC_MODE_INVALID) {
     // If requested, get real values from the local static HcrPmc730 instance
     if (! createEmptyInstance) {
         _getMultiIoValues();
@@ -107,7 +107,7 @@ HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) :
     _emsError3(false),
     _emsError4Or5(false),
     _emsError6Or7(false),
-    _hmcMode(0) {
+    _hmcMode(HcrPmc730::HMC_MODE_INVALID) {
     // Create an input archiver wrapper around the map from std::string to
     // xmlrpc_c::value, and use serialize() to populate our members from its
     // content.
