@@ -27,6 +27,18 @@ LOGGING("HcrPmc730Daemon")
 /// Our Qt application
 QCoreApplication *App = 0;
 
+/// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
+/// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds.
+QTimer * HvOnHeartbeatTimer;
+static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 500;
+
+void
+hvOnHeartbeatTimeout() {
+    WLOG << "'HV on' heartbeat timed out after " << 
+            MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS << " ms. Turning off HV.";
+    HcrPmc730::setXmitterHvOn(false);
+}
+
 /// Application instance name, for procmap
 std::string _instance = "ops";
 
@@ -82,6 +94,8 @@ public:
         ILOG << "Executing XML-RPC call to xmitHvOn()";
         HcrPmc730::setXmitterHvOn(true);
         *retvalP = xmlrpc_c::value_nil();
+        /// Start or restart the "HV on" heartbeat timer
+        HvOnHeartbeatTimer->start();
     }
 };
 
@@ -98,6 +112,8 @@ public:
         ILOG << "Executing XML-RPC call to xmitHvOff()";
         HcrPmc730::setXmitterHvOn(false);
         *retvalP = xmlrpc_c::value_nil();
+        /// Stop the "HV on" heartbeat timer
+        HvOnHeartbeatTimer->stop();
     }
 };
 
@@ -185,6 +201,17 @@ main(int argc, char * argv[]) {
 
     App = new QCoreApplication(argc, argv);
     App->setApplicationName("HcrPmc730Daemon");
+    
+    // Instantiate and configure our heartbeat timer for "HV on" requests.
+    // The timer is started/restarted every time "HV on" is requested, and
+    // stopped on any "HV off" request.
+    HvOnHeartbeatTimer = new QTimer();
+    HvOnHeartbeatTimer->setInterval(MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS);
+    HvOnHeartbeatTimer->setSingleShot(true);
+    QFunctionWrapper heartbeatTimeoutWrapper(hvOnHeartbeatTimeout);
+    QObject::connect(HvOnHeartbeatTimer, SIGNAL(timeout()), 
+            &heartbeatTimeoutWrapper, SLOT(callFunction()));
+    
     
     // Check for --simulate in the arg list
     bool simulate = false;
