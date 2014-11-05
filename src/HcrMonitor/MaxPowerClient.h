@@ -70,10 +70,19 @@ private:
     /// @brief Deal with a max power XML element, which should be of the
     /// form:
     ///      <TsPrintMaxPower>
-    ///          <foo>..</foo>
-    ///          <bar>..</bar>
-    ///          ...
-    ///      </TsPrintMaxPower>
+    ///        <time>2014-10-17T21:39:00</time>
+    ///        <msecs>848</msecs>
+    ///        <prf>9864.27</prf>
+    ///        <nSamples>1000</nSamples>
+    ///        <startGate>30</startGate>
+    ///        <nGates>670</nGates>
+    ///        <el>-88.9096</el>
+    ///        <az>185.969</az>
+    ///        <maxDbm0>-44.7249</maxDbm0>
+    ///        <maxDbm1>-52.216</maxDbm1>
+    ///        <rangeToMax0>2539.84</rangeToMax0>
+    ///        <rangeToMax1>2539.84</rangeToMax1>
+    ///     </TsPrintMaxPower>
     /// @param text the text of the max power XML element
     void _handleMaxPowerElement(const QByteArray & text);
     
