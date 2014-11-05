@@ -143,7 +143,6 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_terrainHtServerResponsive);
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
             ar & BOOST_SERIALIZATION_NVP(_overWater);
-            ar & BOOST_SERIALIZATION_NVP(_requestedHmcMode);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
             ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
             ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
@@ -166,11 +165,23 @@ private:
                         static_cast<ApsControl::ValveControlState>(intValveControlState);
             }
             
+            // _requestedHmcMode
+            {
+                // Before output, convert _requestedHmcMode to an int
+                int intRequestedHmcMode = static_cast<int>(_requestedHmcMode);
+                // This will save intControlState on output or load a value 
+                // there on input.
+                ar & BOOST_SERIALIZATION_NVP(intRequestedHmcMode);
+                // After input, convert the loaded int back to ApsControl::ValveControlState
+                _requestedHmcMode = 
+                        static_cast<HcrPmc730::HmcOperationMode>(intRequestedHmcMode);
+            }
+            
             // _xmitTestStatus
             {
                 // Before output, convert _xmitTestStatus to an int
                 int intXmitTestStatus = static_cast<int>(_xmitTestStatus);
-                // This will save intControlState on output or load a value 
+                // This will save intXmitTestStatus on output or load a value 
                 // there on input.
                 ar & BOOST_SERIALIZATION_NVP(intXmitTestStatus);
                 // After input, convert the loaded int back to ApsControl::ValveControlState
