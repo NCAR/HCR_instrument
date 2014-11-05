@@ -380,10 +380,10 @@ TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) 
     // C-MIGITS data
     double latitude = cmigitsData.latitude;
     double longitude = cmigitsData.longitude;
-    double altitudeMSL = cmigitsData.altitude;
+    _mslAltitude = cmigitsData.altitude;
     
     DLOG << cmigitsData.time3501 << ", lat: " << latitude << 
-            ", lon: " << longitude << ", altMSL: " << altitudeMSL;
+            ", lon: " << longitude << ", altMSL: " << _mslAltitude;
 
     // Get terrain information from TerrainHtServer using current location and
     // calculate AGL altitude.
@@ -419,7 +419,7 @@ TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) 
 
         // Get the surface altitude above MSL then calculate aircraft altitude AGL
         double surfaceAltMSL = xmlrpc_c::value_double(dict["heightM"]);
-        _aglAltitude = altitudeMSL - surfaceAltMSL;
+        _aglAltitude = _mslAltitude - surfaceAltMSL;
 
         // Over land or water?
         _overWater = xmlrpc_c::value_boolean(dict["isWater"]);

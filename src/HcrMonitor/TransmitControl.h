@@ -324,7 +324,10 @@ private:
     /// @brief Is the TerrainHtServer responsive?
     bool _terrainHtServerResponsive;
     
-    /// @brief last AGL altitude
+    /// @brief last MSL altitude, m
+    double _mslAltitude;
+    
+    /// @brief last AGL altitude, m
     double _aglAltitude;
     
     /// @brief Are we over water?
