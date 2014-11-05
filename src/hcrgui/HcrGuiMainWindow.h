@@ -33,6 +33,7 @@
 #include "CmigitsDetails.h"
 #include "FireflydDetails.h"
 #include "HcrdrxDetails.h"
+#include "HcrMonitorDetails.h"
 #include "MotionControlDetails.h"
 #include "Pmc730Details.h"
 #include "XmitDetails.h"
@@ -62,6 +63,7 @@ private slots:
     void on_showLogButton_clicked();
     void on_xmitterDetailsButton_clicked();
     void on_fireflydDetailsButton_clicked();
+    void on_hcrMonitorDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
@@ -182,6 +184,7 @@ private:
     CmigitsDetails _cmigitsDetails;
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
+    HcrMonitorDetails _hcrMonitorDetails;
     MotionControlDetails _motionControlDetails;
     Pmc730Details _pmc730Details;
     XmitDetails _xmitDetails;

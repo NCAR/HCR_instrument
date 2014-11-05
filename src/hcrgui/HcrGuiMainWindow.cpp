@@ -34,6 +34,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _cmigitsDetails(this),
     _fireflydDetails(this),
     _hcrdrxDetails(this),
+    _hcrMonitorDetails(this),
     _motionControlDetails(this),
     _pmc730Details(this),
     _xmitDetails(this),
@@ -106,6 +107,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.cmigitsStatusIcon->setPixmap(_redLED);
     _ui.fireflydStatusIcon->setPixmap(_redLED);
     _ui.hcrdrxStatusIcon->setPixmap(_redLED);
+    _ui.hcrMonitorStatusIcon->setPixmap(_redLED);
     _ui.mcStatusIcon->setPixmap(_redLED);
     _ui.pmc730StatusIcon->setPixmap(_redLED);
     _ui.xmitterStatusIcon->setPixmap(_redLED);
@@ -386,20 +388,20 @@ HcrGuiMainWindow::_hcrMonitorResponsivenessChange(bool responding, QString msg) 
     _logMessage(ss.str().c_str());
 
     if (! responding) {
-        // Create a default (bad) DrxStatus, and set it as the last status
-        // received.
-        _setDrxStatus(DrxStatus());
+        // Create a default (bad) HcrMonitorStatus, and set it as the last 
+        // status received.
+        _setHcrMonitorStatus(HcrMonitorStatus());
     }
 }
 
 void
 HcrGuiMainWindow::_setHcrMonitorStatus(HcrMonitorStatus status) {
     _hcrMonitorStatus = status;
-//    // Update the details dialog
-//    _hcrdrxDetails.updateStatus(_hcrdrxStatusThread.serverIsResponding(),
-//            _drxStatus);
-//    // Update the main GUI
-//    _update();
+    // Update the details dialog
+    _hcrMonitorDetails.updateStatus(_hcrMonitorStatusThread.serverIsResponding(),
+            _hcrMonitorStatus, _pmcStatus);
+    // Update the main GUI
+    _update();
 }
 
 void
@@ -767,6 +769,11 @@ HcrGuiMainWindow::on_fireflydDetailsButton_clicked() {
 }
 
 void
+HcrGuiMainWindow::on_hcrMonitorDetailsButton_clicked() {
+    _hcrMonitorDetails.show();
+}
+
+void
 HcrGuiMainWindow::_update() {
     // convenience variable
     QPixmap light;
@@ -950,6 +957,16 @@ HcrGuiMainWindow::_update() {
         }
     }
     _ui.fireflydStatusIcon->setPixmap(light);
+
+    // HcrMonitor status LED
+    if (! _hcrMonitorStatusThread.serverIsResponding()) {
+        light = _redLED;
+    } else {
+        // If normal transmit is allowed use green light, otherwise amber
+        light = (_hcrMonitorStatus.xmitAllowedStatus() == TransmitControl::XMIT_ALLOWED) ?
+                _greenLED : _amberLED;
+    }
+    _ui.hcrMonitorStatusIcon->setPixmap(light);
 
     // Make sure transmitter HV is turned off if the pressure in the pressure 
     // vessel drops below 760 hPa.
