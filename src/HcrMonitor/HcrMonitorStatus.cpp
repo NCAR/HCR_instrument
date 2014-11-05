@@ -24,6 +24,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _overWater(false),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
+        _transmitAllowed(false),
         _attenuationRequired(false) {
 }
 
@@ -38,6 +39,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _overWater(false),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
+        _transmitAllowed(false),
         _attenuationRequired(false) {
     // Get ApsControl status
     _apsValveControlState = apsControl._valveControlState;
