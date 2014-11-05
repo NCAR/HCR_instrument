@@ -34,10 +34,10 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     // enabled state for the rest of the components.
     if (daemonResponding) {
         _ui.respondingLabel->setText("");
-        _ui.statusFrame->setEnabled(true);
+        _ui.contentFrame->setEnabled(true);
     } else {
         _ui.respondingLabel->setText("<font color='DarkRed'>No HcrMonitor!</font>");
-        _ui.statusFrame->setEnabled(false);
+        _ui.contentFrame->setEnabled(false);
     }
 
     // Now fill in the rest from the status we received
@@ -52,10 +52,10 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     _ui.currentModeValue->setText(QString::fromStdString(currentModeName));
     
     int mslAltFt = int(MetersToFeet(hcrMonitorStatus.mslAltitude()));
-    _ui.altitudeMslLabel->setText(QString::number(mslAltFt));
+    _ui.altitudeMslValue->setText(QString::number(mslAltFt));
     
     int aglAltFt = int(MetersToFeet(hcrMonitorStatus.aglAltitude()));
-    _ui.altitudeMslLabel->setText(QString::number(aglAltFt));
+    _ui.altitudeAglValue->setText(QString::number(aglAltFt));
     
     _ui.surfaceValue->setText(hcrMonitorStatus.overWater() ? "water" : "land");
     
@@ -69,5 +69,5 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     _ui.hvOnIcon->setPixmap(hvOn ? _greenLED : _greenLED_off);
     
     std::string testStatusText = hcrMonitorStatus.xmitAllowedStatusText();
-    _ui.testStatusText->setText(QString::fromStdString(testStatusText));
+    _ui.testResultText->setText(QString::fromStdString(testStatusText));
 }
