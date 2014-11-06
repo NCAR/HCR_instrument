@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
-    <height>571</height>
+    <width>425</width>
+    <height>644</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -603,10 +603,11 @@
              <item row="1" column="0">
               <widget class="QLabel" name="hmcModeLabel">
                <property name="text">
-                <string>HMC Mode</string>
+                <string>Current
+Ops Mode</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -678,7 +679,7 @@
               <widget class="QLabel" name="requestedModeLabel">
                <property name="text">
                 <string>Requested
-HMC Mode</string>
+Ops Mode</string>
                </property>
               </widget>
              </item>
