@@ -173,7 +173,7 @@ private:
                 // This will save intControlState on output or load a value 
                 // there on input.
                 ar & BOOST_SERIALIZATION_NVP(intRequestedHmcMode);
-                // After input, convert the loaded int back to ApsControl::ValveControlState
+                // After input, convert the loaded int back to HcrPmc730::HmcOperationMode
                 _requestedHmcMode = 
                         static_cast<HcrPmc730::HmcOperationMode>(intRequestedHmcMode);
             }
@@ -185,7 +185,7 @@ private:
                 // This will save intXmitTestStatus on output or load a value 
                 // there on input.
                 ar & BOOST_SERIALIZATION_NVP(intXmitTestStatus);
-                // After input, convert the loaded int back to ApsControl::ValveControlState
+                // After input, convert the loaded int back to TransmitControl::XmitTestStatus
                 _xmitTestStatus = 
                         static_cast<TransmitControl::XmitTestStatus>(intXmitTestStatus);
             }
