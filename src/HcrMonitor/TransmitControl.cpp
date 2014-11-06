@@ -302,6 +302,8 @@ TransmitControl::_xmitTestStatusText() const {
         return("Transmit not allowed: No data from MotionControlDaemon");
     case NOXMIT_NO_MAXPOWER_DATA:
         return("Transmit not allowed: No data from TsPrint max power server");
+    case NOXMIT_FILAMENT_OFF:
+        return("Transmit not allowed: Filament is not on");
     case NOXMIT_PV_PRESSURE_LOW:
         oss << "Transmit not allowed: PV pressure is below minimum " <<
             "operating pressure of " << _PV_MINIMUM_PRESSURE_PSI << " PSI";
