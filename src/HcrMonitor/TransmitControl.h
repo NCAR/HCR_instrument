@@ -60,6 +60,7 @@ public:
         NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
         NOXMIT_NO_MOTIONCONTROL_DATA,   ///< MotionControlDaemon is not providing data
         NOXMIT_NO_MAXPOWER_DATA,        ///< TsPrint max power server is not providing data
+        NOXMIT_FILAMENT_OFF,            ///< Transmitter filament is off
         NOXMIT_PV_PRESSURE_LOW,         ///< Pressure vessel pressure is too low
         NOXMIT_TOO_LOW_FOR_NONZENITH,   ///< AGL altitude too low for non-zenith pointing
         NOXMIT_TOO_LOW_FOR_NADIR_POINTING,  ///< AGL altitude too low for near-nadir pointing

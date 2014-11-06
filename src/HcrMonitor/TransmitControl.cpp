@@ -185,6 +185,11 @@ TransmitControl::_runTransmitTests() {
     if (! _maxPowerResponsive) {
         return(NOXMIT_NO_MAXPOWER_DATA);
     }
+
+    // No transmit if the EIK filament is not on
+    if (! _hcrPmc730Status.rdsXmitterFilamentOn()) {
+        return(NOXMIT_FILAMENT_OFF);
+    }
     
     // No transmit allowed if MotionControl does not know which way the
     // radar beam is pointing.
