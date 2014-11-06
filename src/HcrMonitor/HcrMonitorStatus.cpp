@@ -10,6 +10,7 @@
 #include "TransmitControl.h"
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
+#include <cmath>
 #include <iomanip>
 
 LOGGING("HcrMonitorStatus")
@@ -20,8 +21,8 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _motionControlResponsive(false),
         _cmigitsResponsive(false),
         _terrainHtServerResponsive(false),
-        _mslAltitude(0.0),
-        _aglAltitude(0.0),
+        _mslAltitude(NAN),
+        _aglAltitude(NAN),
         _overWater(false),
         _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
         _hvRequested(false),
