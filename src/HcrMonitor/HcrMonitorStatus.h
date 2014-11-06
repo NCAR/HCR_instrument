@@ -141,6 +141,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_motionControlResponsive);
             ar & BOOST_SERIALIZATION_NVP(_cmigitsResponsive);
             ar & BOOST_SERIALIZATION_NVP(_terrainHtServerResponsive);
+            ar & BOOST_SERIALIZATION_NVP(_mslAltitude);
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
             ar & BOOST_SERIALIZATION_NVP(_overWater);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
