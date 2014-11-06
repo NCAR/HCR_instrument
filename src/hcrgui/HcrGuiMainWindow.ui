@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>431</width>
-    <height>515</height>
+    <width>424</width>
+    <height>571</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,7 +30,7 @@
     <item>
      <widget class="QWidget" name="guiWidget" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -419,7 +419,7 @@
               </widget>
              </item>
              <item row="4" column="0">
-              <widget class="QLabel" name="hvIcon">
+              <widget class="QLabel" name="requestHvIcon">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -435,7 +435,7 @@
               </widget>
              </item>
              <item row="4" column="1">
-              <widget class="QPushButton" name="hvButton">
+              <widget class="QPushButton" name="requestHvButton">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -446,14 +446,14 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>High Voltage</string>
+                <string>Request High Voltage</string>
                </property>
                <property name="flat">
                 <bool>false</bool>
                </property>
               </widget>
              </item>
-             <item row="5" column="0">
+             <item row="6" column="0">
               <widget class="QLabel" name="xmittingIcon">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -469,7 +469,7 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="1">
+             <item row="6" column="1">
               <widget class="QLabel" name="xmittingLabel">
                <property name="text">
                 <string>Transmitting</string>
@@ -524,7 +524,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="1">
+             <item row="7" column="1">
               <spacer name="verticalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -536,6 +536,23 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="hvOnIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="hvOnLabel">
+               <property name="text">
+                <string>High Voltage</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -567,7 +584,7 @@
              <string>Data</string>
             </property>
             <layout class="QGridLayout" name="gridLayout">
-             <item row="1" column="1">
+             <item row="3" column="1">
               <spacer name="verticalSpacer_4">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -583,35 +600,17 @@
                </property>
               </spacer>
              </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="hmcModeCombo">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="currentIndex">
-                <number>0</number>
-               </property>
-               <item>
-                <property name="text">
-                 <string/>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="modeLabel">
+             <item row="1" column="0">
+              <widget class="QLabel" name="hmcModeLabel">
                <property name="text">
-                <string>Mode</string>
+                <string>HMC Mode</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
+             <item row="4" column="0">
               <widget class="QLabel" name="dataRateIcon">
                <property name="text">
                 <string/>
@@ -624,7 +623,7 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="4" column="1">
               <widget class="QWidget" name="writeRateWidget" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <property name="margin">
@@ -675,44 +674,211 @@
                </layout>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QPushButton" name="recordingButton">
+             <item row="0" column="0">
+              <widget class="QLabel" name="requestedModeLabel">
+               <property name="text">
+                <string>Requested
+HMC Mode</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="requestedModeCombo">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="hmcModeValue">
+               <property name="text">
+                <string>---</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="locationBox">
+            <property name="title">
+             <string>Location</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="0" column="0">
+              <widget class="QLabel" name="latitudeLabel">
+               <property name="text">
+                <string>Latitude</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="latitudeValue">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Time Series Recording</string>
+                <string>---</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="latitudeUnits">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>deg</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="longitudeLabel">
+               <property name="text">
+                <string>Longitude</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="longitudeValue">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>---</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="longitudeUnits">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>deg</string>
                </property>
               </widget>
              </item>
              <item row="2" column="0">
-              <widget class="QLabel" name="recordingEnabledIcon">
+              <widget class="QLabel" name="altitudeMslLabel">
                <property name="text">
-                <string/>
+                <string>Altitude (MSL)</string>
                </property>
-               <property name="pixmap">
-                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="altitudeMslValue">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>---</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="altitudeMslUnits">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ft</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="altitudeAglLabel">
+               <property name="text">
+                <string>Altitude (AGL)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="altitudeAglValue">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>---</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="altitudeAglUnits">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>ft</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="surfaceLabel">
+               <property name="text">
+                <string>Surface</string>
                </property>
               </widget>
              </item>
              <item row="4" column="1">
-              <spacer name="verticalSpacer_5">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
+              <widget class="QLabel" name="surfaceValue">
+               <property name="text">
+                <string>---</string>
                </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>2</height>
-                </size>
-               </property>
-              </spacer>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -964,7 +1130,7 @@
   <tabstop>mcDetailsButton</tabstop>
   <tabstop>hcrdrxDetailsButton</tabstop>
   <tabstop>filamentButton</tabstop>
-  <tabstop>hvButton</tabstop>
+  <tabstop>requestHvButton</tabstop>
   <tabstop>attitudeCorrectionButton</tabstop>
   <tabstop>driveHomeButton</tabstop>
   <tabstop>antennaModeButton</tabstop>

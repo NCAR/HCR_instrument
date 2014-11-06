@@ -23,6 +23,10 @@ static const float INVALID_ANGLE = -999.9;
 
 LOGGING("HcrGuiMainWindow")
 
+static inline double MetersToFeet(double m) {
+    return(3.28084 * m);
+}
+
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, std::string rdsHost, int drxPort,
@@ -62,10 +66,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _dmapWriteRate(0.0),
     _dmapWriteRateTime(0),
     _lastAngleUpdate(QDateTime::currentDateTime()),
-    _anglesValidTimer(this),
-    _hvDisabledForPressure(true),
-    _goodPresStartTime(0),
-    _tsWriteEnableFileName("/tmp/TsSmartSave.flag.wband") {
+    _anglesValidTimer(this) {
     // Set up the UI
     _ui.setupUi(this);
 
@@ -100,9 +101,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     // Start with all-zero DataMapper status
     memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
-    // Disable the HMC mode box until we get status from HcrPmc730Daemon.
-    _ui.hmcModeCombo->setEnabled(false);
-    
     // No status from any daemons yet
     _ui.cmigitsStatusIcon->setPixmap(_redLED);
     _ui.fireflydStatusIcon->setPixmap(_redLED);
@@ -183,7 +181,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     
     // Populate the HMC mode combo box
     for (int i = 0; i < HcrPmc730::HMC_NMODES; i++) {
-        _ui.hmcModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i); 
+        _ui.requestedModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i);
     }
 
     // Start with angle display cleared
@@ -259,8 +257,6 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding, QString msg) {
             "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
 
-    _ui.hmcModeCombo->setEnabled(responding);
-    
     if (! responding) {
         // Create a default (bad) Pmc730Status, and set it as the last status
         // received.
@@ -481,46 +477,6 @@ HcrGuiMainWindow::_setDataMapperStatus(DMAP_info_t newStatus) {
 }
 
 bool
-HcrGuiMainWindow::_xmitterFilamentIsOn() const {
-    bool filamentOn;
-    // If RDS is in control, we have to use the state of the RDS control lines
-    // from the PMC-730. The status reported directly by the transmitter will 
-    // *not* reflect the correct state when RDS is in control.
-    //
-    // If the control source is unknown (this is true when hcr_xmitd is not
-    // responding), we assume RDS control since that's effectively always true
-    // for HCR.
-    if (_rdsXmitControl) {
-        filamentOn = _pmcStatus.rdsXmitterFilamentOn();
-    } else {
-        // The "filament on" bit from transmitter status is only meaningful
-        // if the transmitter is *not* under RDS control.
-        filamentOn = _xmitStatus.filamentOn();
-    }
-    return(filamentOn);
-}
-
-bool
-HcrGuiMainWindow::_xmitterHvIsOn() const {
-    bool hvOn;
-    // If RDS is in control, we have to use the state of the RDS control lines
-    // from the PMC-730. The status reported directly by the transmitter will 
-    // *not* reflect the correct state when RDS is in control.
-    //
-    // If the control source is unknown (this is true when hcr_xmitd is not
-    // responding), we assume RDS control since that's effectively always true
-    // for HCR.
-    if (_rdsXmitControl) {
-        hvOn = _pmcStatus.rdsXmitterHvOn();
-    } else {
-        // The "HV on" bit from transmitter status is only meaningful
-        // if the transmitter is *not* under RDS control.
-        hvOn = _xmitStatus.highVoltageOn();
-    }
-    return(hvOn);
-}
-
-bool
 HcrGuiMainWindow::_xmitting() const {
     bool xmitting;
     // If RDS is in control, we have to use the state of the RDS control lines
@@ -545,7 +501,7 @@ HcrGuiMainWindow::_xmitting() const {
                 _xmitStatus.summaryFault() ||
                 _xmitStatus.waveguideArcFault() ||
                 _xmitStatus.xmitterTempFault();
-        xmitting = _xmitterFilamentIsOn() && _xmitterHvIsOn() &&
+        xmitting = _pmcStatus.rdsXmitterFilamentOn() && _pmcStatus.rdsXmitterHvOn() &&
                 ! _pmcStatus.modPulseDisabled() && ! hvDisableFault;
     } else {
         // If transmitter is not under RDS control, we can just use the
@@ -558,21 +514,6 @@ HcrGuiMainWindow::_xmitting() const {
 /// Pop up the antenna mode editing dialog
 void
 HcrGuiMainWindow::on_antennaModeButton_clicked() {
-    // Don't pop up the dialog if we're transmitting. At this point, moving the
-    // reflector between pointing locations may steer the beam through the
-    // aircraft fuselage. If we do that while transmitting, the return signal
-    // could damage the radar.
-    if (_xmitterHvIsOn()) {
-        QMessageBox box(QMessageBox::Warning,
-                "No Mode Change While Transmitting",
-                "Reflector mode cannot be changed while transmitting.",
-                QMessageBox::Ok, this);
-        box.setInformativeText(
-                "Radar transmitter HV must be turned off before changing mode!");
-        box.exec();
-        return;
-    }
-    
     // Pop up the antenna mode dialog, and apply the new mode if the dialog
     // is accepted.
     if (_antennaModeDialog.exec() == QDialog::Accepted) {
@@ -685,7 +626,7 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
     // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
     // HV line is handled by hcr_xmitd. We need to cover both cases.
-    if (_xmitterFilamentIsOn()) {
+    if (_pmcStatus.rdsXmitterFilamentOn()) {
         try {
             _pmcStatusThread.rpcClient().xmitFilamentOff();
         } catch (std::exception & e) {
@@ -707,29 +648,32 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
 
 /// Set HMC mode via HcrMonitor
 void
-HcrGuiMainWindow::on_hmcModeCombo_activated(int index) {
+HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
     // Set a new requested HMC mode on HcrMonitor
     HcrPmc730::HmcOperationMode mode =
             static_cast<HcrPmc730::HmcOperationMode>(index);
     try {
+        ILOG << "Requesting HMC mode " << mode;
         _hcrMonitorStatusThread.rpcClient().setRequestedHmcMode(mode);
     } catch (std::exception & e) {
-        WLOG << "Could not tell HcrMonitor to change to HMC mode " << mode;
+        WLOG << "Could not tell HcrMonitor to request HMC mode " << mode;
     }
 }
 
-/// Toggle the current on/off state of the transmitter high voltage
+/// Toggle the requested transmitter high voltage state
 void
-HcrGuiMainWindow::on_hvButton_clicked() {
+HcrGuiMainWindow::on_requestHvButton_clicked() {
     // Send the command to request toggle of HV state to HcrMonitor.
-    if (_xmitterHvIsOn()) {
+    if (_hcrMonitorStatus.hvRequested()) {
         try {
+            ILOG << "Requesting HV off";
         	_hcrMonitorStatusThread.rpcClient().setHvRequested(false);
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrMonitor to turn off HV";
         }
     } else {
         try {
+            ILOG << "Requesting HV on";
         	_hcrMonitorStatusThread.rpcClient().setHvRequested(true);
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrMonitor to turn on HV";
@@ -745,12 +689,6 @@ HcrGuiMainWindow::on_mcDetailsButton_clicked() {
 void
 HcrGuiMainWindow::on_pmc730DetailsButton_clicked() {
     _pmc730Details.show();
-}
-
-void
-HcrGuiMainWindow::on_recordingButton_clicked() {
-    _toggleTsWriteEnabled();
-    _update();
 }
 
 void
@@ -786,8 +724,8 @@ HcrGuiMainWindow::_update() {
     
     // Update transmitter control
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
-    _ui.filamentIcon->setPixmap(_xmitterFilamentIsOn() ? _greenLED : _greenLED_off);
-   if (! _xmitterFilamentIsOn()) {
+    _ui.filamentIcon->setPixmap(_pmcStatus.rdsXmitterFilamentOn() ? _greenLED : _greenLED_off);
+   if (! _pmcStatus.rdsXmitterFilamentOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
         _ui.filamentWarmupLabel->setText("Filament warmup");
@@ -797,15 +735,15 @@ HcrGuiMainWindow::_update() {
         _ui.filamentWarmupLabel->setText(_xmitStatus.filamentDelayActive() ?
                 "Waiting for warmup" : "Filament is warm");
     }
-    _ui.hvIcon->setPixmap(_xmitterHvIsOn() ? _greenLED : _greenLED_off);
-    // Enable the HV button as soon as filament delay has expired and 
-    // transmit control is via RDS
-    _ui.hvButton->setEnabled(_pmcStatusThread.serverIsResponding() &&
-            _rdsXmitControl && ! _xmitStatus.filamentDelayActive());
-    // Regardless of other conditions, force the HV button to be enabled if
-    // HV is on, so that it can be turned off.
-    if (_xmitterHvIsOn()) {
-        _ui.hvButton->setEnabled(true);
+    _ui.requestHvIcon->setPixmap(_hcrMonitorStatus.hvRequested() ?
+            _greenLED : _greenLED_off);
+    _ui.hvOnIcon->setPixmap(_pmcStatus.rdsXmitterHvOn() ? _greenLED : _greenLED_off);
+    // Enable the request HV button as soon as HcrMonitor is responding
+    _ui.requestHvButton->setEnabled(_hcrMonitorStatusThread.serverIsResponding());
+    // Regardless of other conditions, force the request HV button to be enabled
+    // if HV is on, so that it can be turned off.
+    if (_pmcStatus.rdsXmitterHvOn()) {
+        _ui.requestHvButton->setEnabled(true);
     }
     _ui.xmittingIcon->setPixmap(_xmitting() ? _greenLED : _greenLED_off);
 
@@ -849,7 +787,9 @@ HcrGuiMainWindow::_update() {
     }
 
     // HMC mode
-    _ui.hmcModeCombo->setCurrentIndex(_pmcStatus.hmcMode());
+    _ui.requestedModeCombo->setCurrentIndex(_hcrMonitorStatus.requestedHmcMode());
+    std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
+    _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
     // C-MIGITS status light
     light = _redLED;
@@ -921,10 +861,6 @@ HcrGuiMainWindow::_update() {
     _ui.hcrdrxStatusIcon->setPixmap(_hcrdrxStatusThread.serverIsResponding() ?
             _greenLED : _redLED);
     
-    // Time-series data recording enabled LED
-    _ui.recordingEnabledIcon->setPixmap(_tsWriteEnabled() ? 
-            _greenLED : _greenLED_off);
-
     // HcrPmc730Daemon status LED
     light = _greenLED;
     if (! _pmcStatusThread.serverIsResponding() || _pmc730Details.errState()) {
@@ -968,59 +904,23 @@ HcrGuiMainWindow::_update() {
     }
     _ui.hcrMonitorStatusIcon->setPixmap(light);
 
-    // Make sure transmitter HV is turned off if the pressure in the pressure 
-    // vessel drops below 760 hPa.
-    if (_pmcStatus.pvForePressure() < 760) {
-        // Disable the HV button as long as pressure remains too low
-        _ui.hvButton->setEnabled(false);
-        
-        // If HV is on, turn it off now
-        if (_xmitterHvIsOn()) {
-            // Act as if the user clicked the HV button to turn off HV
-            on_hvButton_clicked();
-        }
-
-        // Remember that we've disabled HV
-        bool stateChanged = ! _hvDisabledForPressure;
-        _hvDisabledForPressure = true;
-
-        // Mark as having no continuous good pressures
-        _goodPresStartTime = 0;
-
-        // Popup a message if we just changed the state of _hvDisabledForPressure
-        if (stateChanged) {
-            // Warn the user that we have disabled HV
-            QMessageBox box(QMessageBox::Warning, "Disabling Transmitter HV",
-                    "Disabling transmitter HV due to hcrdrx shutdown\n"
-                    "or low pressure in the pressure vessel",
-                    QMessageBox::Ok, this);
-            box.exec();
-        }
-    } else {
-        // If the last pressure was bad, mark now as the start of good
-        // pressures
-        time_t now = time(0);
-        if (! _goodPresStartTime) {
-            _goodPresStartTime = now;
-        }
-        // Allow HV again if we've had continuous good pressure values
-        // for more than 60 seconds
-        if (_hvDisabledForPressure &&
-                _goodPresStartTime && ((now - _goodPresStartTime) > 60)) {
-            _hvDisabledForPressure = false;
-            QMessageBox box(QMessageBox::Information, "HV Allowed",
-                    "Transmitter HV is now allowed, with 60 seconds\n"
-                    "of good pressures",
-                    QMessageBox::Ok, this);
-            box.exec();
-        }
-    }
-    
     // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
             _greenLED : _redLED);
     _ui.dataRateIcon->setPixmap(_dmapWriteRate > 0 ? _greenLED : _amberLED);
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
+
+    // Location info
+    _ui.latitudeValue->setText(QString::number(_cmigitsStatus.latitude(), 'f', 4));
+    _ui.longitudeValue->setText(QString::number(_cmigitsStatus.longitude(), 'f', 4));
+
+    int iAltFt = int(MetersToFeet(_cmigitsStatus.altitude()));
+    _ui.altitudeMslValue->setText(QString::number(iAltFt));
+
+    iAltFt = int(MetersToFeet(_hcrMonitorStatus.aglAltitude()));
+    _ui.altitudeAglValue->setText(QString::number(iAltFt));
+
+    _ui.surfaceValue->setText(_hcrMonitorStatus.overWater() ? "Water" : "Land");
 }
 
 void
@@ -1205,60 +1105,4 @@ HcrGuiMainWindow::_clearAngleDisplay() {
     _showRotAngle(INVALID_ANGLE);
     _ui.tiltValue->setText("---");
     _showTiltAngle(INVALID_ANGLE);
-}
-
-bool
-HcrGuiMainWindow::_tsWriteEnabled() {
-    // If the file named by _tsWriteEnableFileName exists, writing is enabled.
-    struct stat buf;
-    if (stat(_tsWriteEnableFileName.c_str(), &buf)) {
-        // Log a message if the error is something other than "No such file or 
-        // directory".
-        if (errno != ENOENT) {
-            ELOG << "Error testing for existence of '" << 
-                    _tsWriteEnableFileName << "': " << strerror(errno);
-        }
-        // We didn't find the file, so consider writing disabled.
-        return(false);
-    }
-    
-    bool exists = S_ISREG(buf.st_mode);
-    return(exists);
-}
-
-void
-HcrGuiMainWindow::_setTsWriteEnabled(bool state) {
-    // If desired state is already in effect, just return
-    if (state == _tsWriteEnabled()) {
-        return;
-    }
-    // If we're enabling writing, create the write enable file, otherwise
-    // delete it.
-    if (state) {
-        std::ofstream ofs(_tsWriteEnableFileName.c_str(), std::ios_base::out);
-        if (ofs.fail()) {
-            // Could not create the write enable file...
-            ELOG << "Failed to create write enable file '" << 
-                    _tsWriteEnableFileName << "': " << strerror(errno);
-            ELOG << "Time-series writing was not enabled!";
-            return;
-        }
-        // The file just needs to exist, but we write a line to the file to 
-        // describe its purpose.
-        ofs << "When file " << _tsWriteEnableFileName << " exists, " <<
-                "TsSmartSave.wband will write time-series data to disk.";
-        ofs.close();
-    } else {
-        if (unlink(_tsWriteEnableFileName.c_str()) != 0) {
-            ELOG << "Failed to remove write enable file '" <<
-                    _tsWriteEnableFileName << "': " << strerror(errno);
-            ELOG << "Time-series writing was not disabled!";
-            return;
-        }
-    }
-}
-
-void
-HcrGuiMainWindow::_toggleTsWriteEnabled() {
-    _setTsWriteEnabled(! _tsWriteEnabled());
 }

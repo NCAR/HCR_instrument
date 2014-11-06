@@ -55,11 +55,10 @@ private slots:
     void on_driveHomeButton_clicked();
     void on_filamentButton_clicked();
     void on_hcrdrxDetailsButton_clicked();
-    void on_hmcModeCombo_activated(int index);
-    void on_hvButton_clicked();
+    void on_requestedModeCombo_activated(int index);
+    void on_requestHvButton_clicked();
     void on_mcDetailsButton_clicked();
     void on_pmc730DetailsButton_clicked();
-    void on_recordingButton_clicked();
     void on_showLogButton_clicked();
     void on_xmitterDetailsButton_clicked();
     void on_fireflydDetailsButton_clicked();
@@ -130,24 +129,11 @@ private:
     void _logMessage(std::string message);
 
     /**
-     *  @brief Return true iff our latest status indicates that the transmitter
-     *  filament is on.
-     *  @return true iff our latest status indicates that the transmitter
-     *  filament is on.
-     */
-    bool _xmitterFilamentIsOn() const;
-    /**
-     *  @brief Return true iff our latest status indicates that the transmitter
-     *  high voltage is on.
-     *  @return true iff our latest status indicates that the transmitter
-     *  high voltage is on.
-     */
-    bool _xmitterHvIsOn() const;
-    /**
      * @brief Return true iff the transmitter is actually transmitting.
      * @return true iff the transmitter is actually transmitting.
      */
     bool _xmitting() const;
+
     /**
      * @brief Return true iff we consider MotionControl to be OK, based on
      * responsiveness and returned status.
@@ -166,16 +152,6 @@ private:
     /// @brief Clear the angle displays
     void _clearAngleDisplay();
     
-    /// @brief Return true iff time-series data writing is enabled
-    bool _tsWriteEnabled();
-    
-    /// @brief Set the state of time-series data writing.
-    /// @param state true if writing is to be enabled, false otherwise
-    void _setTsWriteEnabled(bool state);
-    
-    /// @brief Toggle the state of time-series data writing.
-    void _toggleTsWriteEnabled();
-
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
     
@@ -237,17 +213,5 @@ private:
     /// timer to erase angle display if time since new angles is too long
     QTimer _anglesValidTimer;
 
-    /// Have we disabled transmitter HV due to low pod pressure?
-    bool _hvDisabledForPressure;
-    
-    /// Time of the first good pressure in a period of continuous good pressures
-    /// If zero, then the last pressure seen was bad.
-    time_t _goodPresStartTime;
-    
-    /// Time-series write enable filename. This file is created/removed to
-    /// enable/disable writing of time-series files by TsSmartSave. (The
-    /// name here *must* match the name in the TsSmartSave parameter file!)
-    std::string _tsWriteEnableFileName;
-    
 };
 #endif /*HCRGUIMAINWINDOW_H_*/
