@@ -170,14 +170,14 @@ main(int argc, char *argv[]) {
     int xmlrpcPortNum;
     
     // procmap instance name
-    std::string instanceName("ops");
+    std::string instanceName;
 
     // Get HcrMonitor's options
     po::options_description opts("Options");
     opts.add_options()
         ("help,h", "Describe options")
         ("instance,i",
-                po::value<std::string>(&instanceName)->default_value(""),
+                po::value<std::string>(&instanceName)->default_value("ops"),
                 "instance name for procmap connection")
         ("xmlrpcPortNum,x",
                 po::value<int>(&xmlrpcPortNum)->default_value(DEFAULT_XMLRPC_PORT),
