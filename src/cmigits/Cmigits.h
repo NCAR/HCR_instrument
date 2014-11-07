@@ -267,11 +267,11 @@ private:
     /// @param[out] lat latitude from IWG1 packet, deg
     /// @param[out] lon longitude from IWG1 packet, deg
     /// @param[out] alt altitude from IWG1 packet, m MSL
-    /// @param[out] tas true airspeed from IWG1 packet, m/s
+    /// @param[out] groundSpeed  ground speed from IWG1 packet, m/s
     /// @param[out] heading heading from IWG1 packet, deg clockwise from true north
     /// @return true iff IWG1 values were obtained.
     bool _getIwg1Info(double * lat, double * lon, double * alt,
-            double * tas, double * heading);
+            double * groundSpeed, double * heading);
 
     /// @brief Pack a floating point value into C-MIGITS binary-scaled 32-bit
     /// floating point representation at the given destination using the given

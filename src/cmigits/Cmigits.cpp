@@ -1213,19 +1213,20 @@ Cmigits::_doCurrentConfigPhase() {
         // word below.
         udata[1] = 0;        // mode: 0 -> automatic mode sequencing
 
-        // Try to get lat, lon, heading, and true airspeed from the IWG1
-        // data stream, since knowing current position allows the C-MIGITS
-        // GPS to find itself more quickly.
+        // Try to get lat, lon, heading, and ground speed from the IWG1
+        // data stream, since knowing current position allows the C-MIGITS GPS 
+        // to find itself more quickly and we need the current speed to choose 
+        // the right alignment mode.
         //
         // If we do not get an IWG1 packet in a short time, just use zeros.
-        double iwg1Lat(0.0);    // deg
-        double iwg1Lon(0.0);    // deg
-        double iwg1Alt(0.0);    // m MSL
-        double iwg1Tas(0.0) ;   // true airspeed, m/s
-        double iwg1Heading(0.0);// deg clockwise from true north
+        double iwg1Lat(0.0);            // deg
+        double iwg1Lon(0.0);            // deg
+        double iwg1Alt(0.0);            // m MSL
+        double iwg1GroundSpeed(0.0) ;   // ground speed, m/s
+        double iwg1Heading(0.0);        // deg clockwise from true north
 
         bool forceInit = false;
-        if (! _getIwg1Info(&iwg1Lat, &iwg1Lon, &iwg1Alt, &iwg1Tas, &iwg1Heading)) {
+        if (! _getIwg1Info(&iwg1Lat, &iwg1Lon, &iwg1Alt, &iwg1GroundSpeed, &iwg1Heading)) {
             WLOG << "No good IWG1 packet obtained.";
             if (forceInit) {
                 WLOG << "Initializing using zeros for all IWG1 values";
@@ -1237,7 +1238,8 @@ Cmigits::_doCurrentConfigPhase() {
         }
         ILOG << "Configuring C-MIGITS using IWG1 lat: " << iwg1Lat <<
                 ", lon: " << iwg1Lon << ", alt: " << iwg1Alt <<
-                ", tas: " << iwg1Tas << ", heading: " << iwg1Heading;
+                ", ground speed: " << iwg1GroundSpeed << 
+                ", heading: " << iwg1Heading;
 
         // Position and velocity *have* to be initialized some time after power 
         // up, even if we tell the C-MIGITS to use Auto GPS Initialization.
@@ -1281,12 +1283,16 @@ Cmigits::_doCurrentConfigPhase() {
         // Set up alignment/navigation sequence to be used
         // Assume stationary (Fine Alignment) initialization if we're moving
         // less than 2 m/s, otherwise use moving initialization (Air Alignment).
-        // NOTE: if the true airspeed is NaN, we assume we're stationary.
-        if (isnan(iwg1Tas)) {
-            iwg1Tas = 0.0;
-            ILOG << "IWG1 true airspeed is NaN, setting to zero!";
+        // NOTE: if the ground speed is NaN, we assume we're stationary.
+        //
+        // We use ground speed rather than true airspeed because we don't want
+        // winds contaminating the value to make it look like we're not 
+        // stationary when we actually are stationary.
+        if (isnan(iwg1GroundSpeed)) {
+            iwg1GroundSpeed = 0.0;
+            ILOG << "IWG1 ground speed is NaN, setting to zero!";
         }
-        bool stationary = (iwg1Tas < 2.0);
+        bool stationary = (iwg1GroundSpeed < 2.0);
         if (stationary) {
             if (isnan(heading)) {
                 WLOG << "Got NaN for IWG1 heading; must have real heading " <<
@@ -1326,7 +1332,7 @@ Cmigits::_doCurrentConfigPhase() {
 
 bool
 Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
-        double * tas, double * heading) {
+        double * groundSpeed, double * heading) {
     static const unsigned int Iwg1Port = 7071;
     static const char Iwg1Group[] = "239.0.0.10";
     // Open a UDP socket on the IWG1 port (7071)
@@ -1372,7 +1378,7 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
     }
 
     bool ok;
-    double latVal, lonVal, altVal, tasVal, headingVal;
+    double latVal, lonVal, altVal, groundSpeedVal, headingVal;
 
     latVal = tokens[2].toDouble(&ok);
     if (! ok) {
@@ -1392,9 +1398,9 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
         return(false);
     }
 
-    tasVal = tokens[9].toDouble(&ok);
+    groundSpeedVal = tokens[8].toDouble(&ok);
     if (! ok) {
-        WLOG << "Bad true airspeed '" << tokens[9].toStdString() << "' in IWG1 packet!";
+        WLOG << "Bad ground speed '" << tokens[8].toStdString() << "' in IWG1 packet!";
         return(false);
     }
 
@@ -1408,7 +1414,7 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
     *lat = latVal;
     *lon = lonVal;
     *alt = altVal;
-    *tas = tasVal;
+    *groundSpeed = groundSpeedVal;
     *heading = headingVal;
     return(true);
 }
