@@ -24,6 +24,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _mslAltitude(NAN),
         _aglAltitude(NAN),
         _overWater(false),
+        _maxPower(-999.9),
         _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
@@ -41,6 +42,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _mslAltitude(0.0),
         _aglAltitude(0.0),
         _overWater(false),
+        _maxPower(-999.9),
         _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
@@ -57,6 +59,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _mslAltitude = transmitControl._mslAltitude;
     _aglAltitude = transmitControl._aglAltitude;
     _overWater = transmitControl._overWater;
+    _maxPower = transmitControl._maxPower;
     _requestedHmcMode = transmitControl._requestedHmcMode;
     _hvRequested = transmitControl._hvRequested;
     _xmitTestStatus = transmitControl._xmitTestStatus;

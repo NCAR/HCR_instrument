@@ -93,6 +93,10 @@ public:
     /// @return true iff current location is over water
     bool overWater() const { return(_overWater); }
     
+    /// @brief Return the maximum received power, dBm
+    /// @return the maximum received power, dBm
+    double maxPower() const { return(_maxPower); }
+    
     /// @brief Return the requested HMC mode.
     /// @return the requested HMC mode.
     HcrPmc730::HmcOperationMode requestedHmcMode() const { return(_requestedHmcMode); }
@@ -148,6 +152,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_mslAltitude);
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
             ar & BOOST_SERIALIZATION_NVP(_overWater);
+            ar & BOOST_SERIALIZATION_NVP(_maxPower);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
             ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
             ar & BOOST_SERIALIZATION_NVP(_transmitAllowed);
@@ -224,6 +229,9 @@ private:
     
     /// @brief Are we over water?
     bool _overWater;
+    
+    /// @brief Max received power, dBm
+    double _maxPower;
     
     /// @brief Requested HMC mode
     HcrPmc730::HmcOperationMode _requestedHmcMode;
