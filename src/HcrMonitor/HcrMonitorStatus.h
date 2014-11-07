@@ -120,6 +120,7 @@ public:
     /// @brief Return true iff current conditions allow for transmit
     /// @return true iff current conditions allow for transmit
     bool transmitAllowed() const { return(_transmitAllowed); }
+    
     /// @brief Return true iff current conditions require operating with an
     /// attenuated receive mode.
     /// @return true iff current conditions require operating with an
