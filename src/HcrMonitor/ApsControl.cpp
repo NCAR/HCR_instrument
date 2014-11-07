@@ -16,6 +16,16 @@ static inline double HpaToPsi(double pres_hpa) {
     return(0.0145037738 * pres_hpa);
 }
 
+// Valve control state names (mapped to the ValveControlState enum)
+const std::string
+ApsControl::ValveControlStateNames[] = {
+        "Automatic",
+        "Valve Always Open",
+        "Valve Always Closed",
+        "INVALID",
+};
+
+
 ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
     _pmc730Client("localhost", 8003),
     _valveControlState(VALVE_AUTOMATIC) {

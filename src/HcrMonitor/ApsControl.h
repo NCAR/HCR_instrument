@@ -34,6 +34,11 @@ public:
         VALVE_CONTROL_NSTATES   // count of valid control states
     } ValveControlState;
     
+    /**
+     * Strings mapped to the ValveControlState enum
+     */
+    static const std::string ValveControlStateNames[];
+
     /// @brief Set the control state for the APS solenoid valve.
     /// @param state the desired value for valve control
     void setValveControl(ValveControlState state);
@@ -45,6 +50,7 @@ private slots:
     /// @param status the new HcrPmc730Status
     void _checkPvPressure(HcrPmc730Status status);
 private:
+    /// @brief 
     /// @brief Log and save the given status.
     /// @param statusText a string describing the status.
     void _logAndSaveStatus(std::string statusText);
