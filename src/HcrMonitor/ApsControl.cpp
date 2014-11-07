@@ -35,8 +35,8 @@ ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
 }
 
 ApsControl::~ApsControl() {
+    ILOG << "ApsControl destructor closing APS valve";
     _closeApsValve();
-    ILOG << "Closed APS valve on exit";
 }
 
 void

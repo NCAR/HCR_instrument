@@ -92,7 +92,12 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
 
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting HMC mode to Bench Test";
-    _hcrPmc730Client.setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
+    try {
+        _hcrPmc730Client.setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
+    } catch (std::exception & e) {
+        ELOG << "HcrPmc730Daemon failed to respond to setHmcMode(): " <<
+                e.what();
+    }
     _cmigitsWatchThread.quit();
 }
 
