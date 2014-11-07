@@ -117,6 +117,9 @@ public:
         return(_xmitTestStatusText);
     }
     
+    /// @brief Return true iff current conditions allow for transmit
+    /// @return true iff current conditions allow for transmit
+    bool transmitAllowed() const { return(_transmitAllowed); }
     /// @brief Return true iff current conditions require operating with an
     /// attenuated receive mode.
     /// @return true iff current conditions require operating with an
@@ -146,6 +149,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_overWater);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
             ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
+            ar & BOOST_SERIALIZATION_NVP(_transmitAllowed);
             ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
             
             // KLUGE: special handling for members with enumerated types. We 
