@@ -121,10 +121,29 @@ public:
     }
 };
 
-/// @brief xmlrpc_c::method to set HMC mode
-class SetHmcModeMethod : public xmlrpc_c::method {
+/// @brief xmlrpc_c::method to set APS valve control state
+class SetApsValveControlMethod : public xmlrpc_c::method {
 public:
-    SetHmcModeMethod() {
+    SetApsValveControlMethod() {
+        this->_signature = "n:i";
+        this->_help = "This method sets the APS valve control state.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        // Get the requested mode
+        int const state(paramList.getInt(0));
+        paramList.verifyEnd(1);
+
+        ILOG << "Received 'setApsValveControl(" << state << ")' command";
+        TheApsControl->setValveControl(static_cast<ApsControl::ValveControlState>(state));
+        *retvalP = xmlrpc_c::value_nil();
+    }
+};
+
+/// @brief xmlrpc_c::method to set HMC mode
+class SetRequestedHmcModeMethod : public xmlrpc_c::method {
+public:
+    SetRequestedHmcModeMethod() {
         this->_signature = "n:i";
         this->_help = "This method sets the requested HMC mode.";
     }
@@ -134,6 +153,7 @@ public:
         int const mode(paramList.getInt(0));
         paramList.verifyEnd(1);
 
+        ILOG << "Received 'setRequestedHmcMode(" << mode << ")' command";
         TheTransmitControl->setRequestedHmcMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
         *retvalP = xmlrpc_c::value_nil();
     }
@@ -215,7 +235,8 @@ main(int argc, char *argv[]) {
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    myRegistry.addMethod("setRequestedHmcMode", new SetHmcModeMethod);
+    myRegistry.addMethod("setApsValveControl", new SetApsValveControlMethod);
+    myRegistry.addMethod("setRequestedHmcMode", new SetRequestedHmcModeMethod);
     myRegistry.addMethod("setHvRequested", new SetHvRequestedMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
