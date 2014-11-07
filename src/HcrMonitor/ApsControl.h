@@ -30,7 +30,8 @@ public:
     typedef enum {
         VALVE_AUTOMATIC,
         VALVE_ALWAYS_OPEN,
-        VALVE_ALWAYS_CLOSED
+        VALVE_ALWAYS_CLOSED,
+        VALVE_CONTROL_NSTATES   // count of valid control states
     } ValveControlState;
     
     /// @brief Set the control state for the APS solenoid valve.
