@@ -25,8 +25,14 @@ ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
 }
 
 ApsControl::~ApsControl() {
-    ILOG << "Closing APS valve on exit";
     _closeApsValve();
+    ILOG << "Closed APS valve on exit";
+}
+
+void
+ApsControl::_logAndSaveStatus(std::string statusText) {
+    ILOG << statusText;
+    _statusText = statusText;
 }
 
 void
@@ -38,9 +44,12 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     // HIGH_SIDE_MINIMUM_PSI.
     if (apsHighPresPsi < HIGH_SIDE_MINIMUM_PSI) {
         if (status730.apsValveOpen()) {
-            ILOG << "Closing APS valve because high side pressure " <<
-                    "has dropped to " << apsHighPresPsi << " PSI";
             _closeApsValve();
+            
+            std::ostringstream oss;
+            oss << "Closed APS valve because high side pressure " <<
+                    "has dropped to " << apsHighPresPsi << " PSI";
+            _logAndSaveStatus(oss.str());
         }
 
         // Skip all other tests
@@ -70,12 +79,18 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
     // VALVE_CLOSE_PRESSURE_PSI
     if (pvPresPsi < VALVE_OPEN_PRESSURE_PSI && 
             ! status730.apsValveOpen()) {
-        ILOG << "Opening APS valve with PV pressure = " << pvPresPsi << " PSI";
         _openApsValve();
+        
+        std::ostringstream oss;
+        oss << "Opened APS valve with PV pressure = " << pvPresPsi << " PSI";
+        _logAndSaveStatus(oss.str());
     } else if (pvPresPsi > VALVE_CLOSE_PRESSURE_PSI && 
             status730.apsValveOpen()) {
-        ILOG << "Closing APS valve with PV pressure = " << pvPresPsi << " PSI";
         _closeApsValve();
+        
+        std::ostringstream oss;
+        oss << "Closed APS valve with PV pressure = " << pvPresPsi << " PSI";
+        _logAndSaveStatus(oss.str());
     }
 }
 
@@ -100,14 +115,17 @@ ApsControl::setValveControl(ValveControlState state) {
     // For VALVE_AUTOMATIC, we close the valve now, and normal control will 
     // resume on the next call to _checkPvPressure().
     bool openValveNow = (_valveControlState == VALVE_ALWAYS_OPEN);
-    ILOG << "Setting valve control state to '" << stateName <<
-            " and " << (openValveNow ? "opening" : "closing") << " the APS valve";
     
     if (openValveNow) {
         _openApsValve();
     } else {
         _closeApsValve();
     }
+    
+    std::ostringstream oss;
+    oss << "Set valve control state to '" << stateName <<
+            "' and " << (openValveNow ? "opened" : "closed") << " the APS valve";
+    _logAndSaveStatus(oss.str());
 }
 
 void

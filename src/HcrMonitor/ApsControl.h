@@ -44,6 +44,10 @@ private slots:
     /// @param status the new HcrPmc730Status
     void _checkPvPressure(HcrPmc730Status status);
 private:
+    /// @brief Log and save the given status.
+    /// @param statusText a string describing the status.
+    void _logAndSaveStatus(std::string statusText);
+    
     /// @brief The APS valve is opened when pressure vessel pressure drops
     /// below this value.
     static const double VALVE_OPEN_PRESSURE_PSI = 15.0;
@@ -66,6 +70,9 @@ private:
     
     /// Valve control: automatic, always open, or always closed
     ValveControlState _valveControlState;
+    
+    /// Status text
+    std::string _statusText;
 };
 
 #endif /* APSTHREAD_H_ */
