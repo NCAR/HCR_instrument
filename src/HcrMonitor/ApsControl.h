@@ -64,7 +64,7 @@ private:
     /// @brief Our client object for sending XML-RPC commands to HcrPmc730Daemon
     HcrPmc730Client _pmc730Client;
     
-    /// Should we force the APS solenoid valve to be held open?
+    /// Valve control: automatic, always open, or always closed
     ValveControlState _valveControlState;
 };
 
