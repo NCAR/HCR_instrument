@@ -84,14 +84,21 @@ ApsControl::_checkPvPressure(HcrPmc730Status status730) {
         std::ostringstream oss;
         oss << "Opened APS valve with PV pressure = " << pvPresPsi << " PSI";
         _logAndSaveStatus(oss.str());
+        
+        return;
     } else if (pvPresPsi > VALVE_CLOSE_PRESSURE_PSI && 
             status730.apsValveOpen()) {
         _closeApsValve();
-        
+
         std::ostringstream oss;
         oss << "Closed APS valve with PV pressure = " << pvPresPsi << " PSI";
         _logAndSaveStatus(oss.str());
+
+        return;
     }
+    
+    // Everything's good!
+    _statusText = "PV pressure is good";
 }
 
 void
