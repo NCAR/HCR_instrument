@@ -44,7 +44,6 @@ signals:
     /// becomes responsive or unresponsive.
     /// @param responsive true if the server has become responsive or false
     /// if the server has become unresponsive
-    /// @param msg a message describing the associated event
     void serverResponsive(bool responsive);
 
     /// @brief signal emitted when a new status is received from DataMapper
