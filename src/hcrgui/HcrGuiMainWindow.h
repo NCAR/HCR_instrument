@@ -157,6 +157,7 @@ private:
     
     HcrGuiLogWindow _logWindow;
     
+    // Details windows and dialogs
     CmigitsDetails _cmigitsDetails;
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
@@ -177,10 +178,12 @@ private:
     HcrPmc730StatusThread _pmcStatusThread;
     XmitdStatusThread _xmitdStatusThread;
     
+    // LED pixmaps
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
+    
     /// Last status read from the transmitter
     XmitStatus _xmitStatus;
     /// Is the transmitter under RDS control?
