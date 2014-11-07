@@ -57,6 +57,10 @@ public:
         return(_apsValveControlState);
     }
     
+    /// @brief Return APS status text.
+    /// @return APS status text.
+    std::string apsStatusText() const { return(_apsStatusText); }
+    
     /// @brief Return true iff TransmitControl is getting responses from
     /// HcrPmc730Daemon.
     /// @return true iff TransmitControl is getting responses from
@@ -145,6 +149,7 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
+            ar & BOOST_SERIALIZATION_NVP(_apsStatusText);
             ar & BOOST_SERIALIZATION_NVP(_hcrPmc730Responsive);
             ar & BOOST_SERIALIZATION_NVP(_motionControlResponsive);
             ar & BOOST_SERIALIZATION_NVP(_cmigitsResponsive);
@@ -208,6 +213,9 @@ private:
 
     /// @brief APS valve control state: automatic, always open, or always closed
     ApsControl::ValveControlState _apsValveControlState;
+    
+    /// @brief APS status text
+    std::string _apsStatusText;
     
     /// @brief Is HcrPmc730Daemon responsive?
     bool _hcrPmc730Responsive;

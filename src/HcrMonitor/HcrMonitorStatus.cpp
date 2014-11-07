@@ -17,6 +17,7 @@ LOGGING("HcrMonitorStatus")
 
 HcrMonitorStatus::HcrMonitorStatus() :
         _apsValveControlState(ApsControl::VALVE_AUTOMATIC),
+        _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
         _motionControlResponsive(false),
         _cmigitsResponsive(false),
@@ -35,6 +36,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
 HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         const TransmitControl & transmitControl) :
         _apsValveControlState(ApsControl::VALVE_AUTOMATIC),
+        _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
         _motionControlResponsive(false),
         _cmigitsResponsive(false),
@@ -50,6 +52,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _attenuationRequired(false) {
     // Get ApsControl status
     _apsValveControlState = apsControl._valveControlState;
+    _apsStatusText = apsControl._statusText;
     
     // Get TransmitControl status
     _hcrPmc730Responsive = transmitControl._hcrPmc730Responsive;
