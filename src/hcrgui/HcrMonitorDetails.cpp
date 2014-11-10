@@ -63,7 +63,7 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     int aglAltFt = int(MetersToFeet(hcrMonitorStatus.aglAltitude()));
     _ui.altitudeAglValue->setText(QString::number(aglAltFt));
     
-    _ui.surfaceValue->setText(hcrMonitorStatus.overWater() ? "water" : "land");
+    _ui.surfaceValue->setText(hcrMonitorStatus.overWater() ? "Water" : "Land");
     
     // TransmitControl max received power
     _ui.maxPowerValue->setText(QString::number(hcrMonitorStatus.maxPower(), 'f', 1));
@@ -79,18 +79,20 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     bool hvOn = hcrPmc730Status.rdsXmitterHvOn();
     _ui.hvOnIcon->setPixmap(hvOn ? _greenLED : _greenLED_off);
     
-    // Requested HMC mode.
+    // Requested and current HMC modes. Note that current HMC mode comes from
+    // HcrPmc730Status and not from HcrMonitorStatus. Use emphasis background 
+    // color if current mode differs from requested mode.
     HcrPmc730::HmcOperationMode requestedMode = hcrMonitorStatus.requestedHmcMode();
     std::string requestedModeName = HcrPmc730::HmcModeNames[requestedMode];
     _ui.requestedModeValue->setText(QString::fromStdString(requestedModeName));
     
-    // Current HMC mode comes from HcrPmc730Daemon. Use emphasis 
-    // background color if current mode differs from requested mode.
     HcrPmc730::HmcOperationMode currentMode = hcrPmc730Status.hmcMode();
     std::string currentModeName = HcrPmc730::HmcModeNames[currentMode];
     _ui.currentModeValue->setText(currentModeName.c_str());
+
     std::string styleSheet = (currentMode == requestedMode) ? 
             "" : "background-color: #FFFFD0";
+    _ui.requestedModeValue->setStyleSheet(styleSheet.c_str());
     _ui.currentModeValue->setStyleSheet(styleSheet.c_str());
     
     // Show the results of TransmitControl tests. Change background color of 
