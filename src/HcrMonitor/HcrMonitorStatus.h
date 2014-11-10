@@ -14,7 +14,6 @@
 #include <xmlrpc-c/base.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
-#include <boost/serialization/split_free.hpp>
 
 #include "ApsControl.h"
 #include "TransmitControl.h"
