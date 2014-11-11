@@ -28,9 +28,11 @@ LOGGING("HcrPmc730Daemon")
 QCoreApplication *App = 0;
 
 /// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
-/// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds.
+/// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds. 
+/// NOTE: MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS needs to be greater than about
+/// a second, due to latency in XML-RPC server request handling.
 QTimer * HvOnHeartbeatTimer;
-static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 500;
+static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 1000;
 
 void
 hvOnHeartbeatTimeout() {
@@ -91,10 +93,14 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        ILOG << "Executing XML-RPC call to xmitHvOn()";
-        HcrPmc730::setXmitterHvOn(true);
         *retvalP = xmlrpc_c::value_nil();
+        // Send the call to turn on HV if it isn't already on
+        if (! HcrPmc730::xmitterHvOn()) {
+            ILOG << "Executing XML-RPC call to xmitHvOn()";
+            HcrPmc730::setXmitterHvOn(true);
+        }
         /// Start or restart the "HV on" heartbeat timer
+        DLOG << "Heartbeat seen";
         HvOnHeartbeatTimer->start();
     }
 };
