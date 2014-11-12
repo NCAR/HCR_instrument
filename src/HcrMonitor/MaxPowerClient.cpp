@@ -9,19 +9,15 @@
 #include <exception>
 #include <logx/Logging.h>
 #include <QDateTime>
+#include <QDomDocument>
 #include <QMetaType>
 #include <QTcpSocket>
 #include <QTimer>
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
 
 LOGGING("MaxPowerClient")
 
 const QByteArray MaxPowerClient::ELEMENT_START_TEXT("<TsPrintMaxPower>");
 const QByteArray MaxPowerClient::ELEMENT_END_TEXT("</TsPrintMaxPower>");
-
-// I'd rather not do this, but otherwise code gets really dense below
-using namespace xercesc;
 
 MaxPowerClient::MaxPowerClient(std::string serverHost, 
     int serverPort) :
@@ -29,25 +25,11 @@ MaxPowerClient::MaxPowerClient(std::string serverHost,
         _serverPort(serverPort),
         _socket(),
         _serverResponsive(false),
-        _unparsedData(),
-        _xmlParser(NULL) {
-    // Initialize the Xerces-c infrastructure for XML parsing
-    try {
-        XMLPlatformUtils::Initialize();
-    } catch (XMLException & e ) {
-        char* msg = XMLString::transcode(e.getMessage());
-        ELOG << "XML toolkit initialization error: " << msg;
-        std::runtime_error runtimeErr(msg);
-        XMLString::release(&msg);
-        throw runtimeErr;
-    }
+        _unparsedData() {
     // Register QAbstractSocket::SocketError as a metatype, since we
     // receive it as an argument to a slot.
     qRegisterMetaType<QAbstractSocket::SocketError>("QAbstractSocket::SocketError");
 
-    // Our XML DOM parser
-    _xmlParser = new XercesDOMParser();
-    
     // Connect signals from our socket which will be connected to the server
     connect(&_socket, SIGNAL(connected()), this, SLOT(_onConnect()));
     connect(&_socket, SIGNAL(disconnected()), this, SLOT(_onDisconnect()));
@@ -148,7 +130,7 @@ MaxPowerClient::_parseUnparsedData() {
     //
     //     <TsPrintMaxPower>...</TsPrintMaxPower>
     //
-    // If found, extract it and pass it to _parseMaxPowerElement().
+    // If found, extract it and pass it to _handleMaxPowerElement().
     int lastMaxPwrStart = 0;
     int lastMaxPwrLen = 0;
     int elementsFound = 0;
@@ -219,74 +201,69 @@ MaxPowerClient::_parseUnparsedData() {
 }
 
 QString
-MaxPowerClient::_DocElementText(DOMElement * doc, std::string elementName) {
-    // We have to use transcode() to move back and forth between Xerces-friendly
-    // chars and native. Every time we do this, we have to explicitly release
-    // the memory returned by transcode(). Pain in the butt.
-    XMLCh * xercesElementName = XMLString::transcode(elementName.c_str());
-    DOMElement * childElement = 
-            dynamic_cast<DOMElement*>(doc->getElementsByTagName(xercesElementName)->item(0));
-    XMLString::release(&xercesElementName);
-    
-    char * textContent = XMLString::transcode(childElement->getTextContent());
-    QString elementText(textContent);
-    XMLString::release(&textContent);
-    return(elementText);
+MaxPowerClient::_DocElementText(const QDomDocument & doc, QString elementName) {
+    QDomElement element = doc.documentElement().lastChildElement(elementName);
+    if (element.isNull()) {
+        std::ostringstream oss;
+        oss << "Expected element '" << elementName.toStdString() << 
+                "' not found";
+        throw std::runtime_error(oss.str());
+    }
+    return(element.text());
 }
 
 void
 MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
-    // The text we're given must begin with ELEMENT_START_TEXT and end with
-    // ELEMENT_END_TEXT.
-    if (text.indexOf(ELEMENT_START_TEXT) != 0 ||
-        text.indexOf(ELEMENT_END_TEXT) != (text.size() - ELEMENT_END_TEXT.size())) {
-        std::ostringstream oss;
-        oss << "BUG: text in _handleMaxPowerElement() does not start with '" <<
-                ELEMENT_START_TEXT.data() << "' and end with '" <<
-                ELEMENT_END_TEXT.data() << "'";
-        ELOG << oss.str();
-        throw std::runtime_error(oss.str());
+    QDomDocument doc;
+    QString errorMsg;
+    int errorLine;
+    if (! doc.setContent(text, false, &errorMsg, &errorLine)) {
+        ELOG << errorMsg.toStdString() << " at line " << errorLine << 
+                " of:\n" << text.data();
+        return;
     }
     
-    // Map the incoming text into a MemBufInputSource and have Xerces
-    // parse from that.
-    const XMLByte * srcData = reinterpret_cast<const XMLByte*>(text.data());
-    MemBufInputSource src(srcData, text.size(), "foo");
-    _xmlParser->parse(src);
-    
-    // Get the document, which is the parsed contents of the incoming text
-    DOMElement * doc = _xmlParser->getDocument()->getDocumentElement();
-    
-    // Initialize dataTime from the "time" child element (ISO time to the 
-    // second)
-    QString timeText = _DocElementText(doc, "time");
-    QDateTime dataTime = QDateTime::fromString(timeText, Qt::ISODate);
-    
-    // Unpack the parsed "msecs" element, which is the milliseconds portion of 
-    // the data time, and add it to dataTime.
-    int msecs = _DocElementText(doc, "msecs").toInt();
-    dataTime = dataTime.addMSecs(msecs);
-    
-    // Get H channel max power from "maxDbm0" element
-    double maxDbmH = _DocElementText(doc, "maxDbm0").toDouble();
-    
-    // Get V channel max power from "maxDbm1" element
-    double maxDbmV = _DocElementText(doc, "maxDbm1").toDouble();
-    
-    // Get range to H channel max power from "rangeToMax0" element
-    double rangeToMaxH = _DocElementText(doc, "rangeToMax0").toDouble();
-    
-    // Get range to V channel max power from "rangeToMax1" element
-    double rangeToMaxV = _DocElementText(doc, "rangeToMax1").toDouble();
-    
-    // Figure out which max is *really* max
-    double maxDbm = (maxDbmH > maxDbmV) ? maxDbmH : maxDbmV;
-    double rangeToMax = (maxDbmH > maxDbmV) ? rangeToMaxH : rangeToMaxV;
-    
-    // Emit newMaxPower() signal
-    DLOG << "New max power at " << 
-            dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
-            ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
-    double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
-    emit(newMaxPower(secondsSinceEpoch, maxDbm, rangeToMax));
+    try {
+        // Initialize dataTime from the "time" child element (ISO time to the 
+        // second)
+        QString timeText = _DocElementText(doc, "time");
+        QDateTime dataTime = QDateTime::fromString(timeText, Qt::ISODate);
+
+        // Unpack the parsed "msecs" element, which is the milliseconds portion 
+        // of the data time, and add it to dataTime.
+        QString msecsText = _DocElementText(doc, "msecs");
+        int msecs = msecsText.toInt();
+        dataTime = dataTime.addMSecs(msecs);
+
+        // Get H channel max power from "maxDbm0" element
+        QString maxDbm0Text = _DocElementText(doc, "maxDbm0");
+        double maxDbmH = maxDbm0Text.toDouble();
+
+        // Get V channel max power from "maxDbm1" element
+        QString maxDbm1Text = _DocElementText(doc, "maxDbm1");
+        double maxDbmV = maxDbm1Text.toDouble();
+
+        // Get range to H channel max power from "rangeToMax0" element
+        QString rangeToMax0Text = _DocElementText(doc, "rangeToMax0");
+        double rangeToMaxH = rangeToMax0Text.toDouble();
+
+        // Get range to V channel max power from "rangeToMax1" element
+        QString rangeToMax1Text = _DocElementText(doc, "rangeToMax1");
+        double rangeToMaxV = rangeToMax1Text.toDouble();
+        
+        // Figure out which max is *really* max
+        double maxDbm = (maxDbmH > maxDbmV) ? maxDbmH : maxDbmV;
+        double rangeToMax = (maxDbmH > maxDbmV) ? rangeToMaxH : rangeToMaxV;
+        
+        // Emit newMaxPower() signal
+        DLOG << "New max power at " << 
+                dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
+                ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
+        double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
+        emit(newMaxPower(secondsSinceEpoch, maxDbm, rangeToMax));
+    } catch (std::runtime_error & e) {
+        ELOG << "Error in <TsPrintMaxPower>: " << e.what();
+        ELOG << "Text of offending <TsPrintMaxPower>: \n" << text.data();
+        return;
+    }
 }

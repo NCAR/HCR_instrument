@@ -13,12 +13,11 @@ qt4
 rapradar
 QFunctionWrapper
 QXmlRpcServerAbyss
-xercesc
 xmlrpc_client++
 ''')
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore'])
+env.EnableQt4Modules(['QtCore', 'QtXml'])
 
 sources = Split('''
     HcrMonitor.cpp

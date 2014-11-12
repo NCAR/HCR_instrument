@@ -12,7 +12,8 @@
 #include <QByteArray>
 #include <QTcpSocket>
 #include <QThread>
-#include <xercesc/parsers/XercesDOMParser.hpp>
+
+class QDomDocument;
 
 class MaxPowerClient : public QThread {
     Q_OBJECT
@@ -83,6 +84,7 @@ private:
     ///        <rangeToMax0>2539.84</rangeToMax0>
     ///        <rangeToMax1>2539.84</rangeToMax1>
     ///     </TsPrintMaxPower>
+    /// Emit a newMaxPower() signal if the element parses correctly.
     /// @param text the text of the max power XML element
     void _handleMaxPowerElement(const QByteArray & text);
     
@@ -90,14 +92,13 @@ private:
     /// after a brief wait.
     void _setUpDelayedConnectRetry();
     
-    /// @brief Return the text of the requested Xerces DOM document element as 
-    /// a QString
-    /// @param doc a pointer to the Xerces DOM document
+    /// @brief Return the text of the requested element from the given DOM
+    /// document as a QString
+    /// @param doc the QDomDocument from which to extract the desired element
     /// @param elementName the name of the element to be extracted from the 
     /// document
-    /// @return the text of the requested Xerces DOM document element as 
-    /// a QString
-    static QString _DocElementText(xercesc::DOMElement * doc, std::string elementName);
+    /// @return the text of the requested DOM document element as a QString
+    static QString _DocElementText(const QDomDocument & doc, QString elementName);
     
     /// @brief name of the host where the MaxPowerServer (a special TsPrint 
     /// process) is running
@@ -114,9 +115,6 @@ private:
     
     /// @brief Data read from the socket but not yet parsed
     QByteArray _unparsedData;
-    
-    /// @brief XML parser
-    xercesc::XercesDOMParser * _xmlParser;
 };
 
 #endif /* MAXPOWERSERVERCLIENT_H_ */

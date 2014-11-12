@@ -7,7 +7,6 @@ cmigits
 doxygen
 motioncontrol
 qt4
-xercesc
 xmlrpc_client++
 ''')
 hcrMonitorDir = Dir('.').abspath
