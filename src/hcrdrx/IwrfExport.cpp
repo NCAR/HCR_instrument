@@ -34,7 +34,11 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
         _cmigitsWatchThread(),
-        _cmigitsDeque()
+        _cmigitsDeque(),
+        _statusTimer(NULL),
+        _hPulseCount(0),
+        _vPulseCount(0),
+        _cmigitsCount(0)
 {
 
   // initialize
@@ -202,6 +206,13 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   
   // Start _cmigitsWatchThread after this thread is started
   connect(this, SIGNAL(started()), &_cmigitsWatchThread, SLOT(start()));
+
+  // Create a timer to print some status information on a regular basis, and
+  // start it when our thread is started.
+  _statusTimer = new QTimer();
+  _statusTimer->setInterval(5000);    // 5 s
+  connect(_statusTimer, SIGNAL(timeout()), this, SLOT(_printStatus()));
+  connect(this, SIGNAL(started()), _statusTimer, SLOT(start()));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -440,6 +451,7 @@ PulseData *IwrfExport::writePulseH(PulseData *val)
 {
   // Get a write lock which will be released when we return
   QWriteLocker wLocker(&_accessLock);
+  _hPulseCount++;
   return _qH->write(val);
 }
 
@@ -452,6 +464,7 @@ PulseData *IwrfExport::writePulseV(PulseData *val)
 {
   // Get a write lock which will be released when we return
   QWriteLocker wLocker(&_accessLock);
+  _vPulseCount++;
   return _qV->write(val);
 }
 
@@ -1393,9 +1406,25 @@ void IwrfExport::_acceptCmigitsData(CmigitsSharedMemory::ShmStruct data) {
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);
 
+  _cmigitsCount++;
   _cmigitsDeque.push_back(data);
   if (_cmigitsDeque.size() > 1000) {
       ILOG << "clearing _cmigitsDeque because it's too big";
       _cmigitsDeque.clear();
   }
+}
+
+//////////////////////////////////////////////////
+// Log status
+
+void IwrfExport::_logStatus() {
+  // Hold a write lock until we return. This is safe because we make no calls
+  // to self methods below here.
+  QWriteLocker wLocker(&_accessLock);
+
+  ILOG << "new H pulses: " << _hPulseCount << ", new V pulses: " <<
+          _vPulseCount << ", new C-MIGITS: " << _cmigitsCount;
+  _hPulseCount = 0;
+  _vPulseCount = 0;
+  _cmigitsCount = 0;
 }

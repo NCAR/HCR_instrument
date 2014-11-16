@@ -13,6 +13,7 @@
 #include <toolsa/ServerSocket.hh>
 #include <QReadWriteLock>
 #include <QThread>
+#include <QTimer>
 
 /// IwrfExport merges data from the H and V channels, 
 /// converts to IWRF time series format and writes the IWRF data to a client
@@ -189,6 +190,14 @@ private:
   int _simVolNum;
   int _simSweepNum;
   
+  /// timer to generate regular calls to _logStatus()
+  QTimer * _statusTimer;
+
+  /// counts of events between calls to _logStatus()
+  int _hPulseCount;
+  int _vPulseCount;
+  int _cmigitsCount;
+
   /// methods
 
   void _readNextPulse();
@@ -213,6 +222,8 @@ private:
   int _openServer();
   int _checkClient();
   void _closeSocketToClient();
+
+  void _logStatus();
 
 };
 
