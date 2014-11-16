@@ -228,7 +228,7 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm) :
                 _shm(NULL) {
     // Open CmigitsSharedMemory with write access if we're told to use it
     if (useShm) {
-        _shm = new CmigitsSharedMemory(true);
+        _shm = new CmigitsSharedMemory(true, ".");
     }
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
