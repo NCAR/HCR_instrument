@@ -17,7 +17,6 @@
 #include <QCoreApplication>
 #include <QWriteLocker>
 
-using namespace boost::posix_time;
 using namespace std;
 
 // Time out the latest entry in the _cmigitsDeque when it is more than
