@@ -42,12 +42,18 @@ signals:
 private slots:
     void _pollSharedMemory();
 
+    void _logStatus();
+
 private:
     int _pollIntervalMs;                ///< shared memory polling interval, ms
     CmigitsSharedMemory _cmigitsShm;    ///< C-MIGITS shared memory connection
     uint64_t _last3512Time;             ///< time of last C-MIGITS 3512 message seen
     QTimer * _dataTimeoutTimer;         ///< timer used to note when data stop updating
     int _dataTimeoutMs;                 ///< data timeout period, milliseconds
+
+    // Count of times newData() has been emitted since the last call to
+    // _logStatus();
+    int _newDataCount;
 };
 
 #endif /* CMIGITS_WATCH_THREAD_H_ */

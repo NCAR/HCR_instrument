@@ -11,7 +11,8 @@ CmigitsShmWatchThread::CmigitsShmWatchThread(int pollIntervalMs,
     _cmigitsShm(),
     _last3512Time(0),
     _dataTimeoutTimer(NULL),
-    _dataTimeoutMs(dataTimeoutMs) {
+    _dataTimeoutMs(dataTimeoutMs),
+    _newDataCount(0) {
     // Don't allow a polling interval less than 4 ms, since faster polling
     // makes our thread a significant CPU hog, and 4 ms is fast enough to 
     // catch all all new C-MIGITS data even at its maximum rate of 100 Hz
@@ -58,6 +59,12 @@ CmigitsShmWatchThread::run()
     connect(& pollTimer, SIGNAL(timeout()), this, SLOT(_pollSharedMemory()));
     pollTimer.start();
     
+    // Set up and start a timer to log status on a periodic basis
+    QTimer statusTimer;
+    statusTimer.setInterval(10000); // 10 s
+    connect(& statusTimer, SIGNAL(timeout()), this, SLOT(_logStatus()));
+    statusTimer.start();
+
     // The timers are running, so just fire up the event loop.
     exec();
 }
@@ -73,6 +80,13 @@ CmigitsShmWatchThread::_pollSharedMemory() {
         
         // Mark the new time and emit the data
         _last3512Time = cmigitsData.time3512;
+        _newDataCount++;
         emit newData(cmigitsData);
     }
+}
+
+void
+CmigitsShmWatchThread::_logStatus() {
+    ILOG << _newDataCount << " newData() signals emitted";
+    _newDataCount = 0;
 }
