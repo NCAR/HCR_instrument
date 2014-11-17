@@ -33,6 +33,8 @@ LOGGING("Cmigits")
 
 inline double degToRad(double deg) { return((deg / 180.0) * M_PI); }
 
+static const QDateTime UNIX_EPOCH_QDATETIME = QDateTime::fromTime_t(0).toUTC();
+
 class RotationMatrix {
 public:
     /// Instantiate an identity RotationMatrix.
@@ -433,7 +435,7 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     static const int SecondsPerHalfDay = SecondsPerDay / 2;
     time_t now = time(0);
     int sysSecondOfDay = now % SecondsPerDay;
-    time_t startOfDay = now - sysSecondOfDay;
+    time_t startOfNearestDay = now - sysSecondOfDay;
 
     // Be very careful around midnight UTC, since our system clock may be 
     // slightly ahead of or slightly behind the times from the C-MIGITS, and
@@ -441,16 +443,15 @@ Cmigits::_SecondOfDayToNearestDateTime(double secondOfDay) {
     // in second-of-day.
     double diff = secondOfDay - sysSecondOfDay;
     if (diff > SecondsPerHalfDay) {
-        startOfDay -= SecondsPerDay;    // given time is in day previous to system time
+        startOfNearestDay -= SecondsPerDay;    // given time is in day previous to system time
     } else if (diff < -SecondsPerHalfDay) {
-        startOfDay += SecondsPerDay;    // given time is in day after system time
+        startOfNearestDay += SecondsPerDay;    // given time is in day after system time
     }
 
     // Convert milliseconds since the epoch into a QDateTime
     int millisecondOfDay = int(1000 * secondOfDay);
-    qint64 msecsSinceEpoch = qint64(startOfDay) * 1000 + millisecondOfDay;
-    QDateTime dateTime(QDateTime::fromTime_t(0).toUTC().addMSecs(msecsSinceEpoch));
-    return(dateTime);
+    qint64 msecsSinceEpoch = qint64(startOfNearestDay) * 1000 + millisecondOfDay;
+    return(UNIX_EPOCH_QDATETIME.addMSecs(msecsSinceEpoch));
 }
 
 void 
