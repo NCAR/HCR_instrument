@@ -35,7 +35,7 @@ signals:
     /// seen.
     void newData(CmigitsSharedMemory::ShmStruct cmigitsData);
     
-    /// @brief Signal emitted if more than DATA_TIMEOUT_MS milliseconds pass 
+    /// @brief Signal emitted if more than _dataTimeoutMs milliseconds pass 
     /// before new data are seen in the shared memory.
     void dataTimeout();
 
