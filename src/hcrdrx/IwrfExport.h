@@ -73,6 +73,9 @@ private slots:
   /// from the C-MIGITS shared memory.
   void _acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData);
 
+  /// @brief Log some status information
+  void _logStatus();
+
 private:
   /// Lock for thread-safe member access
   
@@ -222,8 +225,6 @@ private:
   int _openServer();
   int _checkClient();
   void _closeSocketToClient();
-
-  void _logStatus();
 
 };
 

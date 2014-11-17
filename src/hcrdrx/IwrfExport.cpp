@@ -210,8 +210,8 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
   _statusTimer = new QTimer();
-  _statusTimer->setInterval(5000);    // 5 s
-  connect(_statusTimer, SIGNAL(timeout()), this, SLOT(_printStatus()));
+  _statusTimer->setInterval(10000);    // 10 s
+  connect(_statusTimer, SIGNAL(timeout()), this, SLOT(_logStatus()));
   connect(this, SIGNAL(started()), _statusTimer, SLOT(start()));
 }
 
@@ -1422,8 +1422,14 @@ void IwrfExport::_logStatus() {
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);
 
+  float statusSecs = 0.001 * _statusTimer->interval();
+  int expectedCmigitsCount = 100 * statusSecs;
   ILOG << "new H pulses: " << _hPulseCount << ", new V pulses: " <<
           _vPulseCount << ", new C-MIGITS: " << _cmigitsCount;
+  if (_cmigitsCount < (0.98 * expectedCmigitsCount)) {
+      ELOG << "BAD C-MIGITS COUNT: got " << _cmigitsCount << 
+              " when expecting " << expectedCmigitsCount;
+  }
   _hPulseCount = 0;
   _vPulseCount = 0;
   _cmigitsCount = 0;
