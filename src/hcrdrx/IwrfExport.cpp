@@ -38,7 +38,8 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _statusTimer(NULL),
         _hPulseCount(0),
         _vPulseCount(0),
-        _cmigitsCount(0)
+        _cmigitsCount(0),
+        _lastGeorefTime(0)
 {
 
   // initialize
@@ -1124,7 +1125,16 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
                   " and " << _cmigitsDeque.size() << " left in deque";
               _cmigitsDeque.pop_front();
           }
-          // No later entries to look at, so break out
+          // If we've already generated a georef from this C-MIGITS entry,
+          // just return false now. Otherwise, for as long as this is the only
+          // entry in the deque, we would return the same georef for *every* 
+          // pulse.
+          if (_lastGeorefTime == cmigits.time3512) {
+              _accessLock.unlock();
+              return(false);
+          }
+          // Break out of the while loop to return a georef built from the 
+          // entry we found.
           break;
       }
       // Remove this entry so we can look at the next one
@@ -1206,6 +1216,9 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
   
   // compute elevation and azimuth
   _computeRadarAngles();
+  
+  // Save the time of this georef
+  _lastGeorefTime = cmigits.time3512;
 
   return(true);
 }

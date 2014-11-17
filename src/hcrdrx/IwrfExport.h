@@ -200,6 +200,10 @@ private:
   int _hPulseCount;
   int _vPulseCount;
   int _cmigitsCount;
+  
+  /// Time of the last georef packet we built, milliseconds since 1970-01-01
+  /// 00:00:00 UTC
+  uint64_t _lastGeorefTime;
 
   /// methods
 
