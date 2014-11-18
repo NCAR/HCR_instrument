@@ -22,6 +22,7 @@
 #include <QStringList>
 #include <QUdpSocket>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <Fmq/DsFmq.hh>
 
 using boost::numeric::ublas::matrix;
 using boost::numeric::ublas::identity_matrix;
@@ -205,7 +206,7 @@ const std::string Cmigits::_TimeFOMStrings[] = {
         ">= 10000 µs"
 };
 
-Cmigits::Cmigits(std::string ttyDev, bool useShm) :
+Cmigits::Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl) :
                 QObject(),
                 _simulate(ttyDev == SIM_DEVICE),
                 _ttyDev(ttyDev),
@@ -227,10 +228,26 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm) :
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
                 _gpsAvailable(false),
-                _shm(NULL) {
+                _shm(NULL),
+                _fmqUrl(fmqUrl) {
     // Open CmigitsSharedMemory with write access if we're told to use it
     if (useShm) {
         _shm = new CmigitsSharedMemory(true, ".");
+        
+        if (_fmq.initReadWrite(_fmqUrl.c_str(),
+                               "cmigitsDaemon",
+                               false, // set debug?
+                               Fmq::END, // start position
+                               false,    // compression
+                               5000,  // nslots
+                               10000000 // buffer size
+                               )) {
+          ELOG << "ERROR: Cannot initialize FMQ: " << _fmqUrl;
+          ELOG << _fmq.getErrStr();
+          abort();
+        }
+        _fmq.setSingleWriter();
+
     }
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
@@ -796,6 +813,22 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
+
+        _cms.writerPid = 0;
+        _cms.time3500 = msecsSinceEpoch;
+        _cms.currentMode  = _currentMode;
+        _cms.insAvailable = insAvailable;
+        _cms.gpsAvailable = gpsAvailable;
+        _cms.doingCoarseAlignment = doingCoarseAlignment;
+        _cms.nSats = nSats;         ///< number of GPS satellites tracked
+        _cms.positionFOM = positionFOM;   ///< position figure-of-merit value
+        _cms.velocityFOM = velocityFOM;   ///< velocity figure-of-merit value
+        _cms.headingFOM = headingFOM;    ///< heading figure-of-merit value
+        _cms.timeFOM = timeFOM;       ///< time figure-of-merit value
+        _cms.hPosError = hPosError;       ///< m
+        _cms.vPosError = vPosError;       ///< m
+        _cms.velocityError = velocityError;   ///< m/s
+        _writeToFmq();
     }
 }
 
@@ -853,9 +886,14 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // Write to shared memory if we have access
     if (_shm) {
         uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
-            msgTime.time().msec();
+                msgTime.time().msec();
         _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
-            altitude);
+                altitude);
+
+        _cms.time3501 = msecsSinceEpoch;
+        _cms.latitude = latitude;
+        _cms.longitude = longitude;       ///< de
+        _cms.altitude = altitude;
     }
 }
 
@@ -903,6 +941,16 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
             msgTime.time().msec();
         _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
             velNorth, velEast, velUp);
+        // latest 3512 message data
+         _cms.time3512 = msecsSinceEpoch;
+         _cms.pitch = pitch;
+         _cms.roll = roll;
+         _cms.heading = heading;
+         _cms.velNorth = velNorth;
+         _cms.velEast = velEast;
+         _cms.velUp = velUp;
+         
+         _writeToFmq();
     }
 }
 
@@ -1423,4 +1471,11 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
 bool Cmigits::initializeUsingIwg1() {
     _configPhase = CONFIG_PreInit;
     return(true);
+}
+
+void 
+Cmigits::_writeToFmq() {
+    if (_fmq.writeMsg(3500, 0, &_cms, sizeof(_cms))) {
+      ELOG << "ERROR in _writeToFmq: Cannot write FMQ: " << _fmqUrl;
+    }
 }

@@ -19,12 +19,12 @@
 #include <QThread>
 #include <QTime>
 #include <QTimer>
-
-
+#include <Fmq/DsFmq.hh>
 
 class Cmigits : public QObject {
     Q_OBJECT
 public:
+    static const int FMQ_SHMEM_ID = 22000;
     /**
      * @brief Construct a Cmigits providing access to the C-MIGITS III on 
      * the given serial port.
@@ -34,8 +34,10 @@ public:
      * @param ttyDev the name of the serial port connected to the C-MIGITS.
      * @param useShm true iff this object should write incoming data to
      * a CmigitsSharedMemory shared memory segment.
+     * @param fmqUrl If not empty, the URL for the FMQ to open for shared 
+     * memory write
      */
-    Cmigits(std::string ttyDev, bool useShm);
+    Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl = "/tmp/cmigits_fmq/shmem_22000");
     virtual ~Cmigits();
 
     /**
@@ -289,6 +291,9 @@ private:
     /// @return The QDateTime nearest to now with the same second-of-day. Note
     /// that the QDateTime returned will be truncated to the nearest millisecond.
     QDateTime _SecondOfDayToNearestDateTime(double secondOfDay);
+    
+    /// @brief Write latest data to the FMQ
+    void _writeToFmq();
 
     /// Configuration is a multi-stage process, driven by responses from the
     /// C-MIGITS. This type enumerates our configuration phases.
@@ -439,6 +444,14 @@ private:
 
     /// Pointer to writable CmigitsSharedMemory
     CmigitsSharedMemory * _shm;
+    
+    /// URL for FMQ-supported shared memory
+    std::string _fmqUrl;
+
+  // FMQ for writing to hcrdrx
+  DsFmq _fmq;
+  CmigitsSharedMemory::ShmStruct _cms;
+
 };
 
 #endif /* CMIGITS_H_ */
