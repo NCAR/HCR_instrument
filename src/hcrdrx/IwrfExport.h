@@ -5,7 +5,7 @@
 #include "HcrDrxConfig.h"
 #include "StatusGrabber.h"
 #include "PulseData.h"
-#include <CmigitsShmWatchThread.h>
+#include "IwrfExportCmigitsThread.h"
 #include <HcrPmc730.h>
 #include <deque>
 #include <radar/iwrf_data.h>
@@ -14,6 +14,8 @@
 #include <QReadWriteLock>
 #include <QThread>
 #include <QTimer>
+
+class IwrfExportCmigitsThread;
 
 /// IwrfExport merges data from the H and V channels, 
 /// converts to IWRF time series format and writes the IWRF data to a client
@@ -67,14 +69,22 @@ public:
   // Returns pulse object for recycling
   
   PulseData *writePulseV(PulseData *val);
+  
+  /// @brief Method called to put new C-MIGITS data in our queue.
+  void acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData);
 
 private slots:
   /// @brief This slot will be called each time a new set of data is available
   /// from the C-MIGITS shared memory.
-  void _acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData);
+  void _acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData) {
+      acceptCmigitsData(cmigitsData);
+  }
 
   /// @brief Log some status information
   void _logStatus();
+  
+  /// @brief Log dataTimeout() reports from CmigitsShmWatchThread
+  void _onCmigitsShmTimeout();
 
 private:
   /// Lock for thread-safe member access
@@ -174,9 +184,8 @@ private:
   double _tiltCorr;
   double _rotationCorr;
 
-  /// Thread which polls the CmigitsSharedMemory segment and emits a signal
-  /// when new data are available
-  CmigitsShmWatchThread _cmigitsWatchThread;
+  /// Thread which reads data from the C-MIGITS FMQ and puts it in our deque
+  IwrfExportCmigitsThread _cmigitsWatchThread;
   
   /// deque of C-MIGITS data
   std::deque<CmigitsSharedMemory::ShmStruct> _cmigitsDeque;

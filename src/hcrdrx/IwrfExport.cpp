@@ -33,7 +33,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
-        _cmigitsWatchThread(),
+        _cmigitsWatchThread(*this),
         _cmigitsDeque(),
         _statusTimer(NULL),
         _hPulseCount(0),
@@ -200,11 +200,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _sock = NULL;
   _newClient = false;
 
-  // Connect _cmigitsWatchThread to put new data into our _cmigitsDeque
-
-  connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-          this, SLOT(_acceptCmigitsData(CmigitsSharedMemory::ShmStruct)));
-  
   // Start _cmigitsWatchThread after this thread is started
   connect(this, SIGNAL(started()), &_cmigitsWatchThread, SLOT(start()));
 
@@ -1292,11 +1287,9 @@ int IwrfExport::_sendIwrfGeorefPacket()
   // Hold a write lock while we modify members.
   _accessLock.lockForWrite();
     
-  // set seq num and time in packet header
+  // set seq num in packet header
 
   _radarGeoref.packet.seq_num = _packetSeqNum++;
-  _radarGeoref.packet.time_secs_utc = _timeSecs;
-  _radarGeoref.packet.time_nano_secs = _nanoSecs;
 
   // write the message
   bool closeSocket = false;
@@ -1414,7 +1407,7 @@ void IwrfExport::_closeSocketToClient()
 //////////////////////////////////////////////////
 // Accept incoming new C-MIGITS data
 
-void IwrfExport::_acceptCmigitsData(CmigitsSharedMemory::ShmStruct data) {
+void IwrfExport::acceptCmigitsData(CmigitsSharedMemory::ShmStruct data) {
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);
@@ -1437,13 +1430,16 @@ void IwrfExport::_logStatus() {
 
   float statusSecs = 0.001 * _statusTimer->interval();
   int expectedCmigitsCount = 100 * statusSecs;
-  ILOG << "new H pulses: " << _hPulseCount << ", new V pulses: " <<
-          _vPulseCount << ", new C-MIGITS: " << _cmigitsCount;
-  if (_cmigitsCount < (0.98 * expectedCmigitsCount)) {
-      ELOG << "BAD C-MIGITS COUNT: got " << _cmigitsCount << 
-              " when expecting " << expectedCmigitsCount;
-  }
+  ILOG << "new C-MIGITS count: " << _cmigitsCount;
   _hPulseCount = 0;
   _vPulseCount = 0;
   _cmigitsCount = 0;
+}
+
+//////////////////////////////////////////////////
+// Log dataTimeout() from CmigitsShmWatchThread
+
+void IwrfExport::_onCmigitsShmTimeout() {
+    DLOG << "Data timeout reported by CmigitsShmWatchThread." << 
+            "Last georef was for time " << _lastGeorefTime;
 }
