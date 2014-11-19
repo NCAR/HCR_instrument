@@ -46,7 +46,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _overWater(false),
     _hvRequested(false),
     _requestedHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST),
-    _xmitTestStatus(NOXMIT_UNSPECIFIED)
+    _xmitTestStatus(NOXMIT_UNSPECIFIED),
+    _attenuatedModeStartTime(0)
 {
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
@@ -244,10 +245,16 @@ TransmitControl::_runTransmitTests() {
     // transmit completely in this case (NOT GREAT), or include info from
     // the max power server to indicate if data are attenuated (BETTER).
     if (_hvRequested && _maxPower > _RECEIVED_POWER_THRESHOLD) {
-        // If we're already attenuated or if there's no viable attenuated mode
-        // available, we have to disable transmit. 
-        if (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) ||
-                ! _attenuatedModeAvailable()) {
+        // If there's no viable attenuated mode available, or if we're in 
+        // attenuated mode and the time of the max power is after the start of 
+        // attenuated mode, we have to disable transmit.
+        if (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) &&
+                _maxPowerDataTime < _attenuatedModeStartTime) {
+            WLOG << "..another too big max power, but before attenuated mode kicked in";
+        }
+        if (! _attenuatedModeAvailable() ||
+                (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) && 
+                        _maxPowerDataTime > _attenuatedModeStartTime)) {
             // Change _hvRequested to false to disable transmit, and force the 
             // user to act to try transmitting again.
             WLOG << "Forcing high voltage request to OFF, to protect the " <<
@@ -344,13 +351,13 @@ TransmitControl::_updateControlState() {
     
     // Figure out the HMC mode to use if attenuation is required and the 
     // requested HMC mode is not attenuated.
-    HcrPmc730::HmcOperationMode hmcMode = attenuationRequired() ? 
+    HcrPmc730::HmcOperationMode newHmcMode = attenuationRequired() ? 
             _EquivalentAttenuatedMode(_requestedHmcMode) : _requestedHmcMode;
 
     // We should have a valid HMC mode now. If not, it's a bug and
     // we'll have to disable transmit...
-    if (hmcMode == HcrPmc730::HMC_MODE_INVALID) {
-        hmcMode = _requestedHmcMode;
+    if (newHmcMode == HcrPmc730::HMC_MODE_INVALID) {
+        newHmcMode = _requestedHmcMode;
         _setXmitTestStatus(NOXMIT_ATTENUATE_BUG);
         ELOG << _xmitTestStatusText();
     }
@@ -367,8 +374,8 @@ TransmitControl::_updateControlState() {
     }
     
     // Set HMC mode
-    if (_hcrPmc730Status.hmcMode() != hmcMode) {
-        _setHmcMode(hmcMode);
+    if (_hcrPmc730Status.hmcMode() != newHmcMode) {
+        _setHmcMode(newHmcMode);
     }
     
     // If we're turning on HV, do it after we change HMC mode, since we only
@@ -594,12 +601,27 @@ TransmitControl::_xmitHvOff() {
 
 void
 TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
+    HcrPmc730::HmcOperationMode startingMode = _hcrPmc730Status.hmcMode();
+    // Are we switching from an unattenuated mode to an attenuated mode?
+    bool enablingAttenuation = ! _HmcModeIsAttenuated(startingMode) &&
+            _HmcModeIsAttenuated(mode);
+    
     // Log only if we're changing mode
-    if (_hcrPmc730Status.hmcMode() != mode) {
-        ILOG << "Changing HMC mode to " << mode;
+    if (startingMode != mode) {
+        ILOG << "Changing HMC mode to '" << HcrPmc730::HmcModeNames[mode] << "'";
     }
     try {
         _hcrPmc730Client.setHmcMode(mode);
+        // Mark the start time of attenuated mode after the call above returns
+        if (enablingAttenuation) {
+            struct timeval tv;
+            gettimeofday(&tv, NULL);
+            _attenuatedModeStartTime = tv.tv_sec + 1.0e-6 * tv.tv_usec;
+            QDateTime startTime = QDateTime::fromTime_t(tv.tv_sec);
+            startTime = startTime.addMSecs(tv.tv_usec / 1000);
+            ILOG << "Attenuated mode started at " << 
+                    startTime.toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
+        }
     } catch (std::exception & e) {
         ELOG << "XML-RPC call to HcrPmc730Daemon setHmcMode(" << mode << 
                 ") failed: " << e.what();

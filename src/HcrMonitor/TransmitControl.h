@@ -13,6 +13,7 @@
 #include <CmigitsShmWatchThread.h>
 #include <HcrPmc730Client.h>
 #include <MotionControlStatusThread.h>
+#include <QDateTime>
 #include <QObject>
 #include <QTimer>
 #include <xmlrpc-c/client_simple.hpp>
@@ -343,6 +344,10 @@ private:
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
     XmitTestStatus _xmitTestStatus;
+    
+    /// @brief Time of last change to an attenuated receive mode, seconds since
+    /// 1970-01-01 00:00:00 UTC
+    double _attenuatedModeStartTime;
 };
 
 #endif /* TRANSMITCONTROL_H_ */
