@@ -725,7 +725,7 @@ HcrGuiMainWindow::_update() {
     // Update transmitter control
     _ui.powerValidIcon->setPixmap(_xmitStatus.psmPowerOn() ? _greenLED : _greenLED_off);
     _ui.filamentIcon->setPixmap(_pmcStatus.rdsXmitterFilamentOn() ? _greenLED : _greenLED_off);
-   if (! _pmcStatus.rdsXmitterFilamentOn()) {
+    if (! _pmcStatus.rdsXmitterFilamentOn()) {
         // Turn off warmup LED if the filament is not on
         _ui.filamentWarmupIcon->setPixmap(_greenLED_off);
         _ui.filamentWarmupLabel->setText("Filament warmup");
@@ -735,6 +735,21 @@ HcrGuiMainWindow::_update() {
         _ui.filamentWarmupLabel->setText(_xmitStatus.filamentDelayActive() ?
                 "Waiting for warmup" : "Filament is warm");
     }
+    // Show the results of TransmitControl tests. Change background color of
+    // the box if transmit is not allowed or if attenuation is required.
+    _ui.hcrMonitorResultText->
+        setText(_hcrMonitorStatus.xmitAllowedStatusText().c_str());
+
+    std::string styleSheet = "";
+    if (! _hcrMonitorStatus.transmitAllowed()) {
+        // Transmit not allowed; make the background light pink
+        styleSheet = "background-color: #FFD0D0";
+    } else if (_hcrMonitorStatus.attenuationRequired()) {
+        // Attenuation required; make the background light yellow
+        styleSheet = "background-color: #FFFFD0";
+    }
+    _ui.hcrMonitorResultText->setStyleSheet(styleSheet.c_str());
+    // HV requested?
     _ui.requestHvIcon->setPixmap(_hcrMonitorStatus.hvRequested() ?
             _greenLED : _greenLED_off);
     _ui.hvOnIcon->setPixmap(_pmcStatus.rdsXmitterHvOn() ? _greenLED : _greenLED_off);

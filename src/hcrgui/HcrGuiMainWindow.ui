@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
-    <height>644</height>
+    <width>467</width>
+    <height>595</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -418,7 +418,7 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
+             <item row="5" column="0">
               <widget class="QLabel" name="requestHvIcon">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -434,7 +434,7 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="1">
+             <item row="5" column="1">
               <widget class="QPushButton" name="requestHvButton">
                <property name="enabled">
                 <bool>true</bool>
@@ -453,7 +453,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="0">
+             <item row="9" column="0">
               <widget class="QLabel" name="xmittingIcon">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -469,7 +469,7 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="1">
+             <item row="9" column="1">
               <widget class="QLabel" name="xmittingLabel">
                <property name="text">
                 <string>Transmitting</string>
@@ -524,7 +524,7 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="1">
+             <item row="10" column="1">
               <spacer name="verticalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -537,7 +537,7 @@
                </property>
               </spacer>
              </item>
-             <item row="5" column="0">
+             <item row="7" column="0">
               <widget class="QLabel" name="hvOnIcon">
                <property name="text">
                 <string/>
@@ -547,10 +547,35 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="1">
+             <item row="7" column="1">
               <widget class="QLabel" name="hvOnLabel">
                <property name="text">
                 <string>High Voltage</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0" colspan="2">
+              <widget class="QLabel" name="hcrMonitorResultText">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="text">
+                <string>HcrMonitor test results</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
