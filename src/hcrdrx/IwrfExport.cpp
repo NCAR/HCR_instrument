@@ -927,7 +927,7 @@ string IwrfExport::_assembleStatusXml()
     ("EmsError4Or5", 2, pmc730Status.emsError4Or5());
 
   xml += TaXml::writeBoolean
-    ("EmsError16Or7", 2, pmc730Status.emsError6Or7());
+    ("EmsError6Or7", 2, pmc730Status.emsError6Or7());
 
   xml += TaXml::writeBoolean
     ("EmsPowerError", 2, pmc730Status.emsPowerError());
