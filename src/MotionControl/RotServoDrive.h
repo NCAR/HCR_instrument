@@ -22,7 +22,7 @@ public:
     /// @param nodeId the CANopen node ID of the servo drive
     RotServoDrive(uint8_t nodeId) :
         ElmoServoDrive(nodeId, "rotation", ROT_DRIVE_COUNTS_PER_CIRCLE,
-                -45.0, 225.0) {}
+                -30.0, 225.0) {}
     virtual ~RotServoDrive() {}
 private:
     std::string _xqInitFunction() const { return("rotInit"); }
