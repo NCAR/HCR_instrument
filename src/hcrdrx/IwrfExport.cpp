@@ -1413,11 +1413,15 @@ void IwrfExport::acceptCmigitsData(CmigitsSharedMemory::ShmStruct data) {
   QWriteLocker wLocker(&_accessLock);
 
   _cmigitsCount++;
-  _cmigitsDeque.push_back(data);
-  if (_cmigitsDeque.size() > 1000) {
+  
+  // If we have too many items in the deque, clear it now.
+  if (_cmigitsDeque.size() == 1000) {
       ILOG << "clearing _cmigitsDeque because it's too big";
       _cmigitsDeque.clear();
   }
+
+  // Push the new item onto the deque
+  _cmigitsDeque.push_back(data);
 }
 
 //////////////////////////////////////////////////
@@ -1428,8 +1432,6 @@ void IwrfExport::_logStatus() {
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);
 
-  float statusSecs = 0.001 * _statusTimer->interval();
-  int expectedCmigitsCount = 100 * statusSecs;
   ILOG << "new C-MIGITS count: " << _cmigitsCount;
   _hPulseCount = 0;
   _vPulseCount = 0;
