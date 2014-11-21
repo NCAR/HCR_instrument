@@ -141,6 +141,13 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
 void
 TransmitControl::_updateMaxPower(double dataTime, double maxPower, 
         double rangeToMax) {
+    // Note the latency for the max power data
+    struct timeval tvNow;
+    gettimeofday(&tvNow, NULL);
+    double doubleNow = tvNow.tv_sec + 1.0e-6 * tvNow.tv_usec;
+    ILOG << "Max power latency: " << doubleNow - dataTime << " s";
+    
+    // Store the max power information and update control state
     _maxPowerDataTime = dataTime;
     _maxPower = maxPower;
     _rangeToMaxPower = rangeToMax;
