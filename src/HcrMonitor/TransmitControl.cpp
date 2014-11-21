@@ -145,7 +145,10 @@ TransmitControl::_updateMaxPower(double dataTime, double maxPower,
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
     double doubleNow = tvNow.tv_sec + 1.0e-6 * tvNow.tv_usec;
-    ILOG << "Max power latency: " << doubleNow - dataTime << " s";
+    QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
+    ILOG << "Max power latency at " << 
+            qNow.toString("yyyyMMdd hh:mm:ss.zzz").toStdString() << ": " <<
+            doubleNow - dataTime << " s";
     
     // Store the max power information and update control state
     _maxPowerDataTime = dataTime;
