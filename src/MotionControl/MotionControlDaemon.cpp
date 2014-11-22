@@ -36,8 +36,7 @@ std::string PmuInstance = "ops";   ///< application instance
 // Optimally, these are set so that putting both drives at their zero positions
 // will cause the radar beam to be pointing exactly at zenith when the C-MIGITS
 // is reporting zero roll and zero pitch.
-static const int ROT_DRIVE_HOME_COUNTS = 3275;  // from calibration maneuvers 2014-11-17
-//static const int TILT_DRIVE_HOME_COUNTS = 200;  // measured in lab 2014-09-19
+static const int ROT_DRIVE_HOME_COUNTS = 3610;  // from calibration maneuvers 2014-11-20
 static const int TILT_DRIVE_HOME_COUNTS = -215; // from calibration maneuvers 2014-11-17
 
 /////////////////////////////////////////////////////////////////////
