@@ -114,11 +114,13 @@ private slots:
 
     /// @brief Accept a new max power from the TsPrint max power server and 
     /// react if necessary
-    /// @param dataTime the time for the max power report, seconds since
-    /// 1970-01-01 00:00:00 UTC
+    /// @param dataTime center time of the period sampled for this max power 
+    /// report, seconds since 1970-01-01 00:00:00 UTC
+    /// @param dwellPeriod the period of time sampled for max power, s
     /// @param maxPower the maximum power received, dBm
     /// @param rangeToMax the range to the maximum received power, m
-    void _updateMaxPower(double dataTime, double maxPower, double rangeToMax);
+    void _updateMaxPower(double dataTime, double dwellPeriod, double maxPower, 
+            double rangeToMax);
 
     /// @brief Note a responsiveness change for the TsPrint max power server
     /// @param responding true if the server is now responsive, false if it's
@@ -133,6 +135,20 @@ private slots:
     void _updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData);
     
 private:
+    /// @brief Struct for details of max power data reports
+    typedef struct {
+        /// @brief center time of period sampled for max power, seconds since 
+        /// 1970-01-01 00:00:00 UTC
+        double dataTime;
+        /// @brief max received power, dBm
+        double maxPower;
+        /// @brief range to max received power, m
+        double rangeToMaxPower;
+        /// @brief true iff the whole period sampled for max power was collected
+        /// in attenuated receive mode
+        bool attenuated;
+    } _MaxPowerStruct;
+    
     /// @brief Normalize the given angle in degrees into the interval [0, 360)
     /// @param angle the angle in degrees to be normalized
     /// @return the given angle normalized into the interval [0, 360)
@@ -236,6 +252,14 @@ private:
     /// otherwise HcrPmc730::HMC_MODE_INVALID.
     static HcrPmc730::HmcOperationMode _EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode);
     
+    /// @brief Return true iff the HMC was using attenuated receive mode during
+    /// the entire period from startTime to endTime.
+    /// @param startTime start time of the period of interest, seconds since
+    /// 1970-01-01 00:00:00 UTC
+    /// @param endTime end time of the period of interest, seconds since
+    /// 1970-01-01 00:00:00 UTC
+    bool _timePeriodWasAttenuated(double startTime, double endTime) const;
+    
     /// @brief Tell HcrPmc730Daemon to turn on transmitter HV
     void _xmitHvOn();
     
@@ -246,6 +270,21 @@ private:
     /// @param mode the HMC mode to use
     void _setHmcMode(HcrPmc730::HmcOperationMode mode);
     
+    /// @brief Return the current HMC mode. We return our local value for
+    /// current mode rather than _hcrPmc730Status.hmcMode() because we may
+    /// have changed the mode but not yet gotten a new status from
+    /// HcrPmc730Daemon.
+    HcrPmc730::HmcOperationMode _currentHmcMode() const {
+        // Current mode is the last entry in our HMC mode map
+        return(_hmcModeMap.rbegin()->second);
+    }
+
+    /// @brief Clear the map of times to HMC modes
+    void _clearHmcModeMap();
+
+    /// @brief Append a mode to our mode map, starting at the current time
+    void _appendToModeMap(HcrPmc730::HmcOperationMode mode);
+
     /// @brief How frequently will we poll CmigitsSharedMemory for new data?
     static const int _CMIGITS_POLL_INTERVAL_MS = 1000;
     
@@ -265,6 +304,9 @@ private:
     /// @brief Received power threshold at which we shift to attenuated mode
     /// or disallow transmit, dBm
     static const float _RECEIVED_POWER_THRESHOLD = -34.0;
+    
+    /// @brief Attenuation applied when in attenuated receive mode, dB
+    static const float _SWITCH_ATTENUATION = 23.5;
     
     /// @brief Minimum altitude AGL for non-zenith transmit, m
     static const int _XMIT_NONZENITH_AGL_LIMIT = 1000;
@@ -308,15 +350,9 @@ private:
     /// @brief Is TsPrint max power server currently responsive?
     bool _maxPowerResponsive;
     
-    /// @brief data time for max power values, seconds since 1970-01-01 00:00:00 UTC
-    double _maxPowerDataTime;
-    
-    /// @brief latest max received power, dBm
-    double _maxPower;
-    
-    /// @brief range to latest max received power, m
-    double _rangeToMaxPower;
-    
+    /// @brief latest max power report
+    _MaxPowerStruct _maxPowerReport;
+        
     /// @brief Thread which monitors the CmigitsSharedMemory segment
     CmigitsShmWatchThread _cmigitsWatchThread;
 
@@ -345,9 +381,17 @@ private:
     /// is currently allowed)
     XmitTestStatus _xmitTestStatus;
     
-    /// @brief Time of last change to an attenuated receive mode, seconds since
-    /// 1970-01-01 00:00:00 UTC
-    double _attenuatedModeStartTime;
+    /// @brief map of HMC mode change times (seconds since 1970-01-01 00:00:00
+    /// UTC) to mode
+    std::map<double, HcrPmc730::HmcOperationMode> _hmcModeMap;
+    
+    /// @brief Time high voltage was last forced off because of high max power,
+    /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been forced off.
+    double _timeOfLastHvOffForHighPower;
+
+    /// @brief String describing details of the last time high voltage was
+    std::string _detailsForLastHvOffForHighPower;
+
 };
 
 #endif /* TRANSMITCONTROL_H_ */

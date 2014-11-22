@@ -161,6 +161,8 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
             ar & BOOST_SERIALIZATION_NVP(_transmitAllowed);
             ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
+            ar & BOOST_SERIALIZATION_NVP(_timeOfLastHvOffForHighPower);
+            ar & BOOST_SERIALIZATION_NVP(_detailsForLastHvOffForHighPower);
             
             // KLUGE: special handling for members with enumerated types. We 
             // explicitly cast to int when saving to an output archive, and 
@@ -259,6 +261,13 @@ private:
     /// @brief Do we currently need to receive using an attenuated mode?
     bool _attenuationRequired;
     
+    /// @brief Time high voltage was last forced off because of high max power,
+    /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been forced off.
+    double _timeOfLastHvOffForHighPower;
+
+    /// @brief String describing details of the last time high voltage was
+    std::string _detailsForLastHvOffForHighPower;
+
 };
 
 // Increment this class version number when member variables are changed.

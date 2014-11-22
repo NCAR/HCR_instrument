@@ -30,7 +30,9 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _transmitAllowed(false),
-        _attenuationRequired(false) {
+        _attenuationRequired(false),
+        _timeOfLastHvOffForHighPower(0),
+        _detailsForLastHvOffForHighPower("") {
 }
 
 HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
@@ -49,7 +51,9 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _transmitAllowed(false),
-        _attenuationRequired(false) {
+        _attenuationRequired(false),
+        _timeOfLastHvOffForHighPower(0),
+        _detailsForLastHvOffForHighPower("") {
     // Get ApsControl status
     _apsValveControlState = apsControl._valveControlState;
     _apsStatusText = apsControl._statusText;
@@ -69,6 +73,8 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _xmitTestStatusText = transmitControl._xmitTestStatusText();
     _transmitAllowed = transmitControl.transmitAllowed();
     _attenuationRequired = transmitControl.attenuationRequired();
+    _timeOfLastHvOffForHighPower = transmitControl._timeOfLastHvOffForHighPower;
+    _detailsForLastHvOffForHighPower = transmitControl._detailsForLastHvOffForHighPower;
 }
 
 HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) {

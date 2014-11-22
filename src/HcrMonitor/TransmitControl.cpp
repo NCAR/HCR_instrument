@@ -36,9 +36,6 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _motionControlResponsive(false),
     _motionControlStatus(),
     _maxPowerResponsive(false),
-    _maxPowerDataTime(0.0),
-    _maxPower(99.9),
-    _rangeToMaxPower(0.0),
     _cmigitsWatchThread(_CMIGITS_POLL_INTERVAL_MS, _CMIGITS_DATA_TIMEOUT_MS),
     _cmigitsResponsive(false),
     _terrainHtServerResponsive(false),
@@ -47,8 +44,13 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _hvRequested(false),
     _requestedHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST),
     _xmitTestStatus(NOXMIT_UNSPECIFIED),
-    _attenuatedModeStartTime(0)
+    _hmcModeMap(),
+    _timeOfLastHvOffForHighPower(0),
+    _detailsForLastHvOffForHighPower("")
 {
+    // Start with clean map of times to HMC modes
+    _clearHmcModeMap();
+
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
     connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_updateHcrPmc730Status(HcrPmc730Status)));
@@ -93,18 +95,25 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
 
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting HMC mode to Bench Test";
-    try {
-        _hcrPmc730Client.setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
-    } catch (std::exception & e) {
-        ELOG << "HcrPmc730Daemon failed to respond to setHmcMode(): " <<
-                e.what();
-    }
+    _setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
     _cmigitsWatchThread.quit();
 }
 
 void
 TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
     _hcrPmc730Status = status;
+    // Our idea of current HMC mode may differ from what HcrPmc730Daemon
+    // reports. This can happen on the first report we see from HcrPmc730Daemon,
+    // or if the daemon goes away and we later regain contact. In this case,
+    // get our state back in sync with HcrPmc730Daemon.
+    if (_hcrPmc730Status.hmcMode() != _currentHmcMode()) {
+        WLOG << "HcrPmc730Daemon reports HMC mode '" <<
+                HcrPmc730::HmcModeNames[_hcrPmc730Status.hmcMode()] <<
+                "' instead of expected mode '" <<
+                HcrPmc730::HmcModeNames[_currentHmcMode()] << "'";
+        // Get our state sync'ed with the actual current mode
+        _setHmcMode(_hcrPmc730Status.hmcMode());
+    }
     _updateControlState();
 }
 
@@ -139,8 +148,8 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
 }
 
 void
-TransmitControl::_updateMaxPower(double dataTime, double maxPower, 
-        double rangeToMax) {
+TransmitControl::_updateMaxPower(double centerTime, double dwellWidth, 
+        double maxPower, double rangeToMax) {
     // Note the latency for the max power data
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
@@ -148,12 +157,15 @@ TransmitControl::_updateMaxPower(double dataTime, double maxPower,
     QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
     ILOG << "Max power latency at " << 
             qNow.toString("yyyyMMdd hh:mm:ss.zzz").toStdString() << ": " <<
-            doubleNow - dataTime << " s";
+            doubleNow - centerTime << " s";
     
     // Store the max power information and update control state
-    _maxPowerDataTime = dataTime;
-    _maxPower = maxPower;
-    _rangeToMaxPower = rangeToMax;
+    _maxPowerReport.dataTime = centerTime;
+    _maxPowerReport.maxPower = maxPower;
+    _maxPowerReport.rangeToMaxPower = rangeToMax;
+    _maxPowerReport.attenuated =
+            _timePeriodWasAttenuated(centerTime - 0.5 * dwellWidth,
+                    centerTime + 0.5 * dwellWidth);
     _updateControlState();
 }
 
@@ -241,47 +253,57 @@ TransmitControl::_runTransmitTests() {
         } else {
             // Mark that we'll have to switch to an attenuated mode if we
             // make it through remaining tests.
-            if (provisionalStatus == XMIT_ALLOWED) {
-                provisionalStatus = ATTENUATE_TOO_LOW_FOR_NADIR_POINTING;
-            }
+            provisionalStatus = ATTENUATE_TOO_LOW_FOR_NADIR_POINTING;
         }
     }
     
     // If user has requested HV on and received power exceeds our safety 
     // threshold, attenuate if possible otherwise force _hvRequested to false 
     // to disable transmit until the user acts.
-    // TODO: After switching in attenuation, the next max power report we get
-    // may still be of non-attenuated data. Maybe delay reaction to turn off
-    // transmit completely in this case (NOT GREAT), or include info from
-    // the max power server to indicate if data are attenuated (BETTER).
-    if (_hvRequested && _maxPower > _RECEIVED_POWER_THRESHOLD) {
-        // If there's no viable attenuated mode available, or if we're in 
-        // attenuated mode and the time of the max power is after the start of 
-        // attenuated mode, we have to disable transmit.
-        if (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) &&
-                _maxPowerDataTime < _attenuatedModeStartTime) {
-            WLOG << "..another too big max power, but before attenuated mode kicked in";
-        }
-        if (! _attenuatedModeAvailable() ||
-                (_HmcModeIsAttenuated(_hcrPmc730Status.hmcMode()) && 
-                        _maxPowerDataTime > _attenuatedModeStartTime)) {
-            // Change _hvRequested to false to disable transmit, and force the 
-            // user to act to try transmitting again.
-            WLOG << "Forcing high voltage request to OFF, to protect the " <<
-                    "receiver after seeing max power of " << _maxPower << 
-                    " dBm in HMC mode: " << 
-                    HcrPmc730::HmcModeNames[_hcrPmc730Status.hmcMode()];
-            _hvRequested = false;
-            return(NOXMIT_RCVD_POWER_TOO_HIGH);
-        } else {
+    if (_hvRequested && _maxPowerReport.maxPower > _RECEIVED_POWER_THRESHOLD) {
+        // Adding attenuation is a solution if 1) an attenuated mode is
+        // available, and 2) the max power was not recorded in a period that
+        // was already attenuated.
+        if (_attenuatedModeAvailable() && ! _maxPowerReport.attenuated) {
             // Mark that we'll have to switch to an attenuated mode if we
             // make it through remaining tests.
-            if (provisionalStatus == XMIT_ALLOWED) {
-                provisionalStatus = ATTENUATE_RCVD_POWER_TOO_HIGH;
-            }
+            provisionalStatus = ATTENUATE_RCVD_POWER_TOO_HIGH;
+        } else {
+            // Change _hvRequested to false to disable transmit, and to force
+            // user action before transmission will be resumed.
+            std::ostringstream oss;
+            oss << "Forcing high voltage request to OFF, to protect the " <<
+                    "receiver after seeing " <<
+                    (_maxPowerReport.attenuated ? "" : "un") << "attenuated " <<
+                    "max power of " << _maxPowerReport.maxPower << 
+                    " dBm with current HMC mode: " <<
+                    HcrPmc730::HmcModeNames[_currentHmcMode()];
+            WLOG << oss.str();
+            _hvRequested = false;
+            // Save time and details about the hard shutoff of high voltage
+            struct timeval tv;
+            gettimeofday(&tv, NULL);
+            _timeOfLastHvOffForHighPower = tv.tv_sec + 1.0e-6 * tv.tv_usec;
+            _detailsForLastHvOffForHighPower = oss.str();
+            return(NOXMIT_RCVD_POWER_TOO_HIGH);
         }
     }
     
+    // If we're currently in attenuated mode due to high received power, we
+    // need to remain there until *unattenuated* max power drops to 6 dB or
+    // more below our max power threshold.
+    if (_xmitTestStatus == ATTENUATE_RCVD_POWER_TOO_HIGH) {
+        double unattenuatedPower = _maxPowerReport.maxPower + _SWITCH_ATTENUATION;
+        if (unattenuatedPower > (_RECEIVED_POWER_THRESHOLD - 6)) {
+            ILOG << "Waiting for max power to drop before removing attenuation";
+            provisionalStatus = ATTENUATE_RCVD_POWER_TOO_HIGH;
+        } else {
+            // No longer forcing attenuation due to high power, although a
+            // different reason for attenuating may have been set above.
+            ILOG << "Max power now low enough to resume unattenuated receive";
+        }
+    }
+
     // If we made it here, transmit is allowed, although it may require 
     // attenuated receive.
     return(provisionalStatus);
@@ -342,8 +364,12 @@ TransmitControl::_xmitTestStatusText() const {
     case NOXMIT_DRIVES_NOT_HOMED:
         return("Transmit not allowed: drives not homed, reflector position unknown");
     case NOXMIT_RCVD_POWER_TOO_HIGH:
-        oss << "Transmit not allowed: Received power in attenuated mode " <<
-            "exceeded " << _RECEIVED_POWER_THRESHOLD << " dBm";
+        oss << "Forcing high voltage request to OFF, to protect the " <<
+        "receiver after seeing " <<
+        (_maxPowerReport.attenuated ? "" : "un") << "attenuated " <<
+        "max power of " << _maxPowerReport.maxPower <<
+        " dBm with current HMC mode '" <<
+        HcrPmc730::HmcModeNames[_currentHmcMode()] << "'";
         return(oss.str());
     case NOXMIT_ATTENUATE_BUG:
         return("BUG: Attenuated mode is required but is not available.");
@@ -384,7 +410,7 @@ TransmitControl::_updateControlState() {
     }
     
     // Set HMC mode
-    if (_hcrPmc730Status.hmcMode() != newHmcMode) {
+    if (_currentHmcMode() != newHmcMode) {
         _setHmcMode(newHmcMode);
     }
     
@@ -611,29 +637,63 @@ TransmitControl::_xmitHvOff() {
 
 void
 TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
-    HcrPmc730::HmcOperationMode startingMode = _hcrPmc730Status.hmcMode();
-    // Are we switching from an unattenuated mode to an attenuated mode?
-    bool enablingAttenuation = ! _HmcModeIsAttenuated(startingMode) &&
-            _HmcModeIsAttenuated(mode);
-    
-    // Log only if we're changing mode
-    if (startingMode != mode) {
+    // Bail out now if we're not changing mode
+    if (_currentHmcMode() == mode) {
+        return;
+    } else {
         ILOG << "Changing HMC mode to '" << HcrPmc730::HmcModeNames[mode] << "'";
     }
     try {
         _hcrPmc730Client.setHmcMode(mode);
-        // Mark the start time of attenuated mode after the call above returns
-        if (enablingAttenuation) {
-            struct timeval tv;
-            gettimeofday(&tv, NULL);
-            _attenuatedModeStartTime = tv.tv_sec + 1.0e-6 * tv.tv_usec;
-            QDateTime startTime = QDateTime::fromTime_t(tv.tv_sec);
-            startTime = startTime.addMSecs(tv.tv_usec / 1000);
-            ILOG << "Attenuated mode started at " << 
-                    startTime.toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
-        }
+        // Mode was changed, so add the mode to _hmcModeMap using the current time
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        double modeStartTime = tv.tv_sec + 1.0e-6 * tv.tv_usec;
+        _hmcModeMap[modeStartTime] = mode;
     } catch (std::exception & e) {
         ELOG << "XML-RPC call to HcrPmc730Daemon setHmcMode(" << mode << 
                 ") failed: " << e.what();
     }
+}
+
+bool
+TransmitControl::_timePeriodWasAttenuated(double startTime,
+        double endTime) const {
+    std::map<double, HcrPmc730::HmcOperationMode>::const_reverse_iterator rit;
+    // Loop backward through the map of HMC modes looking at all modes which
+    // were used during the given period.
+    for (rit = _hmcModeMap.rbegin(); rit != _hmcModeMap.rend(); rit++) {
+        double modeStartTime = rit->first;
+        HcrPmc730::HmcOperationMode mode = rit->second;
+        // If this mode started after the end time, move to the previous mode
+        if (modeStartTime >= endTime)
+            continue;
+        // If we find any unattenuated mode during the period, return
+        // false immediately
+        if (! _HmcModeIsAttenuated(mode)) {
+            return(false);
+        }
+        // If this mode started before the start time, we're done
+        if (modeStartTime <= startTime) {
+            // We found only attenuated mode(s) during the period, so return true
+            return(true);
+        }
+    }
+    // If we get here, it means we do not know what the mode was at the start
+    // of the period. For safety, we must report that attenuation was in effect
+    // for the period, implying that actual max power received at the antenna
+    // port is _SWITCH_ATTENUATION dB higher than the reported max power.
+    int msecs = int(fmod(startTime, 1.0) * 1000);
+    QDateTime qDateTime = QDateTime::fromTime_t(time_t(startTime)).addMSecs(msecs);
+    ELOG << "BUG: HMC mode at " <<
+            qDateTime.toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<
+            " could not be found";
+    return(true);
+}
+
+void
+TransmitControl::_clearHmcModeMap() {
+    _hmcModeMap.clear();
+    // Initialize as having run in "Bench Test" mode since the beginning of time
+    _hmcModeMap[0] = HcrPmc730::HMC_MODE_BENCH_TEST;
 }
