@@ -266,6 +266,7 @@ private:
     double _timeOfLastHvOffForHighPower;
 
     /// @brief String describing details of the last time high voltage was
+    /// forced off because of high max power.
     std::string _detailsForLastHvOffForHighPower;
 
 };
