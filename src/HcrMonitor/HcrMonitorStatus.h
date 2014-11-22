@@ -134,6 +134,16 @@ public:
     /// attenuated receive mode.
     bool attenuationRequired() const { return(_attenuationRequired); }
 
+    /// @brief Return the time HcrMonitor last forced HV off because of high
+    /// max received power, seconds since 1970-01-01 00:00:00 UTC
+    double timeOfLastHvOffForHighPower() const { return(_timeOfLastHvOffForHighPower); }
+
+    /// @brief Return a string with details of why HcrMonitor last forced HV off
+    /// because of high max received power
+    std::string detailsForLastHvOffForHighPower() const {
+        return(_detailsForLastHvOffForHighPower);
+    }
+
 private:
     friend class boost::serialization::access;
     
