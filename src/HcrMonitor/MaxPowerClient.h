@@ -32,12 +32,13 @@ signals:
 
     /// @brief Signal emitted when a new maximum power is received from 
     /// the TsPrint max power server.
-    /// @param time the time for the max power data, seconds since 
+    /// @param time the center time for of the max power dwell, seconds since
     ///    1970-01-01 00:00:00 UTC
+    /// @param dwellTime the length of time over which max power was sampled, s
     /// @param maxPower the maximum power measured, dBm
     /// @param rangeToMax the range from the radar to the maximum power 
     ///    return, m
-    void newMaxPower(double time, double maxPower, double rangeToMax);
+    void newMaxPower(double time, double dwellTime, double maxPower, double rangeToMax);
     
 private slots:
 

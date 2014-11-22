@@ -225,7 +225,8 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
     
     try {
         // Initialize dataTime from the "time" child element (ISO time to the 
-        // second)
+        // second). This is the center time of the period over which the max
+        // power was measured.
         QString timeText = _DocElementText(doc, "time");
         QDateTime dataTime = QDateTime::fromString(timeText, Qt::ISODate);
 
@@ -234,6 +235,14 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
         QString msecsText = _DocElementText(doc, "msecs");
         int msecs = msecsText.toInt();
         dataTime = dataTime.addMSecs(msecs);
+
+        // Unpack the parsed "dwellTime" element, which is the period of time
+        // over which the max power was measured.
+//        QString dwellTimeText = _DocElementText(doc, "dwellTime");
+//        double dwellTime = dwellTimeText.toDouble();
+        // TODO: Dwell time is fixed for the moment, until the new XML element
+        // is added to the data stream
+        double dwellTime = 0.1;
 
         // Get H channel max power from "maxDbm0" element
         QString maxDbm0Text = _DocElementText(doc, "maxDbm0");
@@ -260,7 +269,7 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
                 dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
                 ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
         double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
-        emit(newMaxPower(secondsSinceEpoch, maxDbm, rangeToMax));
+        emit(newMaxPower(secondsSinceEpoch, dwellTime, maxDbm, rangeToMax));
     } catch (std::runtime_error & e) {
         ELOG << "Error in <TsPrintMaxPower>: " << e.what();
         ELOG << "Text of offending <TsPrintMaxPower>: \n" << text.data();
