@@ -62,7 +62,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _mslAltitude = transmitControl._mslAltitude;
     _aglAltitude = transmitControl._aglAltitude;
     _overWater = transmitControl._overWater;
-    _maxPower = transmitControl._maxPower;
+    _maxPower = transmitControl._maxPowerReport.maxPower;
     _requestedHmcMode = transmitControl._requestedHmcMode;
     _hvRequested = transmitControl._hvRequested;
     _xmitTestStatus = transmitControl._xmitTestStatus;
