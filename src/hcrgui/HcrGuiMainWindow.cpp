@@ -136,6 +136,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_hcrMonitorResponsivenessChange(bool, QString)));
     connect(& _hcrMonitorStatusThread, SIGNAL(newStatus(HcrMonitorStatus)),
             this, SLOT(_setHcrMonitorStatus(HcrMonitorStatus)));
+    connect(& _hcrMonitorStatusThread, SIGNAL(hvForcedOffForHighMaxPower(QString)),
+            this, SLOT(_reportHvForcedOff(QString)));
     _hcrMonitorStatusThread.start();
 
     // Connect signals from our HcrPmc730StatusThread object and start the thread.
@@ -1120,4 +1122,13 @@ HcrGuiMainWindow::_clearAngleDisplay() {
     _showRotAngle(INVALID_ANGLE);
     _ui.tiltValue->setText("---");
     _showTiltAngle(INVALID_ANGLE);
+}
+
+void
+HcrGuiMainWindow::_reportHvForcedOff(QString details) {
+    WLOG << "High Voltage forced off by HcrMonitor: " << details.toStdString();
+    details += "\nTo transmit, operator must request high voltage again.";
+    QMessageBox box(QMessageBox::Warning, "High Voltage Disabled", details,
+            QMessageBox::Ok, this);
+    box.exec();
 }

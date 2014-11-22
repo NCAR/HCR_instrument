@@ -123,7 +123,9 @@ private slots:
     void _setFireFlyStatus(FireFlyStatus status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
-
+    /// @brief Slot called to pop up a dialog reporting forced shutoff of
+    /// transmitter high voltage.
+    void _reportHvForcedOff(QString details);
 private:
     // Log a message
     void _logMessage(std::string message);
