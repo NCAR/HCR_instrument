@@ -17,7 +17,8 @@ HcrMonitorStatusThread::HcrMonitorStatusThread(std::string daemonHost,
     _responsive(false),
     _daemonHost(daemonHost),
     _daemonPort(daemonPort),
-    _client(0) {
+    _client(0),
+    _timeOfLastHvOffForHighPower(0) {
     // We need to register HcrMonitorStatus as a metatype, since we'll be 
     // passing it as an argument in a signal.
     qRegisterMetaType<HcrMonitorStatus>("HcrMonitorStatus");
@@ -54,6 +55,12 @@ HcrMonitorStatusThread::_getStatus() {
             std::string msg = "HcrMonitor is responding";
             ILOG << msg;
             emit serverResponsive(true, QString(msg.c_str()));
+        }
+        // Look for a new "HV forced off because of high max power" event, and
+        // emit hvForcedOffForHighMaxPower() if we find one.
+        if (status.timeOfLastHvOffForHighPower() > _timeOfLastHvOffForHighPower) {
+            emit hvForcedOffForHighMaxPower(status.detailsForLastHvOffForHighPower().c_str());
+            _timeOfLastHvOffForHighPower = status.timeOfLastHvOffForHighPower();
         }
         // Emit the new status.
         emit newStatus(status);

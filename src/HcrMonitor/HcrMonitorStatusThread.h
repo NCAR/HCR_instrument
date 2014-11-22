@@ -62,6 +62,12 @@ signals:
     /// @param status the new status received from HcrMonitor
     void newStatus(HcrMonitorStatus status);
 
+    /// @brief signal emitted on detection of a new event of high voltage
+    /// forced off because of high max power
+    /// @param details a string detailing the reason high voltage was forced
+    /// off
+    void hvForcedOffForHighMaxPower(QString details);
+
 private slots:
     /// @brief Try to get latest status from HcrMonitor, and emit a newStatus()
     /// signal if successful.
@@ -76,6 +82,12 @@ private:
 
     /// The HcrMonitorRpcClient object handling the XML-RPC connection
     HcrMonitorRpcClient * _client;
+
+    /// @brief Time high voltage was last forced off because of high max power,
+    /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been
+    /// forced off.
+    double _timeOfLastHvOffForHighPower;
+
 };
 
 #endif /* HCRMONITORSTATUSTHREAD_H_ */
