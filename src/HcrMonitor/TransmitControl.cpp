@@ -70,8 +70,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     
     // Call _updateMaxPower when new max powers arrive from the TsPrint max
     // power server
-    connect(&maxPowerThread, SIGNAL(newMaxPower(double, double, double)),
-            this, SLOT(_updateMaxPower(double, double, double)));
+    connect(&maxPowerThread, SIGNAL(newMaxPower(double, double, double, double)),
+            this, SLOT(_updateMaxPower(double, double, double, double)));
     
     // Call _setMaxPowerResponding when we get a responsiveness change signal
     connect(&maxPowerThread, SIGNAL(serverResponsive(bool, QString)),
