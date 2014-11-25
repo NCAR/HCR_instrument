@@ -118,7 +118,8 @@ HcrPmc730::theHcrPmc730() {
 void
 HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
     // Set the HMC mode bits on our digital out lines. This method works
-    // atomically, setting both bits at once rather than changing one at a time.
+    // atomically, setting all three bits at once rather than changing one 
+    // at a time.
 
     // As written, this only works if the output lines we're setting are in
     // the range 8-15!
