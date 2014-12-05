@@ -72,19 +72,20 @@ private:
     /// @brief Deal with a max power XML element, which should be of the
     /// form:
     ///      <TsPrintMaxPower>
-    ///        <time>2014-10-17T21:39:00</time>
-    ///        <msecs>848</msecs>
+    ///        <time>2014-11-20T18:03:51</time>
+    ///        <msecs>679</msecs>
+    ///        <dwellSecs>0.506881</dwellSecs>
     ///        <prf>9864.27</prf>
-    ///        <nSamples>1000</nSamples>
+    ///        <nSamples>5000</nSamples>
     ///        <startGate>30</startGate>
-    ///        <nGates>670</nGates>
-    ///        <el>-88.9096</el>
-    ///        <az>185.969</az>
-    ///        <maxDbm0>-44.7249</maxDbm0>
-    ///        <maxDbm1>-52.216</maxDbm1>
-    ///        <rangeToMax0>2539.84</rangeToMax0>
-    ///        <rangeToMax1>2539.84</rangeToMax1>
-    ///     </TsPrintMaxPower>
+    ///        <nGates>740</nGates>
+    ///        <el>87.9828</el>
+    ///        <az>228.685</az>
+    ///        <maxDbm0>-96.5835</maxDbm0>
+    ///        <maxDbm1>-95.2945</maxDbm1>
+    ///        <rangeToMax0>7374.89</rangeToMax0>
+    ///        <rangeToMax1>7183.03</rangeToMax1>
+    ///      </TsPrintMaxPower>
     /// Emit a newMaxPower() signal if the element parses correctly.
     /// @param text the text of the max power XML element
     void _handleMaxPowerElement(const QByteArray & text);
