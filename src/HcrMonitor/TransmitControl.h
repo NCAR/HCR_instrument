@@ -101,6 +101,13 @@ private slots:
     /// now unresponsive
     /// @param msg a string describing the responsiveness change
     void _updateHcrPmc730Responsive(bool responding, QString msg);
+    
+    /// @brief Deal with a change in HMC operation mode.
+    /// @param mode the new HMC operation mode
+    /// @param modeChangeTime the time at which the mode was changed, double
+    /// precision seconds sinc 1970-01-01 00:00:00 UTC
+    void _recordHmcModeChange(HcrPmc730::HmcOperationMode mode, 
+                               double modeChangeTime);
 
     /// @brief Accept a new status from MotionControlDaemon and react if necessary
     /// @param status the new status from MotionControlDaemon

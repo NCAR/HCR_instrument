@@ -59,6 +59,12 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     connect(&hcrPmc730StatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_updateHcrPmc730Responsive(bool, QString)));
     
+    // Call _recordHmcModeChange when we get a mode change signal
+    connect(&hcrPmc730StatusThread, 
+            SIGNAL(hmcModeChange(HcrPmc730::HmcOperationMode, double)),
+            this, 
+            SLOT(_recordHmcModeChange(HcrPmc730::HmcOperationMode, double)));
+    
     // Call _updateMotionControlStatus when new status from MotionControlDaemon 
     // arrives
     connect(&mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
@@ -111,8 +117,11 @@ TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
                 HcrPmc730::HmcModeNames[_hcrPmc730Status.hmcMode()] <<
                 "' instead of expected mode '" <<
                 HcrPmc730::HmcModeNames[_currentHmcMode()] << "'";
-        // Get our state sync'ed with the actual current mode
-        _setHmcMode(_hcrPmc730Status.hmcMode());
+        // Log the unexpected mode change as having happened now
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        double now = tv.tv_sec + 1.0e-6 * tv.tv_usec;
+        _recordHmcModeChange(status.hmcMode(), now);
     }
     _updateControlState();
 }
@@ -127,6 +136,17 @@ TransmitControl::_updateHcrPmc730Responsive(bool responding, QString msg) {
     }
     // Redo the monitoring tests
     _updateControlState();
+}
+
+void
+TransmitControl::_recordHmcModeChange(HcrPmc730::HmcOperationMode mode,
+                                       double modeChangeTime) {
+    // Append this mode change to _hmcModeMap
+    ILOG << "HMC mode changed to '" << HcrPmc730::HmcModeNames[mode] << 
+            "' at " << QDateTime::fromTime_t(time_t(modeChangeTime))
+                       .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
+                       .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
+    _hmcModeMap[modeChangeTime] = mode;
 }
 
 void
@@ -645,11 +665,6 @@ TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
     }
     try {
         _hcrPmc730Client.setHmcMode(mode);
-        // Mode was changed, so add the mode to _hmcModeMap using the current time
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        double modeStartTime = tv.tv_sec + 1.0e-6 * tv.tv_usec;
-        _hmcModeMap[modeStartTime] = mode;
     } catch (std::exception & e) {
         ELOG << "XML-RPC call to HcrPmc730Daemon setHmcMode(" << mode << 
                 ") failed: " << e.what();
@@ -668,7 +683,7 @@ TransmitControl::_timePeriodWasAttenuated(double startTime,
         // If this mode started after the end time, move to the previous mode
         if (modeStartTime >= endTime)
             continue;
-        // If we find any unattenuated mode during the period, return
+        // If we find any unattenuated mode was used during the period, return
         // false immediately
         if (! _HmcModeIsAttenuated(mode)) {
             return(false);
