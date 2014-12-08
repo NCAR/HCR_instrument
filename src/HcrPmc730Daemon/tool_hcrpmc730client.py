@@ -11,7 +11,7 @@ tools = Split("""
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
-env.EnableQt4Modules(['QtCore'])
+env.EnableQt4Modules(['QtCore', 'QtNetwork'])
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory
@@ -25,6 +25,7 @@ HcrPmc730StatusThread.cpp
 headers = Split('''
 HcrPmc730Client.h
 HcrPmc730StatusThread.h
+HmcModeChange.h
 ''')
 lib = env.Library('hcrpmc730client', sources)
 

@@ -11,6 +11,8 @@
 #include <QThread>
 #include "HcrPmc730Client.h"
 
+class QUdpSocket;
+
 /// @brief Class providing a thread which gets HcrPmc730Daemon status on a regular
 /// basis using a HcrPmc730Client connection.
 ///
@@ -55,10 +57,20 @@ signals:
     /// @param status the new status received from HcrPmc730Daemon
     void newStatus(HcrPmc730Status status);
 
+    /// @brief Signal emitted when HMC operation mode changes.
+    /// @param mode the new HMC operation mode
+    /// @param modeChangeTime the time of the mode change, double precision
+    /// seconds since 1970-01-01 00:00:00 UTC
+    void hmcModeChange(HcrPmc730::HmcOperationMode mode, double modeChangeTime);
+
 private slots:
     /// @brief Try to get latest status from HcrPmc730Daemon, and emit a newStatus()
     /// signal if successful.
     void _getStatus();
+    
+    /// @brief Read HMC operation mode change info
+    void _readHmcModeChangeSocket();
+    
 private:
     /// True iff the client had a successful connection with the HcrPmc730Daemon
     /// XML-RPC server on the last XML-RPC method call.
@@ -69,6 +81,10 @@ private:
 
     /// The HcrPmc730Client object handling the XML-RPC connection
     HcrPmc730Client * _client;
+    
+    /// QUdpSocket used to read broadcast messages of HMC operation mode 
+    /// changes.
+    QUdpSocket * _hmcModeChangeSocket;
 };
 
 #endif /* HCRPMC730STATUSTHREAD_H_ */

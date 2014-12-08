@@ -16,16 +16,22 @@
 #include <HcrPmc730Status.h>
 #include <QCoreApplication>
 #include <QTimer>
+#include <QUdpSocket>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
+
+#include "HmcModeChange.h"
 
 LOGGING("HcrPmc730Daemon")
 
 
 /// Our Qt application
 QCoreApplication *App = 0;
+
+/// UDP socket on which we broadcast HMC operation mode changes.
+QUdpSocket HmcModeBroadcastSocket;
 
 /// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
 /// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds. 
@@ -133,12 +139,43 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        ILOG << "Executing XML-RPC call to setHmcMode()";
-        int mode = paramList.getInt(0);
+        // We get a single parameter: the integer form of the desired HMC
+        // mode.
+        ILOG << "Received XML-RPC call to setHmcMode()...";
+        int iMode = paramList.getInt(0);
         paramList.verifyEnd(1);
-
-        HcrPmc730::setHmcOperationMode(static_cast<HcrPmc730::HmcOperationMode>(mode));
+        
+        // Cast the int into HcrPmc730::HmcOperationMode
+        HcrPmc730::HmcOperationMode hmcMode = 
+                static_cast<HcrPmc730::HmcOperationMode>(iMode);
+        ILOG << "...with requested HMC mode " << 
+                "'" << HcrPmc730::HmcModeNames[hmcMode] << "'";
         *retvalP = xmlrpc_c::value_nil();
+        
+        // If requested mode is the current mode, just return now
+        if (hmcMode == HcrPmc730::hmcMode()) {
+            DLOG << "Requested HMC mode is same as current mode; returning now.";
+            return;
+        }
+        
+        // Change to the requested mode
+        HcrPmc730::setHmcOperationMode(hmcMode);
+        
+        // Broadcast a datagram to indicate the new mode and the time of the
+        // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
+        struct timeval nowTimeval;
+        gettimeofday(&nowTimeval, NULL);
+        double modeChangeTime = 
+                nowTimeval.tv_sec + 1.0e-6 * nowTimeval.tv_usec; // seconds since epoch
+        HmcModeChangeStruct changeStruct = { hmcMode, modeChangeTime };
+        int result = HmcModeBroadcastSocket.writeDatagram(
+                reinterpret_cast<char*>(&changeStruct), 
+                sizeof(changeStruct), QHostAddress::Broadcast, 
+                HMC_MODE_BROADCAST_PORT);
+        if (result == -1) {
+            ELOG << "HMC mode change UDP write gave QAbstractSocket::SocketError " << 
+                    HmcModeBroadcastSocket.error();
+        }
     }
 };
 

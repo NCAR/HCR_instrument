@@ -17,7 +17,7 @@ HcrPmc730Daemon.cpp
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtGui'])
+env.EnableQt4Modules(['QtCore', 'QtGui', 'QtNetwork'])
 
 HcrPmc730Daemon = env.Program('HcrPmc730Daemon', sources)
 
