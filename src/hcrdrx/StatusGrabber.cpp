@@ -7,9 +7,11 @@
 
 #include "StatusGrabber.h"
 
+#include <HmcModeChange.h>
 #include <QDateTime>
-#include <QTimer>
 #include <QMutexLocker>
+#include <QTimer>
+#include <QUdpSocket>
 
 #include <iostream>
 #include <string>
@@ -29,7 +31,8 @@ StatusGrabber::StatusGrabber(const Pentek::p7142sd3c * pentek,
     _pmc730Status(true),	// empty status
     _pmc730Client(pmc730dHost, pmc730dPort),
     _xmitClient(xmitdHost, xmitdPort),
-    _mutex(QMutex::Recursive) {
+    _mutex(QMutex::Recursive),
+    _hmcModeChangeSocket(NULL) {
 }
 
 StatusGrabber::~StatusGrabber() {
@@ -73,8 +76,19 @@ StatusGrabber::run() {
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(_getStatus()));
     updateTimer.start();
     
+    // Open the UDP socket to receive HMC mode change broadcasts, which we
+    // use to force an update of _pmc730Status separate from the 1 Hz timer
+    // above.
+    _hmcModeChangeSocket = new QUdpSocket();
+    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
+    connect(_hmcModeChangeSocket, SIGNAL(readyRead()), 
+            this, SLOT(_readHmcModeChangeSocket()));
+    
     // Now just start our event loop
     exec();
+    
+    _hmcModeChangeSocket->close();
+    delete(_hmcModeChangeSocket);
 }
 
 void
@@ -128,3 +142,19 @@ StatusGrabber::_getXmitStatus() {
     _xmitStatus = xmitStatus;
 }
 
+void
+StatusGrabber::_readHmcModeChangeSocket() {
+    ILOG << "Forcing update of HcrPmc730Status on HMC mode change";
+    
+    // We only use arrival of data on the mode change socket to tell us to 
+    // immediately update our HcrPmc730Daemon status (which will include the 
+    // new HMC mode and everything else).
+    // Read and throw away everything on the socket.
+    while (_hmcModeChangeSocket->bytesAvailable()) {
+        _hmcModeChangeSocket->readAll();
+    }
+    // OK, now just get full current status from HcrPmc730 via XML-RPC. This
+    // may cost us a handful of milliseconds, but gets us a current and self-
+    // consistent HcrPmc730Status.
+    _getPmc730Status();
+}

@@ -23,6 +23,8 @@
 
 #include "DrxStatus.h"
 
+class QUdpSocket;
+
 /// @brief QThread object which regularly polls for status from HcrPmc730Daemon,
 /// hcr_xmitd, CmigitsDaemon, and the Pentek card. The API provides access to 
 /// the latest status obtained from each of these.
@@ -70,11 +72,13 @@ public:
      * @return the status collected from HcrPmc730Daemon.
      */
     HcrPmc730Status pmc730Status() const;
+    
 private slots:
-    /**
-     * @brief Get current status from all sources
-     */
+    /// @brief Get current status from all sources
     void _getStatus();
+
+    /// @brief Read an incoming broadcast packet on the HMC mode change socket
+    void _readHmcModeChangeSocket();
 
 private:
 
@@ -97,7 +101,7 @@ private:
      * @brief Get transmitter status information from the hcr_xmitd process.
      */
     void _getXmitStatus();
-
+    
     /// The Pentek P7142 we're monitoring
     const Pentek::p7142sd3c * _pentek;
 
@@ -124,6 +128,9 @@ private:
      * methods)
      */
     mutable QMutex _mutex;
+    
+    /// Socket to receive HMC mode change broadcasts
+    QUdpSocket * _hmcModeChangeSocket;
 };
 
 
