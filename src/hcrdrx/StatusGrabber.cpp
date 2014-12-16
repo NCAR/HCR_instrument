@@ -151,10 +151,15 @@ StatusGrabber::_readHmcModeChangeSocket() {
     // new HMC mode and everything else).
     // Read and throw away everything on the socket.
     while (_hmcModeChangeSocket->bytesAvailable()) {
-        _hmcModeChangeSocket->readAll();
+        int nbytes = _hmcModeChangeSocket->bytesAvailable();
+        char * bytes = new char(nbytes);
+        _hmcModeChangeSocket->readDatagram(bytes, nbytes);
+        delete(bytes);
     }
     // OK, now just get full current status from HcrPmc730 via XML-RPC. This
-    // may cost us a handful of milliseconds, but gets us a current and self-
+    // may cost us a handful of milliseconds, but gets complete and self-
     // consistent HcrPmc730Status.
     _getPmc730Status();
+    ILOG << "New HMC mode is '" << 
+            HcrPmc730::HmcModeNames[_pmc730Status.hmcMode()] << "'";
 }
