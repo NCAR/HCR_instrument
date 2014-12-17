@@ -53,6 +53,8 @@ logStatus() {
         ILOG << "PLL " << (status.pllLocked() ? "locked" : "NOT LOCKED") <<
                 ", health status: 0x" << std::hex << status.healthStatus() <<
                 (status.configError() ? ", DEVICE CONFIG ERROR!" : "");
+        ILOG << "1 PPS offset from GPS: " << status.timeDiff1PPS() << " s";
+        ILOG << "Frequency error estimate: " << status.freqErrorEstimate();
     } else {
         ILOG << "FireFly-IIA device is not currently responding!";
     }
