@@ -170,22 +170,27 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
 void
 TransmitControl::_updateMaxPower(double centerTime, double dwellWidth, 
         double maxPower, double rangeToMax) {
-    // Note the latency for the max power data
+    // Figure out dwell start and end times
+    double dwellStart = centerTime - 0.5 * dwellWidth;
+    double dwellEnd = centerTime + 0.5 * dwellWidth;
+    
+    // Calculate the latency for the max power data, and complain if it's big
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
     double doubleNow = tvNow.tv_sec + 1.0e-6 * tvNow.tv_usec;
     QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
-    ILOG << "Max power latency at " << 
+    double latency = doubleNow - dwellEnd;
+    if (latency > 0.3) {
+        WLOG << "Max power latency at " << 
             qNow.toString("yyyyMMdd hh:mm:ss.zzz").toStdString() << ": " <<
             doubleNow - centerTime << " s";
+    }
     
     // Store the max power information and update control state
     _maxPowerReport.dataTime = centerTime;
     _maxPowerReport.maxPower = maxPower;
     _maxPowerReport.rangeToMaxPower = rangeToMax;
-    _maxPowerReport.attenuated =
-            _timePeriodWasAttenuated(centerTime - 0.5 * dwellWidth,
-                    centerTime + 0.5 * dwellWidth);
+    _maxPowerReport.attenuated = _timePeriodWasAttenuated(dwellStart, dwellEnd);
     _updateControlState();
 }
 
