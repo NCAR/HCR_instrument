@@ -285,9 +285,10 @@ bool
 systemClockOffsetOk() {
     // Use 'ntpq -p' to get clock offset. The peer with a '*' in the first
     // character is the one being used to discipline our system clock, i.e.,
-    // the "system peer". The system clock offset w.r.t. this peer (in ms) is
-    // in column 9 of the output.
-    std::string ntpqCmd = "ntpq -p | grep -e '^*' | sed 's/ \\+/ /g' | cut -d' ' -f9";
+    // the "system peer". The peer is in column 1, and system clock offset 
+    // w.r.t. this peer (in ms) is in column 9 of the output.
+    std::string ntpqCmd = 
+            "ntpq -p | grep -e '^*' | sed 's/ \\+/ /g' | cut -d' ' -f1,9";
 
     // Open a pipe to read the output from the ntpq command.
     FILE * ntpqPipe = popen(ntpqCmd.c_str(), "r");
@@ -299,11 +300,19 @@ systemClockOffsetOk() {
     // Read the system clock offset from command output. If there is no output,
     // no system peer was found.
     float msOffset;
-    if (fscanf(ntpqPipe, "%f", &msOffset) != 1) {
+    char peer[40];
+    if (fscanf(ntpqPipe, "%s %f", peer, &msOffset) != 2) {
         ELOG << "No NTP system peer found";
         return(false);
     }
 
+    // Offset is meaningless if the peer is 'LOCAL' (self)
+    if (! strncmp(peer, "*LOCAL", 6)) {
+        ELOG << "NTP peer is currently 'LOCAL' (i.e., self); " <<
+                "system clock offset is unknown";
+        return(false);
+    }
+    
     // Determine if the magnitude of the offset is acceptable, then log and
     // return the result.
     float offset = 0.001 * msOffset;    // ms -> s
