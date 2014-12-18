@@ -272,11 +272,45 @@ dataWaitTimedOut() {
 }
 
 ///////////////////////////////////////////////////////////
-// Function called if when first data arrive
+// Function called when first data arrive
 void
 onFirstData() {
     DLOG << "First data seen at " << 
             to_simple_string(microsec_clock::universal_time());
+}
+
+///////////////////////////////////////////////////////////
+// Verify that the system clock offset is less than 0.2 seconds
+bool
+systemClockOffsetOk() {
+    // Use 'ntpq -p' to get clock offset. The peer with a '*' in the first
+    // character is the one being used to discipline our system clock, i.e.,
+    // the "system peer". The system clock offset w.r.t. this peer (in ms) is
+    // in column 9 of the output.
+    std::string ntpqCmd = "ntpq -p | grep -e '^*' | sed 's/ \\+/ /g' | cut -d' ' -f9";
+
+    // Open a pipe to read the output from the ntpq command.
+    FILE * ntpqPipe = popen(ntpqCmd.c_str(), "r");
+    if (! ntpqPipe) {
+        ELOG << "Unable to execute command: " << ntpqCmd;
+        return(false);
+    }
+
+    // Read the system clock offset from command output. If there is no output,
+    // no system peer was found.
+    float msOffset;
+    if (fscanf(ntpqPipe, "%f", &msOffset) != 1) {
+        ELOG << "No NTP system peer found";
+        return(false);
+    }
+
+    // Determine if the magnitude of the offset is acceptable, then log and
+    // return the result.
+    float offset = 0.001 * msOffset;    // ms -> s
+    bool offsetOk = (fabsf(offset) < 0.2);
+    ILOG << "System clock offset is currently " << offset << " s (" <<
+            (offsetOk ? "OK" : "BAD") << ")";
+    return(offsetOk);
 }
 
 ///////////////////////////////////////////////////////////
@@ -321,6 +355,14 @@ main(int argc, char** argv)
 
     if (_simulate)
       ILOG << "*** Operating in simulation mode";
+
+    // If we're starting on 1 PPS, make sure our system time is within 0.2 s
+    // of "actual" time. That assures that p7142sd3c will determine the correct
+    // data start time.
+    if (hcrConfig.start_on_1pps() && ! systemClockOffsetOk()) {
+        ELOG << "Exiting because of bad or unknown system clock offset.";
+        exit(1);
+    }
 
     // Instantiate our p7142sd3c
     _sd3c = new Pentek::p7142sd3c(_simulate, hcrConfig.tx_delay(),
