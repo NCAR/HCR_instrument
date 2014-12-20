@@ -237,12 +237,6 @@ IwrfExport::~IwrfExport()
 void IwrfExport::run()
 
 {
-  // Time of the last status packet we generated
-  time_t lastStatusTime = 0;
-  
-  // Interval between generating status packets, in seconds
-  const int StatusInterval = 2;
-  
   // Since we have no event loop,
   // allow thread termination via the terminate() method.
 
@@ -321,11 +315,9 @@ void IwrfExport::run()
     // one now.
 
     if (metaDataInitialized) {
-      time_t now = time(0);
-      if ((now - lastStatusTime) >= StatusInterval) {
+      if (sendMeta) {
         _assembleStatusPacket();
         _sendIwrfStatusXmlPacket();
-        lastStatusTime = now;
       }
     }
     
