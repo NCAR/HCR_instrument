@@ -13,6 +13,7 @@
 #include <QTimer>
 #include <QUdpSocket>
 
+#include <ctime>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -144,22 +145,51 @@ StatusGrabber::_getXmitStatus() {
 
 void
 StatusGrabber::_readHmcModeChangeSocket() {
-    ILOG << "Forcing update of HcrPmc730Status on HMC mode change";
-    
-    // We only use arrival of data on the mode change socket to tell us to 
-    // immediately update our HcrPmc730Daemon status (which will include the 
-    // new HMC mode and everything else).
-    // Read and throw away everything on the socket.
+    // Read all datagrams available (there should really always be just one),
+    // and note the mode change time from the last one.
+    double modeChangeTime = 0.0;
     while (_hmcModeChangeSocket->bytesAvailable()) {
-        int nbytes = _hmcModeChangeSocket->bytesAvailable();
-        char * bytes = new char(nbytes);
-        _hmcModeChangeSocket->readDatagram(bytes, nbytes);
-        delete(bytes);
+        int datagramSize = _hmcModeChangeSocket->pendingDatagramSize();
+
+        // If incoming datagram is not the expected size, just read it and 
+        // discard it.
+        if (datagramSize != sizeof(HmcModeChangeStruct)) {
+            ELOG << "HMC mode change datagram is " << datagramSize << 
+                    " bytes when expecting " << sizeof(HmcModeChangeStruct) <<
+                    ", discarding it";
+            char trash[datagramSize];
+            _hmcModeChangeSocket->readDatagram(trash, sizeof(trash));
+        }
+        
+        // Read the datagram into an HmcModeChangeStruct
+        HmcModeChangeStruct mcStruct;
+        _hmcModeChangeSocket->readDatagram(reinterpret_cast<char *>(&mcStruct), 
+                sizeof(mcStruct));
+
+        // Keep the last mode change time
+        modeChangeTime = mcStruct.modeChangeTime;
+    }
+    
+    if (modeChangeTime == 0.0) {
+        WLOG << "_readHmcModeChangeSocket() called, but no good mode change " <<
+                "packet was seen.";
+        return;
     }
     // OK, now just get full current status from HcrPmc730 via XML-RPC. This
     // may cost us a handful of milliseconds, but gets complete and self-
-    // consistent HcrPmc730Status.
+    // consistent HcrPmc730Status with the new HMC mode.
     _getPmc730Status();
-    ILOG << "New HMC mode is '" << 
-            HcrPmc730::HmcModeNames[_pmc730Status.hmcMode()] << "'";
+    
+    
+    struct timeval tvNow;
+    gettimeofday(&tvNow, NULL);
+    ILOG << "New HMC mode '" << 
+            HcrPmc730::HmcModeNames[_pmc730Status.hmcMode()] << "' " <<
+            "with start time " << QDateTime::fromTime_t(time_t(modeChangeTime))
+                .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
+                .toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<
+            " is being noted at " <<
+            QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000)
+                .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
+                    
 }
