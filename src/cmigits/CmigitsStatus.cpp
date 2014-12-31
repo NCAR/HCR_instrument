@@ -128,8 +128,8 @@ CmigitsStatus::StatusFromSharedMemory() {
         // Nobody's writing to the shared memory, so complain and just
         // return the status from the default constructor.
         WLOG << __PRETTY_FUNCTION__ << ": No writer exists for CmigitsSharedMemory -";
-        WLOG << "    This method should only be used on the machine " <<
-                "running cmigitsDaemon.";
+        WLOG << "    CmigitsStatus::StatusFromSharedMemory() should only be " <<
+                "used on the machine running cmigitsDaemon.";
 
     }
     return(status);
