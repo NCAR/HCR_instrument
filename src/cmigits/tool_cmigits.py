@@ -10,6 +10,8 @@ env.EnableQt4Modules(qt4modules)
 
 sources = Split('''
     Cmigits.cpp
+    CmigitsFmqThread.cpp
+    CmigitsFmqThreadWorker.cpp
     CmigitsSharedMemory.cpp
     CmigitsStatus.cpp
     CmigitsShmWatchThread.cpp
@@ -17,6 +19,8 @@ sources = Split('''
 
 headers = Split('''
     Cmigits.h
+    CmigitsFmqThread.h
+    CmigitsFmqThreadWorker.h
     CmigitsSharedMemory.h
     CmigitsStatus.h
     CmigitsShmWatchThread.h
