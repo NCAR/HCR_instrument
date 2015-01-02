@@ -113,13 +113,9 @@ public:
     /// object is allowed to have write access to the shared memory segment; all
     /// others may only read it.
     /// @param writeAccess true iff write access to shared memory is required
-    /// @param csvDestDir if not empty, the destination directory where a CSV
-    /// file of all incoming C-MIGITS data should be written. Note that this
-    /// only has effect if writeAccess is true.
     /// @throw Exception if creation of or attachment to the shared memory
     /// segment with the requested mode fails.
-    CmigitsSharedMemory(bool writeAccess = false,
-            std::string csvDestDir = "") throw(Exception);
+    CmigitsSharedMemory(bool writeAccess = false) throw(Exception);
     virtual ~CmigitsSharedMemory();
 
     /// @brief Get a struct containing the current complete contents of the
@@ -323,11 +319,6 @@ private:
     QTimer _3512TimeoutTimer;
     /// Pointer to the actual shared memory segment
     ShmStruct * _shmContents;
-
-    /// Destination directory for CSV files. CSV writing is disabled if this
-    /// string is empty.
-    std::string _csvDestDir;
-    FILE * _csvFile;
 };
 
 #endif /* CMIGITSSHAREDMEMORY_H_ */

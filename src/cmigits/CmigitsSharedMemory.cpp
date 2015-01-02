@@ -21,16 +21,13 @@ const QString CmigitsSharedMemory::CMIGITS_SHM_KEY("CmigitsSharedMemory");
 inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
 inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 
-CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess,
-        std::string csvDestDir) throw(Exception) :
+CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess) throw(Exception) :
     _qShm(CMIGITS_SHM_KEY),
     _writeAccess(writeAccess),
     _3500TimeoutTimer(),
     _3501TimeoutTimer(),
     _3512TimeoutTimer(),
-    _shmContents(0),
-    _csvDestDir(csvDestDir),
-    _csvFile(0) {
+    _shmContents(0) {
     // Create and attach to the shared memory segment, which holds a
     // CmigitsShmStruct
     int segsize = sizeof(ShmStruct);
@@ -143,16 +140,6 @@ CmigitsSharedMemory::CmigitsSharedMemory(bool writeAccess,
         _3512TimeoutTimer.setInterval(500);      // allow up to 0.5 s
         _3512TimeoutTimer.setSingleShot(true);
         connect(&_3512TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3512Data()));
-
-        // Open a file where CSV data will be written if we were given a
-        // destination directory
-        if (! _csvDestDir.empty()) {
-            std::ostringstream oss;
-            QDateTime now = QDateTime::currentDateTime();
-            oss << _csvDestDir << "/cmigitsData_" <<
-                    now.toString("yyyyMMdd_hhmmss").toStdString() << ".csv";
-            _csvFile = fopen(oss.str().c_str(), "w+");
-        }
     }
 }
 
@@ -218,13 +205,7 @@ CmigitsSharedMemory::storeLatest3500Data(uint64_t time3500, uint16_t currentMode
     _shmContents->vPosError = expectedVPosError;
     _shmContents->velocityError = expectedVelocityError;
     _qShm.unlock();
-    if (_csvFile) {
-        fprintf(_csvFile, "3500,%ju,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n",
-                time3500, currentMode, insAvailable, gpsAvailable,
-                doingCoarseAlignment, nSats, positionFOM, velocityFOM, 
-                headingFOM, timeFOM, expectedHPosError, expectedVPosError,
-                expectedVelocityError);
-    }
+
     // Time out the new data after a second
     _3500TimeoutTimer.start();
 }
@@ -265,10 +246,7 @@ CmigitsSharedMemory::storeLatest3501Data(uint64_t time3501, double latitude,
     _shmContents->longitude = longitude;
     _shmContents->altitude = altitude;
     _qShm.unlock();
-    if (_csvFile) {
-        fprintf(_csvFile, "3501,%ju,%f,%f,%f\n", time3501,
-                latitude, longitude, altitude);
-    }
+
     // Time out the new data after a second
     _3501TimeoutTimer.start();
 }
@@ -301,10 +279,7 @@ CmigitsSharedMemory::storeLatest3512Data(uint64_t time3512, double pitch,
     _shmContents->velEast = velEast;
     _shmContents->velUp = velUp;
     _qShm.unlock();
-    if (_csvFile) {
-        fprintf(_csvFile, "3512,%ju,%f,%f,%f,%f,%f,%f\n", time3512, pitch,
-                roll, heading, velNorth, velEast, velUp);
-    }
+
     // Time out the new data after a second
     _3512TimeoutTimer.start();
 }

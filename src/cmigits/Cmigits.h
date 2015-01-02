@@ -9,6 +9,7 @@
 #define CMIGITS_H_
 
 #include "CmigitsSharedMemory.h"
+#include <cstdio>
 #include <map>
 #include <string>
 #include <stdint.h>
@@ -32,8 +33,6 @@ public:
      * If special serial port name Cmigits::SIM_DEVICE
      * is used, existence of the C-MIGITS will be simulated.
      * @param ttyDev the name of the serial port connected to the C-MIGITS.
-     * @param useShm true iff this object should write incoming data to
-     * a CmigitsSharedMemory shared memory segment.
      * @param fmqUrl If not empty, the URL for the FMQ to open for shared 
      * memory write
      */
@@ -448,10 +447,12 @@ private:
     /// URL for FMQ-supported shared memory
     std::string _fmqUrl;
 
-  // FMQ for writing to hcrdrx
-  DsFmq _fmq;
-  CmigitsSharedMemory::ShmStruct _cms;
+    // FMQ for writing to hcrdrx
+    DsFmq _fmq;
+    CmigitsSharedMemory::ShmStruct _cms;
 
+    // File where C-MIGITS data will be written in CSV form
+    FILE * _csvFile;
 };
 
 #endif /* CMIGITS_H_ */

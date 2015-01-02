@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
@@ -229,26 +230,70 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl) :
                 _insAvailable(false),
                 _gpsAvailable(false),
                 _shm(NULL),
-                _fmqUrl(fmqUrl) {
-    // Open CmigitsSharedMemory with write access if we're told to use it
-    if (useShm) {
-        _shm = new CmigitsSharedMemory(true, ".");
-        
-        if (_fmq.initReadWrite(_fmqUrl.c_str(),
-                               "cmigitsDaemon",
-                               false, // set debug?
-                               Fmq::END, // start position
-                               false,    // compression
-                               5000,  // nslots
-                               10000000 // buffer size
-                               )) {
-          ELOG << "ERROR: Cannot initialize FMQ: " << _fmqUrl;
-          ELOG << _fmq.getErrStr();
-          abort();
-        }
-        _fmq.setSingleWriter();
+                _fmqUrl(fmqUrl),
+                _csvFile(NULL) {
 
+    // CSV files of C-MIGITS data will be written under this directory if 
+    // it's not an empty string.
+    std::string csvDestDir = "/data/hcr/cmigits";
+
+    // Create the CSV destination directory if it doesn't exist
+    if (! csvDestDir.empty()) {
+        // Attempt to create the destination directory using "mkdir -p"
+        std::ostringstream oss;
+        oss << "mkdir -p " << csvDestDir;
+        FILE * mkdirPipe = popen(oss.str().c_str(), "r");
+        if (! mkdirPipe) {
+            ELOG << "Unable to execute '" << oss.str() <<
+                    "', CSV files will not be written!";
+            csvDestDir = "";
+        } else {
+            // If "mkdir -p" executes properly, there won't be any output
+            char reply[256];
+            if (fgets(reply, sizeof(reply), mkdirPipe)) {
+                ELOG << "Error creating directory '" << csvDestDir << "': " <<
+                        reply;
+                // Read the rest of the reply if it's multi-line
+                while (fgets(reply, sizeof(reply), mkdirPipe)) {
+                    ELOG << "    " << reply;
+                }
+                // Let them know we won't write CSV
+                ELOG << "CSV files will not be written!";
+                csvDestDir = "";
+            }
+            // Close the command pipe
+            pclose(mkdirPipe);
+        }
     }
+
+    // If we still have a CSV destination directory, open the file where CSV 
+    // data will be written.
+    if (! csvDestDir.empty()) {
+        std::ostringstream oss;
+        QDateTime now = QDateTime::currentDateTime();
+        oss << csvDestDir << "/cmigitsData_" <<
+                now.toString("yyyyMMdd_hhmmss").toStdString() << ".csv";
+        _csvFile = fopen(oss.str().c_str(), "w+");
+    }
+
+    // Create the CmigitsSharedMemory segment.
+    _shm = new CmigitsSharedMemory(true);
+
+    // Create the FMQ with write access.
+    if (_fmq.initReadWrite(_fmqUrl.c_str(),
+            "cmigitsDaemon",
+            false, // set debug?
+            Fmq::END, // start position
+            false,    // compression
+            5000,  // nslots
+            10000000 // buffer size
+    )) {
+        ELOG << "ERROR: Cannot initialize FMQ: " << _fmqUrl;
+        ELOG << _fmq.getErrStr();
+        abort();
+    }
+    _fmq.setSingleWriter();
+
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
     uint16_t word = 0x0102;
@@ -796,39 +841,39 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", GPS: " << _gpsAvailable <<
                 ", INS: " << _insAvailable <<
                 ", sats tracked: " << nSats;
-//        ILOG << "3500 position FOM: " << PositionFOMString(positionFOM) <<
-//                ", velocity FOM: " << VelocityFOMString(velocityFOM) <<
-//                ", heading FOM: " << HeadingFOMString(headingFOM) <<
-//                ", time FOM: " << TimeFOMString(timeFOM);
-//        ILOG << "3500 expected errors - h pos: " << hPosError << " m"
-//                ", v pos: " << vPosError << " m"
-//                ", velocity: " << velocityError << " m/s";
     }
 
-    // Write to shared memory if we have access
-    if (_shm) {
-        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+    // Write to CmigitsSharedMemory
+    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
-       _shm->storeLatest3500Data(msecsSinceEpoch, _currentMode,
+    _shm->storeLatest3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
 
-        _cms.writerPid = 0;
-        _cms.time3500 = msecsSinceEpoch;
-        _cms.currentMode  = _currentMode;
-        _cms.insAvailable = insAvailable;
-        _cms.gpsAvailable = gpsAvailable;
-        _cms.doingCoarseAlignment = doingCoarseAlignment;
-        _cms.nSats = nSats;         ///< number of GPS satellites tracked
-        _cms.positionFOM = positionFOM;   ///< position figure-of-merit value
-        _cms.velocityFOM = velocityFOM;   ///< velocity figure-of-merit value
-        _cms.headingFOM = headingFOM;    ///< heading figure-of-merit value
-        _cms.timeFOM = timeFOM;       ///< time figure-of-merit value
-        _cms.hPosError = hPosError;       ///< m
-        _cms.vPosError = vPosError;       ///< m
-        _cms.velocityError = velocityError;   ///< m/s
-        _writeToFmq();
+    // Write to the FMQ
+    _cms.writerPid = 0;
+    _cms.time3500 = msecsSinceEpoch;
+    _cms.currentMode  = _currentMode;
+    _cms.insAvailable = insAvailable;
+    _cms.gpsAvailable = gpsAvailable;
+    _cms.doingCoarseAlignment = doingCoarseAlignment;
+    _cms.nSats = nSats;             ///< number of GPS satellites tracked
+    _cms.positionFOM = positionFOM; ///< position figure-of-merit value
+    _cms.velocityFOM = velocityFOM; ///< velocity figure-of-merit value
+    _cms.headingFOM = headingFOM;   ///< heading figure-of-merit value
+    _cms.timeFOM = timeFOM;         ///< time figure-of-merit value
+    _cms.hPosError = hPosError;     ///< m
+    _cms.vPosError = vPosError;     ///< m
+    _cms.velocityError = velocityError; ///< m/s
+    _writeToFmq();
+    
+    // Write to the CSV file if it's open
+    if (_csvFile) {
+        fprintf(_csvFile, "3500,%ju,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n",
+                msecsSinceEpoch, _currentMode, insAvailable, gpsAvailable,
+                doingCoarseAlignment, nSats, positionFOM, velocityFOM, 
+                headingFOM, timeFOM, hPosError, vPosError, velocityError);
     }
 }
 
@@ -883,17 +928,23 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", alt: " << altitude;
     }
 
-    // Write to shared memory if we have access
-    if (_shm) {
-        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
-                msgTime.time().msec();
-        _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
-                altitude);
+    // Write to shared memory
+    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+            msgTime.time().msec();
+    _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
+            altitude);
 
-        _cms.time3501 = msecsSinceEpoch;
-        _cms.latitude = latitude;
-        _cms.longitude = longitude;       ///< de
-        _cms.altitude = altitude;
+    // Write to the FMQ
+    _cms.time3501 = msecsSinceEpoch;
+    _cms.latitude = latitude;
+    _cms.longitude = longitude;
+    _cms.altitude = altitude;
+    _writeToFmq();
+    
+    // Write to the CSV file if it's open
+    if (_csvFile) {
+        fprintf(_csvFile, "3501,%ju,%f,%f,%f\n", msecsSinceEpoch,
+                latitude, longitude, altitude);
     }
 }
 
@@ -935,22 +986,26 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velEast << ", vel up: " << velUp;
     }
 
-    // Write to shared memory if we have access
-    if (_shm) {
-        uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
+    // Write to shared memory
+    uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
-        _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
+    _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
             velNorth, velEast, velUp);
-        // latest 3512 message data
-         _cms.time3512 = msecsSinceEpoch;
-         _cms.pitch = pitch;
-         _cms.roll = roll;
-         _cms.heading = heading;
-         _cms.velNorth = velNorth;
-         _cms.velEast = velEast;
-         _cms.velUp = velUp;
-         
-         _writeToFmq();
+    
+    // Write to the FMQ
+    _cms.time3512 = msecsSinceEpoch;
+    _cms.pitch = pitch;
+    _cms.roll = roll;
+    _cms.heading = heading;
+    _cms.velNorth = velNorth;
+    _cms.velEast = velEast;
+    _cms.velUp = velUp;
+    _writeToFmq();
+    
+    // Write to the CSV file if it's open
+    if (_csvFile) {
+        fprintf(_csvFile, "3512,%ju,%f,%f,%f,%f,%f,%f\n", msecsSinceEpoch, 
+                pitch, roll, heading, velNorth, velEast, velUp);
     }
 }
 
