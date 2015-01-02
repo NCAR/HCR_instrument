@@ -298,7 +298,7 @@ private:
     QTimer _3512TimeoutTimer;
     /// MsgStruct which contains the latest data from the C-MIGITS, used only 
     /// by the writer instance
-    MsgStruct * _currentMsg;
+    MsgStruct _currentMsg;
 };
 
 #endif /* CMIGITSFMQ_H_ */

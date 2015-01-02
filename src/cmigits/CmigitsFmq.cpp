@@ -27,7 +27,7 @@ CmigitsFmq::CmigitsFmq(bool writeAccess) :
     _3500TimeoutTimer(),
     _3501TimeoutTimer(),
     _3512TimeoutTimer(),
-    _currentMsg(0) {
+    _currentMsg() {
     // Initialize the FMQ over which MsgStruct-s are delivered. As writer, we 
     // need to get access immediately. Readers may fail now, but will try again 
     // on each access attempt until a writer has created the FMQ and the reader
@@ -76,7 +76,7 @@ CmigitsFmq::CmigitsFmq(bool writeAccess) :
 CmigitsFmq::~CmigitsFmq() {
     // If we're the writer, finish up with an all-zero message
     if (_writeAccess) {
-        *_currentMsg = MsgStruct();  // all-zero message
+        _currentMsg = MsgStruct();  // all-zero message
         _writeCurrentMsg();
     }
     _fmq.closeMsgQueue();
@@ -101,9 +101,9 @@ CmigitsFmq::_fmqInitializeForRead() {
 
 CmigitsFmq::MsgStruct
 CmigitsFmq::getLatestMsg() {
-    // If we're the writer, just return a copy of _currentMsg
+    // If we're the writer, just return _currentMsg
     if (_writeAccess) {
-        return(*_currentMsg);
+        return(_currentMsg);
     }
     
     // Return an empty message if we can't read the FMQ
@@ -113,9 +113,9 @@ CmigitsFmq::getLatestMsg() {
     
     // Seek to the last entry in the FMQ
     _fmq.seek(DsFmq::FMQ_SEEK_LAST);
-    bool gotOne;
     
     // Read the last message
+    bool gotOne;
     _fmq.readMsg(&gotOne, -1, 0);
     if (gotOne) {
         int msgLen = _fmq.getMsgLen();
@@ -142,7 +142,7 @@ CmigitsFmq::getWriterPid() {
 
 void
 CmigitsFmq::_setWriterPid(pid_t pid) {
-    _currentMsg->writerPid = pid;
+    _currentMsg.writerPid = pid;
     _writeCurrentMsg();
 }
 
@@ -153,22 +153,19 @@ CmigitsFmq::storeLatest3500Data(uint64_t time3500, uint16_t currentMode,
             uint16_t headingFOM, uint16_t timeFOM,
             double expectedHPosError, double expectedVPosError,
             double expectedVelocityError) {
-    if (! _writeAccess) {
-        throw(std::runtime_error("Attempt to write shared memory with ReadOnly access"));
-    }
-    _currentMsg->time3500 = time3500;
-    _currentMsg->currentMode = currentMode;
-    _currentMsg->insAvailable = insAvailable;
-    _currentMsg->gpsAvailable = gpsAvailable;
-    _currentMsg->doingCoarseAlignment = doingCoarseAlignment;
-    _currentMsg->nSats = nSats;
-    _currentMsg->positionFOM = positionFOM;
-    _currentMsg->velocityFOM = velocityFOM;
-    _currentMsg->headingFOM = headingFOM;
-    _currentMsg->timeFOM = timeFOM;
-    _currentMsg->hPosError = expectedHPosError;
-    _currentMsg->vPosError = expectedVPosError;
-    _currentMsg->velocityError = expectedVelocityError;
+    _currentMsg.time3500 = time3500;
+    _currentMsg.currentMode = currentMode;
+    _currentMsg.insAvailable = insAvailable;
+    _currentMsg.gpsAvailable = gpsAvailable;
+    _currentMsg.doingCoarseAlignment = doingCoarseAlignment;
+    _currentMsg.nSats = nSats;
+    _currentMsg.positionFOM = positionFOM;
+    _currentMsg.velocityFOM = velocityFOM;
+    _currentMsg.headingFOM = headingFOM;
+    _currentMsg.timeFOM = timeFOM;
+    _currentMsg.hPosError = expectedHPosError;
+    _currentMsg.vPosError = expectedVPosError;
+    _currentMsg.velocityError = expectedVelocityError;
     _writeCurrentMsg();
 
     // Time out the new data after a second
@@ -201,13 +198,10 @@ CmigitsFmq::getLatest3500Data(uint64_t & time3500, uint16_t & currentMode,
 void
 CmigitsFmq::storeLatest3501Data(uint64_t time3501, double latitude,
         double longitude, double altitude) {
-    if (! _writeAccess) {
-        throw(std::runtime_error("Attempt to write shared memory with ReadOnly access"));
-    }
-    _currentMsg->time3501 = time3501;
-    _currentMsg->latitude = latitude;
-    _currentMsg->longitude = longitude;
-    _currentMsg->altitude = altitude;
+    _currentMsg.time3501 = time3501;
+    _currentMsg.latitude = latitude;
+    _currentMsg.longitude = longitude;
+    _currentMsg.altitude = altitude;
     _writeCurrentMsg();
 
     // Time out the new data after a second
@@ -229,16 +223,13 @@ void
 CmigitsFmq::storeLatest3512Data(uint64_t time3512, double pitch,
         double roll, double heading, double velNorth, double velEast,
         double velUp) {
-    if (! _writeAccess) {
-        throw(std::runtime_error("Attempt to write shared memory with ReadOnly access"));
-    }
-    _currentMsg->time3512 = time3512;
-    _currentMsg->pitch = pitch;
-    _currentMsg->roll = roll;
-    _currentMsg->heading = heading;
-    _currentMsg->velNorth = velNorth;
-    _currentMsg->velEast = velEast;
-    _currentMsg->velUp = velUp;
+    _currentMsg.time3512 = time3512;
+    _currentMsg.pitch = pitch;
+    _currentMsg.roll = roll;
+    _currentMsg.heading = heading;
+    _currentMsg.velNorth = velNorth;
+    _currentMsg.velEast = velEast;
+    _currentMsg.velUp = velUp;
     _writeCurrentMsg();
 
     // Time out the new data after a second
@@ -295,39 +286,47 @@ CmigitsFmq::GetEstimatedDriftAngle(const MsgStruct msg) {
 
 void
 CmigitsFmq::_zero3500Data() {
-    _currentMsg->time3500 = 0;
-    _currentMsg->currentMode = 0;
-    _currentMsg->insAvailable = 0;
-    _currentMsg->gpsAvailable = 0;
-    _currentMsg->doingCoarseAlignment = 0;
-    _currentMsg->nSats = 0;
-    _currentMsg->positionFOM = 0;
-    _currentMsg->velocityFOM = 0;
-    _currentMsg->headingFOM = 0;
-    _currentMsg->timeFOM = 0;
-    _currentMsg->hPosError = 0.0;
-    _currentMsg->vPosError = 0.0;
-    _currentMsg->velocityError = 0.0;
+    _currentMsg.time3500 = 0;
+    _currentMsg.currentMode = 0;
+    _currentMsg.insAvailable = 0;
+    _currentMsg.gpsAvailable = 0;
+    _currentMsg.doingCoarseAlignment = 0;
+    _currentMsg.nSats = 0;
+    _currentMsg.positionFOM = 0;
+    _currentMsg.velocityFOM = 0;
+    _currentMsg.headingFOM = 0;
+    _currentMsg.timeFOM = 0;
+    _currentMsg.hPosError = 0.0;
+    _currentMsg.vPosError = 0.0;
+    _currentMsg.velocityError = 0.0;
     _writeCurrentMsg();
 }
 
 void
 CmigitsFmq::_zero3501Data() {
-    _currentMsg->time3501 = 0;
-    _currentMsg->latitude = 0.0;
-    _currentMsg->longitude = 0.0;
-    _currentMsg->altitude = 0.0;
-    _currentMsg->velNorth = 0.0;
-    _currentMsg->velEast = 0.0;
-    _currentMsg->velUp = 0.0;
+    _currentMsg.time3501 = 0;
+    _currentMsg.latitude = 0.0;
+    _currentMsg.longitude = 0.0;
+    _currentMsg.altitude = 0.0;
+    _currentMsg.velNorth = 0.0;
+    _currentMsg.velEast = 0.0;
+    _currentMsg.velUp = 0.0;
     _writeCurrentMsg();
 }
 
 void
 CmigitsFmq::_zero3512Data() {
-    _currentMsg->time3512 = 0;
-    _currentMsg->pitch = 0.0;
-    _currentMsg->roll = 0.0;
-    _currentMsg->heading = 0.0;
+    _currentMsg.time3512 = 0;
+    _currentMsg.pitch = 0.0;
+    _currentMsg.roll = 0.0;
+    _currentMsg.heading = 0.0;
     _writeCurrentMsg();
+}
+
+void
+CmigitsFmq::_writeCurrentMsg() {
+    if (! _writeAccess) {
+        throw(std::runtime_error("Attempt to write shared memory with ReadOnly access"));
+    }
+    _fmq.writeMsg(0, 0, &_currentMsg, sizeof(_currentMsg));
 }
