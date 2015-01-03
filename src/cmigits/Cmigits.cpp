@@ -207,7 +207,7 @@ const std::string Cmigits::_TimeFOMStrings[] = {
         ">= 10000 µs"
 };
 
-Cmigits::Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl) :
+Cmigits::Cmigits(std::string ttyDev, bool useShm) :
                 QObject(),
                 _simulate(ttyDev == SIM_DEVICE),
                 _ttyDev(ttyDev),
@@ -230,7 +230,7 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl) :
                 _insAvailable(false),
                 _gpsAvailable(false),
                 _shm(NULL),
-                _fmqUrl(fmqUrl),
+                _fmq(true),
                 _csvFile(NULL) {
 
     // CSV files of C-MIGITS data will be written under this directory if 
@@ -278,21 +278,6 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl) :
 
     // Create the CmigitsSharedMemory segment.
     _shm = new CmigitsSharedMemory(true);
-
-    // Create the FMQ with write access.
-    if (_fmq.initReadWrite(_fmqUrl.c_str(),
-            "cmigitsDaemon",
-            false, // set debug?
-            Fmq::END, // start position
-            false,    // compression
-            5000,  // nslots
-            10000000 // buffer size
-    )) {
-        ELOG << "ERROR: Cannot initialize FMQ: " << _fmqUrl;
-        ELOG << _fmq.getErrStr();
-        abort();
-    }
-    _fmq.setSingleWriter();
 
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
@@ -843,31 +828,18 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", sats tracked: " << nSats;
     }
 
-    // Write to CmigitsSharedMemory
+    // Write to CmigitsSharedMemory and CmigitsFmq
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
     _shm->storeLatest3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
             hPosError, vPosError, velocityError);
+    _fmq.storeLatest3500Data(msecsSinceEpoch, _currentMode,
+            insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
+            positionFOM, velocityFOM, headingFOM, timeFOM,
+            hPosError, vPosError, velocityError);
 
-    // Write to the FMQ
-    _cms.writerPid = 0;
-    _cms.time3500 = msecsSinceEpoch;
-    _cms.currentMode  = _currentMode;
-    _cms.insAvailable = insAvailable;
-    _cms.gpsAvailable = gpsAvailable;
-    _cms.doingCoarseAlignment = doingCoarseAlignment;
-    _cms.nSats = nSats;             ///< number of GPS satellites tracked
-    _cms.positionFOM = positionFOM; ///< position figure-of-merit value
-    _cms.velocityFOM = velocityFOM; ///< velocity figure-of-merit value
-    _cms.headingFOM = headingFOM;   ///< heading figure-of-merit value
-    _cms.timeFOM = timeFOM;         ///< time figure-of-merit value
-    _cms.hPosError = hPosError;     ///< m
-    _cms.vPosError = vPosError;     ///< m
-    _cms.velocityError = velocityError; ///< m/s
-    _writeToFmq();
-    
     // Write to the CSV file if it's open
     if (_csvFile) {
         fprintf(_csvFile, "3500,%ju,%d,%d,%d,%d,%d,%d,%d,%d,%d,%f,%f,%f\n",
@@ -928,19 +900,14 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", alt: " << altitude;
     }
 
-    // Write to shared memory
+    // Write to CmigitsSharedMemory and CmigitsFmq
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
     _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
             altitude);
+    _fmq.storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
+            altitude);
 
-    // Write to the FMQ
-    _cms.time3501 = msecsSinceEpoch;
-    _cms.latitude = latitude;
-    _cms.longitude = longitude;
-    _cms.altitude = altitude;
-    _writeToFmq();
-    
     // Write to the CSV file if it's open
     if (_csvFile) {
         fprintf(_csvFile, "3501,%ju,%f,%f,%f\n", msecsSinceEpoch,
@@ -986,21 +953,13 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velEast << ", vel up: " << velUp;
     }
 
-    // Write to shared memory
+    // Write to CmigitsSharedMemory and CmigitsFmq
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
     _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
             velNorth, velEast, velUp);
-    
-    // Write to the FMQ
-    _cms.time3512 = msecsSinceEpoch;
-    _cms.pitch = pitch;
-    _cms.roll = roll;
-    _cms.heading = heading;
-    _cms.velNorth = velNorth;
-    _cms.velEast = velEast;
-    _cms.velUp = velUp;
-    _writeToFmq();
+    _fmq.storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
+            velNorth, velEast, velUp);
     
     // Write to the CSV file if it's open
     if (_csvFile) {
@@ -1526,11 +1485,4 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
 bool Cmigits::initializeUsingIwg1() {
     _configPhase = CONFIG_PreInit;
     return(true);
-}
-
-void 
-Cmigits::_writeToFmq() {
-    if (_fmq.writeMsg(3500, 0, &_cms, sizeof(_cms))) {
-      ELOG << "ERROR in _writeToFmq: Cannot write FMQ: " << _fmqUrl;
-    }
 }

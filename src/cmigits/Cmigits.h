@@ -8,6 +8,7 @@
 #ifndef CMIGITS_H_
 #define CMIGITS_H_
 
+#include "CmigitsFmq.h"
 #include "CmigitsSharedMemory.h"
 #include <cstdio>
 #include <map>
@@ -20,12 +21,10 @@
 #include <QThread>
 #include <QTime>
 #include <QTimer>
-#include <Fmq/DsFmq.hh>
 
 class Cmigits : public QObject {
     Q_OBJECT
 public:
-    static const int FMQ_SHMEM_ID = 22000;
     /**
      * @brief Construct a Cmigits providing access to the C-MIGITS III on 
      * the given serial port.
@@ -33,10 +32,8 @@ public:
      * If special serial port name Cmigits::SIM_DEVICE
      * is used, existence of the C-MIGITS will be simulated.
      * @param ttyDev the name of the serial port connected to the C-MIGITS.
-     * @param fmqUrl If not empty, the URL for the FMQ to open for shared 
-     * memory write
      */
-    Cmigits(std::string ttyDev, bool useShm, std::string fmqUrl = "/tmp/cmigits_fmq/shmem_22000");
+    Cmigits(std::string ttyDev, bool useShm);
     virtual ~Cmigits();
 
     /**
@@ -444,12 +441,8 @@ private:
     /// Pointer to writable CmigitsSharedMemory
     CmigitsSharedMemory * _shm;
     
-    /// URL for FMQ-supported shared memory
-    std::string _fmqUrl;
-
-    // FMQ for writing to hcrdrx
-    DsFmq _fmq;
-    CmigitsSharedMemory::ShmStruct _cms;
+    // FMQ for publishing C-MIGITS data
+    CmigitsFmq _fmq;
 
     // File where C-MIGITS data will be written in CSV form
     FILE * _csvFile;
