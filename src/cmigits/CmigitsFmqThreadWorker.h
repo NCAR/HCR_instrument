@@ -10,7 +10,7 @@
 
 #include <QObject>
 #include <Fmq/DsFmq.hh>
-#include "CmigitsSharedMemory.h"
+#include "CmigitsFmq.h"
 
 /// This worker object loops forever reading the CmigitsFmq and emits 
 /// newData() signals when new C-MIGITS data are seen. However, if the 
@@ -39,7 +39,7 @@ signals:
     /// @brief Signal emitted when new C-MIGITS data are available, and the
     /// data time is at least the specified minimum data interval later than
     /// the last newData() signal.
-    void newData(CmigitsSharedMemory::ShmStruct cmigitsData);
+    void newData(CmigitsFmq::MsgStruct cmigitsData);
     
 private slots:
     void _pollFmq();

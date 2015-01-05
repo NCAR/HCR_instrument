@@ -31,7 +31,7 @@ protected:
 signals:
     /// @brief Signal emitted when new C-MIGITS shared memory content is
     /// seen.
-    void newData(CmigitsSharedMemory::ShmStruct cmigitsData);
+    void newData(CmigitsFmq::MsgStruct cmigitsData);
     
     /// @brief Signal emitted if more than _dataTimeoutMs milliseconds pass 
     /// before new data are seen in the shared memory.

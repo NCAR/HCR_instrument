@@ -30,9 +30,9 @@ CmigitsFmqThreadWorker::CmigitsFmqThreadWorker(uint32_t minDataIntervalMs,
         WLOG << "Data timeout period was changed to minimum value of 10 ms";
         dataTimeoutMs = 10;
     }
-    // We need to register CmigitsSharedMemory::ShmStruct as a metatype,
+    // We need to register CmigitsFmq::MsgStruct as a metatype,
     // since we'll be passing it as an argument in a signal.
-    qRegisterMetaType<CmigitsSharedMemory::ShmStruct>("CmigitsSharedMemory::ShmStruct");
+    qRegisterMetaType<CmigitsFmq::MsgStruct>("CmigitsFmq::MsgStruct");
     
     // Use a zero-interval timer to poll the FMQ whenever the thread is not 
     // busy.
@@ -64,6 +64,9 @@ CmigitsFmqThreadWorker::_pollFmq() {
         if (_cmigitsFmq.initReadOnly(FMQ_PATH.c_str(), "CmigitsFmqThread", 
                                      false, Fmq::END, 0)) {
             ILOG << "No FMQ";
+            // Sleep briefly if we can't open the FMQ, since our zero-interval
+            // timer will otherwise put us in a tight CPU-hogging loop until 
+            // we *can* open it.
             usleep(WAIT_MSECS * 1000);
             return;
         } else {
@@ -71,6 +74,7 @@ CmigitsFmqThreadWorker::_pollFmq() {
         }
     }
     
+    // Execute a read which waits up to WAIT_MSECS ms for a new message.
     bool gotOne = false;
     _cmigitsFmq.readMsg(&gotOne, -1, WAIT_MSECS);
     if (gotOne) {
@@ -81,16 +85,16 @@ CmigitsFmqThreadWorker::_pollFmq() {
     
     // Validate the message size
     int msgLen = _cmigitsFmq.getMsgLen();
-    if (msgLen != sizeof(CmigitsSharedMemory::ShmStruct)) {
+    if (msgLen != sizeof(CmigitsFmq::MsgStruct)) {
         ELOG << "Got " << msgLen << "-byte message from FMQ, when expecting " << 
-                sizeof(CmigitsSharedMemory::ShmStruct) << " bytes";
+                sizeof(CmigitsFmq::MsgStruct) << " bytes";
         return;
     }
 
-    // Cast the message into a CmigitsSharedMemory::ShmStruct
+    // Cast the message into a CmigitsFmq::MsgStruct
     const void * msgPtr = _cmigitsFmq.getMsg();
-    const CmigitsSharedMemory::ShmStruct * cmigitsData = 
-            reinterpret_cast<const CmigitsSharedMemory::ShmStruct*>(msgPtr);
+    const CmigitsFmq::MsgStruct * cmigitsData = 
+            reinterpret_cast<const CmigitsFmq::MsgStruct*>(msgPtr);
 
     // restart the data timeout timer
     _dataTimeoutTimer.start();
