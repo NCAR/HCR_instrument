@@ -36,14 +36,14 @@ IwrfExportCmigitsThread::run()
         }
         
         int msgLen = _cmigitsFmq.getMsgLen();
-        if (msgLen != sizeof(CmigitsSharedMemory::ShmStruct)) {
+        if (msgLen != sizeof(CmigitsFmq::MsgStruct)) {
             ELOG << "Got " << msgLen << "-byte message from FMQ, expected " << 
-                    sizeof(CmigitsSharedMemory::ShmStruct);
+                    sizeof(CmigitsFmq::MsgStruct);
             continue;
         }
         const void * msgPtr = _cmigitsFmq.getMsg();
-        const CmigitsSharedMemory::ShmStruct * cmigitsDataStruct = 
-                reinterpret_cast<const CmigitsSharedMemory::ShmStruct*>(msgPtr);
+        const CmigitsFmq::MsgStruct * cmigitsDataStruct = 
+                reinterpret_cast<const CmigitsFmq::MsgStruct*>(msgPtr);
         _iwrfExport.acceptCmigitsData(*cmigitsDataStruct);
     }
 }

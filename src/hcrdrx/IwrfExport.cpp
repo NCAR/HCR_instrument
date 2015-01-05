@@ -946,7 +946,7 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeStartTag("HcrCmigitsData", 1);
 
   // Get latest data from C-MIGITS (if any).
-  CmigitsSharedMemory::ShmStruct cmigits;
+  CmigitsFmq::MsgStruct cmigits;
   bool haveData = false;
   if (! _cmigitsDeque.empty()) {
       haveData = true;
@@ -1094,9 +1094,9 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
   // current pulse.
   // The C-MIGITS 3512 message comes out at 100 Hz, so use we its time as the
   // time for each shared memory struct.
-  CmigitsSharedMemory::ShmStruct cmigits;
+  CmigitsFmq::MsgStruct cmigits;
   bool haveData = false;    // does cmigits contain data earlier than the pulse time?
-  CmigitsSharedMemory::ShmStruct nextCmigits = _cmigitsDeque.front();
+  CmigitsFmq::MsgStruct nextCmigits = _cmigitsDeque.front();
   while (nextCmigits.time3512 < pulseTime) {
       cmigits = nextCmigits;
       haveData = true;
@@ -1151,7 +1151,7 @@ bool IwrfExport::_assembleIwrfGeorefPacket() {
 
   _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
   _radarGeoref.altitude_msl_km = cmigits.altitude * 0.001; // m -> km
-  _radarGeoref.drift_angle_deg = CmigitsSharedMemory::GetEstimatedDriftAngle(& cmigits);
+  _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(cmigits);
   _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
   _radarGeoref.ew_velocity_mps = cmigits.velEast;
   _radarGeoref.heading_deg = cmigits.heading;
@@ -1399,7 +1399,7 @@ void IwrfExport::_closeSocketToClient()
 //////////////////////////////////////////////////
 // Accept incoming new C-MIGITS data
 
-void IwrfExport::acceptCmigitsData(CmigitsSharedMemory::ShmStruct data) {
+void IwrfExport::acceptCmigitsData(CmigitsFmq::MsgStruct data) {
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);

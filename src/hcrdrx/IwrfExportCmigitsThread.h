@@ -1,7 +1,7 @@
 #ifndef IWRFEXPORTCMIGITS_THREAD_H_
 #define IWRFEXPORTCMIGITS_THREAD_H_
 
-#include <CmigitsSharedMemory.h>
+#include <CmigitsFmq.h>
 #include <QThread>
 #include <Fmq/DsFmq.hh>
 

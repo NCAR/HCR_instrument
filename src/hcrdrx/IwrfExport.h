@@ -71,12 +71,12 @@ public:
   PulseData *writePulseV(PulseData *val);
   
   /// @brief Method called to put new C-MIGITS data in our queue.
-  void acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData);
+  void acceptCmigitsData(CmigitsFmq::MsgStruct cmigitsData);
 
 private slots:
   /// @brief This slot will be called each time a new set of data is available
   /// from the C-MIGITS shared memory.
-  void _acceptCmigitsData(CmigitsSharedMemory::ShmStruct cmigitsData) {
+  void _acceptCmigitsData(CmigitsFmq::MsgStruct cmigitsData) {
       acceptCmigitsData(cmigitsData);
   }
 
@@ -188,7 +188,7 @@ private:
   IwrfExportCmigitsThread _cmigitsWatchThread;
   
   /// deque of C-MIGITS data
-  std::deque<CmigitsSharedMemory::ShmStruct> _cmigitsDeque;
+  std::deque<CmigitsFmq::MsgStruct> _cmigitsDeque;
 
   /// simulation of antenna angles
 
