@@ -19,8 +19,8 @@ CmigitsFmqThread::run()
 {
     // Create our worker and connect its signals to generate our signals.
     CmigitsFmqThreadWorker worker(_minDataIntervalMs, _dataTimeoutMs);
-    connect(&worker, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-            this, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)));
+    connect(&worker, SIGNAL(newData(CmigitsFmq::MsgStruct)),
+            this, SIGNAL(newData(CmigitsFmq::MsgStruct)));
     connect(&worker, SIGNAL(dataTimeout()), this, SIGNAL(dataTimeout()));
 
     // Now just fire up the event loop.
