@@ -27,7 +27,7 @@ MotionControl::MotionControl() :
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
-    _cmigitsShm(),
+    _cmigitsFmq(),
     _fakeAttitude(false),
     _driveStartTime(QTime::currentTime())
 {
@@ -63,12 +63,12 @@ void MotionControl::correctForAttitude()
     double velUp = 0.0;
     double drift = 0.0;
 
-    if (_cmigitsShm.getWriterPid()) {
+    if (_cmigitsFmq.getWriterPid()) {
         // Get pitch, roll, and heading
-        _cmigitsShm.getLatest3512Data(dataTime, pitch, roll, heading, velNorth,
+        _cmigitsFmq.getLatest3512Data(dataTime, pitch, roll, heading, velNorth,
                 velEast, velUp);
         // Get drift
-        drift = _cmigitsShm.getEstimatedDriftAngle();
+        drift = _cmigitsFmq.getEstimatedDriftAngle();
     }
 
     // Substitute fake attitude if requested

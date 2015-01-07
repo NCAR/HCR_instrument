@@ -12,7 +12,7 @@
 #include <QtNetwork>
 #include <xmlrpc-c/base.hpp>
 
-#include "CmigitsSharedMemory.h"
+#include "CmigitsFmq.h"
 #include "RotServoDrive.h"
 #include "TiltServoDrive.h"
 
@@ -252,8 +252,8 @@ private:
     /// Beam tilt angle, deg
     double _scanBeamTilt;
     
-    /// Cmigits shared memory object
-    CmigitsSharedMemory _cmigitsShm;
+    /// FMQ which delivers C-MIGITS data
+    CmigitsFmq _cmigitsFmq;
 
     /// Is attitude correction enabled?
     bool _attitudeCorrectionEnabled;
