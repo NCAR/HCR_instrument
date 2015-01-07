@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include <CmigitsShmWatchThread.h>
+#include <CmigitsFmqThread.h>
 #include <HcrPmc730Client.h>
 #include <MotionControlStatusThread.h>
 #include <QDateTime>
@@ -139,7 +139,7 @@ private slots:
     void _markCmigitsUnresponsive();
     
     /// @brief Update AGL altitude using new location from C-MIGITS data
-    void _updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData);
+    void _updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData);
     
 private:
     /// @brief Struct for details of max power data reports
@@ -361,7 +361,7 @@ private:
     _MaxPowerStruct _maxPowerReport;
         
     /// @brief Thread which monitors the CmigitsSharedMemory segment
-    CmigitsShmWatchThread _cmigitsWatchThread;
+    CmigitsFmqThread _cmigitsWatchThread;
 
     /// @brief Is new data showing up in CmigitsSharedMemory?
     bool _cmigitsResponsive;

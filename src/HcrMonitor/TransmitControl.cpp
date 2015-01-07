@@ -84,8 +84,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
     // Call _updateCmigitsData when we get new C-MIGITS data
-    connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsSharedMemory::ShmStruct)),
-            this, SLOT(_updateAglAltitude(CmigitsSharedMemory::ShmStruct)));
+    connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsFmq::MsgStruct)),
+            this, SLOT(_updateAglAltitude(CmigitsFmq::MsgStruct)));
     
     // Mark cmigitsDaemon as unresponsive when the watch thread emits its
     // dataTimeout() signal.
@@ -450,7 +450,7 @@ TransmitControl::_updateControlState() {
 }
 
 void
-TransmitControl::_updateAglAltitude(CmigitsSharedMemory::ShmStruct cmigitsData) {
+TransmitControl::_updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData) {
     if (! _cmigitsResponsive) {
         ILOG << "Got a response from cmigitsDaemon";
         _cmigitsResponsive = true;
