@@ -12,7 +12,7 @@
 LOGGING("CmigitsStatus")
 
 // Static connection to CmigitsSharedMemory
-CmigitsSharedMemory * CmigitsStatus::_Shm = 0;
+CmigitsFmq * CmigitsStatus::_Fmq = 0;
 
 CmigitsStatus::CmigitsStatus() :
     _time3500(0.0),
@@ -91,22 +91,22 @@ CmigitsStatus::toXmlRpcValue() const {
 }
 
 CmigitsStatus
-CmigitsStatus::StatusFromSharedMemory() {
+CmigitsStatus::StatusFromFmq() {
     CmigitsStatus status;
     
     // If we have no static connection to the shared memory segment, create
     // it now.
-    if (! _Shm) {
-        _Shm = new CmigitsSharedMemory();
+    if (! _Fmq) {
+        _Fmq = new CmigitsFmq();
     }
     
     // If a process is writing to CmigitsSharedMemory, get latest status from
     // there. Set our members from the latest 3500, 3501, and 3512 messages
     // from the C-MIGITS.
-    if (_Shm->getWriterPid()) {
+    if (_Fmq->getWriterPid()) {
         uint64_t iTime;
         // Get the latest 3500 message data
-        _Shm->getLatest3500Data(iTime, status._currentMode, 
+        _Fmq->getLatest3500Data(iTime, status._currentMode, 
                 status._insAvailable, status._gpsAvailable, 
                 status._doingCoarseAlignment, status._nSats, 
                 status._positionFOM, status._velocityFOM, status._headingFOM, 
@@ -115,12 +115,12 @@ CmigitsStatus::StatusFromSharedMemory() {
         status._time3500 = 0.001 * iTime;
 
         // Get the latest 3501 message data
-        _Shm->getLatest3501Data(iTime, status._latitude, status._longitude,
+        _Fmq->getLatest3501Data(iTime, status._latitude, status._longitude,
                 status._altitude);
         status._time3501 = 0.001 * iTime;
 
         // Get the latest 3512 message data
-        _Shm->getLatest3512Data(iTime, status._pitch, status._roll, 
+        _Fmq->getLatest3512Data(iTime, status._pitch, status._roll, 
                 status._heading, status._velNorth, status._velEast, 
                 status._velUp);
         status._time3512 = 0.001 * iTime;

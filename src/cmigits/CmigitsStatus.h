@@ -12,7 +12,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 #include <xmlrpc-c/base.hpp>
-#include "CmigitsSharedMemory.h"
+#include "CmigitsFmq.h"
 
 /// @brief Class which encapsulates data from the C-MIGITS.
 class CmigitsStatus {
@@ -28,12 +28,12 @@ public:
 
     virtual ~CmigitsStatus();
     
-    /// @brief Return a CmigitsStatus populated from current values in 
-    /// CmigitsSharedMemory. If there is no process writing to 
-    /// CmigitsSharedMemory (e.g., if this method is called on a machine
-    /// other than the one where cmigitsDaemon is running), the method
-    /// will return a CmigitsStatus created by the default constructor.
-    static CmigitsStatus StatusFromSharedMemory();
+    /// @brief Return a CmigitsStatus populated from latest values in 
+    /// CmigitsFmq. If there is no process writing to CmigitsFmq (e.g., if this 
+    /// method is called on a machine other than the one where cmigitsDaemon is 
+    /// running), the method will return a CmigitsStatus created by the default
+    /// constructor.
+    static CmigitsStatus StatusFromFmq();
 
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value.
@@ -280,7 +280,7 @@ private:
     }
 
     /// Static connection to the CmigitsSharedMemory segment
-    static CmigitsSharedMemory * _Shm;
+    static CmigitsFmq * _Fmq;
 
     /// Time of last status information, seconds since 1970-01-01 00:00:00 UTC.
     /// This time applies to current mode, INS available, GPS available,

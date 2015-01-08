@@ -104,7 +104,7 @@ void
 StatusGrabber::_getCmigitsStatus() {
     QMutexLocker locker(&_mutex);
     // Get a CmigitsStatus built from current values in CmigitsSharedMemory
-    _cmigitsStatus = CmigitsStatus::StatusFromSharedMemory();
+    _cmigitsStatus = CmigitsStatus::StatusFromFmq();
 }
 
 void

@@ -55,7 +55,7 @@ public:
         DLOG << "Executing XML-RPC call to getStatus()";
         // Get the latest status from shared memory, and convert it to 
         // an xmlrpc_c::value_struct dictionary.
-        *retvalP = CmigitsStatus::StatusFromSharedMemory().toXmlRpcValue();
+        *retvalP = CmigitsStatus::StatusFromFmq().toXmlRpcValue();
     }
 };
 
