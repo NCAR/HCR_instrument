@@ -290,6 +290,12 @@ private:
     
     /// @brief Write latest data to the FMQ
     void _writeToFmq();
+    
+    /// @brief Check the time lag for data arrival, and log a message if the lag
+    /// is big.
+    /// @param msgType the C-MIGITS message type from which the time was obtained
+    /// @param msgTime the message time
+    static void _TestLag(int msgType, QDateTime msgTime);
 
     /// Configuration is a multi-stage process, driven by responses from the
     /// C-MIGITS. This type enumerates our configuration phases.

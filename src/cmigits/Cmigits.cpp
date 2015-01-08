@@ -19,11 +19,11 @@
 #include <stdint.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
+#include <sys/time.h>
 #include <QMutexLocker>
 #include <QStringList>
 #include <QUdpSocket>
 #include <boost/numeric/ublas/matrix.hpp>
-#include <Fmq/DsFmq.hh>
 
 using boost::numeric::ublas::matrix;
 using boost::numeric::ublas::identity_matrix;
@@ -342,6 +342,7 @@ Cmigits::_threadStartInitialize() {
     _gpsTimeoutTimer = new QTimer();
     _gpsTimeoutTimer->setInterval(1000 * _GPS_TIMEOUT_SECS);
     _gpsTimeoutTimer->setSingleShot(true);
+    
     // When this timer times out, call _gpsTimedOut()
     connect(_gpsTimeoutTimer, SIGNAL(timeout()), this, SLOT(_gpsTimedOut()));
     ILOG << "GPS TIMER CREATED";
@@ -747,6 +748,7 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
+    _TestLag(3500, msgTime);
 
     // current mode
     _currentMode = msgWords[9];
@@ -873,6 +875,7 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
     // Unpack time
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
+    _TestLag(3501, msgTime);
 
     // Unpack latitude, longitude, altitude
     double latitude = 180.0 * _UnpackFloat32(msgWords + 9, 0);
@@ -932,6 +935,7 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
 
     double utcSecondOfDay = _unpackTimeTag(msgWords + 5);
     QDateTime msgTime = _SecondOfDayToNearestDateTime(utcSecondOfDay);
+    _TestLag(3512, msgTime);
 
     // Unpack attitude components
     double pitch = 180.0 * _UnpackFloat32(msgWords + 9, 0);
@@ -990,6 +994,7 @@ Cmigits::_process3623Message(const uint16_t * msgWords, uint16_t nMsgWords) {
         gpsSecondOfDay += 86400;
     }
     QDateTime msgTime = _SecondOfDayToNearestDateTime(gpsSecondOfDay);
+    _TestLag(3623, msgTime);
 
     // Calculate current leap seconds offset between UTC and GPS.
     //
@@ -1485,4 +1490,33 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
 bool Cmigits::initializeUsingIwg1() {
     _configPhase = CONFIG_PreInit;
     return(true);
+}
+
+void
+Cmigits::_TestLag(int msgType, QDateTime msgTime) {
+    // Bail out for msgTime of zero
+    if (msgTime.date().year() == 1970)
+        return;
+    
+    struct timeval tvNow;
+    gettimeofday(&tvNow, 0);
+    QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
+    // Find the latency.
+    // As of Qt 4.8, we can only find the difference between the QTime-s and
+    // not the difference between the QDateTime-s. A little extra code is needed
+    // to deal with times which cross a day boundary.
+    int latencyMs = msgTime.time().msecsTo(qNow.time());
+    static const int MSECS_PER_DAY = 86400 * 1000;
+    if (latencyMs < -MSECS_PER_DAY / 2) {
+        latencyMs += MSECS_PER_DAY;
+    } else if (latencyMs > MSECS_PER_DAY / 2) {
+        latencyMs -= MSECS_PER_DAY;
+    }
+    
+    // Complain if the message latency is longer than 100 ms
+    if (latencyMs >= 100) {
+        WLOG << "Latency of " << msgType << " msg for time " << 
+                msgTime.toString("hh:mm:ss.zzz").toStdString() << " is " <<
+                latencyMs << " ms";
+    }
 }
