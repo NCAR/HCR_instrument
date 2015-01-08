@@ -10,6 +10,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <cmath>
+#include <sys/time.h>
 #include <QDateTime>
 #include "CmigitsFmq.h"
 #include <logx/Logging.h>
@@ -328,5 +329,21 @@ CmigitsFmq::_writeCurrentMsg() {
     if (! _writeAccess) {
         throw(std::runtime_error("Attempt to write shared memory with ReadOnly access"));
     }
+    // Log anything with a lag > 100 ms
+    struct timeval tvNow;
+    gettimeofday(&tvNow, 0);
+    uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
+    uint32_t lagMs = nowMs - _currentMsg.time3512;
+    if (_currentMsg.time3512 != 0 && lagMs > 100) {
+        time_t secs = _currentMsg.time3512 / 1000;
+        uint32_t msecs = _currentMsg.time3512 % 1000;
+        QDateTime qCmigitsTime = QDateTime::fromTime_t(secs).addMSecs(msecs);
+        QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
+        WLOG << "C-MIGITS " << 
+                qCmigitsTime.toString("hh:mm:ss.zzz").toStdString() <<
+                " arrived " << qNow.toString("hh:mm:ss.zzz").toStdString() << 
+                " (lag " << lagMs << " ms)";
+    }
+    
     _fmq.writeMsg(0, 0, &_currentMsg, sizeof(_currentMsg));
 }
