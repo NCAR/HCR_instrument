@@ -1062,9 +1062,13 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // this to allow for occasional times when C-MIGITS data arrive later than the 
   // associated pulse data.
   if (_cmigitsDeque.empty() && ! _cmigitsDataDelayed) {
-      // Wait up to 1/2 second for more C-MIGITS data to arrive.
-      static const int MAX_WAIT_MS = 500;   // wait up to 1/2 second
-      static const int SLEEP_MS = 10;
+      // We'll wait up to 1/2 second for more C-MIGITS data to arrive.
+      static const int MAX_WAIT_MS = 500;
+      // Period of sleep between tests for new C-MIGITS data. Leave this 
+      // number small, since tests using 10 ms caused system instability with
+      // Pentek data sync errors and DMA overruns.
+      static const int SLEEP_MS = 1;
+      
       int total_wait_ms = 0;
       while (true) {
           // Release our lock and sleep briefly
