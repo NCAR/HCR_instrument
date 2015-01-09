@@ -1063,31 +1063,31 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // associated pulse data.
   if (_cmigitsDeque.empty() && ! _cmigitsDataDelayed) {
       // We'll wait up to 1/2 second for more C-MIGITS data to arrive.
-      static const int MAX_WAIT_MS = 500;
+      static const int MAX_WAIT_US = 500000;
       // Period of sleep between tests for new C-MIGITS data. Leave this 
-      // number small, since tests using 10 ms caused system instability with
+      // number small, since tests using 1 ms caused system instability with
       // Pentek data sync errors and DMA overruns.
-      static const int SLEEP_MS = 1;
+      static const int SLEEP_US = 100;
       
-      int total_wait_ms = 0;
+      int total_wait_us = 0;
       while (true) {
           // Release our lock and sleep briefly
           _accessLock.unlock();
-          usleep(SLEEP_MS * 1000);
-          total_wait_ms += SLEEP_MS;
+          usleep(SLEEP_US);
+          total_wait_us += SLEEP_US;
           
           // Get the read lock again
           _accessLock.lockForRead();
           
-          // If we've waited MAX_WAIT_MS, mark C-MIGITS data as delayed so that
+          // If we've waited MAX_WAIT_US, mark C-MIGITS data as delayed so that
           // we don't wait again until new data show up in the deque.
-          if (_cmigitsDeque.empty() && (total_wait_ms >= MAX_WAIT_MS)) {
+          if (_cmigitsDeque.empty() && (total_wait_us >= MAX_WAIT_US)) {
               WLOG << "C-MIGITS data too delayed after " << 
-                      total_wait_ms << " ms";
+                      0.001 * total_wait_us << " ms";
               break;
           } else if (! _cmigitsDeque.empty()) {
-              if (total_wait_ms > 30) {
-                ILOG << "Waited " << total_wait_ms << " ms for C-MIGITS data";
+              if (total_wait_us > 30000) {
+                ILOG << "Waited " << 0.001 * total_wait_us << " ms for C-MIGITS data";
               }
               break;
           }
