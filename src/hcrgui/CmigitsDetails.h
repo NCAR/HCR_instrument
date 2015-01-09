@@ -10,8 +10,6 @@
 #include <CmigitsStatus.h>
 
 #include "ui_CmigitsDetails.h"
-#include <CmigitsSharedMemory.h>
-
 
 class CmigitsDetails : public QDialog {
     Q_OBJECT
@@ -24,7 +22,6 @@ public slots:
     void updateStatus(bool daemonResponding, const CmigitsStatus & status);
 private:
     Ui::CmigitsDetails _ui;
-    CmigitsSharedMemory _cmigitsShm;
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;

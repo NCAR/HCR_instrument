@@ -11,7 +11,6 @@
 CmigitsDetails::CmigitsDetails(QWidget *parent) :
     QDialog(parent),
     _ui(),
-    _cmigitsShm(),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
