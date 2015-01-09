@@ -243,6 +243,9 @@ printStatsAndUpdateRegistration() {
     PMU_auto_register("running");
 
     // Print data rates and other interesting tidbits
+    ILOG << "--------------------------------------";
+    ILOG << UPDATE_INTERVAL_SECS << " second stats:";
+    
     std::ostringstream ss;
     for (int c = 0; c < _nChans; c++) {
         Pentek::p7142sd3cDn * down = _downThreads[c]->downconverter();
@@ -260,6 +263,8 @@ printStatsAndUpdateRegistration() {
     DrxStatus status(*_sd3c);
     ILOG << "Pentek board temp: " << status.pentekBoardTemp();
     ILOG << "Pentek FPGA temp: " << status.pentekFpgaTemp();
+    
+    ILOG << "--------------------------------------";
 }
 
 ///////////////////////////////////////////////////////////
@@ -279,6 +284,7 @@ dataWaitTimedOut() {
 // Function called when first data arrive
 void
 onFirstData() {
+    ILOG << "Pentek timers started at " << _sd3c->radarStartTime();
     DLOG << "First data seen at " << 
             to_simple_string(microsec_clock::universal_time());
 }
