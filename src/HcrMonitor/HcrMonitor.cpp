@@ -20,7 +20,6 @@
 #include <string>
 #include <boost/program_options.hpp>
 
-#include <CmigitsSharedMemory.h>
 #include <HcrPmc730StatusThread.h>
 #include <logx/Logging.h>
 #include <MotionControlStatusThread.h>

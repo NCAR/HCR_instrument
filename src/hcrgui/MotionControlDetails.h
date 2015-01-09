@@ -10,7 +10,6 @@
 #include <MotionControl.h>
 
 #include "ui_MotionControlDetails.h"
-#include <CmigitsSharedMemory.h>
 
 
 class MotionControlDetails : public QDialog {

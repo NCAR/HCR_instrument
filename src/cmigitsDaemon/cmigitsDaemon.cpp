@@ -13,7 +13,6 @@
 #include <QMetaType>
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
-#include <CmigitsSharedMemory.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
