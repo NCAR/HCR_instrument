@@ -1,30 +1,30 @@
 /*
- * Ts2CmigitsShmThread.cpp
+ * Ts2CmigitsFmqThread.cpp
  *
- *  Created on: Mar 12, 2014
+ *  Created on: Jan 9, 2015
  *      Author: burghart
  */
 
-#include "Ts2CmigitsShmThread.h"
+#include "Ts2CmigitsFmqThread.h"
 #include <cstring>
 #include <iomanip>
 #include <logx/Logging.h>
 
-LOGGING("Ts2CmigitsShmThread")
+LOGGING("Ts2CmigitsFmqThread")
 
-Ts2CmigitsShmThread::Ts2CmigitsShmThread(std::vector<std::string> fileList) :
+Ts2CmigitsFmqThread::Ts2CmigitsFmqThread(std::vector<std::string> fileList) :
     _workThread(),
     _fake3500Timer(NULL),
     _reader(fileList, IWRF_DEBUG_OFF),
-    _shm(NULL),
+    _fmq(NULL),
     _pulseCount(0),
     _sleepSumUsecs(0),
     _delayedPulseCount(0),
     _delaySumUsecs(0),
     _prevPulseDataTime(0.0),
     _prevPulseProcessTime(0.0) {
-    // Get a connection to CmigitsSharedMemory with write access
-    _shm = new CmigitsSharedMemory(true);
+    // Get a connection to CmigitsFmq with write access
+    _fmq = new CmigitsFmq(true);
     
     // Change our thread affinity to the work thread.
     moveToThread(&_workThread);
@@ -37,7 +37,7 @@ Ts2CmigitsShmThread::Ts2CmigitsShmThread(std::vector<std::string> fileList) :
     _workThread.start();
 }
 
-Ts2CmigitsShmThread::~Ts2CmigitsShmThread() {
+Ts2CmigitsFmqThread::~Ts2CmigitsFmqThread() {
     // Show our processing statistics
     _showStats();
     
@@ -49,19 +49,12 @@ Ts2CmigitsShmThread::~Ts2CmigitsShmThread() {
     }
     
     // Clean up dynamically allocated members
-    delete(_shm);
+    delete(_fmq);
     delete(_fake3500Timer);
 }
 
 void
-Ts2CmigitsShmThread::_onThreadStart() {
-    // Instantiate and start the periodic timer for generating fake 3500 
-    // messages. The real C-MIGITS generates them a 1 Hz, so we'll do that, too.
-    _fake3500Timer = new QTimer();
-    _fake3500Timer->setInterval(1000);   // 1000 ms -> 1 s
-    connect(_fake3500Timer, SIGNAL(timeout()), this, SLOT(_generateFake3500Msg()));
-    _fake3500Timer->start();
-
+Ts2CmigitsFmqThread::_onThreadStart() {
     // We need a pulse before the first call to _doNextPulse().
     _pulse = _reader.getNextPulse();
     if (! _pulse) {
@@ -74,7 +67,7 @@ Ts2CmigitsShmThread::_onThreadStart() {
 }
 
 void
-Ts2CmigitsShmThread::_showStats() {
+Ts2CmigitsFmqThread::_showStats() {
     // Print information about what we processed.
     ILOG << "Processed " << _pulseCount << " pulses, with average sleep of " <<
             float(_sleepSumUsecs) / _pulseCount << " us per pulse";
@@ -87,7 +80,7 @@ Ts2CmigitsShmThread::_showStats() {
 }
 
 void
-Ts2CmigitsShmThread::_doNextPulse() {
+Ts2CmigitsFmqThread::_doNextPulse() {
     // Increment our count of processed pulses
     _pulseCount++;
     if (! (_pulseCount % 10000)) {
@@ -99,10 +92,10 @@ Ts2CmigitsShmThread::_doNextPulse() {
     double pulseDataTime = _pulse->getFTime();
     
     // If georef updates are not active, there's nothing we can write
-    // to CmigitsSharedMemory, so just bail out now.
+    // to CmigitsFmq, so just bail out now.
     if (! _pulse->getGeorefActive()) {
         std::cerr << "No active georef at pulse " << _pulseCount <<
-                ", so there's nothing to write to CmigitsSharedMemory!" <<
+                ", so there's nothing to write to CmigitsFmq!" <<
                 std::endl;
         emit(finished());
         return;
@@ -144,6 +137,15 @@ Ts2CmigitsShmThread::_doNextPulse() {
             _delaySumUsecs += -sleepTimeUsecs;
         }
     }
+    
+    // Test if the integer seconds, tenths of seconds, or hundredths of seconds
+    // changed from the last pulse.
+    bool secondsChanged = 
+            (int(_prevPulseDataTime) % 10) != (int(pulseDataTime) % 10);
+    bool tenthsChanged =
+            (int(_prevPulseDataTime * 10) % 10) != (int(pulseDataTime * 10) % 10);
+    bool hundredthsChanged =
+            (int(_prevPulseDataTime * 100) % 10) != (int(pulseDataTime * 100) % 10);
 
     // Keep the processing time for this pulse and its data time
     _prevPulseProcessTime = pulseProcessTime;
@@ -152,19 +154,38 @@ Ts2CmigitsShmThread::_doNextPulse() {
     // Get the georef data (including C-MIGITS data) for this pulse
     iwrf_platform_georef_t georef = _pulse->getPlatformGeoref();
 
-    // Tag the data going to CmigitsSharedMemory with current time
+    // Tag the data going to CmigitsFmq with current time
     // rather than the time from the data.
     uint64_t tagMsecsSinceEpoch(1000 * pulseProcessTime);
     
-    // Pull out the 3501 and 3512 message data from the iwrf_platform_georef_t
-    // and write it all into the shared memory.
-    _shm->storeLatest3501Data(tagMsecsSinceEpoch,
+    // 3500 messages go out at 1 Hz, so build and send them when the integer
+    // seconds of pulse data time changes.
+    if (secondsChanged) {
+        // Build a fake 3500 message saying that GPS and INS are available and
+        // that the C-MIGITS is in "Air Navigation" mode.
+        bool gpsAvailable = true;
+        bool insAvailable = true;
+        int mode = 7;   // Air Navigation mode
+        _fmq->storeLatest3500Data(tagMsecsSinceEpoch, mode, insAvailable, 
+                gpsAvailable, false, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0);        
+    }
+    
+    // 3501 messages should go out at 10 Hz, so build and send them when the
+    // integer tenths of seconds of pulse data time changes.
+    if (tenthsChanged) {
+        _fmq->storeLatest3501Data(tagMsecsSinceEpoch,
             georef.latitude, georef.longitude,
             1000.0 * georef.altitude_msl_km);
-    _shm->storeLatest3512Data(tagMsecsSinceEpoch,
+    }
+
+    // 3512 messages should go out at 100 Hz, so build and send them when the
+    // integer hundredths of seconds of pulse data time changes.
+    if (hundredthsChanged) {
+        _fmq->storeLatest3512Data(tagMsecsSinceEpoch,
             georef.pitch_deg, georef.roll_deg, georef.heading_deg,
             georef.ns_velocity_mps, georef.ew_velocity_mps,
             georef.vert_velocity_mps);
+    }
 
     // Delete the pulse
     delete(_pulse);
@@ -179,24 +200,4 @@ Ts2CmigitsShmThread::_doNextPulse() {
         // the thread is not otherwise busy.
         QTimer::singleShot(0, this, SLOT(_doNextPulse()));
     }
-}
-
-void
-Ts2CmigitsShmThread::_generateFake3500Msg() {
-    DLOG << "_generateFake3500Msg()";
-    
-    // Tag the data going to CmigitsSharedMemory with current time
-    struct timespec nowTimeSpec;
-    clock_gettime(CLOCK_REALTIME, &nowTimeSpec);
-    double nowTime = nowTimeSpec.tv_sec + 1.0e-9 * nowTimeSpec.tv_nsec;
-    uint64_t tagMsecsSinceEpoch(1000 * nowTime);
-    
-    // Build a fake 3500 message saying that GPS and INS are available and
-    // that the C-MIGITS is in "Air Navigation" mode.
-    bool gpsAvailable = true;
-    bool insAvailable = true;
-    int mode = 7;   // Air Navigation mode
-    _shm->storeLatest3500Data(tagMsecsSinceEpoch, mode, insAvailable, 
-            gpsAvailable, false, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0);
-    
 }

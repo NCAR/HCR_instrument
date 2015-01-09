@@ -19,7 +19,7 @@
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
-#include "Ts2CmigitsShmThread.h"
+#include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
 
 
@@ -101,9 +101,9 @@ main(int argc, char *argv[]) {
       ILOG << "procmap instance '" << PmuInstance << "'";
     }
 
-    // Open connection to the C-MIGITS device (or a Ts2CmigitsShmThread for
+    // Open connection to the C-MIGITS device (or a Ts2CmigitsFmqThread for
     // time-series file playback)
-    Ts2CmigitsShmThread * playbackThread = NULL;
+    Ts2CmigitsFmqThread * playbackThread = NULL;
     if (Playback) {
         PMU_auto_register("creating Ts2CmigitsShmThread for playback");
         // Build a vector of file names from the command line
@@ -112,8 +112,8 @@ main(int argc, char *argv[]) {
             fileList.push_back(argv[i]);
         }
         
-        // Create the Ts2CmigitsShmThread, which begins working immediately.
-        playbackThread = new Ts2CmigitsShmThread(fileList);
+        // Create the Ts2CmigitsFmqThread, which begins working immediately.
+        playbackThread = new Ts2CmigitsFmqThread(fileList);
 
         // Stop the application when the reader thread is done
         QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));

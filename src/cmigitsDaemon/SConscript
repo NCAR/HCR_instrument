@@ -10,11 +10,11 @@ env.EnableQt4Modules(['QtCore', 'QtGui'])
 
 sources = Split('''
 cmigitsDaemon.cpp
-Ts2CmigitsShmThread.cpp
+Ts2CmigitsFmqThread.cpp
 ''')
 
 headers = Split('''
-Ts2CmigitsShmThread.h
+Ts2CmigitsFmqThread.h
 ''')
 
 daemon = env.Program('cmigitsDaemon', sources)

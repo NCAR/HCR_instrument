@@ -1,13 +1,13 @@
 /*
- * Ts2CmigitsShmThread.h
+ * Ts2CmigitsFmqThread.h
  *
- *  Created on: Mar 12, 2014
+ *  Created on: Jan 9, 2015
  *      Author: burghart
  */
 
-#ifndef TS2CMIGITSSHMTHREAD_H_
-#define TS2CMIGITSSHMTHREAD_H_
-#include <CmigitsSharedMemory.h>
+#ifndef TS2CMIGITSFMQTHREAD_H_
+#define TS2CMIGITSFMQTHREAD_H_
+#include <CmigitsFmq.h>
 #include <vector>
 #include <radar/IwrfTsReader.hh>
 #include <QThread>
@@ -19,13 +19,13 @@
 /// the same rate it was originally generated. Data written into shared memory 
 /// is tagged with current time rather than the time from the data.
 
-class Ts2CmigitsShmThread : public QObject {
+class Ts2CmigitsFmqThread : public QObject {
     Q_OBJECT
 public:
     /// @brief Construct using the given list of IWRF time-series files.
     /// @param fileList a vector containing a list of IWRF time-series files.
-    Ts2CmigitsShmThread(std::vector<std::string> fileList);
-    virtual ~Ts2CmigitsShmThread();
+    Ts2CmigitsFmqThread(std::vector<std::string> fileList);
+    virtual ~Ts2CmigitsFmqThread();
 
 signals:
     /// @ brief Signal emitted when our work is complete.
@@ -39,10 +39,6 @@ private slots:
     /// @brief Slot called to read a pulse and handle it at the correct interval
     /// relative to the previous pulse.
     void _doNextPulse();
-    
-    /// @brief Generate a fake C-MIGITS 3500 message and push it into the
-    /// CmigitsSharedMemory.
-    void _generateFake3500Msg();
     
 private:
     
@@ -60,7 +56,7 @@ private:
     IwrfTsReaderFile _reader;
 
     /// Connection to the C-MIGITS shared memory segment
-    CmigitsSharedMemory * _shm;
+    CmigitsFmq * _fmq;
 
     /// The last pulse from the reader
     IwrfTsPulse * _pulse;
@@ -86,4 +82,4 @@ private:
     double _prevPulseProcessTime;
 };
 
-#endif /* TS2CMIGITSSHMTHREAD_H_ */
+#endif /* TS2CMIGITSFMQTHREAD_H_ */
