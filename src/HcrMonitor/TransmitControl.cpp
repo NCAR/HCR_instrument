@@ -36,7 +36,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _motionControlResponsive(false),
     _motionControlStatus(),
     _maxPowerResponsive(false),
-    _cmigitsWatchThread(_CMIGITS_POLL_INTERVAL_MS, _CMIGITS_DATA_TIMEOUT_MS),
+    _cmigitsWatcher(_CMIGITS_POLL_INTERVAL_MS, _CMIGITS_DATA_TIMEOUT_MS),
     _cmigitsResponsive(false),
     _terrainHtServerResponsive(false),
     _aglAltitude(0.0),
@@ -84,16 +84,13 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
     // Call _updateCmigitsData when we get new C-MIGITS data
-    connect(&_cmigitsWatchThread, SIGNAL(newData(CmigitsFmq::MsgStruct)),
+    connect(&_cmigitsWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
             this, SLOT(_updateAglAltitude(CmigitsFmq::MsgStruct)));
     
     // Mark cmigitsDaemon as unresponsive when the watch thread emits its
     // dataTimeout() signal.
-    connect(&_cmigitsWatchThread, SIGNAL(dataTimeout()),
+    connect(&_cmigitsWatcher, SIGNAL(dataTimeout()),
             this, SLOT(_markCmigitsUnresponsive()));
-    
-    // Start the CmigitsShmWatchThread
-    _cmigitsWatchThread.start();
     
     // Finally, do our checks
     _updateControlState();
@@ -102,7 +99,6 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting HMC mode to Bench Test";
     _setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
-    _cmigitsWatchThread.quit();
 }
 
 void

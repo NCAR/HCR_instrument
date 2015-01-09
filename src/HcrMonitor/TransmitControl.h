@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include <CmigitsFmqThread.h>
+#include <CmigitsFmqWatcher.h>
 #include <HcrPmc730Client.h>
 #include <MotionControlStatusThread.h>
 #include <QDateTime>
@@ -360,8 +360,8 @@ private:
     /// @brief latest max power report
     _MaxPowerStruct _maxPowerReport;
         
-    /// @brief Thread which monitors the CmigitsSharedMemory segment
-    CmigitsFmqThread _cmigitsWatchThread;
+    /// @brief C-MIGITS FMQ watcher, to signal when new data are available
+    CmigitsFmqWatcher _cmigitsWatcher;
 
     /// @brief Is new data showing up in CmigitsSharedMemory?
     bool _cmigitsResponsive;

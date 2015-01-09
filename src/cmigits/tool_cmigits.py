@@ -11,8 +11,7 @@ env.EnableQt4Modules(qt4modules)
 sources = Split('''
     Cmigits.cpp
     CmigitsFmq.cpp
-    CmigitsFmqThread.cpp
-    CmigitsFmqThreadWorker.cpp
+    CmigitsFmqWatcher.cpp
     CmigitsSharedMemory.cpp
     CmigitsStatus.cpp
     CmigitsShmWatchThread.cpp
@@ -21,8 +20,7 @@ sources = Split('''
 headers = Split('''
     Cmigits.h
     CmigitsFmq.h
-    CmigitsFmqThread.h
-    CmigitsFmqThreadWorker.h
+    CmigitsFmqWatcher.h
     CmigitsSharedMemory.h
     CmigitsStatus.h
     CmigitsShmWatchThread.h
@@ -30,6 +28,12 @@ headers = Split('''
 
 lib = env.Library('cmigits', sources)
 Default(lib)
+
+progEnv = env.Clone()
+progEnv.Append(LIBS=[lib])
+progEnv.Require(tools)
+cmigitsFmqDump = progEnv.Program('cmigitsFmqDump', ['cmigitsFmqDump.cpp', 'FmqDumper.cpp'])
+Default(cmigitsFmqDump)
 
 env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "cmigits library" })
 doxref = env.Apidocs(sources + headers)
