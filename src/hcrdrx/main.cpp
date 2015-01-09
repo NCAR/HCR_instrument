@@ -266,8 +266,12 @@ printStatsAndUpdateRegistration() {
 // Function called if we wait too long for first data
 void
 dataWaitTimedOut() {
-    ELOG << "First data not seen in 1 second. " << 
-            "Likely there was no 1 PPS signal to start timers!";
+    ELOG << "***********";
+    ELOG << "";
+    ELOG << "FIRST DATA NOT SEEN IN 1 SECOND";
+    ELOG << "Likely there was no 1 PPS signal to start timers!";
+    ELOG << "";
+    ELOG << "***********";
     _app->quit();
 }
 
@@ -328,7 +332,7 @@ main(int argc, char** argv)
 {
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
-    ILOG << "hcrdrx starting";
+    ILOG << "hcrdrx (" << getpid() << ") starting";
 
     // get the configuration parameters from the configuration file
     getConfigParams();
@@ -369,7 +373,11 @@ main(int argc, char** argv)
     // of "actual" time. That assures that p7142sd3c will determine the correct
     // data start time.
     if (hcrConfig.start_on_1pps() && ! systemClockOffsetOk()) {
-        ELOG << "Exiting because of bad or unknown system clock offset.";
+        ELOG << "***********";
+        ELOG << "";
+        ELOG << "EXITING ON ERROR: bad or unknown system clock offset";
+        ELOG << "";
+        ELOG << "***********";
         exit(1);
     }
 
@@ -502,7 +510,7 @@ main(int argc, char** argv)
     
     // Stop the downconverter threads
     for (int c = 0; c < _nChans; c++) {
-        ILOG << "Stopping thread for channel " << _chanNums[c];
+        DLOG << "Stopping thread for channel " << _chanNums[c];
         _downThreads[c]->terminate();
         _downThreads[c]->wait(1000);    // wait up to a second for termination
     }
@@ -520,7 +528,7 @@ main(int argc, char** argv)
     HcrPmc730Client pmc730Client(_pmc730dHost, _pmc730dPort);
     try {
         pmc730Client.xmitHvOff();
-        ILOG << "Turned off transmitter HV via HcrPmc730Daemon";
+        DLOG << "Turned off transmitter HV via HcrPmc730Daemon";
     } catch (std::exception & e) {
         WLOG << "Failed to turn off transmitter HV via HcrPmc730Daemon!: " << e.what();
     }
@@ -528,7 +536,7 @@ main(int argc, char** argv)
     const HcrPmc730::HmcOperationMode DEFAULT_HMC_MODE = HcrPmc730::HMC_MODE_BENCH_TEST;
     try {
         pmc730Client.setHmcMode(DEFAULT_HMC_MODE);
-        ILOG << "Set HMC mode to '" << 
+        DLOG << "Set HMC mode to '" << 
                 HcrPmc730::HmcModeNames[DEFAULT_HMC_MODE] << 
                 "' via HcrPmc730Daemon";
     } catch (std::exception & e) {
@@ -540,7 +548,7 @@ main(int argc, char** argv)
     // Unregister with procmap
     PMU_auto_unregister();
 
-    ILOG << "hcrdrx is done";
+    ILOG << "hcrdrx (" << getpid() << ") is done\n\n";
 
     return(0);
 }
