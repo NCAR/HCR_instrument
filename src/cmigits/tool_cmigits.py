@@ -12,18 +12,14 @@ sources = Split('''
     Cmigits.cpp
     CmigitsFmq.cpp
     CmigitsFmqWatcher.cpp
-    CmigitsSharedMemory.cpp
     CmigitsStatus.cpp
-    CmigitsShmWatchThread.cpp
 ''')
 
 headers = Split('''
     Cmigits.h
     CmigitsFmq.h
     CmigitsFmqWatcher.h
-    CmigitsSharedMemory.h
     CmigitsStatus.h
-    CmigitsShmWatchThread.h
 ''')
 
 lib = env.Library('cmigits', sources)

@@ -9,7 +9,6 @@
 #define CMIGITS_H_
 
 #include "CmigitsFmq.h"
-#include "CmigitsSharedMemory.h"
 #include <cstdio>
 #include <map>
 #include <string>
@@ -444,9 +443,6 @@ private:
     /// Does the C-MIGITS have GPS time and at least 4 satellites?
     bool _gpsAvailable;
 
-    /// Pointer to writable CmigitsSharedMemory
-    CmigitsSharedMemory * _shm;
-    
     // FMQ for publishing C-MIGITS data
     CmigitsFmq _fmq;
 

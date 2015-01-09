@@ -229,7 +229,6 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm) :
                 _utcToGpsCorrection(-1),
                 _insAvailable(false),
                 _gpsAvailable(false),
-                _shm(NULL),
                 _fmq(true),
                 _csvFile(NULL) {
 
@@ -276,9 +275,6 @@ Cmigits::Cmigits(std::string ttyDev, bool useShm) :
         _csvFile = fopen(oss.str().c_str(), "w+");
     }
 
-    // Create the CmigitsSharedMemory segment.
-    _shm = new CmigitsSharedMemory(true);
-
     // Much of the implementation for this class assumes local byte ordering is 
     // little-endian. Verify this.
     uint16_t word = 0x0102;
@@ -310,7 +306,6 @@ Cmigits::~Cmigits() {
     if (! _myThread.wait(1000)) {
         ELOG << __PRETTY_FUNCTION__ << ": wait for _myThread termination timed out!";
     }
-    delete(_shm);
     delete(_gpsTimeoutTimer);
     delete(_handshakeTimer);
     delete(_dataReadyNotifier);
@@ -830,13 +825,9 @@ Cmigits::_process3500Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", sats tracked: " << nSats;
     }
 
-    // Write to CmigitsSharedMemory and CmigitsFmq
+    // Write to CmigitsFmq
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
-    _shm->storeLatest3500Data(msecsSinceEpoch, _currentMode,
-            insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
-            positionFOM, velocityFOM, headingFOM, timeFOM,
-            hPosError, vPosError, velocityError);
     _fmq.storeLatest3500Data(msecsSinceEpoch, _currentMode,
             insAvailable, gpsAvailable, doingCoarseAlignment, nSats,
             positionFOM, velocityFOM, headingFOM, timeFOM,
@@ -903,11 +894,9 @@ Cmigits::_process3501Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", alt: " << altitude;
     }
 
-    // Write to CmigitsSharedMemory and CmigitsFmq
+    // Write to CmigitsFmq
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
-    _shm->storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
-            altitude);
     _fmq.storeLatest3501Data(msecsSinceEpoch, latitude, longitude,
             altitude);
 
@@ -957,11 +946,9 @@ Cmigits::_process3512Message(const uint16_t * msgWords, uint16_t nMsgWords) {
                 ", vel east: " << velEast << ", vel up: " << velUp;
     }
 
-    // Write to CmigitsSharedMemory and CmigitsFmq
+    // Write to CmigitsFmq
     uint64_t msecsSinceEpoch = 1000LL * msgTime.toTime_t() + 
             msgTime.time().msec();
-    _shm->storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
-            velNorth, velEast, velUp);
     _fmq.storeLatest3512Data(msecsSinceEpoch, pitch, roll, heading,
             velNorth, velEast, velUp);
     
