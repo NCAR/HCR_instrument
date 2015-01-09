@@ -15,6 +15,7 @@
 #include <toolsa/toolsa_macros.h>
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QWriteLocker>
 
 using namespace std;
@@ -33,8 +34,10 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
-        _cmigitsWatchThread(*this),
+        _cmigitsWatcher(0),
         _cmigitsDeque(),
+        _latestCmigitsData(),
+        _cmigitsDataDelayed(false),
         _statusTimer(NULL),
         _hPulseCount(0),
         _vPulseCount(0),
@@ -200,8 +203,13 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _sock = NULL;
   _newClient = false;
 
-  // Start _cmigitsWatchThread after this thread is started
-  connect(this, SIGNAL(started()), &_cmigitsWatchThread, SLOT(start()));
+  // Call _queueCmigitsData() when new C-MIGITS data are available. We need
+  // the method call to happen immediately from _cmigitsWatcher's thread
+  // rather than being queued in our affinity thread, so we *must* use
+  // Qt::DirectConnection here!
+  connect(&_cmigitsWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
+          this, SLOT(_queueCmigitsData(CmigitsFmq::MsgStruct)), 
+          Qt::DirectConnection);
 
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
@@ -297,12 +305,9 @@ void IwrfExport::run()
       metaDataInitialized = true;
     }
     
-    // If C-MIGITS data are new, assemble a packet containing that information.
-    // Test against the time of the C-MIGITS 3512 message, since that one
-    // goes out at the highest rate (100 Hz).
-    if (_assembleIwrfGeorefPacket()) {
-        _sendIwrfGeorefPacket();
-    }
+    // Generate any IWRF georef packet(s) with times before this pulse, waiting
+    // for new C-MIGITS data for a while if necessary.
+    _doIwrfGeorefsBeforePulse();
 
     // assemble and send out the IWRF pulse packet
     
@@ -946,66 +951,36 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeStartTag("HcrCmigitsData", 1);
 
   // Get latest data from C-MIGITS (if any).
-  CmigitsFmq::MsgStruct cmigits;
-  bool haveData = false;
-  if (! _cmigitsDeque.empty()) {
-      haveData = true;
-      cmigits = _cmigitsDeque.back();
-  } else {
-      WLOG << "Nothing in _cmigitsDeque; putting bad C-MIGITS data in XML.";
-  }
+  CmigitsFmq::MsgStruct cmigits = _latestCmigitsData;
 
   // C-MIGITS status info (latest 3500 message from C-MIGITS)
-  xml += TaXml::writeDouble("Cmigits3500Time", 2,
-          haveData ? 0.001 * cmigits.time3500 : 0.0);
-  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2,
-          haveData ? cmigits.currentMode : false);
-  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2,
-          haveData ? cmigits.insAvailable : false);
-  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2,
-          haveData ? cmigits.gpsAvailable : false);
-  xml += TaXml::writeInt("Cmigits3500NSats", 2,
-          haveData ? cmigits.nSats : 0);
-  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2,
-          haveData ? cmigits.positionFOM : 0);
-  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2,
-          haveData ? cmigits.velocityFOM : 0);
-  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2,
-          haveData ? cmigits.headingFOM : 0);
-  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2,
-          haveData ? cmigits.timeFOM : 0);
-  xml += TaXml::writeDouble("Cmigits3500HPosError", 2,
-          haveData ? cmigits.hPosError : 0.0);
-  xml += TaXml::writeDouble("Cmigits3500VPosError", 2,
-          haveData ? cmigits.vPosError : 0.0);
-  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2,
-          haveData ? cmigits.velocityError : 0.0);
+  xml += TaXml::writeDouble("Cmigits3500Time", 2, 0.001 * cmigits.time3500);
+  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, cmigits.currentMode);
+  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, cmigits.insAvailable);
+  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, cmigits.gpsAvailable);
+  xml += TaXml::writeInt("Cmigits3500NSats", 2, cmigits.nSats);
+  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, cmigits.positionFOM);
+  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, cmigits.velocityFOM);
+  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, cmigits.headingFOM);
+  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2, cmigits.timeFOM);
+  xml += TaXml::writeDouble("Cmigits3500HPosError", 2, cmigits.hPosError);
+  xml += TaXml::writeDouble("Cmigits3500VPosError", 2, cmigits.vPosError);
+  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2, cmigits.velocityError);
 
   // current position/velocity (latest 3501 message from C-MIGITS)
-  xml += TaXml::writeDouble("Cmigits3501Time", 2,
-          haveData ? 0.001 * cmigits.time3501 : 0.0);
-  xml += TaXml::writeDouble("Cmigits3501Latitude", 2,
-          haveData ? cmigits.latitude : 0.0);
-  xml += TaXml::writeDouble("Cmigits3501Longitude", 2,
-          haveData ? cmigits.longitude : 0.0);
-  xml += TaXml::writeDouble("Cmigits3501Altitude", 2,
-          haveData ? cmigits.altitude : 0.0);
+  xml += TaXml::writeDouble("Cmigits3501Time", 2, 0.001 * cmigits.time3501);
+  xml += TaXml::writeDouble("Cmigits3501Latitude", 2, cmigits.latitude);
+  xml += TaXml::writeDouble("Cmigits3501Longitude", 2, cmigits.longitude);
+  xml += TaXml::writeDouble("Cmigits3501Altitude", 2, cmigits.altitude);
 
   // current attitude (latest 3512 message from C-MIGITS)
-  xml += TaXml::writeDouble("Cmigits3512Time", 2,
-          haveData ? 0.001 * cmigits.time3512 : 0.0);
-  xml += TaXml::writeDouble("Cmigits3512Pitch", 2,
-          haveData ? cmigits.pitch : 0.0);
-  xml += TaXml::writeDouble("Cmigits3512Roll", 2,
-          haveData ? cmigits.roll : 0.0);
-  xml += TaXml::writeDouble("Cmigits3512Heading", 2,
-          haveData ? cmigits.heading : 0.0);
-  xml += TaXml::writeDouble("Cmigits3512VelNorth", 2,
-          haveData ? cmigits.velNorth : 0.0);
-  xml += TaXml::writeDouble("Cmigits3512VelEast", 2,
-          haveData ? cmigits.velEast : 0.0);
-  xml += TaXml::writeDouble("Cmigits3512VelUp", 2,
-          haveData ? cmigits.velUp : 0.0);
+  xml += TaXml::writeDouble("Cmigits3512Time", 2, 0.001 * cmigits.time3512);
+  xml += TaXml::writeDouble("Cmigits3512Pitch", 2, cmigits.pitch);
+  xml += TaXml::writeDouble("Cmigits3512Roll", 2, cmigits.roll);
+  xml += TaXml::writeDouble("Cmigits3512Heading", 2, cmigits.heading);
+  xml += TaXml::writeDouble("Cmigits3512VelNorth", 2, cmigits.velNorth);
+  xml += TaXml::writeDouble("Cmigits3512VelEast", 2, cmigits.velEast);
+  xml += TaXml::writeDouble("Cmigits3512VelUp", 2, cmigits.velUp);
 
   // end C-MIGITS data
 
@@ -1075,139 +1050,167 @@ void IwrfExport::_allocStatusBuf()
 }
 
 //////////////////////////////////////////////////
-// Assemble IWRF georef packet if we have georef data earlier than the current
-// pulse. Return true iff we create a new georef packet.
-bool IwrfExport::_assembleIwrfGeorefPacket() {
-  // Hold a write lock while we modify members.
-  _accessLock.lockForWrite();
-  
-  // Convert pulse time to milliseconds since the Epoch
-  uint64_t pulseTime = uint64_t(_timeSecs) * 1000 + _nanoSecs / 1000000;
+// Write georef packet(s) for all C-MIGITS deque entries up to the current
+// pulse time. If necessary, we will wait up to 1/2 second for data to show
+// up in the deque.
+void IwrfExport::_doIwrfGeorefsBeforePulse() {
+  // Get the read lock
+  _accessLock.lockForRead();
 
-  // Quick out if the C-MIGITS deque is empty
-  if (_cmigitsDeque.empty()) {
-      _accessLock.unlock();
-      return(false);
-  }
-
-  // Find the latest C-MIGITS entry in our deque which is earlier than the
-  // current pulse.
-  // The C-MIGITS 3512 message comes out at 100 Hz, so use we its time as the
-  // time for each shared memory struct.
-  CmigitsFmq::MsgStruct cmigits;
-  bool haveData = false;    // does cmigits contain data earlier than the pulse time?
-  CmigitsFmq::MsgStruct nextCmigits = _cmigitsDeque.front();
-  while (nextCmigits.time3512 < pulseTime) {
-      cmigits = nextCmigits;
-      haveData = true;
-      // Break out if we just looked at the last entry in the deque. Remove the
-      // entry from the deque only if it's older than CMIGITS_TIMEOUT_SECS. We 
-      // wait that long since we generally want the last entry in the deque so 
-      // that _assembleStatusXml() has C-MIGITS data to put into the status.
-      if (_cmigitsDeque.size() == 1) {
-          // Only remove the last entry if it is older than CMIGITS_TIMEOUT_MSECS
-          if ((pulseTime - cmigits.time3512) > CMIGITS_TIMEOUT_MSECS) {
-              int delta = pulseTime - cmigits.time3512;
-              ILOG << "Removing last deque entry with delta = " << delta <<
-                  " and " << _cmigitsDeque.size() << " left in deque";
-              _cmigitsDeque.pop_front();
+  // If C-MIGITS deque is empty and we haven't already marked C-MIGITS data as
+  // delayed, busy wait for a bit to see if more will come in. We need to do 
+  // this to allow for occasional times when C-MIGITS data arrive later than the 
+  // associated pulse data.
+  if (_cmigitsDeque.empty() && ! _cmigitsDataDelayed) {
+      // Wait up to 1/2 second for more C-MIGITS data to arrive.
+      static const int MAX_WAIT_MS = 500;   // wait up to 1/2 second
+      static const int SLEEP_MS = 10;
+      int total_wait_ms = 0;
+      while (true) {
+          // Release our lock and sleep briefly
+          _accessLock.unlock();
+          usleep(SLEEP_MS * 1000);
+          total_wait_ms += SLEEP_MS;
+          
+          // Get the read lock again
+          _accessLock.lockForRead();
+          
+          // If we've waited MAX_WAIT_MS, mark C-MIGITS data as delayed so that
+          // we don't wait again until new data show up in the deque.
+          if (_cmigitsDeque.empty() && (total_wait_ms >= MAX_WAIT_MS)) {
+              WLOG << "C-MIGITS data too delayed after " << 
+                      total_wait_ms << " ms";
+              break;
+          } else if (! _cmigitsDeque.empty()) {
+              if (total_wait_ms > 30) {
+                ILOG << "Waited " << total_wait_ms << " ms for C-MIGITS data";
+              }
+              break;
           }
-          // If we've already generated a georef from this C-MIGITS entry,
-          // just return false now. Otherwise, for as long as this is the only
-          // entry in the deque, we would return the same georef for *every* 
-          // pulse.
-          if (_lastGeorefTime == cmigits.time3512) {
-              _accessLock.unlock();
-              return(false);
-          }
-          // Break out of the while loop to return a georef built from the 
-          // entry we found.
-          break;
       }
-      // Remove this entry so we can look at the next one
-      _cmigitsDeque.pop_front();
-      // Check the next entry on the deque
-      nextCmigits = _cmigitsDeque.front();
   }
+  
+  // If the deque is empty at this point, consider C-MIGITS data delayed.
+  _cmigitsDataDelayed = _cmigitsDeque.empty();
 
-  // If we didn't find earlier C-MIGITS data, just return false now.
-  if (! haveData) {
-      _accessLock.unlock();
-      return false;
-  }
-
-  // Initialize the georef packet
-  iwrf_platform_georef_init(_radarGeoref);
-  // Time tag the georef packet with the C-MIGITS 3512 message time
-  if ((cmigits.time3512 % 1000) / 10 == 0) {
-      DLOG << "New georef tagged " << (cmigits.time3512 / 1000) % 60 <<
-              "." << std::setw(3) << std::setfill('0') <<
-              cmigits.time3512 % 1000 << " for pulse tagged " <<
-              _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
-              _nanoSecs / 1000000;
-  }
-  _radarGeoref.packet.time_secs_utc = cmigits.time3512 / 1000;                 // seconds since Epoch
-  _radarGeoref.packet.time_nano_secs = (cmigits.time3512 % 1000) * 1000000;    // nsecs
-
-  _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
-  _radarGeoref.altitude_msl_km = cmigits.altitude * 0.001; // m -> km
-  _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(cmigits);
-  _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
-  _radarGeoref.ew_velocity_mps = cmigits.velEast;
-  _radarGeoref.heading_deg = cmigits.heading;
-  _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
-  _radarGeoref.latitude = cmigits.latitude;
-  _radarGeoref.longitude = cmigits.longitude;
-  _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
-  _radarGeoref.ns_velocity_mps = cmigits.velNorth;
-  _radarGeoref.pitch_deg = cmigits.pitch;
-  _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
-  _radarGeoref.roll_deg = cmigits.roll;
-  _radarGeoref.vert_velocity_mps = cmigits.velUp;
-  _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
-
-  _radarInfo.latitude_deg = cmigits.latitude;
-  _radarInfo.longitude_deg = cmigits.longitude;
-  _radarInfo.altitude_m = cmigits.altitude;
-
-  // Angles of the reflector rotation and tilt motors.
-  float rotMotorAngle = _pulseH->getRotMotorAngle();
-  float tiltMotorAngle = _pulseH->getTiltMotorAngle();
-  _radarGeoref.drive_angle_1_deg = rotMotorAngle;
-  _radarGeoref.drive_angle_2_deg = tiltMotorAngle;
-
-  // Rotation and tilt of the radar *beam* w.r.t. the pod's longitudinal axis.
-  // Zero rotation means the beam points through the top of the pod and
-  // positive rotation moves clockwise as viewed looking from the back
-  // of the pod toward the front. Zero tilt means the beam points normal to
-  // the longitudinal axis, and positive tilt means the beam points
-  // forward.
-  //
-  // Beware of "rotation" and "tilt" terms here; the angles of the rotation
-  // motor and tilt motor do not map directly to rotation_angle_deg and
-  // tilt_deg! In HCR, the axis of the tilt motor is fixed w.r.t. the pod and
-  // corresponds with the pod's C-MIGITS pitch axis. The axis of the rotation
-  // motor is moved by the tilt motor, and is only parallel to the pod's
-  // longitudinal axis when the tilt motor angle is zero.
-  _radarGeoref.rotation_angle_deg = rotMotorAngle;
-  _radarGeoref.tilt_deg = ((2.0 * tiltMotorAngle) // x2 for reflection
-          * cos(rotMotorAngle * DEG_TO_RAD));
-
-  int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
-  for (int i = 0; i < nUnused; i++) {
-      _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
-  }
-
-  // Release the lock before we call a method which may want it
+  // Release our read lock
   _accessLock.unlock();
   
-  // compute elevation and azimuth
-  _computeRadarAngles();
-  
-  // Save the time of this georef
-  _lastGeorefTime = cmigits.time3512;
+  // Get pulse time in milliseconds since the Epoch
+  uint64_t pulseTime = uint64_t(_timeSecs) * 1000 + _nanoSecs / 1000000;
 
-  return(true);
+  // Write a georef packet for every entry in the deque before the current pulse
+  // time.
+  int writeCount;
+  for (writeCount = 0; ! _cmigitsDeque.empty(); writeCount++) {
+      // Get the next entry, and stop if its time is after our pulse time
+      CmigitsFmq::MsgStruct cmigits = _cmigitsDeque.front();
+      if (cmigits.time3512 > pulseTime) {
+          break;
+      }
+      // Get the write lock
+      _accessLock.lockForWrite();
+      
+      // We're going to use this entry, so remove it from the deque
+      _cmigitsDeque.pop_front();
+      
+      // Initialize the georef packet
+      iwrf_platform_georef_init(_radarGeoref);
+      
+      // Time tag the georef packet with the C-MIGITS 3512 message time
+      if ((cmigits.time3512 % 1000) / 10 == 0) {
+          DLOG << "New georef tagged " << (cmigits.time3512 / 1000) % 60 <<
+                  "." << std::setw(3) << std::setfill('0') <<
+                  cmigits.time3512 % 1000 << " for pulse tagged " <<
+                  _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
+                  _nanoSecs / 1000000;
+      }
+      _radarGeoref.packet.time_secs_utc = cmigits.time3512 / 1000;
+      _radarGeoref.packet.time_nano_secs = (cmigits.time3512 % 1000) * 1000000;
+
+      _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
+      _radarGeoref.altitude_msl_km = cmigits.altitude * 0.001; // m -> km
+      _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(cmigits);
+      _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
+      _radarGeoref.ew_velocity_mps = cmigits.velEast;
+      _radarGeoref.heading_deg = cmigits.heading;
+      _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
+      _radarGeoref.latitude = cmigits.latitude;
+      _radarGeoref.longitude = cmigits.longitude;
+      _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
+      _radarGeoref.ns_velocity_mps = cmigits.velNorth;
+      _radarGeoref.pitch_deg = cmigits.pitch;
+      _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
+      _radarGeoref.roll_deg = cmigits.roll;
+      _radarGeoref.vert_velocity_mps = cmigits.velUp;
+      _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
+
+      _radarInfo.latitude_deg = cmigits.latitude;
+      _radarInfo.longitude_deg = cmigits.longitude;
+      _radarInfo.altitude_m = cmigits.altitude;
+
+      // Angles of the reflector rotation and tilt motors.
+      float rotMotorAngle = _pulseH->getRotMotorAngle();
+      float tiltMotorAngle = _pulseH->getTiltMotorAngle();
+      _radarGeoref.drive_angle_1_deg = rotMotorAngle;
+      _radarGeoref.drive_angle_2_deg = tiltMotorAngle;
+
+      // Rotation and tilt of the radar *beam* w.r.t. the pod's longitudinal axis.
+      // Zero rotation means the beam points through the top of the pod and
+      // positive rotation moves clockwise as viewed looking from the back
+      // of the pod toward the front. Zero tilt means the beam points normal to
+      // the longitudinal axis, and positive tilt means the beam points
+      // forward.
+      //
+      // Beware of "rotation" and "tilt" terms here; the angles of the rotation
+      // motor and tilt motor do not map directly to rotation_angle_deg and
+      // tilt_deg! In HCR, the axis of the tilt motor is fixed w.r.t. the pod and
+      // corresponds with the pod's C-MIGITS pitch axis. The axis of the rotation
+      // motor is moved by the tilt motor, and is only parallel to the pod's
+      // longitudinal axis when the tilt motor angle is zero.
+      _radarGeoref.rotation_angle_deg = rotMotorAngle;
+      _radarGeoref.tilt_deg = ((2.0 * tiltMotorAngle) // x2 for reflection
+              * cos(rotMotorAngle * DEG_TO_RAD));
+
+      int nUnused = sizeof(_radarGeoref.unused) / sizeof(_radarGeoref.unused[0]);
+      for (int i = 0; i < nUnused; i++) {
+          _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
+      }
+      
+      // Release our lock before calling methods which need it
+      _accessLock.unlock();
+      
+      // compute elevation and azimuth
+      _computeRadarAngles();
+      
+      // Log unexpected time differences between georef packets
+      uint64_t thisGeorefTime = cmigits.time3512;
+      int64_t deltaMs = _lastGeorefTime ? thisGeorefTime - _lastGeorefTime : 0;
+      if (deltaMs < 0) {
+          QDateTime qLastTime = 
+                  QDateTime::fromTime_t(_lastGeorefTime / 1000).addMSecs(_lastGeorefTime % 1000);
+          ELOG << "Georef time went backward " << -deltaMs << " ms after " <<
+                  qLastTime.time().toString("hh:mm:ss.zzz").toStdString();    
+      } else if (deltaMs > 11) { // nominal 10 ms difference between 3512 
+                                 // time tags is sometimes 9 or 11 ms.
+          QDateTime qLastTime = 
+                  QDateTime::fromTime_t(_lastGeorefTime / 1000).addMSecs(_lastGeorefTime % 1000);
+          WLOG << "Georef time jumped forward " << deltaMs << " ms after " <<
+                  qLastTime.time().toString("hh:mm:ss.zzz").toStdString();                  
+      }
+      
+      _lastGeorefTime = thisGeorefTime;
+      
+      // send the packet
+      _sendIwrfGeorefPacket();  
+  }
+  
+  // Log a warning if we wrote more than one georef packet and we are not on 
+  // the first pulse.
+  if (writeCount > 1) {
+      WLOG << "Wrote " << writeCount << 
+              " consecutive georef packets written before pulse " << _pulseSeqNum;
+  }
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1399,21 +1402,63 @@ void IwrfExport::_closeSocketToClient()
 //////////////////////////////////////////////////
 // Accept incoming new C-MIGITS data
 
-void IwrfExport::acceptCmigitsData(CmigitsFmq::MsgStruct data) {
+void IwrfExport::_queueCmigitsData(CmigitsFmq::MsgStruct data) {
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);
 
   _cmigitsCount++;
   
+  // Log anything where C-MIGITS latency is longer than current pulse latency
+  struct timeval tvNow;
+  gettimeofday(&tvNow, 0);
+  uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
+  int cmigitsLagMs = nowMs - data.time3512;
+  uint64_t pulseMs = 1000LL * _timeSecs + _nanoSecs / 1000000;
+  int pulseLagMs = nowMs - pulseMs;
+  if (_timeSecs == 0) {
+      pulseLagMs = 9999999;    // fake pulse lag if we have no pulse yet
+  }
+  if (cmigitsLagMs > pulseLagMs) {
+      if (pulseLagMs < cmigitsLagMs) {
+          WLOG << "C-MIGITS data latency (" << cmigitsLagMs << 
+                  " ms) > pulse latency (" << pulseLagMs << " ms)";
+      }
+  }
+  
+  // Log gaps in the C-MIGITS data
+  uint64_t lastTime = _latestCmigitsData.time3512;
+  uint64_t thisTime = data.time3512;
+  int64_t deltaMs = lastTime ? thisTime - lastTime : 0;
+  QDateTime qLastTime = QDateTime::fromTime_t(lastTime / 1000).addMSecs(lastTime % 1000);
+  if (deltaMs < 0) {
+      WLOG << "C-MIGITS time went backwards by " << -deltaMs << " ms after " <<
+              qLastTime.time().toString("hh:mm:ss.zzz").toStdString();
+  } else if (deltaMs > 11) {
+      // Nominal time between 100 Hz data is 10 ms, but 1 ms resolution in 
+      // time stamps means we sometimes see 9 or 11 ms. Anything over 11 ms 
+      // is notable, though...
+      WLOG << "C-MIGITS data gap of " << deltaMs << " ms after " <<
+              qLastTime.time().toString("hh:mm:ss.zzz").toStdString();
+  }
+
   // If we have too many items in the deque, clear it now.
   if (_cmigitsDeque.size() == 1000) {
       ILOG << "clearing _cmigitsDeque because it's too big";
       _cmigitsDeque.clear();
   }
 
-  // Push the new item onto the deque
-  _cmigitsDeque.push_back(data);
+  // Push the new item onto the deque (or replace the last item if its time
+  // is the same as the incoming entry).
+  if (! _cmigitsDeque.empty() && lastTime == thisTime) {
+      DLOG << "Overwriting C-MIGITS entry for " << data.time3512;
+      _cmigitsDeque.back() = data;
+  } else {
+      _cmigitsDeque.push_back(data);
+  }
+  
+  // Keep the latest data for use in assembling status XML
+  _latestCmigitsData = data;
 }
 
 //////////////////////////////////////////////////
@@ -1434,6 +1479,11 @@ void IwrfExport::_logStatus() {
 // Log dataTimeout() from CmigitsShmWatchThread
 
 void IwrfExport::_onCmigitsShmTimeout() {
-    DLOG << "Data timeout reported by CmigitsShmWatchThread." << 
-            "Last georef was for time " << _lastGeorefTime;
+    if (_latestCmigitsData.time3512 != 0) {
+        WLOG << "Data timeout reported by CmigitsFmqWatcher. " << 
+                "Last georef was for time " << _lastGeorefTime;
+        WLOG << "Zeroing C-MIGITS data for status XML until " <<
+                "new C-MIGITS data arrive";
+    }
+    _latestCmigitsData = CmigitsFmq::MsgStruct();   // all-zero data struct
 }

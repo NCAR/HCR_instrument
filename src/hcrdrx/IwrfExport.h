@@ -5,7 +5,7 @@
 #include "HcrDrxConfig.h"
 #include "StatusGrabber.h"
 #include "PulseData.h"
-#include "IwrfExportCmigitsThread.h"
+#include <CmigitsFmqWatcher.h>
 #include <HcrPmc730.h>
 #include <deque>
 #include <radar/iwrf_data.h>
@@ -70,15 +70,10 @@ public:
   
   PulseData *writePulseV(PulseData *val);
   
-  /// @brief Method called to put new C-MIGITS data in our queue.
-  void acceptCmigitsData(CmigitsFmq::MsgStruct cmigitsData);
-
 private slots:
   /// @brief This slot will be called each time a new set of data is available
   /// from the C-MIGITS shared memory.
-  void _acceptCmigitsData(CmigitsFmq::MsgStruct cmigitsData) {
-      acceptCmigitsData(cmigitsData);
-  }
+  void _queueCmigitsData(CmigitsFmq::MsgStruct cmigitsData);
 
   /// @brief Log some status information
   void _logStatus();
@@ -185,10 +180,16 @@ private:
   double _rotationCorr;
 
   /// Thread which reads data from the C-MIGITS FMQ and puts it in our deque
-  IwrfExportCmigitsThread _cmigitsWatchThread;
+  CmigitsFmqWatcher _cmigitsWatcher;
   
-  /// deque of C-MIGITS data
+  /// deque of C-MIGITS data for generating iwrf_platform_georef packets
   std::deque<CmigitsFmq::MsgStruct> _cmigitsDeque;
+  
+  /// Latest C-MIGITS data, used for generating IWRF status XML packets
+  CmigitsFmq::MsgStruct _latestCmigitsData;
+  
+  /// Are C-MIGITS data delayed longer than we want to wait for merging?
+  bool _cmigitsDataDelayed;
 
   /// simulation of antenna angles
 
@@ -231,7 +232,7 @@ private:
   int _sendIwrfStatusXmlPacket();
   void _allocStatusBuf();
   
-  bool _assembleIwrfGeorefPacket();
+  void _doIwrfGeorefsBeforePulse();
   int _sendIwrfGeorefPacket();
   void _computeRadarAngles();
 

@@ -23,7 +23,6 @@ sources = Split("""
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
 IwrfExport.cpp
-IwrfExportCmigitsThread.cpp
 main.cpp
 PulseData.cpp
 StatusGrabber.cpp
@@ -35,7 +34,6 @@ HcrDrxConfig.h
 HcrDrxPub.h
 HcrdrxRpcClient.h
 IwrfExport.h
-IwrfExportCmigitsThread.h
 PulseData.h
 StatusGrabber.h
 """)
