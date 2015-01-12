@@ -6,6 +6,7 @@
  */
 
 #include "CmigitsFmqWatcher.h"
+#include <unistd.h>
 #include <sys/time.h>
 #include <QDateTime>
 #include <QMetaType>
