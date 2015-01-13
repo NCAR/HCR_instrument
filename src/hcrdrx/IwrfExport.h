@@ -31,9 +31,6 @@ class IwrfExportCmigitsThread;
 /// This thread acts as a server, listening for a client to connect. Only
 /// a single client is supported, given the high bandwidth of the data
 /// stream. If no client is connected, the data is discarded.
-///
-/// Since IwrfExport does not use a Qt event loop at this point, the thread
-/// should be stopped by calling its terminate() method.
 
 class IwrfExport : public QThread {
 
