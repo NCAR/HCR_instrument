@@ -40,8 +40,8 @@
 class CmigitsFmq : public QObject {
     Q_OBJECT
 public:
-    /// The struct defining the layout/contents of the shared memory segment
-    typedef struct _CmigitsShmStruct {
+    /// The struct defining the layout/contents of a message in the C-MIGITS FMQ
+    typedef struct _MsgStruct {
         pid_t writerPid;        // process ID of the current writer
         // Latest C-MIGITS status data from the C-MIGITS 3500 message.
         // For details
@@ -73,7 +73,7 @@ public:
         double velUp;           ///< m/s
 
         // Default initializer
-        _CmigitsShmStruct() :
+        _MsgStruct() :
             writerPid(0),
             time3500(0),
             currentMode(0),
