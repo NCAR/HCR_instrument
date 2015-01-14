@@ -248,7 +248,7 @@ main(int argc, char *argv[]) {
     mcStatusThread.start();
     
     // MaxPowerClient instance
-    MaxPowerClient maxPowerClient("localhost", 13000);
+    MaxPowerClient maxPowerClient("archiver", 13000);
     maxPowerClient.start();
     
     // Instantiate the object which will monitor pressure and control the
