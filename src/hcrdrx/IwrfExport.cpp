@@ -1476,14 +1476,17 @@ void IwrfExport::_queueCmigitsData(CmigitsFmq::MsgStruct data) {
 // Log status
 
 void IwrfExport::_logStatus() {
-  // Hold a write lock until we return. This is safe because we make no calls
-  // to self methods below here.
-  QWriteLocker wLocker(&_accessLock);
+  if (! _accessLock.tryLockForWrite(100)) {
+      ELOG << "_logStatus(): unable to obtain lock";
+      return;
+  }
 
   ILOG << "new C-MIGITS count: " << _cmigitsCount;
   _hPulseCount = 0;
   _vPulseCount = 0;
   _cmigitsCount = 0;
+  
+  _accessLock.unlock();
 }
 
 //////////////////////////////////////////////////
