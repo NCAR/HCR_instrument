@@ -1077,11 +1077,13 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           
           // If we've waited MAX_WAIT_US, mark C-MIGITS data as delayed so that
           // we don't wait again until new data show up in the deque.
-          if (_cmigitsDeque.empty() && (total_wait_us >= MAX_WAIT_US)) {
-              WLOG << "C-MIGITS data too delayed after " << 
-                      0.001 * total_wait_us << " ms";
-              break;
-          } else if (! _cmigitsDeque.empty()) {
+          if (_cmigitsDeque.empty()) {
+              if (total_wait_us >= MAX_WAIT_US) {
+                  WLOG << "C-MIGITS data too delayed after " << 
+                          0.001 * total_wait_us << " ms";
+                  break;
+              }
+          } else {
               if (total_wait_us > 30000) {
                 ILOG << "Waited " << 0.001 * total_wait_us << " ms for C-MIGITS data";
               }
@@ -1093,9 +1095,6 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // If the deque is empty at this point, consider C-MIGITS data delayed.
   _cmigitsDataDelayed = _cmigitsDeque.empty();
 
-  // Release our read lock
-  _accessLock.unlock();
-  
   // Get pulse time in milliseconds since the Epoch
   uint64_t pulseTime = uint64_t(_timeSecs) * 1000 + _nanoSecs / 1000000;
 
@@ -1109,6 +1108,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           break;
       }
       // Get the write lock
+      _accessLock.unlock();
       _accessLock.lockForWrite();
       
       // We're going to use this entry, so remove it from the deque
@@ -1177,12 +1177,6 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           _radarGeoref.unused[i] = IWRF_MISSING_FLOAT;
       }
       
-      // Release our lock before calling methods which need it
-      _accessLock.unlock();
-      
-      // compute elevation and azimuth
-      _computeRadarAngles();
-      
       // Log unexpected time differences between georef packets
       uint64_t thisGeorefTime = cmigits.time3512;
       int64_t deltaMs = _lastGeorefTime ? thisGeorefTime - _lastGeorefTime : 0;
@@ -1201,16 +1195,28 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       
       _lastGeorefTime = thisGeorefTime;
       
+      // Release our lock before calling methods which need it
+      _accessLock.unlock();
+      
+      // compute elevation and azimuth
+      _computeRadarAngles();
+      
       // send the packet
-      _sendIwrfGeorefPacket();  
+      _sendIwrfGeorefPacket();
+      
+      // get the read lock again before testing _cmigitsDeque.empty()
+      _accessLock.lockForRead();
   }
   
   // Log a warning if we wrote more than one georef packet and we are not on 
   // the first pulse.
   if (writeCount > 1) {
       WLOG << "Wrote " << writeCount << 
-              " consecutive georef packets written before pulse " << _pulseSeqNum;
+              " consecutive georef packets before pulse " << _pulseSeqNum;
   }
+  
+  // Release the lock before exiting
+  _accessLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////
