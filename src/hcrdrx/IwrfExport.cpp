@@ -1189,13 +1189,13 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           QDateTime qLastTime = 
                   QDateTime::fromTime_t(_lastGeorefTime / 1000).addMSecs(_lastGeorefTime % 1000);
           ELOG << "Georef time went backward " << -deltaMs << " ms after " <<
-                  qLastTime.time().toString("hh:mm:ss.zzz").toStdString();    
+                  qLastTime.toString("hh:mm:ss.zzz").toStdString();    
       } else if (deltaMs > 11) { // nominal 10 ms difference between 3512 
                                  // time tags is sometimes 9 or 11 ms.
           QDateTime qLastTime = 
                   QDateTime::fromTime_t(_lastGeorefTime / 1000).addMSecs(_lastGeorefTime % 1000);
           WLOG << "Georef time jumped forward " << deltaMs << " ms after " <<
-                  qLastTime.time().toString("hh:mm:ss.zzz").toStdString();                  
+                  qLastTime.toString("hh:mm:ss.zzz").toStdString();                  
       }
       
       _lastGeorefTime = thisGeorefTime;
@@ -1444,18 +1444,26 @@ void IwrfExport::_queueCmigitsData(CmigitsFmq::MsgStruct data) {
   QDateTime qLastTime = QDateTime::fromTime_t(lastTime / 1000).addMSecs(lastTime % 1000);
   if (deltaMs < 0) {
       WLOG << "C-MIGITS time went backwards by " << -deltaMs << " ms after " <<
-              qLastTime.time().toString("hh:mm:ss.zzz").toStdString();
+              qLastTime.toString("hh:mm:ss.zzz").toStdString();
   } else if (deltaMs > 11) {
       // Nominal time between 100 Hz data is 10 ms, but 1 ms resolution in 
       // time stamps means we sometimes see 9 or 11 ms. Anything over 11 ms 
       // is notable, though...
       WLOG << "C-MIGITS data gap of " << deltaMs << " ms after " <<
-              qLastTime.time().toString("hh:mm:ss.zzz").toStdString();
+              qLastTime.toString("hh:mm:ss.zzz").toStdString();
   }
 
   // If we have too many items in the deque, clear it now.
   if (_cmigitsDeque.size() == 1000) {
+      uint64_t earliest = _cmigitsDeque.front().time3512;
+      QDateTime qEarliest = QDateTime::fromTime_t(earliest / 1000).addMSecs(earliest % 1000);
+      uint64_t latest = _cmigitsDeque.back().time3512;
+      QDateTime qLatest = QDateTime::fromTime_t(latest / 1000).addMSecs(latest % 1000);
+      QDateTime qPulse = QDateTime::fromTime_t(pulseMs / 1000).addMSecs(pulseMs % 1000);
       ILOG << "clearing _cmigitsDeque because it's too big";
+      ILOG << "Deque times: " << qEarliest.toString("hh:mm:ss.zzz").toStdString() <<
+              "-" << qLatest.toString("hh:mm:ss.zzz").toStdString() <<
+              ", pulse time " << qPulse.toString("hh:mm:ss.zzz").toStdString();
       _cmigitsDeque.clear();
   }
 
