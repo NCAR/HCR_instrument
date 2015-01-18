@@ -219,8 +219,13 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
 IwrfExport::~IwrfExport()
 
 {
-
-  _closeSocketToClient();
+  _statusTimer->stop();
+  delete(_statusTimer);
+  
+  if (_sock && _sock->isOpen()) {
+    _sock->close();
+  }
+  delete(_sock);
 
   delete _qH;
   delete _qV;
