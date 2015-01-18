@@ -30,7 +30,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
-        _cmigitsWatcher(0),
+        _cmigitsWatchThread(*this),
         _cmigitsDeque(),
         _latestCmigitsData(),
         _cmigitsDataDelayed(false),
@@ -199,13 +199,8 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _sock = NULL;
   _newClient = false;
 
-  // Call _queueCmigitsData() when new C-MIGITS data are available. We need
-  // the method call to happen immediately from _cmigitsWatcher's thread
-  // rather than being queued in our affinity thread, so we *must* use
-  // Qt::DirectConnection here!
-  connect(&_cmigitsWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
-          this, SLOT(_queueCmigitsData(CmigitsFmq::MsgStruct)), 
-          Qt::DirectConnection);
+  // Start _cmigitsWatchThread after this thread is started
+  connect(this, SIGNAL(started()), &_cmigitsWatchThread, SLOT(start()));
 
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
@@ -1413,7 +1408,7 @@ void IwrfExport::_closeSocketToClient()
 //////////////////////////////////////////////////
 // Accept incoming new C-MIGITS data
 
-void IwrfExport::_queueCmigitsData(CmigitsFmq::MsgStruct data) {
+void IwrfExport::queueCmigitsData(CmigitsFmq::MsgStruct data) {
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
   QWriteLocker wLocker(&_accessLock);
