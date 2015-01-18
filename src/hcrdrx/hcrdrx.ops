@@ -5,16 +5,14 @@ radar_id                HCR
 calibration_file        /home/hcr/projDir/moments/params/fallback_cal.xml
 start_on_1pps		1
 
-#gates                   60  
-#gates                   175
-gates                   400
+gates                   770
 
 staggered_prt           0
 prt1                    1.01376e-4  # s
 
 # digitizer_gate0_delay is the time in seconds from T0 until digitizer sampling
 # begins. This number is effectively:
-#    tx_delay + tx_latency + 0.5 * tx_pulse_width + (downcoverter latency) + 
+#    tx_delay + tx_latency + 0.5 * tx_pulse_width + (downconverter latency) + 
 #         (desired offset of gate0 w.r.t. the transmit pulse) 
 # The downconverter latency is quite large, so the timing can look 
 # like we don't sample until *well after* the transmitted pulse, yet we 
