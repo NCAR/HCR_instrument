@@ -392,7 +392,7 @@ main(int argc, char** argv)
         hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
         hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
         Pentek::p7142sd3c::DDC8DECIMATE, hcrConfig.start_on_1pps(), 
-        _simPauseMS);
+        _simPauseMS, false, false, 0, 0);
     
     if (! _sd3c->ok()) {
         ELOG << "P7142 was not opened successfully!";
