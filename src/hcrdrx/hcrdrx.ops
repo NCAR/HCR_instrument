@@ -5,7 +5,8 @@ radar_id                HCR
 calibration_file        /home/hcr/projDir/moments/params/fallback_cal.xml
 start_on_1pps		1
 
-gates                   770
+#gates                   770
+gates                   385
 
 staggered_prt           0
 prt1                    1.01376e-4  # s
@@ -21,8 +22,8 @@ digitizer_gate0_delay   2.232e-6
 
 # Digitizer sample width, seconds (gate spacing = 0.5 * c * sample width)
 #digitizer_sample_width    64e-9
-digitizer_sample_width   128e-9
-#digitizer_sample_width   256e-9
+#digitizer_sample_width   128e-9
+digitizer_sample_width   256e-9
 #digitizer_sample_width   512e-9  
 #digitizer_sample_width  1024e-9
 
