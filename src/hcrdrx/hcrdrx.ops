@@ -30,8 +30,8 @@ digitizer_sample_width   256e-9
 # tx_delay is the delay in seconds from T0 to the start of generation of the 
 # DAC waveform which goes to the EIK
 tx_delay                 336e-9
-#tx_pulse_width           256e-9
-tx_pulse_width           512e-9  
+tx_pulse_width           256e-9
+#tx_pulse_width           512e-9  
 #tx_pulse_width          1024e-9 
 
 # tx_pulse_mod_delay is the delay in seconds from T0 to the start of the
