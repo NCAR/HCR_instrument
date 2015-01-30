@@ -15,7 +15,6 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
-#include <HcrPmc730Client.h>
 #include <QCoreApplication>
 
 // For configuration management
@@ -41,7 +40,7 @@ namespace po = boost::program_options;
 
 std::string _drxConfig;          ///< DRX configuration file
 std::string _instance = "ops";   ///< application instance
-StatusGrabber * _statusGrabber;        ///< StatusGrabber instance
+StatusGrabber * _statusGrabber = 0;     ///< StatusGrabber instance
 
 /// Pentek channels to use for H and V. We use channels 0 and 2 because
 /// they exhibit lower noise than channels 1 and 3 when using the DDC8 bitstream
@@ -58,8 +57,10 @@ bool _simulate;                  ///< Set true for simulate mode
 int _simWaveLength;              ///< The simulated data wavelength, in samples
 double _simPauseMS;              ///< The number of milliseconds to pause when reading in simulate mode.
 bool _freeRun = false;           ///< To allow us to see what is happening on the ADCs
-Pentek::p7142sd3c * _sd3c;
-QCoreApplication * _app;
+bool _okToRestart = true;        ///< Set to false to stop the auto-restart loop
+bool _cleaningUp = false;        ///< Are we cleaning up after QCoreApplication exit?
+Pentek::p7142sd3c * _sd3c = 0;
+QCoreApplication * _app = 0;
 
 std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
 int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
@@ -68,9 +69,35 @@ std::string _pmc730dHost("localhost");  ///< The host on which HcrPmc730Daemon i
 int _pmc730dPort = 8003;                ///< HcrPmc730Daemon's XML-RPC port
 
 /////////////////////////////////////////////////////////////////////
-void sigHandler(int sig) {
-  ILOG << "Interrupt received...termination may take a few seconds";
-  _app->quit();
+void stopProgram(int sig) {
+    ILOG << "Initiating program exit on '" << strsignal(sig) << "' signal";
+    _okToRestart = false;
+    _app->quit();
+}
+
+/////////////////////////////////////////////////////////////////////
+void restartProgram(int sig) {
+    if (_cleaningUp) {
+        DLOG << "Still cleaning up after previous signal";
+        return;
+    }
+    // Stop the _sd3c timers now, because if p7142Dn was the source of
+    // the signal, we need to stop the timers to stop many more such signals
+    // arriving.
+    if (_sd3c) {
+        _sd3c->timersStartStop(false);
+    }
+    // Log the restart
+    WLOG << "***********";
+    WLOG << "";
+    WLOG << "Initiating restart on  '" << strsignal(sig) << "' signal";
+    WLOG << "";
+    WLOG << "***********";
+    // Note that we're in the process of cleaning up, mark that restart
+    // is OK, and stop the QCoreApplication instance.
+    _cleaningUp = true;
+    _okToRestart = true;
+    _app->quit();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -372,183 +399,199 @@ main(int argc, char** argv)
     myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, 8081);
 
-    if (_simulate)
-      ILOG << "*** Operating in simulation mode";
-
-    // If we're starting on 1 PPS, make sure our system time is within 0.2 s
-    // of "actual" time. That assures that p7142sd3c will determine the correct
-    // data start time.
-    if (hcrConfig.start_on_1pps() && ! systemClockOffsetOk()) {
-        ELOG << "***********";
-        ELOG << "";
-        ELOG << "EXITING ON ERROR: bad or unknown system clock offset";
-        ELOG << "";
-        ELOG << "***********";
-        exit(1);
-    }
-
-    // Instantiate our p7142sd3c
-    _sd3c = new Pentek::p7142sd3c(_simulate, hcrConfig.tx_delay(),
-        hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
-        hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
-        Pentek::p7142sd3c::DDC8DECIMATE, hcrConfig.start_on_1pps(), 
-        _simPauseMS, false, false, 0, 0);
+    // catch a control-C or kill to shut down cleanly, and SIGUSR2 to generate 
+    // a restart
+    signal(SIGINT, stopProgram);
+    signal(SIGTERM, stopProgram);
     
-    if (! _sd3c->ok()) {
-        ELOG << "P7142 was not opened successfully!";
-        abort();
-    }
-    
-    // Start our status monitoring thread.
-    _statusGrabber = new StatusGrabber(_sd3c, _pmc730dHost, _pmc730dPort,
-            _xmitdHost, _xmitdPort);
-    _statusGrabber->start();
+    // SIGUSR2 is raised by the p7142Dn class on DMA overrun error. If we see
+    // that signal, just restart.
+    signal(SIGUSR2, restartProgram);
 
-    // create the export object
-    _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
+    // Go into a loop which starts operation of the Pentek, and restarts 
+    // things if necessary after some types of errors.
+    for (int nrestarts = 0; _okToRestart; nrestarts++) {
+        if (nrestarts) {
+            ILOG << "Restarting hcrdrx (" << getpid() << ")";
+        }
+        
+        if (_simulate)
+            ILOG << "*** Operating in simulation mode";
 
-    // We use SD3C's first general purpose timer for transmit pulse modulation
-    // The width of the modulation pulse is transmit pulse width + 272 ns,
-    // where the 272 ns was empirically measured.
-    double pulseModWidth = hcrConfig.tx_pulse_width() + 2.72e-7;
-    _sd3c->setGPTimer0(hcrConfig.tx_pulse_mod_delay(), pulseModWidth);
-    
-    // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing.
-    // Use 800 ns + transmit pulse width + transmit delay
-    PMU_auto_register("timers enable");
-    _sd3c->setGPTimer1(0.0,
-        800e-9 + hcrConfig.tx_pulse_width() + hcrConfig.tx_delay());
-    
-    // Create (but don't yet start) the downconversion threads.
-    
-    // Create the down converter threads. The threads are not started at
-    // creation, but they do instantiate the down converters.
-    assert(_nChans <= HcrDrxPub::N_CHANNELS);
-    for (int c = 0; c < _nChans; c++) {
-        ILOG << "*** Pentek channel " << _chanNums[c] << " ***";
-        _downThreads[c] = new HcrDrxPub(*_sd3c, _chanNums[c], 
-                HcrDrxPub::DataChannelType(c), hcrConfig,
-                _exporter, _tsLength, _gaussianFile, _kaiserFile,
-                _simWaveLength);
-    }
-
-    // Create the upConverter.
-    // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
-    PMU_auto_register("create upconverter");
-    Pentek::p7142Up & upConverter = *_sd3c->addUpconverter(_sd3c->adcFrequency(),
-            _sd3c->adcFrequency() / 4, 9);
-
-    // catch a control-C or kill to shut down cleanly
-    signal(SIGINT, sigHandler);
-    signal(SIGTERM, sigHandler);
-
-    for (int c = 0; c < _nChans; c++) {
-        // run the downconverter thread. This will cause the
-        // thread code to call the run() method, which will
-        // start reading data, but should block on the first
-        // read since the timers and filters are not running yet.
-        _downThreads[c]->start();
-        ILOG << "processing enabled on Pentek channel " << _chanNums[c];
-    }
-
-    // wait awhile, so that the threads can all get to the first read.
-    struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
-    while (nanosleep(&sleepTime, &sleepTime)) {
-        if (errno != EINTR) {
-            ELOG << "Error " << errno << " from nanosleep().  Aborting.";
-            abort();
-        } else {
-            // We were interrupted. Return to sleeping until the interval is done.
+        // If we're starting on 1 PPS, make sure our system time is within 0.2 s
+        // of "actual" time. That assures that p7142sd3c will determine the correct
+        // data start time.
+        if (hcrConfig.start_on_1pps() && ! systemClockOffsetOk()) {
+            ELOG << "***********";
+            ELOG << "";
+            ELOG << "EXITING ON ERROR: bad or unknown system clock offset";
+            ELOG << "";
+            ELOG << "***********";
+            // Don't attempt a restart, since it's really unlikely the system
+            // clock will fix itself!
+            _okToRestart = false;
             continue;
         }
-    }
 
-    // all of the filters are started by any call to
-    // start filters(). So just call it for channel 0
-    PMU_auto_register("starting filters");
-    _sd3c->startFilters();
+        // Instantiate our p7142sd3c
+        _sd3c = new Pentek::p7142sd3c(_simulate, hcrConfig.tx_delay(),
+                hcrConfig.tx_pulse_width(), hcrConfig.prt1(), hcrConfig.prt2(),
+                hcrConfig.staggered_prt(), hcrConfig.gates(), 1, _freeRun, 
+                Pentek::p7142sd3c::DDC8DECIMATE, hcrConfig.start_on_1pps(), 
+                _simPauseMS, false, false, 0, 0);
 
-    // Load the DAC memory bank 2, clear the DACM fifo, and enable the 
-    // DAC memory counters. This must take place before the timers are started.
-    PMU_auto_register("starting upconverter");
-    startUpConverter(upConverter, _sd3c->txPulseWidthCounts());
+        if (! _sd3c->ok()) {
+            ELOG << "***********";
+            ELOG << "";
+            ELOG << "Could not open the Pentek P7142 card!";
+            ELOG << "";
+            ELOG << "***********";
+            // Don't attempt a restart, since we likely won't be able to open
+            // the Pentek card on the next try, either.
+            _okToRestart = false;
+            continue;
+        }
 
-    // start the IWRF export
-    PMU_auto_register("start export");
-    _exporter->start();
+        // We use SD3C's first general purpose timer for transmit pulse modulation
+        // The width of the modulation pulse is transmit pulse width + 272 ns,
+        // where the 272 ns was empirically measured.
+        double pulseModWidth = hcrConfig.tx_pulse_width() + 2.72e-7;
+        _sd3c->setGPTimer0(hcrConfig.tx_pulse_mod_delay(), pulseModWidth);
 
-    // Start the timers, which will allow data to flow.
-    _sd3c->timersStartStop(true);
+        // General purpose timer 1 (SD3C timer 5) is used for EMS switch timing.
+        // Use 800 ns + transmit pulse width + transmit delay
+        _sd3c->setGPTimer1(0.0,
+                           800e-9 + hcrConfig.tx_pulse_width() + hcrConfig.tx_delay());
 
-    // Set up a one-shot timer to make sure we see first data within a 
-    // reasonable time. If we're starting on a 1 PPS trigger, data should show
-    // up within a second, otherwise it should start flowing immediately.
-    // (Neglecting latency in filling the Pentek DMA buffer).
-    //
-    // We stop the timer as soon as data are seen on _downThreads[0].
-    QTimer dataWaitTimeoutTimer;
-    dataWaitTimeoutTimer.setInterval(1000);     // 1000 ms -> 1 s
-    QFunctionWrapper dataWaitFuncWrapper(dataWaitTimedOut);
-    QFunctionWrapper onFirstDataFuncWrapper(onFirstData);
-    QObject::connect(&dataWaitTimeoutTimer, SIGNAL(timeout()),
-            &dataWaitFuncWrapper, SLOT(callFunction()));
-    QObject::connect(_downThreads[0], SIGNAL(firstDataSeen(int)),
-            &dataWaitTimeoutTimer, SLOT(stop()));
-    QObject::connect(_downThreads[0], SIGNAL(firstDataSeen(int)),
-            &onFirstDataFuncWrapper, SLOT(callFunction()));
-    dataWaitTimeoutTimer.start();
+        // Start our status monitoring thread.
+        _statusGrabber = new StatusGrabber(_sd3c, _pmc730dHost, _pmc730dPort,
+                                           _xmitdHost, _xmitdPort);
 
-    // Set up a periodic timer to print statistics and maintain registration
-    // with PMU
-    QTimer updateTimer;
-    updateTimer.setInterval(UPDATE_INTERVAL_SECS * 1000); // interval in ms
-    QFunctionWrapper updateFuncWrapper(printStatsAndUpdateRegistration);
-    QObject::connect(&updateTimer, SIGNAL(timeout()),
-            &updateFuncWrapper, SLOT(callFunction()));
-    updateTimer.start();
+        // create and start the export object
+        _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
+        PMU_auto_register("start export");
+        _exporter->start();
 
-    // Now just run the QCoreApplication until somebody stops us, usually via
-    // a 'kill' command or ^C
-    _app->exec();
-    
-    // We're done
-    ILOG << "Shutting down...";
-    
-    // Stop the downconverter threads
-    for (int c = 0; c < _nChans; c++) {
-        DLOG << "Stopping thread for channel " << _chanNums[c];
-        _downThreads[c]->terminate();
-        _downThreads[c]->wait(1000);    // wait up to a second for termination
-    }
+        _statusGrabber->start();
 
-    // stop the DAC
-    upConverter.stopDAC();
+        // Create (but don't yet start) the downconverter threads.
+        assert(_nChans <= HcrDrxPub::N_CHANNELS);
+        for (int c = 0; c < _nChans; c++) {
+            ILOG << "*** Pentek channel " << _chanNums[c] << " ***";
+            _downThreads[c] = new HcrDrxPub(*_sd3c, _chanNums[c], 
+                                            HcrDrxPub::DataChannelType(c), hcrConfig,
+                                            _exporter, _tsLength, _gaussianFile, _kaiserFile,
+                                            _simWaveLength);
+        }
 
-    // stop the timers
-    _sd3c->timersStartStop(false);
+        // Create the upConverter.
+        // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
+        PMU_auto_register("create upconverter");
+        Pentek::p7142Up & upConverter = *_sd3c->addUpconverter(_sd3c->adcFrequency(),
+                                                               _sd3c->adcFrequency() / 4, 9);
 
-    delete(_sd3c);
-    
-    // Tell HcrPmc730Daemon to turn off transmitter high voltage and set the
-    // HMC operating mode to "Bench Test" before we exit.
-    HcrPmc730Client pmc730Client(_pmc730dHost, _pmc730dPort);
-    try {
-        pmc730Client.xmitHvOff();
-        DLOG << "Turned off transmitter HV via HcrPmc730Daemon";
-    } catch (std::exception & e) {
-        WLOG << "Failed to turn off transmitter HV via HcrPmc730Daemon!: " << e.what();
-    }
-    
-    const HcrPmc730::HmcOperationMode DEFAULT_HMC_MODE = HcrPmc730::HMC_MODE_BENCH_TEST;
-    try {
-        pmc730Client.setHmcMode(DEFAULT_HMC_MODE);
-        DLOG << "Set HMC mode to '" << 
-                HcrPmc730::HmcModeNames[DEFAULT_HMC_MODE] << 
-                "' via HcrPmc730Daemon";
-    } catch (std::exception & e) {
-        WLOG << "Failed to set HMC mode to '" << 
-                HcrPmc730::HmcModeNames[DEFAULT_HMC_MODE] <<  
-                "' via HcrPmc730Daemon: " << e.what();
+        // Start the downconverter threads
+        for (int c = 0; c < _nChans; c++) {
+            // run the downconverter thread. This will cause the
+            // thread code to call the run() method, which will
+            // start reading data, but should block on the first
+            // read since the timers and filters are not running yet.
+            _downThreads[c]->start();
+            ILOG << "processing enabled on Pentek channel " << _chanNums[c];
+        }
+
+        // Wait awhile, so that the threads all get to the first read.
+        struct timespec sleepTime = { 1, 0 }; // 1 second, 0 nanoseconds
+        while (nanosleep(&sleepTime, &sleepTime)) {
+            if (errno != EINTR) {
+                ELOG << "Error " << errno << " from nanosleep().  Aborting.";
+                abort();
+            } else {
+                // We were interrupted. Return to sleeping until the interval is done.
+                continue;
+            }
+        }
+
+        // Start the SD3C filters
+        PMU_auto_register("starting filters");
+        _sd3c->startFilters();
+
+        // Load the DAC memory bank 2, clear the DACM fifo, and enable the 
+        // DAC memory counters. This must take place before the timers are started.
+        PMU_auto_register("starting upconverter");
+        startUpConverter(upConverter, _sd3c->txPulseWidthCounts());
+        
+        // Start the timers, which will allow data to flow.
+        PMU_auto_register("timers enable");
+        _sd3c->timersStartStop(true);
+
+        // Set up a one-shot timer to make sure we see first data within a 
+        // reasonable time. If we're starting on a 1 PPS trigger, data should show
+        // up within a second, otherwise it should start flowing immediately.
+        // (Neglecting latency in filling the Pentek DMA buffer).
+        //
+        // We stop the timer as soon as data are seen on _downThreads[0].
+        QTimer dataWaitTimeoutTimer;
+        dataWaitTimeoutTimer.setInterval(1000);     // 1000 ms -> 1 s
+        QFunctionWrapper dataWaitFuncWrapper(dataWaitTimedOut);
+        QFunctionWrapper onFirstDataFuncWrapper(onFirstData);
+        QObject::connect(&dataWaitTimeoutTimer, SIGNAL(timeout()),
+                &dataWaitFuncWrapper, SLOT(callFunction()));
+        QObject::connect(_downThreads[0], SIGNAL(firstDataSeen(int)),
+                &dataWaitTimeoutTimer, SLOT(stop()));
+        QObject::connect(_downThreads[0], SIGNAL(firstDataSeen(int)),
+                &onFirstDataFuncWrapper, SLOT(callFunction()));
+        dataWaitTimeoutTimer.start();
+
+        // Set up a periodic timer to print statistics and maintain registration
+        // with PMU
+        QTimer updateTimer;
+        updateTimer.setInterval(UPDATE_INTERVAL_SECS * 1000); // interval in ms
+        QFunctionWrapper updateFuncWrapper(printStatsAndUpdateRegistration);
+        QObject::connect(&updateTimer, SIGNAL(timeout()),
+                &updateFuncWrapper, SLOT(callFunction()));
+        updateTimer.start();
+
+        // Now just run the QCoreApplication until somebody stops us, usually 
+        // via a 'kill' command or ^C
+        _app->exec();
+
+        // We're done
+        _cleaningUp = true;
+        ILOG << "Cleaning up...";
+
+        // stop the timers
+        _sd3c->timersStartStop(false);
+        DLOG << "Pentek timers are stopped";
+        
+        // Delete the IwrfExport instance
+        delete(_exporter);
+        _exporter = NULL;
+        DLOG << "IwrfExport is gone";
+
+        // stop the DAC
+        upConverter.stopDAC();
+        DLOG << "DAC is stopped";
+
+        // Stop the downconverter threads
+        for (int c = 0; c < _nChans; c++) {
+            DLOG << "Stopping thread for channel " << _chanNums[c];
+            _downThreads[c]->terminate();
+            _downThreads[c]->wait(1000);    // wait up to a second for termination
+        }
+        
+        // Stop and delete the status grabber
+        _statusGrabber->quit();
+        _statusGrabber->wait(1000);
+        delete(_statusGrabber);
+        DLOG << "StatusGrabber is gone";
+        
+        _sd3c->stopFilters();
+        delete(_sd3c);
+        DLOG << "_sd3c is deleted";
+
+        // Finished cleaning up
+        _cleaningUp = false;
     }
 
     // Unregister with procmap
