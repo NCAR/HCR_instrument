@@ -214,7 +214,10 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
 IwrfExport::~IwrfExport()
 
 {
-  _statusTimer->stop();
+  // First terminate the thread
+  terminate();
+
+  // Clean up allocated memory
   delete(_statusTimer);
   
   if (_sock && _sock->isOpen()) {
