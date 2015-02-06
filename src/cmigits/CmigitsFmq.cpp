@@ -19,6 +19,9 @@ LOGGING("CmigitsFmq")
 
 const std::string CmigitsFmq::FMQ_URL = "/tmp/cmigits_fmq/shmem_22000";
 
+// All-zero CmigitsFmq::MsgStruct (from the default constructor)
+static const CmigitsFmq::MsgStruct ALL_ZERO_MESSAGE = CmigitsFmq::MsgStruct();
+
 inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
 inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 
@@ -57,7 +60,8 @@ CmigitsFmq::CmigitsFmq(bool writeAccess) :
         
         // Set up timeout timers which will clear pieces of the shared memory
         // if new messages don't arrive within a reasonable span after previous
-        // ones.
+        // ones. The timers are started/restarted upon arrival of their 
+        // associated message types.
         _3500TimeoutTimer.setInterval(2500);    // allow up to 2.5 s
         _3500TimeoutTimer.setSingleShot(true);
         connect(&_3500TimeoutTimer, SIGNAL(timeout()), this, SLOT(_zero3500Data()));
@@ -77,7 +81,7 @@ CmigitsFmq::CmigitsFmq(bool writeAccess) :
 CmigitsFmq::~CmigitsFmq() {
     // If we're the writer, finish up with an all-zero message
     if (_writeAccess) {
-        _currentMsg = MsgStruct();  // all-zero message
+        _currentMsg = ALL_ZERO_MESSAGE;  // all-zero message
         _writeCurrentMsg();
     }
     _fmq.closeMsgQueue();
@@ -91,7 +95,7 @@ CmigitsFmq::_fmqInitializeForRead() {
     }
     
     // Try to initialize the FMQ for reading and return the result.
-    if (_fmq.initReadOnly(FMQ_URL.c_str(), "CmigitsFmqThread", false, 
+    if (_fmq.initReadOnly(FMQ_URL.c_str(), "CmigitsFmq", false, 
                           Fmq::END, 0)) {
         ILOG << "C-MIGITS FMQ '" << CmigitsFmq::FMQ_URL << "' opened for reading";
     } else {
@@ -109,11 +113,14 @@ CmigitsFmq::getLatestMsg() {
     
     // Return an empty message if we can't read the FMQ
     if (!_fmqInitializeForRead()) {
-        return(MsgStruct());    // all-zero message
+        return(ALL_ZERO_MESSAGE);
     }
     
     // Seek to the last entry in the FMQ
-    _fmq.seek(DsFmq::FMQ_SEEK_LAST);
+    if (_fmq.seek(DsFmq::FMQ_SEEK_LAST) != 0) {
+        WLOG << "Error seeking to last CmigitsFmq entry: " << _fmq.getErrStr();
+        return(ALL_ZERO_MESSAGE);
+    }
     
     // Read the last message
     bool gotOne;
@@ -123,7 +130,7 @@ CmigitsFmq::getLatestMsg() {
         if (msgLen != sizeof(MsgStruct)) {
             ELOG << "Got " << msgLen << "-byte message when expecting " <<
                     sizeof(MsgStruct) << " bytes";
-            return(MsgStruct());    // all-zero message
+            return(ALL_ZERO_MESSAGE);
         }
         
         // Cast the FMQ message pointer into a pointer to our MsgStruct type
@@ -152,7 +159,7 @@ CmigitsFmq::getLatestMsg() {
         return(*msg);
     } else {
         WLOG << "CmigitsFmq is empty!";
-        return(MsgStruct());    // all-zero message
+        return(ALL_ZERO_MESSAGE);
     }
 }
 
