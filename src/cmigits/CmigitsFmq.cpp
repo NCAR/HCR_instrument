@@ -126,10 +126,30 @@ CmigitsFmq::getLatestMsg() {
             return(MsgStruct());    // all-zero message
         }
         
-        // Copy the message into our MsgStruct and return it
-        MsgStruct msg;
-        memcpy(&msg, _fmq.getMsg(), msgLen);
-        return(msg);
+        // Cast the FMQ message pointer into a pointer to our MsgStruct type
+        const MsgStruct * msg = reinterpret_cast<const MsgStruct*>(_fmq.getMsg());
+        
+        // We should be getting data at 100 Hz, so latest data should be no
+        // older than (10 ms + C-MIGITS data latency). Generate a warning if 
+        // the latest message is more than 100 ms old.
+        struct timeval tvNow;
+        gettimeofday(&tvNow, 0);
+        uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
+        uint32_t ageMs = nowMs - msg->time3512;
+        if (msg->time3512 != 0 && ageMs > 100) {
+            time_t secs = msg->time3512 / 1000;
+            uint32_t msecs = msg->time3512 % 1000;
+            QDateTime qCmigitsTime = QDateTime::fromTime_t(secs).addMSecs(msecs);
+            QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
+            WLOG << "Latest C-MIGITS message has time " << 
+                    qCmigitsTime.toString("hh:mm:ss.zzz").toStdString() <<
+                    " and current time is " << 
+                    qNow.toString("hh:mm:ss.zzz").toStdString() << 
+                    " (age " << ageMs << " ms)";
+        }
+        
+        // Return the message
+        return(*msg);
     } else {
         WLOG << "CmigitsFmq is empty!";
         return(MsgStruct());    // all-zero message
