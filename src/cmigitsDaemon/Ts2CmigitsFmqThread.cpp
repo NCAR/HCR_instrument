@@ -141,11 +141,11 @@ Ts2CmigitsFmqThread::_doNextPulse() {
     // Test if the integer seconds, tenths of seconds, or hundredths of seconds
     // changed from the last pulse.
     bool secondsChanged = 
-            (int(_prevPulseDataTime) % 10) != (int(pulseDataTime) % 10);
+            (int64_t(_prevPulseDataTime) % 10) != (int64_t(pulseDataTime) % 10);
     bool tenthsChanged =
-            (int(_prevPulseDataTime * 10) % 10) != (int(pulseDataTime * 10) % 10);
+            (int64_t(_prevPulseDataTime * 10) % 10) != (int64_t(pulseDataTime * 10) % 10);
     bool hundredthsChanged =
-            (int(_prevPulseDataTime * 100) % 10) != (int(pulseDataTime * 100) % 10);
+            (int64_t(_prevPulseDataTime * 100) % 10) != (int64_t(pulseDataTime * 100) % 10);
 
     // Keep the processing time for this pulse and its data time
     _prevPulseProcessTime = pulseProcessTime;
