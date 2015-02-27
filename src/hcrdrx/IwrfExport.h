@@ -84,7 +84,10 @@ private slots:
 private:
   /// Lock for thread-safe member access
   
-  QReadWriteLock _accessLock;
+  QReadWriteLock _hAccessLock;
+  QReadWriteLock _vAccessLock;
+  QReadWriteLock _cmigitsAccessLock;
+  QReadWriteLock _logAccessLock;
 
   /// configuration
 

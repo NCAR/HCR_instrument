@@ -26,7 +26,10 @@ LOGGING("IwrfExport")
 
 IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor) :
         QThread(),
-        _accessLock(QReadWriteLock::NonRecursive),
+        _hAccessLock(QReadWriteLock::NonRecursive),
+        _vAccessLock(QReadWriteLock::NonRecursive),
+        _cmigitsAccessLock(QReadWriteLock::NonRecursive),
+        _logAccessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
@@ -268,9 +271,6 @@ void IwrfExport::run()
       continue;
     }
 
-    // Get a write lock before accessing and potentially changing members below
-    _accessLock.lockForWrite();
-    
     // determine number of gates
 
     int nGates = _pulseH->getNGates();
@@ -294,10 +294,6 @@ void IwrfExport::run()
       sendMeta = true;
     }
 
-    // Make sure the lock is released before we call any of our own methods
-    // which may need it
-    _accessLock.unlock();
-    
     // Send a metadata packet if requested
     if (sendMeta) {
       _sendIwrfMetaData();
@@ -347,9 +343,6 @@ void IwrfExport::_readNextPulse()
   
   _syncPulses();
 
-  // Get the write lock while we modify a bunch of members
-  _accessLock.lockForWrite();
-
   if (_pulseSeqNum < 0) {
     // first time
     _prevPulseSeqNum = _pulseH->getPulseSeqNum() - 1;
@@ -377,8 +370,6 @@ void IwrfExport::_readNextPulse()
          << _prevPulseSeqNum << ", "
          << _pulseSeqNum << endl;
   }
-  
-  _accessLock.unlock();
 
 }
 
@@ -388,8 +379,6 @@ void IwrfExport::_readNextPulse()
 
 void IwrfExport::_syncPulses()
 {
-  // Get a read lock
-  _accessLock.lockForRead();
   
   // compute the max pulse seq num
   
@@ -431,7 +420,6 @@ void IwrfExport::_syncPulses()
 
   } // while
 
-  _accessLock.unlock();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -442,7 +430,7 @@ void IwrfExport::_syncPulses()
 PulseData *IwrfExport::writePulseH(PulseData *val)
 {
   // Get a write lock which will be released when we return
-  QWriteLocker wLocker(&_accessLock);
+  QWriteLocker wLocker(&_hAccessLock);
   _hPulseCount++;
   return _qH->write(val);
 }
@@ -455,7 +443,7 @@ PulseData *IwrfExport::writePulseH(PulseData *val)
 PulseData *IwrfExport::writePulseV(PulseData *val)
 {
   // Get a write lock which will be released when we return
-  QWriteLocker wLocker(&_accessLock);
+  QWriteLocker wLocker(&_vAccessLock);
   _vPulseCount++;
   return _qV->write(val);
 }
@@ -466,8 +454,8 @@ PulseData *IwrfExport::writePulseV(PulseData *val)
 void IwrfExport::_readNextH()
 {
   // Get a write lock, since we modify members
-  _accessLock.lockForWrite();
-  
+  _hAccessLock.lockForWrite();
+
   // Our old pulse goes back for reuse
   PulseData *replacementElement = _pulseH;
   _pulseH = NULL;
@@ -476,14 +464,14 @@ void IwrfExport::_readNextH()
   for (int ntries = 0; _pulseH == NULL; ntries++) {
     if (ntries != 0) {
       // Sleep briefly between tries, releasing the lock while we sleep
-      _accessLock.unlock();
+      _hAccessLock.unlock();
       usleep(50);
-      _accessLock.lockForWrite();
+      _hAccessLock.lockForWrite();
     }
     _pulseH = _qH->read(replacementElement);
   }
-  
-  _accessLock.unlock();
+
+  _hAccessLock.unlock();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -492,8 +480,8 @@ void IwrfExport::_readNextH()
 void IwrfExport::_readNextV()
 {
   // Get a write lock, since we modify members
-  _accessLock.lockForWrite();
-    
+  _vAccessLock.lockForWrite();
+
   // Our old pulse goes back for reuse
   PulseData *replacementElement = _pulseV;
   _pulseV = NULL;
@@ -502,14 +490,14 @@ void IwrfExport::_readNextV()
   for (int ntries = 0; _pulseV == NULL; ntries++) {
       if (ntries != 0) {
           // Sleep briefly between tries, releasing the lock while we sleep
-          _accessLock.unlock();
+          _vAccessLock.unlock();
           usleep(50);
-          _accessLock.lockForWrite();
+          _vAccessLock.lockForWrite();
       }
       _pulseV = _qV->read(replacementElement);
   }
-  
-  _accessLock.unlock();
+
+  _vAccessLock.unlock();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -517,8 +505,6 @@ void IwrfExport::_readNextV()
 
 int IwrfExport::_sendIwrfMetaData()
 {
-  // Get a write lock, since we modify members
-  _accessLock.lockForWrite();
 
   // set seq num and time in packet headers
 
@@ -590,9 +576,6 @@ int IwrfExport::_sendIwrfMetaData()
     closeSocket = true;
   }
   
-  // Release the lock, since _closeSocketToClient will want it
-  _accessLock.unlock();
-  
   if (closeSocket) {
     _closeSocketToClient();
     return -1;
@@ -611,9 +594,6 @@ void IwrfExport::_assembleIwrfPulsePacket()
   // allocate space for IQ data
   
   _allocPulseBuf();
-
-  // Hold a write lock while we modify some members
-  _accessLock.lockForWrite();
 
   // load up IQ data
 
@@ -685,9 +665,6 @@ void IwrfExport::_assembleIwrfPulsePacket()
   
   memcpy(_pulseBuf, &_pulseHdr, sizeof(_pulseHdr));
   
-  // release our lock
-  _accessLock.unlock();
-
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -695,7 +672,13 @@ void IwrfExport::_assembleIwrfPulsePacket()
 
 int IwrfExport::_sendIwrfPulsePacket()
 {
-  _accessLock.lockForRead();
+
+  // copy data to tmp buffer so that we can release the lock immediately
+
+  char *buf = new char[_pulseMsgLen];
+  //_accessLock.lockForRead();
+  memcpy(buf, _pulseBuf, _pulseMsgLen);
+  // _accessLock.unlock();
 
   bool closeSocket = false;
   if (_sock && _sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
@@ -704,10 +687,11 @@ int IwrfExport::_sendIwrfPulsePacket()
     cerr << "  " << _sock->getErrStr() << endl;
     closeSocket = true;
   }
-  
-  // We must release the lock before potentially calling _closeSocketToClient()
-  _accessLock.unlock();
-  
+
+  // clean up
+
+  delete[] buf;
+
   if (closeSocket) {
     _closeSocketToClient();
     return -1; 
@@ -722,9 +706,6 @@ int IwrfExport::_sendIwrfPulsePacket()
 
 void IwrfExport::_allocPulseBuf()
 {
-  // Hold a write lock until we return. This is safe because we make no calls
-  // to self methods here.
-  QWriteLocker wLocker(&_accessLock);
 
   _pulseMsgLen =
     sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * 2 * sizeof(int16_t));
@@ -761,9 +742,6 @@ void IwrfExport::_assembleStatusPacket()
 
   _allocStatusBuf();
 
-  // Get the write lock while we modify members
-  _accessLock.lockForWrite();
-  
   // set header
 
   iwrf_status_xml_t hdr;
@@ -778,9 +756,6 @@ void IwrfExport::_assembleStatusPacket()
   memcpy(_statusBuf + sizeof(iwrf_status_xml_t),
          xmlStr.c_str(), xmlStr.size());
   
-  // Release the lock
-  _accessLock.unlock();
-
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -790,8 +765,6 @@ void IwrfExport::_assembleStatusPacket()
 string IwrfExport::_assembleStatusXml()
 
 {
-  // Get a read lock, since we access members here
-  _accessLock.lockForRead();
 
   string xml;
 
@@ -990,9 +963,6 @@ string IwrfExport::_assembleStatusXml()
 
   xml += TaXml::writeEndTag("HcrStatus", 0);
 
-  // Release the lock
-  _accessLock.unlock();
-  
   return xml;
 
 }
@@ -1003,8 +973,6 @@ string IwrfExport::_assembleStatusXml()
 int IwrfExport::_sendIwrfStatusXmlPacket()
 
 {
-  // Get a read lock
-  _accessLock.lockForRead();
     
   bool closeSocket = false;
 
@@ -1014,9 +982,6 @@ int IwrfExport::_sendIwrfStatusXmlPacket()
     cerr << "  " << _sock->getErrStr() << endl;
     closeSocket = true;
   }
-  
-  // We must release the lock before potentially calling _closeSocketToClient()
-  _accessLock.unlock();
   
   if (closeSocket) {
     _closeSocketToClient();
@@ -1032,8 +997,6 @@ int IwrfExport::_sendIwrfStatusXmlPacket()
 
 void IwrfExport::_allocStatusBuf()
 {
-  // get a write lock before modifying members
-  _accessLock.lockForWrite();
 
   _statusMsgLen = _xmlLen + sizeof(iwrf_status_xml);
   if (_statusMsgLen > _statusBufLen) {
@@ -1044,8 +1007,6 @@ void IwrfExport::_allocStatusBuf()
     _statusBuf = new char[_statusBufLen];
   }
   
-  // release the lock
-  _accessLock.unlock();
 }
 
 //////////////////////////////////////////////////
@@ -1054,7 +1015,7 @@ void IwrfExport::_allocStatusBuf()
 // up in the deque.
 void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // Get the read lock
-  _accessLock.lockForRead();
+  _cmigitsAccessLock.lockForRead();
 
   // If C-MIGITS deque is empty and we haven't already marked C-MIGITS data as
   // delayed, busy wait for a bit to see if more will come in. We need to do 
@@ -1071,12 +1032,12 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       int total_wait_us = 0;
       while (true) {
           // Release our lock and sleep briefly
-          _accessLock.unlock();
+          _cmigitsAccessLock.unlock();
           usleep(SLEEP_US);
           total_wait_us += SLEEP_US;
           
           // Get the read lock again
-          _accessLock.lockForRead();
+          _cmigitsAccessLock.lockForRead();
           
           // If we've waited MAX_WAIT_US, mark C-MIGITS data as delayed so that
           // we don't wait again until new data show up in the deque.
@@ -1111,8 +1072,8 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           break;
       }
       // Get the write lock
-      _accessLock.unlock();
-      _accessLock.lockForWrite();
+      _cmigitsAccessLock.unlock();
+      _cmigitsAccessLock.lockForWrite();
       
       // We're going to use this entry, so remove it from the deque
       _cmigitsDeque.pop_front();
@@ -1199,7 +1160,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       _lastGeorefTime = thisGeorefTime;
       
       // Release our lock before calling methods which need it
-      _accessLock.unlock();
+      _cmigitsAccessLock.unlock();
       
       // compute elevation and azimuth
       _computeRadarAngles();
@@ -1208,7 +1169,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       _sendIwrfGeorefPacket();
       
       // get the read lock again before testing _cmigitsDeque.empty()
-      _accessLock.lockForRead();
+      _cmigitsAccessLock.lockForRead();
   }
   
   // Log a warning if we wrote more than one georef packet and we are not on 
@@ -1219,7 +1180,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   }
   
   // Release the lock before exiting
-  _accessLock.unlock();
+  _cmigitsAccessLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1233,8 +1194,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
 void IwrfExport::_computeRadarAngles()
   
 {
-  _accessLock.lockForRead();
-  
+
   double R = (_radarGeoref.roll_deg + _rollCorr) * DEG_TO_RAD;
   double P = (_radarGeoref.pitch_deg + _pitchCorr) * DEG_TO_RAD;
   double H = (_radarGeoref.heading_deg + _headingCorr) * DEG_TO_RAD;
@@ -1272,15 +1232,9 @@ void IwrfExport::_computeRadarAngles()
   double azimuthRad = fmod(lambda_t + T, M_PI * 2.0);
   double elevationRad = asin(zsubt);
   
-  // Change to a write lock while we modify members
-  _accessLock.unlock();
-  _accessLock.lockForWrite();
-
   _elevationDeg = elevationRad * RAD_TO_DEG;
   _azimuthDeg = azimuthRad * RAD_TO_DEG;
   
-  // release our lock
-  _accessLock.unlock();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1288,8 +1242,6 @@ void IwrfExport::_computeRadarAngles()
 
 int IwrfExport::_sendIwrfGeorefPacket()
 {
-  // Hold a write lock while we modify members.
-  _accessLock.lockForWrite();
     
   // set seq num in packet header
 
@@ -1304,9 +1256,6 @@ int IwrfExport::_sendIwrfGeorefPacket()
     cerr << "  " << _sock->getErrStr() << endl;
     closeSocket = true;
   }
-  
-  // We must release the lock before potentially calling _closeSocketToClient()
-  _accessLock.unlock();
   
   if (closeSocket) {
     _closeSocketToClient();
@@ -1324,9 +1273,6 @@ int IwrfExport::_sendIwrfGeorefPacket()
 int IwrfExport::_openServer()
 
 {
-  // Hold a write lock until we return. This is safe because we make no calls
-  // to self methods here.
-  QWriteLocker wLocker(&_accessLock);
 
   if (_serverIsOpen) {
     return 0;
@@ -1360,10 +1306,6 @@ int IwrfExport::_checkClient()
     return -1;
   }
 
-  // Hold a write lock until we return. This is safe because we make no calls
-  // to self methods below here.
-  QWriteLocker wLocker(&_accessLock);
-
   // check status
 
   if (_sock && _sock->isOpen()) {
@@ -1391,10 +1333,7 @@ int IwrfExport::_checkClient()
 void IwrfExport::_closeSocketToClient()
 
 {
-  // Hold a write lock until we return. This is safe because we make no calls
-  // to self methods below here.
-  QWriteLocker wLocker(&_accessLock);
-  
+
   if (_sock == NULL) {
     return;
   }
@@ -1412,9 +1351,11 @@ void IwrfExport::_closeSocketToClient()
 // Accept incoming new C-MIGITS data
 
 void IwrfExport::queueCmigitsData(CmigitsFmq::MsgStruct data) {
+
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
-  QWriteLocker wLocker(&_accessLock);
+
+  QWriteLocker wLocker(&_cmigitsAccessLock);
 
   _cmigitsCount++;
   
@@ -1482,7 +1423,7 @@ void IwrfExport::queueCmigitsData(CmigitsFmq::MsgStruct data) {
 // Log status
 
 void IwrfExport::_logStatus() {
-  if (! _accessLock.tryLockForWrite(100)) {
+  if (! _logAccessLock.tryLockForWrite(100)) {
       ELOG << "_logStatus(): unable to obtain lock";
       return;
   }
@@ -1492,7 +1433,7 @@ void IwrfExport::_logStatus() {
   _vPulseCount = 0;
   _cmigitsCount = 0;
   
-  _accessLock.unlock();
+  _logAccessLock.unlock();
 }
 
 //////////////////////////////////////////////////
