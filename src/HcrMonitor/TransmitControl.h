@@ -310,7 +310,7 @@ private:
     
     /// @brief Received power threshold at which we shift to attenuated mode
     /// or disallow transmit, dBm
-    static const float _RECEIVED_POWER_THRESHOLD = -34.0;
+    static const float _RECEIVED_POWER_THRESHOLD = -30.0;
     
     /// @brief Attenuation applied when in attenuated receive mode, dB
     static const float _SWITCH_ATTENUATION = 23.5;
