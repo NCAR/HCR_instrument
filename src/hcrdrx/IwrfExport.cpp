@@ -673,13 +673,6 @@ void IwrfExport::_assembleIwrfPulsePacket()
 int IwrfExport::_sendIwrfPulsePacket()
 {
 
-  // copy data to tmp buffer so that we can release the lock immediately
-
-  char *buf = new char[_pulseMsgLen];
-  //_accessLock.lockForRead();
-  memcpy(buf, _pulseBuf, _pulseMsgLen);
-  // _accessLock.unlock();
-
   bool closeSocket = false;
   if (_sock && _sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
     cerr << "ERROR - IwrfExport::_sendIwrfPulsePacket()" << endl;
@@ -687,10 +680,6 @@ int IwrfExport::_sendIwrfPulsePacket()
     cerr << "  " << _sock->getErrStr() << endl;
     closeSocket = true;
   }
-
-  // clean up
-
-  delete[] buf;
 
   if (closeSocket) {
     _closeSocketToClient();
