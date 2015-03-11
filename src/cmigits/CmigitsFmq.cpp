@@ -96,7 +96,7 @@ CmigitsFmq::_fmqInitializeForRead() {
     
     // Try to initialize the FMQ for reading and return the result.
     if (_fmq.initReadOnly(FMQ_URL.c_str(), "CmigitsFmq", false, 
-                          Fmq::END, 0)) {
+                          Fmq::END, 0) == 0) {
         ILOG << "C-MIGITS FMQ '" << CmigitsFmq::FMQ_URL << "' opened for reading";
     } else {
         DLOG << "No FMQ yet";
