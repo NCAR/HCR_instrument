@@ -578,6 +578,8 @@ main(int argc, char** argv)
             DLOG << "Stopping thread for channel " << _chanNums[c];
             _downThreads[c]->terminate();
             _downThreads[c]->wait(1000);    // wait up to a second for termination
+            delete _downThreads[c];
+            _downThreads[c] = NULL;
         }
         
         // Stop and delete the status grabber
