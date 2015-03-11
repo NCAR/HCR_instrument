@@ -10,8 +10,6 @@ const std::string IwrfExportCmigitsThread::FMQ_PATH = "/tmp/cmigits_fmq/shmem_22
 IwrfExportCmigitsThread::IwrfExportCmigitsThread(IwrfExport & iwrfExport) :
     _iwrfExport(iwrfExport),
     _cmigitsFmq() {
-    ILOG << "Opening FMQ '" << FMQ_PATH << "' for reading";
-    _cmigitsFmq.initReadBlocking(FMQ_PATH.c_str(), "hcrdrx", false, Fmq::END, 10);
     // Since we don't have a proper Qt event loop, allow the terminate() 
     // method to stop us.
     setTerminationEnabled(true);
@@ -31,6 +29,37 @@ IwrfExportCmigitsThread::~IwrfExportCmigitsThread() {
 void
 IwrfExportCmigitsThread::run()
 {
+    // Loop until the FMQ is initialized, sleeping briefly after each attempt
+    // until initialization is successful. We issue a warning every 
+    // FMQ_WARNING_INTERVAL_SECS seconds if we cannot open the FMQ (generally
+    // because it has not yet been created by the writer).
+    const int FMQ_WARNING_INTERVAL_SECS = 10;
+    time_t fmqWarningTime = 0;
+    
+    while (true) {
+        _cmigitsFmq.initReadOnly(FMQ_PATH.c_str(), "hcrdrx", false,
+                                 Fmq::END, 10);
+
+        // If the FMQ is open, we're done in this loop
+        if (_cmigitsFmq.isOpen()) {
+            ILOG << "C-MIGITS FMQ " << FMQ_PATH << " is now open for reading";
+            // We're done. Break out of the loop.
+            break;
+        }
+        
+        // Warn every FMQ_WARNING_INTERVAL_SECS seconds if we cannot open the
+        // C-MIGITS FMQ.
+        time_t now = time(0);
+        if ((now - fmqWarningTime) > FMQ_WARNING_INTERVAL_SECS) {
+            WLOG << "C-MIGITS FMQ " << FMQ_PATH <<
+                    " cannot yet be opened for reading";
+            fmqWarningTime = now;
+        }
+        // Sleep for 0.1 s and try again
+        usleep(100000);
+    }
+    
+    // Now begin the reading loop
     while (true) {
 //        QCoreApplication::processEvents();
 
