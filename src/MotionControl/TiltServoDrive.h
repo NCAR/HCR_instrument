@@ -17,12 +17,20 @@ public:
     /// Our tilt motor has 480000 encoder counts per full circle
     static const uint32_t TILT_DRIVE_COUNTS_PER_CIRCLE = 480000;
     
-    /// Instantiate a connection to the HCR tilt servo drive at the given 
+    /// Instantiate a connection to the HCR tilt servo drive via the given 
     /// CANopen node ID. The drive's nickname will be set to "tilt".
     /// @param nodeId the CANopen node ID of the servo drive
     TiltServoDrive(uint8_t nodeId) :
         ElmoServoDrive(nodeId, "tilt", TILT_DRIVE_COUNTS_PER_CIRCLE, 
                 -4.0, 4.0) {}
+    
+    /// Instantiate a serial port connection to the HCR tilt servo drive via 
+    /// the given serial device. The drive's nickname will be set to "tilt".
+    /// @param ttyDev the serial device name for the servo drive
+    TiltServoDrive(std::string ttyDev) :
+        ElmoServoDrive(ttyDev, "tilt", TILT_DRIVE_COUNTS_PER_CIRCLE, 
+                -4.0, 4.0) {}
+
     virtual ~TiltServoDrive() {}
 private:
     std::string _xqInitFunction() const { return("tiltInit"); }
