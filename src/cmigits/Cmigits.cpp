@@ -1392,7 +1392,10 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
     static const char Iwg1Group[] = "239.0.0.10";
     // Open a UDP socket on the IWG1 port (7071)
     QUdpSocket socket;
-    socket.bind(Iwg1Port, QUdpSocket::ShareAddress);
+    if (! socket.bind(Iwg1Port, QUdpSocket::ShareAddress)) {
+        ELOG << "Failed to bind QUdpSocket to " << Iwg1Group << ":" << Iwg1Port;
+        return(false);
+    }
 
     // Before Qt 4.8, we need to do the work below to join a multicast group
     // With Qt 4.8, all of this will become:
@@ -1404,8 +1407,8 @@ Cmigits::_getIwg1Info(double * lat, double * lon, double * alt,
     mreq.imr_interface.s_addr = htons(INADDR_ANY);
     if (setsockopt(socketFd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *)&mreq,
             sizeof(mreq)) < 0) {
-        ELOG << __PRETTY_FUNCTION__ << ": error joining multicast group" <<
-                Iwg1Group;
+        ELOG << __PRETTY_FUNCTION__ << ": error joining multicast group " <<
+                Iwg1Group << ": " << strerror(errno);
         return(false);
     }
 
