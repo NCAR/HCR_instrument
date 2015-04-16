@@ -15,15 +15,22 @@ LOGGING("MotionControl")
 inline double DegToRad(double deg) { return(M_PI * deg / 180.0); }
 inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 
-/// CANopen node ID for the rotation drive
-static const int ROT_DRIVE_NODE_ID = 126;
-/// CANopen node ID for the tilt drive
-static const int TILT_DRIVE_NODE_ID = 125;
+/// Rotation drive CANopen node ID (used for CAN connection constructor) and
+/// TTY device name (used for TTY connection constructor)
+static const int ROT_DRIVE_CANOPEN_ID = 126;
+static const std::string ROT_DRIVE_TTYDEV = "/dev/ttydp00";
+
+/// Tilt drive CANopen node ID (used for CAN connection constructor) and
+/// TTY device name (used for TTY connection constructor)
+static const int TILT_DRIVE_CANOPEN_ID = 125;
+static const std::string TILT_DRIVE_TTYDEV = "/dev/ttydp01";
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::MotionControl() :
-    _rotDrive(ROT_DRIVE_NODE_ID),
-    _tiltDrive(TILT_DRIVE_NODE_ID),
+    _rotDrive(ROT_DRIVE_CANOPEN_ID),
+//    _rotDrive(ROT_DRIVE_TTYDEV),
+    _tiltDrive(TILT_DRIVE_CANOPEN_ID),
+//    _tiltDrive(TILT_DRIVE_TTYDEV),
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
