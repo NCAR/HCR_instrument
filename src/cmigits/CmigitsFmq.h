@@ -287,6 +287,7 @@ private:
     
     /// Our shared memory FMQ.
     DsFmq _fmq;
+    
     /// Do we have write access to the shared memory?
     bool _writeAccess;
     
@@ -296,8 +297,7 @@ private:
     QTimer _3501TimeoutTimer;
     /// Timeout timer for 3512 data, used only by the writer instance
     QTimer _3512TimeoutTimer;
-    /// MsgStruct which contains the latest data from the C-MIGITS, used only 
-    /// by the writer instance
+    /// MsgStruct which caches the latest data from the C-MIGITS
     MsgStruct _currentMsg;
 };
 
