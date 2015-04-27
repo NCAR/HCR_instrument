@@ -452,9 +452,10 @@ main(int argc, char** argv)
             continue;
         }
 
-        // We use SD3C's first general purpose timer for transmit pulse modulation
-        // The width of the modulation pulse is transmit pulse width + 272 ns,
-        // where the 272 ns was empirically measured.
+        // We use SD3C's first general purpose timer for transmit pulse 
+        // modulation. The width of the modulation pulse is transmit pulse 
+        // width + 272 ns, where the 272 ns is the empirically measured rise
+        // time until full amplification is achieved. 
         double pulseModWidth = hcrConfig.tx_pulse_width() + 2.72e-7;
         _sd3c->setGPTimer0(hcrConfig.tx_pulse_mod_delay(), pulseModWidth);
 
