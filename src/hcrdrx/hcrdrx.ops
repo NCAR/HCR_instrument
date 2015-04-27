@@ -38,9 +38,10 @@ tx_pulse_width           256e-9
 # modulation pulse signal to the transmitter
 tx_pulse_mod_delay      432e-9 # s
 
-# tx_latency is the measured time in seconds between arrival of the DAC 
-# signal at the EIK and actual output of the transmit pulse
-tx_latency              600e-9
+# tx_latency is the measured time in seconds between initiation of DAC waveform
+# generation (i.e., T0 + tx_delay, or the rising edge of the tx_gate signal) 
+# and the rising edge of the actual transmit pulse emitted from the EIK
+tx_latency              644e-9  # measured 2011-09-01
 
 # iqcount_scale_for_mw: count scaling factor to easily get power in mW from
 # I and Q.  If I and Q are counts from the Pentek, the power at the A/D in 
