@@ -368,11 +368,10 @@ private:
     /// target radius (see documentation for the TR command for details)
     uint32_t _targetRadius;
 
-    /// When did we begin the initialization process?
+    /// Keep the start time of the last XQ command which was executed.
     struct timeval _xqStartTime;
 
-    /// Has there been an error from an XQ command used for initialization/
-    /// homing?
+    /// Has there been an error from an XQ command?
     bool _xqError;
     
     /// Scan point vector
