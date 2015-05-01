@@ -86,8 +86,12 @@ main(int argc, char *argv[]) {
 
     if (! goodargs) {
     	std::cerr << "Usage: " << argv[0] << " <tty_dev>" << std::endl;
-        std::cerr << "            or" << std::endl;
+        std::cerr << "            OR" << std::endl;
         std::cerr << "       " << argv[0] << " --playback <ts_file> [...]" << std::endl;
+        std::cerr << "In playback mode, C-MIGITS data from the given file(s)" <<
+                std::endl;
+        std::cerr << "will be played back until the program is terminated" <<
+                std::endl;
     	exit(1);
     }
 
@@ -113,9 +117,6 @@ main(int argc, char *argv[]) {
         
         // Create the Ts2CmigitsFmqThread, which begins working immediately.
         playbackThread = new Ts2CmigitsFmqThread(fileList);
-
-        // Stop the application when the reader thread is done
-        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
     } else {
         PMU_auto_register("creating Cmigits instance");
         std::string devName(argv[1]);

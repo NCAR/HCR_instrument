@@ -46,6 +46,9 @@ private:
     /// timing.
     void _showStats();
 
+    /// List of time-series files to be played back
+    std::vector<std::string> _fileList;
+    
     /// Work thread where the heavy lifting will be done
     QThread _workThread;
     
@@ -53,7 +56,7 @@ private:
     QTimer * _fake3500Timer;
     
     /// Reader for IWRF time-series files
-    IwrfTsReaderFile _reader;
+    IwrfTsReaderFile * _reader;
 
     /// Connection to the C-MIGITS shared memory segment
     CmigitsFmq * _fmq;

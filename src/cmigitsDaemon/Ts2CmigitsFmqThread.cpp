@@ -13,9 +13,10 @@
 LOGGING("Ts2CmigitsFmqThread")
 
 Ts2CmigitsFmqThread::Ts2CmigitsFmqThread(std::vector<std::string> fileList) :
+    _fileList(fileList),
     _workThread(),
     _fake3500Timer(NULL),
-    _reader(fileList, IWRF_DEBUG_OFF),
+    _reader(NULL),
     _fmq(NULL),
     _pulseCount(0),
     _sleepSumUsecs(0),
@@ -55,13 +56,6 @@ Ts2CmigitsFmqThread::~Ts2CmigitsFmqThread() {
 
 void
 Ts2CmigitsFmqThread::_onThreadStart() {
-    // We need a pulse before the first call to _doNextPulse().
-    _pulse = _reader.getNextPulse();
-    if (! _pulse) {
-        ELOG << "Unable to read first pulse!";
-        exit(1);
-    }
-    
     // Start the processing...
     _doNextPulse();
 }
@@ -81,6 +75,25 @@ Ts2CmigitsFmqThread::_showStats() {
 
 void
 Ts2CmigitsFmqThread::_doNextPulse() {
+    // If we have no pulse, instantiate a new reader with our list of
+    // files and get the first pulse.
+    if (! _pulse) {
+        // Delete the previous reader, if any
+        if (_reader) {
+            delete(_reader);
+        }
+        
+        // Instantiate a reader, using the list of files we were given
+        _reader = new IwrfTsReaderFile(_fileList, IWRF_DEBUG_OFF);
+
+        // Get the first pulse
+        _pulse = _reader->getNextPulse();
+        if (! _pulse) {
+            ELOG << "Unable to read first pulse!";
+            exit(1);
+        }
+    }
+    
     // Increment our count of processed pulses
     _pulseCount++;
     if (! (_pulseCount % 10000)) {
@@ -192,12 +205,9 @@ Ts2CmigitsFmqThread::_doNextPulse() {
 
     // Try to get the next pulse. If we get one, schedule the next call here,
     // otherwise let the outside world we're done.
-    if ((_pulse = _reader.getNextPulse()) == NULL) {
-        // Out of data. We're done!
-        emit(finished());
-    } else {
-        // Set a single-shot zero-interval timer to call this method again when
-        // the thread is not otherwise busy.
-        QTimer::singleShot(0, this, SLOT(_doNextPulse()));
-    }
+    _pulse = _reader->getNextPulse();
+    
+    // Set a single-shot zero-interval timer to call this method again when
+    // the thread is not otherwise busy.
+    QTimer::singleShot(0, this, SLOT(_doNextPulse()));
 }
