@@ -247,7 +247,7 @@ ElmoServoDrive::moveTo(float angle) {
     
     // Generate a command to move to the given absolute position
     DLOG << driveName() << ": move to " << angle;
-    _driveConn->execElmoAssignCmd("PA", _angleToCounts(angle));
+    _driveConn->execElmoAssignCmd("PA", 0, _angleToCounts(angle));
     _driveConn->execElmoCmd("BG");
 }
 
@@ -348,13 +348,13 @@ ElmoServoDrive::scan() {
     ILOG << driveName() << " starting scan"; 
 
     // position to first point of scan
-    _driveConn->execElmoAssignCmd("PA", _scanPoints[0]);
+    _driveConn->execElmoAssignCmd("PA", 0, _scanPoints[0]);
     _driveConn->execElmoCmd("BG");
 
     // TODO we need to wait for motion completion here before starting the scan
     
     // start the scan
-    _driveConn->execElmoAssignCmd("PT", 1);
+    _driveConn->execElmoAssignCmd("PT", 0, 1);
     _driveConn->execElmoCmd("BG");
 }
 
@@ -369,6 +369,14 @@ ElmoServoDrive::homeDrive(int homeCounts) {
     // Set UI[1] to the count value we want associated with the home position.
     _driveConn->execElmoAssignCmd("UI", 1, homeCounts);
 
+    // Set motor position limits to allow full motion (required for 
+    // our homing procedure). User-requested limits will be applied after the 
+    // drive is homed.
+    _driveConn->execElmoAssignCmd("MO", 0, 0);  // motor must be off to set limits
+    _driveConn->execElmoAssignCmd("LL", 3, -1000000000);
+    _driveConn->execElmoAssignCmd("HL", 3, 1000000000);
+    _driveConn->execElmoAssignCmd("MO", 0, 1);  // turn motor back on
+    
     // Call the drive homing function. The function sets the count value for
     // the home position to the number it finds in UI[1].
     _startXq(_xqHomingFunction());
@@ -476,7 +484,7 @@ ElmoServoDrive::_testForInitCompletion() {
         }
     }
 
-    // The initialization/homing program on the drive finished.
+    // The initialization program on the drive finished.
     ILOG << driveName() << " initialization complete";
     _driveInitialized = true;
     
@@ -485,23 +493,14 @@ ElmoServoDrive::_testForInitCompletion() {
     // _onReplyFromExec().
     _driveConn->execElmoCmd("WS", 55);
     
-    // Turn off motor for setting XM[1], XM[2], LL[3], and HL[3]
-    _driveConn->execElmoAssignCmd("MO", 0, 0);
-
     // Override minimum and maximum position counts to their default values
     // of essentially +/- infinity. This disables angle modulo arithmetic on 
     // the servo drive, which is necessary to create an enforceable "keep-out" 
     // wedge.
+    _driveConn->execElmoAssignCmd("MO", 0, 0);  // motor must be off to set limits
     _driveConn->execElmoAssignCmd("XM", 1, -1000000000);
     _driveConn->execElmoAssignCmd("XM", 2, 1000000000);
-    
-    // Load the lower and upper limits for motor position which were specified
-    // in the constructor
-    _driveConn->execElmoAssignCmd("LL", 3, _lowerLimitCounts);
-    _driveConn->execElmoAssignCmd("HL", 3, _upperLimitCounts);
-    
-    // Turn motor back on
-    _driveConn->execElmoAssignCmd("MO", 0, 1);
+    _driveConn->execElmoAssignCmd("MO", 0, 1);  // turn motor back on
 
 stop_timer:
     _gpTimer.stop();
@@ -536,10 +535,16 @@ ElmoServoDrive::_testForHomingCompletion() {
         }
     }
 
-    // The initialization/homing program on the drive finished.
+    // The homing program on the drive finished.
     ILOG << driveName() << " homing complete";
     _driveHomed = true;
-    _driveConn->execElmoAssignCmd("MO", 1);
+    
+    // Now that the drive is homed, apply the user-specified lower and upper 
+    // position limits.
+    _driveConn->execElmoAssignCmd("MO", 0, 0);  // motor must be off to set limits
+    _driveConn->execElmoAssignCmd("LL", 3, _lowerLimitCounts);
+    _driveConn->execElmoAssignCmd("HL", 3, _upperLimitCounts);
+    _driveConn->execElmoAssignCmd("MO", 0, 1);  // motor back on
 
 stop_timer:
     _homingInProgress = false;
