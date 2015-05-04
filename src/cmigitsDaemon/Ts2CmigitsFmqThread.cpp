@@ -18,6 +18,7 @@ Ts2CmigitsFmqThread::Ts2CmigitsFmqThread(std::vector<std::string> fileList) :
     _fake3500Timer(NULL),
     _reader(NULL),
     _fmq(NULL),
+    _pulse(NULL),
     _pulseCount(0),
     _sleepSumUsecs(0),
     _delayedPulseCount(0),
@@ -90,7 +91,8 @@ Ts2CmigitsFmqThread::_doNextPulse() {
         _pulse = _reader->getNextPulse();
         if (! _pulse) {
             ELOG << "Unable to read first pulse!";
-            exit(1);
+            emit(finished());
+            return;
         }
     }
     
