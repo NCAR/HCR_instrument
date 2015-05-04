@@ -117,6 +117,9 @@ main(int argc, char *argv[]) {
         
         // Create the Ts2CmigitsFmqThread, which begins working immediately.
         playbackThread = new Ts2CmigitsFmqThread(fileList);
+
+        // Stop the application when the reader thread is done
+        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
     } else {
         PMU_auto_register("creating Cmigits instance");
         std::string devName(argv[1]);
