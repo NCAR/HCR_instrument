@@ -66,7 +66,7 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     _ui.surfaceValue->setText(hcrMonitorStatus.overWater() ? "Water" : "Land");
     
     // TransmitControl max received power
-    _ui.maxPowerValue->setText(QString::number(hcrMonitorStatus.maxPower(), 'f', 1));
+    _ui.maxPowerValue->setText(QString::number(hcrMonitorStatus.meanMaxPower(), 'f', 1));
     
     // TransmitControl attenuation required, HV requested
     _ui.attenuationRequiredIcon->setPixmap(hcrMonitorStatus.attenuationRequired() ? 

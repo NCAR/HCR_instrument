@@ -35,10 +35,13 @@ signals:
     /// @param time the center time for of the max power dwell, seconds since
     ///    1970-01-01 00:00:00 UTC
     /// @param dwellTime the length of time over which max power was sampled, s
-    /// @param maxPower the maximum power measured, dBm
-    /// @param rangeToMax the range from the radar to the maximum power 
+    /// @param peakMaxPower the maximum power measured, dBm
+    /// @param rangeToPeakMax the range from the radar to the peak maximum power
     ///    return, m
-    void newMaxPower(double time, double dwellTime, double maxPower, double rangeToMax);
+    /// @param meanMaxPower mean maximum power, averaged over the max power
+    ///    server's dwell time, dBm
+    void newMaxPower(double time, double dwellTime, double peakMaxPower,
+            double rangeToPeakMax, double meanMaxPower);
     
 private slots:
 

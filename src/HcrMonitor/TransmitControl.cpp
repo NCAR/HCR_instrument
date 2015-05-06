@@ -76,8 +76,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     
     // Call _updateMaxPower when new max powers arrive from the TsPrint max
     // power server
-    connect(&maxPowerThread, SIGNAL(newMaxPower(double, double, double, double)),
-            this, SLOT(_updateMaxPower(double, double, double, double)));
+    connect(&maxPowerThread, SIGNAL(newMaxPower(double, double, double, double, double)),
+            this, SLOT(_updateMaxPower(double, double, double, double, double)));
     
     // Call _setMaxPowerResponding when we get a responsiveness change signal
     connect(&maxPowerThread, SIGNAL(serverResponsive(bool, QString)),
@@ -165,7 +165,7 @@ TransmitControl::_updateMotionControlResponsive(bool responding, QString msg) {
 
 void
 TransmitControl::_updateMaxPower(double centerTime, double dwellWidth, 
-        double maxPower, double rangeToMax) {
+        double peakMaxPower, double rangeToPeakMax, double meanMaxPower) {
     // Figure out dwell start and end times
     double dwellStart = centerTime - 0.5 * dwellWidth;
     double dwellEnd = centerTime + 0.5 * dwellWidth;
@@ -184,8 +184,9 @@ TransmitControl::_updateMaxPower(double centerTime, double dwellWidth,
     
     // Store the max power information and update control state
     _maxPowerReport.dataTime = centerTime;
-    _maxPowerReport.maxPower = maxPower;
-    _maxPowerReport.rangeToMaxPower = rangeToMax;
+    _maxPowerReport.peakMaxPower = peakMaxPower;
+    _maxPowerReport.rangeToPeakMaxPower = rangeToPeakMax;
+    _maxPowerReport.meanMaxPower = meanMaxPower;
     _maxPowerReport.attenuated = _timePeriodWasAttenuated(dwellStart, dwellEnd);
     _updateControlState();
 }
@@ -281,7 +282,7 @@ TransmitControl::_runTransmitTests() {
     // If user has requested HV on and received power exceeds our safety 
     // threshold, attenuate if possible otherwise force _hvRequested to false 
     // to disable transmit until the user acts.
-    if (_hvRequested && _maxPowerReport.maxPower > _RECEIVED_POWER_THRESHOLD) {
+    if (_hvRequested && _maxPowerReport.meanMaxPower > _RECEIVED_POWER_THRESHOLD) {
         // Adding attenuation is a solution if 1) an attenuated mode is
         // available, and 2) the max power was not recorded in a period that
         // was already attenuated.
@@ -296,7 +297,7 @@ TransmitControl::_runTransmitTests() {
             oss << "Forcing high voltage request to OFF, to protect the " <<
                     "receiver after seeing " <<
                     (_maxPowerReport.attenuated ? "" : "un") << "attenuated " <<
-                    "max power of " << _maxPowerReport.maxPower << 
+                    "max power of " << _maxPowerReport.meanMaxPower <<
                     " dBm with current HMC mode: " <<
                     HcrPmc730::HmcModeNames[_currentHmcMode()];
             WLOG << oss.str();
@@ -314,7 +315,7 @@ TransmitControl::_runTransmitTests() {
     // need to remain there until *unattenuated* max power drops to 6 dB or
     // more below our max power threshold.
     if (_xmitTestStatus == ATTENUATE_RCVD_POWER_TOO_HIGH) {
-        double unattenuatedPower = _maxPowerReport.maxPower + _SWITCH_ATTENUATION;
+        double unattenuatedPower = _maxPowerReport.meanMaxPower + _SWITCH_ATTENUATION;
         if (unattenuatedPower > (_RECEIVED_POWER_THRESHOLD - 6)) {
             ILOG << "Waiting for max power to drop before removing attenuation";
             provisionalStatus = ATTENUATE_RCVD_POWER_TOO_HIGH;
@@ -388,7 +389,7 @@ TransmitControl::_xmitTestStatusText() const {
         oss << "Forcing high voltage request to OFF, to protect the " <<
         "receiver after seeing " <<
         (_maxPowerReport.attenuated ? "" : "un") << "attenuated " <<
-        "max power of " << _maxPowerReport.maxPower <<
+        "max power of " << _maxPowerReport.meanMaxPower <<
         " dBm with current HMC mode '" <<
         HcrPmc730::HmcModeNames[_currentHmcMode()] << "'";
         return(oss.str());

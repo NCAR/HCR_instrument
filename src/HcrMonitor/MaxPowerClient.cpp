@@ -241,32 +241,45 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
         QString dwellSecsText = _DocElementText(doc, "dwellSecs");
         double dwellSecs = dwellSecsText.toDouble();
 
-        // Get H channel max power from "maxDbm0" element
-        QString maxDbm0Text = _DocElementText(doc, "maxDbm0");
-        double maxDbmH = maxDbm0Text.toDouble();
+        // Get H channel mean max power over the max power server's dwell time
+        // from "meanMaxDbm0" element
+        QString meanMaxDbm0Text = _DocElementText(doc, "meanMaxDbm0");
+        double meanMaxDbmH = meanMaxDbm0Text.toDouble();
 
-        // Get V channel max power from "maxDbm1" element
-        QString maxDbm1Text = _DocElementText(doc, "maxDbm1");
-        double maxDbmV = maxDbm1Text.toDouble();
+        // Get V channel mean max power over the max power server's dwell time
+        // from "meanMaxDbm1" element
+        QString meanMaxDbm1Text = _DocElementText(doc, "meanMaxDbm1");
+        double meanMaxDbmV = meanMaxDbm1Text.toDouble();
+
+        // Get H channel peak max power over the max power server's dwell time
+        // from "peakMaxDbm0" element
+        QString peakMaxDbm0Text = _DocElementText(doc, "peakMaxDbm0");
+        double peakMaxDbmH = peakMaxDbm0Text.toDouble();
+
+        // Get V channel peak max power from "peakMaxDbm1" element
+        QString peakMaxDbm1Text = _DocElementText(doc, "peakMaxDbm1");
+        double peakMaxDbmV = peakMaxDbm1Text.toDouble();
 
         // Get range to H channel max power from "rangeToMax0" element
         QString rangeToMax0Text = _DocElementText(doc, "rangeToMax0");
-        double rangeToMaxH = rangeToMax0Text.toDouble();
+        double rangeToPeakH = rangeToMax0Text.toDouble();
 
         // Get range to V channel max power from "rangeToMax1" element
         QString rangeToMax1Text = _DocElementText(doc, "rangeToMax1");
-        double rangeToMaxV = rangeToMax1Text.toDouble();
+        double rangeToPeakV = rangeToMax1Text.toDouble();
         
-        // Figure out which max is *really* max
-        double maxDbm = (maxDbmH > maxDbmV) ? maxDbmH : maxDbmV;
-        double rangeToMax = (maxDbmH > maxDbmV) ? rangeToMaxH : rangeToMaxV;
+        // Figure out which channel's max is *really* max
+        double meanMaxDbm = (meanMaxDbmH > meanMaxDbmV) ? meanMaxDbmH : meanMaxDbmV;
+        double peakMaxDbm = (peakMaxDbmH > peakMaxDbmV) ? peakMaxDbmH : peakMaxDbmV;
+        double rangeToMax = (meanMaxDbmH > meanMaxDbmV) ? rangeToPeakH : rangeToPeakV;
         
         // Emit newMaxPower() signal
         DLOG << "New max power at " << 
                 dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
-                ": " << maxDbm << " dBm (" << rangeToMax << " m range)";
+                ": peak " << peakMaxDbm << " dBm (" << rangeToMax <<
+                " m range), mean " << meanMaxDbm << " dBm";
         double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
-        emit(newMaxPower(secondsSinceEpoch, dwellSecs, maxDbm, rangeToMax));
+        emit(newMaxPower(secondsSinceEpoch, dwellSecs, peakMaxDbm, rangeToMax, meanMaxDbm));
     } catch (std::runtime_error & e) {
         ELOG << "Error in <TsPrintMaxPower>: " << e.what();
         ELOG << "Text of offending <TsPrintMaxPower>: \n" << text.data();

@@ -98,7 +98,7 @@ public:
     
     /// @brief Return the maximum received power, dBm
     /// @return the maximum received power, dBm
-    double maxPower() const { return(_maxPower); }
+    double meanMaxPower() const { return(_meanMaxPower); }
     
     /// @brief Return the requested HMC mode.
     /// @return the requested HMC mode.
@@ -166,7 +166,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_mslAltitude);
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
             ar & BOOST_SERIALIZATION_NVP(_overWater);
-            ar & BOOST_SERIALIZATION_NVP(_maxPower);
+            ar & BOOST_SERIALIZATION_NVP(_meanMaxPower);
             ar & BOOST_SERIALIZATION_NVP(_hvRequested);
             ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
             ar & BOOST_SERIALIZATION_NVP(_transmitAllowed);
@@ -250,7 +250,7 @@ private:
     bool _overWater;
     
     /// @brief Max received power, dBm
-    double _maxPower;
+    double _meanMaxPower;
     
     /// @brief Requested HMC mode
     HcrPmc730::HmcOperationMode _requestedHmcMode;

@@ -123,11 +123,15 @@ private slots:
     /// react if necessary
     /// @param dataTime center time of the period sampled for this max power 
     /// report, seconds since 1970-01-01 00:00:00 UTC
-    /// @param dwellPeriod the period of time sampled for max power, s
-    /// @param maxPower the maximum power received, dBm
-    /// @param rangeToMax the range to the maximum received power, m
-    void _updateMaxPower(double dataTime, double dwellPeriod, double maxPower, 
-            double rangeToMax);
+    /// @param dwellPeriod the length of time over which max power was
+    ///    sampled, s
+    /// @param peakMaxPower the maximum power measured, dBm
+    /// @param rangeToPeakMax the range from the radar to the peak maximum power
+    ///    return, m
+    /// @param meanMaxPower mean maximum power, averaged over the max power
+    ///    server's dwell time, dBm
+    void _updateMaxPower(double dataTime, double dwellPeriod,
+            double peakMaxPower, double rangeToPeakMax, double meanMaxPower);
 
     /// @brief Note a responsiveness change for the TsPrint max power server
     /// @param responding true if the server is now responsive, false if it's
@@ -147,10 +151,13 @@ private:
         /// @brief center time of period sampled for max power, seconds since 
         /// 1970-01-01 00:00:00 UTC
         double dataTime;
-        /// @brief max received power, dBm
-        double maxPower;
-        /// @brief range to max received power, m
-        double rangeToMaxPower;
+        /// @brief peak max received power, dBm
+        double peakMaxPower;
+        /// @brief range to peak max received power, m
+        double rangeToPeakMaxPower;
+        /// @brief time-averaged mean max power, over the max power server's
+        /// dwell period, dBm
+        double meanMaxPower;
         /// @brief true iff the whole period sampled for max power was collected
         /// in attenuated receive mode
         bool attenuated;
