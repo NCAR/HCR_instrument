@@ -18,8 +18,6 @@
 #include <QDateTime>
 #include <QWriteLocker>
 
-using namespace std;
-
 LOGGING("IwrfExport")
 
 ///////////////////////////////////////////////////////////////////////////
@@ -365,10 +363,10 @@ void IwrfExport::_readNextPulse()
 
   if (_pulseSeqNum != _prevPulseSeqNum + 1) {
     int nMissing = _pulseSeqNum - _prevPulseSeqNum - 1;
-    cerr << "Missing pulses - nmiss, prevNum, thisNum: "
+    WLOG << "Missing pulses - nmiss, prevNum, thisNum: "
          << nMissing << ", "
          << _prevPulseSeqNum << ", "
-         << _pulseSeqNum << endl;
+         << _pulseSeqNum;
   }
 
 }
@@ -560,19 +558,19 @@ int IwrfExport::_sendIwrfMetaData()
   bool closeSocket = false;
   
   if (_sock && _sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
-    cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
-    cerr << "  Writing IWRF_RADAR_INFO" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
+    ELOG << "  Writing IWRF_RADAR_INFO";
+    ELOG << "  " << _sock->getErrStr();
     closeSocket = true;
   } else if (_sock && _sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
-    cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
-    cerr << "  Writing IWRF_TS_PROCESSING" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
+    ELOG << "  Writing IWRF_TS_PROCESSING";
+    ELOG << "  " << _sock->getErrStr();
     closeSocket = true;
   } else if (_sock && _sock->writeBuffer(&calibStruct, sizeof(calibStruct))) {
-    cerr << "ERROR - IwrfExport::_sendIwrfMetaData()" << endl;
-    cerr << "  Writing IWRF_CALIBRATION" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
+    ELOG << "  Writing IWRF_CALIBRATION";
+    ELOG << "  " << _sock->getErrStr();
     closeSocket = true;
   }
   
@@ -675,9 +673,9 @@ int IwrfExport::_sendIwrfPulsePacket()
 
   bool closeSocket = false;
   if (_sock && _sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
-    cerr << "ERROR - IwrfExport::_sendIwrfPulsePacket()" << endl;
-    cerr << "  Writing pulse packet" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_sendIwrfPulsePacket()";
+    ELOG << "  Writing pulse packet";
+    ELOG << "  " << _sock->getErrStr();
     closeSocket = true;
   }
 
@@ -966,9 +964,9 @@ int IwrfExport::_sendIwrfStatusXmlPacket()
   bool closeSocket = false;
 
   if (_sock && _sock->writeBuffer(_statusBuf, _statusMsgLen)) {
-    cerr << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()" << endl;
-    cerr << "  Writing status xml packet" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()";
+    ELOG << "  Writing status xml packet";
+    ELOG << "  " << _sock->getErrStr();
     closeSocket = true;
   }
   
@@ -1240,9 +1238,9 @@ int IwrfExport::_sendIwrfGeorefPacket()
   bool closeSocket = false;
 
   if (_sock && _sock->writeBuffer(&_radarGeoref, sizeof(_radarGeoref))) {
-    cerr << "ERROR - IwrfExport::_sendIwrfGeorefPacket()" << endl;
-    cerr << "  Writing IWRF_RADAR_GEOREF" << endl;
-    cerr << "  " << _sock->getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_sendIwrfGeorefPacket()";
+    ELOG << "  Writing IWRF_RADAR_GEOREF";
+    ELOG << "  " << _sock->getErrStr();
     closeSocket = true;
   }
   
@@ -1268,9 +1266,9 @@ int IwrfExport::_openServer()
   }
 
   if (_server.openServer(_iwrfServerTcpPort)) {
-    cerr << "ERROR - IwrfExport::_openServer" << endl;
-    cerr << "  Cannot open server, port: " << _iwrfServerTcpPort << endl;
-    cerr << "  " << _server.getErrStr() << endl;
+    ELOG << "ERROR - IwrfExport::_openServer";
+    ELOG << "  Cannot open server, port: " << _iwrfServerTcpPort;
+    ELOG << "  " << _server.getErrStr();
     umsleep(1000);
     return -1;
   }
