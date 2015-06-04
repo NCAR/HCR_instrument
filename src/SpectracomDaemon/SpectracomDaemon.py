@@ -1,48 +1,63 @@
 #!/usr/bin/env python
 
-"""@package SpectracomDaemon
+'''@package SpectracomDaemon
 A daemon program which periodically collects status information from a 
 Spectracom SecureSync time and frequency server and supports an XML-RPC 
 interface to provide access to the status information.
-"""
+'''
 
-import time
-import threading
-from SocketServer import ThreadingMixIn
-from SimpleXMLRPCServer import SimpleXMLRPCServer
-from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 
-class ThreadingXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
-    ### Version of SimpleXMLRPCServer which can be run in a thread
-    
-    # Ctrl-C will cleanly kill all spawned threads
-    daemon_threads = True
-    
-    # much faster rebinding
-    allow_reuse_address = True
-    
+import logging
+logging.basicConfig(level=logging.INFO, 
+                    format='%(asctime)-15s %(levelname)s:%(name)s:%(message)s')
+
+import sys
+import os
+logger = logging.getLogger(os.path.basename(sys.argv[0]))
 
 XMLRPC_PORT = 8008
 
 def getStatus():
-    """Handle XML-RPC 'getStatus' requests, returning current Spectracom status.
-    """
+    '''Handle XML-RPC 'getStatus' requests, returning current Spectracom status.
+    '''
     print "call to getStatus() method"
-    return
+    return 0
 
-if __name__ == "__main__":
+# Create our XML-RPC server
+from SimpleXMLRPCServer import SimpleXMLRPCServer
 
-    serverXMLRPC = ThreadingXMLRPCServer(('0.0.0.0', XMLRPC_PORT))
-    serverXMLRPC.register_function(getStatus)
-    server_thread = threading.Thread(target=serverXMLRPC.serve_forever)
-    server_thread.start() 
+SimpleXMLRPCServer.allow_reuse_address = True
+serverXMLRPC = SimpleXMLRPCServer(('0.0.0.0', XMLRPC_PORT))
+serverXMLRPC.register_introspection_functions()
+serverXMLRPC.register_function(getStatus)
        
+def onStatusCollectorFailure():
+    '''Callback which handles StatusCollector failure
+    '''
+    logger.error("StatusCollector has died. Exiting program.")
+    # Stop the XML-RPC server to exit our main loop
+    serverXMLRPC.shutdown()
+
+# Create our StatusCollector which talks to the Spectracom
+from StatusCollector import StatusCollector
+collector = StatusCollector('timeserver', '/home/burghart/spectracom_log',
+                            onStatusCollectorFailure)
+
+
+if __name__ == '__main__':
+    import sys
+    import time
+    logger.info('Started ' + time.asctime())
+    
     try:
-        while (True):
-            print "Foo"
-            time.sleep(5)
+        # The main thread is devoted to just running the XML-RPC server
+        serverXMLRPC.serve_forever()
     except KeyboardInterrupt:
         print
-        print "exiting on SIGINT"
+        print 'exiting on SIGINT'
         
+    # Perform a clean shutdown of the XML-RPC server
     serverXMLRPC.shutdown()
+    
+    logger.info('Finished ' + time.asctime())
+
