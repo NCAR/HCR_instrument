@@ -20,8 +20,10 @@ XMLRPC_PORT = 8008
 def getStatus():
     '''Handle XML-RPC 'getStatus' requests, returning current Spectracom status.
     '''
-    print "call to getStatus() method"
-    return 0
+    logger.info('In XML-RPC getStatus() method')
+    # XML-RPC needs a simple dictionary, so reinterpret
+    # collector.getLatestStatus() as a plain dict
+    return dict(collector.getLatestStatus())
 
 # Create our XML-RPC server
 from SimpleXMLRPCServer import SimpleXMLRPCServer
