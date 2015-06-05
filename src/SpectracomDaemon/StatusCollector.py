@@ -23,7 +23,7 @@ class SpectracomStatus(dict):
     ALLOWED_KEYS = ['StatusTime', 'HostName', 'HostResponding', 'Reference', 
                     'NTPStratum', 'NTPSync', 'OscType', 'OscState', 'TFOM', 
                     'MaxTFOM', 'AlarmStatusTime', 'MajorAlarm', 'MinorAlarm', 
-                    'AlarmList']
+                    'AlarmList', 'FreqErrTime', 'FreqErr']
     
     def __init__(self, hostName):
         # StatusTime: datetime for the status information
@@ -54,6 +54,10 @@ class SpectracomStatus(dict):
         self['MinorAlarm'] = False
         # AlarmList: list of strings naming currently active alarms
         self['AlarmList'] = []
+        # FreqErrTime: datetime of the latest frequency error report
+        self['FreqErrTime'] = datetime(1970, 1, 1)
+        # FreqErr: latest frequency error
+        self['FreqErr'] = 999.e9
         
         # Verify that all valid keys have been initialized
         for k in self.ALLOWED_KEYS:
@@ -240,7 +244,7 @@ class StatusCollector:
             logger.error(p.stderr.read())
             logger.error("Error executing 'status' on the Spectracom")
 
-        # Get the current alarm state
+        # Get the current alarm state from alarms.log
 
         # Collect all lines from alarms.log.1 (if it exists) and alarms.log.
         # We get both files in case the latest alarm block spans the two files.
@@ -253,7 +257,7 @@ class StatusCollector:
         if not os.path.exists(path):
             # Generate a fake major alarm to note there is no alarms.log file
             newStatus['MajorAlarm'] = True
-            newStatus['AlarmList'] += 'No alarms.log file'
+            newStatus['AlarmList'].append('No alarms.log file')
         else:
             lines += open(path, 'r').readlines()
             
@@ -315,7 +319,41 @@ class StatusCollector:
                 newStatus['MajorAlarm'] = True
                 newStatus['AlarmList'] += 'No alarm block found'
                 
-            logger.info(newStatus)
-            
-            self.__setLatestStatus(newStatus)
+        # Get the latest frequency error from osc.log
+        path = os.path.join(self.logDest, 'osc.log')
+        if not os.path.exists(path):
+            # Generate a fake major alarm to note there is no osc.log file
+            newStatus['MajorAlarm'] = True
+            newStatus['AlarmList'].append('No osc.log file')
+        else:
+            lines += open(path, 'r').readlines()
+            # Find the latest line like:
+            #    Jun  5 22:06:20 Spectracom Spectracom: [system] 2015 156 22:06:20 000 XO1: Frequency error recalculated: 00.000974 (9.745x10^-12)
+            # and parse out the frequency error
+            m = None
+            for line in reversed(lines):
+                # Look for a line contaning 'Frequency error recalculated' and
+                # pull out the date/time and the frequency error
+                m = re.match('.*\[system\] ([^X]*).*Frequency error recalculated:[^\(]*\(([^\)]*)\)', line)
+                if m:
+                    freqErrTime = datetime.strptime(m.group(1).strip(), '%Y %j %H:%M:%S %f')
+                    # Only store the frequency error if its time is less than
+                    # twenty minutes old
+                    age = datetime.utcnow() - freqErrTime
+                    if age.total_seconds() < 20 * 60:
+                        newStatus['FreqErrTime'] = freqErrTime
+                        # Get the frequency error string, changing AAAx10^BBB
+                        # to AAAeBBB before converting to float.
+                        freqErrString = m.group(2).replace('x10^', 'e')
+                        newStatus['FreqErr'] = float(freqErrString)
+                    break
+                
+                
+        # Log and save the collected status
+        logger.info("=====")
+        logger.info("New status at %s:", str(newStatus['StatusTime']))
+        for key in newStatus.keys():
+            logger.info('    %s: %s', key, newStatus[key])
+        
+        self.__setLatestStatus(newStatus)
                 
