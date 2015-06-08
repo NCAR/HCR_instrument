@@ -20,44 +20,44 @@ class SpectracomStatus(dict):
        SecureSync time/frequency server
     '''
     
-    ALLOWED_KEYS = ['StatusTime', 'HostName', 'HostResponding', 'Reference', 
-                    'NTPStratum', 'NTPSync', 'OscType', 'OscState', 'TFOM', 
-                    'MaxTFOM', 'AlarmStatusTime', 'MajorAlarm', 'MinorAlarm', 
-                    'AlarmList', 'FreqErrTime', 'FreqErr']
+    ALLOWED_KEYS = ['_statusTime', '_hostName', '_hostResponding', '_reference', 
+                    '_ntpStratum', '_ntpSync', '_oscType', '_oscState', '_tfom', 
+                    '_maxTfom', '_alarmStatusTime', '_majorAlarm', '_minorAlarm', 
+                    '_alarmList', '_freqErrTime', '_freqErr']
     
     def __init__(self, hostName):
-        # StatusTime: datetime for the status information
-        self['StatusTime'] = datetime.utcnow()
-        # HostName: host name or IP address string for the Spectracom
-        self['HostName'] = hostName
-        # HostResponding: true iff the Spectracom is responding
-        self['HostResponding'] = False
-        # Reference: string describing current time and NTP reference sources
-        self['Reference'] = 'Unknown'
-        # NTPStratum: current NTP stratum
-        self['NTPStratum'] = 999
-        # NTPSync: true iff NTP is currently sync'ed
-        self['NTPSync'] = False
-        # OscType: type of oscillator installed in the Spectracom
-        self['OscType'] = 'Unknown'
-        # OscState: string describing the current oscillator state
-        self['OscState'] = 'Unknown'
+        # _statusTime: datetime for the status information
+        self['_statusTime'] = datetime.utcnow()
+        # _hostName: host name or IP address string for the Spectracom
+        self['_hostName'] = hostName
+        # _hostResponding: true iff the Spectracom is responding
+        self['_hostResponding'] = False
+        # _reference: string describing current time and NTP reference sources
+        self['_reference'] = 'Unknown'
+        # _ntpStratum: current NTP stratum
+        self['_ntpStratum'] = 999
+        # _ntpSync: true iff NTP is currently sync'ed
+        self['_ntpSync'] = False
+        # _oscType: type of oscillator installed in the Spectracom
+        self['_oscType'] = 'Unknown'
+        # _oscState: string describing the current oscillator state
+        self['_oscState'] = 'Unknown'
         # TFOM: current time figure-of-merit
-        self['TFOM'] = 999
+        self['_tfom'] = 999
         # MaxTFOM: maximum TFOM where 1 PPS will be emitted
-        self['MaxTFOM'] = 999
-        # AlarmStatusTime: datetime of the latest alarm status report
-        self['AlarmStatusTime'] = datetime(1970, 1, 1)
+        self['_maxTfom'] = 999
+        # Alarm_statusTime: datetime of the latest alarm status report
+        self['_alarmStatusTime'] = datetime(1970, 1, 1)
         # MajorAlarm: true iff a major alarm is active
-        self['MajorAlarm'] = False
+        self['_majorAlarm'] = False
         # MinorAlarm: true iff a minor alarm is active
-        self['MinorAlarm'] = False
+        self['_minorAlarm'] = False
         # AlarmList: list of strings naming currently active alarms
-        self['AlarmList'] = []
+        self['_alarmList'] = []
         # FreqErrTime: datetime of the latest frequency error report
-        self['FreqErrTime'] = datetime(1970, 1, 1)
+        self['_freqErrTime'] = datetime(1970, 1, 1)
         # FreqErr: latest frequency error
-        self['FreqErr'] = 999.e9
+        self['_freqErr'] = 999.e9
         
         # Verify that all valid keys have been initialized
         for k in self.ALLOWED_KEYS:
@@ -201,7 +201,7 @@ class StatusCollector:
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, close_fds=True)
         retcode = p.wait()
         if retcode == 0:
-            newStatus['HostResponding'] = True
+            newStatus['_hostResponding'] = True
             # Parse the 'status' output, which looks like:
             #    REF: T=gps0 P=gps0
             #    NTP:Strat=1 SYNC=Y
@@ -212,31 +212,31 @@ class StatusCollector:
             # parse the REF line
             m = re.match('REF:(.*)', lines[0])
             if m:
-                newStatus['Reference'] = m.group(1)
+                newStatus['_reference'] = m.group(1)
             else:
                 logger.error('Bad REF line in Spectracom status: %s', lines[0])
             
             # parse the NTP line
             m = re.match('NTP:Strat=([0-9]+) Sync=([NY])', lines[1])
             if m:
-                newStatus['NTPStratum'] = int(m.group(1))
-                newStatus['NTPSync'] = (m.group(2) == 'Y')
+                newStatus['_ntpStratum'] = int(m.group(1))
+                newStatus['_ntpSync'] = (m.group(2) == 'Y')
             else:
                 logger.error('Bad NTP line in Spectracom status: %s', lines[1])
                 
             # parse the OSC line
             m = re.match('OSC:(.*)\s+\(([^\)]*)\)', lines[2])
             if m:
-                newStatus['OscType'] = m.group(1).strip()
-                newStatus['OscState'] = m.group(2).strip()
+                newStatus['_oscType'] = m.group(1).strip()
+                newStatus['_oscState'] = m.group(2).strip()
             else:
                 logger.error('Bad OSC line in Spectracom status: %s', lines[2])
                 
             # parse the TFOM line
-            m = re.match('TFOM=([0-9]*)\s+MaxTFOM=([0-9]*)', lines[3])
+            m = re.match('_tfom=([0-9]*)\s+MaxTFOM=([0-9]*)', lines[3])
             if m:
-                newStatus['TFOM'] = int(m.group(1))
-                newStatus['MaxTFOM'] = int(m.group(2))
+                newStatus['_tfom'] = int(m.group(1))
+                newStatus['_maxTfom'] = int(m.group(2))
             else:
                 logger.error('Bad TFOM line in Spectracom status: %s', lines[3])
         else:
@@ -256,8 +256,8 @@ class StatusCollector:
         path = os.path.join(self.logDest, 'alarms.log')
         if not os.path.exists(path):
             # Generate a fake major alarm to note there is no alarms.log file
-            newStatus['MajorAlarm'] = True
-            newStatus['AlarmList'].append('No alarms.log file')
+            newStatus['_majorAlarm'] = True
+            newStatus['_alarmList'].append('No alarms.log file')
         else:
             lines += open(path, 'r').readlines()
             
@@ -303,28 +303,28 @@ class StatusCollector:
                         alarmDatetime = datetime.strptime(m.group(0), 
                                                           '%b %d %H:%M:%S')
                         alarmDatetime = alarmDatetime.replace(year=logfileYear)
-                        newStatus['AlarmStatusTime'] = alarmDatetime
+                        newStatus['_alarmStatusTime'] = alarmDatetime
                     # Parse ACTIVE ALARMS, which can be: 'NONE', 'MAJOR', 
                     # 'MINOR', or 'MAJOR MINOR'
                     elif re.match('.*\[system\] ACTIVE ALARMS:', line):
-                        newStatus['MajorAlarm'] = re.match('.*MAJOR', line) is not None
-                        newStatus['MinorAlarm'] = re.match('.*MINOR', line) is not None
+                        newStatus['_majorAlarm'] = re.match('.*MAJOR', line) is not None
+                        newStatus['_minorAlarm'] = re.match('.*MINOR', line) is not None
                     # Anything else is the name of an alarm condition, which
                     # we add to the list
                     else:
                         m = re.match('.*\[system\] (.*)', line)
-                        newStatus['AlarmList'].append(m.group(1))
+                        newStatus['_alarmList'].append(m.group(1))
             else:
                 # Generate a fake major alarm to note that no alarm block was found
-                newStatus['MajorAlarm'] = True
-                newStatus['AlarmList'] += 'No alarm block found'
+                newStatus['_majorAlarm'] = True
+                newStatus['_alarmList'] += 'No alarm block found'
                 
         # Get the latest frequency error from osc.log
         path = os.path.join(self.logDest, 'osc.log')
         if not os.path.exists(path):
             # Generate a fake major alarm to note there is no osc.log file
-            newStatus['MajorAlarm'] = True
-            newStatus['AlarmList'].append('No osc.log file')
+            newStatus['_majorAlarm'] = True
+            newStatus['_alarmList'].append('No osc.log file')
         else:
             lines += open(path, 'r').readlines()
             # Find the latest line like:
@@ -341,17 +341,17 @@ class StatusCollector:
                     # twenty minutes old
                     age = datetime.utcnow() - freqErrTime
                     if age.total_seconds() < 20 * 60:
-                        newStatus['FreqErrTime'] = freqErrTime
+                        newStatus['_freqErrTime'] = freqErrTime
                         # Get the frequency error string, changing AAAx10^BBB
                         # to AAAeBBB before converting to float.
                         freqErrString = m.group(2).replace('x10^', 'e')
-                        newStatus['FreqErr'] = float(freqErrString)
+                        newStatus['_freqErr'] = float(freqErrString)
                     break
                 
                 
         # Log and save the collected status
         logger.info("=====")
-        logger.info("New status at %s:", str(newStatus['StatusTime']))
+        logger.info("New status at %s:", str(newStatus['_statusTime']))
         for key in newStatus.keys():
             logger.info('    %s: %s', key, newStatus[key])
         
