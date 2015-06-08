@@ -233,7 +233,7 @@ class StatusCollector:
                 logger.error('Bad OSC line in Spectracom status: %s', lines[2])
                 
             # parse the TFOM line
-            m = re.match('_tfom=([0-9]*)\s+MaxTFOM=([0-9]*)', lines[3])
+            m = re.match('TFOM=([0-9]*)\s+MaxTFOM=([0-9]*)', lines[3])
             if m:
                 newStatus['_tfom'] = int(m.group(1))
                 newStatus['_maxTfom'] = int(m.group(2))
