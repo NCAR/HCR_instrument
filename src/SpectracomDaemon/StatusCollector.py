@@ -158,11 +158,11 @@ class StatusCollector:
             else:
                 logger.error('Bad REF line in Spectracom status: %s', lines[0])
             
-            # parse the NTP line
+            # parse the NTP/sync line
             m = re.match('NTP:Strat=([0-9]+) Sync=([NY])', lines[1])
             if m:
                 newStatus['_ntpStratum'] = int(m.group(1))
-                newStatus['_ntpSync'] = (m.group(2) == 'Y')
+                newStatus['_inSync'] = (m.group(2) == 'Y')
             else:
                 logger.error('Bad NTP line in Spectracom status: %s', lines[1])
                 

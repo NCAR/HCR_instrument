@@ -6,7 +6,7 @@ class SpectracomStatus(dict):
     '''
     
     ALLOWED_KEYS = ['_statusTime', '_hostName', '_hostResponding', '_reference', 
-                    '_ntpStratum', '_ntpSync', '_oscType', '_oscState', '_tfom', 
+                    '_ntpStratum', '_inSync', '_oscType', '_oscState', '_tfom', 
                     '_maxTfom', '_alarmStatusTime', '_majorAlarm', '_minorAlarm', 
                     '_alarmList', '_freqErrTime', '_freqErr']
     
@@ -21,8 +21,9 @@ class SpectracomStatus(dict):
         self['_reference'] = 'Unknown'
         # _ntpStratum: current NTP stratum
         self['_ntpStratum'] = 999
-        # _ntpSync: true iff NTP is currently sync'ed
-        self['_ntpSync'] = False
+        # _inSync: true iff Spectracom is currently sync'ed to time and 1PPS
+        # references
+        self['_inSync'] = False
         # _oscType: type of oscillator installed in the Spectracom
         self['_oscType'] = 'Unknown'
         # _oscState: string describing the current oscillator state
