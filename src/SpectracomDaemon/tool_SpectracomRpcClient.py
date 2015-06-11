@@ -1,11 +1,9 @@
 #
-# Rules to build fireflydRpcClient class and export it (and its header) as a tool
+# Rules to build SpectracomRpcClient class and export it (and its headers) as a tool
 #
-import os
-
 tools = Split("""
+    archive_xmlrpc_c
     logx
-    FireFly
     xmlrpc_client++
     boost_serialization
 """)
@@ -16,13 +14,15 @@ tooldir = env.Dir('.').srcnode().abspath    # this directory
 includeDir = tooldir
 
 sources = Split('''
-fireflydRpcClient.cpp
+SpectracomRpcClient.cpp
+SpectracomStatus.cpp
 ''')
-lib = env.Library('fireflydrpcclient', sources)
+lib = env.Library('spectracomrpcclient', sources)
+Default(lib)
     
-def fireflydRpcClient(env):
+def SpectracomRpcClient(env):
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
     env.Require(tools)
 
-Export('fireflydRpcClient')
+Export('SpectracomRpcClient')

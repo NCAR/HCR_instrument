@@ -12,28 +12,42 @@
 
 LOGGING("SpectracomStatus")
 
-SpectracomStatus::SpectracomStatus() :
+SpectracomStatus::SpectracomStatus(std::string hostName) :
     _statusTime(time(0)),
-    _deviceResponding(false),
-    _pllLocked(false),
-    _lastHoldoverDuration(0),
-    _inHoldover(false),
-    _freqErrorEstimate(1.0),
-    _timeDiff1PPS(1.0),
-    _healthStatus(0xfff),
-    _configError(false) {
+    _hostName(hostName),
+    _hostResponding(false),
+    _reference("Unknown"),
+    _ntpStratum(999),
+    _inSync(false),
+    _oscType("Unknown"),
+    _oscState("Unknown"),
+    _tfom(999),
+    _maxTfom(999),
+    _alarmStatusTime(0.0),
+    _majorAlarm(false),
+    _minorAlarm(false),
+    _alarmList(),
+    _freqErrTime(0.0),
+    _freqErr(1.0) {
 }
 
 SpectracomStatus::SpectracomStatus(xmlrpc_c::value_struct & statusDict):
     _statusTime(time(0)),
-    _deviceResponding(false),
-    _pllLocked(false),
-    _lastHoldoverDuration(0),
-    _inHoldover(false),
-    _freqErrorEstimate(0.0),
-    _timeDiff1PPS(0.0),
-    _healthStatus(0),
-    _configError(false) {
+    _hostName(),
+    _hostResponding(false),
+    _reference("Unknown"),
+    _ntpStratum(999),
+    _inSync(false),
+    _oscType("Unknown"),
+    _oscState("Unknown"),
+    _tfom(999),
+    _maxTfom(999),
+    _alarmStatusTime(0.0),
+    _majorAlarm(false),
+    _minorAlarm(false),
+    _alarmList(),
+    _freqErrTime(0.0),
+    _freqErr(1.0) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);
