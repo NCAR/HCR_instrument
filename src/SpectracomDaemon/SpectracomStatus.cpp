@@ -27,8 +27,11 @@ SpectracomStatus::SpectracomStatus() :
     _majorAlarm(false),
     _minorAlarm(false),
     _alarmList(),
-    _freqErrTime(0.0),
-    _freqErr(1.0) {
+    _disciplineTime(0.0),
+    _dacValue(0),
+    _ppsPhaseErr(0),
+    _freqErr(1.0),
+    _oscTemp(0.0) {
 }
 
 SpectracomStatus::SpectracomStatus(xmlrpc_c::value_struct & statusDict):
@@ -46,8 +49,11 @@ SpectracomStatus::SpectracomStatus(xmlrpc_c::value_struct & statusDict):
     _majorAlarm(false),
     _minorAlarm(false),
     _alarmList(),
-    _freqErrTime(0.0),
-    _freqErr(1.0) {
+    _disciplineTime(0.0),
+    _dacValue(0),
+    _ppsPhaseErr(0),
+    _freqErr(1.0),
+    _oscTemp(0.0) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);

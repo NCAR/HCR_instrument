@@ -75,8 +75,11 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_majorAlarm);
             ar & BOOST_SERIALIZATION_NVP(_minorAlarm);
             ar & BOOST_SERIALIZATION_NVP(_alarmList);
-            ar & BOOST_SERIALIZATION_NVP(_freqErrTime);
+            ar & BOOST_SERIALIZATION_NVP(_disciplineTime);
+            ar & BOOST_SERIALIZATION_NVP(_dacValue);
+            ar & BOOST_SERIALIZATION_NVP(_ppsPhaseErr);
             ar & BOOST_SERIALIZATION_NVP(_freqErr);
+            ar & BOOST_SERIALIZATION_NVP(_oscTemp);
         }
         if (version >= 1) {
             // Version 1 stuff will go here...
@@ -130,11 +133,21 @@ private:
     std::vector<std::string> _alarmList;
 
     /// Time at which frequency error was reported, seconds since 1970-01-01 
-    /// 00:00:00 UTC
-    double _freqErrTime;
+    /// 00:00:00 UTC. This is the time which applies to _dacValue, _ppsPhaseErr,
+    ///_freqErr, and _oscTemp.
+    double _disciplineTime;
     
+    /// Oscillator discipline DAC value, int
+    int _dacValue;
+
+    /// 1 PPS phase error, ns
+    int _ppsPhaseErr;
+
     /// Estimated frequency error
     double _freqErr;
+
+    /// Oscillator temperature
+    double _oscTemp;
 };
 
 // Increment this class version number when member variables are changed.

@@ -4,9 +4,12 @@
 #   Copy log files and obtain status information from a Spectracom SecureSync
 #   time/frequency server on a periodic basis.
 
+import calendar
 from datetime import datetime
+from glob import glob
 import logging
 import os
+import pytz
 import re
 from subprocess import Popen, PIPE
 import threading
@@ -206,7 +209,7 @@ class StatusCollector:
             # Get the year from the last modification time of alarms.log.
             # We need it below because the entry timetags in the log file do not
             # include the year...
-            logfileYear = datetime.fromtimestamp(os.path.getmtime(path)).year
+            logfileYear = datetime.utcfromtimestamp(os.path.getmtime(path)).year
             
             # The alarm log file content looks something like this:
             #    [...]
@@ -237,15 +240,23 @@ class StatusCollector:
             if len(alarmblock):
                 # Parse out the major/minor alarm state and the alarm names
                 for line in alarmblock:
-                    # Get the alarm status time from the STATUS CHANGE line
+                    # Get the alarm status time from the STATUS CHANGE line.
+                    # This is painful, since we want the time as a timestamp,
+                    # and Python makes it *very* hard to keep local time zone
+                    # from contaminating the conversion to timestamp. The 
+                    # calendar.timegm() function seems to be the least evil of 
+                    # all the options for the last step.
                     if re.match('.*\[system\] STATUS CHANGE:', line):
                         m = re.match('[^\s]*\s+[^\s]*\s+[^\s]*', line)
-                        # parse the (yearless) date/time, then set the year
-                        # to the year of the logfile (which we obtained above)
-                        alarmDatetime = datetime.strptime(m.group(0), 
-                                                          '%b %d %H:%M:%S')
-                        alarmDatetime = alarmDatetime.replace(year=logfileYear)
-                        newStatus['_alarmStatusTime'] = alarmDatetime
+                        timeString = m.group(0)
+                        # Parse the (yearless) date/time, then set the year
+                        # to the year of the logfile (which we obtained above).
+                        # All of this is UTC.
+                        alarmDatetime = datetime.strptime(timeString, '%b %d %H:%M:%S')\
+                            .replace(year=logfileYear)\
+                            .replace(tzinfo=pytz.UTC)
+                        # Now convert the datetime to the equivalent timestamp
+                        newStatus['_alarmStatusTime'] = calendar.timegm(alarmDatetime.timetuple())
                     # Parse ACTIVE ALARMS, which can be: 'NONE', 'MAJOR', 
                     # 'MINOR', or 'MAJOR MINOR'
                     elif re.match('.*\[system\] ACTIVE ALARMS:', line):
@@ -261,35 +272,46 @@ class StatusCollector:
                 newStatus['_majorAlarm'] = True
                 newStatus['_alarmList'] += 'No alarm block found'
                 
-        # Get the latest frequency error from osc.log
-        path = os.path.join(self.logDest, 'osc.log')
-        if not os.path.exists(path):
-            # Generate a fake major alarm to note there is no osc.log file
+        # Get the latest frequency error from the latest discipline log file,
+        # (discstats/discstats.<yyyymmdd>)
+        pathList = sorted(glob(os.path.join(self.logDest, 'discstats', 'discstats.*')))
+        if not pathList:
+            # Generate a fake major alarm to note there are no discstats.* files
             newStatus['_majorAlarm'] = True
-            newStatus['_alarmList'].append('No osc.log file')
+            newStatus['_alarmList'].append('No discstats/discstats.<yyyymmdd> log files')
         else:
-            lines += open(path, 'r').readlines()
-            # Find the latest line like:
-            #    Jun  5 22:06:20 Spectracom Spectracom: [system] 2015 156 22:06:20 000 XO1: Frequency error recalculated: 00.000974 (9.745x10^-12)
-            # and parse out the frequency error
-            m = None
-            for line in reversed(lines):
-                # Look for a line contaning 'Frequency error recalculated' and
-                # pull out the date/time and the frequency error
-                m = re.match('.*\[system\] ([^X]*).*Frequency error recalculated:[^\(]*\(([^\)]*)\)', line)
-                if m:
-                    freqErrTime = datetime.strptime(m.group(1).strip(), '%Y %j %H:%M:%S %f')
-                    # Only store the frequency error if its time is less than
-                    # twenty minutes old
-                    age = datetime.utcnow() - freqErrTime
-                    if age.total_seconds() < 20 * 60:
-                        newStatus['_freqErrTime'] = freqErrTime
-                        # Get the frequency error string, changing AAAx10^BBB
-                        # to AAAeBBB before converting to float.
-                        freqErrString = m.group(2).replace('x10^', 'e')
-                        newStatus['_freqErr'] = float(freqErrString)
-                    break
-                
+            # Read the last file in the list, which should be the latest.
+            #
+            # Lines in the file look like:
+            #    16597,64349,1,0,gps0,gps0,33896,19,-5.89e-11,45.280785
+            # (or for our older unit):
+            #    16587,56447,1,0,gps0,gps0,31369,-11,-5.08e-10
+            # where the columns are:
+            #    1) integer whole days since the epoch (1970-01-01 00:00:00 UTC)
+            #    2) integer second of the day
+            #    3) 1 if in sync, 0 if not (?)
+            #    4) ?
+            #    5) string naming the current time reference (may be empty)
+            #    6) string naming the current 1 PPS reference (may be empty)
+            #    7) integer oscillator discipline DAC value
+            #    8) integer 1 PPS phase error in nanoseconds
+            #    9) floating point frequency error
+            #   10) floating point oscillator temperature in deg C (?)
+            #
+            lines += open(pathList[-1], 'r').readlines()
+            # We just look at the last line to get the latest report
+            vals = lines[-1].split(',')
+            if len(vals) == 9 or len(vals) == 10:
+                # Get the time in seconds since 1970-01-01 00:00:00 UTC
+                epochSeconds = int(vals[0]) * 86400 + int(vals[1])
+                newStatus['_disciplineTime'] = epochSeconds
+                newStatus['_dacValue'] = int(vals[6])
+                newStatus['_ppsPhaseErr'] = int(vals[7])
+                newStatus['_freqErr'] = float(vals[8])
+                if (len(vals)) == 10:
+                    newStatus['_oscTemp'] = float(vals[9])
+            else:
+                logger.error("Bad discipline line: %s" % (lines[-1]))
                 
         # Log and save the collected status
         logger.info("=====")
