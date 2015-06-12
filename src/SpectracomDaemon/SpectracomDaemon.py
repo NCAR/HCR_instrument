@@ -15,7 +15,7 @@ import sys
 import os
 logger = logging.getLogger(os.path.basename(sys.argv[0]))
 
-XMLRPC_PORT = 8008
+XMLRPC_PORT = 8005
 
 def getStatus():
     '''Handle XML-RPC 'getStatus' requests, returning current Spectracom status.
