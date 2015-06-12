@@ -12,9 +12,10 @@ hcrdrxrpcclient
 hcrmonitor
 logx
 motioncontrol
-xmitdrpcclient
-rapradar
 qt4
+rapradar
+SpectracomRpcClient
+xmitdrpcclient
 """)
 hcrguiEnv = Environment(tools = ['default'] + hcrguiTools)
 hcrguiEnv.EnableQt4Modules(['QtCore', 'QtGui'])
@@ -34,6 +35,7 @@ HcrMonitorDetails.cpp
 MotionControlDetails.cpp
 Pmc730Details.cpp
 qrc_HcrGuiMainWindow.cc
+SpectracomStatusThread.cpp
 XmitDetails.cpp
 XmitdStatusThread.cpp
 """)
@@ -73,6 +75,7 @@ HcrGuiLogWindow.h
 HcrGuiMainWindow.h
 MotionControlDetails.h
 Pmc730Details.h
+SpectracomStatusThread.h
 XmitDetails.h
 XmitdStatusThread.h
 """)
