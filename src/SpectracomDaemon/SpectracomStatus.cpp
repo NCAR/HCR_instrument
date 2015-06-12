@@ -12,9 +12,9 @@
 
 LOGGING("SpectracomStatus")
 
-SpectracomStatus::SpectracomStatus(std::string hostName) :
+SpectracomStatus::SpectracomStatus() :
     _statusTime(time(0)),
-    _hostName(hostName),
+    _hostName("Unknown"),
     _hostResponding(false),
     _reference("Unknown"),
     _ntpStratum(999),

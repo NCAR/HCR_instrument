@@ -22,9 +22,7 @@ public:
     /// @brief Default constructor. Status time is set to current time,
     /// the device is marked as not responding. Other values are set to
     /// generally indicate badness.
-    /// @param hostName the name or IP address of the Spectracom for which
-    /// this status applies.
-    SpectracomStatus(std::string hostName);
+    SpectracomStatus();
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
     /// by a call to SpectracomDaemon's XML-RPC getStatus() method.
