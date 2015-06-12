@@ -20,13 +20,13 @@ class SpectracomRpcClient {
 public:
     /// Instantiate SpectracomRpcClient to communicate with a SpectracomDaemon 
     /// process running on host spectracomHost and using port spectracomPort.
-    /// @param spectracomHost the name of the host on which spectracom is 
+    /// @param daemonHost the name of the host on which SpectracomDaemon is
     /// running
-    /// @param spectracomPort the port number being used by spectracom
-    SpectracomRpcClient(std::string spectracomHost, int spectracomPort);
+    /// @param daemonPort the port number being used by SpectracomDaemon
+    SpectracomRpcClient(std::string daemonHost, int daemonPort);
     virtual ~SpectracomRpcClient();
     
-    /// @brief Send a "getStatus" command, filling a FireFlyStatus
+    /// @brief Send a "getStatus" command, filling a SpectracomStatus
     /// object if we get status from the SpectracomDaemon.
     /// @param status the SpectracomRpcClient::Status object to be filled
     /// @return true and fill the status object if status is obtained from
@@ -37,18 +37,18 @@ public:
     
     /// Get the port number of the associated SpectracomDaemon.
     /// @return the port number of the associated SpectracomDaemon.
-    int getSpectracomPort() { return(_spectracomPort); }
+    int getDaemonPort() { return(_daemonPort); }
     
 
     /// Get the name of the host on which the associated SpectracomDaemon is 
     /// running.
     /// @return the name of the host on which the associated SpectracomDaemon 
     /// is running.
-    std::string getFireflydHost() { return(_spectracomHost); }
+    std::string getDaemonHost() { return(_daemonHost); }
     
 private:
-    std::string _spectracomHost;
-    int _spectracomPort;
+    std::string _daemonHost;
+    int _daemonPort;
     std::string _daemonUrl;
     xmlrpc_c::clientSimple _client;
 };

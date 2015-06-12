@@ -12,14 +12,14 @@
 
 LOGGING("SpectracomRpcClient")
 
-SpectracomRpcClient::SpectracomRpcClient(std::string spectracomHost,
-        int spectracomPort) :
-    _spectracomHost(spectracomHost),
-    _spectracomPort(spectracomPort),
+SpectracomRpcClient::SpectracomRpcClient(std::string daemonHost,
+        int daemonPort) :
+    _daemonHost(daemonHost),
+    _daemonPort(daemonPort),
     _client() {
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
-    ss << "http://" << _spectracomHost << ":" << _spectracomPort << "/RPC2";
+    ss << "http://" << _daemonHost << ":" << _daemonPort << "/RPC2";
     _daemonUrl = ss.str();
     ILOG << "SpectracomRpcClient on " << _daemonUrl;
 }
