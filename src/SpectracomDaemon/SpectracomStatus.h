@@ -47,6 +47,100 @@ public:
     /// @return the status time, seconds since 1970-01-01 00:00:00 UTC.
     time_t statusTime() const { return(_statusTime); }
 
+    /// @brief Return the host name (or IP address string) for the Spectracom
+    /// @return the host name (or IP address string) for the Spectracom
+    std::string hostName() const { return(_hostName); }
+
+    /// @brief Return true iff the Spectracom is responding to queries
+    /// @return true iff the Spectracom is responding to queries
+    bool hostResponding() const { return(_hostResponding); }
+
+    /// @brief Return a string describing the current time and 1 PPS references
+    /// used by the Spectracom
+    /// @return a string describing the current time and 1 PPS references
+    /// used by the Spectracom
+    std::string reference() const { return(_reference); }
+
+    /// @brief Return the Spectracom's current NTP stratum
+    /// @return the Spectracom's current NTP stratum
+    int ntpStratum() const { return(_ntpStratum); }
+
+    /// @brief Return true iff the Spectracom is currently synchronized
+    /// @return true iff the Spectracom is currently synchronized
+    bool inSync() const { return(_inSync); }
+
+    /// @brief Return a string describing the oscillator installed in the
+    /// Spectracom
+    /// @return a string describing the oscillator installed in the
+    /// Spectracom
+    std::string oscType() const { return(_oscType); }
+
+    /// @brief Return a string describing the oscillator state. States which
+    /// may be returned include: "Warm Up", "Setup", "Free Run", and "Trk/Lock".
+    /// @return a string describing the oscillator state.  States which
+    /// may be returned include: "Warm Up", "Setup", "Free Run", and "Trk/Lock".
+    std::string oscState() const { return(_oscState); }
+
+    /// @brief Return the current TFOM (time figure of merit) of the Spectracom.
+    /// (See the Spectracom manual for details).
+    /// @return the current TFOM (time figure of merit) of the Spectracom.
+    /// (See the Spectracom manual for details).
+    int tfom() const { return(_tfom); }
+
+    /// @brief Return the maximum TFOM (time figure of merit) for which the
+    /// Spectracom will generate a 1 PPS output signal.
+    /// @return the maximum TFOM (time figure of merit) for which the Spectracom
+    /// will generate a 1 PPS output signal.
+    int maxTfom() const { return(_maxTfom); }
+
+    /// @brief Return the alarm status time, in seconds since 1970-01-01
+    /// 00:00:00 UTC. This time applies to values returned by majorAlarm(),
+    /// minorAlarm(), and alarmList().
+    /// @return the alarm status time, in seconds since 1970-01-01
+    /// 00:00:00 UTC. This time applies to values returned by majorAlarm(),
+    /// minorAlarm(), and alarmList().
+    double alarmStatusTime() const { return(_alarmStatusTime); }
+
+    /// @brief Return true iff a major alarm is currently in effect.
+    /// @return true iff a major alarm is currently in effect.
+    bool majorAlarm() const { return(_majorAlarm); }
+
+    /// @brief Return true iff a minor alarm is currently in effect.
+    /// @return true iff a minor alarm is currently in effect.
+    bool minorAlarm() const { return(_minorAlarm); }
+
+    /// @brief Return a list of strings describing current alarm conditions.
+    /// @return a list of strings describing current alarm conditions.
+    std::vector<std::string> alarmList() const { return(_alarmList); }
+
+    /// @brief Return the time of the last discipline report, in seconds since
+    /// 1970-01-01 00:00:00 UTC. This time applies to values returned by
+    /// dacValue(), ppsPhaseErr(), freqErr(), and oscTemp().
+    /// @return the time of the last discipline report, in seconds since
+    /// 1970-01-01 00:00:00 UTC. This time applies to values returned by
+    /// dacValue(), ppsPhaseErr(), freqErr(), and oscTemp().
+    double disciplineTime() const { return(_disciplineTime); }
+
+    /// @brief Return the current oscillator DAC value.
+    /// @return the current oscillator DAC value.
+    int dacValue() const { return(_dacValue); }
+
+    /// @brief Return the current offset of the generated 1 PPS signal w.r.t.
+    /// the reference 1 PPS signal, in nanoseconds.
+    /// @return the current offset of the generated 1 PPS signal w.r.t. the
+    /// reference 1 PPS signal, in nanoseconds.
+    int ppsPhaseErr() const { return(_ppsPhaseErr); }
+
+    /// @brief Return the current estimated frequency error for the 10 MHz
+    /// oscillator, in Hz.
+    /// @return the current estimated frequency error for the 10 MHz
+    /// oscillator, in Hz.
+    double freqErr() const { return(_freqErr); }
+
+    /// @brief Return the current temperature of the 10 MHz oscillator, deg C.
+    /// @return the current temperature of the 10 MHz oscillator, deg C.
+    double oscTemp() const { return(_oscTemp); }
+
 private:
     friend class boost::serialization::access;
 
