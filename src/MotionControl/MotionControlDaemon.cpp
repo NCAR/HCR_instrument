@@ -40,7 +40,8 @@ std::string PmuInstance = "ops";   ///< application instance
 //static const int ROT_DRIVE_HOME_COUNTS = 4171;  // from CSET TF01 (w/stabilization off)
 static const int ROT_DRIVE_HOME_COUNTS = 4123;  // from CSET TF01 (w/stabilization on)
 //static const int TILT_DRIVE_HOME_COUNTS = 1616; // from CSET TF01 (w/stabilization off)
-static const int TILT_DRIVE_HOME_COUNTS = 1586; // from CSET TF01 (w/stabilization on)
+//static const int TILT_DRIVE_HOME_COUNTS = 1586; // from CSET TF01 (w/stabilization on)
+static const int TILT_DRIVE_HOME_COUNTS = -386; // from CSET TF01 (w/stabilization on)
 
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
