@@ -139,7 +139,7 @@ CmigitsFmq::getLatestMsg() {
     struct timeval tvNow;
     gettimeofday(&tvNow, 0);
     uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
-    uint32_t ageMs = nowMs - _currentMsg.time3512;
+    int32_t ageMs = nowMs - _currentMsg.time3512;
     if (_currentMsg.time3512 != 0 && ageMs > 100) {
         time_t secs = _currentMsg.time3512 / 1000;
         uint32_t msecs = _currentMsg.time3512 % 1000;
