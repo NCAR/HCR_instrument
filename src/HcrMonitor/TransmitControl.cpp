@@ -255,29 +255,29 @@ TransmitControl::_runTransmitTests() {
         return(NOXMIT_PV_PRESSURE_LOW);
     }
     
-    // No transmit allowed if altitude is below _XMIT_NONZENITH_AGL_LIMIT and 
-    // not scanning/pointing near zenith.
-    if (_aglAltitude < _XMIT_NONZENITH_AGL_LIMIT && ! _allNearZenithPointing()) {
-        return(NOXMIT_TOO_LOW_FOR_NONZENITH);
-    }
-
-    // Test for AGL altitude below our nadir limit if we're nadir pointing
-    if (_anyNearNadirPointing() && _aglAltitude < _xmitNadirAglMinimum()) {
-        return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
-    }
-    
-    // Test against AGL altitude limits for attenuated receive
-    if (_anyNearNadirPointing() && _aglAltitude < _unattenuatedNadirAglMinimum()) {
-        if (! _attenuatedModeAvailable()) {
-            // If there is not attenuated mode we can use, we have to disable
-            // transmit.
-            return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
-        } else {
-            // Mark that we'll have to switch to an attenuated mode if we
-            // make it through remaining tests.
-            provisionalStatus = ATTENUATE_TOO_LOW_FOR_NADIR_POINTING;
-        }
-    }
+//    // No transmit allowed if altitude is below _XMIT_NONZENITH_AGL_LIMIT and
+//    // not scanning/pointing near zenith.
+//    if (_aglAltitude < _XMIT_NONZENITH_AGL_LIMIT && ! _allNearZenithPointing()) {
+//        return(NOXMIT_TOO_LOW_FOR_NONZENITH);
+//    }
+//
+//    // Test for AGL altitude below our nadir limit if we're nadir pointing
+//    if (_anyNearNadirPointing() && _aglAltitude < _xmitNadirAglMinimum()) {
+//        return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
+//    }
+//
+//    // Test against AGL altitude limits for attenuated receive
+//    if (_anyNearNadirPointing() && _aglAltitude < _unattenuatedNadirAglMinimum()) {
+//        if (! _attenuatedModeAvailable()) {
+//            // If there is not attenuated mode we can use, we have to disable
+//            // transmit.
+//            return(NOXMIT_TOO_LOW_FOR_NADIR_POINTING);
+//        } else {
+//            // Mark that we'll have to switch to an attenuated mode if we
+//            // make it through remaining tests.
+//            provisionalStatus = ATTENUATE_TOO_LOW_FOR_NADIR_POINTING;
+//        }
+//    }
     
     // If user has requested HV on and received power exceeds our safety 
     // threshold, attenuate if possible otherwise force _hvRequested to false 
