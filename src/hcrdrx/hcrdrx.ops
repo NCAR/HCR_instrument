@@ -2,7 +2,12 @@
 
 #instance                ops
 radar_id                HCR
-calibration_file        /home/hcr/projDir/moments/params/fallback_cal.xml
+
+# IMPORTANT NOTE: the calibration_file will be different for different 
+# values of tx_pulse_width
+calibration_file        /home/hcr/projDir/moments/params/cal_256ns/hcr_cal_256ns_20140825_223302.xml
+#calibration_file        /home/hcr/projDir/moments/params/cal_512ns/hcr_cal_512ns_20140825_220000.xml
+
 start_on_1pps		1
 
 gates                   770
@@ -30,6 +35,9 @@ digitizer_sample_width   128e-9
 # tx_delay is the delay in seconds from T0 to the start of generation of the 
 # DAC waveform which goes to the EIK
 tx_delay                 336e-9
+
+# NOTE: If you change tx_pulse_width, you will also likely need to change 
+# calibration_file and digitizer_gate0_delay.
 tx_pulse_width           256e-9
 #tx_pulse_width           512e-9  
 #tx_pulse_width          1024e-9 
