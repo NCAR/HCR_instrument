@@ -12,7 +12,6 @@
 #include <QDomDocument>
 #include <QMetaType>
 #include <QTcpSocket>
-#include <QTimer>
 
 LOGGING("MaxPowerClient")
 
@@ -24,6 +23,8 @@ MaxPowerClient::MaxPowerClient(std::string serverHost,
         _serverHost(serverHost),
         _serverPort(serverPort),
         _socket(),
+		_dwellSecs(),
+		_dwellTimeoutTimer(NULL),
         _serverResponsive(false),
         _unparsedData() {
     // Register QAbstractSocket::SocketError as a metatype, since we
@@ -40,6 +41,9 @@ MaxPowerClient::MaxPowerClient(std::string serverHost,
 }
 
 MaxPowerClient::~MaxPowerClient() {
+	// stop and destroy the dwell timeout timer
+	_dwellTimeoutTimer->stop();
+	delete(_dwellTimeoutTimer);
     // stop the thread
     quit();
     // wait up to a second for thread to finish
@@ -51,6 +55,12 @@ MaxPowerClient::run() {
     // Start a connection attempt the server
     _tryToConnect();
     
+    // Timer used to mark the server as unresponsive if the time between
+    // arriving max power reports gets too big
+    _dwellTimeoutTimer = new QTimer();
+    _dwellTimeoutTimer->setSingleShot(true);
+    connect(_dwellTimeoutTimer, SIGNAL(timeout()), this, SLOT(_onDwellTimeout()));
+
     // Start the event loop
     exec();
     
@@ -70,11 +80,20 @@ MaxPowerClient::_tryToConnect() {
 }
 
 void
+MaxPowerClient::_onDwellTimeout() {
+	// It's been too long since the last report from the server. Mark it as
+	// unresponsive.
+    _serverResponsive = false;
+    std::ostringstream os;
+    os << "No new value for " << TIMEOUT_DWELL_MULTIPLE * _dwellSecs <<
+    		" s. Previous dwell time was " << _dwellSecs << " s";
+    ILOG << os.str();
+    emit serverResponsive(_serverResponsive, QString(os.str().c_str()));
+}
+
+void
 MaxPowerClient::_onConnect() {
-    _serverResponsive = true;
-    std::string msg("Connection established to max power server");
-    ILOG << msg;
-    emit serverResponsive(_serverResponsive, QString(msg.c_str()));
+	ILOG << "Connection established to max power server";
 }
 
 void
@@ -223,6 +242,12 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
         return;
     }
     
+    // Values to be filled from the max power element
+    double secondsSinceEpoch;	// time at the midpoint of the dwell
+    double meanMaxDbm;	// mean of the maximum values during the dwell period
+    double peakMaxDbm;	// absolute maximum during the dwell period
+    double rangeToMax;	// range to the absolute maximum during the dwell period
+
     try {
         // Initialize dataTime from the "time" child element (ISO time to the 
         // second). This is the center time of the period over which the max
@@ -239,7 +264,7 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
         // Unpack the parsed "dwellSecs" element, which is the period of time
         // over which the max power was measured.
         QString dwellSecsText = _DocElementText(doc, "dwellSecs");
-        double dwellSecs = dwellSecsText.toDouble();
+        _dwellSecs = dwellSecsText.toDouble();
 
         // Get H channel mean max power over the max power server's dwell time
         // from "meanMaxDbm0" element
@@ -269,20 +294,35 @@ MaxPowerClient::_handleMaxPowerElement(const QByteArray & text) {
         double rangeToPeakV = rangeToMax1Text.toDouble();
         
         // Figure out which channel's max is *really* max
-        double meanMaxDbm = (meanMaxDbmH > meanMaxDbmV) ? meanMaxDbmH : meanMaxDbmV;
-        double peakMaxDbm = (peakMaxDbmH > peakMaxDbmV) ? peakMaxDbmH : peakMaxDbmV;
-        double rangeToMax = (meanMaxDbmH > meanMaxDbmV) ? rangeToPeakH : rangeToPeakV;
+        meanMaxDbm = (meanMaxDbmH > meanMaxDbmV) ? meanMaxDbmH : meanMaxDbmV;
+        peakMaxDbm = (peakMaxDbmH > peakMaxDbmV) ? peakMaxDbmH : peakMaxDbmV;
+        rangeToMax = (peakMaxDbmH > peakMaxDbmV) ? rangeToPeakH : rangeToPeakV;
         
-        // Emit newMaxPower() signal
+        // We successfully parsed everything we need
         DLOG << "New max power at " << 
                 dataTime.toString("yyyy/MM/dd hh:mm:ss.zzz").toStdString() <<
                 ": peak " << peakMaxDbm << " dBm (" << rangeToMax <<
                 " m range), mean " << meanMaxDbm << " dBm";
-        double secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
-        emit(newMaxPower(secondsSinceEpoch, dwellSecs, peakMaxDbm, rangeToMax, meanMaxDbm));
+        secondsSinceEpoch = dataTime.toTime_t() + 0.001 * dataTime.time().msec();
     } catch (std::runtime_error & e) {
         ELOG << "Error in <TsPrintMaxPower>: " << e.what();
         ELOG << "Text of offending <TsPrintMaxPower>: \n" << text.data();
         return;
     }
+
+	// Mark the server as responsive if it had been unresponsive
+	if (! _serverResponsive) {
+		_serverResponsive = true;
+	    std::string msg("valid max power element received");
+	    ILOG << msg;
+	    emit serverResponsive(_serverResponsive, QString(msg.c_str()));
+	}
+
+	// Start (or restart) the dwell timeout timer to fire if the next max power
+	// report does not arrive within TIMEOUT_DWELL_MULTIPLE * this report's
+	// dwell time.
+	_dwellTimeoutTimer->start(int(1000 * TIMEOUT_DWELL_MULTIPLE * _dwellSecs));
+
+    // Emit the new newMaxPower signal
+    emit(newMaxPower(secondsSinceEpoch, _dwellSecs, peakMaxDbm, rangeToMax, meanMaxDbm));
 }

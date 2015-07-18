@@ -12,6 +12,7 @@
 #include <QByteArray>
 #include <QTcpSocket>
 #include <QThread>
+#include <QTimer>
 
 class QDomDocument;
 
@@ -23,11 +24,11 @@ public:
     
     void run();
 signals:
-    /// @brief Signal emitted when the XML-RPC client connection to the server
-    /// becomes responsive or unresponsive.
+    /// @brief Signal emitted when the max power server becomes responsive or
+	/// unresponsive.
     /// @param responsive true if the server has become responsive or false
+	/// if the server has become unresponsive
     /// @param msg a message describing the associated event
-    /// if the server has become unresponsive
     void serverResponsive(bool responsive, QString msg);
 
     /// @brief Signal emitted when a new maximum power is received from 
@@ -60,6 +61,10 @@ private slots:
     
     /// @brief Start a connection attempt with our server
     void _tryToConnect();
+
+    /// @brief Slot to be called when the last received max power value is
+    /// considered too old
+    void _onDwellTimeout();
 
 private:
     /// @brief Text marking the start of a TsPrintMaxPower element
@@ -115,6 +120,17 @@ private:
     /// @brief socket for our connection to the server
     QTcpSocket _socket;
     
+    /// @brief dwell period of the last received max power element
+    double _dwellSecs;
+
+    /// @brief maximum number of power element dwell times which can elapse
+    /// before the server is considered to be unresponsive
+    static const float TIMEOUT_DWELL_MULTIPLE = 1.5;
+
+    /// @brief timer started on receipt of a max power element which expires
+    /// after TIMEOUT_DWELL_MUTIPLE * the max power element's dwell time
+    QTimer * _dwellTimeoutTimer;
+
     /// @brief True iff the server is responding 
     bool _serverResponsive;
     
