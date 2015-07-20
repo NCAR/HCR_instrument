@@ -13,6 +13,7 @@
 #include <climits>
 #include <cmath>
 #include <cstring>
+#include <cstdio>
 #include <stdint.h>
 #include <vector>
 #include <sys/time.h>
@@ -287,6 +288,12 @@ private:
     /// possible, is within the interval [_lowerLimitCounts,_upperLimitCounts].
     int _angleToCounts(float angleDeg) const;
 
+    /// @brief Return the angle associated with the given motor counts, in the
+    /// interval [0.0,360.0).
+    /// @return the angle associated with the given motor counts, in the
+    /// interval [0.0,360.0).
+    double _countsToAngle(int32_t count) const;
+
     /// @brief Return true iff the drive is allowed to position the motor to
     /// the given count value.
     /// @return true iff the drive is allowed to position the motor to the 
@@ -376,6 +383,9 @@ private:
     
     /// Scan point vector
     std::vector<int> _scanPoints;
+
+    /// File to which drive angles will be logged
+    FILE * _anglesFile;
 };
 
 #endif /* ELMOSERVODRIVE_H_ */
