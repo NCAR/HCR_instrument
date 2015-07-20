@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <stdint.h>
 #include <unistd.h>
+#include <QDateTime>
 #include <logx/Logging.h>
 
 LOGGING("ElmoServoDrive")
@@ -52,6 +53,50 @@ ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName,
     _scanPoints() {
     // Create our CANopen connection to the drive
     _driveConn = new CanElmoConnection(nodeId, driveName);
+
+    // CSV files of drive position counts will be written under this directory
+    // if it's not an empty string.
+    std::string angleFileDestDir = "/data/hcr/driveAngles";
+
+    // Create the angle file destination directory if it doesn't exist
+    if (! angleFileDestDir.empty()) {
+        // Attempt to create the destination directory using "mkdir -p"
+        std::ostringstream oss;
+        oss << "mkdir -p " << angleFileDestDir;
+        FILE * mkdirPipe = popen(oss.str().c_str(), "r");
+        if (! mkdirPipe) {
+            ELOG << "Unable to execute '" << oss.str() <<
+                    "', angle file will not be written!";
+            angleFileDestDir = "";
+        } else {
+            // If "mkdir -p" executes properly, there won't be any output
+            char reply[256];
+            if (fgets(reply, sizeof(reply), mkdirPipe)) {
+                ELOG << "Error creating directory '" << angleFileDestDir <<
+                		"': " << reply;
+                // Read the rest of the reply if it's multi-line
+                while (fgets(reply, sizeof(reply), mkdirPipe)) {
+                    ELOG << "    " << reply;
+                }
+                // Let them know we won't write an angle file
+                ELOG << "An angle file will not be written!";
+                angleFileDestDir = "";
+            }
+            // Close the command pipe
+            pclose(mkdirPipe);
+        }
+    }
+
+    // If we still have a angle file destination directory, create the angle
+    // file with name "<driveName>DriveAngles_<yyyymmdd>_<hhmmss>.csv".
+    if (! angleFileDestDir.empty()) {
+        std::ostringstream oss;
+        QDateTime now = QDateTime::currentDateTime();
+        oss << angleFileDestDir << "/" << driveName << "DriveAngles_" <<
+                now.toString("yyyyMMdd_hhmmss").toStdString() << ".csv";
+        _anglesFile = fopen(oss.str().c_str(), "w+");
+    }
+
     // Complete our construction
     _finishConstruction();
 }
@@ -67,6 +112,10 @@ ElmoServoDrive::~ElmoServoDrive() {
     _driveConn->execElmoAssignCmd("EO", 0, 1);
     // Destroy the drive connection
     delete(_driveConn);
+    // Close the angles file (if any)
+    if (_anglesFile) {
+    	fclose(_anglesFile);
+    }
 }
 
 void
@@ -157,6 +206,18 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
         else if (! cmd.compare("PX")) {
             // PX is reported in counts in the range [XM[1],XM[2]-1]
             _angleCounts = iVal;
+
+            // Log the position as its equivalent angle. The log format is:
+            // 		<current_date>,<current_time>,<drive_angle>
+            // where current_date is represented as yyyymmdd and current_time
+            // is hhmmss.zzz (in UTC), and drive_angle is in degrees.
+            if (_anglesFile) {
+                QDateTime now = QDateTime::currentDateTime();
+                // Write a line of the form "<current_date>,<current_time>,<drive_angle>"
+                fprintf(_anglesFile, "%s,%.3f\n",
+                		now.toString("yyyyMMdd,hhmmss.zzz,").toStdString().c_str(),
+						_countsToAngle(_angleCounts));
+            }
         }
         // Save the state of the external inhibit bit
         else if (! cmd.compare("IB[12]")) {
@@ -223,6 +284,17 @@ ElmoServoDrive::_angleToCounts(float angleDeg) const {
     // The counts value now contains a value in counts yielding the given angle,
     // and, if possible, within the interval [_lowerLimitCounts,_upperLimitCounts].
     return(counts);
+}
+
+double
+ElmoServoDrive::_countsToAngle(int32_t count) const {
+	// normalize the count into the interval [0,_countsPerCircle)
+	count %= _countsPerCircle;
+	if (count < 0) {
+		count += _countsPerCircle;
+	}
+	// convert count to angle in degrees
+	return((360.0 * count) / _countsPerCircle);
 }
 
 void
