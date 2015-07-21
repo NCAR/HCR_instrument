@@ -215,8 +215,8 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
                 QDateTime now = QDateTime::currentDateTime();
                 // Write a line of the form "<current_date>,<current_time>,<drive_angle>"
                 fprintf(_anglesFile, "%s,%.3f\n",
-                		now.toString("yyyyMMdd,hhmmss.zzz,").toStdString().c_str(),
-						_countsToAngle(_angleCounts));
+                    now.toString("yyyyMMdd,hhmmss.zzz").toStdString().c_str(),
+                    _countsToAngle(_angleCounts));
             }
         }
         // Save the state of the external inhibit bit
