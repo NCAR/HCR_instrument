@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.join(os.getcwd(),'config'))
 import eol_scons
 import SCons
 
-options = eol_scons.GlobalOptions()
+options = eol_scons.GlobalVariables()
 
 def HcrSetup(env):
     env.AppendUnique(CCFLAGS = ['-g'])
