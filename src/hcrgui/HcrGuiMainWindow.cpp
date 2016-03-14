@@ -624,10 +624,11 @@ done:
 /// Toggle the current on/off state of the transmitter klystron filament
 void
 HcrGuiMainWindow::on_filamentButton_clicked() {
-    // Send the command to toggle HV state to both hcr_xmitd and 
+    // Send the command to toggle filament state to both hcr_xmitd and 
     // HcrPmc730Daemon. If the transmitter is under RDS control (generally 
-    // true), the HV line is handled by HcrPmc730Daemon. If RS-232 control, the 
-    // HV line is handled by hcr_xmitd. We need to cover both cases.
+    // true), the filament line is handled by HcrPmc730Daemon. If RS-232 
+    // control, the filament line is handled by hcr_xmitd. We need to cover 
+    // both cases.
     if (_pmcStatus.rdsXmitterFilamentOn()) {
         try {
             _pmcStatusThread.rpcClient().xmitFilamentOff();
