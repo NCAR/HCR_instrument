@@ -3,7 +3,13 @@
 # Build cmigitsDaemon
 #
 
-tools = ['cmigits', 'qt4', 'QFunctionWrapper', 'QXmlRpcServerAbyss', 'rapradar']
+tools = Split("""
+cmigits
+lrose
+qt4
+QFunctionWrapper
+QXmlRpcServerAbyss
+""")
 
 env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui'])

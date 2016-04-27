@@ -11,9 +11,9 @@ fireflydRpcClient
 hcrdrxrpcclient
 hcrmonitor
 logx
+lrose
 motioncontrol
 qt4
-rapradar
 SpectracomRpcClient
 xmitdrpcclient
 """)

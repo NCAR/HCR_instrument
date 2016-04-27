@@ -4,8 +4,8 @@ tools = Split("""
 doxygen
 hcrpmc730client
 logx
+lrose
 qt4
-rapradar
 QFunctionWrapper
 QXmlRpcServerAbyss
 """)

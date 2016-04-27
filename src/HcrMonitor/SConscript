@@ -8,9 +8,9 @@ hcrpmc730client
 boost_program_options
 doxygen
 hcrmonitor
+lrose
 motioncontrol
 qt4
-rapradar
 QFunctionWrapper
 QXmlRpcServerAbyss
 xmlrpc_client++

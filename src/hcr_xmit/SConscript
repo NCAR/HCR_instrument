@@ -5,10 +5,10 @@ archive_xmlrpc_c
 boost_program_options
 doxygen
 logx
+lrose
 QFunctionWrapper
 qt4
 QXmlRpcServerAbyss
-rapradar
 """)
 
 xmitdEnv = Environment(tools = ['default'] + xmitdTools)

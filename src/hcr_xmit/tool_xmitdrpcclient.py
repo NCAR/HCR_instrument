@@ -3,7 +3,7 @@
 #
 import os
 
-tools = ['xmlrpc_client++', 'rapradar']
+tools = ['lrose', 'xmlrpc_client++']
 env = Environment(tools=['default'] + tools)
 
 # The object file and header file live in this directory.

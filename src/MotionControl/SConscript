@@ -5,10 +5,10 @@
 
 tools = Split("""
     cmigits
+    lrose
     motioncontrol
     QFunctionWrapper
     QXmlRpcServerAbyss
-    rapradar
 """)
 
 env = Environment(tools = ['default'] + tools)

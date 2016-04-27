@@ -7,7 +7,7 @@ tools = Split("""
     archive_xmlrpc_c
     boost_serialization
     logx
-    pentek
+    pentek7142
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)

@@ -5,10 +5,10 @@ boost_program_options
 doxygen
 FireFly
 logx
+lrose
 qt4
 QFunctionWrapper
 QXmlRpcServerAbyss
-rapradar
 """)
 
 # Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled

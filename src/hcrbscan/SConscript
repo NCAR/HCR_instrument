@@ -15,11 +15,11 @@ def Bscan(env):
     return env
 
 tools = Split("""
+boost_program_options
+doxygen
+lrose
 qtt_qtconfig
 qtt_qtbscan
-rapradar
-doxygen
-boost_program_options
 """)
 
 env = Environment(tools = ['default'] + tools,
