@@ -12,8 +12,8 @@
  * Acromag's API.
  */
 extern "C" {
-#  include "pmccommon/pmcmulticommon.h"
-#  include "pmc730/pmc730.h"
+#  include "Acromag/pmccommon/pmcmulticommon.h"
+#  include "Acromag/pmc730/pmc730.h"
 }
 
 
