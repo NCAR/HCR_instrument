@@ -1,0 +1,33 @@
+[submodule "src/logx"]
+	path = src/logx
+	url = https://github.com/ncareol/logx.git
+[submodule "src/qttoolbox"]
+	path = src/qttoolbox
+	url = https://github.com/ncareol/qttoolbox.git
+[submodule "src/site_scons"]
+	path = src/site_scons
+	url = https://github.com/ncareol/eol_scons.git
+[submodule "src/ascope"]
+	path = src/ascope
+	url = /space/dt/burghart/git_migration/ascope.git
+[submodule "src/tcpscope"]
+	path = src/tcpscope
+	url = /space/dt/burghart/git_migration/tcpscope.git
+[submodule "src/Archive_xmlrpc_c"]
+	path = src/Archive_xmlrpc_c
+	url = /space/dt/burghart/git_migration/Archive_xmlrpc_c.git
+[submodule "src/QXmlRpcServerAbyss"]
+	path = src/QXmlRpcServerAbyss
+	url = /space/dt/burghart/git_migration/QXmlRpcServerAbyss.git
+[submodule "src/QFunctionWrapper"]
+	path = src/QFunctionWrapper
+	url = /space/dt/burghart/git_migration/QFunctionWrapper.git
+[submodule "src/pentek7142"]
+	path = src/pentek7142
+	url = /space/dt/burghart/git_migration/eol_pentek7142.git
+[submodule "src/tool_pmc730"]
+	path = src/tool_pmc730
+	url = /space/dt/burghart/git_migration/tool_pmc730.git
+[submodule "src/ReadyFlow7142_428"]
+	path = src/ReadyFlow7142_428
+	url = /space/dt/burghart/git_migration/ReadyFlow7142_428.git/
