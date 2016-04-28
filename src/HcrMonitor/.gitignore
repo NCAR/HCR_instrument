@@ -1,0 +1,4 @@
+*.a
+*.o
+HcrMonitor
+moc_*

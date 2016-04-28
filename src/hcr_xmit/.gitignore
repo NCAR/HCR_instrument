@@ -1,0 +1,4 @@
+*.a
+*.o
+hcr_xmitd
+moc_*

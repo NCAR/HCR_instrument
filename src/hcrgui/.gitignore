@@ -1,0 +1,5 @@
+*.o
+hcrgui
+moc_*
+qrc_*
+ui_*

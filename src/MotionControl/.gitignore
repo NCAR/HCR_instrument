@@ -1,0 +1,10 @@
+*.a
+*.o
+
+# These two files are generated automatically using the CANopen
+# object dictionary ElmoMasterNode.od
+ElmoMasterNode.c
+ElmoMasterNode.h
+
+moc_*
+MotionControlDaemon

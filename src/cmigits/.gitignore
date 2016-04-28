@@ -1,0 +1,4 @@
+*.a
+*.o
+cmigitsFmqDump
+moc_*

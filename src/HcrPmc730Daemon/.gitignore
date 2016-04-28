@@ -1,0 +1,4 @@
+*.a
+*.o
+HcrPmc730Daemon
+moc_*
