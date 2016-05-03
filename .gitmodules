@@ -33,4 +33,11 @@
 	url = /space/dt/burghart/git_migration/Pmc730.git
 [submodule "src/cmigits"]
 	path = src/cmigits
-	url = /space/dt/burghart/git_migration/cmigits-hcr.git
+	#
+	# Port localhost:2200 needs to be tunnelled to port 22 on an
+	# EOL machine. Here's a ssh session to gate.ucar.edu which would
+	# set up the tunnel:
+	#
+	#    $ ssh -L 2200:tikal.eol.ucar.edu:22 gate.ucar.edu
+	#
+	url = ssh://localhost:2200/net/cds/git/cmigits-hcr.git
