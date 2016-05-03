@@ -31,3 +31,6 @@
 [submodule "src/Pmc730"]
 	path = src/Pmc730
 	url = /space/dt/burghart/git_migration/Pmc730.git
+[submodule "src/cmigits"]
+	path = src/cmigits
+	url = /space/dt/burghart/git_migration/cmigits-hcr.git
