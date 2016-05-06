@@ -25,9 +25,9 @@
 [submodule "src/pentek7142"]
 	path = src/pentek7142
 	url = /space/dt/burghart/git_migration/eol_pentek7142.git
-[submodule "src/tool_pmc730"]
-	path = src/tool_pmc730
-	url = /space/dt/burghart/git_migration/tool_pmc730.git
 [submodule "src/ReadyFlow7142_428"]
 	path = src/ReadyFlow7142_428
 	url = /space/dt/burghart/git_migration/ReadyFlow7142_428.git/
+[submodule "src/Pmc730"]
+	path = src/Pmc730
+	url = /space/dt/burghart/git_migration/Pmc730.git
