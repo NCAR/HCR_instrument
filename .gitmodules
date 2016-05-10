@@ -9,28 +9,28 @@
 	url = https://github.com/ncareol/eol_scons.git
 [submodule "src/ascope"]
 	path = src/ascope
-	url = /space/dt/burghart/git_migration/ascope.git
+	url = https://github.com/NCAR/ascope.git
 [submodule "src/tcpscope"]
 	path = src/tcpscope
-	url = /space/dt/burghart/git_migration/tcpscope.git
+	url = https://github.com/NCAR/tcpscope.git
 [submodule "src/Archive_xmlrpc_c"]
 	path = src/Archive_xmlrpc_c
-	url = /space/dt/burghart/git_migration/Archive_xmlrpc_c.git
+	url = https://github.com/NCAR/Archive_xmlrpc_c.git
 [submodule "src/QXmlRpcServerAbyss"]
 	path = src/QXmlRpcServerAbyss
-	url = /space/dt/burghart/git_migration/QXmlRpcServerAbyss.git
+	url = https://github.com/NCAR/QXmlRpcServerAbyss.git
 [submodule "src/QFunctionWrapper"]
 	path = src/QFunctionWrapper
-	url = /space/dt/burghart/git_migration/QFunctionWrapper.git
+	url = https://github.com/NCAR/QFunctionWrapper.git
 [submodule "src/pentek7142"]
 	path = src/pentek7142
-	url = /space/dt/burghart/git_migration/eol_pentek7142.git
+	url = /space/dt/burghart/git_migration/eol_Pentek7142.git
 [submodule "src/ReadyFlow7142_428"]
 	path = src/ReadyFlow7142_428
 	url = /space/dt/burghart/git_migration/ReadyFlow7142_428.git/
 [submodule "src/Pmc730"]
 	path = src/Pmc730
-	url = /space/dt/burghart/git_migration/Pmc730.git
+	url = https://github.com/NCAR/Pmc730.git
 [submodule "src/cmigits"]
 	path = src/cmigits
 	#
