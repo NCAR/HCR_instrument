@@ -22,9 +22,9 @@
 [submodule "src/QFunctionWrapper"]
 	path = src/QFunctionWrapper
 	url = https://github.com/NCAR/QFunctionWrapper.git
-[submodule "src/pentek7142"]
-	path = src/pentek7142
-	url = /space/dt/burghart/git_migration/eol_Pentek7142.git
+[submodule "src/Pentek7142"]
+	path = src/Pentek7142
+	url = /space/dt/burghart/git_migration/Pentek7142.git
 [submodule "src/ReadyFlow7142_428"]
 	path = src/ReadyFlow7142_428
 	url = /space/dt/burghart/git_migration/ReadyFlow7142_428.git/
