@@ -32,7 +32,6 @@
 #include <iostream>
 #include <QCoreApplication>
 #include <QTimer>
-#include "svnInfo.h"
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 

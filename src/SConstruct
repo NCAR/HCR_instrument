@@ -21,8 +21,7 @@ def HcrSetup(env):
     return env
     
 env = Environment(tools = ['default'], 
-                  GLOBAL_TOOLS = ['prefixoptions', 'buildmode', 'svninfo', HcrSetup])
-svnInfo = env.SvnInfo('svnInfo.h', '#')
+                  GLOBAL_TOOLS = ['prefixoptions', 'buildmode', HcrSetup])
 
 SConscript("cmigitsDaemon/SConscript")
 SConscript("fireflyd/SConscript")
