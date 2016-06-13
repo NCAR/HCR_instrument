@@ -48,3 +48,6 @@
 	#    $ ssh -L 2200:tikal.eol.ucar.edu:22 gate.ucar.edu
 	#
 	url = ssh://localhost:2200/net/cds/git/ReadyFlow7142_428.git
+[submodule "src/SpatialFOG"]
+	path = src/SpatialFOG
+	url = https://github.com/NCAR/SpatialFOG.git
