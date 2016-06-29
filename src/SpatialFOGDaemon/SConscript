@@ -1,0 +1,22 @@
+# -*- python -*-
+#
+# Build SpatialFOGDaemon
+#
+
+tools = Split("""
+spatialfogcore
+qt4
+""")
+
+env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtCore', 'QtGui'])
+
+sources = Split('''
+SpatialFOGDaemon.cpp
+''')
+
+headers = Split('''
+''')
+
+daemon = env.Program('SpatialFOGDaemon', sources)
+Default(daemon)
