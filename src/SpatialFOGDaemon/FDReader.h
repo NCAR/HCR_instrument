@@ -11,11 +11,11 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QThread>
 
-///
 /// @brief A Qt class which provides data asynchronously as it becomes available
 /// on a given file descriptor.
 ///
-/// The class emits signal newData(QByteArray data) when new data are available.
+/// The class emits signal newData(QByteArray data) when new data have been
+/// read from the file descriptor.
 class FDReader: public QThread {
     Q_OBJECT
 public:
