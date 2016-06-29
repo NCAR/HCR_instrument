@@ -12,10 +12,12 @@ env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui'])
 
 sources = Split('''
+FDReader.cpp
 SpatialFOGDaemon.cpp
 ''')
 
 headers = Split('''
+FDReader.h
 ''')
 
 daemon = env.Program('SpatialFOGDaemon', sources)
