@@ -14,16 +14,18 @@ env.EnableQt4Modules(['QtCore', 'QtGui'])
 
 sources = Split('''
 FDReader.cpp
+SFDataHandler.cpp
 SpatialFOGDaemon.cpp
 ''')
 
 headers = Split('''
 FDReader.h
+SFDataHandler.h
 ''')
 
-env['DOXYFILE_DICT'].update({'PROJECT_NAME':'SpatialFOGDaemon'})
-html = env.Apidocs(sources + headers)
-Default(html)
+# env['DOXYFILE_DICT'].update({'PROJECT_NAME':'SpatialFOGDaemon'})
+# html = env.Apidocs(sources + headers)
+# Default(html)
 
 daemon = env.Program('SpatialFOGDaemon', sources)
 Default(daemon)
