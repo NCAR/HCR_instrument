@@ -105,14 +105,6 @@ openDevice(const std::string devName) {
     }
     cfmakeraw(&ios);
 
-    // Odd parity
-    ios.c_cflag |= PARENB;  // enable parity
-    ios.c_cflag |= PARODD;  // use odd parity
-
-    // Set a 0.2 second timeout for reads
-    ios.c_cc[VMIN] = 0;
-    ios.c_cc[VTIME] = 2;    // 0.2 seconds
-
     if (tcsetattr(fd, TCSAFLUSH, &ios) == -1) {
         ELOG << __PRETTY_FUNCTION__ << ": error setting " << devName <<
                 " attributes: " << strerror(errno);
