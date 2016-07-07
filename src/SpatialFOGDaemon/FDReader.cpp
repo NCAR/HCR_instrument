@@ -92,13 +92,15 @@ FDReader::_readData() {
         return;
     }
 
+//    // Log the received bytes
+//    std::ostringstream oss;
+//    oss << "Read 0x";
+//    for (int i = 0; i < nread; i++) {
+//        oss << std::setw(2) << std::setfill('0') << std::hex <<
+//                uint(readBuffer[i]);
+//    }
+//    DLOG << oss.str();
+
     // We have data. Emit newData() to ship it off.
-    std::ostringstream oss;
-    oss << "Read 0x";
-    for (int i = 0; i < nread; i++) {
-        oss << std::setw(2) << std::setfill('0') << std::hex <<
-                uint(readBuffer[i]);
-    }
-    ILOG << oss.str();
-    emit(SIGNAL(newData(QByteArray(&readBuffer, nread))));
+    emit newData(QByteArray(reinterpret_cast<char*>(&readBuffer), nread));
 }
