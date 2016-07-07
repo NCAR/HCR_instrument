@@ -45,12 +45,14 @@ SFDataHandler::_parseData() {
                 WLOG << "Skipped " << _nskipped << " bytes to find a good header";
                 _nskipped = 0;
             }
-            ILOG << "Got an ANPP packet with ID " << pkt->packetId() <<
+            DLOG << "Got an ANPP packet with ID " << pkt->packetId() <<
                     ", CRC is " << (pkt->crcIsGood() ? "good" : "BAD");
-            // Drop the bytes for the packet we just extracted
-            _data = _data.right(_data.length() - pkt->fullPacketLen());
             emit(SIGNAL(newPacket(*pkt)));
             delete(pkt);
+
+            // Drop the bytes for the packet we just constructed
+            _data = _data.right(_data.length() - pkt->fullPacketLen());
+
             continue;
         } catch (ANPPPacket::NeedMoreData & x) {
             // Break out, since we need more data to continue
