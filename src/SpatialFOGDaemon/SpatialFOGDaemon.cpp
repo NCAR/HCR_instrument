@@ -125,19 +125,14 @@ openDevice(const std::string devName) {
 void
 sendPacket(const ANPPPacket & packet) {
     std::vector<uint8_t> raw(packet.rawBytes());
-    while (raw.size() > 0) {
-        int nwritten = write(Fd, &raw[0], raw.size());
-        if (nwritten < 0) {
+    int nwritten = 0;
+    while (nwritten < int(raw.size())) {
+        int wrote = write(Fd, &raw[nwritten], raw.size() - nwritten);
+        if (wrote < 0) {
             ELOG << "error writing packet: " << strerror(errno);
             return;
-        } else if (nwritten == int(raw.size())) {
-            // Quick bailout if we wrote all of the remaining bytes
-            return;
         }
-        // Erase the written bytes from the vector
-        for (int i = 0; i < nwritten; i++) {
-            raw.erase(raw.begin());
-        }
+        nwritten += wrote;
     }
 }
 
