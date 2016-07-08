@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <ANPPPacketFactory.h>
 #include <logx/Logging.h>
+#include <QtCore/QDateTime>
 #include "SFDataHandler.h"
 
 LOGGING("SFDataHandler")
@@ -45,8 +46,11 @@ SFDataHandler::_parseData() {
                 WLOG << "Skipped " << _nskipped << " bytes to find a good header";
                 _nskipped = 0;
             }
-            DLOG << "Got an ANPP packet with ID " << pkt->packetId() <<
-                    ", CRC is " << (pkt->crcIsGood() ? "good" : "BAD");
+            QDateTime pktTime = QDateTime::fromTime_t(pkt->timeOfValiditySeconds())
+                    .addMSecs(pkt->timeOfValidityMicroseconds() / 1000);
+            DLOG << "Packet ID " << pkt->packetId() << " @ " <<
+                    pktTime.toString("hh:mm:ss.zzz").toStdString();
+
             emit(SIGNAL(newPacket(*pkt)));
             delete(pkt);
 
