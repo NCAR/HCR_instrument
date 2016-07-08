@@ -138,7 +138,6 @@ sendPacket(const ANPPPacket & packet) {
 
 void
 sendRequestPacket() {
-    ILOG << "In sendRequestPacket()";
     sendPacket(RequestPacket(30));
     sendPacket(RequestPacket(39));
 }
