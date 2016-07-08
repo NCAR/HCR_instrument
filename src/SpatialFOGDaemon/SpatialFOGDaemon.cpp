@@ -13,10 +13,13 @@
 #include <termios.h>
 #include <sys/select.h>
 #include <logx/Logging.h>
+#include <QFunctionWrapper.h>
+#include <RequestPacket.h>
 
 #include <SpatialFOGCore.h>
 
 #include <QApplication>
+#include <QTimer>
 
 #include "FDReader.h"
 #include "SFDataHandler.h"
@@ -119,6 +122,32 @@ openDevice(const std::string devName) {
     return(fd);
 }
 
+void
+sendPacket(const ANPPPacket & packet) {
+    std::vector<uint8_t> raw(packet.rawBytes());
+    while (raw.size() > 0) {
+        int nwritten = write(Fd, &raw[0], raw.size());
+        if (nwritten < 0) {
+            ELOG << "error writing packet: " << strerror(errno);
+            return;
+        } else if (nwritten == int(raw.size())) {
+            // Quick bailout if we wrote all of the remaining bytes
+            return;
+        }
+        // Erase the written bytes from the vector
+        for (int i = 0; i < nwritten; i++) {
+            raw.erase(raw.begin());
+        }
+    }
+}
+
+void
+sendRequestPacket() {
+    ILOG << "In sendRequestPacket()";
+    sendPacket(RequestPacket(30));
+    sendPacket(RequestPacket(39));
+}
+
 int
 main(int argc, char * argv[]) {
     // Initialize logx, letting it get and strip out its command line arguments
@@ -148,7 +177,16 @@ main(int argc, char * argv[]) {
     app.connect(&fdr, SIGNAL(newData(QByteArray)),
                 &handler, SLOT(handleData(QByteArray)));
 
+    // Wrap our sendRequestPacket() function, so it can be treated as a Qt slot
+    QFunctionWrapper fWrapper(sendRequestPacket);
+
+    // Set up a timer to call sendRequestPacket on a regular basis
+    QTimer timer;
+    app.connect(&timer, SIGNAL(timeout()),
+                &fWrapper, SLOT(callFunction()));
+
     fdr.start();
+    timer.start(500);
 
     app.exec();
 }

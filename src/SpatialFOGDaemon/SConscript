@@ -5,12 +5,14 @@
 
 tools = Split("""
 doxygen
+QFunctionWrapper
 spatialfogcore
 qt4
 """)
 
 env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtGui'])
+env.AppendUnique(CXXFLAGS = ['-std=c++11'])
 
 sources = Split('''
 FDReader.cpp
