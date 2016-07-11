@@ -15,9 +15,9 @@
 
 /// @brief Handler for incoming data from a Spatial FOG.
 ///
-/// This class is passed raw bytes arriving from the Spatial FOG to its
-/// handleData() slot, and emits parsed complete packets via its newPacket()
-/// signal.
+/// This class accepts raw bytes arriving from the Spatial FOG in its
+/// handleData() slot, and emits parsed complete ANPPPacket-s via its
+/// newPacket() signal.
 class SFDataHandler: public QObject {
     Q_OBJECT
 public:
