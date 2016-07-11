@@ -42,14 +42,15 @@ SFDataHandler::_parseData() {
         try {
             ANPPPacket * pkt =
                     ANPPPacketFactory::instance().constructANPPPacket(uint8Data, dataLen);
+            DLOG << "Packet ID " << pkt->packetId() << " @ " <<
+                    QDateTime::fromTime_t(pkt->timeOfValiditySeconds())
+                        .addMSecs(pkt->timeOfValidityMicroseconds() / 1000)
+                        .toString("hh:mm:ss.zzz")
+                        .toStdString();
             if (_nskipped) {
-                WLOG << "Skipped " << _nskipped << " bytes to find a good header";
+                WLOG << "Skipped " << _nskipped << " bytes to find the last packet";
                 _nskipped = 0;
             }
-            QDateTime pktTime = QDateTime::fromTime_t(pkt->timeOfValiditySeconds())
-                    .addMSecs(pkt->timeOfValidityMicroseconds() / 1000);
-            DLOG << "Packet ID " << pkt->packetId() << " @ " <<
-                    pktTime.toString("hh:mm:ss.zzz").toStdString();
 
             emit(SIGNAL(newPacket(*pkt)));
             delete(pkt);
@@ -60,13 +61,17 @@ SFDataHandler::_parseData() {
             continue;
         } catch (ANPPPacket::NeedMoreData & x) {
             // Break out, since we need more data to continue
-            DLOG << "need more data...";
+            DLOG << "Waiting for more data: " << x.what();
             break;
         } catch (ANPPPacket::BadHeader & x) {
             // Not a valid header. Drop the first byte of _data and try again.
-            WLOG << "Skipping a byte: " << x.what();
+            DLOG << "Skipping a byte: " << x.what();
             _data = _data.right(_data.length() - 1);
             _nskipped++;
+            if ((_nskipped % 100) == 0) {
+                WLOG << "Looking for a header; " << _nskipped <<
+                        " bytes skipped so far...";
+            }
             continue;
         }
     }
