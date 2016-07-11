@@ -22,8 +22,6 @@ SFDataHandler::~SFDataHandler() {
 
 void
 SFDataHandler::handleData(QByteArray newData) {
-    DLOG << "handleData() got " << newData.length() << " bytes";
-
     // Append the new data to what we already have
     _data += newData;
 
@@ -42,11 +40,6 @@ SFDataHandler::_parseData() {
         try {
             ANPPPacket * pkt =
                     ANPPPacketFactory::instance().constructANPPPacket(uint8Data, dataLen);
-            DLOG << "Packet ID " << pkt->packetId() << " @ " <<
-                    QDateTime::fromTime_t(pkt->timeOfValiditySeconds())
-                        .addMSecs(pkt->timeOfValidityMicroseconds() / 1000)
-                        .toString("hh:mm:ss.zzz")
-                        .toStdString();
             if (_nskipped) {
                 WLOG << "Skipped " << _nskipped << " bytes to find the last packet";
                 _nskipped = 0;
@@ -55,7 +48,7 @@ SFDataHandler::_parseData() {
             emit(SIGNAL(newPacket(*pkt)));
             delete(pkt);
 
-            // Drop the bytes for the packet we just constructed
+            // Drop the bytes used for the packet we just constructed
             _data = _data.right(_data.length() - pkt->fullPacketLen());
 
             continue;
@@ -65,7 +58,6 @@ SFDataHandler::_parseData() {
             break;
         } catch (ANPPPacket::BadHeader & x) {
             // Not a valid header. Drop the first byte of _data and try again.
-            DLOG << "Skipping a byte: " << x.what();
             _data = _data.right(_data.length() - 1);
             _nskipped++;
             if ((_nskipped % 100) == 0) {
