@@ -138,8 +138,11 @@ sendPacket(const ANPPPacket & packet) {
 
 void
 sendRequestPacket() {
-    sendPacket(RequestPacket(30));
-    sendPacket(RequestPacket(39));
+    std::vector<uint8_t> pktIds;
+    pktIds.push_back(21);
+    pktIds.push_back(30);
+    pktIds.push_back(39);
+    sendPacket(RequestPacket(pktIds));
 }
 
 int
