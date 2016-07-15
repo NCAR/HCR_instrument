@@ -17,13 +17,13 @@
 
 #include "FDReader.h"
 
+
 LOGGING("FDReader")
 
-class ReaderWorker : public QObject {
-    Q_OBJECT
-};
+FDReader::FDReader(int inFd) :
+    _fd(inFd),
+    _exitRequested(false) {
 
-FDReader::FDReader(int inFd) : _fd(inFd) {
 }
 
 FDReader::~FDReader() {
@@ -31,13 +31,21 @@ FDReader::~FDReader() {
 
 void
 FDReader::run() {
-    const struct timespec timeout = { 0, 100000000 };   // 0.1 s
+    // Timeout period for our select() call, so that we can process Qt events
+    // even when there's nothing to read.
+    const struct timespec timeout = { 0, 200000000 };   // 0.2 s
     const double timeoutD = timeout.tv_sec + 1.0e-9 * timeout.tv_nsec;
+
     std::ostringstream oss;
 
     while (true) {
-        // Handle any pending Qt events
+        // Handle any Qt events pending for this thread
         QApplication::instance()->processEvents();
+
+        // Stop now if requested
+        if (_exitRequested) {
+            break;
+        }
 
         // Select on our incoming file descriptor for up to the time period
         // specified by timeout above
@@ -74,6 +82,12 @@ FDReader::run() {
         // The file descriptor has data. Read it now and emit newData().
         _readData();
     }
+    ILOG << "Exiting FDReader thread for fd " << _fd;
+}
+
+void
+FDReader::quit() {
+    _exitRequested = true;
 }
 
 void
@@ -104,3 +118,7 @@ FDReader::_readData() {
     // We have data. Emit newData() to ship it off.
     emit newData(QByteArray(reinterpret_cast<char*>(&readBuffer), nread));
 }
+
+//FDReaderThreadWorker::FDReaderThreadWorker(int fd) : _fd(fd) {
+//
+//}

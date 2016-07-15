@@ -29,14 +29,36 @@ public:
 
     void run();
 
+public slots:
+    /// @brief Stop the thread
+    void quit();
+
 signals:
     void newData(QByteArray data);
 
 private:
     int _fd;
+    bool _exitRequested;
 
     // @brief Read available data and emit a newData() signal.
     void _readData();
 };
+
+///// @brief Worker class to perform the heavy lifting within the thread
+//class FDReaderWorker : public QObject {
+//    Q_OBJECT
+//public:
+//    FDReaderWorker(int fd);
+//signals:
+//    void finished(QByteArray data);
+//public slots:
+//    void doWork();
+//private:
+//    int _fd;
+//
+//    // @brief Read available data and emit a finished() signal with the new
+//    // data.
+//    void _readData();
+//};
 
 #endif /* _FDREADER_H_ */
