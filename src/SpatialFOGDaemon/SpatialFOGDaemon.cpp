@@ -11,12 +11,11 @@
 #include <iostream>
 #include <string>
 #include <termios.h>
-#include <sys/select.h>
-#include <logx/Logging.h>
 #include <QFunctionWrapper.h>
 #include <RequestPacket.h>
-
 #include <SpatialFOGCore.h>
+#include <sys/select.h>
+#include <logx/Logging.h>
 
 #include <QApplication>
 #include <QTimer>
@@ -29,8 +28,14 @@ LOGGING("SpatialFOGDaemon")
 // Serial port device name for connection to SpatialFOG
 std::string DevName;
 
+// QApplication instance
+QApplication * App;
+
 // File descriptor of connection to SpatialFOG
 int Fd;
+
+// Reader thread
+FDReader * Fdr = NULL;
 
 void
 usage() {
@@ -139,19 +144,30 @@ sendPacket(const ANPPPacket & packet) {
 void
 sendRequestPacket() {
     std::vector<uint8_t> pktIds;
-    pktIds.push_back(21);
-    pktIds.push_back(30);
-    pktIds.push_back(39);
+    pktIds.push_back(45);
+    pktIds.push_back(47);
+    pktIds.push_back(48);
     sendPacket(RequestPacket(pktIds));
 }
 
+void stopApp() {
+    if (Fdr) {
+        ILOG << "Stopping FDReader thread";
+        Fdr->quit();
+        Fdr->wait();
+    }
+    if (App) {
+        ILOG << "Closing QApplication";
+        App->quit();
+    }
+}
 int
 main(int argc, char * argv[]) {
     // Initialize logx, letting it get and strip out its command line arguments
     logx::ParseLogArgs(argc, argv);
 
     // Create a non-GUI QApplication instance
-    QApplication app(argc, argv, false);
+    App = new QApplication(argc, argv, false);
 
     // We should have one remaining argument after the program name: the device
     // port to which the SpatialFOG is attached
@@ -166,24 +182,29 @@ main(int argc, char * argv[]) {
     Fd = openDevice(DevName);
 
     // Start a reader thread
-    FDReader fdr(Fd);
+    Fdr = new FDReader(Fd);
 
     // Function wrapper to handle data
     SFDataHandler handler;
 
-    app.connect(&fdr, SIGNAL(newData(QByteArray)),
-                &handler, SLOT(handleData(QByteArray)));
+    App->connect(Fdr, SIGNAL(newData(QByteArray)),
+                 &handler, SLOT(handleData(QByteArray)));
 
     // Wrap our sendRequestPacket() function, so it can be treated as a Qt slot
     QFunctionWrapper fWrapper(sendRequestPacket);
 
     // Set up a timer to call sendRequestPacket on a regular basis
-    QTimer timer;
-    app.connect(&timer, SIGNAL(timeout()),
-                &fWrapper, SLOT(callFunction()));
+    QTimer requestTimer;
+    App->connect(&requestTimer, SIGNAL(timeout()),
+                 &fWrapper, SLOT(callFunction()));
 
-    fdr.start();
-    timer.start(500);
+    // Set up a timer to shut down after a fixed time
+    QFunctionWrapper stopWrapper(stopApp);
+    QTimer::singleShot(10000, &stopWrapper, SLOT(callFunction()));
 
-    app.exec();
+    Fdr->start();
+
+    requestTimer.start(500);
+
+    App->exec();
 }
