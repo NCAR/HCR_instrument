@@ -13,85 +13,110 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <logx/Logging.h>
-#include <QtGui/QApplication>
+#include <QApplication>
 
 #include "FDReader.h"
 
 
 LOGGING("FDReader")
 
-FDReader::FDReader(int inFd) :
-    _fd(inFd),
-    _exitRequested(false) {
-
+FDReader::FDReader(int inFd) : _workerThread() {
+    FDReaderWorker * worker = new FDReaderWorker(inFd, &_workerThread);
+    connect(&_workerThread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    // Map the worker's newData() signal to our own newData() signal
+    connect(worker, SIGNAL(newData(QByteArray)),
+            this, SIGNAL(newData(QByteArray)));
+    _workerThread.start();
 }
 
 FDReader::~FDReader() {
+    _workerThread.quit();
+    _workerThread.wait();
+}
+
+FDReaderWorker::FDReaderWorker(int fd, QThread * workerThread) :
+        _fd(fd),
+        _workerThread(workerThread),
+        _runWhenFreeTimer(NULL) {
+    // Move our affinity to the worker thread
+    moveToThread(_workerThread);
+
+    // When the worker thread is started, call _tryToRead()
+    connect(_workerThread, SIGNAL(started()), this, SLOT(_tryToRead()));
 }
 
 void
-FDReader::run() {
-    // Timeout period for our select() call, so that we can process Qt events
-    // even when there's nothing to read.
+FDReaderWorker::_tryToRead() {
+    // On first call here, create a zero-length timer connected so that we
+    // execute _tryToRead() whenever the thread is not otherwise busy.
+    // IMPORTANT: This timer MUST be created within the worker thread to
+    // function properly; that's why it doesn't get created in the constructor!
+    if (! _runWhenFreeTimer) {
+        // Verify that we're executing in the worker thread before creating the
+        // zero-length timer.
+        if (QThread::currentThread() != _workerThread) {
+            ELOG << "Unexpected execution of  _tryToRead() " <<
+                    "outside the worker thread";
+            return;
+        }
+        // Create the timer
+        _runWhenFreeTimer = new QTimer();
+        // Queue execution of this method again upon timeout.
+        connect(_runWhenFreeTimer, SIGNAL(timeout()), this, SLOT(_tryToRead()));
+        // Stop the timer when the thread is finished.
+        connect(_workerThread, SIGNAL(finished()), _runWhenFreeTimer, SLOT(stop()));
+        // Zero-length timer emits timeout() whenever the thread is not
+        // otherwise busy.
+        _runWhenFreeTimer->start(0);
+    }
+
+    // Set a timeout period for our select() call below, so that we don't block
+    // forever and hold up our Qt event loop.
     const struct timespec timeout = { 0, 200000000 };   // 0.2 s
     const double timeoutD = timeout.tv_sec + 1.0e-9 * timeout.tv_nsec;
 
-    std::ostringstream oss;
+    // Select on our incoming file descriptor for up to the time period
+    // specified by timeout above
+    fd_set in_fds;
+    FD_SET(_fd, &in_fds);
+    int ready = pselect(_fd + 1, &in_fds, NULL, NULL, &timeout, NULL);
 
-    while (true) {
-        // Handle any Qt events pending for this thread
-        QApplication::instance()->processEvents();
+    // If there's no ready FD, then we timed out. Just return.
+    if (ready == 0) {
+        DLOG << "Select timeout after " << std::setprecision(3) <<
+                timeoutD << " s";
+        return;
+    }
 
-        // Stop now if requested
-        if (_exitRequested) {
+    // On error...
+    if (ready == -1) {
+        switch (errno) {
+        // If we were interrupted. Just return and we'll try again shortly.
+        case EINTR:
+            ILOG << "Select was interrupted by a signal; trying again";
+            return;
+        // EBADF means the file descriptor was closed. Return now, which
+        // will stop the thread.
+        case EBADF:
+            ELOG << "Stopping because file descriptor " << _fd <<
+                " has been closed!";
+            _runWhenFreeTimer->stop();
+            _workerThread->exit(1);
+            break;
+        default:
+            ELOG << "Stopping on unknown pselect() error " << errno;
+            _runWhenFreeTimer->stop();
+            _workerThread->exit(1);
             break;
         }
-
-        // Select on our incoming file descriptor for up to the time period
-        // specified by timeout above
-        fd_set in_fds;
-        FD_SET(_fd, &in_fds);
-        int ready = pselect(_fd + 1, &in_fds, NULL, NULL, &timeout, NULL);
-
-        // If there's no ready FD, then we timed out. Just try again.
-        if (ready == 0) {
-            DLOG << "Select timeout after " << std::setprecision(3) <<
-                    timeoutD << " s";
-            continue;
-        }
-
-        // On error...
-        if (ready == -1) {
-            switch (errno) {
-            // If we were interrupted, just go back and try again
-            case EINTR:
-                ILOG << "Select was interrupted by a signal; trying again";
-                continue;
-            // EBADF means the file descriptor was closed. Return now, which
-            // will stop the thread.
-            case EBADF:
-                ELOG << "Stopping because file descriptor " << _fd <<
-                    " has been closed!";
-                return;
-            default:
-                ELOG << "Stopping on unknown pselect() error " << errno;
-                return;
-            }
-        }
-
-        // The file descriptor has data. Read it now and emit newData().
-        _readData();
     }
-    ILOG << "Exiting FDReader thread for fd " << _fd;
+
+    // The file descriptor has data. Read it now and emit newData().
+    _readData();
 }
 
 void
-FDReader::quit() {
-    _exitRequested = true;
-}
-
-void
-FDReader::_readData() {
+FDReaderWorker::_readData() {
     uint8_t readBuffer[1000];
     // Read up to sizeof(readBuffer) bytes and emit a newData() signal
     // carrying the read data.
@@ -118,7 +143,3 @@ FDReader::_readData() {
     // We have data. Emit newData() to ship it off.
     emit newData(QByteArray(reinterpret_cast<char*>(&readBuffer), nread));
 }
-
-//FDReaderThreadWorker::FDReaderThreadWorker(int fd) : _fd(fd) {
-//
-//}

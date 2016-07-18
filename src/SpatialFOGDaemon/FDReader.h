@@ -8,16 +8,18 @@
 #ifndef _FDREADER_H_
 #define _FDREADER_H_
 
-#include <QtCore/QByteArray>
-#include <QtCore/QThread>
+#include <QByteArray>
+#include <QThread>
+#include <QTimer>
 
 /// @brief A Qt class which provides data asynchronously as it becomes available
 /// on a given file descriptor.
 ///
 /// The class emits signal newData(QByteArray data) when new data have been
 /// read from the file descriptor.
-class FDReader: public QThread {
+class FDReader: public QObject {
     Q_OBJECT
+    QThread _workerThread;
 public:
     /// @brief Construct FDReader to read from the given file descriptor
     ///
@@ -27,38 +29,37 @@ public:
 
     virtual ~FDReader();
 
-    void run();
+signals:
+    void newData(QByteArray data);
 
-public slots:
-    /// @brief Stop the thread
-    void quit();
+};
+
+/// @brief Worker class to do the real work
+class FDReaderWorker : public QObject {
+    Q_OBJECT
+public:
+    FDReaderWorker(int fd, QThread * workerThread);
 
 signals:
     void newData(QByteArray data);
 
+private slots:
+    /// @brief Try to read new data (waiting briefly if necessary). Emit
+    /// finished(QByteArray data) signal if anything was read.
+    ///
+    /// This slot is first called when the worker thread is started, and on
+    /// the first call a zero-length QTimer will be created to call the
+    /// slot again whenever the worker thread is not otherwise busy.
+    void _tryToRead();
+
 private:
     int _fd;
-    bool _exitRequested;
+    QThread * _workerThread;
+    QTimer * _runWhenFreeTimer;
 
-    // @brief Read available data and emit a newData() signal.
+    // @brief Read available data and emit a finished() signal with the new
+    // data.
     void _readData();
 };
-
-///// @brief Worker class to perform the heavy lifting within the thread
-//class FDReaderWorker : public QObject {
-//    Q_OBJECT
-//public:
-//    FDReaderWorker(int fd);
-//signals:
-//    void finished(QByteArray data);
-//public slots:
-//    void doWork();
-//private:
-//    int _fd;
-//
-//    // @brief Read available data and emit a finished() signal with the new
-//    // data.
-//    void _readData();
-//};
 
 #endif /* _FDREADER_H_ */
