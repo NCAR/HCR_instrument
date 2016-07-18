@@ -38,6 +38,7 @@ SFDataHandler::_parseData() {
         uint dataLen(_data.length());
 
         try {
+            // Let the ANPPPacketFactory try to create a packet
             ANPPPacket * pkt =
                     ANPPPacketFactory::instance().constructANPPPacket(uint8Data, dataLen);
             if (_nskipped) {
@@ -46,10 +47,13 @@ SFDataHandler::_parseData() {
             }
 
             emit(SIGNAL(newPacket(*pkt)));
-            delete(pkt);
 
-            // Drop the bytes used for the packet we just constructed
+            // Drop the bytes from the packet we just decoded from the front
+            // of _data
             _data = _data.right(_data.length() - pkt->fullPacketLen());
+
+            // Delete the packet
+            delete(pkt);
 
             continue;
         } catch (ANPPPacket::NeedMoreData & x) {
