@@ -151,11 +151,6 @@ sendRequestPacket() {
 }
 
 void stopApp() {
-    if (Fdr) {
-        ILOG << "Stopping FDReader thread";
-        Fdr->quit();
-        Fdr->wait();
-    }
     if (App) {
         ILOG << "Closing QApplication";
         App->quit();
@@ -200,11 +195,12 @@ main(int argc, char * argv[]) {
 
     // Set up a timer to shut down after a fixed time
     QFunctionWrapper stopWrapper(stopApp);
-    QTimer::singleShot(10000, &stopWrapper, SLOT(callFunction()));
-
-    Fdr->start();
+    QTimer::singleShot(20000, &stopWrapper, SLOT(callFunction()));
 
     requestTimer.start(500);
 
     App->exec();
+
+    delete(Fdr);
+    delete(App);
 }
