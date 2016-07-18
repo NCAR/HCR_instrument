@@ -160,6 +160,9 @@ int
 main(int argc, char * argv[]) {
     // Initialize logx, letting it get and strip out its command line arguments
     logx::ParseLogArgs(argc, argv);
+    ILOG << "======================";
+    ILOG << "SpatialFOGDaemon start";
+    ILOG << "======================";
 
     // Create a non-GUI QApplication instance
     App = new QApplication(argc, argv, false);
