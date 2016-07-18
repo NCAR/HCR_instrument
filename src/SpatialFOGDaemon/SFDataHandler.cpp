@@ -9,15 +9,28 @@
 #include <iomanip>
 #include <ANPPPacketFactory.h>
 #include <logx/Logging.h>
-#include <QtCore/QDateTime>
+
+#include <QDateTime>
+#include <QThread>
+
 #include "SFDataHandler.h"
 
 LOGGING("SFDataHandler")
 
-SFDataHandler::SFDataHandler() : _data(), _nskipped(0) {
+SFDataHandler::SFDataHandler() :
+    _data(),
+    _nskipped(0),
+    _packetCountMap() {
 }
 
 SFDataHandler::~SFDataHandler() {
+    if (! _packetCountMap.empty()) {
+        ILOG << "Packet counts by ID:";
+        for (std::map<int, int>::const_iterator it = _packetCountMap.begin();
+             it != _packetCountMap.end(); it++) {
+            ILOG << "  " << it->first << " - " << it->second;
+        }
+    }
 }
 
 void
@@ -42,15 +55,21 @@ SFDataHandler::_parseData() {
             ANPPPacket * pkt =
                     ANPPPacketFactory::instance().constructANPPPacket(uint8Data, dataLen);
             if (_nskipped) {
-                WLOG << "Skipped " << _nskipped << " bytes to find the last packet";
+                WLOG << "Skipped " << _nskipped <<
+                        " bytes to find a pkt after " <<
+                        totalPacketsReceived() << " pkts received";
                 _nskipped = 0;
             }
 
+            // Update our packet count
+            _packetCountMap[pkt->packetId()]++;
+
+            // Emit the newPacket() signal
             emit(SIGNAL(newPacket(*pkt)));
 
             // Drop the bytes from the packet we just decoded from the front
             // of _data
-            _data = _data.right(_data.length() - pkt->fullPacketLen());
+            _data.remove(0, pkt->fullPacketLen());
 
             // Delete the packet
             delete(pkt);
@@ -62,7 +81,7 @@ SFDataHandler::_parseData() {
             break;
         } catch (ANPPPacket::BadHeader & x) {
             // Not a valid header. Drop the first byte of _data and try again.
-            _data = _data.right(_data.length() - 1);
+            _data.remove(0, 1);
             _nskipped++;
             if ((_nskipped % 100) == 0) {
                 WLOG << "Looking for a header; " << _nskipped <<
