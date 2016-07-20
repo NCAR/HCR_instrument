@@ -1,8 +1,8 @@
 /*
- * SpatialFOGDaemon.cpp
+ * SpatialFogDaemon.cpp
  *
  *  Created on: Jun 28, 2016
- *      Author: Chris Burghart
+ *      Author: Chris Burghart <burghart@ucar.edu>
  */
 
 #include <cerrno>
@@ -11,9 +11,9 @@
 #include <iostream>
 #include <string>
 #include <termios.h>
+#include <unistd.h>
 #include <QFunctionWrapper.h>
 #include <RequestPacket.h>
-#include <SpatialFOGCore.h>
 #include <sys/select.h>
 #include <logx/Logging.h>
 #include "QAnppPacketFactory.h"
@@ -23,15 +23,15 @@
 
 #include "FDReader.h"
 
-LOGGING("SpatialFOGDaemon")
+LOGGING("SpatialFogDaemon")
 
-// Serial port device name for connection to SpatialFOG
+// Serial port device name for connection to Spatial FOG
 std::string DevName;
 
 // QApplication instance
 QApplication * App;
 
-// File descriptor of connection to SpatialFOG
+// File descriptor of connection to Spatial FOG
 int Fd;
 
 // Reader thread
@@ -39,7 +39,7 @@ FDReader * Fdr = NULL;
 
 void
 usage() {
-    std::cerr << "Usage: SpatialFOGDaemon [(logx_argument)...] <tty_dev>" <<
+    std::cerr << "Usage: SpatialFogDaemon [(logx_argument)...] <tty_dev>" <<
             std::endl;
     logx::LogUsage(std::cerr);
 }
@@ -161,14 +161,14 @@ main(int argc, char * argv[]) {
     // Initialize logx, letting it get and strip out its command line arguments
     logx::ParseLogArgs(argc, argv);
     ILOG << "======================";
-    ILOG << "SpatialFOGDaemon start";
+    ILOG << "SpatialFogDaemon start";
     ILOG << "======================";
 
     // Create a non-GUI QApplication instance
     App = new QApplication(argc, argv, false);
 
     // We should have one remaining argument after the program name: the device
-    // port to which the SpatialFOG is attached
+    // port to which the Spatial FOG is attached
     if (argc != 2) {
         usage();
         exit(1);

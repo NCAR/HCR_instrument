@@ -1,6 +1,6 @@
 # -*- python -*-
 #
-# Build SpatialFOGDaemon
+# Build SpatialFogDaemon
 #
 
 tools = Split("""
@@ -17,7 +17,7 @@ env.AppendUnique(CXXFLAGS = ['-std=c++11'])
 sources = Split('''
 FDReader.cpp
 QAnppPacketFactory.cpp
-SpatialFOGDaemon.cpp
+SpatialFogDaemon.cpp
 ''')
 
 headers = Split('''
@@ -25,9 +25,9 @@ FDReader.h
 QAnppPacketFactory.h
 ''')
 
-# env['DOXYFILE_DICT'].update({'PROJECT_NAME':'SpatialFOGDaemon'})
+# env['DOXYFILE_DICT'].update({'PROJECT_NAME':'SpatialFogDaemon'})
 # html = env.Apidocs(sources + headers)
 # Default(html)
 
-daemon = env.Program('SpatialFOGDaemon', sources)
+daemon = env.Program('SpatialFogDaemon', sources)
 Default(daemon)
