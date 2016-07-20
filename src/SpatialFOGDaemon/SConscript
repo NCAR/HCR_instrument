@@ -16,13 +16,13 @@ env.AppendUnique(CXXFLAGS = ['-std=c++11'])
 
 sources = Split('''
 FDReader.cpp
-SFDataHandler.cpp
+QAnppPacketFactory.cpp
 SpatialFOGDaemon.cpp
 ''')
 
 headers = Split('''
 FDReader.h
-SFDataHandler.h
+QAnppPacketFactory.h
 ''')
 
 # env['DOXYFILE_DICT'].update({'PROJECT_NAME':'SpatialFOGDaemon'})

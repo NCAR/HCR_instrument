@@ -1,5 +1,5 @@
 /*
- * SFDataHandler.cpp
+ * QAnppPacketFactory.cpp
  *
  *  Created on: Jul 1, 2016
  *      Author: burghart
@@ -9,21 +9,21 @@
 #include <iomanip>
 #include <ANPPPacketFactory.h>
 #include <logx/Logging.h>
+#include "QAnppPacketFactory.h"
 
 #include <QDateTime>
 #include <QThread>
 
-#include "SFDataHandler.h"
 
-LOGGING("SFDataHandler")
+LOGGING("QAnppPacketFactory")
 
-SFDataHandler::SFDataHandler() :
+QAnppPacketFactory::QAnppPacketFactory() :
     _data(),
     _nskipped(0),
     _packetCountMap() {
 }
 
-SFDataHandler::~SFDataHandler() {
+QAnppPacketFactory::~QAnppPacketFactory() {
     if (! _packetCountMap.empty()) {
         ILOG << "Packet counts by ID:";
         for (std::map<int, int>::const_iterator it = _packetCountMap.begin();
@@ -34,7 +34,7 @@ SFDataHandler::~SFDataHandler() {
 }
 
 void
-SFDataHandler::handleData(QByteArray newData) {
+QAnppPacketFactory::handleData(QByteArray newData) {
     // Append the new data to what we already have
     _data += newData;
 
@@ -43,7 +43,7 @@ SFDataHandler::handleData(QByteArray newData) {
 }
 
 void
-SFDataHandler::_parseData() {
+QAnppPacketFactory::_parseData() {
     // Try to extract valid ANPP packets from the data
     while (_data.length() > 0) {
         // Cast our data into a pointer to an array of uint8_t

@@ -1,12 +1,12 @@
 /*
- * SFDataHandler.h
+ * QAnppPacketFactory.h
  *
  *  Created on: Jul 1, 2016
- *      Author: burghart
+ *      Author: Chris Burghart <burghart@ucar.edu>
  */
 
-#ifndef _SFDATAHANDLER_H_
-#define _SFDATAHANDLER_H_
+#ifndef _QANPPPACKETFACTORY_H_
+#define _QANPPPACKETFACTORY_H_
 
 #include <map>
 #include <vector>
@@ -14,16 +14,16 @@
 
 #include <ANPPPacket.h>
 
-/// @brief Handler for incoming data from a Spatial FOG.
+/// @brief Handler for incoming raw Advanced Navigation Packet Protocol (ANPP)
+/// data (e.g., from Advanced Navigation's Spatial FOG INS).
 ///
-/// This class accepts raw bytes arriving from the Spatial FOG in its
-/// handleData() slot, and emits parsed complete ANPPPacket-s via its
+/// This class accepts raw ANPP bytes arriving from the unit in its
 /// newPacket() signal.
-class SFDataHandler: public QObject {
+class QAnppPacketFactory: public QObject {
     Q_OBJECT
 public:
-    SFDataHandler();
-    virtual ~SFDataHandler();
+    QAnppPacketFactory();
+    virtual ~QAnppPacketFactory();
 
     /// @brief Return the number of ANPP packets received and decoded by
     /// the SFDataHandler since it was created.
@@ -68,4 +68,4 @@ private:
 
 };
 
-#endif /* _SFDATAHANDLER_H_ */
+#endif /* _QANPPPACKETFACTORY_H_ */

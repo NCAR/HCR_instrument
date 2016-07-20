@@ -16,12 +16,12 @@
 #include <SpatialFOGCore.h>
 #include <sys/select.h>
 #include <logx/Logging.h>
+#include "QAnppPacketFactory.h"
 
 #include <QApplication>
 #include <QTimer>
 
 #include "FDReader.h"
-#include "SFDataHandler.h"
 
 LOGGING("SpatialFOGDaemon")
 
@@ -183,7 +183,7 @@ main(int argc, char * argv[]) {
     Fdr = new FDReader(Fd);
 
     // Function wrapper to handle data
-    SFDataHandler handler;
+    QAnppPacketFactory handler;
 
     App->connect(Fdr, SIGNAL(newData(QByteArray)),
                  &handler, SLOT(handleData(QByteArray)));
