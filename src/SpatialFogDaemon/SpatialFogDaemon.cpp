@@ -182,7 +182,7 @@ main(int argc, char * argv[]) {
     // Start a reader thread
     Fdr = new FDReader(Fd);
 
-    // Function wrapper to handle data
+    // Factory which accepts raw data bytes and emits new AnppPacket objects
     QAnppPacketFactory factory;
 
     App->connect(Fdr, SIGNAL(newData(QByteArray)),
