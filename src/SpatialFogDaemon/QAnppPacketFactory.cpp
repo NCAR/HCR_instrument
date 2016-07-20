@@ -79,6 +79,7 @@ QAnppPacketFactory::_parseData() {
             DLOG << "Waiting for more data: " << x.what();
             break;
         } catch (AnppPacket::BadHeader & x) {
+            DLOG << "Bad header: " << x.what() << "; skipping a byte";
             // Our data does not begin with a valid header. Drop the first
             // byte of _data and try again.
             _data.remove(0, 1);
