@@ -12,13 +12,14 @@
 #include <vector>
 #include <QObject>
 
-#include "../SpatialFOG/AnppPacket.h"
+#include <AnppPacket.h>
 
-/// @brief Handler for incoming raw Advanced Navigation Packet Protocol (ANPP)
-/// data (e.g., from Advanced Navigation's Spatial FOG INS).
+/// @brief Factory which accepts incoming raw Advanced Navigation Packet
+/// Protocol (ANPP) data, then creates and emits AnppPacket objects.
 ///
-/// This class accepts raw ANPP bytes arriving from the unit in its
-/// newPacket() signal.
+/// Data from an Advanced Navigation INS unit (e.g., Spatial FOG) are passed
+/// in to the appendData() slot. As full ANPP packets can be parsed, new
+/// AnppPacket objects are created and the emitted via the newPacket() signal.
 class QAnppPacketFactory: public QObject {
     Q_OBJECT
 public:
@@ -42,7 +43,7 @@ public:
 public slots:
     /// @brief Slot to accept incoming data from the Spatial FOG and emit
     /// newPacket() signals as packets can be parsed from the stream.
-    void handleData(QByteArray newData);
+    void appendData(QByteArray newData);
 
 signals:
     /// @brief Signal emitted when a new ANPP packet has arrived from the

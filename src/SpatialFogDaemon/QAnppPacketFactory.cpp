@@ -8,12 +8,11 @@
 #include <inttypes.h>
 #include <iomanip>
 #include <logx/Logging.h>
-#include "QAnppPacketFactory.h"
-
+#include <AnppPacketFactory.h>
 #include <QDateTime>
 #include <QThread>
-#include "../SpatialFOG/AnppPacketFactory.h"
 
+#include "QAnppPacketFactory.h"
 
 LOGGING("QAnppPacketFactory")
 
@@ -34,7 +33,7 @@ QAnppPacketFactory::~QAnppPacketFactory() {
 }
 
 void
-QAnppPacketFactory::handleData(QByteArray newData) {
+QAnppPacketFactory::appendData(QByteArray newData) {
     // Append the new data to what we already have
     _data += newData;
 
@@ -53,11 +52,11 @@ QAnppPacketFactory::_parseData() {
         try {
             // Let the ANPPPacketFactory try to create a packet
             AnppPacket * pkt =
-                    AnppPacketFactory::instance().constructAnppPacket(uint8Data, dataLen);
+                    AnppPacketFactory::ConstructAnppPacket(uint8Data, dataLen);
             if (_nskipped) {
                 WLOG << "Skipped " << _nskipped <<
-                        " bytes to find a pkt after " <<
-                        totalPacketsReceived() << " pkts received";
+                        " bytes to find a pkt (after " <<
+                        totalPacketsReceived() << " pkts received)";
                 _nskipped = 0;
             }
 
@@ -76,11 +75,12 @@ QAnppPacketFactory::_parseData() {
 
             continue;
         } catch (AnppPacket::NeedMoreData & x) {
-            // Break out, since we need more data to continue
+            // Break out, since the factory needs more data to continue
             DLOG << "Waiting for more data: " << x.what();
             break;
         } catch (AnppPacket::BadHeader & x) {
-            // Not a valid header. Drop the first byte of _data and try again.
+            // Our data does not begin with a valid header. Drop the first
+            // byte of _data and try again.
             _data.remove(0, 1);
             _nskipped++;
             if ((_nskipped % 100) == 0) {

@@ -183,10 +183,10 @@ main(int argc, char * argv[]) {
     Fdr = new FDReader(Fd);
 
     // Function wrapper to handle data
-    QAnppPacketFactory handler;
+    QAnppPacketFactory factory;
 
     App->connect(Fdr, SIGNAL(newData(QByteArray)),
-                 &handler, SLOT(handleData(QByteArray)));
+                 &factory, SLOT(appendData(QByteArray)));
 
     // Wrap our sendRequestPacket() function, so it can be treated as a Qt slot
     QFunctionWrapper fWrapper(sendRequestPacket);
