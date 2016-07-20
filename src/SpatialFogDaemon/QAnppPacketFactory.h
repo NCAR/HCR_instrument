@@ -12,7 +12,7 @@
 #include <vector>
 #include <QObject>
 
-#include <ANPPPacket.h>
+#include "../SpatialFOG/AnppPacket.h"
 
 /// @brief Handler for incoming raw Advanced Navigation Packet Protocol (ANPP)
 /// data (e.g., from Advanced Navigation's Spatial FOG INS).
@@ -47,7 +47,7 @@ public slots:
 signals:
     /// @brief Signal emitted when a new ANPP packet has arrived from the
     /// Spatial FOG.
-    void newPacket(ANPPPacket packet);
+    void newPacket(AnppPacket packet);
 
 private:
     /// @brief Parse the _data array to find complete ANPP packets, and

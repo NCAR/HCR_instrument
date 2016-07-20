@@ -128,7 +128,7 @@ openDevice(const std::string devName) {
 }
 
 void
-sendPacket(const ANPPPacket & packet) {
+sendPacket(const AnppPacket & packet) {
     std::vector<uint8_t> raw(packet.rawBytes());
     int nwritten = 0;
     while (nwritten < int(raw.size())) {

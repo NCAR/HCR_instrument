@@ -7,12 +7,12 @@
 
 #include <inttypes.h>
 #include <iomanip>
-#include <ANPPPacketFactory.h>
 #include <logx/Logging.h>
 #include "QAnppPacketFactory.h"
 
 #include <QDateTime>
 #include <QThread>
+#include "../SpatialFOG/AnppPacketFactory.h"
 
 
 LOGGING("QAnppPacketFactory")
@@ -52,8 +52,8 @@ QAnppPacketFactory::_parseData() {
 
         try {
             // Let the ANPPPacketFactory try to create a packet
-            ANPPPacket * pkt =
-                    ANPPPacketFactory::instance().constructANPPPacket(uint8Data, dataLen);
+            AnppPacket * pkt =
+                    AnppPacketFactory::instance().constructAnppPacket(uint8Data, dataLen);
             if (_nskipped) {
                 WLOG << "Skipped " << _nskipped <<
                         " bytes to find a pkt after " <<
@@ -75,11 +75,11 @@ QAnppPacketFactory::_parseData() {
             delete(pkt);
 
             continue;
-        } catch (ANPPPacket::NeedMoreData & x) {
+        } catch (AnppPacket::NeedMoreData & x) {
             // Break out, since we need more data to continue
             DLOG << "Waiting for more data: " << x.what();
             break;
-        } catch (ANPPPacket::BadHeader & x) {
+        } catch (AnppPacket::BadHeader & x) {
             // Not a valid header. Drop the first byte of _data and try again.
             _data.remove(0, 1);
             _nskipped++;
