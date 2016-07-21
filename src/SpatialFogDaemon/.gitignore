@@ -1,3 +1,4 @@
+*.a
 *.o
 moc_*
 SpatialFogDaemon
