@@ -17,12 +17,14 @@ env.AppendUnique(CXXFLAGS = ['-std=c++11'])
 
 sources = Split('''
 FDReader.cpp
+HcrSpatialFog.cpp
 QAnppPacketFactory.cpp
 SpatialFogDaemon.cpp
 ''')
 
 headers = Split('''
 FDReader.h
+HcrSpatialFog.h
 QAnppPacketFactory.h
 ''')
 
