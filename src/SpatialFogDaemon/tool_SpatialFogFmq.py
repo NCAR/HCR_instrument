@@ -26,7 +26,6 @@ env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "SpatialFogFmq library" })
 doxref = env.Apidocs(sources + headers)
 
 def SpatialFogFmq(env):
-    print("SpatialFogFmq tool adding " + toolDir + " to CPPPATH")
     env.AppendUnique(CPPPATH = toolDir)
     env.Append(LIBS=[lib])
     env.AppendDoxref(doxref[0])
