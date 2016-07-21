@@ -6,8 +6,9 @@
 tools = Split("""
 doxygen
 QFunctionWrapper
-spatialfogcore
 qt4
+spatialfogcore
+SpatialFogFmq
 """)
 
 env = Environment(tools = ['default'] + tools)
