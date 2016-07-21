@@ -35,7 +35,7 @@
 #include <QtNetwork>
 #include <xmlrpc-c/base.hpp>
 
-#include "CmigitsFmq.h"
+#include <SpatialFogFmq.h>
 #include "RotServoDrive.h"
 #include "TiltServoDrive.h"
 
@@ -275,8 +275,8 @@ private:
     /// Beam tilt angle, deg
     double _scanBeamTilt;
     
-    /// FMQ which delivers C-MIGITS data
-    CmigitsFmq _cmigitsFmq;
+    /// FMQ which delivers Spatial FOG data
+    SpatialFogFmq _spatialFogFmq;
 
     /// Is attitude correction enabled?
     bool _attitudeCorrectionEnabled;

@@ -7,6 +7,7 @@ tools = Split('''
     doxygen
     logx
     qt4
+    SpatialFogFmq
     xmlrpc_client++
 ''')
 motionControlDir = Dir('.').abspath

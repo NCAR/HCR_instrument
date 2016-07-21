@@ -4,8 +4,6 @@
 #
 
 tools = Split("""
-    cmigits
-    lrose
     motioncontrol
     QFunctionWrapper
     QXmlRpcServerAbyss
