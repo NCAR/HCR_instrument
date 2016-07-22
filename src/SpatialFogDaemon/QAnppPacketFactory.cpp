@@ -64,7 +64,7 @@ QAnppPacketFactory::_parseData() {
             _packetCountMap[pkt->packetId()]++;
 
             // Emit the newPacket() signal
-            emit(SIGNAL(newPacket(*pkt)));
+            emit newPacket(*pkt);
 
             // Drop the bytes from the packet we just decoded from the front
             // of _data
