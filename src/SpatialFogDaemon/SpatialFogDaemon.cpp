@@ -58,10 +58,6 @@ main(int argc, char * argv[]) {
     // queue (FMQ).
     HcrSpatialFog * spatialFog = new HcrSpatialFog(devName);
 
-    // Set up a QTimer to shut us down after a fixed time
-    QFunctionWrapper stopWrapper(stopApp);
-    QTimer::singleShot(20000, &stopWrapper, SLOT(callFunction()));
-
     // Start the app
     App->exec();
 
