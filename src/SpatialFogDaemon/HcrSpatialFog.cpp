@@ -43,8 +43,8 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
             &_pktFactory, SLOT(appendData(QByteArray)));
 
     // Pass packets from the factory to our _packetHandler() slot
-    connect(&_pktFactory, SIGNAL(newPacket(AnppPacket)),
-            this, SLOT(_packetHandler(AnppPacket)));
+    connect(&_pktFactory, SIGNAL(newPacket(AnppPacket *)),
+            this, SLOT(_packetHandler(AnppPacket *)));
 
     _setOperatingState(Operating);
 }
@@ -165,32 +165,35 @@ HcrSpatialFog::_openTtyFd() {
 }
 
 void
-HcrSpatialFog::_packetHandler(AnppPacket pkt) {
+HcrSpatialFog::_packetHandler(AnppPacket * pkt) {
     // Get packet time in milliseconds since 1970-01-01 00:00:00 UTC
-    uint64_t pktTime = uint64_t(pkt.timeOfValidity() * 1000);
+    uint64_t pktTime = uint64_t(pkt->timeOfValidity() * 1000);
 
     // If it's an EulerPacket, save the new attitude information to the FMQ
-    try {
-        EulerPacket & ePkt = dynamic_cast<EulerPacket&>(pkt);
-        _fmq.storeLatestAttitudeData(pktTime, ePkt.pitch(), ePkt.roll(),
-                        ePkt.heading());
-    } catch (std::bad_cast & ex) {}
+    EulerPacket * ePkt = dynamic_cast<EulerPacket*>(pkt);
+    if (ePkt) {
+        DLOG << "Got Euler";
+        _fmq.storeLatestAttitudeData(pktTime, ePkt->pitch(), ePkt->roll(),
+                ePkt->heading());
+    }
 
     // If it's a NEDVelocityPacket, save the north/east/up speeds to the FMQ
-    try {
-        NEDVelocityPacket & velPkt = dynamic_cast<NEDVelocityPacket&>(pkt);
-        _fmq.storeLatestVelocityData(pktTime, velPkt.velocityNorth(),
-                velPkt.velocityEast(), velPkt.velocityUp());
-    } catch (std::bad_cast & ex) {}
+    NEDVelocityPacket * velPkt = dynamic_cast<NEDVelocityPacket*>(pkt);
+    if (velPkt) {
+        DLOG << "Got NEDVelocity";
+        _fmq.storeLatestVelocityData(pktTime, velPkt->velocityNorth(),
+                velPkt->velocityEast(), velPkt->velocityUp());
+    }
 
     // If it's a SystemStatePacket, save status and position to the FMQ
-    try {
-        SystemStatePacket & ssPkt = dynamic_cast<SystemStatePacket&>(pkt);
-        _fmq.storeLatestStatusData(pktTime, ssPkt.systemStatus(),
-                ssPkt.filterStatus());
-        _fmq.storeLatestPositionData(pktTime, ssPkt.latitude(),
-                ssPkt.longitude(), ssPkt.altitude());
-    } catch (std::bad_cast & ex) {}
+    SystemStatePacket * ssPkt = dynamic_cast<SystemStatePacket*>(pkt);
+    if (ssPkt) {
+        DLOG << "Got SystemState";
+        _fmq.storeLatestStatusData(pktTime, ssPkt->systemStatus(),
+                ssPkt->filterStatus());
+        _fmq.storeLatestPositionData(pktTime, ssPkt->latitude(),
+                ssPkt->longitude(), ssPkt->altitude());
+    }
 }
 
 void

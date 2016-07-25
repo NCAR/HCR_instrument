@@ -80,7 +80,7 @@ private:
 private slots:
     /// @brief Slot which receives incoming Advanced Navigation Packet Protocol
     /// packets, in the form of ANPPPacket objects.
-    void _packetHandler(AnppPacket pkt);
+    void _packetHandler(AnppPacket * pkt);
 };
 
 #endif /* _HCRSPATIALFOG_H_ */

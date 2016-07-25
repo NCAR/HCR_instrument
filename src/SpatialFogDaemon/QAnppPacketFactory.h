@@ -48,7 +48,7 @@ public slots:
 signals:
     /// @brief Signal emitted when a new ANPP packet has arrived from the
     /// Spatial FOG.
-    void newPacket(AnppPacket packet);
+    void newPacket(AnppPacket * packet);
 
 private:
     /// @brief Parse the _data array to find complete ANPP packets, and
