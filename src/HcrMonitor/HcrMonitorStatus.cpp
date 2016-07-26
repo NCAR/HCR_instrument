@@ -84,7 +84,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     // Get TransmitControl status
     _hcrPmc730Responsive = transmitControl._hcrPmc730Responsive;
     _motionControlResponsive = transmitControl._motionControlResponsive;
-    _cmigitsResponsive = transmitControl._cmigitsResponsive;
+    _cmigitsResponsive = transmitControl._insResponsive;
     _terrainHtServerResponsive = transmitControl._terrainHtServerResponsive;
     _mslAltitude = transmitControl._mslAltitude;
     _aglAltitude = transmitControl._aglAltitude;

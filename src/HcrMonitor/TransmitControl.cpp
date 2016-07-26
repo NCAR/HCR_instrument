@@ -59,8 +59,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _motionControlResponsive(false),
     _motionControlStatus(),
     _maxPowerResponsive(false),
-    _cmigitsWatcher(_CMIGITS_POLL_INTERVAL_MS, _CMIGITS_DATA_TIMEOUT_MS),
-    _cmigitsResponsive(false),
+    _insWatcher(_INS_POLL_INTERVAL_MS, _INS_DATA_TIMEOUT_MS),
+    _insResponsive(false),
     _terrainHtServerResponsive(false),
     _aglAltitude(0.0),
     _overWater(false),
@@ -107,13 +107,13 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
     // Call _updateAglAltitude when we get new INS data
-    connect(&_cmigitsWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
-            this, SLOT(_updateAglAltitude(CmigitsFmq::MsgStruct)));
+    connect(&_insWatcher, SIGNAL(newData(SpatialFogFmq::MsgStruct)),
+            this, SLOT(_updateAglAltitude(SpatialFogFmq::MsgStruct)));
     
-    // Mark cmigitsDaemon as unresponsive when the watch thread emits its
+    // Mark INS reader daemon as unresponsive when the watch thread emits its
     // dataTimeout() signal.
-    connect(&_cmigitsWatcher, SIGNAL(dataTimeout()),
-            this, SLOT(_markCmigitsUnresponsive()));
+    connect(&_insWatcher, SIGNAL(dataTimeout()),
+            this, SLOT(_markInsUnresponsive()));
     
     // Finally, do our checks
     _updateControlState();
@@ -227,8 +227,8 @@ TransmitControl::_updateMaxPowerResponsive(bool responding, QString msg) {
 }
 
 void
-TransmitControl::_markCmigitsUnresponsive() {
-    _cmigitsResponsive = false;
+TransmitControl::_markInsUnresponsive() {
+    _insResponsive = false;
     _updateControlState();
 }
 
@@ -243,8 +243,8 @@ TransmitControl::_runTransmitTests() {
         return(NOXMIT_NO_HCRPMC730_DATA);
     }
     
-    if (! _cmigitsResponsive) {
-        return(NOXMIT_NO_CMIGITS_DATA);
+    if (! _insResponsive) {
+        return(NOXMIT_NO_INS_DATA);
     }
     
     if (! _terrainHtServerResponsive) {
@@ -383,8 +383,8 @@ TransmitControl::_xmitTestStatusText() const {
         return(oss.str());
     case NOXMIT_NO_HCRPMC730_DATA:
         return("Transmit not allowed: No data from HcrPmc730Daemon");
-    case NOXMIT_NO_CMIGITS_DATA:
-        return("Transmit not allowed: No data from cmigitsDaemon");
+    case NOXMIT_NO_INS_DATA:
+        return("Transmit not allowed: No data from the INS reader daemon");
     case NOXMIT_NO_TERRAINHTSERVER_DATA:
         return("Transmit not allowed: TerrainHtServer not responding or returned an error");
     case NOXMIT_NO_MOTIONCONTROL_DATA:
@@ -470,19 +470,19 @@ TransmitControl::_updateControlState() {
 }
 
 void
-TransmitControl::_updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData) {
-    if (! _cmigitsResponsive) {
-        ILOG << "Got a response from cmigitsDaemon";
-        _cmigitsResponsive = true;
+TransmitControl::_updateAglAltitude(SpatialFogFmq::MsgStruct insData) {
+    if (! _insResponsive) {
+        ILOG << "Got a response from INS reader daemon";
+        _insResponsive = true;
     }
     
     // Get instrument latitude, longitude, and MSL altitude from the 
-    // C-MIGITS data
-    double latitude = cmigitsData.latitude;
-    double longitude = cmigitsData.longitude;
-    _mslAltitude = cmigitsData.altitude;
+    // INS data
+    double latitude = insData.latitude;
+    double longitude = insData.longitude;
+    _mslAltitude = insData.altitude;
     
-    DLOG << cmigitsData.time3501 << ", lat: " << latitude << 
+    DLOG << insData.positionTime << ", lat: " << latitude <<
             ", lon: " << longitude << ", altMSL: " << _mslAltitude;
 
     // Get terrain information from TerrainHtServer using current location and
