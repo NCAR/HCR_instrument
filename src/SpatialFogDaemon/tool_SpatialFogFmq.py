@@ -13,10 +13,12 @@ env.EnableQt4Modules(['QtCore'])
 
 sources = Split('''
     SpatialFogFmq.cpp
+    SpatialFogFmqWatcher.cpp
 ''')
 
 headers = Split('''
     SpatialFogFmq.h
+    SpatialFogFmqWatcher.h
 ''')
 
 lib = env.Library('SpatialFogFmq', sources)
