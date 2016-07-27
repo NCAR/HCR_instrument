@@ -323,44 +323,44 @@ private:
     void _appendToModeMap(HcrPmc730::HmcOperationMode mode);
 
     /// @brief How frequently will we poll CmigitsSharedMemory for new data?
-    static const int _CMIGITS_POLL_INTERVAL_MS = 1000;
+    static constexpr int _CMIGITS_POLL_INTERVAL_MS = 1000;
     
     /// @brief After what period do we consider C-MIGITS data too old?
-    static const int _CMIGITS_DATA_TIMEOUT_MS = 1100;
+    static constexpr int _CMIGITS_DATA_TIMEOUT_MS = 1100;
     
     /// @brief Tolerance for near-zenith pointing, deg
-    static const float _NEAR_ZENITH_TOLERANCE_DEG = 45.0;
+    static constexpr float _NEAR_ZENITH_TOLERANCE_DEG = 45.0;
     
     /// @brief Tolerance for near-nadir pointing, deg
-    static const float _NEAR_NADIR_TOLERANCE_DEG = 45.0;
+    static constexpr float _NEAR_NADIR_TOLERANCE_DEG = 45.0;
     
     /// @brief Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
-    static const float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+    static constexpr float _PV_MINIMUM_PRESSURE_PSI = 11.0;
     
     /// @brief Received power threshold at which we shift to attenuated mode
     /// or disallow transmit, dBm
-    static const float _RECEIVED_POWER_THRESHOLD = -30.0;
+    static constexpr float _RECEIVED_POWER_THRESHOLD = -30.0;
     
     /// @brief Attenuation applied when in attenuated receive mode, dB
-    static const float _SWITCH_ATTENUATION = 23.5;
+    static constexpr float _SWITCH_ATTENUATION = 23.5;
     
     /// @brief Minimum altitude AGL for non-zenith transmit, m
-    static const int _XMIT_NONZENITH_AGL_LIMIT = 1000;
+    static constexpr int _XMIT_NONZENITH_AGL_LIMIT = 1000;
     
     /// @brief Minimum altitude AGL for near-nadir transmit over land, m
-    static const int _XMIT_NADIR_AGL_LIMIT_LAND = 1000;
+    static constexpr int _XMIT_NADIR_AGL_LIMIT_LAND = 1000;
     
     /// @brief Minimum altitude AGL for near-nadir transmit over land, m
-    static const int _XMIT_NADIR_AGL_LIMIT_WATER = 1500;
+    static constexpr int _XMIT_NADIR_AGL_LIMIT_WATER = 1500;
     
     /// @brief AGL altitude below which we should attenuate receive for
     /// near-nadir pointing over land, m
-    static const int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1500;
+    static constexpr int _ATTENUATED_NADIR_AGL_LIMIT_LAND = 1500;
     
     /// @brief AGL altitude below which we should attenuate receive for
     /// near-nadir pointing over water, m
-    static const int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800;
+    static constexpr int _ATTENUATED_NADIR_AGL_LIMIT_WATER = 4800;
     
     /// @brief Perform monitoring tests based on latest status and react 
     /// appropriately.

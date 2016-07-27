@@ -80,14 +80,14 @@ private:
     
     /// @brief The APS valve is opened when pressure vessel pressure drops
     /// below this value.
-    static const double VALVE_OPEN_PRESSURE_PSI = 15.0;
+    static constexpr double VALVE_OPEN_PRESSURE_PSI = 15.0;
     
     /// @brief The APS valve is closed when pressure vessel pressure exceeds
     /// this value.
-    static const double VALVE_CLOSE_PRESSURE_PSI = 16.0;
+    static constexpr double VALVE_CLOSE_PRESSURE_PSI = 16.0;
 
     /// @brief Close the APS valve if high side pressure drops below this value.
-    static const double HIGH_SIDE_MINIMUM_PSI = 100.0;
+    static constexpr double HIGH_SIDE_MINIMUM_PSI = 100.0;
     
     /// @brief Command HcrPmc730Daemon to open the APS valve
     void _openApsValve();

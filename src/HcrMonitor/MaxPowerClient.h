@@ -148,7 +148,7 @@ private:
 
     /// @brief maximum number of power element dwell times which can elapse
     /// before the server is considered to be unresponsive
-    static const float TIMEOUT_DWELL_MULTIPLE = 1.5;
+    static constexpr float TIMEOUT_DWELL_MULTIPLE = 1.5;
 
     /// @brief timer started on receipt of a max power element which expires
     /// after TIMEOUT_DWELL_MUTIPLE * the max power element's dwell time
