@@ -326,7 +326,7 @@ private:
     static constexpr int _INS_POLL_INTERVAL_MS = 1000;
     
     /// @brief After what period do we consider INS data too old?
-    static const int _INS_DATA_TIMEOUT_MS = 1100;
+    static constexpr int _INS_DATA_TIMEOUT_MS = 1100;
     
     /// @brief Tolerance for near-zenith pointing, deg
     static constexpr float _NEAR_ZENITH_TOLERANCE_DEG = 45.0;
