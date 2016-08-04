@@ -21,16 +21,16 @@
 // ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-#include "IwrfExportCmigitsThread.h"
+#include <IwrfExportInsThread.h>
 #include "IwrfExport.h"
 #include <QTimer>
 #include <logx/Logging.h>
 
 LOGGING("IwrfExportCmigitsThread")
 
-const std::string IwrfExportCmigitsThread::FMQ_PATH = "/tmp/cmigits_fmq/shmem_22000";
+const std::string IwrfExportInsThread::FMQ_PATH = "/tmp/cmigits_fmq/shmem_22000";
 
-IwrfExportCmigitsThread::IwrfExportCmigitsThread(IwrfExport & iwrfExport) :
+IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport) :
     _iwrfExport(iwrfExport),
     _cmigitsFmq() {
     // Since we don't have a proper Qt event loop, allow the terminate() 
@@ -38,7 +38,7 @@ IwrfExportCmigitsThread::IwrfExportCmigitsThread(IwrfExport & iwrfExport) :
     setTerminationEnabled(true);
 }
 
-IwrfExportCmigitsThread::~IwrfExportCmigitsThread() {
+IwrfExportInsThread::~IwrfExportInsThread() {
     DLOG << "destructor";
     if (isRunning()) {
         DLOG << "Stopping thread";
@@ -50,7 +50,7 @@ IwrfExportCmigitsThread::~IwrfExportCmigitsThread() {
 //
 // Thread run method
 void
-IwrfExportCmigitsThread::run()
+IwrfExportInsThread::run()
 {
     // Loop until the FMQ is initialized, sleeping briefly after each attempt
     // until initialization is successful. We issue a warning every 

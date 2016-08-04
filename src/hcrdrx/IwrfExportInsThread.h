@@ -21,8 +21,8 @@
 // ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-#ifndef IWRFEXPORTCMIGITS_THREAD_H_
-#define IWRFEXPORTCMIGITS_THREAD_H_
+#ifndef IWRFEXPORTINS_THREAD_H_
+#define IWRFEXPORTINS_THREAD_H_
 
 #include <CmigitsFmq.h>
 #include <QThread>
@@ -30,10 +30,10 @@
 
 class IwrfExport;
 
-/// IwrfExportCmigitsThread polls CmigitsSharedMemory and emits newData() when new
+/// IwrfExportInsThread polls CmigitsSharedMemory and emits newData() when new
 /// data is seen in the shared memory.
 
-class IwrfExportCmigitsThread : public QThread {
+class IwrfExportInsThread : public QThread {
 
     Q_OBJECT
 
@@ -41,10 +41,10 @@ public:
     static const std::string FMQ_PATH;
     
     /// @brief Constructor
-    IwrfExportCmigitsThread(IwrfExport & iwrfExport);
+    IwrfExportInsThread(IwrfExport & iwrfExport);
     
     /// Destructor
-    virtual ~IwrfExportCmigitsThread();
+    virtual ~IwrfExportInsThread();
 
 protected:
     void run();
@@ -54,4 +54,4 @@ private:
     DsFmq _cmigitsFmq;
 };
 
-#endif /* IWRFEXPORTCMIGITS_THREAD_H_ */
+#endif /* IWRFEXPORTINS_THREAD_H_ */

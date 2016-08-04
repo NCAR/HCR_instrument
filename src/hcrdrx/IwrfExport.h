@@ -28,7 +28,6 @@
 #include "HcrDrxConfig.h"
 #include "StatusGrabber.h"
 #include "PulseData.h"
-#include "IwrfExportCmigitsThread.h"
 #include <HcrPmc730.h>
 #include <deque>
 #include <radar/iwrf_data.h>
@@ -37,8 +36,9 @@
 #include <QReadWriteLock>
 #include <QThread>
 #include <QTimer>
+#include "IwrfExportInsThread.h"
 
-class IwrfExportCmigitsThread;
+class IwrfExportInsThread;
 
 /// IwrfExport merges data from the H and V channels, 
 /// converts to IWRF time series format and writes the IWRF data to a client
@@ -206,7 +206,7 @@ private:
   double _rotationCorr;
 
   /// Thread which reads data from the C-MIGITS FMQ and puts it in our deque
-  IwrfExportCmigitsThread _cmigitsWatchThread;
+  IwrfExportInsThread _cmigitsWatchThread;
   
   /// deque of C-MIGITS data for generating iwrf_platform_georef packets
   std::deque<CmigitsFmq::MsgStruct> _cmigitsDeque;
