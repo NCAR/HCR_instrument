@@ -88,7 +88,7 @@ SpatialFogFmqWatcher::_pollFmq() {
     // Try to open the FMQ if it is not yet opened
     if (! _spatialFogFmq.isOpen()) {
         if (_spatialFogFmq.initReadOnly(FMQ_PATH.c_str(), "SpatialFogFmqThread", 
-                                     false, Fmq::END, 0)) {
+                                        false, Fmq::END, 0)) {
             DLOG << "No FMQ";
             // Sleep briefly if we can't open the FMQ, since our zero-interval
             // timer will otherwise put us in a tight CPU-hogging loop until 
