@@ -42,7 +42,8 @@ signals:
     /// @brief Signal emitted when new Spatial FOG data are available, and the
     /// data time is at least the specified minimum data interval later than
     /// the last newData() signal.
-    void newData(SpatialFogFmq::MsgStruct cmigitsData);
+    /// @param insData SpatialFogFmq::MsgStruct containing the latest data
+    void newData(SpatialFogFmq::MsgStruct insData);
     
 private slots:
     void _startWatching();
@@ -81,5 +82,5 @@ private:
     uint32_t _fmqMsgCount;
 };
 
-#endif /* SPATIALFOGFMQTHREADWORKER_H_ */
+#endif /* SPATIALFOGFMQWATCHER_H_ */
 
