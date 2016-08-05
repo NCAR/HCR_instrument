@@ -26,13 +26,11 @@
 #include <QTimer>
 #include <logx/Logging.h>
 
-LOGGING("IwrfExportCmigitsThread")
-
-const std::string IwrfExportInsThread::FMQ_PATH = "/tmp/cmigits_fmq/shmem_22000";
+LOGGING("IwrfExportInsThread")
 
 IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport) :
     _iwrfExport(iwrfExport),
-    _cmigitsFmq() {
+    _insFmq() {
     // Since we don't have a proper Qt event loop, allow the terminate() 
     // method to stop us.
     setTerminationEnabled(true);
@@ -57,24 +55,25 @@ IwrfExportInsThread::run()
     // FMQ_WARNING_INTERVAL_SECS seconds if we cannot open the FMQ (generally
     // because it has not yet been created by the writer).
     const int FMQ_WARNING_INTERVAL_SECS = 10;
+    const std::string FMQ_URL = SpatialFogFmq::FMQ_URL;
     time_t fmqWarningTime = 0;
     
     while (true) {
-        _cmigitsFmq.initReadOnly(FMQ_PATH.c_str(), "hcrdrx", false,
+        _insFmq.initReadOnly(FMQ_URL.c_str(), "hcrdrx", false,
                                  Fmq::END, 10);
 
         // If the FMQ is open, we're done in this loop
-        if (_cmigitsFmq.isOpen()) {
-            ILOG << "C-MIGITS FMQ " << FMQ_PATH << " is now open for reading";
+        if (_insFmq.isOpen()) {
+            ILOG << "INS FMQ " << FMQ_URL << " is now open for reading";
             // We're done. Break out of the loop.
             break;
         }
         
         // Warn every FMQ_WARNING_INTERVAL_SECS seconds if we cannot open the
-        // C-MIGITS FMQ.
+        // INS FMQ.
         time_t now = time(0);
         if ((now - fmqWarningTime) > FMQ_WARNING_INTERVAL_SECS) {
-            WLOG << "C-MIGITS FMQ " << FMQ_PATH <<
+            WLOG << "INS FMQ " << FMQ_URL <<
                     " cannot yet be opened for reading";
             fmqWarningTime = now;
         }
@@ -86,20 +85,20 @@ IwrfExportInsThread::run()
     while (true) {
 //        QCoreApplication::processEvents();
 
-        if (_cmigitsFmq.readMsgBlocking()) {
-          ELOG << "ERROR - cannot read message from FMQ: " << _cmigitsFmq.getErrStr();
+        if (_insFmq.readMsgBlocking()) {
+          ELOG << "ERROR - cannot read message from FMQ: " << _insFmq.getErrStr();
           return;
         }
         
-        int msgLen = _cmigitsFmq.getMsgLen();
-        if (msgLen != sizeof(CmigitsFmq::MsgStruct)) {
+        int msgLen = _insFmq.getMsgLen();
+        if (msgLen != sizeof(SpatialFogFmq::MsgStruct)) {
             ELOG << "Got " << msgLen << "-byte message from FMQ, expected " << 
-                    sizeof(CmigitsFmq::MsgStruct);
+                    sizeof(SpatialFogFmq::MsgStruct);
             continue;
         }
-        const void * msgPtr = _cmigitsFmq.getMsg();
-        const CmigitsFmq::MsgStruct * cmigitsDataStruct = 
-                reinterpret_cast<const CmigitsFmq::MsgStruct*>(msgPtr);
-        _iwrfExport.queueCmigitsData(*cmigitsDataStruct);
+        const void * msgPtr = _insFmq.getMsg();
+        const SpatialFogFmq::MsgStruct * insDataStruct = 
+                reinterpret_cast<const SpatialFogFmq::MsgStruct*>(msgPtr);
+        _iwrfExport.queueInsData(*insDataStruct);
     }
 }
