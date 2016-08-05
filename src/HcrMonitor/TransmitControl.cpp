@@ -106,7 +106,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     connect(&maxPowerThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
-    // Call _updateCmigitsData when we get new C-MIGITS data
+    // Call _updateAglAltitude when we get new INS data
     connect(&_cmigitsWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
             this, SLOT(_updateAglAltitude(CmigitsFmq::MsgStruct)));
     
