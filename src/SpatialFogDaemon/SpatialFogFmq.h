@@ -126,7 +126,7 @@ public:
     /// @param[out] latitude latitude, deg
     /// @param[out] longitude longitude, deg
     /// @param[out] altitude altitude, m above MSL
-    void getLatestPositionData(uint64_t & time3501, double & latitude,
+    void getLatestPositionData(uint64_t & dataTime, double & latitude,
             double & longitude, double & altitude);
 
     /// @brief Get the latest attitude (Euler angles) data available.
