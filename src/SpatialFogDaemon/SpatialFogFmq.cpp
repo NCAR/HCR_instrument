@@ -188,7 +188,7 @@ SpatialFogFmq::storeLatestStatusData(uint64_t statusTime, uint16_t statusBits,
     _currentMsg.filterBits = filterBits;
     _writeCurrentMsg();
 
-    // Time out the new data after a second
+    // Restart the status timeout timer
     _statusTimeoutTimer.start();
 }
 
@@ -210,7 +210,7 @@ SpatialFogFmq::storeLatestPositionData(uint64_t dataTime, double latitude,
     _currentMsg.altitude = altitude;
     _writeCurrentMsg();
 
-    // Time out the new data after a second
+    // Restart the position timeout timer
     _positionTimeoutTimer.start();
 }
 
@@ -234,7 +234,7 @@ SpatialFogFmq::storeLatestAttitudeData(uint64_t dataTime, double pitch,
     _currentMsg.heading = heading;
     _writeCurrentMsg();
 
-    // Time out the new data after a second
+    // Restart the attitude timeout timer
     _attitudeTimeoutTimer.start();
 }
 
@@ -258,7 +258,7 @@ SpatialFogFmq::storeLatestVelocityData(uint64_t dataTime, double velNorth,
     _currentMsg.velUp = velUp;
     _writeCurrentMsg();
 
-    // Time out the new data after a second
+    // Restart the velocity timeout timer
     _velocityTimeoutTimer.start();
 }
 
