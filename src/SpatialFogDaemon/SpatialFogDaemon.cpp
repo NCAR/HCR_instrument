@@ -5,6 +5,8 @@
  *      Author: Chris Burghart <burghart@ucar.edu>
  */
 
+#include <csignal>
+#include <cstring>
 #include <string>
 #include <QFunctionWrapper.h>
 #include <logx/Logging.h>
@@ -26,9 +28,9 @@ usage() {
     logx::LogUsage(std::cerr);
 }
 
-void stopApp() {
+void stopApp(int sig) {
     if (App) {
-        ILOG << "Closing QApplication";
+        ILOG << "Stopping app; received '" << strsignal(sig) << "' signal";
         App->quit();
     }
 }
@@ -39,7 +41,10 @@ main(int argc, char * argv[]) {
     logx::ParseLogArgs(argc, argv);
     ILOG << "======================";
     ILOG << "SpatialFogDaemon start";
-    ILOG << "======================";
+
+    // Set up to exit on INT or TERM signals sent to the process
+    signal(SIGINT, stopApp);
+    signal(SIGTERM, stopApp);
 
     // Create a non-GUI QApplication instance
     App = new QApplication(argc, argv, false);
@@ -63,4 +68,7 @@ main(int argc, char * argv[]) {
 
     delete(spatialFog);
     delete(App);
+    
+    ILOG << "SpatialFogDaemon exit";
+    ILOG << "======================";
 }
