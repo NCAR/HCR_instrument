@@ -346,19 +346,19 @@ SpatialFogFmq::_writeCurrentMsg() {
     if (! _writeAccess) {
         throw(std::runtime_error("Attempt to write shared memory with ReadOnly access"));
     }
-    // Log anything with a lag > 100 ms
+    // Log anything with a lag < 0 ms or lag > 100 ms
     struct timeval tvNow;
     gettimeofday(&tvNow, 0);
     uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
-    uint32_t lagMs = nowMs - _currentMsg.attitudeTime;
-    if (_currentMsg.attitudeTime != 0 && lagMs > 100) {
+    int32_t lagMs = nowMs - _currentMsg.attitudeTime;
+    if (_currentMsg.attitudeTime != 0 && (lagMs < 0 || lagMs > 100)) {
         time_t secs = _currentMsg.attitudeTime / 1000;
         uint32_t msecs = _currentMsg.attitudeTime % 1000;
         QDateTime qSpatialTime = QDateTime::fromTime_t(secs).addMSecs(msecs);
         QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
-        WLOG << "Spatial " <<
+        WLOG << "Datum for " <<
                 qSpatialTime.toString("hh:mm:ss.zzz").toStdString() <<
-                " arrived " << qNow.toString("hh:mm:ss.zzz").toStdString() << 
+                " arrived at " << qNow.toString("hh:mm:ss.zzz").toStdString() << 
                 " (lag " << lagMs << " ms)";
     }
     
