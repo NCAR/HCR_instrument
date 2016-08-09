@@ -74,12 +74,6 @@ StatusGrabber::transmitterStatus() const {
     return(_xmitStatus);
 }
 
-CmigitsStatus
-StatusGrabber::cmigitsStatus() const {
-    QMutexLocker locker(&_mutex);
-    return(_cmigitsStatus);
-}
-
 DrxStatus
 StatusGrabber::drxStatus() const {
     QMutexLocker locker(&_mutex);
@@ -118,16 +112,8 @@ StatusGrabber::run() {
 void
 StatusGrabber::_getStatus() {
     _getPmc730Status();
-    _getCmigitsStatus();
     _getDrxStatus();
     _getXmitStatus();
-}
-
-void
-StatusGrabber::_getCmigitsStatus() {
-    QMutexLocker locker(&_mutex);
-    // Get a CmigitsStatus built from current values in CmigitsSharedMemory
-    _cmigitsStatus = CmigitsStatus::StatusFromFmq();
 }
 
 void

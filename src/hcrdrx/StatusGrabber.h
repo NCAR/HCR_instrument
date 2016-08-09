@@ -40,7 +40,6 @@
 #include <QMutex>
 
 #include <p7142sd3c.h>
-#include <CmigitsStatus.h>
 #include <HcrPmc730Client.h>
 #include <XmitdRpcClient.h>
 
@@ -49,14 +48,14 @@
 class QUdpSocket;
 
 /// @brief QThread object which regularly polls for status from HcrPmc730Daemon,
-/// hcr_xmitd, CmigitsDaemon, and the Pentek card. The API provides access to 
-/// the latest status obtained from each of these.
+/// hcr_xmitd, and the Pentek card. The API provides access to the latest status
+/// obtained from each of these.
 class StatusGrabber : public QThread {
     Q_OBJECT
 public:
     /**
-     * @brief Construct a StatusGrabber which will read data on a regular basis from
-     * the PMC-730 card, and get transmitter status from hcr_xmitd.
+     * @brief Construct a StatusGrabber which will read data on a regular basis
+     * from the PMC-730 card, and get transmitter status from hcr_xmitd.
      * @param pentek pointer to the p7142sd3c Pentek card to be monitored
      * @param pmc730dHost the name of the host on which HcrPmc730Dameon is
      *      running
@@ -77,12 +76,6 @@ public:
      * @return the transmitter status.
      */
     XmitStatus transmitterStatus() const;
-
-    /**
-     * @brief Return the C-MIGITS status.
-     * @return the C-MIGITS status.
-     */
-    CmigitsStatus cmigitsStatus() const;
 
     /**
      * @brief Return the DRX status.
@@ -106,11 +99,6 @@ private slots:
 private:
 
     /**
-     * @brief Get data from the C-MIGITS
-     */
-    void _getCmigitsStatus();
-
-    /**
      * @brief Get status from the Pentek
      */
     void _getDrxStatus();
@@ -127,9 +115,6 @@ private:
     
     /// The Pentek P7142 we're monitoring
     const Pentek::p7142sd3c * _pentek;
-
-    /// Last CmigitsStatus we obtained
-    CmigitsStatus _cmigitsStatus;
 
     /// Last DrxStatus we obtained
     DrxStatus _drxStatus;
