@@ -6,10 +6,15 @@ sys.path.insert(0, os.path.join(os.getcwd(),'config'))
 import eol_scons
 import SCons
 
+topDir = Dir('.').abspath
+
 options = eol_scons.GlobalVariables()
 
 def HcrSetup(env):
     env.AppendUnique(CCFLAGS = ['-g'])
+    # Headers which apply system-wide to HCR can be kept here in the
+    # top-level directory
+    env.AppendUnique(CPPPATH = topDir)
 ## The next two lines will build with profiling
 #    env.AppendUnique(CCFLAGS = ['-pg'])
 #    env.AppendUnique(LINKFLAGS = ['-pg'])
