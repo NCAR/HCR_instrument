@@ -47,7 +47,7 @@ HcrPmc730Status::TemperatureList HcrPmc730Status::_Ps28VTemps;
 HcrPmc730Status::TemperatureList HcrPmc730Status::_RdsInDuctTemps;
 HcrPmc730Status::TemperatureList HcrPmc730Status::_RotationMotorTemps;
 HcrPmc730Status::TemperatureList HcrPmc730Status::_TiltMotorTemps;
-HcrPmc730Status::TemperatureList HcrPmc730Status::_CmigitsTemps;
+HcrPmc730Status::TemperatureList HcrPmc730Status::_InsTemps;
 HcrPmc730Status::TemperatureList HcrPmc730Status::_TailconeTemps;
 
 
@@ -63,7 +63,7 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     _rdsInDuctTemp(0.0),
     _rotationMotorTemp(0.0),
     _tiltMotorTemp(0.0),
-    _cmigitsTemp(0.0),
+    _insTemp(0.0),
     _tailconeTemp(0.0),
     _detectedRfPower(0.0),
     _pvAftPressure(0.0),
@@ -106,7 +106,7 @@ HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) :
     _rdsInDuctTemp(0.0),
     _rotationMotorTemp(0.0),
     _tiltMotorTemp(0.0),
-    _cmigitsTemp(0.0),
+    _insTemp(0.0),
     _tailconeTemp(0.0),
     _detectedRfPower(0.0),
     _pvAftPressure(0.0),
@@ -173,7 +173,7 @@ HcrPmc730Status::_getMultiIoValues() {
     _NoiseSourceTemps.addTemperature(HcrPmc730::noiseSourceTemperature());
     _Ps28VTemps.addTemperature(HcrPmc730::ps28vTemperature());
     _RdsInDuctTemps.addTemperature(HcrPmc730::rdsInDuctTemperature());
-    _CmigitsTemps.addTemperature(HcrPmc730::cmigitsTemperature());
+    _InsTemps.addTemperature(HcrPmc730::insTemperature());
     _TiltMotorTemps.addTemperature(HcrPmc730::tiltMotorTemperature());
     _RotationMotorTemps.addTemperature(HcrPmc730::rotMotorTemperature());
     _TailconeTemps.addTemperature(HcrPmc730::tailconeTemperature());
@@ -188,7 +188,7 @@ HcrPmc730Status::_getMultiIoValues() {
     _noiseSourceTemp = _NoiseSourceTemps.mean();
     _ps28VTemp = _Ps28VTemps.mean();
     _rdsInDuctTemp = _RdsInDuctTemps.mean();
-    _cmigitsTemp = _CmigitsTemps.mean();
+    _insTemp = _InsTemps.mean();
     _tiltMotorTemp = _TiltMotorTemps.mean();
     _rotationMotorTemp = _RotationMotorTemps.mean();
     _tailconeTemp = _TailconeTemps.mean();

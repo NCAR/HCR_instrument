@@ -87,8 +87,8 @@ Pmc730Details::updateStatus(bool daemonResponding,
         setText(QString::number(status.rotationMotorTemp(), 'f', 1));
     _ui.tiltMotorTempValue->
         setText(QString::number(status.tiltMotorTemp(), 'f', 1));
-    _ui.cmigitsTempValue->
-        setText(QString::number(status.cmigitsTemp(), 'f', 1));
+    _ui.insTempValue->
+        setText(QString::number(status.insTemp(), 'f', 1));
     _ui.tailconeTempValue->
         setText(QString::number(status.tailconeTemp(), 'f', 1));
     

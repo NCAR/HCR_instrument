@@ -173,9 +173,9 @@ public:
     /// @return the temperature of the reflector tilt motor, deg C
     double tiltMotorTemp() const { return(_tiltMotorTemp); }
 
-    /// @brief Return the temperature of the C-MIGITS inertial navigation system, deg C
-    /// @return the temperature of the C-MIGITS inertial navigation system, deg C
-    double cmigitsTemp() const { return(_cmigitsTemp); }
+    /// @brief Return the temperature of the inertial navigation system, deg C
+    /// @return the temperature of the inertial navigation system, deg C
+    double insTemp() const { return(_insTemp); }
 
     /// @brief Return the ambient temperature in the tailcone, deg C
     /// @return the ambient temperature in the tailcone, deg C
@@ -309,9 +309,6 @@ private:
     /// multi-IO card.
     void _getMultiIoValues();
 
-    /// @brief Get latest available data from the C-MIGITS
-    void _getCmigitsValues();
-    
     friend class boost::serialization::access;
 
     /// @brief Serialize our members to a boost save (output) archive or populate
@@ -325,7 +322,7 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsTemp);
+            ar & BOOST_SERIALIZATION_NVP(_insTemp);
             ar & BOOST_SERIALIZATION_NVP(_detectedRfPower);
             ar & BOOST_SERIALIZATION_NVP(_eikTemp);
             ar & BOOST_SERIALIZATION_NVP(_emsError1);
@@ -394,8 +391,8 @@ private:
     static TemperatureList _RotationMotorTemps;
     /// tilt motor temperature list
     static TemperatureList _TiltMotorTemps;
-    /// C-MIGITS temperature list
-    static TemperatureList _CmigitsTemps;
+    /// INS temperature list
+    static TemperatureList _InsTemps;
     /// tailcone temperature list
     static TemperatureList _TailconeTemps;
 
@@ -432,8 +429,8 @@ private:
     /// tilt motor time-averaged temperature
     double _tiltMotorTemp;
 
-    /// C-MIGITS time-averaged temperature
-    double _cmigitsTemp;
+    /// INS time-averaged temperature
+    double _insTemp;
 
     /// tailcone time-averaged temperature
     double _tailconeTemp;

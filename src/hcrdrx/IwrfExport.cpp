@@ -859,7 +859,7 @@ string IwrfExport::_assembleStatusXml()
     ("TiltMotorTemp", 2, pmc730Status.tiltMotorTemp());
 
   xml += TaXml::writeDouble
-    ("CmigitsTemp", 2, pmc730Status.cmigitsTemp());
+    ("InsTemp", 2, pmc730Status.insTemp());
 
   xml += TaXml::writeDouble
     ("TailconeTemp", 2, pmc730Status.tailconeTemp());

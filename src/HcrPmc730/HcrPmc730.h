@@ -345,13 +345,13 @@ public:
     }
 
     /**
-     * @brief Return the C-MIGITS temperature in deg C at the last call to 
+     * @brief Return the INS temperature in deg C at the last call to 
      * updateAnalogValues().
-     * @return the C-MIGITS temperature in deg C at the last call to 
+     * @return the INS temperature in deg C at the last call to 
      * updateAnalogValues().
      */
-    static double cmigitsTemperature() {
-        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_CMIGITS];
+    static double insTemperature() {
+        float pulldownVolts = theHcrPmc730()._analogValues[_HCR_AIN_TEMP_INS];
         return _Pt1000Temperature(ps5vVoltage(), pulldownVolts);
     }
 
@@ -622,8 +622,8 @@ private:
         _HCR_AIN_TEMP_PS_28V = 10,
         /// analog input 11: RDS in duct temperature sensor
         _HCR_AIN_TEMP_RDS_IN_DUCT = 11,
-        /// analog input 12: C-MIGITS temperature sensor
-        _HCR_AIN_TEMP_CMIGITS = 12,
+        /// analog input 12: INS temperature sensor
+        _HCR_AIN_TEMP_INS = 12,
         /// analog input 13: tilt motor temperature sensor
         _HCR_AIN_TEMP_TILT_MOTOR = 13,
         /// analog input 14: rotation motor temperature sensor
