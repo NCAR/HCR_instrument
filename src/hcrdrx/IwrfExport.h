@@ -97,9 +97,6 @@ private slots:
   /// @brief Log some status information
   void _logStatus();
   
-  /// @brief Log dataTimeout() reports from CmigitsShmWatchThread
-  void _onInsShmTimeout();
-
 private:
   /// Lock for thread-safe member access
   

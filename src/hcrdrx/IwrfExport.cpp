@@ -1439,16 +1439,3 @@ void IwrfExport::_logStatus() {
   
   _logAccessLock.unlock();
 }
-
-//////////////////////////////////////////////////
-// Log dataTimeout() from IwrfExportInsThread
-
-void IwrfExport::_onInsShmTimeout() {
-    if (_latestInsData.attitudeTime != 0) {
-        WLOG << "Data timeout reported by SpatialFogFmqWatcher. " << 
-                "Last georef was for time " << _lastGeorefTime;
-        WLOG << "Zeroing INS data for status XML until " <<
-                "new INS data arrive";
-    }
-    _latestInsData = SpatialFogFmq::MsgStruct();   // all-zero data struct
-}
