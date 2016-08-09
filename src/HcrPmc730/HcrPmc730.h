@@ -137,7 +137,16 @@ public:
         
         // Add the coupling losses into the detected power to obtain power at
         // the antenna port.
-        return(detectorPower + DETECTOR_COUPLING_LOSSES);
+        double powerAtFeed = detectorPower + DETECTOR_COUPLING_LOSSES;
+
+        // Limit our reported values to the range 0-100 dBm
+        if (powerAtFeed < 0) {
+            powerAtFeed = 0;
+        } else if (powerAtFeed > 100) {
+            powerAtFeed = 100;
+        }
+            
+        return(powerAtFeed);
     }
 
     /**
