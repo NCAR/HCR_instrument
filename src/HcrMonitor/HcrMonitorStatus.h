@@ -96,10 +96,10 @@ public:
     bool motionControlResponsive() const { return(_motionControlResponsive); }
 
     /// @brief Return true iff TransmitControl is getting responses from
-    /// cmigitsDaemon.
+    /// INS daemon.
     /// @return true iff TransmitControl is getting responses from
-    /// cmigitsDaemon.
-    bool cmigitsResponsive() const { return(_cmigitsResponsive); }
+    /// INS daemon.
+    bool insResponsive() const { return(_insResponsive); }
 
     /// @brief Return true iff TransmitControl is getting responses from
     /// TerrainHtServer.
@@ -184,7 +184,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_apsStatusText);
             ar & BOOST_SERIALIZATION_NVP(_hcrPmc730Responsive);
             ar & BOOST_SERIALIZATION_NVP(_motionControlResponsive);
-            ar & BOOST_SERIALIZATION_NVP(_cmigitsResponsive);
+            ar & BOOST_SERIALIZATION_NVP(_insResponsive);
             ar & BOOST_SERIALIZATION_NVP(_terrainHtServerResponsive);
             ar & BOOST_SERIALIZATION_NVP(_mslAltitude);
             ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
@@ -257,8 +257,8 @@ private:
     /// @brief Is MotionControlDaemon responsive?
     bool _motionControlResponsive;
     
-    /// @brief Is cmigitsDaemon responsive?
-    bool _cmigitsResponsive;
+    /// @brief Is INS daemon responsive?
+    bool _insResponsive;
     
     /// @brief Is TerrainHtServer responsive?
     bool _terrainHtServerResponsive;

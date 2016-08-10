@@ -43,7 +43,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
         _motionControlResponsive(false),
-        _cmigitsResponsive(false),
+        _insResponsive(false),
         _terrainHtServerResponsive(false),
         _mslAltitude(NAN),
         _aglAltitude(NAN),
@@ -64,7 +64,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
         _motionControlResponsive(false),
-        _cmigitsResponsive(false),
+        _insResponsive(false),
         _terrainHtServerResponsive(false),
         _mslAltitude(0.0),
         _aglAltitude(0.0),
@@ -84,7 +84,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     // Get TransmitControl status
     _hcrPmc730Responsive = transmitControl._hcrPmc730Responsive;
     _motionControlResponsive = transmitControl._motionControlResponsive;
-    _cmigitsResponsive = transmitControl._insResponsive;
+    _insResponsive = transmitControl._insResponsive;
     _terrainHtServerResponsive = transmitControl._terrainHtServerResponsive;
     _mslAltitude = transmitControl._mslAltitude;
     _aglAltitude = transmitControl._aglAltitude;
