@@ -38,8 +38,8 @@
 	#    $ ssh -L 2200:tikal.eol.ucar.edu:22 gate.ucar.edu
 	#
 	url = ssh://localhost:2200/net/cds/git/cmigits-hcr.git
-[submodule "src/ReadyFlow7142_428"]
-	path = src/ReadyFlow7142_428
+[submodule "src/ReadyFlow7142_428_WinDriver1150"]
+	path = src/ReadyFlow7142_428_WinDriver1150
 	#
 	# This repo is accessed via a TCP tunnel from local port 2200 to
 	# ssh port 22 on an EOL machine. Here's a ssh session to
@@ -47,7 +47,7 @@
 	#
 	#    $ ssh -L 2200:tikal.eol.ucar.edu:22 gate.ucar.edu
 	#
-	url = ssh://localhost:2200/net/cds/git/ReadyFlow7142_428.git
+	url = ssh://localhost:2200/net/cds/git/ReadyFlow7142_428_WinDriver1150.git
 [submodule "src/SpatialFOG"]
 	path = src/SpatialFOG
 	url = https://github.com/NCAR/SpatialFOG.git
