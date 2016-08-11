@@ -1,3 +1,26 @@
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// ** Copyright UCAR (c) 1990 - 2016                                         
+// ** University Corporation for Atmospheric Research (UCAR)                 
+// ** National Center for Atmospheric Research (NCAR)                        
+// ** Boulder, Colorado, USA                                                 
+// ** BSD licence applies - redistribution and use in source and binary      
+// ** forms, with or without modification, are permitted provided that       
+// ** the following conditions are met:                                      
+// ** 1) If the software is modified to produce derivative works,            
+// ** such modified software should be clearly marked, so as not             
+// ** to confuse it with the version available from UCAR.                    
+// ** 2) Redistributions of source code must retain the above copyright      
+// ** notice, this list of conditions and the following disclaimer.          
+// ** 3) Redistributions in binary form must reproduce the above copyright   
+// ** notice, this list of conditions and the following disclaimer in the    
+// ** documentation and/or other materials provided with the distribution.   
+// ** 4) Neither the name of UCAR nor the names of its contributors,         
+// ** if any, may be used to endorse or promote products derived from        
+// ** this software without specific prior written permission.               
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
  * HcrSpatialFOG.cpp
  *
@@ -6,6 +29,7 @@
  */
 
 #include <cerrno>
+#include <sstream>
 #include <unistd.h>
 
 #include <EulerPacket.h>
@@ -17,21 +41,11 @@
 
 LOGGING("HcrSpatialFog")
 
-// Map from operating states to names
-std::map<HcrSpatialFog::OperatingState, std::string>
-HcrSpatialFog::OperatingStateNames = {
-        {NotOperating, "NotOperating"},
-        {SettingBaudRate, "SettingBaudRate"},
-        {Configuring, "Configuring"},
-        {Operating, "Operating"}
-};
-
 HcrSpatialFog::HcrSpatialFog(std::string devName) :
     _devName(devName),
     _ttyFd(-1),
     _fdReader(NULL),
     _pktFactory(),
-    _operatingState(NotOperating),
     _fmq(true) {
     // Open a file descriptor to our device, and start a Qt-based threaded
     // reader to read from the fd and publish data via its newData() signal.
@@ -45,26 +59,10 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
     // Pass packets from the factory to our _packetHandler() slot
     connect(&_pktFactory, SIGNAL(newPacket(AnppPacket *)),
             this, SLOT(_packetHandler(AnppPacket *)));
-
-    _setOperatingState(Operating);
 }
 
 HcrSpatialFog::~HcrSpatialFog() {
     delete(_fdReader);
-}
-
-void
-HcrSpatialFog::_setOperatingState(OperatingState newState) {
-    if (newState == _operatingState) {
-        WLOG << "Ignoring operating state change to same state (" <<
-                _operatingState << ")";
-        return;
-    } else {
-        ILOG << "Operating state change: " <<
-                OperatingStateNames[_operatingState] << " -> " <<
-                OperatingStateNames[newState];
-    }
-    _operatingState = newState;
 }
 
 std::string
