@@ -56,6 +56,7 @@ HcrDrxPub::HcrDrxPub(
      _chanType(chanType),
      _down(0),
      _nGates(sd3c.gates()),
+     _sampleNumber(0),
      _exporter(exporter),
      _pulseData(NULL),
      _dataSeen(false)
