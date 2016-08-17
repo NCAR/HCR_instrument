@@ -74,7 +74,7 @@ public:
 private slots:
     void on_antennaModeButton_clicked();
     void on_attitudeCorrectionButton_clicked();
-    void on_cmigitsDetailsButton_clicked();
+    void on_insDetailsButton_clicked();
     void on_driveHomeButton_clicked();
     void on_filamentButton_clicked();
     void on_hcrdrxDetailsButton_clicked();
@@ -95,10 +95,10 @@ private slots:
     /// @brief Slot to call when cmigitsDaemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
-    void _cmigitsResponsivenessChange(bool responding, QString msg);
+    void _insResponsivenessChange(bool responding, QString msg);
     /// @brief Save the last status received from cmigitsDaemon.
     /// @param status the last status received from cmigitsDaemon.
-    void _setCmigitsStatus(const CmigitsStatus & status);
+    void _setInsStatus(const CmigitsStatus & status);
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
@@ -183,7 +183,7 @@ private:
     HcrGuiLogWindow _logWindow;
     
     // Details windows and dialogs
-    CmigitsDetails _cmigitsDetails;
+    CmigitsDetails _insDetails;
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
     HcrMonitorDetails _hcrMonitorDetails;
@@ -194,7 +194,7 @@ private:
     AntennaModeDialog _antennaModeDialog;
     
     // Threads to collect status from various daemons
-    CmigitsStatusThread _cmigitsStatusThread;
+    CmigitsStatusThread _insStatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
@@ -220,7 +220,7 @@ private:
     /// Last status read from HcrPmc730Daemon
     HcrPmc730Status _pmcStatus;
     /// Last status read from cmigitsDaemon
-    CmigitsStatus _cmigitsStatus;
+    CmigitsStatus _insStatus;
     /// Last status from hcrdrx
     DrxStatus _drxStatus;
     /// Last status from DataMapper

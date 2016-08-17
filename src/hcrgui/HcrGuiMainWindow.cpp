@@ -58,7 +58,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui(),
     _updateTimer(this),
     _logWindow(this),
-    _cmigitsDetails(this),
+    _insDetails(this),
     _fireflydDetails(this),
     _hcrdrxDetails(this),
     _hcrMonitorDetails(this, rdsHost, hcrMonitorPort),
@@ -66,7 +66,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _pmc730Details(this),
     _xmitDetails(this),
     _antennaModeDialog(this),
-    _cmigitsStatusThread(rdsHost, cmigitsPort),
+    _insStatusThread(rdsHost, cmigitsPort),
     _dataMapperStatusThread(),
     _fireflydStatusThread(archiverHost, fireflydPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
@@ -83,7 +83,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _fireflydStatus(),
     _mcStatus(),
     _pmcStatus(true),
-    _cmigitsStatus(),
+    _insStatus(),
     _drxStatus(),
     _dmapStatus(),
     _dmapWriteRate(0.0),
@@ -125,7 +125,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
     // No status from any daemons yet
-    _ui.cmigitsStatusIcon->setPixmap(_redLED);
+    _ui.insStatusIcon->setPixmap(_redLED);
     _ui.fireflydStatusIcon->setPixmap(_redLED);
     _ui.hcrdrxStatusIcon->setPixmap(_redLED);
     _ui.hcrMonitorStatusIcon->setPixmap(_redLED);
@@ -134,11 +134,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.xmitterStatusIcon->setPixmap(_redLED);
     
     // Connect and start the CmigitsStatusThread
-    connect(& _cmigitsStatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_cmigitsResponsivenessChange(bool, QString)));
-    connect(& _cmigitsStatusThread, SIGNAL(newStatus(CmigitsStatus)),
-            this, SLOT(_setCmigitsStatus(CmigitsStatus)));
-    _cmigitsStatusThread.start();
+    connect(& _insStatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_insResponsivenessChange(bool, QString)));
+    connect(& _insStatusThread, SIGNAL(newStatus(CmigitsStatus)),
+            this, SLOT(_setInsStatus(CmigitsStatus)));
+    _insStatusThread.start();
 
     // Connect and start the MotionControlStatusThread
     connect(& _mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
@@ -217,12 +217,12 @@ HcrGuiMainWindow::~HcrGuiMainWindow() {
 }
 
 void
-HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding, QString msg) {
+HcrGuiMainWindow::_insResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "cmigitsDaemon @ " <<
-            _cmigitsStatusThread.rpcClient().getDaemonHost() << ":" <<
-            _cmigitsStatusThread.rpcClient().getDaemonPort() <<
+            _insStatusThread.rpcClient().getDaemonHost() << ":" <<
+            _insStatusThread.rpcClient().getDaemonPort() <<
             (responding ? " is " : " is not ") <<
             "responding: " << msg.toStdString();
     _logMessage(ss.str().c_str());
@@ -230,16 +230,16 @@ HcrGuiMainWindow::_cmigitsResponsivenessChange(bool responding, QString msg) {
     if (! responding) {
         // Create a default (bad) CmigitsStatus, and set it as the last status
         // received.
-        _setCmigitsStatus(CmigitsStatus());
+        _setInsStatus(CmigitsStatus());
     }
 }
 
 void
-HcrGuiMainWindow::_setCmigitsStatus(const CmigitsStatus & status) {
-    _cmigitsStatus = status;
+HcrGuiMainWindow::_setInsStatus(const CmigitsStatus & status) {
+    _insStatus = status;
     // Update the C-MIGITS status details dialog.
-    _cmigitsDetails.updateStatus(_cmigitsStatusThread.serverIsResponding(),
-            _cmigitsStatus);
+    _insDetails.updateStatus(_insStatusThread.serverIsResponding(),
+            _insStatus);
     // Update the main GUI
     _update();
 }
@@ -581,8 +581,8 @@ HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
 }
 
 void
-HcrGuiMainWindow::on_cmigitsDetailsButton_clicked() {
-    _cmigitsDetails.show();
+HcrGuiMainWindow::on_insDetailsButton_clicked() {
+    _insDetails.show();
 }
 
 /// Set drives to home position
@@ -834,16 +834,16 @@ HcrGuiMainWindow::_update() {
 
     // C-MIGITS status light
     light = _redLED;
-    uint16_t mode = _cmigitsStatus.currentMode();
+    uint16_t mode = _insStatus.currentMode();
     if (mode == 7 || mode == 8) {
         // Green light if mode is "Air Navigation" or "Land Navigation"
         light = _greenLED;
-    } else if (_cmigitsStatus.insAvailable() &&
-            _cmigitsStatus.gpsAvailable()) {
+    } else if (_insStatus.insAvailable() &&
+            _insStatus.gpsAvailable()) {
         // Amber light if we have both INS and GPS
         light = _amberLED;
     }
-    _ui.cmigitsStatusIcon->setPixmap(light);
+    _ui.insStatusIcon->setPixmap(light);
 
     // MotionControl status LED
     if (! _mcStatusThread.serverIsResponding() ||
@@ -952,10 +952,10 @@ HcrGuiMainWindow::_update() {
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 
     // Location info
-    _ui.latitudeValue->setText(QString::number(_cmigitsStatus.latitude(), 'f', 4));
-    _ui.longitudeValue->setText(QString::number(_cmigitsStatus.longitude(), 'f', 4));
+    _ui.latitudeValue->setText(QString::number(_insStatus.latitude(), 'f', 4));
+    _ui.longitudeValue->setText(QString::number(_insStatus.longitude(), 'f', 4));
 
-    int iAltFt = int(MetersToFeet(_cmigitsStatus.altitude()));
+    int iAltFt = int(MetersToFeet(_insStatus.altitude()));
     _ui.altitudeMslValue->setText(QString::number(iAltFt));
 
     iAltFt = int(MetersToFeet(_hcrMonitorStatus.aglAltitude()));
