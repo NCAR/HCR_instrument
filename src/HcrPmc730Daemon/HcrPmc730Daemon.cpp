@@ -45,6 +45,8 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
+#include <HcrPortNumbers.h>
+
 #include "HmcModeChange.h"
 
 LOGGING("HcrPmc730Daemon")
@@ -318,8 +320,7 @@ main(int argc, char * argv[]) {
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("openApsValve", new OpenApsValveMethod);
     myRegistry.addMethod("closeApsValve", new CloseApsValveMethod);
-    int serverPort = 8003;
-    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, serverPort);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, HCRPMC730DAEMON_PORT);
 
     // Catch SIGINT and SIGTERM to arrange for clean shutdown
     signal(SIGINT, exitHandler);

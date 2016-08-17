@@ -35,6 +35,8 @@
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
+#include <HcrPortNumbers.h>
+
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
@@ -42,8 +44,6 @@
 #include "MotionControl.h"
 
 LOGGING("MotionControlDaemon")
-
-quint16 ServerPort = 8080;
 
 // QApplication instance
 QCoreApplication * App = 0;
@@ -245,7 +245,7 @@ main(int argc, char** argv)
     myRegistry.addMethod("Status", new StatusMethod);
     myRegistry.addMethod("SetCorrectionEnabled", new SetCorrectionEnabledMethod);
     myRegistry.addMethod("HomingInProgress", new HomingInProgressMethod);
-    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, MOTIONCONTROLDAEMON_PORT);
 
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // and and create a timer to call it periodically.

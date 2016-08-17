@@ -43,12 +43,14 @@
 #include <string>
 #include <boost/program_options.hpp>
 
+#include <QCoreApplication>
+#include <QTimer>
+
+#include <HcrPortNumbers.h>
 #include <HcrPmc730StatusThread.h>
 #include <logx/Logging.h>
 #include <MotionControlStatusThread.h>
-#include <QCoreApplication>
 #include <QFunctionWrapper.h>
-#include <QTimer>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <xmlrpc-c/client_simple.hpp>
@@ -208,7 +210,7 @@ main(int argc, char *argv[]) {
     App = new QCoreApplication(argc, argv);
 
     // XML-RPC server port number
-    static const int DEFAULT_XMLRPC_PORT = 8004;
+    static const int DEFAULT_XMLRPC_PORT = HCRMONITOR_PORT;
     int xmlrpcPortNum;
     
     // procmap instance name
@@ -263,11 +265,13 @@ main(int argc, char *argv[]) {
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
     // Start a thread to get HcrPmc730Daemon status on a regular basis.
-    HcrPmc730StatusThread hcrPmc730StatusThread("localhost", 8003);
+    HcrPmc730StatusThread hcrPmc730StatusThread("localhost",
+                                                HCRPMC730DAEMON_PORT);
     hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
-    MotionControlStatusThread mcStatusThread("localhost", 8080);
+    MotionControlStatusThread mcStatusThread("localhost",
+                                             MOTIONCONTROLDAEMON_PORT);
     mcStatusThread.start();
     
     // MaxPowerClient instance

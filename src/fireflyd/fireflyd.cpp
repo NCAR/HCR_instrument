@@ -37,6 +37,7 @@
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
+#include <HcrPortNumbers.h>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
@@ -141,9 +142,6 @@ main(int argc, char *argv[]) {
     // tty device name
     std::string devName("/dev/ttyS2");
 
-    // XML-RPC server port number
-    int xmlrpcPortNum = 8001;
-
     // procmap instance name
     std::string instanceName("ops");
 
@@ -155,8 +153,6 @@ main(int argc, char *argv[]) {
                 "instance name for procmap connection")
         ("devName,d", po::value<std::string>(&devName)->default_value("/dev/ttyS2"),
                 "tty device name for FireFly-IIA connection")
-        ("xmlrpcPortNum,x", po::value<int>(&xmlrpcPortNum)->default_value(8001),
-                "XML-RPC server port number")
         ;
     bool argError = false;
     po::variables_map vm;
@@ -192,7 +188,7 @@ main(int argc, char *argv[]) {
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
+    QXmlRpcServerAbyss rpcServer(&myRegistry, FIREFLYD_PORT);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);

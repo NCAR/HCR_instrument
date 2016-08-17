@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include <QApplication>
 #include <QMetaType>
+#include <HcrPortNumbers.h>
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
 #include <xmlrpc-c/registry.hpp>
@@ -44,8 +45,6 @@
 #include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
 
-
-quint16 ServerPort = 8002;
 
 // Our QApplication instance
 QCoreApplication * App = 0;
@@ -153,7 +152,7 @@ main(int argc, char *argv[]) {
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, ServerPort);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, CMIGITSDAEMON_PORT);
         
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // as well as a QTimer, and use them to cause a call to the function on

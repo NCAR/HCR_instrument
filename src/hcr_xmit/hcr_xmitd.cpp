@@ -44,6 +44,7 @@
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
+#include <HcrPortNumbers.h>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
@@ -194,7 +195,7 @@ public:
 void
 usage(const char* argv0) {
     std::cerr << "Usage: " << argv0 << 
-            " [option]... <xmitter_ttydev> <server_port>" << std::endl;
+            " [option]... <xmitter_ttydev>" << std::endl;
     std::cerr << OptionsDesc << std::endl;
     logx::LogUsage(std::cerr);
     std::cerr << std::endl;
@@ -249,9 +250,8 @@ main(int argc, char *argv[]) {
     // Instantiate our QCoreApplication
     App = new QCoreApplication(argc, argv);
 
-    // Remaining args should just be serial device for the transmitter and
-    // port number we should use.
-    if (argc != 3) {
+    // Remaining args should just be serial device for the transmitter.
+    if (argc != 2) {
         std::cout << "remaining args: ";
         for (int i = 0; i < argc; i++) {
             std::cout << argv[i] << " ";
@@ -294,8 +294,7 @@ main(int argc, char *argv[]) {
     myRegistry.addMethod("xmitFilamentOff", new XmitFilamentOffMethod);
     myRegistry.addMethod("xmitHvOn", new XmitHvOnMethod);
     myRegistry.addMethod("xmitHvOff", new XmitHvOffMethod);
-    int serverPort = atoi(argv[2]);
-    QXmlRpcServerAbyss rpcServer(&myRegistry, serverPort);
+    QXmlRpcServerAbyss rpcServer(&myRegistry, HCR_XMITD_PORT);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
