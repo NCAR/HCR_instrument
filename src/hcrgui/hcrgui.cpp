@@ -34,6 +34,7 @@
 
 #include <logx/Logging.h>
 
+#include <HcrPortNumbers.h>
 #include "HcrGuiMainWindow.h"
 
 LOGGING("hcrgui")
@@ -58,19 +59,11 @@ main(int argc, char *argv[]) {
 
     // Hosts and ports for the daemons we'll be talking to
     char archiverHost[] = "archiver";
-    int xmitdPort = 8000;
-    int fireflydPort = 8001;
-
     char rdsHost[] = "rds";
-    int cmigitsPort = 8002;
-    int pmc730Port = 8003;
-    int motionControlPort = 8080;
-    int hcrdrxPort = 8081;
-    int hcrMonitorPort = 8004;
 
-    QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, xmitdPort,
-            fireflydPort, rdsHost, hcrdrxPort, pmc730Port, cmigitsPort,
-            motionControlPort, hcrMonitorPort);
+    QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, HCR_XMITD_PORT,
+            FIREFLYD_PORT, rdsHost, HCRDRX_PORT, HCRPMC730DAEMON_PORT,
+            CMIGITSDAEMON_PORT, MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
     mainWindow->show();
     
     int retval = app->exec();
