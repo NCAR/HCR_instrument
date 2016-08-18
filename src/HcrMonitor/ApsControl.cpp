@@ -29,6 +29,7 @@
  */
 
 #include "ApsControl.h"
+#include <HcrPortNumbers.h>
 #include <HcrPmc730StatusThread.h>
 #include <logx/Logging.h>
 
@@ -50,7 +51,7 @@ ApsControl::ValveControlStateNames[] = {
 
 
 ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
-    _pmc730Client("localhost", 8003),
+    _pmc730Client("localhost", HCRPMC730DAEMON_PORT),
     _valveControlState(VALVE_AUTOMATIC) {
     // Call _checkPvPressure() when new status from HcrPmc730Daemon arrives
     connect(& hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
