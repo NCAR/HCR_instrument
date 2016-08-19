@@ -67,12 +67,12 @@ SpatialFogFmq::SpatialFogFmq(bool writeAccess) :
         // if new messages don't arrive within a reasonable span after previous
         // ones. The timers are started/restarted upon arrival of their 
         // associated message types.
-        _statusTimeoutTimer.setInterval(2500);    // allow up to 2.5 s
+        _statusTimeoutTimer.setInterval(2000);    // allow up to 2.0 s
         _statusTimeoutTimer.setSingleShot(true);
         connect(&_statusTimeoutTimer, SIGNAL(timeout()),
                 this, SLOT(_zeroStatusData()));
         
-        _positionTimeoutTimer.setInterval(500);     // allow up to 0.5 s
+        _positionTimeoutTimer.setInterval(2000);     // allow up to 2.0 s
         _positionTimeoutTimer.setSingleShot(true);
         connect(&_positionTimeoutTimer, SIGNAL(timeout()),
                 this, SLOT(_zeroPositionData()));
