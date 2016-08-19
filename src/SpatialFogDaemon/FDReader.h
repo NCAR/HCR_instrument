@@ -45,7 +45,7 @@ signals:
 
 private slots:
     /// @brief Try to read new data (waiting briefly if necessary). Emit
-    /// finished(QByteArray data) signal if anything was read.
+    /// newData(QByteArray data) signal if anything was read.
     ///
     /// This slot is first called when the worker thread is started, and on
     /// the first call a zero-length QTimer will be created to call the
