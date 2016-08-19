@@ -40,6 +40,12 @@ public:
         return(count);
     }
 
+    /// @brief Return the current count of the number of bytes skipped looking
+    /// for the next good ANPP packet header.
+    ///
+    /// The count resets to zero each time a packet is successfully parsed.
+    int nBytesSkipped() const { return _nskipped; }
+
 public slots:
     /// @brief Slot to accept incoming data from the Spatial FOG and emit
     /// newPacket() signals as packets can be parsed from the stream.
@@ -61,7 +67,10 @@ private:
     /// Spatial FOG.
     QByteArray _data;
 
-    // Number of bytes skipped to find a valid packet header
+    /// @brief Number of bytes skipped so far looking for the next valid packet
+    /// header.
+    ///
+    /// This is reset to zero each time a packet is successfully parsed.
     uint _nskipped;
 
     // Map to hold a packet count by packet ID
