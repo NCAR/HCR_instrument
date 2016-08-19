@@ -40,7 +40,7 @@
 #include <toolsa/pmu.h>
 #include <QCoreApplication>
 
-// For configuration management
+#include <HcrPortNumbers.h>
 #include <QtConfig.h>
 
 #include "HcrDrxPub.h"
@@ -86,10 +86,7 @@ Pentek::p7142sd3c * _sd3c = 0;
 QCoreApplication * _app = 0;
 
 std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
-int _xmitdPort = 8000;                  ///< hcr_xmitd's XML-RPC port
-
 std::string _pmc730dHost("localhost");  ///< The host on which HcrPmc730Daemon is running
-int _pmc730dPort = 8003;                ///< HcrPmc730Daemon's XML-RPC port
 
 /////////////////////////////////////////////////////////////////////
 void stopProgram(int sig) {
@@ -170,9 +167,7 @@ void parseOptions(int argc,
         ("simulate", "Enable simulation")
         ("simPauseMS",  po::value<double>(&_simPauseMS), "Simulation pause interval between beams (ms)")
         ("xmitdHost", po::value<std::string>(&_xmitdHost), "Host machine for hcr_xmitd")
-        ("xmitdPort", po::value<int>(&_xmitdPort), "hcr_xmitd's XML-RPC port")
         ("pmc730dHost", po::value<std::string>(&_pmc730dHost), "Host machine for HcrPmc730Daemon")
-        ("pmc730dPort", po::value<int>(&_pmc730dPort), "HcrPmc730Daemon's XML-RPC port")
         ;
     // If we get an option on the command line with no option name, it
     // is treated like --drxConfig=<option> was given.
@@ -416,11 +411,11 @@ main(int argc, char** argv)
       ILOG << "will register with procmap, instance: " << _instance;
     }
 
-    // Initialize our RPC server on port 8081
+    // Initialize our RPC server using port HCRDRX_PORT
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod);
-    QXmlRpcServerAbyss rpcServer(&myRegistry, 8081);
+    QXmlRpcServerAbyss rpcServer(&myRegistry, HCRDRX_PORT);
 
     // catch a control-C or kill to shut down cleanly, and SIGUSR2 to generate 
     // a restart
@@ -488,8 +483,9 @@ main(int argc, char** argv)
                            800e-9 + hcrConfig.tx_pulse_width() + hcrConfig.tx_delay());
 
         // Start our status monitoring thread.
-        _statusGrabber = new StatusGrabber(_sd3c, _pmc730dHost, _pmc730dPort,
-                                           _xmitdHost, _xmitdPort);
+        _statusGrabber = new StatusGrabber(_sd3c,
+                                           _pmc730dHost, HCRPMC730DAEMON_PORT,
+                                           _xmitdHost, HCR_XMITD_PORT);
 
         // create and start the export object
         _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
