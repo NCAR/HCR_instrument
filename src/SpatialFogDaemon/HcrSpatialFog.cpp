@@ -41,10 +41,16 @@
 
 LOGGING("HcrSpatialFog")
 
+// Report data timeout if bytes are not seen from the device for this
+// period.
+const float HcrSpatialFog::_DATA_TIMEOUT_SECONDS = 5.0;
+
 HcrSpatialFog::HcrSpatialFog(std::string devName) :
     _devName(devName),
     _ttyFd(-1),
     _fdReader(NULL),
+    _dataTimeoutTimer(),
+    _devResponsive(false),
     _pktFactory(),
     _fmq(true) {
     // Open a file descriptor to our device, and start a Qt-based threaded
@@ -52,9 +58,19 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
     _openTtyFd();
     _fdReader = new FDReader(_ttyFd);
 
-    // Push incoming data to the packet factory
+    // Push incoming data to the packet factory, and reset the data timeout
+    // timer when new data arrive
     connect(_fdReader, SIGNAL(newData(QByteArray)),
             &_pktFactory, SLOT(appendData(QByteArray)));
+    connect(_fdReader, SIGNAL(newData(QByteArray)),
+            this, SLOT(_gotBytesFromDevice()));
+
+    // Configure and start the data timeout timer. Call _dataTimeout() upon
+    // timer expiration.
+    _dataTimeoutTimer.setInterval(int(1000 * _DATA_TIMEOUT_SECONDS));
+    connect(&_dataTimeoutTimer, SIGNAL(timeout()),
+            this, SLOT(_onDataTimeout()));
+    _dataTimeoutTimer.start();
 
     // Pass packets from the factory to our _packetHandler() slot
     connect(&_pktFactory, SIGNAL(newPacket(AnppPacket *)),
@@ -207,4 +223,20 @@ HcrSpatialFog::_sendAnppPacket(const AnppPacket & packet) const {
         }
         nwritten += wrote;
     }
+}
+
+void
+HcrSpatialFog::_gotBytesFromDevice() {
+    // Mark the device as responsive
+    _devResponsive = true;
+
+    // Restart the data timeout timer
+    _dataTimeoutTimer.start();
+}
+
+void
+HcrSpatialFog::_onDataTimeout() {
+    _devResponsive = false;
+    ELOG << "No data from SpatialFog on " << _devName << " for " <<
+            _DATA_TIMEOUT_SECONDS << " s";
 }

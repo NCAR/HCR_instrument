@@ -76,6 +76,16 @@ private:
     /// @brief File descriptor reader thread
     FDReader * _fdReader;
 
+    /// @brief Timer which expires if bytes are not seen from the device
+    /// in _DATA_TIMEOUT_SECS seconds.
+    QTimer _dataTimeoutTimer;
+
+    /// @brief Time period in seconds for _dataTimeoutTimer
+    static const float _DATA_TIMEOUT_SECONDS;
+
+    /// @brief Are we receiving any bytes from the device?
+    bool _devResponsive;
+
     /// @brief Factory for AnppPacket objects
     QAnppPacketFactory _pktFactory;
 
@@ -87,6 +97,13 @@ private slots:
     /// @brief Slot which receives incoming Advanced Navigation Packet Protocol
     /// packets, in the form of ANPPPacket objects.
     void _packetHandler(AnppPacket * pkt);
+
+    /// @brief Slot which resets the data timeout timer and marks the device
+    /// as responsive.
+    void _gotBytesFromDevice();
+
+    /// @brief Take action when a data timeout occurs
+    void _onDataTimeout();
 };
 
 #endif /* _HCRSPATIALFOG_H_ */
