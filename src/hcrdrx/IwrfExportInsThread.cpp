@@ -59,8 +59,7 @@ IwrfExportInsThread::run()
     time_t fmqWarningTime = 0;
     
     while (true) {
-        _insFmq.initReadOnly(FMQ_URL.c_str(), "hcrdrx", false,
-                                 Fmq::END, 10);
+        _insFmq.initReadOnly(FMQ_URL.c_str(), "hcrdrx", false, Fmq::END, 10);
 
         // If the FMQ is open, we're done in this loop
         if (_insFmq.isOpen()) {
