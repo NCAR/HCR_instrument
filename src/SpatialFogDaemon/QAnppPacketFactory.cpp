@@ -84,9 +84,16 @@ QAnppPacketFactory::_parseData() {
             // byte of _data and try again.
             _data.remove(0, 1);
             _nskipped++;
-            if ((_nskipped % 100) == 0) {
+
+            // Early on, log every multiple of 100 skipped bytes. Later report
+            // every 1000. With good data, we should never have to skip more
+            // than 255 bytes to find a valid header.
+            if (_nskipped < 1000 && (_nskipped % 100) == 0) {
                 WLOG << "Looking for a header; " << _nskipped <<
                         " bytes skipped so far...";
+            } else if ((_nskipped % 1000) == 0) {
+                ELOG << "Still no good header after " << _nskipped <<
+                        " bytes. Maybe bad baud rate is yielding garbled data?";
             }
             continue;
         }
