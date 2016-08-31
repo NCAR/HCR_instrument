@@ -14,6 +14,7 @@ logx
 lrose
 motioncontrol
 qt4
+SpatialFogClient
 SpectracomRpcClient
 xmitdrpcclient
 """)
@@ -35,6 +36,7 @@ HcrMonitorDetails.cpp
 MotionControlDetails.cpp
 Pmc730Details.cpp
 qrc_HcrGuiMainWindow.cc
+SpatialFogDetails.cpp
 SpectracomStatusThread.cpp
 XmitDetails.cpp
 XmitdStatusThread.cpp
@@ -52,6 +54,7 @@ HcrGuiMainWindow.ui
 HcrMonitorDetails.ui
 MotionControlDetails.ui
 Pmc730Details.ui
+SpatialFogDetails.ui
 XmitDetails.ui
 """)
 hcrguiEnv.Uic4(uifiles)
@@ -75,6 +78,7 @@ HcrGuiLogWindow.h
 HcrGuiMainWindow.h
 MotionControlDetails.h
 Pmc730Details.h
+SpatialFogDetails.h
 SpectracomStatusThread.h
 XmitDetails.h
 XmitdStatusThread.h

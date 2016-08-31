@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>430</width>
-    <height>746</height>
+    <width>478</width>
+    <height>811</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -418,9 +418,9 @@
           </widget>
          </item>
          <item row="10" column="0">
-          <widget class="QLabel" name="systemFailureLabel_25">
+          <widget class="QLabel" name="velocityHeadingEnabledLabel">
            <property name="text">
-            <string>System Failure</string>
+            <string>Velocity Heading Enabled</string>
            </property>
           </widget>
          </item>
@@ -452,14 +452,14 @@
           </widget>
          </item>
          <item row="9" column="0">
-          <widget class="QLabel" name="systemFailureLabel_24">
+          <widget class="QLabel" name="dualAntHeadingActiveLabel">
            <property name="text">
-            <string>System Failure</string>
+            <string>Dual Ant. Heading Active</string>
            </property>
           </widget>
          </item>
          <item row="13" column="1">
-          <widget class="QLabel" name="systemFailureLed_28">
+          <widget class="QLabel" name="externalVelocityActiveLed">
            <property name="text">
             <string/>
            </property>
@@ -476,7 +476,7 @@
           </widget>
          </item>
          <item row="12" column="1">
-          <widget class="QLabel" name="systemFailureLed_27">
+          <widget class="QLabel" name="externalPositionActiveLed">
            <property name="text">
             <string/>
            </property>
@@ -493,7 +493,7 @@
           </widget>
          </item>
          <item row="11" column="1">
-          <widget class="QLabel" name="systemFailureLed_26">
+          <widget class="QLabel" name="atmosphericAltEnabledLed">
            <property name="text">
             <string/>
            </property>
@@ -503,16 +503,16 @@
           </widget>
          </item>
          <item row="7" column="0">
-          <widget class="QLabel" name="dualAntHeadingActiveLabel">
+          <widget class="QLabel" name="event2OccurredLabel">
            <property name="text">
-            <string>Dual Ant. Heading Active</string>
+            <string>Event 2 Occurred</string>
            </property>
           </widget>
          </item>
          <item row="11" column="0">
-          <widget class="QLabel" name="systemFailureLabel_26">
+          <widget class="QLabel" name="atmosphericAltEnabledLabel">
            <property name="text">
-            <string>System Failure</string>
+            <string>Atmospheric Alt. Enabled</string>
            </property>
           </widget>
          </item>
@@ -524,21 +524,21 @@
           </widget>
          </item>
          <item row="13" column="0">
-          <widget class="QLabel" name="systemFailureLabel_28">
+          <widget class="QLabel" name="externalVelocityActiveLabel">
            <property name="text">
-            <string>System Failure</string>
+            <string>External Velocity Active</string>
            </property>
           </widget>
          </item>
          <item row="6" column="0">
-          <widget class="QLabel" name="internalGnssEnabledLabel">
+          <widget class="QLabel" name="event1OccurredLabel">
            <property name="text">
-            <string>Internal GNSS Enabled</string>
+            <string>Event 1 Occurred</string>
            </property>
           </widget>
          </item>
          <item row="6" column="1">
-          <widget class="QLabel" name="internalGnssEnabledLed">
+          <widget class="QLabel" name="event1OccurredLed">
            <property name="text">
             <string/>
            </property>
@@ -548,14 +548,14 @@
           </widget>
          </item>
          <item row="12" column="0">
-          <widget class="QLabel" name="systemFailureLabel_27">
+          <widget class="QLabel" name="externalPositionActiveLabel">
            <property name="text">
-            <string>System Failure</string>
+            <string>External Position Active</string>
            </property>
           </widget>
          </item>
          <item row="9" column="1">
-          <widget class="QLabel" name="systemFailureLed_24">
+          <widget class="QLabel" name="dualAntHeadingActiveLed">
            <property name="text">
             <string/>
            </property>
@@ -565,9 +565,9 @@
           </widget>
          </item>
          <item row="8" column="0">
-          <widget class="QLabel" name="systemFailureLabel_23">
+          <widget class="QLabel" name="internalGnssEnabledLabel">
            <property name="text">
-            <string>System Failure</string>
+            <string>Internal GNSS enabled</string>
            </property>
           </widget>
          </item>
@@ -579,7 +579,7 @@
           </widget>
          </item>
          <item row="8" column="1">
-          <widget class="QLabel" name="systemFailureLed_23">
+          <widget class="QLabel" name="internalGnssEnabledLed">
            <property name="text">
             <string/>
            </property>
@@ -591,12 +591,12 @@
          <item row="14" column="0">
           <widget class="QLabel" name="systemFailureLabel_29">
            <property name="text">
-            <string>System Failure</string>
+            <string>External Heading Active</string>
            </property>
           </widget>
          </item>
          <item row="14" column="1">
-          <widget class="QLabel" name="systemFailureLed_29">
+          <widget class="QLabel" name="externalHeadingActiveLed">
            <property name="text">
             <string/>
            </property>
@@ -606,7 +606,7 @@
           </widget>
          </item>
          <item row="10" column="1">
-          <widget class="QLabel" name="systemFailureLed_25">
+          <widget class="QLabel" name="velocityHeadingEnabledLed">
            <property name="text">
             <string/>
            </property>
@@ -616,7 +616,7 @@
           </widget>
          </item>
          <item row="7" column="1">
-          <widget class="QLabel" name="dualAntHeadingActiveLed">
+          <widget class="QLabel" name="event2OccurredLed">
            <property name="text">
             <string/>
            </property>
@@ -662,7 +662,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QGroupBox" name="dataGroupBox">
+    <widget class="QGroupBox" name="dataBox">
      <property name="title">
       <string>Data</string>
      </property>

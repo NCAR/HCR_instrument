@@ -39,7 +39,7 @@
 #include <QTimer>
 #include <QUdpSocket>
 
-#include <CmigitsStatusThread.h>
+#include <SpatialFogStatusThread.h>
 #include <HcrPmc730StatusThread.h>
 #include <HcrMonitorStatusThread.h>
 #include <MotionControlStatusThread.h>
@@ -53,7 +53,7 @@
 
 #include "HcrGuiLogWindow.h"
 
-#include "CmigitsDetails.h"
+#include "SpatialFogDetails.h"
 #include "FireflydDetails.h"
 #include "HcrdrxDetails.h"
 #include "HcrMonitorDetails.h"
@@ -68,7 +68,7 @@ class HcrGuiMainWindow : public QMainWindow {
 public:
     HcrGuiMainWindow(std::string archivererHost, int xmitterPort,
             int fireflydPort, std::string rdsHost, int drxPort, int pmcPort,
-            int cmigitsPort, int motionControlPort, int hcrMonitorPort);
+            int insPort, int motionControlPort, int hcrMonitorPort);
     virtual ~HcrGuiMainWindow();
 
 private slots:
@@ -92,13 +92,13 @@ private slots:
     /// @brief read angle(s) available on the broadcast port
     void _readAngles();
     
-    /// @brief Slot to call when cmigitsDaemon server responsiveness changes.
+    /// @brief Slot to call when SpatialFogDaemon server responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
     void _insResponsivenessChange(bool responding, QString msg);
-    /// @brief Save the last status received from cmigitsDaemon.
-    /// @param status the last status received from cmigitsDaemon.
-    void _setInsStatus(const CmigitsStatus & status);
+    /// @brief Save the last status received from SpatialFogDaemon.
+    /// @param status the last status received from SpatialFogDaemon.
+    void _setInsStatus(const SpatialFogStatus & status);
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
@@ -183,7 +183,7 @@ private:
     HcrGuiLogWindow _logWindow;
     
     // Details windows and dialogs
-    CmigitsDetails _insDetails;
+    SpatialFogDetails _insDetails;
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
     HcrMonitorDetails _hcrMonitorDetails;
@@ -194,7 +194,7 @@ private:
     AntennaModeDialog _antennaModeDialog;
     
     // Threads to collect status from various daemons
-    CmigitsStatusThread _insStatusThread;
+    SpatialFogStatusThread _insStatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
@@ -219,8 +219,8 @@ private:
     MotionControl::Status _mcStatus;
     /// Last status read from HcrPmc730Daemon
     HcrPmc730Status _pmcStatus;
-    /// Last status read from cmigitsDaemon
-    CmigitsStatus _insStatus;
+    /// Last status read from SpatialFogDaemon
+    SpatialFogStatus _insStatus;
     /// Last status from hcrdrx
     DrxStatus _drxStatus;
     /// Last status from DataMapper
