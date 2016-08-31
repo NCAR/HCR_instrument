@@ -1,5 +1,6 @@
 #
-# Rules to build libspatialfogfmq.a and export it as a SCons tool
+# Rules to build assorted classes for SpatialFog clients into
+# libSpatialFogClient.a and export it as a SCons tool
 #
 tools = Split('''
     archive_xmlrpc_c
@@ -28,16 +29,16 @@ headers = Split('''
     SpatialFogStatusThread.h
 ''')
 
-lib = env.Library('SpatialFogFmq', sources)
+lib = env.Library('SpatialFogClient', sources)
 Default(lib)
 
-env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "SpatialFogFmq library" })
+env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "SpatialFogClient library" })
 doxref = env.Apidocs(sources + headers)
 
-def SpatialFogFmq(env):
+def SpatialFogClient(env):
     env.AppendUnique(CPPPATH = toolDir)
     env.Append(LIBS=[lib])
     env.AppendDoxref(doxref[0])
     env.Require(tools)
 
-Export('SpatialFogFmq')
+Export('SpatialFogClient')

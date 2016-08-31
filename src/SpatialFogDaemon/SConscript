@@ -9,7 +9,7 @@ QFunctionWrapper
 QXmlRpcServerAbyss
 qt4
 spatialfogcore
-SpatialFogFmq
+SpatialFogClient
 """)
 
 env = Environment(tools = ['default'] + tools)
