@@ -42,6 +42,7 @@
 #include <HcrPortNumbers.h>
 
 #include "HcrSpatialFog.h"
+#include "SpatialFogStatus.h"
 
 LOGGING("SpatialFogDaemon")
 
@@ -83,7 +84,7 @@ public:
         DLOG << "Executing XML-RPC call to getStatus()";
         // Get the latest status from the FMQ, and convert it to 
         // an xmlrpc_c::value_struct dictionary.
-//        *retvalP = .toXmlRpcValue();
+        *retvalP = SpatialFogStatus::StatusFromFmq().toXmlRpcValue();
     }
 };
 
