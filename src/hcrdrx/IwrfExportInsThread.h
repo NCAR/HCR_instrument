@@ -24,22 +24,20 @@
 #ifndef IWRFEXPORTINS_THREAD_H_
 #define IWRFEXPORTINS_THREAD_H_
 
-#include <CmigitsFmq.h>
+#include <SpatialFogFmq.h>
 #include <QThread>
 #include <Fmq/DsFmq.hh>
 
 class IwrfExport;
 
-/// IwrfExportInsThread polls CmigitsSharedMemory and emits newData() when new
-/// data is seen in the shared memory.
+/// IwrfExportInsThread polls SpatialFogFmq shared memory and emits newData()
+/// when new data are found.
 
 class IwrfExportInsThread : public QThread {
 
     Q_OBJECT
 
 public:
-    static const std::string FMQ_PATH;
-    
     /// @brief Constructor
     IwrfExportInsThread(IwrfExport & iwrfExport);
     
@@ -51,7 +49,7 @@ protected:
 
 private:
     IwrfExport & _iwrfExport;
-    DsFmq _cmigitsFmq;
+    DsFmq _insFmq;
 };
 
 #endif /* IWRFEXPORTINS_THREAD_H_ */

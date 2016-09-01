@@ -22,51 +22,33 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * hcrgui.cpp
- *
- *  Created on: Jan 6, 2011
- *      Author: burghart
+ *  Created on: Aug 10, 2016
+ *      Author: Chris Burghart <burghart@ucar.edu>
  */
- 
-#include <cstdlib>
-#include <cstdio>
-#include <QApplication>
+#ifndef SPATIALFOGDETAILS_H_
+#define SPATIALFOGDETAILS_H_
 
-#include <logx/Logging.h>
+#include <QDialog>
+#include <QPixmap>
 
-#include <HcrPortNumbers.h>
-#include "HcrGuiMainWindow.h"
+#include "ui_SpatialFogDetails.h"
 
-LOGGING("hcrgui")
+class SpatialFogStatus;
 
-void
-usage(const char* appName) {
-    ELOG << "Usage: " << appName;
-    exit(1);
-}
+class SpatialFogDetails : public QDialog {
+    Q_OBJECT
+public:
+    SpatialFogDetails(QWidget *parent);
+    virtual ~SpatialFogDetails() {}
 
-int
-main(int argc, char *argv[]) {
-    // Let logx get and strip out its arguments
-    logx::ParseLogArgs(argc, argv);
-    ILOG << "hcrgui started";
-    
-    QApplication* app = new QApplication(argc, argv);
-    
-    if (argc != 1) {
-        usage(argv[0]);
-    }
-
-    // Hosts and ports for the daemons we'll be talking to
-    char archiverHost[] = "archiver";
-    char rdsHost[] = "rds";
-
-    QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, HCR_XMITD_PORT,
-            FIREFLYD_PORT, rdsHost, HCRDRX_PORT, HCRPMC730DAEMON_PORT,
-            SPATIALFOGDAEMON_PORT, MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
-    mainWindow->show();
-    
-    int retval = app->exec();
-    ILOG << "hcrgui stopped";
-    return(retval);
-}
+    void noStatus();
+public slots:
+    void updateStatus(bool daemonResponding, const SpatialFogStatus & status);
+private:
+    Ui::SpatialFogDetails _ui;
+    QPixmap _redLED;
+    QPixmap _amberLED;
+    QPixmap _greenLED;
+    QPixmap _greenLED_off;
+};
+#endif /* SPATIALFOGDETAILS_H_*/

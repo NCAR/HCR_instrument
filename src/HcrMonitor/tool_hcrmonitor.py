@@ -3,7 +3,6 @@
 #
 tools = Split('''
 hcrpmc730client
-cmigits
 doxygen
 motioncontrol
 qt4

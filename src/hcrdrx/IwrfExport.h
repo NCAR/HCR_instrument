@@ -90,26 +90,19 @@ public:
   
   PulseData *writePulseV(PulseData *val);
   
-  /// @brief Method called to put new C-MIGITS data in our queue.
-  void queueCmigitsData(CmigitsFmq::MsgStruct cmigitsData);
+  /// @brief Method called to put new INS data in our queue.
+  void queueInsData(SpatialFogFmq::MsgStruct insData);
 
 private slots:
-//  /// @brief This slot will be called each time a new set of data is available
-//  /// from the C-MIGITS shared memory.
-//  void _queueCmigitsData(CmigitsFmq::MsgStruct cmigitsData);
-
   /// @brief Log some status information
   void _logStatus();
   
-  /// @brief Log dataTimeout() reports from CmigitsShmWatchThread
-  void _onCmigitsShmTimeout();
-
 private:
   /// Lock for thread-safe member access
   
   QReadWriteLock _hAccessLock;
   QReadWriteLock _vAccessLock;
-  QReadWriteLock _cmigitsAccessLock;
+  QReadWriteLock _insAccessLock;
   QReadWriteLock _logAccessLock;
 
   /// configuration
@@ -205,17 +198,17 @@ private:
   double _tiltCorr;
   double _rotationCorr;
 
-  /// Thread which reads data from the C-MIGITS FMQ and puts it in our deque
-  IwrfExportInsThread _cmigitsWatchThread;
+  /// Thread which reads data from the INS FMQ and puts it in our deque
+  IwrfExportInsThread _insWatchThread;
   
-  /// deque of C-MIGITS data for generating iwrf_platform_georef packets
-  std::deque<CmigitsFmq::MsgStruct> _cmigitsDeque;
+  /// deque of INS data for generating iwrf_platform_georef packets
+  std::deque<SpatialFogFmq::MsgStruct> _insDeque;
   
-  /// Latest C-MIGITS data, used for generating IWRF status XML packets
-  CmigitsFmq::MsgStruct _latestCmigitsData;
+  /// Latest INS data, used for generating IWRF status XML packets
+  SpatialFogFmq::MsgStruct _latestInsData;
   
-  /// Are C-MIGITS data delayed longer than we want to wait for merging?
-  bool _cmigitsDataDelayed;
+  /// Are INS data delayed longer than we want to wait for merging?
+  bool _insDataDelayed;
 
   /// simulation of antenna angles
 
@@ -235,7 +228,7 @@ private:
   /// counts of events between calls to _logStatus()
   int _hPulseCount;
   int _vPulseCount;
-  int _cmigitsCount;
+  int _insCount;
   
   /// Time of the last georef packet we built, milliseconds since 1970-01-01
   /// 00:00:00 UTC

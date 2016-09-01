@@ -197,7 +197,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>C-MIGITS</string>
+                <string>INS</string>
                </property>
               </widget>
              </item>

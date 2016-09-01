@@ -33,7 +33,7 @@
 
 #include <vector>
 
-#include <CmigitsFmqWatcher.h>
+#include <SpatialFogFmqWatcher.h>
 #include <HcrPmc730Client.h>
 #include <MotionControlStatusThread.h>
 #include <QDateTime>
@@ -80,7 +80,7 @@ public:
         
         NOXMIT_UNSPECIFIED,             ///< Unspecified reason, used as initial state for _xmitTestStatus
         NOXMIT_NO_HCRPMC730_DATA,       ///< HcrPmc730Daemon is not providing data
-        NOXMIT_NO_CMIGITS_DATA,         ///< cmigitsDaemon is not providing data
+        NOXMIT_NO_INS_DATA,             ///< INS reader daemon is not providing data
         NOXMIT_NO_TERRAINHTSERVER_DATA, ///< TerrainHtServer is not providing data
         NOXMIT_NO_MOTIONCONTROL_DATA,   ///< MotionControlDaemon is not providing data
         NOXMIT_NO_MAXPOWER_DATA,        ///< TsPrint max power server is not providing data
@@ -162,11 +162,11 @@ private slots:
     /// @param msg a string describing the responsiveness change
     void _updateMaxPowerResponsive(bool responding, QString msg);
 
-    /// @brief Mark the cmigitsDaemon as unresponsive
-    void _markCmigitsUnresponsive();
+    /// @brief Mark the INS daemon as unresponsive
+    void _markInsUnresponsive();
     
-    /// @brief Update AGL altitude using new location from C-MIGITS data
-    void _updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData);
+    /// @brief Update AGL altitude using new location from INS data
+    void _updateAglAltitude(SpatialFogFmq::MsgStruct insData);
     
 private:
     /// @brief Struct for details of max power data reports
@@ -323,10 +323,10 @@ private:
     void _appendToModeMap(HcrPmc730::HmcOperationMode mode);
 
     /// @brief How frequently will we poll CmigitsSharedMemory for new data?
-    static constexpr int _CMIGITS_POLL_INTERVAL_MS = 1000;
+    static constexpr int _INS_POLL_INTERVAL_MS = 1000;
     
-    /// @brief After what period do we consider C-MIGITS data too old?
-    static constexpr int _CMIGITS_DATA_TIMEOUT_MS = 1100;
+    /// @brief After what period do we consider INS data too old?
+    static constexpr int _INS_DATA_TIMEOUT_MS = 1100;
     
     /// @brief Tolerance for near-zenith pointing, deg
     static constexpr float _NEAR_ZENITH_TOLERANCE_DEG = 45.0;
@@ -390,11 +390,11 @@ private:
     /// @brief latest max power report
     _MaxPowerStruct _maxPowerReport;
         
-    /// @brief C-MIGITS FMQ watcher, to signal when new data are available
-    CmigitsFmqWatcher _cmigitsWatcher;
+    /// @brief FMQ watcher for INS data, to signal when new data are available
+    SpatialFogFmqWatcher _insWatcher;
 
     /// @brief Is new data showing up in CmigitsSharedMemory?
-    bool _cmigitsResponsive;
+    bool _insResponsive;
     
     /// @brief Is the TerrainHtServer responsive?
     bool _terrainHtServerResponsive;

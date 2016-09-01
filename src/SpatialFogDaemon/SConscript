@@ -1,0 +1,36 @@
+# -*- python -*-
+#
+# Build SpatialFogDaemon
+#
+
+tools = Split("""
+doxygen
+QFunctionWrapper
+QXmlRpcServerAbyss
+qt4
+spatialfogcore
+SpatialFogClient
+""")
+
+env = Environment(tools = ['default'] + tools)
+env.EnableQt4Modules(['QtCore', 'QtGui'])
+
+sources = Split('''
+FDReader.cpp
+HcrSpatialFog.cpp
+QAnppPacketFactory.cpp
+SpatialFogDaemon.cpp
+''')
+
+headers = Split('''
+FDReader.h
+HcrSpatialFog.h
+QAnppPacketFactory.h
+''')
+
+# env['DOXYFILE_DICT'].update({'PROJECT_NAME':'SpatialFogDaemon'})
+# html = env.Apidocs(sources + headers)
+# Default(html)
+
+daemon = env.Program('SpatialFogDaemon', sources)
+Default(daemon)
