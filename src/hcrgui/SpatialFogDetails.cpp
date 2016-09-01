@@ -142,7 +142,7 @@ SpatialFogDetails::updateStatus(bool daemonResponding,
     _ui.altitudeValue->setText(QString::number(status.altitude, 'f', 0));
 
     _ui.attitudeTimeValue->setText(
-            QDateTime::fromMSecsSinceEpoch(status.attitudeTime).toUTC().toString("hh:mm:ss"));
+            QDateTime::fromMSecsSinceEpoch(status.attitudeTime).toUTC().toString("hh:mm:ss.zzz"));
     _ui.pitchValue->setText(QString::number(status.pitch, 'f', 2));
     _ui.rollValue->setText(QString::number(status.roll, 'f', 2));
     _ui.headingValue->setText(QString::number(status.heading, 'f', 1));
