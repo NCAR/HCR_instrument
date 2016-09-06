@@ -181,6 +181,14 @@ SpatialFogFmq::_setWriterPid(pid_t pid) {
 }
 
 void
+SpatialFogFmq::storeInsResponsiveness(bool responsive) {
+    if (responsive != _currentMsg.insResponsive) {
+        _currentMsg.insResponsive = responsive;
+        _writeCurrentMsg();
+    }
+}
+
+void
 SpatialFogFmq::storeLatestStatusData(uint64_t statusTime, uint16_t statusBits,
             uint16_t filterBits) {
     _currentMsg.statusTime = statusTime;

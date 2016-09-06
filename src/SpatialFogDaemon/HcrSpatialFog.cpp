@@ -227,8 +227,12 @@ HcrSpatialFog::_sendAnppPacket(const AnppPacket & packet) const {
 
 void
 HcrSpatialFog::_gotBytesFromDevice() {
-    // Mark the device as responsive
-    _devResponsive = true;
+    if (! _devResponsive) {
+        // Mark the device as responsive
+        _devResponsive = true;
+        // Set responsiveness in the FMQ message
+        _fmq.storeInsResponsiveness(_devResponsive);
+    }
 
     // Restart the data timeout timer
     _dataTimeoutTimer.start();
@@ -236,7 +240,11 @@ HcrSpatialFog::_gotBytesFromDevice() {
 
 void
 HcrSpatialFog::_onDataTimeout() {
-    _devResponsive = false;
+    if (_devResponsive) {
+        _devResponsive = false;
+        _fmq.storeInsResponsiveness(_devResponsive);
+    }
+
     ELOG << "No data from SpatialFog on " << _devName << " for " <<
             _DATA_TIMEOUT_SECONDS << " s";
 }

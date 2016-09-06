@@ -45,6 +45,7 @@ public:
     /// The struct defining the layout/contents of a message in the Spatial FMQ
     typedef struct _MsgStruct {
         pid_t writerPid;        ///< process ID of the current writer
+        bool insResponsive;     ///< is the INS currently delivering data?
         // Latest status data
         uint64_t statusTime;    ///< msecs since 1970-01-01 00:00:00 UTC
         uint16_t statusBits;
@@ -68,6 +69,7 @@ public:
         // Default initializer
         _MsgStruct() :
             writerPid(0),
+            insResponsive(false),
             statusTime(0),
             statusBits(0),
             filterBits(0),
@@ -191,6 +193,10 @@ public:
     static double GetEstimatedDriftAngle(const MsgStruct msg);
 
 public slots:
+    /// @brief Set the responsiveness state for the INS
+    /// @param responsive true iff the device is delivering data
+    void storeInsResponsiveness(bool responsive);
+
     /// @brief Store the latest system status data.
     /// @param dataTime date/time for data, msecs since 1970-01-01 00:00:00 UTC
     /// @param statusBits system status bits, see Advanced Navigation

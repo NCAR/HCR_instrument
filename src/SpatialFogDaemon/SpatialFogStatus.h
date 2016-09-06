@@ -246,6 +246,7 @@ private:
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
             ar & BOOST_SERIALIZATION_NVP(writerPid);
+            ar & BOOST_SERIALIZATION_NVP(insResponsive);
             ar & BOOST_SERIALIZATION_NVP(statusTime);
             ar & BOOST_SERIALIZATION_NVP(statusBits);
             ar & BOOST_SERIALIZATION_NVP(filterBits);
