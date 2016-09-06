@@ -48,12 +48,20 @@ SpatialFogDetails::SpatialFogDetails(QWidget *parent) :
 void
 SpatialFogDetails::updateStatus(bool daemonResponding,
         const SpatialFogStatus & status) {
-    // Based on whether the daemon is responding, set the "daemon responding"
+    // Based on whether the daemon is responding, set the "responding"
     // label, and set the enabled state for the rest of the components.
-    _ui.daemonRespondingLabel->setText(daemonResponding ?
-            "" : "<font color='DarkRed'>No SpatialFogDaemon!</font>");
-    _ui.stateBox->setEnabled(daemonResponding);
-    _ui.dataBox->setEnabled(daemonResponding);
+    bool responding = daemonResponding && status.insResponsive;
+    std::string respondingText("");
+    if (! responding) {
+        if (! daemonResponding) {
+            respondingText = "<font color='DarkRed'>No SpatialFogDaemon!</font>";
+        } else {
+            respondingText = "<font color='DarkRed'>INS is not responding</font>";
+        }
+    }
+    _ui.respondingLabel->setText(respondingText.c_str());
+    _ui.stateBox->setEnabled(responding);
+    _ui.dataBox->setEnabled(responding);
 
     // Info from the system status bits
     _ui.statusTimeValue->setText(
