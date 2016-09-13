@@ -32,6 +32,7 @@
 #include <iostream>
 #include <QCoreApplication>
 #include <QTimer>
+#include <boost/program_options.hpp>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
@@ -43,6 +44,8 @@
 
 #include "MotionControl.h"
 
+namespace po = boost::program_options;
+
 LOGGING("MotionControlDaemon")
 
 // QApplication instance
@@ -53,6 +56,9 @@ MotionControl * Control = 0;
 
 // PMU application instance name
 std::string PmuInstance = "ops";   ///< application instance
+
+// Description of command line options
+po::options_description OptionsDesc("Options");
 
 // Rotation *beam* angle correction in degrees, which can be set on the command
 // line, is used to set the home count value for the rotation drive. If beam is
@@ -236,6 +242,56 @@ updatePMURegistration() {
     PMU_auto_register("running");
 }
 
+/// Print usage information
+void
+usage(const char* argv0) {
+    std::cerr << "Usage: " << argv0 << 
+            " [option]" << std::endl;
+    std::cerr << OptionsDesc << std::endl;
+    logx::LogUsage(std::cerr);
+}
+
+/// Parse the command line options, removing the successfully parsed bits from
+/// argc/argv.
+void
+parseOptions(int & argc, char** argv)
+{
+    // Description for our command line options
+    OptionsDesc.add_options()
+            ("help", "Describe options")
+            ("rotBeamAngleCorrection", 
+                po::value<float>(&RotBeamAngleCorrection),
+                "Rotation beam angle correction, degrees")
+            ("tiltBeamAngleCorrection",
+                po::value<float>(&TiltBeamAngleCorrection), 
+                "Tilt beam angle correction, degrees")
+            ;
+
+    po::variables_map vm;
+    po::command_line_parser parser(argc, argv);
+    parser.options(OptionsDesc);
+    po::parsed_options parsedOpts = parser.run();
+    po::store(parsedOpts, vm);
+    po::notify(vm);
+    
+    if (vm.count("help")) {
+        usage(argv[0]);
+        exit(0);
+    }
+    
+    // Retain only the unparsed args in argv, adjusting argc and argv
+    std::vector<std::string> unparsed = 
+            po::collect_unrecognized(parsedOpts.options, po::include_positional);
+    if (unparsed.size() > 0) {
+        std::cerr << "Unrecognized options: ";
+        for (unsigned int i = 0; i < unparsed.size(); i++) {
+            std::cerr << unparsed[i].c_str() << " ";
+        }
+        std::cerr << std::endl;
+        exit(1);
+    }
+}
+
 /////////////////////////////////////////////////////////////////////
 int
 main(int argc, char** argv)
@@ -243,7 +299,19 @@ main(int argc, char** argv)
     // Let logx get and strip out its arguments
     logx::ParseLogArgs(argc, argv);
 
-    // set up registration with procmap if instance is specified
+    ILOG << "MotionControlDaemon start: " << 
+        QDateTime::currentDateTimeUtc().toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
+
+    // Get our local options
+    parseOptions(argc, argv);
+
+    // Log the angle correction values
+    ILOG << "Rotation beam angle correction: " << RotBeamAngleCorrection <<
+        " deg";
+    ILOG << "Tilt beam angle correction: " << TiltBeamAngleCorrection <<
+        " deg";
+
+    // set up registration with procmap
     if (PmuInstance.size() > 0) {
         PMU_auto_init("MotionControlDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
         ILOG << "will register with procmap, instance: " << PmuInstance;
