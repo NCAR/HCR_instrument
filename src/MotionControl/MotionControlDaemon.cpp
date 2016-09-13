@@ -54,15 +54,21 @@ MotionControl * Control = 0;
 // PMU application instance name
 std::string PmuInstance = "ops";   ///< application instance
 
-// Count values to be assigned to the "home position" for each of the drives.
-// Optimally, these are set so that putting both drives at their zero positions
-// will cause the radar beam to be pointing exactly at zenith when the C-MIGITS
-// is reporting zero roll and zero pitch.
+// Rotation *beam* angle correction in degrees, which can be set on the command
+// line, is used to set the home count value for the rotation drive. If beam is
+// commanded to point nadir (straight down, or desired true rotation angle 180
+// degrees) and the beam actually points left of the aircraft, then set this
+// angle more positive. If the beam actually points right of the aircraft, set
+// it more negative.
+float RotBeamAngleCorrection = 3.10;    // coarse lab measurement 2016-08-31
 
-static const int ROT_DRIVE_HOME_COUNTS = 3450;  // coarse lab measurement 2016-08-31
-//static const int ROT_DRIVE_HOME_COUNTS = 3377;  // from CSET TF01 (offset measured w/stabilization on)
-static const int TILT_DRIVE_HOME_COUNTS = -230; // coarse lab measurement 2016-09-02
-//static const int TILT_DRIVE_HOME_COUNTS = -386; // from CSET TF01 (offset measured w/stabilization on)
+// Tilt *beam* angle correction in degrees, which can be set on the command
+// line, is used to set the home count value for the tilt drive. If beam is
+// commanded to point nadir (straight down, rotation angle 180 degrees) and the
+// beam actually points forward of the aircraft, then set this angle more
+// positive. If the beam actually points aft of the aircraft, set it more
+// negative.
+float TiltBeamAngleCorrection = -0.34;  // coarse lab measurement 2016-09-02
 
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
@@ -87,7 +93,20 @@ public:
     {
         paramList.verifyEnd(0);
 
-        Control->homeDrive(ROT_DRIVE_HOME_COUNTS, TILT_DRIVE_HOME_COUNTS);
+        // Calculate the home position count for the rotation drive from the
+        // beam angle correction.
+        int rotDriveHomeCounts = int(RotBeamAngleCorrection / 360.0 *
+            RotServoDrive::ROT_DRIVE_COUNTS_PER_CIRCLE);
+        // Calculate the home position count for the tilt drive from the
+        // beam angle correction. NOTE: For tilt, there's an extra factor of
+        // 0.5 applied because of reflection, i.e., delta(reflectorAngle) =
+        // 0.5 * delta(beamAngle).
+        int tiltDriveHomeCounts = int(0.5 * TiltBeamAngleCorrection/ 360.0 *
+            TiltServoDrive::TILT_DRIVE_COUNTS_PER_CIRCLE);
+
+        // Home the drives and set the appropriate count values for
+        // their home positions.
+        Control->homeDrive(rotDriveHomeCounts, tiltDriveHomeCounts);
 
         *retvalP = xmlrpc_c::value_int(0);
     }
