@@ -64,17 +64,17 @@ po::options_description OptionsDesc("Options");
 // line, is used to set the home count value for the rotation drive. If beam is
 // commanded to point nadir (straight down, or desired true rotation angle 180
 // degrees) and the beam actually points left of the aircraft, then set this
-// angle more positive. If the beam actually points right of the aircraft, set
-// it more negative.
-float RotBeamAngleCorrection = 3.10;    // coarse lab measurement 2016-08-31
+// angle more negative. If the beam actually points right of the aircraft, set
+// it more positive.
+float RotBeamAngleCorrection = 0.0;
 
 // Tilt *beam* angle correction in degrees, which can be set on the command
 // line, is used to set the home count value for the tilt drive. If beam is
 // commanded to point nadir (straight down, rotation angle 180 degrees) and the
 // beam actually points forward of the aircraft, then set this angle more
-// positive. If the beam actually points aft of the aircraft, set it more
-// negative.
-float TiltBeamAngleCorrection = -0.34;  // coarse lab measurement 2016-09-02
+// negative. If the beam actually points aft of the aircraft, set it more
+// positive.
+float TiltBeamAngleCorrection = 0.0;
 
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
@@ -101,14 +101,16 @@ public:
 
         // Calculate the home position count for the rotation drive from the
         // beam angle correction.
-        int rotDriveHomeCounts = int(RotBeamAngleCorrection / 360.0 *
+        int rotDriveHomeCounts = int(-RotBeamAngleCorrection / 360.0 *
             RotServoDrive::ROT_DRIVE_COUNTS_PER_CIRCLE);
+        ILOG << "Rotation drive home counts: " << rotDriveHomeCounts;
         // Calculate the home position count for the tilt drive from the
         // beam angle correction. NOTE: For tilt, there's an extra factor of
         // 0.5 applied because of reflection, i.e., delta(reflectorAngle) =
         // 0.5 * delta(beamAngle).
-        int tiltDriveHomeCounts = int(0.5 * TiltBeamAngleCorrection/ 360.0 *
+        int tiltDriveHomeCounts = int((TiltBeamAngleCorrection * 0.5) / 360.0 *
             TiltServoDrive::TILT_DRIVE_COUNTS_PER_CIRCLE);
+        ILOG << "Tilt drive home counts: " << tiltDriveHomeCounts;
 
         // Home the drives and set the appropriate count values for
         // their home positions.
@@ -270,25 +272,18 @@ parseOptions(int & argc, char** argv)
     po::variables_map vm;
     po::command_line_parser parser(argc, argv);
     parser.options(OptionsDesc);
-    po::parsed_options parsedOpts = parser.run();
-    po::store(parsedOpts, vm);
-    po::notify(vm);
+    try {
+        po::parsed_options parsedOpts = parser.run();
+        po::store(parsedOpts, vm);
+        po::notify(vm);
+    } catch (std::exception & ex) {
+        usage(argv[0]);
+        exit(1);
+    }
     
     if (vm.count("help")) {
         usage(argv[0]);
         exit(0);
-    }
-    
-    // Retain only the unparsed args in argv, adjusting argc and argv
-    std::vector<std::string> unparsed = 
-            po::collect_unrecognized(parsedOpts.options, po::include_positional);
-    if (unparsed.size() > 0) {
-        std::cerr << "Unrecognized options: ";
-        for (unsigned int i = 0; i < unparsed.size(); i++) {
-            std::cerr << unparsed[i].c_str() << " ";
-        }
-        std::cerr << std::endl;
-        exit(1);
     }
 }
 
