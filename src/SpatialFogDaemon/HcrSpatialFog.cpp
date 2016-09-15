@@ -63,7 +63,7 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
     connect(_fdReader, SIGNAL(newData(QByteArray)),
             &_pktFactory, SLOT(appendData(QByteArray)));
     connect(_fdReader, SIGNAL(newData(QByteArray)),
-            this, SLOT(_gotBytesFromDevice()));
+            this, SLOT(_gotBytesFromDevice(QByteArray)));
 
     // Configure and start the data timeout timer. Call _dataTimeout() upon
     // timer expiration.
@@ -75,6 +75,50 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
     // Pass packets from the factory to our _packetHandler() slot
     connect(&_pktFactory, SIGNAL(newPacket(AnppPacket *)),
             this, SLOT(_packetHandler(AnppPacket *)));
+
+    // Files of all incoming raw Advanced Navigation Packet Protocol (ANPP)
+    // data will be written under this directory if it's not an empty string.
+    std::string anppDestDir = "/data/hcr/INS";
+
+    // Create the ANPP destination directory if it doesn't exist
+    if (! anppDestDir.empty()) {
+        // Attempt to create the destination directory using "mkdir -p"
+        std::ostringstream oss;
+        oss << "mkdir -p " << anppDestDir;
+        FILE * mkdirPipe = popen(oss.str().c_str(), "r");
+        if (! mkdirPipe) {
+            ELOG << "Unable to execute '" << oss.str() <<
+                    "', ANPP files will not be written!";
+            anppDestDir = "";
+        } else {
+            // If "mkdir -p" executes properly, there won't be any output
+            char reply[256];
+            if (fgets(reply, sizeof(reply), mkdirPipe)) {
+                ELOG << "Error creating directory '" << anppDestDir << "': " <<
+                        reply;
+                // Read the rest of the reply if it's multi-line
+                while (fgets(reply, sizeof(reply), mkdirPipe)) {
+                    ELOG << "    " << reply;
+                }
+                // Let them know we won't write ANPP
+                ELOG << "ANPP files will not be written!";
+                anppDestDir = "";
+            }
+            // Close the command pipe
+            pclose(mkdirPipe);
+        }
+    }
+
+    // If we still have a ANPP destination directory, open the file where ANPP 
+    // data will be written.
+    if (! anppDestDir.empty()) {
+        std::ostringstream oss;
+        QDateTime now = QDateTime::currentDateTimeUtc();
+        oss << anppDestDir << "/" <<
+                now.toString("yyyyMMdd_hhmmss").toStdString() << ".anpp";
+        _anppFile = fopen(oss.str().c_str(), "w+");
+    }
+
 }
 
 HcrSpatialFog::~HcrSpatialFog() {
@@ -226,7 +270,7 @@ HcrSpatialFog::_sendAnppPacket(const AnppPacket & packet) const {
 }
 
 void
-HcrSpatialFog::_gotBytesFromDevice() {
+HcrSpatialFog::_gotBytesFromDevice(QByteArray byteArray) {
     if (! _devResponsive) {
         // Mark the device as responsive
         _devResponsive = true;
@@ -236,6 +280,11 @@ HcrSpatialFog::_gotBytesFromDevice() {
 
     // Restart the data timeout timer
     _dataTimeoutTimer.start();
+    
+    // Archive incoming bytes to the ANPP file if it's open
+    if (_anppFile) {
+        fwrite(byteArray.data(), byteArray.size(), 1, _anppFile);
+    }
 }
 
 void

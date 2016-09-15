@@ -92,15 +92,24 @@ private:
     /// @brief The file message queue (FMQ) where data will be written for
     /// sharing with other processes.
     SpatialFogFmq _fmq;
+    
+    // @brief File where incoming INS data will be written in raw Advanced
+    // Navigation Packet Protocol (ANPP) form
+    FILE * _anppFile;
 
 private slots:
     /// @brief Slot which receives incoming Advanced Navigation Packet Protocol
     /// packets, in the form of ANPPPacket objects.
     void _packetHandler(AnppPacket * pkt);
 
-    /// @brief Slot which resets the data timeout timer and marks the device
-    /// as responsive.
-    void _gotBytesFromDevice();
+    /// @brief Slot which marks the device as responsive, and (possibly)
+    /// archives the incoming raw data.
+    ///
+    /// This slot marks the device as responsive, and resets the data timeout
+    /// timer. If _anppFile currently points to an open file, then all of the
+    /// incoming data in byteArray is appended to the file.
+    /// @param byteArray QByteArray containing the new bytes
+    void _gotBytesFromDevice(QByteArray byteArray);
 
     /// @brief Take action when a data timeout occurs
     void _onDataTimeout();
