@@ -76,7 +76,7 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
     connect(&_pktFactory, SIGNAL(newPacket(AnppPacket *)),
             this, SLOT(_packetHandler(AnppPacket *)));
 
-    // Files of all incoming raw Advanced Navigation Packet Protocol (ANPP)
+    // A file of all incoming raw Advanced Navigation Packet Protocol (ANPP)
     // data will be written under this directory if it's not an empty string.
     std::string anppDestDir = "/data/hcr/INS";
 
