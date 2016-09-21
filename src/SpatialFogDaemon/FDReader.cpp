@@ -22,7 +22,10 @@ LOGGING("FDReader")
 
 FDReader::FDReader(int inFd) : _workerThread() {
     FDReaderWorker * worker = new FDReaderWorker(inFd, &_workerThread);
+    // Set up lazy deletion of the worker when the thread exits
     connect(&_workerThread, SIGNAL(finished()), worker, SLOT(deleteLater()));
+    // Map the thread's finished() signal to our own finished() signal
+    connect(&_workerThread, SIGNAL(finished()), this, SIGNAL(finished()));
     // Map the worker's newData() signal to our own newData() signal
     connect(worker, SIGNAL(newData(QByteArray)),
             this, SIGNAL(newData(QByteArray)));
@@ -100,13 +103,11 @@ FDReaderWorker::_tryToRead() {
         case EBADF:
             ELOG << "Stopping because file descriptor " << _fd <<
                 " has been closed!";
-            _runWhenFreeTimer->stop();
-            _workerThread->exit(1);
+            _stopReading(1);
             break;
         default:
             ELOG << "Stopping on unknown pselect() error " << errno;
-            _runWhenFreeTimer->stop();
-            _workerThread->exit(1);
+            _stopReading(1);
             break;
         }
     }
@@ -123,7 +124,8 @@ FDReaderWorker::_readData() {
     int nread = read(_fd, readBuffer, sizeof(readBuffer));
 
     if (nread == 0) {
-        WLOG << "_readData(): Unexpected empty read";
+        ILOG << "End-of-file reached";
+        _stopReading(0);
         return;
     } else if (nread == -1) {
         // Report the error and return
@@ -142,4 +144,10 @@ FDReaderWorker::_readData() {
 
     // We have data. Emit newData() to ship it off.
     emit newData(QByteArray(reinterpret_cast<char*>(&readBuffer), nread));
+}
+
+void
+FDReaderWorker::_stopReading(int exitStatus) {
+    _runWhenFreeTimer->stop();
+    _workerThread->exit(exitStatus);
 }

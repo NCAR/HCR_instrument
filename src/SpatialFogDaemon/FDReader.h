@@ -13,7 +13,8 @@
 #include <QTimer>
 
 /// @brief A Qt class which provides data asynchronously as it becomes available
-/// on a given file descriptor.
+/// on a given file descriptor, which is typically connected to a serial port
+/// device.
 ///
 /// The class emits signal newData(QByteArray data) when new data have been
 /// read from the file descriptor.
@@ -30,8 +31,13 @@ public:
     virtual ~FDReader();
 
 signals:
+    /// @brief Signal emitted when new data have been read from the file
+    /// descriptor.
     void newData(QByteArray data);
 
+    /// @brief Signal emitted when the reader thread finishes, either due
+    /// to error or end-of-file.
+    void finished();
 };
 
 /// @brief Worker class to do the real work
@@ -57,9 +63,14 @@ private:
     QThread * _workerThread;
     QTimer * _runWhenFreeTimer;
 
-    // @brief Read available data and emit a finished() signal with the new
+    // @brief Read available data and emit a newData() signal with the new
     // data.
     void _readData();
+    
+    // @brief Stop reading and stop the worker thread with the given exit
+    // status.
+    // @param exitStatus the exit status passed when exiting the worker thread
+    void _stopReading(int exitStatus);
 };
 
 #endif /* _FDREADER_H_ */
