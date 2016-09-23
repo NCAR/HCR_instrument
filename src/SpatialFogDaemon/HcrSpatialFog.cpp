@@ -109,7 +109,7 @@ HcrSpatialFog::HcrSpatialFog(std::string devName) :
         }
     }
 
-    // If we still have a ANPP destination directory, open the file where ANPP 
+    // If we still have an ANPP destination directory, open the file where ANPP
     // data will be written.
     if (! anppDestDir.empty()) {
         std::ostringstream oss;
@@ -201,23 +201,30 @@ HcrSpatialFog::_openTtyFd() {
         exit(1);
     }
 
-    // Make the port 8 data bits, 1 stop bit, odd parity, "raw"
-    struct termios ios;
-    if (tcgetattr(_ttyFd, &ios) == -1) {
-        ELOG << __PRETTY_FUNCTION__ << ": error getting " << _devName <<
-                " attributes: " << strerror(errno);
+    // If we've opened a tty device file, configure it for communication with
+    // a Spatial FOG.
+    if (isatty(_ttyFd)) {
+        // Make the port 8 data bits, no parity, 1 stop bit, "raw"
+        struct termios ios;
+        if (tcgetattr(_ttyFd, &ios) == -1) {
+            ELOG << __PRETTY_FUNCTION__ << ": error getting " << _devName <<
+                    " attributes: " << strerror(errno);
+            exit(1);
+        }
+        cfmakeraw(&ios);
+
+        if (tcsetattr(_ttyFd, TCSAFLUSH, &ios) == -1) {
+            ELOG << __PRETTY_FUNCTION__ << ": error setting " << _devName <<
+                    " attributes: " << strerror(errno);
+            exit(1);
+        }
+
+        // Start at 115200 baud
+        _setBaud(B115200);
+    } else {
+        ELOG << _devName << " is not a tty device!";
         exit(1);
     }
-    cfmakeraw(&ios);
-
-    if (tcsetattr(_ttyFd, TCSAFLUSH, &ios) == -1) {
-        ELOG << __PRETTY_FUNCTION__ << ": error setting " << _devName <<
-                " attributes: " << strerror(errno);
-        exit(1);
-    }
-
-    // Start at 115200 baud
-    _setBaud(B115200);
 
     DLOG << "Done configuring " << _devName;
 }
