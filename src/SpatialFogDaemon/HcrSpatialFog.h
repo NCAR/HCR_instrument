@@ -44,15 +44,16 @@
 #include "FDReader.h"
 #include "QAnppPacketFactory.h"
 
-class HcrSpatialFog: public QObject {
+
+/// @brief Class which opens a serial port connection to a Spatial FOG INS,
+/// reads the incoming data stream, and publishes new status, attitude, and
+/// velocity values to the SpatialFogFmq (file message queue) as the new
+/// values arrive from the INS.
+class HcrSpatialFog : public QObject {
     Q_OBJECT
 public:
     HcrSpatialFog(std::string devName);
     virtual ~HcrSpatialFog();
-
-signals:
-    void newAttitude(QDateTime time,
-                     double pitchDeg, double rollDeg, double headingDeg);
 
 private:
     /// @brief Open and configure the terminal port to the Spatial FOG
