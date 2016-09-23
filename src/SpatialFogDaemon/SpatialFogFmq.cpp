@@ -360,10 +360,10 @@ SpatialFogFmq::_writeCurrentMsg() {
     uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
     int32_t lagMs = nowMs - _currentMsg.attitudeTime;
     if (_currentMsg.attitudeTime != 0 && (lagMs < 0 || lagMs > 100)) {
-        time_t secs = _currentMsg.attitudeTime / 1000;
-        uint32_t msecs = _currentMsg.attitudeTime % 1000;
-        QDateTime qSpatialTime = QDateTime::fromTime_t(secs).addMSecs(msecs);
-        QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
+        QDateTime qSpatialTime =
+                QDateTime::fromMSecsSinceEpoch(_currentMsg.attitudeTime).toUTC();
+        QDateTime qNow =
+                QDateTime::fromTime_t(tvNow.tv_sec).toUTC().addMSecs(tvNow.tv_usec / 1000);
         WLOG << "Datum for " <<
                 qSpatialTime.toString("hh:mm:ss.zzz").toStdString() <<
                 " arrived at " << qNow.toString("hh:mm:ss.zzz").toStdString() << 
