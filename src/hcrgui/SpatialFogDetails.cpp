@@ -108,7 +108,8 @@ SpatialFogDetails::updateStatus(bool daemonResponding,
             status.headingInitialized() ? _greenLED : _greenLED_off);
     _ui.utcTimeInitializedLed->setPixmap(
             status.utcTimeInitialized() ? _greenLED : _greenLED_off);
-    // Red light for no GNSS fix, amber for 2D fix, and green for
+
+    // GNSS fix: red light for no fix, amber for 2D fix, and green for
     // anything above that.
     QPixmap & led(_redLED);
     if (status.gnssFixValue() == 1) {
@@ -118,6 +119,7 @@ SpatialFogDetails::updateStatus(bool daemonResponding,
     }
     _ui.gnssFixLed->setPixmap(led);
     _ui.gnssFixDescription->setText(status.gnssFixText());
+
     _ui.event1OccurredLed->setPixmap(
             status.event1Occurred() ? _greenLED : _greenLED_off);
     _ui.event2OccurredLed->setPixmap(
