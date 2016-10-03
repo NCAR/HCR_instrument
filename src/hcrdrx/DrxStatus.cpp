@@ -43,7 +43,8 @@ DrxStatus::DrxStatus() :
     _xmitPulseWidth(0.0),
     _prt(0.0),
     _nGates(0),
-    _gateSpacing(0.0) {
+    _gateSpacing(0.0),
+    _motorZeroPositionSet(false) {
 }
 
 DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
@@ -59,6 +60,7 @@ DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
         downconverter = dynamic_cast<const Pentek::p7142sd3cDn*>(pentek.downconverter(chan));
     }
     _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
+    _motorZeroPositionSet = pentek.motorZeroPositionSet();
 }
 
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
@@ -67,7 +69,8 @@ DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
     _xmitPulseWidth(0.0),
     _prt(0.0),
     _nGates(0),
-    _gateSpacing(0.0) {
+    _gateSpacing(0.0),
+    _motorZeroPositionSet(false) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);

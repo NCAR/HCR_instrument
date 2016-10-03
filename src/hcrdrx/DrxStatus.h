@@ -97,6 +97,10 @@ public:
     /// @brief Return the transmitter pulse width, s
     /// @return the transmitter pulse width, s
     double xmitPulseWidth() const { return(_xmitPulseWidth); }
+
+    /// @brief Return true iff the zero position for motor counts has been set
+    /// @return true iff the zero position for motor counts has been set
+    bool motorZeroPositionSet() const { return(_motorZeroPositionSet); }
     
 private:
     friend class boost::serialization::access;
@@ -117,6 +121,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_prt);
             ar & BOOST_SERIALIZATION_NVP(_nGates);
             ar & BOOST_SERIALIZATION_NVP(_gateSpacing);
+            ar & BOOST_SERIALIZATION_NVP(_motorZeroPositionSet);
         }
         if (version >= 1) {
             // Version 1 stuff will go here...
@@ -140,7 +145,9 @@ private:
     
     /// gate spacing, m
     double _gateSpacing;
-    
+
+    /// Has zero position for Pentek motor quadrature counts been set?
+    bool _motorZeroPositionSet;
 };
 
 // Increment this class version number when member variables are changed.
