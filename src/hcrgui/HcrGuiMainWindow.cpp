@@ -902,7 +902,7 @@ HcrGuiMainWindow::_update() {
     if (! _hcrdrxStatusThread.serverIsResponding()) {
         // Red light if hcrdrx is not responding
         light = _redLED;
-    } else if (_drxStatus.motorZeroPositionSet()) {
+    } else if (! _drxStatus.motorZeroPositionSet()) {
         // Amber light if motor zero position has not been set
         light = _amberLED;
     }
