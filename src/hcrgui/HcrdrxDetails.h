@@ -29,6 +29,7 @@
 #define HCRDRXDETAILS_H_
 
 #include <QDialog>
+#include <QPixmap>
 #include <DrxStatus.h>
 
 #include "ui_HcrdrxDetails.h"
@@ -45,5 +46,8 @@ public slots:
     void updateStatus(bool daemonResponding, const DrxStatus & status);
 private:
     Ui::HcrdrxDetails _ui;
+    QPixmap _amberLED;
+    QPixmap _greenLED;
+    QPixmap _greenLED_off;
 };
 #endif /* HCRDRXDETAILS_H_*/

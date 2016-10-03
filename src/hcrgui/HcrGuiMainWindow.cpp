@@ -634,13 +634,14 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
 
     // With the motors both at their zero positions, tell the Pentek to zero
     // its position counts for both motors.
+    // We sleep briefly to give hcrdrx long enough to handle the XML-RPC call
+    // to zero motor counts on the Pentek card, then restore the previous state
+    // for attitude correction.
     ILOG << "Elmo homing complete. Zeroing Pentek's motor counts.";
     _hcrdrxStatusThread.rpcClient().zeroPentekMotorCounts();
+    usleep(100000);
 
 done:
-    // Sleep momentarily, then restore the previous state for attitude
-    // correction
-    usleep(100000);
     _mcStatusThread.rpcClient().setCorrectionEnabled(savedState);
 }
 
@@ -832,7 +833,7 @@ HcrGuiMainWindow::_update() {
     std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
-    // C-MIGITS status light
+    // INS status light
     light = _redLED;
     if (_insStatus.gnssFixValue() > 1) {
         // Green light if GNSS fix is 3D or better
@@ -897,8 +898,15 @@ HcrGuiMainWindow::_update() {
     }
     
     // hcrdrx status LED
-    _ui.hcrdrxStatusIcon->setPixmap(_hcrdrxStatusThread.serverIsResponding() ?
-            _greenLED : _redLED);
+    light = _greenLED;
+    if (! _hcrdrxStatusThread.serverIsResponding()) {
+        // Red light if hcrdrx is not responding
+        light = _redLED;
+    } else if (_drxStatus.motorZeroPositionSet()) {
+        // Amber light if motor zero position has not been set
+        light = _amberLED;
+    }
+    _ui.hcrdrxStatusIcon->setPixmap(light);
     
     // HcrPmc730Daemon status LED
     light = _greenLED;

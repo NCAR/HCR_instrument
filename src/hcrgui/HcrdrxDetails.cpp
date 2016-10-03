@@ -32,7 +32,10 @@
 
 HcrdrxDetails::HcrdrxDetails(QWidget *parent) :
     QDialog(parent),
-    _ui() {
+    _ui(),
+    _amberLED(":/amberLED.png"),
+    _greenLED(":/greenLED.png"),
+    _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
     // Initialize to no status available
@@ -53,6 +56,8 @@ HcrdrxDetails::updateStatus(bool daemonResponding, const DrxStatus & status) {
     _ui.prtValue->setText(text.sprintf("%.3f", 1.0e6 * status.prt()));
     _ui.nGatesValue->setText(QString::number(status.nGates()));
     _ui.gateSpacingValue->setText(text.sprintf("%.1f", status.gateSpacing()));
+    _ui.zeroSetValue->setText(status.motorZeroPositionSet() ? "Set" : "Unset");
+    _ui.zeroSetIcon->setPixmap(status.motorZeroPositionSet() ? _greenLED : _amberLED);
     _ui.pentekFpgaTempValue->setText(QString::number(status.pentekFpgaTemp()));
     _ui.pentekBoardTempValue->setText(QString::number(status.pentekBoardTemp()));
 }
@@ -63,6 +68,8 @@ HcrdrxDetails::noStatus() {
     _ui.prtValue->setText("0.0");
     _ui.nGatesValue->setText("0");
     _ui.gateSpacingValue->setText("0");
+    _ui.zeroSetValue->setText("Unknown");
+    _ui.zeroSetIcon->setPixmap(_greenLED_off);
     _ui.pentekFpgaTempValue->setText("---");
     _ui.pentekBoardTempValue->setText("---");
 }
