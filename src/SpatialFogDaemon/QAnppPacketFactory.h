@@ -12,7 +12,7 @@
 #include <vector>
 #include <QObject>
 
-#include <AnppPacket.h>
+#include <AnppPacketFactory.h>  // provides access to all of the packet classes
 
 /// @brief Factory which accepts incoming raw Advanced Navigation Packet
 /// Protocol (ANPP) data, then creates and emits AnppPacket objects.

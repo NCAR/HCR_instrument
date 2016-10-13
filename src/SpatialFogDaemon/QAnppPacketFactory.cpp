@@ -8,7 +8,6 @@
 #include <inttypes.h>
 #include <iomanip>
 #include <logx/Logging.h>
-#include <AnppPacketFactory.h>
 #include <QDateTime>
 #include <QThread>
 
