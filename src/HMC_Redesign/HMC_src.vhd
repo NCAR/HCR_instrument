@@ -225,8 +225,8 @@ signal pol_state : STD_LOGIC_VECTOR(1 downto 0);   -- polarization state of Tx p
 signal wg_sw_pos: STD_LOGIC;								-- current waveguide switch position
 signal cmd_wg_sw_pos: STD_LOGIC;							-- commanded waveguide switch position
 
-signal t0_d1: STD_LOGIC;
-signal t0_rising: STD_LOGIC;
+-- signal t0_d1: STD_LOGIC;
+-- signal t0_rising: STD_LOGIC;
 
 signal hv_flag: STD_LOGIC;									-- H/V Flag to be sent to Pentek for housekeeping
 
@@ -940,7 +940,71 @@ begin
 				ems_67_rx_stat <= '0';
 			else
 				ems_67_rx_stat <= '1';
-			end if;						
+			end if;
+when "111" => -- vertical transmit, receive both, but enable noise source for testing		
+		-- Transmit
+			if (BIT_EMS = "0101110") then
+				ems_tx_stat <= '1';
+			else
+				ems_tx_stat <= '0';
+			end if;
+			if (BIT_EMS(1)) = '0' then
+				ems_1_tx_stat <= '0';
+			else
+				ems_1_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(2)) = '1' then
+				ems_2_tx_stat <= '0';
+			else
+				ems_2_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(3)) = '1' then
+				ems_3_tx_stat <= '0';
+			else
+				ems_3_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(5 downto 4)) = "01" then
+				ems_45_tx_stat <= '0';
+			else
+				ems_45_tx_stat <= '1';
+			end if;
+			if (BIT_EMS(7 downto 6)) = "01" then
+				ems_67_tx_stat <= '0';
+			else
+				ems_67_tx_stat <= '1';
+			end if;
+			
+		-- Receive
+			if (BIT_EMS = "1010011") then
+				ems_rx_stat <= '1';
+			else
+				ems_rx_stat <= '0';
+			end if;
+			if (BIT_EMS(1)) = '1' then
+				ems_1_rx_stat <= '0';
+			else
+				ems_1_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(2)) = '1' then
+				ems_2_rx_stat <= '0';
+			else
+				ems_2_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(3)) = '0' then
+				ems_3_rx_stat <= '0';
+			else
+				ems_3_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(5 downto 4)) = "10" then
+				ems_45_rx_stat <= '0';
+			else
+				ems_45_rx_stat <= '1';
+			end if;
+			if (BIT_EMS(7 downto 6)) = "10" then
+				ems_67_rx_stat <= '0';
+			else
+				ems_67_rx_stat <= '1';
+			end if;					
 		when others =>   -- default bad status for all
 			ems_tx_stat <= '0';
 			ems_rx_stat <= '0';
@@ -1053,6 +1117,8 @@ begin
 			MOD_PULSE_DISABLE <= '1';
 		when "100" =>				-- Noise source cal, no mod_pulse generated
 				MOD_PULSE_DISABLE <= '1';
+		when "111" =>				-- Noise source isolation test, no mod_pulse generated
+				MOD_PULSE_DISABLE <= '1';				
 		when others =>
 				MOD_PULSE_DISABLE <= mod_pulse_error;
 		end case;
@@ -1285,6 +1351,8 @@ begin
 					state <= s1;
 				elsif (ops_mode = "100" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1' AND wg_stat = '1') then   -- Noise source cal
 					state <= s1;
+				elsif (ops_mode = "111" AND EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND ems_pwr_ok = '1' AND wg_stat = '1') then   -- Noise source isolation test
+					state <= s1;					
 				elsif(EMS_TRIG = '1' AND T0 = '1' AND tx_dly = '0' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1' AND wg_stat = '1') then
 					state <= s1;
 				end if;		
@@ -1292,11 +1360,15 @@ begin
 				if (ops_mode = "110" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Test Mode
 					state <= s2;
 				elsif (ops_mode = "100" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Noise source cal
-					state <= s2;					
+					state <= s2;
+				elsif (ops_mode = "111" AND ems_tx_ok = '1' AND rx_dly = '0' AND ems_pwr_ok = '1') then    -- Noise source isolation test
+					state <= s2;										
 				elsif(ems_tx_ok = '1' AND rx_dly = '0' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s2;
 --				elsif(ems_tx_ok = '0' AND rx_dly = '0' AND tx_dly = '1' ) then
 --					state <=s0;
+-----------------------------------------------------------------------------------------------------
+--				WHY AREN'T ALL STATES COVERED HERE???
 				elsif(ems_pwr_ok = '0' AND rx_dly = '0' AND tx_dly = '1') then
 					state <=s0;
 				elsif(ops_mode = "000" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
@@ -1311,12 +1383,15 @@ begin
 					state <=s0;
 				elsif(ops_mode = "101" AND hv_dly = '0' AND rx_dly = '0' AND tx_dly = '1') then
 					state <=s0;										
-				end if;			
+				end if;
+-------------------------------------------------------------------------------------------------------------				
 			when s2 =>
 				if (ops_mode = "110" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Test Mode
 					state <= s3;
 				elsif (ops_mode = "100" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Noise source cal
-					state <= s3;					
+					state <= s3;
+				elsif (ops_mode = "111" AND tx_dly = '1' AND ems_pwr_ok = '1') then  -- Noise source isolation test
+					state <= s3;										
 				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '1' AND ems_pwr_ok = '1') then
 					state <= s3;
 				elsif(rx_dly = '1' AND tx_dly = '1' AND hv_dly = '0' AND ems_pwr_ok = '1') then
@@ -1537,7 +1612,21 @@ begin
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
-				cmd_wg_sw_pos <= '0';	
+				cmd_wg_sw_pos <= '0';
+			elsif (ops_mode = "111") then -- Vertical tx, receive both, enable noise source for testing
+				MOD_PULSE_HMC <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
+				hv_flag <= '1';			-- V				
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
+				NOISE_SOURCE_EN <= '1';
+				cmd_wg_sw_pos <= '1';									
 			else
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
@@ -1673,7 +1762,20 @@ begin
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
-				cmd_wg_sw_pos <= '0';					
+				cmd_wg_sw_pos <= '0';
+			elsif (ops_mode = "111") then -- Vertical tx, receive both, enable noise source for test	
+				MOD_PULSE_HMC <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
+				NOISE_SOURCE_EN <= '1';
+				cmd_wg_sw_pos <= '1';				
 			else
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
@@ -1810,7 +1912,20 @@ begin
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
-				cmd_wg_sw_pos <= '0';					
+				cmd_wg_sw_pos <= '0';
+			elsif (ops_mode = "111") then -- Vertical tx, receive both				
+				MOD_PULSE_HMC <= '0';
+				EMS_OUT(1) <= NOT EMS_TRIG;
+				EMS_OUT(2) <= '1';
+				EMS_OUT(3) <= EMS_TRIG;
+				EMS_OUT(4) <= EMS_TRIG;
+				EMS_OUT(5) <= NOT EMS_TRIG;
+				EMS_OUT(6) <= EMS_TRIG;
+				EMS_OUT(7) <= NOT EMS_TRIG;
+				WG_SW_CTRL_TERM <= '1';
+				WG_SW_CTRL_NOISE <= '0';
+				NOISE_SOURCE_EN <= '1';
+				cmd_wg_sw_pos <= '1';				
 			else
 				MOD_PULSE_HMC <= '0';
 				EMS_OUT <= "0000000";
@@ -1827,7 +1942,7 @@ begin
 				WG_SW_CTRL_TERM <= '0';
 				WG_SW_CTRL_NOISE <= '1';
 				NOISE_SOURCE_EN <= '0';
-				cmd_wg_sw_pos <= '0';					
+				cmd_wg_sw_pos <= '0';
 	end case;
 end process;	
 			
