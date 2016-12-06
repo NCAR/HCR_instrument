@@ -543,6 +543,7 @@ int IwrfExport::_sendIwrfMetaData()
     case HcrPmc730::HMC_MODE_V_HV:
     case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
     case HcrPmc730::HMC_MODE_BENCH_TEST:
+    case HcrPmc730::HMC_MODE_UNUSED_7:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
