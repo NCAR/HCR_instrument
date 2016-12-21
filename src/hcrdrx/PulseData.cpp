@@ -77,6 +77,8 @@ void PulseData::set(int64_t pulseSeqNum,
 
   _nGates = nGates;
 
+  _xmitPolarization = xmitPol;
+  
   _allocIq();
   memcpy(_iq, iq, _nGates * 2 * sizeof(int16_t));
 
