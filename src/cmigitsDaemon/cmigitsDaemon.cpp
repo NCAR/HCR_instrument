@@ -145,7 +145,7 @@ main(int argc, char *argv[]) {
     } else {
         PMU_auto_register("creating Cmigits instance");
         std::string devName(argv[1]);
-        Cm = new Cmigits(devName, true);
+        Cm = new Cmigits(devName, true, "/data/hcr/cmigits");
     }
 
     // Create our XML-RPC method registry and server instance
