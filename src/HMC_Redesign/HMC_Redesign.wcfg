@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="C:/TEMP/src/HMC_Redesign/HMC_tb_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="C:/Users/ericloew/Desktop/GitHub/HCR_instrument/src/HMC_Redesign/HMC_tb_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="hmc_tb" />
             <top_module name="std_logic_1164" />
@@ -12,19 +12,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="47" />
-   <wvobject fp_name="/hmc_tb/timer_6" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">timer_6</obj_property>
-      <obj_property name="ObjectShortName">timer_6</obj_property>
-   </wvobject>
-   <wvobject fp_name="/hmc_tb/timer_7" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">timer_7</obj_property>
-      <obj_property name="ObjectShortName">timer_7</obj_property>
-   </wvobject>
-   <wvobject fp_name="/hmc_tb/tx_gate" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">tx_gate</obj_property>
-      <obj_property name="ObjectShortName">tx_gate</obj_property>
-   </wvobject>
+   <WVObjectSize size="51" />
    <wvobject fp_name="/hmc_tb/reset" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
@@ -33,9 +21,25 @@
       <obj_property name="ElementShortName">ext_clk</obj_property>
       <obj_property name="ObjectShortName">ext_clk</obj_property>
    </wvobject>
+   <wvobject fp_name="/hmc_tb/t0" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">t0</obj_property>
+      <obj_property name="ObjectShortName">t0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/mod_pulse" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mod_pulse</obj_property>
+      <obj_property name="ObjectShortName">mod_pulse</obj_property>
+   </wvobject>
    <wvobject fp_name="/hmc_tb/sync_pulse" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">sync_pulse</obj_property>
       <obj_property name="ObjectShortName">sync_pulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/ems_trig" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_trig</obj_property>
+      <obj_property name="ObjectShortName">ems_trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/rx_gate" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rx_gate</obj_property>
+      <obj_property name="ObjectShortName">rx_gate</obj_property>
    </wvobject>
    <wvobject fp_name="/hmc_tb/one_pps" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">one_pps</obj_property>
@@ -81,25 +85,9 @@
       <obj_property name="ElementShortName">test_bit_1</obj_property>
       <obj_property name="ObjectShortName">test_bit_1</obj_property>
    </wvobject>
-   <wvobject fp_name="/hmc_tb/t0" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">t0</obj_property>
-      <obj_property name="ObjectShortName">t0</obj_property>
-   </wvobject>
-   <wvobject fp_name="/hmc_tb/mod_pulse" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">mod_pulse</obj_property>
-      <obj_property name="ObjectShortName">mod_pulse</obj_property>
-   </wvobject>
-   <wvobject fp_name="/hmc_tb/ems_trig" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">ems_trig</obj_property>
-      <obj_property name="ObjectShortName">ems_trig</obj_property>
-   </wvobject>
    <wvobject fp_name="/hmc_tb/ems_out" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">ems_out[7:1]</obj_property>
       <obj_property name="ObjectShortName">ems_out[7:1]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/hmc_tb/rx_gate" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">rx_gate</obj_property>
-      <obj_property name="ObjectShortName">rx_gate</obj_property>
    </wvobject>
    <wvobject fp_name="/hmc_tb/mod_pulse_hmc" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">mod_pulse_hmc</obj_property>
@@ -189,16 +177,44 @@
       <obj_property name="ElementShortName">ext_clk_period</obj_property>
       <obj_property name="ObjectShortName">ext_clk_period</obj_property>
    </wvobject>
-   <wvobject fp_name="/hmc_tb/uut/pol_state" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">pol_state[1:0]</obj_property>
-      <obj_property name="ObjectShortName">pol_state[1:0]</obj_property>
+   <wvobject fp_name="/hmc_tb/uut/wg_stat" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wg_stat</obj_property>
+      <obj_property name="ObjectShortName">wg_stat</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/hv_flag" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">hv_flag</obj_property>
+      <obj_property name="ObjectShortName">hv_flag</obj_property>
    </wvobject>
    <wvobject fp_name="/hmc_tb/uut/ops_mode" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">ops_mode[2:0]</obj_property>
       <obj_property name="ObjectShortName">ops_mode[2:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/hmc_tb/uut/state" type="other" db_ref_id="1">
-      <obj_property name="ElementShortName">state</obj_property>
-      <obj_property name="ObjectShortName">state</obj_property>
+   <wvobject fp_name="/hmc_tb/uut/rx_dly" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rx_dly</obj_property>
+      <obj_property name="ObjectShortName">rx_dly</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/tx_dly" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tx_dly</obj_property>
+      <obj_property name="ObjectShortName">tx_dly</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/pol_state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pol_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">pol_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/ems_tx_stat" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_tx_stat</obj_property>
+      <obj_property name="ObjectShortName">ems_tx_stat</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/ems_rx_stat" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ems_rx_stat</obj_property>
+      <obj_property name="ObjectShortName">ems_rx_stat</obj_property>
+   </wvobject>
+   <wvobject fp_name="/hmc_tb/uut/hv_dly" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">hv_dly</obj_property>
+      <obj_property name="ObjectShortName">hv_dly</obj_property>
    </wvobject>
 </wave_config>
