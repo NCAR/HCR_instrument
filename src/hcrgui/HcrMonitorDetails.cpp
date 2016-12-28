@@ -88,8 +88,13 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     
     _ui.surfaceValue->setText(hcrMonitorStatus.overWater() ? "Water" : "Land");
     
-    // TransmitControl max received power
-    _ui.maxPowerValue->setText(QString::number(hcrMonitorStatus.meanMaxPower(), 'f', 1));
+    // TransmitControl max received power. We avoid printing values greater
+    // than 100 dBm, since numbers that scale and bigger are not realistic,
+    // and we don't want to print the HUGE values returned by the MaxPower
+    // server before data with real numbers are available.
+    double maxPower = hcrMonitorStatus.meanMaxPower();
+    _ui.maxPowerValue->setText((maxPower < 100.0) ?
+            QString::number(maxPower, 'f', 1) : "HUGE");
     
     // TransmitControl attenuation required, HV requested
     _ui.attenuationRequiredIcon->setPixmap(hcrMonitorStatus.attenuationRequired() ? 
