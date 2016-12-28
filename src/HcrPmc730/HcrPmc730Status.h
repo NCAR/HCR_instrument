@@ -49,8 +49,8 @@ public:
     /// HcrPmc730 instance if createEmptyInstance is true.
     /// @param createEmptyInstance If true, the instance is created containing
     /// all zero values. If false, current status values are obtained from the
-    /// local HcrPmc730 singleton instance (a PMC-730 card *must*
-    /// program if no PMC-730 card is on the machine where the call is made!
+    /// local HcrPmc730 singleton instance (a PMC-730 card *must* be present
+    /// on the system in this case).
     HcrPmc730Status(bool createEmptyInstance = false);
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
