@@ -152,7 +152,7 @@ main(int argc, char *argv[]) {
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, CMIGITSDAEMON_PORT);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, PRIMARYINSDAEMON_PORT);
         
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // as well as a QTimer, and use them to cause a call to the function on
