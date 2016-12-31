@@ -111,8 +111,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _logMessage(ss.str());
 
     ss.str("");
-    ss << "No response yet from SpatialFogDaemon at " << rdsHost << ":" <<
-            insPort;
+    ss << "No response yet from cmigitsDaemon at " << rdsHost << ":" << insPort;
     _logMessage(ss.str());
 
     ss.str("");
@@ -133,11 +132,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.pmc730StatusIcon->setPixmap(_redLED);
     _ui.xmitterStatusIcon->setPixmap(_redLED);
     
-    // Connect and start the SpatialFogStatusThread
+    // Connect and start the INS status gathering thread
     connect(& _insStatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_insResponsivenessChange(bool, QString)));
-    connect(& _insStatusThread, SIGNAL(newStatus(SpatialFogStatus)),
-            this, SLOT(_setInsStatus(SpatialFogStatus)));
+    connect(& _insStatusThread, SIGNAL(newStatus(CmigitsStatus)),
+            this, SLOT(_setInsStatus(CmigitsStatus)));
     _insStatusThread.start();
 
     // Connect and start the MotionControlStatusThread
@@ -220,26 +219,26 @@ void
 HcrGuiMainWindow::_insResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
-    ss << "SpatialFogDaemon @ " <<
-            _insStatusThread.rpcClient().getDaemonHost() << ":" <<
-            _insStatusThread.rpcClient().getDaemonPort() <<
-            (responding ? " is " : " is not ") <<
-            "responding: " << msg.toStdString();
+    ss << "cmigitsDaemon @ " <<
+          _insStatusThread.rpcClient().getDaemonHost() << ":" <<
+          _insStatusThread.rpcClient().getDaemonPort() <<
+          (responding ? " is " : " is not ") <<
+          "responding: " << msg.toStdString();
     _logMessage(ss.str().c_str());
 
     if (! responding) {
-        // Create a default (bad) SpatialFogStatus, and set it as the last status
+        // Create a default (bad) CmigitsStatus, and set it as the last status
         // received.
-        _setInsStatus(SpatialFogStatus());
+        _setInsStatus(CmigitsStatus());
     }
 }
 
 void
-HcrGuiMainWindow::_setInsStatus(const SpatialFogStatus & status) {
+HcrGuiMainWindow::_setInsStatus(const CmigitsStatus & status) {
     _insStatus = status;
-    // Update the C-MIGITS status details dialog.
+    // Update the primary INS status details dialog.
     _insDetails.updateStatus(_insStatusThread.serverIsResponding(),
-            _insStatus);
+            status);
     // Update the main GUI
     _update();
 }
@@ -833,14 +832,18 @@ HcrGuiMainWindow::_update() {
     std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
-    // INS status light
-    light = _redLED;
-    if (_insStatus.gnssFixValue() > 1) {
-        // Green light if GNSS fix is 3D or better
+    // INS status light:
+    // Green light if mode is "Air Navigation" or "Land Navigation"
+    // Amber light if we have both INS and GPS
+    // Red light otherwise
+    uint16_t mode = _insStatus.currentMode();
+    if (mode == 7 || mode == 8) {
         light = _greenLED;
-    } else if (_insStatus.gnssFixValue() == 1) {
-        // Amber light if we have a 2D fix
+    } else if (_insStatus.insAvailable() &&
+            _insStatus.gpsAvailable()) {
         light = _amberLED;
+    } else {
+        light = _redLED;
     }
     _ui.insStatusIcon->setPixmap(light);
 
@@ -958,10 +961,10 @@ HcrGuiMainWindow::_update() {
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 
     // Location info
-    _ui.latitudeValue->setText(QString::number(_insStatus.latitude, 'f', 4));
-    _ui.longitudeValue->setText(QString::number(_insStatus.longitude, 'f', 4));
+    _ui.latitudeValue->setText(QString::number(_insStatus.latitude(), 'f', 4));
+    _ui.longitudeValue->setText(QString::number(_insStatus.longitude(), 'f', 4));
 
-    int iAltFt = int(MetersToFeet(_insStatus.altitude));
+    int iAltFt = int(MetersToFeet(_insStatus.altitude()));
     _ui.altitudeMslValue->setText(QString::number(iAltFt));
 
     iAltFt = int(MetersToFeet(_hcrMonitorStatus.aglAltitude()));
