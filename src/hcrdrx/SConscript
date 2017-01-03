@@ -14,7 +14,6 @@ QFunctionWrapper
 qt4
 qtt_qtconfig
 QXmlRpcServerAbyss
-SpatialFogClient
 xmitdrpcclient
 """)
 

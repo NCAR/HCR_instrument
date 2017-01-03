@@ -28,6 +28,8 @@
 
 LOGGING("IwrfExportInsThread")
 
+const std::string IwrfExportInsThread::FMQ_URL = "/tmp/cmigits_fmq/shmem_22000";
+
 IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport) :
     _iwrfExport(iwrfExport),
     _insFmq() {
@@ -55,7 +57,6 @@ IwrfExportInsThread::run()
     // FMQ_WARNING_INTERVAL_SECS seconds if we cannot open the FMQ (generally
     // because it has not yet been created by the writer).
     const int FMQ_WARNING_INTERVAL_SECS = 10;
-    const std::string FMQ_URL = SpatialFogFmq::FMQ_URL;
     time_t fmqWarningTime = 0;
     
     while (true) {
@@ -90,14 +91,14 @@ IwrfExportInsThread::run()
         }
         
         int msgLen = _insFmq.getMsgLen();
-        if (msgLen != sizeof(SpatialFogFmq::MsgStruct)) {
+        if (msgLen != sizeof(CmigitsFmq::MsgStruct)) {
             ELOG << "Got " << msgLen << "-byte message from FMQ, expected " << 
-                    sizeof(SpatialFogFmq::MsgStruct);
+                    sizeof(CmigitsFmq::MsgStruct);
             continue;
         }
         const void * msgPtr = _insFmq.getMsg();
-        const SpatialFogFmq::MsgStruct * insDataStruct = 
-                reinterpret_cast<const SpatialFogFmq::MsgStruct*>(msgPtr);
-        _iwrfExport.queueInsData(*insDataStruct);
+        const CmigitsFmq::MsgStruct * cmigitsDataStruct = 
+                reinterpret_cast<const CmigitsFmq::MsgStruct*>(msgPtr);
+        _iwrfExport.queueInsData(*cmigitsDataStruct);
     }
 }

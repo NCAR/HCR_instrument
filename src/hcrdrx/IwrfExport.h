@@ -91,7 +91,7 @@ public:
   PulseData *writePulseV(PulseData *val);
   
   /// @brief Method called to put new INS data in our queue.
-  void queueInsData(SpatialFogFmq::MsgStruct insData);
+  void queueInsData(CmigitsFmq::MsgStruct cmigitsData);
 
 private slots:
   /// @brief Log some status information
@@ -202,10 +202,10 @@ private:
   IwrfExportInsThread _insWatchThread;
   
   /// deque of INS data for generating iwrf_platform_georef packets
-  std::deque<SpatialFogFmq::MsgStruct> _insDeque;
+  std::deque<CmigitsFmq::MsgStruct> _insDeque;
   
   /// Latest INS data, used for generating IWRF status XML packets
-  SpatialFogFmq::MsgStruct _latestInsData;
+  CmigitsFmq::MsgStruct _latestInsData;
   
   /// Are INS data delayed longer than we want to wait for merging?
   bool _insDataDelayed;

@@ -931,36 +931,43 @@ string IwrfExport::_assembleStatusXml()
   ///////////////////////////////////////////////////////
   // HCR INS block
 
-  xml += TaXml::writeStartTag("HcrInsData", 1);
+  xml += TaXml::writeStartTag("HcrCmigitsData", 1);
 
   // Get latest data from INS (if any).
-  SpatialFogFmq::MsgStruct ins = _latestInsData;
+  CmigitsFmq::MsgStruct cmigits = _latestInsData;
 
-  // INS status info
-  xml += TaXml::writeDouble("InsStateTime", 2, 0.001 * ins.statusTime);
-  xml += TaXml::writeInt("InsStatusBits", 2, ins.statusBits);
-  xml += TaXml::writeInt("InsFilterBits", 2, ins.filterBits);
+  // C-MIGITS status info (latest 3500 message from C-MIGITS)
+  xml += TaXml::writeDouble("Cmigits3500Time", 2, 0.001 * cmigits.time3500);
+  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, cmigits.currentMode);
+  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, cmigits.insAvailable);
+  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, cmigits.gpsAvailable);
+  xml += TaXml::writeInt("Cmigits3500NSats", 2, cmigits.nSats);
+  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, cmigits.positionFOM);
+  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, cmigits.velocityFOM);
+  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, cmigits.headingFOM);
+  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2, cmigits.timeFOM);
+  xml += TaXml::writeDouble("Cmigits3500HPosError", 2, cmigits.hPosError);
+  xml += TaXml::writeDouble("Cmigits3500VPosError", 2, cmigits.vPosError);
+  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2, cmigits.velocityError);
 
-  // current position/velocity
-  xml += TaXml::writeDouble("InsPositionTime", 2, 0.001 * ins.positionTime);
-  xml += TaXml::writeDouble("InsPositionLatitude", 2, ins.latitude);
-  xml += TaXml::writeDouble("InsPositionLongitude", 2, ins.longitude);
-  xml += TaXml::writeDouble("InsPositionAltitude", 2, ins.altitude);
+  // current position/velocity (latest 3501 message from C-MIGITS)
+  xml += TaXml::writeDouble("Cmigits3501Time", 2, 0.001 * cmigits.time3501);
+  xml += TaXml::writeDouble("Cmigits3501Latitude", 2, cmigits.latitude);
+  xml += TaXml::writeDouble("Cmigits3501Longitude", 2, cmigits.longitude);
+  xml += TaXml::writeDouble("Cmigits3501Altitude", 2, cmigits.altitude);
 
-  // current attitude
-  xml += TaXml::writeDouble("InsAttitudeTime", 2, 0.001 * ins.attitudeTime);
-  xml += TaXml::writeDouble("InsAttitudePitch", 2, ins.pitch);
-  xml += TaXml::writeDouble("InsAttitudeRoll", 2, ins.roll);
-  xml += TaXml::writeDouble("InsAttitudeHeading", 2, ins.heading);
-  
-  xml += TaXml::writeDouble("InsVelocityTime", 2, 0.001 * ins.velTime);
-  xml += TaXml::writeDouble("InsAttitudeVelNorth", 2, ins.velNorth);
-  xml += TaXml::writeDouble("InsAttitudeVelEast", 2, ins.velEast);
-  xml += TaXml::writeDouble("InsAttitudeVelUp", 2, ins.velUp);
+  // current attitude (latest 3512 message from C-MIGITS)
+  xml += TaXml::writeDouble("Cmigits3512Time", 2, 0.001 * cmigits.time3512);
+  xml += TaXml::writeDouble("Cmigits3512Pitch", 2, cmigits.pitch);
+  xml += TaXml::writeDouble("Cmigits3512Roll", 2, cmigits.roll);
+  xml += TaXml::writeDouble("Cmigits3512Heading", 2, cmigits.heading);
+  xml += TaXml::writeDouble("Cmigits3512VelNorth", 2, cmigits.velNorth);
+  xml += TaXml::writeDouble("Cmigits3512VelEast", 2, cmigits.velEast);
+  xml += TaXml::writeDouble("Cmigits3512VelUp", 2, cmigits.velUp);
 
-  // end INS data
+  // end C-MIGITS data
 
-  xml += TaXml::writeEndTag("HcrInsData", 1);
+  xml += TaXml::writeEndTag("HcrCmigitsData", 1);
 
   ////////////////////////////////////////////////
   // close
@@ -1071,8 +1078,8 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   int writeCount;
   for (writeCount = 0; ! _insDeque.empty(); writeCount++) {
       // Get the next entry, and stop if its time is after our pulse time
-      SpatialFogFmq::MsgStruct ins = _insDeque.front();
-      if (ins.attitudeTime > pulseTime) {
+      CmigitsFmq::MsgStruct cmigits = _insDeque.front();
+      if (cmigits.time3512 > pulseTime) {
           break;
       }
       // Get the write lock
@@ -1085,38 +1092,37 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       // Initialize the georef packet
       iwrf_platform_georef_init(_radarGeoref);
       
-      // Time tag the georef packet with the INS attitude data time, since
-      // that's being delivered at the highest rate.
-      if ((ins.attitudeTime % 1000) / 10 == 0) {
-          DLOG << "New georef tagged " << (ins.attitudeTime / 1000) % 60 <<
+      // Time tag the georef packet with the C-MIGITS 3512 message time
+      if ((cmigits.time3512 % 1000) / 10 == 0) {
+          DLOG << "New georef tagged " << (cmigits.time3512 / 1000) % 60 <<
                   "." << std::setw(3) << std::setfill('0') <<
-                  ins.attitudeTime % 1000 << " for pulse tagged " <<
+                  cmigits.time3512 % 1000 << " for pulse tagged " <<
                   _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
                   _nanoSecs / 1000000;
       }
-      _radarGeoref.packet.time_secs_utc = ins.attitudeTime / 1000;
-      _radarGeoref.packet.time_nano_secs = (ins.attitudeTime % 1000) * 1000000;
+      _radarGeoref.packet.time_secs_utc = cmigits.time3512 / 1000;
+      _radarGeoref.packet.time_nano_secs = (cmigits.time3512 % 1000) * 1000000;
 
       _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
-      _radarGeoref.altitude_msl_km = ins.altitude * 0.001; // m -> km
-      _radarGeoref.drift_angle_deg = SpatialFogFmq::GetEstimatedDriftAngle(ins);
+      _radarGeoref.altitude_msl_km = cmigits.altitude * 0.001; // m -> km
+      _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(cmigits);
       _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
-      _radarGeoref.ew_velocity_mps = ins.velEast;
-      _radarGeoref.heading_deg = ins.heading;
+      _radarGeoref.ew_velocity_mps = cmigits.velEast;
+      _radarGeoref.heading_deg = cmigits.heading;
       _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
-      _radarGeoref.latitude = ins.latitude;
-      _radarGeoref.longitude = ins.longitude;
+      _radarGeoref.latitude = cmigits.latitude;
+      _radarGeoref.longitude = cmigits.longitude;
       _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
-      _radarGeoref.ns_velocity_mps = ins.velNorth;
-      _radarGeoref.pitch_deg = ins.pitch;
+      _radarGeoref.ns_velocity_mps = cmigits.velNorth;
+      _radarGeoref.pitch_deg = cmigits.pitch;
       _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
-      _radarGeoref.roll_deg = ins.roll;
-      _radarGeoref.vert_velocity_mps = ins.velUp;
+      _radarGeoref.roll_deg = cmigits.roll;
+      _radarGeoref.vert_velocity_mps = cmigits.velUp;
       _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
-      _radarInfo.latitude_deg = ins.latitude;
-      _radarInfo.longitude_deg = ins.longitude;
-      _radarInfo.altitude_m = ins.altitude;
+      _radarInfo.latitude_deg = cmigits.latitude;
+      _radarInfo.longitude_deg = cmigits.longitude;
+      _radarInfo.altitude_m = cmigits.altitude;
 
       // Angles of the reflector rotation and tilt motors.
       float rotMotorAngle = _pulseH->getRotMotorAngle();
@@ -1147,7 +1153,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       }
       
       // Log unexpected time differences between georef packets
-      uint64_t thisGeorefTime = ins.attitudeTime;
+      uint64_t thisGeorefTime = cmigits.time3512;
       int64_t deltaMs = _lastGeorefTime ? thisGeorefTime - _lastGeorefTime : 0;
       if (deltaMs < 0) {
           QDateTime qLastTime = 
@@ -1353,9 +1359,9 @@ void IwrfExport::_closeSocketToClient()
 }
 
 //////////////////////////////////////////////////
-// Accept incoming new INS data
+// Accept incoming new C-MIGITS data
 
-void IwrfExport::queueInsData(SpatialFogFmq::MsgStruct data) {
+void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data) {
 
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
@@ -1368,7 +1374,7 @@ void IwrfExport::queueInsData(SpatialFogFmq::MsgStruct data) {
   struct timeval tvNow;
   gettimeofday(&tvNow, 0);
   uint64_t nowMs = 1000LL * tvNow.tv_sec + tvNow.tv_usec / 1000;
-  int insLagMs = nowMs - data.attitudeTime;
+  int insLagMs = nowMs - data.time3512;
   uint64_t pulseMs = 1000LL * _timeSecs + _nanoSecs / 1000000;
   int pulseLagMs = nowMs - pulseMs;
   if (_timeSecs == 0) {
@@ -1382,8 +1388,8 @@ void IwrfExport::queueInsData(SpatialFogFmq::MsgStruct data) {
   }
   
   // Log gaps in the INS data
-  uint64_t lastTime = _latestInsData.attitudeTime;
-  uint64_t thisTime = data.attitudeTime;
+  uint64_t lastTime = _latestInsData.time3512;
+  uint64_t thisTime = data.time3512;
   int64_t deltaMs = lastTime ? thisTime - lastTime : 0;
   QDateTime qLastTime = QDateTime::fromTime_t(lastTime / 1000).addMSecs(lastTime % 1000);
   if (deltaMs < 0) {
@@ -1399,9 +1405,9 @@ void IwrfExport::queueInsData(SpatialFogFmq::MsgStruct data) {
 
   // If we have too many items in the deque, clear it now.
   if (_insDeque.size() == 1000) {
-      uint64_t earliest = _insDeque.front().attitudeTime;
+      uint64_t earliest = _insDeque.front().time3512;
       QDateTime qEarliest = QDateTime::fromTime_t(earliest / 1000).addMSecs(earliest % 1000);
-      uint64_t latest = _insDeque.back().attitudeTime;
+      uint64_t latest = _insDeque.back().time3512;
       QDateTime qLatest = QDateTime::fromTime_t(latest / 1000).addMSecs(latest % 1000);
       QDateTime qPulse = QDateTime::fromTime_t(pulseMs / 1000).addMSecs(pulseMs % 1000);
       ILOG << "clearing _insDeque because it's too big";
@@ -1414,7 +1420,7 @@ void IwrfExport::queueInsData(SpatialFogFmq::MsgStruct data) {
   // Push the new item onto the deque (or replace the last item if its time
   // is the same as the incoming entry).
   if (! _insDeque.empty() && lastTime == thisTime) {
-      DLOG << "Overwriting INS entry for " << data.attitudeTime;
+      DLOG << "Overwriting INS entry for " << data.time3512;
       _insDeque.back() = data;
   } else {
       _insDeque.push_back(data);
