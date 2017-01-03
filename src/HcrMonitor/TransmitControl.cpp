@@ -107,8 +107,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
     // Call _updateAglAltitude when we get new INS data
-    connect(&_insWatcher, SIGNAL(newData(SpatialFogFmq::MsgStruct)),
-            this, SLOT(_updateAglAltitude(SpatialFogFmq::MsgStruct)));
+    connect(&_insWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
+            this, SLOT(_updateAglAltitude(CmigitsFmq::MsgStruct)));
     
     // Mark INS reader daemon as unresponsive when the watch thread emits its
     // dataTimeout() signal.
@@ -384,7 +384,7 @@ TransmitControl::_xmitTestStatusText() const {
     case NOXMIT_NO_HCRPMC730_DATA:
         return("Transmit not allowed: No data from HcrPmc730Daemon");
     case NOXMIT_NO_INS_DATA:
-        return("Transmit not allowed: No data from the INS reader daemon");
+        return("Transmit not allowed: No data from INS reader daemon");
     case NOXMIT_NO_TERRAINHTSERVER_DATA:
         return("Transmit not allowed: TerrainHtServer not responding or returned an error");
     case NOXMIT_NO_MOTIONCONTROL_DATA:
@@ -470,19 +470,19 @@ TransmitControl::_updateControlState() {
 }
 
 void
-TransmitControl::_updateAglAltitude(SpatialFogFmq::MsgStruct insData) {
+TransmitControl::_updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData) {
     if (! _insResponsive) {
         ILOG << "Got a response from INS reader daemon";
         _insResponsive = true;
     }
     
     // Get instrument latitude, longitude, and MSL altitude from the 
-    // INS data
-    double latitude = insData.latitude;
-    double longitude = insData.longitude;
-    _mslAltitude = insData.altitude;
+    // C-MIGITS data
+    double latitude = cmigitsData.latitude;
+    double longitude = cmigitsData.longitude;
+    _mslAltitude = cmigitsData.altitude;
     
-    DLOG << insData.positionTime << ", lat: " << latitude <<
+    DLOG << cmigitsData.time3501 << ", lat: " << latitude << 
             ", lon: " << longitude << ", altMSL: " << _mslAltitude;
 
     // Get terrain information from TerrainHtServer using current location and

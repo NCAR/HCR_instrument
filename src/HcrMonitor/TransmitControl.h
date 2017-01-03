@@ -33,7 +33,7 @@
 
 #include <vector>
 
-#include <SpatialFogFmqWatcher.h>
+#include <CmigitsFmqWatcher.h>
 #include <HcrPmc730Client.h>
 #include <MotionControlStatusThread.h>
 #include <QDateTime>
@@ -166,7 +166,7 @@ private slots:
     void _markInsUnresponsive();
     
     /// @brief Update AGL altitude using new location from INS data
-    void _updateAglAltitude(SpatialFogFmq::MsgStruct insData);
+    void _updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData);
     
 private:
     /// @brief Struct for details of max power data reports
@@ -322,7 +322,7 @@ private:
     /// @brief Append a mode to our mode map, starting at the current time
     void _appendToModeMap(HcrPmc730::HmcOperationMode mode);
 
-    /// @brief How frequently will we poll CmigitsSharedMemory for new data?
+    /// @brief How frequently will we poll the INS FMQ for new data?
     static constexpr int _INS_POLL_INTERVAL_MS = 1000;
     
     /// @brief After what period do we consider INS data too old?
@@ -391,9 +391,9 @@ private:
     _MaxPowerStruct _maxPowerReport;
         
     /// @brief FMQ watcher for INS data, to signal when new data are available
-    SpatialFogFmqWatcher _insWatcher;
+    CmigitsFmqWatcher _insWatcher;
 
-    /// @brief Is new data showing up in CmigitsSharedMemory?
+    /// @brief Is new data showing up in the INS FMQ?
     bool _insResponsive;
     
     /// @brief Is the TerrainHtServer responsive?
