@@ -60,7 +60,12 @@ SpectracomRpcClient::getStatus(SpectracomStatus & status) {
         return(false);
     }
     xmlrpc_c::value_struct resultStruct(result);
-    status = SpectracomStatus(resultStruct);
+    std::map<std::string, xmlrpc_c::value> map = resultStruct.cvalue();
+    try {
+        status = SpectracomStatus(resultStruct);
+    } catch (std::exception & e) {
+        ELOG << "Exception constructing SpectracomStatus: " << e.what();
+    }
     return(true);
 }
 
