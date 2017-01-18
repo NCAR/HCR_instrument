@@ -6,6 +6,7 @@
 
 import calendar
 from datetime import datetime
+import getpass
 from glob import glob
 import logging
 import os
@@ -110,16 +111,30 @@ class StatusCollector:
             # Call the failureCallback function if we were given one
             if self.failureCallback:
                 self.failureCallback()
-                
-    def __rsyncLogFiles(self):
-        rsyncStartTime = time.time()
+
+    def __onSshCmdError(self, cmd, errmsg, retcode):
+        '''Log an error in executing a system ssh (or ssh-based) command
+           @parm cmd a string containing the system command which generated
+                 the error
+           @parm retCode the return code returned by the command
+        '''
+        # Log the rsync command's error
+        logger.error("Error %d executing command '%s'", retcode, cmd)
+        logger.error("...with error msg: %s", errmsg)
+        logger.error("(NOTE: Verify that user %s's public key is in the"
+                    " authorized_keys file on the Spectracom)"
+                    % (getpass.getuser()))
         
+    def __rsyncLogFiles(self):
+        '''Use 'rsync' to create/update a copy of the Spectracom's log
+           directory under local directory self.logDest
+        '''
         # Build the rsync command to copy the current contents of the 
         # Spectracom's log directory into our local destination directory. 
         # Key-based authentication is assumed, so we have rsync use ssh in 
         # BatchMode to force immediate failure if it tries to prompt for a 
         # password.
-        rsyncCmd = ['rsync', '-a', '-e', 'ssh -o "BatchMode yes"',
+        rsyncCmd = ['rsync', '-a', '-e', 'ssh -o BatchMode=yes',
                     'spadmin@%s:log/' % (self.hostName),
                     self.logDest + '/']
             
@@ -130,9 +145,10 @@ class StatusCollector:
             retcode = p.wait()
             
             if retcode != 0:
-                # Log the rsync command's error
-                logger.error(p.stderr.read())
-                logger.error("Error %d executing command %s", retcode, rsyncCmd)
+                self.__onSshCmdError(' '.join(rsyncCmd), 
+                                     p.stderr.read(),
+                                     retcode)
+
         except OSError as e:
             logger.error('Got error: %s' % (e))
             logger.error('when trying to execute %s', rsyncCmd)
@@ -141,23 +157,29 @@ class StatusCollector:
         newStatus = SpectracomStatus(self.hostName)
         
         # Execute the 'status' command on the Spectracom and parse its
-        # output
-        cmd = ['ssh', 'spadmin@%s' % (self.hostName), 'status']
+        # output.
+        # Key-based authentication is assumed, so we use ssh in BatchMode to
+        # force immediate failure if it tries to prompt for a password.
+        cmd = ['ssh', '-o BatchMode=yes', 'spadmin@%s' % (self.hostName), 'status']
         p = Popen(cmd, stdout=PIPE, stderr=PIPE, close_fds=True)
         retcode = p.wait()
         if retcode == 0:
             newStatus['_hostResponding'] = True
             # Parse the 'status' output, which looks like:
-            #    REF: T=gps0 P=gps0
+            #    REF:T=gps0 P=gps0
             #    NTP:Strat=1 SYNC=Y
             #    OSC:OCXO (Trk/Lock)
             #    TFOM=2 MaxTFOM=5
             lines = p.stdout.readlines()
+
+            # Log the output from the 'status' command
+            logger.info("'status' command output: %s" % (''.join(lines)))
             
             # parse the REF line
-            m = re.match('REF:(.*)', lines[0])
+            m = re.match('REF:T=([^ ]*) P=(.*)', lines[0])
             if m:
-                newStatus['_reference'] = m.group(1)
+                newStatus['_timeReference'] = m.group(1)
+                newStatus['_ppsReference'] = m.group(2)
             else:
                 logger.error('Bad REF line in Spectracom status: %s', lines[0])
             
@@ -169,7 +191,7 @@ class StatusCollector:
             else:
                 logger.error('Bad NTP line in Spectracom status: %s', lines[1])
                 
-            # parse the OSC line
+            # parse the OSC:<type> (<state>) line
             m = re.match('OSC:(.*)\s+\(([^\)]*)\)', lines[2])
             if m:
                 newStatus['_oscType'] = m.group(1).strip()
@@ -186,8 +208,14 @@ class StatusCollector:
                 logger.error('Bad TFOM line in Spectracom status: %s', lines[3])
         else:
             # Log the error executing the 'status' command
-            logger.error(p.stderr.read())
-            logger.error("Error executing 'status' on the Spectracom")
+            self.__onSshCmdError(' '.join(cmd), 
+                                 p.stderr.read(),
+                                 retcode)
+
+            # Mark the host as unresponsive and return now
+            newStatus['_hostResponding'] = False
+            self.__setLatestStatus(newStatus)
+            return
 
         # Get the current alarm state from alarms.log
 
@@ -198,11 +226,14 @@ class StatusCollector:
         if os.path.exists(path):
             lines += open(path, 'r').readlines()
             
+        # list of alarm strings
+        alarmList = []
+
         path = os.path.join(self.logDest, 'alarms.log')
         if not os.path.exists(path):
             # Generate a fake major alarm to note there is no alarms.log file
             newStatus['_majorAlarm'] = True
-            newStatus['_alarmList'].append('No alarms.log file')
+            alarmList.append('No alarms.log file')
         else:
             lines += open(path, 'r').readlines()
             
@@ -256,7 +287,9 @@ class StatusCollector:
                             .replace(year=logfileYear)\
                             .replace(tzinfo=pytz.UTC)
                         # Now convert the datetime to the equivalent timestamp
-                        newStatus['_alarmStatusTime'] = calendar.timegm(alarmDatetime.timetuple())
+                        # Status time members must explicitly be floating point
+                        newStatus['_alarmStatusTime'] = \
+                            float(calendar.timegm(alarmDatetime.timetuple()))
                     # Parse ACTIVE ALARMS, which can be: 'NONE', 'MAJOR', 
                     # 'MINOR', or 'MAJOR MINOR'
                     elif re.match('.*\[system\] ACTIVE ALARMS:', line):
@@ -266,11 +299,11 @@ class StatusCollector:
                     # we add to the list
                     else:
                         m = re.match('.*\[system\] (.*)', line)
-                        newStatus['_alarmList'].append(m.group(1))
+                        alarmList.append(m.group(1))
             else:
                 # Generate a fake major alarm to note that no alarm block was found
                 newStatus['_majorAlarm'] = True
-                newStatus['_alarmList'] += 'No alarm block found'
+                alarmList.append('No alarm block found')
                 
         # Get the latest frequency error from the latest discipline log file,
         # (discstats/discstats.<yyyymmdd>)
@@ -278,7 +311,7 @@ class StatusCollector:
         if not pathList:
             # Generate a fake major alarm to note there are no discstats.* files
             newStatus['_majorAlarm'] = True
-            newStatus['_alarmList'].append('No discstats/discstats.<yyyymmdd> log files')
+            alarmList.append('No discstats/discstats.<yyyymmdd> log files')
         else:
             # Read the last file in the list, which should be the latest.
             #
@@ -295,7 +328,7 @@ class StatusCollector:
             #    6) string naming the current 1 PPS reference (may be empty)
             #    7) integer oscillator discipline DAC value
             #    8) integer 1 PPS phase error in nanoseconds
-            #    9) floating point frequency error
+            #    9) floating point 10 MHz oscillator frequency error in Hz
             #   10) floating point oscillator temperature in deg C (?)
             #
             lines += open(pathList[-1], 'r').readlines()
@@ -304,7 +337,8 @@ class StatusCollector:
             if len(vals) == 9 or len(vals) == 10:
                 # Get the time in seconds since 1970-01-01 00:00:00 UTC
                 epochSeconds = int(vals[0]) * 86400 + int(vals[1])
-                newStatus['_disciplineTime'] = epochSeconds
+                # Status time members must explicitly be floating point
+                newStatus['_disciplineTime'] = float(epochSeconds)
                 newStatus['_dacValue'] = int(vals[6])
                 newStatus['_ppsPhaseErr'] = int(vals[7])
                 newStatus['_freqErr'] = float(vals[8])
@@ -312,12 +346,16 @@ class StatusCollector:
                     newStatus['_oscTemp'] = float(vals[9])
             else:
                 logger.error("Bad discipline line: %s" % (lines[-1]))
-                
+
+        # Finally set newStatus['_alarmList'] to a single string with the
+        # individual alarm strings joined by newlines
+        newStatus['_alarmList'] = '\n'.join(alarmList)
+                        
         # Log and save the collected status
         logger.info("=====")
         logger.info("New status at %s:", str(newStatus['_statusTime']))
         for key in newStatus.keys():
             logger.info('    %s: %s', key, newStatus[key])
-        
+
         self.__setLatestStatus(newStatus)
                 
