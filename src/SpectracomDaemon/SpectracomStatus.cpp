@@ -39,7 +39,8 @@ SpectracomStatus::SpectracomStatus() :
     _statusTime(time(0)),
     _hostName("Unknown"),
     _hostResponding(false),
-    _reference("Unknown"),
+    _timeReference("----"),
+    _ppsReference("----"),
     _ntpStratum(999),
     _inSync(false),
     _oscType("Unknown"),
@@ -61,7 +62,8 @@ SpectracomStatus::SpectracomStatus(xmlrpc_c::value_struct & statusDict):
     _statusTime(time(0)),
     _hostName(),
     _hostResponding(false),
-    _reference("Unknown"),
+    _timeReference("----"),
+    _ppsReference("----"),
     _ntpStratum(999),
     _inSync(false),
     _oscType("Unknown"),
@@ -97,4 +99,54 @@ SpectracomStatus::toXmlRpcValue() const {
     oar << clone;
     // Finally, return the statusDict
     return(xmlrpc_c::value_struct(statusDict));
+}
+
+int
+SpectracomStatus::syncSimpleStatus() const {
+    // Currently, we indicate only minor problems or none for sync state
+    return(_inSync ? 0 : 1);
+}
+
+int
+SpectracomStatus::alarmsSimpleStatus() const {
+    if (_majorAlarm) {
+        return 2;
+    } else if (_minorAlarm) {
+        return 1;
+    }
+    return 0;
+}
+
+int
+SpectracomStatus::tfomSimpleStatus() const {
+    // Currently, we indicate only minor problems or none for TFOM state
+    return((_tfom <= _maxTfom) ? 0 : 1);
+}
+
+int
+SpectracomStatus::oscSimpleStatus() const {
+    // Currently, we indicate only minor problems or none for oscillator state
+    return((_oscState == "Trk/Lock") ? 0 : 1);
+}
+
+int
+SpectracomStatus::simpleStatus() const {
+    // Major problem if the host is not responding
+    int status = _hostResponding ? 0 : 2;
+    // Change overall status if we get worse status for sync, alarms, TFOM,
+    // or the oscillator
+    if (syncSimpleStatus() > status) {
+        status = syncSimpleStatus();
+    }
+    if (alarmsSimpleStatus() > status) {
+        status = alarmsSimpleStatus();
+    }
+    if (tfomSimpleStatus() > status) {
+        status = tfomSimpleStatus();
+    }
+    if (oscSimpleStatus() > status) {
+        status = oscSimpleStatus();
+    }
+
+    return(status);
 }

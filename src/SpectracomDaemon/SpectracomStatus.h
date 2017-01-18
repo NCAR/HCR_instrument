@@ -33,6 +33,7 @@
 
 #include <ctime>
 #include <exception>
+#include <iostream>
 #include <string>
 #include <stdint.h>
 #include <xmlrpc-c/base.hpp>
@@ -78,11 +79,17 @@ public:
     /// @return true iff the Spectracom is responding to queries
     bool hostResponding() const { return(_hostResponding); }
 
-    /// @brief Return a string describing the current time and 1 PPS references
+    /// @brief Return a string describing the current time reference
     /// used by the Spectracom
-    /// @return a string describing the current time and 1 PPS references
+    /// @return a string describing the current time reference
     /// used by the Spectracom
-    std::string reference() const { return(_reference); }
+    std::string timeReference() const { return(_timeReference); }
+
+    /// @brief Return a string describing the current 1PPS reference
+    /// used by the Spectracom
+    /// @return a string describing the current 1PPS reference
+    /// used by the Spectracom
+    std::string ppsReference() const { return(_ppsReference); }
 
     /// @brief Return the Spectracom's current NTP stratum
     /// @return the Spectracom's current NTP stratum
@@ -132,9 +139,10 @@ public:
     /// @return true iff a minor alarm is currently in effect.
     bool minorAlarm() const { return(_minorAlarm); }
 
-    /// @brief Return a list of strings describing current alarm conditions.
-    /// @return a list of strings describing current alarm conditions.
-    std::vector<std::string> alarmList() const { return(_alarmList); }
+    /// @brief Return a newline-delimited string describing current alarm
+    /// conditions.
+    /// @return a newline-delimited string describing current alarm conditions.
+    std::string alarmList() const { return(_alarmList); }
 
     /// @brief Return the time of the last discipline report, in seconds since
     /// 1970-01-01 00:00:00 UTC. This time applies to values returned by
@@ -164,6 +172,25 @@ public:
     /// @return the current temperature of the 10 MHz oscillator, deg C.
     double oscTemp() const { return(_oscTemp); }
 
+    /// @brief Return latest sync status in simple three-state terms: 0 = good,
+    /// 1 = minor issue(s), 2 = major issue(s)
+    int syncSimpleStatus() const;
+
+    /// @brief Return latest alarms status in simple three-state terms:
+    /// 0 = good, 1 = minor issue(s), 2 = major issue(s)
+    int alarmsSimpleStatus() const;
+
+    /// @brief Return latest time figure of merit (TFOM) status in simple
+    /// three-state terms: 0 = good, 1 = minor issue(s), 2 = major issue(s)
+    int tfomSimpleStatus() const;
+
+    /// @brief Return latest oscillator status in simple three-state terms:
+    /// 0 = good, 1 = minor issue(s), 2 = major issue(s)
+    int oscSimpleStatus() const;
+
+    /// @brief Return latest status in simple three-state terms: 0 = good,
+    /// 1 = minor issue(s), 2 = major issue(s)
+    int simpleStatus() const;
 private:
     friend class boost::serialization::access;
 
@@ -181,7 +208,8 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_statusTime);
             ar & BOOST_SERIALIZATION_NVP(_hostName);
             ar & BOOST_SERIALIZATION_NVP(_hostResponding);
-            ar & BOOST_SERIALIZATION_NVP(_reference);
+            ar & BOOST_SERIALIZATION_NVP(_timeReference);
+            ar & BOOST_SERIALIZATION_NVP(_ppsReference);
             ar & BOOST_SERIALIZATION_NVP(_ntpStratum);
             ar & BOOST_SERIALIZATION_NVP(_inSync);
             ar & BOOST_SERIALIZATION_NVP(_oscType);
@@ -212,9 +240,11 @@ private:
     /// Is the Spectracom responding?
     bool _hostResponding;
     
-    /// String describing the Spectracom's current time and frequency 
-    /// reference sources
-    std::string _reference;
+    /// String describing the Spectracom's current time reference source
+    std::string _timeReference;
+
+    /// String describing the Spectracom's current 1PPS reference source
+    std::string _ppsReference;
     
     /// NTP stratum
     int _ntpStratum;
@@ -246,8 +276,8 @@ private:
     /// Is a minor alarm indicated?
     bool _minorAlarm;
     
-    /// List of strings describing current alarms.
-    std::vector<std::string> _alarmList;
+    /// Newline-delimited list of strings describing current alarms.
+    std::string _alarmList;
 
     /// Time at which frequency error was reported, seconds since 1970-01-01 
     /// 00:00:00 UTC. This is the time which applies to _dacValue, _ppsPhaseErr,
@@ -268,6 +298,7 @@ private:
 };
 
 // Increment this class version number when member variables are changed.
+// (Remember to update it in SpectracomStatus.py as well!)
 BOOST_CLASS_VERSION(SpectracomStatus, 0)
 
 #endif /* SPECTRACOMSTATUS_H_ */
