@@ -62,8 +62,9 @@ main(int argc, char *argv[]) {
     char rdsHost[] = "rds";
 
     QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, HCR_XMITD_PORT,
-            FIREFLYD_PORT, rdsHost, HCRDRX_PORT, HCRPMC730DAEMON_PORT,
-            PRIMARYINSDAEMON_PORT, MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
+            FIREFLYD_PORT, SPECTRACOMDAEMON_PORT, rdsHost, HCRDRX_PORT,
+            HCRPMC730DAEMON_PORT, PRIMARYINSDAEMON_PORT,
+            MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
     mainWindow->show();
     
     int retval = app->exec();

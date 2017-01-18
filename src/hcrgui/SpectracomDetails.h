@@ -42,13 +42,35 @@ public:
     SpectracomDetails(QWidget *parent);
     virtual ~SpectracomDetails() {}
 
-    void noStatus();
 public slots:
+    /// @brief Update the status displayed by the widget
     void updateStatus(bool daemonResponding, const SpectracomStatus & status);
 private:
-    Ui::SpectracomDetails _ui;
+    /// @brief Set widget to display that no up-to-date status is
+    /// available
+    void _noStatus();
+
+    /// @brief Return green, amber, or red LED pixmap appropriate for the given
+    /// simple state with values 0 = good, 1 = minor issue(s),
+    /// 2 = major issue(s)
+    /// @param simpleState 0 = good, 1 = minor issue(s), 2 = major issue(s)
+    /// @return green, amber, or red LED pixmap appropriate for the given
+    /// simple state
+    QPixmap & _ledForSimpleStatus(int simpleState) {
+        if (simpleState == 2) {
+            return(_redLED);
+        } else if (simpleState == 1) {
+            return(_amberLED);
+        } else {
+            return(_greenLED);
+        }
+    }
+
+    QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
+
+    Ui::SpectracomDetails _ui;
 };
 #endif /* SPECTRACOMDETAILS_H_*/

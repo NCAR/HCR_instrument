@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>436</width>
-    <height>677</height>
+    <width>456</width>
+    <height>602</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,10 +35,7 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0">
-       <property name="spacing">
-        <number>0</number>
-       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <property name="margin">
         <number>0</number>
        </property>
@@ -60,160 +57,6 @@
              <string>Processes</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_4">
-             <item row="2" column="1">
-              <widget class="QLabel" name="rcStatusLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Reflector Control</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="mcStatusIcon">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
-              <widget class="QLabel" name="pmc730StatusIcon">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="2">
-              <widget class="QToolButton" name="fireflydDetailsButton">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="1">
-              <widget class="QLabel" name="dmStatusLabel">
-               <property name="text">
-                <string>DataMapper</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="0">
-              <widget class="QLabel" name="dmStatusIcon">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QLabel" name="pmc730StatusLabel">
-               <property name="text">
-                <string>PMC-730</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="hcrdrxStatusIcon">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QToolButton" name="mcDetailsButton">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="hcrdrxStatusLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>hcrdrx</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="1">
-              <widget class="QLabel" name="fireflydStatusLabel">
-               <property name="text">
-                <string>FireFly-IIA</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="insStatusLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>INS</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="xmitterStatusLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Transmitter</string>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="insStatusIcon">
                <property name="sizePolicy">
@@ -230,28 +73,21 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
+             <item row="0" column="1">
+              <widget class="QLabel" name="insStatusLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>INS</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
               <widget class="QToolButton" name="insDetailsButton">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QToolButton" name="hcrdrxDetailsButton">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QToolButton" name="xmitterDetailsButton">
                <property name="focusPolicy">
                 <enum>Qt::NoFocus</enum>
                </property>
@@ -276,7 +112,128 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="2">
+             <item row="1" column="1" colspan="2">
+              <widget class="QLabel" name="xmitterStatusLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Transmitter</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QToolButton" name="xmitterDetailsButton">
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="mcStatusIcon">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1" colspan="2">
+              <widget class="QLabel" name="rcStatusLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Reflector Control</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QToolButton" name="mcDetailsButton">
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="hcrdrxStatusIcon">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="hcrdrxStatusLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>hcrdrx</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QToolButton" name="hcrdrxDetailsButton">
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="pmc730StatusIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLabel" name="pmc730StatusLabel">
+               <property name="text">
+                <string>PMC-730</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
               <widget class="QToolButton" name="pmc730DetailsButton">
                <property name="focusPolicy">
                 <enum>Qt::NoFocus</enum>
@@ -286,26 +243,69 @@
                </property>
               </widget>
              </item>
-             <item row="9" column="1">
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>2</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="6" column="0">
+             <item row="5" column="0">
               <widget class="QLabel" name="fireflydStatusIcon">
                <property name="text">
                 <string/>
                </property>
                <property name="pixmap">
                 <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="fireflydStatusLabel">
+               <property name="text">
+                <string>FireFly-IIA</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="3">
+              <widget class="QToolButton" name="fireflydDetailsButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="spectracomStatusIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1" colspan="2">
+              <widget class="QLabel" name="spectracomStatusLabel">
+               <property name="text">
+                <string>Spectracom</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="3">
+              <widget class="QToolButton" name="spectracomDetailsButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="text">
+                <string>...</string>
                </property>
               </widget>
              </item>
@@ -319,14 +319,14 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="1">
+             <item row="7" column="1" colspan="2">
               <widget class="QLabel" name="hcrMonitorStatusLabel">
                <property name="text">
                 <string>HCR Monitor</string>
                </property>
               </widget>
              </item>
-             <item row="7" column="2">
+             <item row="7" column="3">
               <widget class="QToolButton" name="hcrMonitorDetailsButton">
                <property name="enabled">
                 <bool>true</bool>
@@ -335,6 +335,36 @@
                 <string>...</string>
                </property>
               </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QLabel" name="dmStatusIcon">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1" colspan="2">
+              <widget class="QLabel" name="dmStatusLabel">
+               <property name="text">
+                <string>DataMapper</string>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="2">
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>2</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>

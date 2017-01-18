@@ -47,6 +47,7 @@
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
+#include "SpectracomStatusThread.h"
 #include "XmitdStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
@@ -59,6 +60,7 @@
 #include "HcrMonitorDetails.h"
 #include "MotionControlDetails.h"
 #include "Pmc730Details.h"
+#include "SpectracomDetails.h"
 #include "XmitDetails.h"
 
 #include "AntennaModeDialog.h"
@@ -68,25 +70,28 @@ class HcrGuiMainWindow : public QMainWindow {
 
 public:
     HcrGuiMainWindow(std::string archivererHost, int xmitterPort,
-            int fireflydPort, std::string rdsHost, int drxPort, int pmcPort,
-            int primaryInsPort, int motionControlPort, int hcrMonitorPort);
+            int fireflydPort, int spectracomPort, std::string rdsHost,
+            int drxPort, int pmcPort, int primaryInsPort, int motionControlPort,
+            int hcrMonitorPort);
     virtual ~HcrGuiMainWindow();
 
 private slots:
     void on_antennaModeButton_clicked();
     void on_attitudeCorrectionButton_clicked();
-    void on_insDetailsButton_clicked();
     void on_driveHomeButton_clicked();
     void on_filamentButton_clicked();
-    void on_hcrdrxDetailsButton_clicked();
     void on_requestedModeCombo_activated(int index);
     void on_requestHvButton_clicked();
+    void on_showLogButton_clicked();
+
+    void on_fireflydDetailsButton_clicked();
+    void on_hcrdrxDetailsButton_clicked();
+    void on_hcrMonitorDetailsButton_clicked();
+    void on_insDetailsButton_clicked();
     void on_mcDetailsButton_clicked();
     void on_pmc730DetailsButton_clicked();
-    void on_showLogButton_clicked();
+    void on_spectracomDetailsButton_clicked();
     void on_xmitterDetailsButton_clicked();
-    void on_fireflydDetailsButton_clicked();
-    void on_hcrMonitorDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
     void _update();
@@ -146,6 +151,12 @@ private slots:
     /// @brief Save the last status received from fireflyd.
     /// @param status the last status received from fireflyd.
     void _setFireFlyStatus(FireFlyStatus status);
+    /// @brief Slot to call when SpectracomDaemon responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    void _spectracomResponsivenessChange(bool responding);
+    /// @brief Save the last status received from SpectracomDaemon.
+    /// @param status the last status received from SpectracomDaemon.
+    void _setSpectracomStatus(SpectracomStatus status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
     /// @brief Slot called to pop up a dialog reporting forced shutoff of
@@ -191,6 +202,7 @@ private:
     HcrMonitorDetails _hcrMonitorDetails;
     MotionControlDetails _motionControlDetails;
     Pmc730Details _pmc730Details;
+    SpectracomDetails _spectracomDetails;
     XmitDetails _xmitDetails;
     
     AntennaModeDialog _antennaModeDialog;
@@ -199,6 +211,7 @@ private:
     CmigitsStatusThread _insStatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
+    SpectracomStatusThread _spectracomStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrMonitorStatusThread _hcrMonitorStatusThread;
     MotionControlStatusThread _mcStatusThread;
@@ -217,6 +230,8 @@ private:
     bool _rdsXmitControl;
     /// Last status obtained from fireflyd
     FireFlyStatus _fireflydStatus;
+    /// Last status obtained from SpectracomDaemon
+    SpectracomStatus _spectracomStatus;
     /// Last status from the MotionControlDaemon
     MotionControl::Status _mcStatus;
     /// Last status read from HcrPmc730Daemon

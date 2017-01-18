@@ -28,49 +28,122 @@
  *      Author: Chris Burghart <burghart@ucar.edu>
  */
 #include "SpectracomDetails.h"
+#include <sstream>
 #include <QtCore/QDateTime>
 
 SpectracomDetails::SpectracomDetails(QWidget *parent) :
     QDialog(parent),
-    _ui(),
+    _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
-    _greenLED_off(":/greenLED_off.png") {
+    _greenLED_off(":/greenLED_off.png"),
+    _ui() {
     // Set up the UI and get the current status
     _ui.setupUi(this);
     // Initialize to no status available
-    noStatus();
+    _noStatus();
 }
 
 void
 SpectracomDetails::updateStatus(bool daemonResponding,
 		const SpectracomStatus & status) {
+    // Time of general status report
+    QDateTime qTime = QDateTime::fromTime_t(time_t(status.statusTime())).toUTC();
+
     // Based on whether the daemon is responding, set the "daemon responding"
     // label, and set the enabled state for the rest of the components.
-    _ui.daemonRespondingLabel->setText(daemonResponding ?
-            "" : "<font color='DarkRed'>No hcrdrx!</font>");
+    QString daemonText;
+    if (daemonResponding) {
+        daemonText.append("Spectracom status at ");
+        daemonText.append(qTime.toString("yyyy-MM-dd hh:mm:ss"));
+    } else {
+        daemonText.append("<font color='DarkRed'>");
+        daemonText.append("No daemon response at ");
+        daemonText.append(qTime.toString("yyyy-MM-dd hh:mm:ss"));
+        daemonText.append("</font>");
+    }
+    _ui.daemonRespondingLabel->setText(daemonText);
     _ui.statusFrame->setEnabled(daemonResponding);
 
-    // Fill in with info from the DrxStatus
-    QString text;
-    _ui.pulsewidthValue->setText(text.sprintf("%.3f", 1.0e6 * status.xmitPulseWidth()));
-    _ui.prtValue->setText(text.sprintf("%.3f", 1.0e6 * status.prt()));
-    _ui.nGatesValue->setText(QString::number(status.nGates()));
-    _ui.gateSpacingValue->setText(text.sprintf("%.1f", status.gateSpacing()));
-    _ui.zeroSetValue->setText(status.motorZeroPositionSet() ? "Set" : "Unset");
-    _ui.zeroSetIcon->setPixmap(status.motorZeroPositionSet() ? _greenLED : _amberLED);
-    _ui.pentekFpgaTempValue->setText(QString::number(status.pentekFpgaTemp()));
-    _ui.pentekBoardTempValue->setText(QString::number(status.pentekBoardTemp()));
+
+    // Synchronized?
+    _ui.synchronizedIcon->setPixmap(_ledForSimpleStatus(status.syncSimpleStatus()));
+
+    // Alarm state icon: red if major alarm, amber if minor alarm, green if
+    // no alarm
+    _ui.alarmsIcon->setPixmap(_ledForSimpleStatus(status.alarmsSimpleStatus()));
+    if (status.majorAlarm()) {
+        _ui.alarmsSeverityValue->setText(status.minorAlarm() ? "Major + Minor" : "Major");
+    } else if (status.minorAlarm()) {
+        _ui.alarmsSeverityValue->setText("Minor");
+    } else {
+        _ui.alarmsSeverityValue->setText("None");
+    }
+
+    // List alarms named in the last alarms report
+    _ui.alarmsList->setText(QString::fromStdString(status.alarmList()));
+
+    // NTP stratum
+    _ui.ntpStratumValue->setText(QString::number(status.ntpStratum()));
+
+    // time reference
+    _ui.timeReferenceValue->setText(QString::fromStdString(status.timeReference()));
+
+    // 1PPS reference
+    _ui.ppsReferenceValue->setText(QString::fromStdString(status.ppsReference()));
+
+    // time figure of merit (TFOM)
+    _ui.tfomIcon->setPixmap(_ledForSimpleStatus(status.tfomSimpleStatus()));
+    std::ostringstream oss;
+    oss << status.tfom() << "/" << status.maxTfom();
+    _ui.tfomValue->setText(QString::fromStdString(oss.str()));
+
+    // oscillator state icon and text
+    // green icon if oscillator state is "Trk/Lock", otherwise amber
+    _ui.oscStateIcon->setPixmap(_ledForSimpleStatus(status.oscSimpleStatus()));
+    _ui.oscStateValue->setText(QString::fromStdString(status.oscState()));
+
+    // oscillator type
+    _ui.oscTypeValue->setText(QString::fromStdString(status.oscType()));
+
+    // oscillator discipline report time
+    qTime = QDateTime::fromTime_t(time_t(status.disciplineTime())).toUTC();
+    _ui.oscDisciplineTimeValue->setText(qTime.toString("yyyy-MM-dd hh:mm:ss"));
+
+    // oscillator discipline report: frequency error, Hz
+    _ui.oscFreqErrorValue->setText(QString::number(status.freqErr(), 'e', 1) +
+                                   " Hz");
+
+    // oscillator discipline report: 1PPS phase error, ns
+    _ui.oscPpsPhaseErrorValue->setText(QString::number(status.ppsPhaseErr()) +
+                                       " ns");
+
+    // discipline report: oscillator temperature, deg C
+    _ui.oscTempValue->setText(QString::number(status.oscTemp(), 'f', 1) +
+                              " deg C");
+
+    // oscillator discipline report: DAC value
+    _ui.oscDacValue->setText(QString::number(status.dacValue()));
 }
 
 void
-SpectracomDetails::noStatus() {
-    _ui.pulsewidthValue->setText("0.0");
-    _ui.prtValue->setText("0.0");
-    _ui.nGatesValue->setText("0");
-    _ui.gateSpacingValue->setText("0");
-    _ui.zeroSetValue->setText("Unknown");
-    _ui.zeroSetIcon->setPixmap(_greenLED_off);
-    _ui.pentekFpgaTempValue->setText("---");
-    _ui.pentekBoardTempValue->setText("---");
+SpectracomDetails::_noStatus() {
+    _ui.daemonRespondingLabel->setText(
+            "<font color='DarkRed'>No daemon response!</font>");
+    _ui.statusFrame->setEnabled(false);
+    _ui.synchronizedIcon->setPixmap(_greenLED_off);
+    _ui.alarmsIcon->setPixmap(_greenLED_off);
+    _ui.alarmsList->setText("--");
+    _ui.ntpStratumValue->setText("--");
+    _ui.timeReferenceValue->setText("--");
+    _ui.ppsReferenceValue->setText("--");
+    _ui.tfomValue->setText("-/-");
+    _ui.oscStateIcon->setPixmap(_greenLED_off);
+    _ui.oscStateValue->setText("--");
+    _ui.oscTypeValue->setText("--");
+    _ui.oscDisciplineTimeValue->setText("0000-00-00 00:00:00");
+    _ui.oscFreqErrorValue->setText("-- Hz");
+    _ui.oscPpsPhaseErrorValue->setText("-- ns");
+    _ui.oscTempValue->setText("-- deg C");
+    _ui.oscDacValue->setText("--");
 }
