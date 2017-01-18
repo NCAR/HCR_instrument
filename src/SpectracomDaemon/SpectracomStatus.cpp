@@ -103,8 +103,8 @@ SpectracomStatus::toXmlRpcValue() const {
 
 int
 SpectracomStatus::syncSimpleStatus() const {
-    // Currently, we indicate only minor problems or none for sync state
-    return(_inSync ? 0 : 1);
+    // If not in sync, mark it as a major issue
+    return(_inSync ? 0 : 2);
 }
 
 int
