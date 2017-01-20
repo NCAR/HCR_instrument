@@ -4,6 +4,7 @@
 #
 
 tools = Split("""
+boost_program_options
 cmigits
 lrose
 qt4

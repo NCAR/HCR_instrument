@@ -26,12 +26,24 @@
  *
  *  Created on: Oct 31, 2012
  *      Author: burghart
+ *
+ * Daemon which communicates with a C-MIGITS or SDN500 INS unit and provides
+ * the following services:
+ *   o Regularly collect status from the INS and provide the latest status to
+ *     external processes which call our XML-RPC getStatus() method
+ *   o Record contents of all received data packets into a CSV-formatted file
+ *   o Publish all INS data in real time to a file message queue (FMQ), unless
+ *     run with the --secondary option
  */
-#include <iostream>
 #include <cerrno>
-#include <cstdlib>
 #include <csignal>
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+#include <vector>
 #include <unistd.h>
+#include <boost/program_options.hpp>
 #include <QApplication>
 #include <QMetaType>
 #include <HcrPortNumbers.h>
@@ -45,18 +57,13 @@
 #include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
 
+namespace po = boost::program_options;
 
 // Our QApplication instance
 QCoreApplication * App = 0;
 
 // Our Cmigits instance
 Cmigits * Cm = 0;
-
-// Are we playing back from time-series files?
-bool Playback;
-
-// PMU application instance name
-std::string PmuInstance = "ops";   ///< application instance
 
 // Handler for SIGINT and SIGTERM signals.
 void
@@ -86,73 +93,188 @@ updatePMURegistration() {
     PMU_auto_register("running");
 }
 
+void
+usage(const po::options_description & opts) {
+    // brief usage
+    std::cout << "Usage: cmigitsDaemon [OPTIONS] --antennaOffset <x,y,z> <cmigitsTtyDev>" << std::endl;
+    std::cout << "       cmigitsDaemon [OPTIONS] --playback <file> [<file> ...]" << std::endl;
+
+    // command line options, as provided to boost::program_options
+    std::cout << opts << std::endl;
+
+    // more detailed program information
+    std::cout << std::endl;
+    std::cout << "cmigitsDaemon communicates with a C-MIGITS or SDN500 INS unit" << std::endl;
+    std::cout << "and provides the following services:" << std::endl;
+    std::cout << "  o " <<
+        "Regularly collect status from the INS and provide the latest status to" << std::endl;
+    std::cout << "    " <<
+        "external processes which call our XML-RPC getStatus() method" << std::endl;
+    std::cout << "    " <<
+        "(XML-RPC service is provided on port " << PRIMARYINSDAEMON_PORT << ", or port" << std::endl;
+    std::cout << "    " <<
+        SECONDARYINSDAEMON_PORT << " when run with --secondary)" << std::endl;
+    std::cout << "  o " <<
+        "Record contents of all received data packets into a CSV-formatted file" << std::endl;
+    std::cout << "  o " <<
+        "Publish all INS data in real time to a file message queue (FMQ)" << std::endl;
+    std::cout << "    " <<
+        "(disabled when run with the --secondary option)" << std::endl;
+    std::cout << std::endl;
+}
+
 int
 main(int argc, char *argv[]) {
+    // First let logx get and strip out its arguments
+    logx::ParseLogArgs(argc, argv);
+
+    // QCoreApplication gets its arguments
     App = new QCoreApplication(argc, argv);
+
+    // Command line options we will display to the user
+    po::options_description visible_opts("Options");
+    visible_opts.add_options()
+            ("help,h", "print usage information and exit")
+            ("antennaOffset", po::value<string>(),
+                              "<x,y,z> offset in body coordinates from the INS to\n"
+                              "the GPS antenna, in cm")
+            ("secondary", "run as secondary INS (different CSV directory, "
+                          "and no publishing to FMQ)")
+            ("playback", "play back from listed file(s)");
+
+    // All options includes the above, plus a "patharg" option which we
+    // will hide when showing usage, but need for use as a marker for
+    // "positional arguments", i.e., file or device names given on the command
+    // line.
+    po::options_description all_opts("All");
+    all_opts.add(visible_opts).add_options()
+            ("patharg", po::value<std::vector<std::string> >());
+
+    // Positional option maps unknown arguments as if they were --patharg <arg>
+    po::positional_options_description pos_opts;
+    pos_opts.add("patharg", -1);
+
+    po::variables_map vm;
+    try {
+    po::store(po::command_line_parser(argc, argv).
+              options(all_opts).positional(pos_opts).run(), vm);
+    } catch (std::exception & e) {
+        ELOG << "po::store failure: " << e.what();
+    }
+    po::notify(vm);
+
+    // If requested, show the usage message and exit
+    if (vm.count("help")) {
+        usage(visible_opts);
+        exit(1);
+    }
+
+    // Are we running as primary or secondary INS?
+    bool primary(vm.count("secondary") == 0);
+
+    // Set the pieces which are different for primary and secondary
+    std::string pmuInstance(primary ? "ops" : "secondary"); // historically, primary is "ops"
+    int xmlrpcPort = primary ? PRIMARYINSDAEMON_PORT : SECONDARYINSDAEMON_PORT;
+    std::string csvFilePath = primary ? "/data/hcr/ins" : "/data/hcr/secondary_ins";
+    bool publishToFmq = primary; // only the primary publishes to the FMQ
+
+    // Are we running in playback mode?
+    bool playback = vm.count("playback");
+
+    // If not playback, we require --antennaOffset to provide antenna offset
+    // in body coordinates from the INS to the GPS antenna, x,y,z in integer
+    // cm (e.g., "--antennaOffset -20,5,-18")
+    int16_t antennaOffsetX = 0;
+    int16_t antennaOffsetY = 0;
+    int16_t antennaOffsetZ = 0;
+    if (! playback) {
+        // Verify we got exactly one --antennaOffset argument
+        if (vm.count("antennaOffset") != 1) {
+            std::cerr << "If not playback, one '--antennaOffset <x,y,z>' is required!" << std::endl;
+            std::cerr << std::endl;
+            usage(visible_opts);
+            exit(1);
+        }
+        // Parse 
+        if (3 != sscanf(vm["antennaOffset"].as<std::string>().c_str(),
+                        "%hd,%hd,%hd", &antennaOffsetX, &antennaOffsetY,
+                        &antennaOffsetZ)) {
+            std::cerr << "Bad antennaOffset '%s'" << std::endl;
+            std::cerr << std::endl;
+            usage(visible_opts);
+            exit(1);
+        }
+    }
 
     // Catch INT and TERM signals so we can shut down cleanly on ^C or 'kill'
     signal(SIGINT, exitHandler);
     signal(SIGTERM, exitHandler);
-    
-    // Let logx get and strip out its arguments
-    logx::ParseLogArgs(argc, argv);
 
-    // If the first argument is "--playback", play back from the given list of
-    // IWRF time series files instead of getting data from the C-MIGITS
-    Playback = false;
-    bool goodargs = (argc == 2);
-    if (argc > 1 && ! strcmp(argv[1], "--playback")) {
-        Playback = true;
-        goodargs = (argc > 2);
+    // For normal operation, the command line should have single "patharg"
+    // with the TTY device for communication with the INS.
+    // For playback mode, the command line must have one or more "patharg"-s
+    // listing files to be played back.
+    std::vector<std::string> pathArgs;
+    if (vm.count("patharg")) {
+        // Get paths from the command line as a vector of strings
+        pathArgs = vm["patharg"].as<std::vector<std::string> >();
+    }
+    if (! playback) {
+        if (pathArgs.size() != 1) {
+            std::cerr << "Exactly one TTY device file is required on the " <<
+                         "command line!" << std::endl;
+            std::cerr << std::endl;
+            usage(visible_opts);
+            exit(1);
+        }
+    } else {
+        if (pathArgs.size() == 0) {
+            std::cerr << "No files for playback were given on the " <<
+                         "command line!" << std::endl;
+            std::cerr << std::endl;
+            usage(visible_opts);
+            exit(1);
+        }
     }
 
-    if (! goodargs) {
-    	std::cerr << "Usage: " << argv[0] << " <tty_dev>" << std::endl;
-        std::cerr << "            OR" << std::endl;
-        std::cerr << "       " << argv[0] << " --playback <ts_file> [...]" << std::endl;
-        std::cerr << "In playback mode, C-MIGITS data from the given file(s)" <<
-                std::endl;
-        std::cerr << "will be played back until the program is terminated" <<
-                std::endl;
-    	exit(1);
+    ILOG << "Started " << (primary ? "primary" : "secondary") <<
+            " cmigitsDaemon (" << getpid() << ")";
+    if (playback) {
+    } else {
     }
-
-    ILOG << "Started cmigitsDaemon (" << getpid() << ")" << 
-            (Playback ? " in playback mode" : "");
 
     // set up registration with procmap if instance is specified
-    if (PmuInstance.size() > 0) {
-      PMU_auto_init("cmigitsDaemon", PmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
-      ILOG << "procmap instance '" << PmuInstance << "'";
-    }
+    PMU_auto_init("cmigitsDaemon", pmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
+    ILOG << "procmap instance '" << pmuInstance << "'";
 
     // Open connection to the C-MIGITS device (or a Ts2CmigitsFmqThread for
     // time-series file playback)
     Ts2CmigitsFmqThread * playbackThread = NULL;
-    if (Playback) {
+    if (playback) {
+        ILOG << "Playback mode";
         PMU_auto_register("creating Ts2CmigitsShmThread for playback");
-        // Build a vector of file names from the command line
-        std::vector<std::string> fileList;
-        for (int i = 2; i < argc; i++) {
-            fileList.push_back(argv[i]);
-        }
-        
         // Create the Ts2CmigitsFmqThread, which begins working immediately.
-        playbackThread = new Ts2CmigitsFmqThread(fileList);
+        playbackThread = new Ts2CmigitsFmqThread(pathArgs);
 
         // Stop the application when the reader thread is done
         QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
     } else {
         PMU_auto_register("creating Cmigits instance");
-        std::string devName(argv[1]);
-        Cm = new Cmigits(devName, true, "/data/hcr/cmigits");
+        std::string devName = pathArgs[0];
+        ILOG << "Communicating on device " << devName;
+        ILOG << "Using INS-to-antenna x,y,z offset (" <<
+                antennaOffsetX << " cm, " << antennaOffsetY << " cm, " <<
+                antennaOffsetZ << " cm)";
+        Cm = new Cmigits(devName,
+                         antennaOffsetX, antennaOffsetY, antennaOffsetZ,
+                         publishToFmq, csvFilePath);
     }
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
-    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, PRIMARYINSDAEMON_PORT);
+    QXmlRpcServerAbyss xmlrpcServer(&myRegistry, xmlrpcPort);
         
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // as well as a QTimer, and use them to cause a call to the function on
