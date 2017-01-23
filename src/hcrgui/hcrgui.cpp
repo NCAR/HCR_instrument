@@ -34,8 +34,8 @@
 
 #include <logx/Logging.h>
 
-#include <HcrPortNumbers.h>
 #include "HcrGuiMainWindow.h"
+#include "HcrSharedResources.h"
 
 LOGGING("hcrgui")
 
