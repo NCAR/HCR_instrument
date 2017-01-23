@@ -29,6 +29,7 @@
  */
 
 #include "MotionControl.h"
+#include "../HcrSharedResources.h"
 #include <unistd.h>
 #include <iostream>
 #include <logx/Logging.h>
@@ -57,7 +58,7 @@ MotionControl::MotionControl() :
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
-    _insFmq(),
+    _insFmq(PrimaryCmigitsFmqUrl()),
     _fakeAttitude(false),
     _driveStartTime(QTime::currentTime())
 {

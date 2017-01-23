@@ -39,10 +39,9 @@
 #include <QApplication>
 #include <QTimer>
 
-#include <HcrPortNumbers.h>
-
 #include "HcrSpatialFog.h"
 #include "SpatialFogStatus.h"
+#include "../HcrSharedResources.h"
 
 LOGGING("SpatialFogDaemon")
 

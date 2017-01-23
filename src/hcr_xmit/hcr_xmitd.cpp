@@ -44,13 +44,13 @@
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
-#include <HcrPortNumbers.h>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
 #include "HcrXmitter.h"
+#include "../HcrSharedResources.h"
 
 namespace po = boost::program_options;
 

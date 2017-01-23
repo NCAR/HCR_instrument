@@ -29,7 +29,7 @@
  */
 
 #include "ApsControl.h"
-#include <HcrPortNumbers.h>
+#include "../HcrSharedResources.h"
 #include <HcrPmc730StatusThread.h>
 #include <logx/Logging.h>
 

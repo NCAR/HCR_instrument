@@ -40,16 +40,16 @@
 #include <toolsa/pmu.h>
 #include <QCoreApplication>
 
-#include <HcrPortNumbers.h>
 #include <QtConfig.h>
 
-#include "HcrDrxPub.h"
-#include "p7142sd3c.h"
-#include "p7142Up.h"
+#include <p7142sd3c.h>
+#include <p7142Up.h>
 
 #include "HcrDrxConfig.h"
+#include "HcrDrxPub.h"
 #include "IwrfExport.h"
 #include "StatusGrabber.h"
+#include "../HcrSharedResources.h"
 
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>

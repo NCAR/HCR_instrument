@@ -46,7 +46,6 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-#include <HcrPortNumbers.h>
 #include <HcrPmc730StatusThread.h>
 #include <logx/Logging.h>
 #include <MotionControlStatusThread.h>
@@ -56,6 +55,7 @@
 #include <xmlrpc-c/client_simple.hpp>
 #include <xmlrpc-c/registry.hpp>
 
+#include "../HcrSharedResources.h"
 #include "ApsControl.h"
 #include "HcrMonitorStatus.h"
 #include "MaxPowerClient.h"

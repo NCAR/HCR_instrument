@@ -46,7 +46,6 @@
 #include <boost/program_options.hpp>
 #include <QApplication>
 #include <QMetaType>
-#include <HcrPortNumbers.h>
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
 #include <xmlrpc-c/registry.hpp>
@@ -55,6 +54,7 @@
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 #include "Ts2CmigitsFmqThread.h"
+#include "../HcrSharedResources.h"
 LOGGING("cmigitsDaemon")
 
 namespace po = boost::program_options;

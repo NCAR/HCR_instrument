@@ -36,13 +36,12 @@
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
-#include <HcrPortNumbers.h>
-
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 
 #include "MotionControl.h"
+#include "../HcrSharedResources.h"
 
 namespace po = boost::program_options;
 

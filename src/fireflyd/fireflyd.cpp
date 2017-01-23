@@ -37,13 +37,13 @@
 
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
-#include <HcrPortNumbers.h>
 #include <QFunctionWrapper.h>
 
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
 #include "FireFly.h"
+#include "../HcrSharedResources.h"
 
 LOGGING("fireflyd")
 
