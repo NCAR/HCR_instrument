@@ -32,8 +32,7 @@
  *   o Regularly collect status from the INS and provide the latest status to
  *     external processes which call our XML-RPC getStatus() method
  *   o Record contents of all received data packets into a CSV-formatted file
- *   o Publish all INS data in real time to a file message queue (FMQ), unless
- *     run with the --secondary option
+ *   o Publish all INS data in real time to a file message queue (FMQ)
  */
 #include <cerrno>
 #include <csignal>
@@ -48,13 +47,14 @@
 #include <QMetaType>
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
+#include <HcrSharedResources.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
-#include "Ts2CmigitsFmqThread.h"
 #include "../HcrSharedResources.h"
+#include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
 
 namespace po = boost::program_options;
@@ -64,6 +64,9 @@ QCoreApplication * App = 0;
 
 // Our Cmigits instance
 Cmigits * Cm = 0;
+
+// URL for our CmigitsFmq
+std::string CmigitsFmqUrl;
 
 // Handler for SIGINT and SIGTERM signals.
 void
@@ -81,9 +84,9 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Executing XML-RPC call to getStatus()";
-        // Get the latest status from shared memory, and convert it to 
+        // Get the latest status from the shared memory FMQ, and convert it to
         // an xmlrpc_c::value_struct dictionary.
-        *retvalP = CmigitsStatus::StatusFromFmq().toXmlRpcValue();
+        *retvalP = CmigitsStatus::StatusFromFmq(CmigitsFmqUrl).toXmlRpcValue();
     }
 };
 
@@ -118,6 +121,10 @@ usage(const po::options_description & opts) {
         "Record contents of all received data packets into a CSV-formatted file" << std::endl;
     std::cout << "  o " <<
         "Publish all INS data in real time to a file message queue (FMQ)" << std::endl;
+    std::cout << "    " <<
+        "(FMQ URL is " << PrimaryCmigitsFmqUrl() << " for primary" << std::endl;
+    std::cout << "    " <<
+        "and " << SecondaryCmigitsFmqUrl() << " for secondary)" << std::endl;
     std::cout << "    " <<
         "(disabled when run with the --secondary option)" << std::endl;
     std::cout << std::endl;
@@ -170,13 +177,13 @@ main(int argc, char *argv[]) {
     }
 
     // Are we running as primary or secondary INS?
-    bool primary(vm.count("secondary") == 0);
+    bool primary = (vm.count("secondary") == 0);
 
     // Set the pieces which are different for primary and secondary
     std::string pmuInstance(primary ? "ops" : "secondary"); // historically, primary is "ops"
     int xmlrpcPort = primary ? PRIMARYINSDAEMON_PORT : SECONDARYINSDAEMON_PORT;
     std::string csvFilePath = primary ? "/data/hcr/ins" : "/data/hcr/secondary_ins";
-    bool publishToFmq = primary; // only the primary publishes to the FMQ
+    CmigitsFmqUrl = primary ? PrimaryCmigitsFmqUrl() : SecondaryCmigitsFmqUrl();
 
     // Are we running in playback mode?
     bool playback = vm.count("playback");
@@ -254,7 +261,7 @@ main(int argc, char *argv[]) {
         ILOG << "Playback mode";
         PMU_auto_register("creating Ts2CmigitsShmThread for playback");
         // Create the Ts2CmigitsFmqThread, which begins working immediately.
-        playbackThread = new Ts2CmigitsFmqThread(pathArgs);
+        playbackThread = new Ts2CmigitsFmqThread(pathArgs, CmigitsFmqUrl);
 
         // Stop the application when the reader thread is done
         QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
@@ -267,7 +274,7 @@ main(int argc, char *argv[]) {
                 antennaOffsetZ << " cm)";
         Cm = new Cmigits(devName,
                          antennaOffsetX, antennaOffsetY, antennaOffsetZ,
-                         publishToFmq, csvFilePath);
+                         CmigitsFmqUrl, csvFilePath);
     }
 
     // Create our XML-RPC method registry and server instance

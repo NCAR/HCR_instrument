@@ -29,13 +29,15 @@
  */
 
 #include "Ts2CmigitsFmqThread.h"
+#include "../HcrSharedResources.h"
 #include <cstring>
 #include <iomanip>
 #include <logx/Logging.h>
 
 LOGGING("Ts2CmigitsFmqThread")
 
-Ts2CmigitsFmqThread::Ts2CmigitsFmqThread(std::vector<std::string> fileList) :
+Ts2CmigitsFmqThread::Ts2CmigitsFmqThread(std::vector<std::string> fileList,
+        const std::string & fmqUrl) :
     _fileList(fileList),
     _workThread(),
     _fake3500Timer(NULL),
@@ -49,7 +51,7 @@ Ts2CmigitsFmqThread::Ts2CmigitsFmqThread(std::vector<std::string> fileList) :
     _prevPulseDataTime(0.0),
     _prevPulseProcessTime(0.0) {
     // Get a connection to CmigitsFmq with write access
-    _fmq = new CmigitsFmq(true);
+    _fmq = new CmigitsFmq(fmqUrl, true);
     
     // Change our thread affinity to the work thread.
     moveToThread(&_workThread);

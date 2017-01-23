@@ -47,7 +47,9 @@ class Ts2CmigitsFmqThread : public QObject {
 public:
     /// @brief Construct using the given list of IWRF time-series files.
     /// @param fileList a vector containing a list of IWRF time-series files.
-    Ts2CmigitsFmqThread(std::vector<std::string> fileList);
+    /// @param fmqUrl URL for our CmigitsFmq shared memory file message queue
+    Ts2CmigitsFmqThread(std::vector<std::string> fileList,
+                        const std::string & fmqUrl);
     virtual ~Ts2CmigitsFmqThread();
 
 signals:
