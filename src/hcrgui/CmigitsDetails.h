@@ -37,7 +37,7 @@
 class CmigitsDetails : public QDialog {
     Q_OBJECT
 public:
-    CmigitsDetails(QWidget *parent);
+    CmigitsDetails(QWidget *parent, const QString & title = "");
     virtual ~CmigitsDetails() {}
 
     void noStatus();

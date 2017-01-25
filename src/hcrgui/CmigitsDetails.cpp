@@ -31,15 +31,18 @@
 #include <QDateTime>
 #include <Cmigits.h>
 
-CmigitsDetails::CmigitsDetails(QWidget *parent) :
+CmigitsDetails::CmigitsDetails(QWidget *parent, const QString & title) :
     QDialog(parent),
     _ui(),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png") {
-    // Set up the UI and get the current status
+    // Set up the UI
     _ui.setupUi(this);
+    if (! title.isNull()) {
+        setWindowTitle(title);
+    }
     // Initialize to no status available
     noStatus();
 }
