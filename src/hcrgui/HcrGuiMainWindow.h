@@ -71,7 +71,8 @@ class HcrGuiMainWindow : public QMainWindow {
 public:
     HcrGuiMainWindow(std::string archivererHost, int xmitterPort,
             int fireflydPort, int spectracomPort, std::string rdsHost,
-            int drxPort, int pmcPort, int primaryInsPort, int motionControlPort,
+            int drxPort, int pmcPort, int primaryInsPort,
+            int secondaryInsPort, int motionControlPort,
             int hcrMonitorPort);
     virtual ~HcrGuiMainWindow();
 
@@ -88,6 +89,7 @@ private slots:
     void on_hcrdrxDetailsButton_clicked();
     void on_hcrMonitorDetailsButton_clicked();
     void on_insDetailsButton_clicked();
+    void on_ins2DetailsButton_clicked();
     void on_mcDetailsButton_clicked();
     void on_pmc730DetailsButton_clicked();
     void on_spectracomDetailsButton_clicked();
@@ -106,6 +108,14 @@ private slots:
     /// the GUI.
     /// @param status the last status received from cmigitsDaemon
     void _setInsStatus(const CmigitsStatus & status);
+    /// @brief Slot to call when secondary cmigitsDaemon responsiveness changes.
+    /// @param responding True iff the server is currently responsive.
+    /// @param msg message describing the responsiveness change event
+    void _ins2ResponsivenessChange(bool responding, QString msg);
+    /// @brief Save the last status received from secondary cmigitsDaemon and
+    /// update the GUI.
+    /// @param status the last status received from secondary cmigitsDaemon
+    void _setIns2Status(const CmigitsStatus & status);
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
@@ -196,7 +206,8 @@ private:
     HcrGuiLogWindow _logWindow;
     
     // Details windows and dialogs
-    CmigitsDetails _insDetails;             // C-MIGITS INS details
+    CmigitsDetails _insDetails;             // primary INS status
+    CmigitsDetails _ins2Details;            // secondary INS status
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
     HcrMonitorDetails _hcrMonitorDetails;
@@ -209,6 +220,7 @@ private:
     
     // Threads to collect status from various daemons
     CmigitsStatusThread _insStatusThread;
+    CmigitsStatusThread _ins2StatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
     SpectracomStatusThread _spectracomStatusThread;
@@ -236,8 +248,10 @@ private:
     MotionControl::Status _mcStatus;
     /// Last status read from HcrPmc730Daemon
     HcrPmc730Status _pmcStatus;
-    /// Last status read from cmigitsDaemon
+    /// Last status read from primary cmigitsDaemon
     CmigitsStatus _insStatus;
+    /// Last status read from secondary cmigitsDaemon
+    CmigitsStatus _ins2Status;
     /// Last status from hcrdrx
     DrxStatus _drxStatus;
     /// Last status from DataMapper

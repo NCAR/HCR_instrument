@@ -53,13 +53,14 @@ static inline double MetersToFeet(double m) {
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, int spectracomPort,
-    std::string rdsHost, int drxPort, int pmcPort, int insPort,
-    int motionControlPort, int hcrMonitorPort) :
+    std::string rdsHost, int drxPort, int pmcPort, int primaryInsPort,
+    int secondaryInsPort, int motionControlPort, int hcrMonitorPort) :
     QMainWindow(),
     _ui(),
     _updateTimer(this),
     _logWindow(this),
-    _insDetails(this),
+    _insDetails(this, "C-MIGITS Status"),
+    _ins2Details(this, "Secondary C-MIGITS Status"),
     _fireflydDetails(this),
     _hcrdrxDetails(this),
     _hcrMonitorDetails(this, rdsHost, hcrMonitorPort),
@@ -68,7 +69,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _spectracomDetails(this),
     _xmitDetails(this),
     _antennaModeDialog(this),
-    _insStatusThread(rdsHost, insPort),
+    _insStatusThread(rdsHost, primaryInsPort),
+    _ins2StatusThread(rdsHost, secondaryInsPort),
     _dataMapperStatusThread(),
     _fireflydStatusThread(archiverHost, fireflydPort),
     _spectracomStatusThread(archiverHost, spectracomPort),
@@ -87,6 +89,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _mcStatus(),
     _pmcStatus(true),
     _insStatus(),
+    _ins2Status(),
     _drxStatus(),
     _dmapStatus(),
     _dmapWriteRate(0.0),
@@ -119,7 +122,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _logMessage(ss.str());
 
     ss.str("");
-    ss << "No response yet from cmigitsDaemon at " << rdsHost << ":" << insPort;
+    ss << "No response yet from cmigitsDaemon at " << rdsHost << ":" <<
+            primaryInsPort;
+    _logMessage(ss.str());
+
+    ss.str("");
+    ss << "No response yet from secondary cmigitsDaemon at " << rdsHost <<
+            ":" << secondaryInsPort;
     _logMessage(ss.str());
 
     ss.str("");
@@ -133,6 +142,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
 
     // No status from any daemons yet
     _ui.insStatusIcon->setPixmap(_redLED);
+    _ui.ins2StatusIcon->setPixmap(_redLED);
     _ui.fireflydStatusIcon->setPixmap(_redLED);
     _ui.hcrdrxStatusIcon->setPixmap(_redLED);
     _ui.hcrMonitorStatusIcon->setPixmap(_redLED);
@@ -141,12 +151,19 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.spectracomStatusIcon->setPixmap(_redLED);
     _ui.xmitterStatusIcon->setPixmap(_redLED);
     
-    // Connect and start the INS status gathering thread
+    // Connect and start the primary INS status gathering thread
     connect(& _insStatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_insResponsivenessChange(bool, QString)));
     connect(& _insStatusThread, SIGNAL(newStatus(CmigitsStatus)),
             this, SLOT(_setInsStatus(CmigitsStatus)));
     _insStatusThread.start();
+
+    // Connect and start the secondary INS status gathering thread
+    connect(& _ins2StatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_ins2ResponsivenessChange(bool, QString)));
+    connect(& _ins2StatusThread, SIGNAL(newStatus(CmigitsStatus)),
+            this, SLOT(_setIns2Status(CmigitsStatus)));
+    _ins2StatusThread.start();
 
     // Connect and start the MotionControlStatusThread
     connect(& _mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
@@ -254,6 +271,34 @@ HcrGuiMainWindow::_setInsStatus(const CmigitsStatus & status) {
     _insStatus = status;
     // Update the primary INS status details dialog.
     _insDetails.updateStatus(_insStatusThread.serverIsResponding(),
+            status);
+    // Update the main GUI
+    _update();
+}
+
+void
+HcrGuiMainWindow::_ins2ResponsivenessChange(bool responding, QString msg) {
+    // log the responsiveness change
+    std::ostringstream ss;
+    ss << "cmigitsDaemon @ " <<
+          _ins2StatusThread.rpcClient().getDaemonHost() << ":" <<
+          _ins2StatusThread.rpcClient().getDaemonPort() <<
+          (responding ? " is " : " is not ") <<
+          "responding: " << msg.toStdString();
+    _logMessage(ss.str().c_str());
+
+    if (! responding) {
+        // Create a default (bad) CmigitsStatus, and set it as the last status
+        // received.
+        _setIns2Status(CmigitsStatus());
+    }
+}
+
+void
+HcrGuiMainWindow::_setIns2Status(const CmigitsStatus & status) {
+    _ins2Status = status;
+    // Update the secondary INS status details dialog.
+    _ins2Details.updateStatus(_ins2StatusThread.serverIsResponding(),
             status);
     // Update the main GUI
     _update();
@@ -628,6 +673,11 @@ HcrGuiMainWindow::on_insDetailsButton_clicked() {
     _insDetails.show();
 }
 
+void
+HcrGuiMainWindow::on_ins2DetailsButton_clicked() {
+    _ins2Details.show();
+}
+
 /// Set drives to home position
 void
 HcrGuiMainWindow::on_driveHomeButton_clicked() {
@@ -881,7 +931,7 @@ HcrGuiMainWindow::_update() {
     std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
-    // INS status light:
+    // Primary INS status light:
     // Green light if mode is "Air Navigation" or "Land Navigation"
     // Amber light if we have both INS and GPS
     // Red light otherwise
@@ -895,6 +945,21 @@ HcrGuiMainWindow::_update() {
         light = _redLED;
     }
     _ui.insStatusIcon->setPixmap(light);
+
+    // Secondary INS status light:
+    // Green light if mode is "Air Navigation" or "Land Navigation"
+    // Amber light if we have both INS and GPS
+    // Red light otherwise
+    mode = _ins2Status.currentMode();
+    if (mode == 7 || mode == 8) {
+        light = _greenLED;
+    } else if (_ins2Status.insAvailable() &&
+            _ins2Status.gpsAvailable()) {
+        light = _amberLED;
+    } else {
+        light = _redLED;
+    }
+    _ui.ins2StatusIcon->setPixmap(light);
 
     // MotionControl status LED
     if (! _mcStatusThread.serverIsResponding() ||
@@ -1025,7 +1090,7 @@ HcrGuiMainWindow::_update() {
     _ui.dataRateIcon->setPixmap(_dmapWriteRate > 0 ? _greenLED : _amberLED);
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 
-    // Location info
+    // Location info from primary INS
     _ui.latitudeValue->setText(QString::number(_insStatus.latitude(), 'f', 4));
     _ui.longitudeValue->setText(QString::number(_insStatus.longitude(), 'f', 4));
 

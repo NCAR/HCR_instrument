@@ -35,7 +35,7 @@
 #include <logx/Logging.h>
 
 #include "HcrGuiMainWindow.h"
-#include "HcrSharedResources.h"
+#include "../HcrSharedResources.h"
 
 LOGGING("hcrgui")
 
@@ -64,7 +64,7 @@ main(int argc, char *argv[]) {
     QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, HCR_XMITD_PORT,
             FIREFLYD_PORT, SPECTRACOMDAEMON_PORT, rdsHost, HCRDRX_PORT,
             HCRPMC730DAEMON_PORT, PRIMARYINSDAEMON_PORT,
-            MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
+            SECONDARYINSDAEMON_PORT, MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
     mainWindow->show();
     
     int retval = app->exec();
