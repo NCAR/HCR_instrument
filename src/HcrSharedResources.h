@@ -21,7 +21,7 @@ const uint16_t MOTIONCONTROLDAEMON_PORT =   8080;  ///< MotionControlDaemon port
 // This is defined as a function to guarantee construction-on-first-use
 static const std::string &
 PrimaryCmigitsFmqUrl() {
-    static std::string url("/tmp/cmigits_fmq/shmem_primary");
+    static std::string url("/tmp/cmigits_fmq/shmem_22000");
     return(url);
 }
 
@@ -29,7 +29,7 @@ PrimaryCmigitsFmqUrl() {
 // This is defined as a function to guarantee construction-on-first-use
 static const std::string &
 SecondaryCmigitsFmqUrl() {
-    static std::string url("/tmp/cmigits_fmq/shmem_secondary");
+    static std::string url("/tmp/cmigits_fmq/shmem_22002");
     return(url);
 }
 
