@@ -53,6 +53,7 @@
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
+
 #include "../HcrSharedResources.h"
 #include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
@@ -114,7 +115,8 @@ usage(const po::options_description & opts) {
     std::cout << "    " <<
         "external processes which call our XML-RPC getStatus() method" << std::endl;
     std::cout << "    " <<
-        "(XML-RPC service is provided on port " << PRIMARYINSDAEMON_PORT << ", or port" << std::endl;
+        "(XML-RPC service is provided on port " << PRIMARYINSDAEMON_PORT <<
+        " by default, or port" << std::endl;
     std::cout << "    " <<
         SECONDARYINSDAEMON_PORT << " when run with --secondary)" << std::endl;
     std::cout << "  o " <<
@@ -125,8 +127,6 @@ usage(const po::options_description & opts) {
         "(FMQ URL is " << PrimaryCmigitsFmqUrl() << " for primary" << std::endl;
     std::cout << "    " <<
         "and " << SecondaryCmigitsFmqUrl() << " for secondary)" << std::endl;
-    std::cout << "    " <<
-        "(disabled when run with the --secondary option)" << std::endl;
     std::cout << std::endl;
 }
 
