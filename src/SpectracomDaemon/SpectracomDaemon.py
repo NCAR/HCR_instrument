@@ -37,15 +37,15 @@ def removeCplusplusComments(filename):
     f = open(filename, "r")
     return re.sub(pattern, replacer, f.read())
 
-# Read ../HcrPortNumbers.h and parse out the port number we should use for
+# Read ../HcrSharedResources.h and parse out the port number we should use for
 # our XML-RPC service
 def getDaemonXmlRpcPort():
     '''Parse and return the SPECTRACOMDAEMON_PORT value from 
-       <scriptDir>/../HcrPortNumbers.h.
+       <scriptDir>/../HcrSharedResources.h.
     '''
-    # Read the contents of "<SpectracomDaemonDir>/../HcrPortNumbers.h"
+    # Read the contents of "<SpectracomDaemonDir>/../HcrSharedResources.h"
     headerDir = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), '..'))
-    portNumbersHeader = os.path.join(headerDir, 'HcrPortNumbers.h')
+    portNumbersHeader = os.path.join(headerDir, 'HcrSharedResources.h')
     try:
         text = open(portNumbersHeader, "r").read()
     except IOError as e:
