@@ -21,14 +21,15 @@
 // ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-#include <IwrfExportInsThread.h>
+#include "IwrfExportInsThread.h"
 #include "IwrfExport.h"
+#include "../HcrSharedResources.h"
+
 #include <QTimer>
 #include <logx/Logging.h>
 
 LOGGING("IwrfExportInsThread")
 
-const std::string IwrfExportInsThread::FMQ_URL = "/tmp/cmigits_fmq/shmem_22000";
 
 IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport) :
     _iwrfExport(iwrfExport),
@@ -60,11 +61,12 @@ IwrfExportInsThread::run()
     time_t fmqWarningTime = 0;
     
     while (true) {
-        _insFmq.initReadOnly(FMQ_URL.c_str(), "hcrdrx", false, Fmq::END, 10);
+        const std::string & url = PrimaryCmigitsFmqUrl();
+        _insFmq.initReadOnly(url.c_str(), "hcrdrx", false, Fmq::END, 10);
 
         // If the FMQ is open, we're done in this loop
         if (_insFmq.isOpen()) {
-            ILOG << "INS FMQ " << FMQ_URL << " is now open for reading";
+            ILOG << "INS FMQ " << url << " is now open for reading";
             // We're done. Break out of the loop.
             break;
         }
@@ -73,7 +75,7 @@ IwrfExportInsThread::run()
         // INS FMQ.
         time_t now = time(0);
         if ((now - fmqWarningTime) > FMQ_WARNING_INTERVAL_SECS) {
-            WLOG << "INS FMQ " << FMQ_URL <<
+            WLOG << "INS FMQ " << url <<
                     " cannot yet be opened for reading";
             fmqWarningTime = now;
         }
