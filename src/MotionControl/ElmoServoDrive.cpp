@@ -46,7 +46,7 @@ ElmoServoDrive::ElmoServoDrive(std::string ttyDev, std::string driveName,
         uint32_t countsPerCircle, float lowerAngleLimit, float upperAngleLimit) :
     QObject(),
     _driveConn(0),
-    _inhibitActive(false),
+    _inhibitActive(true),       // assume inhibit is enabled until we hear otherwise
     _driveInitialized(false),
     _driveHomed(false),
     _homingInProgress(false),
@@ -65,7 +65,7 @@ ElmoServoDrive::ElmoServoDrive(uint8_t nodeId, std::string driveName,
         uint32_t countsPerCircle, float lowerAngleLimit, float upperAngleLimit) :
     QObject(),
     _driveConn(0),
-    _inhibitActive(false),
+    _inhibitActive(true),       // assume inhibit is enabled until we hear otherwise
     _driveInitialized(false),
     _driveHomed(false),
     _homingInProgress(false),
@@ -161,18 +161,16 @@ ElmoServoDrive::_finishConstruction() {
 void
 ElmoServoDrive::_onReadyToExecChanged(bool isReady) {
     if (isReady) {
+        // We can try to initialize the drive now
         _initDrive();
     } else {
         // Assume we know nothing accurate about the state of the drive and
         // its motor at this point.
         _clearQueriedParams();
         
-        // If we had already done our initialization or homing, mark those
-        // as undone.
-        if (_driveInitialized || _driveHomed) {
-            _driveInitialized = false;
-            _driveHomed = false;
-        }
+        // Mark initialization and homing as undone.
+        _driveInitialized = false;
+        _driveHomed = false;
     }
 }
 
@@ -246,10 +244,15 @@ ElmoServoDrive::_onReplyFromExec(std::string cmd,
         else if (! cmd.compare("IB[12]")) {
             bool inhibit(iVal);
             if (inhibit != _inhibitActive) {
+                _inhibitActive = inhibit;
                 ILOG << driveName() << " external inhibit is now " << 
-                        (inhibit ? "enabled" : "disabled");
+                        (_inhibitActive ? "enabled" : "disabled");
+                // If inhibit is no longer active and the drive is
+                // not initialized, try to initialize now
+                if (! _inhibitActive && !_driveInitialized) {
+                    _initDrive();
+                }
             }
-            _inhibitActive = inhibit;
         }
         // Log reply from XM[1] "position counter min count" command
         else if (! cmd.compare("XM[1]")) {
@@ -501,6 +504,24 @@ ElmoServoDrive::setTargetRadius(uint32_t targetRadius) {
 
 void
 ElmoServoDrive::_initDrive() {
+    // If the drive is not responding, we can't proceed
+    if (! _driveConn->readyToExec()) {
+        WLOG << driveName() <<
+                " delaying initialization until the drive is accepting commands";
+        return;
+    }
+
+    // If the external inhibit is active, do not start drive initialization,
+    // since the initialization function will try to turn on the motor (and
+    // fail).
+    if (_inhibitActive) {
+        WLOG << driveName() <<
+                " delaying initialization while external inhibit is active";
+        return;
+    }
+
+    ILOG << driveName() << " starting drive initialization";
+
     // Call the drive method to initialize drive parameters
     _startXq(_xqInitFunction());
 
@@ -672,6 +693,7 @@ ElmoServoDrive::_collectStatus() {
 
 void
 ElmoServoDrive::_clearQueriedParams() {
+    _inhibitActive = true;      // assume inhibit is active until we hear otherwise
     _pcSampleTime = 0.0;
     _driveStatusRegister = 0;
     _lastSrTime.tv_sec = 0;
