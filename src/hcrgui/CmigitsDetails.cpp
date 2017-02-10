@@ -56,6 +56,9 @@ CmigitsDetails::updateStatus(bool daemonResponding,
             "" : "<font color='DarkRed'>No CmigitsDaemon!</font>");
     _ui.infoFrame->setEnabled(daemonResponding);
 
+    // INS model name
+    _ui.insModelValue->setText(status.insModelName().c_str());
+
     double statusTime = 0.0;
     uint16_t currentMode = 0;
     bool insAvailable = false;

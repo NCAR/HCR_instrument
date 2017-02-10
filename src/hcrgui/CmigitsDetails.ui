@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>348</height>
+    <width>504</width>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,14 +38,14 @@
          <string>Status</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="9" column="0">
+         <item row="10" column="0">
           <widget class="QLabel" name="timeFOMLabel">
            <property name="text">
             <string>Time FOM</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <widget class="QLabel" name="velocityFOMValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -61,7 +61,7 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="9" column="1">
           <widget class="QLabel" name="headingFOMValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -77,14 +77,14 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="positionFOMLabel">
            <property name="text">
             <string>Position FOM</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item row="9" column="0">
           <widget class="QLabel" name="headingFOMLabel">
            <property name="text">
             <string>Heading FOM</string>
@@ -98,14 +98,14 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="insLabel">
            <property name="text">
             <string>INS available</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="1">
+         <item row="10" column="1">
           <widget class="QLabel" name="timeFOMValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -121,14 +121,14 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="velocityFOMLabel">
            <property name="text">
             <string>Velocity FOM</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="7" column="1">
           <widget class="QLabel" name="positionFOMValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -144,7 +144,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="QLabel" name="gpsValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -163,14 +163,14 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="currentModeLabel">
            <property name="text">
             <string>Current Mode</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="QLabel" name="insValue">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -189,7 +189,7 @@
            </property>
           </widget>
          </item>
-         <item row="10" column="0">
+         <item row="11" column="0">
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -202,35 +202,35 @@
            </property>
           </spacer>
          </item>
-         <item row="5" column="0">
+         <item row="6" column="0">
           <widget class="QLabel" name="satCountLabel">
            <property name="text">
             <string># Satellites</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="6" column="1">
           <widget class="QLabel" name="satCountValue">
            <property name="text">
             <string>-1</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="gpsLabel">
            <property name="text">
             <string>GPS available</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="coarseAlignLabel">
            <property name="text">
             <string>Doing coarse alignment</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="QLabel" name="coarsAlignValue">
            <property name="text">
             <string/>
@@ -247,7 +247,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QFrame" name="currentModeFrame">
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
@@ -277,6 +277,20 @@
              </widget>
             </item>
            </layout>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="insModelLabel">
+           <property name="text">
+            <string>INS Model</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="insModelValue">
+           <property name="text">
+            <string>(placeholder)</string>
+           </property>
           </widget>
          </item>
         </layout>
