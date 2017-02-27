@@ -21,7 +21,7 @@
 
 LOGGING("SpatialFogFmq")
 
-const std::string SpatialFogFmq::FMQ_URL = "/tmp/spatialfog_fmq/shmem_22002";
+const std::string SpatialFogFmq::FMQ_URL = "/tmp/spatialfog_fmq/shmem_22004";
 
 // All-zero SpatialFogFmq::MsgStruct (from the default constructor)
 static const SpatialFogFmq::MsgStruct ALL_ZERO_MESSAGE = SpatialFogFmq::MsgStruct();
