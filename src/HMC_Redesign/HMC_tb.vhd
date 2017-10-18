@@ -31,6 +31,10 @@ USE ieee.std_logic_1164.ALL;
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --USE ieee.numeric_std.ALL;
+
+-----------------------------------------------------------------------------------------
+-- NEED TO RUN SIMULATION FOR 1016 MILLISECONDS TO SEE CORRECT BEHAVIOR !!!
+-----------------------------------------------------------------------------------------
  
 ENTITY HMC_tb IS
 END HMC_tb;
@@ -138,8 +142,7 @@ ARCHITECTURE behavior OF HMC_tb IS
    -- Clock period definitions
    constant EXT_CLK_period : time := 64 ns;
  
-BEGIN
- 
+BEGIN 
 	-- Instantiate the Unit Under Test (UUT)
    uut: HMC_src PORT MAP (
           TIMER_6 => TIMER_6,
@@ -210,8 +213,8 @@ BEGIN
    begin
 		wait for 100 ns;
 		RESET <= '0'; -- reset firmware
-		wait for 500 ns; -- turn HV_ON
-		HV_ON_730 <= '0'; 
+		wait for 500 ns; -- turn HV_ON, Filament on
+		HV_ON_730 <= '0';
 		EMS_PWR_ERROR <= '0';  	-- good status	
 		RESET <= '1'; 			-- take out of reset state!
 		wait;             -- wait forever; i.e. don't cycle
