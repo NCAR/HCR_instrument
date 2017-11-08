@@ -58,9 +58,12 @@ MotionControl::MotionControl() :
     _antennaMode(POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
-    _insFmq(PrimaryCmigitsFmqUrl()),
+    _ins1Fmq(INS1_FMQ_URL),
+    _ins2Fmq(INS2_FMQ_URL),
+    _attitudeCorrectionEnabled(false),
     _fakeAttitude(false),
-    _driveStartTime(QTime::currentTime())
+    _driveStartTime(QTime::currentTime()),
+    _insInUse(1)
 {
     // Start with attitude correction enabled.
     setCorrectionEnabled(true);
@@ -94,12 +97,14 @@ void MotionControl::correctForAttitude()
     double velUp = 0.0;
     double drift = 0.0;
 
-    if (_insFmq.getWriterPid()) {
+    CmigitsFmq & insFmq = (_insInUse == 1 ? _ins1Fmq : _ins2Fmq);
+    if (insFmq.getWriterPid()) {
         // Get pitch, roll, and heading
-        _insFmq.getLatest3512Data(dataTime, pitch, roll, heading, velNorth,
-                velEast, velUp);
+        insFmq.getLatest3512Data(
+                dataTime, pitch, roll, heading, velNorth, velEast, velUp
+        );
         // Get drift
-        drift = _insFmq.getEstimatedDriftAngle();
+        drift = insFmq.getEstimatedDriftAngle();
     }
 
     // Substitute fake attitude if requested
@@ -219,6 +224,22 @@ MotionControl::setCorrectionEnabled(bool enabled) {
 
 /////////////////////////////////////////////////////////////////////
 void
+MotionControl::setInsInUse(int newInsInUse) {
+    if (newInsInUse == 1 || newInsInUse == 2) {
+        if (newInsInUse != _insInUse) {
+            // We're changing the INS in use, so do an immediate attitude
+            // correction with the new INS.
+            _insInUse = newInsInUse;
+            correctForAttitude();
+        }
+    } else {
+        ELOG << "BAD new insInUse: " << newInsInUse <<
+                ", keeping current insInUse: " << _insInUse;
+    }
+}
+
+/////////////////////////////////////////////////////////////////////
+void
 MotionControl::_adjustForAttitude(double & rot, double & tilt, double pitch,
         double roll, double drift)
 {
@@ -323,7 +344,8 @@ MotionControl::Status::Status() :
     scanCwLimit(0.0),
     scanRate(0.0),
     scanBeamTilt(0.0),
-    attitudeCorrectionEnabled(false) {}
+    attitudeCorrectionEnabled(false),
+    insInUse(1) {}
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::Status::Status(const MotionControl & mc) :
@@ -345,7 +367,8 @@ MotionControl::Status::Status(const MotionControl & mc) :
     tiltDriveSystemTime(mc.tiltDrive().driveSystemTime()),
     antennaMode(mc.antennaMode()),
     fixedPointingAngle(mc.fixedPointingAngle()),
-    attitudeCorrectionEnabled(mc.attitudeCorrectionEnabled()) {
+    attitudeCorrectionEnabled(mc.attitudeCorrectionEnabled()),
+    insInUse(mc.insInUse()) {
     // Use the MotionControl::getScanParams() method to get all three scan
     // parameters
     mc.getScanParams(scanCcwLimit, scanCwLimit, scanRate, scanBeamTilt);
@@ -388,6 +411,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
     scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
     scanBeamTilt = static_cast<xmlrpc_c::value_double>(statusMap["scanBeamTilt"]);
     attitudeCorrectionEnabled = static_cast<xmlrpc_c::value_boolean>(statusMap["attitudeCorrectionEnabled"]);
+    insInUse = static_cast<xmlrpc_c::value_int>(statusMap["insInUse"]);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -432,6 +456,7 @@ MotionControl::Status::to_value_struct() const {
     dict["scanRate"] = xmlrpc_c::value_double(scanRate);
     dict["scanBeamTilt"] = xmlrpc_c::value_double(scanBeamTilt);
     dict["attitudeCorrectionEnabled"] = xmlrpc_c::value_boolean(attitudeCorrectionEnabled);
+    dict["insInUse"] = xmlrpc_c::value_int(insInUse);
     // Construct an xmlrpc_c::value_struct from the map and return it.
     return(xmlrpc_c::value_struct(dict));
 }
