@@ -43,6 +43,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
         _motionControlResponsive(false),
+        _insInUse(1),
         _insResponsive(false),
         _terrainHtServerResponsive(false),
         _mslAltitude(NAN),
@@ -64,6 +65,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
         _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
         _motionControlResponsive(false),
+        _insInUse(1),
         _insResponsive(false),
         _terrainHtServerResponsive(false),
         _mslAltitude(0.0),
@@ -84,6 +86,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     // Get TransmitControl status
     _hcrPmc730Responsive = transmitControl._hcrPmc730Responsive;
     _motionControlResponsive = transmitControl._motionControlResponsive;
+    _insInUse = transmitControl._insInUse;
     _insResponsive = transmitControl._insResponsive;
     _terrainHtServerResponsive = transmitControl._terrainHtServerResponsive;
     _mslAltitude = transmitControl._mslAltitude;
@@ -100,7 +103,25 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _detailsForLastHvOffForHighPower = transmitControl._detailsForLastHvOffForHighPower;
 }
 
-HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) {
+HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) :
+    _apsValveControlState(ApsControl::VALVE_AUTOMATIC),
+    _apsStatusText("no status"),
+    _hcrPmc730Responsive(false),
+    _motionControlResponsive(false),
+    _insInUse(1),
+    _insResponsive(false),
+    _terrainHtServerResponsive(false),
+    _mslAltitude(0.0),
+    _aglAltitude(0.0),
+    _overWater(false),
+    _meanMaxPower(-999.9),
+    _requestedHmcMode(HcrPmc730::HMC_MODE_INVALID),
+    _hvRequested(false),
+    _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
+    _transmitAllowed(false),
+    _attenuationRequired(false),
+    _timeOfLastHvOffForHighPower(0),
+    _detailsForLastHvOffForHighPower("") {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);
