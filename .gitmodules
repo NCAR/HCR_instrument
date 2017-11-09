@@ -41,6 +41,3 @@
 [submodule "src/ReadyFlow7142_428_WinDriver1150"]
 	path = src/ReadyFlow7142_428_WinDriver1150
 	url = http://gitlab.eol.ucar.edu/vendor/ReadyFlow7142_428_WinDriver1150.git
-[submodule "src/SpatialFOG"]
-	path = src/SpatialFOG
-	url = https://github.com/NCAR/SpatialFOG.git

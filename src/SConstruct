@@ -37,7 +37,6 @@ SConscript("hcrgui/SConscript")
 SConscript("HcrMonitor/SConscript")
 SConscript("HcrPmc730Daemon/SConscript")
 SConscript("MotionControl/SConscript")
-SConscript("SpatialFogDaemon/SConscript")
 SConscript("tcpscope/SConscript")
 
 env.Alias('apidocs', env.Dir("apidocs"))
