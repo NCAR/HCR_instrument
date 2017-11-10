@@ -36,6 +36,7 @@
 #include <sstream>
 
 #include <logx/Logging.h>
+#include <HcrSharedResources.h>
 #include <HcrPmc730StatusThread.h>
 
 LOGGING("TransmitControl")
@@ -59,7 +60,8 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _motionControlResponsive(false),
     _motionControlStatus(),
     _maxPowerResponsive(false),
-    _insWatcher(_INS_POLL_INTERVAL_MS, _INS_DATA_TIMEOUT_MS),
+    _insInUse(1),
+    _insWatcher(INS1_FMQ_URL, _INS_POLL_INTERVAL_MS, _INS_DATA_TIMEOUT_MS),
     _insResponsive(false),
     _terrainHtServerResponsive(false),
     _aglAltitude(0.0),
@@ -171,6 +173,29 @@ TransmitControl::_recordHmcModeChange(HcrPmc730::HmcOperationMode mode,
 void
 TransmitControl::_updateMotionControlStatus(MotionControl::Status status) {
     _motionControlStatus = status;
+
+    // Our _insInUse should track Motion Control's. Change the watcher's
+    // URL if we change _insInUse.
+    int mcInsInUse = _motionControlStatus.insInUse;
+    if (_insInUse != mcInsInUse) {
+        ILOG << "Switching 'INS in use' from " << _insInUse << " to " <<
+                mcInsInUse << " to match MotionControl";
+        _insInUse = mcInsInUse;
+        std::string fmqUrl;
+        switch (_insInUse) {
+        case 1:
+            fmqUrl = INS1_FMQ_URL;
+            break;
+        case 2:
+            fmqUrl = INS2_FMQ_URL;
+            break;
+        default:
+            ELOG << "BUG - bad 'INS in use' value: " << _insInUse;
+            abort();
+        }
+        _insWatcher.setFmqUrl(fmqUrl);
+    }
+
     _updateControlState();
 }
 

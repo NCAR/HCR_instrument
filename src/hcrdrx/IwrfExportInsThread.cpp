@@ -31,8 +31,9 @@
 LOGGING("IwrfExportInsThread")
 
 
-IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport) :
+IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport, int insNum) :
     _iwrfExport(iwrfExport),
+    _insNum(insNum),
     _insFmq() {
     // Since we don't have a proper Qt event loop, allow the terminate() 
     // method to stop us.
@@ -59,14 +60,26 @@ IwrfExportInsThread::run()
     // because it has not yet been created by the writer).
     const int FMQ_WARNING_INTERVAL_SECS = 10;
     time_t fmqWarningTime = 0;
-    
+    std::string fmqUrl;
+    switch (_insNum) {
+    case 1:
+        fmqUrl = INS1_FMQ_URL;
+        break;
+    case 2:
+        fmqUrl = INS2_FMQ_URL;
+        break;
+    case 3:
+        ELOG << "BUG - Unexpected INS number " << _insNum;
+        abort();
+    }
+
+    // Loop until we open the FMQ successfully
     while (true) {
-        const std::string & url = PrimaryCmigitsFmqUrl();
-        _insFmq.initReadOnly(url.c_str(), "hcrdrx", false, Fmq::END, 10);
+        _insFmq.initReadOnly(fmqUrl.c_str(), "hcrdrx", false, Fmq::END, 10);
 
         // If the FMQ is open, we're done in this loop
         if (_insFmq.isOpen()) {
-            ILOG << "INS FMQ " << url << " is now open for reading";
+            ILOG << "INS FMQ " << fmqUrl << " is now open for reading";
             // We're done. Break out of the loop.
             break;
         }
@@ -75,8 +88,7 @@ IwrfExportInsThread::run()
         // INS FMQ.
         time_t now = time(0);
         if ((now - fmqWarningTime) > FMQ_WARNING_INTERVAL_SECS) {
-            WLOG << "INS FMQ " << url <<
-                    " cannot yet be opened for reading";
+            WLOG << "INS FMQ " << fmqUrl << " cannot yet be opened for reading";
             fmqWarningTime = now;
         }
         // Sleep for 0.1 s and try again
@@ -85,8 +97,6 @@ IwrfExportInsThread::run()
     
     // Now begin the reading loop
     while (true) {
-//        QCoreApplication::processEvents();
-
         if (_insFmq.readMsgBlocking()) {
           ELOG << "ERROR - cannot read message from FMQ: " << _insFmq.getErrStr();
           return;
@@ -101,6 +111,6 @@ IwrfExportInsThread::run()
         const void * msgPtr = _insFmq.getMsg();
         const CmigitsFmq::MsgStruct * cmigitsDataStruct = 
                 reinterpret_cast<const CmigitsFmq::MsgStruct*>(msgPtr);
-        _iwrfExport.queueInsData(*cmigitsDataStruct);
+        _iwrfExport.queueInsData(*cmigitsDataStruct, _insNum);
     }
 }

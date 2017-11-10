@@ -390,6 +390,10 @@ private:
     /// @brief latest max power report
     _MaxPowerStruct _maxPowerReport;
 
+    /// @brief The INS (1 or 2) currently in use to get location for determining
+    /// AGL altitude
+    int _insInUse;
+
     /// @brief FMQ watcher for INS data, to signal when new data are available
     CmigitsFmqWatcher _insWatcher;
 
