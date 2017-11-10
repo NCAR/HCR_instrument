@@ -759,6 +759,7 @@ void IwrfExport::_assembleStatusPacket()
   iwrf_status_xml_init(hdr);
   hdr.xml_len = _xmlLen;
   hdr.packet.len_bytes = _statusMsgLen;
+  hdr.packet.seq_num = _packetSeqNum++;
 
   // copy data into buffer
   
