@@ -42,12 +42,12 @@ inline double RadToDeg(double rad) { return(180.0 * rad / M_PI); }
 /// Rotation drive CANopen node ID (used for CAN connection constructor) and
 /// TTY device name (used for TTY connection constructor)
 static const int ROT_DRIVE_CANOPEN_ID = 126;
-static const std::string ROT_DRIVE_TTYDEV = "/dev/ttydp00";
+//static const std::string ROT_DRIVE_TTYDEV = "/dev/ttydp00";
 
 /// Tilt drive CANopen node ID (used for CAN connection constructor) and
 /// TTY device name (used for TTY connection constructor)
 static const int TILT_DRIVE_CANOPEN_ID = 125;
-static const std::string TILT_DRIVE_TTYDEV = "/dev/ttydp01";
+//static const std::string TILT_DRIVE_TTYDEV = "/dev/ttydp01";
 
 /////////////////////////////////////////////////////////////////////
 MotionControl::MotionControl() :
