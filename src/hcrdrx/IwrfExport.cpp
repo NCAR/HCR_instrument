@@ -1065,7 +1065,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
 
       // Get the read lock again
       _insAccessLock.lockForRead();
-      
+
       // If we've waited MAX_WAIT_US, mark INS data as delayed so that
       // we don't wait again until new data show up in the deque.
       if (total_wait_us >= MAX_WAIT_US) {
@@ -1115,6 +1115,8 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   int writeCount;
   for (writeCount = 0; ! true; writeCount++) {
       // Find the INS deque with the earliest entry time
+      int insNum;
+      // Pointer to the deque with the earliest entry
       std::deque<CmigitsFmq::MsgStruct> * insDequePtr(NULL);
 
       if (_ins1Deque.empty() && _ins2Deque.empty()) {
@@ -1127,8 +1129,10 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           uint64_t ins2Time = _ins2Deque.front().time3512;
           insDequePtr = (ins1Time <= ins2Time) ?  &_ins1Deque : &_ins2Deque;
       } else if (! _ins1Deque.empty()) {
+          insNum = 1;
           insDequePtr = &_ins1Deque;
       } else {
+          insNum = 2;
           insDequePtr = &_ins2Deque;
       }
 
@@ -1141,20 +1145,24 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
           break;
       }
 
-      // Get the write lock
-      _insAccessLock.unlock();
-      _insAccessLock.lockForWrite();
-
       // We're going to use this entry, so remove it from its source deque.
       //
       // If we get here, insDequePtr must point to the deque which provided
       // the earliest entry.
+
       if (! insDequePtr) {
           ELOG << "BUG - insDequePtr is NULL when writing a georef packet";
           abort();
       }
+
+      _insAccessLock.unlock();
+      _insAccessLock.lockForWrite();
       insDequePtr->pop_front();
-      
+
+      // We don't need further read or write access to the _ins* members for
+      // a bit
+      _insAccessLock.unlock();
+
       // Initialize the georef packet
       iwrf_platform_georef_init(_radarGeoref);
       
@@ -1169,6 +1177,14 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       _radarGeoref.packet.time_secs_utc = entry.time3512 / 1000;
       _radarGeoref.packet.time_nano_secs = (entry.time3512 % 1000) * 1000000;
 
+      // The unit_num member is kind of funky: unit_num = 0 indicates that this
+      // is the "primary" INS (i.e., the one used for MotionControl), and
+      // unit_num = 1 indicates the "secondary" (or backup) INS.
+      _radarGeoref.unit_num =
+              (_monitor.motionControlStatus().insInUse == insNum) ? 0 : 1;
+      // The unit_id member should be a consistent unique identifier for the
+      // INS, e.g. a serial number
+      _radarGeoref.unit_id = entry.insSerialNum;
       _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
       _radarGeoref.altitude_msl_km = entry.altitude * 0.001; // m -> km
       _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(entry);
@@ -1236,16 +1252,13 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       
       _lastGeorefTime = thisGeorefTime;
       
-      // Release our lock before calling methods which need it
-      _insAccessLock.unlock();
-      
       // compute elevation and azimuth
       _computeRadarAngles();
       
       // send the packet
       _sendIwrfGeorefPacket();
       
-      // get the read lock again before testing _insDeque.empty()
+      // get the read lock again before testing if INS deque-s are empty
       _insAccessLock.lockForRead();
   }
   
