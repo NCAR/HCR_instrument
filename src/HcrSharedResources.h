@@ -5,18 +5,49 @@
 #include <string>
 
 /// Port numbers for XML-RPC services provided by HCR processes
-const uint16_t HCR_XMITD_PORT =             8000;  ///< hcr_xmitd port
-const uint16_t FIREFLYD_PORT =              8001;  ///< fireflyd port
-const uint16_t HCRPMC730DAEMON_PORT =       8003;  ///< HcrPmc730Daemon port
-const uint16_t HCRMONITOR_PORT =            8004;  ///< HcrMonitor port
-const uint16_t SPECTRACOMDAEMON_PORT =      8005;  ///< SpectracomDaemon port
-const uint16_t INS1_DAEMON_PORT =           53005; ///< INS1 cmigitsDaemon port
-const uint16_t INS2_DAEMON_PORT =           53006; ///< INS2 cmigitsDaemon port
-const uint16_t HCRDRX_PORT =                8081;  ///< hcrdrx port
-const uint16_t MOTIONCONTROLDAEMON_PORT =   8080;  ///< MotionControlDaemon port
+static const uint16_t HCR_XMITD_PORT =             8000;  ///< hcr_xmitd port
+static const uint16_t FIREFLYD_PORT =              8001;  ///< fireflyd port
+static const uint16_t HCRPMC730DAEMON_PORT =       8003;  ///< HcrPmc730Daemon port
+static const uint16_t HCRMONITOR_PORT =            8004;  ///< HcrMonitor port
+static const uint16_t SPECTRACOMDAEMON_PORT =      8005;  ///< SpectracomDaemon port
+static const uint16_t INS1_DAEMON_PORT =           53005; ///< INS1 cmigitsDaemon port
+static const uint16_t INS2_DAEMON_PORT =           53006; ///< INS2 cmigitsDaemon port
+static const uint16_t HCRDRX_PORT =                8081;  ///< hcrdrx port
+static const uint16_t MOTIONCONTROLDAEMON_PORT =   8080;  ///< MotionControlDaemon port
 
 /// FMQ URLs for our two INSs
 #define INS1_FMQ_URL "/tmp/cmigits_fmq/shmem_22000"
 #define INS2_FMQ_URL "/tmp/cmigits_fmq/shmem_22002"
+
+/// bad/warn thresholds for INS differences
+static const double PITCH_DIFF_BAD =    0.5;    // deg
+static const double PITCH_DIFF_WARN =   0.25;   // deg
+
+static const double ROLL_DIFF_BAD =     0.5;    // deg
+static const double ROLL_DIFF_WARN =    0.25;   // deg
+
+static const double HEADING_DIFF_BAD =  5.0;    // deg
+static const double HEADING_DIFF_WARN = 2.5;    // deg
+
+static const double GNDSPEED_DIFF_BAD = 10.0;   // m/s
+static const double GNDSPEED_DIFF_WARN = 5.0;   // m/s
+
+// Minimum ground speed for which we expect a meaningful ground track
+static const double GNDTRACK_TEST_MIN_SPEED = 10.0;  // m/s
+
+static const double GNDTRACK_DIFF_BAD = 1.0;    // deg
+static const double GNDTRACK_DIFF_WARN = 0.5;   // deg
+
+static const double VERTSPEED_DIFF_BAD = 5.0;   // m/s
+static const double VERTSPEED_DIFF_WARN = 2.5;  // m/s
+
+static const double LATITUDE_DIFF_BAD = 0.01;   // deg
+static const double LATITUDE_DIFF_WARN = 0.001; // deg
+
+static const double LONGITUDE_DIFF_BAD = 0.01;  // deg
+static const double LONGITUDE_DIFF_WARN = 0.001;// deg
+
+static const double ALTITUDE_DIFF_BAD = 50;     // m
+static const double ALTITUDE_DIFF_WARN = 20;    // m
 
 #endif // #ifndef _HCRSHAREDRESOURCES_H_
