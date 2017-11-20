@@ -87,6 +87,7 @@ QCoreApplication * _app = 0;
 
 std::string _xmitdHost("archiver");     ///< The host on which hcr_xmitd is running
 std::string _pmc730dHost("localhost");  ///< The host on which HcrPmc730Daemon is running
+std::string _motionControlHost("localhost");  ///< The host on which MotionControlDaemon is running
 
 /////////////////////////////////////////////////////////////////////
 void stopProgram(int sig) {
@@ -484,8 +485,9 @@ main(int argc, char** argv)
 
         // Start our status monitoring thread.
         _statusGrabber = new StatusGrabber(_sd3c,
-                                           _pmc730dHost, HCRPMC730DAEMON_PORT,
-                                           _xmitdHost, HCR_XMITD_PORT);
+                               _pmc730dHost, HCRPMC730DAEMON_PORT,
+                               _xmitdHost, HCR_XMITD_PORT,
+                               _motionControlHost, MOTIONCONTROLDAEMON_PORT);
 
         // create and start the export object
         _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
