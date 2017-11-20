@@ -252,12 +252,12 @@ HcrGuiMainWindow::~HcrGuiMainWindow() {
 void
 HcrGuiMainWindow::_updateInsOverview() {
     _insOverview.updateStatus(_ins1StatusThread.serverIsResponding(),
-                              (_mcStatus.insInUse == 1),
                               _ins1Status,
                               _ins2StatusThread.serverIsResponding(),
-                              (_mcStatus.insInUse == 2),
-                              _ins2Status);
+                              _ins2Status,
+                              _mcStatus.insInUse);
 }
+
 void
 HcrGuiMainWindow::_ins1ResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change

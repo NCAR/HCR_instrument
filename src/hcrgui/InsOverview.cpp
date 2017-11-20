@@ -52,14 +52,12 @@ GroundSpeed(double velNorth, double velEast) {
     return(hypot(velNorth, velEast));
 }
 
-
 void
 InsOverview::updateStatus(bool ins1DaemonResponding,
-                          bool ins1InUse,
                           const CmigitsStatus & ins1Status,
                           bool ins2DaemonResponding,
-                          bool ins2InUse,
-                          const CmigitsStatus & ins2Status) {
+                          const CmigitsStatus & ins2Status,
+                          int insInUse) {
     // QString and an associated QStringStream for building text strings
     QString text;
     QTextStream textStream(&text); 
@@ -68,8 +66,13 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Degree symbol (0xb0 in Latin1 encoding)
     QChar degSym(0xb0);
 
-    // ms^-1 units text label
+    // fancy ms^-1 units text label
     QString mPerSec(" ms<sup>-1</sup>");
+
+    // Get the default background color from the top-level widget (parent of
+    // gridLayout), which should have its original palette.
+    QColor defaultBgColor =
+            _ui.gridLayout->parentWidget()->palette().color(QWidget::backgroundRole());
 
     // Write to the label which notes if either or both daemons are not
     // responding.
@@ -91,12 +94,14 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Gray out values for INS1 if its daemon is not responding
     _ui.ins1Frame->setEnabled(ins1DaemonResponding);
 
-    // Put a box with a slightly lighter background around INS1 values if the
-    // INS is in use, otherwise no frame
+    // Put a box around the INS1 frame if this is INS is in use
     QFrame::Shape frameShape =
-        ins1InUse ? QFrame::Shape::Panel : QFrame::Shape::NoFrame;
+        (insInUse == 1) ? QFrame::Shape::Panel : QFrame::Shape::NoFrame;
     _ui.ins1Frame->setFrameShape(frameShape);
-    _ui.ins1Frame->setStyleSheet(ins1InUse ? "background-color: #E0E0E0" : "");
+
+    // Make background color for the frame 5% lighter if this is the INS in use.
+    QColor bgColor = (insInUse == 1) ? defaultBgColor.lighter(105) : defaultBgColor;
+    _ui.ins1Frame->setStyleSheet(QString("background-color:") + bgColor.name());
 
     // pitch (to 0.1 degree precision)
     text = "";
@@ -154,11 +159,13 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Gray out values for INS2 if its daemon is not responding
     _ui.ins2Frame->setEnabled(ins2DaemonResponding);
 
-    // Put a box around INS1 values if the INS is in use, otherwise no frame
-    frameShape =
-        ins2InUse ? QFrame::Shape::StyledPanel : QFrame::Shape::NoFrame;
+    // Put a box around the INS2 frame if this is INS is in use
+    frameShape = (insInUse == 2) ? QFrame::Shape::Panel : QFrame::Shape::NoFrame;
     _ui.ins2Frame->setFrameShape(frameShape);
-    _ui.ins2Frame->setStyleSheet(ins2InUse ? "background-color: #EEEEEE" : "");
+
+    // Make background color for the frame 5% lighter if this is the INS in use.
+    bgColor = (insInUse == 2) ? defaultBgColor.lighter(105) : defaultBgColor;
+    _ui.ins2Frame->setStyleSheet(QString("background-color:") + bgColor.name());
 
     // pitch (to 0.1 degree precision)
     text = "";
@@ -217,35 +224,25 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     bool doDiffs = ins1DaemonResponding && ins2DaemonResponding;
     _ui.diffFrame->setEnabled(doDiffs);
 
+    // Get the diffFrame default background color. We may tint it to indicate
+    // warnings or errors.
     if (doDiffs) {
         double diff;
 
         // pitch diff (to 0.1 degree precision)
         diff = fabs(ins1Status.pitch() - ins2Status.pitch());
-        text = "";
-        textStream << "<font color='" <<
-                DiffTextColor(diff, PITCH_DIFF_BAD, PITCH_DIFF_WARN) <<
-                "'>" << qSetRealNumberPrecision(1) << diff <<
-                "</font>" << degSym;
-        _ui.diffPitchValue->setText(text);
+        _setDiffValueLabel(_ui.diffPitchValue, diff, degSym, 1,
+                           PITCH_DIFF_BAD, PITCH_DIFF_WARN);
 
         // roll diff (to 0.1 degree precision)
         diff = fabs(ins1Status.roll() - ins2Status.roll());
-        text = "";
-        textStream << "<font color='" <<
-                DiffTextColor(diff, ROLL_DIFF_BAD, ROLL_DIFF_WARN) <<
-                "'>" << qSetRealNumberPrecision(1) << diff <<
-                "</font>" << degSym;
-        _ui.diffRollValue->setText(text);
+        _setDiffValueLabel(_ui.diffRollValue, diff, degSym, 1,
+                           ROLL_DIFF_BAD, ROLL_DIFF_WARN);
 
         // heading diff (to 1 degree precision)
         diff = fabs(ins1Status.heading() - ins2Status.heading());
-        text = "";
-        textStream << "<font color='" <<
-                DiffTextColor(diff, HEADING_DIFF_BAD, HEADING_DIFF_WARN) <<
-                "'>" << qSetRealNumberPrecision(0) << diff <<
-                "</font>" << degSym;
-        _ui.diffHeadingValue->setText(text);
+        _setDiffValueLabel(_ui.diffHeadingValue, diff, degSym, 0,
+                           HEADING_DIFF_BAD, HEADING_DIFF_WARN);
 
         // ground track diff (to 1 degree precision)
         //
@@ -257,43 +254,34 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
             _ui.diffGndTrackValue->setText("--");
         } else {
             diff = fabs(ins1GroundTrack - ins2GroundTrack);
-            text = "";
-            textStream << "<font color='" <<
-                    DiffTextColor(diff, GNDTRACK_DIFF_BAD, GNDTRACK_DIFF_WARN) <<
-                    "'>" <<  qSetRealNumberPrecision(0) << diff <<
-                    "</font>" << degSym;
-            _ui.diffGndTrackValue->setText(text);
+            _setDiffValueLabel(_ui.diffGndTrackValue, diff, degSym, 0,
+                               GNDTRACK_DIFF_BAD, GNDTRACK_DIFF_WARN);
         }
 
         // ground speed diff (to 1 m/s precision)
-        text = "";
-        textStream << qSetRealNumberPrecision(0) <<
-                fabs(ins1GroundSpeed - ins2GroundSpeed) << mPerSec;
-        _ui.diffGndSpeedValue->setText(text);
+        diff = fabs(ins1GroundSpeed - ins2GroundSpeed);
+        _setDiffValueLabel(_ui.diffGndSpeedValue, diff, mPerSec, 0,
+                           GNDSPEED_DIFF_BAD, GNDSPEED_DIFF_WARN);
 
         // vertical speed diff (to 1 m/s precision)
-        text = "";
-        textStream << qSetRealNumberPrecision(0) <<
-                fabs(ins1Status.velUp() - ins2Status.velUp()) << mPerSec;
-        _ui.diffVertSpeedValue->setText(text);
+        diff = fabs(ins1Status.velUp() - ins2Status.velUp());
+        _setDiffValueLabel(_ui.diffVertSpeedValue, diff, mPerSec, 0,
+                           VERTSPEED_DIFF_BAD, VERTSPEED_DIFF_WARN);
 
         // latitude diff (to 0.001 degree precision)
-        text = "";
-        textStream << qSetRealNumberPrecision(3) <<
-                fabs(ins1Status.latitude() - ins2Status.latitude()) << degSym;
-        _ui.diffLatitudeValue->setText(text);
+        diff = fabs(ins1Status.latitude() - ins2Status.latitude());
+        _setDiffValueLabel(_ui.diffLatitudeValue, diff, degSym, 3,
+                           LATITUDE_DIFF_BAD, LATITUDE_DIFF_WARN);
 
         // longitude diff (to 0.001 degree precision)
-        text = "";
-        textStream << qSetRealNumberPrecision(3) <<
-                fabs(ins1Status.longitude() - ins2Status.longitude()) << degSym;
-        _ui.diffLongitudeValue->setText(text);
+        diff = fabs(ins1Status.longitude() - ins2Status.longitude());
+        _setDiffValueLabel(_ui.diffLongitudeValue, diff, degSym, 3,
+                           LONGITUDE_DIFF_BAD, LONGITUDE_DIFF_WARN);
 
         // altitude (to 1 m precision)
-        text = "";
-        textStream << qSetRealNumberPrecision(0) <<
-                fabs(ins1Status.altitude() - ins2Status.altitude()) << " m";
-        _ui.diffAltitudeValue->setText(text);
+        diff = fabs(ins1Status.altitude() - ins2Status.altitude());
+        _setDiffValueLabel(_ui.diffAltitudeValue, diff, " m", 0,
+                           ALTITUDE_DIFF_BAD, ALTITUDE_DIFF_WARN);
     } else {
         QString noDiffStr("--");
         _ui.diffPitchValue->setText(noDiffStr);
@@ -308,15 +296,41 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     }
 }
 
-const QString &
-InsOverview::DiffTextColor(double diff, double badThreshold, double warnThreshold) {
-    static const QString GoodDiffColor("DarkGreen");
-    static const QString WarnDiffColor("DarkYellow");
-    static const QString BadDiffColor("DarkRed");
+void
+InsOverview::_setDiffValueLabel(QLabel * label, const double diff,
+                                const QString & units, const int precision,
+                                const double badThreshold,
+                                const double warnThreshold) {
+    // Background color. Start from the default background color and tint a
+    // bit if we want to signal warning or error.
+    QColor defBgColor = _ui.diffFrame->palette().color(QWidget::backgroundRole());
+    QString bgColorName = _DiffBgColorName(defBgColor, diff, badThreshold, warnThreshold);
+    label->setStyleSheet(QString("background-color:") +
+            _DiffBgColorName(defBgColor, diff, badThreshold, warnThreshold));
+
+    QString text;
+    QTextStream textStream(&text);
+    textStream.setRealNumberNotation(QTextStream::FixedNotation);
+    textStream << qSetRealNumberPrecision(precision) << diff << units;
+    label->setText(text);
+}
+
+const QString
+InsOverview::_DiffBgColorName(const QColor & defBgColor, double diff,
+                         double badThreshold, double warnThreshold) {
+    static const QColor warnColor("Yellow");
+    static const QColor badColor("Red");
+    QColor tint;
     if (diff >= badThreshold) {
-        return(BadDiffColor);
+        tint = badColor;
     } else if (diff >= warnThreshold) {
-        return(WarnDiffColor);
+        tint = warnColor;
+    } else {
+        // Don't change the default background color
+        return(defBgColor.name());
     }
-    return(GoodDiffColor);
+    // Return a blend of 80% default background color and 20% our selected tint.
+    return(QColor(0.8 * defBgColor.red() + 0.2 * tint.red(),
+                  0.8 * defBgColor.green() + 0.2 * tint.green(),
+                  0.8 * defBgColor.blue() + 0.2 * tint.blue()).name());
 }
