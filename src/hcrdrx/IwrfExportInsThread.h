@@ -38,10 +38,10 @@ class IwrfExportInsThread : public QThread {
     Q_OBJECT
 
 public:
-    static const std::string FMQ_URL;
-    
     /// @brief Constructor
-    IwrfExportInsThread(IwrfExport & iwrfExport);
+    /// @param iwrfExport the IwrfExport object to which we will send data
+    /// @param insNum the HCR INS number (1 or 2) we'll be watching
+    IwrfExportInsThread(IwrfExport & iwrfExport, int insNum);
     
     /// Destructor
     virtual ~IwrfExportInsThread();
@@ -51,6 +51,7 @@ protected:
 
 private:
     IwrfExport & _iwrfExport;
+    int _insNum;    ///< number (1 or 2) of the HCR INS we're watching
     DsFmq _insFmq;
 };
 

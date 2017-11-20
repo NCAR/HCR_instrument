@@ -125,6 +125,18 @@ public:
         return(_rotDrive.homingInProgress() || _tiltDrive.homingInProgress());
     }
 
+    /// @brief Return the current insInUse value, either 1 or 2
+    /// @return the current insInUse value, either 1 or 2
+    int insInUse() const {
+        return(_insInUse);
+    }
+
+    /// @brief Set the INS in use for attitude correction: 1 or 2
+    /// @param insInUse integer selecting the INS in use for attitude
+    /// correction, either 1 or 2
+    /// @return the new insInUse value
+    void setInsInUse(int insInUse);
+
     /// @brief Simple class to encapsulate status of a MotionControl object.
     class Status {
     public:
@@ -215,6 +227,8 @@ public:
         double scanBeamTilt;
         // Attitude correction enabled?
         bool attitudeCorrectionEnabled;
+        // INS in use if attitude correction is enabled: either 1 or 2
+        int insInUse;
     };
 
     /// @brief Return a MotionControl::Status object containing current
@@ -275,8 +289,11 @@ private:
     /// Beam tilt angle, deg
     double _scanBeamTilt;
     
-    /// FMQ which delivers C-MIGITS data
-    CmigitsFmq _insFmq;
+    /// FMQ for data from INS1
+    CmigitsFmq _ins1Fmq;
+
+    /// FMQ for data from INS2
+    CmigitsFmq _ins2Fmq;
 
     /// Is attitude correction enabled?
     bool _attitudeCorrectionEnabled;
@@ -287,6 +304,9 @@ private:
     /// Drive "start" time (object instantiation time), used when generating
     /// fake attitude.
     QTime _driveStartTime;
+
+    /// INS in use for attitude correction: 1 if using INS1, or 2 if using INS2.
+    int _insInUse;
 };
 
 #endif /* MOTIONCONTROL_H_ */

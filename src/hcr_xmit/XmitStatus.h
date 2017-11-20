@@ -31,7 +31,8 @@
 #ifndef XMITSTATUS_H_
 #define XMITSTATUS_H_
 
-#include <exception>
+#include <sstream>
+#include <stdexcept>
 #include <string>
 #include <stdint.h>
 #include <xmlrpc-c/base.hpp>
@@ -421,6 +422,11 @@ public:
      * @return a simulated status
      */
     static XmitStatus simulatedStatus(bool filamentOn, bool highVoltageOn);
+
+    /// Current version of the XmitStatus class. This MUST be incremented if
+    /// any change is made to contents handled by serialize() below.
+    static const unsigned int STATUS_VERSION = 1;
+
 private:
     friend class boost::serialization::access;
     /**
@@ -431,68 +437,72 @@ private:
      */
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
+        // We can only unmarshal if the source is using the same status version.
+        if (version != STATUS_VERSION) {
+            std::ostringstream oss;
+            oss << "XmitStatus::serialize cannot handle version " << version <<
+                   "; only version " << STATUS_VERSION << " is supported.";
+            throw(std::runtime_error(oss.str()));
+            abort();
+        }
+
+        // Map named entries to our member variables using serialization's
+        // name/value pairs (nvp). If anything is changed in this section, be
+        // sure to increment the version number in STATUS_VERSION above.
         using boost::serialization::make_nvp;
-        // Version 0 (see BOOST_CLASS_VERSION macro below for latest version)
-        if (version >= 0) {
-            // Map named entries to our member variables using serialization's
-            // name/value pairs (nvp).
-            ar & BOOST_SERIALIZATION_NVP(_serialConnected);
-            ar & BOOST_SERIALIZATION_NVP(_badChecksumReceived);
-            ar & BOOST_SERIALIZATION_NVP(_filamentOn);
-            ar & BOOST_SERIALIZATION_NVP(_highVoltageOn);
-            ar & BOOST_SERIALIZATION_NVP(_rfOn);
-            ar & BOOST_SERIALIZATION_NVP(_modPulseExternal);
-            ar & BOOST_SERIALIZATION_NVP(_syncPulseExternal);
-            ar & BOOST_SERIALIZATION_NVP(_filamentDelayActive);
-            ar & BOOST_SERIALIZATION_NVP(_psmPowerOn);
-            ar & BOOST_SERIALIZATION_NVP(_controlSource);
-            ar & BOOST_SERIALIZATION_NVP(_summaryFault);
-            ar & BOOST_SERIALIZATION_NVP(_SummaryFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_SummaryFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_modulatorFault);
-            ar & BOOST_SERIALIZATION_NVP(_ModulatorFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_ModulatorFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_syncFault);
-            ar & BOOST_SERIALIZATION_NVP(_SyncFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_SyncFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_xmitterTempFault);
-            ar & BOOST_SERIALIZATION_NVP(_XmitterTempFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_XmitterTempFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_waveguideArcFault);
-            ar & BOOST_SERIALIZATION_NVP(_WaveguideArcFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_WaveguideArcFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_collectorCurrentFault);
-            ar & BOOST_SERIALIZATION_NVP(_CollectorCurrentFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_CollectorCurrentFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_bodyCurrentFault);
-            ar & BOOST_SERIALIZATION_NVP(_BodyCurrentFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_BodyCurrentFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_filamentLorFault);
-            ar & BOOST_SERIALIZATION_NVP(_FilamentLorFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_FilamentLorFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_focusElectrodeLorFault);
-            ar & BOOST_SERIALIZATION_NVP(_FocusElectrodeLorFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_FocusElectrodeLorFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_cathodeLorFault);
-            ar & BOOST_SERIALIZATION_NVP(_CathodeLorFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_CathodeLorFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_inverterOverloadFault);
-            ar & BOOST_SERIALIZATION_NVP(_InverterOverloadFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_InverterOverloadFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_externalInterlockFault);
-            ar & BOOST_SERIALIZATION_NVP(_ExternalInterlockFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_ExternalInterlockFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_eikInterlockFault);
-            ar & BOOST_SERIALIZATION_NVP(_EikInterlockFaultCount);
-            ar & BOOST_SERIALIZATION_NVP(_EikInterlockFaultTime);
-            ar & BOOST_SERIALIZATION_NVP(_cathodeVoltage);
-            ar & BOOST_SERIALIZATION_NVP(_bodyCurrent);
-            ar & BOOST_SERIALIZATION_NVP(_collectorCurrent);
-            ar & BOOST_SERIALIZATION_NVP(_xmitterTemp);
-        }
-        if (version >= 1) {
-            // Version 1 stuff will go here...
-        }
+        ar & BOOST_SERIALIZATION_NVP(_serialConnected);
+        ar & BOOST_SERIALIZATION_NVP(_badChecksumReceived);
+        ar & BOOST_SERIALIZATION_NVP(_filamentOn);
+        ar & BOOST_SERIALIZATION_NVP(_highVoltageOn);
+        ar & BOOST_SERIALIZATION_NVP(_rfOn);
+        ar & BOOST_SERIALIZATION_NVP(_modPulseExternal);
+        ar & BOOST_SERIALIZATION_NVP(_syncPulseExternal);
+        ar & BOOST_SERIALIZATION_NVP(_filamentDelayActive);
+        ar & BOOST_SERIALIZATION_NVP(_psmPowerOn);
+        ar & BOOST_SERIALIZATION_NVP(_controlSource);
+        ar & BOOST_SERIALIZATION_NVP(_summaryFault);
+        ar & BOOST_SERIALIZATION_NVP(_SummaryFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_SummaryFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_modulatorFault);
+        ar & BOOST_SERIALIZATION_NVP(_ModulatorFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_ModulatorFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_syncFault);
+        ar & BOOST_SERIALIZATION_NVP(_SyncFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_SyncFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_xmitterTempFault);
+        ar & BOOST_SERIALIZATION_NVP(_XmitterTempFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_XmitterTempFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_waveguideArcFault);
+        ar & BOOST_SERIALIZATION_NVP(_WaveguideArcFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_WaveguideArcFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_collectorCurrentFault);
+        ar & BOOST_SERIALIZATION_NVP(_CollectorCurrentFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_CollectorCurrentFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_bodyCurrentFault);
+        ar & BOOST_SERIALIZATION_NVP(_BodyCurrentFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_BodyCurrentFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_filamentLorFault);
+        ar & BOOST_SERIALIZATION_NVP(_FilamentLorFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_FilamentLorFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_focusElectrodeLorFault);
+        ar & BOOST_SERIALIZATION_NVP(_FocusElectrodeLorFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_FocusElectrodeLorFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_cathodeLorFault);
+        ar & BOOST_SERIALIZATION_NVP(_CathodeLorFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_CathodeLorFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_inverterOverloadFault);
+        ar & BOOST_SERIALIZATION_NVP(_InverterOverloadFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_InverterOverloadFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_externalInterlockFault);
+        ar & BOOST_SERIALIZATION_NVP(_ExternalInterlockFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_ExternalInterlockFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_eikInterlockFault);
+        ar & BOOST_SERIALIZATION_NVP(_EikInterlockFaultCount);
+        ar & BOOST_SERIALIZATION_NVP(_EikInterlockFaultTime);
+        ar & BOOST_SERIALIZATION_NVP(_cathodeVoltage);
+        ar & BOOST_SERIALIZATION_NVP(_bodyCurrent);
+        ar & BOOST_SERIALIZATION_NVP(_collectorCurrent);
+        ar & BOOST_SERIALIZATION_NVP(_xmitterTemp);
     }
 
     /// Status byte 3: Filament on?
@@ -652,6 +662,6 @@ private:
 };
 
 // Increment this class version number when member variables are changed.
-BOOST_CLASS_VERSION(XmitStatus, 1)
+BOOST_CLASS_VERSION(XmitStatus, XmitStatus::STATUS_VERSION)
 
 #endif /* XMITSTATUS_H_ */

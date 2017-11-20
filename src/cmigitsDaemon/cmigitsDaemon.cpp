@@ -66,9 +66,6 @@ QCoreApplication * App = 0;
 // Our Cmigits instance
 Cmigits * Cm = 0;
 
-// URL for our CmigitsFmq
-std::string CmigitsFmqUrl;
-
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
@@ -87,7 +84,7 @@ public:
         DLOG << "Executing XML-RPC call to getStatus()";
         // Get the latest status from the shared memory FMQ, and convert it to
         // an xmlrpc_c::value_struct dictionary.
-        *retvalP = CmigitsStatus::StatusFromFmq(CmigitsFmqUrl).toXmlRpcValue();
+        *retvalP = CmigitsStatus::StatusFromFmq(Cm->fmqUrl()).toXmlRpcValue();
     }
 };
 
@@ -100,8 +97,8 @@ updatePMURegistration() {
 void
 usage(const po::options_description & opts) {
     // brief usage
-    std::cout << "Usage: cmigitsDaemon [OPTIONS] --antennaOffset <x,y,z> <cmigitsTtyDev>" << std::endl;
-    std::cout << "       cmigitsDaemon [OPTIONS] --playback <file> [<file> ...]" << std::endl;
+    std::cout << "Usage: cmigitsDaemon (--1 | --2) [OPTIONS] --antennaOffset <x,y,z> <cmigitsTtyDev>" << std::endl;
+    std::cout << "       cmigitsDaemon (--1 | --2) [OPTIONS] --playback <file> [<file> ...]" << std::endl;
 
     // command line options, as provided to boost::program_options
     std::cout << opts << std::endl;
@@ -115,18 +112,18 @@ usage(const po::options_description & opts) {
     std::cout << "    " <<
         "external processes which call our XML-RPC getStatus() method" << std::endl;
     std::cout << "    " <<
-        "(XML-RPC service is provided on port " << PRIMARYINSDAEMON_PORT <<
-        " by default, or port" << std::endl;
+        "(XML-RPC service is provided on port " << INS1_DAEMON_PORT <<
+        " for INS1, or port" << std::endl;
     std::cout << "    " <<
-        SECONDARYINSDAEMON_PORT << " when run with --secondary)" << std::endl;
+        INS2_DAEMON_PORT << " for INS2)" << std::endl;
     std::cout << "  o " <<
         "Record contents of all received data packets into a CSV-formatted file" << std::endl;
     std::cout << "  o " <<
         "Publish all INS data in real time to a file message queue (FMQ)" << std::endl;
     std::cout << "    " <<
-        "(FMQ URL is " << PrimaryCmigitsFmqUrl() << " for primary" << std::endl;
+        "(FMQ URL is " << INS1_FMQ_URL << " for INS1" << std::endl;
     std::cout << "    " <<
-        "and " << SecondaryCmigitsFmqUrl() << " for secondary)" << std::endl;
+        "and " << INS2_FMQ_URL << " for INS2)" << std::endl;
     std::cout << std::endl;
 }
 
@@ -145,8 +142,8 @@ main(int argc, char *argv[]) {
             ("antennaOffset", po::value<string>(),
                               "<x,y,z> offset in body coordinates from the INS to\n"
                               "the GPS antenna, in cm")
-            ("secondary", "run as secondary INS (different CSV directory, "
-                          "and no publishing to FMQ)")
+            ("1", "run as INS1")
+            ("2", "run as INS2 (different XML-RPC port and FMQ URL)")
             ("playback", "play back from listed file(s)");
 
     // All options includes the above, plus a "patharg" option which we
@@ -176,14 +173,23 @@ main(int argc, char *argv[]) {
         exit(1);
     }
 
-    // Are we running as primary or secondary INS?
-    bool primary = (vm.count("secondary") == 0);
+    // Make sure the user selected either INS1 or INS2, but not both
+    if ((vm.count("1") == 0 && vm.count("2") == 0) ||
+            (vm.count("1") > 0 && vm.count("2") > 0)) {
+        std::cout << "Either --1 or --2 must be given, but not both." <<
+                std::endl;
+        usage(visible_opts);
+        exit(1);
+    }
 
-    // Set the pieces which are different for primary and secondary
-    std::string pmuInstance(primary ? "ops" : "secondary"); // historically, primary is "ops"
-    int xmlrpcPort = primary ? PRIMARYINSDAEMON_PORT : SECONDARYINSDAEMON_PORT;
-    std::string csvFilePath = primary ? "/data/hcr/ins" : "/data/hcr/secondary_ins";
-    CmigitsFmqUrl = primary ? PrimaryCmigitsFmqUrl() : SecondaryCmigitsFmqUrl();
+    // Are we running as INS1 or INS2?
+    int insNum = (vm.count("1") > 0) ? 1 : 2;
+
+    // Set the pieces which are different for INS1 and INS2
+    std::string pmuInstance((insNum == 1) ? "ins1" : "ins2");
+    int xmlrpcPort = (insNum == 1) ? INS1_DAEMON_PORT : INS2_DAEMON_PORT;
+    std::string csvFilePath = (insNum == 1) ? "/data/hcr/ins1_csv" : "/data/hcr/ins2_csv";
+    std::string fmqUrl = (insNum == 1) ? INS1_FMQ_URL : INS2_FMQ_URL;
 
     // Are we running in playback mode?
     bool playback = vm.count("playback");
@@ -244,7 +250,7 @@ main(int argc, char *argv[]) {
         }
     }
 
-    ILOG << "Started " << (primary ? "primary" : "secondary") <<
+    ILOG << "Started " << ((insNum == 1) ? "INS1" : "INS2") <<
             " cmigitsDaemon (" << getpid() << ")";
     if (playback) {
     } else {
@@ -261,7 +267,7 @@ main(int argc, char *argv[]) {
         ILOG << "Playback mode";
         PMU_auto_register("creating Ts2CmigitsShmThread for playback");
         // Create the Ts2CmigitsFmqThread, which begins working immediately.
-        playbackThread = new Ts2CmigitsFmqThread(pathArgs, CmigitsFmqUrl);
+        playbackThread = new Ts2CmigitsFmqThread(pathArgs, fmqUrl);
 
         // Stop the application when the reader thread is done
         QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
@@ -274,7 +280,7 @@ main(int argc, char *argv[]) {
                 antennaOffsetZ << " cm)";
         Cm = new Cmigits(devName,
                          antennaOffsetX, antennaOffsetY, antennaOffsetZ,
-                         CmigitsFmqUrl, csvFilePath);
+                         fmqUrl, csvFilePath);
     }
 
     // Create our XML-RPC method registry and server instance

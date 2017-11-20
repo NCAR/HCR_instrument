@@ -119,6 +119,22 @@ MotionControlRpcClient::setCorrectionEnabled(bool state)
 }
 
 /////////////////////////////////////////////////////////////////////
+void
+MotionControlRpcClient::setInsInUse(int insNum)
+{
+    if (insNum != 1 && insNum != 2) {
+        ELOG << "Bad INS num (" << insNum << ") for setInsInUse(): " <<
+                "only 1 or 2 is accepted";
+        return;
+    }
+    ILOG << "Setting insInUse to " << insNum;
+
+    xmlrpc_c::paramList params;
+    params.add(xmlrpc_c::value_int(insNum));
+    _execXmlRpcCall("SetInsInUse", params);
+}
+
+/////////////////////////////////////////////////////////////////////
 MotionControl::Status
 MotionControlRpcClient::status()
 {

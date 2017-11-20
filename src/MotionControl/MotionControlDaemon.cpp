@@ -216,6 +216,29 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////
+class SetInsInUseMethod : public xmlrpc_c::method
+{
+public:
+    SetInsInUseMethod() {
+        // The method takes an integer argument (1 or 2), and returns 0 on
+        // success
+        this->_signature = "i:i";
+        this->_help = "This method sets the INS in use for attitude correction";
+    }
+
+    void
+    execute(xmlrpc_c::paramList const& paramList, xmlrpc_c::value* const retvalP)
+    {
+        int const newInsInUse(paramList.getInt(0));
+        paramList.verifyEnd(1);
+
+        Control->setInsInUse(newInsInUse);
+
+        *retvalP = xmlrpc_c::value_int(0);
+    }
+};
+
+/////////////////////////////////////////////////////////////////////
 class HomingInProgressMethod : public xmlrpc_c::method
 {
 public:
@@ -327,6 +350,7 @@ main(int argc, char** argv)
     myRegistry.addMethod("Scan", new DriveScanMethod);
     myRegistry.addMethod("Status", new StatusMethod);
     myRegistry.addMethod("SetCorrectionEnabled", new SetCorrectionEnabledMethod);
+    myRegistry.addMethod("SetInsInUse", new SetInsInUseMethod);
     myRegistry.addMethod("HomingInProgress", new HomingInProgressMethod);
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, MOTIONCONTROLDAEMON_PORT);
 

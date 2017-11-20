@@ -48,13 +48,17 @@ LOGGING("StatusGrabber")
 
 StatusGrabber::StatusGrabber(const Pentek::p7142sd3c * pentek,
         std::string pmc730dHost, int pmc730dPort,
-        std::string xmitdHost, int xmitdPort) :
+        std::string xmitdHost, int xmitdPort,
+        std::string motionControlHost, int motionControlPort) :
     QThread(),
     _pentek(pentek),
     _drxStatus(*_pentek),
-    _pmc730Status(true),	// empty status
     _pmc730Client(pmc730dHost, pmc730dPort),
+    _pmc730Status(true),	// empty status
     _xmitClient(xmitdHost, xmitdPort),
+    _xmitStatus(),
+    _motionControlClient(motionControlHost, motionControlPort),
+    _motionControlStatus(),
     _mutex(QMutex::Recursive),
     _hmcModeChangeSocket(NULL) {
 }
@@ -84,6 +88,12 @@ HcrPmc730Status
 StatusGrabber::pmc730Status() const {
     QMutexLocker locker(&_mutex);
     return(_pmc730Status);
+}
+
+MotionControl::Status
+StatusGrabber::motionControlStatus() const {
+    QMutexLocker locker(&_mutex);
+    return(_motionControlStatus);
 }
 
 void

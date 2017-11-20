@@ -32,6 +32,7 @@ HcrdrxStatusThread.cpp
 HcrGuiLogWindow.cpp
 HcrGuiMainWindow.cpp
 HcrMonitorDetails.cpp
+InsOverview.cpp
 MotionControlDetails.cpp
 Pmc730Details.cpp
 qrc_HcrGuiMainWindow.cc
@@ -51,6 +52,7 @@ HcrdrxDetails.ui
 HcrGuiLogWindow.ui
 HcrGuiMainWindow.ui
 HcrMonitorDetails.ui
+InsOverview.ui
 MotionControlDetails.ui
 Pmc730Details.ui
 SpectracomDetails.ui
@@ -75,6 +77,7 @@ HcrdrxStatusThread.h
 HcrMonitorDetails.h
 HcrGuiLogWindow.h
 HcrGuiMainWindow.h
+InsOverview.h
 MotionControlDetails.h
 Pmc730Details.h
 SpectracomDetails.h

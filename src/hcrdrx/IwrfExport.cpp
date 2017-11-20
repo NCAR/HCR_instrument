@@ -27,6 +27,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <sstream>
 #include <unistd.h>
 #include <iostream>
 #include <iomanip>
@@ -54,14 +55,19 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
-        _insWatchThread(*this),
-        _insDeque(),
-        _latestInsData(),
-        _insDataDelayed(false),
+        _ins1WatchThread(*this, 1),
+        _ins2WatchThread(*this, 2),
+        _ins1Deque(),
+        _ins2Deque(),
+        _latestIns1Data(),
+        _latestIns2Data(),
+        _ins1DataDelayed(false),
+        _ins2DataDelayed(false),
         _statusTimer(NULL),
         _hPulseCount(0),
         _vPulseCount(0),
-        _insCount(0),
+        _ins1Count(0),
+        _ins2Count(0),
         _lastGeorefTime(0)
 {
 
@@ -223,8 +229,9 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _sock = NULL;
   _newClient = false;
 
-  // Start _insWatchThread after this thread is started
-  connect(this, SIGNAL(started()), &_insWatchThread, SLOT(start()));
+  // Start INS watch threads after this thread is started
+  connect(this, SIGNAL(started()), &_ins1WatchThread, SLOT(start()));
+  connect(this, SIGNAL(started()), &_ins2WatchThread, SLOT(start()));
 
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
@@ -930,45 +937,50 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeEndTag("HcrReceiverStatus", 1);
 
   ///////////////////////////////////////////////////////
-  // HCR INS block
+  // HcrIns1Data and HcrIns2Data blocks
+  for (int insNum = 1; insNum <= 2; insNum++) {
 
-  xml += TaXml::writeStartTag("HcrCmigitsData", 1);
+    std::ostringstream oss;
+    oss << "HcrIns" << insNum << "Data";
+    std::string blockName(oss.str());    // "HcrIns1Data" or "HcrIns2Data"
+    xml += TaXml::writeStartTag(blockName, 1);
 
-  // Get latest data from INS (if any).
-  CmigitsFmq::MsgStruct cmigits = _latestInsData;
+    // Get latest data we got from this INS (if any).
+    CmigitsFmq::MsgStruct insData = (insNum == 1) ? _latestIns1Data : _latestIns2Data;
 
-  // C-MIGITS status info (latest 3500 message from C-MIGITS)
-  xml += TaXml::writeDouble("Cmigits3500Time", 2, 0.001 * cmigits.time3500);
-  xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, cmigits.currentMode);
-  xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, cmigits.insAvailable);
-  xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, cmigits.gpsAvailable);
-  xml += TaXml::writeInt("Cmigits3500NSats", 2, cmigits.nSats);
-  xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, cmigits.positionFOM);
-  xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, cmigits.velocityFOM);
-  xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, cmigits.headingFOM);
-  xml += TaXml::writeInt("Cmigits3500TimeFOM", 2, cmigits.timeFOM);
-  xml += TaXml::writeDouble("Cmigits3500HPosError", 2, cmigits.hPosError);
-  xml += TaXml::writeDouble("Cmigits3500VPosError", 2, cmigits.vPosError);
-  xml += TaXml::writeDouble("Cmigits3500VelocityError", 2, cmigits.velocityError);
+    // C-MIGITS status info (latest 3500 message from C-MIGITS)
+    xml += TaXml::writeDouble("Cmigits3500Time", 2, 0.001 * insData.time3500);
+    xml += TaXml::writeInt("Cmigits3500CurrentMode", 2, insData.currentMode);
+    xml += TaXml::writeBoolean("Cmigits3500InsAvailable", 2, insData.insAvailable);
+    xml += TaXml::writeBoolean("Cmigits3500GpsAvailable", 2, insData.gpsAvailable);
+    xml += TaXml::writeInt("Cmigits3500NSats", 2, insData.nSats);
+    xml += TaXml::writeInt("Cmigits3500PositionFOM", 2, insData.positionFOM);
+    xml += TaXml::writeInt("Cmigits3500VelocityFOM", 2, insData.velocityFOM);
+    xml += TaXml::writeInt("Cmigits3500HeadingFOM", 2, insData.headingFOM);
+    xml += TaXml::writeInt("Cmigits3500TimeFOM", 2, insData.timeFOM);
+    xml += TaXml::writeDouble("Cmigits3500HPosError", 2, insData.hPosError);
+    xml += TaXml::writeDouble("Cmigits3500VPosError", 2, insData.vPosError);
+    xml += TaXml::writeDouble("Cmigits3500VelocityError", 2, insData.velocityError);
 
-  // current position/velocity (latest 3501 message from C-MIGITS)
-  xml += TaXml::writeDouble("Cmigits3501Time", 2, 0.001 * cmigits.time3501);
-  xml += TaXml::writeDouble("Cmigits3501Latitude", 2, cmigits.latitude);
-  xml += TaXml::writeDouble("Cmigits3501Longitude", 2, cmigits.longitude);
-  xml += TaXml::writeDouble("Cmigits3501Altitude", 2, cmigits.altitude);
+    // current position/velocity (latest 3501 message from C-MIGITS)
+    xml += TaXml::writeDouble("Cmigits3501Time", 2, 0.001 * insData.time3501);
+    xml += TaXml::writeDouble("Cmigits3501Latitude", 2, insData.latitude);
+    xml += TaXml::writeDouble("Cmigits3501Longitude", 2, insData.longitude);
+    xml += TaXml::writeDouble("Cmigits3501Altitude", 2, insData.altitude);
 
-  // current attitude (latest 3512 message from C-MIGITS)
-  xml += TaXml::writeDouble("Cmigits3512Time", 2, 0.001 * cmigits.time3512);
-  xml += TaXml::writeDouble("Cmigits3512Pitch", 2, cmigits.pitch);
-  xml += TaXml::writeDouble("Cmigits3512Roll", 2, cmigits.roll);
-  xml += TaXml::writeDouble("Cmigits3512Heading", 2, cmigits.heading);
-  xml += TaXml::writeDouble("Cmigits3512VelNorth", 2, cmigits.velNorth);
-  xml += TaXml::writeDouble("Cmigits3512VelEast", 2, cmigits.velEast);
-  xml += TaXml::writeDouble("Cmigits3512VelUp", 2, cmigits.velUp);
+    // current attitude (latest 3512 message from C-MIGITS)
+    xml += TaXml::writeDouble("Cmigits3512Time", 2, 0.001 * insData.time3512);
+    xml += TaXml::writeDouble("Cmigits3512Pitch", 2, insData.pitch);
+    xml += TaXml::writeDouble("Cmigits3512Roll", 2, insData.roll);
+    xml += TaXml::writeDouble("Cmigits3512Heading", 2, insData.heading);
+    xml += TaXml::writeDouble("Cmigits3512VelNorth", 2, insData.velNorth);
+    xml += TaXml::writeDouble("Cmigits3512VelEast", 2, insData.velEast);
+    xml += TaXml::writeDouble("Cmigits3512VelUp", 2, insData.velUp);
 
-  // end C-MIGITS data
+    // end the block
+    xml += TaXml::writeEndTag(blockName, 1);
+  }
 
-  xml += TaXml::writeEndTag("HcrCmigitsData", 1);
 
   ////////////////////////////////////////////////
   // close
@@ -1033,97 +1045,166 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // delayed, busy wait for a bit to see if more will come in. We need to do 
   // this to allow for occasional times when INS data arrive later than the 
   // associated pulse data.
-  if (_insDeque.empty() && ! _insDataDelayed) {
-      // We'll wait up to 1/2 second for more INS data to arrive.
-      static const int MAX_WAIT_US = 500000;
-      // Period of sleep between tests for new INS data. Leave this 
-      // number small, since tests using 1 ms caused system instability with
-      // Pentek data sync errors and DMA overruns.
-      static const int SLEEP_US = 100;
-      
-      int total_wait_us = 0;
-      while (true) {
-          // Release our lock and sleep briefly
-          _insAccessLock.unlock();
-          usleep(SLEEP_US);
-          total_wait_us += SLEEP_US;
-          
-          // Get the read lock again
-          _insAccessLock.lockForRead();
-          
-          // If we've waited MAX_WAIT_US, mark INS data as delayed so that
-          // we don't wait again until new data show up in the deque.
-          if (_insDeque.empty()) {
-              if (total_wait_us >= MAX_WAIT_US) {
-                  WLOG << "INS data too delayed after " << 
-                          0.001 * total_wait_us << " ms";
-                  break;
-              }
-          } else {
+  bool waitForIns1 = (_ins1Deque.empty() && ! _ins1DataDelayed);
+  bool waitForIns2 = (_ins2Deque.empty() && ! _ins2DataDelayed);
+
+  // If waiting, we'll wait up to 1/2 second for more INS data to arrive.
+  static const int MAX_WAIT_US = 500000;
+
+  // Period of sleep between tests for new INS data. Leave this
+  // number small, since tests using 1 ms caused system instability with
+  // Pentek data sync errors and DMA overruns.
+  static const int SLEEP_US = 100;
+
+  int total_wait_us = 0;
+  while (waitForIns1 || waitForIns2) {
+      // Release our lock and sleep briefly
+      _insAccessLock.unlock();
+      usleep(SLEEP_US);
+      total_wait_us += SLEEP_US;
+
+      // Get the read lock again
+      _insAccessLock.lockForRead();
+
+      // If we've waited MAX_WAIT_US, mark INS data as delayed so that
+      // we don't wait again until new data show up in the deque.
+      if (total_wait_us >= MAX_WAIT_US) {
+          if (waitForIns1 && _ins1Deque.empty()) {
+              WLOG << "INS1 data too delayed after " <<
+                      0.001 * total_wait_us << " ms";
+          }
+          if (waitForIns2 && _ins2Deque.empty()) {
+              WLOG << "INS2 data too delayed after " <<
+                      0.001 * total_wait_us << " ms";
+          }
+          // Stop waiting
+          waitForIns1 = false;
+          waitForIns2 = false;
+      } else {
+          // Stop waiting for INS1 if we got something
+          if (waitForIns1 && ! _ins1Deque.empty()) {
+              // We were waiting, but now have something
               if (total_wait_us > 30000) {
-                ILOG << "Waited " << 0.001 * total_wait_us << " ms for INS data";
+                  ILOG << "Waited " << 0.001 * total_wait_us <<
+                          " ms for INS1 data";
+                  waitForIns1 = false;
               }
-              break;
+          }
+          // Stop waiting for INS2 if we got something
+          if (waitForIns2 && ! _ins2Deque.empty()) {
+              // We were waiting, but now have something
+              if (total_wait_us > 30000) {
+                  ILOG << "Waited " << 0.001 * total_wait_us <<
+                          " ms for INS2 data";
+                  waitForIns2 = false;
+              }
           }
       }
   }
   
-  // If the deque is empty at this point, consider INS data delayed.
-  _insDataDelayed = _insDeque.empty();
+  // If we get here and an INS deque is empty mark the INS data as delayed
+  // so that we don't wait again until new data show up in the deque.
+  _ins1DataDelayed = _ins1Deque.empty();
+  _ins2DataDelayed = _ins2Deque.empty();
 
   // Get pulse time in milliseconds since the Epoch
   uint64_t pulseTime = uint64_t(_timeSecs) * 1000 + _nanoSecs / 1000000;
 
-  // Write a georef packet for every entry in the deque before the current pulse
-  // time.
+  // Write a georef packet for all entries in the deques up to and including
+  // the current pulse time.
   int writeCount;
-  for (writeCount = 0; ! _insDeque.empty(); writeCount++) {
-      // Get the next entry, and stop if its time is after our pulse time
-      CmigitsFmq::MsgStruct cmigits = _insDeque.front();
-      if (cmigits.time3512 > pulseTime) {
+  for (writeCount = 0; ! true; writeCount++) {
+      // Find the INS deque with the earliest entry time
+      int insNum;
+      // Pointer to the deque with the earliest entry
+      std::deque<CmigitsFmq::MsgStruct> * insDequePtr(NULL);
+
+      if (_ins1Deque.empty() && _ins2Deque.empty()) {
+          // No entries available, so we're done
+          break;
+      } else if (! _ins1Deque.empty() && ! _ins2Deque.empty()) {
+          // Both deques have something, find the the earliest entry between
+          // them
+          uint64_t ins1Time = _ins1Deque.front().time3512;
+          uint64_t ins2Time = _ins2Deque.front().time3512;
+          insDequePtr = (ins1Time <= ins2Time) ?  &_ins1Deque : &_ins2Deque;
+      } else if (! _ins1Deque.empty()) {
+          insNum = 1;
+          insDequePtr = &_ins1Deque;
+      } else {
+          insNum = 2;
+          insDequePtr = &_ins2Deque;
+      }
+
+      // Get the earliest entry
+      CmigitsFmq::MsgStruct entry = insDequePtr->front();
+
+      // If the earliest entry is later than the current pulse time, we're
+      // done here.
+      if (entry.time3512 > pulseTime) {
           break;
       }
-      // Get the write lock
+
+      // We're going to use this entry, so remove it from its source deque.
+      //
+      // If we get here, insDequePtr must point to the deque which provided
+      // the earliest entry.
+
+      if (! insDequePtr) {
+          ELOG << "BUG - insDequePtr is NULL when writing a georef packet";
+          abort();
+      }
+
       _insAccessLock.unlock();
       _insAccessLock.lockForWrite();
-      
-      // We're going to use this entry, so remove it from the deque
-      _insDeque.pop_front();
-      
+      insDequePtr->pop_front();
+
+      // We don't need further read or write access to the _ins* members for
+      // a bit
+      _insAccessLock.unlock();
+
       // Initialize the georef packet
       iwrf_platform_georef_init(_radarGeoref);
       
       // Time tag the georef packet with the C-MIGITS 3512 message time
-      if ((cmigits.time3512 % 1000) / 10 == 0) {
-          DLOG << "New georef tagged " << (cmigits.time3512 / 1000) % 60 <<
+      if ((entry.time3512 % 1000) / 10 == 0) {
+          DLOG << "New georef tagged " << (entry.time3512 / 1000) % 60 <<
                   "." << std::setw(3) << std::setfill('0') <<
-                  cmigits.time3512 % 1000 << " for pulse tagged " <<
+                  entry.time3512 % 1000 << " for pulse tagged " <<
                   _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
                   _nanoSecs / 1000000;
       }
-      _radarGeoref.packet.time_secs_utc = cmigits.time3512 / 1000;
-      _radarGeoref.packet.time_nano_secs = (cmigits.time3512 % 1000) * 1000000;
+      _radarGeoref.packet.time_secs_utc = entry.time3512 / 1000;
+      _radarGeoref.packet.time_nano_secs = (entry.time3512 % 1000) * 1000000;
 
+      // The unit_num member is kind of funky: unit_num = 0 indicates that this
+      // is the "primary" INS (i.e., the one used for MotionControl), and
+      // unit_num = 1 indicates the "secondary" (or backup) INS.
+      _radarGeoref.unit_num =
+              (_monitor.motionControlStatus().insInUse == insNum) ? 0 : 1;
+      // The unit_id member should be a consistent unique identifier for the
+      // INS, e.g. a serial number
+      _radarGeoref.unit_id = entry.insSerialNum;
       _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
-      _radarGeoref.altitude_msl_km = cmigits.altitude * 0.001; // m -> km
-      _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(cmigits);
+      _radarGeoref.altitude_msl_km = entry.altitude * 0.001; // m -> km
+      _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(entry);
       _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
-      _radarGeoref.ew_velocity_mps = cmigits.velEast;
-      _radarGeoref.heading_deg = cmigits.heading;
+      _radarGeoref.ew_velocity_mps = entry.velEast;
+      _radarGeoref.heading_deg = entry.heading;
       _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
-      _radarGeoref.latitude = cmigits.latitude;
-      _radarGeoref.longitude = cmigits.longitude;
+      _radarGeoref.latitude = entry.latitude;
+      _radarGeoref.longitude = entry.longitude;
       _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
-      _radarGeoref.ns_velocity_mps = cmigits.velNorth;
-      _radarGeoref.pitch_deg = cmigits.pitch;
+      _radarGeoref.ns_velocity_mps = entry.velNorth;
+      _radarGeoref.pitch_deg = entry.pitch;
       _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
-      _radarGeoref.roll_deg = cmigits.roll;
-      _radarGeoref.vert_velocity_mps = cmigits.velUp;
+      _radarGeoref.roll_deg = entry.roll;
+      _radarGeoref.vert_velocity_mps = entry.velUp;
       _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
-      _radarInfo.latitude_deg = cmigits.latitude;
-      _radarInfo.longitude_deg = cmigits.longitude;
-      _radarInfo.altitude_m = cmigits.altitude;
+      _radarInfo.latitude_deg = entry.latitude;
+      _radarInfo.longitude_deg = entry.longitude;
+      _radarInfo.altitude_m = entry.altitude;
 
       // Angles of the reflector rotation and tilt motors.
       float rotMotorAngle = _pulseH->getRotMotorAngle();
@@ -1154,7 +1235,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       }
       
       // Log unexpected time differences between georef packets
-      uint64_t thisGeorefTime = cmigits.time3512;
+      uint64_t thisGeorefTime = entry.time3512;
       int64_t deltaMs = _lastGeorefTime ? thisGeorefTime - _lastGeorefTime : 0;
       if (deltaMs < 0) {
           QDateTime qLastTime = 
@@ -1171,16 +1252,13 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       
       _lastGeorefTime = thisGeorefTime;
       
-      // Release our lock before calling methods which need it
-      _insAccessLock.unlock();
-      
       // compute elevation and azimuth
       _computeRadarAngles();
       
       // send the packet
       _sendIwrfGeorefPacket();
       
-      // get the read lock again before testing _insDeque.empty()
+      // get the read lock again before testing if INS deque-s are empty
       _insAccessLock.lockForRead();
   }
   
@@ -1362,14 +1440,29 @@ void IwrfExport::_closeSocketToClient()
 //////////////////////////////////////////////////
 // Accept incoming new C-MIGITS data
 
-void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data) {
+void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
 
   // Hold a write lock until we return. This is safe because we make no calls
   // to self methods below here.
 
   QWriteLocker wLocker(&_insAccessLock);
 
-  _insCount++;
+  // Get the previous data, then store the new latest data for use in
+  // assembling status XML
+  CmigitsFmq::MsgStruct prevData;
+  if (insNum == 1) {
+      _ins1Count++;
+      prevData = _latestIns1Data;
+      _latestIns1Data = data;
+  } else if (insNum == 2) {
+      _ins2Count++;
+      prevData = _latestIns2Data;
+      _latestIns2Data = data;
+  } else {
+      ELOG << "BUG - Bad insNum " << insNum << " in queueInsData(). " <<
+              "Expected 1 or 2!";
+      abort();
+  }
   
   // Log anything where INS latency is longer than current pulse latency
   struct timeval tvNow;
@@ -1389,7 +1482,7 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data) {
   }
   
   // Log gaps in the INS data
-  uint64_t lastTime = _latestInsData.time3512;
+  uint64_t lastTime = prevData.time3512;
   uint64_t thisTime = data.time3512;
   int64_t deltaMs = lastTime ? thisTime - lastTime : 0;
   QDateTime qLastTime = QDateTime::fromTime_t(lastTime / 1000).addMSecs(lastTime % 1000);
@@ -1404,31 +1497,32 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data) {
               qLastTime.toString("hh:mm:ss.zzz").toStdString();
   }
 
+  // Get a reference to our INS1 or INS2 deque
+  std::deque<CmigitsFmq::MsgStruct> & insDeque =
+          (insNum == 1) ? _ins1Deque : _ins2Deque;
+
   // If we have too many items in the deque, clear it now.
-  if (_insDeque.size() == 1000) {
-      uint64_t earliest = _insDeque.front().time3512;
+  if (insDeque.size() == 1000) {
+      uint64_t earliest = insDeque.front().time3512;
       QDateTime qEarliest = QDateTime::fromTime_t(earliest / 1000).addMSecs(earliest % 1000);
-      uint64_t latest = _insDeque.back().time3512;
+      uint64_t latest = insDeque.back().time3512;
       QDateTime qLatest = QDateTime::fromTime_t(latest / 1000).addMSecs(latest % 1000);
       QDateTime qPulse = QDateTime::fromTime_t(pulseMs / 1000).addMSecs(pulseMs % 1000);
-      ILOG << "clearing _insDeque because it's too big";
+      ILOG << "clearing _ins" << insNum << "Deque because it's too big";
       ILOG << "Deque times: " << qEarliest.toString("hh:mm:ss.zzz").toStdString() <<
               "-" << qLatest.toString("hh:mm:ss.zzz").toStdString() <<
               ", pulse time " << qPulse.toString("hh:mm:ss.zzz").toStdString();
-      _insDeque.clear();
+      insDeque.clear();
   }
 
   // Push the new item onto the deque (or replace the last item if its time
   // is the same as the incoming entry).
-  if (! _insDeque.empty() && lastTime == thisTime) {
+  if (! insDeque.empty() && lastTime == thisTime) {
       DLOG << "Overwriting INS entry for " << data.time3512;
-      _insDeque.back() = data;
+      insDeque.back() = data;
   } else {
-      _insDeque.push_back(data);
+      insDeque.push_back(data);
   }
-  
-  // Keep the latest data for use in assembling status XML
-  _latestInsData = data;
 }
 
 //////////////////////////////////////////////////
@@ -1440,10 +1534,11 @@ void IwrfExport::_logStatus() {
       return;
   }
 
-  ILOG << "new INS count: " << _insCount;
+  ILOG << "new count for INS1: " << _ins1Count << ", INS2: " << _ins2Count;
   _hPulseCount = 0;
   _vPulseCount = 0;
-  _insCount = 0;
+  _ins1Count = 0;
+  _ins2Count = 0;
   
   _logAccessLock.unlock();
 }

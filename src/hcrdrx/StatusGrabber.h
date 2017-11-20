@@ -42,6 +42,7 @@
 #include <p7142sd3c.h>
 #include <HcrPmc730Client.h>
 #include <XmitdRpcClient.h>
+#include <MotionControlRpcClient.h>
 
 #include "DrxStatus.h"
 
@@ -62,10 +63,14 @@ public:
      * @param pmc730dPort the port number HcrPmc730Daemon is using for XML-RPC
      * @param xmitdHost the name of the host on which hcr_xmitd is running
      * @param xmitdPort the port number hcr_xmitd is using for XML-RPC
+     * @param motionControlHost the name of the host on which
+     * MotionControlDaemon is running
+     * @param motionControlPort the port number for MotionControlDaemon XML-RPC
      */
     StatusGrabber(const Pentek::p7142sd3c * pentek,
             std::string pmc730dHost, int pmc730dPort,
-            std::string xmitdHost, int xmitdPort);
+            std::string xmitdHost, int xmitdPort,
+            std::string motionControlHost, int motionControlPort);
     
     virtual ~StatusGrabber();
     
@@ -88,7 +93,13 @@ public:
      * @return the status collected from HcrPmc730Daemon.
      */
     HcrPmc730Status pmc730Status() const;
-    
+
+    /**
+     * @brief Return the status collected from MotionControlDaemon.
+     * @return the status collected from MotionControlDaemon.
+     */
+    MotionControl::Status motionControlStatus() const;
+
 private slots:
     /// @brief Get current status from all sources
     void _getStatus();
@@ -119,11 +130,11 @@ private:
     /// Last DrxStatus we obtained
     DrxStatus _drxStatus;
 
-    /// Last HcrPmc730Status we obtained
-    HcrPmc730Status _pmc730Status;
-
     /// XML-RPC access to HcrPmc730Daemon for status it provides
     HcrPmc730Client _pmc730Client;
+
+    /// Last HcrPmc730Status we obtained
+    HcrPmc730Status _pmc730Status;
 
     /// XML-RPC access to hcr_xmitd for its status
     XmitdRpcClient _xmitClient;
@@ -131,6 +142,11 @@ private:
     /// Last transmitter status we obtained
     XmitStatus _xmitStatus;
 
+    /// XML-RPC access to MotionControlDaemon for its status
+    MotionControlRpcClient _motionControlClient;
+
+    /// Last MotionControlDaemon status we obtained
+    MotionControl::Status _motionControlStatus;
     /**
      * Thread access mutex (mutable so we can lock the mutex even in const
      * methods)

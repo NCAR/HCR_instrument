@@ -58,6 +58,7 @@
 #include "FireflydDetails.h"
 #include "HcrdrxDetails.h"
 #include "HcrMonitorDetails.h"
+#include "InsOverview.h"
 #include "MotionControlDetails.h"
 #include "Pmc730Details.h"
 #include "SpectracomDetails.h"
@@ -71,8 +72,8 @@ class HcrGuiMainWindow : public QMainWindow {
 public:
     HcrGuiMainWindow(std::string archivererHost, int xmitterPort,
             int fireflydPort, int spectracomPort, std::string rdsHost,
-            int drxPort, int pmcPort, int primaryInsPort,
-            int secondaryInsPort, int motionControlPort,
+            int drxPort, int pmcPort, int ins1Port,
+            int ins2Port, int motionControlPort,
             int hcrMonitorPort);
     virtual ~HcrGuiMainWindow();
 
@@ -88,8 +89,9 @@ private slots:
     void on_fireflydDetailsButton_clicked();
     void on_hcrdrxDetailsButton_clicked();
     void on_hcrMonitorDetailsButton_clicked();
-    void on_insDetailsButton_clicked();
+    void on_ins1DetailsButton_clicked();
     void on_ins2DetailsButton_clicked();
+    void on_insOverviewButton_clicked();
     void on_mcDetailsButton_clicked();
     void on_pmc730DetailsButton_clicked();
     void on_spectracomDetailsButton_clicked();
@@ -100,21 +102,21 @@ private slots:
     /// @brief read angle(s) available on the broadcast port
     void _readAngles();
     
-    /// @brief Slot to call when cmigitsDaemon responsiveness changes.
+    /// @brief Slot to call when the INS1 cmigitsDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
-    void _insResponsivenessChange(bool responding, QString msg);
-    /// @brief Save the last status received from cmigitsDaemon and update
-    /// the GUI.
-    /// @param status the last status received from cmigitsDaemon
-    void _setInsStatus(const CmigitsStatus & status);
-    /// @brief Slot to call when secondary cmigitsDaemon responsiveness changes.
+    void _ins1ResponsivenessChange(bool responding, QString msg);
+    /// @brief Save the last status received from the INS1 cmigitsDaemon and
+    /// update the GUI.
+    /// @param status the last status received from the INS1 cmigitsDaemon
+    void _setIns1Status(const CmigitsStatus & status);
+    /// @brief Slot to call when the INS2 cmigitsDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
     void _ins2ResponsivenessChange(bool responding, QString msg);
-    /// @brief Save the last status received from secondary cmigitsDaemon and
+    /// @brief Save the last status received from the INS2 cmigitsDaemon and
     /// update the GUI.
-    /// @param status the last status received from secondary cmigitsDaemon
+    /// @param status the last status received from the INS2 cmigitsDaemon
     void _setIns2Status(const CmigitsStatus & status);
     /// @brief Slot to call when MotionControlDaemon responsiveness changes.
     /// @param responding True iff the server is currently responsive.
@@ -199,18 +201,23 @@ private:
 
     /// @brief Clear the angle displays
     void _clearAngleDisplay();
-    
+
+    /// @brief Update the INS overview dialog based on current responsiveness
+    /// and last status received from the two INSs.
+    void _updateInsOverview();
+
     Ui::HcrGuiMainWindow _ui;
     QTimer _updateTimer;
     
     HcrGuiLogWindow _logWindow;
     
     // Details windows and dialogs
-    CmigitsDetails _insDetails;             // primary INS status
-    CmigitsDetails _ins2Details;            // secondary INS status
+    CmigitsDetails _ins1Details;            // INS1 status
+    CmigitsDetails _ins2Details;            // INS2 status
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
     HcrMonitorDetails _hcrMonitorDetails;
+    InsOverview _insOverview;
     MotionControlDetails _motionControlDetails;
     Pmc730Details _pmc730Details;
     SpectracomDetails _spectracomDetails;
@@ -219,7 +226,7 @@ private:
     AntennaModeDialog _antennaModeDialog;
     
     // Threads to collect status from various daemons
-    CmigitsStatusThread _insStatusThread;
+    CmigitsStatusThread _ins1StatusThread;
     CmigitsStatusThread _ins2StatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
@@ -248,9 +255,9 @@ private:
     MotionControl::Status _mcStatus;
     /// Last status read from HcrPmc730Daemon
     HcrPmc730Status _pmcStatus;
-    /// Last status read from primary cmigitsDaemon
-    CmigitsStatus _insStatus;
-    /// Last status read from secondary cmigitsDaemon
+    /// Last status read from INS1 cmigitsDaemon
+    CmigitsStatus _ins1Status;
+    /// Last status read from INS2 cmigitsDaemon
     CmigitsStatus _ins2Status;
     /// Last status from hcrdrx
     DrxStatus _drxStatus;

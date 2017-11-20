@@ -90,6 +90,8 @@ public:
 	/// @return the URL used to communicate with MotionControlDaemon.
 	std::string daemonUrl() const { return(_daemonUrl); }
 
+	/// @brief Set the INS in use: 1 or 2
+	void setInsInUse(int insNum);
 private:
     /// @brief Execute an XML-RPC method call and return the result.
     /// @param methodName the name of the XML-RPC method to execute

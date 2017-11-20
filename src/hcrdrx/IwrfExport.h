@@ -91,7 +91,7 @@ public:
   PulseData *writePulseV(PulseData *val);
   
   /// @brief Method called to put new INS data in our queue.
-  void queueInsData(CmigitsFmq::MsgStruct cmigitsData);
+  void queueInsData(CmigitsFmq::MsgStruct cmigitsData, int insNum = 1);
 
 private slots:
   /// @brief Log some status information
@@ -198,17 +198,29 @@ private:
   double _tiltCorr;
   double _rotationCorr;
 
-  /// Thread which reads data from the INS FMQ and puts it in our deque
-  IwrfExportInsThread _insWatchThread;
+  /// Thread which reads data from the INS1 FMQ and puts it in our deque
+  IwrfExportInsThread _ins1WatchThread;
+
+  /// Thread which reads data from the INS2 FMQ and puts it in our deque
+  IwrfExportInsThread _ins2WatchThread;
+
+  /// deque of INS1 data for generating iwrf_platform_georef packets
+  std::deque<CmigitsFmq::MsgStruct> _ins1Deque;
   
-  /// deque of INS data for generating iwrf_platform_georef packets
-  std::deque<CmigitsFmq::MsgStruct> _insDeque;
+  /// deque of INS2 data for generating iwrf_platform_georef packets
+  std::deque<CmigitsFmq::MsgStruct> _ins2Deque;
   
-  /// Latest INS data, used for generating IWRF status XML packets
-  CmigitsFmq::MsgStruct _latestInsData;
+  /// Latest INS1 data, used for generating IWRF status XML packets
+  CmigitsFmq::MsgStruct _latestIns1Data;
+
+  /// Latest INS1 data, used for generating IWRF status XML packets
+  CmigitsFmq::MsgStruct _latestIns2Data;
   
-  /// Are INS data delayed longer than we want to wait for merging?
-  bool _insDataDelayed;
+  /// Are INS1 data delayed longer than we want to wait for merging?
+  bool _ins1DataDelayed;
+
+  /// Are INS1 data delayed longer than we want to wait for merging?
+  bool _ins2DataDelayed;
 
   /// simulation of antenna angles
 
@@ -228,7 +240,8 @@ private:
   /// counts of events between calls to _logStatus()
   int _hPulseCount;
   int _vPulseCount;
-  int _insCount;
+  int _ins1Count;
+  int _ins2Count;
   
   /// Time of the last georef packet we built, milliseconds since 1970-01-01
   /// 00:00:00 UTC
