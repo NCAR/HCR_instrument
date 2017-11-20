@@ -350,6 +350,7 @@ main(int argc, char** argv)
     myRegistry.addMethod("Scan", new DriveScanMethod);
     myRegistry.addMethod("Status", new StatusMethod);
     myRegistry.addMethod("SetCorrectionEnabled", new SetCorrectionEnabledMethod);
+    myRegistry.addMethod("SetInsInUse", new SetInsInUseMethod);
     myRegistry.addMethod("HomingInProgress", new HomingInProgressMethod);
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, MOTIONCONTROLDAEMON_PORT);
 
