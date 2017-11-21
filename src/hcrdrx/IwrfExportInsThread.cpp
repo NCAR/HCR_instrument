@@ -68,7 +68,7 @@ IwrfExportInsThread::run()
     case 2:
         fmqUrl = INS2_FMQ_URL;
         break;
-    case 3:
+    default:
         ELOG << "BUG - Unexpected INS number " << _insNum;
         abort();
     }
@@ -79,7 +79,8 @@ IwrfExportInsThread::run()
 
         // If the FMQ is open, we're done in this loop
         if (_insFmq.isOpen()) {
-            ILOG << "INS FMQ " << fmqUrl << " is now open for reading";
+            ILOG << "INS" << _insNum << " FMQ " << fmqUrl <<
+                    " is now open for reading";
             // We're done. Break out of the loop.
             break;
         }
