@@ -938,6 +938,7 @@ string IwrfExport::_assembleStatusXml()
 
   ///////////////////////////////////////////////////////
   // HcrIns1Data and HcrIns2Data blocks
+
   for (int insNum = 1; insNum <= 2; insNum++) {
 
     std::ostringstream oss;
@@ -947,6 +948,9 @@ string IwrfExport::_assembleStatusXml()
 
     // Get latest data we got from this INS (if any).
     CmigitsFmq::MsgStruct insData = (insNum == 1) ? _latestIns1Data : _latestIns2Data;
+
+    // serial number
+    xml += TaXml::writeInt("CmigitsSerialNum", 2, insData.insSerialNum);
 
     // C-MIGITS status info (latest 3500 message from C-MIGITS)
     xml += TaXml::writeDouble("Cmigits3500Time", 2, 0.001 * insData.time3500);
@@ -981,6 +985,28 @@ string IwrfExport::_assembleStatusXml()
     xml += TaXml::writeEndTag(blockName, 1);
   }
 
+  // differences between INSs
+
+  double insDeltaTime = fabs(_latestIns1Data.time3500 - _latestIns2Data.time3500);
+  if (insDeltaTime > 9999) {
+    insDeltaTime = 9999;
+  }
+  double insDeltaLatitude = fabs(_latestIns1Data.latitude - _latestIns2Data.latitude);
+  double insDeltaLongitude = fabs(_latestIns1Data.longitude - _latestIns2Data.longitude);
+  double insDeltaAltitude = fabs(_latestIns1Data.altitude - _latestIns2Data.altitude);
+  double insDeltaPitch = fabs(_latestIns1Data.pitch - _latestIns2Data.pitch);
+  double insDeltaRoll = fabs(_latestIns1Data.roll - _latestIns2Data.roll);
+  double insDeltaHeading = fabs(_latestIns1Data.heading - _latestIns2Data.heading);
+
+  xml += TaXml::writeStartTag("HcrInsDelta", 1);
+  xml += TaXml::writeDouble("CmigitsDeltaTime", 2, insDeltaTime);
+  xml += TaXml::writeDouble("CmigitsDeltaLatitude", 2, insDeltaLatitude);
+  xml += TaXml::writeDouble("CmigitsDeltaLongitude", 2, insDeltaLongitude);
+  xml += TaXml::writeDouble("CmigitsDeltaAltitude", 2, insDeltaAltitude);
+  xml += TaXml::writeDouble("CmigitsDeltaPitch", 2, insDeltaPitch);
+  xml += TaXml::writeDouble("CmigitsDeltaRoll", 2, insDeltaRoll);
+  xml += TaXml::writeDouble("CmigitsDeltaHeading", 2, insDeltaHeading);
+  xml += TaXml::writeEndTag("HcrInsDelta", 1);
 
   ////////////////////////////////////////////////
   // close
