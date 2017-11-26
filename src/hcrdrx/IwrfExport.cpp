@@ -1052,7 +1052,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   static const int MAX_WAIT_US = 500000;
 
   // Period of sleep between tests for new INS data. Leave this
-  // number small, since tests using 1 ms caused system instability with
+  // number small, since tests using 1000 us caused system instability with
   // Pentek data sync errors and DMA overruns.
   static const int SLEEP_US = 100;
 
@@ -1087,8 +1087,8 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
               if (total_wait_us > 30000) {
                   ILOG << "Waited " << 0.001 * total_wait_us <<
                           " ms for INS1 data";
-                  waitForIns1 = false;
               }
+              waitForIns1 = false;
           }
           // Stop waiting for INS2 if we got something
           if (waitForIns2 && ! _ins2Deque.empty()) {
@@ -1096,12 +1096,12 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
               if (total_wait_us > 30000) {
                   ILOG << "Waited " << 0.001 * total_wait_us <<
                           " ms for INS2 data";
-                  waitForIns2 = false;
               }
+              waitForIns2 = false;
           }
       }
   }
-  
+
   // If we get here and an INS deque is empty mark the INS data as delayed
   // so that we don't wait again until new data show up in the deque.
   _ins1DataDelayed = _ins1Deque.empty();
@@ -1113,98 +1113,96 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // Write a georef packet for all entries in the deques up to and including
   // the current pulse time.
   int writeCount;
-  for (writeCount = 0; ! true; writeCount++) {
+  for (writeCount = 0; true; writeCount++) {
       // Find the INS deque with the earliest entry time
-      int insNum;
-      // Pointer to the deque with the earliest entry
-      std::deque<CmigitsFmq::MsgStruct> * insDequePtr(NULL);
+
+      // Get the number of the INS (1 or 2) with the earliest deque entry
+      int insWithEarliest = 0;
 
       if (_ins1Deque.empty() && _ins2Deque.empty()) {
           // No entries available, so we're done
+          _insAccessLock.unlock();  // drop read lock before exiting the loop
           break;
       } else if (! _ins1Deque.empty() && ! _ins2Deque.empty()) {
           // Both deques have something, find the the earliest entry between
           // them
           uint64_t ins1Time = _ins1Deque.front().time3512;
           uint64_t ins2Time = _ins2Deque.front().time3512;
-          insDequePtr = (ins1Time <= ins2Time) ?  &_ins1Deque : &_ins2Deque;
+          if (ins1Time <= ins2Time) {
+              insWithEarliest = 1;
+          } else {
+              insWithEarliest = 2;
+          }
       } else if (! _ins1Deque.empty()) {
-          insNum = 1;
-          insDequePtr = &_ins1Deque;
+          insWithEarliest = 1;
       } else {
-          insNum = 2;
-          insDequePtr = &_ins2Deque;
+          insWithEarliest = 2;
       }
 
-      // Get the earliest entry
-      CmigitsFmq::MsgStruct entry = insDequePtr->front();
+      // Get a reference to the deque with the earliest entry and get a copy of
+      // the actual entry
+      std::deque<CmigitsFmq::MsgStruct> & insDeque =
+              (insWithEarliest == 1) ? _ins1Deque : _ins2Deque;
+      CmigitsFmq::MsgStruct earliest = insDeque.front();
 
       // If the earliest entry is later than the current pulse time, we're
       // done here.
-      if (entry.time3512 > pulseTime) {
+      if (earliest.time3512 > pulseTime) {
+          _insAccessLock.unlock();  // drop read lock before exiting the loop
           break;
       }
 
-      // We're going to use this entry, so remove it from its source deque.
-      //
-      // If we get here, insDequePtr must point to the deque which provided
-      // the earliest entry.
-
-      if (! insDequePtr) {
-          ELOG << "BUG - insDequePtr is NULL when writing a georef packet";
-          abort();
-      }
-
-      _insAccessLock.unlock();
+      // We're going to write a packet for this entry, so remove it from its
+      // source deque. Once we've popped the entry, we don't need read or write
+      // access to the INS deque-s for a bit.
+      _insAccessLock.unlock();  // drop read lock
       _insAccessLock.lockForWrite();
-      insDequePtr->pop_front();
-
-      // We don't need further read or write access to the _ins* members for
-      // a bit
-      _insAccessLock.unlock();
+      insDeque.pop_front();
+      _insAccessLock.unlock();  // drop write lock
 
       // Initialize the georef packet
       iwrf_platform_georef_init(_radarGeoref);
       
       // Time tag the georef packet with the C-MIGITS 3512 message time
-      if ((entry.time3512 % 1000) / 10 == 0) {
-          DLOG << "New georef tagged " << (entry.time3512 / 1000) % 60 <<
+      if ((earliest.time3512 % 1000) / 10 == 0) {
+          DLOG << "New georef tagged " << (earliest.time3512 / 1000) % 60 <<
                   "." << std::setw(3) << std::setfill('0') <<
-                  entry.time3512 % 1000 << " for pulse tagged " <<
+                  earliest.time3512 % 1000 << " for pulse tagged " <<
                   _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
                   _nanoSecs / 1000000;
       }
-      _radarGeoref.packet.time_secs_utc = entry.time3512 / 1000;
-      _radarGeoref.packet.time_nano_secs = (entry.time3512 % 1000) * 1000000;
+      _radarGeoref.packet.time_secs_utc = earliest.time3512 / 1000;
+      _radarGeoref.packet.time_nano_secs = (earliest.time3512 % 1000) * 1000000;
 
       // The unit_num member is kind of funky: unit_num = 0 indicates that this
-      // is the "primary" INS (i.e., the one used for MotionControl), and
-      // unit_num = 1 indicates the "secondary" (or backup) INS.
+      // is the "primary" INS (i.e., the one used by MotionControlDaemon), and
+      // unit_num = 1 indicates the other INS.
       _radarGeoref.unit_num =
-              (_monitor.motionControlStatus().insInUse == insNum) ? 0 : 1;
+              (_monitor.motionControlStatus().insInUse == insWithEarliest) ? 0 : 1;
+
       // The unit_id member should be a consistent unique identifier for the
       // INS, e.g. a serial number
-      _radarGeoref.unit_id = entry.insSerialNum;
+      _radarGeoref.unit_id = earliest.insSerialNum;
       _radarGeoref.altitude_agl_km = IWRF_MISSING_FLOAT;
-      _radarGeoref.altitude_msl_km = entry.altitude * 0.001; // m -> km
-      _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(entry);
+      _radarGeoref.altitude_msl_km = earliest.altitude * 0.001; // m -> km
+      _radarGeoref.drift_angle_deg = CmigitsFmq::GetEstimatedDriftAngle(earliest);
       _radarGeoref.ew_horiz_wind_mps = IWRF_MISSING_FLOAT;
-      _radarGeoref.ew_velocity_mps = entry.velEast;
-      _radarGeoref.heading_deg = entry.heading;
+      _radarGeoref.ew_velocity_mps = earliest.velEast;
+      _radarGeoref.heading_deg = earliest.heading;
       _radarGeoref.heading_rate_dps = IWRF_MISSING_FLOAT;
-      _radarGeoref.latitude = entry.latitude;
-      _radarGeoref.longitude = entry.longitude;
+      _radarGeoref.latitude = earliest.latitude;
+      _radarGeoref.longitude = earliest.longitude;
       _radarGeoref.ns_horiz_wind_mps = IWRF_MISSING_FLOAT;
-      _radarGeoref.ns_velocity_mps = entry.velNorth;
-      _radarGeoref.pitch_deg = entry.pitch;
+      _radarGeoref.ns_velocity_mps = earliest.velNorth;
+      _radarGeoref.pitch_deg = earliest.pitch;
       _radarGeoref.pitch_rate_dps = IWRF_MISSING_FLOAT;
-      _radarGeoref.roll_deg = entry.roll;
-      _radarGeoref.vert_velocity_mps = entry.velUp;
+      _radarGeoref.roll_deg = earliest.roll;
+      _radarGeoref.vert_velocity_mps = earliest.velUp;
       _radarGeoref.vert_wind_mps = IWRF_MISSING_FLOAT;
 
-      _radarInfo.latitude_deg = entry.latitude;
-      _radarInfo.longitude_deg = entry.longitude;
-      _radarInfo.altitude_m = entry.altitude;
+      _radarInfo.latitude_deg = earliest.latitude;
+      _radarInfo.longitude_deg = earliest.longitude;
+      _radarInfo.altitude_m = earliest.altitude;
 
       // Angles of the reflector rotation and tilt motors.
       float rotMotorAngle = _pulseH->getRotMotorAngle();
@@ -1235,7 +1233,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       }
       
       // Log unexpected time differences between georef packets
-      uint64_t thisGeorefTime = entry.time3512;
+      uint64_t thisGeorefTime = earliest.time3512;
       int64_t deltaMs = _lastGeorefTime ? thisGeorefTime - _lastGeorefTime : 0;
       if (deltaMs < 0) {
           QDateTime qLastTime = 
@@ -1258,19 +1256,16 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       // send the packet
       _sendIwrfGeorefPacket();
       
-      // get the read lock again before testing if INS deque-s are empty
+      // get the read lock before looking at the INS deque-s again
       _insAccessLock.lockForRead();
   }
   
-  // Log a warning if we wrote more than one georef packet and we are not on 
-  // the first pulse.
-  if (writeCount > 1) {
+  // Log a warning if we wrote more than one georef packet per INS and we are
+  // not on the first pulse.
+  if (writeCount > 2) {
       WLOG << "Wrote " << writeCount << 
               " consecutive georef packets before pulse " << _pulseSeqNum;
   }
-  
-  // Release the lock before exiting
-  _insAccessLock.unlock();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -1518,7 +1513,7 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
   // Push the new item onto the deque (or replace the last item if its time
   // is the same as the incoming entry).
   if (! insDeque.empty() && lastTime == thisTime) {
-      DLOG << "Overwriting INS entry for " << data.time3512;
+      DLOG << "Overwriting INS" << insNum << " entry for " << data.time3512;
       insDeque.back() = data;
   } else {
       insDeque.push_back(data);
