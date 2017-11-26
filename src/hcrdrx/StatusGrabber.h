@@ -124,6 +124,11 @@ private:
      */
     void _getXmitStatus();
     
+    ///
+    /// @brief Get status information from MotionControlDaemon.
+    ///
+    void _getMotionControlStatus();
+    
     /// The Pentek P7142 we're monitoring
     const Pentek::p7142sd3c * _pentek;
 

@@ -124,6 +124,7 @@ StatusGrabber::_getStatus() {
     _getPmc730Status();
     _getDrxStatus();
     _getXmitStatus();
+    _getMotionControlStatus();
 }
 
 void
@@ -160,6 +161,16 @@ StatusGrabber::_getXmitStatus() {
 
     QMutexLocker locker(&_mutex);
     _xmitStatus = xmitStatus;
+}
+
+void
+StatusGrabber::_getMotionControlStatus() {
+    // Get the status first, then get the mutex and set our member variable.
+    // This way, we don't have the mutex locked very long at all....
+    MotionControl::Status mcStatus = _motionControlClient.status();
+
+    QMutexLocker locker(&_mutex);
+    _motionControlStatus = mcStatus;
 }
 
 void
