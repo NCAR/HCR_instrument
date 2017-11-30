@@ -162,7 +162,10 @@ private slots:
     /// @param msg a string describing the responsiveness change
     void _updateMaxPowerResponsive(bool responding, QString msg);
 
-    /// @brief Mark the INS daemon as unresponsive
+    /// @brief Mark the INS daemon responsive
+    void _markInsResponsive();
+
+    /// @brief Mark the INS daemon unresponsive
     void _markInsUnresponsive();
 
     /// @brief Update AGL altitude using new location from INS data

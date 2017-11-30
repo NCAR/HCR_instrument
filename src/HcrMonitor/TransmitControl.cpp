@@ -108,9 +108,12 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     connect(&maxPowerThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
-    // Call _updateAglAltitude when we get new INS data
+    // Call _updateAglAltitude and mark the INS as responsive when we get new
+    // INS data
     connect(&_insWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
             this, SLOT(_updateAglAltitude(CmigitsFmq::MsgStruct)));
+    connect(&_insWatcher, SIGNAL(newData(CmigitsFmq::MsgStruct)),
+            this, SLOT(_markInsResponsive()));
     
     // Mark INS reader daemon as unresponsive when the watch thread emits its
     // dataTimeout() signal.
@@ -252,7 +255,15 @@ TransmitControl::_updateMaxPowerResponsive(bool responding, QString msg) {
 }
 
 void
+TransmitControl::_markInsResponsive() {
+    ILOG << "INS is responsive";
+    _insResponsive = true;
+    _updateControlState();
+}
+
+void
 TransmitControl::_markInsUnresponsive() {
+    ELOG << "INS is NOT responsive";
     _insResponsive = false;
     _updateControlState();
 }
