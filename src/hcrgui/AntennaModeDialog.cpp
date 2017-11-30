@@ -38,11 +38,10 @@ AntennaModeDialog::AntennaModeDialog(QWidget *parent) :
 
 AntennaModeDialog::AntennaMode
 AntennaModeDialog::getMode() {
-	int index = _ui.tabWidget->currentIndex();
-	if (_ui.tabWidget->tabText(index).contains("Pointing"))
-		return POINTING;
-	else
+	if (_ui.tabWidget->currentWidget() == _ui.scanningTab)
 		return SCANNING;
+	else
+		return POINTING;
 }
 
 void
@@ -52,7 +51,7 @@ AntennaModeDialog::getPointingAngle(float& angle) {
 
 void
 AntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit, 
-        float& scanRate, float& beamTilt) {
+                                    float& scanRate, float& beamTilt) {
 	ccwLimit = (float)_ui.ccwLimitSpinBox->value();
 	cwLimit  = (float)_ui.cwLimitSpinBox->value();
 	scanRate = (float)_ui.scanRateSpinBox->value();
@@ -62,4 +61,40 @@ AntennaModeDialog::getScanningParam(float& ccwLimit, float& cwLimit,
 void
 AntennaModeDialog::on_buttonBox_clicked() {
 	this->accept();
+}
+
+void
+AntennaModeDialog::on_zenithButton_clicked() {
+    _ui.pointingSpinBox->setValue(0.0);
+}
+
+void
+AntennaModeDialog::on_horizontalButton_clicked() {
+    _ui.pointingSpinBox->setValue(90.0);
+}
+
+void
+AntennaModeDialog::on_nadirButton_clicked() {
+    _ui.pointingSpinBox->setValue(180.0);
+}
+
+void
+AntennaModeDialog::on_ssCal170Button_clicked() {
+    _ui.pointingSpinBox->setValue(170.0);
+}
+
+
+void
+AntennaModeDialog::on_ssCal190Button_clicked() {
+    _ui.pointingSpinBox->setValue(190.0);
+}
+
+void
+AntennaModeDialog::on_pointingSpinBox_valueChanged(double val) {
+    // Just set the state of the quick pointing buttons
+    _ui.zenithButton->setChecked(val == 0.0);
+    _ui.horizontalButton->setChecked(val == 90.0);
+    _ui.nadirButton->setChecked(val == 180.0);
+    _ui.ssCal170Button->setChecked(val == 170.0);
+    _ui.ssCal190Button->setChecked(val == 190.0);
 }

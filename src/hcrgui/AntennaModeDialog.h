@@ -55,7 +55,14 @@ public:
     void getScanningParam(float& ccwLimit, float& cwLimit, float& scanRate, float& beamTilt);
 
 private slots:
-    void on_buttonBox_clicked();
+    // auto-connected slots
+    void on_buttonBox_clicked();        // Accept button
+    void on_pointingSpinBox_valueChanged(double val);   // UI pointing value
+    void on_zenithButton_clicked();     // zenith quick point button
+    void on_horizontalButton_clicked(); // horizontal quick point button
+    void on_nadirButton_clicked();      // nadir quick point button
+    void on_ssCal170Button_clicked();   // sea surface cal (170) quick point button
+    void on_ssCal190Button_clicked();   // sea surface cal (190) quick point button
 
 private:
     Ui::AntennaModeDialog _ui;

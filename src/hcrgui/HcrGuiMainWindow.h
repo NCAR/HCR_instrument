@@ -174,6 +174,11 @@ private slots:
     /// @brief Slot called to pop up a dialog reporting forced shutoff of
     /// transmitter high voltage.
     void _reportHvForcedOff(QString details);
+    /// @brief Slot called to place a request to MotionControlDaemon to change
+    /// its 'INS in use'
+    /// @param requestedIns the INS MotionControlDaemon is requested to use
+    /// (1 or 2)
+    void _setMotionControlInsInUse(int requestedIns);
 private:
     // Log a message
     void _logMessage(std::string message);

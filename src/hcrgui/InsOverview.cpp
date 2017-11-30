@@ -11,11 +11,18 @@
 #include <iomanip>
 #include <sstream>
 
+#include <QMessageBox>
 #include <QTextStream>
 
 InsOverview::InsOverview(QWidget * parent) :
 QDialog(parent),
-_ui() {
+_ui(),
+_currentInsInUse(0),
+_redLED(":/redLED.png"),
+_amberLED(":/amberLED.png"),
+_greenLED(":/greenLED.png"),
+_greenLED_off(":/greenLED_off.png")
+{
     // Set up the UI
     _ui.setupUi(this);
 }
@@ -58,6 +65,8 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
                           bool ins2DaemonResponding,
                           const CmigitsStatus & ins2Status,
                           int insInUse) {
+    _currentInsInUse = insInUse;
+
     // QString and an associated QStringStream for building text strings
     QString text;
     QTextStream textStream(&text); 
@@ -94,6 +103,10 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Gray out values for INS1 if its daemon is not responding
     _ui.ins1Frame->setEnabled(ins1DaemonResponding);
 
+    // Checked/unchecked state for the "use INS" button
+    _ui.useIns1Button->setChecked(insInUse == 1);
+    _ui.useIns1Button->setText((insInUse == 1) ? "*" : "");
+
     // Put a box around the INS1 frame if this is INS is in use
     QFrame::Shape frameShape =
         (insInUse == 1) ? QFrame::Shape::Panel : QFrame::Shape::NoFrame;
@@ -102,6 +115,22 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Make background color for the frame 5% lighter if this is the INS in use.
     QColor bgColor = (insInUse == 1) ? defaultBgColor.lighter(105) : defaultBgColor;
     _ui.ins1Frame->setStyleSheet(QString("background-color:") + bgColor.name());
+
+    // INS1 status light:
+    // Green light if mode is "Air Navigation" or "Land Navigation"
+    // Amber light if we have both INS and GPS
+    // Red light otherwise
+    uint16_t insMode = ins1Status.currentMode();
+    QPixmap & light = _greenLED_off;
+    if (insMode == 7 || insMode == 8) {
+        light = _greenLED;
+    } else if (ins1Status.insAvailable() &&
+               ins1Status.gpsAvailable()) {
+        light = _amberLED;
+    } else {
+        light = _redLED;
+    }
+    _ui.ins1StatusLed->setPixmap(light);
 
     // pitch (to 0.1 degree precision)
     text = "";
@@ -159,6 +188,10 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Gray out values for INS2 if its daemon is not responding
     _ui.ins2Frame->setEnabled(ins2DaemonResponding);
 
+    // Checked/unchecked state for the "use INS" button
+    _ui.useIns2Button->setChecked(insInUse == 2);
+    _ui.useIns2Button->setText((insInUse == 2) ? "*" : "");
+
     // Put a box around the INS2 frame if this is INS is in use
     frameShape = (insInUse == 2) ? QFrame::Shape::Panel : QFrame::Shape::NoFrame;
     _ui.ins2Frame->setFrameShape(frameShape);
@@ -166,6 +199,21 @@ InsOverview::updateStatus(bool ins1DaemonResponding,
     // Make background color for the frame 5% lighter if this is the INS in use.
     bgColor = (insInUse == 2) ? defaultBgColor.lighter(105) : defaultBgColor;
     _ui.ins2Frame->setStyleSheet(QString("background-color:") + bgColor.name());
+
+    // INS2 status light:
+    // Green light if mode is "Air Navigation" or "Land Navigation"
+    // Amber light if we have both INS and GPS
+    // Red light otherwise
+    insMode = ins2Status.currentMode();
+    if (insMode == 7 || insMode == 8) {
+        light = _greenLED;
+    } else if (ins2Status.insAvailable() &&
+               ins2Status.gpsAvailable()) {
+        light = _amberLED;
+    } else {
+        light = _redLED;
+    }
+    _ui.ins2StatusLed->setPixmap(light);
 
     // pitch (to 0.1 degree precision)
     text = "";
@@ -302,7 +350,7 @@ InsOverview::_setDiffValueLabel(QLabel * label, const double diff,
                                 const double badThreshold,
                                 const double warnThreshold) {
     // Background color. Start from the default background color and tint a
-    // bit if we want to signal warning or error.
+    // bit yellow to signal warning or red to signal error.
     QColor defBgColor = _ui.diffFrame->palette().color(QWidget::backgroundRole());
     QString bgColorName = _DiffBgColorName(defBgColor, diff, badThreshold, warnThreshold);
     label->setStyleSheet(QString("background-color:") +
@@ -333,4 +381,34 @@ InsOverview::_DiffBgColorName(const QColor & defBgColor, double diff,
     return(QColor(0.8 * defBgColor.red() + 0.2 * tint.red(),
                   0.8 * defBgColor.green() + 0.2 * tint.green(),
                   0.8 * defBgColor.blue() + 0.2 * tint.blue()).name());
+}
+
+void
+InsOverview::_requestInsInUse(int requestedIns) {
+    // Pop up a dialog to confirm the request
+    QMessageBox::StandardButton reply;
+    QString questionText;
+    QTextStream os(&questionText);
+    os << "Change motion control 'INS in use' to INS" << requestedIns << "?";
+    reply = QMessageBox::question(this,
+                                  "Confirm 'INS in use' Request",
+                                  questionText,
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        emit requestNewInsInUse(requestedIns);
+    }
+}
+
+void
+InsOverview::on_useIns1Button_clicked() {
+    if (_currentInsInUse != 1) {
+        _requestInsInUse(1);
+    }
+}
+
+void
+InsOverview::on_useIns2Button_clicked() {
+    if (_currentInsInUse != 2) {
+        _requestInsInUse(2);
+    }
 }
