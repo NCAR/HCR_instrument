@@ -20,6 +20,13 @@ public:
     virtual ~InsOverview() {}
 
     void noStatus();
+signals:
+    /// @brief Signal emitted to request a change in MotionControlDaemon's
+    /// 'INS in use'.
+    /// @param requestedIns the INS desired as MotionControlDaemon's INS in use,
+    /// either 1 or 2
+    void requestNewInsInUse(int requestedIns);
+
 public slots:
     /// @brief Update the widget with current status values for the two
     /// INSs
@@ -33,6 +40,10 @@ public slots:
                       bool ins2DaemonResponding,
                       const CmigitsStatus & ins2Status,
                       int insInUse);
+private slots:
+    // Auto-connected slots
+    void on_useIns1Button_clicked();
+    void on_useIns2Button_clicked();
 private:
     /// @brief Set the text and coloring for the given label in the
     /// "Diff" column.
@@ -69,7 +80,24 @@ private:
                                           double diff,
                                           double badThreshold,
                                           double warnThreshold);
+
+    /// @brief Initiate a request for a new 'INS in use'
+    ///
+    /// A confirmation dialog will be presented, and upon confirmation a
+    /// requestNewInsInUse signal will be emitted.
+    /// @param requestedIns the number for the requested new 'INS in use'
+    /// (1 or 2)
+    void _requestInsInUse(int requestedIns);
+
     Ui::InsOverview _ui;
+    int _currentInsInUse;
+
+    // LED pixmaps
+    QPixmap _redLED;
+    QPixmap _amberLED;
+    QPixmap _greenLED;
+    QPixmap _greenLED_off;
+
 };
 
 #endif /* SRC_HCRGUI_INSOVERVIEW_H_ */

@@ -151,7 +151,12 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.pmc730StatusIcon->setPixmap(_redLED);
     _ui.spectracomStatusIcon->setPixmap(_redLED);
     _ui.xmitterStatusIcon->setPixmap(_redLED);
-    
+
+    // Connect InsOverview's requestNewInsInUse(int) signal to our
+    // _setMotionControlInsInUse(int) slot
+    connect(&_insOverview, SIGNAL(requestNewInsInUse(int)),
+            this, SLOT(_setMotionControlInsInUse(int)));
+
     // Connect and start the INS1 status gathering thread
     connect(& _ins1StatusThread, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_ins1ResponsivenessChange(bool, QString)));
@@ -1312,3 +1317,12 @@ HcrGuiMainWindow::_reportHvForcedOff(QString details) {
             QMessageBox::Ok, this);
     box.exec();
 }
+
+void
+HcrGuiMainWindow::_setMotionControlInsInUse(int requestedIns) {
+    // Set MotionControlDaemon's 'INS in use'
+    ILOG << "Requesting MotionControlDaemon to change INS in use from " <<
+            _mcStatus.insInUse << " to " << requestedIns;
+    _mcStatusThread.rpcClient().setInsInUse(requestedIns);
+}
+
