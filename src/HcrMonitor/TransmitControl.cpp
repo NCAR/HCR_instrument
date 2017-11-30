@@ -256,6 +256,9 @@ TransmitControl::_updateMaxPowerResponsive(bool responding, QString msg) {
 
 void
 TransmitControl::_markInsResponsive() {
+    if (_insResponsive) {
+        return;
+    }
     ILOG << "INS is responsive";
     _insResponsive = true;
     _updateControlState();
@@ -263,6 +266,9 @@ TransmitControl::_markInsResponsive() {
 
 void
 TransmitControl::_markInsUnresponsive() {
+    if (!_insResponsive) {
+        return;
+    }
     ELOG << "INS is NOT responsive";
     _insResponsive = false;
     _updateControlState();
