@@ -4,5 +4,6 @@
     <file>greenLED.png</file>
     <file>amberLED.png</file>
     <file>redLED.png</file>
+    <file>aircraft_horizon.png</file>
   </qresource>
 </RCC>
