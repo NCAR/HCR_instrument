@@ -968,6 +968,9 @@ HcrGuiMainWindow::_update() {
     }
     _ui.ins1StatusIcon->setPixmap(light);
 
+    // Enable INS1 label if it's the INS in use by MotionControlDaemon
+    _ui.ins1StatusLabel->setEnabled(_mcStatus.insInUse == 1);
+
     // INS2 status light:
     // Green light if mode is "Air Navigation" or "Land Navigation"
     // Amber light if we have both INS and GPS
@@ -982,6 +985,9 @@ HcrGuiMainWindow::_update() {
         light = _redLED;
     }
     _ui.ins2StatusIcon->setPixmap(light);
+
+    // Enable INS1 label if it's the INS in use by MotionControlDaemon
+    _ui.ins2StatusLabel->setEnabled(_mcStatus.insInUse == 2);
 
     // MotionControl status LED
     if (! _mcStatusThread.serverIsResponding() ||
