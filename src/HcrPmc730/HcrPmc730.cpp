@@ -285,7 +285,7 @@ HcrPmc730::emsError6Or7() {
 }
 
 int
-HcrPmc730::_ttlBinaryForChannel(int channel) throw (BadTtlVoltage) {
+HcrPmc730::_ttlBinaryForChannel(int channel) {
     float voltage = _analogValues[channel];
     if (voltage < 0.8) {
         return 0;

@@ -53,7 +53,7 @@ CmigitsDaemonRpcClient::~CmigitsDaemonRpcClient() {
 }
 
 CmigitsStatus
-CmigitsDaemonRpcClient::getStatus() throw (std::exception) {
+CmigitsDaemonRpcClient::getStatus() {
     try {
         xmlrpc_c::value result;
         // _client.call() may throw a girerr::error exception (a subclass

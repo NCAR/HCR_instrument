@@ -68,7 +68,7 @@ public:
     /// @param xmitterPkt a 20-byte status packet returned by the transmitter
     /// @throws ConstructError if there is a problem with the status packet
     /// from the transmitter.
-    XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError);
+    XmitStatus(const uint8_t xmitterPkt[20]);
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
     /// by a call to the XmitStatus::toXmlRpcValue() method.
@@ -76,7 +76,7 @@ public:
     /// call to the XmitStatus::toXmlRpcValue() method.
     /// @throws ContructError if there is a problem unpacking the given
     /// xmlrpc_c::value_struct into an XmitStatus.
-    XmitStatus(xmlrpc_c::value_struct & statusDict) throw(ConstructError);
+    XmitStatus(xmlrpc_c::value_struct & statusDict);
 
     /// @brief destructor
     virtual ~XmitStatus();

@@ -101,7 +101,7 @@ XmitStatus::XmitStatus() {
     _prfSelector = 0;
 }
 
-XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
+XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) {
     // Since we have transmitter packet, the serial line must be connected
     _serialConnected = true;
 
@@ -351,7 +351,7 @@ XmitStatus::XmitStatus(const uint8_t xmitterPkt[20]) throw(ConstructError) {
     _PrevStatus = *this;
 }
 
-XmitStatus::XmitStatus(xmlrpc_c::value_struct & statusDict) throw(ConstructError) {
+XmitStatus::XmitStatus(xmlrpc_c::value_struct & statusDict) {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);

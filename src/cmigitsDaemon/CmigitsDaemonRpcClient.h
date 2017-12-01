@@ -58,7 +58,7 @@ public:
      * @throws std::exception if there's a problem executing the XML-RPC
      * call.
      */
-    CmigitsStatus getStatus() throw (std::exception);
+    CmigitsStatus getStatus();
     
     /**
      * Get the port number of the associated cmigitsDaemon.
