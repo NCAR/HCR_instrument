@@ -822,17 +822,18 @@ string IwrfExport::_assembleStatusXml()
   xml += TaXml::writeDouble
     ("DetectedRfPower", 2, pmc730Status.detectedRfPower());
 
+  static const double HPA_PER_PSI = 68.94785;
   xml += TaXml::writeDouble
-    ("PvForePressure", 2, pmc730Status.pvForePressure());
+    ("PvForePressure", 2, pmc730Status.pvForePressure() / HPA_PER_PSI);
 
   xml += TaXml::writeDouble
-    ("PvAftPressure", 2, pmc730Status.pvAftPressure());
+    ("PvAftPressure", 2, pmc730Status.pvAftPressure() / HPA_PER_PSI);
 
   xml += TaXml::writeDouble
-    ("ApsLowSidePressure", 2, pmc730Status.apsLowSidePressure());
+    ("ApsLowSidePressure", 2, pmc730Status.apsLowSidePressure() / HPA_PER_PSI);
 
   xml += TaXml::writeDouble
-    ("ApsHighSidePressure", 2, pmc730Status.apsHighSidePressure());
+    ("ApsHighSidePressure", 2, pmc730Status.apsHighSidePressure() / HPA_PER_PSI);
 
   xml += TaXml::writeDouble
     ("PloTemp", 2, pmc730Status.ploTemp());
