@@ -1498,7 +1498,7 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
   }
   if (insLagMs > pulseLagMs) {
       if (pulseLagMs < insLagMs) {
-          WLOG << "INS data latency (" << insLagMs << 
+          WLOG << "INS" << insNum << " data latency (" << insLagMs << 
                   " ms) > pulse latency (" << pulseLagMs << " ms)";
       }
   }
@@ -1509,8 +1509,8 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
   int64_t deltaMs = lastTime ? thisTime - lastTime : 0;
   QDateTime qLastTime = QDateTime::fromTime_t(lastTime / 1000).addMSecs(lastTime % 1000);
   if (deltaMs < 0) {
-      WLOG << "INS time went backwards by " << -deltaMs << " ms after " <<
-              qLastTime.toString("hh:mm:ss.zzz").toStdString();
+      WLOG << "INS" << insNum << " time went backwards by " << -deltaMs <<
+              " ms after " << qLastTime.toString("hh:mm:ss.zzz").toStdString();
   } else if (deltaMs > 11) {
       // Nominal time between 100 Hz data is 10 ms, but 1 ms resolution in 
       // time stamps means we sometimes see 9 or 11 ms. Anything over 11 ms 
