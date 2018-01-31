@@ -97,6 +97,7 @@ IwrfExportInsThread::run()
     }
     
     // Now begin the reading loop
+    bool inNavMode = false;
     while (true) {
         if (_insFmq.readMsgBlocking()) {
           ELOG << "ERROR - cannot read message from FMQ: " << _insFmq.getErrStr();
@@ -112,6 +113,29 @@ IwrfExportInsThread::run()
         const void * msgPtr = _insFmq.getMsg();
         const CmigitsFmq::MsgStruct * cmigitsDataStruct = 
                 reinterpret_cast<const CmigitsFmq::MsgStruct*>(msgPtr);
-        _iwrfExport.queueInsData(*cmigitsDataStruct, _insNum);
+
+        // Save the previous "in navigation mode" state of the INS
+        bool prevInNavMode = inNavMode;
+
+        // Check the message to see if the INS currently in a navigation mode
+        // (7 = Air Navigation, 8 = Land Navigation)
+        inNavMode = cmigitsDataStruct->currentMode == 7 ||
+                cmigitsDataStruct->currentMode == 8;
+
+        // Log if the "in navigaton mode" state changed
+        if (prevInNavMode != inNavMode) {
+            if (inNavMode) {
+                ILOG << "INS" << _insNum << " is in a navigation mode. " <<
+                        " Delivering data to FMQ";
+            } else {
+                WLOG << "INS" << _insNum <<  " left navigation mode. " <<
+                        "Stopping data delivery to FMQ";
+            }
+        }
+
+        // Only queue the data if the INS is in a navigation mode
+        if (inNavMode) {
+            _iwrfExport.queueInsData(*cmigitsDataStruct, _insNum);
+        }
     }
 }
