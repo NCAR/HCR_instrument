@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>309</width>
-    <height>461</height>
+    <height>510</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,6 +41,9 @@
    </item>
    <item row="3" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -627,8 +630,6 @@
  </widget>
  <resources>
   <include location="HcrGuiMainWindow.qrc"/>
-  <include location="HcrGuiMainWindow.qrc"/>
-  <include location="../../../../../burghart/.designer/backup/HcrGuiMainWindow.qrc"/>
  </resources>
  <connections>
   <connection>

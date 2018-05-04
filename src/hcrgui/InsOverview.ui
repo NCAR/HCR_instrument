@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>338</width>
-    <height>381</height>
+    <width>346</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -308,6 +308,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -627,6 +630,9 @@
    </item>
    <item row="7" column="2">
     <widget class="QPushButton" name="ins2DetailsButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
       <string>Show the INS2 details popup</string>
      </property>
@@ -637,6 +643,9 @@
    </item>
    <item row="7" column="1">
     <widget class="QPushButton" name="ins1DetailsButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
       <string>Show the INS1 details popup</string>
      </property>
@@ -647,6 +656,9 @@
    </item>
    <item row="3" column="2">
     <widget class="QPushButton" name="useIns2Button">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
       <string>Request MotionControlDaemon to use INS2</string>
      </property>
@@ -666,6 +678,9 @@
    </item>
    <item row="3" column="1">
     <widget class="QPushButton" name="useIns1Button">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="toolTip">
       <string>Request MotionControlDaemon to use INS1</string>
      </property>

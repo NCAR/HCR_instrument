@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>381</width>
-    <height>558</height>
+    <width>383</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -73,6 +73,9 @@
              <width>150</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
            </property>
           </widget>
          </item>
@@ -538,6 +541,9 @@
    </item>
    <item row="2" column="1" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
