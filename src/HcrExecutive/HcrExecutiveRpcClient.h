@@ -22,31 +22,31 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorRpcClient.cpp
+ * HcrExecutiveRpcClient.cpp
  *
  *  Created on: Oct 28, 2014
  *      Author: burghart
  */
 
-#ifndef HCRMONITORRPCCLIENT_H_
-#define HCRMONITORRPCCLIENT_H_
+#ifndef HCREXECUTIVERPCCLIENT_H_
+#define HCREXECUTIVERPCCLIENT_H_
 
 #include <xmlrpc-c/client_simple.hpp>
 #include <string>
-#include "HcrMonitorStatus.h"
+#include "HcrExecutiveStatus.h"
 
-/// MotionControlRpcClient encapsulates an XML-RPC connection to an HcrMonitor 
+/// HcrExecutiveRpcClient encapsulates an XML-RPC connection to an HcrExecutive 
 /// process.
-class HcrMonitorRpcClient
+class HcrExecutiveRpcClient
 {
 public:
-    /// @brief Instantiate HcrMonitorRpcClient to communicate with an
-	/// HcrMonitor process running on host daemonHost using port
+    /// @brief Instantiate HcrExecutiveRpcClient to communicate with an
+	/// HcrExecutive process running on host daemonHost using port
 	/// daemonPort.
-    /// @param daemonHost the name of the host on which HcrMonitor is running
-    /// @param daemonPort the port number being used by HcrMonitor
-	HcrMonitorRpcClient(std::string daemonHost, int daemonPort);
-    virtual ~HcrMonitorRpcClient();
+    /// @param daemonHost the name of the host on which HcrExecutive is running
+    /// @param daemonPort the port number being used by HcrExecutive
+	HcrExecutiveRpcClient(std::string daemonHost, int daemonPort);
+    virtual ~HcrExecutiveRpcClient();
 
     /// @brief Set valve control state in the Active Pressurization System (APS)
     /// @param state the desired APS valve control state
@@ -64,16 +64,16 @@ public:
     void setHvRequested(bool hvRequested);
 
     /// @brief Get motion control status
-    /// @return a HcrMonitorStatus object
+    /// @return a HcrExecutiveStatus object
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    HcrMonitorStatus status();
+    HcrExecutiveStatus status();
 
-	/// @brief Return true iff the HcrMonitor is responding.
-	/// @return true iff the HcrMonitor is responding.
+	/// @brief Return true iff the HcrExecutive is responding.
+	/// @return true iff the HcrExecutive is responding.
 	bool daemonResponding() const { return(_daemonResponding); }
 
-	/// @brief Return the URL used to communicate with HcrMonitor.
-	/// @return the URL used to communicate with HcrMonitor.
+	/// @brief Return the URL used to communicate with HcrExecutive.
+	/// @return the URL used to communicate with HcrExecutive.
 	std::string daemonUrl() const { return(_daemonUrl); }
 
 private:
@@ -90,4 +90,4 @@ private:
     xmlrpc_c::clientSimple _client;
 };
 
-#endif /* HCRMONITORRPCCLIENT_H_ */
+#endif /* HCREXECUTIVERPCCLIENT_H_ */

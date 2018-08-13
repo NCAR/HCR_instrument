@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HcrMonitorDetails</class>
- <widget class="QDialog" name="HcrMonitorDetails">
+ <class>HcrExecutiveDetails</class>
+ <widget class="QDialog" name="HcrExecutiveDetails">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>HcrMonitor Details</string>
+   <string>HcrExecutive Details</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
@@ -562,7 +562,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>HcrMonitorDetails</receiver>
+   <receiver>HcrExecutiveDetails</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -578,7 +578,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>HcrMonitorDetails</receiver>
+   <receiver>HcrExecutiveDetails</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

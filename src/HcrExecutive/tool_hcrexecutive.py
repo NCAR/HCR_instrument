@@ -1,5 +1,5 @@
 #
-# Rules to build libhcrmonitor.a and export it as a SCons tool
+# Rules to build libhcrexecutive.a and export it as a SCons tool
 #
 tools = Split('''
 hcrpmc730client
@@ -8,7 +8,7 @@ motioncontrol
 qt4
 xmlrpc_client++
 ''')
-hcrMonitorDir = Dir('.').abspath
+hcrExecutiveDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
 env.EnableQt4Modules(['QtCore'])
@@ -19,30 +19,30 @@ env.canfestivalObjdictImpl('ElmoMasterNode.od')
 
 sources = Split('''
     ApsControl.cpp
-    HcrMonitorRpcClient.cpp
-    HcrMonitorStatus.cpp
-    HcrMonitorStatusThread.cpp
+    HcrExecutiveRpcClient.cpp
+    HcrExecutiveStatus.cpp
+    HcrExecutiveStatusThread.cpp
     TransmitControl.cpp
 ''')
 
 headers = Split('''
     ApsControl.h
-    HcrMonitorRpcClient.h
-    HcrMonitorStatus.h
-    HcrMonitorStatusThread.h
+    HcrExecutiveRpcClient.h
+    HcrExecutiveStatus.h
+    HcrExecutiveStatusThread.h
     TransmitControl.h
 ''')
 
-lib = env.Library('hcrmonitor', sources)
+lib = env.Library('hcrexecutive', sources)
 Default(lib)
 
-env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "HcrMonitor library" })
+env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "HcrExecutive library" })
 doxref = env.Apidocs(sources + headers)
 
-def hcrmonitor(env):
-    env.AppendUnique(CPPPATH = hcrMonitorDir)
+def hcrexecutive(env):
+    env.AppendUnique(CPPPATH = hcrExecutiveDir)
     env.Append(LIBS=[lib])
     env.AppendDoxref(doxref[0])
     env.Require(tools)
 
-Export('hcrmonitor')
+Export('hcrexecutive')

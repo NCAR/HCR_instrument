@@ -22,22 +22,22 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorRpcClient.cpp
+ * HcrExecutiveRpcClient.cpp
  *
  *  Created on: Oct 28, 2014
  *      Author: burghart
  */
 
+#include <HcrExecutive/HcrExecutiveRpcClient.h>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <math.h>
-#include "HcrMonitorRpcClient.h"
 #include <logx/Logging.h>
 
-LOGGING("HcrMonitorRpcClient")
+LOGGING("HcrExecutiveRpcClient")
 
-HcrMonitorRpcClient::HcrMonitorRpcClient(
+HcrExecutiveRpcClient::HcrExecutiveRpcClient(
 		std::string daemonHost,
         int daemonPort) :
         _daemonResponding(false),
@@ -46,14 +46,14 @@ HcrMonitorRpcClient::HcrMonitorRpcClient(
     std::ostringstream ss;
     ss << "http://" << daemonHost << ":" << daemonPort << "/RPC2";
     _daemonUrl = ss.str();
-    ILOG << "HcrMonitorRpcClient talking to " << _daemonUrl;
+    ILOG << "HcrExecutiveRpcClient talking to " << _daemonUrl;
 }
 
-HcrMonitorRpcClient::~HcrMonitorRpcClient() {
+HcrExecutiveRpcClient::~HcrExecutiveRpcClient() {
 }
 
 xmlrpc_c::value
-HcrMonitorRpcClient::_execXmlRpcCall(std::string methodName, 
+HcrExecutiveRpcClient::_execXmlRpcCall(std::string methodName, 
         xmlrpc_c::paramList params)
 {
     try {
@@ -70,7 +70,7 @@ HcrMonitorRpcClient::_execXmlRpcCall(std::string methodName,
 }
 
 void
-HcrMonitorRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
+HcrExecutiveRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
     ILOG << "Setting APS valve control to " << state;
 
     xmlrpc_c::paramList params;
@@ -79,7 +79,7 @@ HcrMonitorRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
 }
 
 void
-HcrMonitorRpcClient::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
+HcrExecutiveRpcClient::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
     ILOG << "Setting requested HMC mode to " << mode;
 
     xmlrpc_c::paramList params;
@@ -88,7 +88,7 @@ HcrMonitorRpcClient::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
 }
 
 void
-HcrMonitorRpcClient::setHvRequested(bool hvRequested) {
+HcrExecutiveRpcClient::setHvRequested(bool hvRequested) {
     ILOG << "Setting 'HV requested' to " << (hvRequested ? "true" : "false");
 
     xmlrpc_c::paramList params;
@@ -96,11 +96,11 @@ HcrMonitorRpcClient::setHvRequested(bool hvRequested) {
     _execXmlRpcCall("setHvRequested", params);
 }
 
-HcrMonitorStatus
-HcrMonitorRpcClient::status() {
+HcrExecutiveStatus
+HcrExecutiveRpcClient::status() {
     xmlrpc_c::value result = _execXmlRpcCall("getStatus");
     // Construct an xmlrpc_c::value_struct from the result, and use that
-    // to construct the  HcrMonitorStatus which we return.
+    // to construct the  HcrExecutiveStatus which we return.
     xmlrpc_c::value_struct vStruct(result);
-    return(HcrMonitorStatus(vStruct));
+    return(HcrExecutiveStatus(vStruct));
 }

@@ -22,12 +22,12 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorDetails.cpp
+ * HcrExecutiveDetails.cpp
  *
  *  Created on: Nov 5, 2014
  *      Author: burghart
  */
-#include "HcrMonitorDetails.h"
+#include "HcrExecutiveDetails.h"
 #include <QDateTime>
 #include <sstream>
 #include <iomanip>
@@ -36,18 +36,18 @@ static inline double MetersToFeet(double m) {
     return(3.28084 * m);
 }
 
-HcrMonitorDetails::HcrMonitorDetails(QWidget *parent, 
-        std::string hcrMonitorHost, int hcrMonitorPort) :
+HcrExecutiveDetails::HcrExecutiveDetails(QWidget *parent, 
+        std::string hcrExecutiveHost, int hcrExecutivePort) :
     QDialog(parent),
     _ui(),
-    _rpcClient(hcrMonitorHost, hcrMonitorPort),
+    _rpcClient(hcrExecutiveHost, hcrExecutivePort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
-    updateStatus(false, HcrMonitorStatus(), HcrPmc730Status(true));
+    updateStatus(false, HcrExecutiveStatus(), HcrPmc730Status(true));
     
     // Populate the APS ValveControlState mode combo box
     for (int i = 0; i < ApsControl::VALVE_CONTROL_NSTATES; i++) {
@@ -56,51 +56,51 @@ HcrMonitorDetails::HcrMonitorDetails(QWidget *parent,
 }
 
 void
-HcrMonitorDetails::on_apsValveControlCombo_activated(int index) {
-    // Tell HcrMonitor to use the selected valve control state
+HcrExecutiveDetails::on_apsValveControlCombo_activated(int index) {
+    // Tell HcrExecutive to use the selected valve control state
     _rpcClient.setApsValveControl(static_cast<ApsControl::ValveControlState>(index));
 }
 
 void
-HcrMonitorDetails::updateStatus(bool daemonResponding,
-        const HcrMonitorStatus & hcrMonitorStatus, 
+HcrExecutiveDetails::updateStatus(bool daemonResponding,
+        const HcrExecutiveStatus & hcrExecutiveStatus, 
         const HcrPmc730Status & hcrPmc730Status) {
     // Based on whether the daemon is responding, set the "responding" label, 
     // and set the enabled state for the rest of the contents.
     _ui.contentFrame->setEnabled(daemonResponding);
     _ui.respondingLabel->setText(daemonResponding ? 
-            "" : "<font color='DarkRed'>No HcrMonitor!</font>");
+            "" : "<font color='DarkRed'>No HcrExecutive!</font>");
     
     // ApsControl status
     
     // APS valve control state
-    _ui.apsValveControlCombo->setCurrentIndex(hcrMonitorStatus.apsValveControlState());
+    _ui.apsValveControlCombo->setCurrentIndex(hcrExecutiveStatus.apsValveControlState());
     
     // APS status text
-    _ui.apsStatusText->setText(hcrMonitorStatus.apsStatusText().c_str());
+    _ui.apsStatusText->setText(hcrExecutiveStatus.apsStatusText().c_str());
 
     // TransmitControl altitudes and surface type
-    int mslAltFt = int(MetersToFeet(hcrMonitorStatus.mslAltitude()));
+    int mslAltFt = int(MetersToFeet(hcrExecutiveStatus.mslAltitude()));
     _ui.altitudeMslValue->setText(QString::number(mslAltFt));
     
-    int aglAltFt = int(MetersToFeet(hcrMonitorStatus.aglAltitude()));
+    int aglAltFt = int(MetersToFeet(hcrExecutiveStatus.aglAltitude()));
     _ui.altitudeAglValue->setText(QString::number(aglAltFt));
     
-    _ui.surfaceValue->setText(hcrMonitorStatus.overWater() ? "Water" : "Land");
+    _ui.surfaceValue->setText(hcrExecutiveStatus.overWater() ? "Water" : "Land");
     
     // TransmitControl max received power. We avoid printing values greater
     // than 100 dBm, since numbers that scale and bigger are not realistic,
     // and we don't want to print the HUGE values returned by the MaxPower
     // server before data with real numbers are available.
-    double maxPower = hcrMonitorStatus.meanMaxPower();
+    double maxPower = hcrExecutiveStatus.meanMaxPower();
     _ui.maxPowerValue->setText((maxPower < 100.0) ?
             QString::number(maxPower, 'f', 1) : "HUGE");
     
     // TransmitControl attenuation required, HV requested
-    _ui.attenuationRequiredIcon->setPixmap(hcrMonitorStatus.attenuationRequired() ? 
+    _ui.attenuationRequiredIcon->setPixmap(hcrExecutiveStatus.attenuationRequired() ? 
             _amberLED : _greenLED_off);
     
-    bool hvRequested = hcrMonitorStatus.hvRequested();
+    bool hvRequested = hcrExecutiveStatus.hvRequested();
     _ui.hvRequestedIcon->setPixmap(hvRequested ? _greenLED : _greenLED_off);
     
     // Actual state of HV on comes from HcrPmc730Daemon
@@ -108,9 +108,9 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     _ui.hvOnIcon->setPixmap(hvOn ? _greenLED : _greenLED_off);
     
     // Requested and current HMC modes. Note that current HMC mode comes from
-    // HcrPmc730Status and not from HcrMonitorStatus. Use emphasis background 
+    // HcrPmc730Status and not from HcrExecutiveStatus. Use emphasis background 
     // color if current mode differs from requested mode.
-    HcrPmc730::HmcOperationMode requestedMode = hcrMonitorStatus.requestedHmcMode();
+    HcrPmc730::HmcOperationMode requestedMode = hcrExecutiveStatus.requestedHmcMode();
     std::string requestedModeName = HcrPmc730::HmcModeNames[requestedMode];
     _ui.requestedModeValue->setText(QString::fromStdString(requestedModeName));
     
@@ -125,13 +125,13 @@ HcrMonitorDetails::updateStatus(bool daemonResponding,
     
     // Show the results of TransmitControl tests. Change background color of 
     // the box if transmit is not allowed or if attenuation is required.
-    _ui.testResultText->setText(hcrMonitorStatus.xmitAllowedStatusText().c_str());
+    _ui.testResultText->setText(hcrExecutiveStatus.xmitAllowedStatusText().c_str());
     
     styleSheet = "";
-    if (! hcrMonitorStatus.transmitAllowed()) {
+    if (! hcrExecutiveStatus.transmitAllowed()) {
         // Transmit not allowed; make the background light pink
         styleSheet = "background-color: #FFD0D0";
-    } else if (hcrMonitorStatus.attenuationRequired()) {
+    } else if (hcrExecutiveStatus.attenuationRequired()) {
         // Attenuation required; make the background light yellow
         styleSheet = "background-color: #FFFFD0";
     }

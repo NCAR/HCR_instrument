@@ -22,13 +22,13 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorStatus.cpp
+ * HcrExecutiveStatus.cpp
  *
  *  Created on: Oct 27, 2014
  *      Author: burghart
  */
 
-#include "HcrMonitorStatus.h"
+#include "HcrExecutiveStatus.h"
 #include "ApsControl.h"
 #include "TransmitControl.h"
 #include <Archive_xmlrpc_c.h>
@@ -36,9 +36,9 @@
 #include <cmath>
 #include <iomanip>
 
-LOGGING("HcrMonitorStatus")
+LOGGING("HcrExecutiveStatus")
 
-HcrMonitorStatus::HcrMonitorStatus() :
+HcrExecutiveStatus::HcrExecutiveStatus() :
         _apsValveControlState(ApsControl::VALVE_AUTOMATIC),
         _apsStatusText("no status"),
         _hcrPmc730Responsive(false),
@@ -59,7 +59,7 @@ HcrMonitorStatus::HcrMonitorStatus() :
         _detailsForLastHvOffForHighPower("") {
 }
 
-HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
+HcrExecutiveStatus::HcrExecutiveStatus(const ApsControl & apsControl,
         const TransmitControl & transmitControl) :
         _apsValveControlState(ApsControl::VALVE_AUTOMATIC),
         _apsStatusText("no status"),
@@ -103,7 +103,7 @@ HcrMonitorStatus::HcrMonitorStatus(const ApsControl & apsControl,
     _detailsForLastHvOffForHighPower = transmitControl._detailsForLastHvOffForHighPower;
 }
 
-HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) :
+HcrExecutiveStatus::HcrExecutiveStatus(xmlrpc_c::value_struct & statusDict) :
     _apsValveControlState(ApsControl::VALVE_AUTOMATIC),
     _apsStatusText("no status"),
     _hcrPmc730Responsive(false),
@@ -128,14 +128,14 @@ HcrMonitorStatus::HcrMonitorStatus(xmlrpc_c::value_struct & statusDict) :
     iar >> *this;
 }
 
-HcrMonitorStatus::~HcrMonitorStatus() {
+HcrExecutiveStatus::~HcrExecutiveStatus() {
 }
 
 xmlrpc_c::value_struct
-HcrMonitorStatus::toXmlRpcValue() const {
+HcrExecutiveStatus::toXmlRpcValue() const {
     std::map<std::string, xmlrpc_c::value> statusDict;
     // Clone ourself to a non-const instance
-    HcrMonitorStatus clone(*this);
+    HcrExecutiveStatus clone(*this);
     // Stuff our content into the statusDict, i.e., _serialize() to an 
     // output archiver wrapped around the statusDict.
     Oarchive_xmlrpc_c oar(statusDict);

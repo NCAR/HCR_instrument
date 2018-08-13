@@ -22,7 +22,7 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitor.cpp
+ * HcrExecutive.cpp
  *
  * Daemon which performs some basic monitoring and reacts if necessary to 
  * protect the HCR transmitter and its receiver LNAs. For the transmitter, 
@@ -57,11 +57,11 @@
 
 #include "../HcrSharedResources.h"
 #include "ApsControl.h"
-#include "HcrMonitorStatus.h"
+#include "HcrExecutiveStatus.h"
 #include "MaxPowerClient.h"
 #include "TransmitControl.h"
 
-LOGGING("HcrMonitor")
+LOGGING("HcrExecutive")
 
 namespace po = boost::program_options;
 
@@ -76,7 +76,7 @@ TransmitControl * TheTransmitControl = 0;
 
 /// Signal handler to allow for clean shutdown on SIGINT and SIGTERM
 void sigHandler(int sig) {
-    ILOG << "Stopping HcrMonitor on signal " << sig << 
+    ILOG << "Stopping HcrExecutive on signal " << sig << 
             " (" << strsignal(sig) << ")";
     App->quit();
 }
@@ -95,23 +95,23 @@ updateRegistration() {
 
 void
 logStatus() {
-    ILOG << "HcrMonitor still running...";
+    ILOG << "HcrExecutive still running...";
 }
 
-/// @brief xmlrpc_c::method to get status from the HcrMonitor process.
+/// @brief xmlrpc_c::method to get status from the HcrExecutive process.
 ///
 /// The method returns a xmlrpc_c::value_struct (dictionary) mapping
 /// std::string keys to xmlrpc_c::value values. Pass the dictionary
-/// to the HcrMonitorStatus(xmlrpc_c::value_struct & dict) constructor to
-/// create a usable HcrMonitorStatus object.
+/// to the HcrExecutiveStatus(xmlrpc_c::value_struct & dict) constructor to
+/// create a usable HcrExecutiveStatus object.
 ///
-/// Example client usage, where HcrMonitor is running on machine
+/// Example client usage, where HcrExecutive is running on machine
 /// `rds`:
 /// @code
 ///     #include <xmlrpc-c/client_simple.hpp>
 ///     ...
 ///
-///     // Get the status from HcrMonitor on rds on port 8004
+///     // Get the status from HcrExecutive on rds on port 8004
 ///     xmlrpc_c::simpleClient client;
 ///     std::string daemonUrl = "http://rds:8004/RPC2")
 ///
@@ -123,9 +123,9 @@ logStatus() {
 ///         exit(1);
 ///     }
 ///
-///     // create a HcrMonitorStatus object from the returned dictionary
+///     // create a HcrExecutiveStatus object from the returned dictionary
 ///     xmlrpc_c::value_struct resultStruct(result);
-///     status = HcrMonitorStatus(resultStruct);
+///     status = HcrExecutiveStatus(resultStruct);
 ///
 ///     // extract a value from the status
 ///     bool pllLocked = status.pllLocked();;
@@ -134,14 +134,14 @@ class GetStatusMethod : public xmlrpc_c::method {
 public:
     GetStatusMethod() {
         this->_signature = "S:";
-        this->_help = "This method returns status from HcrMonitor.";
+        this->_help = "This method returns status from HcrExecutive.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Received 'getStatus' command";
         // Get the latest status from shared memory, and convert it to
         // an xmlrpc_c::value_struct dictionary.
-        *retvalP = HcrMonitorStatus(*TheApsControl, *TheTransmitControl).toXmlRpcValue();
+        *retvalP = HcrExecutiveStatus(*TheApsControl, *TheTransmitControl).toXmlRpcValue();
     }
 };
 
@@ -216,7 +216,7 @@ main(int argc, char *argv[]) {
     // procmap instance name
     std::string instanceName;
 
-    // Get HcrMonitor's options
+    // Get HcrExecutive's options
     po::options_description opts("Options");
     opts.add_options()
         ("help,h", "Describe options")
@@ -247,12 +247,12 @@ main(int argc, char *argv[]) {
     
     // Initialize registration with procmap if instance is specified
     if (instanceName.size() > 0) {
-        PMU_auto_init("HcrMonitor", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
+        PMU_auto_init("HcrExecutive", instanceName.c_str(), PROCMAP_REGISTER_INTERVAL);
         ILOG << "Initializing procmap registration as instance '" << 
                 instanceName << "'";
     }
 
-    ILOG << "HcrMonitor (" << getpid() << ") started";
+    ILOG << "HcrExecutive (" << getpid() << ") started";
 
     PMU_auto_register("initializing");
 
@@ -331,7 +331,7 @@ main(int argc, char *argv[]) {
     hcrPmc730StatusThread.quit();
     hcrPmc730StatusThread.wait(500);
 
-    ILOG << "HcrMonitor (" << getpid() << ") exiting";
+    ILOG << "HcrExecutive (" << getpid() << ") exiting";
 
     return 0;
 } 

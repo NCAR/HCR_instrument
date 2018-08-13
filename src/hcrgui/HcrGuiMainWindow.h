@@ -41,7 +41,7 @@
 
 #include <CmigitsStatusThread.h>
 #include <HcrPmc730StatusThread.h>
-#include <HcrMonitorStatusThread.h>
+#include <HcrExecutiveStatusThread.h>
 #include <MotionControlStatusThread.h>
 
 #include "DataMapperStatusThread.h"
@@ -57,7 +57,7 @@
 #include "CmigitsDetails.h"
 #include "FireflydDetails.h"
 #include "HcrdrxDetails.h"
-#include "HcrMonitorDetails.h"
+#include "HcrExecutiveDetails.h"
 #include "InsOverview.h"
 #include "MotionControlDetails.h"
 #include "Pmc730Details.h"
@@ -74,7 +74,7 @@ public:
             int fireflydPort, int spectracomPort, std::string rdsHost,
             int drxPort, int pmcPort, int ins1Port,
             int ins2Port, int motionControlPort,
-            int hcrMonitorPort);
+            int hcrExecutivePort);
     virtual ~HcrGuiMainWindow();
 
 private slots:
@@ -88,7 +88,7 @@ private slots:
 
     void on_fireflydDetailsButton_clicked();
     void on_hcrdrxDetailsButton_clicked();
-    void on_hcrMonitorDetailsButton_clicked();
+    void on_hcrExecutiveDetailsButton_clicked();
     void on_ins1DetailsButton_clicked();
     void on_ins2DetailsButton_clicked();
     void on_insOverviewButton_clicked();
@@ -144,13 +144,13 @@ private slots:
     /// @brief Save the last status received from hcrdrx
     /// @param status the last status received from hcrdrx
     void _setDrxStatus(DrxStatus status);
-    /// @brief Slot to call when HcrMonitor responsiveness changes.
+    /// @brief Slot to call when HcrMonitoExecutivensiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
-    void _hcrMonitorResponsivenessChange(bool responding, QString msg);
-    /// @brief Save the last status received from HcrMonitor
-    /// @param status the last status received from HcrMonitor
-    void _setHcrMonitorStatus(HcrMonitorStatus status);
+    void _hcrExecutiveResponsivenessChange(bool responding, QString msg);
+    /// @brief Save the last status received from HcrExecutive
+    /// @param status the last status received from HcrExecutive
+    void _setHcrExecutiveStatus(HcrExecutiveStatus status);
     /// @brief Slot to call when DataMapper responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     void _dataMapperResponsivenessChange(bool responding);
@@ -221,7 +221,7 @@ private:
     CmigitsDetails _ins2Details;            // INS2 status
     FireflydDetails _fireflydDetails;
     HcrdrxDetails _hcrdrxDetails;
-    HcrMonitorDetails _hcrMonitorDetails;
+    HcrExecutiveDetails _hcrExecutiveDetails;
     InsOverview _insOverview;
     MotionControlDetails _motionControlDetails;
     Pmc730Details _pmc730Details;
@@ -237,7 +237,7 @@ private:
     FireflydStatusThread _fireflydStatusThread;
     SpectracomStatusThread _spectracomStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
-    HcrMonitorStatusThread _hcrMonitorStatusThread;
+    HcrExecutiveStatusThread _hcrExecutiveStatusThread;
     MotionControlStatusThread _mcStatusThread;
     HcrPmc730StatusThread _pmcStatusThread;
     XmitdStatusThread _xmitdStatusThread;
@@ -268,8 +268,8 @@ private:
     DrxStatus _drxStatus;
     /// Last status from DataMapper
     DMAP_info_t _dmapStatus;
-    /// Last status from HcrMonitor
-    HcrMonitorStatus _hcrMonitorStatus;
+    /// Last status from HcrExecutive
+    HcrExecutiveStatus _hcrExecutiveStatus;
     /// Data write rate calculated from DataMapper information
     double _dmapWriteRate;
     /// Time at which last write rate was computed

@@ -54,7 +54,7 @@ static inline double MetersToFeet(double m) {
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, int spectracomPort,
     std::string rdsHost, int drxPort, int pmcPort, int ins1Port,
-    int ins2Port, int motionControlPort, int hcrMonitorPort) :
+    int ins2Port, int motionControlPort, int hcrExecutivePort) :
     QMainWindow(),
     _ui(),
     _updateTimer(this),
@@ -63,7 +63,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ins2Details(this, "INS2 Status"),
     _fireflydDetails(this),
     _hcrdrxDetails(this),
-    _hcrMonitorDetails(this, rdsHost, hcrMonitorPort),
+    _hcrExecutiveDetails(this, rdsHost, hcrExecutivePort),
     _insOverview(this),
     _motionControlDetails(this),
     _pmc730Details(this),
@@ -76,7 +76,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _fireflydStatusThread(archiverHost, fireflydPort),
     _spectracomStatusThread(archiverHost, spectracomPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
-    _hcrMonitorStatusThread(rdsHost, hcrMonitorPort),
+    _hcrExecutiveStatusThread(rdsHost, hcrExecutivePort),
     _mcStatusThread(rdsHost, motionControlPort),
     _pmcStatusThread(rdsHost, pmcPort),
     _xmitdStatusThread(archiverHost, xmitterPort),
@@ -146,7 +146,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.ins2StatusIcon->setPixmap(_redLED);
     _ui.fireflydStatusIcon->setPixmap(_redLED);
     _ui.hcrdrxStatusIcon->setPixmap(_redLED);
-    _ui.hcrMonitorStatusIcon->setPixmap(_redLED);
+    _ui.hcrExecutiveStatusIcon->setPixmap(_redLED);
     _ui.mcStatusIcon->setPixmap(_redLED);
     _ui.pmc730StatusIcon->setPixmap(_redLED);
     _ui.spectracomStatusIcon->setPixmap(_redLED);
@@ -185,14 +185,14 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_setDrxStatus(DrxStatus)));
     _hcrdrxStatusThread.start();
 
-    // Connect signals from our HcrMonitorStatusThread object and start the thread.
-    connect(& _hcrMonitorStatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_hcrMonitorResponsivenessChange(bool, QString)));
-    connect(& _hcrMonitorStatusThread, SIGNAL(newStatus(HcrMonitorStatus)),
-            this, SLOT(_setHcrMonitorStatus(HcrMonitorStatus)));
-    connect(& _hcrMonitorStatusThread, SIGNAL(hvForcedOffForHighMaxPower(QString)),
+    // Connect signals from our HcrExecutiveStatusThread object and start the thread.
+    connect(& _hcrExecutiveStatusThread, SIGNAL(serverResponsive(bool, QString)),
+            this, SLOT(_hcrExecutiveResponsivenessChange(bool, QString)));
+    connect(& _hcrExecutiveStatusThread, SIGNAL(newStatus(HcrExecutiveStatus)),
+            this, SLOT(_setHcrExecutiveStatus(HcrExecutiveStatus)));
+    connect(& _hcrExecutiveStatusThread, SIGNAL(hvForcedOffForHighMaxPower(QString)),
             this, SLOT(_reportHvForcedOff(QString)));
-    _hcrMonitorStatusThread.start();
+    _hcrExecutiveStatusThread.start();
 
     // Connect signals from our HcrPmc730StatusThread object and start the thread.
     connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool, QString)),
@@ -503,29 +503,29 @@ HcrGuiMainWindow::_setSpectracomStatus(SpectracomStatus status) {
 }
 
 void
-HcrGuiMainWindow::_hcrMonitorResponsivenessChange(bool responding, QString msg) {
+HcrGuiMainWindow::_hcrExecutiveResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
-    ss << "HcrMonitor @ " <<
-            _hcrMonitorStatusThread.daemonHost() << ":" <<
-            _hcrMonitorStatusThread.daemonPort() <<
+    ss << "HcrExecutive @ " <<
+            _hcrExecutiveStatusThread.daemonHost() << ":" <<
+            _hcrExecutiveStatusThread.daemonPort() <<
             (responding ? " is " : " is not ") <<
             "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
 
     if (! responding) {
-        // Create a default (bad) HcrMonitorStatus, and set it as the last 
+        // Create a default (bad) HcrExecutiveStatus, and set it as the last 
         // status received.
-        _setHcrMonitorStatus(HcrMonitorStatus());
+        _setHcrExecutiveStatus(HcrExecutiveStatus());
     }
 }
 
 void
-HcrGuiMainWindow::_setHcrMonitorStatus(HcrMonitorStatus status) {
-    _hcrMonitorStatus = status;
+HcrGuiMainWindow::_setHcrExecutiveStatus(HcrExecutiveStatus status) {
+    _hcrExecutiveStatus = status;
     // Update the details dialog
-    _hcrMonitorDetails.updateStatus(_hcrMonitorStatusThread.serverIsResponding(),
-            _hcrMonitorStatus, _pmcStatus);
+    _hcrExecutiveDetails.updateStatus(_hcrExecutiveStatusThread.serverIsResponding(),
+            _hcrExecutiveStatus, _pmcStatus);
     // Update the main GUI
     _update();
 }
@@ -788,37 +788,37 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
     _hcrdrxDetails.show();
 }
 
-/// Set HMC mode via HcrMonitor
+/// Set HMC mode via HcrExecutive
 void
 HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
-    // Set a new requested HMC mode on HcrMonitor
+    // Set a new requested HMC mode on HcrExecutive
     HcrPmc730::HmcOperationMode mode =
             static_cast<HcrPmc730::HmcOperationMode>(index);
     try {
         ILOG << "Requesting HMC mode " << mode;
-        _hcrMonitorStatusThread.rpcClient().setRequestedHmcMode(mode);
+        _hcrExecutiveStatusThread.rpcClient().setRequestedHmcMode(mode);
     } catch (std::exception & e) {
-        WLOG << "Could not tell HcrMonitor to request HMC mode " << mode;
+        WLOG << "Could not tell HcrExecutive to request HMC mode " << mode;
     }
 }
 
 /// Toggle the requested transmitter high voltage state
 void
 HcrGuiMainWindow::on_requestHvButton_clicked() {
-    // Send the command to request toggle of HV state to HcrMonitor.
-    if (_hcrMonitorStatus.hvRequested()) {
+    // Send the command to request toggle of HV state to HcrExecutive.
+    if (_hcrExecutiveStatus.hvRequested()) {
         try {
             ILOG << "Requesting HV off";
-        	_hcrMonitorStatusThread.rpcClient().setHvRequested(false);
+        	_hcrExecutiveStatusThread.rpcClient().setHvRequested(false);
         } catch (std::exception & e) {
-            WLOG << "Could not tell HcrMonitor to turn off HV";
+            WLOG << "Could not tell HcrExecutive to turn off HV";
         }
     } else {
         try {
             ILOG << "Requesting HV on";
-        	_hcrMonitorStatusThread.rpcClient().setHvRequested(true);
+        	_hcrExecutiveStatusThread.rpcClient().setHvRequested(true);
         } catch (std::exception & e) {
-            WLOG << "Could not tell HcrMonitor to turn on HV";
+            WLOG << "Could not tell HcrExecutive to turn on HV";
         }
     }
 }
@@ -854,8 +854,8 @@ HcrGuiMainWindow::on_spectracomDetailsButton_clicked() {
 }
 
 void
-HcrGuiMainWindow::on_hcrMonitorDetailsButton_clicked() {
-    _hcrMonitorDetails.show();
+HcrGuiMainWindow::on_hcrExecutiveDetailsButton_clicked() {
+    _hcrExecutiveDetails.show();
 }
 
 void
@@ -884,24 +884,24 @@ HcrGuiMainWindow::_update() {
     }
     // Show the results of TransmitControl tests. Change background color of
     // the box if transmit is not allowed or if attenuation is required.
-    _ui.hcrMonitorResultText->
-        setText(_hcrMonitorStatus.xmitAllowedStatusText().c_str());
+    _ui.hcrExecutiveResultText->
+        setText(_hcrExecutiveStatus.xmitAllowedStatusText().c_str());
 
     std::string styleSheet = "";
-    if (! _hcrMonitorStatus.transmitAllowed()) {
+    if (! _hcrExecutiveStatus.transmitAllowed()) {
         // Transmit not allowed; make the background light pink
         styleSheet = "background-color: #FFD0D0";
-    } else if (_hcrMonitorStatus.attenuationRequired()) {
+    } else if (_hcrExecutiveStatus.attenuationRequired()) {
         // Attenuation required; make the background light yellow
         styleSheet = "background-color: #FFFFD0";
     }
-    _ui.hcrMonitorResultText->setStyleSheet(styleSheet.c_str());
+    _ui.hcrExecutiveResultText->setStyleSheet(styleSheet.c_str());
     // HV requested?
-    _ui.requestHvIcon->setPixmap(_hcrMonitorStatus.hvRequested() ?
+    _ui.requestHvIcon->setPixmap(_hcrExecutiveStatus.hvRequested() ?
             _greenLED : _greenLED_off);
     _ui.hvOnIcon->setPixmap(_pmcStatus.rdsXmitterHvOn() ? _greenLED : _greenLED_off);
-    // Enable the request HV button as soon as HcrMonitor is responding
-    _ui.requestHvButton->setEnabled(_hcrMonitorStatusThread.serverIsResponding());
+    // Enable the request HV button as soon as HcrExecutive is responding
+    _ui.requestHvButton->setEnabled(_hcrExecutiveStatusThread.serverIsResponding());
     // Regardless of other conditions, force the request HV button to be enabled
     // if HV is on, so that it can be turned off.
     if (_pmcStatus.rdsXmitterHvOn()) {
@@ -949,7 +949,7 @@ HcrGuiMainWindow::_update() {
     }
 
     // HMC mode
-    _ui.requestedModeCombo->setCurrentIndex(_hcrMonitorStatus.requestedHmcMode());
+    _ui.requestedModeCombo->setCurrentIndex(_hcrExecutiveStatus.requestedHmcMode());
     std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
@@ -1102,15 +1102,15 @@ HcrGuiMainWindow::_update() {
     }
     _ui.spectracomStatusIcon->setPixmap(light);
 
-    // HcrMonitor status LED
-    if (! _hcrMonitorStatusThread.serverIsResponding()) {
+    // HcrExecutive status LED
+    if (! _hcrExecutiveStatusThread.serverIsResponding()) {
         light = _redLED;
     } else {
         // If normal transmit is allowed use green light, otherwise amber
-        light = (_hcrMonitorStatus.xmitAllowedStatus() == TransmitControl::XMIT_ALLOWED) ?
+        light = (_hcrExecutiveStatus.xmitAllowedStatus() == TransmitControl::XMIT_ALLOWED) ?
                 _greenLED : _amberLED;
     }
-    _ui.hcrMonitorStatusIcon->setPixmap(light);
+    _ui.hcrExecutiveStatusIcon->setPixmap(light);
 
     // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
@@ -1125,10 +1125,10 @@ HcrGuiMainWindow::_update() {
     int iAltFt = int(MetersToFeet(_ins1Status.altitude()));
     _ui.altitudeMslValue->setText(QString::number(iAltFt));
 
-    iAltFt = int(MetersToFeet(_hcrMonitorStatus.aglAltitude()));
+    iAltFt = int(MetersToFeet(_hcrExecutiveStatus.aglAltitude()));
     _ui.altitudeAglValue->setText(QString::number(iAltFt));
 
-    _ui.surfaceValue->setText(_hcrMonitorStatus.overWater() ? "Water" : "Land");
+    _ui.surfaceValue->setText(_hcrExecutiveStatus.overWater() ? "Water" : "Land");
 }
 
 void
@@ -1317,7 +1317,7 @@ HcrGuiMainWindow::_clearAngleDisplay() {
 
 void
 HcrGuiMainWindow::_reportHvForcedOff(QString details) {
-    WLOG << "High Voltage forced off by HcrMonitor: " << details.toStdString();
+    WLOG << "High Voltage forced off by HcrExecutive: " << details.toStdString();
     details += "\nTo transmit, operator must request high voltage again.";
     QMessageBox box(QMessageBox::Warning, "High Voltage Disabled", details,
             QMessageBox::Ok, this);

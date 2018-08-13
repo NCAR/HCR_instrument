@@ -22,14 +22,14 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorStatus.h
+ * HcrExecutiveStatus.h
  *
  *  Created on: Oct 27, 2014
  *      Author: burghart
  */
 
-#ifndef HCRMONITORSTATUS_H_
-#define HCRMONITORSTATUS_H_
+#ifndef HCREXECUTIVESTATUS_H_
+#define HCREXECUTIVESTATUS_H_
 
 #include <string>
 #include <sstream>
@@ -43,26 +43,26 @@
 #include "TransmitControl.h"
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
-class HcrMonitorStatus {
+class HcrExecutiveStatus {
 public:
     /// @brief Default constructor. Integer fields are set to -99.
-    HcrMonitorStatus();
+    HcrExecutiveStatus();
 
-    /// @brief Construct a HcrMonitorStatus using data from the given 
+    /// @brief Construct a HcrExecutiveStatus using data from the given 
     /// ApsControl and TransmitControl
     /// @param apsControl the ApsControl object from which to get status
     /// @param transmitControl the TransmitControl object from which to get 
     /// status
-    HcrMonitorStatus(const ApsControl & apsControl, 
+    HcrExecutiveStatus(const ApsControl & apsControl, 
             const TransmitControl & transmitControl);
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
-    /// by a call to the HcrMonitorStatus::toXmlRpcValue() method.
+    /// by a call to the HcrExecutiveStatus::toXmlRpcValue() method.
     /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by 
-    /// call to the HcrMonitorStatus::toXmlRpcValue() method.
-    HcrMonitorStatus(xmlrpc_c::value_struct & statusDict);
+    /// call to the HcrExecutiveStatus::toXmlRpcValue() method.
+    HcrExecutiveStatus(xmlrpc_c::value_struct & statusDict);
 
-    virtual ~HcrMonitorStatus();
+    virtual ~HcrExecutiveStatus();
 
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.
@@ -158,11 +158,11 @@ public:
     /// attenuated receive mode.
     bool attenuationRequired() const { return(_attenuationRequired); }
 
-    /// @brief Return the time HcrMonitor last forced HV off because of high
+    /// @brief Return the time HcrExecutive last forced HV off because of high
     /// max received power, seconds since 1970-01-01 00:00:00 UTC
     double timeOfLastHvOffForHighPower() const { return(_timeOfLastHvOffForHighPower); }
 
-    /// @brief Return a string with details of why HcrMonitor last forced HV off
+    /// @brief Return a string with details of why HcrExecutive last forced HV off
     /// because of high max received power
     std::string detailsForLastHvOffForHighPower() const {
         return(_detailsForLastHvOffForHighPower);
@@ -181,11 +181,11 @@ private:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
         using boost::serialization::make_nvp;
-        // When unmarshalling, only the current HcrMonitorStatus version is
+        // When unmarshalling, only the current HcrExecutiveStatus version is
         // supported.
         if (version != STATUS_VERSION) {
             std::ostringstream oss;
-            oss << "HcrMonitorStatus::serialize cannot handle version " <<
+            oss << "HcrExecutiveStatus::serialize cannot handle version " <<
                    version << "; only version " << STATUS_VERSION <<
                    " is supported.";
             throw(std::runtime_error(oss.str()));
@@ -319,6 +319,6 @@ private:
 };
 
 // Increment this class version number when member variables are changed.
-BOOST_CLASS_VERSION(HcrMonitorStatus, HcrMonitorStatus::STATUS_VERSION)
+BOOST_CLASS_VERSION(HcrExecutiveStatus, HcrExecutiveStatus::STATUS_VERSION)
 
-#endif /* HCRMONITORSTATUS_H_ */
+#endif /* HCREXECUTIVESTATUS_H_ */
