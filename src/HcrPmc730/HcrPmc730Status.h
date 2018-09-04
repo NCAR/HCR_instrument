@@ -263,11 +263,7 @@ public:
 
     /// @brief Return the HMC operating mode.
     /// @see HcrPmc730::HmcOperationMode for a description of the values.
-    HcrPmc730::HmcOperationMode hmcMode() const {
-        // Cast _hmcMode back to its original HcrPmc730::HmcOperationMode
-        // enum type.
-        return(static_cast<HcrPmc730::HmcOperationMode>(_hmcMode));
-    }
+    HcrPmc730::HmcOperationMode hmcMode() const { return(_hmcMode); }
     
 private:
     /// @brief Simple class implementing a list of temperatures with a maximum
@@ -311,8 +307,8 @@ private:
 
     friend class boost::serialization::access;
 
-    /// @brief Serialize our members to a boost save (output) archive or populate
-    /// our members from a boost load (input) archive.
+    /// @brief Serialize our members to a boost save (output) archive or
+    /// populate our members from a boost load (input) archive.
     /// @param ar the archive to load from or save to.
     /// @param version the version
     template<class Archive>
@@ -322,7 +318,9 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
-            ar & BOOST_SERIALIZATION_NVP(_insTemp);
+            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressure);
+            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressure);
+            ar & BOOST_SERIALIZATION_NVP(_apsValveOpen);
             ar & BOOST_SERIALIZATION_NVP(_detectedRfPower);
             ar & BOOST_SERIALIZATION_NVP(_eikTemp);
             ar & BOOST_SERIALIZATION_NVP(_emsError1);
@@ -334,6 +332,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_emsPowerError);
             ar & BOOST_SERIALIZATION_NVP(_hLnaTemp);
             ar & BOOST_SERIALIZATION_NVP(_hmcMode);
+            ar & BOOST_SERIALIZATION_NVP(_insTemp);
             ar & BOOST_SERIALIZATION_NVP(_locked1250MHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_locked125MHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_locked15_5GHzPLO);
@@ -345,11 +344,8 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_psVoltage);
             ar & BOOST_SERIALIZATION_NVP(_pvAftPressure);
             ar & BOOST_SERIALIZATION_NVP(_pvForePressure);
-            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressure);
-            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressure);
             ar & BOOST_SERIALIZATION_NVP(_radarPowerError);
             ar & BOOST_SERIALIZATION_NVP(_rdsInDuctTemp);
-            ar & BOOST_SERIALIZATION_NVP(_apsValveOpen);
             ar & BOOST_SERIALIZATION_NVP(_rdsXmitterFilamentOn);
             ar & BOOST_SERIALIZATION_NVP(_rdsXmitterHvOn);
             ar & BOOST_SERIALIZATION_NVP(_rfDetectorTemp);
@@ -501,10 +497,8 @@ private:
     /// Is there one or more EMS errors of type 6 or 7 in the error count?
     bool _emsError6Or7;
 
-    /// HMC operating mode. We keep it as an int, rather than as the
-    /// HcrPmc730::HmcOperationMode enum, so that our serialize() method above
-    /// has an easier type to work with.
-    uint16_t _hmcMode;
+    /// HMC operating mode
+    HcrPmc730::HmcOperationMode _hmcMode;
 };
 
 // Increment this class version number when member variables are changed.
