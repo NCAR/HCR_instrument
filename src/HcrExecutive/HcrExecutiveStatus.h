@@ -180,7 +180,6 @@ private:
     /// @param version the version 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
-        using boost::serialization::make_nvp;
         // When unmarshalling, only the current HcrExecutiveStatus version is
         // supported.
         if (version != STATUS_VERSION) {
@@ -195,7 +194,7 @@ private:
         // Map named entries to our member variables using serialization's
         // name/value pairs (nvp). If anything is changed in this section, be
         // sure to increment the version number in STATUS_VERSION above.
-        using boost::serialization::make_nvp;
+        ar & BOOST_SERIALIZATION_NVP(_apsValveControlState);
         ar & BOOST_SERIALIZATION_NVP(_apsStatusText);
         ar & BOOST_SERIALIZATION_NVP(_hcrPmc730Responsive);
         ar & BOOST_SERIALIZATION_NVP(_motionControlResponsive);
@@ -206,54 +205,14 @@ private:
         ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
         ar & BOOST_SERIALIZATION_NVP(_overWater);
         ar & BOOST_SERIALIZATION_NVP(_meanMaxPower);
+        ar & BOOST_SERIALIZATION_NVP(_requestedHmcMode);
         ar & BOOST_SERIALIZATION_NVP(_hvRequested);
+        ar & BOOST_SERIALIZATION_NVP(_xmitTestStatus);
         ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
         ar & BOOST_SERIALIZATION_NVP(_transmitAllowed);
         ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
         ar & BOOST_SERIALIZATION_NVP(_timeOfLastHvOffForHighPower);
         ar & BOOST_SERIALIZATION_NVP(_detailsForLastHvOffForHighPower);
-
-        // KLUGE: special handling for members with enumerated types. We
-        // explicitly cast to int when saving to an output archive, and
-        // explicitly cast back to the desired enum when loading from an
-        // input archive. It is hoped that later improvements in the
-        // Archive_xmlrpc_c classes will remove the need for this...
-
-        // _apsValveControlState
-        {
-            // For output, convert _apsValveControlState to an int
-            int intValveControlState = static_cast<int>(_apsValveControlState);
-            // This will save intControlState on output or load a value
-            // there on input.
-            ar & BOOST_SERIALIZATION_NVP(intValveControlState);
-            // On input, convert the loaded int back to ApsControl::ValveControlState
-            _apsValveControlState =
-                    static_cast<ApsControl::ValveControlState>(intValveControlState);
-        }
-
-        // _requestedHmcMode
-        {
-            // Before output, convert _requestedHmcMode to an int
-            int intRequestedHmcMode = static_cast<int>(_requestedHmcMode);
-            // This will save intControlState on output or load a value
-            // there on input.
-            ar & BOOST_SERIALIZATION_NVP(intRequestedHmcMode);
-            // After input, convert the loaded int back to HcrPmc730::HmcOperationMode
-            _requestedHmcMode =
-                    static_cast<HcrPmc730::HmcOperationMode>(intRequestedHmcMode);
-        }
-
-        // _xmitTestStatus
-        {
-            // Before output, convert _xmitTestStatus to an int
-            int intXmitTestStatus = static_cast<int>(_xmitTestStatus);
-            // This will save intXmitTestStatus on output or load a value
-            // there on input.
-            ar & BOOST_SERIALIZATION_NVP(intXmitTestStatus);
-            // After input, convert the loaded int back to TransmitControl::XmitTestStatus
-            _xmitTestStatus =
-                    static_cast<TransmitControl::XmitTestStatus>(intXmitTestStatus);
-        }
     }
 
     /// @brief APS valve control state: automatic, always open, or always closed
@@ -298,7 +257,7 @@ private:
     /// @brief Current allowed/disallowed status for transmitting
     TransmitControl::XmitTestStatus _xmitTestStatus;
 
-    /// @brief Text describing the currend allowed/disallowed status for 
+    /// @brief Text describing the current allowed/disallowed status for 
     /// transmitting
     std::string _xmitTestStatusText;
 
