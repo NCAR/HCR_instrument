@@ -5,7 +5,8 @@ radar_id                HCR
 
 # IMPORTANT NOTE: the calibration_file will be different for different 
 # values of tx_pulse_width
-calibration_file        /home/hcr/projDir/moments/params/cal_256ns/hcr_cal_256ns_20140825_223302.xml
+calibration_file        /home/hcr/projDir/moments/params/cal_256ns/TsCalAuto_Wband-HCR1-256ns_20171113_231130.xml
+#calibration_file        /home/hcr/projDir/moments/params/cal_256ns/hcr_cal_256ns_20140825_223302.xml
 #calibration_file        /home/hcr/projDir/moments/params/cal_512ns/hcr_cal_512ns_20140825_220000.xml
 
 start_on_1pps		1
@@ -61,7 +62,7 @@ tx_latency              644e-9  # measured 2011-09-01
 #iqcount_scale_for_mw    11310   # unknown Pentek
 #iqcount_scale_for_mw    9465    # unknown Pentek
 #iqcount_scale_for_mw    7480    # PC.8194004H (HCR 1)
-iqcount_scale_for_mw    8200    # PC.8194004H (HCR 1, 2014-08-12)
+iqcount_scale_for_mw    8200    # PC.8194004H (HCR 1 2014-08-12, verified 2017-11-11)
 #iqcount_scale_for_mw    8297    # PC.8264003H (Ka-band)
 
 # FL1 location
@@ -71,7 +72,7 @@ altitude            1609
 
 # merge queue size
 
-merge_queue_size        20000   # size of queue which acts as buffer
+merge_queue_size        100000  # size of queue which acts as buffer
                                 # for the merge
 
 # IWRF data export
