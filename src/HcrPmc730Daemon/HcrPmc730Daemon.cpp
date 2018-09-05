@@ -62,13 +62,21 @@ QUdpSocket HmcModeBroadcastSocket;
 /// NOTE: MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS needs to be greater than about
 /// a second, due to latency in XML-RPC server request handling.
 QTimer * HvOnHeartbeatTimer;
-static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 1000;
+//static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 1000;
+
+// 2018/02/03 Extended heartbeat interval significantly to try to eliminate
+// 5-second data drops that seem be related to occasional long latencies
+// in TsPrint.power_server reports to HcrMonitor. This was implemented between
+// SOCRATES RF07 and RF08.
+static const int MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS = 10000;
 
 void
 hvOnHeartbeatTimeout() {
+    // WLOG << "'HV on' heartbeat timed out after " << 
+    //         MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS << " ms. Turning off HV.";
+    // HcrPmc730::setXmitterHvOn(false);
     WLOG << "'HV on' heartbeat timed out after " << 
-            MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS << " ms. Turning off HV.";
-    HcrPmc730::setXmitterHvOn(false);
+            MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS << " ms. Leaving HV on ...";
 }
 
 /// Application instance name, for procmap
