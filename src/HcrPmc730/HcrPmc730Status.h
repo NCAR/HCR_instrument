@@ -42,7 +42,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 
-/// @brief Class to represent HCR digital receiver/remote data system status.
+/// @brief Class to hold status of the singleton HcrPmc730 instance
 class HcrPmc730Status {
 public:
     /// @brief Constructor, getting current values from the local singleton
