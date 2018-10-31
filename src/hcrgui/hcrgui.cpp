@@ -64,7 +64,7 @@ main(int argc, char *argv[]) {
     QMainWindow* mainWindow = new HcrGuiMainWindow(archiverHost, HCR_XMITD_PORT,
             FIREFLYD_PORT, SPECTRACOMDAEMON_PORT, rdsHost, HCRDRX_PORT,
             HCRPMC730DAEMON_PORT, INS1_DAEMON_PORT, INS2_DAEMON_PORT,
-            MOTIONCONTROLDAEMON_PORT, HCRMONITOR_PORT);
+            MOTIONCONTROLDAEMON_PORT, HCREXECUTIVE_PORT);
     mainWindow->show();
     
     int retval = app->exec();

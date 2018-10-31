@@ -210,7 +210,7 @@ main(int argc, char *argv[]) {
     App = new QCoreApplication(argc, argv);
 
     // XML-RPC server port number
-    static const int DEFAULT_XMLRPC_PORT = HCRMONITOR_PORT;
+    static const int DEFAULT_XMLRPC_PORT = HCREXECUTIVE_PORT;
     int xmlrpcPortNum;
     
     // procmap instance name
