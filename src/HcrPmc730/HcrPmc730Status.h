@@ -53,12 +53,13 @@ public:
     /// on the system in this case).
     HcrPmc730Status(bool createEmptyInstance = false);
 
-    /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
-    /// by a call to the HcrPmc730Status::toXmlRpcValue() method.
-    /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by
-    /// call to the HcrPmc730Status::toXmlRpcValue() method.
+    /// @brief Construct from an xmlrpc_c::value, which must be hold an
+    /// xmlrpc_c::value_struct dictionary as returned by a call to the
+    /// HcrPmc730Status::toXmlRpcValue() method.
+    /// @param statusValue an xmlrpc_c::value as returned by call to the
+    /// HcrPmc730Status::toXmlRpcValue() method.
     ///
-    /// Generally, the xmlrpc_c::value_struct is obtained on the client side of
+    /// Generally, the xmlrpc_c::value is obtained on the client side of
     /// an XML-RPC connection to HcrPmc730Daemon:
     /// @code
     ///     ...
@@ -66,10 +67,10 @@ public:
     ///     _client.call(_daemonUrl, "getHcrPmc730Status", "", &result);
     ///     // Cast the xmlrpc_c::value into xmlrpc_c::value_struct, and use
     ///     // that to construct an HcrPmc730Status.
-    ///     HcrPmc730Status status(static_cast<xmlrpc_c::value_struct>(result));
+    ///     HcrPmc730Status status(result);
     ///     ...
     /// @endcode
-    HcrPmc730Status(const xmlrpc_c::value_struct & statusDict);
+    HcrPmc730Status(const xmlrpc_c::value & statusValue);
 
     virtual ~HcrPmc730Status();
 
@@ -264,6 +265,9 @@ public:
     /// @brief Return the HMC operating mode.
     /// @see HcrPmc730::HmcOperationMode for a description of the values.
     HcrPmc730::HmcOperationMode hmcMode() const { return(_hmcMode); }
+
+    /// @brief cast to xmlrpc_c::value
+    operator xmlrpc_c::value() const;
     
 private:
     /// @brief Simple class implementing a list of temperatures with a maximum

@@ -94,7 +94,7 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     }
 }
 
-HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) :
+HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value & statusValue) :
     _ploTemp(0.0),
     _eikTemp(0.0),
     _vLnaTemp(0.0),
@@ -131,10 +131,13 @@ HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) :
     _emsError4Or5(false),
     _emsError6Or7(false),
     _hmcMode(HcrPmc730::HMC_MODE_INVALID) {
-    // Create an input archiver wrapper around the map from std::string to
-    // xmlrpc_c::value, and use serialize() to populate our members from its
-    // content.
+    // Cast the xmlrpc_c::value to xmlrpc_c::value_struct, then from that
+    // to std::map<std::string, xmlrpc_c::value>.
+    xmlrpc_c::value_struct statusDict(statusValue);
     std::map<std::string, xmlrpc_c::value> statusMap(statusDict);
+
+    // Create an input archiver wrapper around the map and use serialize() to
+    // populate our members from its content.
     Iarchive_xmlrpc_c iar(statusMap);
     iar >> *this;
 }
@@ -142,11 +145,24 @@ HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value_struct & statusDict) :
 HcrPmc730Status::~HcrPmc730Status() {
 }
 
-xmlrpc_c::value_struct
-HcrPmc730Status::toXmlRpcValue() const {
+//xmlrpc_c::value_struct
+//HcrPmc730Status::toXmlRpcValue() const {
+//    std::map<std::string, xmlrpc_c::value> statusMap;
+//    // Clone ourself to a non-const instance, which is needed when calling
+//    // Oarchive_xmlrpc_c operator<<()
+//    HcrPmc730Status clone(*this);
+//    // Stuff our content into the statusMap, i.e., _serialize() to an
+//    // output archiver wrapped around the statusDict.
+//    Oarchive_xmlrpc_c oar(statusMap);
+//    oar << clone;
+//    // Finally, return a value_struct constructed from the map
+//    return(xmlrpc_c::value_struct(statusMap));
+//}
+
+HcrPmc730Status::operator xmlrpc_c::value() const {
     std::map<std::string, xmlrpc_c::value> statusMap;
-    // Clone ourself to a non-const instance. We take as a given that the
-    // Oarchive_xmlrpc_c operator<<() will not modify us...
+    // Clone ourself to a non-const instance, which is needed when calling
+    // Oarchive_xmlrpc_c operator<<()
     HcrPmc730Status clone(*this);
     // Stuff our content into the statusMap, i.e., _serialize() to an
     // output archiver wrapped around the statusDict.

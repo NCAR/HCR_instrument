@@ -226,7 +226,7 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Executing XML-RPC call to getStatus()";
         paramList.verifyEnd(0);
-        *retvalP = HcrPmc730Status().toXmlRpcValue();
+        *retvalP = static_cast<xmlrpc_c::value>(HcrPmc730Status());
     }
 };
 
