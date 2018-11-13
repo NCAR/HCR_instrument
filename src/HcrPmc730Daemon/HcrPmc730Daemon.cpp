@@ -42,6 +42,7 @@
 #include <QUdpSocket>
 #include <QFunctionWrapper.h>
 
+#include <XmlrpcSerializable.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
@@ -226,7 +227,8 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Executing XML-RPC call to getStatus()";
         paramList.verifyEnd(0);
-        *retvalP = static_cast<xmlrpc_c::value>(HcrPmc730Status::CurrentStatus());
+        XmlrpcSerializable<HcrPmc730Status> currentStatus(HcrPmc730Status::CurrentStatus());
+        *retvalP = static_cast<xmlrpc_c::value>(currentStatus);
     }
 };
 

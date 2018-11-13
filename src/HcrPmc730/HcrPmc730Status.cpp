@@ -89,89 +89,13 @@ HcrPmc730Status::HcrPmc730Status() :
     _emsError6Or7(false),
     _hmcMode(HcrPmc730::HMC_MODE_INVALID) {}
 
-HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value & statusValue) :
-    _ploTemp(0.0),
-    _eikTemp(0.0),
-    _vLnaTemp(0.0),
-    _hLnaTemp(0.0),
-    _polarizationSwitchTemp(0.0),
-    _rfDetectorTemp(0.0),
-    _noiseSourceTemp(0.0),
-    _ps28VTemp(0.0),
-    _rdsInDuctTemp(0.0),
-    _rotationMotorTemp(0.0),
-    _tiltMotorTemp(0.0),
-    _insTemp(0.0),
-    _tailconeTemp(0.0),
-    _detectedRfPower(0.0),
-    _pvAftPressure(0.0),
-    _pvForePressure(0.0),
-    _apsLowSidePressure(0.0),
-    _apsHighSidePressure(0.0),
-    _psVoltage(0.0),
-    _locked15_5GHzPLO(false),
-    _locked1250MHzPLO(false),
-    _locked125MHzPLO(false),
-    _modPulseDisabled(false),
-    _apsValveOpen(false),
-    _rdsXmitterFilamentOn(false),
-    _rdsXmitterHvOn(false),
-    _radarPowerError(false),
-    _emsPowerError(false),
-    _waveguideSwitchError(false),
-    _emsErrorCount(0),
-    _emsError1(false),
-    _emsError2(false),
-    _emsError3(false),
-    _emsError4Or5(false),
-    _emsError6Or7(false),
-    _hmcMode(HcrPmc730::HMC_MODE_INVALID) {
-    // Cast the xmlrpc_c::value to xmlrpc_c::value_struct, then from that
-    // to std::map<std::string, xmlrpc_c::value>.
-    xmlrpc_c::value_struct statusDict(statusValue);
-    std::map<std::string, xmlrpc_c::value> statusMap(statusDict);
-
-    // Create an input archiver wrapper around the map and use serialize() to
-    // populate our members from its content.
-    Iarchive_xmlrpc_c iar(statusMap);
-    iar >> *this;
-}
-
-HcrPmc730Status::~HcrPmc730Status() {
-}
+HcrPmc730Status::~HcrPmc730Status() {}
 
 HcrPmc730Status
 HcrPmc730Status::CurrentStatus() {
     HcrPmc730Status status;
     status._getMultiIoValues();
     return(status);
-}
-
-//xmlrpc_c::value_struct
-//HcrPmc730Status::toXmlRpcValue() const {
-//    std::map<std::string, xmlrpc_c::value> statusMap;
-//    // Clone ourself to a non-const instance, which is needed when calling
-//    // Oarchive_xmlrpc_c operator<<()
-//    HcrPmc730Status clone(*this);
-//    // Stuff our content into the statusMap, i.e., _serialize() to an
-//    // output archiver wrapped around the statusDict.
-//    Oarchive_xmlrpc_c oar(statusMap);
-//    oar << clone;
-//    // Finally, return a value_struct constructed from the map
-//    return(xmlrpc_c::value_struct(statusMap));
-//}
-
-HcrPmc730Status::operator xmlrpc_c::value() const {
-    std::map<std::string, xmlrpc_c::value> statusMap;
-    // Clone ourself to a non-const instance, which is needed when calling
-    // Oarchive_xmlrpc_c operator<<()
-    HcrPmc730Status clone(*this);
-    // Stuff our content into the statusMap, i.e., _serialize() to an
-    // output archiver wrapped around the statusDict.
-    Oarchive_xmlrpc_c oar(statusMap);
-    oar << clone;
-    // Finally, return a value_struct constructed from the map
-    return(xmlrpc_c::value_struct(statusMap));
 }
 
 void
