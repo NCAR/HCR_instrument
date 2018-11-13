@@ -51,7 +51,7 @@ HcrPmc730Status::TemperatureList HcrPmc730Status::_InsTemps;
 HcrPmc730Status::TemperatureList HcrPmc730Status::_TailconeTemps;
 
 
-HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
+HcrPmc730Status::HcrPmc730Status() :
     _ploTemp(0.0),
     _eikTemp(0.0),
     _vLnaTemp(0.0),
@@ -87,12 +87,7 @@ HcrPmc730Status::HcrPmc730Status(bool createEmptyInstance) :
     _emsError3(false),
     _emsError4Or5(false),
     _emsError6Or7(false),
-    _hmcMode(HcrPmc730::HMC_MODE_INVALID) {
-    // If requested, get real values from the local static HcrPmc730 instance
-    if (! createEmptyInstance) {
-        _getMultiIoValues();
-    }
-}
+    _hmcMode(HcrPmc730::HMC_MODE_INVALID) {}
 
 HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value & statusValue) :
     _ploTemp(0.0),
@@ -145,6 +140,13 @@ HcrPmc730Status::HcrPmc730Status(const xmlrpc_c::value & statusValue) :
 HcrPmc730Status::~HcrPmc730Status() {
 }
 
+HcrPmc730Status
+HcrPmc730Status::CurrentStatus() {
+    HcrPmc730Status status;
+    status._getMultiIoValues();
+    return(status);
+}
+
 //xmlrpc_c::value_struct
 //HcrPmc730Status::toXmlRpcValue() const {
 //    std::map<std::string, xmlrpc_c::value> statusMap;
@@ -175,24 +177,24 @@ HcrPmc730Status::operator xmlrpc_c::value() const {
 void
 HcrPmc730Status::_getMultiIoValues() {
     // Load current analog values from the PMC-730
-    HcrPmc730::updateAnalogValues();
+    HcrPmc730::UpdateAnalogValues();
     
     // Get various temperatures from sensors connected to the PMC-730. The data 
     // are a bit noisy, so we keep up to TemperatureList::_MAX_SIZE samples so 
     // we can generate moving averages.
-    _PloTemps.addTemperature(HcrPmc730::ploTemperature());
-    _EikTemps.addTemperature(HcrPmc730::eikTemperature());
-    _VLnaTemps.addTemperature(HcrPmc730::vLnaTemperature());
-    _HLnaTemps.addTemperature(HcrPmc730::hLnaTemperature());
-    _PolarizationSwitchTemps.addTemperature(HcrPmc730::polSwitchTemperature());
-    _RfDetectorTemps.addTemperature(HcrPmc730::rfDetectorTemperature());
-    _NoiseSourceTemps.addTemperature(HcrPmc730::noiseSourceTemperature());
-    _Ps28VTemps.addTemperature(HcrPmc730::ps28vTemperature());
-    _RdsInDuctTemps.addTemperature(HcrPmc730::rdsInDuctTemperature());
-    _InsTemps.addTemperature(HcrPmc730::insTemperature());
-    _TiltMotorTemps.addTemperature(HcrPmc730::tiltMotorTemperature());
-    _RotationMotorTemps.addTemperature(HcrPmc730::rotMotorTemperature());
-    _TailconeTemps.addTemperature(HcrPmc730::tailconeTemperature());
+    _PloTemps.addTemperature(HcrPmc730::PloTemperature());
+    _EikTemps.addTemperature(HcrPmc730::EikTemperature());
+    _VLnaTemps.addTemperature(HcrPmc730::VLnaTemperature());
+    _HLnaTemps.addTemperature(HcrPmc730::HLnaTemperature());
+    _PolarizationSwitchTemps.addTemperature(HcrPmc730::PolSwitchTemperature());
+    _RfDetectorTemps.addTemperature(HcrPmc730::RfDetectorTemperature());
+    _NoiseSourceTemps.addTemperature(HcrPmc730::NoiseSourceTemperature());
+    _Ps28VTemps.addTemperature(HcrPmc730::Ps28vTemperature());
+    _RdsInDuctTemps.addTemperature(HcrPmc730::RdsInDuctTemperature());
+    _InsTemps.addTemperature(HcrPmc730::InsTemperature());
+    _TiltMotorTemps.addTemperature(HcrPmc730::TiltMotorTemperature());
+    _RotationMotorTemps.addTemperature(HcrPmc730::RotMotorTemperature());
+    _TailconeTemps.addTemperature(HcrPmc730::TailconeTemperature());
 
     // Save the current averaged temperatures
     _ploTemp = _PloTemps.mean();
@@ -210,31 +212,31 @@ HcrPmc730Status::_getMultiIoValues() {
     _tailconeTemp = _TailconeTemps.mean();
     
     // Other status from the PMC-730
-    _detectedRfPower = HcrPmc730::detectedRfPower();
-    _pvAftPressure = HcrPmc730::pvAftPressure();
-    _pvForePressure = HcrPmc730::pvForePressure();
-    _apsLowSidePressure = HcrPmc730::apsLowSidePressure();
-    _apsHighSidePressure = HcrPmc730::apsHighSidePressure();
-    _psVoltage = HcrPmc730::ps5vVoltage();
-    _locked15_5GHzPLO = HcrPmc730::locked15_5GHzPLO();
-    _locked1250MHzPLO = HcrPmc730::locked1250MHzPLO();
-    _locked125MHzPLO = HcrPmc730::locked125MHzPLO();
-    _modPulseDisabled = HcrPmc730::modPulseDisabled();
-    _emsErrorCount = HcrPmc730::emsErrorCount();
-    _emsError1 = HcrPmc730::emsError1();
-    _emsError2 = HcrPmc730::emsError2();
-    _emsError3 = HcrPmc730::emsError3();
-    _emsError4Or5 = HcrPmc730::emsError4Or5();
-    _emsError6Or7 = HcrPmc730::emsError6Or7();
-    _emsPowerError = HcrPmc730::emsPowerError();
-    _radarPowerError = HcrPmc730::radarPowerError();
-    _waveguideSwitchError = HcrPmc730::waveguideSwitchError();
-    _apsValveOpen = HcrPmc730::apsValveOpen();
-    _rdsXmitterFilamentOn = HcrPmc730::xmitterFilamentOn();
-    _rdsXmitterHvOn = HcrPmc730::xmitterHvOn();
-    _hmcMode = HcrPmc730::hmcMode();
+    _detectedRfPower = HcrPmc730::DetectedRfPower();
+    _pvAftPressure = HcrPmc730::PvAftPressure();
+    _pvForePressure = HcrPmc730::PvForePressure();
+    _apsLowSidePressure = HcrPmc730::ApsLowSidePressure();
+    _apsHighSidePressure = HcrPmc730::ApsHighSidePressure();
+    _psVoltage = HcrPmc730::Ps5vVoltage();
+    _locked15_5GHzPLO = HcrPmc730::Locked15_5GHzPLO();
+    _locked1250MHzPLO = HcrPmc730::Locked1250MHzPLO();
+    _locked125MHzPLO = HcrPmc730::Locked125MHzPLO();
+    _modPulseDisabled = HcrPmc730::ModPulseDisabled();
+    _emsErrorCount = HcrPmc730::EmsErrorCount();
+    _emsError1 = HcrPmc730::EmsError1();
+    _emsError2 = HcrPmc730::EmsError2();
+    _emsError3 = HcrPmc730::EmsError3();
+    _emsError4Or5 = HcrPmc730::EmsError4Or5();
+    _emsError6Or7 = HcrPmc730::EmsError6Or7();
+    _emsPowerError = HcrPmc730::EmsPowerError();
+    _radarPowerError = HcrPmc730::RadarPowerError();
+    _waveguideSwitchError = HcrPmc730::WaveguideSwitchError();
+    _apsValveOpen = HcrPmc730::ApsValveOpen();
+    _rdsXmitterFilamentOn = HcrPmc730::XmitterFilamentOn();
+    _rdsXmitterHvOn = HcrPmc730::XmitterHvOn();
+    _hmcMode = HcrPmc730::HmcMode();
     
     // Raise the 'status_ack' line on the HMC briefly so that it will reset
     // status values for which it does sense-and-hold.
-    HcrPmc730::ackHmcStatus();
+    HcrPmc730::AckHmcStatus();
 }

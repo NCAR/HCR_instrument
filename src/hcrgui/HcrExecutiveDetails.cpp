@@ -47,7 +47,7 @@ HcrExecutiveDetails::HcrExecutiveDetails(QWidget *parent,
     _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
-    updateStatus(false, HcrExecutiveStatus(), HcrPmc730Status(true));
+    updateStatus(false, HcrExecutiveStatus(), HcrPmc730Status::CurrentStatus());
     
     // Populate the APS ValveControlState mode combo box
     for (int i = 0; i < ApsControl::VALVE_CONTROL_NSTATES; i++) {

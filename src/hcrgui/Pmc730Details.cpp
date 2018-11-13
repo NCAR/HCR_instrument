@@ -46,7 +46,7 @@ Pmc730Details::Pmc730Details(QWidget *parent) :
     // Set up the UI and get the current status
     _ui.setupUi(this);
     // Initialize with no daemon response and default/bad status
-    updateStatus(false, HcrPmc730Status(true));
+    updateStatus(false, HcrPmc730Status());
 }
 
 void

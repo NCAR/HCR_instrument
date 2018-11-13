@@ -62,7 +62,7 @@ HcrPmc730::HmcModeNames[] = {
 bool HcrPmc730::_DoSimulate = false;
 
 // Our singleton instance
-HcrPmc730 * HcrPmc730::_theHcrPmc730 = 0;
+HcrPmc730 * HcrPmc730::_TheHcrPmc730 = 0;
 
 HcrPmc730::HcrPmc730() : 
         Pmc730(_DoSimulate ? -1 : 0),
@@ -118,8 +118,8 @@ HcrPmc730::~HcrPmc730() {
 }
 
 void
-HcrPmc730::doSimulate(bool simulate) {
-	if (_theHcrPmc730) {
+HcrPmc730::DoSimulate(bool simulate) {
+	if (_TheHcrPmc730) {
 		ELOG << __PRETTY_FUNCTION__ <<
 			" has no effect after the HcrPmc730 has been created!";
 		return;
@@ -130,16 +130,16 @@ HcrPmc730::doSimulate(bool simulate) {
 }
 
 HcrPmc730 &
-HcrPmc730::theHcrPmc730() {
-    if (! _theHcrPmc730) {
-        _theHcrPmc730 = new HcrPmc730();
+HcrPmc730::TheHcrPmc730() {
+    if (! _TheHcrPmc730) {
+        _TheHcrPmc730 = new HcrPmc730();
     }
-    return(*_theHcrPmc730);
+    return(*_TheHcrPmc730);
 }
 
 // static
 void
-HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
+HcrPmc730::SetHmcOperationMode(HmcOperationMode mode) {
     // Set the HMC mode bits on our digital out lines. This method works
     // atomically, setting all three bits at once rather than changing one 
     // at a time.
@@ -151,32 +151,32 @@ HcrPmc730::setHmcOperationMode(HmcOperationMode mode) {
             _HCR_DOUT_HMC_OPS_MODE_BIT2 >= 8 && _HCR_DOUT_HMC_OPS_MODE_BIT2 <= 15);
 
     // start from the current state of lines 8-15
-    uint8_t new8_15 = theHcrPmc730().getDio8_15();
+    uint8_t new8_15 = TheHcrPmc730().getDio8_15();
 
     // set the bits for the three lines which set the mode
     uint8_t modeBit0 = (mode >> 0) & 0x01;
     new8_15 = modeBit0 ?
-            _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
-            _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
+            _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
+            _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
 
     uint8_t modeBit1 = (mode >> 1) & 0x01;
     new8_15 = modeBit1 ?
-            _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
-            _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
+            _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
+            _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
 
     uint8_t modeBit2 = (mode >> 2) & 0x01;
     new8_15 = modeBit2 ?
-            _turnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
-            _turnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);
+            _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
+            _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);
 
     // ship out the new state
-    theHcrPmc730().setDio8_15(new8_15);
+    TheHcrPmc730().setDio8_15(new8_15);
 }
 
 bool
-HcrPmc730::locked15_5GHzPLO() {
+HcrPmc730::Locked15_5GHzPLO() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_15_5_GHZ_LOCKED));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_15_5_GHZ_LOCKED));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return false;
@@ -184,9 +184,9 @@ HcrPmc730::locked15_5GHzPLO() {
 }
 
 bool
-HcrPmc730::locked1250MHzPLO() {
+HcrPmc730::Locked1250MHzPLO() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_1250_MHZ_LOCKED));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_1250_MHZ_LOCKED));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return false;
@@ -194,9 +194,9 @@ HcrPmc730::locked1250MHzPLO() {
 }
 
 bool
-HcrPmc730::locked125MHzPLO() {
+HcrPmc730::Locked125MHzPLO() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_125_MHZ_LOCKED));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_125_MHZ_LOCKED));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return false;
@@ -204,9 +204,9 @@ HcrPmc730::locked125MHzPLO() {
 }
 
 bool
-HcrPmc730::emsPowerError() {
+HcrPmc730::EmsPowerError() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_PWR_ERROR));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_PWR_ERROR));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -214,9 +214,9 @@ HcrPmc730::emsPowerError() {
 }
 
 bool
-HcrPmc730::radarPowerError() {
+HcrPmc730::RadarPowerError() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_RADAR_PWR_ERROR));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_RADAR_PWR_ERROR));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -224,9 +224,9 @@ HcrPmc730::radarPowerError() {
 }
 
 bool
-HcrPmc730::waveguideSwitchError() {
+HcrPmc730::WaveguideSwitchError() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_WG_SWITCH_ERROR));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_WG_SWITCH_ERROR));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -234,9 +234,9 @@ HcrPmc730::waveguideSwitchError() {
 }
 
 bool
-HcrPmc730::emsError1() {
+HcrPmc730::EmsError1() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_1));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_1));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -244,9 +244,9 @@ HcrPmc730::emsError1() {
 }
 
 bool
-HcrPmc730::emsError2() {
+HcrPmc730::EmsError2() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_2));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_2));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -254,9 +254,9 @@ HcrPmc730::emsError2() {
 }
 
 bool
-HcrPmc730::emsError3() {
+HcrPmc730::EmsError3() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_3));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_3));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -264,9 +264,9 @@ HcrPmc730::emsError3() {
 }
 
 bool
-HcrPmc730::emsError4Or5() {
+HcrPmc730::EmsError4Or5() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_4OR5));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_4OR5));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;
@@ -275,9 +275,9 @@ HcrPmc730::emsError4Or5() {
 
 
 bool
-HcrPmc730::emsError6Or7() {
+HcrPmc730::EmsError6Or7() {
 	try {
-    	return(theHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_6OR7));
+    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_6OR7));
 	} catch (BadTtlVoltage & e) {
 		ELOG << e.what();
 		return true;

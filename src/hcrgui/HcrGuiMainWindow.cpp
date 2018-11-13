@@ -88,7 +88,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _rdsXmitControl(true),
     _fireflydStatus(),
     _mcStatus(),
-    _pmcStatus(true),
+    _pmcStatus(),
     _ins1Status(),
     _ins2Status(),
     _drxStatus(),
@@ -362,7 +362,7 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding, QString msg) {
     if (! responding) {
         // Create a default (bad) Pmc730Status, and set it as the last status
         // received.
-        _setPmcStatus(HcrPmc730Status(true));
+        _setPmcStatus(HcrPmc730Status());
     }
 }
 

@@ -45,13 +45,8 @@
 /// @brief Class to hold status of the singleton HcrPmc730 instance
 class HcrPmc730Status {
 public:
-    /// @brief Constructor, getting current values from the local singleton
-    /// HcrPmc730 instance if createEmptyInstance is true.
-    /// @param createEmptyInstance If true, the instance is created containing
-    /// all zero values. If false, current status values are obtained from the
-    /// local HcrPmc730 singleton instance (a PMC-730 card *must* be present
-    /// on the system in this case).
-    HcrPmc730Status(bool createEmptyInstance = false);
+    /// @brief Default constructor using all zero or invalid values
+    HcrPmc730Status();
 
     /// @brief Construct from an xmlrpc_c::value, which must be hold an
     /// xmlrpc_c::value_struct dictionary as returned by a call to the
@@ -73,6 +68,9 @@ public:
     HcrPmc730Status(const xmlrpc_c::value & statusValue);
 
     virtual ~HcrPmc730Status();
+
+    /// @brief Static method which returns current status
+    static HcrPmc730Status CurrentStatus();
 
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.
@@ -305,8 +303,8 @@ private:
         std::deque<double> _items;
     };
 
-    /// @brief Get new values for all of our sensor data supplied via the PMC730
-    /// multi-IO card.
+    /// @brief Populate with current values for all of our sensor data supplied
+    /// via the PMC730 multi-IO card.
     void _getMultiIoValues();
 
     friend class boost::serialization::access;
