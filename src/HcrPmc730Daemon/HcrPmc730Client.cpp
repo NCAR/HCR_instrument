@@ -91,8 +91,7 @@ HcrPmc730Client::setHmcMode(HcrPmc730::HmcOperationMode mode) {
 HcrPmc730Status
 HcrPmc730Client::getStatus() {
     xmlrpc_c::value result = _execXmlRpcCall("getStatus");
-    xmlrpc_c::value_struct statusDict = xmlrpc_c::value_struct(result);
-    XmlrpcSerializable<HcrPmc730Status> status(statusDict);
+    XmlrpcSerializable<HcrPmc730Status> status(result);
     return(status);
 }
 
