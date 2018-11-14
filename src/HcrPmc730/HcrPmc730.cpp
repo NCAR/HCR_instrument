@@ -119,14 +119,14 @@ HcrPmc730::~HcrPmc730() {
 
 void
 HcrPmc730::DoSimulate(bool simulate) {
-	if (_TheHcrPmc730) {
-		ELOG << __PRETTY_FUNCTION__ <<
-			" has no effect after the HcrPmc730 has been created!";
-		return;
-	}
-	DLOG << "Singleton HcrPmc730 will be created with simulate set to " <<
-		(simulate ? "TRUE" : "FALSE");
-	_DoSimulate = simulate;
+    if (_TheHcrPmc730) {
+        ELOG << __PRETTY_FUNCTION__ <<
+            " has no effect after the HcrPmc730 has been created!";
+        return;
+    }
+    DLOG << "Singleton HcrPmc730 will be created with simulate set to " <<
+        (simulate ? "TRUE" : "FALSE");
+    _DoSimulate = simulate;
 }
 
 HcrPmc730 &
@@ -175,113 +175,113 @@ HcrPmc730::SetHmcOperationMode(HmcOperationMode mode) {
 
 bool
 HcrPmc730::Locked15_5GHzPLO() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_15_5_GHZ_LOCKED));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return false;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_15_5_GHZ_LOCKED));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return false;
+    }
 }
 
 bool
 HcrPmc730::Locked1250MHzPLO() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_1250_MHZ_LOCKED));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return false;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_1250_MHZ_LOCKED));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return false;
+    }
 }
 
 bool
 HcrPmc730::Locked125MHzPLO() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_125_MHZ_LOCKED));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return false;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_125_MHZ_LOCKED));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return false;
+    }
 }
 
 bool
 HcrPmc730::EmsPowerError() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_PWR_ERROR));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_PWR_ERROR));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 bool
 HcrPmc730::RadarPowerError() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_RADAR_PWR_ERROR));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_RADAR_PWR_ERROR));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 bool
 HcrPmc730::WaveguideSwitchError() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_WG_SWITCH_ERROR));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_WG_SWITCH_ERROR));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 bool
 HcrPmc730::EmsError1() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_1));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_1));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 bool
 HcrPmc730::EmsError2() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_2));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_2));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 bool
 HcrPmc730::EmsError3() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_3));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_3));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 bool
 HcrPmc730::EmsError4Or5() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_4OR5));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_4OR5));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 
 bool
 HcrPmc730::EmsError6Or7() {
-	try {
-    	return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_6OR7));
-	} catch (BadTtlVoltage & e) {
-		ELOG << e.what();
-		return true;
-	}
+    try {
+        return(TheHcrPmc730()._ttlBinaryForChannel(_HCR_AIN_TTL_EMS_ERROR_6OR7));
+    } catch (BadTtlVoltage & e) {
+        ELOG << e.what();
+        return true;
+    }
 }
 
 int
