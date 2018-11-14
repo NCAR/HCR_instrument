@@ -47,11 +47,12 @@ HcrExecutiveDetails::HcrExecutiveDetails(QWidget *parent,
     _greenLED_off(":/greenLED_off.png") {
     // Set up the UI and get the current status
     _ui.setupUi(this);
-    updateStatus(false, HcrExecutiveStatus(), HcrPmc730Status::CurrentStatus());
+    updateStatus(false, HcrExecutiveStatus(), HcrPmc730Status());
     
     // Populate the APS ValveControlState mode combo box
     for (int i = 0; i < ApsControl::VALVE_CONTROL_NSTATES; i++) {
-        _ui.apsValveControlCombo->insertItem(i, ApsControl::ValveControlStateNames[i].c_str(), i);
+        std::string stateName(ApsControl::ValveControlStateNames[i]);
+        _ui.apsValveControlCombo->insertItem(i, stateName.c_str(), i);
     }
 }
 
