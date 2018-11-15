@@ -483,18 +483,20 @@ main(int argc, char** argv)
         _sd3c->setGPTimer1(0.0,
                            800e-9 + hcrConfig.tx_pulse_width() + hcrConfig.tx_delay());
 
-        // Start our status monitoring thread.
-        _statusGrabber = new StatusGrabber(_sd3c,
-                               _pmc730dHost, HCRPMC730DAEMON_PORT,
-                               _xmitdHost, HCR_XMITD_PORT,
-                               _motionControlHost, MOTIONCONTROLDAEMON_PORT);
+        // Create and start our status collecting thread. Connnect a signal to
+        // stop the thread when our QApplication is finishing.
+        _statusGrabber = new StatusGrabber(*_sd3c,
+                                           _pmc730dHost, HCRPMC730DAEMON_PORT,
+                                           _xmitdHost, HCR_XMITD_PORT,
+                                           _motionControlHost, MOTIONCONTROLDAEMON_PORT);
+        _statusGrabber->start();
+        QObject::connect(qApp, SIGNAL(aboutToQuit()),
+                         _statusGrabber, SLOT(quit()));
 
         // create and start the export object
         _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
         PMU_auto_register("start export");
         _exporter->start();
-
-        _statusGrabber->start();
 
         // Create (but don't yet start) the downconverter threads.
         assert(_nChans <= HcrDrxPub::N_CHANNELS);
