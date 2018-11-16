@@ -175,12 +175,11 @@ public:
         // We get a single parameter: the integer form of the desired HMC
         // mode.
         ILOG << "Received XML-RPC call to setHmcMode()...";
-        int iMode = paramList.getInt(0);
         paramList.verifyEnd(1);
         
         // Cast the int into HcrPmc730::HmcOperationMode
-        HcrPmc730::HmcOperationMode hmcMode = 
-                static_cast<HcrPmc730::HmcOperationMode>(iMode);
+        HcrPmc730::HmcOperationMode hmcMode =
+                static_cast<HcrPmc730::HmcOperationMode>(paramList.getInt(0));
         ILOG << "...with requested HMC mode " << 
                 "'" << HcrPmc730::HmcModeNames[hmcMode] << "'";
         *retvalP = xmlrpc_c::value_nil();
