@@ -316,7 +316,7 @@ void IwrfExport::run()
     }
     if (_monitor.pmc730Status().hmcMode() != _hmcMode) {
       sendMeta = true;
-      _hmcMode = static_cast<HcrPmc730::HmcOperationMode>(_monitor.pmc730Status().hmcMode());
+      _hmcMode = _monitor.pmc730Status().hmcMode();
     }
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
