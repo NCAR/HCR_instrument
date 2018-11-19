@@ -36,14 +36,14 @@
 
 class QUdpSocket;
 
-/// @brief Class providing a thread which gets HcrPmc730Daemon status on a regular
-/// basis using a HcrPmc730Client connection.
+/// @brief Class providing a thread which gets HcrPmc730Daemon status on a
+/// regular basis.
 ///
-/// This class uses the given HcrPmc730RpcClient connection to poll for status
-/// from HcrPmc730Daemon on a ~1 Hz basis (when connected). When new status is received,
-/// a newStatus(DrxStatus) signal is emitted. The class also provides a useful
-/// way to test for good connection to the HcrPmc730Daemon RPC server, via
-/// serverResponsive(bool) signals emitted when connection/disconnection is
+/// This class uses an HcrPmc730RpcClient connection to regularly query status
+/// from HcrPmc730Daemon on a ~1 Hz basis (when connected). When new status is
+/// received, a newStatus(HcrPmc730Status) signal is emitted. The class
+/// also reports the state of the connection to the HcrPmc730Daemon RPC server,
+/// via serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
 class HcrPmc730StatusThread : public QThread {
     Q_OBJECT
