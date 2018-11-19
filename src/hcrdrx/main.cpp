@@ -588,9 +588,14 @@ main(int argc, char** argv)
         _sd3c->timersStartStop(false);
         DLOG << "Pentek timers are stopped";
         
-        // Delete the IwrfExport instance
-        delete(_exporter);
-        _exporter = NULL;
+        // Stop the IwrfExport thread and schedule deletion of the instance
+        _exporter->terminate();
+        if (_exporter->wait(1000)) {
+            ILOG << "IwrfExport thread is stopped";
+        } else {
+            ELOG << "IwrfExport thread did not stop! Moving on anyway.";
+        }
+        _exporter->deleteLater();
         DLOG << "IwrfExport is gone";
 
         // stop the DAC
@@ -608,8 +613,12 @@ main(int argc, char** argv)
         
         // Stop and delete the status grabber
         _statusGrabber->quit();
-        _statusGrabber->wait(1000);
-        delete(_statusGrabber);
+        if (_statusGrabber->wait(1000)) {
+            ILOG << "StatusGrabber thread is stopped";
+        } else {
+            ELOG << "StatusGrabber thread did not stop! Moving on anyway.";
+        }
+        _statusGrabber->deleteLater();
         DLOG << "StatusGrabber is gone";
         
         _sd3c->stopFilters();
