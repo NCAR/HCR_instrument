@@ -37,10 +37,10 @@
 /// @brief Class providing a thread which gets HcrExecutive status on a regular
 /// basis using a HcrExecutiveRpcClient connection.
 ///
-/// This class uses the given HcrExecutiveRpcClient connection to poll for status
-/// from HcrExecutive on a ~1 Hz basis (when connected). When new status is received,
-/// a newStatus(DrxStatus) signal is emitted. The class also provides a useful
-/// way to test for good connection to the HcrExecutive RPC server, via
+/// This class creates an HcrExecutiveRpcClient connection to request status
+/// from HcrExecutive on a ~1 Hz basis (when connected). When new status is
+/// returned, a newStatus(HcrExecutiveStatus) signal is emitted. The class
+/// also reports the state of the connection to the HcrExecutive RPC server, via
 /// serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
 class HcrExecutiveStatusThread : public QThread {
