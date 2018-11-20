@@ -144,7 +144,7 @@ private slots:
     /// @brief Save the last status received from hcrdrx
     /// @param status the last status received from hcrdrx
     void _setDrxStatus(DrxStatus status);
-    /// @brief Slot to call when HcrMonitoExecutivensiveness changes.
+    /// @brief Slot to call when HcrExecutive responsiveness changes.
     /// @param responding True iff the server is currently responsive.
     /// @param msg message describing the responsiveness change event
     void _hcrExecutiveResponsivenessChange(bool responding, QString msg);
