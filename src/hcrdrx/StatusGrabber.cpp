@@ -61,6 +61,7 @@ StatusGrabber::StatusGrabber(const Pentek::p7142sd3c * pentek,
     _motionControlStatus(),
     _mutex(QMutex::Recursive),
     _hmcModeChangeSocket(NULL) {
+    moveToThread(this);
 }
 
 StatusGrabber::~StatusGrabber() {
