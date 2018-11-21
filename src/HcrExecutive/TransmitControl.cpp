@@ -73,7 +73,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _timeOfLastHvOffForHighPower(0),
     _detailsForLastHvOffForHighPower("")
 {
-    // Start with clean map of times to HMC modes
+    // Start with clean map of HMC mode change time -> HMC mode
     _clearHmcModeMap();
 
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
