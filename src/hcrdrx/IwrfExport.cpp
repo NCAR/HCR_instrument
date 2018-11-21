@@ -48,10 +48,7 @@ LOGGING("IwrfExport")
 
 IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor) :
         QThread(),
-        _hAccessLock(QReadWriteLock::NonRecursive),
-        _vAccessLock(QReadWriteLock::NonRecursive),
         _insAccessLock(QReadWriteLock::NonRecursive),
-        _logAccessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
@@ -457,8 +454,6 @@ void IwrfExport::_syncPulses()
 
 PulseData *IwrfExport::writePulseH(PulseData *val)
 {
-  // Get a write lock which will be released when we return
-  QWriteLocker wLocker(&_hAccessLock);
   _hPulseCount++;
   return _qH->write(val);
 }
@@ -470,8 +465,6 @@ PulseData *IwrfExport::writePulseH(PulseData *val)
 
 PulseData *IwrfExport::writePulseV(PulseData *val)
 {
-  // Get a write lock which will be released when we return
-  QWriteLocker wLocker(&_vAccessLock);
   _vPulseCount++;
   return _qV->write(val);
 }
@@ -481,9 +474,6 @@ PulseData *IwrfExport::writePulseV(PulseData *val)
 
 void IwrfExport::_readNextH()
 {
-  // Get a write lock, since we modify members
-  _hAccessLock.lockForWrite();
-
   // Our old pulse goes back for reuse
   PulseData *replacementElement = _pulseH;
   _pulseH = NULL;
@@ -491,15 +481,10 @@ void IwrfExport::_readNextH()
   // Loop until we get a new pulse from the circular buffer
   for (int ntries = 0; _pulseH == NULL; ntries++) {
     if (ntries != 0) {
-      // Sleep briefly between tries, releasing the lock while we sleep
-      _hAccessLock.unlock();
       usleep(50);
-      _hAccessLock.lockForWrite();
     }
     _pulseH = _qH->read(replacementElement);
   }
-
-  _hAccessLock.unlock();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -507,9 +492,6 @@ void IwrfExport::_readNextH()
 
 void IwrfExport::_readNextV()
 {
-  // Get a write lock, since we modify members
-  _vAccessLock.lockForWrite();
-
   // Our old pulse goes back for reuse
   PulseData *replacementElement = _pulseV;
   _pulseV = NULL;
@@ -517,15 +499,10 @@ void IwrfExport::_readNextV()
   // Loop until we get a new pulse from the circular buffer
   for (int ntries = 0; _pulseV == NULL; ntries++) {
       if (ntries != 0) {
-          // Sleep briefly between tries, releasing the lock while we sleep
-          _vAccessLock.unlock();
           usleep(50);
-          _vAccessLock.lockForWrite();
       }
       _pulseV = _qV->read(replacementElement);
   }
-
-  _vAccessLock.unlock();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1065,7 +1042,7 @@ void IwrfExport::_allocStatusBuf()
 // pulse time. If necessary, we will wait up to 1/2 second for data to show
 // up in the deque.
 void IwrfExport::_doIwrfGeorefsBeforePulse() {
-  // Get the read lock
+  // Get the read lock for INS data
   _insAccessLock.lockForRead();
 
   // If INS deque is empty and we haven't already marked INS data as
@@ -1551,16 +1528,9 @@ void IwrfExport::queueInsData(CmigitsFmq::MsgStruct data, int insNum) {
 // Log status
 
 void IwrfExport::_logStatus() {
-  if (! _logAccessLock.tryLockForWrite(100)) {
-      ELOG << "_logStatus(): unable to obtain lock";
-      return;
-  }
-
   ILOG << "new count for INS1: " << _ins1Count << ", INS2: " << _ins2Count;
   _hPulseCount = 0;
   _vPulseCount = 0;
   _ins1Count = 0;
   _ins2Count = 0;
-  
-  _logAccessLock.unlock();
 }

@@ -28,8 +28,9 @@
 #include "HcrDrxConfig.h"
 #include "StatusGrabber.h"
 #include "PulseData.h"
-#include <HcrPmc730.h>
+#include <atomic>
 #include <deque>
+#include <HcrPmc730.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
@@ -100,8 +101,6 @@ private slots:
 private:
   /// Lock for thread-safe member access
   
-  QReadWriteLock _hAccessLock;
-  QReadWriteLock _vAccessLock;
   QReadWriteLock _insAccessLock;
   QReadWriteLock _logAccessLock;
 
@@ -238,10 +237,10 @@ private:
   QTimer * _statusTimer;
 
   /// counts of events between calls to _logStatus()
-  int _hPulseCount;
-  int _vPulseCount;
-  int _ins1Count;
-  int _ins2Count;
+  atomic<uint> _hPulseCount;
+  atomic<uint> _vPulseCount;
+  atomic<uint> _ins1Count;
+  atomic<uint> _ins2Count;
   
   /// Time of the last georef packet we built, milliseconds since 1970-01-01
   /// 00:00:00 UTC
