@@ -118,9 +118,7 @@ public:
 
     /// @brief Return the control source selected on the CMU front panel.
     /// @return the control source selected on the CMU front panel.
-    ControlSource controlSource() const {
-        return(static_cast<ControlSource>(_controlSource));
-    }
+    ControlSource controlSource() const { return(_controlSource); }
 
     /// @brief Return true iff serial communication to the transmitter is connected
     /// @return true iff serial connection to the transmitter is connected
@@ -596,7 +594,7 @@ private:
     bool _badChecksumReceived;
 
     /// Which control source is selected on the front panel?
-    uint16_t _controlSource;
+    ControlSource _controlSource;
 
     /// EIK filament on?
     bool _filamentOn;

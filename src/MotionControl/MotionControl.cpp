@@ -32,6 +32,7 @@
 #include "../HcrSharedResources.h"
 #include <unistd.h>
 #include <iostream>
+#include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 
 LOGGING("MotionControl")
@@ -375,43 +376,35 @@ MotionControl::Status::Status(const MotionControl & mc) :
 }
 
 /////////////////////////////////////////////////////////////////////
-MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) {
-    // Cast the given xmlrpc_c::value_struct into a map from string to
-    // xmlrpc_c::value.
-    std::map<std::string, xmlrpc_c::value> statusMap =
-            static_cast<std::map<std::string, xmlrpc_c::value> >(statusDict);
-    rotDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveResponding"]);
-    rotDriveInhibitActive = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveInhibitActive"]);
-    rotDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveInitialized"]);
-    rotDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["rotDriveHomed"]);
-    rotDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveStatusReg"]);
-    rotDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveTemp"]);
-    rotDriveAngle = static_cast<xmlrpc_c::value_double>(statusMap["rotDriveAngle"]);
-    // Unsigned time is in the XML as a signed int. Pull it out as int, then
-    // reinterpret as unsigned.
-    int signedTime = static_cast<xmlrpc_c::value_int>(statusMap["rotDriveSystemTime"]);
-    rotDriveSystemTime = *(reinterpret_cast<uint32_t *>(&signedTime));
-
-    tiltDriveResponding = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveResponding"]);
-    tiltDriveInhibitActive = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInhibitActive"]);
-    tiltDriveInitialized = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveInitialized"]);
-    tiltDriveHomed = static_cast<xmlrpc_c::value_boolean>(statusMap["tiltDriveHomed"]);
-    tiltDriveStatusReg = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveStatusReg"]);
-    tiltDriveTemp = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveTemp"]);
-    tiltDriveAngle = static_cast<xmlrpc_c::value_double>(statusMap["tiltDriveAngle"]);
-    // Unsigned time is in the XML as a signed int. Pull it out as int, then
-    // reinterpret as unsigned.
-    signedTime = static_cast<xmlrpc_c::value_int>(statusMap["tiltDriveSystemTime"]);
-    tiltDriveSystemTime = *(reinterpret_cast<uint32_t *>(&signedTime));
-
-    antennaMode = static_cast<AntennaMode>(int(static_cast<xmlrpc_c::value_int>(statusMap["antennaMode"])));
-    fixedPointingAngle = static_cast<xmlrpc_c::value_double>(statusMap["fixedPointingAngle"]);
-    scanCcwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCcwLimit"]);
-    scanCwLimit = static_cast<xmlrpc_c::value_double>(statusMap["scanCwLimit"]);
-    scanRate = static_cast<xmlrpc_c::value_double>(statusMap["scanRate"]);
-    scanBeamTilt = static_cast<xmlrpc_c::value_double>(statusMap["scanBeamTilt"]);
-    attitudeCorrectionEnabled = static_cast<xmlrpc_c::value_boolean>(statusMap["attitudeCorrectionEnabled"]);
-    insInUse = static_cast<xmlrpc_c::value_int>(statusMap["insInUse"]);
+MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) :
+    rotDriveResponding(false),
+    rotDriveInhibitActive(false),
+    rotDriveInitialized(false),
+    rotDriveHomed(false),
+    rotDriveStatusReg(0),
+    rotDriveTemp(0),
+    rotDriveAngle(0.0),
+    rotDriveSystemTime(0),
+    tiltDriveResponding(false),
+    tiltDriveInhibitActive(false),
+    tiltDriveInitialized(false),
+    tiltDriveHomed(false),
+    tiltDriveStatusReg(0),
+    tiltDriveTemp(0),
+    tiltDriveAngle(0.0),
+    tiltDriveSystemTime(0),
+    antennaMode(POINTING),
+    fixedPointingAngle(0.0),
+    scanCcwLimit(0.0),
+    scanCwLimit(0.0),
+    scanRate(0.0),
+    scanBeamTilt(0.0),
+    attitudeCorrectionEnabled(false),
+    insInUse(1) {
+    // Create an input archiver wrapper around the xmlrpc_c::value_struct
+    // dictionary, and use serialize() to populate our members from its content.
+    Iarchive_xmlrpc_c iar(statusDict);
+    iar >> *this;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -419,44 +412,15 @@ MotionControl::Status::~Status() {
 }
 
 /////////////////////////////////////////////////////////////////////
-xmlrpc_c::value_struct
-MotionControl::Status::to_value_struct() const {
-    // Stuff our content into a dictionary mapping string to
-    // xmlrpc_c::value.
-    std::map<std::string, xmlrpc_c::value> dict;
-
-    dict["rotDriveResponding"] = xmlrpc_c::value_boolean(rotDriveResponding);
-    dict["rotDriveInhibitActive"] = xmlrpc_c::value_boolean(rotDriveInhibitActive);
-    dict["rotDriveInitialized"] = xmlrpc_c::value_boolean(rotDriveInitialized);
-    dict["rotDriveHomed"] = xmlrpc_c::value_boolean(rotDriveHomed);
-    dict["rotDriveStatusReg"] = xmlrpc_c::value_int(rotDriveStatusReg);
-    dict["rotDriveTemp"] = xmlrpc_c::value_int(rotDriveTemp);
-    dict["rotDriveAngle"] = xmlrpc_c::value_double(rotDriveAngle);
-    // We cannot pack unsigned 32-bit int into XML-RPC, so reinterpret it as
-    // signed and push it out that way.
-    int signedTime = *(reinterpret_cast<const int *>(&rotDriveSystemTime));
-    dict["rotDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
-
-    dict["tiltDriveResponding"] = xmlrpc_c::value_boolean(tiltDriveResponding);
-    dict["tiltDriveInhibitActive"] = xmlrpc_c::value_boolean(tiltDriveInhibitActive);
-    dict["tiltDriveInitialized"] = xmlrpc_c::value_boolean(tiltDriveInitialized);
-    dict["tiltDriveHomed"] = xmlrpc_c::value_boolean(tiltDriveHomed);
-    dict["tiltDriveStatusReg"] = xmlrpc_c::value_int(tiltDriveStatusReg);
-    dict["tiltDriveTemp"] = xmlrpc_c::value_int(tiltDriveTemp);
-    dict["tiltDriveAngle"] = xmlrpc_c::value_double(tiltDriveAngle);
-    // We cannot pack unsigned 32-bit int into XML-RPC, so reinterpret it as
-    // signed and push it out that way.
-    signedTime = *(reinterpret_cast<const int *>(&tiltDriveSystemTime));
-    dict["tiltDriveSystemTime"] = xmlrpc_c::value_int(signedTime);
-
-    dict["antennaMode"] = xmlrpc_c::value_int(antennaMode);
-    dict["fixedPointingAngle"] = xmlrpc_c::value_double(fixedPointingAngle);
-    dict["scanCcwLimit"] = xmlrpc_c::value_double(scanCcwLimit);
-    dict["scanCwLimit"] = xmlrpc_c::value_double(scanCwLimit);
-    dict["scanRate"] = xmlrpc_c::value_double(scanRate);
-    dict["scanBeamTilt"] = xmlrpc_c::value_double(scanBeamTilt);
-    dict["attitudeCorrectionEnabled"] = xmlrpc_c::value_boolean(attitudeCorrectionEnabled);
-    dict["insInUse"] = xmlrpc_c::value_int(insInUse);
-    // Construct an xmlrpc_c::value_struct from the map and return it.
-    return(xmlrpc_c::value_struct(dict));
+xmlrpc_c::value
+MotionControl::Status::toXmlRpcValue() const {
+    std::map<std::string, xmlrpc_c::value> statusDict;
+    // Clone ourself to a non-const instance
+    MotionControl::Status clone(*this);
+    // Stuff our content into the statusDict, i.e., _serialize() to an
+    // output archiver wrapped around the statusDict.
+    Oarchive_xmlrpc_c oar(statusDict);
+    oar << clone;
+    // Finally, return the statusDict
+    return(xmlrpc_c::value_struct(statusDict));
 }

@@ -9,7 +9,7 @@ cmigitsdaemonrpcclient
 doxygen
 fireflydRpcClient
 hcrdrxrpcclient
-hcrmonitor
+hcrexecutive
 logx
 lrose
 motioncontrol
@@ -31,7 +31,7 @@ HcrdrxDetails.cpp
 HcrdrxStatusThread.cpp
 HcrGuiLogWindow.cpp
 HcrGuiMainWindow.cpp
-HcrMonitorDetails.cpp
+HcrExecutiveDetails.cpp
 InsOverview.cpp
 MotionControlDetails.cpp
 Pmc730Details.cpp
@@ -51,7 +51,7 @@ FireflydDetails.ui
 HcrdrxDetails.ui
 HcrGuiLogWindow.ui
 HcrGuiMainWindow.ui
-HcrMonitorDetails.ui
+HcrExecutiveDetails.ui
 InsOverview.ui
 MotionControlDetails.ui
 Pmc730Details.ui
@@ -74,7 +74,7 @@ FireflydDetails.h
 FireflydStatusThread.h
 HcrdrxDetails.h
 HcrdrxStatusThread.h
-HcrMonitorDetails.h
+HcrExecutiveDetails.h
 HcrGuiLogWindow.h
 HcrGuiMainWindow.h
 InsOverview.h

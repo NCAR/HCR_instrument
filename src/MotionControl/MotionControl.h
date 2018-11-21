@@ -34,6 +34,8 @@
 #include <QtCore>
 #include <QtNetwork>
 #include <xmlrpc-c/base.hpp>
+#include <boost/serialization/nvp.hpp>
+//#include <boost/serialization/version.hpp>
 
 #include "CmigitsFmq.h"
 #include "RotServoDrive.h"
@@ -164,15 +166,13 @@ public:
         /// Status(const xmlrpc_c::value_struct &) constructor.
         /// @return an external representation of the object's state as
         /// an xmlrpc_c::value_struct dictionary.
-        xmlrpc_c::value_struct to_value_struct() const;
+        xmlrpc_c::value toXmlRpcValue() const;
 
-        /**
-         * @brief Return antenna scanning parameters.
-         * @param[out] ccwLimit the counterclockwise scan limit, deg
-         * @param[out] cwLimit the clockwise scan limit, deg
-         * @param[out] rate the scan rate, deg/s
-         * @param[out] beamTilt the beam tilt angle, deg
-         */
+        /// @brief Return antenna scanning parameters.
+        /// @param[out] ccwLimit the counterclockwise scan limit, deg
+        /// @param[out] cwLimit the clockwise scan limit, deg
+        /// @param[out] rate the scan rate, deg/s
+        /// @param[out] beamTilt the beam tilt angle, deg
         void scanParameters(double & ccwLimit, double & cwLimit, double & rate,
                 double & beamTilt) {
             ccwLimit = scanCcwLimit;
@@ -181,6 +181,37 @@ public:
             beamTilt = scanBeamTilt;
         }
 
+        /// @brief Serialize our members to a boost save (output) archive or
+        /// populate our members from a boost load (input) archive.
+        /// @param ar the archive to load from or save to.
+        /// @param version the version
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int version) {
+            ar & BOOST_SERIALIZATION_NVP(rotDriveResponding);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveInhibitActive);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveInitialized);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveHomed);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveStatusReg);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveTemp);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveAngle);
+            ar & BOOST_SERIALIZATION_NVP(rotDriveSystemTime);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveResponding);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveInhibitActive);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveInitialized);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveHomed);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveStatusReg);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveTemp);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveAngle);
+            ar & BOOST_SERIALIZATION_NVP(tiltDriveSystemTime);
+            ar & BOOST_SERIALIZATION_NVP(antennaMode);
+            ar & BOOST_SERIALIZATION_NVP(fixedPointingAngle);
+            ar & BOOST_SERIALIZATION_NVP(scanCcwLimit);
+            ar & BOOST_SERIALIZATION_NVP(scanCwLimit);
+            ar & BOOST_SERIALIZATION_NVP(scanRate);
+            ar & BOOST_SERIALIZATION_NVP(scanBeamTilt);
+            ar & BOOST_SERIALIZATION_NVP(attitudeCorrectionEnabled);
+            ar & BOOST_SERIALIZATION_NVP(insInUse);
+        }
         /// Is the rotation drive responding?
         bool rotDriveResponding;
         /// Is external inhibit active for the rotation drive?

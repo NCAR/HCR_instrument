@@ -67,7 +67,7 @@ public:
      * MotionControlDaemon is running
      * @param motionControlPort the port number for MotionControlDaemon XML-RPC
      */
-    StatusGrabber(const Pentek::p7142sd3c * pentek,
+    StatusGrabber(const Pentek::p7142sd3c & pentek,
             std::string pmc730dHost, int pmc730dPort,
             std::string xmitdHost, int xmitdPort,
             std::string motionControlHost, int motionControlPort);
@@ -130,7 +130,7 @@ private:
     void _getMotionControlStatus();
     
     /// The Pentek P7142 we're monitoring
-    const Pentek::p7142sd3c * _pentek;
+    const Pentek::p7142sd3c & _pentek;
 
     /// Last DrxStatus we obtained
     DrxStatus _drxStatus;

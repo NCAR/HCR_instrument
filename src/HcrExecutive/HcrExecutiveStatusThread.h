@@ -22,54 +22,54 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorStatusThread.h
+ * HcrExecutiveStatusThread.h
  *
  *  Created on: Oct 28, 2014
  *      Author: burghart
  */
 
-#ifndef HCRMONITORSTATUSTHREAD_H_
-#define HCRMONITORSTATUSTHREAD_H_
+#ifndef HCREXECUTIVESTATUSTHREAD_H_
+#define HCREXECUTIVESTATUSTHREAD_H_
 
+#include "HcrExecutiveRpcClient.h"
 #include <QThread>
-#include "HcrMonitorRpcClient.h"
 
-/// @brief Class providing a thread which gets HcrMonitor status on a regular
-/// basis using a HcrMonitorRpcClient connection.
+/// @brief Class providing a thread which gets HcrExecutive status on a regular
+/// basis using a HcrExecutiveRpcClient connection.
 ///
-/// This class uses the given HcrMonitorRpcClient connection to poll for status
-/// from HcrMonitor on a ~1 Hz basis (when connected). When new status is received,
-/// a newStatus(DrxStatus) signal is emitted. The class also provides a useful
-/// way to test for good connection to the HcrMonitor RPC server, via
+/// This class creates an HcrExecutiveRpcClient connection to request status
+/// from HcrExecutive on a ~1 Hz basis (when connected). When new status is
+/// returned, a newStatus(HcrExecutiveStatus) signal is emitted. The class
+/// also reports the state of the connection to the HcrExecutive RPC server, via
 /// serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
-class HcrMonitorStatusThread : public QThread {
+class HcrExecutiveStatusThread : public QThread {
     Q_OBJECT
 
 public:
-    /// @brief Instantiate, creating a HcrMonitorRpcClient connection to the
-    /// HcrMonitor XML-RPC server.
-    HcrMonitorStatusThread(std::string mcdHost, int mcdPort);
-    virtual ~HcrMonitorStatusThread();
+    /// @brief Instantiate, creating a HcrExecutiveRpcClient connection to the
+    /// HcrExecutive XML-RPC server.
+    HcrExecutiveStatusThread(std::string mcdHost, int mcdPort);
+    virtual ~HcrExecutiveStatusThread();
 
     void run();
 
-    /// @brief Return the HcrMonitorRpcClient instance being used to talk to
-    /// HcrMonitor.
-    /// @return the HcrMonitorRpcClient instance being used to talk to
-    /// HcrMonitor.
-    HcrMonitorRpcClient & rpcClient() const { return(*_client); }
+    /// @brief Return the HcrExecutiveRpcClient instance being used to talk to
+    /// HcrExecutive.
+    /// @return the HcrExecutiveRpcClient instance being used to talk to
+    /// HcrExecutive.
+    HcrExecutiveRpcClient & rpcClient() const { return(*_client); }
 
-    /// @brief Return true iff the HcrMonitor is responding
-    /// @return true iff the HcrMonitor is responding
+    /// @brief Return true iff the HcrExecutive is responding
+    /// @return true iff the HcrExecutive is responding
     bool serverIsResponding() const { return(_responsive); }
     
-    /// @brief Return the host where HcrMonitor is running
-    /// @return the host where HcrMonitor is running
+    /// @brief Return the host where HcrExecutive is running
+    /// @return the host where HcrExecutive is running
     std::string daemonHost() const { return(_daemonHost); }
 
-    /// @brief Return the port on which HcrMonitor is listening
-    /// @return the port on which HcrMonitor is listening
+    /// @brief Return the port on which HcrExecutive is listening
+    /// @return the port on which HcrExecutive is listening
     int daemonPort() const { return(_daemonPort); }
 
 signals:
@@ -81,9 +81,9 @@ signals:
     void serverResponsive(bool responsive, QString msg);
 
     /// @brief signal emitted when a new status is received from 
-    /// HcrMonitor
-    /// @param status the new status received from HcrMonitor
-    void newStatus(HcrMonitorStatus status);
+    /// HcrExecutive
+    /// @param status the new status received from HcrExecutive
+    void newStatus(HcrExecutiveStatus status);
 
     /// @brief signal emitted on detection of a new event of high voltage
     /// forced off because of high max power
@@ -92,19 +92,19 @@ signals:
     void hvForcedOffForHighMaxPower(QString details);
 
 private slots:
-    /// @brief Try to get latest status from HcrMonitor, and emit a newStatus()
+    /// @brief Try to get latest status from HcrExecutive, and emit a newStatus()
     /// signal if successful.
     void _getStatus();
 private:
-    /// True iff the client had a successful connection with the HcrMonitor
+    /// True iff the client had a successful connection with the HcrExecutive
     /// XML-RPC server on the last XML-RPC method call.
     bool _responsive;
 
     std::string _daemonHost;
     int _daemonPort;
 
-    /// The HcrMonitorRpcClient object handling the XML-RPC connection
-    HcrMonitorRpcClient * _client;
+    /// The HcrExecutiveRpcClient object handling the XML-RPC connection
+    HcrExecutiveRpcClient * _client;
 
     /// @brief Time high voltage was last forced off because of high max power,
     /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been
@@ -113,4 +113,4 @@ private:
 
 };
 
-#endif /* HCRMONITORSTATUSTHREAD_H_ */
+#endif /* HCREXECUTIVESTATUSTHREAD_H_ */

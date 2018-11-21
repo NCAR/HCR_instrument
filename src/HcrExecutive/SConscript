@@ -1,13 +1,13 @@
 # -*- python -*-
 #
-# Build cmigitsDaemon
+# Build HcrExecutive
 #
 
 tools = Split('''
 hcrpmc730client
 boost_program_options
 doxygen
-hcrmonitor
+hcrexecutive
 lrose
 motioncontrol
 qt4
@@ -20,7 +20,7 @@ env = Environment(tools = ['default'] + tools)
 env.EnableQt4Modules(['QtCore', 'QtXml'])
 
 sources = Split('''
-    HcrMonitor.cpp
+    HcrExecutive.cpp
     MaxPowerClient.cpp
 ''')
 
@@ -28,5 +28,5 @@ headers = Split('''
     MaxPowerClient.h
 ''')
 
-daemon = env.Program('HcrMonitor', sources)
+daemon = env.Program('HcrExecutive', sources)
 Default(daemon)

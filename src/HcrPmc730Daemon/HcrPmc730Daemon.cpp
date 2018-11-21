@@ -42,6 +42,7 @@
 #include <QUdpSocket>
 #include <QFunctionWrapper.h>
 
+#include <XmlrpcSerializable.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
@@ -100,7 +101,7 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Executing XML-RPC call to xmitFilamentOn()";
-        HcrPmc730::setXmitterFilamentOn(true);
+        HcrPmc730::SetXmitterFilamentOn(true);
         *retvalP = xmlrpc_c::value_nil();
     }
 };
@@ -116,7 +117,7 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Executing XML-RPC call to xmitFilamentOff()";
-        HcrPmc730::setXmitterFilamentOn(false);
+        HcrPmc730::SetXmitterFilamentOn(false);
         *retvalP = xmlrpc_c::value_nil();
     }
 };
@@ -133,9 +134,9 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         *retvalP = xmlrpc_c::value_nil();
         // Send the call to turn on HV if it isn't already on
-        if (! HcrPmc730::xmitterHvOn()) {
+        if (! HcrPmc730::XmitterHvOn()) {
             ILOG << "Executing XML-RPC call to xmitHvOn()";
-            HcrPmc730::setXmitterHvOn(true);
+            HcrPmc730::SetXmitterHvOn(true);
         }
         /// Start or restart the "HV on" heartbeat timer
         DLOG << "Heartbeat seen";
@@ -154,7 +155,7 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Executing XML-RPC call to xmitHvOff()";
-        HcrPmc730::setXmitterHvOn(false);
+        HcrPmc730::SetXmitterHvOn(false);
         *retvalP = xmlrpc_c::value_nil();
         /// Stop the "HV on" heartbeat timer
         HvOnHeartbeatTimer->stop();
@@ -174,24 +175,23 @@ public:
         // We get a single parameter: the integer form of the desired HMC
         // mode.
         ILOG << "Received XML-RPC call to setHmcMode()...";
-        int iMode = paramList.getInt(0);
         paramList.verifyEnd(1);
         
         // Cast the int into HcrPmc730::HmcOperationMode
-        HcrPmc730::HmcOperationMode hmcMode = 
-                static_cast<HcrPmc730::HmcOperationMode>(iMode);
+        HcrPmc730::HmcOperationMode hmcMode =
+                static_cast<HcrPmc730::HmcOperationMode>(paramList.getInt(0));
         ILOG << "...with requested HMC mode " << 
                 "'" << HcrPmc730::HmcModeNames[hmcMode] << "'";
         *retvalP = xmlrpc_c::value_nil();
         
         // If requested mode is the current mode, just return now
-        if (hmcMode == HcrPmc730::hmcMode()) {
+        if (hmcMode == HcrPmc730::HmcMode()) {
             DLOG << "Requested HMC mode is same as current mode; returning now.";
             return;
         }
         
         // Change to the requested mode
-        HcrPmc730::setHmcOperationMode(hmcMode);
+        HcrPmc730::SetHmcOperationMode(hmcMode);
         
         // Broadcast a datagram to indicate the new mode and the time of the
         // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
@@ -226,7 +226,8 @@ public:
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Executing XML-RPC call to getStatus()";
         paramList.verifyEnd(0);
-        *retvalP = HcrPmc730Status().toXmlRpcValue();
+        XmlrpcSerializable<HcrPmc730Status> currentStatus(HcrPmc730Status::CurrentStatus());
+        *retvalP = static_cast<xmlrpc_c::value>(currentStatus);
     }
 };
 
@@ -241,7 +242,7 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Executing XML-RPC call to openApsValve()";
-        HcrPmc730::setApsValveOpen(true);
+        HcrPmc730::SetApsValveOpen(true);
         *retvalP = xmlrpc_c::value_nil();
     }
 };
@@ -257,7 +258,7 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         ILOG << "Executing XML-RPC call to closeApsValve()";
-        HcrPmc730::setApsValveOpen(false);
+        HcrPmc730::SetApsValveOpen(false);
         *retvalP = xmlrpc_c::value_nil();
     }
 };
@@ -303,18 +304,18 @@ main(int argc, char * argv[]) {
     }
 
     // Make sure the HcrPmc730 gets instantiated in simulation mode if requested
-    HcrPmc730::doSimulate(simulate);
+    HcrPmc730::DoSimulate(simulate);
 
     // Just refer to theHcrPmc730() to instantiate the singleton.
-    HcrPmc730::theHcrPmc730();
+    HcrPmc730::TheHcrPmc730();
 
     // Initialize output lines: Active Pressurization System valve closed,
     // transmitter filament off, transmitter HV off, HMC in
     // "txV rxHV (attenuated)" mode.
-    HcrPmc730::setApsValveOpen(false);
-    HcrPmc730::setXmitterFilamentOn(false);
-    HcrPmc730::setXmitterHvOn(false);
-    HcrPmc730::setHmcOperationMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
+    HcrPmc730::SetApsValveOpen(false);
+    HcrPmc730::SetXmitterFilamentOn(false);
+    HcrPmc730::SetXmitterHvOn(false);
+    HcrPmc730::SetHmcOperationMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
@@ -357,9 +358,9 @@ main(int argc, char * argv[]) {
     }
 
     // Explicitly set things to a safe state when we exit
-    HcrPmc730::setXmitterHvOn(false);
-    HcrPmc730::setXmitterFilamentOn(false);
-    HcrPmc730::setApsValveOpen(false);
+    HcrPmc730::SetXmitterHvOn(false);
+    HcrPmc730::SetXmitterFilamentOn(false);
+    HcrPmc730::SetApsValveOpen(false);
    
     delete(App);
     PMU_auto_unregister();

@@ -50,8 +50,8 @@ class MaxPowerClient;
 class TransmitControl : public QObject {
     Q_OBJECT
 
-    // Give HcrMonitorStatus direct access to our members
-    friend class HcrMonitorStatus;
+    // Give HcrExecutiveStatus direct access to our members
+    friend class HcrExecutiveStatus;
 public:
     /// @brief Instantiate using the given HcrPmc730StatusThread as the source
     /// of status from HcrPmc730Daemon.

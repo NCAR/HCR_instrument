@@ -8,7 +8,7 @@
 static const uint16_t HCR_XMITD_PORT =             8000;  ///< hcr_xmitd port
 static const uint16_t FIREFLYD_PORT =              8001;  ///< fireflyd port
 static const uint16_t HCRPMC730DAEMON_PORT =       8003;  ///< HcrPmc730Daemon port
-static const uint16_t HCRMONITOR_PORT =            8004;  ///< HcrMonitor port
+static const uint16_t HCREXECUTIVE_PORT =          8004;  ///< HcrExecutive port
 static const uint16_t SPECTRACOMDAEMON_PORT =      8005;  ///< SpectracomDaemon port
 static const uint16_t INS1_DAEMON_PORT =           53005; ///< INS1 cmigitsDaemon port
 static const uint16_t INS2_DAEMON_PORT =           53006; ///< INS2 cmigitsDaemon port

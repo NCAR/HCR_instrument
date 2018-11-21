@@ -22,41 +22,41 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorStatusThread.cpp
+ * HcrExecutiveStatusThread.cpp
  *
  *  Created on: Oct 28, 2014
  *      Author: burghart
  */
 
-#include "HcrMonitorStatusThread.h"
+#include "HcrExecutiveStatusThread.h"
 #include <QMetaType>
 #include <QTimer>
 #include <logx/Logging.h>
 
-LOGGING("HcrMonitorStatusThread")
+LOGGING("HcrExecutiveStatusThread")
 
-HcrMonitorStatusThread::HcrMonitorStatusThread(std::string daemonHost, 
+HcrExecutiveStatusThread::HcrExecutiveStatusThread(std::string daemonHost, 
         int daemonPort) :
     _responsive(false),
     _daemonHost(daemonHost),
     _daemonPort(daemonPort),
     _client(0),
     _timeOfLastHvOffForHighPower(0) {
-    // We need to register HcrMonitorStatus as a metatype, since we'll be 
+    // We need to register HcrExecutiveStatus as a metatype, since we'll be 
     // passing it as an argument in a signal.
-    qRegisterMetaType<HcrMonitorStatus>("HcrMonitorStatus");
+    qRegisterMetaType<HcrExecutiveStatus>("HcrExecutiveStatus");
     // Set thread affinity to self, so that signals connected to our slot(s)
     // will execute the slots in this thread, and not our parent's.
     moveToThread(this);
 }
 
-HcrMonitorStatusThread::~HcrMonitorStatusThread() {
+HcrExecutiveStatusThread::~HcrExecutiveStatusThread() {
 }
 
 void
-HcrMonitorStatusThread::run() {
-    // Instantiate the HcrMonitorRpcClient
-    _client = new HcrMonitorRpcClient(_daemonHost, _daemonPort);
+HcrExecutiveStatusThread::run() {
+    // Instantiate the HcrExecutiveRpcClient
+    _client = new HcrExecutiveRpcClient(_daemonHost, _daemonPort);
     // Set up a 1 s timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
@@ -67,15 +67,15 @@ HcrMonitorStatusThread::run() {
 }
 
 void
-HcrMonitorStatusThread::_getStatus() {
+HcrExecutiveStatusThread::_getStatus() {
     try {
-        HcrMonitorStatus status = _client->status();
+        HcrExecutiveStatus status = _client->status();
         // We got a response, so emit serverResponsive(true) if the server was
         // not previously responding.
         if (! _responsive) {
             std::ostringstream oss;
             _responsive = true;
-            std::string msg = "HcrMonitor is responding";
+            std::string msg = "HcrExecutive is responding";
             ILOG << msg;
             emit serverResponsive(true, QString(msg.c_str()));
         }
@@ -93,7 +93,7 @@ HcrMonitorStatusThread::_getStatus() {
         if (_responsive) {
             _responsive = false;
             std::ostringstream oss;
-            oss << "HcrMonitor failed to respond to getStatus(): " << e.what();
+            oss << "HcrExecutive failed to respond to getStatus(): " << e.what();
             WLOG << oss.str();
             emit serverResponsive(false, QString(oss.str().c_str()));
         }

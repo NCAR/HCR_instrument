@@ -42,61 +42,16 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 
-/// @brief Class to represent HCR digital receiver/remote data system status.
+/// @brief Class to hold status of the singleton HcrPmc730 instance
 class HcrPmc730Status {
 public:
-    /// @brief Constructor, getting current values from the local singleton
-    /// HcrPmc730 instance if createEmptyInstance is true.
-    /// @param createEmptyInstance If true, the instance is created containing
-    /// all zero values. If false, current status values are obtained from the
-    /// local HcrPmc730 singleton instance (a PMC-730 card *must* be present
-    /// on the system in this case).
-    HcrPmc730Status(bool createEmptyInstance = false);
-
-    /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
-    /// by a call to the HcrPmc730Status::toXmlRpcValue() method.
-    /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by
-    /// call to the HcrPmc730Status::toXmlRpcValue() method.
-    ///
-    /// Generally, the xmlrpc_c::value_struct is obtained on the client side of
-    /// an XML-RPC connection to HcrPmc730Daemon:
-    /// @code
-    ///     ...
-    ///     xmlrpc_c::value result;
-    ///     _client.call(_daemonUrl, "getHcrPmc730Status", "", &result);
-    ///     // Cast the xmlrpc_c::value into xmlrpc_c::value_struct, and use
-    ///     // that to construct an HcrPmc730Status.
-    ///     HcrPmc730Status status(static_cast<xmlrpc_c::value_struct>(result));
-    ///     ...
-    /// @endcode
-    HcrPmc730Status(const xmlrpc_c::value_struct & statusDict);
+    /// @brief Default constructor using all zero or invalid values
+    HcrPmc730Status();
 
     virtual ~HcrPmc730Status();
 
-    /// @brief Return an external representation of the object's state as
-    /// an xmlrpc_c::value_struct dictionary.
-    ///
-    /// The common use is by an xmlrpc_c::serverXXX to provide an object which
-    /// can be used by a client to construct an equivalent HcrPmc730Status
-    /// on the other side:
-    /// @code
-    /// // XML-RPC method to get current monitored values from the PMC-730.
-    /// class GetHcrPmc730StatusMethod : public xmlrpc_c::method {
-    /// public:
-    ///     GetHcrPmc730StatusMethod() {
-    ///         this->_signature = "s:";
-    ///         this->_help = "This method returns current monitored values from the PMC-730.";
-    ///     }
-    ///     void
-    ///     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-    ///         paramList.verifyEnd(0);
-    ///         *retvalP = HcrPmc730Status().toXmlRpcValue();
-    ///     }
-    /// };
-    /// @endcode
-    /// @return an external representation of the object's state as
-    /// an xmlrpc_c::value_struct dictionary.
-    xmlrpc_c::value_struct toXmlRpcValue() const;
+    /// @brief Static method which returns current status
+    static HcrPmc730Status CurrentStatus();
 
     /// @brief Return the transmit pulse power from the QuinStar power detector, dBm
     /// @return the transmit pulse power from the QuinStar power detector, dBm
@@ -263,11 +218,10 @@ public:
 
     /// @brief Return the HMC operating mode.
     /// @see HcrPmc730::HmcOperationMode for a description of the values.
-    HcrPmc730::HmcOperationMode hmcMode() const {
-        // Cast _hmcMode back to its original HcrPmc730::HmcOperationMode
-        // enum type.
-        return(static_cast<HcrPmc730::HmcOperationMode>(_hmcMode));
-    }
+    HcrPmc730::HmcOperationMode hmcMode() const { return(_hmcMode); }
+
+    /// @brief cast to xmlrpc_c::value
+    operator xmlrpc_c::value() const;
     
 private:
     /// @brief Simple class implementing a list of temperatures with a maximum
@@ -305,14 +259,14 @@ private:
         std::deque<double> _items;
     };
 
-    /// @brief Get new values for all of our sensor data supplied via the PMC730
-    /// multi-IO card.
+    /// @brief Populate with current values for all of our sensor data supplied
+    /// via the PMC730 multi-IO card.
     void _getMultiIoValues();
 
     friend class boost::serialization::access;
 
-    /// @brief Serialize our members to a boost save (output) archive or populate
-    /// our members from a boost load (input) archive.
+    /// @brief Serialize our members to a boost save (output) archive or
+    /// populate our members from a boost load (input) archive.
     /// @param ar the archive to load from or save to.
     /// @param version the version
     template<class Archive>
@@ -322,7 +276,9 @@ private:
         if (version >= 0) {
             // Map named entries to our member variables using serialization's
             // name/value pairs (nvp).
-            ar & BOOST_SERIALIZATION_NVP(_insTemp);
+            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressure);
+            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressure);
+            ar & BOOST_SERIALIZATION_NVP(_apsValveOpen);
             ar & BOOST_SERIALIZATION_NVP(_detectedRfPower);
             ar & BOOST_SERIALIZATION_NVP(_eikTemp);
             ar & BOOST_SERIALIZATION_NVP(_emsError1);
@@ -334,6 +290,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_emsPowerError);
             ar & BOOST_SERIALIZATION_NVP(_hLnaTemp);
             ar & BOOST_SERIALIZATION_NVP(_hmcMode);
+            ar & BOOST_SERIALIZATION_NVP(_insTemp);
             ar & BOOST_SERIALIZATION_NVP(_locked1250MHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_locked125MHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_locked15_5GHzPLO);
@@ -345,11 +302,8 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_psVoltage);
             ar & BOOST_SERIALIZATION_NVP(_pvAftPressure);
             ar & BOOST_SERIALIZATION_NVP(_pvForePressure);
-            ar & BOOST_SERIALIZATION_NVP(_apsLowSidePressure);
-            ar & BOOST_SERIALIZATION_NVP(_apsHighSidePressure);
             ar & BOOST_SERIALIZATION_NVP(_radarPowerError);
             ar & BOOST_SERIALIZATION_NVP(_rdsInDuctTemp);
-            ar & BOOST_SERIALIZATION_NVP(_apsValveOpen);
             ar & BOOST_SERIALIZATION_NVP(_rdsXmitterFilamentOn);
             ar & BOOST_SERIALIZATION_NVP(_rdsXmitterHvOn);
             ar & BOOST_SERIALIZATION_NVP(_rfDetectorTemp);
@@ -501,10 +455,8 @@ private:
     /// Is there one or more EMS errors of type 6 or 7 in the error count?
     bool _emsError6Or7;
 
-    /// HMC operating mode. We keep it as an int, rather than as the
-    /// HcrPmc730::HmcOperationMode enum, so that our serialize() method above
-    /// has an easier type to work with.
-    uint16_t _hmcMode;
+    /// HMC operating mode
+    HcrPmc730::HmcOperationMode _hmcMode;
 };
 
 // Increment this class version number when member variables are changed.

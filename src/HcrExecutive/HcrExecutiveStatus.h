@@ -22,14 +22,14 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrMonitorStatus.h
+ * HcrExecutiveStatus.h
  *
  *  Created on: Oct 27, 2014
  *      Author: burghart
  */
 
-#ifndef HCRMONITORSTATUS_H_
-#define HCRMONITORSTATUS_H_
+#ifndef HCREXECUTIVESTATUS_H_
+#define HCREXECUTIVESTATUS_H_
 
 #include <string>
 #include <sstream>
@@ -43,26 +43,26 @@
 #include "TransmitControl.h"
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
-class HcrMonitorStatus {
+class HcrExecutiveStatus {
 public:
     /// @brief Default constructor. Integer fields are set to -99.
-    HcrMonitorStatus();
+    HcrExecutiveStatus();
 
-    /// @brief Construct a HcrMonitorStatus using data from the given 
+    /// @brief Construct a HcrExecutiveStatus using data from the given 
     /// ApsControl and TransmitControl
     /// @param apsControl the ApsControl object from which to get status
     /// @param transmitControl the TransmitControl object from which to get 
     /// status
-    HcrMonitorStatus(const ApsControl & apsControl, 
+    HcrExecutiveStatus(const ApsControl & apsControl, 
             const TransmitControl & transmitControl);
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
-    /// by a call to the HcrMonitorStatus::toXmlRpcValue() method.
+    /// by a call to the HcrExecutiveStatus::toXmlRpcValue() method.
     /// @param statusDict an xmlrpc_c::value_struct dictionary as returned by 
-    /// call to the HcrMonitorStatus::toXmlRpcValue() method.
-    HcrMonitorStatus(xmlrpc_c::value_struct & statusDict);
+    /// call to the HcrExecutiveStatus::toXmlRpcValue() method.
+    HcrExecutiveStatus(xmlrpc_c::value_struct & statusDict);
 
-    virtual ~HcrMonitorStatus();
+    virtual ~HcrExecutiveStatus();
 
     /// @brief Return an external representation of the object's state as
     /// an xmlrpc_c::value_struct dictionary.
@@ -158,11 +158,11 @@ public:
     /// attenuated receive mode.
     bool attenuationRequired() const { return(_attenuationRequired); }
 
-    /// @brief Return the time HcrMonitor last forced HV off because of high
+    /// @brief Return the time HcrExecutive last forced HV off because of high
     /// max received power, seconds since 1970-01-01 00:00:00 UTC
     double timeOfLastHvOffForHighPower() const { return(_timeOfLastHvOffForHighPower); }
 
-    /// @brief Return a string with details of why HcrMonitor last forced HV off
+    /// @brief Return a string with details of why HcrExecutive last forced HV off
     /// because of high max received power
     std::string detailsForLastHvOffForHighPower() const {
         return(_detailsForLastHvOffForHighPower);
@@ -180,12 +180,11 @@ private:
     /// @param version the version 
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) {
-        using boost::serialization::make_nvp;
-        // When unmarshalling, only the current HcrMonitorStatus version is
+        // When unmarshalling, only the current HcrExecutiveStatus version is
         // supported.
         if (version != STATUS_VERSION) {
             std::ostringstream oss;
-            oss << "HcrMonitorStatus::serialize cannot handle version " <<
+            oss << "HcrExecutiveStatus::serialize cannot handle version " <<
                    version << "; only version " << STATUS_VERSION <<
                    " is supported.";
             throw(std::runtime_error(oss.str()));
@@ -195,7 +194,7 @@ private:
         // Map named entries to our member variables using serialization's
         // name/value pairs (nvp). If anything is changed in this section, be
         // sure to increment the version number in STATUS_VERSION above.
-        using boost::serialization::make_nvp;
+        ar & BOOST_SERIALIZATION_NVP(_apsValveControlState);
         ar & BOOST_SERIALIZATION_NVP(_apsStatusText);
         ar & BOOST_SERIALIZATION_NVP(_hcrPmc730Responsive);
         ar & BOOST_SERIALIZATION_NVP(_motionControlResponsive);
@@ -206,54 +205,14 @@ private:
         ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
         ar & BOOST_SERIALIZATION_NVP(_overWater);
         ar & BOOST_SERIALIZATION_NVP(_meanMaxPower);
+        ar & BOOST_SERIALIZATION_NVP(_requestedHmcMode);
         ar & BOOST_SERIALIZATION_NVP(_hvRequested);
+        ar & BOOST_SERIALIZATION_NVP(_xmitTestStatus);
         ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
         ar & BOOST_SERIALIZATION_NVP(_transmitAllowed);
         ar & BOOST_SERIALIZATION_NVP(_attenuationRequired);
         ar & BOOST_SERIALIZATION_NVP(_timeOfLastHvOffForHighPower);
         ar & BOOST_SERIALIZATION_NVP(_detailsForLastHvOffForHighPower);
-
-        // KLUGE: special handling for members with enumerated types. We
-        // explicitly cast to int when saving to an output archive, and
-        // explicitly cast back to the desired enum when loading from an
-        // input archive. It is hoped that later improvements in the
-        // Archive_xmlrpc_c classes will remove the need for this...
-
-        // _apsValveControlState
-        {
-            // For output, convert _apsValveControlState to an int
-            int intValveControlState = static_cast<int>(_apsValveControlState);
-            // This will save intControlState on output or load a value
-            // there on input.
-            ar & BOOST_SERIALIZATION_NVP(intValveControlState);
-            // On input, convert the loaded int back to ApsControl::ValveControlState
-            _apsValveControlState =
-                    static_cast<ApsControl::ValveControlState>(intValveControlState);
-        }
-
-        // _requestedHmcMode
-        {
-            // Before output, convert _requestedHmcMode to an int
-            int intRequestedHmcMode = static_cast<int>(_requestedHmcMode);
-            // This will save intControlState on output or load a value
-            // there on input.
-            ar & BOOST_SERIALIZATION_NVP(intRequestedHmcMode);
-            // After input, convert the loaded int back to HcrPmc730::HmcOperationMode
-            _requestedHmcMode =
-                    static_cast<HcrPmc730::HmcOperationMode>(intRequestedHmcMode);
-        }
-
-        // _xmitTestStatus
-        {
-            // Before output, convert _xmitTestStatus to an int
-            int intXmitTestStatus = static_cast<int>(_xmitTestStatus);
-            // This will save intXmitTestStatus on output or load a value
-            // there on input.
-            ar & BOOST_SERIALIZATION_NVP(intXmitTestStatus);
-            // After input, convert the loaded int back to TransmitControl::XmitTestStatus
-            _xmitTestStatus =
-                    static_cast<TransmitControl::XmitTestStatus>(intXmitTestStatus);
-        }
     }
 
     /// @brief APS valve control state: automatic, always open, or always closed
@@ -298,7 +257,7 @@ private:
     /// @brief Current allowed/disallowed status for transmitting
     TransmitControl::XmitTestStatus _xmitTestStatus;
 
-    /// @brief Text describing the currend allowed/disallowed status for 
+    /// @brief Text describing the current allowed/disallowed status for 
     /// transmitting
     std::string _xmitTestStatusText;
 
@@ -319,6 +278,6 @@ private:
 };
 
 // Increment this class version number when member variables are changed.
-BOOST_CLASS_VERSION(HcrMonitorStatus, HcrMonitorStatus::STATUS_VERSION)
+BOOST_CLASS_VERSION(HcrExecutiveStatus, HcrExecutiveStatus::STATUS_VERSION)
 
-#endif /* HCRMONITORSTATUS_H_ */
+#endif /* HCREXECUTIVESTATUS_H_ */

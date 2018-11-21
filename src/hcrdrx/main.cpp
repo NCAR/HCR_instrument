@@ -483,18 +483,20 @@ main(int argc, char** argv)
         _sd3c->setGPTimer1(0.0,
                            800e-9 + hcrConfig.tx_pulse_width() + hcrConfig.tx_delay());
 
-        // Start our status monitoring thread.
-        _statusGrabber = new StatusGrabber(_sd3c,
-                               _pmc730dHost, HCRPMC730DAEMON_PORT,
-                               _xmitdHost, HCR_XMITD_PORT,
-                               _motionControlHost, MOTIONCONTROLDAEMON_PORT);
+        // Create and start our status collecting thread. Connnect a signal to
+        // stop the thread when our QApplication is finishing.
+        _statusGrabber = new StatusGrabber(*_sd3c,
+                                           _pmc730dHost, HCRPMC730DAEMON_PORT,
+                                           _xmitdHost, HCR_XMITD_PORT,
+                                           _motionControlHost, MOTIONCONTROLDAEMON_PORT);
+        _statusGrabber->start();
+        QObject::connect(qApp, SIGNAL(aboutToQuit()),
+                         _statusGrabber, SLOT(quit()));
 
         // create and start the export object
         _exporter = new IwrfExport(hcrConfig, *_statusGrabber);
         PMU_auto_register("start export");
         _exporter->start();
-
-        _statusGrabber->start();
 
         // Create (but don't yet start) the downconverter threads.
         assert(_nChans <= HcrDrxPub::N_CHANNELS);
@@ -586,9 +588,14 @@ main(int argc, char** argv)
         _sd3c->timersStartStop(false);
         DLOG << "Pentek timers are stopped";
         
-        // Delete the IwrfExport instance
-        delete(_exporter);
-        _exporter = NULL;
+        // Stop the IwrfExport thread and schedule deletion of the instance
+        _exporter->terminate();
+        if (_exporter->wait(1000)) {
+            ILOG << "IwrfExport thread is stopped";
+        } else {
+            ELOG << "IwrfExport thread did not stop! Moving on anyway.";
+        }
+        _exporter->deleteLater();
         DLOG << "IwrfExport is gone";
 
         // stop the DAC
@@ -606,8 +613,12 @@ main(int argc, char** argv)
         
         // Stop and delete the status grabber
         _statusGrabber->quit();
-        _statusGrabber->wait(1000);
-        delete(_statusGrabber);
+        if (_statusGrabber->wait(1000)) {
+            ILOG << "StatusGrabber thread is stopped";
+        } else {
+            ELOG << "StatusGrabber thread did not stop! Moving on anyway.";
+        }
+        _statusGrabber->deleteLater();
         DLOG << "StatusGrabber is gone";
         
         _sd3c->stopFilters();

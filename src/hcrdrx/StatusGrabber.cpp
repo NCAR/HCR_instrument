@@ -46,15 +46,15 @@
 
 LOGGING("StatusGrabber")
 
-StatusGrabber::StatusGrabber(const Pentek::p7142sd3c * pentek,
+StatusGrabber::StatusGrabber(const Pentek::p7142sd3c & pentek,
         std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort,
         std::string motionControlHost, int motionControlPort) :
     QThread(),
     _pentek(pentek),
-    _drxStatus(*_pentek),
+    _drxStatus(),
     _pmc730Client(pmc730dHost, pmc730dPort),
-    _pmc730Status(true),	// empty status
+    _pmc730Status(),	// empty/bad status
     _xmitClient(xmitdHost, xmitdPort),
     _xmitStatus(),
     _motionControlClient(motionControlHost, motionControlPort),
@@ -132,7 +132,7 @@ void
 StatusGrabber::_getDrxStatus() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
-    DrxStatus drxStatus(*_pentek);
+    DrxStatus drxStatus(_pentek);
 
     QMutexLocker locker(&_mutex);
     _drxStatus = drxStatus;
@@ -142,7 +142,7 @@ void
 StatusGrabber::_getPmc730Status() {
     // Get the status first, then get the mutex and set our member variable.
     // This way, we don't have the mutex locked very long at all....
-    HcrPmc730Status status(true);
+    HcrPmc730Status status;
     try {
         status = _pmc730Client.getStatus();
     } catch (std::exception & e) {

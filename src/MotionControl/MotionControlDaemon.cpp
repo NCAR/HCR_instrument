@@ -178,7 +178,7 @@ public:
     StatusMethod() {
         // The method takes no arguments, and returns a struct
         this->_signature = "S:";
-        this->_help = "This method returns servo drive status";
+        this->_help = "This method returns MotionControlDaemon status";
     }
 
     void
@@ -186,10 +186,10 @@ public:
     {
         paramList.verifyEnd(0);
 
-        // Get current status of our MotionControl, pack it into an
-        // xmlrpc_c::value_struct, and return the struct.
-        xmlrpc_c::value_struct dict = Control->status().to_value_struct();
-        *retvalP = dict;
+        // Return current status of our MotionControl an xmlrpc_c::value which
+        // can be used to construct MotionControl::Status again on the other
+        // side.
+        *retvalP = Control->status().toXmlRpcValue();
     }
 };
 

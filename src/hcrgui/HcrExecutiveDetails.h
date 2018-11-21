@@ -25,41 +25,41 @@
  *  Created on: Nov 5, 2014
  *      Author: burghart
  */
-#ifndef HCRMONITORDETAILS_H_
-#define HCRMONITORDETAILS_H_
+#ifndef HCREXECUTIVEDETAILS_H_
+#define HCREXECUTIVEDETAILS_H_
 
 #include <QDialog>
 #include <QPixmap>
-#include <HcrMonitorStatus.h>
-#include <HcrMonitorRpcClient.h>
+#include <HcrExecutiveStatus.h>
+#include <HcrExecutiveRpcClient.h>
 #include <HcrPmc730Status.h>
 
-#include "ui_HcrMonitorDetails.h"
+#include "ui_HcrExecutiveDetails.h"
 
 
-class HcrMonitorDetails : public QDialog {
+class HcrExecutiveDetails : public QDialog {
     Q_OBJECT
 public:
-    HcrMonitorDetails(QWidget *parent, std::string hcrMonitorHost, 
-            int hcrMonitorPort);
-    virtual ~HcrMonitorDetails() {}
+    HcrExecutiveDetails(QWidget *parent, std::string hcrExecutiveHost, 
+            int hcrExecutivePort);
+    virtual ~HcrExecutiveDetails() {}
 
     void noStatus();
 public slots:
     void updateStatus(bool daemonResponding, 
-            const HcrMonitorStatus & hcrMonitorStatus,
+            const HcrExecutiveStatus & hcrExecutiveStatus,
             const HcrPmc730Status & hcrPmc730Status);
     
     void on_apsValveControlCombo_activated(int index);
 private:
-    Ui::HcrMonitorDetails _ui;
+    Ui::HcrExecutiveDetails _ui;
     
-    /// @brief client to be used for sending XML-RPC commands to HcrMonitor
-    HcrMonitorRpcClient _rpcClient;
+    /// @brief client to be used for sending XML-RPC commands to HcrExecutive
+    HcrExecutiveRpcClient _rpcClient;
     
     QPixmap _redLED;
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
 };
-#endif /* HCRMONITORDETAILS_H_*/
+#endif /* HCREXECUTIVEDETAILS_H_*/
