@@ -128,7 +128,7 @@ private slots:
     /// @brief Deal with a change in HMC operation mode.
     /// @param mode the new HMC operation mode
     /// @param modeChangeTime the time at which the mode was changed, double
-    /// precision seconds sinc 1970-01-01 00:00:00 UTC
+    /// precision seconds since 1970-01-01 00:00:00 UTC
     void _recordHmcModeChange(HcrPmc730::HmcOperationMode mode,
                                double modeChangeTime);
 
