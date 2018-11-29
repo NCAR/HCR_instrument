@@ -508,7 +508,7 @@ main(int argc, char** argv)
                                             _simWaveLength);
         }
 
-        // Create the upConverter.
+        // Create the upconverter.
         // Configure the DAC to use CMIX by fDAC/4 (coarse mixer mode = 9)
         PMU_auto_register("create upconverter");
         Pentek::p7142Up & upConverter = *_sd3c->addUpconverter(_sd3c->adcFrequency(),
