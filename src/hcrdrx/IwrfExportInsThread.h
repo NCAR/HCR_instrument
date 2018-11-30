@@ -24,16 +24,17 @@
 #ifndef IWRFEXPORTINS_THREAD_H_
 #define IWRFEXPORTINS_THREAD_H_
 
-#include <CmigitsFmq.h>
-#include <QThread>
+#include <QtCore/QThread>
+#include <QtCore/QTimer>
 #include <Fmq/DsFmq.hh>
 
 class IwrfExport;
 
-/// IwrfExportInsThread watches CmigitsFmq and emits newData() when new
-/// data are found.
+/// IwrfExportInsThread creates a new thread, and from that thread polls an INS
+/// data FMQ and adds any data received to its associated IwrfExport instance's
+/// INS queue.
 
-class IwrfExportInsThread : public QThread {
+class IwrfExportInsThread : public QObject {
 
     Q_OBJECT
 
@@ -46,13 +47,45 @@ public:
     /// Destructor
     virtual ~IwrfExportInsThread();
 
-protected:
-    void run();
+private slots:
+    /// @brief Initialize and start the work timer which drives calls to
+    /// _handleNextFmqEntry()
+    void _initWorkTimer();
+
+    /// @brief Get the next entry from the FMQ and pass it to our IwrfExport
+    /// instance, waiting briefly if necessary
+    void _handleNextFmqEntry();
 
 private:
+    /// @brief QThread in which we'll work
+    QThread _workThread;
+
+    /// @brief Zero-interval timer that will drive our work
+    QTimer * _workTimer;
+
+    /// @brief Parent IwrfExport instance
     IwrfExport & _iwrfExport;
-    int _insNum;    ///< number (1 or 2) of the HCR INS we're watching
+
+    /// @brief number (1 or 2) of the HCR INS we're watching
+    int _insNum;
+
+    /// @brief URL for our INS's FMQ
+    std::string _fmqUrl;
+
+    /// @brief FMQ with data from our INS
     DsFmq _insFmq;
+
+    /// @brief Is our INS in NAV mode?
+    bool _inNavMode;
+
+    /// @brief Maximum time to wait for FMQ open or for arrival of FMQ data, ms
+    static const int FMQ_WAIT_TIMEOUT_MS = 100;
+
+    /// @brief time of the last FMQ warning, in seconds since the Unix epoch
+    time_t _lastFmqWarningTime;
+
+    /// @brief Minimum interval between issuing FMQ warnings
+    const int FMQ_WARNING_INTERVAL_SECS = 10;
 };
 
 #endif /* IWRFEXPORTINS_THREAD_H_ */

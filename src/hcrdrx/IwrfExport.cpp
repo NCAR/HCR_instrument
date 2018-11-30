@@ -226,10 +226,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _sock = NULL;
   _newClient = false;
 
-  // Start INS watch threads after this thread is started
-  connect(this, SIGNAL(started()), &_ins1WatchThread, SLOT(start()));
-  connect(this, SIGNAL(started()), &_ins2WatchThread, SLOT(start()));
-
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
   _statusTimer = new QTimer();
@@ -242,7 +238,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
 IwrfExport::~IwrfExport()
 
 {
-  // First terminate the thread
+  // First terminate our run() method
   terminate();
 
   // Clean up allocated memory
