@@ -25,7 +25,7 @@ hcrdrx.cpp
 HcrDrxConfig.cpp
 HcrDrxPub.cpp
 IwrfExport.cpp
-IwrfExportInsThread.cpp
+IwrfExportInsPoller.cpp
 PulseData.cpp
 StatusGrabber.cpp
 """)
@@ -36,7 +36,7 @@ HcrDrxConfig.h
 HcrDrxPub.h
 HcrdrxRpcClient.h
 IwrfExport.h
-IwrfExportInsThread.h
+IwrfExportInsPoller.h
 PulseData.h
 StatusGrabber.h
 """)

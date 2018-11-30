@@ -37,9 +37,10 @@
 #include <QReadWriteLock>
 #include <QThread>
 #include <QTimer>
-#include "IwrfExportInsThread.h"
 
-class IwrfExportInsThread;
+#include "IwrfExportInsPoller.h"
+
+class IwrfExportInsPoller;
 
 /// IwrfExport merges data from the H and V channels, 
 /// converts to IWRF time series format and writes the IWRF data to a client
@@ -198,10 +199,10 @@ private:
   double _rotationCorr;
 
   /// Thread which reads data from the INS1 FMQ and puts it in our deque
-  IwrfExportInsThread _ins1WatchThread;
+  IwrfExportInsPoller _ins1WatchThread;
 
   /// Thread which reads data from the INS2 FMQ and puts it in our deque
-  IwrfExportInsThread _ins2WatchThread;
+  IwrfExportInsPoller _ins2WatchThread;
 
   /// deque of INS1 data for generating iwrf_platform_georef packets
   std::deque<CmigitsFmq::MsgStruct> _ins1Deque;

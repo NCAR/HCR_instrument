@@ -21,7 +21,7 @@
 // ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-#include "IwrfExportInsThread.h"
+#include "IwrfExportInsPoller.h"
 #include "IwrfExport.h"
 #include "../HcrSharedResources.h"
 
@@ -30,10 +30,10 @@
 #include <QtCore/QTimer>
 #include <logx/Logging.h>
 
-LOGGING("IwrfExportInsThread")
+LOGGING("IwrfExportInsPoller")
 
 
-IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport, int insNum) :
+IwrfExportInsPoller::IwrfExportInsPoller(IwrfExport & iwrfExport, int insNum) :
     _workThread(NULL),
     _workTimer(NULL),
     _iwrfExport(iwrfExport),
@@ -52,12 +52,12 @@ IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport, int insNum) :
         break;
     default:
         std::ostringstream os;
-        os << "IwrfExportInsThread: Unexpected INS number " << _insNum;
+        os << "IwrfExportInsPoller: Unexpected INS number " << _insNum;
         throw(std::runtime_error(os.str()));
     }
 
     // Set the name of our work thread, which will be displayed by 'top' and 'ps'
-    _workThread.setObjectName("IwrfExportInsThread");
+    _workThread.setObjectName("IwrfExportInsPoller");
 
     // Set thread affinity to our work thread, so that our slots will execute
     // in that thread.
@@ -71,7 +71,7 @@ IwrfExportInsThread::IwrfExportInsThread(IwrfExport & iwrfExport, int insNum) :
     _workThread.start();
 }
 
-IwrfExportInsThread::~IwrfExportInsThread() {
+IwrfExportInsPoller::~IwrfExportInsPoller() {
     DLOG << "destructor";
     if (_workThread.isRunning()) {
         DLOG << "Stopping thread";
@@ -83,7 +83,7 @@ IwrfExportInsThread::~IwrfExportInsThread() {
 }
 
 void
-IwrfExportInsThread::_initWorkTimer() {
+IwrfExportInsPoller::_initWorkTimer() {
     // Create and start a timer which will generate a call to
     // _handleNextFmqEntry() whenever the work thread is not otherwise busy.
     _workTimer = new QTimer();
@@ -93,7 +93,7 @@ IwrfExportInsThread::_initWorkTimer() {
 }
 
 void
-IwrfExportInsThread::_handleNextFmqEntry() {
+IwrfExportInsPoller::_handleNextFmqEntry() {
     // If the FMQ is not opened for reading, try to do so now. We issue a
     // warning every FMQ_WARNING_INTERVAL_SECS seconds if we cannot open the
     // FMQ (generally because it has not yet been created by the writer).

@@ -21,8 +21,8 @@
 // ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-#ifndef IWRFEXPORTINS_THREAD_H_
-#define IWRFEXPORTINS_THREAD_H_
+#ifndef IWRFEXPORTINSPOLLER_H_
+#define IWRFEXPORTINSPOLLER_H_
 
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
@@ -30,11 +30,11 @@
 
 class IwrfExport;
 
-/// IwrfExportInsThread creates a new thread, and from that thread polls an INS
+/// IwrfExportInsPoller creates a new thread, and from that thread polls an INS
 /// data FMQ and adds any data received to its associated IwrfExport instance's
 /// INS queue.
 
-class IwrfExportInsThread : public QObject {
+class IwrfExportInsPoller : public QObject {
 
     Q_OBJECT
 
@@ -42,10 +42,10 @@ public:
     /// @brief Constructor
     /// @param iwrfExport the IwrfExport object to which we will send data
     /// @param insNum the HCR INS number (1 or 2) we'll be watching
-    IwrfExportInsThread(IwrfExport & iwrfExport, int insNum);
+    IwrfExportInsPoller(IwrfExport & iwrfExport, int insNum);
     
     /// Destructor
-    virtual ~IwrfExportInsThread();
+    virtual ~IwrfExportInsPoller();
 
 private slots:
     /// @brief Initialize and start the work timer which drives calls to
@@ -88,4 +88,4 @@ private:
     const int FMQ_WARNING_INTERVAL_SECS = 10;
 };
 
-#endif /* IWRFEXPORTINS_THREAD_H_ */
+#endif /* IWRFEXPORTINSPOLLER_H_ */
