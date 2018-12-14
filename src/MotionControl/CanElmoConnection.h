@@ -319,7 +319,7 @@ private:
     
     /// Set the Elmo drive to generate a CANopen heartbeat at this interval.
     /// Heartbeat is disabled if the interval is zero.
-    static const uint16_t ELMO_HEARTBEAT_MSECS = 250;
+  static const uint16_t ELMO_HEARTBEAT_MSECS /* = 250 */;
     
     /// Mutex for thread-safe access to members
     QMutex _mutex;
@@ -341,7 +341,7 @@ private:
     TIMER_HANDLE _replyTimer;
     
     /// Reply timeout in milliseconds
-    static const uint16_t REPLY_TIMEOUT_MSECS = 1000;
+    static const uint16_t REPLY_TIMEOUT_MSECS /* = 1000 */;
     
     /// Command for which the reply timer was started
     std::string _replyTimerCommand;

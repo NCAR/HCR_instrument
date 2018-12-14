@@ -41,6 +41,9 @@
 #include <QMutexLocker>
 #include <QThread>
 
+const uint16_t CanElmoConnection::REPLY_TIMEOUT_MSECS = 1000;
+const uint16_t CanElmoConnection::ELMO_HEARTBEAT_MSECS = 250;
+
 LOGGING("CanElmoConnection")
 
 // Static member pointing to the CanFestival data object for our master CANopen
