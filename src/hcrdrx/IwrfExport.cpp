@@ -156,7 +156,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _tsProc.pulse_width_us = _config.tx_pulse_width() * 1.0e6;
   const double SpeedOfLight = 2.99792458e8; // m/s
   _tsProc.gate_spacing_m = _config.digitizer_sample_width() * SpeedOfLight / 2;
-  _tsProc.start_range_m = _config.range_to_gate0(); // center of gate 0
+  _tsProc.start_range_m = _config.range_to_gate0_m(); // center of gate 0 in meters
   _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
 
   // initialize IWRF scan segment for simulation angles

@@ -59,6 +59,7 @@ std::set<std::string> HcrDrxConfig::_createDoubleLegalKeys() {
     keys.insert("tx_pulse_mod_delay");
     keys.insert("digitizer_gate0_delay");
     keys.insert("digitizer_sample_width");
+    keys.insert("range_to_gate0_m");
     keys.insert("latitude");
     keys.insert("longitude");
     keys.insert("altitude");
@@ -329,6 +330,7 @@ HcrDrxConfig::isValid(bool verbose) const {
     return valid;
 }
 
+#ifdef NOT_ANY_MORE
 double
 HcrDrxConfig::range_to_gate0() const {
   const double SpeedOfLight = 2.9979245e8; // m/s
@@ -338,3 +340,4 @@ HcrDrxConfig::range_to_gate0() const {
   double rangeToCenterGate0 = rangeToStartGate0 + gateSpacing * 0.5;
   return rangeToCenterGate0;
 }
+#endif

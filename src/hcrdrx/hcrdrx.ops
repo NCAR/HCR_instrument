@@ -16,6 +16,7 @@ gates                   770
 
 staggered_prt           0
 prt1                    1.01376e-4  # s
+prt2                    3.0e-4  # s
 
 # digitizer_gate0_delay is the time in seconds from T0 until digitizer sampling
 # begins. This number is effectively:
@@ -25,6 +26,13 @@ prt1                    1.01376e-4  # s
 # like we don't sample until *well after* the transmitted pulse, yet we 
 # actually see the transmitted pulse in the data.
 digitizer_gate0_delay   2.232e-6
+
+# range to the first gate in meters
+# this used to be computed from digitizer_gate0_delay, tx_delay and
+# tx_latency. We decided to use a parameter instead so that the
+# range_to_gate0 can be set independently from those parameters
+
+range_to_gate0_m     -198.0
 
 # Digitizer sample width, seconds (gate spacing = 0.5 * c * sample width)
 #digitizer_sample_width    64e-9

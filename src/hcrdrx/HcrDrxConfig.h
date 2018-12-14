@@ -116,7 +116,7 @@ public:
 
     /// Return the range to the center of gate 0, in meters
     /// @return the range to the center of gate 0, in meters
-    double range_to_gate0() const;
+    double range_to_gate0_m() const{ return _getDoubleVal("range_to_gate0_m"); };
 
     /// @brief radar latitude, degrees
     double latitude() const { return _getDoubleVal("latitude"); }
