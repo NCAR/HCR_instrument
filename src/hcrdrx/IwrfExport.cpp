@@ -49,6 +49,7 @@ LOGGING("IwrfExport")
 IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor) :
         QThread(),
         _insAccessLock(QReadWriteLock::NonRecursive),
+        _fmqAccessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
@@ -220,12 +221,30 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _simVolNum = 0;
   _simSweepNum = 0;
 
+  // IWRF EXPORT
+
   // server
 
   _serverIsOpen = false;
   _sock = NULL;
   _newClient = false;
 
+  // output fmq
+
+  _fmqPath = _config.iwrf_fmq_path();
+  _fmqOpen = false;
+  _firstMessage = false;
+  if (_config.export_iwrf_via_fmq()) {
+    if (_openOutputFmq() == 0) {
+      _fmqOpen = true;
+      _firstMessage = true;
+      DLOG << "==>> Opened FMQ for time series: " << _fmqPath;
+    } else {
+      ELOG << "ERROR: Cannot initialize FMQ: " << _fmqPath;
+      ELOG << "  Will open TCP server instead";
+    }
+  }
+  
   // Create a timer to print some status information on a regular basis, and
   // start it when our thread is started.
   _statusTimer = new QTimer();
@@ -299,9 +318,13 @@ void IwrfExport::run()
     // should we send meta-data?
     
     bool sendMeta = false;
-    if (_newClient) {
+    if (_newClient || _firstMessage) {
+      cerr << "11111111111111111111111111111111111" << endl;
       sendMeta = true;
       metaDataInitialized = false;
+      _firstMessage = false;
+    } else {
+      cerr << "222222222222222222222222222222222" << endl;
     }
     if (nGates != _nGates) {
       sendMeta = true;
@@ -557,30 +580,40 @@ int IwrfExport::_sendIwrfMetaData()
   calibStruct.packet.time_secs_utc = _timeSecs;
   calibStruct.packet.time_nano_secs = _nanoSecs;
 
-  // write individual messages for each struct
+  if (_fmqOpen) {
 
-  bool closeSocket = false;
-  
-  if (_sock && _sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
-    ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
-    ELOG << "  Writing IWRF_RADAR_INFO";
-    ELOG << "  " << _sock->getErrStr();
-    closeSocket = true;
-  } else if (_sock && _sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
-    ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
-    ELOG << "  Writing IWRF_TS_PROCESSING";
-    ELOG << "  " << _sock->getErrStr();
-    closeSocket = true;
-  } else if (_sock && _sock->writeBuffer(&calibStruct, sizeof(calibStruct))) {
-    ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
-    ELOG << "  Writing IWRF_CALIBRATION";
-    ELOG << "  " << _sock->getErrStr();
-    closeSocket = true;
-  }
-  
-  if (closeSocket) {
-    _closeSocketToClient();
-    return -1;
+    _outputMsg.addPart(IWRF_RADAR_INFO_ID, sizeof(_radarInfo), &_radarInfo);
+    _outputMsg.addPart(IWRF_TS_PROCESSING_ID, sizeof(_tsProc), &_tsProc);
+    _outputMsg.addPart(IWRF_CALIBRATION_ID, sizeof(calibStruct), &calibStruct);
+
+  } else {
+    
+    // write individual messages for each struct
+    
+    bool closeSocket = false;
+    
+    if (_sock && _sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
+      ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
+      ELOG << "  Writing IWRF_RADAR_INFO";
+      ELOG << "  " << _sock->getErrStr();
+      closeSocket = true;
+    } else if (_sock && _sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
+      ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
+      ELOG << "  Writing IWRF_TS_PROCESSING";
+      ELOG << "  " << _sock->getErrStr();
+      closeSocket = true;
+    } else if (_sock && _sock->writeBuffer(&calibStruct, sizeof(calibStruct))) {
+      ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
+      ELOG << "  Writing IWRF_CALIBRATION";
+      ELOG << "  " << _sock->getErrStr();
+      closeSocket = true;
+    }
+    
+    if (closeSocket) {
+      _closeSocketToClient();
+      return -1;
+    }
+
   }
 
   return 0;
@@ -675,17 +708,28 @@ void IwrfExport::_assembleIwrfPulsePacket()
 int IwrfExport::_sendIwrfPulsePacket()
 {
 
-  bool closeSocket = false;
-  if (_sock && _sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
-    ELOG << "ERROR - IwrfExport::_sendIwrfPulsePacket()";
-    ELOG << "  Writing pulse packet";
-    ELOG << "  " << _sock->getErrStr();
-    closeSocket = true;
-  }
+  cerr << "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" << endl;
 
-  if (closeSocket) {
-    _closeSocketToClient();
-    return -1; 
+  if (_fmqOpen) {
+
+    _outputMsg.addPart(IWRF_PULSE_HEADER_ID, _pulseMsgLen, _pulseBuf);
+    _writeToOutputFmq();
+    
+  } else {
+
+    bool closeSocket = false;
+    if (_sock && _sock->writeBuffer(_pulseBuf, _pulseMsgLen)) {
+      ELOG << "ERROR - IwrfExport::_sendIwrfPulsePacket()";
+      ELOG << "  Writing pulse packet";
+      ELOG << "  " << _sock->getErrStr();
+      closeSocket = true;
+    }
+    
+    if (closeSocket) {
+      _closeSocketToClient();
+      return -1; 
+    }
+
   }
   
   return 0;
@@ -998,18 +1042,26 @@ int IwrfExport::_sendIwrfStatusXmlPacket()
 
 {
     
-  bool closeSocket = false;
+  if (_fmqOpen) {
+    
+    _outputMsg.addPart(IWRF_STATUS_XML_ID, _statusMsgLen, _statusBuf);
 
-  if (_sock && _sock->writeBuffer(_statusBuf, _statusMsgLen)) {
-    ELOG << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()";
-    ELOG << "  Writing status xml packet";
-    ELOG << "  " << _sock->getErrStr();
-    closeSocket = true;
-  }
-  
-  if (closeSocket) {
-    _closeSocketToClient();
-    return -1; 
+  } else {
+    
+    bool closeSocket = false;
+    
+    if (_sock && _sock->writeBuffer(_statusBuf, _statusMsgLen)) {
+      ELOG << "ERROR - IwrfExport::_sendIwrfStatusXmlPacket()";
+      ELOG << "  Writing status xml packet";
+      ELOG << "  " << _sock->getErrStr();
+      closeSocket = true;
+    }
+    
+    if (closeSocket) {
+      _closeSocketToClient();
+      return -1; 
+    }
+
   }
 
   return 0;
@@ -1333,18 +1385,28 @@ int IwrfExport::_sendIwrfGeorefPacket()
   _radarGeoref.packet.seq_num = _packetSeqNum++;
 
   // write the message
-  bool closeSocket = false;
-
-  if (_sock && _sock->writeBuffer(&_radarGeoref, sizeof(_radarGeoref))) {
-    ELOG << "ERROR - IwrfExport::_sendIwrfGeorefPacket()";
-    ELOG << "  Writing IWRF_RADAR_GEOREF";
-    ELOG << "  " << _sock->getErrStr();
-    closeSocket = true;
-  }
   
-  if (closeSocket) {
-    _closeSocketToClient();
-    return -1;
+  if (_fmqOpen) {
+    
+    _outputMsg.addPart(IWRF_PLATFORM_GEOREF_ID,
+                       sizeof(_radarGeoref), &_radarGeoref);
+    
+  } else {
+    
+    bool closeSocket = false;
+    
+    if (_sock && _sock->writeBuffer(&_radarGeoref, sizeof(_radarGeoref))) {
+      ELOG << "ERROR - IwrfExport::_sendIwrfGeorefPacket()";
+      ELOG << "  Writing IWRF_RADAR_GEOREF";
+      ELOG << "  " << _sock->getErrStr();
+      closeSocket = true;
+    }
+    
+    if (closeSocket) {
+      _closeSocketToClient();
+      return -1;
+    }
+
   }
 
   return 0;
@@ -1530,3 +1592,78 @@ void IwrfExport::_logStatus() {
   _ins1Count = 0;
   _ins2Count = 0;
 }
+
+///////////////////////////////////////
+// open the output FMQ
+// returns 0 on success, -1 on failure
+
+int IwrfExport::_openOutputFmq()
+
+{
+
+  // initialize the output FMQ
+  
+  if (_outputFmq.initReadWrite
+      (_fmqPath.c_str(), "dowdrx",
+       false, // set debug?
+       Fmq::END, // start position
+       false,    // compression
+       _config.iwrf_fmq_nslots(),
+       _config.iwrf_fmq_bufsize())) {
+    ELOG << "ERROR: IwrfExport::_openOutputFmq()";
+    ELOG << "  Cannot initialize FMQ: " << _fmqPath;
+    ELOG << "  nSlots: " << _config.iwrf_fmq_nslots();
+    ELOG << "  nBytes: " << _config.iwrf_fmq_bufsize();
+    ELOG << _outputFmq.getErrStr();
+    return -1;
+  }
+  _outputFmq.setSingleWriter();
+  if (_config.iwrf_fmq_report_interval() > 0) {
+    QWriteLocker wLocker(&_fmqAccessLock);
+    _outputFmq.setRegisterWithDmap(true, _config.iwrf_fmq_report_interval());
+  }
+
+  // initialize message
+  
+  _outputMsg.clearAll();
+  _outputMsg.setType(0);
+
+  return 0;
+
+}
+
+///////////////////////////////////////
+// write to output FMQ if ready
+// returns 0 on success, -1 on failure
+
+int IwrfExport::_writeToOutputFmq(bool force)
+
+{
+
+  // if the message is large enough, write to the FMQ
+  
+  int nParts = _outputMsg.getNParts();
+  DLOG << "==>> WriteToOutputFmq, nparts: " << nParts;
+
+  if (!force && nParts < _config.iwrf_fmq_npackets_per_message()) {
+    return 0;
+  }
+
+  PMU_auto_register("writeToFmq");
+
+  void *buf = _outputMsg.assemble();
+  int len = _outputMsg.lengthAssembled();
+  QWriteLocker wLocker(&_fmqAccessLock);
+  if (_outputFmq.writeMsg(0, 0, buf, len)) {
+    ELOG << "ERROR - IwrfExport";
+    ELOG << "  Cannot write FMQ: " << _fmqPath;
+    _outputMsg.clearParts();
+    return -1;
+  }
+
+  _outputMsg.clearParts();
+
+  return 0;
+
+}
+    

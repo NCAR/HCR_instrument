@@ -76,6 +76,10 @@ std::set<std::string> HcrDrxConfig::_createIntLegalKeys() {
     std::set<std::string> keys;
     keys.insert("gates");
     keys.insert("merge_queue_size");
+    keys.insert("iwrf_fmq_nslots");
+    keys.insert("iwrf_fmq_bufsize");
+    keys.insert("iwrf_fmq_report_interval");
+    keys.insert("iwrf_fmq_npackets_per_message"); 
     keys.insert("iwrf_server_tcp_port");
     keys.insert("pulse_interval_per_iwrf_meta_data");
     keys.insert("sim_n_elev");
@@ -87,6 +91,7 @@ std::set<std::string> HcrDrxConfig::_BoolLegalKeys(_createBoolLegalKeys());
 std::set<std::string> HcrDrxConfig::_createBoolLegalKeys() {
     std::set<std::string> keys;
     keys.insert("staggered_prt");
+    keys.insert("export_iwrf_via_fmq");
     keys.insert("simulate_antenna_angles");
     keys.insert("simulate_pmc730");
     keys.insert("start_on_1pps");
@@ -99,6 +104,7 @@ std::set<std::string> HcrDrxConfig::_createStringLegalKeys() {
     std::set<std::string> keys;
     keys.insert("radar_id");
     keys.insert("calibration_file");
+    keys.insert("iwrf_fmq_path");
     return keys;
 }
 

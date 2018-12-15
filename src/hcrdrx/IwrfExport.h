@@ -24,16 +24,20 @@
 #ifndef IWRF_EXPORT_H_
 #define IWRF_EXPORT_H_
 
+#include <atomic>
+#include <deque>
+
 #include "CircBuffer.h"
 #include "HcrDrxConfig.h"
 #include "StatusGrabber.h"
 #include "PulseData.h"
-#include <atomic>
-#include <deque>
+
 #include <HcrPmc730.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
+#include <Fmq/DsFmq.hh>
+
 #include <QReadWriteLock>
 #include <QThread>
 #include <QTimer>
@@ -103,7 +107,7 @@ private:
   /// Lock for thread-safe member access
   
   QReadWriteLock _insAccessLock;
-  QReadWriteLock _logAccessLock;
+  QReadWriteLock _fmqAccessLock;
 
   /// configuration
 
@@ -173,7 +177,7 @@ private:
   iwrf_scan_segment_t _simScan;
   iwrf_pulse_header_t _pulseHdr;
 
-  /// Server
+  /// Export via TCP
 
   int _iwrfServerTcpPort;
   ServerSocket _server;
@@ -181,6 +185,16 @@ private:
   Socket *_sock;
   bool _newClient;
 
+  /// Export via FMQ
+  /// we combine a number of packets into a message before
+  /// writing to the FMQ
+
+  string _fmqPath;
+  DsFmq _outputFmq;
+  bool _fmqOpen;
+  DsMessage _outputMsg;
+  bool _firstMessage;
+  
   /// current HMC operation mode
   HcrPmc730::HmcOperationMode _hmcMode;
   
@@ -268,9 +282,17 @@ private:
   int _sendIwrfGeorefPacket();
   void _computeRadarAngles();
 
+  // export via TCP
+
   int _openServer();
   int _checkClient();
   void _closeSocketToClient();
+
+  // write to FMQ
+
+  int _openOutputFmq();
+  int _writeToOutputFmq(bool force = false);
+  int _writeEndOfVol();
 
 };
 

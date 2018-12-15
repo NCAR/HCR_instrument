@@ -100,6 +100,41 @@ public:
     int merge_queue_size() const {
         return _getIntVal("merge_queue_size");
     }
+
+    /** 
+     * Export IWRF data via FMQ? 
+     * @ return 0 if false, 1 if true, or UNSET_BOOL if unset
+     */
+
+    int export_iwrf_via_fmq() const {
+        return _getBoolVal("export_iwrf_via_fmq");
+    }
+    /// IWRF FMQ path
+    std::string iwrf_fmq_path() const {
+        return _getStringVal("iwrf_fmq_path");
+    }
+    /// IWRF FMQ number of slots
+    int iwrf_fmq_nslots() const { 
+        return _getIntVal("iwrf_fmq_nslots"); 
+    }
+    /// IWRF FMQ buf size
+    int iwrf_fmq_bufsize() const { 
+        return _getIntVal("iwrf_fmq_bufsize"); 
+    }
+    /// IWRF FMQ n packets per message
+    int iwrf_fmq_npackets_per_message() const { 
+        return _getIntVal("iwrf_fmq_npackets_per_message"); 
+    }
+    /// IWRF FMQ data mapper report interval
+    /// no reporting if <= 0
+    int iwrf_fmq_report_interval() const { 
+        return _getIntVal("iwrf_fmq_report_interval"); 
+    }
+
+    /** 
+     * If NOT export via FMQ, use TCP server instead 
+     */
+
     /// @brief TCP port for IWRF data server
     int iwrf_server_tcp_port() const {
         return _getIntVal("iwrf_server_tcp_port");
