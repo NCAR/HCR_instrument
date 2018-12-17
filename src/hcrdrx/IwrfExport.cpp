@@ -233,11 +233,11 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
 
   _fmqPath = _config.iwrf_fmq_path();
   _fmqOpen = false;
-  _firstMessage = false;
+  _firstFmqMessage = false;
   if (_config.export_iwrf_via_fmq()) {
     if (_openOutputFmq() == 0) {
       _fmqOpen = true;
-      _firstMessage = true;
+      _firstFmqMessage = true;
       DLOG << "==>> Opened FMQ for time series: " << _fmqPath;
     } else {
       ELOG << "ERROR: Cannot initialize FMQ: " << _fmqPath;
@@ -305,10 +305,11 @@ void IwrfExport::run()
 
     _readNextPulse();
 
-    // check that we have a client
-    
-    if (_checkClient()) {
-      continue;
+    if (!_config.export_iwrf_via_fmq()) {
+      // check that we have a client
+      if (_checkClient()) {
+        continue;
+      }
     }
 
     // determine number of gates
@@ -318,13 +319,10 @@ void IwrfExport::run()
     // should we send meta-data?
     
     bool sendMeta = false;
-    if (_newClient || _firstMessage) {
-      cerr << "11111111111111111111111111111111111" << endl;
+    if (_newClient || _firstFmqMessage) {
       sendMeta = true;
       metaDataInitialized = false;
-      _firstMessage = false;
-    } else {
-      cerr << "222222222222222222222222222222222" << endl;
+      _firstFmqMessage = false;
     }
     if (nGates != _nGates) {
       sendMeta = true;
@@ -707,8 +705,6 @@ void IwrfExport::_assembleIwrfPulsePacket()
 
 int IwrfExport::_sendIwrfPulsePacket()
 {
-
-  cerr << "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" << endl;
 
   if (_fmqOpen) {
 
@@ -1643,7 +1639,7 @@ int IwrfExport::_writeToOutputFmq(bool force)
   // if the message is large enough, write to the FMQ
   
   int nParts = _outputMsg.getNParts();
-  DLOG << "==>> WriteToOutputFmq, nparts: " << nParts;
+  // DLOG << "==>> WriteToOutputFmq, nparts: " << nParts;
 
   if (!force && nParts < _config.iwrf_fmq_npackets_per_message()) {
     return 0;

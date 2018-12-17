@@ -193,7 +193,7 @@ private:
   DsFmq _outputFmq;
   bool _fmqOpen;
   DsMessage _outputMsg;
-  bool _firstMessage;
+  bool _firstFmqMessage;
   
   /// current HMC operation mode
   HcrPmc730::HmcOperationMode _hmcMode;
