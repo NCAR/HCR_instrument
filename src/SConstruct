@@ -31,7 +31,6 @@ env = Environment(tools = ['default'],
 SConscript("cmigitsDaemon/SConscript")
 SConscript("fireflyd/SConscript")
 SConscript("hcr_xmit/SConscript")
-SConscript("hcrbscan/SConscript")
 SConscript("hcrdrx/SConscript")
 SConscript("hcrgui/SConscript")
 SConscript("HcrExecutive/SConscript")
