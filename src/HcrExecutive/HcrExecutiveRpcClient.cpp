@@ -28,12 +28,12 @@
  *      Author: burghart
  */
 
-#include <HcrExecutive/HcrExecutiveRpcClient.h>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <math.h>
 #include <logx/Logging.h>
+#include "HcrExecutiveRpcClient.h"
 
 LOGGING("HcrExecutiveRpcClient")
 
