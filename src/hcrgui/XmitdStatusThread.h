@@ -32,7 +32,7 @@
 #define XMITDSTATUSTHREAD_H_
 
 #include <XmitdRpcClient.h>
-#include <QThread>
+#include <QtCore/QThread>
 
 /// @brief Class providing a thread which gets hcr_xmitd status on a regular
 /// basis using a XmitdRpcClient connection.

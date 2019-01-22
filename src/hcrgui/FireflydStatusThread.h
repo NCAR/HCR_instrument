@@ -32,7 +32,7 @@
 #define FIREFLYSTATUSTHREAD_H_
 
 #include <fireflydRpcClient.h>
-#include <QThread>
+#include <QtCore/QThread>
 
 /// @brief Class providing a thread which gets fireflyd status on a regular
 /// basis using a fireflydRpcClient connection.

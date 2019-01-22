@@ -30,7 +30,7 @@
 #ifndef DATAMAPPERSTATUSTHREAD_H_
 #define DATAMAPPERSTATUSTHREAD_H_
 
-#include <QThread>
+#include <QtCore/QThread>
 #include <dsserver/DmapAccess.hh>
 
 /// @brief Class providing a thread which queries the DataMapper on a regular

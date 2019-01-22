@@ -43,8 +43,8 @@
 #include <vector>
 #include <unistd.h>
 #include <boost/program_options.hpp>
-#include <QApplication>
-#include <QMetaType>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QMetaType>
 #include <Cmigits.h>
 #include <CmigitsStatus.h>
 #include <HcrSharedResources.h>

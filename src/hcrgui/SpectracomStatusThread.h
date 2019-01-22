@@ -32,7 +32,7 @@
 #define SPECTRACOMSTATUSTHREAD_H_
 
 #include <SpectracomRpcClient.h>
-#include <QThread>
+#include <QtCore/QThread>
 
 /// @brief Class providing a thread which gets Spectracom status on a regular
 /// basis using a SpectracomRpcClient connection.

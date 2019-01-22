@@ -11,8 +11,8 @@
 #include <iomanip>
 #include <sstream>
 
-#include <QMessageBox>
-#include <QTextStream>
+#include <QtCore/QTextStream>
+#include <QtGui/QMessageBox>
 
 InsOverview::InsOverview(QWidget * parent) :
 QDialog(parent),

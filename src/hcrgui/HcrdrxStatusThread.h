@@ -32,7 +32,7 @@
 #define HCRDRXSTATUSTHREAD_H_
 
 #include <HcrdrxRpcClient.h>
-#include <QThread>
+#include <QtCore/QThread>
 
 /// @brief Class providing a thread which gets hcrdrx status on a regular
 /// basis using a HcrdrxRpcClient connection.

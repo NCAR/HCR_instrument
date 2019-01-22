@@ -28,7 +28,7 @@
  *      Author: burghart
  */
 #include "HcrExecutiveDetails.h"
-#include <QDateTime>
+#include <QtCore/QDateTime>
 #include <sstream>
 #include <iomanip>
 

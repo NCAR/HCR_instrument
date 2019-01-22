@@ -28,7 +28,7 @@
  *      Author: burghart
  */
 #include "Pmc730Details.h"
-#include <QDateTime>
+#include <QtCore/QDateTime>
 
 // Convert pressure in hPa to PSI
 static double
