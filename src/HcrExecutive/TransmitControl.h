@@ -70,8 +70,8 @@ public:
     typedef enum {
         XMIT_ALLOWED,                   ///< OK to transmit
 
-        BEGIN_ATTENUATE_MODES,  // Modes which require attenuation between here
-                                // and BEGIN_NOXMIT_MODES
+        BEGIN_ATTENUATE_MODES,  // Modes which require attenuation MUST be between
+                                // BEGIN_ATTENUATE_MODES and BEGIN_NOXMIT_MODES
 
         ATTENUATE_TOO_LOW_FOR_NADIR_POINTING,   ///< AGL altitude is too low for nadir pointing
         ATTENUATE_RCVD_POWER_TOO_HIGH,          ///< max received power is too high
