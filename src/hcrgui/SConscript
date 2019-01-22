@@ -18,7 +18,7 @@ SpectracomRpcClient
 xmitdrpcclient
 """)
 hcrguiEnv = Environment(tools = ['default'] + hcrguiTools)
-hcrguiEnv.EnableQtModules(['QtCore', 'QtWidgets', 'QtGui'])
+hcrguiEnv.EnableQtModules(['QtCore', 'QtGui'])
 
 hcrgui_sources = Split("""
 hcrgui.cpp
