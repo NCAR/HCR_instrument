@@ -11,7 +11,7 @@ tools = Split("""
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtNetwork'])
+env.EnableQtModules(['QtCore', 'QtNetwork'])
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory

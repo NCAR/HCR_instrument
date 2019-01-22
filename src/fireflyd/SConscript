@@ -18,7 +18,7 @@ fireflyd.cpp
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore'])
+env.EnableQtModules(['QtCore'])
 
 fireflyd = env.Program('fireflyd', sources)
 Default(fireflyd)

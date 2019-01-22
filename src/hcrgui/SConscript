@@ -18,7 +18,7 @@ SpectracomRpcClient
 xmitdrpcclient
 """)
 hcrguiEnv = Environment(tools = ['default'] + hcrguiTools)
-hcrguiEnv.EnableQt4Modules(['QtCore', 'QtGui'])
+hcrguiEnv.EnableQtModules(['QtCore', 'QtWidgets', 'QtGui'])
 
 hcrgui_sources = Split("""
 hcrgui.cpp
@@ -58,7 +58,7 @@ Pmc730Details.ui
 SpectracomDetails.ui
 XmitDetails.ui
 """)
-hcrguiEnv.Uic4(uifiles)
+hcrguiEnv.Uic(uifiles)
 
 # This generates the rules for *.qrc -> qrc_*.cc
 qrcfiles = Split("""

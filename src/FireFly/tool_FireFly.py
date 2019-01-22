@@ -12,7 +12,7 @@ tools = Split("""
     qt4
 """)
 env = Environment(tools=['default'] + tools)
-env.EnableQt4Modules(['QtCore'])
+env.EnableQtModules(['QtCore'])
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory

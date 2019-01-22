@@ -12,7 +12,7 @@ QXmlRpcServerAbyss
 """)
 
 xmitdEnv = Environment(tools = ['default'] + xmitdTools)
-xmitdEnv.EnableQt4Modules(['QtCore'])
+xmitdEnv.EnableQtModules(['QtCore'])
 
 xmitd_sources = Split("""
 hcr_xmitd.cpp

@@ -12,7 +12,7 @@ tools = Split('''
 motionControlDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtNetwork'])
+env.EnableQtModules(['QtCore', 'QtNetwork'])
 
 # Create the CanFestival object dictionary implementation files ElmoMasterNode.c 
 # and ElmoMasterNode.h from ElmoMasterNode.od

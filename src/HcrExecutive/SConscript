@@ -17,7 +17,7 @@ xmlrpc_client++
 ''')
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtXml'])
+env.EnableQtModules(['QtCore', 'QtXml'])
 
 sources = Split('''
     HcrExecutive.cpp

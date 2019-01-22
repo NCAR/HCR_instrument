@@ -18,6 +18,9 @@ QXmlRpcServerAbyss
 xmitdrpcclient
 """)
 
+env = Environment(tools = ['default'] + tools)
+env.EnableQtModules(['QtCore'])
+
 # Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
 # via the hcrdrxrpcclient tool
 sources = Split("""
@@ -40,8 +43,6 @@ IwrfExportInsPoller.h
 PulseData.h
 StatusGrabber.h
 """)
-
-env = Environment(tools = ['default'] + tools)
 
 hcrdrx = env.Program('hcrdrx', sources)
 

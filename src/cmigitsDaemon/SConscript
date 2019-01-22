@@ -13,7 +13,7 @@ QXmlRpcServerAbyss
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQt4Modules(['QtCore', 'QtGui'])
+env.EnableQtModules(['QtCore', 'QtGui'])
 
 sources = Split('''
 cmigitsDaemon.cpp
