@@ -42,7 +42,7 @@
 #include <QUdpSocket>
 #include <QFunctionWrapper.h>
 
-#include <XmlrpcSerializable.h>
+#include <Archive_xmlrpc_c.h>
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 

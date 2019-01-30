@@ -28,7 +28,7 @@
  *      Author: hcr
  */
 #include <sstream>
-#include <XmlrpcSerializable.h>
+#include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include "HcrPmc730Client.h"
 
