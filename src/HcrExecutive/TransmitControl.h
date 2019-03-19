@@ -114,6 +114,14 @@ public:
     /// @param hvRequested true if HV on is desired, false if HV off is desired
     void setHvRequested(bool hvRequested);
 
+    /// @brief Return the latest HcrPmc730Status obtained
+    /// @return the latest HcrPmc730Status obtained
+    HcrPmc730Status hcrPmc730Status() const { return(_hcrPmc730Status); }
+
+    /// @brief Return the latest MotionControl::Status obtained
+    /// @return the latest MotionControl::Status obtained
+    MotionControl::Status motionControlStatus() const { return(_motionControlStatus); }
+
 private slots:
     /// @brief Accept a new status from HcrPmc730Daemon and react if necessary
     /// @param status the new status from HcrPmc730Daemon

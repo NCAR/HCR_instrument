@@ -197,7 +197,9 @@ private:
         ar & BOOST_SERIALIZATION_NVP(_apsValveControlState);
         ar & BOOST_SERIALIZATION_NVP(_apsStatusText);
         ar & BOOST_SERIALIZATION_NVP(_hcrPmc730Responsive);
+        ar & BOOST_SERIALIZATION_NVP(_hcrPmc730Status);
         ar & BOOST_SERIALIZATION_NVP(_motionControlResponsive);
+        ar & BOOST_SERIALIZATION_NVP(_motionControlStatus);
         ar & BOOST_SERIALIZATION_NVP(_insInUse);
         ar & BOOST_SERIALIZATION_NVP(_insResponsive);
         ar & BOOST_SERIALIZATION_NVP(_terrainHtServerResponsive);
@@ -224,8 +226,14 @@ private:
     /// @brief Is HcrPmc730Daemon responsive?
     bool _hcrPmc730Responsive;
 
+    /// @brief Latest HcrPmc730 status
+    HcrPmc730Status _hcrPmc730Status;
+
     /// @brief Is MotionControlDaemon responsive?
     bool _motionControlResponsive;
+
+    /// @brief Latest MotionControl status
+    MotionControl::Status _motionControlStatus;
 
     /// @brief The INS currently in use (either 1 or 2)
     int _insInUse;
@@ -274,7 +282,6 @@ private:
     /// @brief String describing details of the last time high voltage was
     /// forced off because of high max power.
     std::string _detailsForLastHvOffForHighPower;
-
 };
 
 // Increment this class version number when member variables are changed.
