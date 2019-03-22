@@ -269,15 +269,19 @@ main(int argc, char *argv[]) {
     // Start a thread to get HcrPmc730Daemon status on a regular basis.
     HcrPmc730StatusThread hcrPmc730StatusThread("localhost",
                                                 HCRPMC730DAEMON_PORT);
+    QObject::connect(App, SIGNAL(aboutToQuit()),
+                     &hcrPmc730StatusThread, SLOT(quit()));
     hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
     MotionControlStatusThread mcStatusThread("localhost",
                                              MOTIONCONTROLDAEMON_PORT);
+    QObject::connect(App, SIGNAL(aboutToQuit()), &mcStatusThread, SLOT(quit()));
     mcStatusThread.start();
     
     // MaxPowerClient instance
     MaxPowerClient maxPowerClient("max_power_host", 13000);
+    QObject::connect(App, SIGNAL(aboutToQuit()), &maxPowerClient, SLOT(quit()));
     maxPowerClient.start();
     
     // Instantiate the object which will monitor pressure and control the
@@ -326,12 +330,18 @@ main(int argc, char *argv[]) {
     delete(TheTransmitControl);
     delete(TheApsControl);
 
-    maxPowerClient.quit();
-    maxPowerClient.wait(500);
-    mcStatusThread.quit();
-    mcStatusThread.wait(500);
-    hcrPmc730StatusThread.quit();
-    hcrPmc730StatusThread.wait(500);
+    // Wait up to 1/2 second (max) for all of our threads to finish
+    int maxWaitMsecs = 500;
+    QDateTime giveUpTime(QDateTime::currentDateTime().addMSecs(maxWaitMsecs));
+    if (! maxPowerClient.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
+        WLOG << "maxPowerClient is still running at exit";
+    }
+    if (! mcStatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
+        WLOG << "mcStatusThread is still running at exit";
+    }
+    if (! hcrPmc730StatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
+        WLOG << "hcrPmc730StatusThread is still running at exit";
+    }
 
     ILOG << "HcrExecutive (" << getpid() << ") exiting";
 
