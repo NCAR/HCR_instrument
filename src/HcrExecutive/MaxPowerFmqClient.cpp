@@ -93,8 +93,9 @@ MaxPowerFmqClient::_doFmqRead() {
     bool gotOne;
     _fmq.readMsg(&gotOne);
     if (gotOne) {
+        // Copy the message, trimming the trailing newline
         QByteArray msg(reinterpret_cast<const char*>(_fmq.getMsg()),
-                       _fmq.getMsgLen());
+                       _fmq.getMsgLen() - 1);
         _handleMaxPowerElement(msg);
     }
 }
