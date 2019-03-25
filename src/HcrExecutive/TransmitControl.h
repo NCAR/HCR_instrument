@@ -42,7 +42,7 @@
 #include <xmlrpc-c/client_simple.hpp>
 
 class HcrPmc730StatusThread;
-class MaxPowerClient;
+class MaxPowerFmqClient;
 
 /// Class providing implementation for handling the transmitter high voltage
 /// enable line, monitoring for whether conditions allow for safe
@@ -59,11 +59,11 @@ public:
     /// provide status from HcrPmc730Daemon
     /// @param mcStatusThread the MotionControlStatusThread which will provide
     /// status from MotionControlDaemon
-    /// @param maxPowerThread the MaxPowerClient thread which will provide
+    /// @param maxPowerClient the MaxPowerFmqClient which will provide
     /// updates on maximum received power
     TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
-            MotionControlStatusThread & mcStatusThread,
-            MaxPowerClient & maxPowerThread);
+                    MotionControlStatusThread & mcStatusThread,
+                    MaxPowerFmqClient & maxPowerClient);
     virtual ~TransmitControl();
 
     /// @brief Enum for status of tests of whether we can transmit

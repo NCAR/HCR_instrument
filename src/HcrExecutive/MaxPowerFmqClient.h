@@ -22,28 +22,30 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * MaxPowerClient.h
+ * MaxPowerFmqClient.h
  *
- *  Created on: Oct 29, 2014
- *      Author: burghart
+ *  Created on: Mar 22, 2019
+ *      Author: Chris Burghart <burghart@ucar.edu>
  */
 
-#ifndef MAXPOWERCLIENT_H_
-#define MAXPOWERCLIENT_H_
+#ifndef MAXPOWERFMQCLIENT_H_
+#define MAXPOWERFMQCLIENT_H_
 
 #include <string>
+#include <Fmq/Fmq.hh>
+
 #include <QByteArray>
-#include <QTcpSocket>
-#include <QThread>
 #include <QTimer>
 
 class QDomDocument;
 
-class MaxPowerClient : public QThread {
+/// @brief Class which polls a given FMQ for radar max power elements, emitting
+/// newMaxPower signals when new elements are seen.
+class MaxPowerFmqClient : public QObject {
     Q_OBJECT
 public:
-    MaxPowerClient(std::string serverHost, int serverPort);
-    virtual ~MaxPowerClient();
+    MaxPowerFmqClient(std::string fmqUrl);
+    virtual ~MaxPowerFmqClient();
     
     void run();
 signals:
@@ -69,22 +71,13 @@ signals:
     
 private slots:
 
-    /// @brief Slot to be called on connect to server
-    void _onConnect();
+    /// @brief Slot which reads any max power packets currently in the FMQ
+    /// and emits a newMaxPower() signal for the last one, if any, found.
+    ///
+    /// As a rule, this will execute often enough that only 0 or 1 packet is
+    /// found.
+    void _doFmqRead();
     
-    /// @brief Slot to be called on disconnect from server
-    void _onDisconnect();
-    
-    /// @brief Slot to be called when new data arrive from the server
-    void _readData();
-    
-    /// @brief Slot to be called on socket errors
-    /// @param error the socket error which occurred
-    void _onSocketError(QAbstractSocket::SocketError error);
-    
-    /// @brief Start a connection attempt with our server
-    void _tryToConnect();
-
     /// @brief Slot to be called when the last received max power value is
     /// considered too old
     void _onDwellTimeout();
@@ -95,10 +88,6 @@ private:
     
     /// @brief Text marking the end of a TsPrintMaxPower element
     static const QByteArray ELEMENT_END_TEXT;
-    
-    /// @brief Parse our _unparsedData array, handling each complete 
-    /// TsPrintMaxPower element found, and removing parsed data.
-    void _parseUnparsedData();
     
     /// @brief Deal with a max power XML element, which should be of the
     /// form:
@@ -121,10 +110,6 @@ private:
     /// @param text the text of the max power XML element
     void _handleMaxPowerElement(const QByteArray & text);
     
-    /// @brief Set up a timer to trigger an attempt to connect to the server
-    /// after a brief wait.
-    void _setUpDelayedConnectRetry();
-    
     /// @brief Return the text of the requested element from the given DOM
     /// document as a QString
     /// @param doc the QDomDocument from which to extract the desired element
@@ -133,16 +118,12 @@ private:
     /// @return the text of the requested DOM document element as a QString
     static QString _DocElementText(const QDomDocument & doc, QString elementName);
     
-    /// @brief name of the host where the MaxPowerServer (a special TsPrint 
-    /// process) is running
-    std::string _serverHost;
-    
-    /// @brief port number on which the server is listening
-    int _serverPort;
-    
-    /// @brief socket for our connection to the server
-    QTcpSocket _socket;
-    
+    /// @brief FMQ providing max power data
+    Fmq _fmq;
+
+    /// @brief Timer to drive periodic polling of the FMQ
+    QTimer _fmqPollTimer;
+
     /// @brief dwell period of the last received max power element
     double _dwellSecs;
 
@@ -150,9 +131,9 @@ private:
     /// before the server is considered to be unresponsive
     static constexpr float TIMEOUT_DWELL_MULTIPLE = 1.5;
 
-    /// @brief timer started on receipt of a max power element which expires
+    /// @brief timer started on receipt of a new max power element and expires
     /// after TIMEOUT_DWELL_MUTIPLE * the max power element's dwell time
-    QTimer * _dwellTimeoutTimer;
+    QTimer _dwellTimeoutTimer;
 
     /// @brief True iff the server is responding 
     bool _serverResponsive;

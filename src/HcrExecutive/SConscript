@@ -21,11 +21,11 @@ env.EnableQtModules(['QtCore', 'QtXml'])
 
 sources = Split('''
     HcrExecutive.cpp
-    MaxPowerClient.cpp
+    MaxPowerFmqClient.cpp
 ''')
 
 headers = Split('''
-    MaxPowerClient.h
+    MaxPowerFmqClient.h
 ''')
 
 daemon = env.Program('HcrExecutive', sources)

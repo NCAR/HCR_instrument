@@ -58,7 +58,7 @@
 #include "../HcrSharedResources.h"
 #include "ApsControl.h"
 #include "HcrExecutiveStatus.h"
-#include "MaxPowerClient.h"
+#include "MaxPowerFmqClient.h"
 #include "TransmitControl.h"
 
 LOGGING("HcrExecutive")
@@ -279,10 +279,9 @@ main(int argc, char *argv[]) {
     QObject::connect(App, SIGNAL(aboutToQuit()), &mcStatusThread, SLOT(quit()));
     mcStatusThread.start();
     
-    // MaxPowerClient instance
-    MaxPowerClient maxPowerClient("max_power_host", 13000);
+    // MaxPowerFmqClient instance
+    MaxPowerFmqClient maxPowerClient("fmqp:://localhost::/tmp/fmq/max_power/wband/shmem_15000");
     QObject::connect(App, SIGNAL(aboutToQuit()), &maxPowerClient, SLOT(quit()));
-    maxPowerClient.start();
     
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
@@ -291,7 +290,8 @@ main(int argc, char *argv[]) {
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
     TheTransmitControl = new TransmitControl(hcrPmc730StatusThread, 
-            mcStatusThread, maxPowerClient);
+                                             mcStatusThread,
+                                             maxPowerClient);
     
     // catch a control-C or kill to shut down cleanly
     signal(SIGINT, sigHandler);
@@ -333,9 +333,6 @@ main(int argc, char *argv[]) {
     // Wait up to 1/2 second (max) for all of our threads to finish
     int maxWaitMsecs = 500;
     QDateTime giveUpTime(QDateTime::currentDateTime().addMSecs(maxWaitMsecs));
-    if (! maxPowerClient.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
-        WLOG << "maxPowerClient is still running at exit";
-    }
     if (! mcStatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
         WLOG << "mcStatusThread is still running at exit";
     }

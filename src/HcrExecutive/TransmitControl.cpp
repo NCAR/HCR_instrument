@@ -29,7 +29,7 @@
  */
 
 #include "TransmitControl.h"
-#include "MaxPowerClient.h"
+#include "MaxPowerFmqClient.h"
 
 #include <iomanip>
 #include <limits>
@@ -52,7 +52,7 @@ const std::string TERRAIN_HT_SERVER_URL = "http://archiver:9090/RPC2";
 
 TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
         MotionControlStatusThread & mcStatusThread,
-        MaxPowerClient & maxPowerThread) :
+        MaxPowerFmqClient & maxPowerClient) :
     _xmlrpcClient(),
     _hcrPmc730Client(hcrPmc730StatusThread.rpcClient()),
     _hcrPmc730Responsive(false),
@@ -101,11 +101,11 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     
     // Call _updateMaxPower when new max powers arrive from the TsPrint max
     // power server
-    connect(&maxPowerThread, SIGNAL(newMaxPower(double, double, double, double, double)),
+    connect(&maxPowerClient, SIGNAL(newMaxPower(double, double, double, double, double)),
             this, SLOT(_updateMaxPower(double, double, double, double, double)));
     
     // Call _setMaxPowerResponding when we get a responsiveness change signal
-    connect(&maxPowerThread, SIGNAL(serverResponsive(bool, QString)),
+    connect(&maxPowerClient, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_updateMaxPowerResponsive(bool, QString)));
     
     // Call _updateAglAltitude and mark the INS as responsive when we get new
