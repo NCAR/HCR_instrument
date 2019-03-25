@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * MaxPowerFmqClient.h
  *
@@ -46,7 +46,7 @@ class MaxPowerFmqClient : public QObject {
 public:
     MaxPowerFmqClient(std::string fmqUrl);
     virtual ~MaxPowerFmqClient();
-    
+
     void run();
 signals:
     /// @brief Signal emitted when the max power server becomes responsive or
@@ -56,7 +56,7 @@ signals:
     /// @param msg a message describing the associated event
     void serverResponsive(bool responsive, QString msg);
 
-    /// @brief Signal emitted when a new maximum power is received from 
+    /// @brief Signal emitted when a new maximum power is received from
     /// the TsPrint max power server.
     /// @param time the center time for of the max power dwell, seconds since
     ///    1970-01-01 00:00:00 UTC
@@ -68,7 +68,7 @@ signals:
     ///    server's dwell time, dBm
     void newMaxPower(double time, double dwellTime, double peakMaxPower,
             double rangeToPeakMax, double meanMaxPower);
-    
+
 private slots:
 
     /// @brief Slot which reads any max power packets currently in the FMQ
@@ -77,7 +77,7 @@ private slots:
     /// As a rule, this will execute often enough that only 0 or 1 packet is
     /// found.
     void _doFmqRead();
-    
+
     /// @brief Slot to be called when the last received max power value is
     /// considered too old
     void _onDwellTimeout();
@@ -85,10 +85,10 @@ private slots:
 private:
     /// @brief Text marking the start of a TsPrintMaxPower element
     static const QByteArray ELEMENT_START_TEXT;
-    
+
     /// @brief Text marking the end of a TsPrintMaxPower element
     static const QByteArray ELEMENT_END_TEXT;
-    
+
     /// @brief Deal with a max power XML element, which should be of the
     /// form:
     ///      <TsPrintMaxPower>
@@ -109,15 +109,15 @@ private:
     /// Emit a newMaxPower() signal if the element parses correctly.
     /// @param text the text of the max power XML element
     void _handleMaxPowerElement(const QByteArray & text);
-    
+
     /// @brief Return the text of the requested element from the given DOM
     /// document as a QString
     /// @param doc the QDomDocument from which to extract the desired element
-    /// @param elementName the name of the element to be extracted from the 
+    /// @param elementName the name of the element to be extracted from the
     /// document
     /// @return the text of the requested DOM document element as a QString
     static QString _DocElementText(const QDomDocument & doc, QString elementName);
-    
+
     /// @brief FMQ providing max power data
     Fmq _fmq;
 
@@ -135,9 +135,9 @@ private:
     /// after TIMEOUT_DWELL_MUTIPLE * the max power element's dwell time
     QTimer _dwellTimeoutTimer;
 
-    /// @brief True iff the server is responding 
+    /// @brief True iff the server is responding
     bool _serverResponsive;
-    
+
     /// @brief Data read from the socket but not yet parsed
     QByteArray _unparsedData;
 };
