@@ -280,7 +280,7 @@ main(int argc, char *argv[]) {
     mcStatusThread.start();
     
     // MaxPowerFmqClient instance
-    MaxPowerFmqClient maxPowerClient("fmqp:://localhost::/tmp/fmq/max_power/wband/shmem_15000");
+    MaxPowerFmqClient maxPowerClient("fmqp://localhost/tmp/fmq/max_power/wband/shmem_15000");
     QObject::connect(App, SIGNAL(aboutToQuit()), &maxPowerClient, SLOT(quit()));
     
     // Instantiate the object which will monitor pressure and control the
