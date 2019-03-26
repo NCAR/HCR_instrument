@@ -225,12 +225,13 @@ TransmitControl::_updateMaxPower(double centerTime, double dwellWidth,
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
     double doubleNow = tvNow.tv_sec + 1.0e-6 * tvNow.tv_usec;
-    QDateTime qNow = QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000);
     double latency = doubleNow - dwellEnd;
     if (latency > 0.3) {
-        WLOG << "Max power latency at " << 
-            qNow.toString("yyyyMMdd hh:mm:ss.zzz").toStdString() << ": " <<
-            doubleNow - centerTime << " s";
+        QDateTime qMaxPwrTime = QDateTime::fromTime_t(time_t(centerTime))
+                .addMSecs(int(centerTime * 1000) % 1000);
+        WLOG << "Latency for " <<
+            qMaxPwrTime.toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<
+            " max power report: " << doubleNow - centerTime << " s";
     }
     
     // Store the max power information and update control state
@@ -246,9 +247,9 @@ void
 TransmitControl::_updateMaxPowerResponsive(bool responding, QString msg) {
     _maxPowerResponsive = responding;
     if (_maxPowerResponsive) {
-        ILOG << "Got a response from TsPrint max power server";
+        ILOG << msg.toStdString();
     } else {
-        WLOG << "TsPrint max power server is not responding: " << msg.toStdString();
+        WLOG << msg.toStdString();
     }
     // Redo the monitoring tests
     _updateControlState();
