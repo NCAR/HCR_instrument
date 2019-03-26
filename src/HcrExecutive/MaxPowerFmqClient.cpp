@@ -43,61 +43,89 @@ const QByteArray MaxPowerFmqClient::ELEMENT_END_TEXT("</TsPrintMaxPower>");
 
 MaxPowerFmqClient::MaxPowerFmqClient(std::string fmqUrl) :
         _fmq(),
+        _fmqUrl(fmqUrl),
         _fmqPollTimer(),
-        _dwellSecs(),
-        _dwellTimeoutTimer(),
+        _reportIntervalSecs(),
+        _reportTimeoutTimer(),
         _serverResponsive(false) {
-    // Initialize our FMQ
-    int err = _fmq.initReadOnly(fmqUrl.c_str(), "MaxPowerFmqClient");
-    if (err) {
-        std::ostringstream os;
-        os << "Failed to open FMQ '" << fmqUrl << "'";
-        throw(std::runtime_error(os.str()));
-    }
-
     // We don't want our FMQ to generate PMU registration calls
     _fmq.setHeartbeat(NULL);
 
-    // Create and start a timer to poll the FMQ at a moderate rate
-    static const int POLL_RATE_HZ = 5;
-    _fmqPollTimer.setInterval(1000 / POLL_RATE_HZ); // poll time in ms
+    // Create and start a timer to poll the FMQ. We start with a (long) timer
+    // interval of FMQ_INIT_RETRY_MS until the FMQ is successfully
+    // initialized in _doFmqRead().
+    static const int FMQ_OPEN_RETRY_MS = 2000;
+    _fmqPollTimer.setInterval(FMQ_OPEN_RETRY_MS);
     connect(&_fmqPollTimer, SIGNAL(timeout()), this, SLOT(_doFmqRead()));
     _fmqPollTimer.start();
+
+    // Call _onReportTimeout() when the report timeout timer expires
+    connect(&_reportTimeoutTimer, SIGNAL(timeout()),
+            this, SLOT(_onReportTimeout()));
+
+    // Start with an immediate call to _doFmqRead. Subsequent calls to it
+    // will be triggered by _fmqPollTimer.
+    _doFmqRead();
 }
 
 MaxPowerFmqClient::~MaxPowerFmqClient() {
     // stop our timers
     _fmqPollTimer.stop();
-    _dwellTimeoutTimer.stop();
+    _reportTimeoutTimer.stop();
 }
 
 void
-MaxPowerFmqClient::_onDwellTimeout() {
+MaxPowerFmqClient::_onReportTimeout() {
     // It's been too long since the last report from the server. Mark it as
     // unresponsive.
     _serverResponsive = false;
+    _reportTimeoutTimer.stop();
     std::ostringstream os;
-    os << "No new value for " << TIMEOUT_DWELL_MULTIPLE * _dwellSecs <<
-            " s. Previous dwell time was " << _dwellSecs << " s";
-    ILOG << os.str();
+    os << "No max power value for " <<
+          TIMEOUT_REPORT_MULTIPLE * _reportIntervalSecs <<
+          " s. Previous report interval was " << _reportIntervalSecs << " s";
+    WLOG << os.str();
     emit serverResponsive(_serverResponsive, QString(os.str().c_str()));
 }
 
 void
 MaxPowerFmqClient::_doFmqRead() {
-    // Seek to the last element in the FMQ (or the end if the FMQ is empty)
-    _fmq.seek(Fmq::FMQ_SEEK_LAST);
-
-    // Read the last element (if any). If we get one, pass its contents on to
-    // be handled.
-    bool gotOne;
-    _fmq.readMsg(&gotOne);
-    if (gotOne) {
-        // Copy the message, trimming the trailing newline
-        QByteArray msg(reinterpret_cast<const char*>(_fmq.getMsg()),
-                       _fmq.getMsgLen() - 1);
-        _handleMaxPowerElement(msg);
+    // Open the FMQ if we haven't yet
+    if (! _fmq.isOpen()) {
+        // Try to initialize our FMQ for reading
+        int err = _fmq.initReadOnly(_fmqUrl.c_str(), "MaxPowerFmqClient");
+        if (err) {
+            WLOG << "Failed to initialize FMQ '" << _fmqUrl << " for reading";
+            return;
+        } else {
+            // With the FMQ open, we now poll faster to read the data
+            static const int FMQ_POLL_INTERVAL_MS = 50; // 50 ms -> 20 Hz
+            _fmqPollTimer.setInterval(FMQ_POLL_INTERVAL_MS);
+            ILOG << "FMQ '" << _fmqUrl << "' is now ready for reading";
+        }
     }
+
+    // Read all messages which have been added to the FMQ. If
+    int nread = 0;
+    while (true) {
+        bool gotOne;
+        _fmq.readMsg(&gotOne);
+        if (gotOne) {
+            nread++;
+        } else if (nread == 0) {
+            // Return now if we got no new messages
+            return;
+        } else {
+            // Break out when we're at the end of the FMQ
+            break;
+        }
+    }
+
+    // Copy the last message, trimming the trailing newline, and pass it on
+    // for handling
+    QByteArray msg(reinterpret_cast<const char*>(_fmq.getMsg()),
+                   _fmq.getMsgLen() - 1);
+    _handleMaxPowerElement(msg);
 }
 
 QString
@@ -128,6 +156,7 @@ MaxPowerFmqClient::_handleMaxPowerElement(const QByteArray & text) {
     double meanMaxDbm;    // mean of the maximum values during the dwell period
     double peakMaxDbm;    // absolute maximum during the dwell period
     double rangeToMax;    // range to the absolute maximum during the dwell period
+    double dwellSecs;     // dwell period for calculating max power
 
     try {
         // Initialize dataTime from the "time" child element (ISO time to the
@@ -145,7 +174,12 @@ MaxPowerFmqClient::_handleMaxPowerElement(const QByteArray & text) {
         // Unpack the parsed "dwellSecs" element, which is the period of time
         // over which the max power was measured.
         QString dwellSecsText = _DocElementText(doc, "dwellSecs");
-        _dwellSecs = dwellSecsText.toDouble();
+        dwellSecs = dwellSecsText.toDouble();
+
+        // Unpack the parsed "reportIntervalSecs" element, which is the period of time
+        // between max power reports.
+        QString reportIntervalText = _DocElementText(doc, "reportIntervalSecs");
+        _reportIntervalSecs = reportIntervalText.toDouble();
 
         // Get H channel mean max power over the max power server's dwell time
         // from "meanMaxDbm0" element
@@ -194,16 +228,16 @@ MaxPowerFmqClient::_handleMaxPowerElement(const QByteArray & text) {
     // Mark the server as responsive if it had been unresponsive
     if (! _serverResponsive) {
         _serverResponsive = true;
-        std::string msg("valid max power element received");
+        std::string msg("Max power server is delivering data");
         ILOG << msg;
         emit serverResponsive(_serverResponsive, QString(msg.c_str()));
     }
 
     // Start (or restart) the dwell timeout timer to fire if the next max power
-    // report does not arrive within TIMEOUT_DWELL_MULTIPLE * this report's
+    // report does not arrive within TIMEOUT_REPORT_MULTIPLE * this report's
     // dwell time.
-    _dwellTimeoutTimer.start(int(1000 * TIMEOUT_DWELL_MULTIPLE * _dwellSecs));
+    _reportTimeoutTimer.start(int(1000 * TIMEOUT_REPORT_MULTIPLE * _reportIntervalSecs));
 
     // Emit the new newMaxPower signal
-    emit(newMaxPower(secondsSinceEpoch, _dwellSecs, peakMaxDbm, rangeToMax, meanMaxDbm));
+    emit(newMaxPower(secondsSinceEpoch, dwellSecs, peakMaxDbm, rangeToMax, meanMaxDbm));
 }

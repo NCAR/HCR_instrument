@@ -67,7 +67,7 @@ signals:
     /// @param meanMaxPower mean maximum power, averaged over the max power
     ///    server's dwell time, dBm
     void newMaxPower(double time, double dwellTime, double peakMaxPower,
-            double rangeToPeakMax, double meanMaxPower);
+                     double rangeToPeakMax, double meanMaxPower);
 
 private slots:
 
@@ -80,7 +80,7 @@ private slots:
 
     /// @brief Slot to be called when the last received max power value is
     /// considered too old
-    void _onDwellTimeout();
+    void _onReportTimeout();
 
 private:
     /// @brief Text marking the start of a TsPrintMaxPower element
@@ -94,7 +94,8 @@ private:
     ///      <TsPrintMaxPower>
     ///        <time>2014-11-20T18:03:51</time>
     ///        <msecs>679</msecs>
-    ///        <dwellSecs>0.506881</dwellSecs>
+    ///        <dwellSecs>0.0101</dwellSecs>
+    ///        <reportIntervalSecs>0.1010</reportIntervalSecs>
     ///        <prf>9864.27</prf>
     ///        <nSamples>5000</nSamples>
     ///        <startGate>30</startGate>
@@ -121,19 +122,22 @@ private:
     /// @brief FMQ providing max power data
     Fmq _fmq;
 
+    /// @brief The URL for our FMQ
+    std::string _fmqUrl;
+
     /// @brief Timer to drive periodic polling of the FMQ
     QTimer _fmqPollTimer;
 
-    /// @brief dwell period of the last received max power element
-    double _dwellSecs;
+    /// @brief Report period as of the last received max power element
+    double _reportIntervalSecs;
 
-    /// @brief maximum number of power element dwell times which can elapse
+    /// @brief maximum number of power element report times which can elapse
     /// before the server is considered to be unresponsive
-    static constexpr float TIMEOUT_DWELL_MULTIPLE = 1.5;
+    static constexpr float TIMEOUT_REPORT_MULTIPLE = 1.5;
 
     /// @brief timer started on receipt of a new max power element and expires
-    /// after TIMEOUT_DWELL_MUTIPLE * the max power element's dwell time
-    QTimer _dwellTimeoutTimer;
+    /// after TIMEOUT_REPORT_MUTIPLE * the max power element's report interval
+    QTimer _reportTimeoutTimer;
 
     /// @brief True iff the server is responding
     bool _serverResponsive;
