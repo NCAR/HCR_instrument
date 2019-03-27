@@ -92,7 +92,7 @@ iwrf_fmq_path        /tmp/fmq/ts/wband/shmem_10000 # path for lock file, fmq is 
 iwrf_fmq_nslots                  100               # nslots should be small
 iwrf_fmq_bufsize                 1000000000        # 1 GB
 iwrf_fmq_npackets_per_message    100               # for efficiency we put multiple packets per msg
-iwrf_fmq_report_interval         -1                # set > 0 to activate
+iwrf_fmq_report_interval         1                # set > 0 to activate
 
 # TCP server only active if export_iwrf_via_fmq is 0 - see above
 
