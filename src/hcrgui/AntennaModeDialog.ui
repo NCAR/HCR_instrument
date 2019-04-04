@@ -245,7 +245,7 @@
        <item row="0" column="1">
         <widget class="QDoubleSpinBox" name="pointingSpinBox">
          <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="decimals">
           <number>1</number>
@@ -314,7 +314,7 @@
        <item row="0" column="1">
         <widget class="QDoubleSpinBox" name="ccwLimitSpinBox">
          <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="decimals">
           <number>1</number>
@@ -333,7 +333,7 @@
        <item row="1" column="1">
         <widget class="QDoubleSpinBox" name="cwLimitSpinBox">
          <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="decimals">
           <number>1</number>
@@ -362,7 +362,7 @@
        <item row="3" column="1">
         <widget class="QDoubleSpinBox" name="beamTiltSpinBox">
          <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="decimals">
           <number>1</number>
@@ -378,7 +378,7 @@
        <item row="2" column="1">
         <widget class="QDoubleSpinBox" name="scanRateSpinBox">
          <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
+          <enum>Qt::StrongFocus</enum>
          </property>
          <property name="decimals">
           <number>1</number>
