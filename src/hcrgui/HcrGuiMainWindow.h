@@ -47,7 +47,7 @@
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
-#include "SpectracomStatusThread.h"
+//#include "SpectracomStatusThread.h"
 #include "XmitdStatusThread.h"
 
 #include "ui_HcrGuiMainWindow.h"
@@ -61,7 +61,7 @@
 #include "InsOverview.h"
 #include "MotionControlDetails.h"
 #include "Pmc730Details.h"
-#include "SpectracomDetails.h"
+//#include "SpectracomDetails.h"
 #include "XmitDetails.h"
 
 #include "AntennaModeDialog.h"
@@ -94,7 +94,7 @@ private slots:
     void on_insOverviewButton_clicked();
     void on_mcDetailsButton_clicked();
     void on_pmc730DetailsButton_clicked();
-    void on_spectracomDetailsButton_clicked();
+//    void on_spectracomDetailsButton_clicked();
     void on_xmitterDetailsButton_clicked();
 
     /// @brief Update GUI state based on _xmitStatus and _pmcStatus
@@ -163,12 +163,12 @@ private slots:
     /// @brief Save the last status received from fireflyd.
     /// @param status the last status received from fireflyd.
     void _setFireFlyStatus(FireFlyStatus status);
-    /// @brief Slot to call when SpectracomDaemon responsiveness changes.
-    /// @param responding True iff the server is currently responsive.
-    void _spectracomResponsivenessChange(bool responding);
-    /// @brief Save the last status received from SpectracomDaemon.
-    /// @param status the last status received from SpectracomDaemon.
-    void _setSpectracomStatus(SpectracomStatus status);
+//    /// @brief Slot to call when SpectracomDaemon responsiveness changes.
+//    /// @param responding True iff the server is currently responsive.
+//    void _spectracomResponsivenessChange(bool responding);
+//    /// @brief Save the last status received from SpectracomDaemon.
+//    /// @param status the last status received from SpectracomDaemon.
+//    void _setSpectracomStatus(SpectracomStatus status);
     /// @brief Slot to erase the angle display when angles are no longer valid
     void _timeoutAngleDisplay();
     /// @brief Slot called to pop up a dialog reporting forced shutoff of
@@ -225,7 +225,7 @@ private:
     InsOverview _insOverview;
     MotionControlDetails _motionControlDetails;
     Pmc730Details _pmc730Details;
-    SpectracomDetails _spectracomDetails;
+//    SpectracomDetails _spectracomDetails;
     XmitDetails _xmitDetails;
     
     AntennaModeDialog _antennaModeDialog;
@@ -235,7 +235,7 @@ private:
     CmigitsStatusThread _ins2StatusThread;
     DataMapperStatusThread _dataMapperStatusThread;
     FireflydStatusThread _fireflydStatusThread;
-    SpectracomStatusThread _spectracomStatusThread;
+//    SpectracomStatusThread _spectracomStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrExecutiveStatusThread _hcrExecutiveStatusThread;
     MotionControlStatusThread _mcStatusThread;
@@ -254,8 +254,8 @@ private:
     bool _rdsXmitControl;
     /// Last status obtained from fireflyd
     FireFlyStatus _fireflydStatus;
-    /// Last status obtained from SpectracomDaemon
-    SpectracomStatus _spectracomStatus;
+//    /// Last status obtained from SpectracomDaemon
+//    SpectracomStatus _spectracomStatus;
     /// Last status from the MotionControlDaemon
     MotionControl::Status _mcStatus;
     /// Last status read from HcrPmc730Daemon

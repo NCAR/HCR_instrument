@@ -67,14 +67,14 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _insOverview(this),
     _motionControlDetails(this),
     _pmc730Details(this),
-    _spectracomDetails(this),
+//    _spectracomDetails(this),
     _xmitDetails(this),
     _antennaModeDialog(this),
     _ins1StatusThread(rdsHost, ins1Port),
     _ins2StatusThread(rdsHost, ins2Port),
     _dataMapperStatusThread(),
     _fireflydStatusThread(archiverHost, fireflydPort),
-    _spectracomStatusThread(archiverHost, spectracomPort),
+//    _spectracomStatusThread(archiverHost, spectracomPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
     _hcrExecutiveStatusThread(rdsHost, hcrExecutivePort),
     _mcStatusThread(rdsHost, motionControlPort),
@@ -112,10 +112,10 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             fireflydPort;
     _logMessage(ss.str());
 
-    ss.str("");
-    ss << "No response yet from SpectracomDaemon at " << archiverHost << ":" <<
-            spectracomPort;
-    _logMessage(ss.str());
+//    ss.str("");
+//    ss << "No response yet from SpectracomDaemon at " << archiverHost << ":" <<
+//            spectracomPort;
+//    _logMessage(ss.str());
 
     ss.str("");
     ss << "No response yet from HcrPmc730Daemon at " << rdsHost << ":" <<
@@ -149,8 +149,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.hcrExecutiveStatusIcon->setPixmap(_redLED);
     _ui.mcStatusIcon->setPixmap(_redLED);
     _ui.pmc730StatusIcon->setPixmap(_redLED);
-    _ui.spectracomStatusIcon->setPixmap(_redLED);
+//    _ui.spectracomStatusIcon->setPixmap(_redLED);
     _ui.xmitterStatusIcon->setPixmap(_redLED);
+
+    // Disable Spectracom widgets
+    _ui.spectracomStatusIcon->setEnabled(false);
+    _ui.spectracomStatusLabel->setEnabled(false);
+    _ui.spectracomDetailsButton->setEnabled(false);
 
     // Connect InsOverview's requestNewInsInUse(int) signal to our
     // _setMotionControlInsInUse(int) slot
@@ -222,12 +227,12 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_setFireFlyStatus(FireFlyStatus)));
     _fireflydStatusThread.start();
 
-    // Connect signals from our SpectracomStatusThread object and start the thread.
-    connect(& _spectracomStatusThread, SIGNAL(serverResponsive(bool)),
-            this, SLOT(_spectracomResponsivenessChange(bool)));
-    connect(& _spectracomStatusThread, SIGNAL(newStatus(SpectracomStatus)),
-            this, SLOT(_setSpectracomStatus(SpectracomStatus)));
-    _spectracomStatusThread.start();
+//    // Connect signals from our SpectracomStatusThread object and start the thread.
+//    connect(& _spectracomStatusThread, SIGNAL(serverResponsive(bool)),
+//            this, SLOT(_spectracomResponsivenessChange(bool)));
+//    connect(& _spectracomStatusThread, SIGNAL(newStatus(SpectracomStatus)),
+//            this, SLOT(_setSpectracomStatus(SpectracomStatus)));
+//    _spectracomStatusThread.start();
 
     // QUdpSocket listening for broadcast of angles
     _angleSocket.bind(45454, QUdpSocket::ShareAddress);
@@ -474,33 +479,33 @@ HcrGuiMainWindow::_setFireFlyStatus(FireFlyStatus status) {
     _update();
 }
 
-void
-HcrGuiMainWindow::_spectracomResponsivenessChange(bool responding) {
-    // log the responsiveness change
-    std::ostringstream ss;
-    ss << "SpectracomDaemon @ " <<
-            _spectracomStatusThread.rpcClient().getDaemonHost() << ":" <<
-            _spectracomStatusThread.rpcClient().getDaemonPort() <<
-            (responding ? " is " : " is not ") <<
-            "responding";
-    _logMessage(ss.str().c_str());
-
-    if (! responding) {
-        // Create a default (bad) SpectracomStatus, and set it as the last
-        // status received.
-        _setSpectracomStatus(SpectracomStatus());
-    }
-}
-
-void
-HcrGuiMainWindow::_setSpectracomStatus(SpectracomStatus status) {
-    _spectracomStatus = status;
-    // Update the Spectracom status details dialog
-    _spectracomDetails.updateStatus(_spectracomStatusThread.serverIsResponding(),
-            _spectracomStatus);
-    // Update the main GUI
-    _update();
-}
+//void
+//HcrGuiMainWindow::_spectracomResponsivenessChange(bool responding) {
+//    // log the responsiveness change
+//    std::ostringstream ss;
+//    ss << "SpectracomDaemon @ " <<
+//            _spectracomStatusThread.rpcClient().getDaemonHost() << ":" <<
+//            _spectracomStatusThread.rpcClient().getDaemonPort() <<
+//            (responding ? " is " : " is not ") <<
+//            "responding";
+//    _logMessage(ss.str().c_str());
+//
+//    if (! responding) {
+//        // Create a default (bad) SpectracomStatus, and set it as the last
+//        // status received.
+//        _setSpectracomStatus(SpectracomStatus());
+//    }
+//}
+//
+//void
+//HcrGuiMainWindow::_setSpectracomStatus(SpectracomStatus status) {
+//    _spectracomStatus = status;
+//    // Update the Spectracom status details dialog
+//    _spectracomDetails.updateStatus(_spectracomStatusThread.serverIsResponding(),
+//            _spectracomStatus);
+//    // Update the main GUI
+//    _update();
+//}
 
 void
 HcrGuiMainWindow::_hcrExecutiveResponsivenessChange(bool responding, QString msg) {
@@ -848,10 +853,10 @@ HcrGuiMainWindow::on_fireflydDetailsButton_clicked() {
     _fireflydDetails.show();
 }
 
-void
-HcrGuiMainWindow::on_spectracomDetailsButton_clicked() {
-    _spectracomDetails.show();
-}
+//void
+//HcrGuiMainWindow::on_spectracomDetailsButton_clicked() {
+//    _spectracomDetails.show();
+//}
 
 void
 HcrGuiMainWindow::on_hcrExecutiveDetailsButton_clicked() {
@@ -1086,21 +1091,21 @@ HcrGuiMainWindow::_update() {
     }
     _ui.fireflydStatusIcon->setPixmap(light);
 
-    // Spectracom status LED
-    switch (_spectracomStatus.simpleStatus()) {
-    case 0:     // good status
-        light = _greenLED;
-        break;
-    case 1:     // minor issue(s)
-        light = _amberLED;
-        break;
-    case 2:     // major issue(s)
-        light = _redLED;
-        break;
-    default:    // shouldn't get here...
-        light = _greenLED_off;
-    }
-    _ui.spectracomStatusIcon->setPixmap(light);
+//    // Spectracom status LED
+//    switch (_spectracomStatus.simpleStatus()) {
+//    case 0:     // good status
+//        light = _greenLED;
+//        break;
+//    case 1:     // minor issue(s)
+//        light = _amberLED;
+//        break;
+//    case 2:     // major issue(s)
+//        light = _redLED;
+//        break;
+//    default:    // shouldn't get here...
+//        light = _greenLED_off;
+//    }
+//    _ui.spectracomStatusIcon->setPixmap(light);
 
     // HcrExecutive status LED
     if (! _hcrExecutiveStatusThread.serverIsResponding()) {
