@@ -40,12 +40,8 @@ RadToDeg(double rad) {
 static inline
 double
 GroundTrack(double velNorth, double velEast) {
-    // Return track of zero if both arguments are zero.
-    if (velNorth == 0.0 && velEast == 0.0) {
-        return(0.0);
-    }
     // Calculate the track in degrees clockwise from true north
-    double groundTrack = RadToDeg(atan2(velNorth, velEast));
+    double groundTrack = RadToDeg(atan2(velEast, velNorth));
     if (groundTrack < 0.0) {
         groundTrack += 360.0;
     }
