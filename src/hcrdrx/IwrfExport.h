@@ -174,7 +174,7 @@ private:
   iwrf_platform_georef_t _radarGeoref;
   iwrf_ts_processing_t _tsProc;
   IwrfCalib _calib;
-  iwrf_scan_segment_t _simScan;
+  iwrf_scan_segment_t _scanSegment;
   iwrf_pulse_header_t _pulseHdr;
 
   /// Export via TCP

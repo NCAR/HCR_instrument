@@ -38,9 +38,9 @@
 #include <toolsa/TaXml.hh>
 #include <toolsa/toolsa_macros.h>
 
-#include <QCoreApplication>
-#include <QDateTime>
-#include <QWriteLocker>
+#include <QtCore>
+#include <QtCore>
+#include <QtCore>
 
 LOGGING("IwrfExport")
 
@@ -162,8 +162,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
 
   // initialize IWRF scan segment for simulation angles
 
-  iwrf_scan_segment_init(_simScan);
-  _simScan.scan_mode = IWRF_SCAN_MODE_AZ_SUR_360;
+  iwrf_scan_segment_init(_scanSegment);
 
   // initialize pulse header
 
@@ -1102,7 +1101,7 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
   // Period of sleep between tests for new INS data. Leave this
   // number small, since tests using 1000 us caused system instability with
   // Pentek data sync errors and DMA overruns.
-  static const int SLEEP_US = 100;
+  static const uint32_t SLEEP_US = 100;
 
   int total_wait_us = 0;
   while (waitForIns1 || waitForIns2) {
