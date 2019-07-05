@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>703</width>
-    <height>472</height>
+    <width>693</width>
+    <height>462</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -977,6 +977,9 @@ EMS Errors</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item row="1" column="3">
@@ -992,6 +995,9 @@ EMS Errors</string>
            </property>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -1009,6 +1015,9 @@ EMS Errors</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item row="3" column="3">
@@ -1024,6 +1033,9 @@ EMS Errors</string>
            </property>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -1041,6 +1053,9 @@ EMS Errors</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item row="5" column="3">
@@ -1056,6 +1071,9 @@ EMS Errors</string>
            </property>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -1073,6 +1091,9 @@ EMS Errors</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item row="7" column="3">
@@ -1089,6 +1110,9 @@ EMS Errors</string>
            <property name="pixmap">
             <pixmap resource="HcrGuiMainWindow.qrc">:/greenLED_off.png</pixmap>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
           </widget>
          </item>
          <item row="8" column="3">
@@ -1099,8 +1123,17 @@ EMS Errors</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>64</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>0000000</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
