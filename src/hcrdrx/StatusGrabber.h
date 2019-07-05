@@ -49,8 +49,8 @@
 class QUdpSocket;
 
 /// @brief QThread object which regularly polls for status from HcrPmc730Daemon,
-/// hcr_xmitd, and the Pentek card. The API provides access to the latest status
-/// obtained from each of these.
+/// hcr_xmitd, the Pentek card, and MotionControlDaemon. The API provides access
+/// to the latest status obtained from each of these.
 class StatusGrabber : public QThread {
     Q_OBJECT
 public:
