@@ -81,14 +81,22 @@ CmigitsDetails::updateStatus(bool daemonResponding,
             expectedHPosError, expectedVPosError, expectedVelocityError);
     _ui.statusTimeValue->setText(QDateTime::fromTime_t(uint32_t(statusTime)).toUTC().toString("hh:mm:ss"));
     _ui.insValue->setPixmap(insAvailable ? _greenLED : _redLED);
-    _ui.gpsValue->setPixmap(gpsAvailable ? _greenLED : _redLED);
+    if (! gpsAvailable) {
+        _ui.gpsValue->setPixmap(_redLED);
+    } else if (nSats <= 5) {
+        // 4 satellites are required for a solution. If 5 or 4 satellites are
+        // in the current solution, mark it as marginal.
+        _ui.gpsValue->setPixmap(_amberLED);
+    } else {
+        _ui.gpsValue->setPixmap(_greenLED);
+    }
+    _ui.satCountValue->setText(QString::number(nSats));
     _ui.coarsAlignValue->setPixmap(doingCoarseAlignment ? _amberLED : _greenLED_off);
     // Green light for mode 7 or 8 (air or land navigation), amber for
     // anything else
     _ui.currentModeIcon->setPixmap((currentMode == 7 || currentMode == 8) ?
             _greenLED : _amberLED);
     _ui.currentModeValue->setText(Cmigits::ModeName(currentMode).c_str());
-    _ui.satCountValue->setText(QString::number(nSats));
     _ui.positionFOMValue->setText(Cmigits::PositionFOMString(positionFOM).c_str());
     _ui.velocityFOMValue->setText(Cmigits::VelocityFOMString(velocityFOM).c_str());
     _ui.headingFOMValue->setText(Cmigits::HeadingFOMString(headingFOM).c_str());

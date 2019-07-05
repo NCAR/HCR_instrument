@@ -959,14 +959,15 @@ HcrGuiMainWindow::_update() {
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
     // INS1 status light:
-    // Green light if mode is "Air Navigation" or "Land Navigation"
+    // Green light if mode is "Air Navigation" or "Land Navigation" and we have
+    // more than 5 satellites in the current solution.
     // Amber light if we have both INS and GPS
     // Red light otherwise
     uint16_t mode = _ins1Status.currentMode();
-    if (mode == 7 || mode == 8) {
+    if ((mode == 7 || mode == 8) && _ins1Status.nSats() > 5) {
         light = _greenLED;
     } else if (_ins1Status.insAvailable() &&
-            _ins1Status.gpsAvailable()) {
+               _ins1Status.gpsAvailable()) {
         light = _amberLED;
     } else {
         light = _redLED;
@@ -977,14 +978,15 @@ HcrGuiMainWindow::_update() {
     _ui.ins1StatusLabel->setEnabled(_mcStatus.insInUse == 1);
 
     // INS2 status light:
-    // Green light if mode is "Air Navigation" or "Land Navigation"
+    // Green light if mode is "Air Navigation" or "Land Navigation" and we have
+    // more than 5 satellites in the current solution.
     // Amber light if we have both INS and GPS
     // Red light otherwise
     mode = _ins2Status.currentMode();
-    if (mode == 7 || mode == 8) {
+    if ((mode == 7 || mode == 8) && _ins2Status.nSats() > 5) {
         light = _greenLED;
     } else if (_ins2Status.insAvailable() &&
-            _ins2Status.gpsAvailable()) {
+               _ins2Status.gpsAvailable()) {
         light = _amberLED;
     } else {
         light = _redLED;
