@@ -87,8 +87,9 @@ public:
 
     /// Antenna motion mode: pointing or scanning
     typedef enum {
-        POINTING,
-        SCANNING
+        MODE_POINTING,
+        MODE_SCANNING,
+        MODE_UNDEFINED
     } AntennaMode;
 
     /// @brief Return the current antenna mode.

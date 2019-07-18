@@ -613,7 +613,7 @@ TransmitControl::_anyNearNadirPointing() {
     double nearNadirCcwLimit = 180 - _NEAR_NADIR_TOLERANCE_DEG;
     double nearNadirCwLimit = 180 + _NEAR_NADIR_TOLERANCE_DEG;
 
-    if (_motionControlStatus.antennaMode == MotionControl::POINTING) {
+    if (_motionControlStatus.antennaMode == MotionControl::MODE_POINTING) {
         // pointing
         return(_ArcContainsAngle(nearNadirCcwLimit, nearNadirCwLimit,
                 _motionControlStatus.fixedPointingAngle));
@@ -639,7 +639,7 @@ TransmitControl::_allNearZenithPointing() {
     double nearZenithCcwLimit = -_NEAR_ZENITH_TOLERANCE_DEG;
     double nearZenithCwLimit = _NEAR_ZENITH_TOLERANCE_DEG;
 
-    if (_motionControlStatus.antennaMode == MotionControl::POINTING) {
+    if (_motionControlStatus.antennaMode == MotionControl::MODE_POINTING) {
         // pointing
         return(_ArcContainsAngle(nearZenithCcwLimit, nearZenithCwLimit,
                 _motionControlStatus.fixedPointingAngle));

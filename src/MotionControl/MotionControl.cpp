@@ -56,7 +56,7 @@ MotionControl::MotionControl() :
 //    _rotDrive(ROT_DRIVE_TTYDEV),
     _tiltDrive(TILT_DRIVE_CANOPEN_ID),
 //    _tiltDrive(TILT_DRIVE_TTYDEV),
-    _antennaMode(POINTING),
+    _antennaMode(MODE_POINTING),
     _fixedPointingAngle(0.0),
     _scanBeamTilt(0.0),
     _ins1Fmq(INS1_FMQ_URL),
@@ -124,11 +124,14 @@ void MotionControl::correctForAttitude()
     }
 
     switch (_antennaMode) {
-    case POINTING:
+    case MODE_POINTING:
         _adjustPointingForAttitude(pitch, roll, drift);
         break;
-    case SCANNING:
+    case MODE_SCANNING:
         _adjustScanningForAttitude(pitch, roll, drift);
+        break;
+    case MODE_UNDEFINED:
+    default:
         break;
     }
 }
@@ -156,7 +159,7 @@ MotionControl::point(double angle)
     // Set up for fixed antenna pointing
     _fixedPointingAngle = angle;
     _scanBeamTilt = 0.0;
-    _antennaMode = POINTING;
+    _antennaMode = MODE_POINTING;
     _rotDrive.moveTo(angle);
     _tiltDrive.moveTo(_scanBeamTilt);
 }
@@ -193,7 +196,7 @@ MotionControl::scan(double ccwLimit, double cwLimit, double scanRate,
     _tiltDrive.moveTo(tiltDriveAngle);
 
     // Set up for antenna scanning
-    _antennaMode = SCANNING;
+    _antennaMode = MODE_SCANNING;
     _rotDrive.scan();
 }
 
@@ -210,14 +213,18 @@ MotionControl::setCorrectionEnabled(bool enabled) {
     // correction back to straight level attitude.
     if (turningOff) {
         switch (_antennaMode) {
-        case POINTING:
+        case MODE_POINTING:
             _adjustPointingForAttitude(0.0, 0.0, 0.0);
             break;
-        case SCANNING:
+        case MODE_SCANNING:
             // @TODO: Figure out how to handle this once corrected scanning
             // is implemented...
             WLOG << "***Need to implement scan cleanup when attitude correction "
                 "is disabled***";
+            break;
+        case MODE_UNDEFINED:
+        default:
+            // do nothing
             break;
         }
     }
@@ -339,7 +346,7 @@ MotionControl::Status::Status() :
     tiltDriveTemp(0),
     tiltDriveAngle(0.0),
     tiltDriveSystemTime(0),
-    antennaMode(POINTING),
+    antennaMode(MODE_POINTING),
     fixedPointingAngle(0.0),
     scanCcwLimit(0.0),
     scanCwLimit(0.0),
@@ -393,7 +400,7 @@ MotionControl::Status::Status(xmlrpc_c::value_struct & statusDict) :
     tiltDriveTemp(0),
     tiltDriveAngle(0.0),
     tiltDriveSystemTime(0),
-    antennaMode(POINTING),
+    antennaMode(MODE_POINTING),
     fixedPointingAngle(0.0),
     scanCcwLimit(0.0),
     scanCwLimit(0.0),
