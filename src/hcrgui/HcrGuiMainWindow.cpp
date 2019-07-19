@@ -1010,10 +1010,10 @@ HcrGuiMainWindow::_update() {
         // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
-        case MotionControl::POINTING:
+        case MotionControl::MODE_POINTING:
             ss << "Fixed pointing at " << _mcStatus.fixedPointingAngle << " deg";
             break;
-        case MotionControl::SCANNING:
+        case MotionControl::MODE_SCANNING:
             ss << "Scanning:\n" <<
                 "    from " << _mcStatus.scanCcwLimit << " deg CCW to " <<
                 _mcStatus.scanCwLimit << " deg CW\n" <<
@@ -1200,7 +1200,7 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 	double scanRange = cwLimit - ccwLimit;
 	if (scanRange < 0)
 		scanRange += 360;
-	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
+	if (_mcStatus.antennaMode == MotionControl::MODE_SCANNING) {
 	   	painter.setBrush(QColor(0, 200, 80));
 	   	painter.drawPie(13, 13, 64, 64, (90-ccwLimit)*16, -scanRange*16);
 	}
@@ -1230,7 +1230,7 @@ void HcrGuiMainWindow::_showRotAngle(float rotAngle)
 		painter.rotate(10);
 	}
 	// If we're scanning, indicate scanning limits
-	if (_mcStatus.antennaMode == MotionControl::SCANNING) {
+	if (_mcStatus.antennaMode == MotionControl::MODE_SCANNING) {
 	    pen.setColor("yellow");
 	    pen.setWidth(1);
 	    painter.setPen(pen);
