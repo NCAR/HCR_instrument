@@ -39,8 +39,6 @@
 #include <toolsa/toolsa_macros.h>
 
 #include <QtCore>
-#include <QtCore>
-#include <QtCore>
 
 LOGGING("IwrfExport")
 
@@ -53,6 +51,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _config(config),
         _monitor(monitor),
         _hmcMode(HcrPmc730::HMC_MODE_INVALID),
+        _antennaMode(MotionControl::MODE_UNDEFINED),
         _ins1WatchThread(*this, 1),
         _ins2WatchThread(*this, 2),
         _ins1Deque(),
@@ -159,10 +158,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _tsProc.gate_spacing_m = _config.digitizer_sample_width() * SpeedOfLight / 2;
   _tsProc.start_range_m = _config.range_to_gate0_m(); // center of gate 0 in meters
   _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
-
-  // initialize IWRF scan segment for simulation angles
-
-  iwrf_scan_segment_init(_scanSegment);
 
   // initialize pulse header
 
@@ -330,6 +325,10 @@ void IwrfExport::run()
     if (_monitor.pmc730Status().hmcMode() != _hmcMode) {
       sendMeta = true;
       _hmcMode = _monitor.pmc730Status().hmcMode();
+    }
+    if (_monitor.motionControlStatus().antennaMode != _antennaMode) {
+      sendMeta = true;
+      _antennaMode = _monitor.motionControlStatus().antennaMode;
     }
     if (_pulseSeqNum % _pulseIntervalPerIwrfMetaData == 0) {
       sendMeta = true;
@@ -572,37 +571,42 @@ int IwrfExport::_sendIwrfMetaData()
         break;
   }
 
+  // assemble the calibration struct
+
   iwrf_calibration_t calibStruct = _calib.getStruct();
   calibStruct.packet.seq_num = _packetSeqNum++;
   calibStruct.packet.time_secs_utc = _timeSecs;
   calibStruct.packet.time_nano_secs = _nanoSecs;
 
+  // Assemble our iwrf_scan_segment_t describing current scanning/pointing
+  _assembleIwrfScanSegment();
+
+
   if (_fmqOpen) {
 
+    // Write the IWRF packets to our FMQ
     _outputMsg.addPart(IWRF_RADAR_INFO_ID, sizeof(_radarInfo), &_radarInfo);
     _outputMsg.addPart(IWRF_TS_PROCESSING_ID, sizeof(_tsProc), &_tsProc);
     _outputMsg.addPart(IWRF_CALIBRATION_ID, sizeof(calibStruct), &calibStruct);
+    _outputMsg.addPart(IWRF_SCAN_SEGMENT_ID, sizeof(_scanSegment), &_scanSegment);
 
   } else {
     
-    // write individual messages for each struct
+    // publish individual messages for each struct to our socket
     
     bool closeSocket = false;
     
     if (_sock && _sock->writeBuffer(&_radarInfo, sizeof(_radarInfo))) {
-      ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
-      ELOG << "  Writing IWRF_RADAR_INFO";
-      ELOG << "  " << _sock->getErrStr();
+      ELOG << "_sendIwrfMetaData() writing IWRF_RADAR_INFO: " << _sock->getErrStr();
       closeSocket = true;
     } else if (_sock && _sock->writeBuffer(&_tsProc, sizeof(_tsProc))) {
-      ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
-      ELOG << "  Writing IWRF_TS_PROCESSING";
-      ELOG << "  " << _sock->getErrStr();
+      ELOG << "_sendIwrfMetaData() writing IWRF_TS_PROCESSING: " << _sock->getErrStr();
       closeSocket = true;
     } else if (_sock && _sock->writeBuffer(&calibStruct, sizeof(calibStruct))) {
-      ELOG << "ERROR - IwrfExport::_sendIwrfMetaData()";
-      ELOG << "  Writing IWRF_CALIBRATION";
-      ELOG << "  " << _sock->getErrStr();
+      ELOG << "_sendIwrfMetaData() writing IWRF_CALIBRATION: " << _sock->getErrStr();
+      closeSocket = true;
+    } else if (_sock && _sock->writeBuffer(&_scanSegment, sizeof(_scanSegment))) {
+      ELOG << "_sendIwrfMetaData() writing IWRF_SCAN_SEGMENT: " << _sock->getErrStr();
       closeSocket = true;
     }
     
@@ -1661,4 +1665,57 @@ int IwrfExport::_writeToOutputFmq(bool force)
   return 0;
 
 }
-    
+
+///////////////////////////////////////
+// Assemble our iwrf_scan_segment_t packet with current scanning/pointing mode
+
+void IwrfExport::_assembleIwrfScanSegment()
+
+{
+    // Start with a clean iwrf_scan_segment_t struct
+    iwrf_scan_segment_init(_scanSegment);
+
+    _scanSegment.packet.seq_num = _packetSeqNum++;
+    _scanSegment.packet.time_secs_utc = _timeSecs;
+    _scanSegment.packet.time_nano_secs = _nanoSecs;
+
+    // Populate _scanSegment using current information from the MotionControl
+    // daemon
+    auto scanStatus = _monitor.motionControlStatus();
+    switch (scanStatus.antennaMode) {
+    case MotionControl::MODE_POINTING:
+        // Build an iwrf_scan_segment for fixed pointing
+        // We abuse the definitions a bit, mapping our rotation fixed angle
+        // into the az_manual member and our beam tilt (0.0 as a rule) into the
+        // el_manual member.
+        _scanSegment.scan_mode = IWRF_SCAN_MODE_POINTING;
+        _scanSegment.az_manual = scanStatus.fixedPointingAngle;
+        _scanSegment.el_manual = scanStatus.scanBeamTilt;
+        break;
+    case MotionControl::MODE_SCANNING:
+        // Build an iwrf_scan_segment for scanning
+        // We map our rotation CCW limit into the left_limit member,
+        // rotation CW limit into the right_limit member, and scan beam tilt
+        // (0.0 as a rule) into the current_fixed_angle member.
+        _scanSegment.scan_mode = IWRF_SCAN_MODE_SECTOR;
+        _scanSegment.left_limit = scanStatus.scanCcwLimit;
+        _scanSegment.right_limit = scanStatus.scanCwLimit;
+        _scanSegment.current_fixed_angle = scanStatus.scanBeamTilt;
+        break;
+    default:
+        ELOG << "Unhandled MotionControl::AntennaMode " <<
+                scanStatus.antennaMode << " in _sendIwrfScanSegment!";
+        _scanSegment.scan_mode = IWRF_SCAN_MODE_NOT_SET;
+//        ELOG << "Raising SIGINT to exit the program";
+//        raise(SIGINT);
+    }
+
+    // XXX This piece was inherited from the apardrx code. I don't think it's
+    // necessary for HCR.
+//    // We use the polarization mode name as the segment name for ease in
+//    // configuring HawkEye displays
+//    strncpy(_scanSegment.segment_name,
+//            APAR_Config::PolarizationModeName(_config.polarization_mode()).c_str(),
+//            IWRF_MAX_SEGMENT_NAME - 1);
+
+}

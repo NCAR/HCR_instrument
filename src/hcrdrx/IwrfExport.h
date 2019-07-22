@@ -195,8 +195,11 @@ private:
   DsMessage _outputMsg;
   bool _firstFmqMessage;
   
-  /// current HMC operation mode
+  /// @brief current HMC operation mode
   HcrPmc730::HmcOperationMode _hmcMode;
+
+  /// @brief current MotionControlDaemon antenna mode
+  MotionControl::AntennaMode _antennaMode;
   
   // elevation and azimuth from reflector rotation and tilt
 
@@ -294,6 +297,9 @@ private:
   int _writeToOutputFmq(bool force = false);
   int _writeEndOfVol();
 
+  /// @brief Create and publish an iwrf_scan_segment packet describing the
+  /// current scanning/pointing mode
+  void _assembleIwrfScanSegment();
 };
 
 #endif /* IWRF_EXPORT_H_ */
