@@ -33,6 +33,7 @@
 #include <csignal>
 #include <sys/time.h>
 
+#include <boost/program_options.hpp>
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 #include <HcrPmc730.h>
@@ -51,6 +52,7 @@
 
 LOGGING("HcrPmc730Daemon")
 
+namespace po = boost::program_options;
 
 /// Our Qt application
 QCoreApplication *App = 0;
@@ -269,6 +271,16 @@ updatePMURegistration() {
     PMU_auto_register("running");
 }
 
+void
+usage(const po::options_description & opts) {
+    // brief usage
+    std::cout << "Usage: HcrPmc730Daemon [OPTIONS]" << std::endl;
+
+    // command line options, as provided to boost::program_options
+    std::cout << opts << std::endl;
+    std::cout << std::endl;
+}
+
 int
 main(int argc, char * argv[]) {
     // Let logx get and strip out its arguments
@@ -278,6 +290,23 @@ main(int argc, char * argv[]) {
     App = new QCoreApplication(argc, argv);
     App->setApplicationName("HcrPmc730Daemon");
     
+    // Command line options
+    double pvPressureCorrectionPsi = 0.0;
+    po::options_description descripts("Options");
+    descripts.add_options()
+            ("help,h", "print usage information and exit")
+            ("pvPressureCorrectionPsi",
+                    po::value<double>(&pvPressureCorrectionPsi),
+                    "<value> correction to be added to measured pressure, in PSI")
+            ("simulate", "run in simulation mode");
+
+    po::variables_map vm;
+    po::store(po:: command_line_parser(argc, argv).options(descripts).run(), vm);
+    po::notify(vm);
+
+    // Set pressure vessel pressure correction if requested
+    HcrPmc730::SetPvPresCorrectionPsi(pvPressureCorrectionPsi); 
+
     // Instantiate and configure our heartbeat timer for "HV on" requests.
     // The timer is started/restarted every time "HV on" is requested, and
     // stopped on any "HV off" request.
@@ -287,21 +316,9 @@ main(int argc, char * argv[]) {
     QFunctionWrapper heartbeatTimeoutWrapper(hvOnHeartbeatTimeout);
     QObject::connect(HvOnHeartbeatTimer, SIGNAL(timeout()), 
             &heartbeatTimeoutWrapper, SLOT(callFunction()));
-    
-    
+
     // Check for --simulate in the arg list
-    bool simulate = false;
-    if (argc > 2) {
-        ELOG << "Bad arg(s). Only '--simulate' is allowed.";
-        exit(1);
-    } else if (argc == 2) {
-        if (! strcmp(argv[1], "--simulate")) {
-            simulate = true;
-        } else {
-            ELOG << "Bad arg. Only '--simulate' is allowed.";
-            exit(1);
-        }
-    }
+    bool simulate(vm.count("simulate") > 0);
 
     // Make sure the HcrPmc730 gets instantiated in simulation mode if requested
     HcrPmc730::DoSimulate(simulate);

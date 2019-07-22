@@ -66,7 +66,8 @@ HcrPmc730 * HcrPmc730::_TheHcrPmc730 = 0;
 
 HcrPmc730::HcrPmc730() : 
         Pmc730(_DoSimulate ? -1 : 0),
-        _analogValues() {
+        _analogValues(),
+        _pvPresCorrection(0.0) {
     // For HCR, DIO lines 0-7 are used for input, 8-15 for output
     setDioDirection0_7(DIO_INPUT);
     setDioDirection8_15(DIO_OUTPUT);
@@ -510,4 +511,11 @@ HcrPmc730::_emsErrorCount() const {
     // (unsigned) resolution.
     uint32_t emsErrorCount = *(reinterpret_cast<uint32_t*>(&signedCount));
     return(emsErrorCount);
+}
+
+void
+HcrPmc730::_setPvPresCorrectionPsi(double pvPresCorrectionPsi) {
+    _pvPresCorrection = PsiToHpa(pvPresCorrectionPsi);
+    ILOG << "Pressure vessel pressure correction of " << pvPresCorrectionPsi <<
+            " PSI (" << _pvPresCorrection << " hPa) will be applied";
 }

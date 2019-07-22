@@ -138,7 +138,8 @@ public:
     /// @return the pressure vessel aft sensor pressure in hPa at the last call 
     /// to updateAnalogValues().
     static double PvAftPressure() {
-        return _30PSI_A_4V_Pres(TheHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE]);
+        double voltage = TheHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE];
+        return(_30PSI_A_4V_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
     }
 
     /// @brief Return the pressure vessel fore sensor pressure in hPa at the last
@@ -146,7 +147,8 @@ public:
     /// @return the pressure vessel fore sensor pressure in hPa at the last call 
     /// to updateAnalogValues().
     static double PvForePressure() {
-        return _30PSI_A_4V_Pres(TheHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE]);
+        double voltage = TheHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE];
+        return(_30PSI_A_4V_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
     }
 
     /// @brief Convert pressure in PSI to hPa
@@ -446,6 +448,17 @@ public:
         return TheHcrPmc730()._emsErrorCount();
     }
     
+    /// @brief Set correction for pressure vessel pressures. Correct absolute
+    /// pressure is the calculated pressure from the A/D voltage + the
+    /// correction value.
+    /// @param pvPresCorrectionPsi correction value in PSI
+    ///
+    /// We need this because for unknown reasons, the pressure transducers
+    /// appear to be damaged and consistently read lower than actual pressure.
+    static void SetPvPresCorrectionPsi(double pvPresCorrectionPsi) {
+        TheHcrPmc730()._setPvPresCorrectionPsi(pvPresCorrectionPsi);
+    }
+
 private:
     HcrPmc730();
     virtual ~HcrPmc730();
@@ -649,11 +662,31 @@ private:
     /// its sense-and-hold values.
     void _ackHmcStatus();
     
+    /// @brief Set correction for pressure vessel pressures. Correct absolute
+    /// pressure is the calculated pressure from the A/D voltage + the
+    /// correction value.
+    /// @param correctionPsi correction value in PSI
+    ///
+    /// We need this because for unknown reasons, the pressure transducers
+    /// appear to be damaged and consistently read lower than actual pressure.
+    void _setPvPresCorrectionPsi(double pvPresCorrectionPsi);
+
     /// @brief Analog voltage values from all 32 Analog In channels, as of the
     /// last call to updateAnalogValues().
     std::vector<float> _analogValues;
-    
+
+    /// @brief Correction applied for fore and aft pressure vessel pressures,
+    /// in hPa
+    ///
+    /// The PvForePressure() and PvAftPressure methods will return the
+    /// calculated pressure from the associated A/D voltage + the
+    /// correction value.
+    ///
+    /// We need this because for unknown reasons, the pressure transducers
+    /// appear to be damaged and consistently read lower than actual pressure.
     /// @brief The singleton instance of HcrPmc730.
+    double _pvPresCorrection;
+
     static HcrPmc730 * _TheHcrPmc730;
 };
 
