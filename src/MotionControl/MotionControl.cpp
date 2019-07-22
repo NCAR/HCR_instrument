@@ -64,10 +64,12 @@ MotionControl::MotionControl() :
     _attitudeCorrectionEnabled(false),
     _fakeAttitude(false),
     _driveStartTime(QTime::currentTime()),
-    _insInUse(1)
+//    _insInUse(1)
+    _insInUse(2)
 {
     // Start with attitude correction enabled.
     setCorrectionEnabled(true);
+    ILOG << "Starting out using INS " << _insInUse;
 }
 
 /////////////////////////////////////////////////////////////////////
