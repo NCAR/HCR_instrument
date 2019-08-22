@@ -133,7 +133,7 @@ private:
 
     /// @brief maximum number of power element report times which can elapse
     /// before the server is considered to be unresponsive
-    static constexpr float TIMEOUT_REPORT_MULTIPLE = 1.5;
+    static constexpr float TIMEOUT_REPORT_MULTIPLE = 5.0;
 
     /// @brief timer started on receipt of a new max power element and expires
     /// after TIMEOUT_REPORT_MUTIPLE * the max power element's report interval
