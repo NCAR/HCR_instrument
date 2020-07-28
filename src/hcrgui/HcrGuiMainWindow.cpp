@@ -1125,11 +1125,12 @@ HcrGuiMainWindow::_update() {
     _ui.dataRateIcon->setPixmap(_dmapWriteRate > 0 ? _greenLED : _amberLED);
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 
-    // Location info from INS1
-    _ui.latitudeValue->setText(QString::number(_ins1Status.latitude(), 'f', 4));
-    _ui.longitudeValue->setText(QString::number(_ins1Status.longitude(), 'f', 4));
+    // Location info from the INS in use
+    const CmigitsStatus insInUseStatus = ((_mcStatus.insInUse == 1) ? _ins1Status : _ins2Status);
+    _ui.latitudeValue->setText(QString::number(insInUseStatus.latitude(), 'f', 4));
+    _ui.longitudeValue->setText(QString::number(insInUseStatus.longitude(), 'f', 4));
 
-    int iAltFt = int(MetersToFeet(_ins1Status.altitude()));
+    int iAltFt = int(MetersToFeet(insInUseStatus.altitude()));
     _ui.altitudeMslValue->setText(QString::number(iAltFt));
 
     iAltFt = int(MetersToFeet(_hcrExecutiveStatus.aglAltitude()));
