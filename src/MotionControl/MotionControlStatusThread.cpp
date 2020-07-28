@@ -37,7 +37,7 @@ LOGGING("MotionControlStatusThread")
 
 MotionControlStatusThread::MotionControlStatusThread(std::string mcdHost, 
         int mcdPort) :
-    _responsive(false),
+    _daemonAlive(false),
     _mcdHost(mcdHost),
     _mcdPort(mcdPort),
     _client(0) {
@@ -70,24 +70,18 @@ MotionControlStatusThread::run() {
 
 void
 MotionControlStatusThread::_getStatus() {
-    try {
-        MotionControl::Status status = _client->status();
-        // We got a response, so emit serverResponsive(true) if the server was
-        // not previously responding.
-        if (! _responsive) {
-            _responsive = true;
-            emit serverResponsive(true, QString("MotionControlDaemon is responding"));
-        }
-        // Emit the new status.
-        emit newStatus(status);
-    } catch (std::exception & e) {
-        // As a rule, exceptions just mean the server is not responding. Emit
-        // serverResponsive(false) if the server had previously been responding.
-        if (_responsive) {
-            std::ostringstream oss;
-            oss << "MotionControlDaemon failed to respond to getStatus(): " << e.what();
-            _responsive = false;
-            emit serverResponsive(false, QString(oss.str().c_str()));
-        }
+    MotionControl::Status status = _client->status();
+
+    // If daemon responsiveness changed, log the change and emit a
+    // serverResponsive signal
+    bool previouslyAlive = _daemonAlive;
+    _daemonAlive = _client->daemonResponding();
+    if (_daemonAlive != previouslyAlive) {
+        std::ostringstream os;
+        os << "Motion control is" << (_daemonAlive ? "" : " NOT") << " responding";
+        emit serverResponsive(_daemonAlive, os.str().c_str());
     }
+
+    // Emit the new status
+    emit newStatus(status);
 }

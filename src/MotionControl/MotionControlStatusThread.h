@@ -62,7 +62,7 @@ public:
 
     /// @brief Return true iff the MotionControlDaemon is responding
     /// @return true iff the MotionControlDaemon is responding
-    bool serverIsResponding() { return _responsive; }
+    bool serverIsResponding() { return _daemonAlive; }
 
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
@@ -84,7 +84,7 @@ private slots:
 private:
     /// True iff the client had a successful connection with the hcrdrx
     /// XML-RPC server on the last XML-RPC method call.
-    bool _responsive;
+    bool _daemonAlive;
 
     std::string _mcdHost;
     int _mcdPort;
