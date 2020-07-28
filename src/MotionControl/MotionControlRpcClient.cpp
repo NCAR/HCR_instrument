@@ -60,15 +60,18 @@ MotionControlRpcClient::_execXmlRpcCall(std::string methodName,
         xmlrpc_c::paramList params)
 {
     try {
+        // Execute the XML-RPC function call and return the result
         xmlrpc_c::value result;
         _client.call(_daemonUrl, methodName, params, &result);
         _daemonResponding = true;
         return(result);
     }
     catch (std::exception & e) {
+        // On XML-RPC error, mark the daemon as unresponsive, and return
+        // xmlrpc_c::value_nil()
         WLOG << "XML-RPC error calling " << methodName << "(): " << e.what();
         _daemonResponding = false;
-        throw;
+        return(xmlrpc_c::value_nil());
     }
 }
 
@@ -139,6 +142,13 @@ MotionControl::Status
 MotionControlRpcClient::status()
 {
     xmlrpc_c::value result = _execXmlRpcCall("Status");
+
+    // A nil return from _execXmlRpcCall implies an error occurred. Just return
+    // an empty/bad default status.
+    if (result.type() == xmlrpc_c::value::TYPE_NIL) {
+        return(MotionControl::Status());
+    }
+
     // Construct an xmlrpc_c::value_struct from the result, and use that
     // to construct the  MotionControl::Status which we return.
     xmlrpc_c::value_struct vStruct(result);
