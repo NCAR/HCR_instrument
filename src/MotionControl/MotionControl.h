@@ -290,14 +290,28 @@ private:
     /// @param pitch The aircraft pitch angle
     /// @param roll The aircraft roll angle
     /// @param drift The aircraft drift angle
-    void _adjustPointingForAttitude(double pitch, double roll, double drift);
+  void _adjustPointingForAttitude(double pitch, double roll, double hdg, double drift);
 
     /// Adjust scanning table according to aircraft attitude
     /// @param pitch The aircraft pitch angle
     /// @param roll The aircraft roll angle
     /// @param drift The aircraft drift angle
-    void _adjustScanningForAttitude(double pitch, double roll, double drift);
+  void _adjustScanningForAttitude(double pitch, double roll, double hdg, double drift);
     
+    // compute (elevation, azimuth) from attitude, rotation, tilt
+    // For a Y-prime radar e.g. HCR
+    // angles are passed in/out in degrees
+    void _computeAzElYPrime(double pitch, double roll, double hdg, 
+                            double rot, double tilt,
+                            double &el, double &az);
+
+    // compute (rotation, tilt) from attitude, elevation, azimuth
+    // For a Y-prime radar e.g. HCR
+    // angles are passed in/out in degrees
+    void _computeRotTiltYPrime(double pitch, double roll, double hdg, 
+                               double el, double az,
+                               double &rot, double &tilt);
+
     /// Rotation drive
     RotServoDrive _rotDrive;
     /// Tilt drive
@@ -339,6 +353,10 @@ private:
 
     /// INS in use for attitude correction: 1 if using INS1, or 2 if using INS2.
     int _insInUse;
+
+    /// controlling debug print
+    time_t _timeLastDebugPrint;
+
 };
 
 #endif /* MOTIONCONTROL_H_ */

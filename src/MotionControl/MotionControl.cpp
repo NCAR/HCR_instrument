@@ -69,6 +69,7 @@ MotionControl::MotionControl() :
 {
     // Start with attitude correction enabled.
     setCorrectionEnabled(true);
+    _timeLastDebugPrint = time(NULL);
     ILOG << "Starting out using INS " << _insInUse;
 }
 
@@ -127,10 +128,10 @@ void MotionControl::correctForAttitude()
 
     switch (_antennaMode) {
     case MODE_POINTING:
-        _adjustPointingForAttitude(pitch, roll, drift);
+        _adjustPointingForAttitude(pitch, roll, heading, drift);
         break;
     case MODE_SCANNING:
-        _adjustScanningForAttitude(pitch, roll, drift);
+        _adjustScanningForAttitude(pitch, roll, heading, drift);
         break;
     case MODE_UNDEFINED:
     default:
@@ -216,7 +217,7 @@ MotionControl::setCorrectionEnabled(bool enabled) {
     if (turningOff) {
         switch (_antennaMode) {
         case MODE_POINTING:
-            _adjustPointingForAttitude(0.0, 0.0, 0.0);
+          _adjustPointingForAttitude(0.0, 0.0, 0.0, 0.0);
             break;
         case MODE_SCANNING:
             // @TODO: Figure out how to handle this once corrected scanning
@@ -309,23 +310,82 @@ MotionControl::_adjustForAttitude(double & rot, double & tilt, double pitch,
     if (rot < 0) rot += 360.0;
 }
 
+#define DEBUG_POINTING
+
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::_adjustPointingForAttitude(double pitch, double roll, double drift)
+MotionControl::_adjustPointingForAttitude(double pitch, double roll,
+                                          double heading, double drift)
 {
+
+#ifdef DEBUG_POINTING
+
+    // ORIGINAL CODE
     // Start with the desired track-relative rotation and tilt angles
-    double rot = _fixedPointingAngle;
-    double tilt = _scanBeamTilt;
+    double rot0 = _fixedPointingAngle;
+    double tilt0 = _scanBeamTilt;
     // Adjust to pod-relative rotation and tilt angles
-    _adjustForAttitude(rot, tilt, pitch, roll, drift);
+    _adjustForAttitude(rot0, tilt0, pitch, roll, drift);
+    // NEW - computing tiltDriveAngle, using cos(rot)
+    double tiltDriveAngle0 = -tilt0 / fabs(cos(DegToRad(rot0)));
     // Move the drives to their new angles
-    _rotDrive.moveTo(rot);
-    _tiltDrive.moveTo(-tilt);
+    // NEW - don't actually use these
+    // _rotDrive.moveTo(rot0);
+    // _tiltDrive.moveTo(tiltDriveAngle0);
+
+#endif
+
+    // updated pointing code
+
+    // specify az and el
+
+    double el = 90.0 - _fixedPointingAngle;
+    double az = heading + 90.0;
+    if (az >= 360.0) {
+      az -= 360.0;
+    }
+    
+    // compute rotation and tilt
+    
+    double rotAngle, tiltAngle;
+    _computeRotTiltYPrime(pitch, roll, heading, 
+                          el, az, rotAngle, tiltAngle);
+    if (rotAngle < 0) {
+      rotAngle += 360.0;
+    }
+    
+    // compute drive angles
+    
+    double rotDriveAngle = rotAngle;
+    double tiltDriveAngle =
+      -tiltAngle / (2.0 * cos(DegToRad(rotAngle)));
+    _rotDrive.moveTo(rotDriveAngle);
+    _tiltDrive.moveTo(tiltDriveAngle);
+    
+#ifdef DEBUG_POINTING
+
+    time_t now = time(NULL);
+    if (now > _timeLastDebugPrint) {
+      std::cerr << "==================================================" << endl;
+      std::cerr << "=====>> el, az: " << el << ", " << az << endl;
+      std::cerr << "=====>> rot0, rotAngle: "
+                << rot0 << ", " << rotAngle << endl;
+      std::cerr << "=====>> tilt0*2, tiltAngle: "
+                << tilt0 * 2.0 << ", " << tiltAngle << endl;
+      std::cerr << "=====>> tiltDriveAngle0, tiltDriveAngle: "
+                << tiltDriveAngle0 << ", " << tiltDriveAngle << std::endl;
+      std::cerr << "==================================================" << endl;
+      _timeLastDebugPrint = now;
+    }
+
+#endif
+
 }
 
 /////////////////////////////////////////////////////////////////////
 void
-MotionControl::_adjustScanningForAttitude(double pitch, double roll, double drift)
+MotionControl::_adjustScanningForAttitude(double pitch, double roll, 
+                                          double heading, double drift)
 {
     DLOG << "_adjustScanningForAttitude not implemented";
 }
@@ -433,3 +493,148 @@ MotionControl::Status::toXmlRpcValue() const {
     // Finally, return the statusDict
     return(xmlrpc_c::value_struct(statusDict));
 }
+
+///////////////////////////////////////////////////////////////////
+// compute (elevation, azimuth) from attitude, rotation, tilt
+// For a Y-prime radar e.g. HCR
+// angles are passed in/out in degrees
+
+void MotionControl::_computeAzElYPrime(double pitch, double roll, double hdg, 
+                                       double rot, double tilt,
+                                       double &el, double &az)
+{
+
+  // precompute sin/cos
+  
+  double sinPitch = sin(DegToRad(pitch));
+  double cosPitch = cos(DegToRad(pitch));
+    
+  double sinRoll = sin(DegToRad(roll));
+  double cosRoll = cos(DegToRad(roll));
+    
+  double sinHdg = sin(DegToRad(hdg));
+  double cosHdg = cos(DegToRad(hdg));
+
+  double sinRot = sin(DegToRad(rot));
+  double cosRot = cos(DegToRad(rot));
+    
+  double sinTilt = sin(DegToRad(tilt));
+  double cosTilt = cos(DegToRad(tilt));
+
+  // compute unit vector relative to aircraft
+  
+  double x_a = sinRot * cosTilt;
+  double y_a = sinTilt;
+  double z_a = cosRot * cosTilt;
+
+  // compute matrix elements after multiplication
+  // for 3 axis transformation
+  
+  double mf11 = cosHdg * cosRoll + sinHdg * sinPitch * sinRoll;
+  double mf12 = sinHdg * cosPitch;
+  double mf13 = cosHdg * sinRoll - sinHdg * sinPitch * cosRoll;
+
+  double mf21 = -sinHdg * cosRoll + cosHdg * sinPitch * sinRoll;
+  double mf22 = cosHdg * cosPitch;
+  double mf23 = -sinHdg * sinRoll - cosHdg * sinPitch * cosRoll;
+
+  double mf31 = -cosPitch * sinRoll;
+  double mf32 = sinPitch;
+  double mf33 = cosPitch * cosRoll;
+
+  // Compute unit vector in earth coords
+  
+  double xx = mf11 * x_a + mf12 * y_a + mf13 * z_a;
+  double yy = mf21 * x_a + mf22 * y_a + mf23 * z_a;
+  double zz = mf31 * x_a + mf32 * y_a + mf33 * z_a;
+
+  // compute az and el
+
+  el = RadToDeg(asin(zz));
+  az = RadToDeg(atan2(xx, yy));
+
+  // if el is NAN then it is either +90 or -90
+
+  if (std::isnan(el)) {
+    if (zz > 0) {
+      el = 90.0;
+      az = 0.0;
+    } else if (zz < 0) {
+      el = -90.0;
+      az = 0.0;
+    }
+  }
+
+}
+
+///////////////////////////////////////////////////////////////////
+// compute (rotation, tilt) from attitude, elevation, azimuth
+// For a Y-prime radar e.g. HCR
+// angles are passed in/out in degrees
+
+void MotionControl::_computeRotTiltYPrime(double pitch, double roll, double hdg, 
+                                          double el, double az,
+                                          double &rot, double &tilt)
+{
+
+  // precompute sin/cos
+  
+  double sinPitch = sin(DegToRad(pitch));
+  double cosPitch = cos(DegToRad(pitch));
+    
+  double sinRoll = sin(DegToRad(roll));
+  double cosRoll = cos(DegToRad(roll));
+
+  double sinHdg = sin(DegToRad(hdg));
+  double cosHdg = cos(DegToRad(hdg));
+
+  double sinEl = sin(DegToRad(el));
+  double cosEl = cos(DegToRad(el));
+    
+  double sinAz = sin(DegToRad(az));
+  double cosAz = cos(DegToRad(az));
+
+  // compute unit vector relative to aircraft
+
+  double xx = sinAz * cosEl;
+  double yy = cosAz * cosEl;
+  double zz = sinEl;
+
+  // compute matrix elements after multiplication
+  // for 3 axis transformation
+  
+  double mr11 = cosRoll * cosHdg + sinRoll * sinPitch * sinHdg;
+  double mr12 = -cosRoll * sinHdg + sinRoll * sinPitch * cosHdg;
+  double mr13 = -sinRoll * cosPitch;
+
+  double mr21 = cosPitch * sinHdg;
+  double mr22 = cosPitch * cosHdg;
+  double mr23 = sinPitch;
+
+  double mr31 = sinRoll * cosHdg - cosRoll * sinPitch * sinHdg;
+  double mr32 = -sinRoll * sinHdg - cosRoll * sinPitch * cosHdg;
+  double mr33 = cosRoll * cosPitch;
+
+  // Compute unit vector in earth coords
+
+  double x_a = mr11 * xx + mr12 * yy + mr13 * zz;
+  double y_a = mr21 * xx + mr22 * yy + mr23 * zz;
+  double z_a = mr31 * xx + mr32 * yy + mr33 * zz;
+
+  // compute rot and tilt
+
+  tilt = RadToDeg(asin(y_a));
+  rot =  RadToDeg(atan2(x_a, z_a));
+
+  if (std::isnan(tilt)) {
+    if (y_a > 0) {
+      tilt = 90.0;
+      rot = 0.0;
+    } else if (y_a < 0) {
+      tilt = -90.0;
+      rot = 0.0;
+    }
+  }
+
+}
+
