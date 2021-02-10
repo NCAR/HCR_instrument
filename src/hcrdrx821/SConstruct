@@ -1,0 +1,73 @@
+# -*- python -*-
+
+import os
+import eol_scons
+
+options = eol_scons.GlobalVariables()
+
+def GlobalEnvSetup(env):
+    env.AppendUnique(CCFLAGS = ['-g'])
+    env.AppendUnique(CCFLAGS=['-Wall','-Wno-char-subscripts'])
+    env.AppendUnique(CXXFLAGS = ['-std=c++14'])
+    env.AppendUnique(CXXFLAGS = ['-fconcepts'])
+    env.AppendUnique(CXXFLAGS=['-Wno-non-virtual-dtor'])
+    env['QT_VERSION'] = 5
+    env['DOXYFILE_DICT'] = dict()
+    # Uncomment the following two lines for gprof profiling
+#    env.AppendUnique(CCFLAGS = ['-pg'])
+#    env.AppendUnique(LINKFLAGS = ['-pg'])
+    return env
+
+env = Environment(tools = ['default', 'setuidprogram'],
+                  GLOBAL_TOOLS = [GlobalEnvSetup])
+
+
+hcrdrxTools = [
+    'qtcore',
+    'qtnetwork',
+    'logx',
+    'lrose',
+    'Pentek_xx821',
+    'QFunctionWrapper',
+]
+hcrdrxEnv = env.Clone()
+hcrdrxEnv.Require(hcrdrxTools)
+
+SConscript("tcpscope/SConscript")
+
+hcrdrxSrcs = Split('''
+    hcrdrx.cpp
+    HCR_Pentek.cpp
+    HCR_Config.cpp
+    HCR_Beam.cpp
+    IwrfPublisher.cpp
+    PublishWorker.cpp
+''')
+
+hcrdrxHdrs = Split('''
+    HCR_Pentek.h
+    HCR_Config.h
+    HCR_Beam.h
+    ChannelPulseData.h
+    IwrfPublisher.h
+    PublishWorker.h
+''')
+
+hcrdrx = hcrdrxEnv.Program('hcrdrx', hcrdrxSrcs)
+Default(hcrdrx)
+
+html = hcrdrxEnv.Apidocs(hcrdrxSrcs + hcrdrxHdrs)
+Default(html)
+
+# Build setWinDriverIrqAffinity as a setuid program owned by root
+#
+# The program is not built by default. It must be built explicitly by root,
+# usually with the command:
+#
+#    $ sudo scons setWinDriverIrqAffinity
+#
+# Note that the program *is* removed by default when cleaning
+irqAffinityProg = env.SetuidProgram('setWinDriverIrqAffinity',
+                                    'setWinDriverIrqAffinity.cpp')
+if (GetOption("clean")):
+    env.Default(irqAffinityProg)

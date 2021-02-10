@@ -1,0 +1,15 @@
+*.o
+moc_*
+.sconf_temp
+.sconsign.dblite
+apardrx
+apidocs
+setWinDriverIrqAffinity
+
+# Eclipse-generated files
+.cproject
+.project
+.pydevproject
+.settings
+config.log
+# end Eclipse-generated files
