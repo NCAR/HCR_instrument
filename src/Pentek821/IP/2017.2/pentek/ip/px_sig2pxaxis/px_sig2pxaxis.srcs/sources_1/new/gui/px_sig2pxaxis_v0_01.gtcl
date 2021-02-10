@@ -1,0 +1,6 @@
+# This file is automatically written.  Do not modify.
+proc gen_USERPARAMETER_use_info_inputs_ENABLEMENT {has_pi_output } {expr ($has_pi_output == true)}
+proc gen_USERPARAMETER_dflt_samples_per_cycle_ENABLEMENT {has_pi_output use_info_inputs } {expr ($has_pi_output == true) && ($use_info_inputs == false)}
+proc gen_USERPARAMETER_dflt_data_format_ENABLEMENT {has_pi_output use_info_inputs } {expr ($has_pi_output == true) && ($use_info_inputs == false)}
+proc gen_USERPARAMETER_dflt_data_type_ENABLEMENT {has_pi_output use_info_inputs } {expr ($has_pi_output == true) && ($use_info_inputs == false)}
+proc gen_USERPARAMETER_dflt_channel_ENABLEMENT {has_pi_output use_info_inputs } {expr ($has_pi_output == true) && ($use_info_inputs == false)}

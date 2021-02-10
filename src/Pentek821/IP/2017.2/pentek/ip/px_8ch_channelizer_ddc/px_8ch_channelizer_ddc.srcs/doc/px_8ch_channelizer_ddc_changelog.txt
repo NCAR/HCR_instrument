@@ -1,0 +1,4 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release - Encrypted

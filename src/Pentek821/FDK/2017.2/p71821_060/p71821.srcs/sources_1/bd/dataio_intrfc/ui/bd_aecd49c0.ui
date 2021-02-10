@@ -1,0 +1,57 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.5b  2016-09-06 bk=1.3687 VDI=39 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axis_testsig_pdti -pg 1 -y 960 -defaultsOSRD
+preplace port s_axis_adc1_pdti -pg 1 -y 680 -defaultsOSRD
+preplace port s_axi_csr_aclk -pg 1 -y 90 -defaultsOSRD
+preplace port m_axis_ch2_pdti -pg 1 -y 1000 -defaultsOSRD
+preplace port s_axi_csr -pg 1 -y 70 -defaultsOSRD
+preplace port m_axis_ch1_pdti -pg 1 -y 740 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -y 110 -defaultsOSRD
+preplace port s_axis_adc0_pdti -pg 1 -y 540 -defaultsOSRD
+preplace port sample_clk_a -pg 1 -y 980 -defaultsOSRD
+preplace port m_axis_ch0_pdti -pg 1 -y 480 -defaultsOSRD
+preplace port s_axis_adc2_pdti -pg 1 -y 820 -defaultsOSRD
+preplace port aresetn -pg 1 -y 1000 -defaultsOSRD
+preplace inst chan0_mux -pg 1 -lvl 3 -y 480 -defaultsOSRD
+preplace inst chan1_mux -pg 1 -lvl 3 -y 740 -defaultsOSRD
+preplace inst adc1_broadcast -pg 1 -lvl 2 -y 700 -defaultsOSRD
+preplace inst chan2_mux -pg 1 -lvl 3 -y 1000 -defaultsOSRD
+preplace inst adc2_broadcast -pg 1 -lvl 2 -y 830 -defaultsOSRD
+preplace inst adc0_broadcast -pg 1 -lvl 2 -y 560 -defaultsOSRD
+preplace inst axi_interconnect_0 -pg 1 -lvl 3 -y 170 -defaultsOSRD
+preplace inst testsig_broadcast -pg 1 -lvl 2 -y 980 -defaultsOSRD
+preplace netloc s_axis_adc0_pdti_1 1 0 2 NJ 540 NJ
+preplace netloc testsig_broadcast_M03_AXIS 1 2 1 450
+preplace netloc testsig_broadcast_M00_AXIS 1 2 1 420
+preplace netloc adc1_broadcast_M00_AXIS 1 2 1 370
+preplace netloc testsig_broadcast_M02_AXIS 1 2 1 380
+preplace netloc adc0_broadcast_M00_AXIS 1 2 1 360
+preplace netloc adc0_broadcast_M02_AXIS 1 2 1 470
+preplace netloc testsig_broadcast_M05_AXIS 1 2 1 470
+preplace netloc s_axi_csr_aresetn_1 1 0 3 NJ 110 NJ 110 440
+preplace netloc s_axi_csr_aclk_1 1 0 3 NJ 90 NJ 90 480
+preplace netloc axi_interconnect_0_M02_AXI 1 2 2 520 340 780
+preplace netloc chan2_mux_m_axis_pdti 1 3 1 NJ
+preplace netloc chan1_mux_m_axis_pdti 1 3 1 NJ
+preplace netloc adc2_broadcast_M02_AXIS 1 2 1 390
+preplace netloc adc0_broadcast_M01_AXIS 1 2 1 490
+preplace netloc s_axis_testsig_pdti_1 1 0 2 NJ 960 NJ
+preplace netloc testsig_broadcast_M04_AXIS 1 2 1 370
+preplace netloc testsig_broadcast_M01_AXIS 1 2 1 360
+preplace netloc adc2_broadcast_M01_AXIS 1 2 1 460
+preplace netloc adc1_broadcast_M01_AXIS 1 2 1 410
+preplace netloc sample_clk_a_1 1 0 3 NJ 980 60 490 400
+preplace netloc chan0_mux_m_axis_pdti 1 3 1 NJ
+preplace netloc s_axi_csr_1 1 0 3 NJ 70 NJ 70 NJ
+preplace netloc axi_interconnect_0_M00_AXI 1 2 2 500 10 790
+preplace netloc aresetn_1 1 0 3 NJ 1000 70 1090 500
+preplace netloc s_axis_adc1_pdti_1 1 0 2 NJ 680 NJ
+preplace netloc axi_interconnect_0_M01_AXI 1 2 2 510 330 790
+preplace netloc adc1_broadcast_M02_AXIS 1 2 1 430
+preplace netloc s_axis_adc2_pdti_1 1 0 2 20J 810 NJ
+preplace netloc adc2_broadcast_M00_AXIS 1 2 1 390
+levelinfo -pg 1 0 40 220 650 810 -top 0 -bot 1140
+",
+}
+0

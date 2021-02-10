@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_axis_abs_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="tb_px_axis_abs" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="112950000fs"></ZoomStartTime>
+      <ZoomEndTime time="217350001fs"></ZoomEndTime>
+      <Cursor1Time time="162000000fs"></Cursor1Time>
+   </zoom_setting>
+   <WVObjectSize size="18" />
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/axis_aclk" type="logic">
+      <obj_property name="ElementShortName">axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_aclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/s_axis_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_tdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tdata[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/s_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/s_axis_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/s_axis_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_tuser[0:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tuser[0:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/m_axis_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_tdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tdata[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/m_axis_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/m_axis_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_tuser[0:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tuser[0:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/sat_out" type="logic">
+      <obj_property name="ElementShortName">sat_out</obj_property>
+      <obj_property name="ObjectShortName">sat_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/t1_m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">t1_m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t1_m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/t2_m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">t2_m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t2_m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/t3_m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">t3_m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t3_m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/has_tready" type="other">
+      <obj_property name="ElementShortName">has_tready</obj_property>
+      <obj_property name="ObjectShortName">has_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/has_sat_out" type="other">
+      <obj_property name="ElementShortName">has_sat_out</obj_property>
+      <obj_property name="ObjectShortName">has_sat_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/stim" type="array">
+      <obj_property name="ElementShortName">stim[0:7][15:0]</obj_property>
+      <obj_property name="ObjectShortName">stim[0:7][15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_abs/uut/dat_abs" type="array">
+      <obj_property name="ElementShortName">dat_abs[16:0]</obj_property>
+      <obj_property name="ObjectShortName">dat_abs[16:0]</obj_property>
+   </wvobject>
+</wave_config>

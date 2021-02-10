@@ -1,0 +1,12 @@
+set_property CFGBVS GND [current_design]
+set_property CONFIG_VOLTAGE 1.8 [current_design]
+set_property BITSTREAM.CONFIG.CONFIGRATE 130 [current_design]
+#set_property BITSTREAM.CONFIG.EXTMASTERCCLK_EN DIV-1 [current_design]
+set_property BITSTREAM.CONFIG.EXTMASTERCCLK_EN DISABLE [current_design]
+set_property BITSTREAM.CONFIG.BPI_SYNC_MODE TYPE1 [current_design]
+set_property CONFIG_MODE BPI16 [current_design]
+set_property BITSTREAM.CONFIG.CONFIGFALLBACK DISABLE [current_design]
+set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
+set_property BITSTREAM.CONFIG.OVERTEMPSHUTDOWN ENABLE [current_design]
+
+set_property UNAVAILABLE_DURING_CALIBRATION TRUE [get_ports SYNCA_PPS_OUT_P]

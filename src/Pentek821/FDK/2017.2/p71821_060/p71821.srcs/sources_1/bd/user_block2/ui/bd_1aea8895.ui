@@ -1,0 +1,30 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.8  2016-12-21 bk=1.3817 VDI=40 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axi_aclk -pg 1 -y 120 -defaultsOSRD
+preplace port dsp_clk -pg 1 -y 380 -defaultsOSRD
+preplace port s_axi -pg 1 -y 100 -defaultsOSRD
+preplace port s_axi_aresetn -pg 1 -y 140 -defaultsOSRD
+preplace port m_axis_pdti -pg 1 -y 310 -defaultsOSRD
+preplace port s_axis_pdti -pg 1 -y 240 -defaultsOSRD
+preplace inst false_0 -pg 1 -lvl 1 -y 330 -defaultsOSRD
+preplace inst px_axil_bram_ctlr_0 -pg 1 -lvl 1 -y 120 -defaultsOSRD
+preplace inst pc_fir_0 -pg 1 -lvl 2 -y 320 -defaultsOSRD
+preplace netloc px_axil_bram_ctlr_0_bram_rst 1 1 1 350
+preplace netloc px_axil_bram_ctlr_0_bram_we 1 1 1 360
+preplace netloc s_axi_csr_aresetn_1 1 0 1 NJ
+preplace netloc s_axi_csr_aclk_1 1 0 1 NJ
+preplace netloc pc_fir_0_bram_rddata 1 1 2 NJ 190 780
+preplace netloc px_axil_bram_ctlr_0_bram_addr 1 1 1 370
+preplace netloc false_0_dout 1 1 1 320J
+preplace netloc axi_interc_M00_AXI 1 0 1 NJ
+preplace netloc dsp_clk_1 1 0 2 NJ 380 NJ
+preplace netloc pc_fir_0_m_axis_pdti 1 2 1 N
+preplace netloc px_axil_bram_ctlr_0_bram_clk 1 1 1 330
+preplace netloc s_axis_pdti_1 1 0 2 NJ 240 NJ
+preplace netloc px_axil_bram_ctlr_0_bram_wrdata 1 1 1 340
+preplace netloc px_axil_bram_ctlr_0_bram_en 1 1 1 380
+levelinfo -pg 1 0 170 580 800 -top 0 -bot 450
+",
+}
+0

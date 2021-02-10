@@ -1,0 +1,7 @@
+
+.autopilot/*
+.debug/*
+.tcls/*
+csim/*
+sim/*
+syn/*

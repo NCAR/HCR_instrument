@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_cdc_clk_intrfc_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_px_cdc_clk_intrfc" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="6950240000fs"></ZoomStartTime>
+      <ZoomEndTime time="11321991414fs"></ZoomEndTime>
+      <Cursor1Time time="11000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="175"></NameColumnWidth>
+      <ValueColumnWidth column_width="310"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="126" />
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/cdc_stat_vcxo" type="logic">
+      <obj_property name="ElementShortName">cdc_stat_vcxo</obj_property>
+      <obj_property name="ObjectShortName">cdc_stat_vcxo</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/cdc_stat_ref" type="logic">
+      <obj_property name="ElementShortName">cdc_stat_ref</obj_property>
+      <obj_property name="ObjectShortName">cdc_stat_ref</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/cdc_stat_lock" type="logic">
+      <obj_property name="ElementShortName">cdc_stat_lock</obj_property>
+      <obj_property name="ObjectShortName">cdc_stat_lock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/man_keepalive_in" type="logic">
+      <obj_property name="ElementShortName">man_keepalive_in</obj_property>
+      <obj_property name="ObjectShortName">man_keepalive_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/clk_in_p" type="logic">
+      <obj_property name="ElementShortName">clk_in_p</obj_property>
+      <obj_property name="ObjectShortName">clk_in_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/clk_in_n" type="logic">
+      <obj_property name="ElementShortName">clk_in_n</obj_property>
+      <obj_property name="ObjectShortName">clk_in_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/refclk" type="logic">
+      <obj_property name="ElementShortName">refclk</obj_property>
+      <obj_property name="ObjectShortName">refclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/sample_clk" type="logic">
+      <obj_property name="ElementShortName">sample_clk</obj_property>
+      <obj_property name="ObjectShortName">sample_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/led_n" type="logic">
+      <obj_property name="ElementShortName">led_n</obj_property>
+      <obj_property name="ObjectShortName">led_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/clk_good" type="logic">
+      <obj_property name="ElementShortName">clk_good</obj_property>
+      <obj_property name="ObjectShortName">clk_good</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider125">
+      <obj_property name="label">uut</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/cdc_stat_vcxo" type="logic">
+      <obj_property name="ElementShortName">cdc_stat_vcxo</obj_property>
+      <obj_property name="ObjectShortName">cdc_stat_vcxo</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/cdc_stat_ref" type="logic">
+      <obj_property name="ElementShortName">cdc_stat_ref</obj_property>
+      <obj_property name="ObjectShortName">cdc_stat_ref</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/cdc_stat_lock" type="logic">
+      <obj_property name="ElementShortName">cdc_stat_lock</obj_property>
+      <obj_property name="ObjectShortName">cdc_stat_lock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/man_keepalive_in" type="logic">
+      <obj_property name="ElementShortName">man_keepalive_in</obj_property>
+      <obj_property name="ObjectShortName">man_keepalive_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clk_in_p" type="logic">
+      <obj_property name="ElementShortName">clk_in_p</obj_property>
+      <obj_property name="ObjectShortName">clk_in_p</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clk_in_n" type="logic">
+      <obj_property name="ElementShortName">clk_in_n</obj_property>
+      <obj_property name="ObjectShortName">clk_in_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/refclk" type="logic">
+      <obj_property name="ElementShortName">refclk</obj_property>
+      <obj_property name="ObjectShortName">refclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/sample_clk" type="logic">
+      <obj_property name="ElementShortName">sample_clk</obj_property>
+      <obj_property name="ObjectShortName">sample_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/led_n" type="logic">
+      <obj_property name="ElementShortName">led_n</obj_property>
+      <obj_property name="ObjectShortName">led_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clk_good" type="logic">
+      <obj_property name="ElementShortName">clk_good</obj_property>
+      <obj_property name="ObjectShortName">clk_good</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clkin" type="logic">
+      <obj_property name="ElementShortName">clkin</obj_property>
+      <obj_property name="ObjectShortName">clkin</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clk_bufg" type="logic">
+      <obj_property name="ElementShortName">clk_bufg</obj_property>
+      <obj_property name="ObjectShortName">clk_bufg</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/keep_alive_clock" type="logic">
+      <obj_property name="ElementShortName">keep_alive_clock</obj_property>
+      <obj_property name="ObjectShortName">keep_alive_clock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/timeout_clr_n" type="logic">
+      <obj_property name="ElementShortName">timeout_clr_n</obj_property>
+      <obj_property name="ObjectShortName">timeout_clr_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/ignore1" type="logic">
+      <obj_property name="ElementShortName">ignore1</obj_property>
+      <obj_property name="ObjectShortName">ignore1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s0" type="logic">
+      <obj_property name="ElementShortName">s0</obj_property>
+      <obj_property name="ObjectShortName">s0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s1" type="logic">
+      <obj_property name="ElementShortName">s1</obj_property>
+      <obj_property name="ObjectShortName">s1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/ignore1x" type="logic">
+      <obj_property name="ElementShortName">ignore1x</obj_property>
+      <obj_property name="ObjectShortName">ignore1x</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s0x" type="logic">
+      <obj_property name="ElementShortName">s0x</obj_property>
+      <obj_property name="ObjectShortName">s0x</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/s1x" type="logic">
+      <obj_property name="ElementShortName">s1x</obj_property>
+      <obj_property name="ObjectShortName">s1x</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clk_ok" type="logic">
+      <obj_property name="ElementShortName">clk_ok</obj_property>
+      <obj_property name="ObjectShortName">clk_ok</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/state" type="array">
+      <obj_property name="ElementShortName">state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/timeout_cntr" type="array">
+      <obj_property name="ElementShortName">timeout_cntr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">timeout_cntr[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/reset_cnt" type="logic">
+      <obj_property name="ElementShortName">reset_cnt</obj_property>
+      <obj_property name="ObjectShortName">reset_cnt</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/cy_count_clk_in_rr" type="logic">
+      <obj_property name="ElementShortName">cy_count_clk_in_rr</obj_property>
+      <obj_property name="ObjectShortName">cy_count_clk_in_rr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/cy_count_clk_in_r" type="logic">
+      <obj_property name="ElementShortName">cy_count_clk_in_r</obj_property>
+      <obj_property name="ObjectShortName">cy_count_clk_in_r</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/count_clk_in" type="logic">
+      <obj_property name="ElementShortName">count_clk_in</obj_property>
+      <obj_property name="ObjectShortName">count_clk_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/count_sys_clk" type="array">
+      <obj_property name="ElementShortName">count_sys_clk[5:0]</obj_property>
+      <obj_property name="ObjectShortName">count_sys_clk[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/counter_tc_ff" type="logic">
+      <obj_property name="ElementShortName">counter_tc_ff</obj_property>
+      <obj_property name="ObjectShortName">counter_tc_ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/count_good_clk_in" type="array">
+      <obj_property name="ElementShortName">count_good_clk_in[3:0]</obj_property>
+      <obj_property name="ObjectShortName">count_good_clk_in[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/fifo_wr" type="logic">
+      <obj_property name="ElementShortName">fifo_wr</obj_property>
+      <obj_property name="ObjectShortName">fifo_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_cntr_rst_rr" type="logic">
+      <obj_property name="ElementShortName">freq_cntr_rst_rr</obj_property>
+      <obj_property name="ObjectShortName">freq_cntr_rst_rr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_cntr_rst_rrr" type="logic">
+      <obj_property name="ElementShortName">freq_cntr_rst_rrr</obj_property>
+      <obj_property name="ObjectShortName">freq_cntr_rst_rrr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_cntr_rst_r" type="logic">
+      <obj_property name="ElementShortName">freq_cntr_rst_r</obj_property>
+      <obj_property name="ObjectShortName">freq_cntr_rst_r</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_cntr" type="array">
+      <obj_property name="ElementShortName">freq_cntr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">freq_cntr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_cntr_rst" type="logic">
+      <obj_property name="ElementShortName">freq_cntr_rst</obj_property>
+      <obj_property name="ObjectShortName">freq_cntr_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/led_mode" type="array">
+      <obj_property name="ElementShortName">led_mode[1:0]</obj_property>
+      <obj_property name="ObjectShortName">led_mode[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/led_lite" type="logic">
+      <obj_property name="ElementShortName">led_lite</obj_property>
+      <obj_property name="ObjectShortName">led_lite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t1_cdc_stat_vcxo" type="logic">
+      <obj_property name="ElementShortName">t1_cdc_stat_vcxo</obj_property>
+      <obj_property name="ObjectShortName">t1_cdc_stat_vcxo</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t1_cdc_stat_ref" type="logic">
+      <obj_property name="ElementShortName">t1_cdc_stat_ref</obj_property>
+      <obj_property name="ObjectShortName">t1_cdc_stat_ref</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t1_cdc_stat_lock" type="logic">
+      <obj_property name="ElementShortName">t1_cdc_stat_lock</obj_property>
+      <obj_property name="ObjectShortName">t1_cdc_stat_lock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/clock_disable" type="logic">
+      <obj_property name="ElementShortName">clock_disable</obj_property>
+      <obj_property name="ObjectShortName">clock_disable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_latch" type="array">
+      <obj_property name="ElementShortName">freq_latch[31:0]</obj_property>
+      <obj_property name="ObjectShortName">freq_latch[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/frq_fifo_empty" type="logic">
+      <obj_property name="ElementShortName">frq_fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">frq_fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_period_cntr" type="array">
+      <obj_property name="ElementShortName">freq_period_cntr[29:0]</obj_property>
+      <obj_property name="ObjectShortName">freq_period_cntr[29:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/timeout" type="logic">
+      <obj_property name="ElementShortName">timeout</obj_property>
+      <obj_property name="ObjectShortName">timeout</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/count_good_tc" type="logic">
+      <obj_property name="ElementShortName">count_good_tc</obj_property>
+      <obj_property name="ObjectShortName">count_good_tc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t1_count_good_tc" type="logic">
+      <obj_property name="ElementShortName">t1_count_good_tc</obj_property>
+      <obj_property name="ObjectShortName">t1_count_good_tc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t2_count_good_tc" type="logic">
+      <obj_property name="ElementShortName">t2_count_good_tc</obj_property>
+      <obj_property name="ObjectShortName">t2_count_good_tc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t3_count_good_tc" type="logic">
+      <obj_property name="ElementShortName">t3_count_good_tc</obj_property>
+      <obj_property name="ObjectShortName">t3_count_good_tc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/det_clk" type="logic">
+      <obj_property name="ElementShortName">det_clk</obj_property>
+      <obj_property name="ObjectShortName">det_clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/src_send" type="logic">
+      <obj_property name="ElementShortName">src_send</obj_property>
+      <obj_property name="ObjectShortName">src_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/src_rcv" type="logic">
+      <obj_property name="ElementShortName">src_rcv</obj_property>
+      <obj_property name="ObjectShortName">src_rcv</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/dest_req" type="logic">
+      <obj_property name="ElementShortName">dest_req</obj_property>
+      <obj_property name="ObjectShortName">dest_req</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/freq_x" type="array">
+      <obj_property name="ElementShortName">freq_x[31:0]</obj_property>
+      <obj_property name="ObjectShortName">freq_x[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/t1_man_keepalive_in" type="logic">
+      <obj_property name="ElementShortName">t1_man_keepalive_in</obj_property>
+      <obj_property name="ObjectShortName">t1_man_keepalive_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/differential_term" type="array">
+      <obj_property name="ElementShortName">differential_term[1:8]</obj_property>
+      <obj_property name="ObjectShortName">differential_term[1:8]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/ibuf_low_pwr" type="other">
+      <obj_property name="ElementShortName">ibuf_low_pwr</obj_property>
+      <obj_property name="ObjectShortName">ibuf_low_pwr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/initial_led_mode" type="other">
+      <obj_property name="ElementShortName">initial_led_mode</obj_property>
+      <obj_property name="ObjectShortName">initial_led_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/has_man_keepalive_in" type="other">
+      <obj_property name="ElementShortName">has_man_keepalive_in</obj_property>
+      <obj_property name="ObjectShortName">has_man_keepalive_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/RESET_STATE" type="array">
+      <obj_property name="ElementShortName">RESET_STATE[2:0]</obj_property>
+      <obj_property name="ObjectShortName">RESET_STATE[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/START_TIMEOUT_CNTR_STATE" type="array">
+      <obj_property name="ElementShortName">START_TIMEOUT_CNTR_STATE[2:0]</obj_property>
+      <obj_property name="ObjectShortName">START_TIMEOUT_CNTR_STATE[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/KEEP_ALIVE_STATE" type="array">
+      <obj_property name="ElementShortName">KEEP_ALIVE_STATE[2:0]</obj_property>
+      <obj_property name="ObjectShortName">KEEP_ALIVE_STATE[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/TIMEOUT_STATE" type="array">
+      <obj_property name="ElementShortName">TIMEOUT_STATE[2:0]</obj_property>
+      <obj_property name="ObjectShortName">TIMEOUT_STATE[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/TIMEOUT_STATE_WAIT1" type="array">
+      <obj_property name="ElementShortName">TIMEOUT_STATE_WAIT1[2:0]</obj_property>
+      <obj_property name="ObjectShortName">TIMEOUT_STATE_WAIT1[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/TIMEOUT_STATE_WAIT2" type="array">
+      <obj_property name="ElementShortName">TIMEOUT_STATE_WAIT2[2:0]</obj_property>
+      <obj_property name="ObjectShortName">TIMEOUT_STATE_WAIT2[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/TIMEOUT_STATE_WAIT3" type="array">
+      <obj_property name="ElementShortName">TIMEOUT_STATE_WAIT3[2:0]</obj_property>
+      <obj_property name="ObjectShortName">TIMEOUT_STATE_WAIT3[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/GOOD_CLOCK_STATE" type="array">
+      <obj_property name="ElementShortName">GOOD_CLOCK_STATE[2:0]</obj_property>
+      <obj_property name="ObjectShortName">GOOD_CLOCK_STATE[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/src_send" type="logic">
+      <obj_property name="ElementShortName">src_send</obj_property>
+      <obj_property name="ObjectShortName">src_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/src_rcv" type="logic">
+      <obj_property name="ElementShortName">src_rcv</obj_property>
+      <obj_property name="ObjectShortName">src_rcv</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_cdc_clk_intrfc/uut/dest_req" type="logic">
+      <obj_property name="ElementShortName">dest_req</obj_property>
+      <obj_property name="ObjectShortName">dest_req</obj_property>
+   </wvobject>
+</wave_config>

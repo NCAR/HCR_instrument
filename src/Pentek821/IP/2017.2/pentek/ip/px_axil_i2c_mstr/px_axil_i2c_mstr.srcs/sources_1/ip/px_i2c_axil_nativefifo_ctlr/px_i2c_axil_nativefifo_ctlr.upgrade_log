@@ -1,0 +1,111 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 14:22:07 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_i2c_axil_nativefifo_ctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_i2c_axil_nativefifo_ctlr from pentek.com:px_ip:px_axil_nativefifo_ctlr:0.01 (Rev. 5) to pentek.com:px_ip:px_axil_nativefifo_ctlr:1.0 (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Thu Jul 02 12:21:40 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_i2c_axil_nativefifo_ctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_i2c_axil_nativefifo_ctlr (pentek.com:px_ip:px_axil_nativefifo_ctlr:0.01) from (Rev. 2) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.1 (win64) Build 1215546 Mon Apr 27 19:22:08 MDT 2015
+| Date         : Sat May 02 18:46:32 2015
+| Host         : Igor running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_i2c_axil_nativefifo_ctlr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_i2c_axil_nativefifo_ctlr (pentek.com:px_ip:px_axil_nativefifo_ctlr:0.01) from (Rev. 1) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2014.4.1 (win64) Build 1149489 Thu Feb 19 16:23:09 MST 2015
+| Date         : Sat Apr 18 19:04:11 2015
+| Host         : Igor running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+--------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_i2c_axil_nativefifo_ctlr'
+
+1. Summary
+----------
+
+SUCCESS in the update of px_i2c_axil_nativefifo_ctlr (pentek.com:px_ip:px_axil_nativefifo_ctlr:0.01 (Rev. 1)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2014.4.1 (win64) Build 1149489 Thu Feb 19 16:23:09 MST 2015
+| Date         : Sat Apr 18 17:11:04 2015
+| Host         : Igor running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+--------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_i2c_axil_nativefifo_ctlr'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the update of px_i2c_axil_nativefifo_ctlr (pentek.com:px_ip:px_axil_nativefifo_ctlr:0.01 (Rev. 1)) to current project options.
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading IP 'px_i2c_axil_nativefifo_ctlr'. These changes may impact your design.
+
+
+-upgrade has added port 'fifo_empty'
+-upgrade has added port 'fifo_full'
+

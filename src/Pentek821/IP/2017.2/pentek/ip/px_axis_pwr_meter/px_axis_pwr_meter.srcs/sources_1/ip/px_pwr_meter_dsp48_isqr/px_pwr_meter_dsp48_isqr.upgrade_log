@@ -1,0 +1,37 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 14:48:35 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_pwr_meter_dsp48_isqr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_pwr_meter_dsp48_isqr (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 9) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Thu Jul 02 10:19:37 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_pwr_meter_dsp48_isqr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_pwr_meter_dsp48_isqr (xilinx.com:ip:xbip_dsp48_macro:3.0) from (Rev. 8) to (Rev. 9)
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_axis_round_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="tb_px_axis_round" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="13" />
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/axis_aclk" type="logic">
+      <obj_property name="ElementShortName">axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_aclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/s_axis_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_tdata[11:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tdata[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/s_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/s_axis_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/m_axis_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tdata[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/m_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/m_axis_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/sat_out" type="logic">
+      <obj_property name="ElementShortName">sat_out</obj_property>
+      <obj_property name="ObjectShortName">sat_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/rnd_type" type="other">
+      <obj_property name="ElementShortName">rnd_type</obj_property>
+      <obj_property name="ObjectShortName">rnd_type</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/has_tready" type="other">
+      <obj_property name="ElementShortName">has_tready</obj_property>
+      <obj_property name="ObjectShortName">has_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/has_sat_out" type="other">
+      <obj_property name="ElementShortName">has_sat_out</obj_property>
+      <obj_property name="ObjectShortName">has_sat_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_round/stim" type="array">
+      <obj_property name="ElementShortName">stim[0:7][11:0]</obj_property>
+      <obj_property name="ObjectShortName">stim[0:7][11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

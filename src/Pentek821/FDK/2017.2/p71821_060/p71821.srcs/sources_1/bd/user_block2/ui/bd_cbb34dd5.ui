@@ -1,0 +1,41 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.8  2016-12-21 bk=1.3817 VDI=40 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port pulse_metadata -pg 1 -y 110 -defaultsOSRD
+preplace port aclk -pg 1 -y 460 -defaultsOSRD
+preplace port out_pdti -pg 1 -y 140 -defaultsOSRD
+preplace port coef -pg 1 -y 360 -defaultsOSRD
+preplace port aresetn -pg 1 -y 440 -defaultsOSRD
+preplace port in_pdti -pg 1 -y 420 -defaultsOSRD
+preplace portBus pos_enc_0 -pg 1 -y 170 -defaultsOSRD
+preplace portBus pos_enc_1 -pg 1 -y 190 -defaultsOSRD
+preplace portBus flags -pg 1 -y 210 -defaultsOSRD
+preplace inst metadata_injector -pg 1 -lvl 5 -y 130 -defaultsOSRD
+preplace inst bcast -pg 1 -lvl 2 -y 280 -defaultsOSRD
+preplace inst one -pg 1 -lvl 4 -y 60 -defaultsOSRD
+preplace inst remove_unused_sigs -pg 1 -lvl 6 -y 150 -defaultsOSRD
+preplace inst map_fsel -pg 1 -lvl 3 -y 440 -defaultsOSRD
+preplace inst map_data -pg 1 -lvl 3 -y 280 -defaultsOSRD
+preplace inst fifo -pg 1 -lvl 1 -y 440 -defaultsOSRD
+preplace inst pulse_fir -pg 1 -lvl 4 -y 400 -defaultsOSRD
+preplace netloc Conn1 1 0 5 NJ 110 NJ 110 NJ 110 NJ 110 NJ
+preplace netloc metadata_injector_o_data 1 5 1 N
+preplace netloc axis_subset_converter_1_M_AXIS 1 3 1 1070
+preplace netloc pulse_fir_0_M_AXIS_DATA 1 4 1 1490
+preplace netloc one_dout 1 4 1 1490J
+preplace netloc axis_subset_converter_0_M_AXIS 1 3 1 1050
+preplace netloc axis_broadcaster_0_M00_AXIS 1 2 1 720
+preplace netloc pos_enc_1_1 1 0 5 NJ 190 NJ 190 NJ 190 NJ 190 NJ
+preplace netloc s_axis_adc_pdti_aclk_1 1 0 6 20 530 380 350 720 370 1060 490 1510 260 1850J
+preplace netloc coef_1 1 0 4 NJ 360 NJ 360 NJ 360 NJ
+preplace netloc pos_enc_0_1 1 0 5 NJ 170 NJ 170 NJ 170 NJ 170 NJ
+preplace netloc axis_broadcaster_0_M01_AXIS 1 2 1 710
+preplace netloc flags_1 1 0 5 NJ 210 NJ 210 NJ 210 NJ 210 NJ
+preplace netloc axis_subset_converter_0_M_AXIS1 1 6 1 N
+preplace netloc axis_data_fifo_0_M_AXIS 1 1 1 370
+preplace netloc s_axis_adc_pdti_aresetn_1 1 0 6 30 520 390 370 730 350 1060J 310 1500 270 1860J
+preplace netloc s_axis_adc_ch0_pdti_1 1 0 1 NJ
+levelinfo -pg 1 0 200 550 890 1280 1680 2060 2280 -top 0 -bot 540
+",
+}
+0

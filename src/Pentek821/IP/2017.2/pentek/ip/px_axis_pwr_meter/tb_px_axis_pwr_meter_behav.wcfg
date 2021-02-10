@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_axis_pwr_meter_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_axis_pwr_meter" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="70" />
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_pwr_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pwr_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pwr_tdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[6:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider65">
+      <obj_property name="label">control Regs</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/reg0_init_val" type="array">
+      <obj_property name="ElementShortName">reg0_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg0_init_val[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/reg1_init_val" type="array">
+      <obj_property name="ElementShortName">reg1_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg1_init_val[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/ctl0_out" type="array">
+      <obj_property name="ElementShortName">ctl0_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl0_out[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/ctl1_out" type="array">
+      <obj_property name="ElementShortName">ctl1_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl1_out[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/stat0_in" type="array">
+      <obj_property name="ElementShortName">stat0_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat0_in[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/stat1_in" type="array">
+      <obj_property name="ElementShortName">stat1_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat1_in[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/intrpt_src_in" type="array">
+      <obj_property name="ElementShortName">intrpt_src_in[0:0]</obj_property>
+      <obj_property name="ObjectShortName">intrpt_src_in[0:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider73">
+      <obj_property name="label">output</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t27_mag" type="array">
+      <obj_property name="ElementShortName">t27_mag[23:0]</obj_property>
+      <obj_property name="ObjectShortName">t27_mag[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/rdy_out" type="logic">
+      <obj_property name="ElementShortName">rdy_out</obj_property>
+      <obj_property name="ObjectShortName">rdy_out</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_pwr_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pwr_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pwr_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_pwr_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pwr_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pwr_tdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_mag_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_mag_tdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_mag_tdata[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_mag_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_mag_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_mag_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_pwr_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pwr_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pwr_tdata[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/m_axis_mag_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_mag_tdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_mag_tdata[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
+      <obj_property name="CellHeight">100</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider13">
+      <obj_property name="label">I</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/isqr_inst/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/isqr_inst/A" type="array">
+      <obj_property name="ElementShortName">A[15:0]</obj_property>
+      <obj_property name="ObjectShortName">A[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/isqr_inst/B" type="array">
+      <obj_property name="ElementShortName">B[15:0]</obj_property>
+      <obj_property name="ObjectShortName">B[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/isqr_inst/PCOUT" type="array">
+      <obj_property name="ElementShortName">PCOUT[47:0]</obj_property>
+      <obj_property name="ObjectShortName">PCOUT[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/isqr_inst/P" type="array">
+      <obj_property name="ElementShortName">P[31:0]</obj_property>
+      <obj_property name="ObjectShortName">P[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider19">
+      <obj_property name="label">Q</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/qsqr_inst/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/qsqr_inst/PCIN" type="array">
+      <obj_property name="ElementShortName">PCIN[47:0]</obj_property>
+      <obj_property name="ObjectShortName">PCIN[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/qsqr_inst/A" type="array">
+      <obj_property name="ElementShortName">A[15:0]</obj_property>
+      <obj_property name="ObjectShortName">A[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/qsqr_inst/B" type="array">
+      <obj_property name="ElementShortName">B[15:0]</obj_property>
+      <obj_property name="ObjectShortName">B[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/qsqr_inst/P" type="array">
+      <obj_property name="ElementShortName">P[47:0]</obj_property>
+      <obj_property name="ObjectShortName">P[47:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider44">
+      <obj_property name="label">accum</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/accum_inst/B" type="array">
+      <obj_property name="ElementShortName">B[32:0]</obj_property>
+      <obj_property name="ObjectShortName">B[32:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/accum_inst/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/accum_inst/CE" type="logic">
+      <obj_property name="ElementShortName">CE</obj_property>
+      <obj_property name="ObjectShortName">CE</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/accum_inst/BYPASS" type="logic">
+      <obj_property name="ElementShortName">BYPASS</obj_property>
+      <obj_property name="ObjectShortName">BYPASS</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/accum_inst/Q" type="array">
+      <obj_property name="ElementShortName">Q[35:0]</obj_property>
+      <obj_property name="ObjectShortName">Q[35:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t1_pwr_accum" type="array">
+      <obj_property name="ElementShortName">t1_pwr_accum[35:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_pwr_accum[35:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider101">
+      <obj_property name="label">mult_k</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/mult_k_inst/CLK" type="logic">
+      <obj_property name="ElementShortName">CLK</obj_property>
+      <obj_property name="ObjectShortName">CLK</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/mult_k_inst/A" type="array">
+      <obj_property name="ElementShortName">A[31:0]</obj_property>
+      <obj_property name="ObjectShortName">A[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/mult_k_inst/B" type="array">
+      <obj_property name="ElementShortName">B[16:0]</obj_property>
+      <obj_property name="ObjectShortName">B[16:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/mult_k_inst/P" type="array">
+      <obj_property name="ElementShortName">P[46:0]</obj_property>
+      <obj_property name="ObjectShortName">P[46:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t1_k" type="array">
+      <obj_property name="ElementShortName">t1_k[16:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_k[16:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t1_x1mk" type="array">
+      <obj_property name="ElementShortName">t1_x1mk[46:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_x1mk[46:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t5_acc_tvalid" type="logic">
+      <obj_property name="ElementShortName">t5_acc_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t5_acc_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t1_ak" type="array">
+      <obj_property name="ElementShortName">t1_ak[46:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_ak[46:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/iir_pwr" type="array">
+      <obj_property name="ElementShortName">iir_pwr[46:0]</obj_property>
+      <obj_property name="ObjectShortName">iir_pwr[46:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_axis_pwr_meter/uut/t8_acc_tvalid" type="logic">
+      <obj_property name="ElementShortName">t8_acc_tvalid</obj_property>
+      <obj_property name="ObjectShortName">t8_acc_tvalid</obj_property>
+   </wvobject>
+</wave_config>

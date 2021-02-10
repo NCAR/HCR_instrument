@@ -1,0 +1,104 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 15:16:00 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_info'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_info from pentek.com:px_ip:px_axil_csr:0.01 (Rev. 6) to pentek.com:px_ip:px_axil_csr:1.0 (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Thu Jul 02 10:23:48 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_info'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_info (pentek.com:px_ip:px_axil_csr:0.01) from (Rev. 5) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.1 (win64) Build 1215546 Mon Apr 27 19:22:08 MDT 2015
+| Date         : Tue May 19 08:58:57 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_info'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_info (pentek.com:px_ip:px_axil_csr:0.01) from (Rev. 3) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.1 (win64) Build 1215546 Mon Apr 27 19:22:08 MDT 2015
+| Date         : Fri May 01 22:34:54 2015
+| Host         : Igor running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_info'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of px_axil_csr_info (pentek.com:px_ip:px_axil_csr:0.01) from (Rev. 8) to (Rev. 3)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading IP 'px_axil_csr_info'.
+
+
+-upgrade has removed interface 'interrupt'
+-upgrade has removed interface 'intrpt_src'
+-upgrade has removed interface 's_axi_csr_signal_clock'
+-upgrade has removed interface 's_axi_csr_signal_reset'
+-upgrade has added interface 'irq'
+-upgrade has added interface 's_axi_csr_aclk'
+-upgrade has added interface 's_axi_csr_aresetn'
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading IP 'px_axil_csr_info'. These changes may impact your design.
+
+
+-upgraded port 's_axi_csr_araddr' width 7 differs from original width 6
+-upgraded port 's_axi_csr_awaddr' width 7 differs from original width 6
+

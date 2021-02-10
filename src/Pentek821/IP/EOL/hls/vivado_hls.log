@@ -1,0 +1,21 @@
+INFO: [HLS 200-10] Running '/opt/Xilinx/Vivado/2019.1/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'apar' on host 'apararchiver' (Linux_x86_64 version 4.18.0-80.11.2.el8_0.x86_64) on Fri Feb 05 16:41:27 UTC 2021
+INFO: [HLS 200-10] On os "CentOS Linux release 8.0.1905 (Core) "
+INFO: [HLS 200-10] In directory '/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls'
+Sourcing Tcl script '/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/cosim.tcl'
+INFO: [HLS 200-10] Opening project '/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller'.
+INFO: [HLS 200-10] Opening solution '/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 1ns.
+ERROR: [HLS 200-70] Part 'xcku060-ffva1517-2-e' is not installed.
+command 'ap_source' returned error code
+    while executing
+"source /home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/cosim.tcl"
+    invoked from within
+"hls::main /home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/cosim.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel 1 hls::main {*}$args"
+    (procedure "hls_proc" line 5)
+    invoked from within
+"hls_proc $argv"

@@ -1,0 +1,55 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.8  2016-12-21 bk=1.3817 VDI=40 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axis_adc_pdti_aresetn -pg 1 -y 910 -defaultsOSRD
+preplace port s_axis_dac_pdti -pg 1 -y 1080 -defaultsOSRD
+preplace port s_axi_csr_aclk -pg 1 -y 420 -defaultsOSRD
+preplace port m_axis_dac_pdti -pg 1 -y 1100 -defaultsOSRD
+preplace port s_axi_csr -pg 1 -y 400 -defaultsOSRD
+preplace port s_axis_adc_ch2_pdti -pg 1 -y 890 -defaultsOSRD
+preplace port s_axis_adc_ch0_pdti -pg 1 -y 340 -defaultsOSRD
+preplace port s_axis_dac_pdti_aresetn -pg 1 -y 1100 -defaultsOSRD
+preplace port s_axis_dac_pdti_aclk -pg 1 -y 1120 -defaultsOSRD
+preplace port s_axis_adc_ch1_pdti -pg 1 -y 700 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -y 440 -defaultsOSRD
+preplace port m_axis_adc_ch1_pdti -pg 1 -y 720 -defaultsOSRD
+preplace port s_axis_adc_pdti_aclk -pg 1 -y 930 -defaultsOSRD
+preplace port m_axis_adc_ch2_pdti -pg 1 -y 910 -defaultsOSRD
+preplace port m_axis_adc_ch0_pdti -pg 1 -y 360 -defaultsOSRD
+preplace portBus dsp_irq -pg 1 -y 130 -defaultsOSRD
+preplace inst zero_const -pg 1 -lvl 1 -y 160 -defaultsOSRD
+preplace inst dac0 -pg 1 -lvl 2 -y 1110 -defaultsOSRD
+preplace inst px_scalar2vctr_0 -pg 1 -lvl 2 -y 130 -defaultsOSRD
+preplace inst axi_interconnect_0 -pg 1 -lvl 1 -y 520 -defaultsOSRD
+preplace inst adc_ch0 -pg 1 -lvl 2 -y 370 -defaultsOSRD
+preplace inst adc_ch1 -pg 1 -lvl 2 -y 730 -defaultsOSRD
+preplace inst adc_ch2 -pg 1 -lvl 2 -y 920 -defaultsOSRD
+preplace netloc s_axis_pdti_2 1 0 2 NJ 700 NJ
+preplace netloc ch0_m_axis_pdti 1 2 1 NJ
+preplace netloc s_axis_pdti_4 1 0 2 NJ 1080 NJ
+preplace netloc s_axis_adc_ch2_pdti_1 1 0 2 NJ 890 NJ
+preplace netloc s_axis_adc_pdti_aclk_1 1 0 2 NJ 930 370
+preplace netloc px_scalar_const_0_std_logic_const 1 1 1 330
+preplace netloc s_axi_csr_aresetn_1 1 0 2 20 720 340
+preplace netloc s_axi_csr_ack_1 1 0 2 30 710 390
+preplace netloc axi_interconnect_0_M02_AXI 1 1 1 360
+preplace netloc ch2_irq 1 1 2 410 250 800
+preplace netloc dac0_irq 1 1 2 420 260 790
+preplace netloc s_axis_dac_pdti_aresetn_1 1 0 2 NJ 1100 NJ
+preplace netloc ch3_m_axis_pdti 1 2 1 NJ
+preplace netloc ch2_m_axis_pdti 1 2 1 NJ
+preplace netloc s_axi_csr_1 1 0 1 NJ
+preplace netloc ch1_m_axis_pdti 1 2 1 NJ
+preplace netloc axi_interconnect_0_M00_AXI 1 1 1 330
+preplace netloc ch0_irq 1 1 2 420 10 780
+preplace netloc px_scalar2vctr_0_output_vector 1 2 1 NJ
+preplace netloc axi_interconnect_0_M01_AXI 1 1 1 380
+preplace netloc s_axis_dac_pdti_aclk_1 1 0 2 NJ 1120 NJ
+preplace netloc ch1_irq 1 1 2 400 470 780
+preplace netloc s_axis_adc_pdti_aresetn_1 1 0 2 NJ 910 350
+preplace netloc s_axis_pdti_1 1 0 2 NJ 340 NJ
+preplace netloc axi_interconnect_0_M03_AXI 1 1 1 330
+levelinfo -pg 1 0 180 600 820 -top 0 -bot 1210
+",
+}
+0

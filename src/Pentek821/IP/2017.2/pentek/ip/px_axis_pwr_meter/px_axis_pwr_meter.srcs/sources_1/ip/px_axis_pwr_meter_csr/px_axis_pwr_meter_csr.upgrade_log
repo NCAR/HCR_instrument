@@ -1,0 +1,58 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Thu Feb 04 14:48:22 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_pwr_meter_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_pwr_meter_csr from pentek.com:px_ip:px_axil_csr:0.01 (Rev. 6) to pentek.com:px_ip:px_axil_csr:1.0 (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.2 (win64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Thu Jul 02 10:19:28 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_pwr_meter_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_pwr_meter_csr (pentek.com:px_ip:px_axil_csr:0.01) from (Rev. 5) to (Rev. 6)
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.1 (win64) Build 1215546 Mon Apr 27 19:22:08 MDT 2015
+| Date         : Tue May 19 08:42:28 2015
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_pwr_meter_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_pwr_meter_csr (pentek.com:px_ip:px_axil_csr:0.01) from (Rev. 4) to (Rev. 5)
+
