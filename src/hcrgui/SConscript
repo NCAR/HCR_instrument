@@ -13,12 +13,13 @@ hcrexecutive
 logx
 lrose
 motioncontrol
-qt4
+qt5
+qtcore
+qtgui
 SpectracomRpcClient
 xmitdrpcclient
 """)
 hcrguiEnv = Environment(tools = ['default'] + hcrguiTools)
-hcrguiEnv.EnableQtModules(['QtCore', 'QtGui'])
 
 hcrgui_sources = Split("""
 hcrgui.cpp
