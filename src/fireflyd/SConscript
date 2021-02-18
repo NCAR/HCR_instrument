@@ -6,7 +6,8 @@ doxygen
 FireFly
 logx
 lrose
-qt4
+qt5
+qtcore
 QFunctionWrapper
 QXmlRpcServerAbyss
 """)
@@ -18,7 +19,6 @@ fireflyd.cpp
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQtModules(['QtCore'])
 
 fireflyd = env.Program('fireflyd', sources)
 Default(fireflyd)

@@ -12,14 +12,14 @@ lrose
 motioncontrol
 Pentek7142
 QFunctionWrapper
-qt4
+qt5
+qtcore
 qtt_qtconfig
 QXmlRpcServerAbyss
 xmitdrpcclient
 """)
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQtModules(['QtCore'])
 
 # Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
 # via the hcrdrxrpcclient tool

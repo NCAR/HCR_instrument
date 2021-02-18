@@ -5,13 +5,12 @@ tools = Split('''
 hcrpmc730client
 doxygen
 motioncontrol
-qt4
+qt5
 xmlrpc_client++
 ''')
 hcrExecutiveDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
-env.EnableQtModules(['QtCore'])
 
 # Create the CanFestival object dictionary implementation files ElmoMasterNode.c 
 # and ElmoMasterNode.h from ElmoMasterNode.od

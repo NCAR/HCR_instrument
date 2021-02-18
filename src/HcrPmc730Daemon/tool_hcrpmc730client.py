@@ -7,11 +7,11 @@ tools = Split("""
     hcrpmc730
     logx
     boost_serialization
-    qt4
+    qtcore
+    qtnetwork
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
-env.EnableQtModules(['QtCore', 'QtNetwork'])
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory

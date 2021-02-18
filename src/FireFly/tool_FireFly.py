@@ -9,10 +9,10 @@ tools = Split("""
     boost
     logx
     pmc730
-    qt4
+    qt5
+    qtcore
 """)
 env = Environment(tools=['default'] + tools)
-env.EnableQtModules(['QtCore'])
 
 # The object file and header file live in this directory.
 tooldir = env.Dir('.').srcnode().abspath    # this directory

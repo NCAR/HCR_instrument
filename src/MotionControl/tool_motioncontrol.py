@@ -6,13 +6,14 @@ tools = Split('''
     cmigits
     doxygen
     logx
-    qt4
+    qt5
+    qtcore
+    qtnetwork
     xmlrpc_client++
 ''')
 motionControlDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
-env.EnableQtModules(['QtCore', 'QtNetwork'])
 
 # Create the CanFestival object dictionary implementation files ElmoMasterNode.c 
 # and ElmoMasterNode.h from ElmoMasterNode.od

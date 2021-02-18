@@ -10,14 +10,15 @@ doxygen
 hcrexecutive
 lrose
 motioncontrol
-qt4
+qt5
+qtcore
+qtxml
 QFunctionWrapper
 QXmlRpcServerAbyss
 xmlrpc_client++
 ''')
 
 env = Environment(tools = ['default'] + tools)
-env.EnableQtModules(['QtCore', 'QtXml'])
 
 sources = Split('''
     HcrExecutive.cpp
