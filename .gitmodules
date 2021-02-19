@@ -34,3 +34,9 @@
 [submodule "src/ReadyFlow7142_428_WinDriver1150"]
 	path = src/ReadyFlow7142_428_WinDriver1150
 	url = http://gitlab.eol.ucar.edu/vendor/ReadyFlow7142_428_WinDriver1150.git
+[submodule "src/Navigator_xx821"]
+	path = src/Navigator_xx821
+	url = http://gitlab.eol.ucar.edu/vendor/Navigator_xx821
+[submodule "src/Pentek_xx821"]
+	path = src/Pentek_xx821
+	url = git@github.com:/NCAR/Pentek_xx821
