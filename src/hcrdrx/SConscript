@@ -1,47 +1,41 @@
 # -*- python -*-
 
 tools = Split("""
-hcrpmc730client
-boost_date_time
-boost_program_options
-cmigitsdaemonrpcclient
-doxygen
-hcrdrxrpcclient
-logx
-lrose
-motioncontrol
-Pentek7142
-QFunctionWrapper
-qt5
-qtcore
-qtt_qtconfig
-QXmlRpcServerAbyss
-xmitdrpcclient
+    hcrpmc730client
+    cmigitsdaemonrpcclient
+    boost_date_time
+    boost_program_options
+    doxygen
+    hcrdrxrpcclient
+    logx
+    lrose
+    motioncontrol
+    Pentek_xx821
+    QFunctionWrapper
+    qt5
+    QXmlRpcServerAbyss
+    xmitdrpcclient
 """)
-
 env = Environment(tools = ['default'] + tools)
 
 # Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
 # via the hcrdrxrpcclient tool
 sources = Split("""
-hcrdrx.cpp
-HcrDrxConfig.cpp
-HcrDrxPub.cpp
-IwrfExport.cpp
-IwrfExportInsPoller.cpp
-PulseData.cpp
-StatusGrabber.cpp
+    hcrdrx.cpp
+    HCR_Beam.cpp
+    HCR_Config.cpp
+    HCR_Pentek.cpp
+    IwrfPublisher.cpp
+    PublishWorker.cpp
 """)
 
 headers = Split("""
-DrxStatus.h
-HcrDrxConfig.h
-HcrDrxPub.h
-HcrdrxRpcClient.h
-IwrfExport.h
-IwrfExportInsPoller.h
-PulseData.h
-StatusGrabber.h
+    HCR_Beam.h
+    HCR_Config.h
+    HCR_Pentek.h
+    HcrdrxRpcClient.h
+    IwrfPublisher.h
+    PublishWorker.h
 """)
 
 hcrdrx = env.Program('hcrdrx', sources)
