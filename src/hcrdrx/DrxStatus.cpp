@@ -29,8 +29,7 @@
  */
 
 #include "DrxStatus.h"
-#include <p7142sd3c.h>
-#include <p7142sd3cDn.h>
+#include "HCR_Pentek.h"
 #include <Archive_xmlrpc_c.h>
 #include <logx/Logging.h>
 #include <iomanip>
@@ -47,20 +46,14 @@ DrxStatus::DrxStatus() :
     _motorZeroPositionSet(false) {
 }
 
-DrxStatus::DrxStatus(const Pentek::p7142sd3c & pentek) {
-    _pentekFpgaTemp = pentek.fpgaTemp();
-    _pentekBoardTemp = pentek.circuitBoardTemp();
-    _nGates = pentek.gates();
-    _prt = pentek.prt();
-    _xmitPulseWidth = pentek.txPulseWidth();
-    // Search channel-by-channel until we find a downconverter, then query it
-    // to find gate spacing.
-    const Pentek::p7142sd3cDn* downconverter = NULL;
-    for (int chan = 0; chan < 4 && downconverter == NULL; chan++) {
-        downconverter = dynamic_cast<const Pentek::p7142sd3cDn*>(pentek.downconverter(chan));
-    }
-    _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
-    _motorZeroPositionSet = pentek.motorZeroPositionSet();
+DrxStatus::DrxStatus(const HCR_Pentek& pentek) : DrxStatus() {
+//    _pentekFpgaTemp = pentek.fpgaTemp();
+//    _pentekBoardTemp = pentek.circuitBoardTemp();
+//    _nGates = pentek.gates();
+//    _prt = pentek.prt();
+//    _xmitPulseWidth = pentek.txPulseWidth();
+//    _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
+//    _motorZeroPositionSet = pentek.motorZeroPositionSet();
 }
 
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :

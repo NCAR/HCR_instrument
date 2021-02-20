@@ -51,9 +51,9 @@ HCR_Config::HCR_Config()
 {
     // This is the default config.
     // _processParameter() can change these values, but won't change/add keys.
-    
+
     _cfg["config_file"] = "default";
-    
+
     _cfg["use_internal_clock"] = "true";
     _cfg["duc_interpolation"] = "2";
     _cfg["rx_frequency"] = "93.75e6";
@@ -78,7 +78,7 @@ HCR_Config::HCR_Config()
     _cfg["longitude"] = "-105.24127";
     _cfg["altitude"] = "1609";
     _cfg["radar_id"] = "HCR";
-    
+
     _cfg["pulse_filter_file_ch_0"] = "cdata/pulse_filter_default.csv";
     _cfg["pulse_filter_file_ch_1"] = "cdata/pulse_filter_default.csv";
     _cfg["pulse_filter_file_ch_2"] = "cdata/pulse_filter_default.csv";
@@ -193,7 +193,7 @@ void HCR_Config::_processParameter(const std::string & parameter, int lineNum)
     if (cfgLine.empty()) return;
 
     // Skip lines without '='
-    int separator = cfgLine.find("=");
+    size_t separator = cfgLine.find("=");
     if (separator == std::string::npos) {
         ELOG << "Config syntax error @" << lineNum << " : \"" << cfgLine << "\"";
         throw std::runtime_error("Config syntax error");

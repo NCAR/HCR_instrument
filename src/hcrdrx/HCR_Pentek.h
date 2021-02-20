@@ -34,12 +34,12 @@
 
 #include "HCR_Config.h"
 #include "HCR_Beam.h"
+#include "IwrfPublisher.h"
 #include "RadarController.h"
 #include <ctime>
 #include <vector>
 #include <complex>
 #include <Pentek_xx821.h>
-#include <IwrfPublisher.h>
 #include <QtCore/QMutex>
 #include <QtCore/QSharedPointer>
 #include <QtCore/QSocketNotifier>

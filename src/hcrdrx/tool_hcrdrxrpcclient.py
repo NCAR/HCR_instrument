@@ -1,5 +1,5 @@
 #
-# Rules to build HcrdrxRpcClient class and export it (and its header) as a tool
+# Build HcrdrxRpcClient class and export it (and its header) as a tool
 #
 import os
 
@@ -7,7 +7,10 @@ tools = Split("""
     archive_xmlrpc_c
     boost_serialization
     logx
-    Pentek7142
+    lrose
+    Pentek_xx821
+    qt5
+    qtcore
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)

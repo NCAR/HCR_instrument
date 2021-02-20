@@ -24,7 +24,7 @@
 /*
  * HcrdrxRpcClient.h
  *
- *  Created on: August 13, 2012
+ *  Created on: February 18, 2021
  *      Author: burghart
  */
 
@@ -42,8 +42,8 @@
 class HcrdrxRpcClient {
 public:
     /**
-     * Instantiate HcrdrxRpcClient to communicate with an hcrdrx process running
-     * on host hcrdrxHost and using port hcrdrxPort.
+     * Instantiate HcrdrxRpcClient to communicate with an hcrdrx process
+     * running on host hcrdrxHost and using port hcrdrxPort.
      * @param hcrdrxHost the name of the host on which hcrdrx is running
      * @param hcrdrxPort the port number being used by hcrdrx
      */
@@ -58,7 +58,7 @@ public:
     /**
      * @brief Send a "getStatus" command, filling a DrxStatus
      * object if we get status from the hcrdrx.
-     * @param status the HcrdrxRpcClient::Status object to be filled
+     * @param status the DrxStatus object to be filled
      * @return true and fill the status object if status is obtained from
      * hcrdrx, otherwise return false and leave the status object
      * unmodified.
