@@ -187,7 +187,7 @@ HCR_Pentek::_startRadar() {
     usleep(sleepUsecs);
     
     #warning todo configurable
-    _controller.run(0, _pulseDefinitions.size(), DDC_DECIMATION, _pulseDefinitions.size()*_pulseDefinitions[0].numPulses);
+    _controller.run(0, _pulseDefinitions.size(), DDC_DECIMATION, 10, _pulseDefinitions.size()*_pulseDefinitions[0].numPulses);
 
     // Zero the Pentek's PPS counter
     status = NAV_TimestampGenSetup(_boardHandle, 0);
@@ -680,6 +680,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     const NAV_DMA_ADC_META_DATA * metadata(metadataPtr.data());
     size_t clockOffsetCount = 0;
     size_t dataBufOffsetBytes = 0;
+    bool lastPulseInXfer = false;
     using IQData = std::complex<int16_t>;
 
     if (! _checkDmaMetadata(chan, metadata)) {
@@ -687,22 +688,19 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     }
 
     //Process all the pulses in the data.
-    //We discover the true numPulses inside the loop.
-    for(size_t numPulses=1, numPulsesProcessed=0;
-        numPulsesProcessed < numPulses; ++numPulsesProcessed)
+    for(size_t numPulsesProcessed=0; !lastPulseInXfer; ++numPulsesProcessed)
     {
 
         // Check the size of the buffer
         if(dataBufOffsetBytes+sizeof(Controller::PulseHeader) > metadata->validBytes) {
             ELOG << "Truncated pulse block chan " << std::dec << chan 
-                 << " after pulse " << numPulsesProcessed << " of " << numPulses;
+                 << " after pulse " << numPulsesProcessed;
             return;
         }
 
         // Extract the pulse header
         const Controller::PulseHeader& pulseHeader = *reinterpret_cast<const Controller::PulseHeader*>(dataBuf+dataBufOffsetBytes);
         dataBufOffsetBytes += sizeof(Controller::PulseHeader);
-//        ILOG << pulseHeader.magic;
         
         if(pulseHeader.magic != Controller::HEADER_MAGIC) {
             ELOG << "Bad header magic 0x" << std::hex << pulseHeader.magic
@@ -734,13 +732,18 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         // Add the PRT to get the offset for the next pulse
         clockOffsetCount += pulseHeader.prt;
         
-        // Find out how many pulses to process
-        numPulses = pulseDef.numPulses;
-        
+        // Add the post-time if applicable
+        if(pulseHeader.statusFlags.lastPulseInBlock) {
+            clockOffsetCount += pulseDef.blockPostTime;
+        }
+
+        // Check if done
+        lastPulseInXfer = pulseHeader.statusFlags.lastPulseInXfer;
+
         // Check the size of the buffer
         if(dataBufOffsetBytes + nGates*sizeof(IQData) > metadata->validBytes) {
             ELOG << "Truncated pulse data chan " << std::dec << chan 
-                 << " after pulse " << numPulsesProcessed << " of " << numPulses;
+                 << " after pulse " << numPulsesProcessed;
             return;
         }
 
