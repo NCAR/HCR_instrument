@@ -361,7 +361,7 @@ resolve_type immediate dependency {} format string minimum {} maximum {}} value 
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_V.TDATA_NUM_BYTES">106</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_V.TDATA_NUM_BYTES">102</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -387,11 +387,14 @@ automatic dependency {} format long minimum {} maximum {}} value 0} bitoffset {a
 maximum {}} value timer_width} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 0} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 512} array_type {name {attribs {resolve_type immediate depen
 dency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immedi
 ate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}}}}} field_sequence_index {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value sequence_index} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum 
-{} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 768} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_pulse_rep {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value pulse_rep} enabled {attribs {resolve_type imme
-diate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 776} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_
-num_samples {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_samples} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format lon
-g minimum {} maximum {}} value 808} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_terminate {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value terminate} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attrib
-s {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 840}}}}}}}</spirit:value>
+{} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 768} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_num_samples {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_samples} enabled {attribs {resolve_type 
+immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 776} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} fi
+eld_first_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dep
+endency {} format long minimum {} maximum {}} value 808}}} field_last_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum 
+{}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 809}}} field_first_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_t
+ype immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 810}}} field_last_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string mini
+mum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 811}}} field_terminate {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value terminate} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type imm
+ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 812}}}}}}}</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
     </spirit:busInterface>
@@ -457,7 +460,7 @@ s {resolve_type immediate dependency {} format long minimum {} maximum {}} value
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.FLAGS.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {DATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.FLAGS.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {DATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 16} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
     </spirit:busInterface>
@@ -963,7 +966,7 @@ s {resolve_type immediate dependency {} format long minimum {} maximum {}} value
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">847</spirit:left>
+            <spirit:left spirit:format="long">815</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1014,7 +1017,7 @@ s {resolve_type immediate dependency {} format long minimum {} maximum {}} value
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:left spirit:format="long">15</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1085,7 +1088,7 @@ s {resolve_type immediate dependency {} format long minimum {} maximum {}} value
       <spirit:file>
         <spirit:name>hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_64481fae</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_4b9b3bc8</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1182,8 +1185,8 @@ s {resolve_type immediate dependency {} format long minimum {} maximum {}} value
       </xilinx:taxonomies>
       <xilinx:displayName>Hcr_metadata_injector</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2102051334</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-02-05T13:34:41Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2103091418</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-03-09T14:18:21Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2017.2</xilinx:xilinxVersion>

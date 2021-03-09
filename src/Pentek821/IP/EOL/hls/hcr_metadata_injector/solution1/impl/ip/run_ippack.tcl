@@ -34,7 +34,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2102051334"
+set Revision    "2103091418"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set Taxonomy    "/VIVADO_HLS_IP"
@@ -229,13 +229,13 @@ set Interfaces {
         port_prefix "pulse_metadata_V"
         has_tready "1"
         ports {
-            TDATA 848
+            TDATA 816
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "848"
-                Bits "848"
+                Width "816"
+                Bits "816"
                 Fields {
                     def {
                         Type "struct"
@@ -312,20 +312,35 @@ set Interfaces {
                         Width "8"
                         Bits "8"
                     }
-                    pulse_rep {
-                        Type "integer unsigned"
-                        Width "32"
-                        Bits "32"
-                    }
                     num_samples {
                         Type "integer unsigned"
                         Width "32"
                         Bits "32"
                     }
+                    first_pulse_in_block {
+                        Type "null"
+                        Width "1"
+                        Bits "1"
+                    }
+                    last_pulse_in_block {
+                        Type "null"
+                        Width "1"
+                        Bits "1"
+                    }
+                    first_pulse_in_xfer {
+                        Type "null"
+                        Width "1"
+                        Bits "1"
+                    }
+                    last_pulse_in_xfer {
+                        Type "null"
+                        Width "1"
+                        Bits "1"
+                    }
                     terminate {
                         Type "null"
                         Width "1"
-                        Bits "8"
+                        Bits "4"
                     }
                 }
             }
@@ -368,12 +383,12 @@ set Interfaces {
     flags {
         type "data"
         dir "in"
-        width "32"
+        width "16"
         ctype {
             DATA {
                 Type "integer unsigned"
-                Width "32"
-                Bits "32"
+                Width "16"
+                Bits "16"
             }
         }
     }

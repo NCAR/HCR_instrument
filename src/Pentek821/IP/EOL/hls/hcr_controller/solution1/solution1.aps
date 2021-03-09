@@ -1,17 +1,7 @@
 <solution AutoPilot="com.autoesl.autopilot.solution">
-    <checksum>
-        <value string="false"/>
-    </checksum>
     <downStreamTool>
         <DownStreamTool name=""/>
     </downStreamTool>
-    <targetInfo>
-        <TargetInfo value="xcku060:-ffva1517:-2-e"/>
-    </targetInfo>
-    <libraryList>
-        <library name="DefaultPlatform" value="xilinx/kintexu/kintexu"/>
-        <library name="DefaultPlatform" value="xilinx/kintexu/kintexu_fpv7"/>
-    </libraryList>
     <clockList>
         <clock name="default" period="4" uncertainty="1"/>
     </clockList>
@@ -51,14 +41,14 @@
         </UIAutoSimConf>
     </UIConfigurations>
     <ExportDesign askAgain="true" evaluate="false" flow="false" flowChoice="syn" formatName="ip_catalog" rtl="verilog" rtlButton="true" rtlCombo="vhdl">
-        <Format description="Controls the radar schedule" formatName="ip_catalog" library="EOL" vendor="NCAR"/>
+        <Format description="Controls the radar schedule" formatName="ip_catalog" library="EOL" vendor="NCAR" version="1.0" driver_input_dir="" display_name="" taxonomy=""/>
         <Format formatName="sysgen"/>
         <Format formatName="sysgen_ise"/>
         <Format formatName="syn_dcp"/>
         <Format formatName="pcore" use_netlist="none"/>
     </ExportDesign>
     <Simulation>
-        <SimFlow askAgain="true" clangSanitizer="false" compile="false" compileChoice="gcc" disableDeadlockDetect="false" dumpTrace="all" name="cosim" optimizeCompile="false" reduce_diskspace="false" setup="false" toolName="Auto" waveDebug="false">
+        <SimFlow askAgain="true" dumpTrace="all" name="cosim" optimizeCompile="false" reduce_diskspace="false" setup="false" toolName="Auto">
             <Rtl active="false" name="systemc"/>
             <Rtl active="false" name="verilog"/>
             <Rtl active="true" name="vhdl"/>
@@ -70,5 +60,12 @@
     <project>
         <value string="hcr_controller"/>
     </project>
+    <targetInfo>
+        <TargetInfo value="xcku060:-ffva1517:-2-e"/>
+    </targetInfo>
+    <libraryList>
+        <library name="DefaultPlatform" value="xilinx/kintexu/kintexu"/>
+        <library name="DefaultPlatform" value="xilinx/kintexu/kintexu_fpv7"/>
+    </libraryList>
 </solution>
 

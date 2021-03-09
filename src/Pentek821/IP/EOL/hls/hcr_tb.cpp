@@ -13,8 +13,9 @@ int main()
 
 	uint32_t cfg_pulse_sequence_start_index = 0;
 	uint32_t cfg_pulse_sequence_length = 2;
-	uint32_t cfg_num_pulses_to_execute = 10;
+	uint32_t cfg_num_pulses_to_execute = 24;
 	uint32_t cfg_decimation = 8;
+	uint32_t cfg_num_pulses_per_xfer = 7;
 	pulse_definition cfg_pulse_sequence[N_PULSE_DEFS] {};
 	bool sync_pulse = 1;
 	volatile ap_uint<N_TIMERS> mt_pulse;
@@ -35,7 +36,7 @@ int main()
 	hls::stream<coef_t> coef_ch2;
 	uint32_t pos_enc_0 = 0xDEADBEEF;
 	uint32_t pos_enc_1 = 0xF00DCAFE;
-	uint32_t flags = 1;
+	uint16_t flags = 1;
 
 	cfg_pulse_sequence[0].num_pulses = 3;
 	cfg_pulse_sequence[0].prt[0] = 100;
@@ -56,7 +57,7 @@ int main()
 	}
 
 	pdti_32 adc_data;
-	for(int x=0; x<cfg_num_pulses_to_execute; ++x)
+	for(int x=0; x<cfg_num_pulses_to_execute+1; ++x)
 	{
 
 		for(int k=0; k<20;k++)
@@ -88,6 +89,7 @@ int main()
 		cfg_pulse_sequence_length,
 		&cfg_num_pulses_to_execute,
 		cfg_decimation,
+		cfg_num_pulses_per_xfer,
 		cfg_pulse_sequence,
 		cfg_filter_coefs_ch0,
 		cfg_filter_coefs_ch1,

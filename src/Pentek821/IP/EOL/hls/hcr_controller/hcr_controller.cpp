@@ -13,6 +13,7 @@ void hcr_controller(
 		uint8_t cfg_pulse_sequence_length,
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_decimation,
+		uint32_t cfg_num_pulses_per_xfer,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -38,6 +39,7 @@ void hcr_controller(
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence_length
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_to_execute
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_decimation
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_per_xfer
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->prt complete
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->timer_offset complete
@@ -85,6 +87,7 @@ void hcr_controller(
 			cfg_pulse_sequence_length,
 			cfg_num_pulses_to_execute,
 			cfg_decimation,
+			cfg_num_pulses_per_xfer,
 			cfg_pulse_sequence,
 			cfg_filter_coefs_ch0,
 			cfg_filter_coefs_ch1,
@@ -119,6 +122,7 @@ void scheduler_parser(
 		uint32_t cfg_pulse_sequence_length,
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_decimation,
+		uint32_t cfg_num_pulses_per_xfer,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -148,6 +152,8 @@ void scheduler_parser(
 	}
 
 	uint32_t num_pulses_scheduled = 0;
+	uint32_t num_pulses_scheduled_this_xfer = 0;
+	bool pulses_to_execute_reached = false;
 
 	//Run until the specified number of pulses is hit
 	while(true)
@@ -166,10 +172,11 @@ void scheduler_parser(
 				pulse.def = pulse_definition;
 				pulse.terminate = false;
 				pulse.sequence_index = cfg_pulse_sequence_start_index + seq_idx;
-				pulse.pulse_rep = pulse_rep;
+				pulse.first_pulse_in_block = (pulse_rep == 0);
+				pulse.last_pulse_in_block = (pulse_rep == (pulse_definition.num_pulses-1));
 
 				//Only execute the post time on the final pulse in the block
-				if(pulse_rep != pulse_definition.num_pulses-1)
+				if(!pulse.last_pulse_in_block)
 					pulse.def.block_post_time = 0;
 
 				//Select the correct staggered PRT
@@ -189,6 +196,23 @@ void scheduler_parser(
 					num_samples[ch] = ns;
 				}
 
+				//Check if done
+				uint32_t pulses_to_execute = *cfg_num_pulses_to_execute;
+				if(pulses_to_execute != 0 && num_pulses_scheduled >= pulses_to_execute)
+				{
+					pulses_to_execute_reached = true;
+				}
+
+				//Set the xfer start and end flags periodically
+				pulse.first_pulse_in_xfer = (num_pulses_scheduled_this_xfer == 0);
+				pulse.last_pulse_in_xfer = false;
+				num_pulses_scheduled_this_xfer++;
+				if(num_pulses_scheduled_this_xfer == cfg_num_pulses_per_xfer || pulses_to_execute_reached )
+				{
+					pulse.last_pulse_in_xfer = true;
+					num_pulses_scheduled_this_xfer = 0;
+				}
+
 				//Send the pulse to the cycle-exact function
 				pulse_queue_s << pulse;
 				pulse.num_samples = num_samples[0];
@@ -199,9 +223,7 @@ void scheduler_parser(
 				pulse_queue_2 << pulse;
 				num_pulses_scheduled++;
 
-				//Check if done
-				uint32_t pulses_to_execute = *cfg_num_pulses_to_execute;
-				if(pulses_to_execute != 0 && num_pulses_scheduled >= pulses_to_execute)
+				if(pulses_to_execute_reached)
 				{
 					pulse_exec_definition term;
 					term.terminate = true;

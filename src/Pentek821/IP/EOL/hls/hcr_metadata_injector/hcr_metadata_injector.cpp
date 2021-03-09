@@ -14,7 +14,7 @@ void hcr_metadata_injector(
 		hls::stream<pulse_exec_definition>& pulse_metadata,
 		volatile uint32_t* pos_enc_0,
 		volatile uint32_t* pos_enc_1,
-		volatile uint32_t* flags
+		volatile uint16_t* flags
 	)
 {
 	#pragma HLS INTERFACE axis register both port=i_data
@@ -27,8 +27,8 @@ void hcr_metadata_injector(
 
 
 	bool in_a_pulse = 0;
-	bool in_a_pulse_group = 0;
-	bool last_pulse = 0;
+	bool in_a_xfer_bundle = 0;
+	bool break_after_pulse = 0;
 	uint32_t num_samples = 0;
 	uint32_t sample_counter = 0;
 	bool terminate = 0;
@@ -51,8 +51,8 @@ void hcr_metadata_injector(
 					pulse_metadata,
 					data_word,
 					in_a_pulse,
-					in_a_pulse_group,
-					last_pulse,
+					in_a_xfer_bundle,
+					break_after_pulse,
 					num_samples,
 					sample_counter,
 					o_data,
@@ -68,14 +68,14 @@ void hcr_metadata_injector(
 			if (sample_counter == num_samples)
 			{
 				in_a_pulse = 0;
-				if(last_pulse)
+				if(break_after_pulse)
 				{
-					in_a_pulse_group = 0;
+					in_a_xfer_bundle = 0;
 				}
 			}
 
-			//Write the word, omitting ungated samples inside a pulse group
-			if(in_a_pulse || !in_a_pulse_group)
+			//Write the word, omitting ungated samples inside a pulse bundle
+			if(in_a_pulse || !in_a_xfer_bundle)
 			{
 				data_word.user[PDTI_GATE] = in_a_pulse;
 				data_word.user[PDTI_SYNC] = 0;
@@ -91,16 +91,18 @@ bool handle_header(
 		hls::stream<pulse_exec_definition>& pulse_metadata,
 		pdti_32 data_word,
 		bool& in_a_pulse,
-		bool& in_a_pulse_group,
-		bool& last_pulse,
+		bool& in_a_xfer_bundle,
+		bool& break_after_pulse,
 		uint32_t& num_samples,
 		uint32_t& sample_counter,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
-		uint32_t flags
+		uint16_t flags
 	)
 {
+
+	std::cout << "Reading pulse... ";
 
 	//Read the pulse definition
 	pulse_exec_definition pulse_info = assert_readable(pulse_metadata).read();
@@ -119,14 +121,23 @@ bool handle_header(
 
 	//Update flags
 	in_a_pulse = 1;
-	in_a_pulse_group = 1;
-	last_pulse = (pulse_info.pulse_rep+1 == pulse_info.def.num_pulses);
+	in_a_xfer_bundle = 1;
+	break_after_pulse = pulse_info.last_pulse_in_xfer;
 	num_samples = pulse_info.num_samples;
+
+	ap_uint<32> ext_flags = flags;
+	ext_flags[16] = pulse_info.first_pulse_in_block;
+	ext_flags[17] = pulse_info.last_pulse_in_block;
+	ext_flags[18] = pulse_info.first_pulse_in_xfer;
+	ext_flags[19] = pulse_info.last_pulse_in_xfer;
+
+	std::cout << "blockFL: " << ext_flags[16] << ext_flags[17]
+		   << "  xferFL: " << ext_flags[18] << ext_flags[19] << "\n";
 
 	uint32_t header[8];
 	#pragma HLS ARRAY_PARTITION variable=header complete
 	header[0] = 0xba5eba11;
-	header[1] = flags;
+	header[1] = ext_flags;
 	header[2] = pos_enc_0;
 	header[3] = pos_enc_1;
 	header[4] = pulse_info.sequence_index;
