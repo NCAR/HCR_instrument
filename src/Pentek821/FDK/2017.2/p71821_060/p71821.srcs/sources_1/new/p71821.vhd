@@ -632,7 +632,7 @@ component user_block2_wrapper
   control_flags : out STD_LOGIC_VECTOR ( 31 downto 0 );
   mt_pulse : out STD_LOGIC_VECTOR ( 7 downto 0 );
   controller_PPS : in STD_LOGIC;
-  flags : in STD_LOGIC_VECTOR ( 31 downto 0 );
+  status_flags : in STD_LOGIC_VECTOR ( 15 downto 0 );
   ROT_A   : in std_logic;
   ROT_B   : in std_logic;
   TILT_A  : in std_logic;
@@ -1457,7 +1457,7 @@ signal filter_select_ch2   : STD_LOGIC_VECTOR ( 1 downto 0 ) := (others=>'0');
 signal control_flags       : STD_LOGIC_VECTOR ( 31 downto 0 ) := (others=>'0');
 signal mt_pulse            : STD_LOGIC_VECTOR ( 7 downto 0 ) := (others=>'0');
 signal controller_PPS      : STD_LOGIC := '0';
-signal flags               : STD_LOGIC_VECTOR ( 31 downto 0 ) := (others=>'0');
+signal status_flags        : STD_LOGIC_VECTOR ( 15 downto 0 ) := (others=>'0');
 signal ROT_A   : STD_LOGIC := '0';
 signal ROT_B   : STD_LOGIC := '0';
 signal TILT_A  : STD_LOGIC := '0';
@@ -1799,7 +1799,7 @@ port map (
     control_flags                             => control_flags,
     mt_pulse                                  => mt_pulse,
     controller_PPS                            => controller_PPS,
-    flags                                     => flags,
+    status_flags                              => status_flags,
     ROT_A                                     => ROT_A,
     ROT_B                                     => ROT_B,
     TILT_A                                    => TILT_A,

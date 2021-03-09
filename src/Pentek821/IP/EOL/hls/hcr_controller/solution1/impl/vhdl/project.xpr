@@ -6,7 +6,7 @@
 <Project Version="7" Minor="20" Path="/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/vhdl/project.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="f1bf19391b8647829d483e0be1264d9c"/>
+    <Option Name="Id" Val="5d4edb74fa244f309b656a7441ee4de4"/>
     <Option Name="Part" Val="xcku060-ffva1517-2-e"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -63,13 +63,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/fifo_w841_d16_S.vhd">
+      <File Path="$PPRDIR/fifo_w813_d16_S.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/fifo_w841_d1_A.vhd">
+      <File Path="$PPRDIR/fifo_w813_d1_A.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>

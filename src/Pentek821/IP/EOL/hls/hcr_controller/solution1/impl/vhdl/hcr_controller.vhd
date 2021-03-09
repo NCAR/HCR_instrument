@@ -42,9 +42,9 @@ port (
     filter_select_ch0_V : OUT STD_LOGIC_VECTOR (1 downto 0);
     filter_select_ch1_V : OUT STD_LOGIC_VECTOR (1 downto 0);
     filter_select_ch2_V : OUT STD_LOGIC_VECTOR (1 downto 0);
-    pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (847 downto 0);
-    pulse_metadata_ch1_V_TDATA : OUT STD_LOGIC_VECTOR (847 downto 0);
-    pulse_metadata_ch2_V_TDATA : OUT STD_LOGIC_VECTOR (847 downto 0);
+    pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
+    pulse_metadata_ch1_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
+    pulse_metadata_ch2_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
     pps_address0 : OUT STD_LOGIC_VECTOR (0 downto 0);
     pps_ce0 : OUT STD_LOGIC;
     pps_d0 : OUT STD_LOGIC_VECTOR (0 downto 0);
@@ -73,7 +73,7 @@ end;
 architecture behav of hcr_controller is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13070,HLS_SYN_LUT=5400}";
+    "hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13053,HLS_SYN_LUT=5595}";
     constant C_S_AXI_DATA_WIDTH : INTEGER range 63 downto 0 := 20;
     constant C_S_AXI_WSTRB_WIDTH : INTEGER range 63 downto 0 := 4;
     constant C_S_AXI_ADDR_WIDTH : INTEGER range 63 downto 0 := 20;
@@ -82,7 +82,7 @@ architecture behav of hcr_controller is
     constant ap_const_lv8_0 : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
     constant ap_const_lv32_0 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
     constant ap_const_lv2_0 : STD_LOGIC_VECTOR (1 downto 0) := "00";
-    constant ap_const_lv848_lc_2 : STD_LOGIC_VECTOR (847 downto 0) := "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    constant ap_const_lv816_lc_2 : STD_LOGIC_VECTOR (815 downto 0) := "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_logic_0 : STD_LOGIC := '0';
     constant ap_const_lv2_1 : STD_LOGIC_VECTOR (1 downto 0) := "01";
@@ -97,6 +97,7 @@ architecture behav of hcr_controller is
     signal cfg_pulse_sequence_length : STD_LOGIC_VECTOR (7 downto 0);
     signal cfg_num_pulses_to_execute : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_decimation : STD_LOGIC_VECTOR (31 downto 0);
+    signal cfg_num_pulses_per_xfer : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_prt_0_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_prt_1_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_num_pulses_q0 : STD_LOGIC_VECTOR (31 downto 0);
@@ -192,13 +193,13 @@ architecture behav of hcr_controller is
     signal scheduler_parser_U0_coef_ch1_V_V_TVALID : STD_LOGIC;
     signal scheduler_parser_U0_coef_ch2_V_V_TDATA : STD_LOGIC_VECTOR (23 downto 0);
     signal scheduler_parser_U0_coef_ch2_V_V_TVALID : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_0_V_din : STD_LOGIC_VECTOR (840 downto 0);
+    signal scheduler_parser_U0_pulse_queue_0_V_din : STD_LOGIC_VECTOR (812 downto 0);
     signal scheduler_parser_U0_pulse_queue_0_V_write : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_1_V_din : STD_LOGIC_VECTOR (840 downto 0);
+    signal scheduler_parser_U0_pulse_queue_1_V_din : STD_LOGIC_VECTOR (812 downto 0);
     signal scheduler_parser_U0_pulse_queue_1_V_write : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_2_V_din : STD_LOGIC_VECTOR (840 downto 0);
+    signal scheduler_parser_U0_pulse_queue_2_V_din : STD_LOGIC_VECTOR (812 downto 0);
     signal scheduler_parser_U0_pulse_queue_2_V_write : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_s_V_din : STD_LOGIC_VECTOR (840 downto 0);
+    signal scheduler_parser_U0_pulse_queue_s_V_din : STD_LOGIC_VECTOR (812 downto 0);
     signal scheduler_parser_U0_pulse_queue_s_V_write : STD_LOGIC;
     signal ap_sync_continue : STD_LOGIC;
     signal scheduler_cycle_exac_U0_ap_start : STD_LOGIC;
@@ -225,7 +226,7 @@ architecture behav of hcr_controller is
     signal output_fifo69_U0_ap_idle : STD_LOGIC;
     signal output_fifo69_U0_ap_ready : STD_LOGIC;
     signal output_fifo69_U0_pulse_queue_ch0_V_read : STD_LOGIC;
-    signal output_fifo69_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (847 downto 0);
+    signal output_fifo69_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (815 downto 0);
     signal output_fifo69_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
     signal output_fifo70_U0_ap_start : STD_LOGIC;
     signal output_fifo70_U0_ap_done : STD_LOGIC;
@@ -233,7 +234,7 @@ architecture behav of hcr_controller is
     signal output_fifo70_U0_ap_idle : STD_LOGIC;
     signal output_fifo70_U0_ap_ready : STD_LOGIC;
     signal output_fifo70_U0_pulse_queue_ch0_V_read : STD_LOGIC;
-    signal output_fifo70_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (847 downto 0);
+    signal output_fifo70_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (815 downto 0);
     signal output_fifo70_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
     signal output_fifo_U0_ap_start : STD_LOGIC;
     signal output_fifo_U0_ap_done : STD_LOGIC;
@@ -241,19 +242,19 @@ architecture behav of hcr_controller is
     signal output_fifo_U0_ap_idle : STD_LOGIC;
     signal output_fifo_U0_ap_ready : STD_LOGIC;
     signal output_fifo_U0_in_V_read : STD_LOGIC;
-    signal output_fifo_U0_out_V_TDATA : STD_LOGIC_VECTOR (847 downto 0);
+    signal output_fifo_U0_out_V_TDATA : STD_LOGIC_VECTOR (815 downto 0);
     signal output_fifo_U0_out_V_TVALID : STD_LOGIC;
     signal pulse_queue_ch0_V_full_n : STD_LOGIC;
-    signal pulse_queue_ch0_V_dout : STD_LOGIC_VECTOR (840 downto 0);
+    signal pulse_queue_ch0_V_dout : STD_LOGIC_VECTOR (812 downto 0);
     signal pulse_queue_ch0_V_empty_n : STD_LOGIC;
     signal pulse_queue_ch1_V_full_n : STD_LOGIC;
-    signal pulse_queue_ch1_V_dout : STD_LOGIC_VECTOR (840 downto 0);
+    signal pulse_queue_ch1_V_dout : STD_LOGIC_VECTOR (812 downto 0);
     signal pulse_queue_ch1_V_empty_n : STD_LOGIC;
     signal pulse_queue_ch2_V_full_n : STD_LOGIC;
-    signal pulse_queue_ch2_V_dout : STD_LOGIC_VECTOR (840 downto 0);
+    signal pulse_queue_ch2_V_dout : STD_LOGIC_VECTOR (812 downto 0);
     signal pulse_queue_ch2_V_empty_n : STD_LOGIC;
     signal pulse_queue_schedule_full_n : STD_LOGIC;
-    signal pulse_queue_schedule_dout : STD_LOGIC_VECTOR (840 downto 0);
+    signal pulse_queue_schedule_dout : STD_LOGIC_VECTOR (812 downto 0);
     signal pulse_queue_schedule_empty_n : STD_LOGIC;
     signal ap_sync_done : STD_LOGIC;
     signal ap_reg_scheduler_parser_U0_ap_done : STD_LOGIC := '0';
@@ -305,6 +306,7 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_l : IN STD_LOGIC_VECTOR (7 downto 0);
         cfg_num_pulses_to_ex : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_decimation : IN STD_LOGIC_VECTOR (31 downto 0);
+        cfg_num_pulses_per_x : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_p_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_p_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_p_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -395,16 +397,16 @@ architecture behav of hcr_controller is
         coef_ch2_V_V_TDATA : OUT STD_LOGIC_VECTOR (23 downto 0);
         coef_ch2_V_V_TVALID : OUT STD_LOGIC;
         coef_ch2_V_V_TREADY : IN STD_LOGIC;
-        pulse_queue_0_V_din : OUT STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_0_V_din : OUT STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_0_V_full_n : IN STD_LOGIC;
         pulse_queue_0_V_write : OUT STD_LOGIC;
-        pulse_queue_1_V_din : OUT STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_1_V_din : OUT STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_1_V_full_n : IN STD_LOGIC;
         pulse_queue_1_V_write : OUT STD_LOGIC;
-        pulse_queue_2_V_din : OUT STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_2_V_din : OUT STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_2_V_full_n : IN STD_LOGIC;
         pulse_queue_2_V_write : OUT STD_LOGIC;
-        pulse_queue_s_V_din : OUT STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_s_V_din : OUT STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_s_V_full_n : IN STD_LOGIC;
         pulse_queue_s_V_write : OUT STD_LOGIC );
     end component;
@@ -422,7 +424,7 @@ architecture behav of hcr_controller is
         pps_address0 : OUT STD_LOGIC_VECTOR (0 downto 0);
         pps_ce0 : OUT STD_LOGIC;
         pps_q0 : IN STD_LOGIC_VECTOR (0 downto 0);
-        pulse_queue_V_dout : IN STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_V_dout : IN STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_V_empty_n : IN STD_LOGIC;
         pulse_queue_V_read : OUT STD_LOGIC;
         mt_pulse_V : OUT STD_LOGIC_VECTOR (7 downto 0);
@@ -447,10 +449,10 @@ architecture behav of hcr_controller is
         ap_continue : IN STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_ch0_V_empty_n : IN STD_LOGIC;
         pulse_queue_ch0_V_read : OUT STD_LOGIC;
-        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (847 downto 0);
+        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
         pulse_metadata_ch0_V_TVALID : OUT STD_LOGIC;
         pulse_metadata_ch0_V_TREADY : IN STD_LOGIC );
     end component;
@@ -465,10 +467,10 @@ architecture behav of hcr_controller is
         ap_continue : IN STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (840 downto 0);
+        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (812 downto 0);
         pulse_queue_ch0_V_empty_n : IN STD_LOGIC;
         pulse_queue_ch0_V_read : OUT STD_LOGIC;
-        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (847 downto 0);
+        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
         pulse_metadata_ch0_V_TVALID : OUT STD_LOGIC;
         pulse_metadata_ch0_V_TREADY : IN STD_LOGIC );
     end component;
@@ -483,40 +485,40 @@ architecture behav of hcr_controller is
         ap_continue : IN STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        in_V_dout : IN STD_LOGIC_VECTOR (840 downto 0);
+        in_V_dout : IN STD_LOGIC_VECTOR (812 downto 0);
         in_V_empty_n : IN STD_LOGIC;
         in_V_read : OUT STD_LOGIC;
-        out_V_TDATA : OUT STD_LOGIC_VECTOR (847 downto 0);
+        out_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
         out_V_TVALID : OUT STD_LOGIC;
         out_V_TREADY : IN STD_LOGIC );
     end component;
 
 
-    component fifo_w841_d16_S IS
+    component fifo_w813_d16_S IS
     port (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
         if_read_ce : IN STD_LOGIC;
         if_write_ce : IN STD_LOGIC;
-        if_din : IN STD_LOGIC_VECTOR (840 downto 0);
+        if_din : IN STD_LOGIC_VECTOR (812 downto 0);
         if_full_n : OUT STD_LOGIC;
         if_write : IN STD_LOGIC;
-        if_dout : OUT STD_LOGIC_VECTOR (840 downto 0);
+        if_dout : OUT STD_LOGIC_VECTOR (812 downto 0);
         if_empty_n : OUT STD_LOGIC;
         if_read : IN STD_LOGIC );
     end component;
 
 
-    component fifo_w841_d1_A IS
+    component fifo_w813_d1_A IS
     port (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
         if_read_ce : IN STD_LOGIC;
         if_write_ce : IN STD_LOGIC;
-        if_din : IN STD_LOGIC_VECTOR (840 downto 0);
+        if_din : IN STD_LOGIC_VECTOR (812 downto 0);
         if_full_n : OUT STD_LOGIC;
         if_write : IN STD_LOGIC;
-        if_dout : OUT STD_LOGIC_VECTOR (840 downto 0);
+        if_dout : OUT STD_LOGIC_VECTOR (812 downto 0);
         if_empty_n : OUT STD_LOGIC;
         if_read : IN STD_LOGIC );
     end component;
@@ -601,6 +603,7 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_length : OUT STD_LOGIC_VECTOR (7 downto 0);
         cfg_num_pulses_to_execute : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_decimation : OUT STD_LOGIC_VECTOR (31 downto 0);
+        cfg_num_pulses_per_xfer : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_prt_0_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_prt_0_ce0 : IN STD_LOGIC;
         cfg_pulse_sequence_prt_0_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
@@ -721,6 +724,7 @@ begin
         cfg_pulse_sequence_length => cfg_pulse_sequence_length,
         cfg_num_pulses_to_execute => cfg_num_pulses_to_execute,
         cfg_decimation => cfg_decimation,
+        cfg_num_pulses_per_xfer => cfg_num_pulses_per_xfer,
         cfg_pulse_sequence_prt_0_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_prt_0_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_prt_0_q0 => cfg_pulse_sequence_prt_0_q0,
@@ -819,6 +823,7 @@ begin
         cfg_pulse_sequence_l => cfg_pulse_sequence_length,
         cfg_num_pulses_to_ex => cfg_num_pulses_to_execute,
         cfg_decimation => cfg_decimation,
+        cfg_num_pulses_per_x => cfg_num_pulses_per_xfer,
         cfg_pulse_sequence_p_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_p_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_p_q0 => cfg_pulse_sequence_prt_0_q0,
@@ -996,7 +1001,7 @@ begin
         out_V_TVALID => output_fifo_U0_out_V_TVALID,
         out_V_TREADY => pulse_metadata_ch2_V_TREADY);
 
-    pulse_queue_ch0_V_U : component fifo_w841_d16_S
+    pulse_queue_ch0_V_U : component fifo_w813_d16_S
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1009,7 +1014,7 @@ begin
         if_empty_n => pulse_queue_ch0_V_empty_n,
         if_read => output_fifo69_U0_pulse_queue_ch0_V_read);
 
-    pulse_queue_ch1_V_U : component fifo_w841_d16_S
+    pulse_queue_ch1_V_U : component fifo_w813_d16_S
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1022,7 +1027,7 @@ begin
         if_empty_n => pulse_queue_ch1_V_empty_n,
         if_read => output_fifo70_U0_pulse_queue_ch0_V_read);
 
-    pulse_queue_ch2_V_U : component fifo_w841_d16_S
+    pulse_queue_ch2_V_U : component fifo_w813_d16_S
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1035,7 +1040,7 @@ begin
         if_empty_n => pulse_queue_ch2_V_empty_n,
         if_read => output_fifo_U0_in_V_read);
 
-    pulse_queue_schedule_U : component fifo_w841_d1_A
+    pulse_queue_schedule_U : component fifo_w813_d1_A
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,

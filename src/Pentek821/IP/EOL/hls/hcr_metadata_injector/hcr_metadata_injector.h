@@ -16,7 +16,7 @@ void hcr_metadata_injector(
 		hls::stream<pulse_exec_definition>& pulse_metadata,
 		volatile uint32_t* pos_enc_0,
 		volatile uint32_t* pos_enc_1,
-		volatile uint32_t* flags
+		volatile uint16_t* flags
 	);
 
 bool handle_header(
@@ -30,7 +30,7 @@ bool handle_header(
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
-		uint32_t flags
+		uint16_t flags
 	);
 
 #endif // __HCR_METADATA_INJ_H__
