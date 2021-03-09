@@ -16,7 +16,7 @@ template<typename FPGA> class RadarController {
 public:
 
     RadarController(const FPGA& fpgaInstance, uint32_t baseAddr) : fpga(fpgaInstance), base(baseAddr) {};
-    
+
     struct PulseDefinition
     {
         uint32_t prt[2];            // Pulse repetition time(s) in cycles. Set unused PRTs to 0
@@ -32,19 +32,28 @@ public:
             uint32_t width;         // Then, wait this many cycles before clearing MT_PULSE[n]
         } timers[8];
     };
-    
+
     struct PulseHeader
     {
         uint32_t magic;
-        uint32_t flags;
+        struct
+        {
+            unsigned int HV                 : 1;
+            unsigned int spare0             : 15;
+            unsigned int firstPulseInBlock  : 1;
+            unsigned int lastPulseInBlock   : 1;
+            unsigned int firstPulseInXfer   : 1;
+            unsigned int lastPulseInXfer    : 1;
+            unsigned int spare1             : 12;
+        } statusFlags;
         uint32_t posEnc0;
         uint32_t posEnc1;
         uint32_t pulseDefinitionNumber;
         uint32_t numSamples;
         uint32_t prt;
-        uint32_t spare;	
+        uint32_t spare;
     };
-    
+
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
     static constexpr uint32_t NUM_TOTAL_FILTER_COEFS                  = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_FILTER_COEFS_CH0;
     static constexpr uint32_t NUM_FILTER_COEF_SETS                    = 4;
@@ -52,7 +61,7 @@ public:
     static constexpr uint32_t HEADER_MAGIC                            = 0xba5eba11;
 private :
 
-    enum RegDefs : uint32_t {           
+    enum RegDefs : uint32_t {
         CTRL                                    = XHCR_CONTROLLER_CFG_BUS_ADDR_AP_CTRL,
         GIE                                     = XHCR_CONTROLLER_CFG_BUS_ADDR_GIE,
         IER                                     = XHCR_CONTROLLER_CFG_BUS_ADDR_IER,
@@ -61,6 +70,7 @@ private :
         PULSE_SEQUENCE_LENGTH                   = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA,
         NUM_PULSES_TO_EXECUTE                   = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA,
         DECIMATION                              = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_DECIMATION_DATA,
+        NUM_PULSES_PER_XFER                     = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_PER_XFER_DATA,
         PULSE_SEQUENCE_PRT_0                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE,
         PULSE_SEQUENCE_PRT_1                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE,
         PULSE_SEQUENCE_NUM_PULSES               = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE,
@@ -89,20 +99,20 @@ private :
         FILTER_COEFS_CH1                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH1_BASE,
         FILTER_COEFS_CH2                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH2_BASE
     };
-    
+
     const FPGA& fpga;
     const uint32_t base;
-    
+
     auto write_(auto addr, auto val, auto action)
     {
         return fpga.writeLiteRegister_(base+addr, val, action);
     };
-    
+
     auto read_(auto addr, auto action)
     {
         return fpga.readLiteRegister_(base+addr, action);
-    };    
-    
+    };
+
 public:
 
     void writePulseDefinition(const PulseDefinition& pulseDef, size_t index)
@@ -134,14 +144,14 @@ public:
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_4     , pulseDef.timers[4].width,  action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_5     , pulseDef.timers[5].width,  action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_6     , pulseDef.timers[6].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_7     , pulseDef.timers[7].width,  action);         
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_7     , pulseDef.timers[7].width,  action);
     };
-    
+
     void writePulseDefinitions(const std::vector<PulseDefinition>& pulseDefs, size_t startIndex = 0)
     {
         for (auto&& def : pulseDefs) writePulseDefinition(def, startIndex++);
     }
-    
+
     void writeFilterCoefs(const std::vector<double>& coefs, int chan)
     {
         uint32_t base;
@@ -152,33 +162,34 @@ public:
             case 2: base=FILTER_COEFS_CH2; break;
             default: throw std::runtime_error("Wrong channel");
         }
-        
+
         if(coefs.size() != NUM_TOTAL_FILTER_COEFS)
         {
             std::ostringstream os;
-            os << "Writing pulse filter coefficients for channel " 
+            os << "Writing pulse filter coefficients for channel "
                << chan << ": need " << NUM_TOTAL_FILTER_COEFS << " coefs, have " << coefs.size();
             throw(std::runtime_error(os.str()));
         }
-        
+
         for(uint32_t index=0; index<NUM_TOTAL_FILTER_COEFS; index++)
         {
             int32_t intCoef = round(coefs[index]*0x400000);
             write_(index*sizeof(uint32_t) + base, intCoef, "Writing pulse coef");
         }
     }
-    
-    void run(uint32_t sequenceStartIndex, uint32_t sequenceLength, uint32_t decimation, uint32_t numPulsesToExecute = INFINITE_PULSES)
+
+    void run(uint32_t sequenceStartIndex, uint32_t sequenceLength, uint32_t decimation, uint32_t numPulsesPerXfer, uint32_t numPulsesToExecute = INFINITE_PULSES)
     {
         write_(PULSE_SEQUENCE_START_INDEX, sequenceStartIndex,  "Writing controller start index");
         write_(PULSE_SEQUENCE_LENGTH,      sequenceLength,      "Writing controller sequence length");
         write_(NUM_PULSES_TO_EXECUTE,      numPulsesToExecute,  "Writing num pulses to execute");
-        write_(DECIMATION,                 decimation,          "Writing decimation");  
+        write_(DECIMATION,                 decimation,          "Writing decimation");
+        write_(NUM_PULSES_PER_XFER,        numPulsesPerXfer,    "Writing num pulses per xfer");
         write_(CTRL,                       1,                   "Starting controller");
-        
+
         for(uint32_t k=0;k<64;k=k+4) std::cout << std::hex << "ctrl: " << k << " " << read_(k,"") << "\n";
     };
-    
+
     void halt()
     {
         //If not running, this has no effect.

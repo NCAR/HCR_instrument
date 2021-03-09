@@ -38,6 +38,9 @@
 // 0x0028 : Data signal of cfg_decimation
 //          bit 31~0 - cfg_decimation[31:0] (Read/Write)
 // 0x002c : reserved
+// 0x0030 : Data signal of cfg_num_pulses_per_xfer
+//          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
+// 0x0034 : reserved
 // 0x0080 ~
 // 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 //          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -133,6 +136,8 @@
 #define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_NUM_PULSES_TO_EXECUTE_DATA            32
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_DECIMATION_DATA                       0x0028
 #define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_DECIMATION_DATA                       32
+#define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_PER_XFER_DATA              0x0030
+#define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_NUM_PULSES_PER_XFER_DATA              32
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE             0x0080
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH             0x00ff
 #define XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PULSE_SEQUENCE_PRT_0                 32
