@@ -187,7 +187,12 @@ HCR_Pentek::_startRadar() {
     usleep(sleepUsecs);
     
     #warning todo configurable
-    _controller.run(0, _pulseDefinitions.size(), DDC_DECIMATION, 10, _pulseDefinitions.size()*_pulseDefinitions[0].numPulses);
+    _controller.run(0,                              // sequenceStartIndex,
+                    _pulseDefinitions.size(),       // sequenceLength,
+                    DDC_DECIMATION,                 // decimation,
+                    10,                             // numPulsesPerXfer,
+                    0x7,                            // enabledChannelVector,
+                    Controller::INFINITE_PULSES );  // numPulsesToExecute
 
     // Zero the Pentek's PPS counter
     status = NAV_TimestampGenSetup(_boardHandle, 0);
@@ -721,7 +726,8 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         // Number of data values
         uint32_t nGates = pulseHeader.numSamples;
         if(!chan) { 
-            ILOG << "k " << pulseHeader.pulseDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt;
+            ILOG << "k " << pulseHeader.pulseDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
+            << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
             
         }
 
