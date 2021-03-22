@@ -5,8 +5,8 @@
         <SimFlow name="csim" csimMode="0" lastCsimMode="0" compiler="true" compilerChoices="clang"/>
     </Simulation>
     <files xmlns="">
-        <file name="../../hcr_metadata_injector/hcr_metadata_injector.cpp" sc="0" tb="1" cflags=" "/>
         <file name="../../hcr_tb.cpp" sc="0" tb="1" cflags=" "/>
+        <file name="../../hcr_metadata_injector/hcr_metadata_injector.cpp" sc="0" tb="1" cflags=" "/>
         <file name="hcr_controller/hcr_controller.cpp" sc="0" tb="false" cflags=""/>
     </files>
     <solutions xmlns="">

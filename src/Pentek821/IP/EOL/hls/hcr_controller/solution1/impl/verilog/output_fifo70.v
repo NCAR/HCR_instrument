@@ -71,7 +71,7 @@ wire    ap_CS_fsm_state3;
 wire  signed [815:0] cast_fu_85_p1;
 reg    ap_block_state2;
 reg    ap_block_state2_io;
-wire   [811:0] tmp_47_fu_73_p1;
+wire   [811:0] tmp_38_fu_73_p1;
 wire   [812:0] tmp_1_fu_77_p3;
 reg   [2:0] ap_NS_fsm;
 reg    ap_block_state1;
@@ -288,8 +288,8 @@ assign pulse_metadata_ch0_V_TVALID = pulse_metadata_ch0_V_1_state[1'd0];
 
 assign pulse_terminate_fu_65_p3 = pulse_queue_ch0_V_dout[32'd812];
 
-assign tmp_1_fu_77_p3 = {{1'd0}, {tmp_47_fu_73_p1}};
+assign tmp_1_fu_77_p3 = {{1'd0}, {tmp_38_fu_73_p1}};
 
-assign tmp_47_fu_73_p1 = pulse_queue_ch0_V_dout[811:0];
+assign tmp_38_fu_73_p1 = pulse_queue_ch0_V_dout[811:0];
 
 endmodule //output_fifo70

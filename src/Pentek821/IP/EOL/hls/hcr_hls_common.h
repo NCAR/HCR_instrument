@@ -37,7 +37,7 @@ const int PDTI_CHANNEL = 96;
 const int N_PULSE_DEFS = 32;
 const int N_TIMERS = 8;
 const int N_PRTS = 2;
-const int CHANNEL_TO_MT[3] = {1,1,4};
+const int CHANNEL_TO_MT[3] = {1,2,3};
 
 // An array of this structure definies the radar schedule.
 // Each entry specifies a group of pulses. The pulses are identical, except for PRT which can

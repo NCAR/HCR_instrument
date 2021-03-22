@@ -1222,6 +1222,29 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
           </spirit:field>
         </spirit:register>
         <spirit:register>
+          <spirit:name>cfg_enabled_channel_vector</spirit:name>
+          <spirit:displayName>cfg_enabled_channel_vector</spirit:displayName>
+          <spirit:description>Data signal of cfg_enabled_channel_vector</spirit:description>
+          <spirit:addressOffset>56</spirit:addressOffset>
+          <spirit:size spirit:format="long">32</spirit:size>
+          <spirit:access>write-only</spirit:access>
+          <spirit:reset>
+            <spirit:value spirit:format="long">0</spirit:value>
+          </spirit:reset>
+          <spirit:field>
+            <spirit:name>cfg_enabled_channel_vector</spirit:name>
+            <spirit:description>Bit 31 to 0 Data signal of cfg_enabled_channel_vector</spirit:description>
+            <spirit:bitOffset>0</spirit:bitOffset>
+            <spirit:bitWidth spirit:format="long">32</spirit:bitWidth>
+            <spirit:access>write-only</spirit:access>
+            <spirit:writeValueConstraint>
+              <spirit:minimum>0</spirit:minimum>
+              <spirit:maximum>0</spirit:maximum>
+            </spirit:writeValueConstraint>
+            <spirit:testable spirit:testConstraint="unconstrained">false</spirit:testable>
+          </spirit:field>
+        </spirit:register>
+        <spirit:register>
           <spirit:name>Memory_cfg_pulse_sequence_prt_0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_prt_0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_prt_0</spirit:description>
@@ -2447,11 +2470,11 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/output_fifo69.v</spirit:name>
+        <spirit:name>hdl/verilog/output_fifo70.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/output_fifo70.v</spirit:name>
+        <spirit:name>hdl/verilog/output_fifo71.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -2516,12 +2539,12 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/output_fifo69.v</spirit:name>
+        <spirit:name>hdl/verilog/output_fifo70.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/output_fifo70.v</spirit:name>
+        <spirit:name>hdl/verilog/output_fifo71.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -2584,11 +2607,11 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/output_fifo69.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/output_fifo70.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/output_fifo71.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -2598,7 +2621,7 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
       <spirit:file>
         <spirit:name>hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_8ffdd0d1</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_50b06c58</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -2654,12 +2677,12 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/output_fifo69.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/output_fifo70.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/output_fifo71.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -2785,8 +2808,8 @@ ediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {at
       </xilinx:taxonomies>
       <xilinx:displayName>Hcr_controller</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2103091419</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-03-09T14:19:58Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2103191540</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-03-19T15:40:49Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2017.2</xilinx:xilinxVersion>

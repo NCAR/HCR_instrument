@@ -16,6 +16,7 @@ int main()
 	uint32_t cfg_num_pulses_to_execute = 24;
 	uint32_t cfg_decimation = 8;
 	uint32_t cfg_num_pulses_per_xfer = 7;
+	uint32_t cfg_enabled_channel_vector = 7;
 	pulse_definition cfg_pulse_sequence[N_PULSE_DEFS] {};
 	bool sync_pulse = 1;
 	volatile ap_uint<N_TIMERS> mt_pulse;
@@ -90,6 +91,7 @@ int main()
 		&cfg_num_pulses_to_execute,
 		cfg_decimation,
 		cfg_num_pulses_per_xfer,
+		cfg_enabled_channel_vector,
 		cfg_pulse_sequence,
 		cfg_filter_coefs_ch0,
 		cfg_filter_coefs_ch1,
