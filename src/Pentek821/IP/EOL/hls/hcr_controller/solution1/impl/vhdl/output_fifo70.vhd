@@ -75,7 +75,7 @@ architecture behav of output_fifo70 is
     signal cast_fu_85_p1 : STD_LOGIC_VECTOR (815 downto 0);
     signal ap_block_state2 : BOOLEAN;
     signal ap_block_state2_io : BOOLEAN;
-    signal tmp_47_fu_73_p1 : STD_LOGIC_VECTOR (811 downto 0);
+    signal tmp_38_fu_73_p1 : STD_LOGIC_VECTOR (811 downto 0);
     signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (812 downto 0);
     signal ap_NS_fsm : STD_LOGIC_VECTOR (2 downto 0);
     signal ap_block_state1 : BOOLEAN;
@@ -318,6 +318,6 @@ begin
     end process;
 
     pulse_terminate_fu_65_p3 <= pulse_queue_ch0_V_dout(812 downto 812);
-    tmp_1_fu_77_p3 <= (ap_const_lv1_0 & tmp_47_fu_73_p1);
-    tmp_47_fu_73_p1 <= pulse_queue_ch0_V_dout(812 - 1 downto 0);
+    tmp_1_fu_77_p3 <= (ap_const_lv1_0 & tmp_38_fu_73_p1);
+    tmp_38_fu_73_p1 <= pulse_queue_ch0_V_dout(812 - 1 downto 0);
 end behav;

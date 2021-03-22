@@ -106,6 +106,7 @@ bool handle_header(
 
 	//Read the pulse definition
 	pulse_exec_definition pulse_info = assert_readable(pulse_metadata).read();
+	std::cout << "T" << pulse_info.terminate << " ";
 	if(pulse_info.terminate) return true;
 
 	//If pentek didn't give us enough samples, add them now

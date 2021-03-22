@@ -161,6 +161,23 @@ u32 XHcr_controller_Get_cfg_num_pulses_per_xfer(XHcr_controller *InstancePtr) {
     return Data;
 }
 
+void XHcr_controller_Set_cfg_enabled_channel_vector(XHcr_controller *InstancePtr, u32 Data) {
+    Xil_AssertVoid(InstancePtr != NULL);
+    Xil_AssertVoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA, Data);
+}
+
+u32 XHcr_controller_Get_cfg_enabled_channel_vector(XHcr_controller *InstancePtr) {
+    u32 Data;
+
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA);
+    return Data;
+}
+
 u32 XHcr_controller_Get_cfg_pulse_sequence_prt_0_BaseAddress(XHcr_controller *InstancePtr) {
     Xil_AssertNonvoid(InstancePtr != NULL);
     Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);

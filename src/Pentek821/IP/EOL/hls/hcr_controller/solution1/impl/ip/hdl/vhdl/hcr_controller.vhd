@@ -73,7 +73,7 @@ end;
 architecture behav of hcr_controller is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13053,HLS_SYN_LUT=5595}";
+    "hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13850,HLS_SYN_LUT=6069}";
     constant C_S_AXI_DATA_WIDTH : INTEGER range 63 downto 0 := 20;
     constant C_S_AXI_WSTRB_WIDTH : INTEGER range 63 downto 0 := 4;
     constant C_S_AXI_ADDR_WIDTH : INTEGER range 63 downto 0 := 20;
@@ -98,6 +98,7 @@ architecture behav of hcr_controller is
     signal cfg_num_pulses_to_execute : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_decimation : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_num_pulses_per_xfer : STD_LOGIC_VECTOR (31 downto 0);
+    signal cfg_enabled_channel_vector : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_prt_0_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_prt_1_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_num_pulses_q0 : STD_LOGIC_VECTOR (31 downto 0);
@@ -220,14 +221,6 @@ architecture behav of hcr_controller is
     signal scheduler_cycle_exac_U0_filter_select_ch1_V_ap_vld : STD_LOGIC;
     signal scheduler_cycle_exac_U0_filter_select_ch2_V : STD_LOGIC_VECTOR (1 downto 0);
     signal scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld : STD_LOGIC;
-    signal output_fifo69_U0_ap_start : STD_LOGIC;
-    signal output_fifo69_U0_ap_done : STD_LOGIC;
-    signal output_fifo69_U0_ap_continue : STD_LOGIC;
-    signal output_fifo69_U0_ap_idle : STD_LOGIC;
-    signal output_fifo69_U0_ap_ready : STD_LOGIC;
-    signal output_fifo69_U0_pulse_queue_ch0_V_read : STD_LOGIC;
-    signal output_fifo69_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (815 downto 0);
-    signal output_fifo69_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
     signal output_fifo70_U0_ap_start : STD_LOGIC;
     signal output_fifo70_U0_ap_done : STD_LOGIC;
     signal output_fifo70_U0_ap_continue : STD_LOGIC;
@@ -236,6 +229,14 @@ architecture behav of hcr_controller is
     signal output_fifo70_U0_pulse_queue_ch0_V_read : STD_LOGIC;
     signal output_fifo70_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (815 downto 0);
     signal output_fifo70_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
+    signal output_fifo71_U0_ap_start : STD_LOGIC;
+    signal output_fifo71_U0_ap_done : STD_LOGIC;
+    signal output_fifo71_U0_ap_continue : STD_LOGIC;
+    signal output_fifo71_U0_ap_idle : STD_LOGIC;
+    signal output_fifo71_U0_ap_ready : STD_LOGIC;
+    signal output_fifo71_U0_pulse_queue_ch0_V_read : STD_LOGIC;
+    signal output_fifo71_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (815 downto 0);
+    signal output_fifo71_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
     signal output_fifo_U0_ap_start : STD_LOGIC;
     signal output_fifo_U0_ap_done : STD_LOGIC;
     signal output_fifo_U0_ap_continue : STD_LOGIC;
@@ -259,8 +260,8 @@ architecture behav of hcr_controller is
     signal ap_sync_done : STD_LOGIC;
     signal ap_reg_scheduler_parser_U0_ap_done : STD_LOGIC := '0';
     signal ap_reg_scheduler_cycle_exac_U0_ap_done : STD_LOGIC := '0';
-    signal ap_reg_output_fifo69_U0_ap_done : STD_LOGIC := '0';
     signal ap_reg_output_fifo70_U0_ap_done : STD_LOGIC := '0';
+    signal ap_reg_output_fifo71_U0_ap_done : STD_LOGIC := '0';
     signal ap_reg_output_fifo_U0_ap_done : STD_LOGIC := '0';
     signal ap_sync_ready : STD_LOGIC;
     signal ap_sync_reg_scheduler_parser_U0_ap_ready : STD_LOGIC := '0';
@@ -269,24 +270,24 @@ architecture behav of hcr_controller is
     signal ap_sync_reg_scheduler_cycle_exac_U0_ap_ready : STD_LOGIC := '0';
     signal ap_sync_scheduler_cycle_exac_U0_ap_ready : STD_LOGIC;
     signal scheduler_cycle_exac_U0_ap_ready_count : STD_LOGIC_VECTOR (1 downto 0) := "00";
-    signal start_for_output_fifo69_U0_din : STD_LOGIC_VECTOR (0 downto 0);
-    signal start_for_output_fifo69_U0_full_n : STD_LOGIC;
-    signal start_for_output_fifo69_U0_dout : STD_LOGIC_VECTOR (0 downto 0);
-    signal start_for_output_fifo69_U0_empty_n : STD_LOGIC;
     signal start_for_output_fifo70_U0_din : STD_LOGIC_VECTOR (0 downto 0);
     signal start_for_output_fifo70_U0_full_n : STD_LOGIC;
     signal start_for_output_fifo70_U0_dout : STD_LOGIC_VECTOR (0 downto 0);
     signal start_for_output_fifo70_U0_empty_n : STD_LOGIC;
+    signal start_for_output_fifo71_U0_din : STD_LOGIC_VECTOR (0 downto 0);
+    signal start_for_output_fifo71_U0_full_n : STD_LOGIC;
+    signal start_for_output_fifo71_U0_dout : STD_LOGIC_VECTOR (0 downto 0);
+    signal start_for_output_fifo71_U0_empty_n : STD_LOGIC;
     signal start_for_output_fifo_U0_din : STD_LOGIC_VECTOR (0 downto 0);
     signal start_for_output_fifo_U0_full_n : STD_LOGIC;
     signal start_for_output_fifo_U0_dout : STD_LOGIC_VECTOR (0 downto 0);
     signal start_for_output_fifo_U0_empty_n : STD_LOGIC;
     signal scheduler_cycle_exac_U0_start_full_n : STD_LOGIC;
     signal scheduler_cycle_exac_U0_start_write : STD_LOGIC;
-    signal output_fifo69_U0_start_full_n : STD_LOGIC;
-    signal output_fifo69_U0_start_write : STD_LOGIC;
     signal output_fifo70_U0_start_full_n : STD_LOGIC;
     signal output_fifo70_U0_start_write : STD_LOGIC;
+    signal output_fifo71_U0_start_full_n : STD_LOGIC;
+    signal output_fifo71_U0_start_write : STD_LOGIC;
     signal output_fifo_U0_start_full_n : STD_LOGIC;
     signal output_fifo_U0_start_write : STD_LOGIC;
 
@@ -307,6 +308,7 @@ architecture behav of hcr_controller is
         cfg_num_pulses_to_ex : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_decimation : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_num_pulses_per_x : IN STD_LOGIC_VECTOR (31 downto 0);
+        cfg_enabled_channel_vector : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_p_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_p_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_p_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -440,7 +442,7 @@ architecture behav of hcr_controller is
     end component;
 
 
-    component output_fifo69 IS
+    component output_fifo70 IS
     port (
         ap_clk : IN STD_LOGIC;
         ap_rst : IN STD_LOGIC;
@@ -458,7 +460,7 @@ architecture behav of hcr_controller is
     end component;
 
 
-    component output_fifo70 IS
+    component output_fifo71 IS
     port (
         ap_clk : IN STD_LOGIC;
         ap_rst : IN STD_LOGIC;
@@ -604,6 +606,7 @@ architecture behav of hcr_controller is
         cfg_num_pulses_to_execute : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_decimation : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_num_pulses_per_xfer : OUT STD_LOGIC_VECTOR (31 downto 0);
+        cfg_enabled_channel_vector : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_prt_0_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_prt_0_ce0 : IN STD_LOGIC;
         cfg_pulse_sequence_prt_0_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
@@ -725,6 +728,7 @@ begin
         cfg_num_pulses_to_execute => cfg_num_pulses_to_execute,
         cfg_decimation => cfg_decimation,
         cfg_num_pulses_per_xfer => cfg_num_pulses_per_xfer,
+        cfg_enabled_channel_vector => cfg_enabled_channel_vector,
         cfg_pulse_sequence_prt_0_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_prt_0_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_prt_0_q0 => cfg_pulse_sequence_prt_0_q0,
@@ -824,6 +828,7 @@ begin
         cfg_num_pulses_to_ex => cfg_num_pulses_to_execute,
         cfg_decimation => cfg_decimation,
         cfg_num_pulses_per_x => cfg_num_pulses_per_xfer,
+        cfg_enabled_channel_vector => cfg_enabled_channel_vector,
         cfg_pulse_sequence_p_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_p_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_p_q0 => cfg_pulse_sequence_prt_0_q0,
@@ -953,22 +958,6 @@ begin
         filter_select_ch2_V => scheduler_cycle_exac_U0_filter_select_ch2_V,
         filter_select_ch2_V_ap_vld => scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld);
 
-    output_fifo69_U0 : component output_fifo69
-    port map (
-        ap_clk => ap_clk,
-        ap_rst => ap_rst_n_inv,
-        ap_start => output_fifo69_U0_ap_start,
-        ap_done => output_fifo69_U0_ap_done,
-        ap_continue => output_fifo69_U0_ap_continue,
-        ap_idle => output_fifo69_U0_ap_idle,
-        ap_ready => output_fifo69_U0_ap_ready,
-        pulse_queue_ch0_V_dout => pulse_queue_ch0_V_dout,
-        pulse_queue_ch0_V_empty_n => pulse_queue_ch0_V_empty_n,
-        pulse_queue_ch0_V_read => output_fifo69_U0_pulse_queue_ch0_V_read,
-        pulse_metadata_ch0_V_TDATA => output_fifo69_U0_pulse_metadata_ch0_V_TDATA,
-        pulse_metadata_ch0_V_TVALID => output_fifo69_U0_pulse_metadata_ch0_V_TVALID,
-        pulse_metadata_ch0_V_TREADY => pulse_metadata_ch0_V_TREADY);
-
     output_fifo70_U0 : component output_fifo70
     port map (
         ap_clk => ap_clk,
@@ -978,11 +967,27 @@ begin
         ap_continue => output_fifo70_U0_ap_continue,
         ap_idle => output_fifo70_U0_ap_idle,
         ap_ready => output_fifo70_U0_ap_ready,
-        pulse_queue_ch0_V_dout => pulse_queue_ch1_V_dout,
-        pulse_queue_ch0_V_empty_n => pulse_queue_ch1_V_empty_n,
+        pulse_queue_ch0_V_dout => pulse_queue_ch0_V_dout,
+        pulse_queue_ch0_V_empty_n => pulse_queue_ch0_V_empty_n,
         pulse_queue_ch0_V_read => output_fifo70_U0_pulse_queue_ch0_V_read,
         pulse_metadata_ch0_V_TDATA => output_fifo70_U0_pulse_metadata_ch0_V_TDATA,
         pulse_metadata_ch0_V_TVALID => output_fifo70_U0_pulse_metadata_ch0_V_TVALID,
+        pulse_metadata_ch0_V_TREADY => pulse_metadata_ch0_V_TREADY);
+
+    output_fifo71_U0 : component output_fifo71
+    port map (
+        ap_clk => ap_clk,
+        ap_rst => ap_rst_n_inv,
+        ap_start => output_fifo71_U0_ap_start,
+        ap_done => output_fifo71_U0_ap_done,
+        ap_continue => output_fifo71_U0_ap_continue,
+        ap_idle => output_fifo71_U0_ap_idle,
+        ap_ready => output_fifo71_U0_ap_ready,
+        pulse_queue_ch0_V_dout => pulse_queue_ch1_V_dout,
+        pulse_queue_ch0_V_empty_n => pulse_queue_ch1_V_empty_n,
+        pulse_queue_ch0_V_read => output_fifo71_U0_pulse_queue_ch0_V_read,
+        pulse_metadata_ch0_V_TDATA => output_fifo71_U0_pulse_metadata_ch0_V_TDATA,
+        pulse_metadata_ch0_V_TVALID => output_fifo71_U0_pulse_metadata_ch0_V_TVALID,
         pulse_metadata_ch0_V_TREADY => pulse_metadata_ch1_V_TREADY);
 
     output_fifo_U0 : component output_fifo
@@ -1012,7 +1017,7 @@ begin
         if_write => scheduler_parser_U0_pulse_queue_0_V_write,
         if_dout => pulse_queue_ch0_V_dout,
         if_empty_n => pulse_queue_ch0_V_empty_n,
-        if_read => output_fifo69_U0_pulse_queue_ch0_V_read);
+        if_read => output_fifo70_U0_pulse_queue_ch0_V_read);
 
     pulse_queue_ch1_V_U : component fifo_w813_d16_S
     port map (
@@ -1025,7 +1030,7 @@ begin
         if_write => scheduler_parser_U0_pulse_queue_1_V_write,
         if_dout => pulse_queue_ch1_V_dout,
         if_empty_n => pulse_queue_ch1_V_empty_n,
-        if_read => output_fifo70_U0_pulse_queue_ch0_V_read);
+        if_read => output_fifo71_U0_pulse_queue_ch0_V_read);
 
     pulse_queue_ch2_V_U : component fifo_w813_d16_S
     port map (
@@ -1059,12 +1064,12 @@ begin
         reset => ap_rst_n_inv,
         if_read_ce => ap_const_logic_1,
         if_write_ce => ap_const_logic_1,
-        if_din => start_for_output_fifo69_U0_din,
-        if_full_n => start_for_output_fifo69_U0_full_n,
+        if_din => start_for_output_fifo70_U0_din,
+        if_full_n => start_for_output_fifo70_U0_full_n,
         if_write => scheduler_parser_U0_start_write,
-        if_dout => start_for_output_fifo69_U0_dout,
-        if_empty_n => start_for_output_fifo69_U0_empty_n,
-        if_read => output_fifo69_U0_ap_ready);
+        if_dout => start_for_output_fifo70_U0_dout,
+        if_empty_n => start_for_output_fifo70_U0_empty_n,
+        if_read => output_fifo70_U0_ap_ready);
 
     start_for_output_eOg_U : component start_for_output_eOg
     port map (
@@ -1072,12 +1077,12 @@ begin
         reset => ap_rst_n_inv,
         if_read_ce => ap_const_logic_1,
         if_write_ce => ap_const_logic_1,
-        if_din => start_for_output_fifo70_U0_din,
-        if_full_n => start_for_output_fifo70_U0_full_n,
+        if_din => start_for_output_fifo71_U0_din,
+        if_full_n => start_for_output_fifo71_U0_full_n,
         if_write => scheduler_parser_U0_start_write,
-        if_dout => start_for_output_fifo70_U0_dout,
-        if_empty_n => start_for_output_fifo70_U0_empty_n,
-        if_read => output_fifo70_U0_ap_ready);
+        if_dout => start_for_output_fifo71_U0_dout,
+        if_empty_n => start_for_output_fifo71_U0_empty_n,
+        if_read => output_fifo71_U0_ap_ready);
 
     start_for_output_fYi_U : component start_for_output_fYi
     port map (
@@ -1096,22 +1101,6 @@ begin
 
 
 
-    ap_reg_output_fifo69_U0_ap_done_assign_proc : process(ap_clk)
-    begin
-        if (ap_clk'event and ap_clk =  '1') then
-            if (ap_rst_n_inv = '1') then
-                ap_reg_output_fifo69_U0_ap_done <= ap_const_logic_0;
-            else
-                if ((ap_const_logic_1 = ap_sync_done)) then 
-                    ap_reg_output_fifo69_U0_ap_done <= ap_const_logic_0;
-                else 
-                    ap_reg_output_fifo69_U0_ap_done <= (output_fifo69_U0_ap_done or ap_reg_output_fifo69_U0_ap_done);
-                end if; 
-            end if;
-        end if;
-    end process;
-
-
     ap_reg_output_fifo70_U0_ap_done_assign_proc : process(ap_clk)
     begin
         if (ap_clk'event and ap_clk =  '1') then
@@ -1122,6 +1111,22 @@ begin
                     ap_reg_output_fifo70_U0_ap_done <= ap_const_logic_0;
                 else 
                     ap_reg_output_fifo70_U0_ap_done <= (output_fifo70_U0_ap_done or ap_reg_output_fifo70_U0_ap_done);
+                end if; 
+            end if;
+        end if;
+    end process;
+
+
+    ap_reg_output_fifo71_U0_ap_done_assign_proc : process(ap_clk)
+    begin
+        if (ap_clk'event and ap_clk =  '1') then
+            if (ap_rst_n_inv = '1') then
+                ap_reg_output_fifo71_U0_ap_done <= ap_const_logic_0;
+            else
+                if ((ap_const_logic_1 = ap_sync_done)) then 
+                    ap_reg_output_fifo71_U0_ap_done <= ap_const_logic_0;
+                else 
+                    ap_reg_output_fifo71_U0_ap_done <= (output_fifo71_U0_ap_done or ap_reg_output_fifo71_U0_ap_done);
                 end if; 
             end if;
         end if;
@@ -1230,7 +1235,7 @@ begin
         end if;
     end process;
     ap_done <= ap_sync_done;
-    ap_idle <= (scheduler_parser_U0_ap_idle and scheduler_cycle_exac_U0_ap_idle and output_fifo69_U0_ap_idle and output_fifo70_U0_ap_idle and output_fifo_U0_ap_idle);
+    ap_idle <= (scheduler_parser_U0_ap_idle and scheduler_cycle_exac_U0_ap_idle and output_fifo70_U0_ap_idle and output_fifo71_U0_ap_idle and output_fifo_U0_ap_idle);
     ap_ready <= ap_sync_ready;
 
     ap_rst_n_inv_assign_proc : process(ap_rst_n)
@@ -1239,7 +1244,7 @@ begin
     end process;
 
     ap_sync_continue <= ap_sync_done;
-    ap_sync_done <= (ap_reg_scheduler_parser_U0_ap_done and ap_reg_scheduler_cycle_exac_U0_ap_done and ap_reg_output_fifo69_U0_ap_done and ap_reg_output_fifo70_U0_ap_done and ap_reg_output_fifo_U0_ap_done);
+    ap_sync_done <= (ap_reg_scheduler_parser_U0_ap_done and ap_reg_scheduler_cycle_exac_U0_ap_done and ap_reg_output_fifo70_U0_ap_done and ap_reg_output_fifo71_U0_ap_done and ap_reg_output_fifo_U0_ap_done);
     ap_sync_ready <= (ap_sync_scheduler_parser_U0_ap_ready and ap_sync_scheduler_cycle_exac_U0_ap_ready);
     ap_sync_scheduler_cycle_exac_U0_ap_ready <= (scheduler_cycle_exac_U0_ap_ready or ap_sync_reg_scheduler_cycle_exac_U0_ap_ready);
     ap_sync_scheduler_parser_U0_ap_ready <= (scheduler_parser_U0_ap_ready or ap_sync_reg_scheduler_parser_U0_ap_ready);
@@ -1259,14 +1264,14 @@ begin
     filter_select_ch2_V_ap_vld <= scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld;
     mt_pulse_V <= scheduler_cycle_exac_U0_mt_pulse_V;
     mt_pulse_V_ap_vld <= scheduler_cycle_exac_U0_mt_pulse_V_ap_vld;
-    output_fifo69_U0_ap_continue <= ap_sync_done;
-    output_fifo69_U0_ap_start <= start_for_output_fifo69_U0_empty_n;
-    output_fifo69_U0_start_full_n <= ap_const_logic_0;
-    output_fifo69_U0_start_write <= ap_const_logic_0;
     output_fifo70_U0_ap_continue <= ap_sync_done;
     output_fifo70_U0_ap_start <= start_for_output_fifo70_U0_empty_n;
     output_fifo70_U0_start_full_n <= ap_const_logic_0;
     output_fifo70_U0_start_write <= ap_const_logic_0;
+    output_fifo71_U0_ap_continue <= ap_sync_done;
+    output_fifo71_U0_ap_start <= start_for_output_fifo71_U0_empty_n;
+    output_fifo71_U0_start_full_n <= ap_const_logic_0;
+    output_fifo71_U0_start_write <= ap_const_logic_0;
     output_fifo_U0_ap_continue <= ap_sync_done;
     output_fifo_U0_ap_start <= start_for_output_fifo_U0_empty_n;
     output_fifo_U0_start_full_n <= ap_const_logic_0;
@@ -1275,10 +1280,10 @@ begin
     pps_ce0 <= scheduler_cycle_exac_U0_pps_ce0;
     pps_d0 <= ap_const_lv1_0;
     pps_we0 <= ap_const_logic_0;
-    pulse_metadata_ch0_V_TDATA <= output_fifo69_U0_pulse_metadata_ch0_V_TDATA;
-    pulse_metadata_ch0_V_TVALID <= output_fifo69_U0_pulse_metadata_ch0_V_TVALID;
-    pulse_metadata_ch1_V_TDATA <= output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
-    pulse_metadata_ch1_V_TVALID <= output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
+    pulse_metadata_ch0_V_TDATA <= output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
+    pulse_metadata_ch0_V_TVALID <= output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
+    pulse_metadata_ch1_V_TDATA <= output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
+    pulse_metadata_ch1_V_TVALID <= output_fifo71_U0_pulse_metadata_ch0_V_TVALID;
     pulse_metadata_ch2_V_TDATA <= output_fifo_U0_out_V_TDATA;
     pulse_metadata_ch2_V_TVALID <= output_fifo_U0_out_V_TVALID;
     scheduler_cycle_exac_U0_ap_continue <= ap_sync_done;
@@ -1287,8 +1292,8 @@ begin
     scheduler_cycle_exac_U0_start_write <= ap_const_logic_0;
     scheduler_parser_U0_ap_continue <= ap_sync_done;
     scheduler_parser_U0_ap_start <= (ap_start and (ap_sync_reg_scheduler_parser_U0_ap_ready xor ap_const_logic_1));
-    scheduler_parser_U0_start_full_n <= (ap_const_logic_0 or start_for_output_fifo69_U0_full_n or start_for_output_fifo70_U0_full_n or start_for_output_fifo_U0_full_n);
-    start_for_output_fifo69_U0_din <= (0=>ap_const_logic_1, others=>'-');
+    scheduler_parser_U0_start_full_n <= (ap_const_logic_0 or start_for_output_fifo70_U0_full_n or start_for_output_fifo71_U0_full_n or start_for_output_fifo_U0_full_n);
     start_for_output_fifo70_U0_din <= (0=>ap_const_logic_1, others=>'-');
+    start_for_output_fifo71_U0_din <= (0=>ap_const_logic_1, others=>'-');
     start_for_output_fifo_U0_din <= (0=>ap_const_logic_1, others=>'-');
 end behav;

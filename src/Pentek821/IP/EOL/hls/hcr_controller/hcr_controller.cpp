@@ -14,6 +14,7 @@ void hcr_controller(
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_decimation,
 		uint32_t cfg_num_pulses_per_xfer,
+		uint32_t cfg_enabled_channel_vector,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -40,6 +41,7 @@ void hcr_controller(
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_to_execute
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_decimation
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_per_xfer
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_enabled_channel_vector
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->prt complete
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->timer_offset complete
@@ -88,6 +90,7 @@ void hcr_controller(
 			cfg_num_pulses_to_execute,
 			cfg_decimation,
 			cfg_num_pulses_per_xfer,
+			cfg_enabled_channel_vector,
 			cfg_pulse_sequence,
 			cfg_filter_coefs_ch0,
 			cfg_filter_coefs_ch1,
@@ -123,6 +126,7 @@ void scheduler_parser(
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_decimation,
 		uint32_t cfg_num_pulses_per_xfer,
+		ap_uint<3> cfg_enabled_channel_vector,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -213,14 +217,18 @@ void scheduler_parser(
 					num_pulses_scheduled_this_xfer = 0;
 				}
 
-				//Send the pulse to the cycle-exact function
+				//Send the pulse to the cycle-exact function, and to the metadata injectors
 				pulse_queue_s << pulse;
+
 				pulse.num_samples = num_samples[0];
-				pulse_queue_0 << pulse;
+				if (cfg_enabled_channel_vector[0]) pulse_queue_0 << pulse;
+
 				pulse.num_samples = num_samples[1];
-				pulse_queue_1 << pulse;
+				if (cfg_enabled_channel_vector[1]) pulse_queue_1 << pulse;
+
 				pulse.num_samples = num_samples[2];
-				pulse_queue_2 << pulse;
+				if (cfg_enabled_channel_vector[2]) pulse_queue_2 << pulse;
+
 				num_pulses_scheduled++;
 
 				if(pulses_to_execute_reached)

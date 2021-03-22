@@ -6,6 +6,7 @@
   <xd:arg xd:name="*(cfg_num_pulses_to_execute)" xd:originalName="cfg_num_pulses_to_execute" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x20" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_decimation" xd:originalName="cfg_decimation" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x28" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_num_pulses_per_xfer" xd:originalName="cfg_num_pulses_per_xfer" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x30" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="cfg_enabled_channel_vector" xd:originalName="cfg_enabled_channel_vector" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x38" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].prt[0]" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x80" xd:arraySize="32" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].prt[1]" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x100" xd:arraySize="32" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].num_pulses" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x180" xd:arraySize="32" xd:dataWidth="32"/>
@@ -137,5 +138,5 @@
   <xd:arg xd:name="pps_d0" xd:originalName="pps_d0" xd:direction="out" xd:interfaceRef="pps_d0" xd:busTypeRef="ap_memory" xd:arraySize="2" xd:dataWidth="1"/>
   <xd:arg xd:name="pps_q0" xd:originalName="pps_q0" xd:direction="in" xd:interfaceRef="pps_q0" xd:busTypeRef="ap_memory" xd:arraySize="2" xd:dataWidth="1"/>
   <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
-  <xd:resourceEstimates xd:LUT="5595" xd:FF="13053" xd:BRAM="56" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="6069" xd:FF="13850" xd:BRAM="56" xd:DSP="0"/>
 </xd:acceleratorMap>

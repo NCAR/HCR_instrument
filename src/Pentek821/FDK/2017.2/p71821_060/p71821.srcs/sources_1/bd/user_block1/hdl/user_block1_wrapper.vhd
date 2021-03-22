@@ -1,7 +1,7 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
---Date        : Wed Feb 10 10:20:55 2021
+--Date        : Fri Mar 19 18:49:06 2021
 --Host        : apararchiver running 64-bit CentOS Linux release 8.0.1905 (Core)
 --Command     : generate_target user_block1_wrapper.bd
 --Design      : user_block1_wrapper

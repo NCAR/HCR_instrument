@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13053,HLS_SYN_LUT=5595}" *)
+(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13850,HLS_SYN_LUT=6069}" *)
 
 module hcr_controller (
         s_axi_cfg_bus_AWVALID,
@@ -137,6 +137,7 @@ wire   [7:0] cfg_pulse_sequence_length;
 wire   [31:0] cfg_num_pulses_to_execute;
 wire   [31:0] cfg_decimation;
 wire   [31:0] cfg_num_pulses_per_xfer;
+wire   [31:0] cfg_enabled_channel_vector;
 wire   [31:0] cfg_pulse_sequence_prt_0_q0;
 wire   [31:0] cfg_pulse_sequence_prt_1_q0;
 wire   [31:0] cfg_pulse_sequence_num_pulses_q0;
@@ -259,14 +260,6 @@ wire   [1:0] scheduler_cycle_exac_U0_filter_select_ch1_V;
 wire    scheduler_cycle_exac_U0_filter_select_ch1_V_ap_vld;
 wire   [1:0] scheduler_cycle_exac_U0_filter_select_ch2_V;
 wire    scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld;
-wire    output_fifo69_U0_ap_start;
-wire    output_fifo69_U0_ap_done;
-wire    output_fifo69_U0_ap_continue;
-wire    output_fifo69_U0_ap_idle;
-wire    output_fifo69_U0_ap_ready;
-wire    output_fifo69_U0_pulse_queue_ch0_V_read;
-wire   [815:0] output_fifo69_U0_pulse_metadata_ch0_V_TDATA;
-wire    output_fifo69_U0_pulse_metadata_ch0_V_TVALID;
 wire    output_fifo70_U0_ap_start;
 wire    output_fifo70_U0_ap_done;
 wire    output_fifo70_U0_ap_continue;
@@ -275,6 +268,14 @@ wire    output_fifo70_U0_ap_ready;
 wire    output_fifo70_U0_pulse_queue_ch0_V_read;
 wire   [815:0] output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
 wire    output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
+wire    output_fifo71_U0_ap_start;
+wire    output_fifo71_U0_ap_done;
+wire    output_fifo71_U0_ap_continue;
+wire    output_fifo71_U0_ap_idle;
+wire    output_fifo71_U0_ap_ready;
+wire    output_fifo71_U0_pulse_queue_ch0_V_read;
+wire   [815:0] output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
+wire    output_fifo71_U0_pulse_metadata_ch0_V_TVALID;
 wire    output_fifo_U0_ap_start;
 wire    output_fifo_U0_ap_done;
 wire    output_fifo_U0_ap_continue;
@@ -298,8 +299,8 @@ wire    pulse_queue_schedule_empty_n;
 wire    ap_sync_done;
 reg    ap_reg_scheduler_parser_U0_ap_done;
 reg    ap_reg_scheduler_cycle_exac_U0_ap_done;
-reg    ap_reg_output_fifo69_U0_ap_done;
 reg    ap_reg_output_fifo70_U0_ap_done;
+reg    ap_reg_output_fifo71_U0_ap_done;
 reg    ap_reg_output_fifo_U0_ap_done;
 wire    ap_sync_ready;
 reg    ap_sync_reg_scheduler_parser_U0_ap_ready;
@@ -308,24 +309,24 @@ reg   [1:0] scheduler_parser_U0_ap_ready_count;
 reg    ap_sync_reg_scheduler_cycle_exac_U0_ap_ready;
 wire    ap_sync_scheduler_cycle_exac_U0_ap_ready;
 reg   [1:0] scheduler_cycle_exac_U0_ap_ready_count;
-wire   [0:0] start_for_output_fifo69_U0_din;
-wire    start_for_output_fifo69_U0_full_n;
-wire   [0:0] start_for_output_fifo69_U0_dout;
-wire    start_for_output_fifo69_U0_empty_n;
 wire   [0:0] start_for_output_fifo70_U0_din;
 wire    start_for_output_fifo70_U0_full_n;
 wire   [0:0] start_for_output_fifo70_U0_dout;
 wire    start_for_output_fifo70_U0_empty_n;
+wire   [0:0] start_for_output_fifo71_U0_din;
+wire    start_for_output_fifo71_U0_full_n;
+wire   [0:0] start_for_output_fifo71_U0_dout;
+wire    start_for_output_fifo71_U0_empty_n;
 wire   [0:0] start_for_output_fifo_U0_din;
 wire    start_for_output_fifo_U0_full_n;
 wire   [0:0] start_for_output_fifo_U0_dout;
 wire    start_for_output_fifo_U0_empty_n;
 wire    scheduler_cycle_exac_U0_start_full_n;
 wire    scheduler_cycle_exac_U0_start_write;
-wire    output_fifo69_U0_start_full_n;
-wire    output_fifo69_U0_start_write;
 wire    output_fifo70_U0_start_full_n;
 wire    output_fifo70_U0_start_write;
+wire    output_fifo71_U0_start_full_n;
+wire    output_fifo71_U0_start_write;
 wire    output_fifo_U0_start_full_n;
 wire    output_fifo_U0_start_write;
 
@@ -333,8 +334,8 @@ wire    output_fifo_U0_start_write;
 initial begin
 #0 ap_reg_scheduler_parser_U0_ap_done = 1'b0;
 #0 ap_reg_scheduler_cycle_exac_U0_ap_done = 1'b0;
-#0 ap_reg_output_fifo69_U0_ap_done = 1'b0;
 #0 ap_reg_output_fifo70_U0_ap_done = 1'b0;
+#0 ap_reg_output_fifo71_U0_ap_done = 1'b0;
 #0 ap_reg_output_fifo_U0_ap_done = 1'b0;
 #0 ap_sync_reg_scheduler_parser_U0_ap_ready = 1'b0;
 #0 scheduler_parser_U0_ap_ready_count = 2'd0;
@@ -376,6 +377,7 @@ hcr_controller_cfg_bus_s_axi_U(
     .cfg_num_pulses_to_execute(cfg_num_pulses_to_execute),
     .cfg_decimation(cfg_decimation),
     .cfg_num_pulses_per_xfer(cfg_num_pulses_per_xfer),
+    .cfg_enabled_channel_vector(cfg_enabled_channel_vector),
     .cfg_pulse_sequence_prt_0_address0(scheduler_parser_U0_cfg_pulse_sequence_p_address0),
     .cfg_pulse_sequence_prt_0_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_ce0),
     .cfg_pulse_sequence_prt_0_q0(cfg_pulse_sequence_prt_0_q0),
@@ -475,6 +477,7 @@ scheduler_parser scheduler_parser_U0(
     .cfg_num_pulses_to_ex(cfg_num_pulses_to_execute),
     .cfg_decimation(cfg_decimation),
     .cfg_num_pulses_per_x(cfg_num_pulses_per_xfer),
+    .cfg_enabled_channel_vector(cfg_enabled_channel_vector),
     .cfg_pulse_sequence_p_address0(scheduler_parser_U0_cfg_pulse_sequence_p_address0),
     .cfg_pulse_sequence_p_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_ce0),
     .cfg_pulse_sequence_p_q0(cfg_pulse_sequence_prt_0_q0),
@@ -605,22 +608,6 @@ scheduler_cycle_exac scheduler_cycle_exac_U0(
     .filter_select_ch2_V_ap_vld(scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld)
 );
 
-output_fifo69 output_fifo69_U0(
-    .ap_clk(ap_clk),
-    .ap_rst(ap_rst_n_inv),
-    .ap_start(output_fifo69_U0_ap_start),
-    .ap_done(output_fifo69_U0_ap_done),
-    .ap_continue(output_fifo69_U0_ap_continue),
-    .ap_idle(output_fifo69_U0_ap_idle),
-    .ap_ready(output_fifo69_U0_ap_ready),
-    .pulse_queue_ch0_V_dout(pulse_queue_ch0_V_dout),
-    .pulse_queue_ch0_V_empty_n(pulse_queue_ch0_V_empty_n),
-    .pulse_queue_ch0_V_read(output_fifo69_U0_pulse_queue_ch0_V_read),
-    .pulse_metadata_ch0_V_TDATA(output_fifo69_U0_pulse_metadata_ch0_V_TDATA),
-    .pulse_metadata_ch0_V_TVALID(output_fifo69_U0_pulse_metadata_ch0_V_TVALID),
-    .pulse_metadata_ch0_V_TREADY(pulse_metadata_ch0_V_TREADY)
-);
-
 output_fifo70 output_fifo70_U0(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),
@@ -629,11 +616,27 @@ output_fifo70 output_fifo70_U0(
     .ap_continue(output_fifo70_U0_ap_continue),
     .ap_idle(output_fifo70_U0_ap_idle),
     .ap_ready(output_fifo70_U0_ap_ready),
-    .pulse_queue_ch0_V_dout(pulse_queue_ch1_V_dout),
-    .pulse_queue_ch0_V_empty_n(pulse_queue_ch1_V_empty_n),
+    .pulse_queue_ch0_V_dout(pulse_queue_ch0_V_dout),
+    .pulse_queue_ch0_V_empty_n(pulse_queue_ch0_V_empty_n),
     .pulse_queue_ch0_V_read(output_fifo70_U0_pulse_queue_ch0_V_read),
     .pulse_metadata_ch0_V_TDATA(output_fifo70_U0_pulse_metadata_ch0_V_TDATA),
     .pulse_metadata_ch0_V_TVALID(output_fifo70_U0_pulse_metadata_ch0_V_TVALID),
+    .pulse_metadata_ch0_V_TREADY(pulse_metadata_ch0_V_TREADY)
+);
+
+output_fifo71 output_fifo71_U0(
+    .ap_clk(ap_clk),
+    .ap_rst(ap_rst_n_inv),
+    .ap_start(output_fifo71_U0_ap_start),
+    .ap_done(output_fifo71_U0_ap_done),
+    .ap_continue(output_fifo71_U0_ap_continue),
+    .ap_idle(output_fifo71_U0_ap_idle),
+    .ap_ready(output_fifo71_U0_ap_ready),
+    .pulse_queue_ch0_V_dout(pulse_queue_ch1_V_dout),
+    .pulse_queue_ch0_V_empty_n(pulse_queue_ch1_V_empty_n),
+    .pulse_queue_ch0_V_read(output_fifo71_U0_pulse_queue_ch0_V_read),
+    .pulse_metadata_ch0_V_TDATA(output_fifo71_U0_pulse_metadata_ch0_V_TDATA),
+    .pulse_metadata_ch0_V_TVALID(output_fifo71_U0_pulse_metadata_ch0_V_TVALID),
     .pulse_metadata_ch0_V_TREADY(pulse_metadata_ch1_V_TREADY)
 );
 
@@ -663,7 +666,7 @@ fifo_w813_d16_S pulse_queue_ch0_V_U(
     .if_write(scheduler_parser_U0_pulse_queue_0_V_write),
     .if_dout(pulse_queue_ch0_V_dout),
     .if_empty_n(pulse_queue_ch0_V_empty_n),
-    .if_read(output_fifo69_U0_pulse_queue_ch0_V_read)
+    .if_read(output_fifo70_U0_pulse_queue_ch0_V_read)
 );
 
 fifo_w813_d16_S pulse_queue_ch1_V_U(
@@ -676,7 +679,7 @@ fifo_w813_d16_S pulse_queue_ch1_V_U(
     .if_write(scheduler_parser_U0_pulse_queue_1_V_write),
     .if_dout(pulse_queue_ch1_V_dout),
     .if_empty_n(pulse_queue_ch1_V_empty_n),
-    .if_read(output_fifo70_U0_pulse_queue_ch0_V_read)
+    .if_read(output_fifo71_U0_pulse_queue_ch0_V_read)
 );
 
 fifo_w813_d16_S pulse_queue_ch2_V_U(
@@ -710,12 +713,12 @@ start_for_output_dEe start_for_output_dEe_U(
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
     .if_write_ce(1'b1),
-    .if_din(start_for_output_fifo69_U0_din),
-    .if_full_n(start_for_output_fifo69_U0_full_n),
+    .if_din(start_for_output_fifo70_U0_din),
+    .if_full_n(start_for_output_fifo70_U0_full_n),
     .if_write(scheduler_parser_U0_start_write),
-    .if_dout(start_for_output_fifo69_U0_dout),
-    .if_empty_n(start_for_output_fifo69_U0_empty_n),
-    .if_read(output_fifo69_U0_ap_ready)
+    .if_dout(start_for_output_fifo70_U0_dout),
+    .if_empty_n(start_for_output_fifo70_U0_empty_n),
+    .if_read(output_fifo70_U0_ap_ready)
 );
 
 start_for_output_eOg start_for_output_eOg_U(
@@ -723,12 +726,12 @@ start_for_output_eOg start_for_output_eOg_U(
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
     .if_write_ce(1'b1),
-    .if_din(start_for_output_fifo70_U0_din),
-    .if_full_n(start_for_output_fifo70_U0_full_n),
+    .if_din(start_for_output_fifo71_U0_din),
+    .if_full_n(start_for_output_fifo71_U0_full_n),
     .if_write(scheduler_parser_U0_start_write),
-    .if_dout(start_for_output_fifo70_U0_dout),
-    .if_empty_n(start_for_output_fifo70_U0_empty_n),
-    .if_read(output_fifo70_U0_ap_ready)
+    .if_dout(start_for_output_fifo71_U0_dout),
+    .if_empty_n(start_for_output_fifo71_U0_empty_n),
+    .if_read(output_fifo71_U0_ap_ready)
 );
 
 start_for_output_fYi start_for_output_fYi_U(
@@ -746,24 +749,24 @@ start_for_output_fYi start_for_output_fYi_U(
 
 always @ (posedge ap_clk) begin
     if (ap_rst_n_inv == 1'b1) begin
-        ap_reg_output_fifo69_U0_ap_done <= 1'b0;
-    end else begin
-        if ((1'b1 == ap_sync_done)) begin
-            ap_reg_output_fifo69_U0_ap_done <= 1'b0;
-        end else begin
-            ap_reg_output_fifo69_U0_ap_done <= (output_fifo69_U0_ap_done | ap_reg_output_fifo69_U0_ap_done);
-        end
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (ap_rst_n_inv == 1'b1) begin
         ap_reg_output_fifo70_U0_ap_done <= 1'b0;
     end else begin
         if ((1'b1 == ap_sync_done)) begin
             ap_reg_output_fifo70_U0_ap_done <= 1'b0;
         end else begin
             ap_reg_output_fifo70_U0_ap_done <= (output_fifo70_U0_ap_done | ap_reg_output_fifo70_U0_ap_done);
+        end
+    end
+end
+
+always @ (posedge ap_clk) begin
+    if (ap_rst_n_inv == 1'b1) begin
+        ap_reg_output_fifo71_U0_ap_done <= 1'b0;
+    end else begin
+        if ((1'b1 == ap_sync_done)) begin
+            ap_reg_output_fifo71_U0_ap_done <= 1'b0;
+        end else begin
+            ap_reg_output_fifo71_U0_ap_done <= (output_fifo71_U0_ap_done | ap_reg_output_fifo71_U0_ap_done);
         end
     end
 end
@@ -846,7 +849,7 @@ end
 
 assign ap_done = ap_sync_done;
 
-assign ap_idle = (scheduler_parser_U0_ap_idle & scheduler_cycle_exac_U0_ap_idle & output_fifo69_U0_ap_idle & output_fifo70_U0_ap_idle & output_fifo_U0_ap_idle);
+assign ap_idle = (scheduler_parser_U0_ap_idle & scheduler_cycle_exac_U0_ap_idle & output_fifo70_U0_ap_idle & output_fifo71_U0_ap_idle & output_fifo_U0_ap_idle);
 
 assign ap_ready = ap_sync_ready;
 
@@ -856,7 +859,7 @@ end
 
 assign ap_sync_continue = ap_sync_done;
 
-assign ap_sync_done = (ap_reg_scheduler_parser_U0_ap_done & ap_reg_scheduler_cycle_exac_U0_ap_done & ap_reg_output_fifo69_U0_ap_done & ap_reg_output_fifo70_U0_ap_done & ap_reg_output_fifo_U0_ap_done);
+assign ap_sync_done = (ap_reg_scheduler_parser_U0_ap_done & ap_reg_scheduler_cycle_exac_U0_ap_done & ap_reg_output_fifo70_U0_ap_done & ap_reg_output_fifo71_U0_ap_done & ap_reg_output_fifo_U0_ap_done);
 
 assign ap_sync_ready = (ap_sync_scheduler_parser_U0_ap_ready & ap_sync_scheduler_cycle_exac_U0_ap_ready);
 
@@ -896,14 +899,6 @@ assign mt_pulse_V = scheduler_cycle_exac_U0_mt_pulse_V;
 
 assign mt_pulse_V_ap_vld = scheduler_cycle_exac_U0_mt_pulse_V_ap_vld;
 
-assign output_fifo69_U0_ap_continue = ap_sync_done;
-
-assign output_fifo69_U0_ap_start = start_for_output_fifo69_U0_empty_n;
-
-assign output_fifo69_U0_start_full_n = 1'b0;
-
-assign output_fifo69_U0_start_write = 1'b0;
-
 assign output_fifo70_U0_ap_continue = ap_sync_done;
 
 assign output_fifo70_U0_ap_start = start_for_output_fifo70_U0_empty_n;
@@ -911,6 +906,14 @@ assign output_fifo70_U0_ap_start = start_for_output_fifo70_U0_empty_n;
 assign output_fifo70_U0_start_full_n = 1'b0;
 
 assign output_fifo70_U0_start_write = 1'b0;
+
+assign output_fifo71_U0_ap_continue = ap_sync_done;
+
+assign output_fifo71_U0_ap_start = start_for_output_fifo71_U0_empty_n;
+
+assign output_fifo71_U0_start_full_n = 1'b0;
+
+assign output_fifo71_U0_start_write = 1'b0;
 
 assign output_fifo_U0_ap_continue = ap_sync_done;
 
@@ -928,13 +931,13 @@ assign pps_d0 = 1'd0;
 
 assign pps_we0 = 1'b0;
 
-assign pulse_metadata_ch0_V_TDATA = output_fifo69_U0_pulse_metadata_ch0_V_TDATA;
+assign pulse_metadata_ch0_V_TDATA = output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
 
-assign pulse_metadata_ch0_V_TVALID = output_fifo69_U0_pulse_metadata_ch0_V_TVALID;
+assign pulse_metadata_ch0_V_TVALID = output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
 
-assign pulse_metadata_ch1_V_TDATA = output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
+assign pulse_metadata_ch1_V_TDATA = output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
 
-assign pulse_metadata_ch1_V_TVALID = output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
+assign pulse_metadata_ch1_V_TVALID = output_fifo71_U0_pulse_metadata_ch0_V_TVALID;
 
 assign pulse_metadata_ch2_V_TDATA = output_fifo_U0_out_V_TDATA;
 
@@ -952,11 +955,11 @@ assign scheduler_parser_U0_ap_continue = ap_sync_done;
 
 assign scheduler_parser_U0_ap_start = (ap_start & (ap_sync_reg_scheduler_parser_U0_ap_ready ^ 1'b1));
 
-assign scheduler_parser_U0_start_full_n = (1'b0 | start_for_output_fifo69_U0_full_n | start_for_output_fifo70_U0_full_n | start_for_output_fifo_U0_full_n);
-
-assign start_for_output_fifo69_U0_din = 1'b1;
+assign scheduler_parser_U0_start_full_n = (1'b0 | start_for_output_fifo70_U0_full_n | start_for_output_fifo71_U0_full_n | start_for_output_fifo_U0_full_n);
 
 assign start_for_output_fifo70_U0_din = 1'b1;
+
+assign start_for_output_fifo71_U0_din = 1'b1;
 
 assign start_for_output_fifo_U0_din = 1'b1;
 

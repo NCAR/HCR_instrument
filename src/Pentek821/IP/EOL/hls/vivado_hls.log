@@ -1,5 +1,5 @@
 INFO: [HLS 200-10] Running '/opt/Xilinx/Vivado_HLS/2017.2/bin/unwrapped/lnx64.o/vivado_hls'
-INFO: [HLS 200-10] For user 'apar' on host 'apararchiver' (Linux_x86_64 version 4.18.0-80.11.2.el8_0.x86_64) on Tue Mar 09 14:19:50 UTC 2021
+INFO: [HLS 200-10] For user 'apar' on host 'apararchiver' (Linux_x86_64 version 4.18.0-80.11.2.el8_0.x86_64) on Fri Mar 19 15:40:42 UTC 2021
 INFO: [HLS 200-10] On os "CentOS Linux release 8.0.1905 (Core) "
 INFO: [HLS 200-10] In directory '/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls'
 INFO: [HLS 200-10] Opening project '/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller'.
@@ -18,4 +18,4 @@ source run_ippack.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2017.2/data/ip'.
-INFO: [Common 17-206] Exiting Vivado at Tue Mar  9 14:19:58 2021...
+INFO: [Common 17-206] Exiting Vivado at Fri Mar 19 15:40:49 2021...

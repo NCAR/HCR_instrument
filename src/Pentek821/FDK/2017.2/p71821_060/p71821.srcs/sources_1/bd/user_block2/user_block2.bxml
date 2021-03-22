@@ -2,9 +2,9 @@
 <Root MajorVersion="0" MinorVersion="33">
   <CompositeFile CompositeFileTopName="user_block2" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="RESET" Timestamp="1612991516"/>
-    <Generation Name="IMPLEMENTATION" State="RESET" Timestamp="1612991516"/>
-    <Generation Name="SIMULATION" State="RESET" Timestamp="1612991516"/>
+    <Generation Name="SYNTHESIS" State="RESET" Timestamp="1616416300"/>
+    <Generation Name="IMPLEMENTATION" State="RESET" Timestamp="1616416300"/>
+    <Generation Name="SIMULATION" State="RESET" Timestamp="1616416300"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ip/user_block2_irq_placeholder_0/user_block2_irq_placeholder_0.xci" Type="IP">
         <Instance HierarchyPath="irq_placeholder"/>
@@ -30,7 +30,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_axis_broadcaster_0_0/user_block2_axis_broadcaster_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch0/bcast"/>
+        <Instance HierarchyPath="dsp_ch0/fir/bcast"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -38,7 +38,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_axis_subset_converter_0_0/user_block2_axis_subset_converter_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch0/map_fsel"/>
+        <Instance HierarchyPath="dsp_ch0/fir/map_fsel"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -46,7 +46,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_fir_compiler_0_0/user_block2_fir_compiler_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch0/pulse_fir"/>
+        <Instance HierarchyPath="dsp_ch0/fir/pulse_fir"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -54,7 +54,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_axis_subset_converter_1_0/user_block2_axis_subset_converter_1_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch0/map_data"/>
+        <Instance HierarchyPath="dsp_ch0/fir/map_data"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -102,7 +102,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_bcast_0_1/user_block2_bcast_0_1.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch2/bcast"/>
+        <Instance HierarchyPath="dsp_ch2/fir/bcast"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -110,7 +110,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_map_data_0_1/user_block2_map_data_0_1.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch2/map_data"/>
+        <Instance HierarchyPath="dsp_ch2/fir/map_data"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -118,7 +118,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_pulse_fir_0_1/user_block2_pulse_fir_0_1.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch2/pulse_fir"/>
+        <Instance HierarchyPath="dsp_ch2/fir/pulse_fir"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -126,7 +126,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_map_cfg_0_1/user_block2_map_cfg_0_1.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch2/map_fsel"/>
+        <Instance HierarchyPath="dsp_ch2/fir/map_fsel"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -158,7 +158,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_bcast_0_0/user_block2_bcast_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch1/bcast"/>
+        <Instance HierarchyPath="dsp_ch1/fir/bcast"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -166,7 +166,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_map_data_0_0/user_block2_map_data_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch1/map_data"/>
+        <Instance HierarchyPath="dsp_ch1/fir/map_data"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -174,7 +174,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_pulse_fir_0_0/user_block2_pulse_fir_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch1/pulse_fir"/>
+        <Instance HierarchyPath="dsp_ch1/fir/pulse_fir"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -182,7 +182,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_map_cfg_0_0/user_block2_map_cfg_0_0.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch1/map_fsel"/>
+        <Instance HierarchyPath="dsp_ch1/fir/map_fsel"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -293,14 +293,6 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/user_block2_xbar_0/user_block2_xbar_0.xci" Type="IP">
-        <Instance HierarchyPath="csr/axi_interc/xbar"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
       <File Name="ip/user_block2_xlslice_0_0/user_block2_xlslice_0_0.xci" Type="IP">
         <Instance HierarchyPath="csr/xlslice_0"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -359,6 +351,46 @@
       </File>
       <File Name="ip/user_block2_position_encoder_0_0/user_block2_position_encoder_0_0.xci" Type="IP">
         <Instance HierarchyPath="position_encoder_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block2_xbar_0/user_block2_xbar_0.xci" Type="IP">
+        <Instance HierarchyPath="csr/axi_interc/xbar"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block2_system_ila_0_0/user_block2_system_ila_0_0.xci" Type="IP">
+        <Instance HierarchyPath="dsp_ch0/fir/system_ila_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block2_axis_subset_converter_0_6/user_block2_axis_subset_converter_0_6.xci" Type="IP">
+        <Instance HierarchyPath="dsp_ch1/fir/trim_data"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block2_axis_subset_converter_0_7/user_block2_axis_subset_converter_0_7.xci" Type="IP">
+        <Instance HierarchyPath="dsp_ch2/fir/trim_data"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block2_axis_subset_converter_0_5/user_block2_axis_subset_converter_0_5.xci" Type="IP">
+        <Instance HierarchyPath="dsp_ch0/fir/trim_data"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>

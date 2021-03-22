@@ -1,7 +1,7 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
---Date        : Wed Feb 10 16:22:27 2021
+--Date        : Fri Mar 19 18:48:58 2021
 --Host        : apararchiver running 64-bit CentOS Linux release 8.0.1905 (Core)
 --Command     : generate_target user_block2_wrapper.bd
 --Design      : user_block2_wrapper
@@ -28,7 +28,6 @@ entity user_block2_wrapper is
     filter_select_ch0 : out STD_LOGIC_VECTOR ( 1 downto 0 );
     filter_select_ch1 : out STD_LOGIC_VECTOR ( 1 downto 0 );
     filter_select_ch2 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    flags : in STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
@@ -82,6 +81,7 @@ entity user_block2_wrapper is
     s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_dac_pdti_tvalid : in STD_LOGIC;
+    status_flags : in STD_LOGIC_VECTOR ( 15 downto 0 );
     user2_irq : out STD_LOGIC_VECTOR ( 1 downto 0 )
   );
 end user_block2_wrapper;
@@ -104,7 +104,7 @@ architecture STRUCTURE of user_block2_wrapper is
     filter_select_ch2 : out STD_LOGIC_VECTOR ( 1 downto 0 );
     control_flags : out STD_LOGIC_VECTOR ( 31 downto 0 );
     mt_pulse : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    flags : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    status_flags : in STD_LOGIC_VECTOR ( 15 downto 0 );
     s_axis_adc_pdti_aresetn : in STD_LOGIC;
     s_axi_csr_aresetn : in STD_LOGIC;
     s_axi_csr_aclk : in STD_LOGIC;
@@ -179,7 +179,6 @@ user_block2_i: component user_block2
       filter_select_ch0(1 downto 0) => filter_select_ch0(1 downto 0),
       filter_select_ch1(1 downto 0) => filter_select_ch1(1 downto 0),
       filter_select_ch2(1 downto 0) => filter_select_ch2(1 downto 0),
-      flags(31 downto 0) => flags(31 downto 0),
       m_axis_adc_ch0_pdti_tdata(31 downto 0) => m_axis_adc_ch0_pdti_tdata(31 downto 0),
       m_axis_adc_ch0_pdti_tuser(127 downto 0) => m_axis_adc_ch0_pdti_tuser(127 downto 0),
       m_axis_adc_ch0_pdti_tvalid => m_axis_adc_ch0_pdti_tvalid,
@@ -233,6 +232,7 @@ user_block2_i: component user_block2
       s_axis_dac_pdti_tdata(31 downto 0) => s_axis_dac_pdti_tdata(31 downto 0),
       s_axis_dac_pdti_tuser(127 downto 0) => s_axis_dac_pdti_tuser(127 downto 0),
       s_axis_dac_pdti_tvalid => s_axis_dac_pdti_tvalid,
+      status_flags(15 downto 0) => status_flags(15 downto 0),
       user2_irq(1 downto 0) => user2_irq(1 downto 0)
     );
 end STRUCTURE;

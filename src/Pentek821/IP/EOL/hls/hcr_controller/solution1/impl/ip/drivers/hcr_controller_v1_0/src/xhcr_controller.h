@@ -97,6 +97,8 @@ void XHcr_controller_Set_cfg_decimation(XHcr_controller *InstancePtr, u32 Data);
 u32 XHcr_controller_Get_cfg_decimation(XHcr_controller *InstancePtr);
 void XHcr_controller_Set_cfg_num_pulses_per_xfer(XHcr_controller *InstancePtr, u32 Data);
 u32 XHcr_controller_Get_cfg_num_pulses_per_xfer(XHcr_controller *InstancePtr);
+void XHcr_controller_Set_cfg_enabled_channel_vector(XHcr_controller *InstancePtr, u32 Data);
+u32 XHcr_controller_Get_cfg_enabled_channel_vector(XHcr_controller *InstancePtr);
 u32 XHcr_controller_Get_cfg_pulse_sequence_prt_0_BaseAddress(XHcr_controller *InstancePtr);
 u32 XHcr_controller_Get_cfg_pulse_sequence_prt_0_HighAddress(XHcr_controller *InstancePtr);
 u32 XHcr_controller_Get_cfg_pulse_sequence_prt_0_TotalBytes(XHcr_controller *InstancePtr);
