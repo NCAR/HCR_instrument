@@ -359,17 +359,20 @@ MotionControl::_adjustPointingForAttitude(double pitch, double roll,
     double rotDriveAngle = rotAngle;
     double tiltDriveAngle =
       -tiltAngle / (2.0 * cos(DegToRad(rotAngle)));
+    tiltDriveAngle *= 1.01; // Correct for slight under-control
     _rotDrive.moveTo(rotDriveAngle);
     _tiltDrive.moveTo(tiltDriveAngle);
-    
+    // _rotDrive.moveTo(rotDriveAngle - 0.020);
+    // _tiltDrive.moveTo(tiltDriveAngle - 0.008);
+
 #ifdef DEBUG_POINTING
 
     time_t now = time(NULL);
     if (now > _timeLastDebugPrint) {
       std::cerr << "==================================================" << endl;
       std::cerr << "=====>> el, az: " << el << ", " << az << endl;
-      std::cerr << "=====>> rot0, rotAngle: "
-                << rot0 << ", " << rotAngle << endl;
+      std::cerr << "=====>> rot0, rotDriveAngle: "
+                << rot0 << ", " << rotDriveAngle << endl;
       std::cerr << "=====>> tilt0*2, tiltAngle: "
                 << tilt0 * 2.0 << ", " << tiltAngle << endl;
       std::cerr << "=====>> tiltDriveAngle0, tiltDriveAngle: "
