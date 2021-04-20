@@ -28,8 +28,8 @@
 #ifndef SPECTRACOMDETAILS_H_
 #define SPECTRACOMDETAILS_H_
 
-#include <QtGui/QDialog>
-#include <QtGui/QPixmap>
+#include <QDialog>
+#include <QPixmap>
 #include <SpectracomStatus.h>
 
 #include "ui_SpectracomDetails.h"
