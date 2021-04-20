@@ -16,6 +16,7 @@ motioncontrol
 qt5
 qtcore
 qtgui
+qtwidgets
 SpectracomRpcClient
 xmitdrpcclient
 """)

@@ -36,8 +36,8 @@
 #include <sstream>
 #include <unistd.h>
 
-#include <QtCore/QDateTime>
-#include <QtGui/QMessageBox>
+#include <QDateTime>
+#include <QMessageBox>
 
 #include <logx/Logging.h>
 

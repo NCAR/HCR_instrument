@@ -8,7 +8,7 @@
 #ifndef SRC_HCRGUI_INSOVERVIEW_H_
 #define SRC_HCRGUI_INSOVERVIEW_H_
 
-#include <QtGui/qdialog.h>
+#include <QDialog>
 #include <CmigitsStatus.h>
 
 #include "ui_InsOverview.h"
