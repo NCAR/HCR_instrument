@@ -185,14 +185,6 @@ HCR_Pentek::_startRadar() {
     // Sleep until the next mid-second mark
     DLOG << "Sleeping " << sleepUsecs << " us before zeroing the Pentek PPS count";
     usleep(sleepUsecs);
-    
-    #warning todo configurable
-    _controller.run(0,                              // sequenceStartIndex,
-                    _pulseDefinitions.size(),       // sequenceLength,
-                    DDC_DECIMATION,                 // decimation,
-                    10,                             // numPulsesPerXfer,
-                    0x7,                            // enabledChannelVector,
-                    Controller::INFINITE_PULSES );  // numPulsesToExecute
 
     // Zero the Pentek's PPS counter
     status = NAV_TimestampGenSetup(_boardHandle, 0);
@@ -205,10 +197,18 @@ HCR_Pentek::_startRadar() {
     status = NAV_GlobalGateOpen(_boardHandle, NAV_CHANNEL_TYPE_DAC);
     _AbortCtorOnNavStatusError(status, "DAC NAV_GlobalGateOpen");
 
-    #warning remove fake pps
-    usleep(1000);
-    writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Fake PPS");
-    writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Fake PPS");
+    // Start the radar controller
+    _controller.run(0,                              // sequenceStartIndex,
+                    _pulseDefinitions.size(),       // sequenceLength,
+                    DDC_DECIMATION,                 // decimation,
+                    10,                             // numPulsesPerXfer,
+                    0x7,                            // enabledChannelVector,
+                    Controller::INFINITE_PULSES );  // numPulsesToExecute
+
+    // Uncomment for testing without external PPS source
+    //usleep(1000);
+    //writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Fake PPS");
+    //writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Fake PPS");
 
     ILOG << "Pentek start time: " << QDateTime::fromTime_t(_radarStartSecond)
                        .toString("yyyy-MM-dd hh:mm:ss").toStdString();
@@ -365,10 +365,11 @@ HCR_Pentek::_setupBoard() const {
                            NAV_OPTIONS_NONE);           // options
     _AbortCtorOnNavStatusError(status, "NAV_GateSetup");
 
+    //Note: PPS source SYNC_SBUS_TTL has been rerouted to P14 (GPIO) in the firmware
     status = NAV_PpsRcvSourceSetup(_boardHandle,
-                                   NAV_PPS_SRC_SYNC_SBUS_DIFF,     // busA PPS source
+                                   NAV_PPS_SRC_SYNC_SBUS_TTL,      // busA PPS source
                                    NAV_PPS_POL_NORMAL,             // busA PPS polarity
-                                   NAV_PPS_SRC_SYNC_SBUS_DIFF,     // busB PPS source
+                                   NAV_PPS_SRC_SYNC_SBUS_TTL,      // busB PPS source
                                    NAV_PPS_POL_NORMAL);            // busB PPS polarity
     _AbortCtorOnNavStatusError(status, "NAV_PpsRcvSourceSetup");
 
@@ -725,11 +726,10 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         
         // Number of data values
         uint32_t nGates = pulseHeader.numSamples;
-        if(!chan) { 
-            ILOG << "k " << pulseHeader.pulseDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
-            << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
-            
-        }
+        //if(!chan) { 
+        //    ILOG << "k " << pulseHeader.pulseDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
+        //    << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
+        //}
 
         // Calculate the timestamp
         time_t dataSec = _radarStartSecond + metadata->timestampPpsCount;    

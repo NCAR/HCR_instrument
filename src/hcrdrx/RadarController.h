@@ -194,8 +194,6 @@ public:
         write_(NUM_PULSES_PER_XFER,        numPulsesPerXfer,    "Writing num pulses per xfer");
         write_(ENABLED_CHANNEL_VECTOR,     enabledChannelVector,"Writing enabled channel vector");
         write_(CTRL,                       1,                   "Starting controller");
-
-        for(uint32_t k=0;k<64;k=k+4) std::cout << std::hex << "ctrl: " << k << " " << read_(k,"") << "\n";
     };
 
     void halt()
