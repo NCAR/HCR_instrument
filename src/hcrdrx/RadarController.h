@@ -59,6 +59,18 @@ public:
     static constexpr uint32_t NUM_FILTER_COEF_SETS                    = 4;
     static constexpr uint32_t INFINITE_PULSES                         = 0;
     static constexpr uint32_t HEADER_MAGIC                            = 0xba5eba11;
+
+    enum Timers {
+        MASTER_SYNC, // timer 0 is the master sync timer
+        RX_0,        // timer 1 is the rx timer for channel 0
+        RX_1,        // timer 2 is the rx timer for channel 1
+        RX_2,        // timer 3 is the rx timer for channel 2
+        TX_PULSE,    // timer 4 is the tx pulse timer
+        MOD_PULSE,   // timer 5 is the mod pulse
+        EMS_TRIG,    // timer 6 is the EMS trigger
+        TIMER_7      // timer 7 is spare
+    };
+
 private :
 
     enum RegDefs : uint32_t {

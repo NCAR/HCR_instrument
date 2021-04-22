@@ -55,9 +55,10 @@ HCR_Config::HCR_Config()
     _cfg["config_file"] = "default";
 
     _cfg["use_internal_clock"] = "true";
-    _cfg["duc_interpolation"] = "2";
+    _cfg["duc_interpolation"] = "1";
     _cfg["rx_frequency"] = "93.75e6";
     _cfg["tx_frequency"] = "93.75e6";
+    _cfg["use_debug_pps"] = "false";
 
     _cfg["instance"] = "ops";
     _cfg["publish_iwrf"] = "true";

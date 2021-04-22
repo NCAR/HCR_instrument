@@ -203,12 +203,14 @@ HCR_Pentek::_startRadar() {
                     DDC_DECIMATION,                 // decimation,
                     10,                             // numPulsesPerXfer,
                     0x7,                            // enabledChannelVector,
-                    Controller::INFINITE_PULSES );  // numPulsesToExecute
+                    10);//Controller::INFINITE_PULSES );  // numPulsesToExecute
 
-    // Uncomment for testing without external PPS source
-    //usleep(1000);
-    //writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Fake PPS");
-    //writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Fake PPS");
+    // Generate a fake PPS if desired
+    if(_config.use_debug_pps()) {
+        usleep(1000);
+        writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Toggle debug PPS source 1");
+        writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Toggle debug PPS source 0");
+    }
 
     ILOG << "Pentek start time: " << QDateTime::fromTime_t(_radarStartSecond)
                        .toString("yyyy-MM-dd hh:mm:ss").toStdString();
@@ -379,6 +381,9 @@ HCR_Pentek::_setupBoard() const {
 //                                 NAV_IP_CDC_CLK_INTRFC_INTR_CLK_NOT_OK,
 //                                 &clockLostIntrHandler, NULL);
 
+    //Clear the debug PPS
+    writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Clear debug PPS");
+
     //Toggle the (negative-polarity) reset for user block 2
     writeLiteRegister_(BLOCK2_GPR_BASE, 0, "Resetting user block 2");
     writeLiteRegister_(BLOCK2_GPR_BASE, 1, "Resetting user block 2");
@@ -430,7 +435,7 @@ HCR_Pentek::_setupAdc() {
                               32768,                    // buffer size in bytes
                               NAV_DMA_METADATA_ENABLE,  // enable metadata
                               NAV_DMA_RUN_MODE_CONTINUOUS_LOOP, // continuous sampling
-                              NAV_SYS_WAIT_STATE_MILSEC(1000),  // DMA timeout, ms
+                              NAV_SYS_WAIT_STATE_MILSEC(2000),  // DMA timeout, ms
                               AdcDmaCallbackHandler,
                               this,
                               NAV_OPTIONS_NONE);
@@ -688,6 +693,8 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     size_t dataBufOffsetBytes = 0;
     bool lastPulseInXfer = false;
     using IQData = std::complex<int16_t>;
+
+    ILOG << "_acceptAdcData " << chan << "\n";
 
     if (! _checkDmaMetadata(chan, metadata)) {
         return;
@@ -1054,23 +1061,28 @@ void
 HCR_Pentek::_setupController()
 {
 
-    #warning todo configurable
-    for(uint32_t k=0;k<16;k++)
+    //Define dwell(s) and add them to the pulse definitions
+    Controller::PulseDefinition dwell = 
     {
-        Controller::PulseDefinition pulse = 
-        {
-            .prt = {6000,0},  
-            .numPulses = 3,
-            .blockPostTime = 10, 
-            .controlFlags = 0xBEAF,
-            .filterSelectCh0 = 0,   
-            .filterSelectCh1 = 0,   
-            .filterSelectCh2 = 0,   
-            .timers = { {8,k+3990}, {8,k+3990}, {8,k+3990}, {8,k+3990}, {8,k+3990}, {8,k+3990}, {8,k+3990}, {8,k+3990} }
-        };    
-        _pulseDefinitions.push_back(pulse);
-    }
-    
+        .prt = {125000000/10000,0},  
+        .numPulses = 10,
+        .blockPostTime = 10, 
+        .controlFlags = 0xBEAF,
+        .filterSelectCh0 = 0,   
+        .filterSelectCh1 = 0,   
+        .filterSelectCh2 = 0,
+        .timers = {}
+    };
+    dwell.timers[Controller::Timers::MASTER_SYNC] = {8, 100};
+    dwell.timers[Controller::Timers::RX_0] = {8, 12000};
+    dwell.timers[Controller::Timers::RX_1] = {8, 12000};
+    dwell.timers[Controller::Timers::RX_2] = {8, 12000};
+    dwell.timers[Controller::Timers::TX_PULSE] = {100, 100};
+    dwell.timers[Controller::Timers::MOD_PULSE] = {150, 100};
+    dwell.timers[Controller::Timers::EMS_TRIG] = {200, 100};
+    dwell.timers[Controller::Timers::TIMER_7] = {250, 100};
+    _pulseDefinitions.push_back(dwell);
+
     // Write the pulse definitions
     _controller.writePulseDefinitions(_pulseDefinitions);
     

@@ -65,7 +65,7 @@ public:
     virtual ~HCR_Pentek();
 
     /// @brief Base clock frequency for HCR
-    static constexpr double BASE_FREQUENCY = 200.0e6;
+    static constexpr double BASE_FREQUENCY = 125.0e6;
 
     /// @brief Reference clock frequency provided to the Pentek board
     static constexpr double REF_FREQUENCY = 10.0e6;
