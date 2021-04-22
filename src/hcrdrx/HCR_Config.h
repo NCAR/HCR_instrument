@@ -101,6 +101,11 @@ public:
     /// @return true iff the internal debug PPS should be used
     bool use_debug_pps() const { return(_asBool("use_debug_pps")); }
 
+    uint32_t num_pulses_to_run() const {
+        if(_asString("num_pulses_to_run") == "inf") return 0;
+        return(_asUInt("num_pulses_to_run"));
+    }
+
     /// @brief Return the path for the calibration file
     /// @return the path for the calibration file
     std::string calib_file_long_pulse() const { return(_asString("calib_file_long_pulse")); }

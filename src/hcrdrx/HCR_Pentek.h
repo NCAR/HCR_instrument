@@ -296,6 +296,9 @@ private:
     /// @brief Socket notifier for console input
     QSocketNotifier _consoleNotifier;
 
+    /// @brief Number of pulses processed
+    std::vector<int64_t> _processedPulses;
+
 };
 
 
