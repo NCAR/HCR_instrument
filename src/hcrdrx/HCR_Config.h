@@ -95,7 +95,11 @@ public:
     
     /// @brief Return the transmit (IF) frequency
     /// @return the transmit frequency
-    double tx_frequency() const { return(_asDouble("tx_frequency")); }       
+    double tx_frequency() const { return(_asDouble("tx_frequency")); }
+
+    /// @brief Return true iff the internal debug PPS should be used
+    /// @return true iff the internal debug PPS should be used
+    bool use_debug_pps() const { return(_asBool("use_debug_pps")); }
 
     /// @brief Return the path for the calibration file
     /// @return the path for the calibration file
