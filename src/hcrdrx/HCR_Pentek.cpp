@@ -74,7 +74,8 @@ HCR_Pentek::HCR_Pentek(const HCR_Config & config,
     _prevDmaPacketNum(_adcCount, -1),
     _nDroppedBeforeStartSig(_adcCount, 0),
     _unprocessedDma(_adcCount, 0),
-    _maxUnprocessedDma(_adcCount, 0),    
+    _maxUnprocessedDma(_adcCount, 0),
+    _processedPulses(_adcCount, 0),
     _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read)    
 {
     // Register needed types
@@ -203,7 +204,7 @@ HCR_Pentek::_startRadar() {
                     DDC_DECIMATION,                 // decimation,
                     10,                             // numPulsesPerXfer,
                     0x7,                            // enabledChannelVector,
-                    10);//Controller::INFINITE_PULSES );  // numPulsesToExecute
+                    _config.num_pulses_to_run() );  // numPulsesToExecute
 
     // Generate a fake PPS if desired
     if(_config.use_debug_pps()) {
@@ -221,6 +222,9 @@ HCR_Pentek::~HCR_Pentek() {
 
     // Shut down Navigator
     int32_t status;
+
+    // Stop the scheduler
+    _controller.halt();
 
     // Close the global gates
     status = NAV_GlobalGateClose(_boardHandle, NAV_CHANNEL_TYPE_ADC);
@@ -694,14 +698,14 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     bool lastPulseInXfer = false;
     using IQData = std::complex<int16_t>;
 
-    ILOG << "_acceptAdcData " << chan << "\n";
+    // ILOG << "_acceptAdcData " << chan << "\n";
 
     if (! _checkDmaMetadata(chan, metadata)) {
         return;
     }
 
     //Process all the pulses in the data.
-    for(size_t numPulsesProcessed=0; !lastPulseInXfer; ++numPulsesProcessed)
+    for(size_t numPulsesProcessed=0; !lastPulseInXfer; ++numPulsesProcessed, ++_processedPulses[chan])
     {
 
         // Check the size of the buffer
@@ -921,10 +925,9 @@ HCR_Pentek::AdcDmaCallbackHandler(int32_t chan, int32_t dmaStatus,
         std::string adcPrefix = std::string("ADC chan ") +
                 std::to_string(chan) + ": ";
 
-        ELOG << "ADC DMA timeout on board " << instance->_boardNum <<
-                " chan " << chan;
+        // ELOG << "ADC DMA timeout on board " << instance->_boardNum << " chan " << chan;
 
-        // Now have the associated HCR_Pentek instance emit signal
+        // Have the associated HCR_Pentek instance emit signal
         // adcDmaTimeout(). This will queue execution of _dmaTimeoutHandler in
         // the instance's thread.
         emit(instance->adcDmaTimeout(chan));
@@ -1015,8 +1018,17 @@ HCR_Pentek::_dmaOverrunHandler(int32_t chan) {
 
 void
 HCR_Pentek::_dmaTimeoutHandler(int32_t chan) {
-    ELOG << "DMA timeout handler needs work! Initiating exit.";
-    raise(SIGINT);  // Trigger the program's ^C handler
+
+    if(_config.num_pulses_to_run() != Controller::INFINITE_PULSES
+       && _processedPulses[chan] >= _config.num_pulses_to_run()) {
+
+        ILOG << "Channel " << chan << " successfully processed " << _processedPulses[chan] << " pulses.";
+        raise(SIGINT);  // Trigger the program's ^C handler
+    }
+    else {
+
+        ELOG << "DMA timeout handler needs work! Initiating exit.";
+        raise(SIGINT);  // Trigger the program's ^C handler
 
 //        // On DMA timeout, we report the error and restart DMA transfers
 //        ELOG << "ADC DMA timeout on board " << _boardNum << " chan " << chan <<
@@ -1055,6 +1067,7 @@ HCR_Pentek::_dmaTimeoutHandler(int32_t chan) {
 //        // Finally, reopen the global gate for ADC data flow
 //        status = NAV_GlobalGateOpen(_boardHandle, NAV_CHANNEL_TYPE_ADC);
 //        _LogNavigatorError(status, "ADC NAV_GlobalGateOpen");
+    }
 }
 
 void
@@ -1074,9 +1087,9 @@ HCR_Pentek::_setupController()
         .timers = {}
     };
     dwell.timers[Controller::Timers::MASTER_SYNC] = {8, 100};
-    dwell.timers[Controller::Timers::RX_0] = {8, 12000};
-    dwell.timers[Controller::Timers::RX_1] = {8, 12000};
-    dwell.timers[Controller::Timers::RX_2] = {8, 12000};
+    dwell.timers[Controller::Timers::RX_0] = {8, 1200};
+    dwell.timers[Controller::Timers::RX_1] = {8, 1200};
+    dwell.timers[Controller::Timers::RX_2] = {8, 1200};
     dwell.timers[Controller::Timers::TX_PULSE] = {100, 100};
     dwell.timers[Controller::Timers::MOD_PULSE] = {150, 100};
     dwell.timers[Controller::Timers::EMS_TRIG] = {200, 100};
