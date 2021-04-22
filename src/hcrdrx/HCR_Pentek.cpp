@@ -202,9 +202,9 @@ HCR_Pentek::_startRadar() {
     _controller.run(0,                              // sequenceStartIndex,
                     _pulseDefinitions.size(),       // sequenceLength,
                     DDC_DECIMATION,                 // decimation,
-                    10,                             // numPulsesPerXfer,
+                    _config.pulses_per_xfer(),      // numPulsesPerXfer,
                     0x7,                            // enabledChannelVector,
-                    _config.num_pulses_to_run() );  // numPulsesToExecute
+                    _config.pulses_to_run() );      // numPulsesToExecute
 
     // Generate a fake PPS if desired
     if(_config.use_debug_pps()) {
@@ -1019,8 +1019,8 @@ HCR_Pentek::_dmaOverrunHandler(int32_t chan) {
 void
 HCR_Pentek::_dmaTimeoutHandler(int32_t chan) {
 
-    if(_config.num_pulses_to_run() != Controller::INFINITE_PULSES
-       && _processedPulses[chan] >= _config.num_pulses_to_run()) {
+    if(_config.pulses_to_run() != Controller::INFINITE_PULSES
+       && _processedPulses[chan] >= _config.pulses_to_run()) {
 
         ILOG << "Channel " << chan << " successfully processed " << _processedPulses[chan] << " pulses.";
         raise(SIGINT);  // Trigger the program's ^C handler

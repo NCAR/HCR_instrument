@@ -101,10 +101,16 @@ public:
     /// @return true iff the internal debug PPS should be used
     bool use_debug_pps() const { return(_asBool("use_debug_pps")); }
 
-    uint32_t num_pulses_to_run() const {
-        if(_asString("num_pulses_to_run") == "inf") return 0;
-        return(_asUInt("num_pulses_to_run"));
+    /// @brief Number of pulses to run
+    /// @return Number of pulses per xfer
+    uint32_t pulses_to_run() const {
+        if(_asString("pulses_to_run") == "inf") return 0;
+        return(_asUInt("pulses_to_run"));
     }
+
+    /// @brief Number of pulses per xfer
+    /// @return Number of pulses per xfer
+    uint32_t pulses_per_xfer() const { return(_asUInt("pulses_per_xfer")); }
 
     /// @brief Return the path for the calibration file
     /// @return the path for the calibration file

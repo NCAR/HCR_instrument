@@ -59,7 +59,8 @@ HCR_Config::HCR_Config()
     _cfg["rx_frequency"] = "93.75e6";
     _cfg["tx_frequency"] = "93.75e6";
     _cfg["use_debug_pps"] = "false";
-    _cfg["num_pulses_to_run"] = "inf";
+    _cfg["pulses_to_run"] = "inf";
+    _cfg["pulses_per_xfer"] = "10";
 
     _cfg["instance"] = "ops";
     _cfg["publish_iwrf"] = "true";
