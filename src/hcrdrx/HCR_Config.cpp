@@ -55,12 +55,12 @@ HCR_Config::HCR_Config()
     _cfg["config_file"] = "default";
 
     _cfg["use_internal_clock"] = "true";
-    _cfg["duc_interpolation"] = "1";
+    _cfg["duc_interpolation"] = "2";
     _cfg["rx_frequency"] = "93.75e6";
-    _cfg["tx_frequency"] = "93.75e6";
+    _cfg["tx_frequency"] = "31.25e6";
     _cfg["use_debug_pps"] = "false";
     _cfg["pulses_to_run"] = "inf";
-    _cfg["pulses_per_xfer"] = "10";
+    _cfg["pulses_per_xfer"] = "50";
 
     _cfg["instance"] = "ops";
     _cfg["publish_iwrf"] = "true";
@@ -85,6 +85,10 @@ HCR_Config::HCR_Config()
     _cfg["pulse_filter_file_ch_0"] = "cdata/pulse_filter_default.csv";
     _cfg["pulse_filter_file_ch_1"] = "cdata/pulse_filter_default.csv";
     _cfg["pulse_filter_file_ch_2"] = "cdata/pulse_filter_default.csv";
+
+    _cfg["enable_rx_ch_0"] = "true";
+    _cfg["enable_rx_ch_1"] = "true";
+    _cfg["enable_rx_ch_2"] = "false";
 
     _cfg["polarization_mode"] = "HH";   // "HH", "VV" or "HH_VV"
     _cfg["prt"] = "500.0e-6";
@@ -306,7 +310,12 @@ double HCR_Config::iqcount_scale_for_mw(int ddcChan) const
     return(_asDouble(key));
 }
 
-/// @brief Print available parameters, with their current value
+bool HCR_Config::enable_rx(int chan) const
+{
+    std::string key = "enable_rx_ch_" + std::to_string(chan);
+    return(_asBool(key));
+}
+
 void HCR_Config::printAsSet(std::ostream &out) const
 {
 

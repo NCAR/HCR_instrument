@@ -77,6 +77,11 @@ public:
     /// given DDC channel
     double iqcount_scale_for_mw(int ddcChan) const;
 
+    /// @brief Return true if the channel is enabled
+    /// @param chan the channel
+    /// @return true if enabled
+    bool enable_rx(int chan) const;
+
     /// @brief Return the radar pulse interval between published IWRF
     /// metadata packets
     /// @return the radar pulse interval between published IWRF
@@ -88,11 +93,11 @@ public:
     /// @brief Return true iff the internal clock should be used
     /// @return true iff the internal clock should be used
     bool use_internal_clock() const { return(_asBool("use_internal_clock")); }
-    
+
     /// @brief Return the receive (IF) frequency
     /// @return the receive frequency
-    double rx_frequency() const { return(_asDouble("rx_frequency")); }    
-    
+    double rx_frequency() const { return(_asDouble("rx_frequency")); }
+
     /// @brief Return the transmit (IF) frequency
     /// @return the transmit frequency
     double tx_frequency() const { return(_asDouble("tx_frequency")); }
@@ -132,10 +137,10 @@ public:
     /// @brief Return the radar name
     /// @return the radar name
     std::string radar_id() const { return(_asString("radar_id")); }
-    
+
     /// @brief Return the pulse repetition time, s
     /// @return the pulse repetition time, s
-    double prt() const { return(_asDouble("prt")); }    
+    double prt() const { return(_asDouble("prt")); }
 
     /// @brief Return the TQS pulse width, s
     /// @return the TQS pulse width, s
@@ -151,7 +156,7 @@ public:
 
     /// @brief Return the scale factor to apply to the tx waveform
     /// @return the scale factor to apply to the tx waveform
-    double tx_scale_db() const { return(_asDouble("tx_scale_db")); }        
+    double tx_scale_db() const { return(_asDouble("tx_scale_db")); }
 
     /// @brief Return true iff digital downconversion (DDC) blocks should
     /// be enabled
@@ -186,7 +191,7 @@ public:
     uint32_t fmq_nslots() const {
         return(_asUInt("fmq_nslots"));
     }
-    
+
     /// @brief Return the filter file name for
     /// the selected ADC channel
     /// @param chan the ADC channel number (0-3)
@@ -225,7 +230,7 @@ public:
 
     /// @brief Print usage to override parameters
     void printUsage(std::ostream &out) const;
-    
+
 private:
 
     /// @brief Parse a line of the config

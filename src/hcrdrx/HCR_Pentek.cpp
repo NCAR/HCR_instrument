@@ -76,7 +76,7 @@ HCR_Pentek::HCR_Pentek(const HCR_Config & config,
     _unprocessedDma(_adcCount, 0),
     _maxUnprocessedDma(_adcCount, 0),
     _processedPulses(_adcCount, 0),
-    _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read)    
+    _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read)
 {
     // Register needed types
     qRegisterMetaType<int32_t>("int32_t");
@@ -130,12 +130,12 @@ HCR_Pentek::HCR_Pentek(const HCR_Config & config,
         _AbortConstruction(os.str());
     }
 
-    char aparChars[] = "HCRX";
-    uint32_t aparCharsIntVal =
-        *(reinterpret_cast<uint32_t*>(aparChars));
-    if (aparCharsIntVal != userWord) {
+    char expectChars[] = "HCRX";
+    uint32_t expectCharsIntVal =
+        *(reinterpret_cast<uint32_t*>(expectChars));
+    if (expectCharsIntVal != userWord) {
         std::ostringstream os;
-        os << "Expected 'HCRX' (0x" << std::hex << aparCharsIntVal <<
+        os << "Expected 'HCRX' (0x" << std::hex << expectCharsIntVal <<
               ") in the board's user word, but found 0x" << userWord;
         _AbortConstruction(os.str());
     }
@@ -151,7 +151,7 @@ HCR_Pentek::HCR_Pentek(const HCR_Config & config,
 
     // Transmit chain: DAC, DUC, and waveforms
     _setupTx();
-    
+
     // Radar controller
     _setupController();
 
@@ -198,12 +198,20 @@ HCR_Pentek::_startRadar() {
     status = NAV_GlobalGateOpen(_boardHandle, NAV_CHANNEL_TYPE_DAC);
     _AbortCtorOnNavStatusError(status, "DAC NAV_GlobalGateOpen");
 
+    uint32_t enabledChannelVector = 0;
+    for(int chan=0; chan<_adcCount; chan++) {
+        if (_config.enable_rx(chan)) {
+            enabledChannelVector |= (1<<chan);
+        }
+    }
+
     // Start the radar controller
     _controller.run(0,                              // sequenceStartIndex,
                     _pulseDefinitions.size(),       // sequenceLength,
-                    DDC_DECIMATION,                 // decimation,
+                    DDC_DECIMATION,                 // ddcDcimation,
+                    2,                              // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
-                    0x7,                            // enabledChannelVector,
+                    enabledChannelVector,           // enabledChannelVector,
                     _config.pulses_to_run() );      // numPulsesToExecute
 
     // Generate a fake PPS if desired
@@ -236,6 +244,9 @@ HCR_Pentek::~HCR_Pentek() {
     // For each ADC: disarm and clear trigger, stop the DMA thread, and
     // free DMA resources
     for (int32_t adcChan = 0; adcChan < _adcCount; adcChan++) {
+
+        if(!_config.enable_rx(adcChan)) continue;
+
         std::string adcPrefix = std::string("ADC chan ") + std::to_string(adcChan) + " ";
 
         status = NAV_TrigDisarm(_boardHandle, NAV_CHANNEL_TYPE_ADC, adcChan);
@@ -344,7 +355,7 @@ HCR_Pentek::_setupBoard() const {
     _logClockConfigDiffs();
     status = NAV_ClockSetup(_boardHandle,                        // void    *boardHandle,
                             _config.use_internal_clock() ?       // int32_t  boardClockSource,
-                               NAV_CLOCK_INT : NAV_CLOCK_EXT,    
+                               NAV_CLOCK_INT : NAV_CLOCK_EXT,
                             boardClockFrequency(),               // double   boardClockFreq,
                             REF_FREQUENCY,                       // double   extRefClockFreq,
                             adcFrequency(),                      // double   clockAFreq,
@@ -402,6 +413,9 @@ HCR_Pentek::_setupAdc() {
 
     // Set up the ADC channels
     for (int32_t adcChan = 0; adcChan < _adcCount; adcChan++) {
+
+        if(!_config.enable_rx(adcChan)) continue;
+
         // Build a prefix string of the form "ADC chan <chanNum> "
         std::string adcPrefix =
                 std::string("ADC chan ") + std::to_string(adcChan) + " ";
@@ -435,8 +449,8 @@ HCR_Pentek::_setupAdc() {
         status = NAV_DmaSetup(_boardHandle,
                               NAV_CHANNEL_TYPE_ADC,     // channel type
                               adcChan,                  // channel number
-                              1024,                     // number of xfer buffers to allocate
-                              32768,                    // buffer size in bytes
+                              128,                      // number of xfer buffers to allocate
+                              262144,                   // buffer size in bytes
                               NAV_DMA_METADATA_ENABLE,  // enable metadata
                               NAV_DMA_RUN_MODE_CONTINUOUS_LOOP, // continuous sampling
                               NAV_SYS_WAIT_STATE_MILSEC(2000),  // DMA timeout, ms
@@ -459,36 +473,54 @@ HCR_Pentek::_setupAdc() {
         if (adcChan == 0) {
             ILOG << "Setting CPU affinity the new DMA IRQ";
 
-            // Set up the setWinDriverIrqAffinity command
-            std::ostringstream oss;
-            int irqCpu = 29;    // Fixed affinity at CPU 29 (for now)
-            oss << "./setWinDriverIrqAffinity " << std::to_string(irqCpu) <<
-                   " 2>&1";
-            ILOG << "Command: " << oss.str();
+            int irqCpu = 3;    // Fixed affinity
 
-            // Open a pipe executing the command
-            FILE * pipe = popen(oss.str().c_str(), "r");
-            if (pipe) {
-                // Read and log the output
-                ILOG << "Output: ";
-                char line[128];
-                while (fgets(line, sizeof(line), pipe)) {
-                    // Trim trailing newline
-                    line[strlen(line) - 1] = '\0';
-                    ILOG << "    " << line;
-                }
-                // Get command status from pclose, and warn if the command
-                // failed
-                int cmdStatus = pclose(pipe);
-                if (cmdStatus == 0) {
-                    ILOG << "IRQ affinity is set";
-                } else {
+            //Check for isolcpus. If you isolate more than once CPU,
+            //this check may need to be more clever.
+            std::ifstream kernelCmdFile("/proc/cmdline");
+            std::string kernelCmd;
+            std::getline(kernelCmdFile, kernelCmd);
+            std::size_t found = kernelCmd.find("isolcpus="+std::to_string(irqCpu));
+
+            if (found == std::string::npos) {
                     WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
                     WLOG << "";
-                    WLOG << "Failed to set WinDriver IRQ CPU affinity";
+                    WLOG << "Couldn't find isolcpus";
                     WLOG << "DMA overruns are likely!";
                     WLOG << "";
                     WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
+            }
+            else {
+                // Set up the setWinDriverIrqAffinity command
+                std::ostringstream oss;
+                oss << "./setWinDriverIrqAffinity " << std::to_string(irqCpu) <<
+                       " 2>&1";
+                ILOG << "Command: " << oss.str();
+
+                // Open a pipe executing the command
+                FILE * pipe = popen(oss.str().c_str(), "r");
+                if (pipe) {
+                    // Read and log the output
+                    ILOG << "Output: ";
+                    char line[128];
+                    while (fgets(line, sizeof(line), pipe)) {
+                        // Trim trailing newline
+                        line[strlen(line) - 1] = '\0';
+                        ILOG << "    " << line;
+                    }
+                    // Get command status from pclose, and warn if the command
+                    // failed
+                    int cmdStatus = pclose(pipe);
+                    if (cmdStatus == 0) {
+                        ILOG << "IRQ affinity is set";
+                    } else {
+                        WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
+                        WLOG << "";
+                        WLOG << "Failed to set WinDriver IRQ CPU affinity";
+                        WLOG << "DMA overruns are likely!";
+                        WLOG << "";
+                        WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
+                    }
                 }
             }
         }
@@ -553,7 +585,7 @@ HCR_Pentek::_setupTx() {
 
     PMU_auto_register("HCR_Pentek::_setupTx()");
 
-    // APAR DAC set up. The Pentek 78821 board has one DAC5688 dual-channel
+    // DAC set up. The Pentek 78821 board has one DAC5688 dual-channel
     // chip. We configure the DAC chip via NAV_DacSetup(), which in its
     // documentation uses the term "channel" to refer to the DAC *chip* index,
     // which for this board can only be 0. However, we can then "channel-pack"
@@ -597,10 +629,10 @@ HCR_Pentek::_setupTx() {
         _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_DucSetup");
     }
 
-    // Set the DUC to wait for a sync
-    status = NAV_SetDucSyncState(_boardHandle,
-                                 dacChip,
-                                 NAV_DUC_SYNC_STATE_ENABLE);
+//    // Set the DUC to wait for a sync
+//    status = NAV_SetDucSyncState(_boardHandle,
+//                                 dacChip,
+//                                 NAV_DUC_SYNC_STATE_ENABLE);
 
 //    // Write the packed transmit waveforms to the RAM memory used by the
 //    // descriptor created above.
@@ -638,7 +670,7 @@ HCR_Pentek::boardInfoString() const {
     // Add HCR_Pentek header
     os << "    HCR_Pentek" << std::endl;
 
-    // The rev date register holds the APAR firmware revision date in the form
+    // The rev date register holds the firmware revision date in the form
     // 0xYYMMDD (21st century is assumed)
     uint32_t revDate;
     uint32_t revHour;
@@ -650,7 +682,7 @@ HCR_Pentek::boardInfoString() const {
                                             &revHour);
 
     // Log the firmware rev date and hour
-    os << "        APAR firmware rev date/time: 20" << std::hex << revDate <<
+    os << "        DRX firmware rev date/time: 20" << std::hex << revDate <<
           " " << revHour << ":00" << std::endl;
     return(os.str());
 }
@@ -660,10 +692,10 @@ HCR_Pentek::_logClockConfigDiffs() const {
     NAV_CLOCK_SELECT currClockConfig =
             _boardResource()->boardParams.clockSelect;
 
-    int32_t aparClockSource = _config.use_internal_clock() ? NAV_CLOCK_INT : NAV_CLOCK_EXT;
-    if (currClockConfig.boardClockSource != aparClockSource) {
+    int32_t newClockSource = _config.use_internal_clock() ? NAV_CLOCK_INT : NAV_CLOCK_EXT;
+    if (currClockConfig.boardClockSource != newClockSource) {
         ILOG << "Changing board clock source from " <<
-                currClockConfig.boardClockSource << " to " << aparClockSource;
+                currClockConfig.boardClockSource << " to " << newClockSource;
     }
 
     if (currClockConfig.boardClockFreq != boardClockFrequency()) {
@@ -710,7 +742,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
 
         // Check the size of the buffer
         if(dataBufOffsetBytes+sizeof(Controller::PulseHeader) > metadata->validBytes) {
-            ELOG << "Truncated pulse block chan " << std::dec << chan 
+            ELOG << "Truncated pulse block chan " << std::dec << chan
                  << " after pulse " << numPulsesProcessed;
             return;
         }
@@ -718,37 +750,37 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         // Extract the pulse header
         const Controller::PulseHeader& pulseHeader = *reinterpret_cast<const Controller::PulseHeader*>(dataBuf+dataBufOffsetBytes);
         dataBufOffsetBytes += sizeof(Controller::PulseHeader);
-        
+
         if(pulseHeader.magic != Controller::HEADER_MAGIC) {
             ELOG << "Bad header magic 0x" << std::hex << pulseHeader.magic
                  << "(want ba5eba11) at location 0x" << dataBufOffsetBytes
                  << std::dec << " chan " << chan << " pulse " << numPulsesProcessed;
             return;
         }
-        
+
         if(pulseHeader.pulseDefinitionNumber >= _pulseDefinitions.size()) {
             ELOG << "Bad pulse definition " << pulseHeader.pulseDefinitionNumber
-                 << " chan " << chan << " pulse " << numPulsesProcessed;            
+                 << " chan " << chan << " pulse " << numPulsesProcessed;
             return;
         }
-        
+
         // Lookup the pulse definition
         const Controller::PulseDefinition& pulseDef = _pulseDefinitions[pulseHeader.pulseDefinitionNumber];
-        
+
         // Number of data values
         uint32_t nGates = pulseHeader.numSamples;
-        //if(!chan) { 
+        //if(!chan) {
         //    ILOG << "k " << pulseHeader.pulseDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
         //    << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
         //}
 
         // Calculate the timestamp
-        time_t dataSec = _radarStartSecond + metadata->timestampPpsCount;    
+        time_t dataSec = _radarStartSecond + metadata->timestampPpsCount;
         uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/BASE_FREQUENCY);
 
         // Add the PRT to get the offset for the next pulse
         clockOffsetCount += pulseHeader.prt;
-        
+
         // Add the post-time if applicable
         if(pulseHeader.statusFlags.lastPulseInBlock) {
             clockOffsetCount += pulseDef.blockPostTime;
@@ -759,7 +791,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
 
         // Check the size of the buffer
         if(dataBufOffsetBytes + nGates*sizeof(IQData) > metadata->validBytes) {
-            ELOG << "Truncated pulse data chan " << std::dec << chan 
+            ELOG << "Truncated pulse data chan " << std::dec << chan
                  << " after pulse " << numPulsesProcessed;
             return;
         }
@@ -858,7 +890,7 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
         // We will not use the given metadata
         return(false);
     }
-    
+
     // For publishing, we only handle 16-bit complex (i.e., IQ) data, with I in the first sample.
     //
     // Navigator definitions used on the FPGA side do not agree with the
@@ -874,7 +906,7 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
                 ", type: " << metadata->dataType <<
                 ", first sample phase: " << metadata->firstSamplePhase;
         return(false);
-    }    
+    }
 
     return(true);
 }
@@ -1075,22 +1107,22 @@ HCR_Pentek::_setupController()
 {
 
     //Define dwell(s) and add them to the pulse definitions
-    Controller::PulseDefinition dwell = 
+    Controller::PulseDefinition dwell =
     {
-        .prt = {125000000/10000,0},  
+        .prt = {125000000/10000,0},
         .numPulses = 10,
-        .blockPostTime = 10, 
+        .blockPostTime = 10,
         .controlFlags = 0xBEAF,
-        .filterSelectCh0 = 0,   
-        .filterSelectCh1 = 0,   
+        .filterSelectCh0 = 0,
+        .filterSelectCh1 = 0,
         .filterSelectCh2 = 0,
         .timers = {}
     };
     dwell.timers[Controller::Timers::MASTER_SYNC] = {8, 100};
-    dwell.timers[Controller::Timers::RX_0] = {8, 1200};
-    dwell.timers[Controller::Timers::RX_1] = {8, 1200};
-    dwell.timers[Controller::Timers::RX_2] = {8, 1200};
-    dwell.timers[Controller::Timers::TX_PULSE] = {100, 100};
+    dwell.timers[Controller::Timers::RX_0] = {8, 770*16};
+    dwell.timers[Controller::Timers::RX_1] = {8, 770*16};
+    dwell.timers[Controller::Timers::RX_2] = {8, 770*16};
+    dwell.timers[Controller::Timers::TX_PULSE] = {100, 1000};
     dwell.timers[Controller::Timers::MOD_PULSE] = {150, 100};
     dwell.timers[Controller::Timers::EMS_TRIG] = {200, 100};
     dwell.timers[Controller::Timers::TIMER_7] = {250, 100};
@@ -1098,10 +1130,12 @@ HCR_Pentek::_setupController()
 
     // Write the pulse definitions
     _controller.writePulseDefinitions(_pulseDefinitions);
-    
+
     // Write the coefficients that the controller will use to populate the pulse filters
     for(int chan=0; chan<_adcCount; chan++)
     {
+        if(!_config.enable_rx(chan)) continue;
+
         std::vector<double> coefs;
         ReadFilterCoefsFromFile(_config.pulse_filter_file(chan), coefs);
         _controller.writeFilterCoefs(coefs, chan);
