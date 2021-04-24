@@ -45,6 +45,9 @@ quitHandler(int signum) {
 int
 main(int argc, char * argv[]) {
 
+    // Let logx get and strip out its arguments first
+    logx::ParseLogArgs(argc, argv);
+
     // Get the configuration
     HCR_Config config;
     config.parse(argc, argv);
@@ -68,8 +71,6 @@ main(int argc, char * argv[]) {
       exit(0);
     }
 
-    // Let logx get and strip out its arguments first
-    logx::ParseLogArgs(argc, argv);
     ILOG << "hcrdrx started at " <<
             QDateTime::currentDateTimeUtc().toString(Qt::ISODate).toStdString();
 
