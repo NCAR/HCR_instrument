@@ -81,7 +81,8 @@ private :
         PULSE_SEQUENCE_START_INDEX              = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA,
         PULSE_SEQUENCE_LENGTH                   = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA,
         NUM_PULSES_TO_EXECUTE                   = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA,
-        DECIMATION                              = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_DECIMATION_DATA,
+        TOTAL_DECIMATION                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_TOTAL_DECIMATION_DATA,
+        POST_DECIMATION                         = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_POST_DECIMATION_DATA,
         NUM_PULSES_PER_XFER                     = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_PER_XFER_DATA,
         ENABLED_CHANNEL_VECTOR                  = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA,
         PULSE_SEQUENCE_PRT_0                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE,
@@ -193,16 +194,19 @@ public:
 
     void run(   uint32_t sequenceStartIndex,
                 uint32_t sequenceLength,
-                uint32_t decimation,
+                uint32_t ddcDecimation,
+                uint32_t postDecimation,
                 uint32_t numPulsesPerXfer,
                 uint32_t enabledChannelVector,
                 uint32_t numPulsesToExecute
             )
     {
+        uint32_t totalDecimation = ddcDecimation * postDecimation;
         write_(PULSE_SEQUENCE_START_INDEX, sequenceStartIndex,  "Writing controller start index");
         write_(PULSE_SEQUENCE_LENGTH,      sequenceLength,      "Writing controller sequence length");
         write_(NUM_PULSES_TO_EXECUTE,      numPulsesToExecute,  "Writing num pulses to execute");
-        write_(DECIMATION,                 decimation,          "Writing decimation");
+        write_(TOTAL_DECIMATION,           totalDecimation,     "Writing total decimation");
+        write_(POST_DECIMATION,            postDecimation,      "Writing post decimation");
         write_(NUM_PULSES_PER_XFER,        numPulsesPerXfer,    "Writing num pulses per xfer");
         write_(ENABLED_CHANNEL_VECTOR,     enabledChannelVector,"Writing enabled channel vector");
         write_(CTRL,                       1,                   "Starting controller");
