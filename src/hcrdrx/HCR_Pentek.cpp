@@ -480,47 +480,47 @@ HCR_Pentek::_setupAdc() {
             std::ifstream kernelCmdFile("/proc/cmdline");
             std::string kernelCmd;
             std::getline(kernelCmdFile, kernelCmd);
-            std::size_t found = kernelCmd.find("isolcpus="+std::to_string(irqCpu));
+            std::string strToFind = "isolcpus=" + std::to_string(irqCpu);
+            std::size_t found = kernelCmd.find(strToFind);
 
             if (found == std::string::npos) {
                     WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
                     WLOG << "";
-                    WLOG << "Couldn't find isolcpus";
+                    WLOG << "Couldn't find '" << strToFind << "' in /proc/cmdline";
                     WLOG << "DMA overruns are likely!";
                     WLOG << "";
                     WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
             }
-            else {
-                // Set up the setWinDriverIrqAffinity command
-                std::ostringstream oss;
-                oss << "./setWinDriverIrqAffinity " << std::to_string(irqCpu) <<
-                       " 2>&1";
-                ILOG << "Command: " << oss.str();
 
-                // Open a pipe executing the command
-                FILE * pipe = popen(oss.str().c_str(), "r");
-                if (pipe) {
-                    // Read and log the output
-                    ILOG << "Output: ";
-                    char line[128];
-                    while (fgets(line, sizeof(line), pipe)) {
-                        // Trim trailing newline
-                        line[strlen(line) - 1] = '\0';
-                        ILOG << "    " << line;
-                    }
-                    // Get command status from pclose, and warn if the command
-                    // failed
-                    int cmdStatus = pclose(pipe);
-                    if (cmdStatus == 0) {
-                        ILOG << "IRQ affinity is set";
-                    } else {
-                        WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
-                        WLOG << "";
-                        WLOG << "Failed to set WinDriver IRQ CPU affinity";
-                        WLOG << "DMA overruns are likely!";
-                        WLOG << "";
-                        WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
-                    }
+            // Set up the setWinDriverIrqAffinity command
+            std::ostringstream oss;
+            oss << "./setWinDriverIrqAffinity " << std::to_string(irqCpu) <<
+                   " 2>&1";
+            ILOG << "Command: " << oss.str();
+
+            // Open a pipe executing the command
+            FILE * pipe = popen(oss.str().c_str(), "r");
+            if (pipe) {
+                // Read and log the output
+                ILOG << "Output: ";
+                char line[128];
+                while (fgets(line, sizeof(line), pipe)) {
+                    // Trim trailing newline
+                    line[strlen(line) - 1] = '\0';
+                    ILOG << "    " << line;
+                }
+                // Get command status from pclose, and warn if the command
+                // failed
+                int cmdStatus = pclose(pipe);
+                if (cmdStatus == 0) {
+                    ILOG << "IRQ affinity is set";
+                } else {
+                    WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
+                    WLOG << "";
+                    WLOG << "Failed to set WinDriver IRQ CPU affinity";
+                    WLOG << "DMA overruns are likely!";
+                    WLOG << "";
+                    WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
                 }
             }
         }
@@ -629,34 +629,10 @@ HCR_Pentek::_setupTx() {
         _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_DucSetup");
     }
 
-//    // Set the DUC to wait for a sync
-//    status = NAV_SetDucSyncState(_boardHandle,
-//                                 dacChip,
-//                                 NAV_DUC_SYNC_STATE_ENABLE);
-
-//    // Write the packed transmit waveforms to the RAM memory used by the
-//    // descriptor created above.
-//    status = NAV_RamWrite(_boardHandle, NAV_RAM_ACCESS_MODE_DMA, 0,
-//                          waveTableLen, packedTxData);
-//    _AbortCtorOnNavStatusError(status, dacPrefix + "waveform NAV_RamWrite");
-//
-//
-//    // Construct a single waveform generator descriptor which loops back to itself.
-//    status = NAV_DacWaveGenSetDescriptor(_boardHandle,
-//                                         dacChip,       // channel
-//                                         0,             // descriptorIndex
-//                                         0,             // trigDelay
-//                                         1024,          // trigLength (in words)
-//                                         0,             // ramStartAddr (in bytes)
-//                                         4 * 1024,      // ramEndAddr (in bytes)
-//                                         0,             // nextDescriptorIndex
-//                                         NAV_DISABLE,   // enableLinkStartIntr
-//                                         NAV_ENABLE,    // enableLinkEndIntr
-//                                         NAV_DISABLE);  // enableDisarmMode
-//    _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_DacWaveGenSetDescriptor");
-//
-//    status = NAV_DacWaveGenActivateDescriptor(_boardHandle, dacChip, 0);
-//    _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_DacWaveGenActivateDescriptor");
+    // Set the DUC to wait for a sync
+    status = NAV_SetDucSyncState(_boardHandle,
+                                 dacChip,
+                                 NAV_DUC_SYNC_STATE_ENABLE);
 
 }
 
@@ -1109,9 +1085,9 @@ HCR_Pentek::_setupController()
     //Define dwell(s) and add them to the pulse definitions
     Controller::PulseDefinition dwell =
     {
-        .prt = {125000000/10000,0},
+        .prt = {12512,0},
         .numPulses = 10,
-        .blockPostTime = 10,
+        .blockPostTime = 0,
         .controlFlags = 0xBEAF,
         .filterSelectCh0 = 0,
         .filterSelectCh1 = 0,
@@ -1119,11 +1095,11 @@ HCR_Pentek::_setupController()
         .timers = {}
     };
     dwell.timers[Controller::Timers::MASTER_SYNC] = {8, 100};
-    dwell.timers[Controller::Timers::RX_0] = {8, 770*16};
-    dwell.timers[Controller::Timers::RX_1] = {8, 770*16};
-    dwell.timers[Controller::Timers::RX_2] = {8, 770*16};
-    dwell.timers[Controller::Timers::TX_PULSE] = {100, 1000};
-    dwell.timers[Controller::Timers::MOD_PULSE] = {150, 100};
+    dwell.timers[Controller::Timers::RX_0] = {32, 1000000}; // rx offset <32 triggers a FPGA bug
+    dwell.timers[Controller::Timers::RX_1] = {32, 1000000};
+    dwell.timers[Controller::Timers::RX_2] = {32, 1000000};
+    dwell.timers[Controller::Timers::TX_PULSE] = {0, 1000};
+    dwell.timers[Controller::Timers::MOD_PULSE] = {96, 100};
     dwell.timers[Controller::Timers::EMS_TRIG] = {200, 100};
     dwell.timers[Controller::Timers::TIMER_7] = {250, 100};
     _pulseDefinitions.push_back(dwell);
