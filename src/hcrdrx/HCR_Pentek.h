@@ -92,8 +92,7 @@ public:
     ///
     /// @return the frequency of samples emitted by the DACs
     double dacFrequency() const {
-        //return(BASE_FREQUENCY * _config.duc_interpolation());
-        return(BASE_FREQUENCY); //For HCR I think we just want a common clock
+        return(BASE_FREQUENCY * _config.duc_interpolation());
     }
 
     /// @brief Return the Pentek board clock frequency

@@ -133,6 +133,16 @@ public:
     {
         if (index>=NUM_PULSE_SEQUENCE_DEFINITIONS)
             throw std::runtime_error("Too many pulse definitions");
+std::cout << pulseDef.prt[0];
+	//These checks are HCR-specific. They avoid drifting relative to the 156.25MHz IF
+        if (pulseDef.prt[0] % 8 != 0)
+            throw std::runtime_error("PRT0 must be a multiple of 64ns");
+
+        if (pulseDef.prt[1] % 8 != 0)
+            throw std::runtime_error("PRT1 must be a multiple of 64ns");
+
+        if (pulseDef.blockPostTime % 8 != 0)
+            throw std::runtime_error("Post-time must be a multiple of 64ns");
 
         const std::string action = "Writing pulse definition";
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_0             , pulseDef.prt[0],           action);
