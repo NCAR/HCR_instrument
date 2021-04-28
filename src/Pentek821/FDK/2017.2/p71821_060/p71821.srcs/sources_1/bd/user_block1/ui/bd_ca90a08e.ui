@@ -1,0 +1,27 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.8  2016-12-21 bk=1.3817 VDI=40 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axis_dac_pdti -pg 1 -y 50 -defaultsOSRD
+preplace port m_axis_dac_pdti -pg 1 -y 100 -defaultsOSRD
+preplace port s_axis_dac_pdti_aresetn -pg 1 -y 90 -defaultsOSRD
+preplace port s_axis_dac_pdti_aclk -pg 1 -y 210 -defaultsOSRD
+preplace port s_axis_adc_pdti_aclk -pg 1 -y 110 -defaultsOSRD
+preplace portBus mt_pulse -pg 1 -y 160 -defaultsOSRD
+preplace inst vio_0 -pg 1 -lvl 3 -y 170 -defaultsOSRD
+preplace inst xlslice_0 -pg 1 -lvl 1 -y 160 -defaultsOSRD
+preplace inst px_lvl_trans_xclk_0 -pg 1 -lvl 2 -y 160 -defaultsOSRD
+preplace inst pdti_dac_pulse_0 -pg 1 -lvl 4 -y 100 -defaultsOSRD
+preplace netloc Conn1 1 4 1 N
+preplace netloc s_axis_adc_pdti_aclk_1 1 0 2 NJ 110 170J
+preplace netloc mt_pulse_1 1 0 1 NJ
+preplace netloc px_lvl_trans_xclk_0_out_sig 1 2 2 370 230 690J
+preplace netloc s_axis_dac_pdti_1 1 0 4 NJ 50 NJ 50 NJ 50 NJ
+preplace netloc vio_0_probe_out0 1 3 1 680
+preplace netloc vio_0_probe_out1 1 3 1 700
+preplace netloc aresetn_1 1 0 4 NJ 90 NJ 90 NJ 90 NJ
+preplace netloc aclk_1 1 0 4 NJ 210 170 230 380 70 NJ
+preplace netloc xlslice_0_Dout 1 1 1 NJ
+levelinfo -pg 1 -50 70 270 530 880 1100 -top 0 -bot 240
+",
+}
+0

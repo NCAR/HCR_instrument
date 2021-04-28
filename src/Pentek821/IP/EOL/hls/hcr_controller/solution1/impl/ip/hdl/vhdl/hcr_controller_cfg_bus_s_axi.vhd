@@ -44,7 +44,8 @@ port (
     cfg_pulse_sequence_start_index :out  STD_LOGIC_VECTOR(7 downto 0);
     cfg_pulse_sequence_length :out  STD_LOGIC_VECTOR(7 downto 0);
     cfg_num_pulses_to_execute :out  STD_LOGIC_VECTOR(31 downto 0);
-    cfg_decimation        :out  STD_LOGIC_VECTOR(31 downto 0);
+    cfg_total_decimation  :out  STD_LOGIC_VECTOR(31 downto 0);
+    cfg_post_decimation   :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_num_pulses_per_xfer :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_enabled_channel_vector :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_pulse_sequence_prt_0_address0 :in   STD_LOGIC_VECTOR(4 downto 0);
@@ -161,15 +162,18 @@ end entity hcr_controller_cfg_bus_s_axi;
 -- 0x0020 : Data signal of cfg_num_pulses_to_execute
 --          bit 31~0 - cfg_num_pulses_to_execute[31:0] (Read/Write)
 -- 0x0024 : reserved
--- 0x0028 : Data signal of cfg_decimation
---          bit 31~0 - cfg_decimation[31:0] (Read/Write)
+-- 0x0028 : Data signal of cfg_total_decimation
+--          bit 31~0 - cfg_total_decimation[31:0] (Read/Write)
 -- 0x002c : reserved
--- 0x0030 : Data signal of cfg_num_pulses_per_xfer
---          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
+-- 0x0030 : Data signal of cfg_post_decimation
+--          bit 31~0 - cfg_post_decimation[31:0] (Read/Write)
 -- 0x0034 : reserved
--- 0x0038 : Data signal of cfg_enabled_channel_vector
---          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
+-- 0x0038 : Data signal of cfg_num_pulses_per_xfer
+--          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
 -- 0x003c : reserved
+-- 0x0040 : Data signal of cfg_enabled_channel_vector
+--          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
+-- 0x0044 : reserved
 -- 0x0080 ~
 -- 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 --          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -268,12 +272,14 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     constant ADDR_CFG_PULSE_SEQUENCE_LENGTH_CTRL            : INTEGER := 16#001c#;
     constant ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0          : INTEGER := 16#0020#;
     constant ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL            : INTEGER := 16#0024#;
-    constant ADDR_CFG_DECIMATION_DATA_0                     : INTEGER := 16#0028#;
-    constant ADDR_CFG_DECIMATION_CTRL                       : INTEGER := 16#002c#;
-    constant ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            : INTEGER := 16#0030#;
-    constant ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              : INTEGER := 16#0034#;
-    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         : INTEGER := 16#0038#;
-    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           : INTEGER := 16#003c#;
+    constant ADDR_CFG_TOTAL_DECIMATION_DATA_0               : INTEGER := 16#0028#;
+    constant ADDR_CFG_TOTAL_DECIMATION_CTRL                 : INTEGER := 16#002c#;
+    constant ADDR_CFG_POST_DECIMATION_DATA_0                : INTEGER := 16#0030#;
+    constant ADDR_CFG_POST_DECIMATION_CTRL                  : INTEGER := 16#0034#;
+    constant ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            : INTEGER := 16#0038#;
+    constant ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              : INTEGER := 16#003c#;
+    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         : INTEGER := 16#0040#;
+    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           : INTEGER := 16#0044#;
     constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE             : INTEGER := 16#0080#;
     constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH             : INTEGER := 16#00ff#;
     constant ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE             : INTEGER := 16#0100#;
@@ -353,7 +359,8 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     signal int_cfg_pulse_sequence_start_index : UNSIGNED(7 downto 0) := (others => '0');
     signal int_cfg_pulse_sequence_length : UNSIGNED(7 downto 0) := (others => '0');
     signal int_cfg_num_pulses_to_execute : UNSIGNED(31 downto 0) := (others => '0');
-    signal int_cfg_decimation  : UNSIGNED(31 downto 0) := (others => '0');
+    signal int_cfg_total_decimation : UNSIGNED(31 downto 0) := (others => '0');
+    signal int_cfg_post_decimation : UNSIGNED(31 downto 0) := (others => '0');
     signal int_cfg_num_pulses_per_xfer : UNSIGNED(31 downto 0) := (others => '0');
     signal int_cfg_enabled_channel_vector : UNSIGNED(31 downto 0) := (others => '0');
     -- memory signals
@@ -1462,8 +1469,10 @@ port map (
                         rdata_data <= RESIZE(int_cfg_pulse_sequence_length(7 downto 0), 32);
                     when ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0 =>
                         rdata_data <= RESIZE(int_cfg_num_pulses_to_execute(31 downto 0), 32);
-                    when ADDR_CFG_DECIMATION_DATA_0 =>
-                        rdata_data <= RESIZE(int_cfg_decimation(31 downto 0), 32);
+                    when ADDR_CFG_TOTAL_DECIMATION_DATA_0 =>
+                        rdata_data <= RESIZE(int_cfg_total_decimation(31 downto 0), 32);
+                    when ADDR_CFG_POST_DECIMATION_DATA_0 =>
+                        rdata_data <= RESIZE(int_cfg_post_decimation(31 downto 0), 32);
                     when ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0 =>
                         rdata_data <= RESIZE(int_cfg_num_pulses_per_xfer(31 downto 0), 32);
                     when ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0 =>
@@ -1538,7 +1547,8 @@ port map (
     cfg_pulse_sequence_start_index <= STD_LOGIC_VECTOR(int_cfg_pulse_sequence_start_index);
     cfg_pulse_sequence_length <= STD_LOGIC_VECTOR(int_cfg_pulse_sequence_length);
     cfg_num_pulses_to_execute <= STD_LOGIC_VECTOR(int_cfg_num_pulses_to_execute);
-    cfg_decimation       <= STD_LOGIC_VECTOR(int_cfg_decimation);
+    cfg_total_decimation <= STD_LOGIC_VECTOR(int_cfg_total_decimation);
+    cfg_post_decimation  <= STD_LOGIC_VECTOR(int_cfg_post_decimation);
     cfg_num_pulses_per_xfer <= STD_LOGIC_VECTOR(int_cfg_num_pulses_per_xfer);
     cfg_enabled_channel_vector <= STD_LOGIC_VECTOR(int_cfg_enabled_channel_vector);
 
@@ -1678,8 +1688,19 @@ port map (
     begin
         if (ACLK'event and ACLK = '1') then
             if (ACLK_EN = '1') then
-                if (w_hs = '1' and waddr = ADDR_CFG_DECIMATION_DATA_0) then
-                    int_cfg_decimation(31 downto 0) <= (UNSIGNED(WDATA(31 downto 0)) and wmask(31 downto 0)) or ((not wmask(31 downto 0)) and int_cfg_decimation(31 downto 0));
+                if (w_hs = '1' and waddr = ADDR_CFG_TOTAL_DECIMATION_DATA_0) then
+                    int_cfg_total_decimation(31 downto 0) <= (UNSIGNED(WDATA(31 downto 0)) and wmask(31 downto 0)) or ((not wmask(31 downto 0)) and int_cfg_total_decimation(31 downto 0));
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ACLK_EN = '1') then
+                if (w_hs = '1' and waddr = ADDR_CFG_POST_DECIMATION_DATA_0) then
+                    int_cfg_post_decimation(31 downto 0) <= (UNSIGNED(WDATA(31 downto 0)) and wmask(31 downto 0)) or ((not wmask(31 downto 0)) and int_cfg_post_decimation(31 downto 0));
                 end if;
             end if;
         end if;

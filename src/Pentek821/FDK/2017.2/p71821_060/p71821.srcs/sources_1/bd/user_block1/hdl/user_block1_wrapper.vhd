@@ -1,8 +1,8 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
---Date        : Fri Mar 19 18:49:06 2021
---Host        : apararchiver running 64-bit CentOS Linux release 8.0.1905 (Core)
+--Date        : Tue Apr 27 22:15:28 2021
+--Host        : wind running 64-bit unknown
 --Command     : generate_target user_block1_wrapper.bd
 --Design      : user_block1_wrapper
 --Purpose     : IP block netlist
@@ -115,20 +115,20 @@ architecture STRUCTURE of user_block1_wrapper is
     s_axi_csr_aresetn : in STD_LOGIC;
     user1_irq : out STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axis_adc_pdti_aclk : in STD_LOGIC;
-    s_axis_dac_pdti_aclk : in STD_LOGIC;
-    s_axis_dac_pdti_aresetn : in STD_LOGIC;
-    controller_PPS : out STD_LOGIC;
-    filter_select_ch0 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    filter_select_ch1 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    filter_select_ch2 : in STD_LOGIC_VECTOR ( 1 downto 0 );
     mt_pulse : in STD_LOGIC_VECTOR ( 7 downto 0 );
     s_axis_adc_pdti_aresetn : in STD_LOGIC;
-    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_dac_pdti_tvalid : out STD_LOGIC;
+    s_axis_dac_pdti_aclk : in STD_LOGIC;
+    s_axis_dac_pdti_aresetn : in STD_LOGIC;
+    filter_select_ch0 : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    controller_PPS : out STD_LOGIC;
+    filter_select_ch1 : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    filter_select_ch2 : in STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_dac_pdti_tvalid : in STD_LOGIC
+    s_axis_dac_pdti_tvalid : in STD_LOGIC;
+    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_dac_pdti_tvalid : out STD_LOGIC
   );
   end component user_block1;
 begin

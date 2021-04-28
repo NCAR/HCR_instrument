@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13850,HLS_SYN_LUT=6069}" *)
+(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2017_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=3.101667,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=56,HLS_SYN_DSP=0,HLS_SYN_FF=13944,HLS_SYN_LUT=6133}" *)
 
 module hcr_controller (
         s_axi_cfg_bus_AWVALID,
@@ -101,9 +101,9 @@ output  [31:0] control_flags_V;
 output  [1:0] filter_select_ch0_V;
 output  [1:0] filter_select_ch1_V;
 output  [1:0] filter_select_ch2_V;
-output  [815:0] pulse_metadata_ch0_V_TDATA;
-output  [815:0] pulse_metadata_ch1_V_TDATA;
-output  [815:0] pulse_metadata_ch2_V_TDATA;
+output  [823:0] pulse_metadata_ch0_V_TDATA;
+output  [823:0] pulse_metadata_ch1_V_TDATA;
+output  [823:0] pulse_metadata_ch2_V_TDATA;
 output  [0:0] pps_address0;
 output   pps_ce0;
 output  [0:0] pps_d0;
@@ -135,7 +135,8 @@ wire    ap_idle;
 wire   [7:0] cfg_pulse_sequence_start_index;
 wire   [7:0] cfg_pulse_sequence_length;
 wire   [31:0] cfg_num_pulses_to_execute;
-wire   [31:0] cfg_decimation;
+wire   [31:0] cfg_total_decimation;
+wire   [31:0] cfg_post_decimation;
 wire   [31:0] cfg_num_pulses_per_xfer;
 wire   [31:0] cfg_enabled_channel_vector;
 wire   [31:0] cfg_pulse_sequence_prt_0_q0;
@@ -233,13 +234,13 @@ wire   [23:0] scheduler_parser_U0_coef_ch1_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch1_V_V_TVALID;
 wire   [23:0] scheduler_parser_U0_coef_ch2_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch2_V_V_TVALID;
-wire   [812:0] scheduler_parser_U0_pulse_queue_0_V_din;
+wire   [820:0] scheduler_parser_U0_pulse_queue_0_V_din;
 wire    scheduler_parser_U0_pulse_queue_0_V_write;
-wire   [812:0] scheduler_parser_U0_pulse_queue_1_V_din;
+wire   [820:0] scheduler_parser_U0_pulse_queue_1_V_din;
 wire    scheduler_parser_U0_pulse_queue_1_V_write;
-wire   [812:0] scheduler_parser_U0_pulse_queue_2_V_din;
+wire   [820:0] scheduler_parser_U0_pulse_queue_2_V_din;
 wire    scheduler_parser_U0_pulse_queue_2_V_write;
-wire   [812:0] scheduler_parser_U0_pulse_queue_s_V_din;
+wire   [820:0] scheduler_parser_U0_pulse_queue_s_V_din;
 wire    scheduler_parser_U0_pulse_queue_s_V_write;
 wire    ap_sync_continue;
 wire    scheduler_cycle_exac_U0_ap_start;
@@ -266,7 +267,7 @@ wire    output_fifo70_U0_ap_continue;
 wire    output_fifo70_U0_ap_idle;
 wire    output_fifo70_U0_ap_ready;
 wire    output_fifo70_U0_pulse_queue_ch0_V_read;
-wire   [815:0] output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
+wire   [823:0] output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
 wire    output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
 wire    output_fifo71_U0_ap_start;
 wire    output_fifo71_U0_ap_done;
@@ -274,7 +275,7 @@ wire    output_fifo71_U0_ap_continue;
 wire    output_fifo71_U0_ap_idle;
 wire    output_fifo71_U0_ap_ready;
 wire    output_fifo71_U0_pulse_queue_ch0_V_read;
-wire   [815:0] output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
+wire   [823:0] output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
 wire    output_fifo71_U0_pulse_metadata_ch0_V_TVALID;
 wire    output_fifo_U0_ap_start;
 wire    output_fifo_U0_ap_done;
@@ -282,19 +283,19 @@ wire    output_fifo_U0_ap_continue;
 wire    output_fifo_U0_ap_idle;
 wire    output_fifo_U0_ap_ready;
 wire    output_fifo_U0_in_V_read;
-wire   [815:0] output_fifo_U0_out_V_TDATA;
+wire   [823:0] output_fifo_U0_out_V_TDATA;
 wire    output_fifo_U0_out_V_TVALID;
 wire    pulse_queue_ch0_V_full_n;
-wire   [812:0] pulse_queue_ch0_V_dout;
+wire   [820:0] pulse_queue_ch0_V_dout;
 wire    pulse_queue_ch0_V_empty_n;
 wire    pulse_queue_ch1_V_full_n;
-wire   [812:0] pulse_queue_ch1_V_dout;
+wire   [820:0] pulse_queue_ch1_V_dout;
 wire    pulse_queue_ch1_V_empty_n;
 wire    pulse_queue_ch2_V_full_n;
-wire   [812:0] pulse_queue_ch2_V_dout;
+wire   [820:0] pulse_queue_ch2_V_dout;
 wire    pulse_queue_ch2_V_empty_n;
 wire    pulse_queue_schedule_full_n;
-wire   [812:0] pulse_queue_schedule_dout;
+wire   [820:0] pulse_queue_schedule_dout;
 wire    pulse_queue_schedule_empty_n;
 wire    ap_sync_done;
 reg    ap_reg_scheduler_parser_U0_ap_done;
@@ -375,7 +376,8 @@ hcr_controller_cfg_bus_s_axi_U(
     .cfg_pulse_sequence_start_index(cfg_pulse_sequence_start_index),
     .cfg_pulse_sequence_length(cfg_pulse_sequence_length),
     .cfg_num_pulses_to_execute(cfg_num_pulses_to_execute),
-    .cfg_decimation(cfg_decimation),
+    .cfg_total_decimation(cfg_total_decimation),
+    .cfg_post_decimation(cfg_post_decimation),
     .cfg_num_pulses_per_xfer(cfg_num_pulses_per_xfer),
     .cfg_enabled_channel_vector(cfg_enabled_channel_vector),
     .cfg_pulse_sequence_prt_0_address0(scheduler_parser_U0_cfg_pulse_sequence_p_address0),
@@ -475,7 +477,8 @@ scheduler_parser scheduler_parser_U0(
     .cfg_pulse_sequence_s(cfg_pulse_sequence_start_index),
     .cfg_pulse_sequence_l(cfg_pulse_sequence_length),
     .cfg_num_pulses_to_ex(cfg_num_pulses_to_execute),
-    .cfg_decimation(cfg_decimation),
+    .cfg_total_decimation(cfg_total_decimation),
+    .cfg_post_decimation(cfg_post_decimation),
     .cfg_num_pulses_per_x(cfg_num_pulses_per_xfer),
     .cfg_enabled_channel_vector(cfg_enabled_channel_vector),
     .cfg_pulse_sequence_p_address0(scheduler_parser_U0_cfg_pulse_sequence_p_address0),
@@ -656,7 +659,7 @@ output_fifo output_fifo_U0(
     .out_V_TREADY(pulse_metadata_ch2_V_TREADY)
 );
 
-fifo_w813_d16_S pulse_queue_ch0_V_U(
+fifo_w821_d16_S pulse_queue_ch0_V_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -669,7 +672,7 @@ fifo_w813_d16_S pulse_queue_ch0_V_U(
     .if_read(output_fifo70_U0_pulse_queue_ch0_V_read)
 );
 
-fifo_w813_d16_S pulse_queue_ch1_V_U(
+fifo_w821_d16_S pulse_queue_ch1_V_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -682,7 +685,7 @@ fifo_w813_d16_S pulse_queue_ch1_V_U(
     .if_read(output_fifo71_U0_pulse_queue_ch0_V_read)
 );
 
-fifo_w813_d16_S pulse_queue_ch2_V_U(
+fifo_w821_d16_S pulse_queue_ch2_V_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -695,7 +698,7 @@ fifo_w813_d16_S pulse_queue_ch2_V_U(
     .if_read(output_fifo_U0_in_V_read)
 );
 
-fifo_w813_d1_A pulse_queue_schedule_U(
+fifo_w821_d1_A pulse_queue_schedule_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),

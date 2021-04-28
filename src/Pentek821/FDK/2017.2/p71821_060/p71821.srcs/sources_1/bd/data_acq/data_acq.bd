@@ -42,7 +42,7 @@
             <spirit:value>250000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -374,7 +374,7 @@
             <spirit:value>200000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -490,7 +490,7 @@
             <spirit:value>200000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -606,7 +606,7 @@
             <spirit:value>200000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -722,7 +722,7 @@
             <spirit:value>250000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -740,7 +740,7 @@
             <spirit:value>data_acq_s_axis_dac_pdti_aclk</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -838,7 +838,7 @@
             <spirit:value>250000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -1070,7 +1070,7 @@
             <spirit:value>250000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -1302,7 +1302,7 @@
             <spirit:value>300000000</spirit:value>
             <spirit:vendorExtensions>
               <bd:configElementInfos>
-                <bd:configElementInfo bd:valueSource="user"/>
+                <bd:configElementInfo bd:valueSource="default"/>
               </bd:configElementInfos>
             </spirit:vendorExtensions>
           </spirit:parameter>
@@ -6684,7 +6684,8 @@
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">data_acq_dma_ppkt2pcie_3</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="pcie_channel">2</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="input_word_width">2</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="lite">true</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="fifo_size">2</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="lite">false</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>
@@ -8451,7 +8452,8 @@
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">data_acq_dma_ppkt2pcie_2</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="pcie_channel">1</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="input_word_width">2</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="lite">true</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="fifo_size">2</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="lite">false</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
       <spirit:componentInstance>
@@ -13130,7 +13132,8 @@
         <spirit:configurableElementValues>
           <spirit:configurableElementValue spirit:referenceId="bd:xciName">data_acq_px_dma_ppkt2pcie_0_0</spirit:configurableElementValue>
           <spirit:configurableElementValue spirit:referenceId="input_word_width">2</spirit:configurableElementValue>
-          <spirit:configurableElementValue spirit:referenceId="lite">true</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="fifo_size">2</spirit:configurableElementValue>
+          <spirit:configurableElementValue spirit:referenceId="lite">false</spirit:configurableElementValue>
         </spirit:configurableElementValues>
       </spirit:componentInstance>
     </spirit:componentInstances>

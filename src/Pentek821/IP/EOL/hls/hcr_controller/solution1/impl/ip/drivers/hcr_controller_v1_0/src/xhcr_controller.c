@@ -127,20 +127,37 @@ u32 XHcr_controller_Get_cfg_num_pulses_to_execute(XHcr_controller *InstancePtr) 
     return Data;
 }
 
-void XHcr_controller_Set_cfg_decimation(XHcr_controller *InstancePtr, u32 Data) {
+void XHcr_controller_Set_cfg_total_decimation(XHcr_controller *InstancePtr, u32 Data) {
     Xil_AssertVoid(InstancePtr != NULL);
     Xil_AssertVoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
 
-    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_DECIMATION_DATA, Data);
+    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_TOTAL_DECIMATION_DATA, Data);
 }
 
-u32 XHcr_controller_Get_cfg_decimation(XHcr_controller *InstancePtr) {
+u32 XHcr_controller_Get_cfg_total_decimation(XHcr_controller *InstancePtr) {
     u32 Data;
 
     Xil_AssertNonvoid(InstancePtr != NULL);
     Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
 
-    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_DECIMATION_DATA);
+    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_TOTAL_DECIMATION_DATA);
+    return Data;
+}
+
+void XHcr_controller_Set_cfg_post_decimation(XHcr_controller *InstancePtr, u32 Data) {
+    Xil_AssertVoid(InstancePtr != NULL);
+    Xil_AssertVoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_POST_DECIMATION_DATA, Data);
+}
+
+u32 XHcr_controller_Get_cfg_post_decimation(XHcr_controller *InstancePtr) {
+    u32 Data;
+
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_POST_DECIMATION_DATA);
     return Data;
 }
 

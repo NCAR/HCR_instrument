@@ -25,12 +25,13 @@ void hcr_metadata_injector(
 	#pragma HLS INTERFACE ap_none port=pos_enc_1
 	#pragma HLS INTERFACE ap_none port=flags
 
-
+	uint8_t decimation_value = 1;
 	bool in_a_pulse = 0;
 	bool in_a_xfer_bundle = 0;
 	bool break_after_pulse = 0;
 	uint32_t num_samples = 0;
 	uint32_t sample_counter = 0;
+	uint8_t decimation_counter = 0;
 	bool terminate = 0;
 
 	pdti_32 data_word;
@@ -55,6 +56,8 @@ void hcr_metadata_injector(
 					break_after_pulse,
 					num_samples,
 					sample_counter,
+					decimation_value,
+					decimation_counter,
 					o_data,
 					*pos_enc_0,
 					*pos_enc_1,
@@ -74,15 +77,23 @@ void hcr_metadata_injector(
 				}
 			}
 
+			bool dec_keep = (decimation_counter == decimation_value);
+
 			//Write the word, omitting ungated samples inside a pulse bundle
-			if(in_a_pulse || !in_a_xfer_bundle)
+			if((in_a_pulse && dec_keep) || !in_a_xfer_bundle)
 			{
 				data_word.user[PDTI_GATE] = in_a_pulse;
 				data_word.user[PDTI_SYNC] = 0;
+				decimation_counter = 1;
 				o_data << data_word;
 			}
+			else
+			{
+				decimation_counter++;
+			}
 
-			sample_counter++;
+			if(dec_keep) sample_counter++;
+
 		}
 	}
 }
@@ -95,6 +106,8 @@ bool handle_header(
 		bool& break_after_pulse,
 		uint32_t& num_samples,
 		uint32_t& sample_counter,
+		uint8_t& decimation_value,
+		uint8_t& decimation_counter,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
@@ -120,11 +133,23 @@ bool handle_header(
 		o_data << pad_sample;
 	}
 
+	//If collecting continuously, we need to add a "break sample"
+	//so the DMA engine knows where to end the transfer.
+	if(pulse_info.first_pulse_in_xfer)
+	{
+		pdti_32 spacer_sample = data_word;
+		spacer_sample.data = 0x98989898;
+		spacer_sample.user[PDTI_GATE] = 0;
+		spacer_sample.user[PDTI_SYNC] = 0;
+		o_data << spacer_sample;
+	}
+
 	//Update flags
 	in_a_pulse = 1;
 	in_a_xfer_bundle = 1;
 	break_after_pulse = pulse_info.last_pulse_in_xfer;
 	num_samples = pulse_info.num_samples;
+	decimation_value = pulse_info.post_decimation;
 
 	ap_uint<32> ext_flags = flags;
 	ext_flags[16] = pulse_info.first_pulse_in_block;
@@ -162,6 +187,7 @@ bool handle_header(
 	data_word.user[PDTI_SYNC] = 0;
 	o_data << data_word;
 	sample_counter = 1;
+	decimation_counter = 1;
 
 	return false;
 }

@@ -7,7 +7,7 @@
   <spirit:componentInstances>
     <spirit:componentInstance>
       <spirit:instanceName>user_block2_position_encoder_0_0</spirit:instanceName>
-      <spirit:componentRef spirit:vendor="user.org" spirit:library="module_ref" spirit:name="position_encoder" spirit:version="1.0"/>
+      <spirit:componentRef spirit:vendor="eol" spirit:library="module_ref" spirit:name="position_encoder" spirit:version="1.0"/>
       <spirit:configurableElementValues>
         <spirit:configurableElementValue spirit:referenceId="BUSIFPARAM_VALUE.ACLK.ASSOCIATED_BUSIF"/>
         <spirit:configurableElementValue spirit:referenceId="BUSIFPARAM_VALUE.ACLK.CLK_DOMAIN">user_block2_s_axis_adc_pdti_aclk</spirit:configurableElementValue>

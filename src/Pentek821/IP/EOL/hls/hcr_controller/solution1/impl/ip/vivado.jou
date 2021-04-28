@@ -2,11 +2,11 @@
 # Vivado v2017.2 (64-bit)
 # SW Build 1909853 on Thu Jun 15 18:39:10 MDT 2017
 # IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
-# Start of session at: Fri Mar 19 15:40:43 2021
-# Process ID: 13815
-# Current directory: /home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip
+# Start of session at: Fri Apr 23 20:21:44 2021
+# Process ID: 3521402
+# Current directory: /home/karboski/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip
 # Command line: vivado -notrace -mode batch -source run_ippack.tcl
-# Log file: /home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip/vivado.log
-# Journal file: /home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip/vivado.jou
+# Log file: /home/karboski/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip/vivado.log
+# Journal file: /home/karboski/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip/vivado.jou
 #-----------------------------------------------------------
 source run_ippack.tcl -notrace

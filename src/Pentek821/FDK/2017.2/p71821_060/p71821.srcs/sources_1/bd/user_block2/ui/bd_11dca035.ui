@@ -17,43 +17,34 @@ preplace portBus filter_select_ch1 -pg 1 -y 910 -defaultsOSRD
 preplace portBus mt_pulse -pg 1 -y 460 -defaultsOSRD
 preplace portBus filter_select_ch2 -pg 1 -y 1040 -defaultsOSRD
 preplace inst enable_mux_0 -pg 1 -lvl 2 -y 460 -defaultsOSRD
-preplace inst enable_mux_1 -pg 1 -lvl 2 -y 650 -defaultsOSRD -resize 160 100
-preplace inst enable_mux_2 -pg 1 -lvl 2 -y 780 -defaultsOSRD -resize 160 100
-preplace inst enable_mux_3 -pg 1 -lvl 2 -y 910 -defaultsOSRD -resize 160 100
-preplace inst enable_mux_4 -pg 1 -lvl 2 -y 1040 -defaultsOSRD -resize 160 100
+preplace inst enable_mux_1 -pg 1 -lvl 2 -y 630 -defaultsOSRD
 preplace inst validate_kludge_0 -pg 1 -lvl 2 -y 70 -defaultsOSRD
 preplace inst hcr_controller_0 -pg 1 -lvl 1 -y 670 -defaultsOSRD
 preplace inst validate_kludge_1 -pg 1 -lvl 2 -y 200 -defaultsOSRD -resize 280 100
 preplace inst validate_kludge_2 -pg 1 -lvl 2 -y 330 -defaultsOSRD -resize 280 100
 preplace netloc Conn1 1 0 1 -20J
 preplace netloc hcr_controller_0_coef_ch2_V_V 1 1 1 460
-preplace netloc hcr_controller_0_pulse_metadata_ch0_V 1 1 2 NJ 530 870J
+preplace netloc hcr_controller_0_pulse_metadata_ch0_V 1 1 2 NJ 530 880J
 preplace netloc axis_subset_converter_0_M_AXIS 1 2 1 NJ
-preplace netloc hcr_controller_0_filter_select_ch0_V_ap_vld 1 1 1 510
 preplace netloc hcr_controller_0_mt_pulse_V_ap_vld 1 1 1 470
 preplace netloc s_axis_adc_pdti_aclk_1 1 0 2 -10 330 490
 preplace netloc hcr_controller_0_control_flags_V_ap_vld 1 1 1 500
-preplace netloc enable_mux_4_O 1 2 1 NJ
-preplace netloc enable_mux_1_O 1 2 1 NJ
-preplace netloc hcr_controller_0_control_flags_V 1 1 1 500
+preplace netloc hcr_controller_0_control_flags_V 1 1 1 510
+preplace netloc enable_mux_1_O 1 2 1 880
 preplace netloc validate_kludge_2_M_AXIS 1 2 1 NJ
-preplace netloc hcr_controller_0_filter_select_ch2_V 1 1 1 440
+preplace netloc hcr_controller_0_filter_select_ch2_V 1 1 2 N 830 870J
 preplace netloc hcr_controller_0_coef_ch1_V_V 1 1 1 450
-preplace netloc enable_mux_3_O 1 2 1 NJ
-preplace netloc hcr_controller_0_filter_select_ch1_V 1 1 1 450
-preplace netloc hcr_controller_0_pulse_metadata_ch2_V 1 1 2 NJ 570 NJ
+preplace netloc hcr_controller_0_filter_select_ch1_V 1 1 2 N 810 880J
+preplace netloc hcr_controller_0_pulse_metadata_ch2_V 1 1 2 480J 560 880J
 preplace netloc validate_kludge_1_M_AXIS 1 2 1 NJ
-preplace netloc hcr_controller_0_filter_select_ch1_V_ap_vld 1 1 1 480
 preplace netloc sync_pulse_1 1 0 1 NJ
 preplace netloc hcr_controller_0_coef_ch0_V_V 1 1 1 440
-preplace netloc pulse_metadata_1 1 1 2 480J 540 NJ
-preplace netloc enable_mux_2_O 1 2 1 NJ
-preplace netloc enable_mux_0_O 1 2 1 NJ
+preplace netloc pulse_metadata_1 1 1 2 NJ 550 880J
+preplace netloc enable_mux_0_O 1 2 1 N
 preplace netloc reset_reg_aresetn 1 0 2 0 350 500
-preplace netloc hcr_controller_0_filter_select_ch2_V_ap_vld 1 1 1 470
-preplace netloc hcr_controller_0_filter_select_ch0_V 1 1 1 N
+preplace netloc hcr_controller_0_filter_select_ch0_V 1 1 2 480 780 NJ
 preplace netloc hcr_controller_0_mt_pulse_V 1 1 1 490
-levelinfo -pg 1 -40 230 710 900 -top 0 -bot 1110
+levelinfo -pg 1 -40 230 710 900 -top -110 -bot 1110
 ",
 }
 0

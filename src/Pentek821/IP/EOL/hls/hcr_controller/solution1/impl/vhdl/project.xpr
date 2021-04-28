@@ -3,10 +3,10 @@
 <!--                                                         -->
 <!-- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="20" Path="/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/vhdl/project.xpr">
+<Project Version="7" Minor="20" Path="/home/karboski/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/vhdl/project.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="34dd07aaec334e88be1c05c47c23015a"/>
+    <Option Name="Id" Val="b246ff7e26824e8e94828aa2ed9d64e2"/>
     <Option Name="Part" Val="xcku060-ffva1517-2-e"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
@@ -63,13 +63,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/fifo_w813_d16_S.vhd">
+      <File Path="$PPRDIR/fifo_w821_d16_S.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/fifo_w813_d1_A.vhd">
+      <File Path="$PPRDIR/fifo_w821_d1_A.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>

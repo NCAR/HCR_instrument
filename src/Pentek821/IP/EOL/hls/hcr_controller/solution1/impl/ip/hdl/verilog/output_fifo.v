@@ -34,10 +34,10 @@ output   ap_done;
 input   ap_continue;
 output   ap_idle;
 output   ap_ready;
-input  [812:0] in_V_dout;
+input  [820:0] in_V_dout;
 input   in_V_empty_n;
 output   in_V_read;
-output  [815:0] out_V_TDATA;
+output  [823:0] out_V_TDATA;
 output   out_V_TVALID;
 input   out_V_TREADY;
 
@@ -49,13 +49,13 @@ reg in_V_read;
 reg    ap_done_reg;
 (* fsm_encoding = "none" *) reg   [2:0] ap_CS_fsm;
 wire    ap_CS_fsm_state1;
-reg   [815:0] out_V_1_data_out;
+reg   [823:0] out_V_1_data_out;
 reg    out_V_1_vld_in;
 wire    out_V_1_vld_out;
 wire    out_V_1_ack_in;
 wire    out_V_1_ack_out;
-reg   [815:0] out_V_1_payload_A;
-reg   [815:0] out_V_1_payload_B;
+reg   [823:0] out_V_1_payload_A;
+reg   [823:0] out_V_1_payload_B;
 reg    out_V_1_sel_rd;
 reg    out_V_1_sel_wr;
 wire    out_V_1_sel;
@@ -68,11 +68,11 @@ wire    ap_CS_fsm_state2;
 reg    out_V_TDATA_blk_n;
 wire   [0:0] pulse_terminate_fu_65_p3;
 wire    ap_CS_fsm_state3;
-wire  signed [815:0] cast_fu_85_p1;
+wire  signed [823:0] cast_fu_85_p1;
 reg    ap_block_state2;
 reg    ap_block_state2_io;
-wire   [811:0] tmp_40_fu_73_p1;
-wire   [812:0] tmp_1_fu_77_p3;
+wire   [819:0] tmp_40_fu_73_p1;
+wire   [820:0] tmp_1_fu_77_p3;
 reg   [2:0] ap_NS_fsm;
 reg    ap_block_state1;
 
@@ -286,10 +286,10 @@ assign out_V_TDATA = out_V_1_data_out;
 
 assign out_V_TVALID = out_V_1_state[1'd0];
 
-assign pulse_terminate_fu_65_p3 = in_V_dout[32'd812];
+assign pulse_terminate_fu_65_p3 = in_V_dout[32'd820];
 
 assign tmp_1_fu_77_p3 = {{1'd0}, {tmp_40_fu_73_p1}};
 
-assign tmp_40_fu_73_p1 = in_V_dout[811:0];
+assign tmp_40_fu_73_p1 = in_V_dout[819:0];
 
 endmodule //output_fifo

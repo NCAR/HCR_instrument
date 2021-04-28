@@ -41,7 +41,8 @@ module hcr_controller_cfg_bus_s_axi
     output wire [7:0]                    cfg_pulse_sequence_start_index,
     output wire [7:0]                    cfg_pulse_sequence_length,
     output wire [31:0]                   cfg_num_pulses_to_execute,
-    output wire [31:0]                   cfg_decimation,
+    output wire [31:0]                   cfg_total_decimation,
+    output wire [31:0]                   cfg_post_decimation,
     output wire [31:0]                   cfg_num_pulses_per_xfer,
     output wire [31:0]                   cfg_enabled_channel_vector,
     input  wire [4:0]                    cfg_pulse_sequence_prt_0_address0,
@@ -156,15 +157,18 @@ module hcr_controller_cfg_bus_s_axi
 // 0x0020 : Data signal of cfg_num_pulses_to_execute
 //          bit 31~0 - cfg_num_pulses_to_execute[31:0] (Read/Write)
 // 0x0024 : reserved
-// 0x0028 : Data signal of cfg_decimation
-//          bit 31~0 - cfg_decimation[31:0] (Read/Write)
+// 0x0028 : Data signal of cfg_total_decimation
+//          bit 31~0 - cfg_total_decimation[31:0] (Read/Write)
 // 0x002c : reserved
-// 0x0030 : Data signal of cfg_num_pulses_per_xfer
-//          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
+// 0x0030 : Data signal of cfg_post_decimation
+//          bit 31~0 - cfg_post_decimation[31:0] (Read/Write)
 // 0x0034 : reserved
-// 0x0038 : Data signal of cfg_enabled_channel_vector
-//          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
+// 0x0038 : Data signal of cfg_num_pulses_per_xfer
+//          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
 // 0x003c : reserved
+// 0x0040 : Data signal of cfg_enabled_channel_vector
+//          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
+// 0x0044 : reserved
 // 0x0080 ~
 // 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 //          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -260,12 +264,14 @@ localparam
     ADDR_CFG_PULSE_SEQUENCE_LENGTH_CTRL            = 13'h001c,
     ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0          = 13'h0020,
     ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL            = 13'h0024,
-    ADDR_CFG_DECIMATION_DATA_0                     = 13'h0028,
-    ADDR_CFG_DECIMATION_CTRL                       = 13'h002c,
-    ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            = 13'h0030,
-    ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              = 13'h0034,
-    ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         = 13'h0038,
-    ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           = 13'h003c,
+    ADDR_CFG_TOTAL_DECIMATION_DATA_0               = 13'h0028,
+    ADDR_CFG_TOTAL_DECIMATION_CTRL                 = 13'h002c,
+    ADDR_CFG_POST_DECIMATION_DATA_0                = 13'h0030,
+    ADDR_CFG_POST_DECIMATION_CTRL                  = 13'h0034,
+    ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            = 13'h0038,
+    ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              = 13'h003c,
+    ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         = 13'h0040,
+    ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           = 13'h0044,
     ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE             = 13'h0080,
     ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH             = 13'h00ff,
     ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE             = 13'h0100,
@@ -353,7 +359,8 @@ localparam
     reg  [7:0]                    int_cfg_pulse_sequence_start_index = 'b0;
     reg  [7:0]                    int_cfg_pulse_sequence_length = 'b0;
     reg  [31:0]                   int_cfg_num_pulses_to_execute = 'b0;
-    reg  [31:0]                   int_cfg_decimation = 'b0;
+    reg  [31:0]                   int_cfg_total_decimation = 'b0;
+    reg  [31:0]                   int_cfg_post_decimation = 'b0;
     reg  [31:0]                   int_cfg_num_pulses_per_xfer = 'b0;
     reg  [31:0]                   int_cfg_enabled_channel_vector = 'b0;
     // memory signals
@@ -1391,8 +1398,11 @@ always @(posedge ACLK) begin
                 ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0: begin
                     rdata <= int_cfg_num_pulses_to_execute[31:0];
                 end
-                ADDR_CFG_DECIMATION_DATA_0: begin
-                    rdata <= int_cfg_decimation[31:0];
+                ADDR_CFG_TOTAL_DECIMATION_DATA_0: begin
+                    rdata <= int_cfg_total_decimation[31:0];
+                end
+                ADDR_CFG_POST_DECIMATION_DATA_0: begin
+                    rdata <= int_cfg_post_decimation[31:0];
                 end
                 ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0: begin
                     rdata <= int_cfg_num_pulses_per_xfer[31:0];
@@ -1495,7 +1505,8 @@ assign int_ap_ready                   = ap_ready;
 assign cfg_pulse_sequence_start_index = int_cfg_pulse_sequence_start_index;
 assign cfg_pulse_sequence_length      = int_cfg_pulse_sequence_length;
 assign cfg_num_pulses_to_execute      = int_cfg_num_pulses_to_execute;
-assign cfg_decimation                 = int_cfg_decimation;
+assign cfg_total_decimation           = int_cfg_total_decimation;
+assign cfg_post_decimation            = int_cfg_post_decimation;
 assign cfg_num_pulses_per_xfer        = int_cfg_num_pulses_per_xfer;
 assign cfg_enabled_channel_vector     = int_cfg_enabled_channel_vector;
 // int_ap_start
@@ -1606,13 +1617,23 @@ always @(posedge ACLK) begin
     end
 end
 
-// int_cfg_decimation[31:0]
+// int_cfg_total_decimation[31:0]
 always @(posedge ACLK) begin
     if (ARESET)
-        int_cfg_decimation[31:0] <= 0;
+        int_cfg_total_decimation[31:0] <= 0;
     else if (ACLK_EN) begin
-        if (w_hs && waddr == ADDR_CFG_DECIMATION_DATA_0)
-            int_cfg_decimation[31:0] <= (WDATA[31:0] & wmask) | (int_cfg_decimation[31:0] & ~wmask);
+        if (w_hs && waddr == ADDR_CFG_TOTAL_DECIMATION_DATA_0)
+            int_cfg_total_decimation[31:0] <= (WDATA[31:0] & wmask) | (int_cfg_total_decimation[31:0] & ~wmask);
+    end
+end
+
+// int_cfg_post_decimation[31:0]
+always @(posedge ACLK) begin
+    if (ARESET)
+        int_cfg_post_decimation[31:0] <= 0;
+    else if (ACLK_EN) begin
+        if (w_hs && waddr == ADDR_CFG_POST_DECIMATION_DATA_0)
+            int_cfg_post_decimation[31:0] <= (WDATA[31:0] & wmask) | (int_cfg_post_decimation[31:0] & ~wmask);
     end
 end
 

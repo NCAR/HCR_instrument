@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="20" Path="/home/apar/git/HCR_instrument/src/Pentek821/FDK/2017.2/p71821_060/p71821.xpr">
+<Project Version="7" Minor="20" Path="/home/karboski/git/HCR_instrument/src/Pentek821/FDK/2017.2/p71821_060/p71821.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="ba6a7fd9931b4271a4dd8d68ab9bed03"/>
@@ -54,12 +54,6 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PPRDIR/../../../IP/EOL/enable_mux.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../../../IP/EOL/quad2bin.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -78,7 +72,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../IP/EOL/pdti_mod.vhd">
+      <File Path="$PPRDIR/../../../IP/EOL/enable_mux.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../IP/EOL/pdti_adc_tweak.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -90,12 +90,160 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/bd/data_acq/data_acq.bd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <File Path="$PSRCDIR/sources_1/bd/user_block2/user_block2.bd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_bcast_0_1/user_block2_bcast_0_1.xci">
+          <Proxy FileSetName="user_block2_bcast_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_one_1/user_block2_one_1.xci">
+          <Proxy FileSetName="user_block2_one_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo_0_1/user_block2_fifo_0_1.xci">
+          <Proxy FileSetName="user_block2_fifo_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_map_cfg_0_1/user_block2_map_cfg_0_1.xci">
+          <Proxy FileSetName="user_block2_map_cfg_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pulse_fir_0_1/user_block2_pulse_fir_0_1.xci">
+          <Proxy FileSetName="user_block2_pulse_fir_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_map_data_0_1/user_block2_map_data_0_1.xci">
+          <Proxy FileSetName="user_block2_map_data_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_metadata_injector_0_1/user_block2_hcr_metadata_injector_0_1.xci">
+          <Proxy FileSetName="user_block2_hcr_metadata_injector_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_bcast_0_0/user_block2_bcast_0_0.xci">
+          <Proxy FileSetName="user_block2_bcast_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_map_data_0_0/user_block2_map_data_0_0.xci">
+          <Proxy FileSetName="user_block2_map_data_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pulse_fir_0_0/user_block2_pulse_fir_0_0.xci">
+          <Proxy FileSetName="user_block2_pulse_fir_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_map_cfg_0_0/user_block2_map_cfg_0_0.xci">
+          <Proxy FileSetName="user_block2_map_cfg_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_metadata_injector_0_2/user_block2_hcr_metadata_injector_0_2.xci">
+          <Proxy FileSetName="user_block2_hcr_metadata_injector_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xlconstant_0_0/user_block2_xlconstant_0_0.xci">
+          <Proxy FileSetName="user_block2_xlconstant_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_metadata_injector_0_0/user_block2_hcr_metadata_injector_0_0.xci">
+          <Proxy FileSetName="user_block2_hcr_metadata_injector_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_controller_0_0/user_block2_hcr_controller_0_0.xci">
+          <Proxy FileSetName="user_block2_hcr_controller_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_data_fifo_0_0/user_block2_axis_data_fifo_0_0.xci">
+          <Proxy FileSetName="user_block2_axis_data_fifo_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_1_0/user_block2_axis_subset_converter_1_0.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_1_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fir_compiler_0_0/user_block2_fir_compiler_0_0.xci">
+          <Proxy FileSetName="user_block2_fir_compiler_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_0/user_block2_axis_subset_converter_0_0.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_broadcaster_0_0/user_block2_axis_broadcaster_0_0.xci">
+          <Proxy FileSetName="user_block2_axis_broadcaster_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_irq_placeholder_0/user_block2_irq_placeholder_0.xci">
+          <Proxy FileSetName="user_block2_irq_placeholder_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo_0_0/user_block2_fifo_0_0.xci">
+          <Proxy FileSetName="user_block2_fifo_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_one_0/user_block2_one_0.xci">
+          <Proxy FileSetName="user_block2_one_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_2/user_block2_axis_subset_converter_0_2.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_validate_kludge_0_0/user_block2_validate_kludge_0_0.xci">
+          <Proxy FileSetName="user_block2_validate_kludge_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_validate_kludge_1_0/user_block2_validate_kludge_1_0.xci">
+          <Proxy FileSetName="user_block2_validate_kludge_1_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_axil_csr_0_0/user_block2_px_axil_csr_0_0.xci">
+          <Proxy FileSetName="user_block2_px_axil_csr_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xlconstant_0_1/user_block2_xlconstant_0_1.xci">
+          <Proxy FileSetName="user_block2_xlconstant_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_vctr2scalar_0_0/user_block2_px_vctr2scalar_0_0.xci">
+          <Proxy FileSetName="user_block2_px_vctr2scalar_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xlslice_0_0/user_block2_xlslice_0_0.xci">
+          <Proxy FileSetName="user_block2_xlslice_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xlslice_0_1/user_block2_xlslice_0_1.xci">
+          <Proxy FileSetName="user_block2_xlslice_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_vctr2scalar_0_1/user_block2_px_vctr2scalar_0_1.xci">
+          <Proxy FileSetName="user_block2_px_vctr2scalar_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_util_vector_logic_0_0/user_block2_util_vector_logic_0_0.xci">
+          <Proxy FileSetName="user_block2_util_vector_logic_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_4/user_block2_axis_subset_converter_0_4.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_4"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_3/user_block2_axis_subset_converter_0_3.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_3"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_1/user_block2_axis_subset_converter_0_1.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_position_encoder_0_0/user_block2_position_encoder_0_0.xci">
+          <Proxy FileSetName="user_block2_position_encoder_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xbar_0/user_block2_xbar_0.xci">
+          <Proxy FileSetName="user_block2_xbar_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_6/user_block2_axis_subset_converter_0_6.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_6"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_7/user_block2_axis_subset_converter_0_7.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_7"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_5/user_block2_axis_subset_converter_0_5.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_5"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_0_2/user_block2_enable_mux_0_2.xci">
+          <Proxy FileSetName="user_block2_enable_mux_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_0_3/user_block2_enable_mux_0_3.xci">
+          <Proxy FileSetName="user_block2_enable_mux_0_3"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_register_slice_0_0/user_block2_axis_register_slice_0_0.xci">
+          <Proxy FileSetName="user_block2_axis_register_slice_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_auto_cc_1/user_block2_auto_cc_1.xci">
+          <Proxy FileSetName="user_block2_auto_cc_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_auto_cc_0/user_block2_auto_cc_0.xci">
+          <Proxy FileSetName="user_block2_auto_cc_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_s00_regslice_0/user_block2_s00_regslice_0.xci">
+          <Proxy FileSetName="user_block2_s00_regslice_0"/>
+        </CompFileExtendedInfo>
       </File>
       <File Path="$PSRCDIR/sources_1/bd/user_block1/user_block1.bd">
         <FileInfo>
@@ -179,8 +327,14 @@
           <Attr Name="UsedIn" Val="implementation"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/constrs_1/new/target.xdc">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
       <Config>
-        <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/new/p71821.xdc"/>
+        <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/new/target.xdc"/>
         <Option Name="ConstrsType" Val="XDC"/>
       </Config>
     </FileSet>
@@ -257,21 +411,6 @@
         <Generic Name="rev" Val="8&apos;h11"/>
       </Config>
     </FileSet>
-    <FileSet Name="data_acq" Type="BlockSrcs" RelSrcDir="$PSRCDIR/data_acq">
-      <File Path="$PSRCDIR/sources_1/bd/data_acq/data_acq.bd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <Config>
-        <Option Name="TopModule" Val="data_acq"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-        <Generic Name="rev_date" Val="24&apos;h180423"/>
-        <Generic Name="rev" Val="8&apos;h11"/>
-      </Config>
-    </FileSet>
     <FileSet Name="dsp1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/dsp1">
       <File Path="$PSRCDIR/sources_1/bd/dsp1/dsp1.bd">
         <FileInfo>
@@ -282,6 +421,382 @@
       </File>
       <Config>
         <Option Name="TopModule" Val="dsp1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_fir_compiler_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_fir_compiler_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_fir_compiler_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_1_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_1_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_1_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_data_fifo_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_data_fifo_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_data_fifo_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_xlconstant_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_xlconstant_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_xlconstant_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_bcast_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_bcast_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_bcast_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_map_data_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_map_data_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_map_data_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_pulse_fir_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_pulse_fir_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_pulse_fir_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_map_cfg_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_map_cfg_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_map_cfg_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_fifo_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_fifo_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_fifo_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_one_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_one_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_one_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_bcast_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_bcast_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_bcast_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_map_data_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_map_data_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_map_data_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_pulse_fir_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_pulse_fir_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_pulse_fir_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_map_cfg_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_map_cfg_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_map_cfg_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_fifo_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_fifo_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_fifo_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_one_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_one_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_one_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_2" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_2">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_2"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_validate_kludge_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_validate_kludge_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_validate_kludge_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_validate_kludge_1_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_validate_kludge_1_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_validate_kludge_1_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_px_axil_csr_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_px_axil_csr_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_px_axil_csr_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_xlconstant_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_xlconstant_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_xlconstant_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_px_vctr2scalar_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_px_vctr2scalar_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_px_vctr2scalar_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_xlslice_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_xlslice_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_xlslice_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_xlslice_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_xlslice_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_xlslice_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_px_vctr2scalar_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_px_vctr2scalar_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_px_vctr2scalar_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_util_vector_logic_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_util_vector_logic_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_util_vector_logic_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_broadcaster_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_broadcaster_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_broadcaster_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_irq_placeholder_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_irq_placeholder_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_irq_placeholder_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_4" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_4">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_4"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_3" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_3">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_3"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_xbar_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_xbar_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_xbar_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_6" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_6">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_6"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_7" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_7">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_7"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_subset_converter_0_5" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_subset_converter_0_5">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_subset_converter_0_5"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_hcr_controller_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_hcr_controller_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_hcr_controller_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_position_encoder_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_position_encoder_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_position_encoder_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_axis_register_slice_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_axis_register_slice_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_axis_register_slice_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_auto_cc_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_auto_cc_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_auto_cc_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_hcr_metadata_injector_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_hcr_metadata_injector_0_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_hcr_metadata_injector_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_hcr_metadata_injector_0_2" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_hcr_metadata_injector_0_2">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_hcr_metadata_injector_0_2"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_hcr_metadata_injector_0_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_hcr_metadata_injector_0_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_hcr_metadata_injector_0_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_enable_mux_0_2" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_enable_mux_0_2">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_enable_mux_0_2"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_enable_mux_0_3" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_enable_mux_0_3">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_enable_mux_0_3"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_auto_cc_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_auto_cc_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_auto_cc_1"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_s00_regslice_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_s00_regslice_0">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_s00_regslice_0"/>
         <Option Name="UseBlackboxStub" Val="1"/>
         <Generic Name="rev_date" Val="24&apos;h180423"/>
         <Generic Name="rev" Val="8&apos;h11"/>
@@ -362,7 +877,7 @@
       <ReportStrategy/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
     </Run>
-    <Run Id="data_acq_synth_1" Type="Ft3:Synth" SrcSet="data_acq" Part="xcku060-ffva1156-2-e" ConstrsSet="data_acq" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/data_acq_synth_1" IncludeInArchive="true">
+    <Run Id="dsp1_synth_1" Type="Ft3:Synth" SrcSet="dsp1" Part="xcku060-ffva1156-2-e" ConstrsSet="dsp1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/dsp1_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
         <Step Id="synth_design"/>
@@ -371,7 +886,421 @@
       <ReportStrategy/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
     </Run>
-    <Run Id="dsp1_synth_1" Type="Ft3:Synth" SrcSet="dsp1" Part="xcku060-ffva1156-2-e" ConstrsSet="dsp1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/dsp1_synth_1" IncludeInArchive="true">
+    <Run Id="user_block2_axis_subset_converter_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_fir_compiler_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_fir_compiler_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_fir_compiler_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_fir_compiler_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_1_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_1_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_1_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_1_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_data_fifo_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_data_fifo_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_data_fifo_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_data_fifo_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlconstant_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_xlconstant_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlconstant_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_xlconstant_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_bcast_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_bcast_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_bcast_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_bcast_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_data_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_map_data_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_data_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_map_data_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_pulse_fir_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_pulse_fir_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pulse_fir_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_pulse_fir_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_cfg_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_map_cfg_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_cfg_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_map_cfg_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_fifo_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_fifo_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_fifo_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_fifo_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_one_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_one_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_one_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_one_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_bcast_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_bcast_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_bcast_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_bcast_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_data_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_map_data_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_data_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_map_data_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_pulse_fir_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_pulse_fir_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pulse_fir_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_pulse_fir_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_cfg_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_map_cfg_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_cfg_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_map_cfg_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_fifo_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_fifo_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_fifo_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_fifo_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_one_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_one_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_one_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_one_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_2_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_2" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_2" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_2_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_validate_kludge_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_validate_kludge_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_validate_kludge_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_validate_kludge_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_validate_kludge_1_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_validate_kludge_1_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_validate_kludge_1_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_validate_kludge_1_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_px_axil_csr_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_px_axil_csr_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_px_axil_csr_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_px_axil_csr_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlconstant_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_xlconstant_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlconstant_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_xlconstant_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_px_vctr2scalar_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_px_vctr2scalar_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_px_vctr2scalar_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_px_vctr2scalar_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlslice_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_xlslice_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlslice_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_xlslice_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlslice_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_xlslice_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlslice_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_xlslice_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_px_vctr2scalar_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_px_vctr2scalar_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_px_vctr2scalar_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_px_vctr2scalar_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_util_vector_logic_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_util_vector_logic_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_util_vector_logic_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_util_vector_logic_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_broadcaster_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_broadcaster_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_broadcaster_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_broadcaster_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_irq_placeholder_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_irq_placeholder_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_irq_placeholder_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_irq_placeholder_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_4_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_4" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_4" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_4_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_3_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_3" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_3" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_3_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xbar_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_xbar_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xbar_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_xbar_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_6_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_6" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_6" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_6_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_7_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_7" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_7" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_7_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_5_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_subset_converter_0_5" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_5" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_subset_converter_0_5_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_controller_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_hcr_controller_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_controller_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_hcr_controller_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_position_encoder_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_position_encoder_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_position_encoder_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_position_encoder_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_register_slice_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_axis_register_slice_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_register_slice_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_axis_register_slice_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_auto_cc_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_auto_cc_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_auto_cc_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_metadata_injector_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_hcr_metadata_injector_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_hcr_metadata_injector_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_metadata_injector_0_2_synth_1" Type="Ft3:Synth" SrcSet="user_block2_hcr_metadata_injector_0_2" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_2" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_hcr_metadata_injector_0_2_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_metadata_injector_0_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_hcr_metadata_injector_0_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_hcr_metadata_injector_0_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_enable_mux_0_2_synth_1" Type="Ft3:Synth" SrcSet="user_block2_enable_mux_0_2" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_enable_mux_0_2" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_enable_mux_0_2_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_enable_mux_0_3_synth_1" Type="Ft3:Synth" SrcSet="user_block2_enable_mux_0_3" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_enable_mux_0_3" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_enable_mux_0_3_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_auto_cc_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_auto_cc_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_1" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_auto_cc_1_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_s00_regslice_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_s00_regslice_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_s00_regslice_0" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/user_block2_s00_regslice_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
         <Step Id="synth_design"/>
@@ -469,7 +1398,7 @@
       <ReportStrategy/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
     </Run>
-    <Run Id="data_acq_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="data_acq" Description="Default settings for Implementation." SynthRun="data_acq_synth_1" IncludeInArchive="false">
+    <Run Id="dsp1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="dsp1" Description="Default settings for Implementation." SynthRun="dsp1_synth_1" IncludeInArchive="false">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
         <Step Id="init_design"/>
@@ -485,7 +1414,743 @@
       <ReportStrategy/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
     </Run>
-    <Run Id="dsp1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="dsp1" Description="Default settings for Implementation." SynthRun="dsp1_synth_1" IncludeInArchive="false">
+    <Run Id="user_block2_axis_subset_converter_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_0" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_fir_compiler_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_fir_compiler_0_0" Description="Default settings for Implementation." SynthRun="user_block2_fir_compiler_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_1_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_1_0" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_1_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_data_fifo_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_data_fifo_0_0" Description="Default settings for Implementation." SynthRun="user_block2_axis_data_fifo_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlconstant_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlconstant_0_0" Description="Default settings for Implementation." SynthRun="user_block2_xlconstant_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_bcast_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_bcast_0_1" Description="Default settings for Implementation." SynthRun="user_block2_bcast_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_data_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_data_0_1" Description="Default settings for Implementation." SynthRun="user_block2_map_data_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_pulse_fir_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pulse_fir_0_1" Description="Default settings for Implementation." SynthRun="user_block2_pulse_fir_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_cfg_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_cfg_0_1" Description="Default settings for Implementation." SynthRun="user_block2_map_cfg_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_fifo_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_fifo_0_1" Description="Default settings for Implementation." SynthRun="user_block2_fifo_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_one_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_one_1" Description="Default settings for Implementation." SynthRun="user_block2_one_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_bcast_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_bcast_0_0" Description="Default settings for Implementation." SynthRun="user_block2_bcast_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_data_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_data_0_0" Description="Default settings for Implementation." SynthRun="user_block2_map_data_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_pulse_fir_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pulse_fir_0_0" Description="Default settings for Implementation." SynthRun="user_block2_pulse_fir_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_map_cfg_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_map_cfg_0_0" Description="Default settings for Implementation." SynthRun="user_block2_map_cfg_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_fifo_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_fifo_0_0" Description="Default settings for Implementation." SynthRun="user_block2_fifo_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_one_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_one_0" Description="Default settings for Implementation." SynthRun="user_block2_one_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_2_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_2" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_2_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_validate_kludge_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_validate_kludge_0_0" Description="Default settings for Implementation." SynthRun="user_block2_validate_kludge_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_validate_kludge_1_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_validate_kludge_1_0" Description="Default settings for Implementation." SynthRun="user_block2_validate_kludge_1_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_px_axil_csr_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_px_axil_csr_0_0" Description="Default settings for Implementation." SynthRun="user_block2_px_axil_csr_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlconstant_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlconstant_0_1" Description="Default settings for Implementation." SynthRun="user_block2_xlconstant_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_px_vctr2scalar_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_px_vctr2scalar_0_0" Description="Default settings for Implementation." SynthRun="user_block2_px_vctr2scalar_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlslice_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlslice_0_0" Description="Default settings for Implementation." SynthRun="user_block2_xlslice_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xlslice_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xlslice_0_1" Description="Default settings for Implementation." SynthRun="user_block2_xlslice_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_px_vctr2scalar_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_px_vctr2scalar_0_1" Description="Default settings for Implementation." SynthRun="user_block2_px_vctr2scalar_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_util_vector_logic_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_util_vector_logic_0_0" Description="Default settings for Implementation." SynthRun="user_block2_util_vector_logic_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_broadcaster_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_broadcaster_0_0" Description="Default settings for Implementation." SynthRun="user_block2_axis_broadcaster_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_irq_placeholder_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_irq_placeholder_0" Description="Default settings for Implementation." SynthRun="user_block2_irq_placeholder_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_4_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_4" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_4_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_3_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_3" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_3_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_1" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_xbar_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_xbar_0" Description="Default settings for Implementation." SynthRun="user_block2_xbar_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_6_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_6" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_6_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_7_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_7" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_7_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_subset_converter_0_5_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_subset_converter_0_5" Description="Default settings for Implementation." SynthRun="user_block2_axis_subset_converter_0_5_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_controller_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_controller_0_0" Description="Default settings for Implementation." SynthRun="user_block2_hcr_controller_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_position_encoder_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_position_encoder_0_0" Description="Default settings for Implementation." SynthRun="user_block2_position_encoder_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_axis_register_slice_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_axis_register_slice_0_0" Description="Default settings for Implementation." SynthRun="user_block2_axis_register_slice_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_auto_cc_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_0" Description="Default settings for Implementation." SynthRun="user_block2_auto_cc_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_metadata_injector_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_0" Description="Default settings for Implementation." SynthRun="user_block2_hcr_metadata_injector_0_0_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_metadata_injector_0_2_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_2" Description="Default settings for Implementation." SynthRun="user_block2_hcr_metadata_injector_0_2_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_hcr_metadata_injector_0_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_1" Description="Default settings for Implementation." SynthRun="user_block2_hcr_metadata_injector_0_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_enable_mux_0_2_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_enable_mux_0_2" Description="Default settings for Implementation." SynthRun="user_block2_enable_mux_0_2_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_enable_mux_0_3_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_enable_mux_0_3" Description="Default settings for Implementation." SynthRun="user_block2_enable_mux_0_3_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_auto_cc_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_1" Description="Default settings for Implementation." SynthRun="user_block2_auto_cc_1_synth_1" IncludeInArchive="false">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="user_block2_s00_regslice_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_s00_regslice_0" Description="Default settings for Implementation." SynthRun="user_block2_s00_regslice_0_synth_1" IncludeInArchive="false">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
         <Step Id="init_design"/>

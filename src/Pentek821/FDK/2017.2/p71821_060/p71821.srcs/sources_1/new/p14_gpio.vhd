@@ -7,333 +7,111 @@ library UNISIM;
 use UNISIM.VComponents.all;
 
 entity p14_gpio is
-generic (
-    INSTANTIATE_TEST_PATTERN : boolean := false
-);
 port ( 
 
-    CLK             : in  std_logic;
-    CLK_DAC         : in  std_logic;
+    ADC_CLK         : in  STD_LOGIC;
 
-    LVDS_P          : inout std_logic_vector(23 downto 0);
-    LVDS_N          : inout std_logic_vector(23 downto 0);
+    P14GPIO_P       : inout STD_LOGIC_VECTOR( 23 downto 0 );
+    P14GPIO_N       : inout STD_LOGIC_VECTOR( 23 downto 0 );
 
-    out_test        : in  std_logic_vector(6 downto 1) := (others=>'0'); 
-    out_spare       : in  std_logic := '0';   
-    out_rxgate      : in  std_logic := '0';
-    out_txgate      : in  std_logic := '0';
-    out_sync        : in  std_logic := '0'; 
-
-    in_tqs          : out std_logic := '0';
-    in_pps          : out std_logic := '0';
-    in_spare1       : out std_logic := '0';    
-    in_spare2       : out std_logic := '0'
-
+    CONTROL_FLAGS   : in  STD_LOGIC_VECTOR ( 31 downto 0 );
+    MT_PULSE        : in  STD_LOGIC_VECTOR ( 7 downto 0 );
+    PPS             : out STD_LOGIC;
+    STATUS_FLAGS    : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    ROT_A           : out STD_LOGIC;
+    ROT_B           : out STD_LOGIC;
+    TILT_A          : out STD_LOGIC;
+    TILT_B          : out STD_LOGIC;
+    AZ_MOSI         : out STD_LOGIC;
+    AZ_SCK          : out STD_LOGIC;
+    AZ_SSEL         : out STD_LOGIC;
+    EL_MOSI         : out STD_LOGIC;
+    EL_SCK          : out STD_LOGIC
+    
 );
 end p14_gpio;
 
 
 architecture p14_gpio of p14_gpio is
 
-    signal sig_out_test        : std_logic_vector(8 downto 1) := (others=>'0');
-    signal sig_out_spare       : std_logic;   
-    signal sig_out_rxgate      : std_logic;
-    signal sig_out_txgate      : std_logic;
-    signal sig_out_sync        : std_logic; 
-    signal sig_in_tqs          : std_logic;
-    signal sig_in_pps          : std_logic;
-    signal sig_in_spare1       : std_logic;    
-    signal sig_in_spare2       : std_logic;
-    signal test_word           : std_logic_vector(11 downto 0) := (others=>'0'); 
-    signal test_counter        : unsigned(15 downto 0) := (others=>'0'); 
-    
+    signal mt0_sync      : std_logic;
+    signal mt1_adc_ch0   : std_logic;
+    signal mt2_adc_ch1   : std_logic;
+    signal mt3_adc_ch2   : std_logic;
+    signal mt4_dac       : std_logic;
+    signal mt5_mod_pulse : std_logic;
+    signal mt6_ems_trig  : std_logic;
+    signal mt7_spare     : std_logic;
+
 begin
 
-    ---------------------------------------------------
-    -- Actual 7807 pinout - the Pentek doc is wrong! --
-    ---------------------------------------------------
-    
-    -- J5    Signal       Outputs   Inputs
-    ----------------------------------------
-    -- A1    GND
-    -- A2    LVDS_P(16)   SYNC  
-    -- A3    LVDS_P(0)              PPS
-    -- A4    LVDS_P(17)   RXGATE  
-    -- A5    LVDS_P(1)              TQS
-    -- A6    LVDS_P(18)             SPAREIN1
-    -- A7    LVDS_P(2)    TXGATE  
-    -- A8    LVDS_P(19)             SPAREIN2
-    -- A9    LVDS_P(3)    SPAREOUT  
-    -- A10   LVDS_P(20)   TEST1  
-    -- A11   LVDS_P(4)    TEST2  
-    -- A12   LVDS_P(21)   TEST3  
-    -- A13   LVDS_P(5)    TEST4  
-    -- A14   LVDS_P(22)   TEST5  
-    -- A15   LVDS_P(6)    TEST6  
-    -- A16   LVDS_P(23)   TEST7  
-    -- A17   LVDS_P(7)    TEST8  
-    -- A18   NC
-    -- A19   LVDS_P(8)    
-    -- A20   NC
-    -- A21   LVDS_P(9)    
-    -- A22   NC
-    -- A23   LVDS_P(10)    
-    -- A24   NC
-    -- A25   LVDS_P(11)    
-    -- A26   NC
-    -- A27   LVDS_P(12)    
-    -- A28   NC
-    -- A29   LVDS_P(13)    
-    -- A30   NC
-    -- A31   LVDS_P(14)    
-    -- A32   NC
-    -- A33   LVDS_P(15)    
-    -- A34   GND   
+-- J5    P14          Signal         J5      P14         Signal
+-----------------------------------------------------------------
+-- A1    GND                         B1    GND           
+-- A2    LVDS_P(16)                  B2    LVDS_N(16)    
+-- A3    LVDS_P(0)                   B3    LVDS_N(0)     
+-- A4    LVDS_P(17)                  B4    LVDS_N(17)    
+-- A5    LVDS_P(1)                   B5    LVDS_N(1)     
+-- A6    LVDS_P(18)                  B6    LVDS_N(18)    
+-- A7    LVDS_P(2)                   B7    LVDS_N(2)     
+-- A8    LVDS_P(19)                  B8    LVDS_N(19)    
+-- A9    LVDS_P(3)                   B9    LVDS_N(3)     
+-- A10   LVDS_P(20)                  B10   LVDS_N(20)    SYNC_PULSE
+-- A11   LVDS_P(4)                   B11   LVDS_N(4)     
+-- A12   LVDS_P(21)                  B12   LVDS_N(21)    
+-- A13   LVDS_P(5)                   B13   LVDS_N(5)     
+-- A14   LVDS_P(22)   MOD_PULSE      B14   LVDS_N(22)    TIMER5
+-- A15   LVDS_P(6)                   B15   LVDS_N(6)     
+-- A16   LVDS_P(23)   RX_GATE        B16   LVDS_N(23)    TX_GATE
+-- A17   LVDS_P(7)    PPS            B17   LVDS_N(7)     
+-- A18   NC                          B18   NC            
+-- A19   LVDS_P(8)                   B19   LVDS_N(8)     
+-- A20   NC                          B20   NC            
+-- A21   LVDS_P(9)                   B21   LVDS_N(9)     
+-- A22   NC                          B22   NC            
+-- A23   LVDS_P(10)                  B23   LVDS_N(10)    
+-- A24   NC                          B24   NC            
+-- A25   LVDS_P(11)                  B25   LVDS_N(11)    
+-- A26   NC                          B26   NC            
+-- A27   LVDS_P(12)                  B27   LVDS_N(12)    
+-- A28   NC                          B28   NC            
+-- A29   LVDS_P(13)                  B29   LVDS_N(13)    
+-- A30   NC                          B30   NC            
+-- A31   LVDS_P(14)                  B31   LVDS_N(14)    
+-- A32   NC                          B32   NC            
+-- A33   LVDS_P(15)                  B33   LVDS_N(15)    
+-- A34   GND                         B34   GND           
 
 
+    PPS             <= P14GPIO_P(7);
+    ROT_A           <= '0';
+    ROT_B           <= '0';
+    TILT_A          <= '0';
+    TILT_B          <= '0';
+    AZ_MOSI         <= '0';
+    AZ_SCK          <= '0';
+    AZ_SSEL         <= '0';
+    EL_MOSI         <= '0';
+    EL_SCK          <= '0';
 
-    --Instantiate IOB registers
-    GEN_REGS : if not INSTANTIATE_TEST_PATTERN generate
+    output_regs : process(ADC_CLK)
+    begin
         
-        REGS_PROC : process (CLK)
-        begin
+        mt0_sync      <= MT_PULSE(0);
+        mt1_adc_ch0   <= MT_PULSE(1);
+        mt2_adc_ch1   <= MT_PULSE(2);
+        mt3_adc_ch2   <= MT_PULSE(3);
+        mt4_dac       <= MT_PULSE(4);
+        mt5_mod_pulse <= MT_PULSE(5);
+        mt6_ems_trig  <= MT_PULSE(6);
+        mt7_spare     <= MT_PULSE(7);
         
-            if rising_edge(CLK) then
-            
-                sig_out_test(6 downto 1) <= out_test(6 downto 1);   
-                sig_out_test(7)     <= not sig_out_test(7); --adc clock /2
-                sig_out_spare       <= not out_spare; --unsure where this is reversed
-                sig_out_rxgate      <= out_rxgate; 
-                sig_out_sync        <= out_sync;
-                
-                in_tqs              <= sig_in_tqs;  
-                in_pps              <= sig_in_pps;
-                in_spare1           <= sig_in_spare1;  
-                in_spare2           <= sig_in_spare2;
-                
-            end if;
-            
-        end process;
-        
-        REGS2_PROC : process (CLK_DAC)
-        begin        
-            if rising_edge(CLK_DAC) then            
-                sig_out_test(8)     <= not sig_out_test(8); -- dac clock /2
-                sig_out_txgate      <= out_txgate;
-            end if;            
-        end process;        
-    
-    end generate;
+        P14GPIO_N(20) <= mt0_sync;
+        P14GPIO_P(23) <= mt1_adc_ch0;
+        P14GPIO_N(23) <= mt4_dac;
+        P14GPIO_P(22) <= mt5_mod_pulse;
+        P14GPIO_N(22) <= mt6_ems_trig;
 
-    -- Instantiate a test pattern
-    -- Echo the 4 inputs to test(4 downto 1)
-    -- Counting pattern for the remaining outputs
-    GEN_TEST : if INSTANTIATE_TEST_PATTERN generate
-        
-        TEST_PROC : process (CLK)
-        begin
-        
-            if rising_edge(CLK) then
-            
-                test_counter        <= test_counter + 1;
-            
-                sig_out_test        <= test_word(7 downto 0);   
-                sig_out_spare       <= test_word(8);
-                sig_out_rxgate      <= test_word(9);
-                sig_out_txgate      <= test_word(10);
-                sig_out_sync        <= test_word(11);
-
-                test_word(0)        <= sig_in_tqs;  
-                test_word(1)        <= sig_in_pps;
-                test_word(2)        <= sig_in_spare1;  
-                test_word(3)        <= sig_in_spare2;
-
-                test_word(11 downto 4) <= std_logic_vector(test_counter(15 downto 8));
-                
-            end if;
-            
-        end process;
-        
-    end generate;
-
-
-    -- OUTPUTS
-    
-    -- Testpoint vector
-
-    out_test1_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(20),
-        OB    => LVDS_N(20),
-        I     => sig_out_test(1)
-    );
-
-    out_test2_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(4),
-        OB    => LVDS_N(4),
-        I     => sig_out_test(2)
-    );
-
-    out_test3_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(21),
-        OB    => LVDS_N(21),
-        I     => sig_out_test(3)
-    );
-
-    out_test4_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(5),
-        OB    => LVDS_N(5),
-        I     => sig_out_test(4)
-    );
-
-    out_test5_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(22),
-        OB    => LVDS_N(22),
-        I     => sig_out_test(5)
-    );
-
-    out_test6_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(6),
-        OB    => LVDS_N(6),
-        I     => sig_out_test(6)
-    );
-
-    out_test7_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(23),
-        OB    => LVDS_N(23),
-        I     => sig_out_test(7)
-    );
-
-    out_test8_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(7),
-        OB    => LVDS_N(7),
-        I     => sig_out_test(8)
-    );
-    
-    -- Misc outputs
-    
-    out_spare_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(3),
-        OB    => LVDS_N(3),
-        I     => sig_out_spare
-    ); 
-
-    out_rxgate_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(17),
-        OB    => LVDS_N(17),
-        I     => sig_out_rxgate
-    );
-
-    out_txgate_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(2),
-        OB    => LVDS_N(2),
-        I     => sig_out_txgate
-    );
-
-    out_sync_obuf : OBUFDS
-    port map (
-        O     => LVDS_P(16),
-        OB    => LVDS_N(16),
-        I     => sig_out_sync
-    );
-
-    --Unconnected in adjunct board
-    
-    spare_buf0 : OBUFDS
-    port map (
-        O     => LVDS_P(8),
-        OB    => LVDS_N(8),
-        I     => '0'
-    );
-    
-    spare_buf1 : OBUFDS
-    port map (
-        O     => LVDS_P(9),
-        OB    => LVDS_N(9),
-        I     => '0'
-    );
-
-    spare_buf2 : OBUFDS
-    port map (
-        O     => LVDS_P(10),
-        OB    => LVDS_N(10),
-        I     => '0'
-    );
-
-    spare_buf3 : OBUFDS
-    port map (
-        O     => LVDS_P(11),
-        OB    => LVDS_N(11),
-        I     => '0'
-    );
-
-    spare_buf4 : OBUFDS
-    port map (
-        O     => LVDS_P(12),
-        OB    => LVDS_N(12),
-        I     => '0'
-    );
-
-    spare_buf5 : OBUFDS
-    port map (
-        O     => LVDS_P(13),
-        OB    => LVDS_N(13),
-        I     => '0'
-    );
-
-    spare_buf6 : OBUFDS
-    port map (
-        O     => LVDS_P(14),
-        OB    => LVDS_N(14),
-        I     => '0'
-    );
-
-    spare_buf7 : OBUFDS
-    port map (
-        O     => LVDS_P(15),
-        OB    => LVDS_N(15),
-        I     => '0'
-    );    
-
-    -- INPUTS
-
-    in_tqs_ibuf : IBUFDS
-    port map (
-        I     => LVDS_P(1),
-        IB    => LVDS_N(1),
-        O     => sig_in_tqs
-    );
-    
-    in_pps_ibuf : IBUFDS
-    port map (
-        I     => LVDS_P(0),
-        IB    => LVDS_N(0),
-        O     => sig_in_pps
-    );
-
-    in_spare1_ibuf : IBUFDS
-    port map (
-        I     => LVDS_P(18),
-        IB    => LVDS_N(18),
-        O     => sig_in_spare1
-    );
-
-    in_spare2_ibbuf : IBUFDS
-    port map (
-        I     => LVDS_P(19),
-        IB    => LVDS_N(19),
-        O     => sig_in_spare2
-    );    
-
+    end process output_regs;
 
 end architecture p14_gpio;

@@ -34,7 +34,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2103091418"
+set Revision    "2104272203"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set Taxonomy    "/VIVADO_HLS_IP"
@@ -229,13 +229,13 @@ set Interfaces {
         port_prefix "pulse_metadata_V"
         has_tready "1"
         ports {
-            TDATA 816
+            TDATA 824
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "816"
-                Bits "816"
+                Width "824"
+                Bits "824"
                 Fields {
                     def {
                         Type "struct"
@@ -316,6 +316,11 @@ set Interfaces {
                         Type "integer unsigned"
                         Width "32"
                         Bits "32"
+                    }
+                    post_decimation {
+                        Type "integer unsigned"
+                        Width "8"
+                        Bits "8"
                     }
                     first_pulse_in_block {
                         Type "null"
@@ -1877,7 +1882,7 @@ ipx::archive_core [file join [pwd] $ZipFile] $core
 
 ## Generate XO file if kernel.xml file is dumped
 set enable_xo_gen 0
-set kernel_files {/home/apar/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_metadata_injector/hcr_metadata_injector.cpp}
+set kernel_files {/home/karboski/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_metadata_injector/hcr_metadata_injector.cpp}
 if {$enable_xo_gen} {
     set sdaccel_dir [file join [pwd] .. sdaccel]
     set db_dir [file join [pwd] .. .. .autopilot db]

@@ -1,164 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Root MajorVersion="0"
-		MinorVersion="33">
-	<CompositeFile CompositeFileTopName="user_block1"
-			CanBeSetAsTop="false"
-			CanDisplayChildGraph="true">
-		<Description>Composite Fileset</Description>
-		<Generation Name="SYNTHESIS"
-				State="RESET"
-				Timestamp="1616416190"/>
-		<Generation Name="IMPLEMENTATION"
-				State="RESET"
-				Timestamp="1616416190"/>
-		<Generation Name="SIMULATION"
-				State="RESET"
-				Timestamp="1616416190"/>
-		<FileCollection Name="SOURCES"
-				Type="SOURCES">
-			<File Name="ip/user_block1_px_s_axil_plc_hldr_0_0/user_block1_px_s_axil_plc_hldr_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="axilite_place_holder"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_xlconstant_0_0/user_block1_xlconstant_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="irq_placeholder"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_pdti_mod_0_0/user_block1_pdti_mod_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="pdti_mod_0"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_pdti_mod_0_2/user_block1_pdti_mod_0_2.xci"
-					Type="IP">
-				<Instance HierarchyPath="pdti_mod_1"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_pdti_mod_0_3/user_block1_pdti_mod_0_3.xci"
-					Type="IP">
-				<Instance HierarchyPath="pdti_mod_2"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_px_lvl_trans_xclk_0_0/user_block1_px_lvl_trans_xclk_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="dac_pulse/px_lvl_trans_xclk_0"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_pdti_dac_pulse_0_0/user_block1_pdti_dac_pulse_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="dac_pulse/pdti_dac_pulse_0"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_xlslice_0_0/user_block1_xlslice_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="dac_pulse/xlslice_0"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_xlconstant_0_1/user_block1_xlconstant_0_1.xci"
-					Type="IP">
-				<Instance HierarchyPath="dac_pulse/xlconstant_0"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_xlconstant_1_0/user_block1_xlconstant_1_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="dac_pulse/xlconstant_1"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-			<File Name="ip/user_block1_axis_subset_converter_0_0/user_block1_axis_subset_converter_0_0.xci"
-					Type="IP">
-				<Instance HierarchyPath="dac_pulse/axis_subset_converter_0"/>
-				<Properties IsEditable="false"
-						IsVisible="true"
-						Timestamp="0"
-						IsTrackable="true"
-						IsStatusTracked="true"/>
-				<Library Name="xil_defaultlib"/>
-				<UsedIn Val="SYNTHESIS"/>
-				<UsedIn Val="IMPLEMENTATION"/>
-				<UsedIn Val="SIMULATION"/>
-			</File>
-		</FileCollection>
-	</CompositeFile>
+<Root MajorVersion="0" MinorVersion="33">
+  <CompositeFile CompositeFileTopName="user_block1" CanBeSetAsTop="false" CanDisplayChildGraph="true">
+    <Description>Composite Fileset</Description>
+    <Generation Name="SYNTHESIS" State="RESET" Timestamp="1619571135"/>
+    <Generation Name="IMPLEMENTATION" State="RESET" Timestamp="1619571135"/>
+    <Generation Name="SIMULATION" State="RESET" Timestamp="1619571135"/>
+    <FileCollection Name="SOURCES" Type="SOURCES">
+      <File Name="ip/user_block1_px_s_axil_plc_hldr_0_0/user_block1_px_s_axil_plc_hldr_0_0.xci" Type="IP">
+        <Instance HierarchyPath="axilite_place_holder"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_xlconstant_0_0/user_block1_xlconstant_0_0.xci" Type="IP">
+        <Instance HierarchyPath="irq_placeholder"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_pdti_adc_tweak_0_0/user_block1_pdti_adc_tweak_0_0.xci" Type="IP">
+        <Instance HierarchyPath="pdti_adc_tweak_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_pdti_adc_tweak_0_1/user_block1_pdti_adc_tweak_0_1.xci" Type="IP">
+        <Instance HierarchyPath="pdti_adc_tweak_1"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_pdti_adc_tweak_0_2/user_block1_pdti_adc_tweak_0_2.xci" Type="IP">
+        <Instance HierarchyPath="pdti_adc_tweak_2"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_pdti_dac_pulse_0_0/user_block1_pdti_dac_pulse_0_0.xci" Type="IP">
+        <Instance HierarchyPath="dac/pdti_dac_pulse_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_px_lvl_trans_xclk_0_0/user_block1_px_lvl_trans_xclk_0_0.xci" Type="IP">
+        <Instance HierarchyPath="dac/px_lvl_trans_xclk_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_xlslice_0_0/user_block1_xlslice_0_0.xci" Type="IP">
+        <Instance HierarchyPath="dac/xlslice_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="ip/user_block1_vio_0_1/user_block1_vio_0_1.xci" Type="IP">
+        <Instance HierarchyPath="dac/vio_0"/>
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+    </FileCollection>
+  </CompositeFile>
 </Root>
