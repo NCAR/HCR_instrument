@@ -12,7 +12,8 @@ void hcr_controller(
 		uint8_t cfg_pulse_sequence_start_index,
 		uint8_t cfg_pulse_sequence_length,
 		volatile uint32_t* cfg_num_pulses_to_execute,
-		uint32_t cfg_decimation,
+		uint32_t cfg_total_decimation,
+		uint32_t cfg_post_decimation,
 		uint32_t cfg_num_pulses_per_xfer,
 		uint32_t cfg_enabled_channel_vector,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
@@ -39,7 +40,8 @@ void hcr_controller(
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence_start_index
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence_length
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_to_execute
-	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_decimation
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_total_decimation
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_post_decimation
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_per_xfer
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_enabled_channel_vector
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence
@@ -88,7 +90,8 @@ void hcr_controller(
 			cfg_pulse_sequence_start_index,
 			cfg_pulse_sequence_length,
 			cfg_num_pulses_to_execute,
-			cfg_decimation,
+			cfg_total_decimation,
+			cfg_post_decimation,
 			cfg_num_pulses_per_xfer,
 			cfg_enabled_channel_vector,
 			cfg_pulse_sequence,
@@ -124,7 +127,8 @@ void scheduler_parser(
 		uint32_t cfg_pulse_sequence_start_index,
 		uint32_t cfg_pulse_sequence_length,
 		volatile uint32_t* cfg_num_pulses_to_execute,
-		uint32_t cfg_decimation,
+		uint32_t cfg_total_decimation,
+		uint32_t cfg_post_decimation,
 		uint32_t cfg_num_pulses_per_xfer,
 		ap_uint<3> cfg_enabled_channel_vector,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
@@ -178,6 +182,7 @@ void scheduler_parser(
 				pulse.sequence_index = cfg_pulse_sequence_start_index + seq_idx;
 				pulse.first_pulse_in_block = (pulse_rep == 0);
 				pulse.last_pulse_in_block = (pulse_rep == (pulse_definition.num_pulses-1));
+				pulse.post_decimation = cfg_post_decimation;
 
 				//Only execute the post time on the final pulse in the block
 				if(!pulse.last_pulse_in_block)
@@ -195,7 +200,7 @@ void scheduler_parser(
 					uint32_t totalTime = pulse.def.timer_offset[mt] + pulse.def.timer_width[mt];
 					if(pulse.def.prt[0]<totalTime) totalTime = pulse.def.prt[0];
 					uint32_t startTime = pulse.def.timer_offset[mt];
-					uint32_t ns = (totalTime-startTime) / cfg_decimation;
+					uint32_t ns = (totalTime-startTime) / cfg_total_decimation;
 					if(ns==0) ns=1;
 					num_samples[ch] = ns;
 				}

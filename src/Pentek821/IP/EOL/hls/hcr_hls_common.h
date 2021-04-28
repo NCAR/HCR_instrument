@@ -64,6 +64,7 @@ struct pulse_exec_definition
 	pulse_definition def;
 	uint8_t sequence_index;
 	uint32_t num_samples;
+	uint8_t post_decimation;
 	bool first_pulse_in_block;
 	bool last_pulse_in_block;
 	bool first_pulse_in_xfer;

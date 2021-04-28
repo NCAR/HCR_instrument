@@ -6,4 +6,4 @@
 # ==============================================================
 
 
-/opt/Xilinx/Vivado_HLS/2017.2/../../Vivado/2017.2/bin/vivado  -notrace -mode batch -source ipi_example.tcl -tclargs xcku060-ffva1156-2-e ../NCAR_EOL_hcr_metadata_injector_1_0.zip
+/home/karboski/Xilinx/Vivado_HLS/2017.2/../../Vivado/2017.2/bin/vivado  -notrace -mode batch -source ipi_example.tcl -tclargs xcku060-ffva1156-2-e ../NCAR_EOL_hcr_metadata_injector_1_0.zip

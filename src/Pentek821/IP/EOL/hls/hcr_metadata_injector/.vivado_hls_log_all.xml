@@ -6,7 +6,7 @@
       <simLog/>
       <mgLog/>
       <packageLog>
-        <logs message="ERROR: [Common 17-356] Failed to install all user apps.&#xA;source run_ippack.tcl -notrace" projectName="hcr_metadata_injector" solutionName="solution1" date="2021-03-09T14:17:51.453+0000"/>
+        <logs message="ERROR: [Common 17-356] Failed to install all user apps.&#xA;source run_ippack.tcl -notrace" projectName="hcr_metadata_injector" solutionName="solution1" date="2021-04-27T22:03:01.934+0000"/>
       </packageLog>
       <csimLog/>
     </logs>

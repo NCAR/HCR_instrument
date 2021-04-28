@@ -18,10 +18,10 @@ port (
     ap_continue : IN STD_LOGIC;
     ap_idle : OUT STD_LOGIC;
     ap_ready : OUT STD_LOGIC;
-    in_V_dout : IN STD_LOGIC_VECTOR (812 downto 0);
+    in_V_dout : IN STD_LOGIC_VECTOR (820 downto 0);
     in_V_empty_n : IN STD_LOGIC;
     in_V_read : OUT STD_LOGIC;
-    out_V_TDATA : OUT STD_LOGIC_VECTOR (815 downto 0);
+    out_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
     out_V_TVALID : OUT STD_LOGIC;
     out_V_TREADY : IN STD_LOGIC );
 end;
@@ -43,7 +43,7 @@ architecture behav of output_fifo is
     constant ap_const_lv2_1 : STD_LOGIC_VECTOR (1 downto 0) := "01";
     constant ap_const_lv32_1 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000001";
     constant ap_const_lv32_2 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000010";
-    constant ap_const_lv32_32C : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100101100";
+    constant ap_const_lv32_334 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100110100";
 
     signal ap_done_reg : STD_LOGIC := '0';
     signal ap_CS_fsm : STD_LOGIC_VECTOR (2 downto 0) := "001";
@@ -51,13 +51,13 @@ architecture behav of output_fifo is
     attribute fsm_encoding of ap_CS_fsm : signal is "none";
     signal ap_CS_fsm_state1 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state1 : signal is "none";
-    signal out_V_1_data_out : STD_LOGIC_VECTOR (815 downto 0);
+    signal out_V_1_data_out : STD_LOGIC_VECTOR (823 downto 0);
     signal out_V_1_vld_in : STD_LOGIC;
     signal out_V_1_vld_out : STD_LOGIC;
     signal out_V_1_ack_in : STD_LOGIC;
     signal out_V_1_ack_out : STD_LOGIC;
-    signal out_V_1_payload_A : STD_LOGIC_VECTOR (815 downto 0);
-    signal out_V_1_payload_B : STD_LOGIC_VECTOR (815 downto 0);
+    signal out_V_1_payload_A : STD_LOGIC_VECTOR (823 downto 0);
+    signal out_V_1_payload_B : STD_LOGIC_VECTOR (823 downto 0);
     signal out_V_1_sel_rd : STD_LOGIC := '0';
     signal out_V_1_sel_wr : STD_LOGIC := '0';
     signal out_V_1_sel : STD_LOGIC;
@@ -72,11 +72,11 @@ architecture behav of output_fifo is
     signal pulse_terminate_fu_65_p3 : STD_LOGIC_VECTOR (0 downto 0);
     signal ap_CS_fsm_state3 : STD_LOGIC;
     attribute fsm_encoding of ap_CS_fsm_state3 : signal is "none";
-    signal cast_fu_85_p1 : STD_LOGIC_VECTOR (815 downto 0);
+    signal cast_fu_85_p1 : STD_LOGIC_VECTOR (823 downto 0);
     signal ap_block_state2 : BOOLEAN;
     signal ap_block_state2_io : BOOLEAN;
-    signal tmp_40_fu_73_p1 : STD_LOGIC_VECTOR (811 downto 0);
-    signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (812 downto 0);
+    signal tmp_40_fu_73_p1 : STD_LOGIC_VECTOR (819 downto 0);
+    signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (820 downto 0);
     signal ap_NS_fsm : STD_LOGIC_VECTOR (2 downto 0);
     signal ap_block_state1 : BOOLEAN;
 
@@ -256,7 +256,7 @@ begin
         end if; 
     end process;
 
-        cast_fu_85_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(tmp_1_fu_77_p3),816));
+        cast_fu_85_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(tmp_1_fu_77_p3),824));
 
 
     in_V_blk_n_assign_proc : process(in_V_empty_n, ap_CS_fsm_state2)
@@ -317,7 +317,7 @@ begin
     end process;
 
     out_V_TVALID <= out_V_1_state(0);
-    pulse_terminate_fu_65_p3 <= in_V_dout(812 downto 812);
+    pulse_terminate_fu_65_p3 <= in_V_dout(820 downto 820);
     tmp_1_fu_77_p3 <= (ap_const_lv1_0 & tmp_40_fu_73_p1);
-    tmp_40_fu_73_p1 <= in_V_dout(812 - 1 downto 0);
+    tmp_40_fu_73_p1 <= in_V_dout(820 - 1 downto 0);
 end behav;

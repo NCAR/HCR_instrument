@@ -1,0 +1,28 @@
+{
+   guistr: "# # String gsaved with Nlview 6.6.8  2016-12-21 bk=1.3817 VDI=40 GEI=35 GUI=JA:1.6
+#  -string -flagsOSRD
+preplace port s_axis_adc_pdti_aresetn -pg 1 -y 210 -defaultsOSRD
+preplace port s_axis_dac_pdti -pg 1 -y 50 -defaultsOSRD
+preplace port m_axis_dac_pdti -pg 1 -y 80 -defaultsOSRD
+preplace port s_axis_dac_pdti_aresetn -pg 1 -y 230 -defaultsOSRD
+preplace port s_axis_dac_pdti_aclk -pg 1 -y 270 -defaultsOSRD
+preplace port s_axis_adc_pdti_aclk -pg 1 -y 250 -defaultsOSRD
+preplace portBus mt_pulse -pg 1 -y 190 -defaultsOSRD
+preplace inst vio_d -pg 1 -lvl 3 -y 290 -defaultsOSRD
+preplace inst c1 -pg 1 -lvl 1 -y 90 -defaultsOSRD
+preplace inst clock_crossing_0 -pg 1 -lvl 2 -y 220 -defaultsOSRD
+preplace inst pdti_dac_pulse_0 -pg 1 -lvl 4 -y 80 -defaultsOSRD
+preplace netloc s_axis_tdata_1 1 0 2 NJ 190 200J
+preplace netloc s_axis_aclk_1 1 0 2 NJ 250 170J
+preplace netloc axis_data_fifo_0_m_axis_tdata 1 2 2 670 90 N
+preplace netloc const1_dout 1 1 2 200 100 660
+preplace netloc pdti_dac_pulse_0_M_AXIS_PDTI 1 4 1 N
+preplace netloc S_AXIS_1 1 0 4 -70J 30 NJ 30 NJ 30 NJ
+preplace netloc aresetn_1 1 0 4 NJ 230 180 70 NJ 70 NJ
+preplace netloc aclk_1 1 0 4 NJ 270 160 340 640J 50 NJ
+preplace netloc clock_crossing_0_m_axis_tvalid 1 2 1 650
+preplace netloc s_axis_aresetn_1 1 0 2 NJ 210 190J
+levelinfo -pg 1 -110 90 450 803 1143 1370 -top -20 -bot 370
+",
+}
+0

@@ -1,8 +1,8 @@
 --Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2017.2 (lin64) Build 1909853 Thu Jun 15 18:39:10 MDT 2017
---Date        : Fri Jan 22 18:25:59 2021
---Host        : apararchiver running 64-bit CentOS Linux release 8.0.1905 (Core)
+--Date        : Mon Apr 26 21:54:54 2021
+--Host        : wind running 64-bit unknown
 --Command     : generate_target data_acq_wrapper.bd
 --Design      : data_acq_wrapper
 --Purpose     : IP block netlist

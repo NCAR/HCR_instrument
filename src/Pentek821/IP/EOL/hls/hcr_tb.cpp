@@ -14,8 +14,9 @@ int main()
 	uint32_t cfg_pulse_sequence_start_index = 0;
 	uint32_t cfg_pulse_sequence_length = 2;
 	uint32_t cfg_num_pulses_to_execute = 24;
-	uint32_t cfg_decimation = 8;
-	uint32_t cfg_num_pulses_per_xfer = 7;
+	uint32_t cfg_total_decimation = 16;
+	uint32_t cfg_post_decimation = 2;
+	uint32_t cfg_num_pulses_per_xfer = 3;
 	uint32_t cfg_enabled_channel_vector = 7;
 	pulse_definition cfg_pulse_sequence[N_PULSE_DEFS] {};
 	bool sync_pulse = 1;
@@ -39,13 +40,13 @@ int main()
 	uint32_t pos_enc_1 = 0xF00DCAFE;
 	uint16_t flags = 1;
 
-	cfg_pulse_sequence[0].num_pulses = 3;
-	cfg_pulse_sequence[0].prt[0] = 100;
-	cfg_pulse_sequence[0].block_post_time = 5;
+	cfg_pulse_sequence[0].num_pulses = 4;
+	cfg_pulse_sequence[0].prt[0] = 128;
+	cfg_pulse_sequence[0].block_post_time = 0;
 	for(int t=0;t<N_TIMERS;++t)
 	{
-		cfg_pulse_sequence[0].timer_offset[t] = t*2;
-		cfg_pulse_sequence[0].timer_width[t] = 32;
+		cfg_pulse_sequence[0].timer_offset[t] = 0;
+		cfg_pulse_sequence[0].timer_width[t] = 10000;
 	}
 
 	cfg_pulse_sequence[1].num_pulses = 2;
@@ -61,11 +62,11 @@ int main()
 	for(int x=0; x<cfg_num_pulses_to_execute+1; ++x)
 	{
 
-		for(int k=0; k<20;k++)
+		for(int k=0; k<16;k++)
 		{
 			adc_data.data = 256*65536 + x*256 + k;
 			adc_data.user++;
-			adc_data.user[PDTI_SYNC] = (k==5);
+			adc_data.user[PDTI_SYNC] = (k==0);
 			i_data << adc_data;
 		}
 	}
@@ -89,7 +90,8 @@ int main()
 		cfg_pulse_sequence_start_index,
 		cfg_pulse_sequence_length,
 		&cfg_num_pulses_to_execute,
-		cfg_decimation,
+		cfg_total_decimation,
+		cfg_post_decimation,
 		cfg_num_pulses_per_xfer,
 		cfg_enabled_channel_vector,
 		cfg_pulse_sequence,
