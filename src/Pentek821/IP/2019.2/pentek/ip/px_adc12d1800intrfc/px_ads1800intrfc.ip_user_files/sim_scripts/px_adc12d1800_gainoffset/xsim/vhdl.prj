@@ -1,0 +1,4 @@
+vhdl xil_defaultlib  \
+"../../../../px_adc12d1800intrfc.srcs/sources_1/ip/px_adc12d1800_gainoffset/sim/px_adc12d1800_gainoffset.vhd" \
+
+nosort

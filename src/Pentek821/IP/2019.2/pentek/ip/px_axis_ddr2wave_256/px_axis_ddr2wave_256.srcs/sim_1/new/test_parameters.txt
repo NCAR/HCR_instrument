@@ -1,0 +1,25 @@
+1
+1
+true
+00000000
+00000020
+00000000
+80000000
+90000000
+80
+
+
+Parameters:
+    MODE_SEL                  : std_ulogic_vector(3 downto 0); --  0x0 = Gate Mode  --  0x1 = Trig Mode  --  0x2 = Trig Hold Mode
+    DATA_MODE_SEL             : std_ulogic_vector(3 downto 0);
+    STAY_ARMED                : boolean; -- false - don't stay armed at end of triggered gate, true - Stay armed at end of triggered gate
+    TRIGGER_DLY_VALUE         : std_ulogic_vector(31 downto 0); -- Value to load to delay counter (value)
+    TRIGGER_LENGTH_VALUE      : std_ulogic_vector(31 downto 0); -- Value to load to sample counter (value) 
+    OUTPUT_RATE_DIV           : std_ulogic_vector(31 downto 0); -- Output rate division (value + 1) 
+    DDR4_START_ADDRESS	      : std_ulogic_vector(31 downto 0);
+    DDR4_END_ADDRESS	      : std_ulogic_vector(31 downto 0); -- Last address before returning to start address
+    GATE_OUTPUT_DLY           : std_ulogic_vector(7 downto 0);	-- Clock cycles of delay from gate to data output to absorb DDR4 latency and burst behavior
+
+Enter logic vectors in hex format without 0x prefix -- example 0xC1234567 is entered C1234567.
+Enter logic vectors in hex format without 0x prefix -- example 0x3 is entered 3.
+Enter boolean values as true or false

@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2017.3_AR70218_AR69964 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Wed Jan 17 09:02:02 2018
+# Process ID: 5864
+# Current directory: C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11036 C:\Pentek\IP\2017.3\pentek\ip\px_dma_ppkt2pcie\px_dma_ppkt2pcie.xpr
+# Log file: C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie/vivado.log
+# Journal file: C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie/px_dma_ppkt2pcie.xpr
+report_ip_status -name ip_status 

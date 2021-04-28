@@ -1,0 +1,8 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release
+Version 1.1
+8/9/17 Added User Guide
+Version 1.2
+1/17/18 Fixed SYNC_EN bit to be bit 0 of control register

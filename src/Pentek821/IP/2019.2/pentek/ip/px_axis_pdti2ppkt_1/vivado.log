@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# Vivado v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:55:03 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Tue Jul 25 16:23:34 2017
+# Process ID: 10744
+# Current directory: C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent648 C:\Pentek\IP\2017.1\pentek\ip\px_axis_pdti2ppkt_1\px_axis_pdti2ppkt_1.xpr
+# Log file: C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1/vivado.log
+# Journal file: C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.xpr
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-3] IPUserFilesDir: Could not find the directory 'C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.ip_user_files'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.1/pentek'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Pentek/IP/2017.1/pentek' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.1/data/ip'.
+open_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:10 . Memory (MB): peak = 866.109 ; gain = 61.398
+update_compile_order -fileset sources_1
+close_project
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Jul 25 16:25:39 2017...

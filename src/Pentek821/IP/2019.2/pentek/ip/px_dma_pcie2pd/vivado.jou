@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# Vivado v2017.3_AR70218 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Wed Apr 11 11:07:14 2018
+# Process ID: 8720
+# Current directory: C:/Pentek/IP/2017.3/pentek/ip/px_dma_pcie2pd
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent2580 C:\Pentek\IP\2017.3\pentek\ip\px_dma_pcie2pd\px_dma_pcie2pd.xpr
+# Log file: C:/Pentek/IP/2017.3/pentek/ip/px_dma_pcie2pd/vivado.log
+# Journal file: C:/Pentek/IP/2017.3/pentek/ip/px_dma_pcie2pd\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.3/pentek/ip/px_dma_pcie2pd/px_dma_pcie2pd.xpr
+ipx::open_ipxact_file {C:\Pentek\IP\2017.3\pentek\ip\px_dma_pcie2pd\component.xml}
+set_property version 1.2 [ipx::current_core]
+set_property display_name px_dma_pcie2pd_v1_2 [ipx::current_core]
+set_property core_revision 16 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sun Jun  9 08:45:55 2019
+# Process ID: 5964
+# Current directory: C:/Pentek/IP/2019.1/pentek/ip/px_s_axil_plc_hldr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent10316 C:\Pentek\IP\2019.1\pentek\ip\px_s_axil_plc_hldr\px_s_axil_plc_hldr.xpr
+# Log file: C:/Pentek/IP/2019.1/pentek/ip/px_s_axil_plc_hldr/vivado.log
+# Journal file: C:/Pentek/IP/2019.1/pentek/ip/px_s_axil_plc_hldr\vivado.jou
+#-----------------------------------------------------------
+start_gui

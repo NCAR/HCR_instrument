@@ -1,0 +1,767 @@
+{
+  "Top": "hcr_metadata_injector",
+  "RtlTop": "hcr_metadata_injector",
+  "RtlPrefix": "",
+  "SourceLanguage": "cpp",
+  "ResetStyle": "control",
+  "GenerateBdFiles": "1",
+  "HostMachineBits": "64",
+  "Target": {
+    "Family": "kintexu",
+    "Device": "xcku060",
+    "Package": "-ffva1156",
+    "Speed": "-2-e"
+  },
+  "HlsSolution": {"Config": [
+      "config_sdx -optimization_level=none",
+      "config_sdx -target=none",
+      "config_export -vivado_optimization_level=2",
+      "config_export -description {Adds metadata to a PDTI stream in front of each pulse}",
+      "config_export -format=ip_catalog",
+      "config_export -library=EOL",
+      "config_export -rtl=vhdl",
+      "config_export -vendor=NCAR"
+    ]},
+  "Args": {
+    "i_data": {
+      "index": "0",
+      "type": {
+        "kinds": ["struct"],
+        "dataType": "ap_axiu<32, 128, 1, 1>",
+        "structImpl": "flat-field",
+        "dataPack": true,
+        "fields": {
+          "data": {
+            "order": "0",
+            "dataType": "ap_uint"
+          },
+          "keep": {
+            "order": "1",
+            "dataType": "ap_uint"
+          },
+          "strb": {
+            "order": "2",
+            "dataType": "ap_uint"
+          },
+          "user": {
+            "order": "3",
+            "dataType": "ap_uint"
+          },
+          "last": {
+            "order": "4",
+            "dataType": "ap_uint"
+          },
+          "id": {
+            "order": "5",
+            "dataType": "ap_uint"
+          },
+          "dest": {
+            "order": "6",
+            "dataType": "ap_uint"
+          }
+        }
+      }
+    },
+    "o_data": {
+      "index": "1",
+      "type": {
+        "kinds": ["struct"],
+        "dataType": "ap_axiu<32, 128, 1, 1>",
+        "structImpl": "flat-field",
+        "dataPack": true,
+        "fields": {
+          "data": {
+            "order": "0",
+            "dataType": "ap_uint"
+          },
+          "keep": {
+            "order": "1",
+            "dataType": "ap_uint"
+          },
+          "strb": {
+            "order": "2",
+            "dataType": "ap_uint"
+          },
+          "user": {
+            "order": "3",
+            "dataType": "ap_uint"
+          },
+          "last": {
+            "order": "4",
+            "dataType": "ap_uint"
+          },
+          "id": {
+            "order": "5",
+            "dataType": "ap_uint"
+          },
+          "dest": {
+            "order": "6",
+            "dataType": "ap_uint"
+          }
+        }
+      }
+    },
+    "pulse_metadata": {
+      "index": "2",
+      "type": {
+        "kinds": ["struct"],
+        "dataType": "pulse_exec_definition",
+        "portRef": "TDATA",
+        "structImpl": "interface",
+        "dataPack": true,
+        "fields": {
+          "def": {
+            "order": "0",
+            "kinds": ["struct"],
+            "dataType": "pulse_definition",
+            "fields": {
+              "prt": {
+                "order": "0",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["2"]
+              },
+              "num_pulses": {
+                "order": "1",
+                "dataType": "unsigned"
+              },
+              "block_post_time": {
+                "order": "2",
+                "dataType": "unsigned"
+              },
+              "control_flags": {
+                "order": "3",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch0": {
+                "order": "4",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch1": {
+                "order": "5",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch2": {
+                "order": "6",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "7",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["8"]
+              },
+              "timer_width": {
+                "order": "8",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["8"]
+              }
+            }
+          },
+          "sequence_index": {
+            "order": "1",
+            "dataType": "unsigned"
+          },
+          "num_samples": {
+            "order": "2",
+            "dataType": "unsigned"
+          },
+          "post_decimation": {
+            "order": "3",
+            "dataType": "unsigned"
+          },
+          "first_pulse_in_block": {
+            "order": "4",
+            "dataType": "bool"
+          },
+          "last_pulse_in_block": {
+            "order": "5",
+            "dataType": "bool"
+          },
+          "first_pulse_in_xfer": {
+            "order": "6",
+            "dataType": "bool"
+          },
+          "last_pulse_in_xfer": {
+            "order": "7",
+            "dataType": "bool"
+          },
+          "terminate": {
+            "order": "8",
+            "dataType": "bool"
+          }
+        }
+      }
+    },
+    "pos_enc_0": {
+      "index": "3",
+      "type": {
+        "kinds": ["pointer"],
+        "dataType": "unsigned",
+        "dataWidth": "32",
+        "interfaceRef": "pos_enc_0"
+      }
+    },
+    "pos_enc_1": {
+      "index": "4",
+      "type": {
+        "kinds": ["pointer"],
+        "dataType": "unsigned",
+        "dataWidth": "32",
+        "interfaceRef": "pos_enc_1"
+      }
+    },
+    "flags": {
+      "index": "5",
+      "type": {
+        "kinds": ["pointer"],
+        "dataType": "unsigned",
+        "dataWidth": "16",
+        "interfaceRef": "flags"
+      }
+    }
+  },
+  "Return": {
+    
+  },
+  "ClockInfo": {
+    "ClockName": "ap_clk",
+    "ClockPeriod": "5",
+    "IsCombLogic": "0",
+    "II": "x",
+    "Latency": "undef",
+    "Uncertainty": "2"
+  },
+  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 5.000 [get_ports ap_clk]"]},
+  "Ipx": {
+    "Vendor": "NCAR",
+    "Library": "EOL",
+    "Name": "hcr_metadata_injector",
+    "Version": "1.0",
+    "DisplayName": "Hcr_metadata_injector",
+    "Revision": "",
+    "Description": "Adds metadata to a PDTI stream in front of each pulse",
+    "Taxonomy": "\/VIVADO_HLS_IP",
+    "AutoFamilySupport": ""
+  },
+  "Files": {
+    "CSource": ["..\/hcr_metadata_injector.cpp"],
+    "Vhdl": [
+      "impl\/vhdl\/handle_header.vhd",
+      "impl\/vhdl\/regslice_core.vhd",
+      "impl\/vhdl\/hcr_metadata_injector.vhd"
+    ],
+    "Verilog": [
+      "impl\/verilog\/handle_header.v",
+      "impl\/verilog\/regslice_core.v",
+      "impl\/verilog\/hcr_metadata_injector.v"
+    ],
+    "Misc": ["impl\/misc\/logo.png"],
+    "DesignXml": "\/home\/karboski\/git\/HCR_instrument\/src\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.autopilot\/db\/hcr_metadata_injector.design.xml",
+    "DebugDir": "\/home\/karboski\/git\/HCR_instrument\/src\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.debug",
+    "ProtoInst": ["\/home\/karboski\/git\/HCR_instrument\/src\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.debug\/hcr_metadata_injector.protoinst"]
+  },
+  "SubcoreInfo": {
+    "HasXpmMemory": false,
+    "HasClockedDsp": false,
+    "IP": []
+  },
+  "Interfaces": {
+    "ap_clk": {
+      "type": "clock",
+      "ctype": {"CLK": {"Type": "bool"}},
+      "bundle_name": "ap_clk",
+      "bundle_role": "default",
+      "buses": "i_data o_data pulse_metadata_V",
+      "reset": "ap_rst_n"
+    },
+    "ap_ctrl": {
+      "type": "ap_ctrl",
+      "ctrl_ports": "ap_start ap_done ap_idle ap_ready",
+      "ctype": {
+        "start": {"Type": "bool"},
+        "done": {"Type": "bool"},
+        "idle": {"Type": "bool"},
+        "ready": {"Type": "bool"}
+      }
+    },
+    "ap_rst_n": {
+      "type": "reset",
+      "polarity": "ACTIVE_LOW",
+      "ctype": {"RST": {"Type": "bool"}},
+      "bundle_name": "ap_rst_n",
+      "bundle_role": "default"
+    },
+    "flags": {
+      "type": "data",
+      "dir": "in",
+      "width": "16",
+      "ctype": {"DATA": {
+          "Type": "integer unsigned",
+          "Width": "16"
+        }},
+      "bundle_name": "flags",
+      "bundle_role": "default"
+    },
+    "i_data": {
+      "type": "axi4stream",
+      "mode": "slave",
+      "port_prefix": "i_data",
+      "has_tready": "1",
+      "ctype": {
+        "TDATA": {
+          "Type": "integer unsigned",
+          "Width": "32"
+        },
+        "TVALID": {"Type": "bool"},
+        "TREADY": {"Type": "bool"},
+        "TDEST": {
+          "Type": "integer unsigned",
+          "Width": "1"
+        },
+        "TKEEP": {
+          "Type": "integer unsigned",
+          "Width": "4"
+        },
+        "TSTRB": {
+          "Type": "integer unsigned",
+          "Width": "4"
+        },
+        "TUSER": {
+          "Type": "integer unsigned",
+          "Width": "128"
+        },
+        "TLAST": {
+          "Type": "integer unsigned",
+          "Width": "1"
+        },
+        "TID": {
+          "Type": "integer unsigned",
+          "Width": "1"
+        }
+      },
+      "port_width": {
+        "TDATA": "32",
+        "TDEST": "1",
+        "TID": "1",
+        "TKEEP": "4",
+        "TLAST": "1",
+        "TSTRB": "4",
+        "TUSER": "128"
+      }
+    },
+    "o_data": {
+      "type": "axi4stream",
+      "mode": "master",
+      "port_prefix": "o_data",
+      "has_tready": "1",
+      "ctype": {
+        "TDATA": {
+          "Type": "integer unsigned",
+          "Width": "32"
+        },
+        "TVALID": {"Type": "bool"},
+        "TREADY": {"Type": "bool"},
+        "TDEST": {
+          "Type": "integer unsigned",
+          "Width": "1"
+        },
+        "TKEEP": {
+          "Type": "integer unsigned",
+          "Width": "4"
+        },
+        "TSTRB": {
+          "Type": "integer unsigned",
+          "Width": "4"
+        },
+        "TUSER": {
+          "Type": "integer unsigned",
+          "Width": "128"
+        },
+        "TLAST": {
+          "Type": "integer unsigned",
+          "Width": "1"
+        },
+        "TID": {
+          "Type": "integer unsigned",
+          "Width": "1"
+        }
+      },
+      "port_width": {
+        "TDATA": "32",
+        "TDEST": "1",
+        "TID": "1",
+        "TKEEP": "4",
+        "TLAST": "1",
+        "TSTRB": "4",
+        "TUSER": "128"
+      }
+    },
+    "pos_enc_0": {
+      "type": "data",
+      "dir": "in",
+      "width": "32",
+      "ctype": {"DATA": {
+          "Type": "integer unsigned",
+          "Width": "32"
+        }},
+      "bundle_name": "pos_enc_0",
+      "bundle_role": "default"
+    },
+    "pos_enc_1": {
+      "type": "data",
+      "dir": "in",
+      "width": "32",
+      "ctype": {"DATA": {
+          "Type": "integer unsigned",
+          "Width": "32"
+        }},
+      "bundle_name": "pos_enc_1",
+      "bundle_role": "default"
+    },
+    "pulse_metadata_V": {
+      "type": "axi4stream",
+      "mode": "slave",
+      "port_prefix": "pulse_metadata_V",
+      "has_tready": "1",
+      "ctype": {
+        "TDATA": {
+          "Type": "struct",
+          "Width": "824",
+          "Fields": {
+            "def": {
+              "Type": "struct",
+              "Width": "768",
+              "Fields": {
+                "prt": {
+                  "Type": "array",
+                  "Width": "64",
+                  "Dimension": "2",
+                  "Element": {
+                    "Type": "integer unsigned",
+                    "Width": "32"
+                  }
+                },
+                "num_pulses": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "block_post_time": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "control_flags": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "filter_select_ch0": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "filter_select_ch1": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "filter_select_ch2": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "timer_offset": {
+                  "Type": "array",
+                  "Width": "256",
+                  "Dimension": "8",
+                  "Element": {
+                    "Type": "integer unsigned",
+                    "Width": "32"
+                  }
+                },
+                "timer_width": {
+                  "Type": "array",
+                  "Width": "256",
+                  "Dimension": "8",
+                  "Element": {
+                    "Type": "integer unsigned",
+                    "Width": "32"
+                  }
+                }
+              }
+            },
+            "sequence_index": {
+              "Type": "integer unsigned",
+              "Width": "8"
+            },
+            "num_samples": {
+              "Type": "integer unsigned",
+              "Width": "32"
+            },
+            "post_decimation": {
+              "Type": "integer unsigned",
+              "Width": "8"
+            },
+            "first_pulse_in_block": {
+              "Type": "null",
+              "Width": "1"
+            },
+            "last_pulse_in_block": {
+              "Type": "null",
+              "Width": "1"
+            },
+            "first_pulse_in_xfer": {
+              "Type": "null",
+              "Width": "1"
+            },
+            "last_pulse_in_xfer": {
+              "Type": "null",
+              "Width": "1"
+            },
+            "terminate": {
+              "Type": "null",
+              "Width": "1",
+              "Bits": "4"
+            }
+          }
+        },
+        "TVALID": {"Type": "bool"},
+        "TREADY": {"Type": "bool"}
+      },
+      "port_width": {"TDATA": "824"}
+    }
+  },
+  "RtlPorts": {
+    "ap_clk": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_rst_n": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_start": {
+      "dir": "in",
+      "width": "1"
+    },
+    "ap_done": {
+      "dir": "out",
+      "width": "1"
+    },
+    "ap_idle": {
+      "dir": "out",
+      "width": "1"
+    },
+    "ap_ready": {
+      "dir": "out",
+      "width": "1"
+    },
+    "i_data_TDATA": {
+      "dir": "in",
+      "width": "32"
+    },
+    "i_data_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "i_data_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "i_data_TDEST": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "i_data_TKEEP": {
+      "dir": "in",
+      "width": "4"
+    },
+    "i_data_TSTRB": {
+      "dir": "in",
+      "width": "4"
+    },
+    "i_data_TUSER": {
+      "dir": "in",
+      "width": "128"
+    },
+    "i_data_TLAST": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "i_data_TID": {
+      "dir": "in",
+      "width": "1",
+      "isVector": "true"
+    },
+    "o_data_TDATA": {
+      "dir": "out",
+      "width": "32"
+    },
+    "o_data_TVALID": {
+      "dir": "out",
+      "width": "1"
+    },
+    "o_data_TREADY": {
+      "dir": "in",
+      "width": "1"
+    },
+    "o_data_TDEST": {
+      "dir": "out",
+      "width": "1",
+      "isVector": "true"
+    },
+    "o_data_TKEEP": {
+      "dir": "out",
+      "width": "4"
+    },
+    "o_data_TSTRB": {
+      "dir": "out",
+      "width": "4"
+    },
+    "o_data_TUSER": {
+      "dir": "out",
+      "width": "128"
+    },
+    "o_data_TLAST": {
+      "dir": "out",
+      "width": "1",
+      "isVector": "true"
+    },
+    "o_data_TID": {
+      "dir": "out",
+      "width": "1",
+      "isVector": "true"
+    },
+    "pulse_metadata_V_TDATA": {
+      "dir": "in",
+      "width": "824"
+    },
+    "pulse_metadata_V_TVALID": {
+      "dir": "in",
+      "width": "1"
+    },
+    "pulse_metadata_V_TREADY": {
+      "dir": "out",
+      "width": "1"
+    },
+    "pos_enc_0": {
+      "dir": "in",
+      "width": "32"
+    },
+    "pos_enc_1": {
+      "dir": "in",
+      "width": "32"
+    },
+    "flags": {
+      "dir": "in",
+      "width": "16"
+    }
+  },
+  "ModuleInfo": {
+    "Hierarchy": {
+      "ModuleName": "hcr_metadata_injector",
+      "Instances": [{
+          "ModuleName": "handle_header",
+          "InstanceName": "grp_handle_header_fu_175"
+        }]
+    },
+    "Info": {
+      "handle_header": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "1",
+        "isPipelined": "0",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "hcr_metadata_injector": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "1",
+        "isPipelined": "0",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      }
+    },
+    "Metrics": {
+      "handle_header": {
+        "Latency": {
+          "LatencyBest": "",
+          "LatencyAvg": "",
+          "LatencyWorst": "",
+          "PipelineII": "",
+          "PipelineDepth": "",
+          "PipelineType": "none"
+        },
+        "Timing": {
+          "Target": "5.00",
+          "Uncertainty": "2.00",
+          "Estimate": "1.955"
+        },
+        "Loops": [
+          {
+            "Name": "Loop 1",
+            "TripCount": "",
+            "Latency": "",
+            "PipelineII": "1",
+            "PipelineDepth": "2"
+          },
+          {
+            "Name": "write_header",
+            "TripCount": "8",
+            "Latency": "8",
+            "PipelineII": "1",
+            "PipelineDepth": "2"
+          }
+        ],
+        "Area": {
+          "FF": "1172",
+          "LUT": "718",
+          "BRAM_18K": "0",
+          "DSP48E": "0",
+          "URAM": "0"
+        }
+      },
+      "hcr_metadata_injector": {
+        "Latency": {
+          "LatencyBest": "",
+          "LatencyAvg": "",
+          "LatencyWorst": "",
+          "PipelineII": "",
+          "PipelineDepth": "",
+          "PipelineType": "none"
+        },
+        "Timing": {
+          "Target": "5.00",
+          "Uncertainty": "2.00",
+          "Estimate": "2.845"
+        },
+        "Loops": [{
+            "Name": "sample_loop",
+            "TripCount": "",
+            "Latency": "",
+            "PipelineII": "",
+            "PipelineDepth": ""
+          }],
+        "Area": {
+          "FF": "1599",
+          "LUT": "1132",
+          "BRAM_18K": "0",
+          "DSP48E": "0",
+          "URAM": "0"
+        }
+      }
+    }
+  },
+  "Sdx": {
+    "Target": "none",
+    "ProfileOption": "0",
+    "ProfileType": "none",
+    "XO": "",
+    "KernelName": "hcr_metadata_injector",
+    "EnableXoSwEmu": "1"
+  },
+  "GenData": {
+    "DataVersion": "0.2",
+    "Time": "2021-04-28 12:50:41 GMT",
+    "ToolName": "vivado_hls",
+    "ToolVersion": "2019.2"
+  }
+}

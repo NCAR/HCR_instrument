@@ -5,15 +5,16 @@
       <synLog/>
       <simLog/>
       <mgLog/>
-      <packageLog>
-        <logs message="ERROR: [Common 17-356] Failed to install all user apps.&#xA;source run_ippack.tcl -notrace" projectName="hcr_metadata_injector" solutionName="solution1" date="2021-04-27T22:03:01.934+0000"/>
-      </packageLog>
+      <packageLog/>
       <csimLog/>
     </logs>
   </errorLogs>
   <warningLogs>
     <logs>
-      <synLog/>
+      <synLog>
+        <logs message="WARNING: [HLS 200-484] The 'config_sdx -optimization_level' command is deprecated and will be removed in a future release." projectName="hcr_metadata_injector" solutionName="solution1" date="2021-04-28T12:49:18.131+0000" type="Warning"/>
+        <logs message="WARNING: [HLS 200-483] The 'config_sdx -optimization_level' command is deprecated and will be removed in a future release. Use 'config_export -vivado_optimization_level' as its replacement." projectName="hcr_metadata_injector" solutionName="solution1" date="2021-04-28T12:49:18.127+0000" type="Warning"/>
+      </synLog>
       <simLog/>
       <mgLog/>
       <packageLog/>

@@ -1,0 +1,47 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.702416",
+   "Default View_TopLeft":"-189,-74",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
+#  -string -flagsOSRD
+preplace port s_axi_csr -pg 1 -lvl 0 -x 0 -y 120 -defaultsOSRD
+preplace port s_axis_pdti -pg 1 -lvl 0 -x 0 -y 420 -defaultsOSRD
+preplace port m_axis_pcie_rq -pg 1 -lvl 5 -x 1350 -y 240 -defaultsOSRD
+preplace port s_axis_cntl -pg 1 -lvl 0 -x 0 -y 60 -defaultsOSRD
+preplace port s_axi_csr_aclk -pg 1 -lvl 0 -x 0 -y 140 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -lvl 0 -x 0 -y 160 -defaultsOSRD
+preplace port flowcntl_irq -pg 1 -lvl 5 -x 1350 -y 120 -defaultsOSRD
+preplace port dma_irq -pg 1 -lvl 5 -x 1350 -y 260 -defaultsOSRD
+preplace port fifo_full_stat -pg 1 -lvl 5 -x 1350 -y 280 -defaultsOSRD
+preplace port s_axis_pdti_aclk -pg 1 -lvl 0 -x 0 -y 480 -defaultsOSRD
+preplace port s_axis_pdti_aresetn -pg 1 -lvl 0 -x 0 -y 500 -defaultsOSRD
+preplace inst axi_interc -pg 1 -lvl 1 -x 180 -y 240 -defaultsOSRD
+preplace inst blk_mem_gen_0 -pg 1 -lvl 3 -x 840 -y 460 -defaultsOSRD
+preplace inst acq_flowcntl -pg 1 -lvl 3 -x 840 -y 110 -defaultsOSRD
+preplace inst pretrig_dly -pg 1 -lvl 2 -x 500 -y 450 -defaultsOSRD
+preplace inst dma_ppkt2pcie -pg 1 -lvl 4 -x 1170 -y 260 -defaultsOSRD
+preplace netloc s_axi_csr_aclk_1 1 0 4 30 430 350 260 660 260 NJ
+preplace netloc s_axi_csr_aresetn_1 1 0 4 20 440 330 280 680 280 1000
+preplace netloc acq_flowcntl_irq 1 3 2 NJ 120 NJ
+preplace netloc dma_ppkt2pcie_irq 1 4 1 NJ 260
+preplace netloc dma_ppkt2pcie_fifo_full_led 1 4 1 NJ 280
+preplace netloc s_axis_pdti_aclk_1 1 0 4 NJ 480 350 560 670 320 NJ
+preplace netloc s_axis_pdti_aresetn_1 1 0 4 NJ 500 330 570 690 530 1000J
+preplace netloc dma_ppkt2pcie_m_axis_pcie_rq 1 4 1 NJ 240
+preplace netloc axi_interconnect_0_M01_AXI 1 1 3 NJ 230 NJ 230 990
+preplace netloc acq_flowcntl_m_axis_ppkt 1 3 1 1000 100n
+preplace netloc axi_interconnect_0_M02_AXI 1 1 3 NJ 250 NJ 250 1010
+preplace netloc s_axis_pdti_1 1 0 2 NJ 420 NJ
+preplace netloc axi_interconnect_0_M00_AXI 1 1 2 350 60 NJ
+preplace netloc pretrig_dly_bram_wrport 1 2 1 N 450
+preplace netloc pretrig_dly_m_axis_pdti 1 2 1 650 80n
+preplace netloc s_axis_cntl_1 1 0 4 NJ 60 340J 220 NJ 220 NJ
+preplace netloc s_axi_csr_1 1 0 1 NJ 120
+preplace netloc pretrig_dly_bram_rdport 1 2 1 N 470
+preplace netloc axi_interc_M03_AXI 1 1 1 340 270n
+levelinfo -pg 1 0 180 500 840 1170 1350
+pagesize -pg 1 -db -bbox -sgen -190 0 1510 580
+"
+}
+0

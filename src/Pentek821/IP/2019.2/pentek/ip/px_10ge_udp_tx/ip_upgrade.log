@@ -1,0 +1,970 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:28 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:28 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:28 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_axil_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_axil_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 23) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:27 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_out_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_out_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:26 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_multi8'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_multi8 (xilinx.com:ip:mult_gen:12.0) from (Rev. 15) to (Rev. 16)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:26 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_in_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_in_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:25 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_count_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_count_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:24 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_checksum_adder'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_checksum_adder (xilinx.com:ip:c_addsub:12.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
+| Date         : Tue Dec 17 16:48:24 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'ethernet_core'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of ethernet_core (xilinx.com:ip:axi_10g_ethernet:3.1) from (Rev. 11) to (Rev. 12)
+
+2. Upgrade messages
+-------------------
+
+Removed parameter vu_gt_type
+Added parameter vu_gt_type with value GTH (source 'default')
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:26 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:26 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:26 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_axil_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_axil_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 22) to (Rev. 23)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:26 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_out_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_out_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:25 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_multi8'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_multi8 (xilinx.com:ip:mult_gen:12.0) from (Rev. 14) to (Rev. 15)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:25 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_in_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_in_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:24 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_count_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_count_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 3) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:23 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_checksum_adder'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_checksum_adder (xilinx.com:ip:c_addsub:12.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Dec  3 16:48:23 2019
+| Host         : DESKTOP-A2UUJ55 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'ethernet_core'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of ethernet_core (xilinx.com:ip:axi_10g_ethernet:3.1) from (Rev. 10) to (Rev. 11)
+
+2. Upgrade messages
+-------------------
+
+Removed parameter vu_gt_type
+Added parameter vu_gt_type with value GTH (source 'default')
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:33 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 9) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:33 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 9) to (Rev. 10)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:32 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_axil_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_axil_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 21) to (Rev. 22)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:32 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_out_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_out_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:30 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_in_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_in_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:29 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_count_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_count_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 3)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:27 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_checksum_adder'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of px_10ge_udp_tx_checksum_adder (xilinx.com:ip:c_addsub:12.0 (Rev. 12)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri Dec 14 09:22:26 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'ethernet_core'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of ethernet_core (xilinx.com:ip:axi_10g_ethernet:3.1) from (Rev. 8) to (Rev. 10)
+
+2. Upgrade messages
+-------------------
+
+Removed parameter vu_gt_type
+Added parameter vu_gt_type with value GTH (source 'default')
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:45 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 7) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:45 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 7) to (Rev. 9)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:44 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_axil_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_axil_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 19) to (Rev. 21)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:44 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_out_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_out_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:43 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_multi8'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_multi8 (xilinx.com:ip:mult_gen:12.0) from (Rev. 13) to (Rev. 14)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:42 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_in_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_in_pkt_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:41 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_count_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_count_fifo (xilinx.com:ip:fifo_generator:13.2) to (Rev. 2)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:40 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_checksum_adder'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_checksum_adder (xilinx.com:ip:c_addsub:12.0) from (Rev. 11) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue May  1 08:37:39 2018
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'ethernet_core'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of ethernet_core (xilinx.com:ip:axi_10g_ethernet:3.1) from (Rev. 6) to (Rev. 8)
+
+2. Upgrade messages
+-------------------
+
+Removed parameter vu_gt_type
+Added parameter vu_gt_type with value GTH (source 'default')
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:30 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync_intr (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 6) to (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:30 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_xpm_cdc_bus_sync'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_xpm_cdc_bus_sync (pentek.com:px_ip:px_xpm_cdc_bus_sync:1.1) from (Rev. 6) to (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:30 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_px_axil_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_px_axil_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:30 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_out_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_out_pkt_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:28 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_multi8'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_multi8 (xilinx.com:ip:mult_gen:12.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:27 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_in_pkt_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_in_pkt_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:26 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_count_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_count_fifo from xilinx.com:ip:fifo_generator:13.1 (Rev. 4) to xilinx.com:ip:fifo_generator:13.2
+
+2. Upgrade messages
+-------------------
+
+WARNING: upgrade cannot get value of option ARCHITECTURE : there is no project option called ARCHITECTURE
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+WARNING: there are only case-insensitive matches Reset_Pin for parameter RESET_PIN
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:24 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_10ge_udp_tx_checksum_adder'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_10ge_udp_tx_checksum_adder (xilinx.com:ip:c_addsub:12.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2017.3 (win64) Build 2018833 Wed Oct  4 19:58:22 MDT 2017
+| Date         : Fri Nov  3 13:29:23 2017
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'ethernet_core'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of ethernet_core (xilinx.com:ip:axi_10g_ethernet:3.1) from (Rev. 5) to (Rev. 6)
+
+2. Upgrade messages
+-------------------
+
+Removed parameter vu_gt_type
+Added parameter vu_gt_type with value GTH (source 'default')
+

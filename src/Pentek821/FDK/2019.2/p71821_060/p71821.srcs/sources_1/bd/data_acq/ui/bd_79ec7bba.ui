@@ -1,0 +1,177 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.260209",
+   "Default View_TopLeft":"-569,8",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
+#  -string -flagsOSRD
+preplace port s_axi_csr -pg 1 -lvl 0 -x 0 -y 560 -defaultsOSRD
+preplace port s_axis_adc_ch0_pdti -pg 1 -lvl 0 -x 0 -y 80 -defaultsOSRD
+preplace port s_axis_adc_ch1_pdti -pg 1 -lvl 0 -x 0 -y 300 -defaultsOSRD
+preplace port s_axis_adc_ch2_pdti -pg 1 -lvl 0 -x 0 -y 500 -defaultsOSRD
+preplace port s_axis_dac_pctl -pg 1 -lvl 0 -x 0 -y 1740 -defaultsOSRD
+preplace port s_axis_dma_pcie_cntl -pg 1 -lvl 0 -x 0 -y 970 -defaultsOSRD
+preplace port m_axis_pcie_rq -pg 1 -lvl 9 -x 3390 -y 940 -defaultsOSRD
+preplace port s_axis_pcie_rc -pg 1 -lvl 0 -x 0 -y 1170 -defaultsOSRD
+preplace port m_axis_ddr_rqst -pg 1 -lvl 9 -x 3390 -y 1770 -defaultsOSRD
+preplace port s_axis_wave_ddr_rsp -pg 1 -lvl 0 -x 0 -y 1650 -defaultsOSRD
+preplace port m_axis_dac_pdti -pg 1 -lvl 9 -x 3390 -y 1140 -defaultsOSRD
+preplace port s_axi_csr_aclk -pg 1 -lvl 0 -x 0 -y 580 -defaultsOSRD
+preplace port s_axi_csr_aresetn -pg 1 -lvl 0 -x 0 -y 600 -defaultsOSRD
+preplace port s_axis_adc_pdti_aclk -pg 1 -lvl 0 -x 0 -y 320 -defaultsOSRD
+preplace port s_axis_adc_pdti_aresetn -pg 1 -lvl 0 -x 0 -y 340 -defaultsOSRD
+preplace port shutdown_rqst -pg 1 -lvl 0 -x 0 -y 1670 -defaultsOSRD
+preplace port rq_shutdown_ok -pg 1 -lvl 9 -x 3390 -y 1890 -defaultsOSRD
+preplace port adc0_fifo_full_stat -pg 1 -lvl 9 -x 3390 -y 30 -defaultsOSRD
+preplace port realtime_lost_stat -pg 1 -lvl 9 -x 3390 -y 1620 -defaultsOSRD
+preplace port s_axis_dac_pdti_aclk -pg 1 -lvl 0 -x 0 -y 1760 -defaultsOSRD
+preplace port s_axis_dac_pdti_aresetn -pg 1 -lvl 0 -x 0 -y 1780 -defaultsOSRD
+preplace port adc1_fifo_full_stat -pg 1 -lvl 9 -x 3390 -y 50 -defaultsOSRD
+preplace port adc2_fifo_full_stat -pg 1 -lvl 9 -x 3390 -y 70 -defaultsOSRD
+preplace port ddr4_ui_clk -pg 1 -lvl 0 -x 0 -y 1520 -defaultsOSRD
+preplace portBus pcie_dma_irq -pg 1 -lvl 9 -x 3390 -y 610 -defaultsOSRD
+preplace portBus pdti2ppkt_irq -pg 1 -lvl 9 -x 3390 -y 790 -defaultsOSRD
+preplace inst adc_ch0_acq -pg 1 -lvl 3 -x 1040 -y 120 -defaultsOSRD -resize 240 208
+preplace inst dac_ch1_acq -pg 1 -lvl 3 -x 1040 -y 1390 -defaultsOSRD
+preplace inst dac_ch0_acq -pg 1 -lvl 3 -x 1040 -y 1140 -defaultsOSRD
+preplace inst adc_ch1_acq -pg 1 -lvl 3 -x 1040 -y 340 -defaultsOSRD
+preplace inst adc_ch2_acq -pg 1 -lvl 3 -x 1040 -y 550 -defaultsOSRD
+preplace inst rtlost_or -pg 1 -lvl 8 -x 3210 -y 1620 -defaultsOSRD
+preplace inst irq_concat -pg 1 -lvl 8 -x 3210 -y 610 -defaultsOSRD
+preplace inst axi_interct0 -pg 1 -lvl 1 -x 190 -y 720 -defaultsOSRD
+preplace inst axi_interct1 -pg 1 -lvl 2 -x 570 -y 680 -defaultsOSRD
+preplace inst pcie_cntl_broadcast -pg 1 -lvl 2 -x 570 -y 990 -defaultsOSRD
+preplace inst ctl_broadcast -pg 1 -lvl 2 -x 570 -y 1760 -defaultsOSRD
+preplace inst ch0_broadcast -pg 1 -lvl 4 -x 1600 -y 1100 -defaultsOSRD
+preplace inst subset_combine -pg 1 -lvl 6 -x 2440 -y 1140 -defaultsOSRD
+preplace inst rq_regslice_0 -pg 1 -lvl 4 -x 1600 -y 190 -defaultsOSRD
+preplace inst ch0_subset -pg 1 -lvl 5 -x 2050 -y 1110 -defaultsOSRD
+preplace inst ch1_subset -pg 1 -lvl 5 -x 2050 -y 1250 -defaultsOSRD
+preplace inst rq_arb -pg 1 -lvl 5 -x 2050 -y 600 -defaultsOSRD
+preplace inst ch1_broadcast -pg 1 -lvl 4 -x 1600 -y 1270 -defaultsOSRD
+preplace inst rc_broadcast -pg 1 -lvl 1 -x 190 -y 1190 -defaultsOSRD
+preplace inst dac_ddr2wave -pg 1 -lvl 6 -x 2440 -y 1490 -defaultsOSRD
+preplace inst dac_out_mux -pg 1 -lvl 7 -x 2900 -y 1140 -defaultsOSRD
+preplace inst dma_pcie2ddr -pg 1 -lvl 4 -x 1600 -y 880 -defaultsOSRD
+preplace inst px_irq_pls_aggr_0 -pg 1 -lvl 7 -x 2900 -y 790 -defaultsOSRD
+preplace inst shutdown_vctr -pg 1 -lvl 4 -x 1600 -y 1610 -defaultsOSRD
+preplace inst flowcntl_irqvctr -pg 1 -lvl 6 -x 2440 -y 210 -defaultsOSRD
+preplace inst rtlost_s2v -pg 1 -lvl 7 -x 2900 -y 1620 -defaultsOSRD
+preplace inst dma_irq_vctr -pg 1 -lvl 7 -x 2900 -y 440 -defaultsOSRD
+preplace inst cdc_async_rst -pg 1 -lvl 6 -x 2440 -y 1690 -defaultsOSRD
+preplace inst ddr_rqst_arb -pg 1 -lvl 7 -x 2900 -y 1780 -defaultsOSRD
+preplace inst rq_regslice_1 -pg 1 -lvl 4 -x 1600 -y 330 -defaultsOSRD
+preplace inst rq_regslice_4 -pg 1 -lvl 6 -x 2440 -y 680 -defaultsOSRD
+preplace inst rq_regslice_2 -pg 1 -lvl 4 -x 1600 -y 500 -defaultsOSRD
+preplace inst rq_regslice_3 -pg 1 -lvl 4 -x 1600 -y 660 -defaultsOSRD
+preplace inst rsp_regslice0 -pg 1 -lvl 2 -x 570 -y 1190 -defaultsOSRD
+preplace inst rq_regslice_6 -pg 1 -lvl 4 -x 1600 -y 1440 -defaultsOSRD
+preplace inst rq_regslice_5 -pg 1 -lvl 7 -x 2900 -y 940 -defaultsOSRD
+preplace inst rsp_regslice1 -pg 1 -lvl 2 -x 570 -y 1330 -defaultsOSRD
+preplace inst rsp_regslice2 -pg 1 -lvl 3 -x 1040 -y 950 -defaultsOSRD
+preplace inst empty_irq -pg 1 -lvl 7 -x 2900 -y 620 -defaultsOSRD
+preplace inst zero -pg 1 -lvl 5 -x 2050 -y 190 -defaultsOSRD
+preplace inst const0 -pg 1 -lvl 6 -x 2440 -y 1830 -defaultsOSRD
+preplace netloc ACLK_1 1 0 7 20 480 410 480 810 660 1390 580 1760 740 2270 780 2700
+preplace netloc s_axi_csr_aresetn_1 1 0 7 30 490 380 870 820 700 1400 740 1870 750 2260 800 2690
+preplace netloc s_axis_adc_pdti_aclk_1 1 0 3 NJ 320 NJ 320 740
+preplace netloc s_axis_adc_pdti_aresetn_1 1 0 3 NJ 340 NJ 340 780
+preplace netloc shutdown_rqst_1 1 0 9 NJ 1670 NJ 1670 NJ 1670 1440 1770 NJ 1770 NJ 1770 2600J 1890 NJ 1890 NJ
+preplace netloc px_scalar2vctr_0_output_vector 1 4 1 1820J 680n
+preplace netloc ch0_adc_acq_dma_irq 1 3 4 1220 60 NJ 60 NJ 60 2730J
+preplace netloc dma_irq_vctr_output_vector 1 7 1 3070 440n
+preplace netloc xlconstant_0_dout 1 7 1 N 620
+preplace netloc irq_concat_dout 1 8 1 NJ 610
+preplace netloc ch0_adc_acq_fifo_full_stat 1 3 6 1200J 50 NJ 50 NJ 50 NJ 50 NJ 50 3350J
+preplace netloc ch0_adc_acq_flowcntl_irq 1 3 3 1260 100 1780J 130 NJ
+preplace netloc flowcntl_irqvctr_output_vector 1 6 1 2710 210n
+preplace netloc px_irq_pls_aggr_0_irq_out 1 7 2 NJ 790 NJ
+preplace netloc util_reduced_logic_0_Res 1 8 1 NJ 1620
+preplace netloc px_scalar2vctr_0_output_vector1 1 7 1 NJ 1620
+preplace netloc dac_ch0_acq1_realtime_lost_stat 1 3 4 1270 1750 NJ 1750 2280J 1620 NJ
+preplace netloc dac_ch0_acq1_flowcntl_irq 1 3 3 1340J 110 NJ 110 2220
+preplace netloc zero_dout 1 5 2 2260 350 2700
+preplace netloc dac_ch0_acq1_dma_irq 1 3 4 1300 70 NJ 70 NJ 70 2720J
+preplace netloc s_axis_dac_pdti_aclk_1 1 0 7 NJ 1760 390 1510 860 1510 1430 1180 1880 1010 2220 1230 2660
+preplace netloc s_axis_dac_pdti_aresetn_1 1 0 7 NJ 1780 410 1520 870 1520 1440 1190 1870 1000 2230 1240 2720
+preplace netloc dac_ddr2wave_irq 1 5 2 2270 400 2620
+preplace netloc dac_ddr2wave_realtime_lost 1 6 1 2620 1520n
+preplace netloc dac_ch0_acq_realtime_lost_stat 1 3 4 1370J 1010 1810J 990 NJ 990 2650
+preplace netloc dac_ch0_acq_dma_irq 1 3 4 1380 1020 1790J 970 NJ 970 2650J
+preplace netloc dac_ch0_acq_flowcntl_irq 1 3 3 1280 80 NJ 80 2240J
+preplace netloc adc_ch1_acq_flowcntl_irq 1 3 3 1270 90 NJ 90 2260J
+preplace netloc adc_ch2_acq_flowcntl_irq 1 3 3 1240J 30 NJ 30 2270
+preplace netloc adc_ch1_acq_dma_irq 1 3 4 1380J 410 NJ 410 NJ 410 2640
+preplace netloc adc_ch2_acq_dma_irq 1 3 4 1290J 420 NJ 420 NJ 420 2650
+preplace netloc adc_ch1_acq_fifo_full_stat 1 3 6 1230J 40 NJ 40 NJ 40 NJ 40 NJ 40 3360J
+preplace netloc adc_ch2_acq_fifo_full_stat 1 3 6 1250J 20 NJ 20 NJ 20 NJ 20 NJ 20 3370J
+preplace netloc const0_dout 1 6 1 2670J 1820n
+preplace netloc ddr4_ui_clk_1 1 0 7 NJ 1520 350J 1530 NJ 1530 1410 1760 NJ 1760 2270 1760 2610J
+preplace netloc cdc_async_rst_dest_arst 1 6 1 2620 1690n
+preplace netloc dma_pcie2ddr_irq 1 4 3 1760J 960 2220J 600 2700
+preplace netloc s_axis_dac_pctl_1 1 0 2 NJ 1740 NJ
+preplace netloc px_axis_pdti_mux_0_m_axis_pdti 1 7 2 NJ 1140 NJ
+preplace netloc s_axis_ddr_rsp_1 1 0 6 NJ 1650 NJ 1650 NJ 1650 1210J 1720 1870J 1440 NJ
+preplace netloc s_axis_pcie_rc_1 1 0 1 NJ 1170
+preplace netloc adc_ch2_acq_m_axis_pcie_rq 1 3 1 1260 480n
+preplace netloc axi_interct1_M00_AXI 1 2 1 860 650n
+preplace netloc axis_broadcaster_0_M00_AXIS 1 2 1 840 1090n
+preplace netloc rq_regslice_2_M_AXIS 1 4 1 1760 500n
+preplace netloc rq_regslice_6_M_AXIS 1 4 1 1800 600n
+preplace netloc axi_interct0_M05_AXI 1 1 6 360 1410 850J 1260 1360J 1000 1770J 980 NJ 980 2680J
+preplace netloc ch3_adc_acq_m_axis_pcie_rq 1 3 1 1320 640n
+preplace netloc pcie_cntl_broadcast_M00_AXIS 1 2 1 730 100n
+preplace netloc ch0_adc_acq_m_axis_pcie_rq 1 3 1 1210 90n
+preplace netloc axi_interconnect_0_M02_AXI 1 1 2 390 490 NJ
+preplace netloc ch0_broadcast1_M01_AXIS 1 4 3 1850J 1030 NJ 1030 2660
+preplace netloc rq_regslice_1_M_AXIS 1 4 1 1770 330n
+preplace netloc axi_interct1_M01_AXI 1 2 1 780 670n
+preplace netloc dac_ch0_acq1_m_axis_pcie_rq 1 3 1 1220 1350n
+preplace netloc dac_ch1_acq_m_axis_pdti 1 3 1 1420 1250n
+preplace netloc axis_combiner_0_M_AXIS 1 6 1 2670 1100n
+preplace netloc axis_broadcaster_0_M00_AXIS1 1 4 3 1830J 1020 NJ 1020 2670
+preplace netloc rq_arb_M00_AXIS 1 5 1 2260 590n
+preplace netloc axi_interconnect_0_M00_AXI 1 1 2 360 60 NJ
+preplace netloc rsp_regslice2_M_AXIS 1 3 1 1330 860n
+preplace netloc rc_broadcast_M02_AXIS 1 1 2 350 880 800J
+preplace netloc axis_subset_converter_0_M_AXIS 1 5 1 N 1110
+preplace netloc axi_interct1_M02_AXI 1 2 4 NJ 690 1330J 760 1790J 770 2240
+preplace netloc dac_ddr2wave_m_axis_pdti 1 6 1 2680 1140n
+preplace netloc adc_ch1_acq_m_axis_pcie_rq 1 3 1 N 310
+preplace netloc s_axis_cntl_3 1 2 1 750 1020n
+preplace netloc axis_subset_converter_1_M_AXIS 1 5 1 2250 1130n
+preplace netloc ctl_broadcast_M02_AXIS 1 2 4 NJ 1780 NJ 1780 1820J 1740 2240
+preplace netloc S00_AXI_1 1 0 1 NJ 560
+preplace netloc axi_interct1_M03_AXI 1 2 2 840 820 NJ
+preplace netloc rq_regslice_0_M_AXIS 1 4 1 1780 190n
+preplace netloc axi_interconnect_0_M01_AXI 1 1 2 370 280 NJ
+preplace netloc ch0_broadcast1_M00_AXIS 1 4 1 1860 1230n
+preplace netloc pcie_cntl_broadcast_M02_AXIS 1 2 1 770 530n
+preplace netloc rc_broadcast_M00_AXIS 1 1 1 N 1170
+preplace netloc s_axis_pdti_1 1 0 3 NJ 80 NJ 80 NJ
+preplace netloc s_axis_adc_ch1_pdti_1 1 0 3 NJ 300 NJ 300 NJ
+preplace netloc rq_regslice_7_M_AXIS 1 2 1 830 1130n
+preplace netloc rc_broadcast_M01_AXIS 1 1 1 370 1190n
+preplace netloc s_axis_cntl_2 1 2 1 760 1000n
+preplace netloc rq_regslice_5_M_AXIS 1 7 2 NJ 940 NJ
+preplace netloc axi_interconnect_0_M04_AXI 1 1 6 400 860 760J 830 1310J 750 1810J 760 NJ 760 NJ
+preplace netloc dac_ch0_acq_m_axis_pdti 1 3 1 1350 1080n
+preplace netloc px_dma_pcie2ddr_0_m_axis_rqst 1 4 3 1770 950 NJ 950 2640J
+preplace netloc axis_broadcaster_0_M01_AXIS1 1 4 1 1840 1090n
+preplace netloc axis_broadcaster_0_M01_AXIS 1 2 1 880 1340n
+preplace netloc px_dma_pcie2ddr_0_m_axis_pcie_rq 1 4 1 1780 620n
+preplace netloc dac_ddr2wave_m_axis_ddr_rqst 1 6 1 2630 1460n
+preplace netloc rq_regslice_8_M_AXIS 1 2 1 740 1330n
+preplace netloc s_axis_dma_pcie_cntl_1 1 0 2 NJ 970 NJ
+preplace netloc pcie_cntl_broadcast_M01_AXIS 1 2 1 750 320n
+preplace netloc rq_regslice_3_M_AXIS 1 4 1 1770 580n
+preplace netloc S00_AXI_2 1 1 1 400 560n
+preplace netloc pcie_cntl_broadcast_M05_AXIS 1 2 2 790 840 NJ
+preplace netloc rq_regslice_4_M_AXIS 1 6 1 2680 680n
+preplace netloc ddr_rqst_arb_M00_AXIS 1 7 2 NJ 1770 NJ
+preplace netloc s_axis_adc_ch2_pdti_1 1 0 3 NJ 500 NJ 500 860J
+levelinfo -pg 1 0 190 570 1040 1600 2050 2440 2900 3210 3390
+pagesize -pg 1 -db -bbox -sgen -230 0 3580 1910
+"
+}
+0

@@ -1,17 +1,18 @@
 <solution AutoPilot="com.autoesl.autopilot.solution">
+    <checksum>
+        <value string="false"/>
+    </checksum>
     <downStreamTool>
         <DownStreamTool name=""/>
     </downStreamTool>
-    <clockList>
-        <clock name="default" period="4" uncertainty="1"/>
-    </clockList>
     <config>
         <schedule model="hcr_controller"/>
+        <config_sdx optimization_level="none" target="none"/>
+        <config_export vivado_optimization_level="2" description="Controls the radar schedule" format="ip_catalog" library="EOL" rtl="vhdl" vendor="NCAR"/>
     </config>
     <UIConfigurations>
-        <UIAutosynConf hideTrivialOp="true" isBasedOnBoard="false" isSolutionDirty="true" isStopAskAgain="false" showDetailDesignViewer="false">
+        <UIAutosynConf hideTrivialOp="true" isBasedOnBoard="false" isSolutionDirty="false" isStopAskAgain="false" showDetailDesignViewer="false">
             <Platform>xilinx/kintexu/kintexu</Platform>
-            <Platform>xilinx/kintexu/kintexu_fpv7</Platform>
             <customLibs/>
         </UIAutosynConf>
         <UIIPPackagerConf AskAgain="true" DescriptionButton="false" LibraryButton="false" RTLLanguage="verilog" UseNetList="none" VendorButton="false" VersionButton="false" evaluateRTL="false" setup="false">
@@ -41,14 +42,14 @@
         </UIAutoSimConf>
     </UIConfigurations>
     <ExportDesign askAgain="true" evaluate="false" flow="false" flowChoice="syn" formatName="ip_catalog" rtl="verilog" rtlButton="true" rtlCombo="vhdl">
-        <Format description="Controls the radar schedule" formatName="ip_catalog" library="EOL" vendor="NCAR"/>
+        <Format description="Controls the radar schedule" formatName="ip_catalog" library="EOL" vendor="NCAR" ipname="" version="" driver_input_dir="" display_name="" taxonomy=""/>
         <Format formatName="sysgen"/>
         <Format formatName="sysgen_ise"/>
         <Format formatName="syn_dcp"/>
         <Format formatName="pcore" use_netlist="none"/>
     </ExportDesign>
     <Simulation>
-        <SimFlow askAgain="true" dumpTrace="all" name="cosim" optimizeCompile="false" reduce_diskspace="false" setup="false" toolName="Auto">
+        <SimFlow askAgain="true" clangSanitizer="false" compile="false" compileChoice="gcc" disableDeadlockDetect="false" dumpTrace="all" name="cosim" optimizeCompile="false" reduce_diskspace="false" setup="false" toolName="Auto" waveDebug="false">
             <Rtl active="false" name="systemc"/>
             <Rtl active="false" name="verilog"/>
             <Rtl active="true" name="vhdl"/>
@@ -65,7 +66,10 @@
     </targetInfo>
     <libraryList>
         <library name="DefaultPlatform" value="xilinx/kintexu/kintexu"/>
-        <library name="DefaultPlatform" value="xilinx/kintexu/kintexu_fpv7"/>
+        <library value="xilinx/kintexu/kintexu_fpv7" name="DefaultPlatform"/>
     </libraryList>
+    <clockList>
+        <clock name="default" uncertainty="12.5%" period="5"/>
+    </clockList>
 </solution>
 

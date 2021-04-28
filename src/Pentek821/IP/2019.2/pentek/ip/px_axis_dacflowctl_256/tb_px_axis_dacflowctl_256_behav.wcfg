@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_axis_dacflowctl_1_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_axis_dacflowctl_1" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="983840000fs"></ZoomStartTime>
+      <ZoomEndTime time="1104640001fs"></ZoomEndTime>
+      <Cursor1Time time="1002187000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="257"></NameColumnWidth>
+      <ValueColumnWidth column_width="154"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="164" />
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pd_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_pd_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pd_tkeep" type="array">
+      <obj_property name="ElementShortName">s_axis_pd_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pd_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_pd_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pd_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_pd_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pd_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_pd_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pctl_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_pctl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pctl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/s_axis_pctl_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_pctl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pctl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/m_axis_pdti_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pdti_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/m_axis_pdti_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_pdti_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/m_axis_pdti_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pdti_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/realtime_lost" type="logic">
+      <obj_property name="ElementShortName">realtime_lost</obj_property>
+      <obj_property name="ObjectShortName">realtime_lost</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/bad_trig" type="logic">
+      <obj_property name="ElementShortName">bad_trig</obj_property>
+      <obj_property name="ObjectShortName">bad_trig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/reset_done" type="logic">
+      <obj_property name="ElementShortName">reset_done</obj_property>
+      <obj_property name="ObjectShortName">reset_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/init_done" type="logic">
+      <obj_property name="ElementShortName">init_done</obj_property>
+      <obj_property name="ObjectShortName">init_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/hr" type="logic">
+      <obj_property name="ElementShortName">hr</obj_property>
+      <obj_property name="ObjectShortName">hr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/parameter_file_name" type="array">
+      <obj_property name="ElementShortName">parameter_file_name[1:28]</obj_property>
+      <obj_property name="ObjectShortName">parameter_file_name[1:28]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/MODE_CNTL_REG" type="array">
+      <obj_property name="ElementShortName">MODE_CNTL_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">MODE_CNTL_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/TRIG_CLEAR_REG" type="array">
+      <obj_property name="ElementShortName">TRIG_CLEAR_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">TRIG_CLEAR_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/TRIG_DLY_REG" type="array">
+      <obj_property name="ElementShortName">TRIG_DLY_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">TRIG_DLY_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/TRIG_LENGTH_REG" type="array">
+      <obj_property name="ElementShortName">TRIG_LENGTH_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">TRIG_LENGTH_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/FIFO_FLUSH_REG" type="array">
+      <obj_property name="ElementShortName">FIFO_FLUSH_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">FIFO_FLUSH_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/STATUS_REG" type="array">
+      <obj_property name="ElementShortName">STATUS_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">STATUS_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/INTRPT_EN_REG" type="array">
+      <obj_property name="ElementShortName">INTRPT_EN_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">INTRPT_EN_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/INTRPT_STAT_REG" type="array">
+      <obj_property name="ElementShortName">INTRPT_STAT_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">INTRPT_STAT_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/INTRPT_FLAG_REG" type="array">
+      <obj_property name="ElementShortName">INTRPT_FLAG_REG[5:0]</obj_property>
+      <obj_property name="ObjectShortName">INTRPT_FLAG_REG[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/NBSP" type="other">
+      <obj_property name="ElementShortName">NBSP</obj_property>
+      <obj_property name="ObjectShortName">NBSP</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/NUS" type="array">
+      <obj_property name="ElementShortName">NUS[2:1]</obj_property>
+      <obj_property name="ObjectShortName">NUS[2:1]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider197">
+      <obj_property name="label">uut</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/m_axis_pdti_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_pdti_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/m_axis_pdti_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_pdti_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/m_axis_pdti_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_pdti_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_pdti_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axis_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axis_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pd_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_pd_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pd_tkeep" type="array">
+      <obj_property name="ElementShortName">s_axis_pd_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pd_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_pd_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pd_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_pd_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pd_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_pd_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pd_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pctl_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_pctl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pctl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/s_axis_pctl_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_pctl_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_pctl_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/realtime_lost" type="logic">
+      <obj_property name="ElementShortName">realtime_lost</obj_property>
+      <obj_property name="ObjectShortName">realtime_lost</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/csr_irq" type="logic">
+      <obj_property name="ElementShortName">csr_irq</obj_property>
+      <obj_property name="ObjectShortName">csr_irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_clear" type="logic">
+      <obj_property name="ElementShortName">trig_clear</obj_property>
+      <obj_property name="ObjectShortName">trig_clear</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_arm" type="logic">
+      <obj_property name="ElementShortName">trig_arm</obj_property>
+      <obj_property name="ObjectShortName">trig_arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/mode_sel" type="array">
+      <obj_property name="ElementShortName">mode_sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">mode_sel[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/data_mode_sel" type="array">
+      <obj_property name="ElementShortName">data_mode_sel[1:0]</obj_property>
+      <obj_property name="ObjectShortName">data_mode_sel[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/stay_armed" type="logic">
+      <obj_property name="ElementShortName">stay_armed</obj_property>
+      <obj_property name="ObjectShortName">stay_armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_len" type="array">
+      <obj_property name="ElementShortName">trig_len[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_len[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_dly" type="array">
+      <obj_property name="ElementShortName">trig_dly[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_dly[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/waiting_arm" type="logic">
+      <obj_property name="ElementShortName">waiting_arm</obj_property>
+      <obj_property name="ObjectShortName">waiting_arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/armed" type="logic">
+      <obj_property name="ElementShortName">armed</obj_property>
+      <obj_property name="ObjectShortName">armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/active" type="logic">
+      <obj_property name="ElementShortName">active</obj_property>
+      <obj_property name="ObjectShortName">active</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/mode" type="array">
+      <obj_property name="ElementShortName">mode[1:0]</obj_property>
+      <obj_property name="ObjectShortName">mode[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/data_mode" type="array">
+      <obj_property name="ElementShortName">data_mode[1:0]</obj_property>
+      <obj_property name="ObjectShortName">data_mode[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/acq_start" type="logic">
+      <obj_property name="ElementShortName">acq_start</obj_property>
+      <obj_property name="ObjectShortName">acq_start</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/acq_end" type="logic">
+      <obj_property name="ElementShortName">acq_end</obj_property>
+      <obj_property name="ObjectShortName">acq_end</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/waiting_arm_re" type="logic">
+      <obj_property name="ElementShortName">waiting_arm_re</obj_property>
+      <obj_property name="ObjectShortName">waiting_arm_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/armed_re" type="logic">
+      <obj_property name="ElementShortName">armed_re</obj_property>
+      <obj_property name="ObjectShortName">armed_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/xirq" type="logic">
+      <obj_property name="ElementShortName">xirq</obj_property>
+      <obj_property name="ObjectShortName">xirq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/xempty" type="logic">
+      <obj_property name="ElementShortName">xempty</obj_property>
+      <obj_property name="ObjectShortName">xempty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/xor_csr_irq" type="logic">
+      <obj_property name="ElementShortName">xor_csr_irq</obj_property>
+      <obj_property name="ObjectShortName">xor_csr_irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_gatetrig" type="logic">
+      <obj_property name="ElementShortName">t2_gatetrig</obj_property>
+      <obj_property name="ObjectShortName">t2_gatetrig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_gate" type="logic">
+      <obj_property name="ElementShortName">t2_gate</obj_property>
+      <obj_property name="ObjectShortName">t2_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_gate" type="logic">
+      <obj_property name="ElementShortName">t3_gate</obj_property>
+      <obj_property name="ObjectShortName">t3_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_gatetrig" type="logic">
+      <obj_property name="ElementShortName">t3_gatetrig</obj_property>
+      <obj_property name="ObjectShortName">t3_gatetrig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t4_gatetrig" type="logic">
+      <obj_property name="ElementShortName">t4_gatetrig</obj_property>
+      <obj_property name="ObjectShortName">t4_gatetrig</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_trig_re" type="logic">
+      <obj_property name="ElementShortName">t2_trig_re</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_re</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_trig_cntr_ld" type="logic">
+      <obj_property name="ElementShortName">t2_trig_cntr_ld</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_cntr_ld</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_trig_cntr_ce" type="logic">
+      <obj_property name="ElementShortName">t2_trig_cntr_ce</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_cntr_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/rate_div_cntr" type="array">
+      <obj_property name="ElementShortName">rate_div_cntr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">rate_div_cntr[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_cntr_ld_val" type="array">
+      <obj_property name="ElementShortName">trig_cntr_ld_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_cntr_ld_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_dly_cntr_ld_val" type="array">
+      <obj_property name="ElementShortName">trig_dly_cntr_ld_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_dly_cntr_ld_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t1_waiting_arm" type="logic">
+      <obj_property name="ElementShortName">t1_waiting_arm</obj_property>
+      <obj_property name="ObjectShortName">t1_waiting_arm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t1_armed" type="logic">
+      <obj_property name="ElementShortName">t1_armed</obj_property>
+      <obj_property name="ObjectShortName">t1_armed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t1_csr_irq" type="logic">
+      <obj_property name="ElementShortName">t1_csr_irq</obj_property>
+      <obj_property name="ObjectShortName">t1_csr_irq</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/frst" type="logic">
+      <obj_property name="ElementShortName">frst</obj_property>
+      <obj_property name="ObjectShortName">frst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t4_mux_gate" type="logic">
+      <obj_property name="ElementShortName">t4_mux_gate</obj_property>
+      <obj_property name="ObjectShortName">t4_mux_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_trig_cntr_tc" type="logic">
+      <obj_property name="ElementShortName">t3_trig_cntr_tc</obj_property>
+      <obj_property name="ObjectShortName">t3_trig_cntr_tc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_ts_gate" type="logic">
+      <obj_property name="ElementShortName">t3_ts_gate</obj_property>
+      <obj_property name="ObjectShortName">t3_ts_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_trig_hold" type="logic">
+      <obj_property name="ElementShortName">t3_trig_hold</obj_property>
+      <obj_property name="ObjectShortName">t3_trig_hold</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_cntr_sclr" type="logic">
+      <obj_property name="ElementShortName">trig_cntr_sclr</obj_property>
+      <obj_property name="ObjectShortName">trig_cntr_sclr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/trig_count" type="array">
+      <obj_property name="ElementShortName">trig_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">trig_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/dly_count" type="array">
+      <obj_property name="ElementShortName">dly_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dly_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/disarm" type="logic">
+      <obj_property name="ElementShortName">disarm</obj_property>
+      <obj_property name="ObjectShortName">disarm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_trig_cntr_ld" type="logic">
+      <obj_property name="ElementShortName">t3_trig_cntr_ld</obj_property>
+      <obj_property name="ObjectShortName">t3_trig_cntr_ld</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t4_trig_cntr_ld" type="logic">
+      <obj_property name="ElementShortName">t4_trig_cntr_ld</obj_property>
+      <obj_property name="ObjectShortName">t4_trig_cntr_ld</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_trig_dly_cntr_ce" type="logic">
+      <obj_property name="ElementShortName">t2_trig_dly_cntr_ce</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_dly_cntr_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t3_trig_dly_cntr_tc" type="logic">
+      <obj_property name="ElementShortName">t3_trig_dly_cntr_tc</obj_property>
+      <obj_property name="ObjectShortName">t3_trig_dly_cntr_tc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/local_gate_mode" type="logic">
+      <obj_property name="ElementShortName">local_gate_mode</obj_property>
+      <obj_property name="ObjectShortName">local_gate_mode</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/local_gate" type="logic">
+      <obj_property name="ElementShortName">local_gate</obj_property>
+      <obj_property name="ObjectShortName">local_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t2_trig_cntr_up_ce" type="logic">
+      <obj_property name="ElementShortName">t2_trig_cntr_up_ce</obj_property>
+      <obj_property name="ObjectShortName">t2_trig_cntr_up_ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">fifo_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">fifo_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_axis_tready" type="logic">
+      <obj_property name="ElementShortName">fifo_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">fifo_axis_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_axis_tdata" type="array">
+      <obj_property name="ElementShortName">fifo_axis_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_axis_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_axis_tkeep" type="array">
+      <obj_property name="ElementShortName">fifo_axis_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_axis_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_axis_tlast" type="logic">
+      <obj_property name="ElementShortName">fifo_axis_tlast</obj_property>
+      <obj_property name="ObjectShortName">fifo_axis_tlast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/wcnv_axis_tvalid" type="logic">
+      <obj_property name="ElementShortName">wcnv_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">wcnv_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/wcnv_axis_tready" type="logic">
+      <obj_property name="ElementShortName">wcnv_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">wcnv_axis_tready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/wcnv_axis_tdata" type="array">
+      <obj_property name="ElementShortName">wcnv_axis_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wcnv_axis_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t1_s_axis_pctl_tdata" type="array">
+      <obj_property name="ElementShortName">t1_s_axis_pctl_tdata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_s_axis_pctl_tdata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/sm_tdata" type="array">
+      <obj_property name="ElementShortName">sm_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sm_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/mux_sel" type="logic">
+      <obj_property name="ElementShortName">mux_sel</obj_property>
+      <obj_property name="ObjectShortName">mux_sel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/pack_cntr" type="logic">
+      <obj_property name="ElementShortName">pack_cntr</obj_property>
+      <obj_property name="ObjectShortName">pack_cntr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t1_fifo_aresetn" type="logic">
+      <obj_property name="ElementShortName">t1_fifo_aresetn</obj_property>
+      <obj_property name="ObjectShortName">t1_fifo_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/x_fifo_aresetn" type="logic">
+      <obj_property name="ElementShortName">x_fifo_aresetn</obj_property>
+      <obj_property name="ObjectShortName">x_fifo_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_empty" type="logic">
+      <obj_property name="ElementShortName">fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">fifo_empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_full" type="logic">
+      <obj_property name="ElementShortName">fifo_full</obj_property>
+      <obj_property name="ObjectShortName">fifo_full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_count" type="array">
+      <obj_property name="ElementShortName">fifo_count[10:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_count[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_flush" type="logic">
+      <obj_property name="ElementShortName">fifo_flush</obj_property>
+      <obj_property name="ObjectShortName">fifo_flush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/fifo_aresetn" type="logic">
+      <obj_property name="ElementShortName">fifo_aresetn</obj_property>
+      <obj_property name="ObjectShortName">fifo_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/qual_gate" type="logic">
+      <obj_property name="ElementShortName">qual_gate</obj_property>
+      <obj_property name="ObjectShortName">qual_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/t1_qual_gate" type="logic">
+      <obj_property name="ElementShortName">t1_qual_gate</obj_property>
+      <obj_property name="ObjectShortName">t1_qual_gate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/GATE_MODE" type="array">
+      <obj_property name="ElementShortName">GATE_MODE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">GATE_MODE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/TRIG_MODE" type="array">
+      <obj_property name="ElementShortName">TRIG_MODE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">TRIG_MODE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/TRIG_HOLD_MODE" type="array">
+      <obj_property name="ElementShortName">TRIG_HOLD_MODE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">TRIG_HOLD_MODE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/TIME_PACKED_MODE" type="array">
+      <obj_property name="ElementShortName">TIME_PACKED_MODE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">TIME_PACKED_MODE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_axis_dacflowctl_1/uut/CHAN_PACKED_MODE" type="array">
+      <obj_property name="ElementShortName">CHAN_PACKED_MODE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">CHAN_PACKED_MODE[1:0]</obj_property>
+   </wvobject>
+</wave_config>

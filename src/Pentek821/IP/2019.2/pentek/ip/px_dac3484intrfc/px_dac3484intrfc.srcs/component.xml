@@ -1,0 +1,1837 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <spirit:vendor>pentek.com</spirit:vendor>
+  <spirit:library>px_ip</spirit:library>
+  <spirit:name>px_dac3484intrfc</spirit:name>
+  <spirit:version>1.0</spirit:version>
+  <spirit:busInterfaces>
+    <spirit:busInterface>
+      <spirit:name>s_axi_csr_aclk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_aclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CSR_ACLK.ASSOCIATED_BUSIF">s_axi_csr</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CSR_ACLK.ASSOCIATED_RESET">s_axi_csr_aresetn</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_dac_axis_aclk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac_axis_aclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_BUSIF</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_DAC_AXIS_ACLK.ASSOCIATED_BUSIF">s_dac0_axis:s_dac1_axis</spirit:value>
+        </spirit:parameter>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_DAC_AXIS_ACLK.ASSOCIATED_RESET">s_dac_axis_aresetn</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>px_spi</spirit:name>
+      <spirit:busType spirit:vendor="Pentek.com" spirit:library="px_ip" spirit:name="px_spi" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="Pentek.com" spirit:library="px_ip" spirit:name="px_spi_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>sclk</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>px_spi_sclk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>sdi</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>px_spi_sdi</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>sdo</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>px_spi_sdo</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>en_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>px_spi_en_n</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dac3484_cntrl</spirit:name>
+      <spirit:busType spirit:vendor="Pentek.com" spirit:library="px_up" spirit:name="px_dac3484_cntrl" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="Pentek.com" spirit:library="px_up" spirit:name="px_dac3484_cntrl_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>frame_p</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_FRAME_P</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>frame_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_FRAME_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>txenable</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_TXENABLE</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>parity_p</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_PARITY_P</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>parity_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_PARITY_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ostr_p</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_OSTR_P</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ostr_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_OSTR_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>sync_p</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_SYNC_P</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>sync_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_SYNC_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>reset_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_RESET_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>dac_data_p</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_DATA_P</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>dac_data_n</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_DATA_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>sleep</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_SLEEP</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_dac0_axis</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac0_axis_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac0_axis_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac0_axis_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_dac1_axis</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac1_axis_tdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TUSER</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac1_axis_tuser</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac1_axis_tvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_axi_csr</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="aximm" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="aximm_rtl" spirit:version="1.0"/>
+      <spirit:slave>
+        <spirit:memoryMapRef spirit:memoryMapRef="s_axi_csr"/>
+      </spirit:slave>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWADDR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_awaddr</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWPROT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_awprot</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_awvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>AWREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_awready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_wdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WSTRB</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_wstrb</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_wvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>WREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_wready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BRESP</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_bresp</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_bvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>BREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_bready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARADDR</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_araddr</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARPROT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_arprot</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_arvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ARREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_arready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_rdata</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RRESP</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_rresp</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_rvalid</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RREADY</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_rready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_axi_csr_aresetn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_axi_csr_aresetn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CSR_ARESETN.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>irq</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="interrupt" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="interrupt_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>INTERRUPT</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>irq</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>SENSITIVITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.IRQ.SENSITIVITY">EDGE_RISING</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>diff_dac_clk_out</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="diff_clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="diff_clock_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK_P</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_DCLK_P</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK_N</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>DAC_DCLK_N</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>s_dac_axis_aresetn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="reset_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>RST</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>s_dac_axis_aresetn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>POLARITY</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_DAC_AXIS_ARESETN.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+  </spirit:busInterfaces>
+  <spirit:memoryMaps>
+    <spirit:memoryMap>
+      <spirit:name>s_axi_csr</spirit:name>
+      <spirit:addressBlock>
+        <spirit:name>reg0</spirit:name>
+        <spirit:baseAddress spirit:format="bitString" spirit:resolve="user" spirit:bitStringLength="32">0</spirit:baseAddress>
+        <spirit:range spirit:format="long" spirit:resolve="user" spirit:minimum="4096" spirit:rangeType="long">128</spirit:range>
+        <spirit:width spirit:format="long" spirit:resolve="user">32</spirit:width>
+        <spirit:usage>register</spirit:usage>
+      </spirit:addressBlock>
+    </spirit:memoryMap>
+  </spirit:memoryMaps>
+  <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagesynthesis</spirit:name>
+        <spirit:displayName>Synthesis</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>VHDL</spirit:language>
+        <spirit:modelName>px_dac3484intrfc</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_pentek_com_px_ip_px_axil_csr_1_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_pentek_com_px_ip_px_serial_int_1_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>655d2d6f</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_anylanguagebehavioralsimulation</spirit:name>
+        <spirit:displayName>Simulation</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>VHDL</spirit:language>
+        <spirit:modelName>px_dac3484intrfc</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_pentek_com_px_ip_px_axil_csr_1_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_pentek_com_px_ip_px_serial_int_1_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>655d2d6f</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_testbench</spirit:name>
+        <spirit:displayName>Test Bench</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:simulation.testbench</spirit:envIdentifier>
+        <spirit:modelName>tb_px_dac3484intrfc</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_testbench_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>3cdbcdda</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_xpgui</spirit:name>
+        <spirit:displayName>UI Layout</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:xgui.ui</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_xpgui_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>viewChecksum</spirit:name>
+            <spirit:value>e6ebc386</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
+    <spirit:ports>
+      <spirit:port>
+        <spirit:name>s_axi_csr_aclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_aresetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_awaddr</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">6</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_awprot</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_awvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_awready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_wdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_wstrb</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">1</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_wvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_wready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_bresp</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_bvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_bready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_araddr</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">6</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_arprot</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">2</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_arvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_arready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_rdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_rresp</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_rvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_axi_csr_rready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac_axis_aclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac_axis_aresetn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac0_axis_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac0_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac0_axis_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">127</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac1_axis_tvalid</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac1_axis_tdata</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>s_dac1_axis_tuser</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">127</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_CLK_IN</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_DATA_P</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">15</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_DATA_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">15</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_DCLK_P</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_DCLK_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_SLEEP</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_FRAME_P</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_FRAME_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_TXENABLE</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_PARITY_P</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_PARITY_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_OSTR_P</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_OSTR_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_SYNC_P</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_SYNC_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>DAC_RESET_N</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>px_spi_sclk</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>px_spi_sdi</spirit:name>
+        <spirit:wire>
+          <spirit:direction>inout</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>px_spi_sdo</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>px_spi_en_n</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>irq</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+    </spirit:ports>
+    <spirit:modelParameters>
+      <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
+        <spirit:name>initial_sync_tap_delay</spirit:name>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.initial_sync_tap_delay">0</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>initial_ostrb_tap_delay</spirit:name>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.initial_ostrb_tap_delay">0</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>idelaycntrl_refclk_freq</spirit:name>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.idelaycntrl_refclk_freq">200</spirit:value>
+      </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="string">
+        <spirit:name>iodelay_grp</spirit:name>
+        <spirit:value spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.iodelay_grp">IODELAY_GRP</spirit:value>
+      </spirit:modelParameter>
+    </spirit:modelParameters>
+  </spirit:model>
+  <spirit:choices>
+    <spirit:choice>
+      <spirit:name>choice_list_9d8b0d81</spirit:name>
+      <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
+      <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
+    </spirit:choice>
+  </spirit:choices>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484_csr.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484_packer.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484_serdes.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484intrfc.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_c2bba5c9</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_pentek_com_px_ip_px_axil_csr_1_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="pentek.com" xilinx:library="px_ip" xilinx:name="px_axil_csr" xilinx:version="1.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_pentek_com_px_ip_px_serial_int_1_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="pentek.com" xilinx:library="px_ip" xilinx:name="px_serial_int" xilinx:version="1.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484_csr.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484_packer.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484_serdes.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>sources_1/new/px_dac3484intrfc.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_pentek_com_px_ip_px_axil_csr_1_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="pentek.com" xilinx:library="px_ip" xilinx:name="px_axil_csr" xilinx:version="1.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_pentek_com_px_ip_px_serial_int_1_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="pentek.com" xilinx:library="px_ip" xilinx:name="px_serial_int" xilinx:version="1.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_testbench_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sim_1/new/tb_px_dac3484intrfc.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../tb_px_dac3484intrfc_behav.wcfg</spirit:name>
+        <spirit:fileType>unknown</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>xgui/px_dac3484intrfc_v1_0.tcl</spirit:name>
+        <spirit:fileType>tclSource</spirit:fileType>
+        <spirit:userFileType>CHECKSUM_e6ebc386</spirit:userFileType>
+        <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
+  <spirit:description>AXI Stream interface to Texas Instrument Dac3484</spirit:description>
+  <spirit:parameters>
+    <spirit:parameter>
+      <spirit:name>Component_Name</spirit:name>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">px_dac3484intrfc_v1_0</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>initial_sync_tap_delay</spirit:name>
+      <spirit:displayName>Initial Sync Tap Delay</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.initial_sync_tap_delay">0</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>initial_ostrb_tap_delay</spirit:name>
+      <spirit:displayName>Initial Ostrb Tap Delay</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.initial_ostrb_tap_delay">0</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>idelaycntrl_refclk_freq</spirit:name>
+      <spirit:displayName>Idelaycntrl Refclk Freq</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.idelaycntrl_refclk_freq">200</spirit:value>
+    </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>iodelay_grp</spirit:name>
+      <spirit:displayName>Iodelay Grp</spirit:displayName>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.iodelay_grp">IODELAY_GRP</spirit:value>
+    </spirit:parameter>
+  </spirit:parameters>
+  <spirit:vendorExtensions>
+    <xilinx:coreExtensions>
+      <xilinx:supportedFamilies>
+        <xilinx:family xilinx:lifeCycle="Production">kintexu</xilinx:family>
+      </xilinx:supportedFamilies>
+      <xilinx:taxonomies>
+        <xilinx:taxonomy>/PentekIP</xilinx:taxonomy>
+      </xilinx:taxonomies>
+      <xilinx:displayName>px_dac3484intrfc_v1_0</xilinx:displayName>
+      <xilinx:definitionSource>package_project</xilinx:definitionSource>
+      <xilinx:xpmLibraries>
+        <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
+      </xilinx:xpmLibraries>
+      <xilinx:vendorDisplayName>Pentek, Inc</xilinx:vendorDisplayName>
+      <xilinx:vendorURL>http://www.pentek.com</xilinx:vendorURL>
+      <xilinx:coreRevision>19</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-08-03T21:25:09Z</xilinx:coreCreationDateTime>
+      <xilinx:tags>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16ee6262_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3811427e_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c67e624_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@658e9913_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12080f46_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50afc520_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36c22588_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@593e0a4d_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6edad2b9_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b1e8676_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ac52ab1_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@670cefdd_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2100b3d5_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25514d0c_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54e0b54_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4135fc7e_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4820812f_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1781d86d_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5eb35bd9_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21f31805_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@174509fc_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@384dcab_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78d58142_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38556a15_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3edc01f2_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f0b7143_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2829e391_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1083ef29_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52ebc7f6_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4005575b_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@478fcb2a_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6be92168_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@494969eb_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7ebc3279_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@140b3630_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@624ef7ae_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@782dbe1_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@adf5548_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c884bfc_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4895bc3_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6712318f_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7b2a562a_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@630121f1_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c1c22dd_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79428ed1_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@748fd625_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31098ce5_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a1b4bfe_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a43435d_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b8bdd09_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@42a0efa7_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c6652e4_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76706b2e_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@136da2b3_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14aea518_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@12cae361_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a5acb8f_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4115923e_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5342228d_ARCHIVE_LOCATION">c:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61db2eb8_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d81d269_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27b9cd65_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@74cf4ac8_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@88e7746_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ab96b46_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@384bb0a9_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f90ca31_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e72a28b_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a668803_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@614b082b_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a2e6054_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a95fb30_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7210ed8d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56f9d756_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@568abef9_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64615284_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b39d6e2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a7c9017_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25df00f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c892333_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40d886c2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@545ba95_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11576ca4_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e96a15e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5cbf5f36_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5aa18abf_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6345401a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5749a615_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f14e69f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bce86dd_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f2c3441_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c822d9e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5778a58a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61bc87dd_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@295558fd_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4bbc8193_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f8cee4_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2130a7c3_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@164fe02d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3876693e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@84ef3b3_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e9af698_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1da8751a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22c2f830_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6dc3aefc_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46d2c49d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40370dbf_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@538cff4c_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c440f96_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2209bbd7_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3ace105f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@601c8d27_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a5cdd24_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7ea82612_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@cc3b3eb_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@102492c0_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4734d067_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1fc01a01_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e550f6f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4869d4e6_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e02bbc2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77e3ce9a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1024aee2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72a58ec1_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b9e4d5c_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ab57d81_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57a302c7_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@234eebe0_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5299d028_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33f36d92_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17376f23_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f353b4c_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2ecd3bbc_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@482877fb_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d514cc2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b8d6853_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@147c91c4_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5048e759_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3cd5d0e3_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2feeada0_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6c8bee38_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70787c41_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bb77039_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79e0d065_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e787729_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@248d6a2f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@666bfe9b_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a85c8a9_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3866e99c_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40678577_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2492fb27_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29927e6_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5de0b6d2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b35ba6_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d6d9205_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11e557a5_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56e63336_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9fee295_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7304f019_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50d165ff_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@67c76780_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@508614d9_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e277eaa_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f308388_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3589b6f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ee050c8_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b4b7c54_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f3d00a2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4a9fed6b_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51d5f0d5_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@63090780_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5eebac4d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@49f4be8e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31a6730b_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59327cfa_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2244cb29_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@23d58e7b_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@389d44ba_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@202bbb3a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6f558ff2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c1651d6_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e56649f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ce2b93e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@13cc79ec_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57caf684_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@119e30f8_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38569109_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f8c3781_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40f7142f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4c7ac0bd_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a46c8a4_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@557c51bb_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@203a7200_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d471f03_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14430648_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4bf7ffb3_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b10682a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72d87848_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d348a17_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4500cb89_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37d477eb_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55b3671e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1bd12adc_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6189093_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d9b849a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1079094_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@448b0019_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3da6aba3_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@f887068_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64a6007d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d392e76_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3df79fe5_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d881338_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c507525_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bdedecd_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76ec04b6_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19907d98_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11a226d9_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@292f53a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d78e7de_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3cd242eb_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5749c203_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ef8a776_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71c984e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27b6cdaf_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55f554be_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8362e1a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@136bce5c_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70711a98_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f7f0b09_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@375de8d8_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@daa5ddb_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4fed3ea8_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e8f6381_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f328c31_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37d12ba5_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@bd012a3_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17673c5a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4e90cebe_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d1b1cbc_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@127e874_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@37a2089e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6da17ee2_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68818278_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e10e9a_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c9aa189_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a389654_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7b82c37f_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@fd00c2e_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7635dcfd_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@349383d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@382677b6_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ae8d0cf_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@632e4c12_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8409f5d_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43452710_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@209d1c47_ARCHIVE_LOCATION">c:/Pentek/ip/2019.2/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs</xilinx:tag>
+      </xilinx:tags>
+    </xilinx:coreExtensions>
+    <xilinx:packagingInfo>
+      <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="81a6141a"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="ae8056c6"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="7a967b65"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="737ba2aa"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="e2a2cb1a"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="7f7aeb28"/>
+    </xilinx:packagingInfo>
+  </spirit:vendorExtensions>
+</spirit:component>

@@ -1,0 +1,607 @@
+#-----------------------------------------------------------
+# Vivado v2018.1 (64-bit)
+# SW Build 2188600 on Wed Apr  4 18:40:38 MDT 2018
+# IP Build 2185939 on Wed Apr  4 20:55:05 MDT 2018
+# Start of session at: Tue Aug 14 13:56:58 2018
+# Process ID: 824
+# Current directory: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent8868 C:\pentek\ip\2018WIP\pentek\ip\px_3324_FMC_intrfc\px_3324_FMC_intrfc.xpr
+# Log file: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/vivado.log
+# Journal file: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/pentek/ip/2018.1/pentek'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2018.1/data/ip'.
+open_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:08 . Memory (MB): peak = 898.746 ; gain = 155.590
+update_compile_order -fileset sources_1
+current_fileset -simset [ get_filesets TWSI_intrfc_simulation ]
+launch_simulation -simset TWSI_intrfc_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/TWSI_intrfc_simulation/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'TWSI_intrfc_simulation'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2018.1/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/TWSI_intrfc_simulation/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_3324_FMC_intrfc_twsi_test' in fileset 'TWSI_intrfc_simulation'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'TWSI_intrfc_simulation'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/TWSI_intrfc_simulation/behav/xsim'
+"xvlog --incr --relax -prj tb_px_3324_FMC_intrfc_twsi_test_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_3324_FMC_intrfc_twsi_test_vhdl.prj"
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/TWSI_intrfc_simulation/behav/xsim'
+Vivado Simulator 2018.1
+Copyright 1986-1999, 2001-2017 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2018.1/bin/unwrapped/win64.o/xelab.exe -wto f04efd3b9b4b4ce0873ca5fca168de51 --incr --debug typical --relax --mt 2 -L fifo_generator_v13_2_2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_3324_FMC_intrfc_twsi_test_behav xil_defaultlib.tb_px_3324_FMC_intrfc_twsi_test xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/TWSI_intrfc_simulation/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_3324_FMC_intrfc_twsi_test_behav -key {Behavioral:TWSI_intrfc_simulation:Functional:tb_px_3324_FMC_intrfc_twsi_test} -tclbatch {tb_px_3324_FMC_intrfc_twsi_test.tcl} -view {C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.wcfg} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2018.1
+Time resolution is 1 ps
+open_wave_config C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.wcfg
+source tb_px_3324_FMC_intrfc_twsi_test.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 650000ns
+Note: >>>>>>>>>>>>>> Setting Control Register for Write of One Byte to address 0x50.
+Time: 504 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00005010 to Address: x0C
+Time: 504 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 525000 ps
+Time: 525 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Writing the value 0x000000C5 to the Data Transmit FIFO (Data to transmit over TWSI).
+Time: 625 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x000000C5 to Address: x10
+Time: 625 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 645000 ps
+Time: 645 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Toggling the Start Transaction Control Bit.
+Time: 645 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00000001 to Address: x14
+Time: 645 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 665000 ps
+Time: 665 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00000000 to Address: x14
+Time: 665 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 685000 ps
+Time: 685 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Checking the TWSI Status Register (TWSI Write Check)...
+Time: 685 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Reading Address: x24
+Time: 685 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Value is: x00000023
+Time: 709 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Read completed successfully at time = 709000 ps
+Time: 709 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Write Status Register Check Succeeded.
+Time: 712 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Waiting for Transaction Done Interrupt...
+Time: 712 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** Start Bit sensed on TWSI bus ****
+Time: 22628 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Clock Period = 12288000 ps ****
+Time: 41060 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** Sensed Write Transaction on TWSI Bus ****
+Time: 114788 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** Acknowledging Address on TWSI bus ****
+Time: 122980 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** Acknowledging Data on TWSI bus ****
+Time: 233572 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Simulated Slave Received Write to Address = 0x50  Data Received = 0xC5 ****
+Time: 249956 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Write Succeeded:
+Time: 249956 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Transaction Done Interrupt was Received.
+Time: 262252 ns  Iteration: 2  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Setting Control Register to Disable TWSI.
+Time: 262252 ns  Iteration: 2  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00000000 to Address: x0C
+Time: 262252 ns  Iteration: 2  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 262273000 ps
+Time: 262273 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Setting Control Register for Read of One Byte.
+Time: 362273 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00005030 to Address: x0C
+Time: 362273 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 362293000 ps
+Time: 362293 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Toggling the Start Transaction Control Bit.
+Time: 362393 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00000001 to Address: x14
+Time: 362393 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 362413000 ps
+Time: 362413 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Writing x00000000 to Address: x14
+Time: 362413 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Write completed at time = 362433000 ps
+Time: 362433 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Waiting for Transaction Done Interrupt...
+Time: 362433 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** Start Bit sensed on TWSI bus ****
+Time: 383076 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Clock Period = 12288000 ps ****
+Time: 401508 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Sensed Read
+Time: 475236 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** Acknowledging Address on TWSI bus ****
+Time: 483428 ns  Iteration: 4  Process: /tb_px_3324_FMC_intrfc_twsi_test/receive_twsi  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Transaction Done Interrupt was Received. Read Complete.
+Time: 618604 ns  Iteration: 2  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Reading the Data Receive FIFO.
+Time: 618604 ns  Iteration: 2  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Reading Address: x28
+Time: 618604 ns  Iteration: 2  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Value is: x000000B4
+Time: 618629 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Read completed successfully at time = 618629000 ps
+Time: 618629 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Data Received at Address = 0x28  Data Received = 0x000000B4 ****
+Time: 618632 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Read Succeeded:
+Time: 618632 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>> Checking the TWSI Status Register (TWSI Read Check)...
+Time: 619632 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Reading Address: x24
+Time: 619632 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Value is: x00000022
+Time: 619653 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: Read completed successfully at time = 619653000 ps
+Time: 619653 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Note: >>>>>>>>>>>>>>**** TWSI Read Status Register Check Succeeded.
+Time: 619656 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+Failure: >>>>>>>>>>>>>>******* NOT A FAILURE: All TWSI Tests Completed with No Errors. Time = 620656000 ps
+Time: 620656 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_twsi_test/TWSI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd
+$finish called at time : 620656 ns : File "C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_twsi_test.vhd" Line 565
+xsim: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 928.129 ; gain = 24.523
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_3324_FMC_intrfc_twsi_test_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 650000ns
+launch_simulation: Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 928.129 ; gain = 24.523
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+current_fileset -simset [ get_filesets SPI_intrfc_simulation ]
+launch_simulation -simset SPI_intrfc_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/SPI_intrfc_simulation/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'SPI_intrfc_simulation'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2018.1/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/SPI_intrfc_simulation/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_3324_FMC_intrfc_spi_test' in fileset 'SPI_intrfc_simulation'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'SPI_intrfc_simulation'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/SPI_intrfc_simulation/behav/xsim'
+"xvlog --incr --relax -prj tb_px_3324_FMC_intrfc_spi_test_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_3324_FMC_intrfc_spi_test_vhdl.prj"
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/SPI_intrfc_simulation/behav/xsim'
+Vivado Simulator 2018.1
+Copyright 1986-1999, 2001-2017 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2018.1/bin/unwrapped/win64.o/xelab.exe -wto f04efd3b9b4b4ce0873ca5fca168de51 --incr --debug typical --relax --mt 2 -L fifo_generator_v13_2_2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_3324_FMC_intrfc_spi_test_behav xil_defaultlib.tb_px_3324_FMC_intrfc_spi_test xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.sim/SPI_intrfc_simulation/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_3324_FMC_intrfc_spi_test_behav -key {Behavioral:SPI_intrfc_simulation:Functional:tb_px_3324_FMC_intrfc_spi_test} -tclbatch {tb_px_3324_FMC_intrfc_spi_test.tcl} -view {C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.wcfg} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2018.1
+Time resolution is 1 ps
+open_wave_config C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.wcfg
+source tb_px_3324_FMC_intrfc_spi_test.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 50000ns
+Note: Writing x00800104 to Address: x00
+Time: 200 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 313000 ps
+Time: 313 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x000000A5 to Address: x04
+Time: 413 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 433000 ps
+Time: 433 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 533 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 557 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 557000 ps
+Time: 557 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 560 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 585 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 585000 ps
+Time: 585 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 688 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 705000 ps
+Time: 705 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 705 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 725000 ps
+Time: 725 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 725 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 749 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 749000 ps
+Time: 749 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x0003400C to Address: x00
+Time: 4852 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 4869000 ps
+Time: 4869 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x0000005A to Address: x04
+Time: 4969 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 4989000 ps
+Time: 4989 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 5089 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 5113 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 5113000 ps
+Time: 5113 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 5116 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 5141 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 5141000 ps
+Time: 5141 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 5244 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 5261000 ps
+Time: 5261 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 5261 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 5281000 ps
+Time: 5281 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 5281 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 5305 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 5305000 ps
+Time: 5305 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00005694 to Address: x00
+Time: 9408 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 9425000 ps
+Time: 9425 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00001234 to Address: x04
+Time: 9525 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 9545000 ps
+Time: 9545 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 9645 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 9669 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 9669000 ps
+Time: 9669 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 9672 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 9697 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 9697000 ps
+Time: 9697 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 9800 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 9817000 ps
+Time: 9817 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 9817 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 9837000 ps
+Time: 9837 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 9837 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 9861 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 9861000 ps
+Time: 9861 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x0000569C to Address: x00
+Time: 13964 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 13981000 ps
+Time: 13981 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x0000FEDC to Address: x04
+Time: 14081 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 14101000 ps
+Time: 14101 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 14201 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 14225 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 14225000 ps
+Time: 14225 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 14228 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 14253 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 14253000 ps
+Time: 14253 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 14356 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 14373000 ps
+Time: 14373 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 14373 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 14393000 ps
+Time: 14393 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 14393 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 14417 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 14417000 ps
+Time: 14417 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00078064 to Address: x00
+Time: 18520 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 18537000 ps
+Time: 18537 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x000000FA to Address: x04
+Time: 18637 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 18657000 ps
+Time: 18657 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 18757 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 18781 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 18781000 ps
+Time: 18781 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 18784 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 18809 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 18809000 ps
+Time: 18809 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 18912 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 18929000 ps
+Time: 18929 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 18929 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 18949000 ps
+Time: 18949 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 18949 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 18973 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 18973000 ps
+Time: 18973 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00800102 to Address: x00
+Time: 23176 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 23193000 ps
+Time: 23193 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 23293 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 23317 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 23317000 ps
+Time: 23317 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 23320 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 23345 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 23345000 ps
+Time: 23345 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 23448 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 23465000 ps
+Time: 23465 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 23465 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 23485000 ps
+Time: 23485 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 23485 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 23509 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 23509000 ps
+Time: 23509 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x20
+Time: 27112 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000081
+Time: 27133 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 27133000 ps
+Time: 27133 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x0003400A to Address: x00
+Time: 27636 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 27653000 ps
+Time: 27653 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 27753 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 27777 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 27777000 ps
+Time: 27777 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 27780 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 27805 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 27805000 ps
+Time: 27805 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 27908 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 27925000 ps
+Time: 27925 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 27925 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 27945000 ps
+Time: 27945 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 27945 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 27969 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 27969000 ps
+Time: 27969 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x20
+Time: 31572 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x0000005A
+Time: 31593 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 31593000 ps
+Time: 31593 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x0000569A to Address: x00
+Time: 32096 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 32113000 ps
+Time: 32113 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 32213 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 32237 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 32237000 ps
+Time: 32237 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 32240 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 32265 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 32265000 ps
+Time: 32265 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 32368 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 32385000 ps
+Time: 32385 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 32385 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 32405000 ps
+Time: 32405 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 32405 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 32429 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 32429000 ps
+Time: 32429 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x20
+Time: 36032 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00001234
+Time: 36053 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 36053000 ps
+Time: 36053 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00005692 to Address: x00
+Time: 36556 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 36573000 ps
+Time: 36573 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 36673 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 36697 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 36697000 ps
+Time: 36697 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 36700 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 36725 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 36725000 ps
+Time: 36725 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 36828 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 36845000 ps
+Time: 36845 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 36845 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 36865000 ps
+Time: 36865 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 36865 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 36889 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 36889000 ps
+Time: 36889 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x20
+Time: 40492 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x0000FEDC
+Time: 40513 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 40513000 ps
+Time: 40513 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00078062 to Address: x00
+Time: 41016 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 41033000 ps
+Time: 41033 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 41133 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 41157 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 41157000 ps
+Time: 41157 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x1C
+Time: 41160 ns  Iteration: 1  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000001
+Time: 41185 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 41185000 ps
+Time: 41185 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000001 to Address: x08
+Time: 41288 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 41305000 ps
+Time: 41305 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Writing x00000000 to Address: x08
+Time: 41305 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Write completed at time = 41325000 ps
+Time: 41325 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x18
+Time: 41325 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x00000000
+Time: 41349 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 41349000 ps
+Time: 41349 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Reading Address: x20
+Time: 44952 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Value is: x000000FA
+Time: 44973 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Note: Read completed successfully at time = 44973000 ps
+Time: 44973 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+Failure: >>>>>>>>>>>>>>******* NOT A FAILURE: All SPI Tests Completed with No Errors. Time = 45276000 ps
+Time: 45276 ns  Iteration: 0  Process: /tb_px_3324_FMC_intrfc_spi_test/SPI_TEST  File: C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd
+$finish called at time : 45276 ns : File "C:/pentek/ip/2018WIP/pentek/ip/px_3324_FMC_intrfc/px_3324_FMC_intrfc.srcs/sim_1/new/tb_px_3324_FMC_intrfc_spi_test.vhd" Line 467
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_3324_FMC_intrfc_spi_test_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 50000ns
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 947.266 ; gain = 0.000
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+ipx::package_project -root_dir c:/pentek/ip/2018wip/pentek/ip/px_3324_fmc_intrfc/px_3324_fmc_intrfc.srcs -vendor Pentek.com -library user -taxonomy /UserIP
+INFO: [IP_Flow 19-5107] Inferred bus interface 's_axi_csr_aclk' of definition 'xilinx.com:signal:clock:1.0' (from X_INTERFACE_INFO parameter from HDL file).
+INFO: [IP_Flow 19-5107] Inferred bus interface 's_axi_csr_aclk' of definition 'xilinx.com:signal:clock:1.0' (from 'X_INTERFACE_INFO' attribute).
+WARNING: [IP_Flow 19-1654] Cannot find bus abstraction "pentek.com:pentek_ip:cfg_spc:1.0" from the IP catalog.
+INFO: [IP_Flow 19-5107] Inferred bus interface 's_axi_csr' of definition 'xilinx.com:interface:aximm:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 's_axi_csr_aresetn' of definition 'xilinx.com:signal:reset:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-5107] Inferred bus interface 'PCIE_CLK' of definition 'xilinx.com:signal:clock:1.0' (from Xilinx Repository).
+INFO: [IP_Flow 19-4728] Bus Interface 's_axi_csr_aresetn': Added interface parameter 'POLARITY' with value 'ACTIVE_LOW'.
+INFO: [IP_Flow 19-4728] Bus Interface 's_axi_csr_aclk': Added interface parameter 'ASSOCIATED_BUSIF' with value 's_axi_csr'.
+INFO: [IP_Flow 19-4728] Bus Interface 's_axi_csr_aclk': Added interface parameter 'ASSOCIATED_RESET' with value 's_axi_csr_aresetn'.
+WARNING: [IP_Flow 19-3153] Bus Interface 'PCIE_CLK': ASSOCIATED_BUSIF bus parameter is missing.
+INFO: [IP_Flow 19-2181] Payment Required is not set for this core.
+INFO: [IP_Flow 19-2187] The Product Guide file is missing.
+set_property core_revision 2 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property  ip_repo_paths  {c:/pentek/ip/2018wip/pentek/ip/px_3324_fmc_intrfc/px_3324_fmc_intrfc.srcs c:/pentek/ip/2018.1/pentek} [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/pentek/ip/2018wip/pentek/ip/px_3324_fmc_intrfc/px_3324_fmc_intrfc.srcs'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/pentek/ip/2018.1/pentek'.
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Aug 14 14:04:50 2018...

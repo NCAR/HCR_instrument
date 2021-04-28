@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# Vivado v2017.2 (64-bit)
+# SW Build 1909853 on Thu Jun 15 18:39:09 MDT 2017
+# IP Build 1909766 on Thu Jun 15 19:58:00 MDT 2017
+# Start of session at: Thu Aug 10 10:24:40 2017
+# Process ID: 7952
+# Current directory: C:/Pentek/IP/2017.2/pentek/ip/px_axis_pdti_mux
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11240 C:\Pentek\IP\2017.2\pentek\ip\px_axis_pdti_mux\px_axis_pdti_mux.xpr
+# Log file: C:/Pentek/IP/2017.2/pentek/ip/px_axis_pdti_mux/vivado.log
+# Journal file: C:/Pentek/IP/2017.2/pentek/ip/px_axis_pdti_mux\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.2/pentek/ip/px_axis_pdti_mux/px_axis_pdti_mux.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2017.2\pentek\ip\px_axis_pdti_mux\px_axis_pdti_mux.srcs\sources_1\new\component.xml}
+ipx::unload_core c:/Pentek/IP/2017.2/pentek/ip/px_axis_pdti_mux/px_axis_pdti_mux.srcs/sources_1/new/component.xml
+ipx::open_ipxact_file {C:\Pentek\IP\2017.2\pentek\ip\px_axis_pdti_mux\px_axis_pdti_mux.srcs\sources_1\new\component.xml}
+set_property supported_families {kintexu Production kintexuplus Production virtexuplus Production zynquplus Production} [ipx::current_core]
+set_property name ../../doc/px_axis_pdti_mux.pdf [ipx::get_files ../../../doc/px_axis_pdti_mux.pdf -of_objects [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]]
+set_property name ../../doc/px_axis_pdti_mux_changelog.txt [ipx::get_files ../../../doc/px_axis_pdti_mux_changelog.txt -of_objects [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]]
+set_property core_revision 15 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2017.2/pentek/ip/px_axis_pdti_mux/px_axis_pdti_mux.srcs/sources_1/new

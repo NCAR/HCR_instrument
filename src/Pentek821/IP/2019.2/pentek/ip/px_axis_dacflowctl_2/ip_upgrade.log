@@ -1,0 +1,121 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 09:23:05 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_dacflowctl_2_wcnv'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_dacflowctl_2_wcnv (xilinx.com:ip:axis_dwidth_converter:1.1) from (Rev. 18) to (Rev. 19)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 09:23:05 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_dacflowctl_2_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_dacflowctl_2_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 09:23:04 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_dflw_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_dflw_2 (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 23) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Jun 11 12:37:02 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_dacflowctl_2_wcnv'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_dacflowctl_2_wcnv (xilinx.com:ip:axis_dwidth_converter:1.1) from (Rev. 15) to (Rev. 18)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Jun 11 12:37:02 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axis_dacflowctl_2_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axis_dacflowctl_2_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Jun 11 12:37:01 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_axil_csr_dflw_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_axil_csr_dflw_2 (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 21) to (Rev. 23)
+

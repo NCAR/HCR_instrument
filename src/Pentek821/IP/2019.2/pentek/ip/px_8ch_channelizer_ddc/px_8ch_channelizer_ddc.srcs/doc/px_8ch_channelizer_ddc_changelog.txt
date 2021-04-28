@@ -1,0 +1,6 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release - Encrypted
+Version 1.1
+Fixed problem with disabling SYNC. After a SYNC pulse is seen when disabled, proper function was disturbed.

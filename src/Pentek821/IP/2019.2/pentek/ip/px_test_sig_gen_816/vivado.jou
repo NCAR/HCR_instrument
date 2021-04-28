@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2017.3 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Wed Apr 18 10:38:27 2018
+# Process ID: 11816
+# Current directory: C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11568 C:\pentek\ip\2017.3\pentek\ip\px_test_sig_gen_816\px_test_sig_gen_816.xpr
+# Log file: C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816/vivado.log
+# Journal file: C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/pentek/ip/2017.3/pentek/ip/px_test_sig_gen_816/px_test_sig_gen_816.xpr
+update_compile_order -fileset sources_1

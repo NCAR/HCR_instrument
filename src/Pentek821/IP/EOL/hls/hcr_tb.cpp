@@ -125,7 +125,7 @@ int main()
 		&flags
 	);
 
-
+	std::cout << "\n";
 	while(!o_data.empty())
 	{
 		pdti_32 odata = o_data.read();

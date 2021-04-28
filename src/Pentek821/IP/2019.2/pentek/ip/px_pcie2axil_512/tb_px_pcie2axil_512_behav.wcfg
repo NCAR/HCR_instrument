@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_pcie2axil_512_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="tb_px_pcie2axil_512" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="297" />
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/axi_aclk" type="logic">
+      <obj_property name="ElementShortName">axi_aclk</obj_property>
+      <obj_property name="ObjectShortName">axi_aclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/axi_aresetn" type="logic">
+      <obj_property name="ElementShortName">axi_aresetn</obj_property>
+      <obj_property name="ObjectShortName">axi_aresetn</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cc_shutdown_ok" type="logic">
+      <obj_property name="ElementShortName">cc_shutdown_ok</obj_property>
+      <obj_property name="ObjectShortName">cc_shutdown_ok</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/s_axis_cq_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tdata[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/s_axis_cq_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tuser[84:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tuser[84:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/s_axis_cq_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_cq_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tlast</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/s_axis_cq_tkeep" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tkeep[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/s_axis_cq_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_cq_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/s_axis_cq_tready" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tready[21:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tready[21:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axis_cc_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tdata[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axis_cc_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tuser[32:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tuser[32:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axis_cc_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_cc_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tlast</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axis_cc_tkeep" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tkeep[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axis_cc_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_cc_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axis_cc_tready" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tready[3:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tready[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_awaddr" type="array">
+      <obj_property name="ElementShortName">m_axi_awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_awprot" type="array">
+      <obj_property name="ElementShortName">m_axi_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_awvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_awvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_awready" type="logic">
+      <obj_property name="ElementShortName">m_axi_awready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_wdata" type="array">
+      <obj_property name="ElementShortName">m_axi_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_wstrb" type="array">
+      <obj_property name="ElementShortName">m_axi_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_wvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_wvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_wready" type="logic">
+      <obj_property name="ElementShortName">m_axi_wready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_bresp" type="array">
+      <obj_property name="ElementShortName">m_axi_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_bvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_bvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_bvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_bready" type="logic">
+      <obj_property name="ElementShortName">m_axi_bready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_bready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_araddr" type="array">
+      <obj_property name="ElementShortName">m_axi_araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_araddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_arprot" type="array">
+      <obj_property name="ElementShortName">m_axi_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_arvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_arvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_arvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_arready" type="logic">
+      <obj_property name="ElementShortName">m_axi_arready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_arready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_rdata" type="array">
+      <obj_property name="ElementShortName">m_axi_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_rresp" type="array">
+      <obj_property name="ElementShortName">m_axi_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_rvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_rvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/m_axi_rready" type="logic">
+      <obj_property name="ElementShortName">m_axi_rready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg0" type="array">
+      <obj_property name="ElementShortName">cntl_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg1" type="array">
+      <obj_property name="ElementShortName">cntl_reg1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg1[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg2" type="array">
+      <obj_property name="ElementShortName">cntl_reg2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg2[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg3" type="array">
+      <obj_property name="ElementShortName">cntl_reg3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg3[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg4" type="array">
+      <obj_property name="ElementShortName">cntl_reg4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg4[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg5" type="array">
+      <obj_property name="ElementShortName">cntl_reg5[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg5[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg6" type="array">
+      <obj_property name="ElementShortName">cntl_reg6[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg6[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/cntl_reg7" type="array">
+      <obj_property name="ElementShortName">cntl_reg7[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg7[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg0" type="array">
+      <obj_property name="ElementShortName">stat_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg1" type="array">
+      <obj_property name="ElementShortName">stat_reg1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg1[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg2" type="array">
+      <obj_property name="ElementShortName">stat_reg2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg2[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg3" type="array">
+      <obj_property name="ElementShortName">stat_reg3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg3[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg4" type="array">
+      <obj_property name="ElementShortName">stat_reg4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg4[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg5" type="array">
+      <obj_property name="ElementShortName">stat_reg5[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg5[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg6" type="array">
+      <obj_property name="ElementShortName">stat_reg6[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg6[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/stat_reg7" type="array">
+      <obj_property name="ElementShortName">stat_reg7[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg7[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/num_addr_bits" type="other">
+      <obj_property name="ElementShortName">num_addr_bits</obj_property>
+      <obj_property name="ObjectShortName">num_addr_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar0_size_bits" type="other">
+      <obj_property name="ElementShortName">bar0_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar0_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar0_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar0_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar0_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar1_size_bits" type="other">
+      <obj_property name="ElementShortName">bar1_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar1_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar1_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar1_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar1_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar2_size_bits" type="other">
+      <obj_property name="ElementShortName">bar2_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar2_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar2_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar2_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar2_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar3_size_bits" type="other">
+      <obj_property name="ElementShortName">bar3_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar3_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar3_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar3_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar3_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar4_size_bits" type="other">
+      <obj_property name="ElementShortName">bar4_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar4_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar4_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar4_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar4_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar5_size_bits" type="other">
+      <obj_property name="ElementShortName">bar5_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar5_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/bar5_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar5_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar5_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/AXIS_TDATA_WIDTH" type="other">
+      <obj_property name="ElementShortName">AXIS_TDATA_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">AXIS_TDATA_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/S_AXI_TDATA_WIDTH" type="other">
+      <obj_property name="ElementShortName">S_AXI_TDATA_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_TDATA_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/S_AXI_ADDR_WIDTH" type="other">
+      <obj_property name="ElementShortName">S_AXI_ADDR_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ADDR_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/M_AXI_TDATA_WIDTH" type="other">
+      <obj_property name="ElementShortName">M_AXI_TDATA_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">M_AXI_TDATA_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/M_AXI_ADDR_WIDTH" type="other">
+      <obj_property name="ElementShortName">M_AXI_ADDR_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">M_AXI_ADDR_WIDTH</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider154">
+      <obj_property name="label">rx_engine</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/user_clk" type="logic">
+      <obj_property name="ElementShortName">user_clk</obj_property>
+      <obj_property name="ObjectShortName">user_clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/reset_n" type="logic">
+      <obj_property name="ElementShortName">reset_n</obj_property>
+      <obj_property name="ObjectShortName">reset_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tdata" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tdata[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tlast" type="logic">
+      <obj_property name="ElementShortName">s_axis_cq_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tlast</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tvalid" type="logic">
+      <obj_property name="ElementShortName">s_axis_cq_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tuser" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tuser[84:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tuser[84:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tkeep" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tkeep[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tready" type="logic">
+      <obj_property name="ElementShortName">s_axis_cq_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_compl" type="logic">
+      <obj_property name="ElementShortName">req_compl</obj_property>
+      <obj_property name="ObjectShortName">req_compl</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_compl_wd" type="logic">
+      <obj_property name="ElementShortName">req_compl_wd</obj_property>
+      <obj_property name="ObjectShortName">req_compl_wd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_compl_ur" type="logic">
+      <obj_property name="ElementShortName">req_compl_ur</obj_property>
+      <obj_property name="ObjectShortName">req_compl_ur</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/compl_done" type="logic">
+      <obj_property name="ElementShortName">compl_done</obj_property>
+      <obj_property name="ObjectShortName">compl_done</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_tc" type="array">
+      <obj_property name="ElementShortName">req_tc[2:0]</obj_property>
+      <obj_property name="ObjectShortName">req_tc[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_attr" type="array">
+      <obj_property name="ElementShortName">req_attr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">req_attr[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_len" type="array">
+      <obj_property name="ElementShortName">req_len[10:0]</obj_property>
+      <obj_property name="ObjectShortName">req_len[10:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_rid" type="array">
+      <obj_property name="ElementShortName">req_rid[15:0]</obj_property>
+      <obj_property name="ObjectShortName">req_rid[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_tag" type="array">
+      <obj_property name="ElementShortName">req_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">req_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_be" type="array">
+      <obj_property name="ElementShortName">req_be[3:0]</obj_property>
+      <obj_property name="ObjectShortName">req_be[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_addr" type="array">
+      <obj_property name="ElementShortName">req_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">req_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_at" type="array">
+      <obj_property name="ElementShortName">req_at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">req_at[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_bar_hit" type="array">
+      <obj_property name="ElementShortName">req_bar_hit[2:0]</obj_property>
+      <obj_property name="ObjectShortName">req_bar_hit[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_des_qword0" type="array">
+      <obj_property name="ElementShortName">req_des_qword0[63:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_qword0[63:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_des_qword1" type="array">
+      <obj_property name="ElementShortName">req_des_qword1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_qword1[63:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_des_tph_present" type="logic">
+      <obj_property name="ElementShortName">req_des_tph_present</obj_property>
+      <obj_property name="ObjectShortName">req_des_tph_present</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_des_tph_type" type="array">
+      <obj_property name="ElementShortName">req_des_tph_type[1:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_tph_type[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_des_tph_st_tag" type="array">
+      <obj_property name="ElementShortName">req_des_tph_st_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_tph_st_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_mem_lock" type="logic">
+      <obj_property name="ElementShortName">req_mem_lock</obj_property>
+      <obj_property name="ObjectShortName">req_mem_lock</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/req_mem" type="logic">
+      <obj_property name="ElementShortName">req_mem</obj_property>
+      <obj_property name="ObjectShortName">req_mem</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_awaddr" type="array">
+      <obj_property name="ElementShortName">m_axi_awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awaddr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_awprot" type="array">
+      <obj_property name="ElementShortName">m_axi_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_awvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_awvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_awready" type="logic">
+      <obj_property name="ElementShortName">m_axi_awready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_awready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_wdata" type="array">
+      <obj_property name="ElementShortName">m_axi_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_wstrb" type="array">
+      <obj_property name="ElementShortName">m_axi_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_wvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_wvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_wready" type="logic">
+      <obj_property name="ElementShortName">m_axi_wready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_wready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_bresp" type="array">
+      <obj_property name="ElementShortName">m_axi_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_bvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_bvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_bvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/m_axi_bready" type="logic">
+      <obj_property name="ElementShortName">m_axi_bready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_bready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/output_sm_state" type="other">
+      <obj_property name="ElementShortName">output_sm_state</obj_property>
+      <obj_property name="ObjectShortName">output_sm_state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/trn_type" type="array">
+      <obj_property name="ElementShortName">trn_type[3:0]</obj_property>
+      <obj_property name="ObjectShortName">trn_type[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/sop" type="logic">
+      <obj_property name="ElementShortName">sop</obj_property>
+      <obj_property name="ObjectShortName">sop</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tdata_q" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tdata_q[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tdata_q[255:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/s_axis_cq_tuser_q" type="array">
+      <obj_property name="ElementShortName">s_axis_cq_tuser_q[84:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_cq_tuser_q[84:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr" type="array">
+      <obj_property name="ElementShortName">wr_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_be" type="array">
+      <obj_property name="ElementShortName">wr_be[3:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_be[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_data" type="array">
+      <obj_property name="ElementShortName">wr_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_en" type="logic">
+      <obj_property name="ElementShortName">wr_en</obj_property>
+      <obj_property name="ObjectShortName">wr_en</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_busy" type="logic">
+      <obj_property name="ElementShortName">wr_busy</obj_property>
+      <obj_property name="ObjectShortName">wr_busy</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/int_S_AXIS_CQ_TREADY" type="logic">
+      <obj_property name="ElementShortName">int_S_AXIS_CQ_TREADY</obj_property>
+      <obj_property name="ObjectShortName">int_S_AXIS_CQ_TREADY</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/int_REQ_ADDR" type="array">
+      <obj_property name="ElementShortName">int_REQ_ADDR[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_REQ_ADDR[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr_bar0_masked" type="array">
+      <obj_property name="ElementShortName">wr_addr_bar0_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr_bar0_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr_bar1_masked" type="array">
+      <obj_property name="ElementShortName">wr_addr_bar1_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr_bar1_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr_bar2_masked" type="array">
+      <obj_property name="ElementShortName">wr_addr_bar2_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr_bar2_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr_bar3_masked" type="array">
+      <obj_property name="ElementShortName">wr_addr_bar3_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr_bar3_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr_bar4_masked" type="array">
+      <obj_property name="ElementShortName">wr_addr_bar4_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr_bar4_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/wr_addr_bar5_masked" type="array">
+      <obj_property name="ElementShortName">wr_addr_bar5_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_addr_bar5_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar_hit" type="array">
+      <obj_property name="ElementShortName">bar_hit[2:0]</obj_property>
+      <obj_property name="ObjectShortName">bar_hit[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/num_addr_bits" type="other">
+      <obj_property name="ElementShortName">num_addr_bits</obj_property>
+      <obj_property name="ObjectShortName">num_addr_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar0_size_bits" type="other">
+      <obj_property name="ElementShortName">bar0_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar0_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar0_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar0_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar0_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar1_size_bits" type="other">
+      <obj_property name="ElementShortName">bar1_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar1_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar1_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar1_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar1_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar2_size_bits" type="other">
+      <obj_property name="ElementShortName">bar2_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar2_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar2_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar2_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar2_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar3_size_bits" type="other">
+      <obj_property name="ElementShortName">bar3_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar3_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar3_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar3_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar3_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar4_size_bits" type="other">
+      <obj_property name="ElementShortName">bar4_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar4_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar4_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar4_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar4_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar5_size_bits" type="other">
+      <obj_property name="ElementShortName">bar5_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar5_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/bar5_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar5_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar5_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_MEM_RD_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_MEM_RD_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_MEM_RD_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_MEM_WR_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_MEM_WR_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_MEM_WR_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_IO_RD_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_IO_RD_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_IO_RD_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_IO_WR_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_IO_WR_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_IO_WR_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_ATOP_FAA_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_ATOP_FAA_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_ATOP_FAA_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_ATOP_UCS_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_ATOP_UCS_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_ATOP_UCS_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_ATOP_CAS_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_ATOP_CAS_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_ATOP_CAS_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_MEM_LK_RD_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_MEM_LK_RD_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_MEM_LK_RD_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_MSG_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_MSG_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_MSG_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_MSG_VD_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_MSG_VD_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_MSG_VD_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/PIO_RX_MSG_ATS_FMT_TYPE" type="array">
+      <obj_property name="ElementShortName">PIO_RX_MSG_ATS_FMT_TYPE[3:0]</obj_property>
+      <obj_property name="ObjectShortName">PIO_RX_MSG_ATS_FMT_TYPE[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/rx_engine_inst/BAR_ID_SELECT" type="other">
+      <obj_property name="ElementShortName">BAR_ID_SELECT</obj_property>
+      <obj_property name="ObjectShortName">BAR_ID_SELECT</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider233">
+      <obj_property name="label">tx engine</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/user_clk" type="logic">
+      <obj_property name="ElementShortName">user_clk</obj_property>
+      <obj_property name="ObjectShortName">user_clk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/reset_n" type="logic">
+      <obj_property name="ElementShortName">reset_n</obj_property>
+      <obj_property name="ObjectShortName">reset_n</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axis_cc_tdata" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tdata[255:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axis_cc_tkeep" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tkeep[7:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tkeep[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axis_cc_tlast" type="logic">
+      <obj_property name="ElementShortName">m_axis_cc_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tlast</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axis_cc_tvalid" type="logic">
+      <obj_property name="ElementShortName">m_axis_cc_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axis_cc_tuser" type="array">
+      <obj_property name="ElementShortName">m_axis_cc_tuser[32:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tuser[32:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axis_cc_tready" type="logic">
+      <obj_property name="ElementShortName">m_axis_cc_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_cc_tready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_compl" type="logic">
+      <obj_property name="ElementShortName">req_compl</obj_property>
+      <obj_property name="ObjectShortName">req_compl</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_compl_wd" type="logic">
+      <obj_property name="ElementShortName">req_compl_wd</obj_property>
+      <obj_property name="ObjectShortName">req_compl_wd</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_compl_ur" type="logic">
+      <obj_property name="ElementShortName">req_compl_ur</obj_property>
+      <obj_property name="ObjectShortName">req_compl_ur</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/compl_done" type="logic">
+      <obj_property name="ElementShortName">compl_done</obj_property>
+      <obj_property name="ObjectShortName">compl_done</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_tc" type="array">
+      <obj_property name="ElementShortName">req_tc[2:0]</obj_property>
+      <obj_property name="ObjectShortName">req_tc[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_td" type="logic">
+      <obj_property name="ElementShortName">req_td</obj_property>
+      <obj_property name="ObjectShortName">req_td</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_ep" type="logic">
+      <obj_property name="ElementShortName">req_ep</obj_property>
+      <obj_property name="ObjectShortName">req_ep</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_attr" type="array">
+      <obj_property name="ElementShortName">req_attr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">req_attr[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_rid" type="array">
+      <obj_property name="ElementShortName">req_rid[15:0]</obj_property>
+      <obj_property name="ObjectShortName">req_rid[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_tag" type="array">
+      <obj_property name="ElementShortName">req_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">req_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_be" type="array">
+      <obj_property name="ElementShortName">req_be[3:0]</obj_property>
+      <obj_property name="ObjectShortName">req_be[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_addr" type="array">
+      <obj_property name="ElementShortName">req_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">req_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_at" type="array">
+      <obj_property name="ElementShortName">req_at[1:0]</obj_property>
+      <obj_property name="ObjectShortName">req_at[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_bar_hit" type="array">
+      <obj_property name="ElementShortName">req_bar_hit[2:0]</obj_property>
+      <obj_property name="ObjectShortName">req_bar_hit[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/completer_id" type="array">
+      <obj_property name="ElementShortName">completer_id[15:0]</obj_property>
+      <obj_property name="ObjectShortName">completer_id[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_des_qword0" type="array">
+      <obj_property name="ElementShortName">req_des_qword0[63:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_qword0[63:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_des_qword1" type="array">
+      <obj_property name="ElementShortName">req_des_qword1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_qword1[63:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_des_tph_present" type="logic">
+      <obj_property name="ElementShortName">req_des_tph_present</obj_property>
+      <obj_property name="ObjectShortName">req_des_tph_present</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_des_tph_type" type="array">
+      <obj_property name="ElementShortName">req_des_tph_type[1:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_tph_type[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_des_tph_st_tag" type="array">
+      <obj_property name="ElementShortName">req_des_tph_st_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">req_des_tph_st_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_mem_lock" type="logic">
+      <obj_property name="ElementShortName">req_mem_lock</obj_property>
+      <obj_property name="ObjectShortName">req_mem_lock</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/req_mem" type="logic">
+      <obj_property name="ElementShortName">req_mem</obj_property>
+      <obj_property name="ObjectShortName">req_mem</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_araddr" type="array">
+      <obj_property name="ElementShortName">m_axi_araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_araddr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_arprot" type="array">
+      <obj_property name="ElementShortName">m_axi_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_arvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_arvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_arvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_arready" type="logic">
+      <obj_property name="ElementShortName">m_axi_arready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_arready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_rdata" type="array">
+      <obj_property name="ElementShortName">m_axi_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_rvalid" type="logic">
+      <obj_property name="ElementShortName">m_axi_rvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_rready" type="logic">
+      <obj_property name="ElementShortName">m_axi_rready</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/m_axi_rresp" type="array">
+      <obj_property name="ElementShortName">m_axi_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axi_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/byte_count" type="array">
+      <obj_property name="ElementShortName">byte_count[11:0]</obj_property>
+      <obj_property name="ObjectShortName">byte_count[11:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/lower_addr" type="array">
+      <obj_property name="ElementShortName">lower_addr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">lower_addr[6:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/case_concat" type="array">
+      <obj_property name="ElementShortName">case_concat[4:0]</obj_property>
+      <obj_property name="ObjectShortName">case_concat[4:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/reader_state" type="other">
+      <obj_property name="ElementShortName">reader_state</obj_property>
+      <obj_property name="ObjectShortName">reader_state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/data_available" type="logic">
+      <obj_property name="ElementShortName">data_available</obj_property>
+      <obj_property name="ObjectShortName">data_available</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/reg_rd_data" type="array">
+      <obj_property name="ElementShortName">reg_rd_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_rd_data[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/int_m_axis_cc_tdata" type="array">
+      <obj_property name="ElementShortName">int_m_axis_cc_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">int_m_axis_cc_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/int_compl_done" type="logic">
+      <obj_property name="ElementShortName">int_compl_done</obj_property>
+      <obj_property name="ObjectShortName">int_compl_done</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/rd_addr_bar0_masked" type="array">
+      <obj_property name="ElementShortName">rd_addr_bar0_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr_bar0_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/rd_addr_bar1_masked" type="array">
+      <obj_property name="ElementShortName">rd_addr_bar1_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr_bar1_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/rd_addr_bar2_masked" type="array">
+      <obj_property name="ElementShortName">rd_addr_bar2_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr_bar2_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/rd_addr_bar3_masked" type="array">
+      <obj_property name="ElementShortName">rd_addr_bar3_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr_bar3_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/rd_addr_bar4_masked" type="array">
+      <obj_property name="ElementShortName">rd_addr_bar4_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr_bar4_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/rd_addr_bar5_masked" type="array">
+      <obj_property name="ElementShortName">rd_addr_bar5_masked[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_addr_bar5_masked[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/num_addr_bits" type="other">
+      <obj_property name="ElementShortName">num_addr_bits</obj_property>
+      <obj_property name="ObjectShortName">num_addr_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar0_size_bits" type="other">
+      <obj_property name="ElementShortName">bar0_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar0_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar0_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar0_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar0_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar1_size_bits" type="other">
+      <obj_property name="ElementShortName">bar1_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar1_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar1_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar1_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar1_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar2_size_bits" type="other">
+      <obj_property name="ElementShortName">bar2_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar2_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar2_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar2_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar2_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar3_size_bits" type="other">
+      <obj_property name="ElementShortName">bar3_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar3_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar3_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar3_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar3_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar4_size_bits" type="other">
+      <obj_property name="ElementShortName">bar4_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar4_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar4_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar4_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar4_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar5_size_bits" type="other">
+      <obj_property name="ElementShortName">bar5_size_bits</obj_property>
+      <obj_property name="ObjectShortName">bar5_size_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/bar5_addr_translation" type="array">
+      <obj_property name="ElementShortName">bar5_addr_translation[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bar5_addr_translation[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/C_DATA_WIDTH" type="other">
+      <obj_property name="ElementShortName">C_DATA_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">C_DATA_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/STRB_WIDTH" type="other">
+      <obj_property name="ElementShortName">STRB_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">STRB_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/KEEP_WIDTH" type="other">
+      <obj_property name="ElementShortName">KEEP_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">KEEP_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/PARITY_WIDTH" type="other">
+      <obj_property name="ElementShortName">PARITY_WIDTH</obj_property>
+      <obj_property name="ObjectShortName">PARITY_WIDTH</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/AXISTEN_IF_WIDTH" type="array">
+      <obj_property name="ElementShortName">AXISTEN_IF_WIDTH[1:0]</obj_property>
+      <obj_property name="ObjectShortName">AXISTEN_IF_WIDTH[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/uut/tx_engine_inst/PAYLOAD_LEN" type="array">
+      <obj_property name="ElementShortName">PAYLOAD_LEN[1:0]</obj_property>
+      <obj_property name="ObjectShortName">PAYLOAD_LEN[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider304">
+      <obj_property name="label">control/status registers</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[5:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[5:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg0_init_val" type="array">
+      <obj_property name="ElementShortName">reg0_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg0_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg1_init_val" type="array">
+      <obj_property name="ElementShortName">reg1_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg1_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg2_init_val" type="array">
+      <obj_property name="ElementShortName">reg2_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg2_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg3_init_val" type="array">
+      <obj_property name="ElementShortName">reg3_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg3_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg4_init_val" type="array">
+      <obj_property name="ElementShortName">reg4_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg4_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg5_init_val" type="array">
+      <obj_property name="ElementShortName">reg5_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg5_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg6_init_val" type="array">
+      <obj_property name="ElementShortName">reg6_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg6_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg7_init_val" type="array">
+      <obj_property name="ElementShortName">reg7_init_val[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg7_init_val[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl0_out" type="array">
+      <obj_property name="ElementShortName">ctl0_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl0_out[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl1_out" type="array">
+      <obj_property name="ElementShortName">ctl1_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl1_out[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl2_out" type="array">
+      <obj_property name="ElementShortName">ctl2_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl2_out[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl3_out" type="array">
+      <obj_property name="ElementShortName">ctl3_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl3_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl4_out" type="array">
+      <obj_property name="ElementShortName">ctl4_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl4_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl5_out" type="array">
+      <obj_property name="ElementShortName">ctl5_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl5_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl6_out" type="array">
+      <obj_property name="ElementShortName">ctl6_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl6_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/ctl7_out" type="array">
+      <obj_property name="ElementShortName">ctl7_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ctl7_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat0_in" type="array">
+      <obj_property name="ElementShortName">stat0_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat0_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat1_in" type="array">
+      <obj_property name="ElementShortName">stat1_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat1_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat2_in" type="array">
+      <obj_property name="ElementShortName">stat2_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat2_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat3_in" type="array">
+      <obj_property name="ElementShortName">stat3_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat3_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat4_in" type="array">
+      <obj_property name="ElementShortName">stat4_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat4_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat5_in" type="array">
+      <obj_property name="ElementShortName">stat5_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat5_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat6_in" type="array">
+      <obj_property name="ElementShortName">stat6_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat6_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat7_in" type="array">
+      <obj_property name="ElementShortName">stat7_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat7_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/intrpt_src_in" type="array">
+      <obj_property name="ElementShortName">intrpt_src_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">intrpt_src_in[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/irq" type="logic">
+      <obj_property name="ElementShortName">irq</obj_property>
+      <obj_property name="ObjectShortName">irq</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/state" type="other">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/rd_data" type="array">
+      <obj_property name="ElementShortName">rd_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/w_data" type="array">
+      <obj_property name="ElementShortName">w_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">w_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/w_addr" type="array">
+      <obj_property name="ElementShortName">w_addr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">w_addr[5:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/r_addr" type="array">
+      <obj_property name="ElementShortName">r_addr[5:0]</obj_property>
+      <obj_property name="ObjectShortName">r_addr[5:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/w_we" type="logic">
+      <obj_property name="ElementShortName">w_we</obj_property>
+      <obj_property name="ObjectShortName">w_we</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/w_addr_num" type="other">
+      <obj_property name="ElementShortName">w_addr_num</obj_property>
+      <obj_property name="ObjectShortName">w_addr_num</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/r_addr_num" type="other">
+      <obj_property name="ElementShortName">r_addr_num</obj_property>
+      <obj_property name="ObjectShortName">r_addr_num</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/cntl_reg" type="array">
+      <obj_property name="ElementShortName">cntl_reg[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">cntl_reg[0:7][31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/stat_reg" type="array">
+      <obj_property name="ElementShortName">stat_reg[0:7][31:0]</obj_property>
+      <obj_property name="ObjectShortName">stat_reg[0:7][31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/int_en_reg" type="array">
+      <obj_property name="ElementShortName">int_en_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_en_reg[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/t1_intrpt_src_in" type="array">
+      <obj_property name="ElementShortName">t1_intrpt_src_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t1_intrpt_src_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/t2_intrpt_src_in" type="array">
+      <obj_property name="ElementShortName">t2_intrpt_src_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">t2_intrpt_src_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/re_int" type="array">
+      <obj_property name="ElementShortName">re_int[31:0]</obj_property>
+      <obj_property name="ObjectShortName">re_int[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/int_and" type="array">
+      <obj_property name="ElementShortName">int_and[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_and[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/int_flag_reg" type="array">
+      <obj_property name="ElementShortName">int_flag_reg[31:0]</obj_property>
+      <obj_property name="ObjectShortName">int_flag_reg[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/reg_clr" type="array">
+      <obj_property name="ElementShortName">reg_clr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_clr[31:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/usr_int" type="logic">
+      <obj_property name="ElementShortName">usr_int</obj_property>
+      <obj_property name="ObjectShortName">usr_int</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/num_addr_bits" type="other">
+      <obj_property name="ElementShortName">num_addr_bits</obj_property>
+      <obj_property name="ObjectShortName">num_addr_bits</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/num_ctl_regs" type="other">
+      <obj_property name="ElementShortName">num_ctl_regs</obj_property>
+      <obj_property name="ObjectShortName">num_ctl_regs</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/num_stat_regs" type="other">
+      <obj_property name="ElementShortName">num_stat_regs</obj_property>
+      <obj_property name="ObjectShortName">num_stat_regs</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/num_interrupt_regs" type="other">
+      <obj_property name="ElementShortName">num_interrupt_regs</obj_property>
+      <obj_property name="ObjectShortName">num_interrupt_regs</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" fp_name="/tb_px_pcie2axil_512/px_axil_csr_inst/num_interrupt_src" type="other">
+      <obj_property name="ElementShortName">num_interrupt_src</obj_property>
+      <obj_property name="ObjectShortName">num_interrupt_src</obj_property>
+   </wvobject>
+</wave_config>

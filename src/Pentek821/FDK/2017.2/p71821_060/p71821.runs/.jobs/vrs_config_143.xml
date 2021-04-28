@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<Runs Version="1" Minor="0">
-	<Run Id="ddr4_intrfc_synth_1" LaunchDir="G:/src/firmware/DT/FDK/2017.2/p71821_060/p71821.runs/ddr4_intrfc_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
-	<Run Id="synth_1" LaunchDir="G:/src/firmware/DT/FDK/2017.2/p71821_060/p71821.runs/synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado">
-		<Parent Id="ddr4_intrfc_synth_1"/>
-	</Run>
-</Runs>
-

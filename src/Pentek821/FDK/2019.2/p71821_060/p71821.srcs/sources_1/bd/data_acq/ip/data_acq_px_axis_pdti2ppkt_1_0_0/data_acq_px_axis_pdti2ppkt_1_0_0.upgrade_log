@@ -1,0 +1,58 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4.2 (win64) Build 1494164 Fri Feb 26 04:18:56 MST 2016
+| Date         : Mon Mar 28 08:39:09 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+--------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'data_acq_px_axis_pdti2ppkt_1_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the update of data_acq_px_axis_pdti2ppkt_1_0_0 (pentek.com:px_ip:px_axis_pdti2ppkt_1:1.0 (Rev. 17)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4.2 (win64) Build 1494164 Fri Feb 26 04:18:56 MST 2016
+| Date         : Wed Mar 23 09:23:40 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku115-flva1517-2-e
+--------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'data_acq_px_axis_pdti2ppkt_1_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the update of data_acq_px_axis_pdti2ppkt_1_0_0 (pentek.com:px_ip:px_axis_pdti2ppkt_1:1.0 (Rev. 17)) to current project options.
+
+
+
+
+
+
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (win64) Build 1412921 Wed Nov 18 09:43:45 MST 2015
+| Date         : Tue Mar 15 13:18:13 2016
+| Host         : Rich-PC running 64-bit Service Pack 1  (build 7601)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e-es2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'data_acq_px_axis_pdti2ppkt_1_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of data_acq_px_axis_pdti2ppkt_1_0_0 (pentek.com:px_ip:px_axis_pdti2ppkt_1:1.0) from (Rev. 15) to (Rev. 17)
+

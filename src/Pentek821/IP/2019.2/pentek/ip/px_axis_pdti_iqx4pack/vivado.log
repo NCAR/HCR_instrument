@@ -1,0 +1,45 @@
+#-----------------------------------------------------------
+# Vivado v2016.2 (64-bit)
+# SW Build 1577090 on Thu Jun  2 16:32:40 MDT 2016
+# IP Build 1577682 on Fri Jun  3 12:00:54 MDT 2016
+# Start of session at: Thu Jun 09 10:46:07 2016
+# Process ID: 748
+# Current directory: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent4984 C:\Xilinx\Vivado\2016.2\data\ip\pentek\ip\px_axis_pdti_iqx4pack\px_axis_pdti_iqx4pack.xpr
+# Log file: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack/vivado.log
+# Journal file: C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack/px_axis_pdti_iqx4pack.xpr
+INFO: [Project 1-313] Project file moved from 'C:/Xilinx/Vivado/2016.1/data/ip/pentek/ip/px_axis_pdti_iqx4pack' since last save.
+Scanning sources...
+Finished scanning sources
+INFO: [Project 1-230] Project 'px_axis_pdti_iqx4pack.xpr' upgraded for this version of Vivado.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2016.2/data/ip'.
+WARNING: [IP_Flow 19-2162] IP 'axis_dwidth_iqx4pack' is locked:
+* IP definition 'AXI4-Stream Data Width Converter (1.1)' for IP 'axis_dwidth_iqx4pack' has a different revision in the IP Catalog.
+Please select 'Report IP Status' from the 'Tools/Report' menu or run Tcl command 'report_ip_status' for more information.
+open_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:07 . Memory (MB): peak = 923.219 ; gain = 226.625
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+export_ip_user_files -of_objects [get_ips  axis_dwidth_iqx4pack] -no_script -reset -quiet
+upgrade_ip -srcset axis_dwidth_iqx4pack -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 [get_ips  axis_dwidth_iqx4pack] -log ip_upgrade.log
+Upgrading 'axis_dwidth_iqx4pack'
+INFO: [Project 1-386] Moving file 'C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack/px_axis_pdti_iqx4pack.srcs/sources_1/ip/axis_dwidth_iqx4pack/axis_dwidth_iqx4pack.xci' from fileset 'axis_dwidth_iqx4pack' to fileset 'sources_1'.
+INFO: [IP_Flow 19-3422] Upgraded axis_dwidth_iqx4pack (AXI4-Stream Data Width Converter 1.1) from revision 7 to revision 8
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'axis_dwidth_iqx4pack'...
+INFO: [Coretcl 2-1525] Wrote upgrade log to 'C:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack/ip_upgrade.log'.
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Xilinx\Vivado\2016.2\data\ip\pentek\ip\px_axis_pdti_iqx4pack\px_axis_pdti_iqx4pack.srcs\sources_1\component.xml}
+set_property core_revision 4 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property  ip_repo_paths  c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack/px_axis_pdti_iqx4pack.srcs/sources_1 [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Xilinx/Vivado/2016.2/data/ip/pentek/ip/px_axis_pdti_iqx4pack/px_axis_pdti_iqx4pack.srcs/sources_1'.
+exit
+INFO: [Common 17-206] Exiting Vivado at Thu Jun 09 10:47:15 2016...

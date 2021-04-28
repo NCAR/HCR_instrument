@@ -1,0 +1,163 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 09:02:26 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_twsi_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_3324_FMC_intrfc_twsi_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 4) to (Rev. 5)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (win64) Build 2700185 Thu Oct 24 18:46:05 MDT 2019
+| Date         : Tue Nov 12 09:02:25 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_3324_FMC_intrfc_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 23) to (Rev. 24)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Jun 11 12:11:55 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_twsi_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_3324_FMC_intrfc_twsi_fifo (xilinx.com:ip:fifo_generator:13.2) from (Rev. 2) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Tue Jun 11 12:11:55 2019
+| Host         : Rich-PC running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_csr'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of px_3324_FMC_intrfc_csr (pentek.com:px_ip:px_axil_csr:1.0) from (Rev. 21) to (Rev. 23)
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue Aug 14 13:11:33 2018
+| Host         : DESKTOP-AI6ONV9 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_twsi_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of px_3324_FMC_intrfc_twsi_fifo (xilinx.com:ip:fifo_generator:13.2 (Rev. 2)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue Aug 14 13:11:33 2018
+| Host         : DESKTOP-AI6ONV9 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_csr'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of px_3324_FMC_intrfc_csr (pentek.com:px_ip:px_axil_csr:1.0 (Rev. 21)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue Aug 14 13:10:54 2018
+| Host         : DESKTOP-AI6ONV9 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku085-flva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_twsi_fifo'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of px_3324_FMC_intrfc_twsi_fifo (xilinx.com:ip:fifo_generator:13.2 (Rev. 2)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.1 (win64) Build 2188600 Wed Apr  4 18:40:38 MDT 2018
+| Date         : Tue Aug 14 13:10:53 2018
+| Host         : DESKTOP-AI6ONV9 running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xcku085-flva1517-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'px_3324_FMC_intrfc_csr'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of px_3324_FMC_intrfc_csr (pentek.com:px_ip:px_axil_csr:1.0 (Rev. 21)) to Vivado generation flows.
+

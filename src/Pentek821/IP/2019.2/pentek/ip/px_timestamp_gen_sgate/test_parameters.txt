@@ -1,0 +1,32 @@
+2
+true
+false
+true
+FFFFFFFE
+FFFFFFF0
+00000010
+1
+32
+
+Definitions of above values
+   -- Counter Load Mode
+   -- 0x0 Always on Arm
+   -- 0x1 AUX pulse rising edge
+   -- 0x2 PPS rising edge
+   -- 0x3 PPS falling edge
+   -- 0x4 SYNC rising edge
+   -- 0x5 SYNC falling edge
+   -- 0x6 Gate rising_edge
+   -- 0x7 Gate falling edge 
+    COUNTER_LOAD_MODE   : std_ulogic_vector(3 downto 0);
+    COUNTER_LOAD_ENABLE : boolean; -- false - Disable counter loading, true - Enable Counter loading
+    PPS_MODE            : boolean; -- false - 64-bit sample count, no pps count, true - 32-bit sample count and 32-bit pps count
+    PPS_RISING_ACTIVE_EDGE : boolean; -- true - rising edge , false - falling edge
+    SAMPLE_CNTR_INIT_VALUE: std_ulogic_vector(31 downto 0); -- Value to load to sample counter 
+    PPS_CNTR_INIT_VALUE : std_ulogic_vector(31 downto 0); -- Value to load to pps counter or when pps_mode = '0', load to upper 32 bits of 64-bit sample counter
+    SAMPLE_CNTR_INCR_VALUE: std_ulogic_vector(31 downto 0); -- Value to load to sample counter
+    TICKS_PER_CYCLE     : integer; -- Timestamp Ticks per clock cycle
+    CYCLES_PER_PPS      : integer; -- clock cycles between pps pulses in simulation
+
+Enter logic vectors in hex format without 0x prefix -- example 0xC is entered C.
+Enter boolean values as true or false

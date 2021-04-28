@@ -1,0 +1,11 @@
+Version 1.2
+5/16/2018 - Changed fifo implementation option of jesd_buffer_fifo 
+from built-in to block ram. Block Ram results in better routing and timing for
+fifo's operating at high frequencies. 
+
+Version 1.1
+5/2/2018 - Fixed NCO controller state machine and added nco_a_cntrl_start and 
+nco_b_cntrl_start
+
+Version 1.0
+* Core Created

@@ -6,24 +6,22 @@
       <simLog/>
       <mgLog/>
       <packageLog/>
-      <csimLog>
-        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: compilation error(s)." projectName="hcr_controller" solutionName="solution1" date="2021-04-27T21:24:48.112+0000"/>
-        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: compilation error(s)." projectName="hcr_controller" solutionName="solution1" date="2021-04-27T21:24:22.168+0000"/>
-        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: compilation error(s)." projectName="hcr_controller" solutionName="solution1" date="2021-04-27T21:23:38.650+0000"/>
-        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: compilation error(s)." projectName="hcr_controller" solutionName="solution1" date="2021-04-27T21:23:09.707+0000"/>
-      </csimLog>
+      <csimLog/>
     </logs>
   </errorLogs>
   <warningLogs>
     <logs>
       <synLog>
-        <logs message="WARNING: [SCHED 204-21] The critical path consists of the following:&#xA;&#x9;'phi' operation ('p_s', hcr_controller/hcr_controller.cpp:332) with incoming values : ('p_066_2', hcr_controller/hcr_controller.cpp:332) (0 ns)&#xA;&#x9;multiplexor before 'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:338) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:338) (0.538 ns)&#xA;&#x9;'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:338) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:338) (0 ns)&#xA;&#x9;'add' operation ('prt_clock', hcr_controller/hcr_controller.cpp:329) (1.46 ns)&#xA;&#x9;'icmp' operation ('tmp_10', hcr_controller/hcr_controller.cpp:338) (0.992 ns)&#xA;&#x9;'select' operation ('prt_clock', hcr_controller/hcr_controller.cpp:338) (0.115 ns)" projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:05.739+0000" type="Warning"/>
-        <logs message="WARNING: [SCHED 204-21] Estimated clock period (3.1ns) exceeds the target (target clock period: 4ns, clock uncertainty: 1ns, effective delay budget: 3ns)." projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:05.736+0000" type="Warning"/>
-        <logs message="WARNING: [XFORM 203-562] Loop 'Loop-2.1' (hcr_controller/hcr_controller.cpp:177) in function 'scheduler_parser' has unknown bound because it has multiple exiting blocks." projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:05.252+0000" type="Warning"/>
-        <logs message="WARNING: [XFORM 203-631] Renaming function 'scheduler_cycle_exact' (hcr_controller/hcr_controller.cpp:267) into scheduler_cycle_exac." projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:05.046+0000" type="Warning"/>
-        <logs message="WARNING: [XFORM 203-713] Argument 'pps' has read operations in process function 'scheduler_cycle_exact' (hcr_controller/hcr_controller.cpp:266)." projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:04.310+0000" type="Warning"/>
-        <logs message="WARNING: [XFORM 203-713] Reading dataflow channel 'pps' (hcr_controller/hcr_controller.cpp:34) in the middle of dataflow may stall the dataflow pipeline:" projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:04.306+0000" type="Warning"/>
-        <logs message="WARNING: [SYNCHK 200-23] hcr_controller/hcr_controller.cpp:313: variable-indexed range selection may cause suboptimal QoR." projectName="hcr_controller" solutionName="solution1" date="2021-04-23T20:20:03.624+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] The critical path in module 'hcr_controller' consists of the following:&#xA;&#x9;'call' operation ('_ln0') to 'scheduler_cycle_exac' [163]  (4.7 ns)" projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:27.530+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] Estimated clock period (4.704ns) exceeds the target (target clock period: 5ns, clock uncertainty: 2ns, effective delay budget: 3ns)." projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:27.528+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] The critical path in module 'scheduler_cycle_exac' consists of the following:&#xA;&#x9;multiplexor before 'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:338) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:338) [115]  (0.835 ns)&#xA;&#x9;'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:338) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:338) [115]  (0 ns)&#xA;&#x9;'add' operation ('prt_clock', hcr_controller/hcr_controller.cpp:329) [206]  (1.49 ns)&#xA;&#x9;'icmp' operation ('icmp_ln338', hcr_controller/hcr_controller.cpp:338) [210]  (1.14 ns)&#xA;&#x9;'select' operation ('prt_clock', hcr_controller/hcr_controller.cpp:338) [211]  (0.44 ns)&#xA;&#x9;'phi' operation ('prt_clock') with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:338) [57]  (0 ns)&#xA;&#x9;'icmp' operation ('icmp_ln302', hcr_controller/hcr_controller.cpp:302) [61]  (1.14 ns)" projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:27.238+0000" type="Warning"/>
+        <logs message="WARNING: [SCHED 204-21] Estimated clock period (5.041ns) exceeds the target (target clock period: 5ns, clock uncertainty: 2ns, effective delay budget: 3ns)." projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:27.234+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-631] Renaming function 'scheduler_cycle_exact' to 'scheduler_cycle_exac' (hcr_controller/hcr_controller.cpp:267)" projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:26.135+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-713] Argument 'pps' has read operations in process function 'scheduler_cycle_exact'." projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:25.231+0000" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-713] Reading dataflow channel 'pps' in the middle of dataflow may stall the dataflow pipeline:" projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:25.225+0000" type="Warning"/>
+        <logs message="WARNING: [SYNCHK 200-23] hcr_controller/hcr_controller.cpp:313: variable-indexed range selection may cause suboptimal QoR." projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:24.072+0000" type="Warning"/>
+        <logs message="WARNING: [HLS 200-484] The 'config_sdx -optimization_level' command is deprecated and will be removed in a future release." projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:08.442+0000" type="Warning"/>
+        <logs message="WARNING: [HLS 200-483] The 'config_sdx -optimization_level' command is deprecated and will be removed in a future release. Use 'config_export -vivado_optimization_level' as its replacement." projectName="hcr_controller" solutionName="solution1" date="2021-04-28T12:46:08.437+0000" type="Warning"/>
       </synLog>
       <simLog/>
       <mgLog/>

@@ -1,0 +1,2438 @@
+/*
+
+Xilinx Vivado v2019.1 (64-bit) [Major: 2019, Minor: 1]
+SW Build: 2552052 on Fri May 24 14:49:42 MDT 2019
+IP Build: 2548770 on Fri May 24 18:01:18 MDT 2019
+
+Process ID (PID): 13772
+License: Customer
+
+Current time: 	Wed Oct 02 14:09:30 EDT 2019
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Windows 10
+OS Version: 10.0
+OS Architecture: amd64
+Available processors (cores): 12
+
+Screen size: 1920x1080
+Screen resolution (DPI): 100
+Available screens: 1
+Available disk space: 33 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	C:/Xilinx/Vivado/2019.1/tps/win64/jre9.0.4
+Java executable location: 	C:/Xilinx/Vivado/2019.1/tps/win64/jre9.0.4/bin/java.exe
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	Germain
+User home directory: C:/Users/Germain
+User working directory: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: C:/Xilinx/Vivado
+HDI_APPROOT: C:/Xilinx/Vivado/2019.1
+RDI_DATADIR: C:/Xilinx/Vivado/2019.1/data
+RDI_BINDIR: C:/Xilinx/Vivado/2019.1/bin
+
+Vivado preferences file location: C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/2019.1/vivado.xml
+Vivado preferences directory: C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/2019.1/
+Vivado layouts directory: C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/2019.1/layouts
+PlanAhead jar file location: 	C:/Xilinx/Vivado/2019.1/lib/classes/planAhead.jar
+Vivado log file location: 	C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/vivado.log
+Vivado journal file location: 	C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/vivado.jou
+Engine tmp dir: 	C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/.Xil/Vivado-13772-Germain-PC
+
+Xilinx Environment Variables
+----------------------------
+NO_XILINX_DATA_LICENSE: HIDDEN
+XILINX: C:/Xilinx/Vivado/2019.1/ids_lite/ISE
+XILINXD_LICENSE_FILE: C:\.Xilinx\license.lic
+XILINX_DSP: C:/Xilinx/Vivado/2019.1/ids_lite/ISE
+XILINX_PLANAHEAD: C:/Xilinx/Vivado/2019.1
+XILINX_SDK: C:/Xilinx/SDK/2019.1
+XILINX_VIVADO: C:/Xilinx/Vivado/2019.1
+XILINX_VIVADO_HLS: C:/Xilinx/Vivado/2019.1
+
+
+GUI allocated memory:	384 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 749 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: INFO: [Common 17-1460] Use of init.tcl in C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/init.tcl is deprecated. Please use Vivado_init.tcl  
+// Tcl Message: Sourcing tcl script 'C:/Users/Germain/AppData/Roaming/Xilinx/Vivado/init.tcl' 
+// Tcl Message: start_gui 
+// TclEventType: PROJECT_OPEN_DIALOG
+// [GUI Memory]: 89 MB (+91011kb) [00:00:05]
+// [Engine Memory]: 648 MB (+528013kb) [00:00:05]
+// by (cl):  Open Project : addNotify
+// Opening Vivado Project: C:\pentek\ip\2019.1\pentek\ip\px_dac3484intrfc\px_dac3484intrfc.xpr. Version: Vivado v2019.1 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// Tcl Message: open_project C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: open_project C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.xpr 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 106 MB (+13375kb) [00:00:10]
+// [Engine Memory]: 782 MB (+106479kb) [00:00:10]
+// WARNING: HEventQueue.dispatchEvent() is taking  2224 ms.
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2019.1/data/ip'. 
+// HMemoryUtils.trashcanNow. Engine heap size: 834 MB. GUI used memory: 53 MB. Current time: 10/2/19, 2:09:33 PM EDT
+// Project name: px_dac3484intrfc; location: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc; part: xcku060-ffva1156-2-e
+// [Engine Memory]: 834 MB (+13796kb) [00:00:12]
+// Tcl Message: open_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:06 . Memory (MB): peak = 1059.688 ; gain = 175.320 
+dismissDialog("Open Project"); // by (cl)
+// Elapsed time: 104 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // Z (q, cl)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // Z (q, cl)
+// PAPropertyPanels.initPanels (sim_1) elapsed time: 0.3s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1]", 3, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1]", 3, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources]", 2, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (E, c)
+dismissFileChooser();
+selectButton("BACK", "< Back"); // JButton (j, c)
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_HDL_NETLIST_BLOCK_DESIGN, "Add or create design sources"); // a (o, c)
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (E, c)
+// Elapsed time: 10 seconds
+String[] filenames31467 = {"C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd", "C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_packer.vhd", "C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_serdes.vhd", "C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484intrfc.vhd"};
+setFileChooser(filenames31467);
+// Elapsed time: 10 seconds
+selectButton("CANCEL", "Cancel"); // JButton (j, c)
+// 'h' command handler elapsed time: 41 seconds
+dismissDialog("Add Sources"); // c (cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_HDL_NETLIST_BLOCK_DESIGN, "Add or create design sources"); // a (o, c)
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_DIRECTORIES, "Add Directories"); // a (E, c)
+setFolderChooser("C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs");
+// Elapsed time: 20 seconds
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 32 seconds
+dismissDialog("Add Sources"); // c (cl)
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// by (cl):  Add Sources  : addNotify
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// [GUI Memory]: 116 MB (+3977kb) [00:03:28]
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: LOAD_FEATURE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// Elapsed time: 16 seconds
+dismissDialog("Add Sources"); // by (cl)
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
+// Elapsed time: 263 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), serdes_intrfc_inst : px_dac3484_serdes(Behavioral) (px_dac3484_serdes.vhd)]", 4, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true); // B (F, cl) - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectTab(PAResourceEtoH.FileSetView_TABBED_PANE, (HResource) null, "IP Sources", 1); // i (N, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // Z (q, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ae (cl)
+selectMenu(PAResourceItoN.MainMenuMgr_CHECKPOINT, "Checkpoint"); // ae (cl)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ae (cl)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // Z (q, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // Z (q, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // Z (q, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ae (cl)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ae (cl)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // Z (q, cl)
+selectMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // Z (q, cl)
+dismissMenu(RDIResource.MainWinMenuMgr_LAYOUT, "Layout"); // Z (q, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_HELP, "Help"); // Z (q, cl)
+dismissMenu(PAResourceItoN.MainMenuMgr_HELP, "Help"); // Z (q, cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Settings]", 1, false); // u (O, cl)
+// Run Command: RDIResourceCommand.RDICommands_SETTINGS
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+// D (cl): Settings: addNotify
+// [Engine Memory]: 880 MB (+4624kb) [00:08:33]
+// WARNING: HEventQueue.dispatchEvent() is taking  1695 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 883 MB. GUI used memory: 68 MB. Current time: 10/2/19, 2:17:57 PM EDT
+// Elapsed time: 285 seconds
+expandTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, IP]", 6); // L (E, D)
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, IP, Repository]", 7, false); // L (E, D)
+selectButton(PAResourceQtoS.SettingsProjectIPRepositoryPage_ADD_REPOSITORY, "Add Repository"); // B (f, D)
+setFolderChooser("C:/pentek/ip/2019.1/pentek");
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// Tcl Message: set_property  ip_repo_paths  C:/pentek/ip/2019.1/pentek [current_project] 
+// TclEventType: CREATE_IP_CATALOG
+// by (cl):  Refresh All IP Repositories : addNotify
+// Tcl Message: update_ip_catalog 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: IP_LOCK_CHANGE
+// TclEventType: CREATE_IP_CATALOG
+// Tcl Message: INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/pentek/ip/2019.1/pentek'. 
+// Tcl Message: update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:09 . Memory (MB): peak = 1059.688 ; gain = 0.000 
+// c (D): Add Repository: addNotify
+// Elapsed time: 13 seconds
+selectButton(RDIResource.AddRepositoryInfoDialog_OK, "OK"); // a (c)
+// [GUI Memory]: 125 MB (+3609kb) [00:13:39]
+dismissDialog("Add Repository"); // c (D)
+// Elapsed time: 88 seconds
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (D)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (D)
+dismissDialog("Settings"); // D (cl)
+// Elapsed time: 324 seconds
+selectTab(PAResourceEtoH.FileSetView_TABBED_PANE, (HResource) null, "Hierarchy", 0); // i (N, cl)
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1); // B (F, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // Z (q, cl)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // Z (q, cl)
+// [GUI Memory]: 133 MB (+2545kb) [00:31:11]
+// HMemoryUtils.trashcanNow. Engine heap size: 883 MB. GUI used memory: 72 MB. Current time: 10/2/19, 2:47:57 PM EDT
+// Elapsed time: 1794 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; Not started ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Vivado Synthesis Defaults (Vivado Synthesis 2019) ; Vivado Synthesis Default Reports (Vivado Synthesis 2019) ; xcku060-ffva1156-2-e ; Vivado Synthesis Defaults", 0, "synth_1", 0, true); // ay (O, cl) - Node
+// PAPropertyPanels.initPanels (synth_1) elapsed time: 0.3s
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// f (cl): Launch Runs: addNotify
+// by (f):  Starting Design Runs : addNotify
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_ADD
+// Tcl Message: launch_runs synth_1 -jobs 6 
+// Tcl Message: INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'dac3484_serial_int'... INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'dac3484_csr_intrfc'... 
+// TclEventType: RUN_ADD
+// TclEventType: FILE_SET_NEW
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_ADD
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Wed Oct  2 15:00:07 2019] Launched dac3484_serial_int_synth_1, dac3484_csr_intrfc_synth_1... Run output will be captured here: dac3484_serial_int_synth_1: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/dac3484_serial_int_synth_1/runme.log dac3484_csr_intrfc_synth_1: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/dac3484_csr_intrfc_synth_1/runme.log [Wed Oct  2 15:00:07 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (f)
+expandTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "Out-of-Context Module Runs ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; ", 2); // ay (O, cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Synthesis Completed: addNotify
+// Elapsed time: 222 seconds
+dismissDialog("Synthesis Completed"); // ah (cl)
+// [GUI Memory]: 142 MB (+1463kb) [00:54:30]
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Not started ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 15:03:54 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 44 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Implementation Failed"); // ah (cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[0]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[1]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[6]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[2]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[5]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[4]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, true); // ah (O, cl) - Node
+// [Engine Memory]: 965 MB (+42710kb) [00:55:25]
+maximizeFrame(PAResourceOtoP.PAViews_MESSAGES, "Messages"); // az (aK, cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 966 MB. GUI used memory: 83 MB. Current time: 10/2/19, 3:04:47 PM EDT
+// [Engine Memory]: 1,239 MB (+236536kb) [00:56:03]
+// Elapsed time: 1120 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[0]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[1]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[6]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[2]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[5]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[4]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, true, false, false, false, true, false); // ah (O, cl) - Popup Trigger - Node
+// Elapsed time: 14 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[0]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[1]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[6]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[2]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[5]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[4]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, true, false, false, false, true, false); // ah (O, cl) - Popup Trigger - Node
+// Elapsed time: 25 seconds
+applyEscape(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, (String) null); // ah (O, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, dac_output_fifo (dac_output_fifo.xci)]", 2, false); // B (F, cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1); // B (F, cl)
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, tb_px_dac3484intrfc(Behavioral) (tb_px_dac3484intrfc.vhd)]", 4, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, tb_px_dac3484intrfc(Behavioral) (tb_px_dac3484intrfc.vhd)]", 4, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, tb_px_dac3484intrfc(Behavioral) (tb_px_dac3484intrfc.vhd)]", 4, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenuItem(PAResourceCommand.PACommandNames_MOVE_TO_SIM_SET, "Move to Simulation Sources"); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_MOVE_TO_SIM_SET
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: move_files -fileset sim_1 [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sim_1/new/tb_px_dac3484intrfc.vhd] 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,261 MB. GUI used memory: 82 MB. Current time: 10/2/19, 3:24:27 PM EDT
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1]", 6); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1, tb_px_dac3484intrfc(Behavioral) (tb_px_dac3484intrfc.vhd)]", 10, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1, tb_px_dac3484intrfc(Behavioral) (tb_px_dac3484intrfc.vhd)]", 10, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_SET_AS_TOP, "Set as Top"); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_SET_AS_TOP
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: set_property top tb_px_dac3484intrfc [get_filesets sim_1] 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: set_property top_lib xil_defaultlib [get_filesets sim_1] 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sim_1 
+// Elapsed time: 10 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 7); // B (F, cl)
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 7); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true); // B (F, cl) - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1); // B (F, cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), serial_int_inst : dac3484_serial_int (dac3484_serial_int.xci)]", 4, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true); // B (F, cl) - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, dac_output_fifo (dac_output_fifo.xci)]", 7); // B (F, cl)
+// A (cl): Show IP Hierarchy: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (A)
+dismissDialog("Show IP Hierarchy"); // A (cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true); // B (F, cl) - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// Elapsed time: 33 seconds
+selectCodeEditor("px_dac3484_csr.vhd", 153, 262); // cl (w, cl)
+selectCodeEditor("px_dac3484_csr.vhd", 153, 262, false, false, false, false, true); // cl (w, cl) - Double Click
+typeControlKey((HResource) null, "px_dac3484_csr.vhd", 'c'); // cl (w, cl)
+// Elapsed time: 137 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Language Templates]", 3, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_LANGUAGE_TEMPLATES
+// a (cl): Language Templates: addNotify
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL]", 1); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM)]", 8); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), 0_Info (Usage Instructions)]", 9, false); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM]", 10); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM]", 10); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM)]", 8); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC]", 10); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Configuration (7-Series)]", 13); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Physical Constraints]", 12); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints]", 11); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints]", 11); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Physical Constraints]", 12); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Configuration (7-Series)]", 13); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, IP Integrator HDL]", 5); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, IP Integrator HDL]", 5); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM)]", 8); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM]", 10); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), 0_Info (Usage Instructions)]", 9, false); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM)]", 8); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL]", 1, true); // i (O, a) - Node
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM)]", 8); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_MEMORY]", 13, true); // i (O, a) - Node
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_MEMORY]", 13); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC]", 11); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false); // i (O, a)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 107 seconds
+selectButton(RDIResource.BaseDialog_CLOSE, "Close"); // a (a)
+dismissDialog("Language Templates"); // a (cl)
+selectButton(PAResourceAtoD.AbstractFileView_RELOAD, "Reload"); // h (cS, cl)
+// k (cl): Text Changed: addNotify
+closeView(PAResourceOtoP.PAViews_CODE, "Code"); // B (k, cl)
+selectButton(RDIResource.ConfirmSaveTextEditsDialog_NO, "No"); // a (k)
+dismissDialog("Text Changed"); // k (cl)
+// Elapsed time: 81 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; opt_design ERROR ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Wed Oct 02 15:04:06 EDT 2019 ; 00:00:29 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_NO, "No"); // a (A)
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// 'c' command handler elapsed time: 4 seconds
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 15:32:14 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 15:32:14 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 140 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 169 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true); // B (F, cl) - Node
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [GUI Memory]: 151 MB (+2905kb) [01:35:23]
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 468 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; opt_design ERROR ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Wed Oct 02 15:33:18 EDT 2019 ; 00:00:28 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 15:45:17 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 15:45:17 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 107 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,387 MB. GUI used memory: 87 MB. Current time: 10/2/19, 3:47:18 PM EDT
+// [Engine Memory]: 1,387 MB (+90323kb) [01:38:03]
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 186 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 15:50:17 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 15:50:17 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 99 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 15 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net packer_inst/dac_data_out[0] has multiple drivers: packer_inst/dac_data_out_reg[17]/Q, packer_inst/dac_data_out_reg[16]/Q, packer_inst/dac_data_out_reg[24]/Q, packer_inst/dac_data_out_reg[22]/Q, packer_inst/dac_data_out_reg[20]/Q, packer_inst/dac_data_out_reg[18]/Q, packer_inst/dac_data_out_reg[19]/Q, packer_inst/dac_data_out_reg[23]/Q, packer_inst/dac_data_out_reg[25]/Q, packer_inst/dac_data_out_reg[21]/Q, packer_inst/dac_data_out_reg[28]/Q, packer_inst/dac_data_out_reg[26]/Q, packer_inst/dac_data_out_reg[31]/Q, packer_inst/dac_data_out_reg[27]/Q, packer_inst/dac_data_out_reg[30]/Q... and (the first 15 of 16 listed).. ]", 8, true); // ah (O, cl) - Node
+// Elapsed time: 10 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net packer_inst/dac_data_out[0] has multiple drivers: packer_inst/dac_data_out_reg[17]/Q, packer_inst/dac_data_out_reg[16]/Q, packer_inst/dac_data_out_reg[24]/Q, packer_inst/dac_data_out_reg[22]/Q, packer_inst/dac_data_out_reg[20]/Q, packer_inst/dac_data_out_reg[18]/Q, packer_inst/dac_data_out_reg[19]/Q, packer_inst/dac_data_out_reg[23]/Q, packer_inst/dac_data_out_reg[25]/Q, packer_inst/dac_data_out_reg[21]/Q, packer_inst/dac_data_out_reg[28]/Q, packer_inst/dac_data_out_reg[26]/Q, packer_inst/dac_data_out_reg[31]/Q, packer_inst/dac_data_out_reg[27]/Q, packer_inst/dac_data_out_reg[30]/Q... and (the first 15 of 16 listed).. ]", 8, true, false, false, false, true, false); // ah (O, cl) - Popup Trigger - Node
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 394 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// 'c' command handler elapsed time: 4 seconds
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Wed Oct  2 15:59:05 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 15:59:05 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 100 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 750 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 16:13:20 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 16:13:20 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// [GUI Memory]: 159 MB (+103kb) [02:07:07]
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 200 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 16 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 16:17:01 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 16:17:01 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+dismissDialog("Starting Design Runs"); // by (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 89 MB. Current time: 10/2/19, 4:17:18 PM EDT
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 131 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 351 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[0]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[1]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[4]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[6]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[2]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[5]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[0]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[1]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[4]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[3]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[6]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[2]/Q, csr_inst/cntl07_xclk/dest_hsdata_ff_reg[5]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, false, false, false, false, true, false); // ah (O, cl) - Popup Trigger
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 199 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Wed Oct  2 16:28:28 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 16:28:28 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 105 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cntl07_xclk/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, and csr_inst/cntl07_xclk/dest_req_ff_reg/Q.. ]", 9, false, false, false, false, true, false); // ah (O, cl) - Popup Trigger
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 810 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// 'c' command handler elapsed time: 4 seconds
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Wed Oct  2 16:43:57 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Wed Oct  2 16:43:57 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 96 seconds
+selectRadioButton(PAResourceCommand.PACommandNames_LOG_WINDOW, "View Log"); // a (Q, ah)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_LOG_WINDOW
+dismissDialog("Implementation Failed"); // ah (cl)
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 75, 102); // n (B, cl)
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "error", true); // l (aT, cl)
+// Elapsed time: 13 seconds
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "error"); // l (aT, cl)
+// Elapsed time: 22 seconds
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "error"); // l (aT, cl)
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "error"); // l (aT, cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 90 MB. Current time: 10/2/19, 4:47:18 PM EDT
+// Elapsed time: 150 seconds
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "error"); // l (aT, cl)
+setText(RDIResource.HCodeEditor_SEARCH_TEXT_COMBO_BOX, "error"); // l (aT, cl)
+// Elapsed time: 119 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cdc/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, and csr_inst/cdc/dest_req_ff_reg/Q.. ]", 9, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Implementation, Opt Design, DRC, Netlist, Net, [DRC MDRV-1] Multiple Driver Nets: Net csr_inst/<const0> has multiple drivers: csr_inst/GND/G, csr_inst/cdc/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q, and csr_inst/cdc/dest_req_ff_reg/Q.. ]", 9, false, false, false, false, true, false); // ah (O, cl) - Popup Trigger
+selectMenu(PAResourceItoN.MsgTreePanel_MESSAGE_SEVERITY, "Message Severity"); // ae (K, Popup.HeavyWeightWindow)
+// Elapsed time: 217 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Language Templates]", 3, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_LANGUAGE_TEMPLATES
+// a (cl): Language Templates: addNotify
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false, false, false, false, false, true); // i (O, a) - Double Click
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false, false, false, false, false, true); // i (O, a) - Double Click
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Synchronizer (xpm_cdc_single)]", 16, false); // i (O, a)
+// Elapsed time: 19 seconds
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL]", 1); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints]", 4); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Clocks]", 5, true); // i (O, a) - Node
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Clocks]", 5); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Clocks]", 5); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL]", 1); // i (O, a)
+// Elapsed time: 17 seconds
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false); // i (O, a)
+// Elapsed time: 144 seconds
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC]", 11); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_MEMORY]", 13); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Input Delay Constraints]", 18, true); // i (O, a) - Node
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Input Delay Constraints]", 18); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Input Delay Constraints, System Synchronous]", 19, true); // i (O, a) - Node
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Timing Constraints, Input Delay Constraints]", 18); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, Debug]", 23); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, Debug]", 23); // i (O, a)
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Physical Constraints]", 21); // i (O, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, XDC, Physical Constraints]", 21); // i (O, a)
+// Elapsed time: 27 seconds
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC]", 11, true); // i (O, a) - Node
+expandTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC]", 11); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Asynchronous Reset Synchronizer (xpm_cdc_async_rst)]", 12, false); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Synchronizer (xpm_cdc_single)]", 16, false); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM), XPM, XPM_CDC, Single-bit Array Synchronizer (xpm_cdc_array_single)]", 15, false); // i (O, a)
+// Elapsed time: 274 seconds
+selectButton(RDIResource.BaseDialog_CLOSE, "Close"); // a (a)
+dismissDialog("Language Templates"); // a (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 89 MB. Current time: 10/2/19, 5:17:19 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 5:47:19 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 6:17:19 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 6:47:19 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 7:17:20 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 7:47:20 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 8:17:20 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 89 MB. Current time: 10/2/19, 8:47:20 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 9:17:21 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 9:47:21 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 10:17:21 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 10:47:22 PM EDT
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1175 ms. Increasing delay to 3525 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 1806 ms. Increasing delay to 3000 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 11:17:22 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/2/19, 11:47:22 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 12:17:22 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 12:47:23 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 1:17:23 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 1:47:23 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 96 MB. Current time: 10/3/19, 2:17:23 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 2:47:24 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 3:17:24 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 3:47:24 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 4:17:25 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 4:47:25 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 5:17:25 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 5:47:26 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 6:17:26 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 6:47:26 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 7:17:27 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 7:47:27 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 8:17:27 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 8:47:27 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 9:17:28 AM EDT
+// Elapsed time: 59298 seconds
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 2); // ah (O, cl)
+// Elapsed time: 110 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin syncstages_ff_reg_n_0_[3] with 1st driver pin 'csr_inst/cdc/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q' [C:/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:221]. ]", 4, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 2nd driver pin 'GND' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 3, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 2, true); // ah (O, cl) - Node
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin syncstages_ff_reg_n_0_[3] with 2nd driver pin 'GND' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 5, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin dest_req with 1st driver pin 'csr_inst/cdc/dest_req_ff_reg/Q' [C:/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:594]. ]", 6, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin dest_req with 2nd driver pin 'GND' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 7, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6858] multi-driven net C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 is connected to at least one constant driver which has been preserved, other driver is ignored [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 8, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin syncstages_ff_reg_n_0_[3] with 1st driver pin 'csr_inst/cdc/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[3]/Q' [C:/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:221]. ]", 4, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. , [Synth 8-6859] multi-driven net on pin syncstages_ff_reg_n_0_[3] with 2nd driver pin 'GND' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 5, false); // ah (O, cl)
+// Elapsed time: 712 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-199.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:199]. ]", 2, true); // ah (O, cl) - Node
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 88 MB. Current time: 10/3/19, 9:47:28 AM EDT
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 785 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 09:59:09 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 09:59:09 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 125 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-201.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:201]. ]", 2); // ah (O, cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 204 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 10:04:51 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:04:51 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 98 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 22 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 10:06:56 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:06:56 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 96 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 90 MB. Current time: 10/3/19, 10:17:28 AM EDT
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 550 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Settings]", 1, false); // u (O, cl)
+// Run Command: RDIResourceCommand.RDICommands_SETTINGS
+// D (cl): Settings: addNotify
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, General]", 0, false); // L (E, D)
+// Elapsed time: 12 seconds
+selectComboBox(PAResourceQtoS.SettingsProjectGeneralPage_TARGET_LANGUAGE, "VHDL", 0); // e (Q, D)
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (D)
+// A (cl): Create New Run: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// b (cl): Create Run: addNotify
+dismissDialog("Create New Run"); // A (cl)
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (b)
+dismissDialog("Create Run"); // b (cl)
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (D)
+// A (cl): Create New Run: addNotify
+selectButton(RDIResource.BaseDialog_NO, "No"); // a (A)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// Tcl Message: set_property target_language VHDL [current_project] 
+dismissDialog("Create New Run"); // A (cl)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (D)
+dismissDialog("Settings"); // D (cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (f)
+dismissDialog("Launch Runs"); // f (cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenuItem(PAResourceCommand.PACommandNames_RESET_COMPOSITE_FILE, "Reset Output Products..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_RESET_COMPOSITE_FILE
+// aI (cl): Reset Output Products: addNotify
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_RESET_OUTPUT_PRODUCTS, "Reset"); // a (aI)
+// by (cl):  Managing Output Products : addNotify
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJ_DESIGN_MODE_SET
+// Tcl Message: reset_target all [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci] 
+// TclEventType: PROJ_DESIGN_MODE_SET
+// Tcl Message: export_ip_user_files -of_objects  [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci] -sync -no_script -force -quiet 
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_DELETE
+// Tcl Message: delete_ip_run [get_files -of_objects [get_fileset dac3484_csr_intrfc] C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci] 
+// TclEventType: RUN_DELETE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_DELETE
+// Tcl Message: INFO: [Project 1-386] Moving file 'C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci' from fileset 'dac3484_csr_intrfc' to fileset 'sources_1'. 
+// 'bo' command handler elapsed time: 3 seconds
+dismissDialog("Managing Output Products"); // by (cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false); // B (F, cl)
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), csr_inst : dac3484_csr_intrfc (dac3484_csr_intrfc.xci)]", 3, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenuItem(PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, "Generate Output Products..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE
+// aI (cl): Generate Output Products: addNotify
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate"); // a (aI)
+// by (cl):  Managing Output Products : addNotify
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: generate_target all [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci] 
+// Tcl Message: INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'dac3484_csr_intrfc'... INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'dac3484_csr_intrfc'... INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'dac3484_csr_intrfc'... INFO: [IP_Flow 19-1686] Generating 'Test Bench' target for IP 'dac3484_csr_intrfc'... INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'dac3484_csr_intrfc'... 
+// Tcl Message: catch { config_ip_cache -export [get_ips -all dac3484_csr_intrfc] } 
+// Tcl Message: export_ip_user_files -of_objects [get_files C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci] -no_script -sync -force -quiet 
+// TclEventType: FILE_SET_NEW
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_ADD
+// Tcl Message: create_ip_run [get_files -of_objects [get_fileset sources_1] C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_csr_intrfc/dac3484_csr_intrfc.xci] 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs -jobs 6 dac3484_csr_intrfc_synth_1 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu Oct  3 10:18:37 2019] Launched dac3484_csr_intrfc_synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/dac3484_csr_intrfc_synth_1/runme.log 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: RUN_STATUS_CHANGE
+selectButton(RDIResource.ProgressDialog_BACKGROUND, "Background"); // a (by)
+// 'bo' command handler elapsed time: 5 seconds
+dismissDialog("Managing Output Products"); // by (cl)
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+// [GUI Memory]: 167 MB (+243kb) [20:09:21]
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), serial_int_inst : dac3484_serial_int (dac3484_serial_int.xci)]", 4, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), serial_int_inst : dac3484_serial_int (dac3484_serial_int.xci)]", 4, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenuItem(PAResourceCommand.PACommandNames_RESET_COMPOSITE_FILE, "Reset Output Products..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_RESET_COMPOSITE_FILE
+// aI (cl): Reset Output Products: addNotify
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_RESET_OUTPUT_PRODUCTS, "Reset"); // a (aI)
+// by (cl):  Managing Output Products : addNotify
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJ_DESIGN_MODE_SET
+// Tcl Message: reset_target all [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci] 
+// TclEventType: PROJ_DESIGN_MODE_SET
+// Tcl Message: export_ip_user_files -of_objects  [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci] -sync -no_script -force -quiet 
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_DELETE
+// Tcl Message: delete_ip_run [get_files -of_objects [get_fileset dac3484_serial_int] C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci] 
+// TclEventType: RUN_DELETE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_DELETE
+// Tcl Message: INFO: [Project 1-386] Moving file 'C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci' from fileset 'dac3484_serial_int' to fileset 'sources_1'. 
+// 'bo' command handler elapsed time: 3 seconds
+dismissDialog("Managing Output Products"); // by (cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd), serial_int_inst : dac3484_serial_int (dac3484_serial_int.xci)]", 4, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenu(PAResourceQtoS.SrcMenu_IP_DOCUMENTATION, "IP Documentation"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_DOCUMENTATION, "IP Documentation"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE, "Generate Output Products..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_COMPOSITE_FILE
+// aI (cl): Generate Output Products: addNotify
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate"); // a (aI)
+// by (cl):  Managing Output Products : addNotify
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: generate_target all [get_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci] 
+// Tcl Message: INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'dac3484_serial_int'... INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'dac3484_serial_int'... INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'dac3484_serial_int'... INFO: [IP_Flow 19-1686] Generating 'Test Bench' target for IP 'dac3484_serial_int'... INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'dac3484_serial_int'... 
+// Tcl Message: catch { config_ip_cache -export [get_ips -all dac3484_serial_int] } 
+// Tcl Message: export_ip_user_files -of_objects [get_files C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci] -no_script -sync -force -quiet 
+// TclEventType: FILE_SET_NEW
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_ADD
+// Tcl Message: create_ip_run [get_files -of_objects [get_fileset sources_1] C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac3484_serial_int/dac3484_serial_int.xci] 
+// TclEventType: RUN_ADD
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs -jobs 6 dac3484_serial_int_synth_1 
+// Tcl Message: [Thu Oct  3 10:18:55 2019] Launched dac3484_serial_int_synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/dac3484_serial_int_synth_1/runme.log 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: FILE_SET_CHANGE
+// 'bo' command handler elapsed time: 56 seconds
+// Elapsed time: 55 seconds
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+// [GUI Memory]: 183 MB (+7190kb) [20:10:28]
+// [GUI Memory]: 195 MB (+2987kb) [20:10:29]
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Implementation Out-of-date ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Thu Oct 03 10:08:00 EDT 2019 ; 00:00:29 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu Oct  3 10:19:57 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:19:58 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 121 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-203.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:203]. ]", 2); // ah (O, cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Settings]", 1, false); // u (O, cl)
+// Run Command: RDIResourceCommand.RDICommands_SETTINGS
+// D (cl): Settings: addNotify
+// Elapsed time: 19 seconds
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, Simulation]", 1, false); // L (E, D)
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, Elaboration]", 2, false); // L (E, D)
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, Synthesis]", 3, false); // L (E, D)
+// Elapsed time: 38 seconds
+selectTree("PAResourceOtoP.ProgramOptionsPanelImpl_STRATEGY", "[Run Strategies, Vivado Strategies, Flow_PerfOptimized_high]", 7, false); // TreeChooserPanel (D, ResizableWindow)
+// Elapsed time: 18 seconds
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (D)
+// A (cl): Create New Run: addNotify
+selectButton(RDIResource.BaseDialog_NO, "No"); // a (A)
+// TclEventType: RUN_OPTIONS_MODIFIED
+// TclEventType: RUN_MODIFY
+// PAPropertyPanels.initPanels (impl_1) elapsed time: 0.2s
+// Tcl Message: set_property strategy Flow_PerfOptimized_high [get_runs synth_1] 
+dismissDialog("Create New Run"); // A (cl)
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, Implementation]", 4, false); // L (E, D)
+// Elapsed time: 32 seconds
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, Bitstream]", 5, false); // L (E, D)
+selectTree(PAResourceQtoS.SettingsDialog_PROJECT_TREE, "[projectRoot, IP]", 6, true); // L (E, D) - Node
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (D)
+dismissDialog("Settings"); // D (cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 10:24:29 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:24:29 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 165 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 78 seconds
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-203.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:203]. ]", 2); // ah (O, cl)
+// Elapsed time: 20 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-203.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:203]. , [Synth 8-6859] multi-driven net on pin syncstages_ff_reg_n_0_[2] with 1st driver pin 'csr_inst/cdc/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[2]/Q' [C:/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:221]. ]", 4, false); // ah (O, cl)
+// Elapsed time: 26 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-203.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:203]. , [Synth 8-6859] multi-driven net on pin syncstages_ff_reg_n_0_[2] with 1st driver pin 'csr_inst/cdc/xpm_cdc_single_dest2src_inst/syncstages_ff_reg[2]/Q' [C:/Xilinx/Vivado/2019.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:221]. ]", 4, false); // ah (O, cl)
+messagesViewCrossProbe(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "src;-;C:\Xilinx\Vivado\2019.1\data\ip\xpm\xpm_cdc\hdl\xpm_cdc.sv;-;;-;16;-;line;-;221;-;;-;16;-;"); // ah (O, cl)
+closeView(PAResourceOtoP.PAViews_CODE, "Code"); // B
+// Elapsed time: 12 seconds
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd-203.2 with 1st driver pin 'px_dac3484_csr:/cdc/dest_req' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:203]. , [Synth 8-6859] multi-driven net on pin dest_req with 2nd driver pin 'GND' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_csr.vhd:203]. ]", 7, false); // ah (O, cl)
+messagesViewCrossProbe(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "src;-;C:\pentek\ip\2019.1\pentek\ip\px_dac3484intrfc\px_dac3484intrfc.srcs\sources_1\new\px_dac3484_csr.vhd;-;;-;16;-;line;-;203;-;;-;16;-;"); // ah (O, cl)
+// Elapsed time: 13 seconds
+selectCodeEditor("px_dac3484_csr.vhd", 148, 230); // cl (w, cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 40 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; opt_design ERROR ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Thu Oct 03 10:25:32 EDT 2019 ; 00:00:28 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// 'c' command handler elapsed time: 4 seconds
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 10:30:40 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:30:40 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 240 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_LOG_WINDOW
+dismissDialog("Implementation Failed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 72 seconds
+closeView(PAResourceOtoP.PAViews_CODE, "Code"); // B
+// Elapsed time: 16 seconds
+closeView(PAResourceOtoP.PAViews_CODE, "Code"); // B
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), csr_inst : px_dac3484_csr(Behavioral) (px_dac3484_csr.vhd)]", 2, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// Elapsed time: 18 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; opt_design ERROR ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Thu Oct 03 10:31:44 EDT 2019 ; 00:00:30 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 10:36:35 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:36:35 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 96 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Language Templates]", 3, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_LANGUAGE_TEMPLATES
+// a (cl): Language Templates: addNotify
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 16 seconds
+applyEscape(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, (String) null); // u (O, cl)
+dismissDialog("Language Templates"); // a (cl)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 104 seconds
+dismissDialog("Implementation Completed"); // ah (cl)
+// Elapsed time: 211 seconds
+selectCodeEditor("px_dac3484_csr.vhd", 35, 48); // cl (w, cl)
+selectCodeEditor("px_dac3484_csr.vhd", 35, 48, false, false, false, false, true); // cl (w, cl) - Double Click
+// Elapsed time: 103 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true); // B (F, cl) - Node
+// Elapsed time: 12 seconds
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0); // B (F, cl)
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Simulation Sources, sim_1]", 3); // B (F, cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, dac_output_fifo (dac_output_fifo.xci)]", 5, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, dac_packer_split_fifo (dac_packer_split_fifo.xci)]", 6, false, false, true, false, false, false); // B (F, cl) - Control Key
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, dac_packer_split_fifo (dac_packer_split_fifo.xci)]", 6, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenu(PAResourceQtoS.SrcMenu_IP_DOCUMENTATION, "IP Documentation"); // ae (an, cl)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_DOCUMENTATION, "IP Documentation"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_DOCUMENTATION, "IP Documentation"); // ae (an, cl)
+selectMenuItem(RDIResourceCommand.RDICommands_DELETE, "Remove File from Project..."); // ah (an, cl)
+// Run Command: RDIResourceCommand.RDICommands_DELETE
+// aE (cl): Remove Sources: addNotify
+selectCheckBox(PAResourceQtoS.RemoveSourcesDialog_ALSO_DELETE, "Also delete  project local files/directories from disk", true); // g (Q, aE): TRUE
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (aE)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (aE)
+// 'c' command handler elapsed time: 4 seconds
+dismissDialog("Remove Sources"); // aE (cl)
+// Tcl Message: export_ip_user_files -of_objects  [get_files C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac_output_fifo/dac_output_fifo.xci] -no_script -reset -force -quiet 
+// Tcl Message: export_ip_user_files -of_objects  [get_files C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci] -no_script -reset -force -quiet 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: PROJ_DESIGN_MODE_SET
+// Tcl Message: remove_files  {C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac_output_fifo/dac_output_fifo.xci C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci} 
+// aE (cl): Remove Sources: addNotify
+// by (aE):  Remove Sources : addNotify
+// Tcl Message: file delete -force C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac_output_fifo C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/ip/dac_packer_split_fifo 
+dismissDialog("Remove Sources"); // by (aE)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,390 MB. GUI used memory: 107 MB. Current time: 10/3/19, 10:47:29 AM EDT
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 98 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Implementation Out-of-date ; NA ; NA ; NA ; NA ; NA ; 5.016173839569092 ; 0 ; 172 ; 336 ; 0.0 ; 0 ; 0 ; Thu Oct 03 10:37:39 EDT 2019 ; 00:02:03 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 10:47:50 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 10:47:50 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 137 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 53 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Project Manager, Language Templates]", 3, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_LANGUAGE_TEMPLATES
+// a (cl): Language Templates: addNotify
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Xilinx Parameterized Macros (XPM)]", 8); // i (O, a)
+selectButton(RDIResource.AbstractSearchablePanel_SHOW_SEARCH, "Templates_search"); // u (f, a): TRUE
+setText("PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE_SEARCH_FIELD", "oserd"); // OverlayTextField (v, a)
+// Elapsed time: 10 seconds
+setText("PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE_SEARCH_FIELD", "OSERDESE3"); // OverlayTextField (v, a)
+collapseTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, Verilog]", 0); // i (O, a)
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Device Primitive Instantiation, Kintex UltraScale, I/O, SERDES]", 5, true); // i (O, a) - Node
+selectTree(PAResourceItoN.LanguageTemplatesDialog_TEMPLATES_TREE, "[Templates, VHDL, Device Primitive Instantiation, Kintex UltraScale, I/O, SERDES, Output SERial/DESerializer (OSERDESE3)]", 6, false); // i (O, a)
+// Elapsed time: 22 seconds
+selectMenuItem(PAResourceItoN.LanguageTemplatesDialog_COPY, "Copy"); // ah (an)
+// Elapsed time: 20 seconds
+selectButton(RDIResource.BaseDialog_CLOSE, "Close"); // a (a)
+dismissDialog("Language Templates"); // a (cl)
+// Elapsed time: 31 seconds
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin dac_data_out[16] with 1st driver pin 'packer_inst/dac_data_out_reg[16]/Q' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484_packer.vhd:83]. ]", 2); // ah (O, cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 679 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 11:04:07 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:04:07 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 439ms to process. Increasing delay to 3000 ms.
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 215 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 227 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 11:11:37 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:11:37 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 278 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 40 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 11:17:01 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:17:01 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 114 MB. Current time: 10/3/19, 11:17:29 AM EDT
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 119 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 429 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu Oct  3 11:26:14 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:26:14 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Failed: addNotify
+// Elapsed time: 154 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Failed"); // ah (cl)
+// Elapsed time: 17 seconds
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, synth_1, [Synth 8-6859] multi-driven net on pin dac_data_in[63] with 1st driver pin 'dac_data_in[48]' [C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/sources_1/new/px_dac3484intrfc.vhd:36]. ]", 2); // ah (O, cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 389 seconds
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: [Thu Oct  3 11:35:41 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:35:41 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+dismissDialog("Starting Design Runs"); // by (cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Syntax Error Files]", 1); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Syntax Error Files, px_dac3484_serdes.vhd]", 2, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Syntax Error Files, px_dac3484_serdes.vhd]", 2, false, false, false, false, false, true); // B (F, cl) - Double Click
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 28 seconds
+selectButton(PAResourceAtoD.AbstractFileView_RELOAD, "Reload"); // h (cS, cl)
+// k (cl): Text Changed: addNotify
+closeView(PAResourceOtoP.PAViews_CODE, "Code"); // B (k, cl)
+selectButton(RDIResource.ConfirmSaveTextEditsDialog_NO, "No"); // a (k)
+dismissDialog("Text Changed"); // k (cl)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 46 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Implementation Out-of-date ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Thu Oct 03 11:36:46 EDT 2019 ; 00:00:12 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_RESET_SELECTED_RUNS, "Design Runs_reset"); // B (f, cl)
+// r (cl): Reset Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "Reset"); // a (r)
+// HOptionPane Warning: 'Run 'impl_1' appears to be running or queued. Reset anyway? (Reset Runs)'
+// r (cl): Reset Runs: addNotify
+// by (r):  Resetting Runs : addNotify
+selectButton("OptionPane.button", "Yes"); // JButton (A, H)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run impl_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+dismissDialog("Resetting Runs"); // by (r)
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; Synthesis Out-of-date ;  ;  ;  ;  ;  ;  ;  ; 53 ; 208 ; 0.0 ; 0 ; 0 ; Thu Oct 03 11:35:49 EDT 2019 ; 00:00:46 ; Flow_PerfOptimized_high (Vivado Synthesis 2019) ; Vivado Synthesis Default Reports (Vivado Synthesis 2019) ; xcku060-ffva1156-2-e ; Higher performance designs, resource sharing is turned off, the global fanout guide is set to a lower number, FSM extraction forced to one-hot, LUT combining is disabled, equivalent registers are preserved, SRL are inferred  with a larger threshold", 0, "synth_1", 0, true); // ay (O, cl) - Node
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Not started ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu Oct  3 11:37:18 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:37:18 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 380 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 89 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Implementation Out-of-date ; 3002.52099609375 ; 0.0 ; NA ; NA ; NA ; 26.003341674804688 ; 0 ; 225 ; 492 ; 0.0 ; 0 ; 0 ; Thu Oct 03 11:38:22 EDT 2019 ; 00:02:29 ; Vivado Implementation Defaults (Vivado Implementation 2019) ; Vivado Implementation Default Reports (Vivado Implementation 2019) ; xcku060-ffva1156-2-e ; Default settings for Implementation.", 1, "impl_1", 0, false); // ay (O, cl)
+selectButton(PAResourceEtoH.ExploreAheadView_LAUNCH_SELECTED_RUNS, "Design Runs_launch_runs"); // B (f, cl)
+// f (cl): Launch Runs: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cl): Synthesis is Out-of-date: addNotify
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// by (cl):  Resetting Runs : addNotify
+dismissDialog("Synthesis is Out-of-date"); // A (cl)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 6 
+// Tcl Message: [Thu Oct  3 11:45:16 2019] Launched synth_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/synth_1/runme.log [Thu Oct  3 11:45:16 2019] Launched impl_1... Run output will be captured here: C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.runs/impl_1/runme.log 
+// [GUI Memory]: 205 MB (+606kb) [21:35:54]
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 119 MB. Current time: 10/3/19, 11:47:29 AM EDT
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 321 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cl)
+// Elapsed time: 107 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (E, c)
+// Elapsed time: 77 seconds
+setFileChooser("C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/component.xml");
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 85 seconds
+dismissDialog("Add Sources"); // c (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -norecurse C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/component.xml 
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Unknown]", 5); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Unknown, component.xml]", 6, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Unknown, component.xml]", 6, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenuItem(RDIResourceCommand.RDICommands_DELETE, "Remove File from Project..."); // ah (an, cl)
+// Run Command: RDIResourceCommand.RDICommands_DELETE
+// aE (cl): Remove Sources: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (aE)
+dismissDialog("Remove Sources"); // aE (cl)
+// Tcl Message: export_ip_user_files -of_objects  [get_files C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/component.xml] -no_script -reset -force -quiet 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: remove_files  C:/pentek/ip/2019.1/pentek/ip/px_dac3484intrfc/px_dac3484intrfc.srcs/component.xml 
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 1081 ms to process. Increasing delay to 2000 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 118 MB. Current time: 10/3/19, 12:17:29 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 117 MB. Current time: 10/3/19, 12:47:30 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 117 MB. Current time: 10/3/19, 1:17:30 PM EDT
+// Elapsed time: 5291 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd), packer_inst : px_dac3484_packer(Behavioral) (px_dac3484_packer.vhd)]", 3, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (E, c)
+// Elapsed time: 13 seconds
+dismissFileChooser();
+selectButton("CANCEL", "Cancel"); // JButton (j, c)
+// 'h' command handler elapsed time: 21 seconds
+dismissDialog("Add Sources"); // c (cl)
+selectMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // Z (q, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_IP_PACKAGER_WIZARD, "Create and Package New IP..."); // ah (cl)
+dismissMenu(PAResourceItoN.MainMenuMgr_TOOLS, "Tools"); // Z (q, cl)
+// Run Command: PAResourceCommand.PACommandNames_IP_PACKAGER_WIZARD
+// Q (cl): Create and Package New IP: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, Q)
+// by (Q):  Analyze source files for top modules : addNotify
+selectButton("NEXT", "Next >"); // JButton (j, Q)
+dismissDialog("Analyze source files for top modules"); // by (Q)
+// by (cl):  Open IP-XACT File : addNotify
+selectButton("OptionPane.button", "Open"); // JButton (A, G)
+dismissDialog("Create and Package New IP"); // Q (cl)
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: LOAD_FEATURE
+// TclEventType: PACKAGER_CURRENT_CORE
+// Run Command: PAResourceCommand.PACommandNames_IP_PACKAGER
+// WARNING: HEventQueue.dispatchEvent() is taking  1318 ms.
+// TclEventType: PACKAGER_OBJECT_CHANGE
+// Tcl Message: ipx::open_ipxact_file {c:\pentek\ip\2019.1\pentek\ip\px_dac3484intrfc\px_dac3484intrfc.srcs\component.xml} 
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_MESSAGE_UPDATE
+// TclEventType: PACKAGER_OBJECT_CHANGE
+selectButton("NEXT", "Next >"); // JButton (j, Q)
+// 'q' command handler elapsed time: 19 seconds
+dismissDialog("Open IP-XACT File"); // by (cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Compatibility", 1); // ar (O, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "File Groups", 2); // ar (O, cl)
+selectButton(PAResourceOtoP.PackagerStepContentPanel_MESSAGES, "4"); // h (p, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Customization Parameters", 3); // ar (O, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Ports and Interfaces", 4); // ar (O, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "File Groups", 2); // ar (O, cl)
+selectButton(PAResourceOtoP.PackagerStepContentPanel_MESSAGES, "4"); // h (p, cl)
+expandTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "Synthesis ;  ;  ; false ;  ;  ; px_dac3484intrfc", 1); // M (O, cl)
+selectTreeTableHeader(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "Library Name", 1); // M (O, cl)
+selectTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "sources_1/ip/dac_output_fifo/dac_output_fifo.xci ;  ; xci ; false ; false ; xilinx_anylanguagesynthesis ; ", 2, "sources_1/ip/dac_output_fifo/dac_output_fifo.xci", 0, false); // M (O, cl)
+selectTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci ;  ; xci ; false ; false ; xilinx_anylanguagesynthesis ; ", 3, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci", 0, false, false, true, false, false, false); // M (O, cl) - Control Key
+selectTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci ;  ; xci ; false ; false ; xilinx_anylanguagesynthesis ; ", 3, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci", 0, false, false, false, false, true, false); // M (O, cl) - Popup Trigger
+selectMenuItem(PAResourceEtoH.FileGroupFacetTable_REMOVE_FILE, "Remove File"); // ah (an, cl)
+// TclEventType: PACKAGER_OBJECT_DELETE
+// Tcl Message: ipx::remove_file sources_1/ip/dac_output_fifo/dac_output_fifo.xci [ipx::get_file_groups xilinx_anylanguagesynthesis -of_objects [ipx::current_core]] 
+// Tcl Message: ipx::remove_file sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci [ipx::get_file_groups xilinx_anylanguagesynthesis -of_objects [ipx::current_core]] 
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Compatibility", 1); // ar (O, cl)
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_MESSAGE_UPDATE
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "File Groups", 2); // ar (O, cl)
+selectButton(PAResourceOtoP.PackagerStepContentPanel_MESSAGES, "2"); // h (p, cl)
+expandTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "Simulation ;  ;  ; false ;  ;  ; px_dac3484intrfc", 8); // M (O, cl)
+selectTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "sources_1/ip/dac_output_fifo/dac_output_fifo.xci ;  ; xci ; false ; false ; xilinx_anylanguagebehavioralsimulation ; ", 9, "sources_1/ip/dac_output_fifo/dac_output_fifo.xci", 0, false); // M (O, cl)
+selectTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci ;  ; xci ; false ; false ; xilinx_anylanguagebehavioralsimulation ; ", 10, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci", 0, false, false, true, false, false, false); // M (O, cl) - Control Key
+selectTreeTable(PAResourceEtoH.FileGroupFacetTable_FILE_GROUP_FACET_TABLE, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci ;  ; xci ; false ; false ; xilinx_anylanguagebehavioralsimulation ; ", 10, "sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci", 0, false, false, false, false, true, false); // M (O, cl) - Popup Trigger
+selectMenuItem(PAResourceEtoH.FileGroupFacetTable_REMOVE_FILE, "Remove File"); // ah (an, cl)
+// TclEventType: PACKAGER_OBJECT_DELETE
+// Tcl Message: ipx::remove_file sources_1/ip/dac_output_fifo/dac_output_fifo.xci [ipx::get_file_groups xilinx_anylanguagebehavioralsimulation -of_objects [ipx::current_core]] 
+// Tcl Message: ipx::remove_file sources_1/ip/dac_packer_split_fifo/dac_packer_split_fifo.xci [ipx::get_file_groups xilinx_anylanguagebehavioralsimulation -of_objects [ipx::current_core]] 
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Ports and Interfaces", 4); // ar (O, cl)
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_MESSAGE_UPDATE
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "File Groups", 2); // ar (O, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Ports and Interfaces", 4); // ar (O, cl)
+expandTreeTable(PAResourceOtoP.PortAndInterfaceFacetTable_PORT_AND_INTERFACE_FACET_TABLE, "dac3484_cntrl ; master ;  ; false ;  ;  ;  ;  ;  ;  ;  ;  ; ", 5); // M (O, cl)
+collapseTreeTable(PAResourceOtoP.PortAndInterfaceFacetTable_PORT_AND_INTERFACE_FACET_TABLE, "dac3484_cntrl ; master ;  ; false ;  ;  ;  ;  ;  ;  ;  ;  ; ", 5); // M (O, cl)
+// Elapsed time: 13 seconds
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Review and Package", 7); // ar (O, cl)
+selectButton(PAResourceItoN.MessageBanner_CHANGES_DETECTED_IN_IP_THAT_REQUIRE, "IP has been modified."); // h (M, cl)
+// Tcl Message: ipx::update_checksums [ipx::current_core] 
+// Tcl Message: ipx::save_core [ipx::current_core] 
+// Elapsed time: 54 seconds
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Customization Parameters", 3); // ar (O, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Review and Package", 7); // ar (O, cl)
+// Elapsed time: 33 seconds
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Customization Parameters", 3); // ar (O, cl)
+selectList(PAResourceOtoP.PackagerStepsPanel_PACKAGER_STEPS_LIST, "Review and Package", 7); // ar (O, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, px_dac3484intrfc(Behavioral) (px_dac3484intrfc.vhd)]", 1, true); // B (F, cl) - Node
+selectButton(PAResourceQtoS.ReviewContentPanel_RE_PACKAGE_IP, "Re-Package IP"); // a (c, cl)
+// TclEventType: PACKAGER_OBJECT_CHANGE
+// Tcl Message: set_property core_revision 16 [ipx::current_core] 
+// Tcl Message: ipx::create_xgui_files [ipx::current_core] 
+// Tcl Message: ipx::update_checksums [ipx::current_core] 
+// Tcl Message: ipx::save_core [ipx::current_core] 
+// TclEventType: CREATE_IP_CATALOG
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_MESSAGE_UPDATE
+// by (cl):  Package IP : addNotify
+// Tcl Message: update_ip_catalog -rebuild -repo_path c:/pentek/ip/2019.1/pentek 
+// TclEventType: CREATE_IP_CATALOG
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_MESSAGE_UPDATE
+// Tcl Message: INFO: [IP_Flow 19-725] Reloaded user IP repository 'c:/pentek/ip/2019.1/pentek' 
+// Tcl Message: update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:14 . Memory (MB): peak = 2011.254 ; gain = 0.000 
+// Elapsed time: 17 seconds
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 128 MB. Current time: 10/3/19, 1:47:30 PM EDT
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 2967 ms. Increasing delay to 3000 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/3/19, 2:17:30 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/3/19, 2:47:30 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/3/19, 3:17:30 PM EDT
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 2015 ms. Increasing delay to 4000 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 4313 ms. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1465 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 3:47:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 4:17:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 4:47:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 5:17:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 5:47:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 6:17:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 6:47:31 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 7:17:32 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 7:47:32 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 8:17:32 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/3/19, 8:47:32 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 9:17:33 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 9:47:33 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 10:17:33 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 10:47:33 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 11:17:34 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/3/19, 11:47:34 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 12:17:34 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 12:47:34 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 1:17:35 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 1:47:35 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 2:17:35 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 2:47:35 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/4/19, 3:17:36 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 3:47:36 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 4:17:36 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 4:47:36 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 5:17:37 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 5:47:37 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 6:17:37 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 6:47:37 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 7:17:39 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 7:47:40 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 8:17:40 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 8:47:40 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 9:17:40 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 9:47:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 10:17:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 10:47:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 11:17:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 11:47:42 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 12:17:42 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 12:47:42 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 1:17:43 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 1:47:43 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 2:17:43 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 2:47:43 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 3:17:44 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 3:47:44 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 4:17:44 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 4:47:44 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/4/19, 5:17:45 PM EDT
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 2850 ms to process. Increasing delay to 3000 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 3158 ms. Increasing delay to 9474 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 5:47:45 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 6:17:45 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 6:47:45 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 7:17:46 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 7:47:46 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 8:17:46 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 8:47:46 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 9:17:47 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 9:47:47 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 10:17:47 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 10:47:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 11:17:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/4/19, 11:47:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 12:17:48 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 12:47:48 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 1:17:49 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 1:47:49 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 2:17:49 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 2:47:50 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 3:17:50 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 3:47:50 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 4:17:50 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 4:47:51 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 5:17:51 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 5:47:51 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 6:17:51 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 6:47:52 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 7:17:52 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 7:47:52 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 8:17:52 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 8:47:53 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 9:17:53 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 9:47:53 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 10:17:53 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 10:47:54 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 11:17:54 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 11:47:54 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 12:17:54 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 12:47:55 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 1:17:55 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 1:47:55 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 2:17:55 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 2:47:56 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 3:17:56 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 3:47:56 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 4:17:56 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 4:47:57 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 5:17:57 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 5:47:57 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 6:17:57 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 6:47:58 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 7:17:58 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 7:47:58 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 8:17:58 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 8:47:59 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 9:17:59 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 9:47:59 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 10:17:59 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 10:48:00 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 11:18:00 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/5/19, 11:48:00 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 12:18:01 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 12:48:01 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 1:18:01 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 1:48:01 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 2:18:02 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 2:48:02 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 3:18:02 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 3:48:02 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 4:18:03 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 4:48:03 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 5:18:03 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 5:48:03 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 6:18:04 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 6:48:04 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 7:18:04 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 7:48:04 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 8:18:05 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 8:48:05 AM EDT
+// WARNING: HEventQueue.dispatchEvent() is taking  1678 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 9:18:07 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 9:48:07 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 10:18:07 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 10:48:08 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 11:18:08 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 11:48:08 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 12:18:09 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 12:48:09 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 1:18:09 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 1:48:09 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 2:18:10 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 2:48:10 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 3:18:10 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 3:48:10 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 4:18:11 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 4:48:11 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 5:18:11 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 5:48:11 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 6:18:12 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 6:48:12 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 7:18:12 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 7:48:12 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 8:18:13 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 8:48:13 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 9:18:13 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 9:48:13 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 10:18:14 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 10:48:14 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 11:18:14 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/6/19, 11:48:14 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 12:18:15 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 12:48:15 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 1:18:15 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 1:48:15 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 2:18:16 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 2:48:16 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 3:18:16 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 3:48:16 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 4:18:17 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 4:48:17 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 5:18:17 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 5:48:17 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 6:18:18 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 6:48:18 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 7:18:18 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 7:48:19 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 8:18:19 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 8:48:19 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 9:18:19 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/7/19, 9:48:20 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/7/19, 10:18:20 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 10:48:20 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 11:18:20 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 11:48:21 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 12:18:21 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 12:48:21 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 1:18:21 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 1:48:22 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 2:18:22 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 2:48:22 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 3:18:22 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 3:48:23 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 4:18:23 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 4:48:23 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/7/19, 5:18:24 PM EDT
+// WARNING: HEventQueue.dispatchEvent() is taking  1145 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 5:48:25 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 6:18:25 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 6:48:25 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 7:18:26 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 7:48:26 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 8:18:26 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 8:48:27 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 9:18:27 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 9:48:27 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 10:18:27 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 10:48:28 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 11:18:28 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/7/19, 11:48:28 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 12:18:28 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 12:48:29 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 1:18:29 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 1:48:29 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 2:18:29 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 2:48:30 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 3:18:30 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 3:48:30 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 4:18:30 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 4:48:31 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 5:18:31 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 5:48:31 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 6:18:31 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 6:48:32 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 7:18:32 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 7:48:32 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 8:18:32 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 8:48:33 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 9:18:33 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 9:48:33 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 10:18:34 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 10:48:34 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 11:18:34 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 11:48:34 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 12:18:35 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 12:48:35 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 1:18:35 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 1:48:35 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 2:18:36 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 2:48:36 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 3:18:36 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 3:48:36 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 4:18:37 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 4:48:37 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 5:18:37 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 5:48:37 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 6:18:38 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 6:48:38 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 7:18:38 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 7:48:38 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 8:18:39 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 8:48:39 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 9:18:39 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 9:48:39 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 10:18:40 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 10:48:40 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 11:18:40 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/8/19, 11:48:41 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 12:18:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 12:48:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 1:18:41 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 1:48:42 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 2:18:42 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 2:48:42 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 3:18:42 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 3:48:43 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 4:18:43 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 4:48:43 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 5:18:43 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 5:48:44 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 6:18:44 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 6:48:44 AM EDT
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 1856 ms to process. Increasing delay to 4000 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 7:18:44 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 7:48:45 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 8:18:45 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 8:48:45 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 9:18:46 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/9/19, 9:48:46 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 10:18:46 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 10:48:46 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 11:18:47 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 11:48:47 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 12:18:47 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 12:48:47 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/9/19, 1:18:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 1:48:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 2:18:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 2:48:48 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 3:18:49 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 3:48:49 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 4:18:49 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 4:48:49 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 5:18:50 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 5:48:50 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 6:18:50 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 6:48:50 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 7:18:51 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 7:48:51 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 8:18:51 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 8:48:51 PM EDT
+// WARNING: HEventQueue.dispatchEvent() is taking  1760 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 9:18:53 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 9:48:54 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 10:18:54 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 10:48:54 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 11:18:54 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/9/19, 11:48:54 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 12:18:55 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 12:48:55 AM EDT
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 6372 ms. Increasing delay to 6000 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 1:18:55 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 1:48:56 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 2:18:56 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 2:48:56 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 3:18:56 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 3:48:57 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 4:18:57 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 4:48:57 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 5:18:57 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 5:48:58 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 6:18:58 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 6:48:58 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 7:18:59 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 7:48:59 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 8:18:59 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 8:48:59 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 9:19:00 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 9:49:00 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 10:19:00 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 10:49:00 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 11:19:01 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 11:49:01 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 12:19:01 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 12:49:01 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 1:19:02 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 1:49:02 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 2:19:02 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 2:49:02 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 3:19:03 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 3:49:03 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 4:19:03 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 4:49:04 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 5:19:04 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 5:49:04 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 6:19:04 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 6:49:05 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 7:19:05 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 7:49:05 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 8:19:06 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 8:49:06 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 9:19:06 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 9:49:06 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 10:19:07 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 10:49:07 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 11:19:07 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/10/19, 11:49:07 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 12:19:08 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 12:49:08 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 1:19:08 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 1:49:09 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 2:19:09 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 2:49:09 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 3:19:09 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 3:49:10 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 4:19:10 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 4:49:10 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 5:19:10 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 5:49:11 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 6:19:11 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 6:49:11 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 7:19:11 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 7:49:12 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 8:19:12 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 8:49:12 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 9:19:12 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 9:49:13 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 10:19:13 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 10:49:13 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/11/19, 11:19:14 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 127 MB. Current time: 10/11/19, 11:49:14 AM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 12:19:14 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 12:49:14 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 1:19:15 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 1:49:15 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 2:19:15 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 2:49:15 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 3:19:16 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 3:49:16 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 4:19:16 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 4:49:16 PM EDT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,405 MB. GUI used memory: 126 MB. Current time: 10/11/19, 5:19:16 PM EDT

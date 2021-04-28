@@ -1,0 +1,1543 @@
+#-----------------------------------------------------------
+# Vivado v2017.3_AR70218 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Wed Apr  4 07:56:11 2018
+# Process ID: 76152
+# Current directory: C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent76332 C:\Pentek\IP\2017.3\wip\px_axis_ppkt_uram_fifo\px_axis_ppkt_uram_fifo.xpr
+# Log file: C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/vivado.log
+# Journal file: C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo\vivado.jou
+#-----------------------------------------------------------
+Sourcing tcl script 'C:/Users/Rich/AppData/Roaming/Xilinx/Vivado/Vivado_init.tcl'
+101 Beta devices matching pattern found, 54 enabled.
+enable_beta_device: Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 278.445 ; gain = 52.020
+start_gui
+open_project C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.xpr
+INFO: [Project 1-313] Project file moved from 'D:/px_axis_ppkt_uram_fifo' since last save.
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/data/ip'.
+open_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:09 . Memory (MB): peak = 843.031 ; gain = 95.207
+update_compile_order -fileset sources_1
+set_property  ip_repo_paths  C:/Pentek/IP/2017.3/pentek [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.3/pentek'.
+update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 894.145 ; gain = 0.000
+set_property  ip_repo_paths  {} [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+set_property  ip_repo_paths  C:/Pentek/IP/2017.3/pentek [current_project]
+update_ip_catalog
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.3/pentek'.
+update_ip_catalog: Time (s): cpu = 00:00:03 ; elapsed = 00:00:07 . Memory (MB): peak = 898.383 ; gain = 0.000
+update_ip_catalog -rebuild
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.3/pentek'.
+update_ip_catalog: Time (s): cpu = 00:00:02 ; elapsed = 00:00:06 . Memory (MB): peak = 975.039 ; gain = 5.660
+close_project
+open_project C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.3/pentek'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/data/ip'.
+open_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 988.574 ; gain = 0.152
+update_compile_order -fileset sources_1
+update_ip_catalog -rebuild
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.3/pentek'.
+update_ip_catalog: Time (s): cpu = 00:00:02 ; elapsed = 00:00:06 . Memory (MB): peak = 990.477 ; gain = 1.902
+set_property part xczu27dr-ffvg1517-1-e-es1 [current_project]
+set_property target_language VHDL [current_project]
+create_ip -name px_axil_csr -vendor pentek.com -library px_ip -version 1.0 -module_name px_axis_ppkt_uram_fifo_csr -dir c:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip
+WARNING: [IP_Flow 19-4832] The IP name 'px_axis_ppkt_uram_fifo_csr' you have specified is long. The Windows operating system has path length limitations. It is recommended you use shorter names to reduce the likelihood of issues.
+set_property -dict [list CONFIG.num_ctl_regs {1} CONFIG.num_stat_regs {3} CONFIG.num_interrupt_src {2} CONFIG.Component_Name {px_axis_ppkt_uram_fifo_csr}] [get_ips px_axis_ppkt_uram_fifo_csr]
+WARNING: [Vivado 12-3523] Attempt to change 'Component_Name' from 'px_axis_ppkt_uram_fifo_csr' to 'px_axis_ppkt_uram_fifo_csr' is not allowed and is ignored.
+generate_target {instantiation_template} [get_files c:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip/px_axis_ppkt_uram_fifo_csr/px_axis_ppkt_uram_fifo_csr.xci]
+INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'px_axis_ppkt_uram_fifo_csr'...
+update_compile_order -fileset sources_1
+generate_target all [get_files  c:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip/px_axis_ppkt_uram_fifo_csr/px_axis_ppkt_uram_fifo_csr.xci]
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'px_axis_ppkt_uram_fifo_csr'...
+INFO: [IP_Flow 19-1686] Generating 'Simulation' target for IP 'px_axis_ppkt_uram_fifo_csr'...
+INFO: [IP_Flow 19-1686] Generating 'Test Bench' target for IP 'px_axis_ppkt_uram_fifo_csr'...
+INFO: [IP_Flow 19-1686] Generating 'Change Log' target for IP 'px_axis_ppkt_uram_fifo_csr'...
+catch { config_ip_cache -export [get_ips -all px_axis_ppkt_uram_fifo_csr] }
+export_ip_user_files -of_objects [get_files c:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip/px_axis_ppkt_uram_fifo_csr/px_axis_ppkt_uram_fifo_csr.xci] -no_script -sync -force -quiet
+create_ip_run [get_files -of_objects [get_fileset sources_1] c:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip/px_axis_ppkt_uram_fifo_csr/px_axis_ppkt_uram_fifo_csr.xci]
+launch_runs -jobs 12 px_axis_ppkt_uram_fifo_csr_synth_1
+[Wed Apr  4 10:10:50 2018] Launched px_axis_ppkt_uram_fifo_csr_synth_1...
+Run output will be captured here: C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.runs/px_axis_ppkt_uram_fifo_csr_synth_1/runme.log
+export_simulation -of_objects [get_files c:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip/px_axis_ppkt_uram_fifo_csr/px_axis_ppkt_uram_fifo_csr.xci] -directory C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.ip_user_files/sim_scripts -ip_user_files_dir C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.ip_user_files -ipstatic_source_dir C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.ip_user_files/ipstatic -lib_map_path [list {modelsim=C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.cache/compile_simlib/modelsim} {questa=C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.cache/compile_simlib/questa} {riviera=C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.cache/compile_simlib/riviera} {activehdl=C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+file mkdir C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new
+set_property SOURCE_SET sources_1 [get_filesets sim_1]
+close [ open C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd w ]
+add_files -fileset sim_1 C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd
+update_compile_order -fileset sim_1
+update_compile_order -fileset sim_1
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.ip_user_files/ipstatic/sources_1/imports/px_utility_pkg/px_utility_pkg.vhd" into library xil_defaultlib
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.ip_user_files/ipstatic/sources_1/new/px_axil_csr.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axil_csr
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/ip/px_axis_ppkt_uram_fifo_csr/sim/px_axis_ppkt_uram_fifo_csr.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo_csr
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '8' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-665] expression has 256 elements ; formal s_axis_ppkt_tdata expects 16 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:212]
+ERROR: [VRFC 10-665] expression has 16 elements ; formal s_axis_ppkt_tkeep expects 1 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:220]
+ERROR: [VRFC 10-665] expression has 256 elements ; formal m_axis_ppkt_tdata expects 16 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:228]
+ERROR: [VRFC 10-665] expression has 16 elements ; formal m_axis_ppkt_tkeep expects 1 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:236]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:06 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:15 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '9' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-664] expression has 1 elements ; expected 67 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd:432]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:05 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '5' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:15 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-664] expression has 1 elements ; expected 2 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd:432]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+INFO: [USF-XSim-69] 'elaborate' step finished in '5' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:12 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '9' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-664] expression has 272 elements ; expected 1024 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd:579]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+INFO: [USF-XSim-69] 'elaborate' step finished in '5' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:14 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-665] expression has 272 elements ; formal dout expects 32 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd:611]
+ERROR: [VRFC 10-665] expression has 5 elements ; formal rd_data_count expects 272 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd:616]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+INFO: [USF-XSim-69] 'elaborate' step finished in '4' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:12 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '9' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+ERROR: [VRFC 10-665] expression has 8 elements ; formal intrpt_src_in expects 2 [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd:683]
+ERROR: [XSIM 43-3322] Static elaboration of top level Verilog design unit(s) in library work failed.
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log'
+ERROR: [USF-XSim-62] 'elaborate' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/elaborate.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:16 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+launch_simulation
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+
+****** Webtalk v2017.3_AR70218 (64-bit)
+  **** SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+  **** IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+    ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
+
+source C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/xsim.dir/tb_px_axis_ppkt_uram_fifo_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Wed Apr  4 11:21:02 2018...
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:12 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '12' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "tb_px_axis_ppkt_uram_fifo_behav -key {Behavioral:sim_1:Functional:tb_px_axis_ppkt_uram_fifo} -tclbatch {tb_px_axis_ppkt_uram_fifo.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+source tb_px_axis_ppkt_uram_fifo.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Error: [XPM_FIFO 15-4] PROG_FULL_THRESH (6) value is outside of legal range. PROG_FULL_THRESH value must be between 7 and 11. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/Initial294_51  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+Error: [XPM_FIFO 15-5] PROG_EMPTY_THRESH (2) value is outside of legal range. PROG_EMPTY_THRESH value must be between 5 and 11. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/Initial294_51  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+$finish called at time : 2 ps : File "/wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv" Line 401
+WARNING: [Simulator 45-29] Cannot open source file /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv: file does not exist.
+xsim: Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'tb_px_axis_ppkt_uram_fifo_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:09 ; elapsed = 00:00:29 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+suspend_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:06 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '9' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+Error: [XPM_FIFO 15-4] PROG_FULL_THRESH (6) value is outside of legal range. PROG_FULL_THRESH value must be between 7 and 11. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/Initial294_51  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv
+$finish called at time : 2 ps : File "/wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv" Line 401
+relaunch_sim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:24 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:05 ; elapsed = 00:00:24 . Memory (MB): peak = 1261.863 ; gain = 0.000
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run 10 us
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '8' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:10 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:25 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:02 ; elapsed = 00:00:06 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '6' seconds
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:19 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:22 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_xsim_kernel: Time (s): cpu = 00:00:01 ; elapsed = 00:00:11 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:28 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:03 ; elapsed = 00:00:21 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:04 ; elapsed = 00:00:21 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:03 ; elapsed = 00:00:10 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '8' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:08 ; elapsed = 00:00:27 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '8' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:21 . Memory (MB): peak = 1261.863 ; gain = 0.000
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run 10 us
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:04 ; elapsed = 00:00:22 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:10 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '10' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:10 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:24 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '8' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:07 ; elapsed = 00:00:26 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+ERROR: [VRFC 10-1412] syntax error near end [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:276]
+ERROR: [VRFC 10-1412] syntax error near process [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:280]
+ERROR: [VRFC 10-1472] type error near behavioral ; expected type  void [C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd:283]
+INFO: [VRFC 10-240] VHDL file C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd ignored due to errors
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+INFO: [USF-XSim-99] Step results log file:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/xvhdl.log'
+ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim/xvhdl.log' file for more information.
+ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+ERROR: [Common 17-69] Command failed: ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
+
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sim_1/new/tb_px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity tb_px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '8' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:01 ; elapsed = 00:00:20 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File 'C:/Xilinx/Vivado/2017.3/data/xsim/ip/xsim_ip.ini' copied to run dir:'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'tb_px_axis_ppkt_uram_fifo' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vlog.prj"
+"xvhdl --incr --relax -prj tb_px_axis_ppkt_uram_fifo_vhdl.prj"
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.srcs/sources_1/new/px_axis_ppkt_uram_fifo.vhd" into library xil_defaultlib
+INFO: [VRFC 10-307] analyzing entity px_axis_ppkt_uram_fifo
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'compile' step finished in '7' seconds
+launch_simulation: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'C:/Pentek/IP/2017.3/wip/px_axis_ppkt_uram_fifo/px_axis_ppkt_uram_fifo.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.3
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2017.3/bin/unwrapped/win64.o/xelab.exe -wto 7bc11f5c9f844089adb84ac7283d0506 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot tb_px_axis_ppkt_uram_fifo_behav xil_defaultlib.tb_px_axis_ppkt_uram_fifo xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling package ieee.numeric_std
+Compiling package xpm.vcomponents
+Compiling package xil_defaultlib.px_utility_pkg
+Compiling package vl.vl_types
+Compiling module xil_defaultlib.glbl
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_memory_sdpram(MEMORY_SIZE=69...
+Compiling module xpm.xpm_fifo_rst_default
+Compiling module xpm.xpm_fifo_reg_bit
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=5...
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=1)
+Compiling module xpm.xpm_counter_updn(RESET_VALUE=2)
+Compiling module xpm.xpm_memory_base(MEMORY_TYPE=1,ME...
+Compiling module xpm.xpm_counter_updn(COUNTER_WIDTH=2...
+Compiling module xpm.xpm_fifo_base(FIFO_MEMORY_TYPE=1...
+Compiling module xpm.xpm_fifo_sync(FIFO_MEMORY_TYPE="...
+Compiling architecture behavioral of entity xil_defaultlib.px_axil_csr [\px_axil_csr(num_ctl_regs=1,num_...]
+Compiling architecture px_axis_ppkt_uram_fifo_csr_arch of entity xil_defaultlib.px_axis_ppkt_uram_fifo_csr [px_axis_ppkt_uram_fifo_csr_defau...]
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,IN...
+Compiling module xpm.xpm_cdc_array_single(DEST_SYNC_F...
+Compiling module xpm.xpm_cdc_async_rst(DEST_SYNC_FF=3...
+Compiling module xpm.xpm_cdc_single(DEST_SYNC_FF=3,SR...
+Compiling module xpm.xpm_cdc_handshake(DEST_EXT_HSK=0...
+Compiling module xpm.xpm_cdc_pulse(DEST_SYNC_FF=3,INI...
+Compiling architecture behavioral of entity xil_defaultlib.px_axis_ppkt_uram_fifo [\px_axis_ppkt_uram_fifo(has_in_t...]
+Compiling architecture behavioral of entity xil_defaultlib.tb_px_axis_ppkt_uram_fifo
+Built simulation snapshot tb_px_axis_ppkt_uram_fifo_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 1261.863 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '8' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 1261.863 ; gain = 0.000
+Vivado Simulator 2017.3
+Time resolution is 1 ps
+Info: [XPM_MEMORY 20-2] MEMORY_INIT_FILE (none), MEMORY_INIT_PARAM together specify no memory initialization. Initial memory contents will be all 0's. tb_px_axis_ppkt_uram_fifo.uut.xpm_fifo_sync_inst.xpm_fifo_base_inst.gen_sdpram.xpm_memory_base_inst.config_drc  0
+Time: 1 ps  Iteration: 0  Process: /tb_px_axis_ppkt_uram_fifo/uut/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_sdpram.xpm_memory_base_inst/Initial270_63  File: /wrk/2017.3/nightly/2017_10_04_2018833/prep/rdi/vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+relaunch_sim: Time (s): cpu = 00:00:02 ; elapsed = 00:00:22 . Memory (MB): peak = 1261.863 ; gain = 0.000
+relaunch_sim

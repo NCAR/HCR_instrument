@@ -1,0 +1,4 @@
+* Core Created
+-- Revision 1.0 - limited WIP release (untested)
+-- Revision 1.1 - Fixed Address registers and fixed IPV4 Header total length field, fixed mixup of VITA49 modes, reversed VITA49 header
+-- Revision 1.2 - Fixed VITA49 PKTCNT

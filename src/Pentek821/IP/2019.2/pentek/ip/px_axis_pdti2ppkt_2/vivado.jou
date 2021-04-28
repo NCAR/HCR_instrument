@@ -1,0 +1,33 @@
+#-----------------------------------------------------------
+# Vivado v2017.1 (64-bit)
+# SW Build 1846317 on Fri Apr 14 18:55:03 MDT 2017
+# IP Build 1846188 on Fri Apr 14 20:52:08 MDT 2017
+# Start of session at: Mon Jul 31 08:04:17 2017
+# Process ID: 13456
+# Current directory: C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_2
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent13304 C:\Pentek\IP\2017.1\pentek\ip\px_axis_pdti2ppkt_2\px_axis_pdti2ppkt_2.xpr
+# Log file: C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_2/vivado.log
+# Journal file: C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_2\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_2/px_axis_pdti2ppkt_2.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2017.1\pentek\ip\px_axis_pdti2ppkt_2\px_axis_pdti2ppkt_2.srcs\component.xml}
+set_property version 1.2 [ipx::current_core]
+set_property display_name px_axis_pdti2ppkt_2_v1_2 [ipx::current_core]
+set_property core_revision 11 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2017.1/pentek
+close_project
+open_project C:/Pentek/IP/2017.1/pentek/ip/px_axis_pdti2ppkt_1/px_axis_pdti2ppkt_1.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2017.1\pentek\ip\px_axis_pdti2ppkt_1\px_axis_pdti2ppkt_1.srcs\component.xml}
+set_property display_name px_axis_pdti2ppkt_1_v1_2 [ipx::current_core]
+set_property version 1.2 [ipx::current_core]
+set_property core_revision 34 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2017.1/pentek

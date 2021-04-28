@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_px_3324_FMC_intrfc_LMK_test_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="px_utility_pkg" />
+            <top_module name="tb_px_3324_FMC_intrfc_LMK_test" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="12620000001fs"></ZoomEndTime>
+      <Cursor1Time time="12620000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="217"></NameColumnWidth>
+      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="41" />
+   <wvobject type="divider" fp_name="divider473">
+      <obj_property name="label">CSR Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#D2691E</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_aclk" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aclk</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_araddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_araddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_araddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_aresetn" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_aresetn</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_aresetn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_arprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_arprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_arready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_arvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_arvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_awaddr" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awaddr[6:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awaddr[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_awprot" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_awprot[2:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awprot[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_awready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_awvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_awvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_awvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_bready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_bresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_bvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_bvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_bvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_rdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_rready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_rresp" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_rvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_rvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_wdata" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_wready" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wready</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_wstrb" type="array">
+      <obj_property name="ElementShortName">s_axi_csr_wstrb[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wstrb[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/s_axi_csr_wvalid" type="logic">
+      <obj_property name="ElementShortName">s_axi_csr_wvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axi_csr_wvalid</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider474">
+      <obj_property name="label">System-Level Inputs</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#808000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/PCIE_CLK" type="logic">
+      <obj_property name="ElementShortName">PCIE_CLK</obj_property>
+      <obj_property name="ObjectShortName">PCIE_CLK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/LRST_N" type="logic">
+      <obj_property name="ElementShortName">LRST_N</obj_property>
+      <obj_property name="ObjectShortName">LRST_N</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider475">
+      <obj_property name="label">LMK Input Control Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#00FFFF</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/INT_REF_SEL" type="logic">
+      <obj_property name="ElementShortName">INT_REF_SEL</obj_property>
+      <obj_property name="ObjectShortName">INT_REF_SEL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/JESD_RESET_GPO" type="logic">
+      <obj_property name="ElementShortName">JESD_RESET_GPO</obj_property>
+      <obj_property name="ObjectShortName">JESD_RESET_GPO</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/PLL1_CLKIN_SEL0" type="logic">
+      <obj_property name="ElementShortName">PLL1_CLKIN_SEL0</obj_property>
+      <obj_property name="ObjectShortName">PLL1_CLKIN_SEL0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/PLL1_CLKIN_SEL1" type="logic">
+      <obj_property name="ElementShortName">PLL1_CLKIN_SEL1</obj_property>
+      <obj_property name="ObjectShortName">PLL1_CLKIN_SEL1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/PLL1_REF_ENAB" type="logic">
+      <obj_property name="ElementShortName">PLL1_REF_ENAB</obj_property>
+      <obj_property name="ObjectShortName">PLL1_REF_ENAB</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/PLL2_REF_ENAB" type="logic">
+      <obj_property name="ElementShortName">PLL2_REF_ENAB</obj_property>
+      <obj_property name="ObjectShortName">PLL2_REF_ENAB</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/GATE_B_SEL" type="logic">
+      <obj_property name="ElementShortName">GATE_B_SEL</obj_property>
+      <obj_property name="ObjectShortName">GATE_B_SEL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/SYSREF_SYNC" type="logic">
+      <obj_property name="ElementShortName">SYSREF_SYNC</obj_property>
+      <obj_property name="ObjectShortName">SYSREF_SYNC</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider476">
+      <obj_property name="label">LMK Output Control Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/STATUS_LD1" type="logic">
+      <obj_property name="ElementShortName">STATUS_LD1</obj_property>
+      <obj_property name="ObjectShortName">STATUS_LD1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/STATUS_LD2" type="logic">
+      <obj_property name="ElementShortName">STATUS_LD2</obj_property>
+      <obj_property name="ObjectShortName">STATUS_LD2</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider477">
+      <obj_property name="label">Testbench Signals</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">#008080</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/LMK_CTRL_REG_ADDR" type="array">
+      <obj_property name="ElementShortName">LMK_CTRL_REG_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">LMK_CTRL_REG_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/LMK_STATUS_REG_ADDR" type="array">
+      <obj_property name="ElementShortName">LMK_STATUS_REG_ADDR[6:0]</obj_property>
+      <obj_property name="ObjectShortName">LMK_STATUS_REG_ADDR[6:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_px_3324_FMC_intrfc_LMK_test/clk_in_half_p" type="other">
+      <obj_property name="ElementShortName">clk_in_half_p</obj_property>
+      <obj_property name="ObjectShortName">clk_in_half_p</obj_property>
+   </wvobject>
+</wave_config>

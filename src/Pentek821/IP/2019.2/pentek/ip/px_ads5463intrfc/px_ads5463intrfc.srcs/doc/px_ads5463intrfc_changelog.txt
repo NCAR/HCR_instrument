@@ -1,0 +1,8 @@
+Version 0.01
+* Core Created
+Version 1.0
+First Release
+Version 1.1
+8/9/17 Added User Guide
+Version 1.2
+11/2/17 Added IDELAY Control generic parameter for OVR bit

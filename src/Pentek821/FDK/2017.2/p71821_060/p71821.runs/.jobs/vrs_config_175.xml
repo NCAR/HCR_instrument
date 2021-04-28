@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<Runs Version="1" Minor="0">
-	<Run Id="user_block2_fir_compiler_0_0_synth_1" LaunchDir="/home/apar/git/HCR_instrument/src/Pentek821/FDK/2017.2/p71821_060/p71821.runs/user_block2_fir_compiler_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
-	<Run Id="user_block2_s00_regslice_0_synth_1" LaunchDir="/home/apar/git/HCR_instrument/src/Pentek821/FDK/2017.2/p71821_060/p71821.runs/user_block2_s00_regslice_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
-</Runs>
-

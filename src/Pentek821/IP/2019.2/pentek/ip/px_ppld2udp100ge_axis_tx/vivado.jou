@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# Vivado v2019.2 (64-bit)
+# SW Build 2700185 on Thu Oct 24 18:46:05 MDT 2019
+# IP Build 2699827 on Thu Oct 24 21:16:38 MDT 2019
+# Start of session at: Fri May  1 14:15:57 2020
+# Process ID: 30624
+# Current directory: C:/Pentek/IP/2019.2/pentek/ip/px_ppld2udp100ge_axis_tx
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent17524 C:\Pentek\IP\2019.2\pentek\ip\px_ppld2udp100ge_axis_tx\px_ppld2udp100ge_axis_tx.xpr
+# Log file: C:/Pentek/IP/2019.2/pentek/ip/px_ppld2udp100ge_axis_tx/vivado.log
+# Journal file: C:/Pentek/IP/2019.2/pentek/ip/px_ppld2udp100ge_axis_tx\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Pentek/IP/2019.2/pentek/ip/px_ppld2udp100ge_axis_tx/px_ppld2udp100ge_axis_tx.xpr
+update_compile_order -fileset sources_1
+ipx::open_ipxact_file {C:\Pentek\IP\2019.2\pentek\ip\px_ppld2udp100ge_axis_tx\px_ppld2udp100ge_axis_tx.srcs\sources_1\component.xml}
+set_property core_revision 26 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/Pentek/IP/2019.2/pentek

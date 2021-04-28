@@ -1,0 +1,105 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Fri Sep 27 11:09:40 2019
+# Process ID: 15176
+# Current directory: C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent2028 C:\pentek\ip\2019.1\pentek\ip\px_cdc_clk_and_clkdiv2\px_cdc_clk_and_clkdiv2.xpr
+# Log file: C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/vivado.log
+# Journal file: C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.xpr
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs synth_1 -jobs 6
+wait_on_run synth_1
+ipx::open_ipxact_file {C:\pentek\ip\2019.1\pentek\ip\px_cdc_clk_and_clkdiv2\px_cdc_clk_and_clkdiv2.srcs\component.xml}
+ipx::unload_core c:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/component.xml
+ipx::open_ipxact_file {C:\pentek\ip\2019.1\pentek\ip\px_cdc_clk_and_clkdiv2\px_cdc_clk_and_clkdiv2.srcs\component.xml}
+ipx::merge_project_changes hdl_parameters [ipx::current_core]
+ipx::remove_file xgui/px_cdc_clk_and_clkdiv2_v1_1.tcl [ipx::get_file_groups xilinx_xpgui -of_objects [ipx::current_core]]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property core_revision 45 [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/pentek/ip/2019.1/pentek
+ipx::add_file C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/xgui/px_cdc_clk_and_clkdiv2_v1_0.tcl [ipx::get_file_groups xilinx_xpgui -of_objects [ipx::current_core]]
+set_property type tclSource [ipx::get_files xgui/px_cdc_clk_and_clkdiv2_v1_0.tcl -of_objects [ipx::get_file_groups xilinx_xpgui -of_objects [ipx::current_core]]]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property core_revision 46 [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/pentek/ip/2019.1/pentek
+ipx::unload_core c:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/component.xml
+export_ip_user_files -of_objects  [get_files C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/component.xml] -no_script -reset -force -quiet
+remove_files  C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/component.xml
+ipx::package_project -root_dir c:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2 -vendor xilinx.com -library user -taxonomy /UserIP
+set_property taxonomy /PentekIP [ipx::current_core]
+set_property supported_families {virtex7 Production zynquplus Production virtexuplus Production kintexuplus Production kintexu Production} [ipx::current_core]
+ipx::add_file_group -type product_guide {} [ipx::current_core]
+ipx::add_file C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2.pdf [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]
+set_property type pdf [ipx::get_files px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2.pdf -of_objects [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]]
+ipx::add_file C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2_changelog.txt [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]
+set_property type text [ipx::get_files px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2_changelog.txt -of_objects [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]]
+ipx::add_file_group -type version_info {} [ipx::current_core]
+ipx::add_file px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2_changelog.txt [ipx::get_file_groups xilinx_xpgui -of_objects [ipx::current_core]]
+ipx::add_file px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2_changelog.txt [ipx::get_file_groups xilinx_versioninformation -of_objects [ipx::current_core]]
+ipx::remove_file px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2_changelog.txt [ipx::get_file_groups xilinx_xpgui -of_objects [ipx::current_core]]
+ipx::add_file C:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/px_cdc_clk_and_clkdiv2.srcs/sim_1/new/tb_px_cdc_clk_and_clkdiv2.vhd [ipx::get_file_groups xilinx_testbench -of_objects [ipx::current_core]]
+set_property type vhdlSource [ipx::get_files px_cdc_clk_and_clkdiv2.srcs/sim_1/new/tb_px_cdc_clk_and_clkdiv2.vhd -of_objects [ipx::get_file_groups xilinx_testbench -of_objects [ipx::current_core]]]
+ipx::remove_file px_cdc_clk_and_clkdiv2.srcs/doc/px_cdc_clk_and_clkdiv2_changelog.txt [ipx::get_file_groups xilinx_productguide -of_objects [ipx::current_core]]
+set_property widget {checkBox} [ipgui::get_guiparamspec -name "ibuf_low_pwr" -component [ipx::current_core] ]
+set_property display_name {Invert Input Clock} [ipgui::get_guiparamspec -name "invert_in_clk" -component [ipx::current_core] ]
+set_property tooltip {Invert if you want output clock to tansition on falling edges of input clock} [ipgui::get_guiparamspec -name "invert_in_clk" -component [ipx::current_core] ]
+set_property widget {checkBox} [ipgui::get_guiparamspec -name "invert_in_clk" -component [ipx::current_core] ]
+set_property display_name {Initial LED Mode at Reset} [ipgui::get_guiparamspec -name "initial_led_mode" -component [ipx::current_core] ]
+set_property tooltip {Initial LED Mode at Reset} [ipgui::get_guiparamspec -name "initial_led_mode" -component [ipx::current_core] ]
+set_property widget {comboBox} [ipgui::get_guiparamspec -name "initial_led_mode" -component [ipx::current_core] ]
+set_property value_validation_type list [ipx::get_user_parameters initial_led_mode -of_objects [ipx::current_core]]
+set_property value_validation_list {0 1 2} [ipx::get_user_parameters initial_led_mode -of_objects [ipx::current_core]]
+ipgui::add_static_text -name {LED TEXT} -component [ipx::current_core] -parent [ipgui::get_pagespec -name "Page 0" -component [ipx::current_core] ] -text {
+
+LED Mode:
+
+0 = Clock Good
+
+1 = Clock Good & VCXO OK
+
+2 = Clock Good & VCXO OK & Ref OK & CDC Lock}
+set_property tooltip {} [ipgui::get_textspec -name "LED TEXT" -component [ipx::current_core] ]
+set_property display_name {Use Input Buffer Low Power Mode} [ipgui::get_guiparamspec -name "ibuf_low_pwr" -component [ipx::current_core] ]
+set_property tooltip {Use Input Buffer Low Power Mode} [ipgui::get_guiparamspec -name "ibuf_low_pwr" -component [ipx::current_core] ]
+set_property widget {checkBox} [ipgui::get_guiparamspec -name "ibuf_low_pwr" -component [ipx::current_core] ]
+set_property display_name {Use Internal 100 Ohm Differential Termination} [ipgui::get_guiparamspec -name "differential_term" -component [ipx::current_core] ]
+set_property tooltip {Use Internal 100 Ohm Differential Termination} [ipgui::get_guiparamspec -name "differential_term" -component [ipx::current_core] ]
+set_property widget {radioGroup} [ipgui::get_guiparamspec -name "differential_term" -component [ipx::current_core] ]
+set_property layout {horizontal} [ipgui::get_guiparamspec -name "differential_term" -component [ipx::current_core] ]
+set_property value_validation_type list [ipx::get_user_parameters differential_term -of_objects [ipx::current_core]]
+set_property value_validation_list {TERM_100 TERM_NONE} [ipx::get_user_parameters differential_term -of_objects [ipx::current_core]]
+ipgui::move_param -component [ipx::current_core] -order 1 [ipgui::get_guiparamspec -name "invert_in_clk" -component [ipx::current_core]] -parent [ipgui::get_pagespec -name "Page 0" -component [ipx::current_core]]
+ipgui::move_param -component [ipx::current_core] -order 2 [ipgui::get_guiparamspec -name "invert_in_clk" -component [ipx::current_core]] -parent [ipgui::get_pagespec -name "Page 0" -component [ipx::current_core]]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+set_property core_revision 2 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/pentek/ip/2019.1/pentek
+ipx::add_bus_interface diff_clk_in [ipx::current_core]
+set_property abstraction_type_vlnv xilinx.com:interface:diff_clock_rtl:1.0 [ipx::get_bus_interfaces diff_clk_in -of_objects [ipx::current_core]]
+set_property bus_type_vlnv xilinx.com:interface:diff_clock:1.0 [ipx::get_bus_interfaces diff_clk_in -of_objects [ipx::current_core]]
+ipx::add_port_map CLK_P [ipx::get_bus_interfaces diff_clk_in -of_objects [ipx::current_core]]
+set_property physical_name clk_in_p [ipx::get_port_maps CLK_P -of_objects [ipx::get_bus_interfaces diff_clk_in -of_objects [ipx::current_core]]]
+ipx::add_port_map CLK_N [ipx::get_bus_interfaces diff_clk_in -of_objects [ipx::current_core]]
+set_property physical_name clk_in_n [ipx::get_port_maps CLK_N -of_objects [ipx::get_bus_interfaces diff_clk_in -of_objects [ipx::current_core]]]
+set_property core_revision 3 [ipx::current_core]
+ipx::create_xgui_files [ipx::current_core]
+ipx::update_checksums [ipx::current_core]
+ipx::save_core [ipx::current_core]
+update_ip_catalog -rebuild -repo_path c:/pentek/ip/2019.1/pentek
+ipx::unload_core c:/pentek/ip/2019.1/pentek/ip/px_cdc_clk_and_clkdiv2/component.xml

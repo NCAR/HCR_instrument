@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# Vivado v2017.3_AR70218_AR69964 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:22 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Wed Jan 17 09:02:02 2018
+# Process ID: 5864
+# Current directory: C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11036 C:\Pentek\IP\2017.3\pentek\ip\px_dma_ppkt2pcie\px_dma_ppkt2pcie.xpr
+# Log file: C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie/vivado.log
+# Journal file: C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie\vivado.jou
+#-----------------------------------------------------------
+Sourcing tcl script 'C:/Users/Rich/AppData/Roaming/Xilinx/Vivado/Vivado_init.tcl'
+101 Beta devices matching pattern found, 54 enabled.
+start_gui
+open_project C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie/px_dma_ppkt2pcie.xpr
+Scanning sources...
+Finished scanning sources
+WARNING: [filemgmt 56-3] IPUserFilesDir: Could not find the directory 'C:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie/px_dma_ppkt2pcie.ip_user_files'.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Pentek/IP/2017.3/pentek'.
+WARNING: [IP_Flow 19-3656] If you move the project, the path for repository 'c:/Pentek/IP/2017.3/pentek' may become invalid. A better location for the repository would be in a path adjacent to the project. (Current project location is 'c:/Pentek/IP/2017.3/pentek/ip/px_dma_ppkt2pcie'.)
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2017.3/data/ip'.
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_usp_rf_data_converter:cal_freeze_pins:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/cal_freeze_pins.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/cal_freeze_pins.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_usp_rf_data_converter:debug_pins:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/debug_pins.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/debug_pins.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_usp_rf_data_converter:diff_pins:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/diff_pins.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/diff_pins.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_usp_rf_data_converter:drp_mon_pins:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/drp_mon_pins.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/drp_mon_pins.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:user:hsams_data_sink_ctrl:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/hsams_data_sink_ctrl.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/hsams_data_sink_ctrl.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:user:hsams_data_source_ctrl:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/hsams_data_source_ctrl.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/hsams_data_source_ctrl.xml'
+WARNING: [IP_Flow 19-4830] Duplicate Interface found for 'xilinx.com:display_usp_rf_data_converter:rts_pins:1.0'. The one found in location 'c:/Xilinx/Vivado/2017.3/patches/AR70218/vivado/data/ip/xilinx/usp_rf_data_converter_v1_2/interfaces/rts_pins.xml' will take precedence over the same Interface in location 'c:/Xilinx/Vivado/2017.3/patches/AR69964/vivado/data/ip/xilinx/usp_rf_data_converter_v1_1/interfaces/rts_pins.xml'
+open_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:13 . Memory (MB): peak = 863.832 ; gain = 79.586
+report_ip_status -name ip_status 
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Jan 17 09:02:59 2018...
