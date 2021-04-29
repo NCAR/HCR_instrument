@@ -405,6 +405,7 @@ architecture Behavioral of p71821 is
 -- Block Design
 component dataio_intrfc_wrapper
   port (
+    dac_sync_from_adc : in std_logic;
     adc0_d0_1_n : in STD_LOGIC;
     adc0_d0_1_p : in STD_LOGIC;
     adc0_d10_11_n : in STD_LOGIC;
@@ -566,6 +567,7 @@ end component dataio_intrfc_wrapper;
 -- Block Design
 component  user_block1_wrapper
  port (
+   dac_sync_from_adc : out std_logic;
    controller_PPS : out STD_LOGIC;
    filter_select_ch0 : in STD_LOGIC_VECTOR ( 1 downto 0 );
    filter_select_ch1 : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -1464,6 +1466,7 @@ signal az_ssel              : std_logic := '0';
 signal el_mosi              : std_logic := '0';
 signal el_sck               : std_logic := '0';
 signal p14_gpio_pps         : std_logic := '0';
+signal dac_sync_from_adc    : std_logic := '0';
 
 --------------------------------------------------------------------------------
 -- Constants
@@ -1492,7 +1495,7 @@ P16_LINKUP_N    <= '1';
 dataio_intrfc_i: dataio_intrfc_wrapper
 port map (
       -- External Interfaces
-      
+      dac_sync_from_adc => dac_sync_from_adc,
       -- ADC Interfaces
       adc0_d0_1_n                               => ADC0_D0_1_N,       
       adc0_d0_1_p                               => ADC0_D0_1_P,       
@@ -1673,6 +1676,7 @@ port map (
       filter_select_ch2 => filter_select_ch2,
       mt_pulse          => mt_pulse,
       controller_PPS    => controller_PPS,
+      dac_sync_from_adc => dac_sync_from_adc,
       -- Input ADC AXI4-Stream Interfaces 
       s_axis_adc_pdti_aclk                      => axis_adc_pdti_aclk,
       s_axis_adc_pdti_aresetn                   => axis_adc_pdti_aresetn,

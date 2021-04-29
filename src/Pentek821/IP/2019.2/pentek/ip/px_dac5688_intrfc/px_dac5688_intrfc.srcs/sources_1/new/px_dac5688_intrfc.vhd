@@ -173,6 +173,7 @@ port (
    -------------------------------------------------------------------------------
    -- Output
    -------------------------------------------------------------------------------
+   dac_sync_in             : in std_logic;
    -- No back pressure supported
    -- Constant output flow
    
@@ -1458,7 +1459,7 @@ ODELAYE3_sync_inst : ODELAYE3
                EN_VTC => en_vtc,           -- 1-bit input: Keep delay constant over VT
                INC => '0',                 -- 1-bit input: Increment/Decrement tap delay input
                LOAD => dly_ld,             -- 1-bit input: Load DELAY_VALUE input
-               ODATAIN => t2_sync,        -- 1-bit input: Data input
+               ODATAIN => dac_sync_in, --t2_sync,        -- 1-bit input: Data input
                RST => '0'                  -- 1-bit input: Asynchronous Reset to the DELAY_VALUE
             );
 
