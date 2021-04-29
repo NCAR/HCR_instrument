@@ -55,7 +55,6 @@ LOGGING("HCR_Pentek")
 static const uint32_t ALL_32_BITS = 0xffffffffUL;
 
 // Create referenceable instances for our constexpr values
-constexpr double HCR_Pentek::BASE_FREQUENCY;
 constexpr double HCR_Pentek::REF_FREQUENCY;
 
 HCR_Pentek::HCR_Pentek(const HCR_Config & config,
@@ -601,6 +600,13 @@ HCR_Pentek::_setupTx() {
                           NAV_DAC_OPTION_NONE);
     _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_DacSetup");
 
+    //// I would like to do this but it doesn't seem to work.
+    //// Instead edit nav820_dac.c : NAV820_DacSetDefaultParams
+    //// to add 'deviceParams->clkDivSyncEna  = DAC5688_CONFIG5_CLK_SYNC_DIV_ENABLE;'
+    //NAV_IP_ADDR_TABLE *ipBaseAddr = &((NAV_BOARD_RESRC*)_boardHandle)->ipBaseAddr;
+    //status = NAVdev_DAC5688SetDacClkDivSyncEn(ipBaseAddr->dac[dacChip].dacIntrfcCtrl, DAC5688_CONFIG5_CLK_SYNC_DIV_ENABLE);
+    //_AbortCtorOnNavStatusError(status, dacPrefix + "NAVdev_DAC5688SetDacClkDivSyncEn");
+
     status = NAV_GateTrigModeSetup(_boardHandle,
                                    NAV_CHANNEL_TYPE_BRD_RAM,
                                    dacChip,
@@ -633,6 +639,7 @@ HCR_Pentek::_setupTx() {
     status = NAV_SetDucSyncState(_boardHandle,
                                  dacChip,
                                  NAV_DUC_SYNC_STATE_ENABLE);
+    _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_SetDucSyncState");
 
 }
 
@@ -752,7 +759,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
 
         // Calculate the timestamp
         time_t dataSec = _radarStartSecond + metadata->timestampPpsCount;
-        uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/BASE_FREQUENCY);
+        uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/adcFrequency());
 
         // Add the PRT to get the offset for the next pulse
         clockOffsetCount += pulseHeader.prt;
@@ -1098,10 +1105,10 @@ HCR_Pentek::_setupController()
     dwell.timers[Controller::Timers::RX_0] = {32, 1000000}; // rx offset <32 triggers a FPGA bug
     dwell.timers[Controller::Timers::RX_1] = {32, 1000000};
     dwell.timers[Controller::Timers::RX_2] = {32, 1000000};
-    dwell.timers[Controller::Timers::TX_PULSE] = {0, 1000};
+    dwell.timers[Controller::Timers::TX_PULSE] = {64, 1000};
     dwell.timers[Controller::Timers::MOD_PULSE] = {96, 100};
     dwell.timers[Controller::Timers::EMS_TRIG] = {200, 100};
-    dwell.timers[Controller::Timers::TIMER_7] = {250, 100};
+    dwell.timers[Controller::Timers::TIMER_7] = {8, 1};
     _pulseDefinitions.push_back(dwell);
 
     // Write the pulse definitions
