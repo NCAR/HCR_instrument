@@ -64,8 +64,11 @@ public:
                 IwrfPublisher * shortPublisher);
     virtual ~HCR_Pentek();
 
-    /// @brief Base clock frequency for HCR
-    static constexpr double BASE_FREQUENCY = 125.0e6;
+    /// @brief ADC clock frequency for HCR
+    static constexpr double ADC_FREQUENCY = 125.0e6;
+
+    /// @brief DAC clock frequency for HCR
+    static constexpr double DAC_FREQUENCY = 500.0e6;
 
     /// @brief Reference clock frequency provided to the Pentek board
     static constexpr double REF_FREQUENCY = 10.0e6;
@@ -81,18 +84,13 @@ public:
     /// @brief Return the sample frequency used for the ADCs
     /// @return the sample frequency used for the ADCs
     double adcFrequency() const {
-        // We run the ADCs at BASE_FREQUENCY
-        return(BASE_FREQUENCY);
+        return(ADC_FREQUENCY);
     }
 
     /// @brief Return the frequency of samples emitted by the DACs
-    ///
-    /// The DACs are set up to deliver interpolated samples from the
-    /// digital upconverter (DUC) at a chosen multiple of BASE_FREQUENCY.
-    ///
     /// @return the frequency of samples emitted by the DACs
     double dacFrequency() const {
-        return(BASE_FREQUENCY * _config.duc_interpolation());
+        return(DAC_FREQUENCY);
     }
 
     /// @brief Return the Pentek board clock frequency
@@ -111,7 +109,7 @@ public:
     /// @param adcChan the ADC channel of interest
     /// @return the digitizer sample width for the selected ADC channel, s
     double digitizer_sample_width(int adcChan) const {
-        return(DDC_DECIMATION / BASE_FREQUENCY);
+        return(DDC_DECIMATION / ADC_FREQUENCY);
     }
 
 signals:
