@@ -54,9 +54,6 @@ LOGGING("HCR_Pentek")
 // 32-bit all-ones bitmask
 static const uint32_t ALL_32_BITS = 0xffffffffUL;
 
-// Create referenceable instances for our constexpr values
-constexpr double HCR_Pentek::REF_FREQUENCY;
-
 HCR_Pentek::HCR_Pentek(const HCR_Config & config,
                          uint boardNum,
                          IwrfPublisher * longPublisher,
@@ -207,7 +204,7 @@ HCR_Pentek::_startRadar() {
     // Start the radar controller
     _controller.run(0,                              // sequenceStartIndex,
                     _pulseDefinitions.size(),       // sequenceLength,
-                    DDC_DECIMATION,                 // ddcDcimation,
+                    ddcDecimation(),                // ddcDcimation,
                     2,                              // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
                     enabledChannelVector,           // enabledChannelVector,
@@ -356,7 +353,7 @@ HCR_Pentek::_setupBoard() const {
                             _config.use_internal_clock() ?       // int32_t  boardClockSource,
                                NAV_CLOCK_INT : NAV_CLOCK_EXT,
                             boardClockFrequency(),               // double   boardClockFreq,
-                            REF_FREQUENCY,                       // double   extRefClockFreq,
+                            _config.refclk_frequency(),          // double   extRefClockFreq,
                             adcFrequency(),                      // double   clockAFreq,
                             dacFrequency(),                      // double   clockBFreq,
                             1.0e6,                               // double   adcTestSigFreq,
@@ -552,7 +549,7 @@ HCR_Pentek::_setupDdc() {
             // Initialize the DDC associated with this ADC
             status = NAV_DdcSetup(_boardHandle,
                                   ddcNum,
-                                  DDC_DECIMATION,
+                                  ddcDecimation(),
                                   _config.rx_frequency(),
                                   NAV_DDC_PACKMODE_PACKED,
                                   NAV_DDC_SPECTRUM_INVERT_DISABLE,
@@ -618,16 +615,10 @@ HCR_Pentek::_setupTx() {
     _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_TrigArm");
 
     // Set up the DUC
-    uint32_t ducInterpolation = _config.duc_interpolation();
-    if (ducInterpolation != 1 && ducInterpolation != 2 && ducInterpolation != 4)
-    {
-        _AbortConstruction("Invalid DUC interpolation. Valid values 1, 2, 4");
-    }
-
-    if (ducInterpolation > 1) {
+    if (ducInterpolation() > 1) {
         status = NAV_DucSetup(_boardHandle,
                               dacChip,                  // channel
-                              ducInterpolation,         // interpolation
+                              ducInterpolation(),       // interpolation
                               _config.tx_frequency(),   // center frequency
                               NAV_DUC_PACKMODE_PACKED,  // packing mode
                               NAV_DUC_SPECTRUM_INVERT_DISABLE,  // invert spectrum?
@@ -641,6 +632,14 @@ HCR_Pentek::_setupTx() {
                                  NAV_DUC_SYNC_STATE_ENABLE);
     _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_SetDucSyncState");
 
+    // Send an ADC sync. Due to some firmware hacks this will sync the DAC to the ADC clock.
+    usleep(1e4);
+    status = NAV_GlobalSyncPulse(_boardHandle, NAV_CHANNEL_TYPE_ADC);
+    _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_GlobalSyncPulse");
+    usleep(1e4);
+    status = NAV_GlobalSyncPulse(_boardHandle, NAV_CHANNEL_TYPE_ADC);
+    _AbortCtorOnNavStatusError(status, dacPrefix + "NAV_GlobalSyncPulse");
+    usleep(1e4);
 }
 
 std::string
@@ -687,16 +686,22 @@ HCR_Pentek::_logClockConfigDiffs() const {
                 boardClockFrequency() * 1.0e-6 << " MHz";
     }
 
-    if (currClockConfig.extRefClockFreq != REF_FREQUENCY) {
+    if (currClockConfig.extRefClockFreq != _config.refclk_frequency()) {
         ILOG << "Changing reference frequency from " <<
                 currClockConfig.extRefClockFreq * 1.0e-6 << " MHz to " <<
-                REF_FREQUENCY * 1.0e-6 << " MHz";
+                _config.refclk_frequency() * 1.0e-6 << " MHz";
     }
 
     if (currClockConfig.options != NAV_OPTIONS_NONE) {
         ILOG << "Changing clock options from " <<
                 currClockConfig.options << " to " << NAV_OPTIONS_NONE;
     }
+
+    ILOG << "Clock config: Source: " << (_config.use_internal_clock() ? "INT" : "EXT")
+         << ", Board: " << (boardClockFrequency()*1e-6) << " MHz"
+         << ", Ref: " << (_config.refclk_frequency()*1e-6) << " MHz";
+    ILOG << "     ADC: " << (adcFrequency()*1e-6) << " MHz (x" << ddcDecimation() << ")"
+         << ", DAC: " << (dacFrequency()*1e-6) << " MHz (x" << ducInterpolation() << ")";
 }
 
 void
@@ -1092,8 +1097,8 @@ HCR_Pentek::_setupController()
     //Define dwell(s) and add them to the pulse definitions
     Controller::PulseDefinition dwell =
     {
-        .prt = {12512,0},
-        .numPulses = 10,
+        .prt = {1564*ddcDecimation(),0},
+        .numPulses = 100,
         .blockPostTime = 0,
         .controlFlags = 0xBEAF,
         .filterSelectCh0 = 0,
@@ -1101,14 +1106,14 @@ HCR_Pentek::_setupController()
         .filterSelectCh2 = 0,
         .timers = {}
     };
-    dwell.timers[Controller::Timers::MASTER_SYNC] = {8, 100};
-    dwell.timers[Controller::Timers::RX_0] = {32, 1000000}; // rx offset <32 triggers a FPGA bug
-    dwell.timers[Controller::Timers::RX_1] = {32, 1000000};
-    dwell.timers[Controller::Timers::RX_2] = {32, 1000000};
-    dwell.timers[Controller::Timers::TX_PULSE] = {64, 1000};
-    dwell.timers[Controller::Timers::MOD_PULSE] = {96, 100};
-    dwell.timers[Controller::Timers::EMS_TRIG] = {200, 100};
-    dwell.timers[Controller::Timers::TIMER_7] = {8, 1};
+    dwell.timers[Controller::Timers::MASTER_SYNC] = {1*ddcDecimation(), 8*ddcDecimation()};
+    dwell.timers[Controller::Timers::RX_0] = {4*ddcDecimation(), 1000000}; // rx offset <32 triggers a FPGA bug
+    dwell.timers[Controller::Timers::RX_1] = {4*ddcDecimation(), 1000000};
+    dwell.timers[Controller::Timers::RX_2] = {4*ddcDecimation(), 1000000};
+    dwell.timers[Controller::Timers::TX_PULSE] = {8*ddcDecimation(), 1000};
+    dwell.timers[Controller::Timers::MOD_PULSE] = {8*ddcDecimation(), 10*ddcDecimation()};
+    dwell.timers[Controller::Timers::EMS_TRIG] = {10*ddcDecimation(), 10*ddcDecimation()};
+    dwell.timers[Controller::Timers::TIMER_7] = {0, 0};
     _pulseDefinitions.push_back(dwell);
 
     // Write the pulse definitions
