@@ -55,7 +55,8 @@ HCR_Config::HCR_Config()
     _cfg["config_file"] = "default";
 
     _cfg["use_internal_clock"] = "true";
-    _cfg["duc_interpolation"] = "2";
+    _cfg["clock_mode_125"] = "false";
+    _cfg["refclk_frequency"] = "10.0e6";
     _cfg["rx_frequency"] = "156.25e6";
     _cfg["tx_frequency"] = "156.25e6";
     _cfg["use_debug_pps"] = "false";

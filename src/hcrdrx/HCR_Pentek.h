@@ -64,18 +64,6 @@ public:
                 IwrfPublisher * shortPublisher);
     virtual ~HCR_Pentek();
 
-    /// @brief ADC clock frequency for HCR
-    static constexpr double ADC_FREQUENCY = 125.0e6;
-
-    /// @brief DAC clock frequency for HCR
-    static constexpr double DAC_FREQUENCY = 500.0e6;
-
-    /// @brief Reference clock frequency provided to the Pentek board
-    static constexpr double REF_FREQUENCY = 10.0e6;
-    
-    /// @brief Receive DDC decimation setting
-    static constexpr int DDC_DECIMATION = 8;
-
     /// @brief Return a string with information about the board and
     /// configuration
     /// @return a string with information about the board and configuration
@@ -84,13 +72,25 @@ public:
     /// @brief Return the sample frequency used for the ADCs
     /// @return the sample frequency used for the ADCs
     double adcFrequency() const {
-        return(ADC_FREQUENCY);
+        return _config.clock_mode_125() ? 125e6 : 187.5e6;
     }
 
     /// @brief Return the frequency of samples emitted by the DACs
     /// @return the frequency of samples emitted by the DACs
     double dacFrequency() const {
-        return(DAC_FREQUENCY);
+        return _config.clock_mode_125() ? 500e6 : 750e6;
+    }
+
+    /// @brief Return the amount of DDC decimation
+    /// @return the amount of DDC decimation
+    int ddcDecimation() const {
+        return _config.clock_mode_125() ? 8 : 12;
+    }
+
+    /// @brief Return the amount of DUC interpolation
+    /// @return the amount of DUC interpolation
+    int ducInterpolation() const {
+        return _config.clock_mode_125() ? 2 : 4;
     }
 
     /// @brief Return the Pentek board clock frequency
@@ -106,10 +106,11 @@ public:
     }
 
     /// @brief Return the digitizer sample width for the selected ADC channel, s
+    /// Not counting the post-decimation
     /// @param adcChan the ADC channel of interest
     /// @return the digitizer sample width for the selected ADC channel, s
     double digitizer_sample_width(int adcChan) const {
-        return(DDC_DECIMATION / ADC_FREQUENCY);
+        return ddcDecimation() / adcFrequency();
     }
 
 signals:

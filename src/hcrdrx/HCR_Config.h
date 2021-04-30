@@ -146,9 +146,13 @@ public:
     /// @return the TQS pulse width, s
     double tx_pulsewidth() const { return(_asDouble("tx_pulsewidth")); }
 
-    /// @brief Return the DUC interpolation factor
-    /// @return the DUC interpolation factor
-    uint32_t duc_interpolation() const { return(_asUInt("duc_interpolation")); }
+    /// @brief Return whether to use 125 MHz clock or 187.5 MHz clock
+    /// @return true if 125 MHz
+    bool clock_mode_125() const { return(_asBool("clock_mode_125")); }
+
+    /// @brief Return the expected frequency of the reference clock
+    /// @return frequency in Hz
+    double refclk_frequency() const { return(_asDouble("refclk_frequency")); }
 
     /// @brief Return the range to data gate 0, m
     /// @return the range to data gate 0, m
