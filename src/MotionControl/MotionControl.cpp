@@ -359,7 +359,8 @@ MotionControl::_adjustPointingForAttitude(double pitch, double roll,
     double rotDriveAngle = rotAngle;
     double tiltDriveAngle =
       -tiltAngle / (2.0 * cos(DegToRad(rotAngle)));
-    tiltDriveAngle *= 1.01; // Correct for slight under-control
+    // tiltDriveAngle *= 1.01; // Correct for slight under-control
+    tiltDriveAngle *= 1.000; // Correct for slight under-control
     _rotDrive.moveTo(rotDriveAngle);
     _tiltDrive.moveTo(tiltDriveAngle);
     // _rotDrive.moveTo(rotDriveAngle - 0.020);
