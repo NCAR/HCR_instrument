@@ -44,6 +44,8 @@ ARCHITECTURE behavior OF HMC_tb IS
     -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT HMC_src
+	 GENERIC(
+		TESTBENCH_MODE : boolean := false );
     PORT(
          TIMER_6 : IN  std_logic;
          TIMER_7 : IN  std_logic;
@@ -141,10 +143,15 @@ ARCHITECTURE behavior OF HMC_tb IS
 
    -- Clock period definitions
    constant EXT_CLK_period : time := 64 ns;
+
+	signal testbench_state : integer := 0;
  
 BEGIN 
 	-- Instantiate the Unit Under Test (UUT)
-   uut: HMC_src PORT MAP (
+   uut: HMC_src
+	GENERIC MAP (
+		TESTBENCH_MODE => true )
+	PORT MAP (
           TIMER_6 => TIMER_6,
           TIMER_7 => TIMER_7,
           TX_GATE => TX_GATE,
@@ -249,51 +256,20 @@ BEGIN
 	EMS_BIT: process -- Generate EMS BIT response; Ops mode will use previous state for current cycle
 	variable CNT : integer range 0 to 1024;
 	begin
---		WG_SW_NOISE <= '0';  -- update switch status
---		WG_SW_TERM <= '1';		
+		WG_SW_NOISE <= '0';  -- update switch status
+		WG_SW_TERM <= '1';		
 		wait for 320 ns;  -- 320 ns is max delay measured
 -- Vertical transmit receive both
 		OPS_MODE_730 <= "100";   -- Next cycle ops mode is noise source
 		BIT_EMS <= "0101110";
 		wait for 1168 ns;
-		BIT_EMS <= "1010011"; 
+		BIT_EMS <= "1010011";
 		wait for 99788 ns;
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';
 		
----- Cycle through EMS BITE errors in next few PRT's
---		wait for 320 ns;  -- 320 ns is max delay measured
---		OPS_MODE_730 <= "100";   
---		BIT_EMS <= "0101111";  -- ems_error_1	
---		wait for 1168 ns;
---		BIT_EMS <= "1010001";  -- ems_error_2	
---		wait for 99788 ns;
---		STATUS_ACK <= '1';  -- clear status every PRT for testing
---		wait for 100 ns;
---		STATUS_ACK <= '0';
---		
---		wait for 320 ns;  -- 320 ns is max delay measured
---		OPS_MODE_730 <= "100";   
---		BIT_EMS <= "0101010";	-- ems_error_3
---		wait for 1168 ns;
---		BIT_EMS <= "1001011"; 	-- ems_error_45
---		wait for 99788 ns;
---		STATUS_ACK <= '1';  -- clear status every PRT for testing
---		wait for 100 ns;
---		STATUS_ACK <= '0';
---		
---		wait for 320 ns;  -- 320 ns is max delay measured
---		OPS_MODE_730 <= "100";   
---		BIT_EMS <= "1001110";	-- ems_error_67
---		wait for 1168 ns;
---		BIT_EMS <= "1010011"; 
---		wait for 99788 ns;
---		STATUS_ACK <= '1';  -- clear status every PRT for testing
---		wait for 100 ns;
---		STATUS_ACK <= '0';
---		
-
+		testbench_state <= 1;
 -- Loop for 1000 PRTs (~100 milliseconds to allow waveguide switch to switch
 		CNT := 0;
 		while (CNT <= 1000) loop
@@ -302,22 +278,49 @@ BEGIN
 			if (CNT = 988) then
 				WG_SW_NOISE <= '0';  -- update switch status
 				WG_SW_TERM <= '1';
---			elsif (CNT = 1000) then
-----				OPS_MODE_730 <= "101";  -- next ops mode is Corner reflector cal, vertical tx w/reduced power on receive
---				WG_SW_NOISE <= '0';  -- update switch status;
---				WG_SW_TERM <= '1';
+			elsif (CNT = 1000) then
+				OPS_MODE_730 <= "001";  -- Next ops mode is vertical tx, simultaneous receive
+				WG_SW_NOISE <= '1';  -- update switch status;
+				WG_SW_TERM <= '0';
+
 			else
 				OPS_MODE_730 <= "100"; -- keep in Noise source cal mode
 			end if;
 		BIT_EMS <= "0101101";
+        assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+		case CNT is
+			when 101 => BIT_EMS(1) <= '0';
+			when 102 => BIT_EMS(2) <= '1';
+			when 103 => BIT_EMS(3) <= '0';
+			when 104 => BIT_EMS(4) <= '0';
+			when 105 => BIT_EMS(5) <= '1';
+			when 106 => BIT_EMS(6) <= '0';
+			when 107 => BIT_EMS(7) <= '1';
+			when others =>
+		end case;
 		wait for 1168 ns;
 		BIT_EMS <= "0101101";
+        assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+		case CNT is
+			when 108 => BIT_EMS(1) <= '0';
+			when 109 => BIT_EMS(2) <= '1';
+			when 110 => BIT_EMS(3) <= '0';
+			when 111 => BIT_EMS(4) <= '0';
+			when 112 => BIT_EMS(5) <= '1';
+			when 113 => BIT_EMS(6) <= '0';
+			when 114 => BIT_EMS(7) <= '1';
+			when others =>
+		end case;
 		wait for 99788 ns;	
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';
 			CNT := CNT + 1;
 		end loop;
+		
+testbench_state <= 14;
+
+		
 -- Loop for 125 PRTs (~100 milliseconds to allow waveguide switch to switch
 	CNT := 0;
 	while (CNT < 125) loop
@@ -329,30 +332,37 @@ BEGIN
 -- Vertical Tx, simultaneous receive	
 		OPS_MODE_730 <= "101"; -- Next ops mode is corner reflector cal, vertical tx
 		BIT_EMS <= "0101110";
+        assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
+		assert EMS_OUT = "0101110" severity failure;
 		wait for 1168 ns;
 		BIT_EMS <= "1010011";
+        assert EMS_OUT = "1010011" report "Bad EMS_OUT at 1010011" severity failure;
 		wait for 99788 ns;
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';
-		
+testbench_state <= 3;		
 -- Corner reflector cal, vertical tx w/reduced power on receive
 		wait for 320 ns;  -- 320 ns is max delay measured		
 		OPS_MODE_730 <= "110"; -- Next ops mode is Test Mode, no tx
 		BIT_EMS <= "0101110";
+        assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 		wait for 1168 ns;
 		BIT_EMS <= "0000011";
+        assert EMS_OUT = "0000011" report "Bad EMS_OUT at 0000011" severity failure;
 		wait for 99788 ns;		
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';		
-
+testbench_state <= 4;
 -- Test Mode, no tx
 			wait for 320 ns;  -- 320 ns is max delay measured		
 			OPS_MODE_730 <= "000";  -- Next ops mode is horizontal tx, simultaneous receive
 			BIT_EMS <= "0101110";
+        assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 			wait for 1168 ns;
 			BIT_EMS <= "1010011";
+        assert EMS_OUT = "1010011" report "Bad EMS_OUT at 1010011" severity failure;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
@@ -361,8 +371,10 @@ BEGIN
 			wait for 320 ns;  -- 320 ns is max delay measured		
 			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV V tx, simultaneous receive
 			BIT_EMS <= "0101001";
+        assert EMS_OUT = "0101001" report "Bad EMS_OUT at 0101001" severity failure;
 			wait for 1168 ns;
 			BIT_EMS <= "1010010";
+        assert EMS_OUT = "1010010" report "Bad EMS_OUT at 1010010" severity failure;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
@@ -371,8 +383,10 @@ BEGIN
 			wait for 320 ns;  -- 320 ns is max delay measured		
 			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV H tx, simultaneous receive
 			BIT_EMS <= "0101110";
+        assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 			wait for 1168 ns;
 			BIT_EMS <= "1010011";
+        assert EMS_OUT = "1010011" report "Bad EMS_OUT at 1010011" severity failure;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
@@ -381,8 +395,10 @@ BEGIN
 			wait for 320 ns;  -- 320 ns is max delay measured		
 			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV H tx, simultaneous receive
 			BIT_EMS <= "0101001";
+        assert EMS_OUT = "0101001" report "Bad EMS_OUT at 0101001" severity failure;
 			wait for 1168 ns;
 			BIT_EMS <= "1010010";
+        assert EMS_OUT = "1010010" report "Bad EMS_OUT at 1010010" severity failure;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
@@ -391,8 +407,10 @@ BEGIN
 			wait for 320 ns;  -- 320 ns is max delay measured		
 			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV V tx, simultaneous receive
 			BIT_EMS <= "0101001";
+        assert EMS_OUT = "0101001" report "Bad EMS_OUT at 0101001" severity failure;
 			wait for 1168 ns;
 			BIT_EMS <= "1010010";
+        assert EMS_OUT = "1010010" report "Bad EMS_OUT at 1010010" severity failure;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
@@ -401,14 +419,17 @@ BEGIN
 			wait for 320 ns;  -- 320 ns is max delay measured		
 			OPS_MODE_730 <= "001";  -- Next ops mode is vertical tx, simultaneous receive
 			BIT_EMS <= "0101110";
+        assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 			wait for 1168 ns;
 			BIT_EMS <= "1010011";
+        assert EMS_OUT = "1010011" report "Bad EMS_OUT at 1010011" severity failure;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
 			STATUS_ACK <= '0';
 		CNT := CNT + 1;
-	end loop;			
+	end loop;
+assert false report "(NO FAILURE) End of stimulus" severity failure;
 	end process;  
 END;
 
