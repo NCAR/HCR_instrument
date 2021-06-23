@@ -28,7 +28,7 @@ entity HMC_src is
     );
     port (
 
-        --			Unused FPGA inputs
+        --            Unused FPGA inputs
         --RDS_GND           : in  std_logic;
         --PW_GND            : in  std_logic;
 
@@ -37,10 +37,10 @@ entity HMC_src is
         TIMER_7           : in  std_logic;
         TX_GATE           : in  std_logic;
 
-        --			cPCI Signals
+        --            cPCI Signals
         RESET             : in  std_logic; -- cPCI reset line
 
-        --			Pentek Timing Signals (Connector PN 4)
+        --            Pentek Timing Signals (Connector PN 4)
         EXT_CLK           : in  std_logic; -- 15.625 MHz clock; 125 MHz/8
         T0                : in  std_logic;
         MOD_PULSE         : in  std_logic;
@@ -48,31 +48,31 @@ entity HMC_src is
         EMS_TRIG          : in  std_logic;
         RX_GATE           : in  std_logic;
 
-        --			GPS input
+        --            GPS input
         ONE_PPS           : in  std_logic;
 
-        --			Power Monitoring
+        --            Power Monitoring
         EMS_PWR_ERROR     : in  std_logic;
 
-        --			PMC730 Commands
+        --            PMC730 Commands
         HV_ON_730         : in  std_logic; -- High voltage cmd from PMC730
         FIL_ON_730        : in  std_logic; -- Filament on cmd from PMC730
         OPS_MODE_730      : in  std_logic_vector(2 downto 0); -- Operationsl mode cmd from PMC730
         STATUS_ACK        : in  std_logic; -- Status receipt acknowledgement
 
-        --			EMS latching circulator Built in Test (BIT) complementary inputs
+        --            EMS latching circulator Built in Test (BIT) complementary inputs
         BIT_EMS           : in  std_logic_vector(7 downto 1); -- EMS latching circulator BIT
 
-        -- 		EMS latching circulator complementary control signals
+        --         EMS latching circulator complementary control signals
         EMS_OUT           : out std_logic_vector(7 downto 1); -- EMS latching circulator outputs
 
-        --			Modulator timing and control signals
+        --            Modulator timing and control signals
         MOD_PULSE_HMC     : out std_logic;
         SYNC_PULSE_HMC    : out std_logic;
         HV_ON_HMC         : out std_logic;
         FIL_ON_HMC        : out std_logic;
 
-        --			Noise source calibration control
+        --            Noise source calibration control
 
         WG_SW_TERM        : in  std_logic; -- BIT indication when waveguide switch is into load
         WG_SW_NOISE       : in  std_logic; -- BIT indication when waveguide switch is into noise source
@@ -81,7 +81,7 @@ entity HMC_src is
         NOISE_SOURCE_EN   : out std_logic; -- Turn on noise source
         WG_SW_ERROR       : out std_logic; -- Waveguide switch BIT doesn't match command
 
-        --  		Status information
+        --          Status information
         MOD_PULSE_DISABLE : out std_logic; -- Fault sum status
         EMS_ERROR_1       : out std_logic; -- EMS switch 1 BIT error
         EMS_ERROR_2       : out std_logic; -- EMS switch 2 BIT error
@@ -90,16 +90,16 @@ entity HMC_src is
         EMS_ERROR_67      : out std_logic; -- EMS switch 6,7 BIT error
         EMS_ERROR_EVENT   : out std_logic; -- EMS switch BIT error count
 
-        -- 		General spares
+        --         General spares
         TEST_BIT_0        : in  std_logic;
         TEST_BIT_1        : in  std_logic;
         SPARE_STATUS0     : out std_logic;
         SPARE_STATUS1     : out std_logic;
 
-        --			U6 Output Enable control, allows Pentek to be discovered on PCI bus
+        --            U6 Output Enable control, allows Pentek to be discovered on PCI bus
         U6_OE             : out std_logic;
 
-        --			Route spare connector (P3)
+        --            Route spare connector (P3)
         SPARE1            : out std_logic;
         SPARE2            : out std_logic;
         SPARE3            : out std_logic
@@ -108,7 +108,7 @@ entity HMC_src is
         --SPARE6            : out STD_LOGIC;
         --SPARE7            : out STD_LOGIC;
 
-        --		Unused signals available on FPGA only
+        --        Unused signals available on FPGA only
         --SPARE10           : inout STD_LOGIC;
         --SPARE11           : inout STD_LOGIC;
         --SPARE12           : inout STD_LOGIC;
@@ -128,35 +128,35 @@ end HMC_src;
 architecture Behavioral of HMC_src is
     -- Uncomment for "Safe" mode
     --BEGIN
-    ----	EMS latching circulator complementary control signals
-    --	EMS_OUT <= "ZZZZZZZ";
+    ----    EMS latching circulator complementary control signals
+    --    EMS_OUT <= "ZZZZZZZ";
     --
-    ----			Modulator timing and control signals
-    --	MOD_PULSE_HMC <= 'Z';
-    --	SYNC_PULSE_HMC <= 'Z';
-    --	HV_ON_HMC <= 'Z';
-    --	FIL_ON_HMC <= 'Z';
+    ----            Modulator timing and control signals
+    --    MOD_PULSE_HMC <= 'Z';
+    --    SYNC_PULSE_HMC <= 'Z';
+    --    HV_ON_HMC <= 'Z';
+    --    FIL_ON_HMC <= 'Z';
     --
-    ----			Noise source calibration control
-    --	WG_SW_CTRL_TERM <= 'Z';
-    --	WG_SW_CTRL_NOISE <= 'Z';
-    --	NOISE_SOURCE_EN <= 'Z';
-    --	WG_SW_ERROR <= 'Z';
+    ----            Noise source calibration control
+    --    WG_SW_CTRL_TERM <= 'Z';
+    --    WG_SW_CTRL_NOISE <= 'Z';
+    --    NOISE_SOURCE_EN <= 'Z';
+    --    WG_SW_ERROR <= 'Z';
     --
-    ----  		Status information
-    --	MOD_PULSE_DISABLE <= 'Z';
-    --	EMS_ERROR_1 <= 'Z';
-    --	EMS_ERROR_2 <= 'Z';
-    --	EMS_ERROR_3 <= 'Z';
-    --	EMS_ERROR_45 <= 'Z';
-    --	EMS_ERROR_67 <= 'Z';
-    --	EMS_ERROR_EVENT <= 'Z';
+    ----          Status information
+    --    MOD_PULSE_DISABLE <= 'Z';
+    --    EMS_ERROR_1 <= 'Z';
+    --    EMS_ERROR_2 <= 'Z';
+    --    EMS_ERROR_3 <= 'Z';
+    --    EMS_ERROR_45 <= 'Z';
+    --    EMS_ERROR_67 <= 'Z';
+    --    EMS_ERROR_EVENT <= 'Z';
     --
-    ---- 		General spares
-    --	SPARE_STATUS0 <= 'Z';
-    --	SPARE_STATUS1 <= 'Z';
+    ----         General spares
+    --    SPARE_STATUS0 <= 'Z';
+    --    SPARE_STATUS1 <= 'Z';
     --
-    ----			Route spare connector (P3)
+    ----            Route spare connector (P3)
     --   SPARE1 <= 'Z';
     --   SPARE2 <= 'Z';
     --   SPARE3 <= 'Z';
@@ -172,7 +172,7 @@ architecture Behavioral of HMC_src is
     constant EMS_CREF_RX        : std_logic_vector(7 downto 1) := "0000010";
     constant EMS_CREF_NOISE_RX  : std_logic_vector(7 downto 1) := "0000011";
     constant EMS_NOISE_CAL      : std_logic_vector(7 downto 1) := "0101101";
-    
+
     constant OPS_0_H_TX         : std_logic_vector(2 downto 0) := o"0"; -- horizontal transmit, receive both
     constant OPS_1_V_TX         : std_logic_vector(2 downto 0) := o"1"; -- vertical transmit, receive both
     constant OPS_2_HHVV_TX      : std_logic_vector(2 downto 0) := o"2"; -- HHVV transmit, receive both
@@ -203,7 +203,7 @@ architecture Behavioral of HMC_src is
     signal l_ems_trig           : std_logic; -- Latched EMS_TRIG signal
     signal ems_tx_count_enable  : std_logic;
     signal ems_rx_count_enable  : std_logic;
-    signal end_cycle            : std_logic; --	End of cycle flag
+    signal end_cycle            : std_logic; --    End of cycle flag
     signal ems_tx_error_vector  : std_logic_vector(7 downto 1);
     signal ems_rx_error_vector  : std_logic_vector(7 downto 1);
     signal ems_tx_ok            : std_logic;
@@ -262,41 +262,45 @@ begin
     ems_pwr_ok <= not EMS_PWR_ERROR;
 
     -- Check wavequide switch position    NEED to account for switch delay (~100 msec) before reporting status
-    CHECK_WG : process (WG_SW_TERM, WG_SW_NOISE, wg_dly, ops_mode, RESET, cmd_wg_sw_pos)
+    CHECK_WG : process (EXT_CLK)
     begin
-        if (RESET = '0') then
-            wg_sw_pos   <= '0'; -- assume waveguide switch is pointed into termination (normal ops)
-            wg_stat     <= '0'; -- bad status
-            WG_SW_ERROR <= '0'; -- assume switch is not in error until we confirm where it is pointed
-				wg_change_state <= '0';
-        elsif (wg_dly = '1') then
-            if (ops_mode = OPS_4_NOISE or ops_mode = OPS_7_ISOL_NOISE) then -- Noise source cal or isolation test mode
-                if (WG_SW_TERM = '1' and WG_SW_NOISE = '0') then
-                    WG_SW_ERROR <= '0';
-                    wg_stat     <= '1'; -- good status
-                    wg_sw_pos   <= '1';
+        if rising_edge(EXT_CLK) then
+            if (wg_dly = '1') then
+                if (ops_mode = OPS_4_NOISE or ops_mode = OPS_7_ISOL_NOISE) then -- Noise source cal or isolation test mode
+                    if (WG_SW_TERM = '1' and WG_SW_NOISE = '0') then
+                        WG_SW_ERROR <= '0';
+                        wg_stat     <= '1'; -- good status
+                        wg_sw_pos   <= '1';
+                    else
+                        WG_SW_ERROR <= '1';
+                        wg_stat     <= '0'; -- bad status
+                        wg_sw_pos   <= '0';
+                    end if;
                 else
-                    WG_SW_ERROR <= '1';
-                    wg_stat     <= '0'; -- bad status
-                    wg_sw_pos   <= '0';
+                    if (WG_SW_TERM = '0' and WG_SW_NOISE = '1') then
+                        WG_SW_ERROR <= '0';
+                        wg_sw_pos   <= '0';
+                        wg_stat     <= '1'; -- good status
+                    else
+                        WG_SW_ERROR <= '1';
+                        wg_stat     <= '0'; -- bad status
+                        wg_sw_pos   <= '1';
+                    end if;
                 end if;
-            else
-                if (WG_SW_TERM = '0' and WG_SW_NOISE = '1') then
-                    WG_SW_ERROR <= '0';
-                    wg_sw_pos   <= '0';
-                    wg_stat     <= '1'; -- good status
-                else
-                    WG_SW_ERROR <= '1';
-                    wg_stat     <= '0'; -- bad status
-                    wg_sw_pos   <= '1';
-                end if;
+                wg_change_state <= wg_sw_pos xor cmd_wg_sw_pos;
+            else -- waveguide switch is in transition
+                wg_sw_pos           <= '0';
+                wg_stat             <= '0'; -- bad status; don't want to transmit in transition
+                WG_SW_ERROR         <= '0'; -- assume there is no error in transition
+                wg_change_state     <= '0';
             end if;
-            wg_change_state <= wg_sw_pos xor cmd_wg_sw_pos;
-        else -- waveguide switch is in transition
-            wg_sw_pos   <= '0';
-            wg_stat     <= '0'; -- bad status; don't want to transmit in transition
-            WG_SW_ERROR <= '0'; -- assume there is no error in transition
-				wg_change_state <= '0';
+
+            if (RESET = '0') then
+                wg_sw_pos           <= '0'; -- assume waveguide switch is pointed into termination (normal ops)
+                wg_stat             <= '0'; -- bad status
+                WG_SW_ERROR         <= '0'; -- assume switch is not in error until we confirm where it is pointed
+                wg_change_state     <= '0';
+            end if;
         end if;
     end process;
 
@@ -307,47 +311,49 @@ begin
     --wg_dly <= '1';
 
     -- Check EMS BIT against the value it's supposed to be for the mode we're in
-    CHECK_BITE : process (BIT_EMS, ops_mode, wg_dly, pol_state)
+    CHECK_BITE : process (EXT_CLK)
     begin
-        if wg_dly = '1' then -- Waveguide switch is not in transition
-            case ops_mode is
-                when OPS_0_H_TX => -- horizontal transmit, receive both
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_HORZTX_RX;     --"1010010";
-                when OPS_1_V_TX => -- vertical transmit, receive both
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
-                when OPS_2_HHVV_TX => -- HHVV transmit, receive both
-                    if pol_state(1) = '0' then -- H transmit
-                        ems_tx_error_vector <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
-                        ems_rx_error_vector <= BIT_EMS xor EMS_HORZTX_RX;     --"1010010";
-                    else -- V transmit
-                        ems_tx_error_vector <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
-                        ems_rx_error_vector <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
-                    end if;
-                when OPS_3_CREF_H => -- Corner reflector horizontal transmit, receive both
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_RX;       --"0000010";
-                when OPS_4_NOISE => -- Noise source cal, no tx
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
-                when OPS_5_CREF_V => -- Corner reflector cal, vertical tx w/increased NF
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_NOISE_RX; --"0000011";
-                when OPS_6_TEST => -- Test Mode, no tx
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
-                when OPS_7_ISOL_NOISE => -- vertical transmit, receive both, but enable noise source for testing
-                    ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
-                    ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
-                when others => -- default bad status for all
-                ems_tx_error_vector         <= (others=>'1');
-                ems_rx_error_vector         <= (others=>'1');   
-            end case;
-        else
-            -- report good status for all ems switches during waveguide switch transition
-            ems_tx_error_vector             <= (others=>'0');
-            ems_rx_error_vector             <= (others=>'0');
+        if rising_edge(EXT_CLK) then
+            if wg_dly = '1' then -- Waveguide switch is not in transition
+                case ops_mode is
+                    when OPS_0_H_TX => -- horizontal transmit, receive both
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_HORZTX_RX;     --"1010010";
+                    when OPS_1_V_TX => -- vertical transmit, receive both
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
+                    when OPS_2_HHVV_TX => -- HHVV transmit, receive both
+                        if pol_state(1) = '0' then -- H transmit
+                            ems_tx_error_vector <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
+                            ems_rx_error_vector <= BIT_EMS xor EMS_HORZTX_RX;     --"1010010";
+                        else -- V transmit
+                            ems_tx_error_vector <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
+                            ems_rx_error_vector <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
+                        end if;
+                    when OPS_3_CREF_H => -- Corner reflector horizontal transmit, receive both
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_RX;       --"0000010";
+                    when OPS_4_NOISE => -- Noise source cal, no tx
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
+                    when OPS_5_CREF_V => -- Corner reflector cal, vertical tx w/increased NF
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_NOISE_RX; --"0000011";
+                    when OPS_6_TEST => -- Test Mode, no tx
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
+                    when OPS_7_ISOL_NOISE => -- vertical transmit, receive both, but enable noise source for testing
+                        ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
+                    when others => -- default bad status for all
+                    ems_tx_error_vector         <= (others=>'1');
+                    ems_rx_error_vector         <= (others=>'1');
+                end case;
+            else
+                -- report good status for all ems switches during waveguide switch transition
+                ems_tx_error_vector             <= (others=>'0');
+                ems_rx_error_vector             <= (others=>'0');
+            end if;
         end if;
     end process;
 
@@ -442,19 +448,12 @@ begin
         end if;
     end process;
 
-    CHECK_MOD_PULSE : process (ops_mode, mod_pulse_error)
-    begin
-        case ops_mode is
-            when OPS_6_TEST => -- Test mode, no mod_pulse generated
-                MOD_PULSE_DISABLE <= '1';
-            when OPS_4_NOISE => -- Noise source cal, no mod_pulse generated
-                MOD_PULSE_DISABLE <= '1';
-            when OPS_7_ISOL_NOISE => -- Noise source isolation test, no mod_pulse generated
-                MOD_PULSE_DISABLE <= '1';
-            when others =>
-                MOD_PULSE_DISABLE <= mod_pulse_error;
-        end case;
-    end process;
+    MOD_PULSE_DISABLE <=
+        '1' when ops_mode = OPS_6_TEST
+              or ops_mode = OPS_4_NOISE
+              or ops_mode = OPS_7_ISOL_NOISE
+              or mod_pulse_error = '1'
+        else '0';
 
     EMS_PRT : process (EXT_CLK, RESET)
     begin
@@ -659,7 +658,7 @@ begin
                     elsif (ems_tx_ok = '1' and rx_dly = '0' and hv_dly = '1' and ems_pwr_ok = '1') then
                         state <= s2;
                         -----------------------------------------------------------------------------------------------------
-                        --				WHY AREN'T ALL STATES COVERED HERE???
+                        --                WHY AREN'T ALL STATES COVERED HERE???
 
                     elsif (ops_mode = OPS_0_H_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
                         state <= s0;
@@ -691,7 +690,7 @@ begin
                         state <= s0;
                     end if;
                 when s3 =>
-                    --				if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0') then
+                    --                if(RX_GATE = '0' AND ems_tx_ok = '1' AND rx_dly = '0' AND tx_dly = '0') then
                     if (RX_GATE = '0' and rx_dly = '0' and tx_dly = '0') then
                         state <= s0;
                     end if;
@@ -703,24 +702,24 @@ begin
 
     -- State Machine Ouputs
 
-    STATE_OUT : process (state, MOD_PULSE, EMS_TRIG, ops_mode, pol_state)
+    STATE_OUT : process (EXT_CLK)--(state, MOD_PULSE, EMS_TRIG, ops_mode, pol_state)
     begin
-		 ops_mode_en      <= '0';
-		 cmd_wg_sw_pos    <= '0';
-		 MOD_PULSE_HMC    <= '0';
-		 EMS_OUT          <= "0000000";
-		 WG_SW_CTRL_TERM  <= '0';
-		 WG_SW_CTRL_NOISE <= '1';
-		 NOISE_SOURCE_EN  <= '0';
-		 cmd_wg_sw_pos    <= '0';
-		 hv_flag           <= '0';
+        if rising_edge(EXT_CLK) then
+        ops_mode_en      <= '0';
+        cmd_wg_sw_pos    <= '0';
+        MOD_PULSE_HMC    <= '0';
+        EMS_OUT          <= "0000000";
+        WG_SW_CTRL_TERM  <= '0';
+        WG_SW_CTRL_NOISE <= '1';
+        NOISE_SOURCE_EN  <= '0';
+        cmd_wg_sw_pos    <= '0';
+        hv_flag          <= '0';
         case state is
             when S0 => -- Reset State, ensure EMS switches transition each PRT
-                --			ops_mode <= OPS_MODE_730;
+                --            ops_mode <= OPS_MODE_730;
                 ops_mode_en   <= '1';
                 MOD_PULSE_HMC <= '0';
                 if (ops_mode = OPS_4_NOISE) then -- Noise source cal, no tx
-                    --				EMS_OUT <= "0101101";
                     EMS_OUT          <= "1010010";
                     WG_SW_CTRL_TERM  <= '1';
                     WG_SW_CTRL_NOISE <= '0';
@@ -949,8 +948,8 @@ begin
                     EMS_OUT(1)       <= EMS_TRIG;
                     EMS_OUT(2)       <= not EMS_TRIG;
                     EMS_OUT(3)       <= '0';
-                    --EMS_OUT(4)       <= EMS_TRIG;
-                    --EMS_OUT(5)       <= not EMS_TRIG;
+                    EMS_OUT(4)       <= EMS_TRIG;
+                    EMS_OUT(5)       <= not EMS_TRIG;
                     EMS_OUT(6)       <= EMS_TRIG;
                     EMS_OUT(7)       <= not EMS_TRIG;
                     WG_SW_CTRL_TERM  <= '0';
@@ -1252,6 +1251,7 @@ begin
                 NOISE_SOURCE_EN  <= '0';
                 cmd_wg_sw_pos    <= '0';
         end case;
+        end if;
     end process;
 
     -------------------------------------------------------------------------------------------------------
