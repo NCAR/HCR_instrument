@@ -47,49 +47,49 @@ ARCHITECTURE behavior OF HMC_tb IS
 	 GENERIC(
 		TESTBENCH_MODE : boolean := false );
     PORT(
-         TIMER_6 : IN  std_logic;
-         TIMER_7 : IN  std_logic;
-         TX_GATE : IN  std_logic;
-         RESET : IN  std_logic;
-         EXT_CLK : IN  std_logic;
-         T0 : IN  std_logic;
-         MOD_PULSE : IN  std_logic;
-         SYNC_PULSE : IN  std_logic;
-         EMS_TRIG : IN  std_logic;
-         RX_GATE : IN  std_logic;
-         ONE_PPS : IN  std_logic;
-         EMS_PWR_ERROR : IN  std_logic;
-         HV_ON_730 : IN  std_logic;
-         FIL_ON_730 : IN  std_logic;
-         OPS_MODE_730 : IN  std_logic_vector(2 downto 0);
-         STATUS_ACK : IN  std_logic;
-         BIT_EMS : IN  std_logic_vector(7 downto 1);
-         EMS_OUT : OUT  std_logic_vector(7 downto 1);
-         MOD_PULSE_HMC : OUT  std_logic;
-         SYNC_PULSE_HMC : OUT  std_logic;
-         HV_ON_HMC : OUT  std_logic;
-         FIL_ON_HMC : OUT  std_logic;
-         WG_SW_TERM : IN  std_logic;
-         WG_SW_NOISE : IN  std_logic;
-         WG_SW_CTRL_TERM : OUT  std_logic;
-         WG_SW_CTRL_NOISE : OUT  std_logic;
-         NOISE_SOURCE_EN : OUT  std_logic;
-         WG_SW_ERROR : OUT  std_logic;
-         MOD_PULSE_DISABLE : OUT  std_logic;
-         EMS_ERROR_1 : OUT  std_logic;
-         EMS_ERROR_2 : OUT  std_logic;
-         EMS_ERROR_3 : OUT  std_logic;
-         EMS_ERROR_45 : OUT  std_logic;
-         EMS_ERROR_67 : OUT  std_logic;
-         EMS_ERROR_EVENT : OUT  std_logic;
-         TEST_BIT_0 : IN  std_logic;
-         TEST_BIT_1 : IN  std_logic;
-         SPARE_STATUS0 : OUT  std_logic;
-         SPARE_STATUS1 : OUT  std_logic;
-			U6_OE: OUT STD_LOGIC;				
-         SPARE1 : OUT  std_logic;
-         SPARE2 : OUT  std_logic;
-         SPARE3 : OUT  std_logic
+        CPCI_RESETn       : in  std_logic; -- cPCI RESETn line
+        T0                : in  std_logic;
+        MOD_PULSE         : in  std_logic;
+        EMS_TRIG          : in  std_logic;
+        RX_GATE           : in  std_logic;
+        --TIMER_6           : in  std_logic;
+        --TIMER_7           : in  std_logic;
+        PENTEK_RESETn     : in  std_logic; -- RESETn from the Pentek. Was TX_GATE
+        EXT_CLK           : in  std_logic; -- 15.625 MHz clock;    125 MHz/8
+        SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 MHz clock; 125 MHz/8/72
+        HV_FLAG_HMC       : out std_logic;
+        --ONE_PPS           : in  std_logic;
+        EMS_PWR_ERROR     : in  std_logic;
+        HV_ON_730         : in  std_logic; -- High voltage cmd from PMC730
+        FIL_ON_730        : in  std_logic; -- Filament on cmd from PMC730
+        OPS_MODE_730      : in  std_logic_vector(2 downto 0); -- Operationsl mode cmd from PMC730
+        STATUS_ACK        : in  std_logic; -- Status receipt acknowledgement
+        BIT_EMS           : in  std_logic_vector(7 downto 1); -- EMS latching circulator BIT
+        EMS_OUT           : out std_logic_vector(7 downto 1); -- EMS latching circulator outputs
+        MOD_PULSE_HMC     : out std_logic;
+        SYNC_PULSE_HMC    : out std_logic;
+        HV_ON_HMC         : out std_logic;
+        FIL_ON_HMC        : out std_logic;
+        WG_SW_TERM        : in  std_logic; -- BIT indication when waveguide switch is into load
+        WG_SW_NOISE       : in  std_logic; -- BIT indication when waveguide switch is into noise source
+        WG_SW_CTRL_TERM   : out std_logic; -- Terminate waveguide switch into load
+        WG_SW_CTRL_NOISE  : out std_logic; -- Terminate waveguide switch into noise source
+        NOISE_SOURCE_EN   : out std_logic; -- Turn on noise source
+        WG_SW_ERROR       : out std_logic; -- Waveguide switch BIT doesn't match command
+        MOD_PULSE_DISABLE : out std_logic; -- Fault sum status
+        EMS_ERROR_1       : out std_logic; -- EMS switch 1 BIT error
+        EMS_ERROR_2       : out std_logic; -- EMS switch 2 BIT error
+        EMS_ERROR_3       : out std_logic; -- EMS switch 3 BIT error
+        EMS_ERROR_45      : out std_logic; -- EMS switch 4,5 BIT error
+        EMS_ERROR_67      : out std_logic; -- EMS switch 6,7 BIT error
+        EMS_ERROR_EVENT   : out std_logic; -- EMS switch BIT error count
+        TEST_BIT_0        : in  std_logic;
+        TEST_BIT_1        : in  std_logic;
+        SPARE_STATUS0     : out std_logic;
+        SPARE_STATUS1     : out std_logic;
+        U6_OE             : out std_logic;
+        SPARE2            : out std_logic;
+        SPARE3            : out std_logic
         );
     END COMPONENT;
     
@@ -102,7 +102,7 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal EXT_CLK : std_logic := '0';
    signal T0 : std_logic := '0';
    signal MOD_PULSE : std_logic := '0';
-   signal SYNC_PULSE : std_logic := '0';
+   signal SYNC_PULSE_CLK : std_logic := '0';
    signal EMS_TRIG : std_logic := '0';
    signal RX_GATE : std_logic := '0';
    signal ONE_PPS : std_logic := '0';
@@ -137,7 +137,7 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal SPARE_STATUS0 : std_logic;
    signal SPARE_STATUS1 : std_logic;
    signal U6_OE : std_logic;	
-   signal SPARE1 : std_logic;
+   signal HV_FLAG_HMC : std_logic;
    signal SPARE2 : std_logic;
    signal SPARE3 : std_logic;
 
@@ -152,17 +152,14 @@ BEGIN
 	GENERIC MAP (
 		TESTBENCH_MODE => true )
 	PORT MAP (
-          TIMER_6 => TIMER_6,
-          TIMER_7 => TIMER_7,
-          TX_GATE => TX_GATE,
-          RESET => RESET,
+          CPCI_RESETn => '1',
+          PENTEK_RESETn => RESET,
           EXT_CLK => EXT_CLK,
           T0 => T0,
           MOD_PULSE => MOD_PULSE,
-          SYNC_PULSE => SYNC_PULSE,
+          SYNC_PULSE_CLK => SYNC_PULSE_CLK,
           EMS_TRIG => EMS_TRIG,
           RX_GATE => RX_GATE,
-          ONE_PPS => ONE_PPS,
           EMS_PWR_ERROR => EMS_PWR_ERROR,
           HV_ON_730 => HV_ON_730,
           FIL_ON_730 => FIL_ON_730,
@@ -192,7 +189,7 @@ BEGIN
           SPARE_STATUS0 => SPARE_STATUS0,
           SPARE_STATUS1 => SPARE_STATUS1,
 			 U6_OE => U6_OE,
-          SPARE1 => SPARE1,
+          HV_FLAG_HMC => HV_FLAG_HMC,
           SPARE2 => SPARE2,
           SPARE3 => SPARE3
         );
@@ -247,9 +244,9 @@ BEGIN
 	
 		SYNC_CLK: process   -- Generate 217 kHz sync clock
    begin	 
-		SYNC_PULSE <= '1';
+		SYNC_PULSE_CLK <= '1';
 		wait for 2304 ns;
-		SYNC_PULSE <= '0';
+		SYNC_PULSE_CLK <= '0';
 		wait for 2304 ns;
 	end process;
 

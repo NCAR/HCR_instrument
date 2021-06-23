@@ -32,24 +32,23 @@ entity HMC_src is
         --RDS_GND           : in  std_logic;
         --PW_GND            : in  std_logic;
 
-        --            Unused Pentek Timing Signals
-        TIMER_6           : in  std_logic;
-        TIMER_7           : in  std_logic;
-        TX_GATE           : in  std_logic;
-
         --            cPCI Signals
-        RESET             : in  std_logic; -- cPCI reset line
+        CPCI_RESETn       : in  std_logic; -- cPCI resetn line
 
         --            Pentek Timing Signals (Connector PN 4)
-        EXT_CLK           : in  std_logic; -- 15.625 MHz clock; 125 MHz/8
         T0                : in  std_logic;
         MOD_PULSE         : in  std_logic;
-        SYNC_PULSE        : in  std_logic;
         EMS_TRIG          : in  std_logic;
         RX_GATE           : in  std_logic;
+        --TIMER_6           : in  std_logic;
+        --TIMER_7           : in  std_logic;
+        PENTEK_RESETn     : in  std_logic; -- resetn from the Pentek. Was TX_GATE
+        EXT_CLK           : in  std_logic; -- 15.625 MHz clock;    125 MHz/8
+        SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 MHz clock; 125 MHz/8/72
+        HV_FLAG_HMC       : out std_logic;
 
         --            GPS input
-        ONE_PPS           : in  std_logic;
+        --ONE_PPS           : in  std_logic;
 
         --            Power Monitoring
         EMS_PWR_ERROR     : in  std_logic;
@@ -100,28 +99,8 @@ entity HMC_src is
         U6_OE             : out std_logic;
 
         --            Route spare connector (P3)
-        SPARE1            : out std_logic;
         SPARE2            : out std_logic;
         SPARE3            : out std_logic
-        --SPARE4            : out STD_LOGIC;
-        --SPARE5            : out STD_LOGIC;
-        --SPARE6            : out STD_LOGIC;
-        --SPARE7            : out STD_LOGIC;
-
-        --            Unused signals available on FPGA only
-        --SPARE10           : inout STD_LOGIC;
-        --SPARE11           : inout STD_LOGIC;
-        --SPARE12           : inout STD_LOGIC;
-        --SPARE13           : inout STD_LOGIC;
-        --SPARE14           : inout STD_LOGIC;
-        --SPARE15           : inout STD_LOGIC;
-        --SPARE16           : inout STD_LOGIC;
-        --SPARE17           : inout STD_LOGIC;
-        --SPARE18           : inout STD_LOGIC;
-        --SPARE19           : inout STD_LOGIC;
-        --SPARE21           : inout STD_LOGIC;
-        --SPARE22           : inout STD_LOGIC;
-        --SPARE23           : inout STD_LOGIC;
     );
 end HMC_src;
 
@@ -236,31 +215,38 @@ architecture Behavioral of HMC_src is
     signal pol_state            : std_logic_vector(1 downto 0); -- polarization state of Tx pulse
     signal wg_sw_pos            : std_logic; -- current waveguide switch position
     signal cmd_wg_sw_pos        : std_logic; -- commanded waveguide switch position
-    signal hv_flag             : std_logic; -- H/V Flag to be sent to Pentek for housekeeping; Tx-H=1, Tx-V=0
+    signal hv_flag              : std_logic; -- H/V Flag to be sent to Pentek for housekeeping; Tx-H=1, Tx-V=0
 
     -- State machine declarations
     type state_type is (s0, s1, s2, s3);
-    signal state      : state_type;
+    signal state                : state_type;
 
     -- for debugging state machine
-    signal state_code : std_logic_vector(1 downto 0);
+    signal state_code           : std_logic_vector(1 downto 0);
+
+    -- Reset, active low
+    signal resetn               : std_logic;
 
 begin
+
+    -- Reset from either source
+    resetn <= PENTEK_RESETn and CPCI_RESETn;
 
     state_code <= "00" when state = s0 else
                   "01" when state = s1 else
                   "10" when state = s2 else
                   "11";
+
     -- Tx Control
     HV_ON_HMC      <= HV_ON_730;
     FIL_ON_HMC     <= FIL_ON_730;
-    SYNC_PULSE_HMC <= SYNC_PULSE;
+    SYNC_PULSE_HMC <= SYNC_PULSE_CLK;
 
     -- Check key power supply voltages
     ems_pwr_ok <= not EMS_PWR_ERROR;
 
     -- Check wavequide switch position    NEED to account for switch delay (~100 msec) before reporting status
-    CHECK_WG : process (EXT_CLK, RESET)
+    CHECK_WG : process (EXT_CLK, resetn)
     begin
         if rising_edge(EXT_CLK) then
             if (wg_dly = '1') then
@@ -292,14 +278,14 @@ begin
                 WG_SW_ERROR         <= '0'; -- assume there is no error in transition
                 wg_change_state     <= '0';
             end if;
-            
+
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             wg_sw_pos               <= '0'; -- assume waveguide switch is pointed into termination (normal ops)
             wg_stat                 <= '0'; -- bad status
             WG_SW_ERROR             <= '0'; -- assume switch is not in error until we confirm where it is pointed
             wg_change_state         <= '0';
-        end if;        
+        end if;
     end process;
 
     -- Force good waveguide switch status for now to aide in debug
@@ -309,7 +295,7 @@ begin
     --wg_dly <= '1';
 
     -- Check EMS BIT against the value it's supposed to be for the mode we're in
-    CHECK_BITE : process (EXT_CLK, RESET)
+    CHECK_BITE : process (EXT_CLK, resetn)
     begin
         if rising_edge(EXT_CLK) then
             if wg_dly = '1' then -- Waveguide switch is not in transition
@@ -354,10 +340,10 @@ begin
             end if;
 
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             ems_tx_error_vector                 <= (others=>'1');
             ems_rx_error_vector                 <= (others=>'1');
-        end if;                
+        end if;
     end process;
 
     -- If there are no bits set in the error vector, then set a 1 to say we are ok
@@ -376,8 +362,10 @@ begin
     ems_45_rx_stat <= ems_rx_error_vector(4) or ems_rx_error_vector(5);
     ems_67_rx_stat <= ems_rx_error_vector(6) or ems_rx_error_vector(7);
 
+    -- Assign HV flag
+    HV_FLAG_HMC   <= hv_flag;
+
     -- Assign test signals to SPARE outputs for debug
-    SPARE1        <= hv_flag;
     SPARE2        <= state_code(0);
     SPARE3        <= state_code(1);
 
@@ -391,9 +379,9 @@ begin
     EMS_ERROR_45  <= ems_45_error;
     EMS_ERROR_67  <= ems_67_error;
     -- Latch OPS_MODE
-    SET_OPS_MODE : process (EXT_CLK, RESET)
+    SET_OPS_MODE : process (EXT_CLK, resetn)
     begin
-        if (RESET = '0') then
+        if (resetn = '0') then
             ops_mode <= OPS_6_TEST; -- default to bench test
         elsif (rising_edge (EXT_CLK)) then
             if ops_mode_en = '1' then
@@ -405,9 +393,9 @@ begin
     end process;
 
     -- Latch EMS delays
-    LATCH_DLY : process (EXT_CLK, RESET)
+    LATCH_DLY : process (EXT_CLK, resetn)
     begin
-        if (RESET = '0') then
+        if (resetn = '0') then
             l_tx_dly <= '0';
             l_rx_dly <= '0';
         elsif (rising_edge (EXT_CLK)) then
@@ -417,9 +405,9 @@ begin
     end process;
 
     -- Update EMS status when BIT is valid
-    EMS_STAT : process (EXT_CLK, RESET)
+    EMS_STAT : process (EXT_CLK, resetn)
     begin
-        if (RESET = '0') then
+        if (resetn = '0') then
             ems_tx_ok       <= '1';
             ems_rx_ok       <= '1';
             ems_1_error     <= '0';
@@ -458,7 +446,7 @@ begin
               or mod_pulse_error = '1'
         else '0';
 
-    EMS_PRT : process (EXT_CLK, RESET)
+    EMS_PRT : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
 
@@ -466,14 +454,14 @@ begin
                              (((not l_rx_dly and rx_dly and not ems_rx_stat) or ems_error_prt) and not end_cycle);
 
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             ems_error_prt <= '0';
         end if;
     end process;
     EMS_ERROR_EVENT <= ems_error_prt; -- reports a maximum of one event per PRT
 
     -- Sets 1 second safety delay from HV_ON to enabling transmit triggers
-    DELAY_1SEC : process (EXT_CLK, RESET)
+    DELAY_1SEC : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             if (HV_ON_730 = '0') then
@@ -490,7 +478,7 @@ begin
                 count_enable <= '1';
             end if;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             hv_count     <= (others=>'0');
             hv_dly       <= '0';
             count_enable <= '1';
@@ -499,7 +487,7 @@ begin
 
     -- Delay for 1 second while Pentek initializes, then enable U6; ohterwise, Pentek isn't discovered on PCI bus!
     -- This is a mystery, but haven't sufficient documentation on Pentek to sort it out.
-    DELAY_U6_ENABLE : process (EXT_CLK, RESET)
+    DELAY_U6_ENABLE : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             if (U6_count = "111100000000000000000000") then -- ~1sec delay
@@ -514,7 +502,7 @@ begin
                 U6_count_enable <= '0';
             end if;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             U6_count        <= (others=>'0');
             U6_dly          <= '0';
             U6_count_enable <= '1';
@@ -524,7 +512,7 @@ begin
     U6_OE <= not U6_dly;
 
     -- Sets 100 millisecond safety delay from waveguide switch command to switch in position
-    DELAY_100MSEC : process (EXT_CLK, RESET)
+    DELAY_100MSEC : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             if (wg_change_state = '1') then -- waveguide switch is commanded to move
@@ -542,39 +530,39 @@ begin
                 wg_count_enable <= '1';
             end if;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             wg_count            <= (others=>'0');
             wg_dly              <= '0';
             wg_count_enable     <= '1';
         end if;
     end process;
-    
+
     -- Generate registered EMS_TRIG
-    LATCH_EMS_TRIG : process (EXT_CLK, RESET)
+    LATCH_EMS_TRIG : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             l_ems_trig <= EMS_TRIG;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             l_ems_trig <= '0';
         end if;
     end process;
 
     -- Generate EMS Transmit and Receive BIT count enables
-    EMS_CNT_EN : process (EXT_CLK, RESET)
+    EMS_CNT_EN : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             ems_tx_count_enable <= ((EMS_TRIG and not l_ems_trig) or ems_tx_count_enable) and not end_cycle; -- rising edge of EMS_TRIG
             ems_rx_count_enable <= ((not EMS_TRIG and l_ems_trig) or ems_rx_count_enable) and not end_cycle; -- falling edge of EMS_TRIG
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             ems_tx_count_enable <= '0';
             ems_rx_count_enable <= '0';
         end if;
     end process;
 
     -- Sets delay from EMS switch trigger to EMS switch BIT valid on transmit
-    EMS_TX_DELAY : process (EXT_CLK, RESET)
+    EMS_TX_DELAY : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             if (ems_tx_count_enable = '1') then
@@ -589,14 +577,14 @@ begin
                 tx_dly       <= '0';
             end if;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             ems_tx_count <= "00000";
             tx_dly       <= '0';
         end if;
     end process;
 
     -- Sets delay from EMS switch trigger to EMS switch BIT valid on receive
-    EMS_RX_DELAY : process (EXT_CLK, RESET)
+    EMS_RX_DELAY : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             if (ems_rx_count_enable = '1') then
@@ -611,33 +599,33 @@ begin
                 rx_dly       <= '0';
             end if;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             ems_rx_count <= "00000";
             rx_dly       <= '0';
         end if;
     end process;
 
     -- Defines cycle over which State Machine operates
-    CYCLE : process (EXT_CLK, RESET)
+    CYCLE : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             l_rx_gate <= RX_GATE;
             end_cycle <= l_rx_gate and not RX_GATE; -- end cycle on falling edge of rx_gate!
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             end_cycle <= '0';
             l_rx_gate <= '0';
         end if;
     end process;
 
-    HHVV : process (EXT_CLK, RESET)
+    HHVV : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             if (ops_mode = OPS_2_HHVV_TX and end_cycle = '1') then
                 pol_state <= pol_state + 1; -- cycle through polarization states
             end if;
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             pol_state <= "11"; -- initial polarization state := V tx
         end if;
     end process;
@@ -645,7 +633,7 @@ begin
 
     ------------------------ State Machine ----------------------------------------------------------------
 
-    STATE_MACHINE : process (EXT_CLK, RESET)
+    STATE_MACHINE : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
             case state is
@@ -708,19 +696,19 @@ begin
                 when others =>
                     state <= s0;
             end case;
-        
-        end if; --RE CLK        
-        if (RESET = '0') then
+
+        end if; --RE CLK
+        if (resetn = '0') then
             state <= s0;
-        end if;        
+        end if;
     end process;
 
     -- State Machine Ouputs
 
-    STATE_OUT : process (EXT_CLK, RESET)
+    STATE_OUT : process (EXT_CLK, resetn)
     begin
         if rising_edge(EXT_CLK) then
-        
+
             ops_mode_en      <= '0';
             cmd_wg_sw_pos    <= '0';
             MOD_PULSE_HMC    <= '0';
@@ -730,9 +718,9 @@ begin
             NOISE_SOURCE_EN  <= '0';
             cmd_wg_sw_pos    <= '0';
             hv_flag          <= '0';
-            
+
             case state is
-                when S0 => -- Reset State, ensure EMS switches transition each PRT
+                when S0 => -- resetn State, ensure EMS switches transition each PRT
                     --            ops_mode <= OPS_MODE_730;
                     ops_mode_en   <= '1';
                     MOD_PULSE_HMC <= '0';
@@ -1268,9 +1256,9 @@ begin
                     NOISE_SOURCE_EN  <= '0';
                     cmd_wg_sw_pos    <= '0';
             end case;
-            
+
         end if; --RE CLK
-        if (RESET = '0') then
+        if (resetn = '0') then
             ops_mode_en      <= '0';
             cmd_wg_sw_pos    <= '0';
             MOD_PULSE_HMC    <= '0';
@@ -1280,7 +1268,7 @@ begin
             NOISE_SOURCE_EN  <= '0';
             cmd_wg_sw_pos    <= '0';
             hv_flag          <= '0';
-        end if;            
+        end if;
     end process;
 
     -------------------------------------------------------------------------------------------------------
