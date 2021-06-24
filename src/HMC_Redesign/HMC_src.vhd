@@ -33,19 +33,18 @@ entity HMC_src is
         --PW_GND            : in  std_logic;
 
         --            cPCI Signals
-        CPCI_RESETn       : in  std_logic; -- cPCI resetn line
+        RESETn_CPCI       : in  std_logic; -- cPCI reset line
 
         --            Pentek Timing Signals (Connector PN 4)
         T0                : in  std_logic;
         MOD_PULSE         : in  std_logic;
         EMS_TRIG          : in  std_logic;
         RX_GATE           : in  std_logic;
-        --TIMER_6           : in  std_logic;
-        --TIMER_7           : in  std_logic;
-        PENTEK_RESETn     : in  std_logic; -- resetn from the Pentek. Was TX_GATE
+        POL_MODE_PENTEK   : in  std_logic_vector(1 downto 0);
+        RESETn_PENTEK     : in  std_logic; -- Reset from the Pentek. Was TX_GATE
         EXT_CLK           : in  std_logic; -- 15.625 MHz clock;    125 MHz/8
         SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 MHz clock; 125 MHz/8/72
-        HV_FLAG_HMC       : out std_logic;
+        HV_FLAG           : out std_logic;
 
         --            GPS input
         --ONE_PPS           : in  std_logic;
@@ -144,22 +143,41 @@ architecture Behavioral of HMC_src is
 
     --   Constant declarations
 
-    constant EMS_HORZTX_TX      : std_logic_vector(7 downto 1) := "0101001";
-    constant EMS_HORZTX_RX      : std_logic_vector(7 downto 1) := "1010010";
-    constant EMS_VERTTX_TX      : std_logic_vector(7 downto 1) := "0101110";
-    constant EMS_VERTTX_RX      : std_logic_vector(7 downto 1) := "1010011";
-    constant EMS_CREF_RX        : std_logic_vector(7 downto 1) := "0000010";
-    constant EMS_CREF_NOISE_RX  : std_logic_vector(7 downto 1) := "0000011";
-    constant EMS_NOISE_CAL      : std_logic_vector(7 downto 1) := "0101101";
+    -- Acceptable values of BIT_EMS
+    constant EMS_HORZTX_TX          : std_logic_vector(7 downto 1) := "0101001";
+    constant EMS_HORZTX_RX          : std_logic_vector(7 downto 1) := "1010010";
+    constant EMS_VERTTX_TX          : std_logic_vector(7 downto 1) := "0101110";
+    constant EMS_VERTTX_RX          : std_logic_vector(7 downto 1) := "1010011";
+    constant EMS_CREF_RX            : std_logic_vector(7 downto 1) := "0000010";
+    constant EMS_CREF_NOISE_RX      : std_logic_vector(7 downto 1) := "0000011";
+    constant EMS_NOISE_CAL          : std_logic_vector(7 downto 1) := "0101101";
 
-    constant OPS_0_H_TX         : std_logic_vector(2 downto 0) := o"0"; -- horizontal transmit, receive both
-    constant OPS_1_V_TX         : std_logic_vector(2 downto 0) := o"1"; -- vertical transmit, receive both
-    constant OPS_2_HHVV_TX      : std_logic_vector(2 downto 0) := o"2"; -- HHVV transmit, receive both
-    constant OPS_3_CREF_H       : std_logic_vector(2 downto 0) := o"3"; -- Corner reflector horizontal transmit, receive both
-    constant OPS_4_NOISE        : std_logic_vector(2 downto 0) := o"4"; -- Noise source cal, no tx
-    constant OPS_5_CREF_V       : std_logic_vector(2 downto 0) := o"5"; -- Corner reflector cal, vertical tx w/increased NF
-    constant OPS_6_TEST         : std_logic_vector(2 downto 0) := o"6"; -- Test Mode, no tx
-    constant OPS_7_ISOL_NOISE   : std_logic_vector(2 downto 0) := o"7"; -- vertical transmit, receive both, but enable noise source for testing
+    -- Enumeration of OPS_MODE_730
+    constant OPS_730_0_SPARE        : std_logic_vector(2 downto 0) := o"0"; -- Spare mode
+    constant OPS_730_1_SPARE        : std_logic_vector(2 downto 0) := o"1"; -- Spare mode
+    constant OPS_730_2_TRANSMIT     : std_logic_vector(2 downto 0) := o"2"; -- Transmit X, receive both. X is determined by Pentek scheduler
+    constant OPS_730_3_CREF_H       : std_logic_vector(2 downto 0) := o"3"; -- Corner reflector horizontal transmit, receive both
+    constant OPS_730_4_NOISE        : std_logic_vector(2 downto 0) := o"4"; -- Noise source cal, no tx
+    constant OPS_730_5_CREF_V       : std_logic_vector(2 downto 0) := o"5"; -- Corner reflector cal, vertical tx w/increased NF
+    constant OPS_730_6_TEST         : std_logic_vector(2 downto 0) := o"6"; -- Test Mode, no tx
+    constant OPS_730_7_ISOL_NOISE   : std_logic_vector(2 downto 0) := o"7"; -- vertical transmit, receive both, but enable noise source for testing
+
+    -- Enumeration of POL_MODE_PENTEK
+    constant PX_POL_H               : std_logic_vector(1 downto 0) := "01";
+    constant PX_POL_V               : std_logic_vector(1 downto 0) := "00";
+    constant PX_POL_HHVV            : std_logic_vector(1 downto 0) := "10";
+
+    -- Enumeration of ops_mode
+    type ops_type is (
+        OP_MODE_H_TX,         -- horizontal transmit, receive both
+        OP_MODE_V_TX,         -- vertical transmit, receive both
+        OP_MODE_HHVV_TX,      -- HHVV transmit, receive both
+        OP_MODE_CREF_H,       -- Corner reflector horizontal transmit, receive both
+        OP_MODE_NOISE,        -- Noise source cal, no tx
+        OP_MODE_CREF_V,       -- Corner reflector cal, vertical tx w/increased NF
+        OP_MODE_TEST,         -- Test Mode, no tx
+        OP_MODE_ISOL_NOISE    -- vertical transmit, receive both, but enable noise source for testing
+    );
 
     --   Signal declarations
 
@@ -210,12 +228,14 @@ architecture Behavioral of HMC_src is
     signal l_tx_dly             : std_logic;
     signal l_rx_dly             : std_logic;
     signal l_rx_gate            : std_logic;
-    signal ops_mode             : std_logic_vector(2 downto 0); -- ops_mode at state S0
-    signal ops_mode_en          : std_logic; -- enables ops mode to be latched
+    signal ops_mode_730_reg     : std_logic_vector(2 downto 0);
+    signal pol_mode_px_reg      : std_logic_vector(1 downto 0);
+    signal next_ops_mode        : ops_type := OP_MODE_TEST; -- ops_mode at state S0
+    signal ops_mode             : ops_type := OP_MODE_TEST; -- ops_mode at state S0
     signal pol_state            : std_logic_vector(1 downto 0); -- polarization state of Tx pulse
     signal wg_sw_pos            : std_logic; -- current waveguide switch position
     signal cmd_wg_sw_pos        : std_logic; -- commanded waveguide switch position
-    signal hv_flag              : std_logic; -- H/V Flag to be sent to Pentek for housekeeping; Tx-H=1, Tx-V=0
+    signal HVn_flag             : std_logic; -- H/V Flag to be sent to Pentek for housekeeping; Tx-H=1, Tx-V=0
 
     -- State machine declarations
     type state_type is (s0, s1, s2, s3);
@@ -230,7 +250,7 @@ architecture Behavioral of HMC_src is
 begin
 
     -- Reset from either source
-    resetn <= PENTEK_RESETn and CPCI_RESETn;
+    resetn <= RESETn_PENTEK and RESETn_CPCI;
 
     state_code <= "00" when state = s0 else
                   "01" when state = s1 else
@@ -250,7 +270,7 @@ begin
     begin
         if rising_edge(EXT_CLK) then
             if (wg_dly = '1') then
-                if (ops_mode = OPS_4_NOISE or ops_mode = OPS_7_ISOL_NOISE) then -- Noise source cal or isolation test mode
+                if (ops_mode = OP_MODE_NOISE or ops_mode = OP_MODE_ISOL_NOISE) then -- Noise source cal or isolation test mode
                     if (WG_SW_TERM = '1' and WG_SW_NOISE = '0') then
                         WG_SW_ERROR <= '0';
                         wg_stat     <= '1'; -- good status
@@ -300,13 +320,13 @@ begin
         if rising_edge(EXT_CLK) then
             if wg_dly = '1' then -- Waveguide switch is not in transition
                 case ops_mode is
-                    when OPS_0_H_TX => -- horizontal transmit, receive both
+                    when OP_MODE_H_TX => -- horizontal transmit, receive both
                         ems_tx_error_vector     <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_HORZTX_RX;     --"1010010";
-                    when OPS_1_V_TX => -- vertical transmit, receive both
+                    when OP_MODE_V_TX => -- vertical transmit, receive both
                         ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
-                    when OPS_2_HHVV_TX => -- HHVV transmit, receive both
+                    when OP_MODE_HHVV_TX => -- HHVV transmit, receive both
                         if pol_state(1) = '0' then -- H transmit
                             ems_tx_error_vector <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
                             ems_rx_error_vector <= BIT_EMS xor EMS_HORZTX_RX;     --"1010010";
@@ -314,19 +334,19 @@ begin
                             ems_tx_error_vector <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
                             ems_rx_error_vector <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
                         end if;
-                    when OPS_3_CREF_H => -- Corner reflector horizontal transmit, receive both
+                    when OP_MODE_CREF_H => -- Corner reflector horizontal transmit, receive both
                         ems_tx_error_vector     <= BIT_EMS xor EMS_HORZTX_TX;     --"0101001";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_RX;       --"0000010";
-                    when OPS_4_NOISE => -- Noise source cal, no tx
+                    when OP_MODE_NOISE => -- Noise source cal, no tx
                         ems_tx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
-                    when OPS_5_CREF_V => -- Corner reflector cal, vertical tx w/increased NF
+                    when OP_MODE_CREF_V => -- Corner reflector cal, vertical tx w/increased NF
                         ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_NOISE_RX; --"0000011";
-                    when OPS_6_TEST => -- Test Mode, no tx
+                    when OP_MODE_TEST => -- Test Mode, no tx
                         ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
-                    when OPS_7_ISOL_NOISE => -- vertical transmit, receive both, but enable noise source for testing
+                    when OP_MODE_ISOL_NOISE => -- vertical transmit, receive both, but enable noise source for testing
                         ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
                     when others => -- default bad status for all
@@ -363,7 +383,7 @@ begin
     ems_67_rx_stat <= ems_rx_error_vector(6) or ems_rx_error_vector(7);
 
     -- Assign HV flag
-    HV_FLAG_HMC   <= hv_flag;
+    HV_FLAG       <= HVn_flag;
 
     -- Assign test signals to SPARE outputs for debug
     SPARE2        <= state_code(0);
@@ -378,47 +398,58 @@ begin
     EMS_ERROR_3   <= ems_3_error;
     EMS_ERROR_45  <= ems_45_error;
     EMS_ERROR_67  <= ems_67_error;
+
     -- Latch OPS_MODE
     SET_OPS_MODE : process (EXT_CLK, resetn)
     begin
-        if (resetn = '0') then
-            ops_mode <= OPS_6_TEST; -- default to bench test
-        elsif (rising_edge (EXT_CLK)) then
-            if ops_mode_en = '1' then
-                ops_mode <= OPS_MODE_730;
-            else
-                ops_mode <= ops_mode;
-            end if;
+        if (rising_edge (EXT_CLK)) then
+            ops_mode_730_reg    <= OPS_MODE_730;
+            pol_mode_px_reg     <= POL_MODE_PENTEK;
+
+            next_ops_mode       <= OP_MODE_TEST; -- default to bench test
+            case ops_mode_730_reg is
+                when OPS_730_0_SPARE        =>
+                when OPS_730_1_SPARE        =>
+                when OPS_730_2_TRANSMIT =>
+                    case pol_mode_px_reg is
+                        when PX_POL_H       =>  next_ops_mode <= OP_MODE_H_TX;
+                        when PX_POL_V       =>  next_ops_mode <= OP_MODE_V_TX;
+                        when others         =>  next_ops_mode <= OP_MODE_HHVV_TX;
+                    end case;
+                when OPS_730_3_CREF_H       =>  next_ops_mode <= OP_MODE_CREF_H;
+                when OPS_730_4_NOISE        =>  next_ops_mode <= OP_MODE_NOISE;
+                when OPS_730_5_CREF_V       =>  next_ops_mode <= OP_MODE_CREF_V;
+                when OPS_730_6_TEST         =>  next_ops_mode <= OP_MODE_TEST;
+                when OPS_730_7_ISOL_NOISE   =>  next_ops_mode <= OP_MODE_ISOL_NOISE;
+                when others =>
+            end case;
+
         end if; --RE CLK
+        if (resetn = '0') then
+            next_ops_mode       <= OP_MODE_TEST; -- default to bench test
+            ops_mode_730_reg    <= (others=>'0');
+            pol_mode_px_reg     <= (others=>'0');
+        end if;
     end process;
 
     -- Latch EMS delays
     LATCH_DLY : process (EXT_CLK, resetn)
     begin
+        if (rising_edge (EXT_CLK)) then
+            l_tx_dly <= tx_dly;
+            l_rx_dly <= rx_dly;
+
+        end if; --RE CLK
         if (resetn = '0') then
             l_tx_dly <= '0';
             l_rx_dly <= '0';
-        elsif (rising_edge (EXT_CLK)) then
-            l_tx_dly <= tx_dly;
-            l_rx_dly <= rx_dly;
-        end if; --RE CLK
+        end if;
     end process;
 
     -- Update EMS status when BIT is valid
     EMS_STAT : process (EXT_CLK, resetn)
     begin
-        if (resetn = '0') then
-            ems_tx_ok       <= '1';
-            ems_rx_ok       <= '1';
-            ems_1_error     <= '0';
-            ems_2_error     <= '0';
-            ems_3_error     <= '0';
-            ems_45_error    <= '0';
-            ems_67_error    <= '0';
-            ems_tx_error    <= '0';
-            mod_pulse_error <= '0';
-
-        elsif (rising_edge (EXT_CLK)) then
+        if (rising_edge (EXT_CLK)) then
             ems_tx_ok   <= ((not l_tx_dly and tx_dly and ems_tx_stat) or ems_tx_ok) and not end_cycle;
 
             ems_1_error <= (((not l_tx_dly and tx_dly and ems_1_tx_stat) or ems_1_error) and not STATUS_ACK) or
@@ -436,13 +467,25 @@ begin
             ems_rx_ok       <= ((not l_rx_dly and rx_dly and ems_rx_stat) or ems_rx_ok) and not end_cycle;
 
             mod_pulse_error <= (not (ems_pwr_ok and not ems_tx_error) or mod_pulse_error) and not STATUS_ACK;
+
         end if; --RE CLK
+        if (resetn = '0') then
+            ems_tx_ok       <= '1';
+            ems_rx_ok       <= '1';
+            ems_1_error     <= '0';
+            ems_2_error     <= '0';
+            ems_3_error     <= '0';
+            ems_45_error    <= '0';
+            ems_67_error    <= '0';
+            ems_tx_error    <= '0';
+            mod_pulse_error <= '0';
+        end if;
     end process;
 
     MOD_PULSE_DISABLE <=
-        '1' when ops_mode = OPS_6_TEST
-              or ops_mode = OPS_4_NOISE
-              or ops_mode = OPS_7_ISOL_NOISE
+        '1' when ops_mode = OP_MODE_TEST
+              or ops_mode = OP_MODE_NOISE
+              or ops_mode = OP_MODE_ISOL_NOISE
               or mod_pulse_error = '1'
         else '0';
 
@@ -621,7 +664,7 @@ begin
     HHVV : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
-            if (ops_mode = OPS_2_HHVV_TX and end_cycle = '1') then
+            if (ops_mode = OP_MODE_HHVV_TX and end_cycle = '1') then
                 pol_state <= pol_state + 1; -- cycle through polarization states
             end if;
         end if; --RE CLK
@@ -638,46 +681,47 @@ begin
         if (rising_edge (EXT_CLK)) then
             case state is
                 when s0 =>
-                    if (ops_mode = OPS_6_TEST and EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and ems_pwr_ok = '1' and wg_stat = '1') then -- Test Mode
+                    if (ops_mode = OP_MODE_TEST and EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and ems_pwr_ok = '1' and wg_stat = '1') then -- Test Mode
                         state <= s1;
-                    elsif (ops_mode = OPS_4_NOISE and EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and ems_pwr_ok = '1' and wg_stat = '1') then -- Noise source cal
+                    elsif (ops_mode = OP_MODE_NOISE and EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and ems_pwr_ok = '1' and wg_stat = '1') then -- Noise source cal
                         state <= s1;
-                    elsif (ops_mode = OPS_7_ISOL_NOISE and EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and ems_pwr_ok = '1' and wg_stat = '1') then -- Noise source isolation test
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE and EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and ems_pwr_ok = '1' and wg_stat = '1') then -- Noise source isolation test
                         state <= s1;
                     elsif (EMS_TRIG = '1' and T0 = '1' and tx_dly = '0' and rx_dly = '0' and hv_dly = '1' and ems_pwr_ok = '1' and wg_stat = '1') then
                         state <= s1;
                     end if;
+                    ops_mode <= next_ops_mode;
                 when s1 =>
-                    if (ops_mode = OPS_6_TEST and ems_tx_ok = '1' and rx_dly = '0' and ems_pwr_ok = '1') then -- Test Mode
+                    if (ops_mode = OP_MODE_TEST and ems_tx_ok = '1' and rx_dly = '0' and ems_pwr_ok = '1') then -- Test Mode
                         state <= s2;
-                    elsif (ops_mode = OPS_4_NOISE and ems_tx_ok = '1' and rx_dly = '0' and ems_pwr_ok = '1') then -- Noise source cal
+                    elsif (ops_mode = OP_MODE_NOISE and ems_tx_ok = '1' and rx_dly = '0' and ems_pwr_ok = '1') then -- Noise source cal
                         state <= s2;
-                    elsif (ops_mode = OPS_7_ISOL_NOISE and ems_tx_ok = '1' and rx_dly = '0' and ems_pwr_ok = '1') then -- Noise source isolation test
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE and ems_tx_ok = '1' and rx_dly = '0' and ems_pwr_ok = '1') then -- Noise source isolation test
                         state <= s2;
                     elsif (ems_tx_ok = '1' and rx_dly = '0' and hv_dly = '1' and ems_pwr_ok = '1') then
                         state <= s2;
                         -----------------------------------------------------------------------------------------------------
                         --                WHY AREN'T ALL STATES COVERED HERE???
 
-                    elsif (ops_mode = OPS_0_H_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
+                    elsif (ops_mode = OP_MODE_H_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
                         state <= s0;
-                    elsif (ops_mode = OPS_1_V_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
+                    elsif (ops_mode = OP_MODE_V_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
                         state <= s0;
-                    elsif (ops_mode = OPS_2_HHVV_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
+                    elsif (ops_mode = OP_MODE_HHVV_TX and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
                         state <= s0;
-                    elsif (ops_mode = OPS_3_CREF_H and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
+                    elsif (ops_mode = OP_MODE_CREF_H and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
                         state <= s0;
-                    elsif (ops_mode = OPS_5_CREF_V and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
+                    elsif (ops_mode = OP_MODE_CREF_V and hv_dly = '0' and rx_dly = '0' and tx_dly = '1') then
                         state <= s0;
                     end if;
 
                     -------------------------------------------------------------------------------------------------------------
                 when s2 =>
-                    if (ops_mode = OPS_6_TEST and tx_dly = '1' and ems_pwr_ok = '1') then -- Test Mode
+                    if (ops_mode = OP_MODE_TEST and tx_dly = '1' and ems_pwr_ok = '1') then -- Test Mode
                         state <= s3;
-                    elsif (ops_mode = OPS_4_NOISE and tx_dly = '1' and ems_pwr_ok = '1') then -- Noise source cal
+                    elsif (ops_mode = OP_MODE_NOISE and tx_dly = '1' and ems_pwr_ok = '1') then -- Noise source cal
                         state <= s3;
-                    elsif (ops_mode = OPS_7_ISOL_NOISE and tx_dly = '1' and ems_pwr_ok = '1') then -- Noise source isolation test
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE and tx_dly = '1' and ems_pwr_ok = '1') then -- Noise source isolation test
                         state <= s3;
                     elsif (rx_dly = '1' and tx_dly = '1' and hv_dly = '1' and ems_pwr_ok = '1') then
                         state <= s3;
@@ -709,42 +753,30 @@ begin
     begin
         if rising_edge(EXT_CLK) then
 
-            ops_mode_en      <= '0';
-            cmd_wg_sw_pos    <= '0';
-            MOD_PULSE_HMC    <= '0';
-            EMS_OUT          <= "0000000";
-            WG_SW_CTRL_TERM  <= '0';
-            WG_SW_CTRL_NOISE <= '1';
-            NOISE_SOURCE_EN  <= '0';
-            cmd_wg_sw_pos    <= '0';
-            hv_flag          <= '0';
-
             case state is
-                when S0 => -- resetn State, ensure EMS switches transition each PRT
-                    --            ops_mode <= OPS_MODE_730;
-                    ops_mode_en   <= '1';
+                when S0 => -- Reset State, ensure EMS switches transition each PRT
                     MOD_PULSE_HMC <= '0';
-                    if (ops_mode = OPS_4_NOISE) then -- Noise source cal, no tx
+                    if (ops_mode = OP_MODE_NOISE) then -- Noise source cal, no tx
                         EMS_OUT          <= "1010010";
                         WG_SW_CTRL_TERM  <= '1';
                         WG_SW_CTRL_NOISE <= '0';
                         NOISE_SOURCE_EN  <= '1';
                         cmd_wg_sw_pos    <= '1';
 
-                    elsif (ops_mode = OPS_7_ISOL_NOISE) then -- Noise source isolation test
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE) then -- Noise source isolation test
                         WG_SW_CTRL_TERM  <= '1';
                         WG_SW_CTRL_NOISE <= '0';
                         NOISE_SOURCE_EN  <= '1';
                         cmd_wg_sw_pos    <= '1';
 
-                    elsif (ops_mode = OPS_0_H_TX) then -- Horizontal tx, receive both
+                    elsif (ops_mode = OP_MODE_H_TX) then -- Horizontal tx, receive both
                         EMS_OUT(3)       <= '1';
                         WG_SW_CTRL_TERM  <= '0';
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
 
-                    elsif (ops_mode = OPS_3_CREF_H) then -- Corner reflector cal, horizontal tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_H) then -- Corner reflector cal, horizontal tx w/increased NF
                         EMS_OUT(3)       <= '1';
                         EMS_OUT(5)       <= '1';
                         EMS_OUT(7)       <= '1';
@@ -753,7 +785,7 @@ begin
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
 
-                    elsif (ops_mode = OPS_5_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
                         EMS_OUT(2)       <= '0';
                         EMS_OUT(5)       <= '1';
                         EMS_OUT(7)       <= '1';
@@ -762,7 +794,7 @@ begin
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
 
-                    elsif (ops_mode = OPS_2_HHVV_TX) then -- Alternating HHVV
+                    elsif (ops_mode = OP_MODE_HHVV_TX) then -- Alternating HHVV
                         if (pol_state = "11") then -- V tx, receive both (initial HHVV state)
                             EMS_OUT(2) <= '0';
                         elsif (pol_state = "00") then -- H tx, receive both
@@ -786,8 +818,7 @@ begin
                         cmd_wg_sw_pos    <= '0';
                     end if;
                 when S1 =>
-                    ops_mode_en <= '0';
-                    if (ops_mode = OPS_0_H_TX) then -- Horizontal tx, receive both
+                    if (ops_mode = OP_MODE_H_TX) then -- Horizontal tx, receive both
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= EMS_TRIG;
                         EMS_OUT(2)       <= not EMS_TRIG;
@@ -796,12 +827,12 @@ begin
                         EMS_OUT(5)       <= not EMS_TRIG;
                         EMS_OUT(6)       <= EMS_TRIG;
                         EMS_OUT(7)       <= not EMS_TRIG;
-                        hv_flag          <= '1'; -- Tx-H
+                        HVn_flag          <= '1'; -- Tx-H
                         WG_SW_CTRL_TERM  <= '0';
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_1_V_TX) then -- Vertical tx, receive both
+                    elsif (ops_mode = OP_MODE_V_TX) then -- Vertical tx, receive both
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -810,12 +841,12 @@ begin
                         EMS_OUT(5)       <= not EMS_TRIG;
                         EMS_OUT(6)       <= EMS_TRIG;
                         EMS_OUT(7)       <= not EMS_TRIG;
-                        hv_flag          <= '0'; -- Tx-V
+                        HVn_flag          <= '0'; -- Tx-V
                         WG_SW_CTRL_TERM  <= '0';
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_2_HHVV_TX) then -- HHVV tx, receive both
+                    elsif (ops_mode = OP_MODE_HHVV_TX) then -- HHVV tx, receive both
                         if (pol_state = "00") then -- transmit H
                             MOD_PULSE_HMC    <= '0';
                             EMS_OUT(1)       <= EMS_TRIG;
@@ -825,7 +856,7 @@ begin
                             EMS_OUT(5)       <= not EMS_TRIG;
                             EMS_OUT(6)       <= EMS_TRIG;
                             EMS_OUT(7)       <= not EMS_TRIG;
-                            hv_flag          <= '1'; -- H
+                            HVn_flag          <= '1'; -- H
                             WG_SW_CTRL_TERM  <= '0';
                             WG_SW_CTRL_NOISE <= '1';
                             NOISE_SOURCE_EN  <= '0';
@@ -839,7 +870,7 @@ begin
                             EMS_OUT(5)       <= not EMS_TRIG;
                             EMS_OUT(6)       <= EMS_TRIG;
                             EMS_OUT(7)       <= not EMS_TRIG;
-                            hv_flag          <= '1'; -- H
+                            HVn_flag          <= '1'; -- H
                             WG_SW_CTRL_TERM  <= '0';
                             WG_SW_CTRL_NOISE <= '1';
                             NOISE_SOURCE_EN  <= '0';
@@ -853,7 +884,7 @@ begin
                             EMS_OUT(5)       <= not EMS_TRIG;
                             EMS_OUT(6)       <= EMS_TRIG;
                             EMS_OUT(7)       <= not EMS_TRIG;
-                            hv_flag          <= '0'; -- V
+                            HVn_flag          <= '0'; -- V
                             WG_SW_CTRL_TERM  <= '0';
                             WG_SW_CTRL_NOISE <= '1';
                             NOISE_SOURCE_EN  <= '0';
@@ -867,13 +898,13 @@ begin
                             EMS_OUT(5)       <= not EMS_TRIG;
                             EMS_OUT(6)       <= EMS_TRIG;
                             EMS_OUT(7)       <= not EMS_TRIG;
-                            hv_flag          <= '0'; -- V
+                            HVn_flag          <= '0'; -- V
                             WG_SW_CTRL_TERM  <= '0';
                             WG_SW_CTRL_NOISE <= '1';
                             NOISE_SOURCE_EN  <= '0';
                             cmd_wg_sw_pos    <= '0';
                         end if;
-                    elsif (ops_mode = OPS_3_CREF_H) then -- Corner reflector horizontal tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_H) then -- Corner reflector horizontal tx w/increased NF
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= EMS_TRIG;
                         EMS_OUT(2)       <= not EMS_TRIG;
@@ -882,20 +913,20 @@ begin
                         EMS_OUT(5)       <= '0';
                         EMS_OUT(6)       <= EMS_TRIG;
                         EMS_OUT(7)       <= '0';
-                        hv_flag          <= '1'; -- H
+                        HVn_flag          <= '1'; -- H
                         WG_SW_CTRL_TERM  <= '0';
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_4_NOISE) then -- Noise source cal, no tx
+                    elsif (ops_mode = OP_MODE_NOISE) then -- Noise source cal, no tx
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT          <= "0101101";
                         WG_SW_CTRL_TERM  <= '1';
                         WG_SW_CTRL_NOISE <= '0';
                         NOISE_SOURCE_EN  <= '1';
                         cmd_wg_sw_pos    <= '1';
-                        hv_flag          <= '0'; -- V
-                    elsif (ops_mode = OPS_5_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
+                        HVn_flag          <= '0'; -- V
+                    elsif (ops_mode = OP_MODE_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -904,12 +935,12 @@ begin
                         EMS_OUT(5)       <= '0';
                         EMS_OUT(6)       <= EMS_TRIG;
                         EMS_OUT(7)       <= '0';
-                        hv_flag          <= '0'; -- V
+                        HVn_flag          <= '0'; -- V
                         WG_SW_CTRL_TERM  <= '0';
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_6_TEST) then -- Test Mode, no tx
+                    elsif (ops_mode = OP_MODE_TEST) then -- Test Mode, no tx
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -918,12 +949,12 @@ begin
                         EMS_OUT(5)       <= not EMS_TRIG;
                         EMS_OUT(6)       <= EMS_TRIG;
                         EMS_OUT(7)       <= not EMS_TRIG;
-                        hv_flag          <= '0'; -- V
+                        HVn_flag          <= '0'; -- V
                         WG_SW_CTRL_TERM  <= '0';
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_7_ISOL_NOISE) then -- Vertical tx, receive both, enable noise source for testing
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE) then -- Vertical tx, receive both, enable noise source for testing
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -932,7 +963,7 @@ begin
                         EMS_OUT(5)       <= not EMS_TRIG;
                         EMS_OUT(6)       <= EMS_TRIG;
                         EMS_OUT(7)       <= not EMS_TRIG;
-                        hv_flag          <= '0'; -- V
+                        HVn_flag          <= '0'; -- V
                         WG_SW_CTRL_TERM  <= '1';
                         WG_SW_CTRL_NOISE <= '0';
                         NOISE_SOURCE_EN  <= '1';
@@ -944,11 +975,10 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                        hv_flag          <= '1'; -- H
+                        HVn_flag          <= '1'; -- H
                     end if;
                 when S2 =>
-                    ops_mode_en <= '0';
-                    if (ops_mode = OPS_0_H_TX) then -- Horizontal tx, receive both
+                    if (ops_mode = OP_MODE_H_TX) then -- Horizontal tx, receive both
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= EMS_TRIG;
                         EMS_OUT(2)       <= not EMS_TRIG;
@@ -961,7 +991,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_1_V_TX) then -- Vertical tx, receive both
+                    elsif (ops_mode = OP_MODE_V_TX) then -- Vertical tx, receive both
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -974,7 +1004,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_2_HHVV_TX) then -- HHVV tx, receive both
+                    elsif (ops_mode = OP_MODE_HHVV_TX) then -- HHVV tx, receive both
                         if (pol_state = "00") then -- transmit H
                             MOD_PULSE_HMC    <= MOD_PULSE;
                             EMS_OUT(1)       <= EMS_TRIG;
@@ -1028,7 +1058,7 @@ begin
                             NOISE_SOURCE_EN  <= '0';
                             cmd_wg_sw_pos    <= '0';
                         end if;
-                    elsif (ops_mode = OPS_3_CREF_H) then -- Corner reflector cal Horizontal tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_H) then -- Corner reflector cal Horizontal tx w/increased NF
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= EMS_TRIG;
                         EMS_OUT(2)       <= not EMS_TRIG;
@@ -1041,14 +1071,14 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_4_NOISE) then -- Noise source cal, no tx
+                    elsif (ops_mode = OP_MODE_NOISE) then -- Noise source cal, no tx
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT          <= "0101101";
                         WG_SW_CTRL_TERM  <= '1';
                         WG_SW_CTRL_NOISE <= '0';
                         NOISE_SOURCE_EN  <= '1';
                         cmd_wg_sw_pos    <= '1';
-                    elsif (ops_mode = OPS_5_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1061,7 +1091,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_6_TEST) then -- Test Mode, no tx
+                    elsif (ops_mode = OP_MODE_TEST) then -- Test Mode, no tx
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1074,7 +1104,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_7_ISOL_NOISE) then -- Vertical tx, receive both, enable noise source for test
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE) then -- Vertical tx, receive both, enable noise source for test
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1096,8 +1126,7 @@ begin
                         cmd_wg_sw_pos    <= '0';
                     end if;
                 when S3 =>
-                    ops_mode_en <= '0';
-                    if (ops_mode = OPS_0_H_TX) then -- Horizontal tx, receive both
+                    if (ops_mode = OP_MODE_H_TX) then -- Horizontal tx, receive both
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= EMS_TRIG;
                         EMS_OUT(2)       <= not EMS_TRIG;
@@ -1110,7 +1139,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_1_V_TX) then -- Vertical tx, receive both
+                    elsif (ops_mode = OP_MODE_V_TX) then -- Vertical tx, receive both
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1123,7 +1152,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_2_HHVV_TX) then -- HHVV tx, receive both
+                    elsif (ops_mode = OP_MODE_HHVV_TX) then -- HHVV tx, receive both
                         case pol_state is
                             when "00" => -- transmit H
                                 MOD_PULSE_HMC    <= MOD_PULSE;
@@ -1179,7 +1208,7 @@ begin
                                 cmd_wg_sw_pos    <= '0';
                             when others =>
                         end case;
-                    elsif (ops_mode = OPS_3_CREF_H) then -- Corner reflector cal, horizontal tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_H) then -- Corner reflector cal, horizontal tx w/increased NF
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= EMS_TRIG;
                         EMS_OUT(2)       <= not EMS_TRIG;
@@ -1192,14 +1221,14 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_4_NOISE) then -- Noise source cal, no tx
+                    elsif (ops_mode = OP_MODE_NOISE) then -- Noise source cal, no tx
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT          <= "0101101";
                         WG_SW_CTRL_TERM  <= '1';
                         WG_SW_CTRL_NOISE <= '0';
                         NOISE_SOURCE_EN  <= '1';
                         cmd_wg_sw_pos    <= '1';
-                    elsif (ops_mode = OPS_5_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
+                    elsif (ops_mode = OP_MODE_CREF_V) then -- Corner reflector cal, vertical tx w/increased NF
                         MOD_PULSE_HMC    <= MOD_PULSE;
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1212,7 +1241,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_6_TEST) then -- Test Mode, no tx
+                    elsif (ops_mode = OP_MODE_TEST) then -- Test Mode, no tx
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1225,7 +1254,7 @@ begin
                         WG_SW_CTRL_NOISE <= '1';
                         NOISE_SOURCE_EN  <= '0';
                         cmd_wg_sw_pos    <= '0';
-                    elsif (ops_mode = OPS_7_ISOL_NOISE) then -- Vertical tx, receive both
+                    elsif (ops_mode = OP_MODE_ISOL_NOISE) then -- Vertical tx, receive both
                         MOD_PULSE_HMC    <= '0';
                         EMS_OUT(1)       <= not EMS_TRIG;
                         EMS_OUT(2)       <= '1';
@@ -1247,7 +1276,6 @@ begin
                         cmd_wg_sw_pos    <= '0';
                     end if;
                 when others =>
-                    ops_mode_en      <= '0';
                     cmd_wg_sw_pos    <= '0';
                     MOD_PULSE_HMC    <= '0';
                     EMS_OUT          <= "0000000";
@@ -1259,7 +1287,6 @@ begin
 
         end if; --RE CLK
         if (resetn = '0') then
-            ops_mode_en      <= '0';
             cmd_wg_sw_pos    <= '0';
             MOD_PULSE_HMC    <= '0';
             EMS_OUT          <= "0000000";
@@ -1267,7 +1294,7 @@ begin
             WG_SW_CTRL_NOISE <= '1';
             NOISE_SOURCE_EN  <= '0';
             cmd_wg_sw_pos    <= '0';
-            hv_flag          <= '0';
+            HVn_flag          <= '0';
         end if;
     end process;
 

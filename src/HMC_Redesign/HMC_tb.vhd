@@ -1,33 +1,33 @@
 --------------------------------------------------------------------------------
--- Company: 
+-- Company:
 -- Engineer:
 --
 -- Create Date:   15:38:24 05/29/2013
--- Design Name:   
+-- Design Name:
 -- Module Name:   //cit/eol/EOL Documents Folders/ericloew/My Documents/MyFiles/HIAPER Cloud Radar/HMC_Redesign/HMC_tb.vhd
 -- Project Name:  HMC_Redesign
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
+-- Target Device:
+-- Tool versions:
+-- Description:
+--
 -- VHDL Test Bench Created by ISE for module: HMC_src
--- 
+--
 -- Dependencies:
--- 
+--
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
 --
--- Notes: 
+-- Notes:
 -- This testbench has been automatically generated using types std_logic and
 -- std_logic_vector for the ports of the unit under test.  Xilinx recommends
 -- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
+-- to guarantee that the testbench will bind correctly to the post-implementation
 -- simulation model.
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
+
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 --USE ieee.numeric_std.ALL;
@@ -35,29 +35,28 @@ USE ieee.std_logic_1164.ALL;
 -----------------------------------------------------------------------------------------
 -- NEED TO RUN SIMULATION FOR 1016 MILLISECONDS TO SEE CORRECT BEHAVIOR !!!
 -----------------------------------------------------------------------------------------
- 
+
 ENTITY HMC_tb IS
 END HMC_tb;
- 
-ARCHITECTURE behavior OF HMC_tb IS 
- 
+
+ARCHITECTURE behavior OF HMC_tb IS
+
     -- Component Declaration for the Unit Under Test (UUT)
- 
+
     COMPONENT HMC_src
 	 GENERIC(
 		TESTBENCH_MODE : boolean := false );
     PORT(
-        CPCI_RESETn       : in  std_logic; -- cPCI RESETn line
+        RESETn_CPCI       : in  std_logic; -- cPCI RESETn line
         T0                : in  std_logic;
         MOD_PULSE         : in  std_logic;
         EMS_TRIG          : in  std_logic;
         RX_GATE           : in  std_logic;
-        --TIMER_6           : in  std_logic;
-        --TIMER_7           : in  std_logic;
-        PENTEK_RESETn     : in  std_logic; -- RESETn from the Pentek. Was TX_GATE
+        POL_MODE_PENTEK   : in  std_logic_vector(1 downto 0);
+        RESETn_PENTEK     : in  std_logic; -- RESETn from the Pentek. Was TX_GATE
         EXT_CLK           : in  std_logic; -- 15.625 MHz clock;    125 MHz/8
         SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 MHz clock; 125 MHz/8/72
-        HV_FLAG_HMC       : out std_logic;
+        HV_FLAG           : out std_logic;
         --ONE_PPS           : in  std_logic;
         EMS_PWR_ERROR     : in  std_logic;
         HV_ON_730         : in  std_logic; -- High voltage cmd from PMC730
@@ -92,11 +91,10 @@ ARCHITECTURE behavior OF HMC_tb IS
         SPARE3            : out std_logic
         );
     END COMPONENT;
-    
+
 
    --Inputs
-   signal TIMER_6 : std_logic := '0';
-   signal TIMER_7 : std_logic := '0';
+   signal POL_MODE_PENTEK : std_logic_vector(1 downto 0) := (others => '0');
    signal TX_GATE : std_logic := '0';
    signal RESET : std_logic := '0';
    signal EXT_CLK : std_logic := '0';
@@ -136,8 +134,8 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal EMS_ERROR_EVENT : std_logic;
    signal SPARE_STATUS0 : std_logic;
    signal SPARE_STATUS1 : std_logic;
-   signal U6_OE : std_logic;	
-   signal HV_FLAG_HMC : std_logic;
+   signal U6_OE : std_logic;
+   signal HV_FLAG : std_logic;
    signal SPARE2 : std_logic;
    signal SPARE3 : std_logic;
 
@@ -145,16 +143,17 @@ ARCHITECTURE behavior OF HMC_tb IS
    constant EXT_CLK_period : time := 64 ns;
 
 	signal testbench_state : integer := 0;
- 
-BEGIN 
+
+BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: HMC_src
 	GENERIC MAP (
 		TESTBENCH_MODE => true )
 	PORT MAP (
-          CPCI_RESETn => '1',
-          PENTEK_RESETn => RESET,
+          RESETn_CPCI => '1',
+          RESETn_PENTEK => RESET,
           EXT_CLK => EXT_CLK,
+			 POL_MODE_PENTEK => POL_MODE_PENTEK,
           T0 => T0,
           MOD_PULSE => MOD_PULSE,
           SYNC_PULSE_CLK => SYNC_PULSE_CLK,
@@ -189,7 +188,7 @@ BEGIN
           SPARE_STATUS0 => SPARE_STATUS0,
           SPARE_STATUS1 => SPARE_STATUS1,
 			 U6_OE => U6_OE,
-          HV_FLAG_HMC => HV_FLAG_HMC,
+          HV_FLAG => HV_FLAG,
           SPARE2 => SPARE2,
           SPARE3 => SPARE3
         );
@@ -202,7 +201,7 @@ BEGIN
 		EXT_CLK <= '1';
 		wait for EXT_CLK_period/2;
    end process;
- 
+
 	HEART_BEAT: process -- one pps heartbeat, for now make it every prt
 	begin
 		ONE_PPS <= '1';
@@ -219,7 +218,7 @@ BEGIN
 		RESET <= '0'; -- reset firmware
 		wait for 500 ns; -- turn HV_ON, Filament on
 		HV_ON_730 <= '0';
-		EMS_PWR_ERROR <= '0';  	-- good status	
+		EMS_PWR_ERROR <= '0';  	-- good status
 		RESET <= '1'; 			-- take out of reset state!
 		wait;             -- wait forever; i.e. don't cycle
 	end process;
@@ -228,7 +227,7 @@ BEGIN
    begin
 		T0 <= '1';
 		EMS_TRIG <= '1';
-		wait for 128 ns; 
+		wait for 128 ns;
 		T0 <= '0';
 		wait for 272 ns;
 		MOD_PULSE <= '1';
@@ -241,9 +240,9 @@ BEGIN
 		RX_GATE <= '0';
 		wait for 2928 ns;
    end process;
-	
+
 		SYNC_CLK: process   -- Generate 217 kHz sync clock
-   begin	 
+   begin
 		SYNC_PULSE_CLK <= '1';
 		wait for 2304 ns;
 		SYNC_PULSE_CLK <= '0';
@@ -254,7 +253,7 @@ BEGIN
 	variable CNT : integer range 0 to 1024;
 	begin
 		WG_SW_NOISE <= '0';  -- update switch status
-		WG_SW_TERM <= '1';		
+		WG_SW_TERM <= '1';
 		wait for 320 ns;  -- 320 ns is max delay measured
 -- Vertical transmit receive both
 		OPS_MODE_730 <= "100";   -- Next cycle ops mode is noise source
@@ -265,7 +264,7 @@ BEGIN
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';
-		
+
 		testbench_state <= 1;
 -- Loop for 1000 PRTs (~100 milliseconds to allow waveguide switch to switch
 		CNT := 0;
@@ -276,7 +275,7 @@ BEGIN
 				WG_SW_NOISE <= '0';  -- update switch status
 				WG_SW_TERM <= '1';
 			elsif (CNT = 1000) then
-				OPS_MODE_730 <= "001";  -- Next ops mode is vertical tx, simultaneous receive
+				OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "00";  -- Next ops mode is vertical tx, simultaneous receive
 				WG_SW_NOISE <= '1';  -- update switch status;
 				WG_SW_TERM <= '0';
 
@@ -308,16 +307,16 @@ BEGIN
 			when 114 => BIT_EMS(7) <= '1';
 			when others =>
 		end case;
-		wait for 99788 ns;	
+		wait for 99788 ns;
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';
 			CNT := CNT + 1;
 		end loop;
-		
+
 testbench_state <= 14;
 
-		
+
 -- Loop for 125 PRTs (~100 milliseconds to allow waveguide switch to switch
 	CNT := 0;
 	while (CNT < 125) loop
@@ -326,7 +325,7 @@ testbench_state <= 14;
 				WG_SW_NOISE <= '1';  -- update switch status;
 				WG_SW_TERM <= '0';
 		end if;
--- Vertical Tx, simultaneous receive	
+-- Vertical Tx, simultaneous receive
 		OPS_MODE_730 <= "101"; -- Next ops mode is corner reflector cal, vertical tx
 		BIT_EMS <= "0101110";
         assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
@@ -338,23 +337,23 @@ testbench_state <= 14;
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
 		STATUS_ACK <= '0';
-testbench_state <= 3;		
+testbench_state <= 3;
 -- Corner reflector cal, vertical tx w/reduced power on receive
-		wait for 320 ns;  -- 320 ns is max delay measured		
+		wait for 320 ns;  -- 320 ns is max delay measured
 		OPS_MODE_730 <= "110"; -- Next ops mode is Test Mode, no tx
 		BIT_EMS <= "0101110";
         assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 		wait for 1168 ns;
 		BIT_EMS <= "0000011";
         assert EMS_OUT = "0000011" report "Bad EMS_OUT at 0000011" severity failure;
-		wait for 99788 ns;		
+		wait for 99788 ns;
 		STATUS_ACK <= '1';  -- clear status every PRT for testing
 		wait for 100 ns;
-		STATUS_ACK <= '0';		
+		STATUS_ACK <= '0';
 testbench_state <= 4;
 -- Test Mode, no tx
-			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "000";  -- Next ops mode is horizontal tx, simultaneous receive
+			wait for 320 ns;  -- 320 ns is max delay measured
+			OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "01";  -- Next ops mode is horizontal tx, simultaneous receive
 			BIT_EMS <= "0101110";
         assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 			wait for 1168 ns;
@@ -365,8 +364,8 @@ testbench_state <= 4;
 			wait for 100 ns;
 			STATUS_ACK <= '0';
 -- Ops Mode, horizontal tx
-			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV V tx, simultaneous receive
+			wait for 320 ns;  -- 320 ns is max delay measured
+			OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "10";  -- Next ops mode is HHVV V tx, simultaneous receive
 			BIT_EMS <= "0101001";
         assert EMS_OUT = "0101001" report "Bad EMS_OUT at 0101001" severity failure;
 			wait for 1168 ns;
@@ -375,10 +374,10 @@ testbench_state <= 4;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
-			STATUS_ACK <= '0';	
+			STATUS_ACK <= '0';
 -- Ops Mode, HHVV
-			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV H tx, simultaneous receive
+			wait for 320 ns;  -- 320 ns is max delay measured
+			OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "10";  -- Next ops mode is HHVV H tx, simultaneous receive
 			BIT_EMS <= "0101110";
         assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 			wait for 1168 ns;
@@ -387,10 +386,10 @@ testbench_state <= 4;
 			wait for 99788 ns;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
-			STATUS_ACK <= '0';	
+			STATUS_ACK <= '0';
 
-			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV H tx, simultaneous receive
+			wait for 320 ns;  -- 320 ns is max delay measured
+			OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "10";  -- Next ops mode is HHVV H tx, simultaneous receive
 			BIT_EMS <= "0101001";
         assert EMS_OUT = "0101001" report "Bad EMS_OUT at 0101001" severity failure;
 			wait for 1168 ns;
@@ -400,9 +399,9 @@ testbench_state <= 4;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
 			STATUS_ACK <= '0';
-			
-			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "010";  -- Next ops mode is HHVV V tx, simultaneous receive
+
+			wait for 320 ns;  -- 320 ns is max delay measured
+			OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "10";  -- Next ops mode is HHVV V tx, simultaneous receive
 			BIT_EMS <= "0101001";
         assert EMS_OUT = "0101001" report "Bad EMS_OUT at 0101001" severity failure;
 			wait for 1168 ns;
@@ -412,9 +411,9 @@ testbench_state <= 4;
 			STATUS_ACK <= '1';  -- clear status every PRT for testing
 			wait for 100 ns;
 			STATUS_ACK <= '0';
-			
-			wait for 320 ns;  -- 320 ns is max delay measured		
-			OPS_MODE_730 <= "001";  -- Next ops mode is vertical tx, simultaneous receive
+
+			wait for 320 ns;  -- 320 ns is max delay measured
+			OPS_MODE_730 <= o"2"; POL_MODE_PENTEK <= "00";  -- Next ops mode is vertical tx, simultaneous receive
 			BIT_EMS <= "0101110";
         assert EMS_OUT = "0101110" report "Bad EMS_OUT at 0101110" severity failure;
 			wait for 1168 ns;
@@ -427,6 +426,6 @@ testbench_state <= 4;
 		CNT := CNT + 1;
 	end loop;
 assert false report "(NO FAILURE) End of stimulus" severity failure;
-	end process;  
+	end process;
 END;
 
