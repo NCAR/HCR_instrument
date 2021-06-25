@@ -665,13 +665,13 @@ begin
             case state is
                 when s0 => -- Idle state
 
-                    if (EMS_TRIG = '1' and T0 = '1' -- Triggered by scheduler
+                    if EMS_TRIG = '1' and T0 = '1' -- Triggered by scheduler
                         and tx_ems_switch_dly = '0' -- Haven't timed out yet
                         and rx_ems_switch_dly = '0' -- Haven't timed out yet
                         and ems_pwr_ok = '1'        -- Power is ok
                         and wg_stat_ok = '1'        -- Waveguide is ok
                                                     -- Either high voltage is on OR we are in a opsmode that doesn't need hv
-                        and (hv_powerup_dly = '1' or ops_mode = OP_MODE_TEST or ops_mode = OP_MODE_NOISE or ops_mode = OP_MODE_ISOL_NOISE)) then
+                        and (hv_powerup_dly = '1' or ops_mode = OP_MODE_TEST or ops_mode = OP_MODE_NOISE or ops_mode = OP_MODE_ISOL_NOISE) then
                             state <= s1;
                     end if;
 
@@ -679,46 +679,43 @@ begin
 
                 when s1 => -- Configure for transmit
 
-                    if (ems_tx_ok = '1'             -- EMS is good 
-                        and rx_ems_switch_dly = '0' -- Didn't timeout waiting for good EMS
+                    if ems_tx_ok = '1'              -- EMS is good
                         and ems_pwr_ok = '1'        -- Power is still good
                                                     -- Either high voltage is on OR we are in a opsmode that doesn't need hv
-                        and ( hv_powerup_dly = '1' OR ops_mode = OP_MODE_TEST or ops_mode = OP_MODE_NOISE or ops_mode = OP_MODE_ISOL_NOISE)) then
+                        and ( hv_powerup_dly = '1' OR ops_mode = OP_MODE_TEST or ops_mode = OP_MODE_NOISE or ops_mode = OP_MODE_ISOL_NOISE) then
 
                             state <= s2;
+                    end if;
 
-                        -----------------------------------------------------------------------------------------------------
-                        --                WHY AREN'T ALL STATES COVERED HERE???
-
-                    elsif (ops_mode = OP_MODE_H_TX and hv_powerup_dly = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '1') then
-                        state <= s0;
-                    elsif (ops_mode = OP_MODE_V_TX and hv_powerup_dly = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '1') then
-                        state <= s0;
-                    elsif (ops_mode = OP_MODE_CREF_H and hv_powerup_dly = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '1') then
-                        state <= s0;
-                    elsif (ops_mode = OP_MODE_CREF_V and hv_powerup_dly = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '1') then
+                    -- Cancel if the state doesn't become good by the timeout
+                    if rx_ems_switch_dly = '1' then
                         state <= s0;
                     end if;
 
-                    -------------------------------------------------------------------------------------------------------------
-                when s2 => -- Transmit (if in a transmitting mode) or wait (if not)
-                    if (ops_mode = OP_MODE_TEST and tx_ems_switch_dly = '1' and ems_pwr_ok = '1') then -- Test Mode
-                        state <= s3;
-                    elsif (ops_mode = OP_MODE_NOISE and tx_ems_switch_dly = '1' and ems_pwr_ok = '1') then -- Noise source cal
-                        state <= s3;
-                    elsif (ops_mode = OP_MODE_ISOL_NOISE and tx_ems_switch_dly = '1' and ems_pwr_ok = '1') then -- Noise source isolation test
-                        state <= s3;
-                    elsif (rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' and hv_powerup_dly = '1' and ems_pwr_ok = '1') then
-                        state <= s3;
-                    elsif (rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' and hv_powerup_dly = '0' and ems_pwr_ok = '1') then
-                        state <= s0;
-                    elsif (rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' and hv_powerup_dly = '1' and ems_pwr_ok = '0') then
-                        state <= s0;
-                    elsif (rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' and hv_powerup_dly = '0' and ems_pwr_ok = '0') then
-                        state <= s0;
+                when s2 => -- Transmit (if in a transmitting mode) or continue (if not)
+
+                    if (ops_mode = OP_MODE_TEST or ops_mode = OP_MODE_NOISE or ops_mode = OP_MODE_ISOL_NOISE) then
+                        -- The non-transmitting opmodes can skip right to RX after the switch delay
+                        if tx_ems_switch_dly = '1' then
+                            state <= s3;
+                        end if;
+                        -- Cancel if power is lost
+                        if ems_pwr_ok = '0' then
+                            state <= s0;
+                        end if;
+                    else -- TX modes
+                        -- When TX is done, proceed to RX
+                        if rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' then
+                            state <= s3;
+                        end if;
+                        --Cancel if high voltage or ems power is lost
+                        if hv_powerup_dly = '0' or ems_pwr_ok = '0' then
+                            state <= s0;
+                        end if;
                     end if;
+
                 when s3 => -- Receive
-                    if (RX_GATE = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '0') then
+                    if RX_GATE = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '0' then
                         state <= s0;
                     end if;
                 when others =>
