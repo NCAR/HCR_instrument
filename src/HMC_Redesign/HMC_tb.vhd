@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
--- Company:
--- Engineer:
+-- Company:   NCAR/EOL
+-- Engineer:  Loew
 --
 -- Create Date:   15:38:24 05/29/2013
 -- Design Name:
@@ -12,11 +12,8 @@
 --
 -- VHDL Test Bench Created by ISE for module: HMC_src
 --
--- Dependencies:
---
 -- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- HMC V5 updates: 7/2/21 - Karboski
 --
 -- Notes:
 -- This testbench has been automatically generated using types std_logic and
@@ -27,10 +24,6 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
 
 -----------------------------------------------------------------------------------------
 -- NEED TO RUN SIMULATION FOR 1016 MILLISECONDS TO SEE CORRECT BEHAVIOR !!!
@@ -251,8 +244,8 @@ BEGIN
     EMS_BIT: process -- Generate EMS BIT response; Ops mode will use previous state for current cycle
     variable CNT : integer range 0 to 1024;
     begin
-        WG_SW_NOISE <= '0';  -- update switch status
-        WG_SW_TERM <= '1';
+        WG_SW_NOISE <= '1';  -- update switch status
+        WG_SW_TERM <= '0';
         wait for 320 ns;  -- 320 ns is max delay measured
 -- Vertical transmit receive both
         OPS_MODE_730 <= "100";   -- Next cycle ops mode is noise source
@@ -265,25 +258,26 @@ BEGIN
         STATUS_ACK <= '0';
 
         testbench_state <= 1;
--- Loop for 1000 PRTs (~100 milliseconds to allow waveguide switch to switch
+-- Loop for 200 PRTs
         CNT := 0;
-        while (CNT <= 1000) loop
+        while (CNT <= 200) loop
         wait for 320 ns;  -- 320 ns is max delay measured
 --     Noise source cal
-            if (CNT = 988) then
+            if (CNT = 20) then
                 WG_SW_NOISE <= '0';  -- update switch status
                 WG_SW_TERM <= '1';
-            elsif (CNT = 1000) then
+            elsif (CNT = 200) then
                 OPS_MODE_730 <= o"2";
                 HVn_CMD_PENTEK <= '0';  -- Next ops mode is vertical tx, simultaneous receive
                 WG_SW_NOISE <= '1';  -- update switch status;
                 WG_SW_TERM <= '0';
-
             else
                 OPS_MODE_730 <= "100"; -- keep in Noise source cal mode
             end if;
         BIT_EMS <= "0101101";
-        assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+        if (CNT > 25) then
+            assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+        end if;
         case CNT is
             when 101 => BIT_EMS(1) <= '0';
             when 102 => BIT_EMS(2) <= '1';
@@ -296,7 +290,9 @@ BEGIN
         end case;
         wait for 1168 ns;
         BIT_EMS <= "0101101";
-        assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+        if (CNT > 25) then
+            assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+        end if;
         case CNT is
             when 108 => BIT_EMS(1) <= '0';
             when 109 => BIT_EMS(2) <= '1';

@@ -1,26 +1,18 @@
 ----------------------------------------------------------------------------------
--- Company:
--- Engineer:
+-- Company:        NCAR/EOL
+-- Engineer:       Loew
 --
 -- Create Date:    15:01:07 07/17/2012
--- Design Name:
--- Module Name:    main_src - Behavioral
--- Project Name:
--- Target Devices:
--- Tool versions:
--- Description:
---
--- Dependencies:
+-- Module Name:    HMC_src - Behavioral
+-- Project Name:   HCR
 --
 -- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- HMC V5 updates: 7/2/21 - Karboski
 --
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use IEEE.std_logic_arith.all;
-use IEEE.std_logic_unsigned.all;
+use IEEE.numeric_std.all;
 
 entity HMC_src is
     generic (
@@ -144,7 +136,7 @@ architecture Behavioral of HMC_src is
     constant EMS_VERTTX_TX          : std_logic_vector(7 downto 1) := "0101110";
     constant EMS_VERTTX_RX          : std_logic_vector(7 downto 1) := "1010011";
     constant EMS_CREF_RX            : std_logic_vector(7 downto 1) := "0000010";
-    constant EMS_CREF_NOISE_RX      : std_logic_vector(7 downto 1) := "0000011";
+    constant EMS_CREF_INCNF_RX      : std_logic_vector(7 downto 1) := "0000011";
     constant EMS_NOISE_CAL          : std_logic_vector(7 downto 1) := "0101101";
 
     -- Enumeration of OPS_MODE_730
@@ -168,24 +160,31 @@ architecture Behavioral of HMC_src is
         OP_MODE_ISOL_NOISE    -- vertical transmit, receive both, but enable noise source for testing
     );
 
+    constant C_1S_DELAY         : integer := 15728640;
+    constant C_100MS_DELAY      : integer := 1562499;
+    constant C_TESTBENCH_DELAY  : integer := 1562;
+    constant C_EMS_DELAY        : integer := 4;
+    signal   C_U6_DELAY         : integer; --set later
+    signal   C_HV_DELAY         : integer;
+    signal   C_WG_DELAY         : integer;
+
     --   Signal declarations
 
     signal ems_pwr_ok           : std_logic;
-    signal hv_powerup_dly               : std_logic;
-    signal hv_count             : std_logic_vector(23 downto 0);
+    signal hv_powerup_dly       : std_logic;
+    signal hv_count             : unsigned(23 downto 0);
     signal count_enable         : std_logic;
-    signal U6_count             : std_logic_vector(23 downto 0);
+    signal U6_count             : unsigned(23 downto 0);
     signal U6_dly               : std_logic;
     signal U6_count_enable      : std_logic;
     signal wg_dly               : std_logic;
-    signal wg_count             : std_logic_vector(20 downto 0);
-    signal wg_count_enable      : std_logic;
+    signal wg_count             : unsigned(20 downto 0);
     signal wg_change_state      : std_logic;
-    signal wg_stat_ok              : std_logic;
-    signal tx_ems_switch_dly               : std_logic; -- Delay before reading EMS BIT on transmit
-    signal ems_tx_count         : std_logic_vector(4 downto 0);
-    signal rx_ems_switch_dly               : std_logic; -- Delay before reading EMS BIT on receive
-    signal ems_rx_count         : std_logic_vector(4 downto 0);
+    signal wg_stat_ok           : std_logic;
+    signal tx_ems_switch_dly    : std_logic; -- Delay before reading EMS BIT on transmit
+    signal ems_tx_count         : unsigned(4 downto 0);
+    signal rx_ems_switch_dly    : std_logic; -- Delay before reading EMS BIT on receive
+    signal ems_rx_count         : unsigned(4 downto 0);
     signal l_ems_trig           : std_logic; -- Latched EMS_TRIG signal
     signal ems_tx_count_enable  : std_logic;
     signal ems_rx_count_enable  : std_logic;
@@ -214,8 +213,8 @@ architecture Behavioral of HMC_src is
     signal ems_67_error         : std_logic;
     signal mod_pulse_error      : std_logic;
     signal ems_error_prt        : std_logic;
-    signal l_tx_ems_switch_dly             : std_logic;
-    signal l_rx_ems_switch_dly             : std_logic;
+    signal l_tx_ems_switch_dly  : std_logic;
+    signal l_rx_ems_switch_dly  : std_logic;
     signal l_rx_gate            : std_logic;
     signal ops_mode_730_reg     : std_logic_vector(2 downto 0) := "000";
     signal ops_mode_730_reg2    : std_logic_vector(2 downto 0) := "000";
@@ -238,6 +237,10 @@ architecture Behavioral of HMC_src is
     signal resetn               : std_logic;
 
 begin
+
+    C_U6_DELAY <= C_TESTBENCH_DELAY when TESTBENCH_MODE else C_1S_DELAY;
+    C_HV_DELAY <= C_TESTBENCH_DELAY when TESTBENCH_MODE else C_1S_DELAY;
+    C_WG_DELAY <= C_TESTBENCH_DELAY when TESTBENCH_MODE else C_100MS_DELAY;
 
     -- Latch OPS_MODE and generate resetn_730
     LATCH_OPS_730 : process (EXT_CLK)
@@ -282,6 +285,7 @@ begin
 
     -- Check wavequide switch position    NEED to account for switch delay (~100 msec) before reporting status
     CHECK_WG : process (EXT_CLK, resetn)
+        variable v_wg_sw_pos : std_logic;
     begin
         if rising_edge(EXT_CLK) then
             if (wg_dly = '1') then
@@ -289,29 +293,40 @@ begin
                     if (WG_SW_TERM = '1' and WG_SW_NOISE = '0') then
                         WG_SW_ERROR <= '0';
                         wg_stat_ok  <= '1'; -- good status
-                        wg_sw_pos   <= '1';
+                        v_wg_sw_pos := '1';
                     else
                         WG_SW_ERROR <= '1';
                         wg_stat_ok  <= '0'; -- bad status
-                        wg_sw_pos   <= '0';
+                        v_wg_sw_pos := '0';
                     end if;
                 else
                     if (WG_SW_TERM = '0' and WG_SW_NOISE = '1') then
                         WG_SW_ERROR <= '0';
-                        wg_sw_pos   <= '0';
+                        v_wg_sw_pos := '0';
                         wg_stat_ok  <= '1'; -- good status
                     else
                         WG_SW_ERROR <= '1';
                         wg_stat_ok  <= '0'; -- bad status
-                        wg_sw_pos   <= '1';
+                        v_wg_sw_pos := '1';
                     end if;
                 end if;
-                wg_change_state <= wg_sw_pos xor cmd_wg_sw_pos;
+
+                if v_wg_sw_pos /= cmd_wg_sw_pos then
+                    wg_dly          <= '0';
+                end if;
+                wg_count            <= (others=>'0');
+                wg_sw_pos           <= v_wg_sw_pos;
             else -- waveguide switch is in transition
                 wg_sw_pos           <= '0';
                 wg_stat_ok          <= '0'; -- bad status; don't want to transmit in transition
                 WG_SW_ERROR         <= '0'; -- assume there is no error in transition
-                wg_change_state     <= '0';
+
+                if (wg_count = C_WG_DELAY) then -- 100 ms
+                    wg_count        <= (others=>'0');
+                    wg_dly          <= '1';
+                else
+                    wg_count        <= wg_count + 1;
+                end if;
             end if;
 
         end if; --RE CLK
@@ -320,6 +335,8 @@ begin
             wg_stat_ok              <= '0'; -- bad status
             WG_SW_ERROR             <= '0'; -- assume switch is not in error until we confirm where it is pointed
             wg_change_state         <= '0';
+            wg_count                <= (others=>'0');
+            wg_dly                  <= '0';
         end if;
     end process;
 
@@ -349,7 +366,7 @@ begin
                         ems_rx_error_vector     <= BIT_EMS xor EMS_NOISE_CAL;     --"0101101";
                     when OP_MODE_CREF_V => -- Corner reflector cal, vertical tx w/increased NF
                         ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
-                        ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_NOISE_RX; --"0000011";
+                        ems_rx_error_vector     <= BIT_EMS xor EMS_CREF_INCNF_RX; --"0000011";
                     when OP_MODE_TEST => -- Test Mode, no tx
                         ems_tx_error_vector     <= BIT_EMS xor EMS_VERTTX_TX;     --"0101110";
                         ems_rx_error_vector     <= BIT_EMS xor EMS_VERTTX_RX;     --"1010011";
@@ -502,7 +519,7 @@ begin
     begin
         if (rising_edge (EXT_CLK)) then
             if (HV_ON_730 = '0') then
-                if (hv_count = "111100000000000000000000") or TESTBENCH_MODE then -- ~1sec delay
+                if (hv_count = C_HV_DELAY) then -- 1 second
                     hv_count        <= (others=>'0');
                     count_enable    <= '0';
                     hv_powerup_dly  <= '1';
@@ -527,7 +544,7 @@ begin
     DELAY_U6_ENABLE : process (EXT_CLK, resetn)
     begin
         if (rising_edge (EXT_CLK)) then
-            if (U6_count = "111100000000000000000000") then -- ~1sec delay
+            if (U6_count = C_U6_DELAY) then -- 1 second
                 U6_count        <= (others=>'0');
                 U6_count_enable <= '0';
                 U6_dly          <= '1';
@@ -547,32 +564,6 @@ begin
     end process;
 
     U6_OE <= not U6_dly;
-
-    -- Sets 100 millisecond safety delay from waveguide switch command to switch in position
-    DELAY_100MSEC : process (EXT_CLK, resetn)
-    begin
-        if (rising_edge (EXT_CLK)) then
-            if (wg_change_state = '1') then -- waveguide switch is commanded to move
-                if (wg_count = "101111101011110000011") then -- ~100 millisec delay
-                    wg_count        <= (others=>'0');
-                    wg_count_enable <= '0';
-                    wg_dly          <= '1';
-                elsif (wg_count_enable = '1') then
-                    wg_count    <= wg_count + 1;
-                    wg_dly      <= '0';
-                end if;
-            else
-                wg_count        <= (others=>'0');
-                wg_dly          <= '1';
-                wg_count_enable <= '1';
-            end if;
-        end if; --RE CLK
-        if (resetn = '0') then
-            wg_count            <= (others=>'0');
-            wg_dly              <= '0';
-            wg_count_enable     <= '1';
-        end if;
-    end process;
 
     -- Generate registered EMS_TRIG
     LATCH_EMS_TRIG : process (EXT_CLK, resetn)
@@ -603,20 +594,20 @@ begin
     begin
         if (rising_edge (EXT_CLK)) then
             if (ems_tx_count_enable = '1') then
-                if (ems_tx_count = "00100") then
-                    ems_tx_count        <= "00000";
+                if (ems_tx_count = C_EMS_DELAY) then
+                    ems_tx_count        <= (others=>'0');
                     tx_ems_switch_dly   <= '1';
                 else
-                    ems_tx_count    <= ems_tx_count + 1;
+                    ems_tx_count        <= ems_tx_count + 1;
                 end if;
             else
-                ems_tx_count        <= "00000";
-                tx_ems_switch_dly   <= '0';
+                ems_tx_count            <= (others=>'0');
+                tx_ems_switch_dly       <= '0';
             end if;
         end if; --RE CLK
         if (resetn = '0') then
-            ems_tx_count            <= "00000";
-            tx_ems_switch_dly       <= '0';
+            ems_tx_count                <= (others=>'0');
+            tx_ems_switch_dly           <= '0';
         end if;
     end process;
 
@@ -625,20 +616,20 @@ begin
     begin
         if (rising_edge (EXT_CLK)) then
             if (ems_rx_count_enable = '1') then
-                if (ems_rx_count = "00100") then
-                    ems_rx_count        <= "00000";
+                if (ems_rx_count = C_EMS_DELAY) then
+                    ems_rx_count        <= (others=>'0');
                     rx_ems_switch_dly   <= '1';
                 else
-                    ems_rx_count    <= ems_rx_count + 1;
+                    ems_rx_count        <= ems_rx_count + 1;
                 end if;
             else
-                ems_rx_count        <= "00000";
-                rx_ems_switch_dly   <= '0';
+                ems_rx_count            <= (others=>'0');
+                rx_ems_switch_dly       <= '0';
             end if;
         end if; --RE CLK
         if (resetn = '0') then
-            ems_rx_count            <= "00000";
-            rx_ems_switch_dly       <= '0';
+            ems_rx_count                <= (others=>'0');
+            rx_ems_switch_dly           <= '0';
         end if;
     end process;
 
