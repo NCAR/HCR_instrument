@@ -16,18 +16,14 @@
 -- HMC V5 updates: 7/2/21 - Karboski
 --
 -- Notes:
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation
--- simulation model.
+--
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
------------------------------------------------------------------------------------------
--- NEED TO RUN SIMULATION FOR 1016 MILLISECONDS TO SEE CORRECT BEHAVIOR !!!
------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- NEED TO 'RUN ALL' TO SEE CORRECT BEHAVIOR.
+--------------------------------------------------------------------------------
 
 ENTITY HMC_tb IS
 END HMC_tb;
@@ -48,7 +44,7 @@ ARCHITECTURE behavior OF HMC_tb IS
         HVn_CMD_PENTEK    : in  std_logic; -- HV command from the Pentek. Was TX_GATE
         EXT_CLK           : in  std_logic; -- 15.625 MHz clock;    125 MHz/8
         SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 MHz clock; 125 MHz/8/72
-        HV_FLAG           : out std_logic;
+        HVn_FLAG          : out std_logic;
         ONE_PPS           : in  std_logic;
         EMS_PWR_ERROR     : in  std_logic;
         HV_ON_730         : in  std_logic; -- High voltage cmd from PMC730
@@ -61,10 +57,10 @@ ARCHITECTURE behavior OF HMC_tb IS
         SYNC_PULSE_HMC    : out std_logic;
         HV_ON_HMC         : out std_logic;
         FIL_ON_HMC        : out std_logic;
-        WG_SW_TERM        : in  std_logic; -- BIT indication when waveguide switch is into load
-        WG_SW_NOISE       : in  std_logic; -- BIT indication when waveguide switch is into noise source
-        WG_SW_CTRL_TERM   : out std_logic; -- Terminate waveguide switch into load
-        WG_SW_CTRL_NOISE  : out std_logic; -- Terminate waveguide switch into noise source
+        WG_SW_TERMn       : in  std_logic; -- BIT indication when waveguide switch is into load
+        WG_SW_NOISEn      : in  std_logic; -- BIT indication when waveguide switch is into noise source
+        WG_SW_CTRL_TERMn  : out std_logic; -- Terminate waveguide switch into load
+        WG_SW_CTRL_NOISEn : out std_logic; -- Terminate waveguide switch into noise source
         NOISE_SOURCE_EN   : out std_logic; -- Turn on noise source
         WG_SW_ERROR       : out std_logic; -- Waveguide switch BIT doesn't match command
         MOD_PULSE_DISABLE : out std_logic; -- Fault sum status
@@ -102,8 +98,8 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal OPS_MODE_730 : std_logic_vector(2 downto 0) := (others => '0');
    signal STATUS_ACK : std_logic := '0';
    signal BIT_EMS : std_logic_vector(7 downto 1) := (others => '0');
-   signal WG_SW_TERM : std_logic := '0';
-   signal WG_SW_NOISE : std_logic := '1';
+   signal WG_SW_TERMn : std_logic := '0';
+   signal WG_SW_NOISEn : std_logic := '1';
    signal TEST_BIT_0 : std_logic := '0';
    signal TEST_BIT_1 : std_logic := '0';
 
@@ -113,8 +109,8 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal SYNC_PULSE_HMC : std_logic;
    signal HV_ON_HMC : std_logic;
    signal FIL_ON_HMC : std_logic;
-   signal WG_SW_CTRL_TERM : std_logic;
-   signal WG_SW_CTRL_NOISE : std_logic;
+   signal WG_SW_CTRL_TERMn : std_logic;
+   signal WG_SW_CTRL_NOISEn : std_logic;
    signal NOISE_SOURCE_EN : std_logic;
    signal WG_SW_ERROR : std_logic;
    signal MOD_PULSE_DISABLE : std_logic;
@@ -127,7 +123,7 @@ ARCHITECTURE behavior OF HMC_tb IS
    signal SPARE_STATUS0 : std_logic;
    signal SPARE_STATUS1 : std_logic;
    signal U6_OE : std_logic;
-   signal HV_FLAG : std_logic;
+   signal HVn_FLAG : std_logic;
    signal SPARE2 : std_logic;
    signal SPARE3 : std_logic;
 
@@ -162,10 +158,10 @@ BEGIN
         SYNC_PULSE_HMC => SYNC_PULSE_HMC,
         HV_ON_HMC => HV_ON_HMC,
         FIL_ON_HMC => FIL_ON_HMC,
-        WG_SW_TERM => WG_SW_TERM,
-        WG_SW_NOISE => WG_SW_NOISE,
-        WG_SW_CTRL_TERM => WG_SW_CTRL_TERM,
-        WG_SW_CTRL_NOISE => WG_SW_CTRL_NOISE,
+        WG_SW_TERMn => WG_SW_TERMn,
+        WG_SW_NOISEn => WG_SW_NOISEn,
+        WG_SW_CTRL_TERMn => WG_SW_CTRL_TERMn,
+        WG_SW_CTRL_NOISEn => WG_SW_CTRL_NOISEn,
         NOISE_SOURCE_EN => NOISE_SOURCE_EN,
         WG_SW_ERROR => WG_SW_ERROR,
         MOD_PULSE_DISABLE => MOD_PULSE_DISABLE,
@@ -180,7 +176,7 @@ BEGIN
         SPARE_STATUS0 => SPARE_STATUS0,
         SPARE_STATUS1 => SPARE_STATUS1,
         U6_OE => U6_OE,
-        HV_FLAG => HV_FLAG,
+        HVn_FLAG => HVn_FLAG,
         SPARE2 => SPARE2,
         SPARE3 => SPARE3
         );
@@ -244,8 +240,8 @@ BEGIN
     EMS_BIT: process -- Generate EMS BIT response; Ops mode will use previous state for current cycle
     variable CNT : integer range 0 to 1024;
     begin
-        WG_SW_NOISE <= '1';  -- update switch status
-        WG_SW_TERM <= '0';
+        WG_SW_NOISEn <= '1';  -- update switch status
+        WG_SW_TERMn <= '0';
         wait for 320 ns;  -- 320 ns is max delay measured
 -- Vertical transmit receive both
         OPS_MODE_730 <= "100";   -- Next cycle ops mode is noise source
@@ -264,13 +260,13 @@ BEGIN
         wait for 320 ns;  -- 320 ns is max delay measured
 --     Noise source cal
             if (CNT = 20) then
-                WG_SW_NOISE <= '0';  -- update switch status
-                WG_SW_TERM <= '1';
+                WG_SW_NOISEn <= '0';  -- update switch status
+                WG_SW_TERMn <= '1';
             elsif (CNT = 200) then
                 OPS_MODE_730 <= o"2";
                 HVn_CMD_PENTEK <= '0';  -- Next ops mode is vertical tx, simultaneous receive
-                WG_SW_NOISE <= '1';  -- update switch status;
-                WG_SW_TERM <= '0';
+                WG_SW_NOISEn <= '1';  -- update switch status;
+                WG_SW_TERMn <= '0';
             else
                 OPS_MODE_730 <= "100"; -- keep in Noise source cal mode
             end if;
@@ -318,8 +314,8 @@ testbench_state <= 14;
     while (CNT < 125) loop
         wait for 320 ns;  -- 320 ns is max delay measured
         if (CNT = 123) then
-                WG_SW_NOISE <= '1';  -- update switch status;
-                WG_SW_TERM <= '0';
+                WG_SW_NOISEn <= '1';  -- update switch status;
+                WG_SW_TERMn <= '0';
         end if;
 -- Vertical Tx, simultaneous receive
         OPS_MODE_730 <= "101"; -- Next ops mode is corner reflector cal, vertical tx
