@@ -264,7 +264,7 @@ private:
     bool _ddcEnable;
     
     /// @brief The pulse sequencer definitions that describe the radar timeline
-    std::vector<Controller::PulseDefinition> _pulseDefinitions;
+    std::vector<Controller::PulseBlockDefinition> _pulseBlockDefinitions;
 
     /// @brief IwrfPublisher instance for publishing long-pulse IWRF time
     /// series data

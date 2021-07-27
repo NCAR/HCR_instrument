@@ -17,12 +17,13 @@ public:
 
     RadarController(const FPGA& fpgaInstance, uint32_t baseAddr) : fpga(fpgaInstance), base(baseAddr) {};
 
-    struct PulseDefinition
+    struct PulseBlockDefinition
     {
         uint32_t prt[2];            // Pulse repetition time(s) in cycles. Set unused PRTs to 0
         uint32_t numPulses;         // Generate this many pulses
         uint32_t blockPostTime;     // Time at the end of the group of pulses, in cycles
         uint32_t controlFlags;      // Set the CONTROL_FLAGS output to this value
+        uint32_t polarizationMode;  // Set the polarization mode
         uint32_t filterSelectCh0;   // Select this filter for ADC channel 0
         uint32_t filterSelectCh1;   // Select this filter for ADC channel 1
         uint32_t filterSelectCh2;   // Select this filter for ADC channel 2
@@ -48,7 +49,7 @@ public:
         } statusFlags;
         uint32_t posEnc0;
         uint32_t posEnc1;
-        uint32_t pulseDefinitionNumber;
+        uint32_t pulseBlockDefinitionNumber;
         uint32_t numSamples;
         uint32_t prt;
         uint32_t spare;
@@ -56,7 +57,7 @@ public:
 
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
     static constexpr uint32_t NUM_TOTAL_FILTER_COEFS                  = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_FILTER_COEFS_CH0;
-    static constexpr uint32_t NUM_FILTER_COEF_SETS                    = 4;
+    static constexpr uint32_t NUM_FILTER_COEF_SETS                    = 8;
     static constexpr uint32_t INFINITE_PULSES                         = 0;
     static constexpr uint32_t HEADER_MAGIC                            = 0xba5eba11;
 
@@ -69,6 +70,12 @@ public:
         MOD_PULSE,   // timer 5 is the mod pulse
         EMS_TRIG,    // timer 6 is the EMS trigger
         TIMER_7      // timer 7 is spare
+    };
+
+    enum PolarizationModes {
+        POL_MODE_V,
+        POL_MODE_H,
+        POL_MODE_HHVV
     };
 
 private :
@@ -90,6 +97,7 @@ private :
         PULSE_SEQUENCE_NUM_PULSES               = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE,
         PULSE_SEQUENCE_BLOCK_POST_TIME          = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE,
         PULSE_SEQUENCE_CONTROL_FLAGS            = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE,
+        PULSE_SEQUENCE_POLARIZATION_MODE        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE,
         PULSE_SEQUENCE_FILTER_SELECT_CH0        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE,
         PULSE_SEQUENCE_FILTER_SELECT_CH1        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE,
         PULSE_SEQUENCE_FILTER_SELECT_CH2        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE,
@@ -129,51 +137,52 @@ private :
 
 public:
 
-    void writePulseDefinition(const PulseDefinition& pulseDef, size_t index)
+    void writePulseBlockDefinition(const PulseBlockDefinition& blockDef, size_t index)
     {
         if (index>=NUM_PULSE_SEQUENCE_DEFINITIONS)
             throw std::runtime_error("Too many pulse definitions");
-std::cout << pulseDef.prt[0];
+
 	//These checks are HCR-specific. They avoid drifting relative to the 156.25MHz IF
-        if (pulseDef.prt[0] % 8 != 0)
+        if (blockDef.prt[0] % 8 != 0)
             throw std::runtime_error("PRT0 must be a multiple of 64ns");
 
-        if (pulseDef.prt[1] % 8 != 0)
+        if (blockDef.prt[1] % 8 != 0)
             throw std::runtime_error("PRT1 must be a multiple of 64ns");
 
-        if (pulseDef.blockPostTime % 8 != 0)
+        if (blockDef.blockPostTime % 8 != 0)
             throw std::runtime_error("Post-time must be a multiple of 64ns");
 
         const std::string action = "Writing pulse definition";
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_0             , pulseDef.prt[0],           action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_1             , pulseDef.prt[1],           action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_NUM_PULSES        , pulseDef.numPulses,        action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_BLOCK_POST_TIME   , pulseDef.blockPostTime,    action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_CONTROL_FLAGS     , pulseDef.controlFlags,     action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH0 , pulseDef.filterSelectCh0,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH1 , pulseDef.filterSelectCh1,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH2 , pulseDef.filterSelectCh2,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_0    , pulseDef.timers[0].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_1    , pulseDef.timers[1].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_2    , pulseDef.timers[2].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_3    , pulseDef.timers[3].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_4    , pulseDef.timers[4].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_5    , pulseDef.timers[5].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_6    , pulseDef.timers[6].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_7    , pulseDef.timers[7].offset, action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_0     , pulseDef.timers[0].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_1     , pulseDef.timers[1].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_2     , pulseDef.timers[2].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_3     , pulseDef.timers[3].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_4     , pulseDef.timers[4].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_5     , pulseDef.timers[5].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_6     , pulseDef.timers[6].width,  action);
-        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_7     , pulseDef.timers[7].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_0             , blockDef.prt[0],           action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_1             , blockDef.prt[1],           action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_NUM_PULSES        , blockDef.numPulses,        action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_BLOCK_POST_TIME   , blockDef.blockPostTime,    action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_CONTROL_FLAGS     , blockDef.controlFlags,     action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_POLARIZATION_MODE , blockDef.polarizationMode, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH0 , blockDef.filterSelectCh0,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH1 , blockDef.filterSelectCh1,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH2 , blockDef.filterSelectCh2,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_0    , blockDef.timers[0].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_1    , blockDef.timers[1].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_2    , blockDef.timers[2].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_3    , blockDef.timers[3].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_4    , blockDef.timers[4].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_5    , blockDef.timers[5].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_6    , blockDef.timers[6].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_7    , blockDef.timers[7].offset, action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_0     , blockDef.timers[0].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_1     , blockDef.timers[1].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_2     , blockDef.timers[2].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_3     , blockDef.timers[3].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_4     , blockDef.timers[4].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_5     , blockDef.timers[5].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_6     , blockDef.timers[6].width,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_WIDTH_7     , blockDef.timers[7].width,  action);
     };
 
-    void writePulseDefinitions(const std::vector<PulseDefinition>& pulseDefs, size_t startIndex = 0)
+    void writePulseBlockDefinitions(const std::vector<PulseBlockDefinition>& blockDefs, size_t startIndex = 0)
     {
-        for (auto&& def : pulseDefs) writePulseDefinition(def, startIndex++);
+        for (auto&& def : blockDefs) writePulseBlockDefinition(def, startIndex++);
     }
 
     void writeFilterCoefs(const std::vector<double>& coefs, int chan)

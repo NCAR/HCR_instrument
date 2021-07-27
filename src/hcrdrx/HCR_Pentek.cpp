@@ -203,7 +203,7 @@ HCR_Pentek::_startRadar() {
 
     // Start the radar controller
     _controller.run(0,                              // sequenceStartIndex,
-                    _pulseDefinitions.size(),       // sequenceLength,
+                    _pulseBlockDefinitions.size(),       // sequenceLength,
                     ddcDecimation(),                // ddcDcimation,
                     2,                              // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
@@ -391,6 +391,10 @@ HCR_Pentek::_setupBoard() const {
 //                                 NAV_INTR_DATA_IO_CLOCK_A, 0,
 //                                 NAV_IP_CDC_CLK_INTRFC_INTR_CLK_NOT_OK,
 //                                 &clockLostIntrHandler, NULL);
+
+
+    // Set up the HMC clock. It is always 64ns (same as the DDC output)
+    writeLiteRegister_(BLOCK2_GPR_BASE+12, ddcDecimation(), "Setting HMC clock divider");
 
     //Clear the debug PPS
     writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Clear debug PPS");
@@ -746,19 +750,19 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
             return;
         }
 
-        if(pulseHeader.pulseDefinitionNumber >= _pulseDefinitions.size()) {
-            ELOG << "Bad pulse definition " << pulseHeader.pulseDefinitionNumber
+        if(pulseHeader.pulseBlockDefinitionNumber >= _pulseBlockDefinitions.size()) {
+            ELOG << "Bad pulse definition " << pulseHeader.pulseBlockDefinitionNumber
                  << " chan " << chan << " pulse " << numPulsesProcessed;
             return;
         }
 
         // Lookup the pulse definition
-        const Controller::PulseDefinition& pulseDef = _pulseDefinitions[pulseHeader.pulseDefinitionNumber];
+        const Controller::PulseBlockDefinition& blockDef = _pulseBlockDefinitions[pulseHeader.pulseBlockDefinitionNumber];
 
         // Number of data values
         uint32_t nGates = pulseHeader.numSamples;
         //if(!chan) {
-        //    ILOG << "k " << pulseHeader.pulseDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
+        //    ILOG << "k " << pulseHeader.pulseBlockDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
         //    << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
         //}
 
@@ -771,7 +775,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
 
         // Add the post-time if applicable
         if(pulseHeader.statusFlags.lastPulseInBlock) {
-            clockOffsetCount += pulseDef.blockPostTime;
+            clockOffsetCount += blockDef.blockPostTime;
         }
 
         // Check if done
@@ -1094,30 +1098,31 @@ void
 HCR_Pentek::_setupController()
 {
 
-    //Define dwell(s) and add them to the pulse definitions
-    Controller::PulseDefinition dwell =
+    //Define block(s) and add them to the pulse definitions
+    Controller::PulseBlockDefinition block =
     {
         .prt = {1564*ddcDecimation(),0},
         .numPulses = 100,
         .blockPostTime = 0,
         .controlFlags = 0xBEAF,
+        .polarizationMode = Controller::PolarizationModes::POL_MODE_H,
         .filterSelectCh0 = 0,
         .filterSelectCh1 = 0,
         .filterSelectCh2 = 0,
         .timers = {}
     };
-    dwell.timers[Controller::Timers::MASTER_SYNC] = {1*ddcDecimation(), 8*ddcDecimation()};
-    dwell.timers[Controller::Timers::RX_0] = {4*ddcDecimation(), 1000000}; // rx offset <32 triggers a FPGA bug
-    dwell.timers[Controller::Timers::RX_1] = {4*ddcDecimation(), 1000000};
-    dwell.timers[Controller::Timers::RX_2] = {4*ddcDecimation(), 1000000};
-    dwell.timers[Controller::Timers::TX_PULSE] = {8*ddcDecimation(), 1000};
-    dwell.timers[Controller::Timers::MOD_PULSE] = {8*ddcDecimation(), 10*ddcDecimation()};
-    dwell.timers[Controller::Timers::EMS_TRIG] = {10*ddcDecimation(), 10*ddcDecimation()};
-    dwell.timers[Controller::Timers::TIMER_7] = {0, 0};
-    _pulseDefinitions.push_back(dwell);
+    block.timers[Controller::Timers::MASTER_SYNC] = {0, 8*ddcDecimation()};
+    block.timers[Controller::Timers::RX_0] = {4*ddcDecimation(), 1000000}; // rx offset <32 triggers a FPGA bug
+    block.timers[Controller::Timers::RX_1] = {8*ddcDecimation(), 1000000};
+    block.timers[Controller::Timers::RX_2] = {4*ddcDecimation(), 1000000};
+    block.timers[Controller::Timers::TX_PULSE] = {4*ddcDecimation(), 1000000};
+    block.timers[Controller::Timers::MOD_PULSE] = {4*ddcDecimation(), 1000000};
+    block.timers[Controller::Timers::EMS_TRIG] = {4*ddcDecimation(), 1000000};
+    block.timers[Controller::Timers::TIMER_7] = {4*ddcDecimation(), 1000000};
+    _pulseBlockDefinitions.push_back(block);
 
     // Write the pulse definitions
-    _controller.writePulseDefinitions(_pulseDefinitions);
+    _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
 
     // Write the coefficients that the controller will use to populate the pulse filters
     for(int chan=0; chan<_adcCount; chan++)
