@@ -1,0 +1,36 @@
+ISim log file
+Running: /home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_isim_beh.exe -intstyle ise -gui -tclbatch isim.cmd -wdb /home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_isim_beh.wdb 
+ISim P.20131013 (signature 0xfbc00daa)
+This is a Full version of ISim.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# restart
+# run all
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+
+** Failure:Bad EMS_OUT at 0101110
+User(VHDL) Code Called Simulation Stop
+In process HMC_tb.vhd:EMS_BIT 
+ 
+INFO: Simulator is stopped.
+ISim P.20131013 (signature 0xfbc00daa)
+This is a Full version of ISim.
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# run 1.00us
+# restart
+# run 1.00us
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# run 1.00us
+# run 1.00us
+# exit 0

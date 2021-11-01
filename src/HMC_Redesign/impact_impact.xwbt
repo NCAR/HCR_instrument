@@ -1,0 +1,8 @@
+INTSTYLE=impact
+INFILE=/home/karboski/git/HCR_instrument/src/HMC_Redesign/impact.xsl
+OUTFILE=/home/karboski/git/HCR_instrument/src/HMC_Redesign/impact.xsl
+FAMILY=Multiple
+PART=Multiple
+WORKINGDIR=/home/karboski/git/HCR_instrument/src/HMC_Redesign
+LICENSE=iMPACT
+USER_INFO=iMPACT

@@ -8,10 +8,7 @@
 <!-- Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_src.vhd&quot; into library work</arg>
-</msg>
-
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.vhd&quot; into library work</arg>
+<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;/home/karboski/git/HCR_instrument/src/HMC_Redesign/_ngo/cs_icon_pro/tmp/_cg/icon_pro.vhd&quot; into library work</arg>
 </msg>
 
 </messages>

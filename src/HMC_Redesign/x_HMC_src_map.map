@@ -1,0 +1,273 @@
+Release 14.7 Map P.20131013 (lin64)
+Xilinx Map Application Log File for Design 'x_HMC_src'
+
+Design Information
+------------------
+Command Line   : map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off
+-pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+Target Device  : xc3s50a
+Target Package : vq100
+Target Speed   : -5
+Mapper Version : spartan3a -- $Revision: 1.55 $
+Mapped Date    : Wed Jul 21 06:46:11 2021
+
+Mapping design into LUTs...
+Running directed packing...
+Running delay-based LUT packing...
+Running related packing...
+Updating timing models...
+WARNING:PhysDesignRules:372 - Gated clock. Clock net icon_control0<13> is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB0> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB1> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB2> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB3> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB4> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB5> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB6> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB7> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB8> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB9> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB10> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB11> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB12> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB13> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB14> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB15> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB16> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB17> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB18> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB19> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB20> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB21> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB22> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB23> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB24> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB25> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB26> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB27> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB28> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB29> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB30> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB31> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB0> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB1> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB2> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB3> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB4> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB5> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB6> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB7> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB8> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB9> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB10> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB11> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB12> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB13> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB14> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB15> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB16> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB17> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB18> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB19> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB20> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB21> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB22> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB23> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB24> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB25> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB26> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB27> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB28> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB29> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB30> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB31> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+
+Design Summary
+--------------
+
+Design Summary:
+Number of errors:      0
+Number of warnings:   65
+Logic Utilization:
+  Total Number Slice Registers:         600 out of   1,408   42%
+    Number used as Flip Flops:          599
+    Number used as Latches:               1
+  Number of 4 input LUTs:               526 out of   1,408   37%
+Logic Distribution:
+  Number of occupied Slices:            543 out of     704   77%
+    Number of Slices containing only related logic:     543 out of     543 100%
+    Number of Slices containing unrelated logic:          0 out of     543   0%
+      *See NOTES below for an explanation of the effects of unrelated logic.
+  Total Number of 4 input LUTs:         652 out of   1,408   46%
+    Number used as logic:               371
+    Number used as a route-thru:        126
+    Number used as Shift registers:     155
+
+  The Slice Logic Distribution report is not meaningful if the design is
+  over-mapped for a non-slice resource or if Placement fails.
+
+  Number of bonded IOBs:                 54 out of      68   79%
+    IOB Flip Flops:                      52
+  Number of BUFGMUXs:                     3 out of      24   12%
+  Number of DCMs:                         1 out of       2   50%
+  Number of BSCANs:                       1 out of       1  100%
+  Number of BSCAN_SPARTAN3As:             1 out of       1  100%
+  Number of RAMB16BWEs:                   2 out of       3   66%
+
+  Number of RPM macros:           12
+Average Fanout of Non-Clock Nets:                2.75
+
+Peak Memory Usage:  704 MB
+Total REAL time to MAP completion:  2 secs 
+Total CPU time to MAP completion:   2 secs 
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Mapping completed.
+See MAP report file "x_HMC_src_map.mrp" for details.

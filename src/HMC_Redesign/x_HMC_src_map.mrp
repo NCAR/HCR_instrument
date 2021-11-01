@@ -1,0 +1,1357 @@
+Release 14.7 Map P.20131013 (lin64)
+Xilinx Mapping Report File for Design 'x_HMC_src'
+
+Design Information
+------------------
+Command Line   : map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off
+-pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+Target Device  : xc3s50a
+Target Package : vq100
+Target Speed   : -5
+Mapper Version : spartan3a -- $Revision: 1.55 $
+Mapped Date    : Wed Jul 21 06:46:11 2021
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:   65
+Logic Utilization:
+  Total Number Slice Registers:         600 out of   1,408   42%
+    Number used as Flip Flops:          599
+    Number used as Latches:               1
+  Number of 4 input LUTs:               526 out of   1,408   37%
+Logic Distribution:
+  Number of occupied Slices:            543 out of     704   77%
+    Number of Slices containing only related logic:     543 out of     543 100%
+    Number of Slices containing unrelated logic:          0 out of     543   0%
+      *See NOTES below for an explanation of the effects of unrelated logic.
+  Total Number of 4 input LUTs:         652 out of   1,408   46%
+    Number used as logic:               371
+    Number used as a route-thru:        126
+    Number used as Shift registers:     155
+
+  The Slice Logic Distribution report is not meaningful if the design is
+  over-mapped for a non-slice resource or if Placement fails.
+
+  Number of bonded IOBs:                 54 out of      68   79%
+    IOB Flip Flops:                      52
+  Number of BUFGMUXs:                     3 out of      24   12%
+  Number of DCMs:                         1 out of       2   50%
+  Number of BSCANs:                       1 out of       1  100%
+  Number of BSCAN_SPARTAN3As:             1 out of       1  100%
+  Number of RAMB16BWEs:                   2 out of       3   66%
+
+  Number of RPM macros:           12
+Average Fanout of Non-Clock Nets:                2.75
+
+Peak Memory Usage:  704 MB
+Total REAL time to MAP completion:  2 secs 
+Total CPU time to MAP completion:   2 secs 
+
+NOTES:
+
+   Related logic is defined as being logic that shares connectivity - e.g. two
+   LUTs are "related" if they share common inputs.  When assembling slices,
+   Map gives priority to combine logic that is related.  Doing so results in
+   the best timing performance.
+
+   Unrelated logic shares no connectivity.  Map will only begin packing
+   unrelated logic into a slice once 99% of the slices are occupied through
+   related logic packing.
+
+   Note that once logic distribution reaches the 99% level through related
+   logic packing, this does not mean the device is completely utilized.
+   Unrelated logic packing will then begin, continuing until all usable LUTs
+   and FFs are occupied.  Depending on your timing budget, increased levels of
+   unrelated logic packing may adversely affect the overall timing performance
+   of your design.
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group and Partition Summary
+Section 10 - Timing Report
+Section 11 - Configuration String Information
+Section 12 - Control Set Information
+Section 13 - Utilization by Hierarchy
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+WARNING:PhysDesignRules:372 - Gated clock. Clock net icon_control0<13> is
+   sourced by a combinatorial pin. This is not good design practice. Use the CE
+   pin to control the loading of data into the flip-flop.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB0> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB1> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB2> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB3> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB4> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB5> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB6> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB7> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB8> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB9> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB10> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB11> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB12> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB13> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB14> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB15> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB16> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB17> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB18> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB19> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB20> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB21> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB22> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB23> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB24> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB25> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB26> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB27> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB28> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB29> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB30> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB31> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[1].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB0> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB1> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB2> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB3> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB4> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB5> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB6> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB7> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB8> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB9> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB10> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB11> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB12> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB13> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB14> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB15> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB16> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB17> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB18> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB19> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB20> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB21> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB22> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB23> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB24> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB25> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB26> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB27> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB28> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB29> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB30> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+WARNING:PhysDesignRules:812 - Dangling pin <DOB31> on
+   block:<U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BR
+   AM[0].U_BRAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i>:<RAMB16BWE_RAMB16BWE>.
+
+Section 3 - Informational
+-------------------------
+INFO:LIT:243 - Logical network icon_control0<10> has no load.
+INFO:LIT:243 - Logical network icon_control0<11> has no load.
+INFO:LIT:243 - Logical network icon_control0<15> has no load.
+INFO:LIT:243 - Logical network icon_control0<21> has no load.
+INFO:LIT:243 - Logical network icon_control0<16> has no load.
+INFO:LIT:243 - Logical network icon_control0<22> has no load.
+INFO:LIT:243 - Logical network icon_control0<17> has no load.
+INFO:LIT:243 - Logical network icon_control0<23> has no load.
+INFO:LIT:243 - Logical network icon_control0<18> has no load.
+INFO:LIT:243 - Logical network icon_control0<24> has no load.
+INFO:LIT:243 - Logical network icon_control0<30> has no load.
+INFO:LIT:243 - Logical network icon_control0<25> has no load.
+INFO:LIT:243 - Logical network icon_control0<31> has no load.
+INFO:LIT:243 - Logical network icon_control0<26> has no load.
+INFO:LIT:243 - Logical network icon_control0<32> has no load.
+INFO:LIT:243 - Logical network icon_control0<7> has no load.
+INFO:LIT:243 - Logical network icon_control0<27> has no load.
+INFO:LIT:243 - Logical network icon_control0<33> has no load.
+INFO:LIT:243 - Logical network icon_control0<28> has no load.
+INFO:LIT:243 - Logical network icon_control0<34> has no load.
+INFO:LIT:243 - Logical network icon_control0<29> has no load.
+INFO:LIT:243 - Logical network icon_control0<35> has no load.
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs.
+INFO:PhysDesignRules:772 - To achieve optimal frequency synthesis performance
+   with the CLKFX and CLKFX180 outputs of the DCM comp DCM1, consult the device
+   Interactive Data Sheet.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+  45 block(s) removed
+  67 block(s) optimized away
+  29 signal(s) removed
+ 237 Block(s) redundant
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+The signal "icon_control0<10>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[6].U_LCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<6>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[6].U_LUT" (ROM)
+removed.
+The signal "icon_control0<11>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[7].U_LCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<7>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[7].U_LUT" (ROM)
+removed.
+The signal "icon_control0<15>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[11].U_LCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<11>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[11].U_LUT" (ROM)
+removed.
+The signal "icon_control0<21>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[1].U_HCE" (ROM)
+removed.
+The signal "icon_control0<16>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[12].U_LCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<12>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[12].U_LUT" (ROM)
+removed.
+The signal "icon_control0<22>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[2].U_HCE" (ROM)
+removed.
+The signal "icon_control0<17>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[13].U_LCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<13>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[13].U_LUT" (ROM)
+removed.
+The signal "icon_control0<23>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[3].U_HCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<3>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[3].U_LUT" (ROM)
+removed.
+The signal "icon_control0<18>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[14].U_LCE" (ROM)
+removed.
+  The signal "U_icon_pro/U0/U_ICON/iCOMMAND_SEL<14>" is loadless and has been
+removed.
+   Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL/I4.FI[14].U_LUT" (ROM)
+removed.
+The signal "icon_control0<24>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[4].U_HCE" (ROM)
+removed.
+The signal "icon_control0<30>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[10].U_HCE" (ROM)
+removed.
+The signal "icon_control0<25>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[5].U_HCE" (ROM)
+removed.
+The signal "icon_control0<31>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[11].U_HCE" (ROM)
+removed.
+The signal "icon_control0<26>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[6].U_HCE" (ROM)
+removed.
+The signal "icon_control0<32>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[12].U_HCE" (ROM)
+removed.
+The signal "icon_control0<7>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[3].U_LCE" (ROM)
+removed.
+The signal "icon_control0<27>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[7].U_HCE" (ROM)
+removed.
+The signal "icon_control0<33>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[13].U_HCE" (ROM)
+removed.
+The signal "icon_control0<28>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[8].U_HCE" (ROM)
+removed.
+The signal "icon_control0<34>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[14].U_HCE" (ROM)
+removed.
+The signal "icon_control0<29>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[9].U_HCE" (ROM)
+removed.
+The signal "icon_control0<35>" is loadless and has been removed.
+ Loadless block "U_icon_pro/U0/U_ICON/U_CTRL_OUT/F_NCP[0].F_CMD[15].U_HCE" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[10].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[11].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[12].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[13].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[14].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[1].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[2].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[3].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[4].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[5].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[6].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[7].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[8].U_LUT" (ROM)
+removed.
+Loadless block "U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL/I4.FI[9].U_LUT" (ROM)
+removed.
+Loadless block "U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_DSR" (ROM) removed.
+Loadless block "U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_STORAGE_QUAL.U_CAP_B"
+(ROM) removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		U_icon_pro/XST_GND
+VCC 		U_icon_pro/XST_VCC
+LUT4 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/F_SSTAT[6].I_STAT.U_STAT
+   optimized to 0
+GND 		U_ila_pro_0/XST_GND
+VCC 		U_ila_pro_0/XST_VCC
+GND 		XST_GND
+VCC 		XST_VCC
+GND 		HMC/XST_GND
+VCC 		HMC/XST_VCC
+
+Redundant Block(s):
+TYPE 		BLOCK
+LOCALBUF 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[0].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[1].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[2].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[3].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[4].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_MUX/U_CS_MUX/I1.U_MUX2/O8/LUT3_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_MUX/U_CS_MUX/I1.U_MUX2/O7/LUT4_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TWMOD4_NE0.I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TWMOD4_NE0.I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[13].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[13].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[12].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[12].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[11].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[11].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[10].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[10].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[9].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[9].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[8].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[8].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[7].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[7].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[6].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[6].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[5].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[5].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[4].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[4].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[3].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[3].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[2].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[2].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[1].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[1].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[0].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/
+I_SRL16.U_GANDX_SRL16/I_TW_GTE4.F_TW[0].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[0]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[1]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[2]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[3]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[4]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[5]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[6]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[7]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[8]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[9]
+.GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[10
+].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[11
+].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[12
+].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[8].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[7].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[6].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[5].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[4].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[3].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[2].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[1].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[0].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_LCMP/I_SRL1
+6.U_GAND_SRL16/I_TW_GTE8.F_TW[0].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_LCMP/I_SRL1
+6.U_GAND_SRL16/I_TW_GTE8.F_TW[0].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_LCMP/I_SRL1
+6.U_GAND_SRL16/I_TWMOD8_NE0.I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_HCMP/I_SRL1
+6.U_GAND_SRL16/I_TW_GTE8.F_TW[0].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_HCMP/I_SRL1
+6.U_GAND_SRL16/I_TW_GTE8.F_TW[0].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_HCMP/I_SRL1
+6.U_GAND_SRL16/I_TWMOD8_NE0.I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_SCNT_CMP/I_SRL16
+.U_GAND_SRL16/I_TW_GTE8.F_TW[0].I_YES_RPM.U_MUXH/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_SCNT_CMP/I_SRL16
+.U_GAND_SRL16/I_TW_GTE8.F_TW[0].I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_SCNT_CMP/I_SRL16
+.U_GAND_SRL16/I_TWMOD8_NE0.I_YES_RPM.U_MUXL/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[0].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[1].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[2].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[3].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[4].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[5].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[6].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[7].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[0].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[1].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[2].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[3].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[4].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[5].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[6].GnH.U_MUXCY/MUXCY_L_BUF
+LOCALBUF
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[7].GnH.U_MUXCY/MUXCY_L_BUF
+INV 		RESETn_CPCI_inv1_INV_0
+INV 		U_icon_pro/U0/U_ICON/U_STAT/U_STATCMD_n
+LUT1 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[0].U_LUT
+LUT1 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[1].U_LUT
+LUT1 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[2].U_LUT
+LUT1 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[3].U_LUT
+LUT1 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[4].U_LUT
+LUT1 		U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT/G[5].U_LUT
+INV 		U_icon_pro/U0/U_ICON/U_CMD/U_SEL_n
+INV 		U_icon_pro/U0/U_ICON/U_iSEL_n
+INV 		U_icon_pro/U0/U_ICON/U_SYNC/U_iDATA_CMD_n
+INV 		U_icon_pro/U0/U_ICON/U_iDATA_CMD_n
+INV
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/I_NI_GT_1
+.IEQ1.U_lowAddr_inv
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[0]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[1]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[2]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[3]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[4]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[5]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[6]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[7]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[8]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[9]
+.U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[10
+].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[11
+].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[12
+].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC/G[13
+].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[9].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[8].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[7].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[6].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[5].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[4].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[3].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[2].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[1].U_LUT
+LUT1 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT/G[0].U_LUT
+INV 		U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STATCMD_n
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[0].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[1].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[2].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[3].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[4].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[5].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[6].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[7].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT
+/G[8].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[0].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[1].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[2].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[3].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[4].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[5].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[6].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[7].U_LUT
+LUT1
+		U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_N
+E_1.U_SCNT/G[8].U_LUT
+LOCALBUF 		HMC/Madd_ems_tx_count_addsub0000_cy<3>11/LUT4_D_BUF
+LOCALBUF 		HMC/Madd_ems_rx_count_addsub0000_cy<3>11/LUT4_D_BUF
+LOCALBUF 		HMC/tx_ems_switch_dly_not000111/LUT4_D_BUF
+LOCALBUF 		HMC/rx_ems_switch_dly_not000111/LUT4_D_BUF
+LOCALBUF 		HMC/_mux00041/LUT4_D_BUF
+LOCALBUF 		HMC/_mux0002<2>_SW0/LUT3_L_BUF
+LOCALBUF 		HMC/ems_tx_stat_cmp_eq0000_SW0/LUT4_L_BUF
+LOCALBUF 		HMC/_mux0001<4>/LUT4_D_BUF
+LOCALBUF 		HMC/ems_out_i_mux0001<1>24/LUT4_L_BUF
+LOCALBUF 		HMC/ems_error_prt_or000013/LUT4_L_BUF
+LOCALBUF 		HMC/U6_dly_not000110/LUT4_L_BUF
+LOCALBUF 		HMC/U6_dly_not000164/LUT4_L_BUF
+LOCALBUF 		HMC/state_FSM_FFd2-In329_SW0/LUT3_L_BUF
+LOCALBUF 		HMC/wg_dly_not0001_SW0/LUT4_L_BUF
+LOCALBUF 		HMC/ems_error_prt_or00005/LUT4_L_BUF
+LOCALBUF 		HMC/state_FSM_FFd2-In42/LUT4_L_BUF
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<1>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<2>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<3>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<4>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<5>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<6>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<7>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<8>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<9>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<10>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<11>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<12>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<13>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<14>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<15>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<16>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<17>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<18>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<19>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<20>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<21>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<22>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_cy<23>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<1>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<2>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<3>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<4>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<5>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<6>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<7>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<8>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<9>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<10>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<11>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<12>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<13>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<14>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<15>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<16>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<17>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<18>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<19>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<20>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<21>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<22>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<23>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<24>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<25>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_cy<26>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<1>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<2>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<3>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<4>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<5>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<6>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<7>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<8>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<9>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<10>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<11>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<12>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<13>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<14>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<15>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<16>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<17>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<18>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<19>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<20>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<21>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<22>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<23>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<24>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<25>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_cy<26>_rt
+LUT1 		HMC/Madd_wg_count_addsub0000_xor<24>_rt
+LUT1 		HMC/Madd_U6_count_addsub0000_xor<27>_rt
+LUT1 		HMC/Madd_hv_count_addsub0000_xor<27>_rt
+INV 		HMC/RESETn_inv381_INV_0
+INV 		HMC/wg_dly_mux00001_INV_0
+INV 		HMC/hv_powerup_dly_mux00001_INV_0
+
+Section 6 - IOB Properties
+--------------------------
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | Type             | Direction | IO Standard          | Diff  | Drive    | Slew    | Reg (s)      | Resistor | IBUF/IFD | SUSPEND          |
+|                                    |                  |           |                      | Term  | Strength | Rate    |              |          | Delay    |                  |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| BIT_EMS<1>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| BIT_EMS<2>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| BIT_EMS<3>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| BIT_EMS<4>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| BIT_EMS<5>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| BIT_EMS<6>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| BIT_EMS<7>                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| EMS_ERROR_1                        | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_ERROR_2                        | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_ERROR_3                        | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_ERROR_45                       | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_ERROR_67                       | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_ERROR_EVENT                    | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<1>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<2>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<3>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<4>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<5>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<6>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_OUT<7>                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| EMS_PWR_ERROR                      | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| EMS_TRIG                           | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| EXT_CLK                            | IBUF             | INPUT     | LVTTL                |       |          |         |              |          | 0 / 0    |                  |
+| FIL_ON_730                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| FIL_ON_HMC                         | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| HV_ON_730                          | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| HV_ON_HMC                          | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| HVn_CMD_PENTEK                     | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| HVn_FLAG                           | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| MOD_PULSE                          | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| MOD_PULSE_DISABLE                  | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| MOD_PULSE_HMC                      | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| NOISE_SOURCE_EN                    | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| OPS_MODE_730<0>                    | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| OPS_MODE_730<1>                    | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| OPS_MODE_730<2>                    | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| RESETn_CPCI                        | IBUF             | INPUT     | LVTTL                |       |          |         |              |          | 0 / 0    |                  |
+| RX_GATE                            | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| SPARE2                             | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| SPARE3                             | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| SPARE_STATUS0                      | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| SPARE_STATUS1                      | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| STATUS_ACK                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| SYNC_PULSE_CLK                     | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| SYNC_PULSE_HMC                     | IOB              | OUTPUT    | LVTTL                |       | 12       | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| T0                                 | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| TEST_BIT_0                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| TEST_BIT_1                         | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| U6_OE                              | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| WG_SW_CTRL_NOISEn                  | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| WG_SW_CTRL_TERMn                   | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| WG_SW_ERROR                        | IOB              | OUTPUT    | LVTTL                |       | 8        | SLOW    | OFF1         |          | 0 / 0    | 3STATE           |
+| WG_SW_NOISEn                       | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
+| WG_SW_TERMn                        | IBUF             | INPUT     | LVTTL                |       |          |         | IFF1         |          | 0 / 5    |                  |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_CDONE_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_CMPRESET_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_NS0_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_NS1_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_SCMPCE_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_SCRST_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_WHCMPCE_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_I_SRLT_NE_1.U_WLCMPCE_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_U_CAP_ADDRGEN_U_SCNT_CMP_I_SRL16.U
+_GAND_SRL16_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_U_CAP_ADDRGEN_U_WCNT_HCMP_I_SRL16.
+U_GAND_SRL16_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL_U_CAP_ADDRGEN_U_WCNT_LCMP_I_SRL16.
+U_GAND_SRL16_MSET
+U_ila_pro_0/U0_I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/I_
+SRL16.U_GANDX_SRL16_MSET
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group and Partition Summary
+--------------------------------------------
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Area Group Information
+----------------------
+
+  No area groups were found in this design.
+
+----------------------
+
+Section 10 - Timing Report
+--------------------------
+This design was not run using timing mode.
+
+Section 11 - Configuration String Details
+-----------------------------------------
+DCM "DCM1":
+CLKDV_DIVIDE:2
+CLKOUT_PHASE_SHIFT:NONE
+DESKEW_ADJUST:9
+DFS_FREQUENCY_MODE:LOW
+DLL_FREQUENCY_MODE:LOW
+DUTY_CYCLE_CORRECTION:TRUE
+FACTORY_JF1:0XC0
+FACTORY_JF2:0X80
+CLKFX_DIVIDE = 1
+CLKFX_MULTIPLY = 4
+PHASE_SHIFT = 0
+X_CLKIN_PERIOD = 64.0000000000000000
+
+
+BUFGMUX "EXT_BUF":
+DISABLE_ATTR:LOW
+
+
+
+BUFGMUX
+"U_icon_pro/U0/U_ICON/I_YES_BSCAN.U_BS/I_USE_SOFTBSCAN_EQ0.I_USE_XST_TCK_WORKARO
+UND_EQ1.U_ICON_BSCAN_BUFG/U_BUFG":
+DISABLE_ATTR:LOW
+
+
+
+RAMB16BWE
+"U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BRAM[0].U_B
+RAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i":
+DATA_WIDTH_A:1
+DATA_WIDTH_B:36
+WRITE_MODE_A:WRITE_FIRST
+WRITE_MODE_B:WRITE_FIRST
+INITP_00 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_01 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_02 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_03 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_04 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_05 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_06 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_07 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_00 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_01 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_02 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_03 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_04 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_05 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_06 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_07 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_08 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_09 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_10 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_11 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_12 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_13 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_14 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_15 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_16 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_17 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_18 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_19 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_20 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_21 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_22 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_23 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_24 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_25 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_26 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_27 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_28 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_29 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_30 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_31 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_32 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_33 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_34 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_35 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_36 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_37 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_38 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_39 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_A = 000000000
+INIT_B = 000000000
+SRVAL_A = 000000000
+SRVAL_B = 000000000
+
+
+RAMB16BWE
+"U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BRAM[1].U_B
+RAM/ram_rt1_s1_s32_if.ram_rt1_s1_s32_i":
+DATA_WIDTH_A:1
+DATA_WIDTH_B:36
+WRITE_MODE_A:WRITE_FIRST
+WRITE_MODE_B:WRITE_FIRST
+INITP_00 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_01 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_02 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_03 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_04 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_05 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_06 = 0000000000000000000000000000000000000000000000000000000000000000
+INITP_07 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_00 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_01 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_02 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_03 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_04 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_05 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_06 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_07 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_08 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_09 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_0F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_10 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_11 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_12 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_13 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_14 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_15 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_16 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_17 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_18 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_19 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_1F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_20 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_21 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_22 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_23 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_24 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_25 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_26 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_27 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_28 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_29 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_2F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_30 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_31 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_32 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_33 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_34 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_35 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_36 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_37 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_38 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_39 = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3A = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3B = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3C = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3D = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3E = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_3F = 0000000000000000000000000000000000000000000000000000000000000000
+INIT_A = 000000000
+INIT_B = 000000000
+SRVAL_A = 000000000
+SRVAL_B = 000000000
+
+
+BUFGMUX "clk_BUFG":
+DISABLE_ATTR:LOW
+
+
+
+
+Section 12 - Control Set Information
+------------------------------------
+No control set information for this architecture.
+
+Section 13 - Utilization by Hierarchy
+-------------------------------------
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Module                                                                  | Partition | Slices        | Slice Reg     | LUTs          | LUTRAM        | BRAM      | MULT18X18 | BUFG  | DCM   | Full Hierarchical Name                                                                                                            |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| x_HMC_src/                                                              |           | 10/573        | 11/600        | 3/640         | 0/155         | 0/2       | 0/0       | 2/3   | 1/1   | x_HMC_src                                                                                                                         |
+| +HMC                                                                    |           | 176/176       | 158/158       | 307/307       | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/HMC                                                                                                                     |
+| +U_icon_pro                                                             |           | 0/41          | 0/28          | 0/43          | 0/0           | 0/0       | 0/0       | 0/1   | 0/0   | x_HMC_src/U_icon_pro                                                                                                              |
+| ++U0                                                                    |           | 0/41          | 0/28          | 0/43          | 0/0           | 0/0       | 0/0       | 0/1   | 0/0   | x_HMC_src/U_icon_pro/U0                                                                                                           |
+| +++U_ICON                                                               |           | 3/41          | 3/28          | 0/43          | 0/0           | 0/0       | 0/0       | 0/1   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON                                                                                                    |
+| ++++I_YES_BSCAN.U_BS                                                    |           | 0/0           | 0/0           | 0/0           | 0/0           | 0/0       | 0/0       | 0/1   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/I_YES_BSCAN.U_BS                                                                                   |
+| +++++I_USE_SOFTBSCAN_EQ0.I_USE_XST_TCK_WORKAROUND_EQ1.U_ICON_BSCAN_BUFG |           | 0/0           | 0/0           | 0/0           | 0/0           | 0/0       | 0/0       | 1/1   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/I_YES_BSCAN.U_BS/I_USE_SOFTBSCAN_EQ0.I_USE_XST_TCK_WORKAROUND_EQ1.U_ICON_BSCAN_BUFG                |
+| ++++U_CMD                                                               |           | 6/12          | 10/10         | 1/12          | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_CMD                                                                                              |
+| +++++U_COMMAND_SEL                                                      |           | 5/5           | 0/0           | 9/9           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_CMD/U_COMMAND_SEL                                                                                |
+| +++++U_CORE_ID_SEL                                                      |           | 1/1           | 0/0           | 2/2           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_CMD/U_CORE_ID_SEL                                                                                |
+| ++++U_CTRL_OUT                                                          |           | 11/11         | 0/0           | 13/13         | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_CTRL_OUT                                                                                         |
+| ++++U_STAT                                                              |           | 4/7           | 1/7           | 7/13          | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_STAT                                                                                             |
+| +++++U_STAT_CNT                                                         |           | 3/3           | 6/6           | 6/6           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_STAT/U_STAT_CNT                                                                                  |
+| ++++U_SYNC                                                              |           | 7/7           | 8/8           | 3/3           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_SYNC                                                                                             |
+| ++++U_TDO_MUX                                                           |           | 0/1           | 0/0           | 0/2           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_TDO_MUX                                                                                          |
+| +++++U_CS_MUX                                                           |           | 0/1           | 0/0           | 0/2           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_TDO_MUX/U_CS_MUX                                                                                 |
+| ++++++I4.U_MUX16                                                        |           | 1/1           | 0/0           | 2/2           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_icon_pro/U0/U_ICON/U_TDO_MUX/U_CS_MUX/I4.U_MUX16                                                                      |
+| +U_ila_pro_0                                                            |           | 0/345         | 0/403         | 0/286         | 0/155         | 0/2       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0                                                                                                             |
+| ++U0                                                                    |           | 29/345        | 58/403        | 0/286         | 0/155         | 0/2       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0                                                                                                          |
+| +++I_NO_D.U_ILA                                                         |           | 1/316         | 0/345         | 1/286         | 0/155         | 0/2       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA                                                                                             |
+| ++++I_DQ.U_DQQ                                                          |           | 29/29         | 58/58         | 58/58         | 58/58         | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/I_DQ.U_DQQ                                                                                  |
+| ++++U_CAPSTOR                                                           |           | 0/12          | 0/16          | 0/17          | 0/0           | 0/2       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR                                                                                   |
+| +++++I_CASE1.I_NO_TB.I_RT1.I_RDADDR                                     |           | 3/10          | 1/15          | 2/16          | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR                                                    |
+| ++++++U_HC                                                              |           | 7/7           | 14/14         | 14/14         | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.I_RDADDR/U_HC                                               |
+| +++++I_CASE1.I_NO_TB.I_RT1.U_RAM                                        |           | 1/2           | 1/1           | 0/1           | 0/0           | 0/2       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM                                                       |
+| ++++++G_BRAM[0].U_BRAM                                                  |           | 0/0           | 0/0           | 0/0           | 0/0           | 1/1       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BRAM[0].U_BRAM                                      |
+| ++++++G_BRAM[1].U_BRAM                                                  |           | 0/0           | 0/0           | 0/0           | 0/0           | 1/1       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/G_BRAM[1].U_BRAM                                      |
+| ++++++I_MUX.U_RD_DATA                                                   |           | 0/1           | 0/0           | 0/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/I_MUX.U_RD_DATA                                       |
+| +++++++U_CS_MUX                                                         |           | 0/1           | 0/0           | 0/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/I_MUX.U_RD_DATA/U_CS_MUX                              |
+| ++++++++I1.U_MUX2                                                       |           | 1/1           | 0/0           | 1/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_CAPSTOR/I_CASE1.I_NO_TB.I_RT1.U_RAM/I_MUX.U_RD_DATA/U_CS_MUX/I1.U_MUX2                    |
+| ++++U_G2_SQ.U_CAPCTRL                                                   |           | 7/76          | 7/62          | 1/92          | 0/49          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL                                                                           |
+| +++++I_SRLT_NE_1.U_CDONE                                                |           | 4/4           | 1/1           | 6/6           | 4/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_CDONE                                                       |
+| +++++I_SRLT_NE_1.U_CMPRESET                                             |           | 3/3           | 0/0           | 5/5           | 4/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_CMPRESET                                                    |
+| +++++I_SRLT_NE_1.U_NS0                                                  |           | 6/6           | 1/1           | 10/10         | 8/8           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_NS0                                                         |
+| +++++I_SRLT_NE_1.U_NS1                                                  |           | 6/6           | 1/1           | 10/10         | 8/8           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_NS1                                                         |
+| +++++I_SRLT_NE_1.U_SCE                                                  |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_SCE                                                         |
+| +++++I_SRLT_NE_1.U_SCMPCE                                               |           | 2/2           | 0/0           | 3/3           | 2/2           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_SCMPCE                                                      |
+| +++++I_SRLT_NE_1.U_SCRST                                                |           | 3/3           | 0/0           | 5/5           | 4/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_SCRST                                                       |
+| +++++I_SRLT_NE_1.U_WCE                                                  |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_WCE                                                         |
+| +++++I_SRLT_NE_1.U_WHCMPCE                                              |           | 2/2           | 0/0           | 3/3           | 2/2           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_WHCMPCE                                                     |
+| +++++I_SRLT_NE_1.U_WLCMPCE                                              |           | 2/2           | 0/0           | 3/3           | 2/2           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/I_SRLT_NE_1.U_WLCMPCE                                                     |
+| +++++U_CAP_ADDRGEN                                                      |           | 21/37         | 34/52         | 12/42         | 1/13          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN                                                             |
+| ++++++I_NO_TSEQ.I_SRLT_NE_1.U_SCNT                                      |           | 5/5           | 9/9           | 9/9           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_NO_TSEQ.I_SRLT_NE_1.U_SCNT                                |
+| ++++++I_SRLT_NE_1.U_WCNT                                                |           | 5/5           | 9/9           | 9/9           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/I_SRLT_NE_1.U_WCNT                                          |
+| ++++++U_SCNT_CMP                                                        |           | 0/2           | 0/0           | 0/4           | 0/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_SCNT_CMP                                                  |
+| +++++++I_SRL16.U_GAND_SRL16                                             |           | 2/2           | 0/0           | 4/4           | 4/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_SCNT_CMP/I_SRL16.U_GAND_SRL16                             |
+| ++++++U_WCNT_HCMP                                                       |           | 0/2           | 0/0           | 0/4           | 0/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_HCMP                                                 |
+| +++++++I_SRL16.U_GAND_SRL16                                             |           | 2/2           | 0/0           | 4/4           | 4/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_HCMP/I_SRL16.U_GAND_SRL16                            |
+| ++++++U_WCNT_LCMP                                                       |           | 0/2           | 0/0           | 0/4           | 0/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_LCMP                                                 |
+| +++++++I_SRL16.U_GAND_SRL16                                             |           | 2/2           | 0/0           | 4/4           | 4/4           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_G2_SQ.U_CAPCTRL/U_CAP_ADDRGEN/U_WCNT_LCMP/I_SRL16.U_GAND_SRL16                            |
+| ++++U_RST                                                               |           | 6/19          | 9/25          | 2/4           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_RST                                                                                       |
+| +++++U_ARM_XFER                                                         |           | 7/7           | 9/9           | 1/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_RST/U_ARM_XFER                                                                            |
+| +++++U_HALT_XFER                                                        |           | 6/6           | 7/7           | 1/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_RST/U_HALT_XFER                                                                           |
+| ++++U_STAT                                                              |           | 26/50         | 23/42         | 14/45         | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT                                                                                      |
+| +++++U_DMUX                                                             |           | 0/6           | 0/0           | 0/11          | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_DMUX                                                                               |
+| ++++++U_CS_MUX                                                          |           | 0/6           | 0/0           | 0/11          | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_DMUX/U_CS_MUX                                                                      |
+| +++++++I3.U_MUX8                                                        |           | 6/6           | 0/0           | 11/11         | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_DMUX/U_CS_MUX/I3.U_MUX8                                                            |
+| +++++U_DSL1                                                             |           | 6/6           | 6/6           | 1/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_DSL1                                                                               |
+| +++++U_MUX                                                              |           | 0/3           | 0/0           | 0/5           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_MUX                                                                                |
+| ++++++U_CS_MUX                                                          |           | 0/3           | 0/0           | 0/5           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_MUX/U_CS_MUX                                                                       |
+| +++++++I1.U_MUX2                                                        |           | 3/3           | 0/0           | 5/5           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_MUX/U_CS_MUX/I1.U_MUX2                                                             |
+| +++++U_RESET_EDGE                                                       |           | 2/2           | 3/3           | 0/0           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_RESET_EDGE                                                                         |
+| +++++U_SMUX                                                             |           | 0/2           | 0/0           | 0/4           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_SMUX                                                                               |
+| ++++++U_CS_MUX                                                          |           | 0/2           | 0/0           | 0/4           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_SMUX/U_CS_MUX                                                                      |
+| +++++++I6.U_MUX64                                                       |           | 2/2           | 0/0           | 4/4           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_SMUX/U_CS_MUX/I6.U_MUX64                                                           |
+| +++++U_STAT_CNT                                                         |           | 5/5           | 10/10         | 10/10         | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_STAT/U_STAT_CNT                                                                           |
+| ++++U_TRIG                                                              |           | 1/129         | 1/142         | 0/69          | 0/48          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG                                                                                      |
+| +++++U_TC                                                               |           | 2/52          | 1/22          | 1/39          | 0/18          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC                                                                                 |
+| ++++++I_STORAGE_QUAL.U_STORAGE_QUAL                                     |           | 1/4           | 1/2           | 0/2           | 0/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_STORAGE_QUAL.U_STORAGE_QUAL                                                   |
+| +++++++I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL                                   |           | 1/3           | 1/1           | 0/2           | 0/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_STORAGE_QUAL.U_STORAGE_QUAL/I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL                    |
+| ++++++++I_NMU_EQ1.U_iDOUT                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_STORAGE_QUAL.U_STORAGE_QUAL/I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL/I_NMU_EQ1.U_iDOUT  |
+| ++++++I_TSEQ_EQ1.I_TSEQ_SIMPLE                                          |           | 10/42         | 17/17         | 2/34          | 0/16          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE                                                        |
+| +++++++S0_CFG                                                           |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/S0_CFG                                                 |
+| +++++++U_STATES[10].SI_CFG                                              |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[10].SI_CFG                                    |
+| +++++++U_STATES[11].SI_CFG                                              |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[11].SI_CFG                                    |
+| +++++++U_STATES[12].SI_CFG                                              |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[12].SI_CFG                                    |
+| +++++++U_STATES[13].SI_CFG                                              |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[13].SI_CFG                                    |
+| +++++++U_STATES[14].SI_CFG                                              |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[14].SI_CFG                                    |
+| +++++++U_STATES[15].SI_CFG                                              |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[15].SI_CFG                                    |
+| +++++++U_STATES[1].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[1].SI_CFG                                     |
+| +++++++U_STATES[2].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[2].SI_CFG                                     |
+| +++++++U_STATES[3].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[3].SI_CFG                                     |
+| +++++++U_STATES[4].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[4].SI_CFG                                     |
+| +++++++U_STATES[5].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[5].SI_CFG                                     |
+| +++++++U_STATES[6].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[6].SI_CFG                                     |
+| +++++++U_STATES[7].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[7].SI_CFG                                     |
+| +++++++U_STATES[8].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[8].SI_CFG                                     |
+| +++++++U_STATES[9].SI_CFG                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_EQ1.I_TSEQ_SIMPLE/U_STATES[9].SI_CFG                                     |
+| ++++++I_TSEQ_NEQ2.U_TC_EQUATION                                         |           | 1/4           | 1/2           | 0/2           | 0/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_NEQ2.U_TC_EQUATION                                                       |
+| +++++++I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL                                   |           | 1/3           | 1/1           | 0/2           | 0/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_NEQ2.U_TC_EQUATION/I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL                        |
+| ++++++++I_NMU_EQ1.U_iDOUT                                               |           | 2/2           | 0/0           | 2/2           | 1/1           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TC/I_TSEQ_NEQ2.U_TC_EQUATION/I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL/I_NMU_EQ1.U_iDOUT      |
+| +++++U_TM                                                               |           | 0/76          | 0/119         | 0/30          | 0/30          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM                                                                                 |
+| ++++++G_NMU[0].U_M                                                      |           | 1/76          | 1/119         | 0/30          | 0/30          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M                                                                    |
+| +++++++U_MU                                                             |           | 1/75          | 1/118         | 0/30          | 0/30          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU                                                               |
+| ++++++++I_MUT_GANDX.U_match                                             |           | 0/74          | 0/117         | 0/30          | 0/30          | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match                                           |
+| +++++++++I_SRL16.U_GANDX_SRL16                                          |           | 74/74         | 117/117       | 30/30         | 30/30         | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/U_ila_pro_0/U0/I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/I_SRL16.U_GANDX_SRL16                     |
+| +x_HMC_src                                                              |           | 1/1           | 0/0           | 1/1           | 0/0           | 0/0       | 0/0       | 0/0   | 0/0   | x_HMC_src/x_HMC_src                                                                                                               |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+* Slices can be packed with basic elements from multiple hierarchies.
+  Therefore, a slice will be counted in every hierarchical module
+  that each of its packed basic elements belong to.
+** For each column, there are two numbers reported <A>/<B>.
+   <A> is the number of elements that belong to that specific hierarchical module.
+   <B> is the total number of elements from that hierarchical module and any lower level
+   hierarchical modules below.
+*** The LUTRAM column counts all LUTs used as memory including RAM, ROM, and shift registers.

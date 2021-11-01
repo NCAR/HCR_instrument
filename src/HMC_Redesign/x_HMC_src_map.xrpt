@@ -1,0 +1,1816 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<document OS="lin64" product="ISE" version="14.7">
+
+  <!--The data in this file is primarily intended for consumption by Xilinx tools.
+    The structure and the elements are likely to change over the next few releases.
+    This means code written to parse this file will need to be revisited each subsequent release.-->
+
+  <application stringID="Map" timeStamp="Wed Jul 21 06:46:14 2021">
+    <section stringID="User_Env">
+      <table stringID="User_EnvVar">
+        <column stringID="variable"/>
+        <column stringID="value"/>
+        <row stringID="row" value="0">
+          <item stringID="variable" value="XILINXD_LICENSE_FILE"/>
+          <item stringID="value" value="2100@krole.eol.ucar.edu"/>
+        </row>
+        <row stringID="row" value="1">
+          <item stringID="variable" value="PATH"/>
+          <item stringID="value" value="/home/karboski/Xilinx/14.7/ISE_DS/ISE//bin/lin64:/bin:/usr/bin:/opt/local/bin:/usr/local/bin:/h/eol/karboski/bin"/>
+        </row>
+        <row stringID="row" value="2">
+          <item stringID="variable" value="XILINX"/>
+          <item stringID="value" value="/home/karboski/Xilinx/14.7/ISE_DS/ISE/"/>
+        </row>
+        <row stringID="row" value="3">
+          <item stringID="variable" value="LD_LIBRARY_PATH"/>
+          <item stringID="value" value="/home/karboski/Xilinx/14.7/ISE_DS/ISE//lib/lin64"/>
+        </row>
+      </table>
+      <item stringID="User_EnvOs" value="OS Information">
+        <item stringID="User_EnvOsname" value="unknown"/>
+        <item stringID="User_EnvOsrelease" value="unknown"/>
+      </item>
+      <item stringID="User_EnvHost" value="wind"/>
+      <table stringID="User_EnvCpu">
+        <column stringID="arch"/>
+        <column stringID="speed"/>
+        <row stringID="row" value="0">
+          <item stringID="arch" value="Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz"/>
+          <item stringID="speed" value="1200.000 MHz"/>
+        </row>
+        <row stringID="row" value="1">
+          <item stringID="arch" value="Intel(R) Xeon(R) Gold 6154 CPU @ 3.00GHz"/>
+          <item stringID="speed" value="1200.670 MHz"/>
+        </row>
+      </table>
+    </section>
+    <section stringID="MAP_OPTION_SUMMARY">
+      <item DEFAULT="TRUE" label="-detail" stringID="MAP_DETAILED_REPORT" value="TRUE"/>
+      <item DEFAULT="OFF" label="-ir" stringID="MAP_IGNORERLOCS" value="OFF"/>
+      <item DEFAULT="area" label="-cm" stringID="MAP_COVER_MODE" value="area"/>
+      <item DEFAULT="None" label="-intstyle" stringID="MAP_INTSTYLE" value="ise"/>
+      <item DEFAULT="None" label="-o" stringID="MAP_OUTFILE" value="x_HMC_src_map.ncd"/>
+      <item DEFAULT="off" label="-pr" stringID="MAP_PACK_INTERNAL" value="b"/>
+      <item DEFAULT="None" label="-p" stringID="MAP_PARTNAME" value="xc3s50a-vq100-5"/>
+    </section>
+    <task stringID="MAP_PACK_REPORT">
+      <section stringID="MAP_DESIGN_INFORMATION">
+        <item stringID="MAP_PART" value="3s50avq100-5"/>
+        <item stringID="MAP_DEVICE" value="xc3s50a"/>
+        <item stringID="MAP_ARCHITECTURE" value="spartan3a"/>
+        <item stringID="MAP_PACKAGE" value="vq100"/>
+        <item stringID="MAP_SPEED" value="-5"/>
+      </section>
+      <section stringID="MAP_DESIGN_SUMMARY">
+        <item dataType="int" stringID="MAP_NUM_ERRORS" value="0"/>
+        <item dataType="int" stringID="MAP_FILTERED_WARNINGS" value="0"/>
+        <item dataType="int" stringID="MAP_NUM_WARNINGS" value="65"/>
+        <item UNITS="KB" dataType="int" stringID="MAP_PEAK_MEMORY" value="721212"/>
+        <item stringID="MAP_TOTAL_REAL_TIME" value="2 secs "/>
+        <item stringID="MAP_TOTAL_CPU_TIME" value="2 secs "/>
+      </section>
+      <section stringID="MAP_SLICE_REPORTING">
+        <item AVAILABLE="1408" dataType="int" label="Number of Slice Registers" stringID="MAP_SLICE_REGISTERS" value="600">
+          <item dataType="int" label="Number of Slice Flip Flops" stringID="MAP_NUM_SLICE_FF" value="599"/>
+          <item dataType="int" stringID="MAP_NUM_SLICE_LATCH" value="1"/>
+        </item>
+        <item AVAILABLE="1408" dataType="int" label="Number of 4 input LUTs" stringID="MAP_NUM_4_INPUT_LUT" value="652">
+          <item dataType="int" label="Number of route-thrus" stringID="MAP_NUM_LUT_RT" value="126"/>
+          <item dataType="int" label="Number used as Shift registers" stringID="MAP_NUM_SHIFT" value="155"/>
+        </item>
+        <item AVAILABLE="704" dataType="int" label="Number of occupied Slices" stringID="MAP_OCCUPIED_SLICES" value="543">
+          <item dataType="int" label="Number of Slices containing unrelated logic" stringID="MAP_NUM_SLICE_UNRELATED" value="0"/>
+        </item>
+      </section>
+      <section stringID="MAP_IOB_REPORTING">
+        <section stringID="MAP_IOB_DATA">
+          <item AVAILABLE="68" dataType="int" stringID="MAP_AGG_BONDED_IO" value="54"/>
+          <item AVAILABLE="0" dataType="int" label="IOB Flip Flops" stringID="MAP_NUM_IOB_FF" value="52"/>
+        </section>
+      </section>
+      <section stringID="MAP_HARD_IP_REPORTING">
+        <item AVAILABLE="24" dataType="int" label="Number of BUFGMUXs" stringID="MAP_NUM_BUFGMUX" value="3"/>
+        <item AVAILABLE="2" dataType="int" stringID="MAP_NUM_DCM" value="1"/>
+        <item AVAILABLE="1" dataType="int" stringID="MAP_NUM_BSCAN" value="1"/>
+      </section>
+      <section stringID="MAP_MACRO_RPM_REPORTING">
+        <item dataType="int" stringID="MAP_HARD_MACROS" value="0"/>
+        <item dataType="int" stringID="MAP_RPMS" value="12"/>
+      </section>
+      <section stringID="MAP_IOB_PROPERTIES">
+        <table stringID="MAP_IOB_TABLE">
+          <column label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME"/>
+          <column stringID="Type"/>
+          <column stringID="Direction"/>
+          <column label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD"/>
+          <column label="Diff&#xA;Term" stringID="DIFF_TERM"/>
+          <column label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH"/>
+          <column label="Slew&#xA;Rate" stringID="SLEW_RATE"/>
+          <column label="Reg&#xA;(s)" stringID="REGS"/>
+          <column stringID="Resistor"/>
+          <column label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY"/>
+          <column label="Suspend" stringID="SUSPEND"/>
+          <row stringID="row" value="1">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;1>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="2">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;2>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="3">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;3>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="4">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;4>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="5">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;5>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="6">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;6>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="7">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="BIT_EMS&lt;7>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="8">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_ERROR_1"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="9">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_ERROR_2"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="10">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_ERROR_3"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="11">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_ERROR_45"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="12">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_ERROR_67"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="13">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_ERROR_EVENT"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="14">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;1>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="15">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;2>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="16">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;3>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="17">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;4>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="18">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;5>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="19">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;6>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="20">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_OUT&lt;7>"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="21">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_PWR_ERROR"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="22">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EMS_TRIG"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="23">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="EXT_CLK"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+          </row>
+          <row stringID="row" value="24">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="FIL_ON_730"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="25">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="FIL_ON_HMC"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="26">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="HV_ON_730"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="27">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="HV_ON_HMC"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="28">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="HVn_CMD_PENTEK"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="29">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="HVn_FLAG"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="30">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="MOD_PULSE"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="31">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="MOD_PULSE_DISABLE"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="32">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="MOD_PULSE_HMC"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="33">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="NOISE_SOURCE_EN"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="34">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="OPS_MODE_730&lt;0>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="35">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="OPS_MODE_730&lt;1>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="36">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="OPS_MODE_730&lt;2>"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="37">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="RESETn_CPCI"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+          </row>
+          <row stringID="row" value="38">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="RX_GATE"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="39">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="SPARE2"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="40">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="SPARE3"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="41">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="SPARE_STATUS0"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="42">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="SPARE_STATUS1"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="43">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="STATUS_ACK"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="44">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="SYNC_PULSE_CLK"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="45">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="SYNC_PULSE_HMC"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="12"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="46">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="T0"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="47">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="TEST_BIT_0"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="48">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="TEST_BIT_1"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="49">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="U6_OE"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="50">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="WG_SW_CTRL_NOISEn"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="51">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="WG_SW_CTRL_TERMn"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="52">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="WG_SW_ERROR"/>
+            <item stringID="Type" value="IOB"/>
+            <item stringID="Direction" value="OUTPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Drive&#xA;Strength" stringID="DRIVE_STRENGTH" value="8"/>
+            <item label="Slew&#xA;Rate" stringID="SLEW_RATE" value="SLOW"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="OFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 0"/>
+            <item label="Suspend" stringID="SUSPEND" value="3STATE"/>
+          </row>
+          <row stringID="row" value="53">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="WG_SW_NOISEn"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+          <row stringID="row" value="54">
+            <item label="IOB&#xA;Name" sort="smart" stringID="IOB_NAME" value="WG_SW_TERMn"/>
+            <item stringID="Type" value="IBUF"/>
+            <item stringID="Direction" value="INPUT"/>
+            <item label="IO&#xA;Standard" sort="smart" stringID="IO_STANDARD" value="LVTTL"/>
+            <item label="Reg&#xA;(s)" stringID="REGS" value="IFF1"/>
+            <item label="IBUF/IFD&#xA;Delay" stringID="IBUF_IFD_DELAY" value="0 / 5"/>
+          </row>
+        </table>
+      </section>
+      <section stringID="MAP_RPM_MACROS">
+        <section stringID="MAP_SHAPE_SECTION">
+          <item dataType="int" stringID="MAP_NUM_SHAPE" value="U_ila_pro_0/U0_I_NO_D.U_ILA/U_TRIG/U_TM/G_NMU[0].U_M/U_MU/I_MUT_GANDX.U_match/I_SRL16.U_GANDX_SRL16_MSET"/>
+        </section>
+      </section>
+      <section stringID="MAP_GUIDE_REPORT"/>
+      <section stringID="MAP_AREA_GROUPS_PARTITIONS"/>
+      <section stringID="MAP_TIMING_REPORT"/>
+      <section stringID="MAP_CONFIGURATION_STRING_DETAILS"/>
+      <section stringID="MAP_GENERAL_CONFIG_DATA">
+        <item stringID="MAP_CLKDV_DIVIDE" value="2"/>
+        <item stringID="MAP_CLKOUT_PHASE_SHIFT" value="NONE"/>
+        <item stringID="MAP_DESKEW_ADJUST" value="9"/>
+        <item stringID="MAP_DFS_FREQUENCY_MODE" value="LOW"/>
+        <item stringID="MAP_DLL_FREQUENCY_MODE" value="LOW"/>
+        <item stringID="MAP_DUTY_CYCLE_CORRECTION" value="TRUE"/>
+        <item stringID="MAP_FACTORY_JF1" value="0XC0"/>
+        <item stringID="MAP_FACTORY_JF2" value="0X80"/>
+        <item stringID="MAP_CLKFX_DIVIDE" value="1"/>
+        <item stringID="MAP_CLKFX_MULTIPLY" value="4"/>
+        <item stringID="MAP_PHASE_SHIFT" value="0"/>
+        <item stringID="MAP_X_CLKIN_PERIOD" value="64.0000000000000000"/>
+        <item stringID="MAP_DISABLE_ATTR" value="LOW"/>
+        <item stringID="MAP_WRITE_MODE_A" value="WRITE_FIRST"/>
+        <item stringID="MAP_WRITE_MODE_B" value="WRITE_FIRST"/>
+        <item stringID="MAP_INITP_00" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_01" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_02" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_03" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_04" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_05" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_06" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INITP_07" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_00" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_01" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_02" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_03" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_04" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_05" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_06" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_07" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_08" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_09" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_0A" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_0B" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_0C" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_0D" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_0E" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_0F" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_10" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_11" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_12" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_13" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_14" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_15" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_16" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_17" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_18" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_19" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_1A" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_1B" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_1C" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_1D" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_1E" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_1F" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_20" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_21" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_22" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_23" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_24" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_25" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_26" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_27" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_28" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_29" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_2A" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_2B" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_2C" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_2D" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_2E" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_2F" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_30" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_31" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_32" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_33" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_34" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_35" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_36" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_37" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_38" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_39" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_3A" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_3B" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_3C" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_3D" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_3E" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_3F" value="0000000000000000000000000000000000000000000000000000000000000000"/>
+        <item stringID="MAP_INIT_A" value="000000000"/>
+        <item stringID="MAP_INIT_B" value="000000000"/>
+        <item stringID="MAP_SRVAL_A" value="000000000"/>
+        <item stringID="MAP_SRVAL_B" value="000000000"/>
+      </section>
+      <section stringID="MAP_CONTROL_SET_INFORMATION"/>
+      <section stringID="MAP_MODULE_UTILIZATION">
+        <tree stringID="MAP_MODULE_HIERARCHY">
+          <property label="Partition" stringID="MAP_PARTITION"/>
+          <property label="Slices" stringID="MAP_SLICES"/>
+          <property label="Slice Reg" stringID="MAP_SLICE_REG"/>
+          <property label="LUTs" stringID="MAP_LUTS"/>
+          <property label="LUTRAM" stringID="MAP_LUTRAM"/>
+          <property label="BRAM" stringID="MAP_BRAM"/>
+          <property stringID="MAP_MULT18X18"/>
+          <property label="BUFG" stringID="MAP_BUFG"/>
+          <property label="DCM" stringID="MAP_DCM"/>
+          <node label="Module Name" stringID="MAP_MODULE" value="x_HMC_src">
+            <item label="Partition" stringID="MAP_PARTITION" value=""/>
+            <item ACCUMULATED="573" dataType="int" label="Slices" stringID="MAP_SLICES" value="10"/>
+            <item ACCUMULATED="600" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="11"/>
+            <item ACCUMULATED="640" dataType="int" label="LUTs" stringID="MAP_LUTS" value="3"/>
+            <item ACCUMULATED="155" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+            <item ACCUMULATED="2" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+            <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+            <item ACCUMULATED="3" dataType="int" label="BUFG" stringID="MAP_BUFG" value="2"/>
+            <item ACCUMULATED="1" dataType="int" label="DCM" stringID="MAP_DCM" value="1"/>
+            <node label="Module Name" stringID="MAP_MODULE" value="HMC">
+              <item label="Partition" stringID="MAP_PARTITION" value=""/>
+              <item ACCUMULATED="176" dataType="int" label="Slices" stringID="MAP_SLICES" value="176"/>
+              <item ACCUMULATED="158" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="158"/>
+              <item ACCUMULATED="307" dataType="int" label="LUTs" stringID="MAP_LUTS" value="307"/>
+              <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+            </node>
+            <node label="Module Name" stringID="MAP_MODULE" value="U_icon_pro">
+              <item label="Partition" stringID="MAP_PARTITION" value=""/>
+              <item ACCUMULATED="41" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+              <item ACCUMULATED="28" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+              <item ACCUMULATED="43" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+              <item ACCUMULATED="1" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+              <node label="Module Name" stringID="MAP_MODULE" value="U0">
+                <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                <item ACCUMULATED="41" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                <item ACCUMULATED="28" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                <item ACCUMULATED="43" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                <item ACCUMULATED="1" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                <node label="Module Name" stringID="MAP_MODULE" value="U_ICON">
+                  <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                  <item ACCUMULATED="41" dataType="int" label="Slices" stringID="MAP_SLICES" value="3"/>
+                  <item ACCUMULATED="28" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="3"/>
+                  <item ACCUMULATED="43" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                  <item ACCUMULATED="1" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                  <node label="Module Name" stringID="MAP_MODULE" value="I_YES_BSCAN.U_BS">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="0" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="1" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_USE_SOFTBSCAN_EQ0.I_USE_XST_TCK_WORKAROUND_EQ1.U_ICON_BSCAN_BUFG">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="0" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="1" dataType="int" label="BUFG" stringID="MAP_BUFG" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_CMD">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="12" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                    <item ACCUMULATED="10" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="10"/>
+                    <item ACCUMULATED="12" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_COMMAND_SEL">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="5" dataType="int" label="Slices" stringID="MAP_SLICES" value="5"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="9" dataType="int" label="LUTs" stringID="MAP_LUTS" value="9"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_CORE_ID_SEL">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_CTRL_OUT">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="11" dataType="int" label="Slices" stringID="MAP_SLICES" value="11"/>
+                    <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                    <item ACCUMULATED="13" dataType="int" label="LUTs" stringID="MAP_LUTS" value="13"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_STAT">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="7" dataType="int" label="Slices" stringID="MAP_SLICES" value="4"/>
+                    <item ACCUMULATED="7" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                    <item ACCUMULATED="13" dataType="int" label="LUTs" stringID="MAP_LUTS" value="7"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_STAT_CNT">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="3"/>
+                      <item ACCUMULATED="6" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="6"/>
+                      <item ACCUMULATED="6" dataType="int" label="LUTs" stringID="MAP_LUTS" value="6"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_SYNC">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="7" dataType="int" label="Slices" stringID="MAP_SLICES" value="7"/>
+                    <item ACCUMULATED="8" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="8"/>
+                    <item ACCUMULATED="3" dataType="int" label="LUTs" stringID="MAP_LUTS" value="3"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_TDO_MUX">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                    <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_CS_MUX">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I4.U_MUX16">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node label="Module Name" stringID="MAP_MODULE" value="U_ila_pro_0">
+              <item label="Partition" stringID="MAP_PARTITION" value=""/>
+              <item ACCUMULATED="345" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+              <item ACCUMULATED="403" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+              <item ACCUMULATED="286" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+              <item ACCUMULATED="155" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+              <item ACCUMULATED="2" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+              <node label="Module Name" stringID="MAP_MODULE" value="U0">
+                <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                <item ACCUMULATED="345" dataType="int" label="Slices" stringID="MAP_SLICES" value="29"/>
+                <item ACCUMULATED="403" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="58"/>
+                <item ACCUMULATED="286" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                <item ACCUMULATED="155" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                <item ACCUMULATED="2" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                <node label="Module Name" stringID="MAP_MODULE" value="I_NO_D.U_ILA">
+                  <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                  <item ACCUMULATED="316" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                  <item ACCUMULATED="345" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                  <item ACCUMULATED="286" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                  <item ACCUMULATED="155" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                  <item ACCUMULATED="2" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                  <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                  <node label="Module Name" stringID="MAP_MODULE" value="I_DQ.U_DQQ">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="29" dataType="int" label="Slices" stringID="MAP_SLICES" value="29"/>
+                    <item ACCUMULATED="58" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="58"/>
+                    <item ACCUMULATED="58" dataType="int" label="LUTs" stringID="MAP_LUTS" value="58"/>
+                    <item ACCUMULATED="58" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="58"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_CAPSTOR">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="12" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                    <item ACCUMULATED="16" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                    <item ACCUMULATED="17" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="2" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_CASE1.I_NO_TB.I_RT1.I_RDADDR">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="10" dataType="int" label="Slices" stringID="MAP_SLICES" value="3"/>
+                      <item ACCUMULATED="15" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                      <item ACCUMULATED="16" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_HC">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="7" dataType="int" label="Slices" stringID="MAP_SLICES" value="7"/>
+                        <item ACCUMULATED="14" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="14"/>
+                        <item ACCUMULATED="14" dataType="int" label="LUTs" stringID="MAP_LUTS" value="14"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      </node>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_CASE1.I_NO_TB.I_RT1.U_RAM">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                      <item ACCUMULATED="1" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                      <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="2" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="G_BRAM[0].U_BRAM">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="0" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="1" dataType="int" label="BRAM" stringID="MAP_BRAM" value="1"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="G_BRAM[1].U_BRAM">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="0" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="1" dataType="int" label="BRAM" stringID="MAP_BRAM" value="1"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I_MUX.U_RD_DATA">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_CS_MUX">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          <node label="Module Name" stringID="MAP_MODULE" value="I1.U_MUX2">
+                            <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                            <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                            <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                            <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                            <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          </node>
+                        </node>
+                      </node>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_G2_SQ.U_CAPCTRL">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="76" dataType="int" label="Slices" stringID="MAP_SLICES" value="7"/>
+                    <item ACCUMULATED="62" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="7"/>
+                    <item ACCUMULATED="92" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                    <item ACCUMULATED="49" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_CDONE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="4" dataType="int" label="Slices" stringID="MAP_SLICES" value="4"/>
+                      <item ACCUMULATED="1" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                      <item ACCUMULATED="6" dataType="int" label="LUTs" stringID="MAP_LUTS" value="6"/>
+                      <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="4"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_CMPRESET">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="3"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="5" dataType="int" label="LUTs" stringID="MAP_LUTS" value="5"/>
+                      <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="4"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_NS0">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                      <item ACCUMULATED="1" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                      <item ACCUMULATED="10" dataType="int" label="LUTs" stringID="MAP_LUTS" value="10"/>
+                      <item ACCUMULATED="8" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="8"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_NS1">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                      <item ACCUMULATED="1" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                      <item ACCUMULATED="10" dataType="int" label="LUTs" stringID="MAP_LUTS" value="10"/>
+                      <item ACCUMULATED="8" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="8"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_SCE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                      <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_SCMPCE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="3" dataType="int" label="LUTs" stringID="MAP_LUTS" value="3"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_SCRST">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="3"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="5" dataType="int" label="LUTs" stringID="MAP_LUTS" value="5"/>
+                      <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="4"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_WCE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                      <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_WHCMPCE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="3" dataType="int" label="LUTs" stringID="MAP_LUTS" value="3"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_WLCMPCE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="3" dataType="int" label="LUTs" stringID="MAP_LUTS" value="3"/>
+                      <item ACCUMULATED="2" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="2"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_CAP_ADDRGEN">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="37" dataType="int" label="Slices" stringID="MAP_SLICES" value="21"/>
+                      <item ACCUMULATED="52" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="34"/>
+                      <item ACCUMULATED="42" dataType="int" label="LUTs" stringID="MAP_LUTS" value="12"/>
+                      <item ACCUMULATED="13" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I_NO_TSEQ.I_SRLT_NE_1.U_SCNT">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="5" dataType="int" label="Slices" stringID="MAP_SLICES" value="5"/>
+                        <item ACCUMULATED="9" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="9"/>
+                        <item ACCUMULATED="9" dataType="int" label="LUTs" stringID="MAP_LUTS" value="9"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.U_WCNT">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="5" dataType="int" label="Slices" stringID="MAP_SLICES" value="5"/>
+                        <item ACCUMULATED="9" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="9"/>
+                        <item ACCUMULATED="9" dataType="int" label="LUTs" stringID="MAP_LUTS" value="9"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_SCNT_CMP">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I_SRL16.U_GAND_SRL16">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="4"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="4"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_WCNT_HCMP">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I_SRL16.U_GAND_SRL16">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="4"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="4"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_WCNT_LCMP">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I_SRL16.U_GAND_SRL16">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="4"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="4"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_RST">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="19" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                    <item ACCUMULATED="25" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="9"/>
+                    <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_ARM_XFER">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="7" dataType="int" label="Slices" stringID="MAP_SLICES" value="7"/>
+                      <item ACCUMULATED="9" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="9"/>
+                      <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_HALT_XFER">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                      <item ACCUMULATED="7" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="7"/>
+                      <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_STAT">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="50" dataType="int" label="Slices" stringID="MAP_SLICES" value="26"/>
+                    <item ACCUMULATED="42" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="23"/>
+                    <item ACCUMULATED="45" dataType="int" label="LUTs" stringID="MAP_LUTS" value="14"/>
+                    <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_DMUX">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="11" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_CS_MUX">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="11" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I3.U_MUX8">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="11" dataType="int" label="LUTs" stringID="MAP_LUTS" value="11"/>
+                          <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_DSL1">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="6" dataType="int" label="Slices" stringID="MAP_SLICES" value="6"/>
+                      <item ACCUMULATED="6" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="6"/>
+                      <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_MUX">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="5" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_CS_MUX">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="5" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I1.U_MUX2">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="3"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="5" dataType="int" label="LUTs" stringID="MAP_LUTS" value="5"/>
+                          <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_RESET_EDGE">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="3" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="3"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_SMUX">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="U_CS_MUX">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                        <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I6.U_MUX64">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="4" dataType="int" label="LUTs" stringID="MAP_LUTS" value="4"/>
+                          <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_STAT_CNT">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="5" dataType="int" label="Slices" stringID="MAP_SLICES" value="5"/>
+                      <item ACCUMULATED="10" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="10"/>
+                      <item ACCUMULATED="10" dataType="int" label="LUTs" stringID="MAP_LUTS" value="10"/>
+                      <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    </node>
+                  </node>
+                  <node label="Module Name" stringID="MAP_MODULE" value="U_TRIG">
+                    <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                    <item ACCUMULATED="129" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                    <item ACCUMULATED="142" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                    <item ACCUMULATED="69" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                    <item ACCUMULATED="48" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                    <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_TC">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="52" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                      <item ACCUMULATED="22" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                      <item ACCUMULATED="39" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+                      <item ACCUMULATED="18" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I_STORAGE_QUAL.U_STORAGE_QUAL">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="4" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                        <item ACCUMULATED="2" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                        <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                          <item ACCUMULATED="1" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          <node label="Module Name" stringID="MAP_MODULE" value="I_NMU_EQ1.U_iDOUT">
+                            <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                            <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                            <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                            <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                            <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                            <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          </node>
+                        </node>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I_TSEQ_EQ1.I_TSEQ_SIMPLE">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="42" dataType="int" label="Slices" stringID="MAP_SLICES" value="10"/>
+                        <item ACCUMULATED="17" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="17"/>
+                        <item ACCUMULATED="34" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                        <item ACCUMULATED="16" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="S0_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[10].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[11].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[12].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[13].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[14].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[15].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[1].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[2].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[3].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[4].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[5].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[6].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[7].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[8].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_STATES[9].SI_CFG">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                          <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        </node>
+                      </node>
+                      <node label="Module Name" stringID="MAP_MODULE" value="I_TSEQ_NEQ2.U_TC_EQUATION">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="4" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                        <item ACCUMULATED="2" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                        <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="I_SRLT_NE_1.I_NMU_1_TO_4.U_TCL">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="3" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                          <item ACCUMULATED="1" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                          <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                          <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          <node label="Module Name" stringID="MAP_MODULE" value="I_NMU_EQ1.U_iDOUT">
+                            <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                            <item ACCUMULATED="2" dataType="int" label="Slices" stringID="MAP_SLICES" value="2"/>
+                            <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                            <item ACCUMULATED="2" dataType="int" label="LUTs" stringID="MAP_LUTS" value="2"/>
+                            <item ACCUMULATED="1" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="1"/>
+                            <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          </node>
+                        </node>
+                      </node>
+                    </node>
+                    <node label="Module Name" stringID="MAP_MODULE" value="U_TM">
+                      <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                      <item ACCUMULATED="76" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                      <item ACCUMULATED="119" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                      <item ACCUMULATED="30" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                      <item ACCUMULATED="30" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                      <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                      <node label="Module Name" stringID="MAP_MODULE" value="G_NMU[0].U_M">
+                        <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                        <item ACCUMULATED="76" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                        <item ACCUMULATED="119" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                        <item ACCUMULATED="30" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                        <item ACCUMULATED="30" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                        <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                        <node label="Module Name" stringID="MAP_MODULE" value="U_MU">
+                          <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                          <item ACCUMULATED="75" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+                          <item ACCUMULATED="118" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="1"/>
+                          <item ACCUMULATED="30" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                          <item ACCUMULATED="30" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                          <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                          <node label="Module Name" stringID="MAP_MODULE" value="I_MUT_GANDX.U_match">
+                            <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                            <item ACCUMULATED="74" dataType="int" label="Slices" stringID="MAP_SLICES" value="0"/>
+                            <item ACCUMULATED="117" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+                            <item ACCUMULATED="30" dataType="int" label="LUTs" stringID="MAP_LUTS" value="0"/>
+                            <item ACCUMULATED="30" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                            <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                            <node label="Module Name" stringID="MAP_MODULE" value="I_SRL16.U_GANDX_SRL16">
+                              <item label="Partition" stringID="MAP_PARTITION" value=""/>
+                              <item ACCUMULATED="74" dataType="int" label="Slices" stringID="MAP_SLICES" value="74"/>
+                              <item ACCUMULATED="117" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="117"/>
+                              <item ACCUMULATED="30" dataType="int" label="LUTs" stringID="MAP_LUTS" value="30"/>
+                              <item ACCUMULATED="30" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="30"/>
+                              <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+                              <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+                              <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+                              <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+                            </node>
+                          </node>
+                        </node>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node label="Module Name" stringID="MAP_MODULE" value="x_HMC_src">
+              <item label="Partition" stringID="MAP_PARTITION" value=""/>
+              <item ACCUMULATED="1" dataType="int" label="Slices" stringID="MAP_SLICES" value="1"/>
+              <item ACCUMULATED="0" dataType="int" label="Slice Reg" stringID="MAP_SLICE_REG" value="0"/>
+              <item ACCUMULATED="1" dataType="int" label="LUTs" stringID="MAP_LUTS" value="1"/>
+              <item ACCUMULATED="0" dataType="int" label="LUTRAM" stringID="MAP_LUTRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="BRAM" stringID="MAP_BRAM" value="0"/>
+              <item ACCUMULATED="0" dataType="int" stringID="MAP_MULT18X18" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="BUFG" stringID="MAP_BUFG" value="0"/>
+              <item ACCUMULATED="0" dataType="int" label="DCM" stringID="MAP_DCM" value="0"/>
+            </node>
+          </node>
+        </tree>
+      </section>
+    </task>
+  </application>
+
+</document>

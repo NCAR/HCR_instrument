@@ -1,0 +1,91 @@
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src_cs.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+bitgen -intstyle ise -f x_HMC_src.ut x_HMC_src.ncd 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src_cs.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+bitgen -intstyle ise -f x_HMC_src.ut x_HMC_src.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src_cs.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+bitgen -intstyle ise -f x_HMC_src.ut x_HMC_src.ncd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src_cs.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+bitgen -intstyle ise -f x_HMC_src.ut x_HMC_src.ncd 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src_cs.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+xst -intstyle ise -ifn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.xst" -ofn "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc HMC_src.ucf -p xc3s50a-vq100-5 x_HMC_src_cs.ngc x_HMC_src.ngd  
+map -intstyle ise -p xc3s50a-vq100-5 -cm area -detail -ir off -pr b -c 100 -o x_HMC_src_map.ncd x_HMC_src.ngd x_HMC_src.pcf 
+par -w -intstyle ise -ol high -t 1 x_HMC_src_map.ncd x_HMC_src.ncd x_HMC_src.pcf 
+trce -intstyle ise -v 3 -s 5 -n 3 -fastpaths -xml x_HMC_src.twx x_HMC_src.ncd -o x_HMC_src.twr x_HMC_src.pcf -ucf HMC_src.ucf 
+bitgen -intstyle ise -f x_HMC_src.ut x_HMC_src.ncd 

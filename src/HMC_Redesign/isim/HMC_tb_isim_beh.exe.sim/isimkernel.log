@@ -1,0 +1,28 @@
+Command line:
+   HMC_tb_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  36131
+
+Wed Jul 21 06:33:45 2021
+
+
+ Elaboration Time: 0.04 sec
+
+ Current Memory Usage: 289.829 Meg
+
+ Total Signals          : 430
+ Total Nets             : 493
+ Total Signal Drivers   : 277
+ Total Blocks           : 17
+ Total Primitive Blocks : 14
+ Total Processes        : 138
+ Total Traceable Variables  : 183
+ Total Scalar Nets and Variables : 5451
+
+ Total Simulation Time: 0.1 sec
+
+ Current Memory Usage: 365.33 Meg
+
+Wed Jul 21 06:37:09 2021
+

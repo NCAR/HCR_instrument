@@ -1,0 +1,9 @@
+Storage Target: Xilinx Flash/PROM
+Storage Family: Platform Flash
+xcf02s          [2 M]
+FF
+x_HMC_src
+/home/karboski/git/HCR_instrument/src/HMC_Redesign/
+
+MCS
+No

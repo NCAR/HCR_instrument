@@ -1,0 +1,36 @@
+Running: /home/karboski/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/fuse -relaunch -intstyle "ise" -incremental -o "/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_isim_beh.exe" -prj "/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_beh.prj" "work.HMC_tb" 
+ISim P.20131013 (signature 0xfbc00daa)
+Number of CPUs detected in this system: 72
+Turning on mult-threading, number of parallel sub-compilation jobs: 144 
+Determining compilation order of HDL files
+Parsing VHDL file "/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_src.vhd" into library work
+Parsing VHDL file "/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.vhd" into library work
+Parsing VHDL file "/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 116796 KB
+Fuse CPU Usage: 1210 ms
+Compiling package standard
+Compiling package std_logic_1164
+Compiling package numeric_std
+Compiling package vcomponents
+Compiling package textio
+Compiling package vital_timing
+Compiling package vital_primitives
+Compiling package vpkg
+Compiling architecture bufg_v of entity BUFG [bufg_default]
+Compiling architecture dcm_sp_clock_divide_by_2_v of entity dcm_sp_clock_divide_by_2 [dcm_sp_clock_divide_by_2_default]
+Compiling architecture dcm_sp_maximum_period_check_v of entity dcm_sp_maximum_period_check [\dcm_sp_maximum_period_check("*"...]
+Compiling architecture dcm_sp_maximum_period_check_v of entity dcm_sp_maximum_period_check [\dcm_sp_maximum_period_check("*"...]
+Compiling architecture dcm_sp_clock_lost_v of entity dcm_sp_clock_lost [dcm_sp_clock_lost_default]
+Compiling architecture dcm_sp_v of entity DCM_SP [\DCM_SP(true,"*",true,false,2.0,...]
+Compiling architecture behavioral of entity HMC_src [\HMC_src(true)\]
+Compiling architecture x_hmc_src of entity x_HMC_src [\x_HMC_src(true)\]
+Compiling architecture behavior of entity hmc_tb
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 25 VHDL Units
+Built simulation executable /home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_isim_beh.exe
+Fuse Memory Usage: 9616240 KB
+Fuse CPU Usage: 1490 ms
+GCC CPU Usage: 170 ms
