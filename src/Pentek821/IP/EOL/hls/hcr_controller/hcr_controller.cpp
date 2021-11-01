@@ -25,9 +25,10 @@ void hcr_controller(
 		hls::stream<coef_t>& coef_ch2,
 		volatile ap_uint<N_TIMERS>* mt_pulse,   // MultiTimer outputs
 		volatile ap_uint<32>* control_flags,    // Control word for the pulse
-		volatile ap_uint<2>* filter_select_ch0, // Selects RX FIR
-		volatile ap_uint<2>* filter_select_ch1,
-		volatile ap_uint<2>* filter_select_ch2,
+		volatile bool* control_hvn,             // HV bit for the pulse
+		volatile ap_uint<3>* filter_select_ch0, // Selects RX FIR
+		volatile ap_uint<3>* filter_select_ch1,
+		volatile ap_uint<3>* filter_select_ch2,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch0,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch1,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch2,
@@ -112,6 +113,7 @@ void hcr_controller(
 			pulse_queue_scheduler,
 			mt_pulse,
 			control_flags,
+			control_hvn,
 			filter_select_ch0,
 			filter_select_ch1,
 			filter_select_ch2
@@ -174,6 +176,7 @@ void scheduler_parser(
 
 			//Add the specified number of repetitions to the queue of pulses to execute
 			uint8_t staggered_prt_index = 0;
+			ap_uint<2> hhvv_index = 3;
 			for(uint32_t pulse_rep = 0; pulse_rep < pulse_definition.num_pulses; ++pulse_rep)
 			{
 				pulse_exec_definition pulse;
@@ -191,18 +194,22 @@ void scheduler_parser(
 				//Select the correct staggered PRT
 				pulse.def.prt[0] = pulse_definition.prt[staggered_prt_index];
 
+				//If the pol mode is hhvv, cycle the polarization flag
+				if(pulse_definition.polarization_mode == POL_MODE_HHVV)
+					pulse.def.polarization_mode = hhvv_index[1];
+
 		        // Number of data values. The total time is offset+width, unless truncated by the PRT
 				uint32_t num_samples[3];
 				for(int ch=0; ch<3; ch++)
 				{
 					#pragma HLS unroll
-					const int mt = CHANNEL_TO_MT[ch];
-					uint32_t totalTime = pulse.def.timer_offset[mt] + pulse.def.timer_width[mt];
+					const int timer_index = CHANNEL_TO_MT[ch];
+					uint32_t totalTime = pulse.def.timer_offset[timer_index] + pulse.def.timer_width[timer_index];
 					if(pulse.def.prt[0]<totalTime) totalTime = pulse.def.prt[0];
-					uint32_t startTime = pulse.def.timer_offset[mt];
-					uint32_t ns = (totalTime-startTime) / cfg_total_decimation;
-					if(ns==0) ns=1;
-					num_samples[ch] = ns;
+					uint32_t startTime = pulse.def.timer_offset[timer_index];
+					uint32_t n_samp = (totalTime-startTime) / cfg_total_decimation;
+					if(n_samp==0) n_samp=1;
+					num_samples[ch] = n_samp;
 				}
 
 				//Check if done
@@ -235,6 +242,7 @@ void scheduler_parser(
 				if (cfg_enabled_channel_vector[2]) pulse_queue_2 << pulse;
 
 				num_pulses_scheduled++;
+				hhvv_index++;
 
 				if(pulses_to_execute_reached)
 				{
@@ -267,9 +275,10 @@ void scheduler_cycle_exact(
 		hls::stream<pulse_exec_definition>& pulse_queue,
 		volatile ap_uint<N_TIMERS>* mt_pulse,
 		volatile ap_uint<32>* control_flags,
-		volatile ap_uint<2>* filter_select_ch0,
-		volatile ap_uint<2>* filter_select_ch1,
-		volatile ap_uint<2>* filter_select_ch2
+		volatile bool* control_hvn,
+		volatile ap_uint<3>* filter_select_ch0,
+		volatile ap_uint<3>* filter_select_ch1,
+		volatile ap_uint<3>* filter_select_ch2
 	)
 {
 
@@ -320,6 +329,7 @@ void scheduler_cycle_exact(
 			#pragma HLS latency min=0 max=0
 			*mt_pulse = timer_vector;
 			*control_flags = pulse.def.control_flags;
+			*control_hvn = pulse.def.polarization_mode & 1;
 			*filter_select_ch0 = pulse.def.filter_select_ch0;
 			*filter_select_ch1 = pulse.def.filter_select_ch1;
 			*filter_select_ch2 = pulse.def.filter_select_ch2;

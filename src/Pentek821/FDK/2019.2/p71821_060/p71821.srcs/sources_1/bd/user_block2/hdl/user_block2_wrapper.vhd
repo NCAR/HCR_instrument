@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Wed Apr 28 12:53:17 2021
+--Date        : Tue Jul 27 08:53:24 2021
 --Host        : wind running 64-bit unknown
 --Command     : generate_target user_block2_wrapper.bd
 --Design      : user_block2_wrapper
@@ -19,15 +19,18 @@ entity user_block2_wrapper is
     EL_MOSI : in STD_LOGIC;
     EL_SCK : in STD_LOGIC;
     EL_SSEL : in STD_LOGIC;
+    PPS_to_controller : in STD_LOGIC;
     ROT_A : in STD_LOGIC;
     ROT_B : in STD_LOGIC;
     TILT_A : in STD_LOGIC;
     TILT_B : in STD_LOGIC;
     control_flags : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    controller_PPS : in STD_LOGIC;
-    filter_select_ch0 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    filter_select_ch1 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    filter_select_ch2 : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    control_hvn : out STD_LOGIC;
+    controller_running : out STD_LOGIC;
+    ctl3_out : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    filter_select_ch0 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch1 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch2 : out STD_LOGIC_VECTOR ( 2 downto 0 );
     m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
@@ -91,16 +94,16 @@ architecture STRUCTURE of user_block2_wrapper is
   port (
     user2_irq : out STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axis_adc_pdti_aclk : in STD_LOGIC;
-    filter_select_ch0 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    filter_select_ch1 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    filter_select_ch2 : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    filter_select_ch0 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch1 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch2 : out STD_LOGIC_VECTOR ( 2 downto 0 );
     control_flags : out STD_LOGIC_VECTOR ( 31 downto 0 );
     mt_pulse : out STD_LOGIC_VECTOR ( 7 downto 0 );
     status_flags : in STD_LOGIC_VECTOR ( 15 downto 0 );
     s_axis_adc_pdti_aresetn : in STD_LOGIC;
     s_axi_csr_aresetn : in STD_LOGIC;
     s_axi_csr_aclk : in STD_LOGIC;
-    controller_PPS : in STD_LOGIC;
+    PPS_to_controller : in STD_LOGIC;
     AZ_MOSI : in STD_LOGIC;
     AZ_SCK : in STD_LOGIC;
     AZ_SSEL : in STD_LOGIC;
@@ -113,23 +116,12 @@ architecture STRUCTURE of user_block2_wrapper is
     TILT_B : in STD_LOGIC;
     s_axis_dac_pdti_aclk : in STD_LOGIC;
     s_axis_dac_pdti_aresetn : in STD_LOGIC;
+    ctl3_out : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    controller_running : out STD_LOGIC;
+    control_hvn : out STD_LOGIC;
     m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
-    s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_adc_ch2_pdti_tready : out STD_LOGIC;
-    s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
-    s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_adc_ch0_pdti_tready : out STD_LOGIC;
-    s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
-    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
-    s_axis_dac_pdti_tvalid : in STD_LOGIC;
-    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_dac_pdti_tvalid : out STD_LOGIC;
     m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
@@ -156,9 +148,23 @@ architecture STRUCTURE of user_block2_wrapper is
     s_axis_adc_ch1_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
+    s_axis_dac_pdti_tvalid : in STD_LOGIC;
+    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_adc_ch0_pdti_tready : out STD_LOGIC;
+    s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
     m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC
+    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
+    s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_adc_ch2_pdti_tready : out STD_LOGIC;
+    s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
+    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC
   );
   end component user_block2;
 begin
@@ -170,15 +176,18 @@ user_block2_i: component user_block2
       EL_MOSI => EL_MOSI,
       EL_SCK => EL_SCK,
       EL_SSEL => EL_SSEL,
+      PPS_to_controller => PPS_to_controller,
       ROT_A => ROT_A,
       ROT_B => ROT_B,
       TILT_A => TILT_A,
       TILT_B => TILT_B,
       control_flags(31 downto 0) => control_flags(31 downto 0),
-      controller_PPS => controller_PPS,
-      filter_select_ch0(1 downto 0) => filter_select_ch0(1 downto 0),
-      filter_select_ch1(1 downto 0) => filter_select_ch1(1 downto 0),
-      filter_select_ch2(1 downto 0) => filter_select_ch2(1 downto 0),
+      control_hvn => control_hvn,
+      controller_running => controller_running,
+      ctl3_out(31 downto 0) => ctl3_out(31 downto 0),
+      filter_select_ch0(2 downto 0) => filter_select_ch0(2 downto 0),
+      filter_select_ch1(2 downto 0) => filter_select_ch1(2 downto 0),
+      filter_select_ch2(2 downto 0) => filter_select_ch2(2 downto 0),
       m_axis_adc_ch0_pdti_tdata(31 downto 0) => m_axis_adc_ch0_pdti_tdata(31 downto 0),
       m_axis_adc_ch0_pdti_tuser(127 downto 0) => m_axis_adc_ch0_pdti_tuser(127 downto 0),
       m_axis_adc_ch0_pdti_tvalid => m_axis_adc_ch0_pdti_tvalid,

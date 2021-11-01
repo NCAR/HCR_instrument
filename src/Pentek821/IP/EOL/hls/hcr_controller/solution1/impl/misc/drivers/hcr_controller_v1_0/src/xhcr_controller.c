@@ -667,6 +667,101 @@ u32 XHcr_controller_Read_cfg_pulse_sequence_control_flags_Bytes(XHcr_controller 
     return length;
 }
 
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_BaseAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_HighAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_TotalBytes(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + 1);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_BitWidth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PULSE_SEQUENCE_POLARIZATION_MODE;
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_Depth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_POLARIZATION_MODE;
+}
+
+u32 XHcr_controller_Write_cfg_pulse_sequence_polarization_mode_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + (offset + i)*4) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_pulse_sequence_polarization_mode_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + (offset + i)*4);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Write_cfg_pulse_sequence_polarization_mode_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + offset + i) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_pulse_sequence_polarization_mode_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE + offset + i);
+    }
+    return length;
+}
+
 u32 XHcr_controller_Get_cfg_pulse_sequence_filter_select_ch0_BaseAddress(XHcr_controller *InstancePtr) {
     Xil_AssertNonvoid(InstancePtr != NULL);
     Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);

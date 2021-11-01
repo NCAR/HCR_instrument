@@ -2,11 +2,39 @@
 <Root MajorVersion="0" MinorVersion="39">
   <CompositeFile CompositeFileTopName="dsp1" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="RESET" Timestamp="1619624070"/>
-    <Generation Name="IMPLEMENTATION" State="RESET" Timestamp="1619624070"/>
-    <Generation Name="SIMULATION" State="RESET" Timestamp="1619624070"/>
-    <Generation Name="HW_HANDOFF" State="RESET" Timestamp="1619624070"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1619640387"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1619640387"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1619640387"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1619640387"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
+      <File Name="dsp1_sim_netlist.vhdl" Type="VHDL">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+        <UsedIn Val="SINGLE_LANGUAGE"/>
+      </File>
+      <File Name="dsp1_sim_netlist.v" Type="Verilog">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+        <UsedIn Val="SINGLE_LANGUAGE"/>
+      </File>
+      <File Name="dsp1_stub.vhdl" Type="VHDL">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTH_BLACKBOX_STUB"/>
+      </File>
+      <File Name="dsp1_stub.v" Type="Verilog">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTH_BLACKBOX_STUB"/>
+      </File>
+      <File Name="dsp1.dcp" Type="DCP">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+      </File>
       <File Name="ip/dsp1_ddc_in_broadcast_0/dsp1_ddc_in_broadcast_0.xci" Type="IP">
         <Instance HierarchyPath="adc_ch0/ddc/ddc_in_broadcast"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -1121,6 +1149,43 @@
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
         <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="synth/dsp1.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+      </File>
+      <File Name="sim/dsp1.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="dsp1_ooc.xdc" Type="XDC">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="OUT_OF_CONTEXT"/>
+      </File>
+      <File Name="hw_handoff/dsp1.hwh" Type="HwHandoff">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="HW_HANDOFF"/>
+      </File>
+      <File Name="hw_handoff/dsp1_bd.tcl">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="HW_HANDOFF"/>
+      </File>
+      <File Name="synth/dsp1.hwdef">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="HW_HANDOFF"/>
+      </File>
+      <File Name="sim/dsp1.protoinst">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
       </File>
     </FileCollection>

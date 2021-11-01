@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x3550895C7DF58C0F",
+      "boundary_crc": "0x789587E5DF667F6C",
       "device": "xcku060-ffva1156-2-e",
       "name": "user_block1",
       "synth_flow_mode": "Hierarchical",
@@ -11,18 +11,16 @@
     "design_tree": {
       "dac": {
         "pdti_dac_pulse_0": "",
-        "px_lvl_trans_xclk_0": "",
         "vio_0": "",
         "xlslice_0": "",
         "px_scalar_reg_0": "",
-        "px_scalar_reg_1": "",
-        "xlslice_1": ""
+        "px_scalar_reg_1": ""
       },
+      "axilite_place_holder": "",
+      "irq_placeholder": "",
       "pdti_adc_tweak_0": "",
       "pdti_adc_tweak_1": "",
-      "pdti_adc_tweak_2": "",
-      "axilite_place_holder": "",
-      "irq_placeholder": ""
+      "pdti_adc_tweak_2": ""
     },
     "interface_ports": {
       "s_axi_csr": {
@@ -36,8 +34,7 @@
             "value": "AXI4LITE"
           },
           "FREQ_HZ": {
-            "value": "250000000",
-            "value_src": "default"
+            "value": "250000000"
           },
           "ID_WIDTH": {
             "value": "0"
@@ -213,16 +210,14 @@
             "value": "0"
           },
           "FREQ_HZ": {
-            "value": "200000000",
-            "value_src": "default"
+            "value": "200000000"
           },
           "PHASE": {
             "value": "0.000",
             "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "user_block1_s_axis_adc_pdti_aclk",
-            "value_src": "default"
+            "value": "user_block1_s_axis_adc_pdti_aclk"
           },
           "LAYERED_METADATA": {
             "value": "undef"
@@ -318,16 +313,14 @@
             "value": "0"
           },
           "FREQ_HZ": {
-            "value": "200000000",
-            "value_src": "default"
+            "value": "200000000"
           },
           "PHASE": {
             "value": "0.000",
             "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "user_block1_s_axis_adc_pdti_aclk",
-            "value_src": "default"
+            "value": "user_block1_s_axis_adc_pdti_aclk"
           },
           "LAYERED_METADATA": {
             "value": "undef"
@@ -423,16 +416,14 @@
             "value": "0"
           },
           "FREQ_HZ": {
-            "value": "200000000",
-            "value_src": "default"
+            "value": "200000000"
           },
           "PHASE": {
             "value": "0.000",
             "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "user_block1_s_axis_adc_pdti_aclk",
-            "value_src": "default"
+            "value": "user_block1_s_axis_adc_pdti_aclk"
           },
           "LAYERED_METADATA": {
             "value": "undef"
@@ -472,16 +463,14 @@
             "value": "0"
           },
           "FREQ_HZ": {
-            "value": "250000000",
-            "value_src": "default"
+            "value": "250000000"
           },
           "PHASE": {
             "value": "0.000",
             "value_src": "default"
           },
           "CLK_DOMAIN": {
-            "value": "user_block1_s_axis_dac_pdti_aclk",
-            "value_src": "default"
+            "value": "user_block1_s_axis_dac_pdti_aclk"
           },
           "LAYERED_METADATA": {
             "value": "undef"
@@ -684,20 +673,17 @@
       },
       "filter_select_ch0": {
         "direction": "I",
-        "left": "1",
+        "left": "2",
         "right": "0"
-      },
-      "controller_PPS": {
-        "direction": "O"
       },
       "filter_select_ch1": {
         "direction": "I",
-        "left": "1",
+        "left": "2",
         "right": "0"
       },
       "filter_select_ch2": {
         "direction": "I",
-        "left": "1",
+        "left": "2",
         "right": "0"
       },
       "dac_sync_from_adc": {
@@ -733,9 +719,6 @@
             "direction": "I",
             "left": "7",
             "right": "0"
-          },
-          "dac_sync": {
-            "direction": "O"
           }
         },
         "components": {
@@ -927,14 +910,13 @@
               }
             }
           },
-          "px_lvl_trans_xclk_0": {
-            "vlnv": "pentek.com:user:px_lvl_trans_xclk:1.0",
-            "xci_name": "user_block1_px_lvl_trans_xclk_0_0"
-          },
           "vio_0": {
             "vlnv": "xilinx.com:ip:vio:3.0",
             "xci_name": "user_block1_vio_0_1",
             "parameters": {
+              "C_NUM_PROBE_IN": {
+                "value": "1"
+              },
               "C_NUM_PROBE_OUT": {
                 "value": "2"
               },
@@ -969,32 +951,20 @@
           },
           "px_scalar_reg_0": {
             "vlnv": "pentek.com:px_ip:px_scalar_reg:1.0",
-            "xci_name": "user_block1_px_scalar_reg_0_0"
+            "xci_name": "user_block1_px_scalar_reg_0_2"
           },
           "px_scalar_reg_1": {
             "vlnv": "pentek.com:px_ip:px_scalar_reg:1.0",
-            "xci_name": "user_block1_px_scalar_reg_0_1"
-          },
-          "xlslice_1": {
-            "vlnv": "xilinx.com:ip:xlslice:1.0",
-            "xci_name": "user_block1_xlslice_0_1",
-            "parameters": {
-              "DIN_FROM": {
-                "value": "7"
-              },
-              "DIN_TO": {
-                "value": "7"
-              },
-              "DIN_WIDTH": {
-                "value": "8"
-              },
-              "DOUT_WIDTH": {
-                "value": "1"
-              }
-            }
+            "xci_name": "user_block1_px_scalar_reg_0_3"
           }
         },
         "interface_nets": {
+          "s_axis_dac_pdti_1": {
+            "interface_ports": [
+              "s_axis_dac_pdti",
+              "pdti_dac_pulse_0/S_AXIS_PDTI"
+            ]
+          },
           "Conn1": {
             "interface_ports": [
               "m_axis_dac_pdti",
@@ -1008,12 +978,6 @@
                 "value": "true"
               }
             }
-          },
-          "s_axis_dac_pdti_1": {
-            "interface_ports": [
-              "s_axis_dac_pdti",
-              "pdti_dac_pulse_0/S_AXIS_PDTI"
-            ]
           }
         },
         "nets": {
@@ -1027,36 +991,22 @@
             "ports": [
               "s_axis_dac_pdti_aclk",
               "pdti_dac_pulse_0/ACLK",
-              "px_lvl_trans_xclk_0/out_clk",
-              "vio_0/clk"
-            ]
-          },
-          "px_lvl_trans_xclk_0_out_sig": {
-            "ports": [
-              "px_lvl_trans_xclk_0/out_sig",
-              "pdti_dac_pulse_0/GATE",
-              "vio_0/probe_in0"
-            ]
-          },
-          "s_axis_adc_pdti_aclk_1": {
-            "ports": [
-              "s_axis_adc_pdti_aclk",
-              "px_lvl_trans_xclk_0/in_clk",
+              "vio_0/clk",
               "px_scalar_reg_1/clk",
               "px_scalar_reg_0/clk"
             ]
           },
-          "xlslice_0_Dout": {
+          "px_lvl_trans_xclk_0_out_sig": {
             "ports": [
-              "xlslice_0/Dout",
-              "px_lvl_trans_xclk_0/in_sig"
+              "px_scalar_reg_1/q",
+              "pdti_dac_pulse_0/GATE",
+              "vio_0/probe_in0"
             ]
           },
           "mt_pulse_1": {
             "ports": [
               "mt_pulse",
-              "xlslice_0/Din",
-              "xlslice_1/Din"
+              "xlslice_0/Din"
             ]
           },
           "vio_0_probe_out0": {
@@ -1077,17 +1027,32 @@
               "px_scalar_reg_1/d"
             ]
           },
-          "xlslice_1_Dout": {
+          "xlslice_0_Dout": {
             "ports": [
-              "xlslice_1/Dout",
+              "xlslice_0/Dout",
               "px_scalar_reg_0/d"
             ]
+          }
+        }
+      },
+      "axilite_place_holder": {
+        "vlnv": "pentek.com:px_ip:px_s_axil_plc_hldr:1.0",
+        "xci_name": "user_block1_px_s_axil_plc_hldr_0_0",
+        "parameters": {
+          "address_width": {
+            "value": "26"
+          }
+        }
+      },
+      "irq_placeholder": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "user_block1_xlconstant_0_0",
+        "parameters": {
+          "CONST_VAL": {
+            "value": "0"
           },
-          "px_scalar_reg_1_q": {
-            "ports": [
-              "px_scalar_reg_1/q",
-              "dac_sync"
-            ]
+          "CONST_WIDTH": {
+            "value": "2"
           }
         }
       },
@@ -1273,8 +1238,14 @@
           },
           "FILTER_SELECT": {
             "direction": "I",
-            "left": "1",
+            "left": "2",
             "right": "0"
+          },
+          "GATE": {
+            "direction": "O"
+          },
+          "SYNC": {
+            "direction": "O"
           },
           "PPS": {
             "direction": "O"
@@ -1468,8 +1439,14 @@
           },
           "FILTER_SELECT": {
             "direction": "I",
-            "left": "1",
+            "left": "2",
             "right": "0"
+          },
+          "GATE": {
+            "direction": "O"
+          },
+          "SYNC": {
+            "direction": "O"
           },
           "PPS": {
             "direction": "O"
@@ -1663,41 +1640,32 @@
           },
           "FILTER_SELECT": {
             "direction": "I",
-            "left": "1",
+            "left": "2",
             "right": "0"
+          },
+          "GATE": {
+            "direction": "O"
+          },
+          "SYNC": {
+            "direction": "O"
           },
           "PPS": {
             "direction": "O"
           }
         }
-      },
-      "axilite_place_holder": {
-        "vlnv": "pentek.com:px_ip:px_s_axil_plc_hldr:1.0",
-        "xci_name": "user_block1_px_s_axil_plc_hldr_0_0",
-        "parameters": {
-          "address_width": {
-            "value": "26"
-          }
-        }
-      },
-      "irq_placeholder": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "xci_name": "user_block1_xlconstant_0_0",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          },
-          "CONST_WIDTH": {
-            "value": "2"
-          }
-        }
       }
     },
     "interface_nets": {
-      "pdti_adc_tweak_1_M_AXIS_PDTI": {
+      "pdti_adc_tweak_2_M_AXIS_PDTI": {
         "interface_ports": [
-          "m_axis_adc_ch1_pdti",
-          "pdti_adc_tweak_1/M_AXIS_PDTI"
+          "m_axis_adc_ch2_pdti",
+          "pdti_adc_tweak_2/M_AXIS_PDTI"
+        ]
+      },
+      "s_axis_adc_ch0_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch0_pdti",
+          "pdti_adc_tweak_0/S_AXIS_PDTI"
         ]
       },
       "pdti_adc_tweak_0_M_AXIS_PDTI": {
@@ -1706,10 +1674,34 @@
           "pdti_adc_tweak_0/M_AXIS_PDTI"
         ]
       },
-      "s_axis_adc_ch0_pdti_1": {
+      "s_axis_adc_ch2_pdti_1": {
         "interface_ports": [
-          "s_axis_adc_ch0_pdti",
-          "pdti_adc_tweak_0/S_AXIS_PDTI"
+          "s_axis_adc_ch2_pdti",
+          "pdti_adc_tweak_2/S_AXIS_PDTI"
+        ]
+      },
+      "s_axi_csr_1": {
+        "interface_ports": [
+          "s_axi_csr",
+          "axilite_place_holder/s_axi_csr"
+        ]
+      },
+      "s_axis_dac_pdti_1": {
+        "interface_ports": [
+          "s_axis_dac_pdti",
+          "dac/s_axis_dac_pdti"
+        ]
+      },
+      "s_axis_adc_ch1_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch1_pdti",
+          "pdti_adc_tweak_1/S_AXIS_PDTI"
+        ]
+      },
+      "pdti_adc_tweak_1_M_AXIS_PDTI": {
+        "interface_ports": [
+          "m_axis_adc_ch1_pdti",
+          "pdti_adc_tweak_1/M_AXIS_PDTI"
         ]
       },
       "dac_M_AXIS_PDTI": {
@@ -1722,36 +1714,6 @@
             "value": "true"
           }
         }
-      },
-      "s_axis_dac_pdti_1": {
-        "interface_ports": [
-          "s_axis_dac_pdti",
-          "dac/s_axis_dac_pdti"
-        ]
-      },
-      "s_axis_adc_ch2_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch2_pdti",
-          "pdti_adc_tweak_2/S_AXIS_PDTI"
-        ]
-      },
-      "s_axis_adc_ch1_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch1_pdti",
-          "pdti_adc_tweak_1/S_AXIS_PDTI"
-        ]
-      },
-      "s_axi_csr_1": {
-        "interface_ports": [
-          "s_axi_csr",
-          "axilite_place_holder/s_axi_csr"
-        ]
-      },
-      "pdti_adc_tweak_2_M_AXIS_PDTI": {
-        "interface_ports": [
-          "m_axis_adc_ch2_pdti",
-          "pdti_adc_tweak_2/M_AXIS_PDTI"
-        ]
       }
     },
     "nets": {
@@ -1776,19 +1738,19 @@
       "s_axis_adc_pdti_aclk_1": {
         "ports": [
           "s_axis_adc_pdti_aclk",
+          "dac/s_axis_adc_pdti_aclk",
           "pdti_adc_tweak_0/ACLK",
           "pdti_adc_tweak_1/ACLK",
-          "pdti_adc_tweak_2/ACLK",
-          "dac/s_axis_adc_pdti_aclk"
+          "pdti_adc_tweak_2/ACLK"
         ]
       },
       "mt_pulse_1": {
         "ports": [
           "mt_pulse",
+          "dac/mt_pulse",
           "pdti_adc_tweak_0/MT_PULSE",
           "pdti_adc_tweak_1/MT_PULSE",
-          "pdti_adc_tweak_2/MT_PULSE",
-          "dac/mt_pulse"
+          "pdti_adc_tweak_2/MT_PULSE"
         ]
       },
       "s_axis_adc_pdti_aresetn_1": {
@@ -1817,12 +1779,6 @@
           "pdti_adc_tweak_0/FILTER_SELECT"
         ]
       },
-      "pdti_adc_tweak_0_PPS": {
-        "ports": [
-          "pdti_adc_tweak_0/PPS",
-          "controller_PPS"
-        ]
-      },
       "filter_select_ch1_1": {
         "ports": [
           "filter_select_ch1",
@@ -1835,9 +1791,9 @@
           "pdti_adc_tweak_2/FILTER_SELECT"
         ]
       },
-      "dac_sync_from_adc": {
+      "pdti_adc_tweak_0_SYNC": {
         "ports": [
-          "dac/dac_sync",
+          "pdti_adc_tweak_0/SYNC",
           "dac_sync_from_adc"
         ]
       }

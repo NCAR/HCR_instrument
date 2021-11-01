@@ -143,6 +143,15 @@ u32 XHcr_controller_Write_cfg_pulse_sequence_control_flags_Words(XHcr_controller
 u32 XHcr_controller_Read_cfg_pulse_sequence_control_flags_Words(XHcr_controller *InstancePtr, int offset, int *data, int length);
 u32 XHcr_controller_Write_cfg_pulse_sequence_control_flags_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length);
 u32 XHcr_controller_Read_cfg_pulse_sequence_control_flags_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length);
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_BaseAddress(XHcr_controller *InstancePtr);
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_HighAddress(XHcr_controller *InstancePtr);
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_TotalBytes(XHcr_controller *InstancePtr);
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_BitWidth(XHcr_controller *InstancePtr);
+u32 XHcr_controller_Get_cfg_pulse_sequence_polarization_mode_Depth(XHcr_controller *InstancePtr);
+u32 XHcr_controller_Write_cfg_pulse_sequence_polarization_mode_Words(XHcr_controller *InstancePtr, int offset, int *data, int length);
+u32 XHcr_controller_Read_cfg_pulse_sequence_polarization_mode_Words(XHcr_controller *InstancePtr, int offset, int *data, int length);
+u32 XHcr_controller_Write_cfg_pulse_sequence_polarization_mode_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length);
+u32 XHcr_controller_Read_cfg_pulse_sequence_polarization_mode_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length);
 u32 XHcr_controller_Get_cfg_pulse_sequence_filter_select_ch0_BaseAddress(XHcr_controller *InstancePtr);
 u32 XHcr_controller_Get_cfg_pulse_sequence_filter_select_ch0_HighAddress(XHcr_controller *InstancePtr);
 u32 XHcr_controller_Get_cfg_pulse_sequence_filter_select_ch0_TotalBytes(XHcr_controller *InstancePtr);

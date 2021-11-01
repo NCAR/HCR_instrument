@@ -65,7 +65,7 @@ input   ap_start;
 output   ap_done;
 output   ap_idle;
 output   ap_ready;
-input  [823:0] pulse_metadata_V_TDATA;
+input  [855:0] pulse_metadata_V_TDATA;
 input   pulse_metadata_V_TVALID;
 output   pulse_metadata_V_TREADY;
 input  [31:0] data_word_data_V;
@@ -138,7 +138,7 @@ reg   [0:0] tmp_reg_819;
 reg   [31:0] x_0_reg_301;
 reg   [3:0] x1_0_reg_310;
 reg    ap_block_state1;
-reg   [823:0] pulse_metadata_V_rea_reg_808;
+reg   [855:0] pulse_metadata_V_rea_reg_808;
 wire   [0:0] tmp_fu_412_p3;
 wire   [0:0] icmp_ln126_fu_420_p2;
 wire    ap_block_state2_pp0_stage0_iter0;
@@ -462,11 +462,11 @@ end
 
 always @ (posedge ap_clk) begin
     if (((1'b1 == ap_CS_fsm_state4) & (1'b0 == ap_block_state4_io))) begin
-        decimation_value_0_n_reg_846 <= {{pulse_metadata_V_rea_reg_808[815:808]}};
+        decimation_value_0_n_reg_846 <= {{pulse_metadata_V_rea_reg_808[847:840]}};
         header_4_reg_856[7 : 0] <= header_4_fu_508_p1[7 : 0];
-        header_5_reg_840 <= {{pulse_metadata_V_rea_reg_808[807:776]}};
+        header_5_reg_840 <= {{pulse_metadata_V_rea_reg_808[839:808]}};
         header_6_reg_861 <= header_6_fu_512_p1;
-        p_Repl2_2_reg_835 <= pulse_metadata_V_rea_reg_808[32'd819];
+        p_Repl2_2_reg_835 <= pulse_metadata_V_rea_reg_808[32'd851];
         tmp_3_reg_851 <= tmp_3_fu_492_p3;
     end
 end
@@ -486,7 +486,7 @@ end
 always @ (posedge ap_clk) begin
     if ((~((pulse_metadata_V_TVALID == 1'b0) | (ap_start == 1'b0)) & (1'b1 == ap_CS_fsm_state1))) begin
         pulse_metadata_V_rea_reg_808 <= pulse_metadata_V_TDATA;
-        tmp_reg_819 <= pulse_metadata_V_TDATA[32'd820];
+        tmp_reg_819 <= pulse_metadata_V_TDATA[32'd852];
     end
 end
 
@@ -903,7 +903,7 @@ assign or_ln193_fu_662_p1 = in_a_pulse_read;
 
 assign or_ln193_fu_662_p2 = (or_ln193_fu_662_p1 | ap_phi_mux_write_flag3_0_phi_fu_362_p4);
 
-assign p_Repl2_s_fu_431_p3 = pulse_metadata_V_rea_reg_808[32'd818];
+assign p_Repl2_s_fu_431_p3 = pulse_metadata_V_rea_reg_808[32'd850];
 
 always @ (*) begin
     p_Result_3_fu_438_p4 = data_word_user_V;
@@ -932,15 +932,15 @@ assign select_ln17_5_fu_635_p3 = ((or_ln17_2_fu_604_p2[0:0] === 1'b1) ? select_l
 
 assign select_ln17_fu_573_p3 = ((icmp_ln17_6_fu_567_p2[0:0] === 1'b1) ? 32'd3126770193 : header_6_reg_861);
 
-assign tmp_2_fu_483_p4 = {{pulse_metadata_V_rea_reg_808[819:816]}};
+assign tmp_2_fu_483_p4 = {{pulse_metadata_V_rea_reg_808[851:848]}};
 
 assign tmp_3_fu_492_p3 = {{tmp_2_fu_483_p4}, {flags}};
 
 assign tmp_data_V_1_fu_643_p3 = ((or_ln17_3_fu_629_p2[0:0] === 1'b1) ? select_ln17_4_fu_621_p3 : select_ln17_5_fu_635_p3);
 
-assign tmp_fu_412_p3 = pulse_metadata_V_TDATA[32'd820];
+assign tmp_fu_412_p3 = pulse_metadata_V_TDATA[32'd852];
 
-assign tmp_sequence_index_l_fu_499_p4 = {{pulse_metadata_V_rea_reg_808[775:768]}};
+assign tmp_sequence_index_l_fu_499_p4 = {{pulse_metadata_V_rea_reg_808[807:800]}};
 
 assign trunc_ln179_fu_527_p1 = x1_0_reg_310[2:0];
 

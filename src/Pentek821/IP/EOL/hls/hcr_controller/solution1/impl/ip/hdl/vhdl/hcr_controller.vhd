@@ -11,7 +11,7 @@ use IEEE.numeric_std.all;
 
 entity hcr_controller is
 generic (
-    C_S_AXI_CFG_BUS_ADDR_WIDTH : INTEGER := 13;
+    C_S_AXI_CFG_BUS_ADDR_WIDTH : INTEGER := 14;
     C_S_AXI_CFG_BUS_DATA_WIDTH : INTEGER := 32 );
 port (
     s_axi_cfg_bus_AWVALID : IN STD_LOGIC;
@@ -39,12 +39,13 @@ port (
     coef_ch2_V_V_TDATA : OUT STD_LOGIC_VECTOR (23 downto 0);
     mt_pulse_V : OUT STD_LOGIC_VECTOR (7 downto 0);
     control_flags_V : OUT STD_LOGIC_VECTOR (31 downto 0);
-    filter_select_ch0_V : OUT STD_LOGIC_VECTOR (1 downto 0);
-    filter_select_ch1_V : OUT STD_LOGIC_VECTOR (1 downto 0);
-    filter_select_ch2_V : OUT STD_LOGIC_VECTOR (1 downto 0);
-    pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
-    pulse_metadata_ch1_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
-    pulse_metadata_ch2_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
+    control_hvn : OUT STD_LOGIC;
+    filter_select_ch0_V : OUT STD_LOGIC_VECTOR (2 downto 0);
+    filter_select_ch1_V : OUT STD_LOGIC_VECTOR (2 downto 0);
+    filter_select_ch2_V : OUT STD_LOGIC_VECTOR (2 downto 0);
+    pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
+    pulse_metadata_ch1_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
+    pulse_metadata_ch2_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
     pps_address0 : OUT STD_LOGIC_VECTOR (0 downto 0);
     pps_ce0 : OUT STD_LOGIC;
     pps_d0 : OUT STD_LOGIC_VECTOR (0 downto 0);
@@ -58,6 +59,7 @@ port (
     coef_ch2_V_V_TREADY : IN STD_LOGIC;
     mt_pulse_V_ap_vld : OUT STD_LOGIC;
     control_flags_V_ap_vld : OUT STD_LOGIC;
+    control_hvn_ap_vld : OUT STD_LOGIC;
     filter_select_ch0_V_ap_vld : OUT STD_LOGIC;
     filter_select_ch1_V_ap_vld : OUT STD_LOGIC;
     filter_select_ch2_V_ap_vld : OUT STD_LOGIC;
@@ -73,7 +75,7 @@ end;
 architecture behav of hcr_controller is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=102,HLS_SYN_DSP=0,HLS_SYN_FF=7036,HLS_SYN_LUT=9452,HLS_VERSION=2019_2}";
+    "hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7241,HLS_SYN_LUT=9693,HLS_VERSION=2019_2}";
     constant C_S_AXI_DATA_WIDTH : INTEGER range 63 downto 0 := 20;
     constant C_S_AXI_WSTRB_WIDTH : INTEGER range 63 downto 0 := 4;
     constant C_S_AXI_ADDR_WIDTH : INTEGER range 63 downto 0 := 20;
@@ -81,10 +83,11 @@ architecture behav of hcr_controller is
     constant ap_const_lv24_0 : STD_LOGIC_VECTOR (23 downto 0) := "000000000000000000000000";
     constant ap_const_lv8_0 : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
     constant ap_const_lv32_0 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000000";
-    constant ap_const_lv2_0 : STD_LOGIC_VECTOR (1 downto 0) := "00";
-    constant ap_const_lv824_lc_2 : STD_LOGIC_VECTOR (823 downto 0) := "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-    constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_logic_0 : STD_LOGIC := '0';
+    constant ap_const_lv3_0 : STD_LOGIC_VECTOR (2 downto 0) := "000";
+    constant ap_const_lv856_lc_2 : STD_LOGIC_VECTOR (855 downto 0) := "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
+    constant ap_const_lv2_0 : STD_LOGIC_VECTOR (1 downto 0) := "00";
     constant ap_const_lv2_1 : STD_LOGIC_VECTOR (1 downto 0) := "01";
     constant ap_const_boolean_1 : BOOLEAN := true;
 
@@ -105,6 +108,7 @@ architecture behav of hcr_controller is
     signal cfg_pulse_sequence_num_pulses_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_block_post_time_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_control_flags_q0 : STD_LOGIC_VECTOR (31 downto 0);
+    signal cfg_pulse_sequence_polarization_mode_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_filter_select_ch0_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_filter_select_ch1_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_filter_select_ch2_q0 : STD_LOGIC_VECTOR (31 downto 0);
@@ -137,14 +141,16 @@ architecture behav of hcr_controller is
     signal scheduler_parser_U0_start_write : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_p_address0 : STD_LOGIC_VECTOR (4 downto 0);
     signal scheduler_parser_U0_cfg_pulse_sequence_p_ce0 : STD_LOGIC;
-    signal scheduler_parser_U0_cfg_pulse_sequence_p_2_address0 : STD_LOGIC_VECTOR (4 downto 0);
-    signal scheduler_parser_U0_cfg_pulse_sequence_p_2_ce0 : STD_LOGIC;
+    signal scheduler_parser_U0_cfg_pulse_sequence_p_3_address0 : STD_LOGIC_VECTOR (4 downto 0);
+    signal scheduler_parser_U0_cfg_pulse_sequence_p_3_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_n_address0 : STD_LOGIC_VECTOR (4 downto 0);
     signal scheduler_parser_U0_cfg_pulse_sequence_n_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_b_address0 : STD_LOGIC_VECTOR (4 downto 0);
     signal scheduler_parser_U0_cfg_pulse_sequence_b_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_c_address0 : STD_LOGIC_VECTOR (4 downto 0);
     signal scheduler_parser_U0_cfg_pulse_sequence_c_ce0 : STD_LOGIC;
+    signal scheduler_parser_U0_cfg_pulse_sequence_p_4_address0 : STD_LOGIC_VECTOR (4 downto 0);
+    signal scheduler_parser_U0_cfg_pulse_sequence_p_4_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_f_address0 : STD_LOGIC_VECTOR (4 downto 0);
     signal scheduler_parser_U0_cfg_pulse_sequence_f_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_f_3_address0 : STD_LOGIC_VECTOR (4 downto 0);
@@ -183,11 +189,11 @@ architecture behav of hcr_controller is
     signal scheduler_parser_U0_cfg_pulse_sequence_t_29_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_cfg_pulse_sequence_t_30_address0 : STD_LOGIC_VECTOR (4 downto 0);
     signal scheduler_parser_U0_cfg_pulse_sequence_t_30_ce0 : STD_LOGIC;
-    signal scheduler_parser_U0_cfg_filter_coefs_ch0_address0 : STD_LOGIC_VECTOR (7 downto 0);
+    signal scheduler_parser_U0_cfg_filter_coefs_ch0_address0 : STD_LOGIC_VECTOR (8 downto 0);
     signal scheduler_parser_U0_cfg_filter_coefs_ch0_ce0 : STD_LOGIC;
-    signal scheduler_parser_U0_cfg_filter_coefs_ch1_address0 : STD_LOGIC_VECTOR (7 downto 0);
+    signal scheduler_parser_U0_cfg_filter_coefs_ch1_address0 : STD_LOGIC_VECTOR (8 downto 0);
     signal scheduler_parser_U0_cfg_filter_coefs_ch1_ce0 : STD_LOGIC;
-    signal scheduler_parser_U0_cfg_filter_coefs_ch2_address0 : STD_LOGIC_VECTOR (7 downto 0);
+    signal scheduler_parser_U0_cfg_filter_coefs_ch2_address0 : STD_LOGIC_VECTOR (8 downto 0);
     signal scheduler_parser_U0_cfg_filter_coefs_ch2_ce0 : STD_LOGIC;
     signal scheduler_parser_U0_coef_ch0_V_V_TDATA : STD_LOGIC_VECTOR (23 downto 0);
     signal scheduler_parser_U0_coef_ch0_V_V_TVALID : STD_LOGIC;
@@ -195,13 +201,13 @@ architecture behav of hcr_controller is
     signal scheduler_parser_U0_coef_ch1_V_V_TVALID : STD_LOGIC;
     signal scheduler_parser_U0_coef_ch2_V_V_TDATA : STD_LOGIC_VECTOR (23 downto 0);
     signal scheduler_parser_U0_coef_ch2_V_V_TVALID : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_0_V_din : STD_LOGIC_VECTOR (820 downto 0);
+    signal scheduler_parser_U0_pulse_queue_0_V_din : STD_LOGIC_VECTOR (852 downto 0);
     signal scheduler_parser_U0_pulse_queue_0_V_write : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_1_V_din : STD_LOGIC_VECTOR (820 downto 0);
+    signal scheduler_parser_U0_pulse_queue_1_V_din : STD_LOGIC_VECTOR (852 downto 0);
     signal scheduler_parser_U0_pulse_queue_1_V_write : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_2_V_din : STD_LOGIC_VECTOR (820 downto 0);
+    signal scheduler_parser_U0_pulse_queue_2_V_din : STD_LOGIC_VECTOR (852 downto 0);
     signal scheduler_parser_U0_pulse_queue_2_V_write : STD_LOGIC;
-    signal scheduler_parser_U0_pulse_queue_s_V_din : STD_LOGIC_VECTOR (820 downto 0);
+    signal scheduler_parser_U0_pulse_queue_s_V_din : STD_LOGIC_VECTOR (852 downto 0);
     signal scheduler_parser_U0_pulse_queue_s_V_write : STD_LOGIC;
     signal ap_sync_continue : STD_LOGIC;
     signal scheduler_cycle_exac_U0_ap_start : STD_LOGIC;
@@ -216,11 +222,13 @@ architecture behav of hcr_controller is
     signal scheduler_cycle_exac_U0_mt_pulse_V_ap_vld : STD_LOGIC;
     signal scheduler_cycle_exac_U0_control_flags_V : STD_LOGIC_VECTOR (31 downto 0);
     signal scheduler_cycle_exac_U0_control_flags_V_ap_vld : STD_LOGIC;
-    signal scheduler_cycle_exac_U0_filter_select_ch0_V : STD_LOGIC_VECTOR (1 downto 0);
+    signal scheduler_cycle_exac_U0_control_hvn : STD_LOGIC;
+    signal scheduler_cycle_exac_U0_control_hvn_ap_vld : STD_LOGIC;
+    signal scheduler_cycle_exac_U0_filter_select_ch0_V : STD_LOGIC_VECTOR (2 downto 0);
     signal scheduler_cycle_exac_U0_filter_select_ch0_V_ap_vld : STD_LOGIC;
-    signal scheduler_cycle_exac_U0_filter_select_ch1_V : STD_LOGIC_VECTOR (1 downto 0);
+    signal scheduler_cycle_exac_U0_filter_select_ch1_V : STD_LOGIC_VECTOR (2 downto 0);
     signal scheduler_cycle_exac_U0_filter_select_ch1_V_ap_vld : STD_LOGIC;
-    signal scheduler_cycle_exac_U0_filter_select_ch2_V : STD_LOGIC_VECTOR (1 downto 0);
+    signal scheduler_cycle_exac_U0_filter_select_ch2_V : STD_LOGIC_VECTOR (2 downto 0);
     signal scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld : STD_LOGIC;
     signal output_fifo70_U0_ap_start : STD_LOGIC;
     signal output_fifo70_U0_ap_done : STD_LOGIC;
@@ -228,7 +236,7 @@ architecture behav of hcr_controller is
     signal output_fifo70_U0_ap_idle : STD_LOGIC;
     signal output_fifo70_U0_ap_ready : STD_LOGIC;
     signal output_fifo70_U0_pulse_queue_ch0_V_read : STD_LOGIC;
-    signal output_fifo70_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (823 downto 0);
+    signal output_fifo70_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (855 downto 0);
     signal output_fifo70_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
     signal output_fifo71_U0_ap_start : STD_LOGIC;
     signal output_fifo71_U0_ap_done : STD_LOGIC;
@@ -236,7 +244,7 @@ architecture behav of hcr_controller is
     signal output_fifo71_U0_ap_idle : STD_LOGIC;
     signal output_fifo71_U0_ap_ready : STD_LOGIC;
     signal output_fifo71_U0_pulse_queue_ch0_V_read : STD_LOGIC;
-    signal output_fifo71_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (823 downto 0);
+    signal output_fifo71_U0_pulse_metadata_ch0_V_TDATA : STD_LOGIC_VECTOR (855 downto 0);
     signal output_fifo71_U0_pulse_metadata_ch0_V_TVALID : STD_LOGIC;
     signal output_fifo_U0_ap_start : STD_LOGIC;
     signal output_fifo_U0_ap_done : STD_LOGIC;
@@ -244,19 +252,19 @@ architecture behav of hcr_controller is
     signal output_fifo_U0_ap_idle : STD_LOGIC;
     signal output_fifo_U0_ap_ready : STD_LOGIC;
     signal output_fifo_U0_in_V_read : STD_LOGIC;
-    signal output_fifo_U0_out_V_TDATA : STD_LOGIC_VECTOR (823 downto 0);
+    signal output_fifo_U0_out_V_TDATA : STD_LOGIC_VECTOR (855 downto 0);
     signal output_fifo_U0_out_V_TVALID : STD_LOGIC;
     signal pulse_queue_ch0_V_full_n : STD_LOGIC;
-    signal pulse_queue_ch0_V_dout : STD_LOGIC_VECTOR (820 downto 0);
+    signal pulse_queue_ch0_V_dout : STD_LOGIC_VECTOR (852 downto 0);
     signal pulse_queue_ch0_V_empty_n : STD_LOGIC;
     signal pulse_queue_ch1_V_full_n : STD_LOGIC;
-    signal pulse_queue_ch1_V_dout : STD_LOGIC_VECTOR (820 downto 0);
+    signal pulse_queue_ch1_V_dout : STD_LOGIC_VECTOR (852 downto 0);
     signal pulse_queue_ch1_V_empty_n : STD_LOGIC;
     signal pulse_queue_ch2_V_full_n : STD_LOGIC;
-    signal pulse_queue_ch2_V_dout : STD_LOGIC_VECTOR (820 downto 0);
+    signal pulse_queue_ch2_V_dout : STD_LOGIC_VECTOR (852 downto 0);
     signal pulse_queue_ch2_V_empty_n : STD_LOGIC;
     signal pulse_queue_schedule_1_full_n : STD_LOGIC;
-    signal pulse_queue_schedule_1_dout : STD_LOGIC_VECTOR (820 downto 0);
+    signal pulse_queue_schedule_1_dout : STD_LOGIC_VECTOR (852 downto 0);
     signal pulse_queue_schedule_1_empty_n : STD_LOGIC;
     signal ap_sync_done : STD_LOGIC;
     signal ap_sync_ready : STD_LOGIC;
@@ -309,9 +317,9 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_p_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_p_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_p_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
-        cfg_pulse_sequence_p_2_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
-        cfg_pulse_sequence_p_2_ce0 : OUT STD_LOGIC;
-        cfg_pulse_sequence_p_2_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
+        cfg_pulse_sequence_p_3_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
+        cfg_pulse_sequence_p_3_ce0 : OUT STD_LOGIC;
+        cfg_pulse_sequence_p_3_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_n_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_n_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_n_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -321,6 +329,9 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_c_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_c_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_c_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
+        cfg_pulse_sequence_p_4_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
+        cfg_pulse_sequence_p_4_ce0 : OUT STD_LOGIC;
+        cfg_pulse_sequence_p_4_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_f_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_f_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_f_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -378,13 +389,13 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_t_30_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_t_30_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_t_30_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
-        cfg_filter_coefs_ch0_address0 : OUT STD_LOGIC_VECTOR (7 downto 0);
+        cfg_filter_coefs_ch0_address0 : OUT STD_LOGIC_VECTOR (8 downto 0);
         cfg_filter_coefs_ch0_ce0 : OUT STD_LOGIC;
         cfg_filter_coefs_ch0_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
-        cfg_filter_coefs_ch1_address0 : OUT STD_LOGIC_VECTOR (7 downto 0);
+        cfg_filter_coefs_ch1_address0 : OUT STD_LOGIC_VECTOR (8 downto 0);
         cfg_filter_coefs_ch1_ce0 : OUT STD_LOGIC;
         cfg_filter_coefs_ch1_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
-        cfg_filter_coefs_ch2_address0 : OUT STD_LOGIC_VECTOR (7 downto 0);
+        cfg_filter_coefs_ch2_address0 : OUT STD_LOGIC_VECTOR (8 downto 0);
         cfg_filter_coefs_ch2_ce0 : OUT STD_LOGIC;
         cfg_filter_coefs_ch2_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
         coef_ch0_V_V_TDATA : OUT STD_LOGIC_VECTOR (23 downto 0);
@@ -396,16 +407,16 @@ architecture behav of hcr_controller is
         coef_ch2_V_V_TDATA : OUT STD_LOGIC_VECTOR (23 downto 0);
         coef_ch2_V_V_TVALID : OUT STD_LOGIC;
         coef_ch2_V_V_TREADY : IN STD_LOGIC;
-        pulse_queue_0_V_din : OUT STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_0_V_din : OUT STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_0_V_full_n : IN STD_LOGIC;
         pulse_queue_0_V_write : OUT STD_LOGIC;
-        pulse_queue_1_V_din : OUT STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_1_V_din : OUT STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_1_V_full_n : IN STD_LOGIC;
         pulse_queue_1_V_write : OUT STD_LOGIC;
-        pulse_queue_2_V_din : OUT STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_2_V_din : OUT STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_2_V_full_n : IN STD_LOGIC;
         pulse_queue_2_V_write : OUT STD_LOGIC;
-        pulse_queue_s_V_din : OUT STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_s_V_din : OUT STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_s_V_full_n : IN STD_LOGIC;
         pulse_queue_s_V_write : OUT STD_LOGIC );
     end component;
@@ -423,18 +434,20 @@ architecture behav of hcr_controller is
         pps_address0 : OUT STD_LOGIC_VECTOR (0 downto 0);
         pps_ce0 : OUT STD_LOGIC;
         pps_q0 : IN STD_LOGIC_VECTOR (0 downto 0);
-        pulse_queue_V_dout : IN STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_V_dout : IN STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_V_empty_n : IN STD_LOGIC;
         pulse_queue_V_read : OUT STD_LOGIC;
         mt_pulse_V : OUT STD_LOGIC_VECTOR (7 downto 0);
         mt_pulse_V_ap_vld : OUT STD_LOGIC;
         control_flags_V : OUT STD_LOGIC_VECTOR (31 downto 0);
         control_flags_V_ap_vld : OUT STD_LOGIC;
-        filter_select_ch0_V : OUT STD_LOGIC_VECTOR (1 downto 0);
+        control_hvn : OUT STD_LOGIC;
+        control_hvn_ap_vld : OUT STD_LOGIC;
+        filter_select_ch0_V : OUT STD_LOGIC_VECTOR (2 downto 0);
         filter_select_ch0_V_ap_vld : OUT STD_LOGIC;
-        filter_select_ch1_V : OUT STD_LOGIC_VECTOR (1 downto 0);
+        filter_select_ch1_V : OUT STD_LOGIC_VECTOR (2 downto 0);
         filter_select_ch1_V_ap_vld : OUT STD_LOGIC;
-        filter_select_ch2_V : OUT STD_LOGIC_VECTOR (1 downto 0);
+        filter_select_ch2_V : OUT STD_LOGIC_VECTOR (2 downto 0);
         filter_select_ch2_V_ap_vld : OUT STD_LOGIC );
     end component;
 
@@ -448,10 +461,10 @@ architecture behav of hcr_controller is
         ap_continue : IN STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_ch0_V_empty_n : IN STD_LOGIC;
         pulse_queue_ch0_V_read : OUT STD_LOGIC;
-        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
+        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
         pulse_metadata_ch0_V_TVALID : OUT STD_LOGIC;
         pulse_metadata_ch0_V_TREADY : IN STD_LOGIC );
     end component;
@@ -466,10 +479,10 @@ architecture behav of hcr_controller is
         ap_continue : IN STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (820 downto 0);
+        pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (852 downto 0);
         pulse_queue_ch0_V_empty_n : IN STD_LOGIC;
         pulse_queue_ch0_V_read : OUT STD_LOGIC;
-        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
+        pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
         pulse_metadata_ch0_V_TVALID : OUT STD_LOGIC;
         pulse_metadata_ch0_V_TREADY : IN STD_LOGIC );
     end component;
@@ -484,40 +497,40 @@ architecture behav of hcr_controller is
         ap_continue : IN STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        in_V_dout : IN STD_LOGIC_VECTOR (820 downto 0);
+        in_V_dout : IN STD_LOGIC_VECTOR (852 downto 0);
         in_V_empty_n : IN STD_LOGIC;
         in_V_read : OUT STD_LOGIC;
-        out_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
+        out_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
         out_V_TVALID : OUT STD_LOGIC;
         out_V_TREADY : IN STD_LOGIC );
     end component;
 
 
-    component fifo_w821_d16_S IS
+    component fifo_w853_d16_S IS
     port (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
         if_read_ce : IN STD_LOGIC;
         if_write_ce : IN STD_LOGIC;
-        if_din : IN STD_LOGIC_VECTOR (820 downto 0);
+        if_din : IN STD_LOGIC_VECTOR (852 downto 0);
         if_full_n : OUT STD_LOGIC;
         if_write : IN STD_LOGIC;
-        if_dout : OUT STD_LOGIC_VECTOR (820 downto 0);
+        if_dout : OUT STD_LOGIC_VECTOR (852 downto 0);
         if_empty_n : OUT STD_LOGIC;
         if_read : IN STD_LOGIC );
     end component;
 
 
-    component fifo_w821_d1_A IS
+    component fifo_w853_d1_A IS
     port (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
         if_read_ce : IN STD_LOGIC;
         if_write_ce : IN STD_LOGIC;
-        if_din : IN STD_LOGIC_VECTOR (820 downto 0);
+        if_din : IN STD_LOGIC_VECTOR (852 downto 0);
         if_full_n : OUT STD_LOGIC;
         if_write : IN STD_LOGIC;
-        if_dout : OUT STD_LOGIC_VECTOR (820 downto 0);
+        if_dout : OUT STD_LOGIC_VECTOR (852 downto 0);
         if_empty_n : OUT STD_LOGIC;
         if_read : IN STD_LOGIC );
     end component;
@@ -620,6 +633,9 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_control_flags_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_control_flags_ce0 : IN STD_LOGIC;
         cfg_pulse_sequence_control_flags_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
+        cfg_pulse_sequence_polarization_mode_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
+        cfg_pulse_sequence_polarization_mode_ce0 : IN STD_LOGIC;
+        cfg_pulse_sequence_polarization_mode_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_filter_select_ch0_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_filter_select_ch0_ce0 : IN STD_LOGIC;
         cfg_pulse_sequence_filter_select_ch0_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
@@ -677,13 +693,13 @@ architecture behav of hcr_controller is
         cfg_pulse_sequence_timer_width_7_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_timer_width_7_ce0 : IN STD_LOGIC;
         cfg_pulse_sequence_timer_width_7_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        cfg_filter_coefs_ch0_address0 : IN STD_LOGIC_VECTOR (7 downto 0);
+        cfg_filter_coefs_ch0_address0 : IN STD_LOGIC_VECTOR (8 downto 0);
         cfg_filter_coefs_ch0_ce0 : IN STD_LOGIC;
         cfg_filter_coefs_ch0_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        cfg_filter_coefs_ch1_address0 : IN STD_LOGIC_VECTOR (7 downto 0);
+        cfg_filter_coefs_ch1_address0 : IN STD_LOGIC_VECTOR (8 downto 0);
         cfg_filter_coefs_ch1_ce0 : IN STD_LOGIC;
         cfg_filter_coefs_ch1_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
-        cfg_filter_coefs_ch2_address0 : IN STD_LOGIC_VECTOR (7 downto 0);
+        cfg_filter_coefs_ch2_address0 : IN STD_LOGIC_VECTOR (8 downto 0);
         cfg_filter_coefs_ch2_ce0 : IN STD_LOGIC;
         cfg_filter_coefs_ch2_q0 : OUT STD_LOGIC_VECTOR (31 downto 0) );
     end component;
@@ -731,8 +747,8 @@ begin
         cfg_pulse_sequence_prt_0_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_prt_0_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_prt_0_q0 => cfg_pulse_sequence_prt_0_q0,
-        cfg_pulse_sequence_prt_1_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_2_address0,
-        cfg_pulse_sequence_prt_1_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_2_ce0,
+        cfg_pulse_sequence_prt_1_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_3_address0,
+        cfg_pulse_sequence_prt_1_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_3_ce0,
         cfg_pulse_sequence_prt_1_q0 => cfg_pulse_sequence_prt_1_q0,
         cfg_pulse_sequence_num_pulses_address0 => scheduler_parser_U0_cfg_pulse_sequence_n_address0,
         cfg_pulse_sequence_num_pulses_ce0 => scheduler_parser_U0_cfg_pulse_sequence_n_ce0,
@@ -743,6 +759,9 @@ begin
         cfg_pulse_sequence_control_flags_address0 => scheduler_parser_U0_cfg_pulse_sequence_c_address0,
         cfg_pulse_sequence_control_flags_ce0 => scheduler_parser_U0_cfg_pulse_sequence_c_ce0,
         cfg_pulse_sequence_control_flags_q0 => cfg_pulse_sequence_control_flags_q0,
+        cfg_pulse_sequence_polarization_mode_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_4_address0,
+        cfg_pulse_sequence_polarization_mode_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_4_ce0,
+        cfg_pulse_sequence_polarization_mode_q0 => cfg_pulse_sequence_polarization_mode_q0,
         cfg_pulse_sequence_filter_select_ch0_address0 => scheduler_parser_U0_cfg_pulse_sequence_f_address0,
         cfg_pulse_sequence_filter_select_ch0_ce0 => scheduler_parser_U0_cfg_pulse_sequence_f_ce0,
         cfg_pulse_sequence_filter_select_ch0_q0 => cfg_pulse_sequence_filter_select_ch0_q0,
@@ -832,9 +851,9 @@ begin
         cfg_pulse_sequence_p_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_p_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_p_q0 => cfg_pulse_sequence_prt_0_q0,
-        cfg_pulse_sequence_p_2_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_2_address0,
-        cfg_pulse_sequence_p_2_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_2_ce0,
-        cfg_pulse_sequence_p_2_q0 => cfg_pulse_sequence_prt_1_q0,
+        cfg_pulse_sequence_p_3_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_3_address0,
+        cfg_pulse_sequence_p_3_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_3_ce0,
+        cfg_pulse_sequence_p_3_q0 => cfg_pulse_sequence_prt_1_q0,
         cfg_pulse_sequence_n_address0 => scheduler_parser_U0_cfg_pulse_sequence_n_address0,
         cfg_pulse_sequence_n_ce0 => scheduler_parser_U0_cfg_pulse_sequence_n_ce0,
         cfg_pulse_sequence_n_q0 => cfg_pulse_sequence_num_pulses_q0,
@@ -844,6 +863,9 @@ begin
         cfg_pulse_sequence_c_address0 => scheduler_parser_U0_cfg_pulse_sequence_c_address0,
         cfg_pulse_sequence_c_ce0 => scheduler_parser_U0_cfg_pulse_sequence_c_ce0,
         cfg_pulse_sequence_c_q0 => cfg_pulse_sequence_control_flags_q0,
+        cfg_pulse_sequence_p_4_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_4_address0,
+        cfg_pulse_sequence_p_4_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_4_ce0,
+        cfg_pulse_sequence_p_4_q0 => cfg_pulse_sequence_polarization_mode_q0,
         cfg_pulse_sequence_f_address0 => scheduler_parser_U0_cfg_pulse_sequence_f_address0,
         cfg_pulse_sequence_f_ce0 => scheduler_parser_U0_cfg_pulse_sequence_f_ce0,
         cfg_pulse_sequence_f_q0 => cfg_pulse_sequence_filter_select_ch0_q0,
@@ -951,6 +973,8 @@ begin
         mt_pulse_V_ap_vld => scheduler_cycle_exac_U0_mt_pulse_V_ap_vld,
         control_flags_V => scheduler_cycle_exac_U0_control_flags_V,
         control_flags_V_ap_vld => scheduler_cycle_exac_U0_control_flags_V_ap_vld,
+        control_hvn => scheduler_cycle_exac_U0_control_hvn,
+        control_hvn_ap_vld => scheduler_cycle_exac_U0_control_hvn_ap_vld,
         filter_select_ch0_V => scheduler_cycle_exac_U0_filter_select_ch0_V,
         filter_select_ch0_V_ap_vld => scheduler_cycle_exac_U0_filter_select_ch0_V_ap_vld,
         filter_select_ch1_V => scheduler_cycle_exac_U0_filter_select_ch1_V,
@@ -1006,7 +1030,7 @@ begin
         out_V_TVALID => output_fifo_U0_out_V_TVALID,
         out_V_TREADY => pulse_metadata_ch2_V_TREADY);
 
-    pulse_queue_ch0_V_U : component fifo_w821_d16_S
+    pulse_queue_ch0_V_U : component fifo_w853_d16_S
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1019,7 +1043,7 @@ begin
         if_empty_n => pulse_queue_ch0_V_empty_n,
         if_read => output_fifo70_U0_pulse_queue_ch0_V_read);
 
-    pulse_queue_ch1_V_U : component fifo_w821_d16_S
+    pulse_queue_ch1_V_U : component fifo_w853_d16_S
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1032,7 +1056,7 @@ begin
         if_empty_n => pulse_queue_ch1_V_empty_n,
         if_read => output_fifo71_U0_pulse_queue_ch0_V_read);
 
-    pulse_queue_ch2_V_U : component fifo_w821_d16_S
+    pulse_queue_ch2_V_U : component fifo_w853_d16_S
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1045,7 +1069,7 @@ begin
         if_empty_n => pulse_queue_ch2_V_empty_n,
         if_read => output_fifo_U0_in_V_read);
 
-    pulse_queue_schedule_1_U : component fifo_w821_d1_A
+    pulse_queue_schedule_1_U : component fifo_w853_d1_A
     port map (
         clk => ap_clk,
         reset => ap_rst_n_inv,
@@ -1176,6 +1200,8 @@ begin
     coef_ch2_V_V_TVALID <= scheduler_parser_U0_coef_ch2_V_V_TVALID;
     control_flags_V <= scheduler_cycle_exac_U0_control_flags_V;
     control_flags_V_ap_vld <= scheduler_cycle_exac_U0_control_flags_V_ap_vld;
+    control_hvn <= scheduler_cycle_exac_U0_control_hvn;
+    control_hvn_ap_vld <= scheduler_cycle_exac_U0_control_hvn_ap_vld;
     filter_select_ch0_V <= scheduler_cycle_exac_U0_filter_select_ch0_V;
     filter_select_ch0_V_ap_vld <= scheduler_cycle_exac_U0_filter_select_ch0_V_ap_vld;
     filter_select_ch1_V <= scheduler_cycle_exac_U0_filter_select_ch1_V;

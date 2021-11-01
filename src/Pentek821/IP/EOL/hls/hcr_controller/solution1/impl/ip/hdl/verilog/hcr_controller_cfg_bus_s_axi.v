@@ -5,7 +5,7 @@
 `timescale 1ns/1ps
 module hcr_controller_cfg_bus_s_axi
 #(parameter
-    C_S_AXI_ADDR_WIDTH = 13,
+    C_S_AXI_ADDR_WIDTH = 14,
     C_S_AXI_DATA_WIDTH = 32
 )(
     input  wire                          ACLK,
@@ -55,6 +55,9 @@ module hcr_controller_cfg_bus_s_axi
     input  wire [4:0]                    cfg_pulse_sequence_control_flags_address0,
     input  wire                          cfg_pulse_sequence_control_flags_ce0,
     output wire [31:0]                   cfg_pulse_sequence_control_flags_q0,
+    input  wire [4:0]                    cfg_pulse_sequence_polarization_mode_address0,
+    input  wire                          cfg_pulse_sequence_polarization_mode_ce0,
+    output wire [31:0]                   cfg_pulse_sequence_polarization_mode_q0,
     input  wire [4:0]                    cfg_pulse_sequence_filter_select_ch0_address0,
     input  wire                          cfg_pulse_sequence_filter_select_ch0_ce0,
     output wire [31:0]                   cfg_pulse_sequence_filter_select_ch0_q0,
@@ -112,13 +115,13 @@ module hcr_controller_cfg_bus_s_axi
     input  wire [4:0]                    cfg_pulse_sequence_timer_width_7_address0,
     input  wire                          cfg_pulse_sequence_timer_width_7_ce0,
     output wire [31:0]                   cfg_pulse_sequence_timer_width_7_q0,
-    input  wire [7:0]                    cfg_filter_coefs_ch0_address0,
+    input  wire [8:0]                    cfg_filter_coefs_ch0_address0,
     input  wire                          cfg_filter_coefs_ch0_ce0,
     output wire [31:0]                   cfg_filter_coefs_ch0_q0,
-    input  wire [7:0]                    cfg_filter_coefs_ch1_address0,
+    input  wire [8:0]                    cfg_filter_coefs_ch1_address0,
     input  wire                          cfg_filter_coefs_ch1_ce0,
     output wire [31:0]                   cfg_filter_coefs_ch1_q0,
-    input  wire [7:0]                    cfg_filter_coefs_ch2_address0,
+    input  wire [8:0]                    cfg_filter_coefs_ch2_address0,
     input  wire                          cfg_filter_coefs_ch2_ce0,
     output wire [31:0]                   cfg_filter_coefs_ch2_q0
 );
@@ -180,147 +183,152 @@ module hcr_controller_cfg_bus_s_axi
 // 0x02ff : Memory 'cfg_pulse_sequence_control_flags' (32 * 32b)
 //          Word n : bit [31:0] - cfg_pulse_sequence_control_flags[n]
 // 0x0300 ~
-// 0x037f : Memory 'cfg_pulse_sequence_filter_select_ch0' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch0[n]
+// 0x037f : Memory 'cfg_pulse_sequence_polarization_mode' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_polarization_mode[n]
 // 0x0380 ~
-// 0x03ff : Memory 'cfg_pulse_sequence_filter_select_ch1' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch1[n]
+// 0x03ff : Memory 'cfg_pulse_sequence_filter_select_ch0' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch0[n]
 // 0x0400 ~
-// 0x047f : Memory 'cfg_pulse_sequence_filter_select_ch2' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch2[n]
+// 0x047f : Memory 'cfg_pulse_sequence_filter_select_ch1' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch1[n]
 // 0x0480 ~
-// 0x04ff : Memory 'cfg_pulse_sequence_timer_offset_0' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_0[n]
+// 0x04ff : Memory 'cfg_pulse_sequence_filter_select_ch2' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch2[n]
 // 0x0500 ~
-// 0x057f : Memory 'cfg_pulse_sequence_timer_offset_1' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_1[n]
+// 0x057f : Memory 'cfg_pulse_sequence_timer_offset_0' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_0[n]
 // 0x0580 ~
-// 0x05ff : Memory 'cfg_pulse_sequence_timer_offset_2' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_2[n]
+// 0x05ff : Memory 'cfg_pulse_sequence_timer_offset_1' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_1[n]
 // 0x0600 ~
-// 0x067f : Memory 'cfg_pulse_sequence_timer_offset_3' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_3[n]
+// 0x067f : Memory 'cfg_pulse_sequence_timer_offset_2' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_2[n]
 // 0x0680 ~
-// 0x06ff : Memory 'cfg_pulse_sequence_timer_offset_4' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_4[n]
+// 0x06ff : Memory 'cfg_pulse_sequence_timer_offset_3' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_3[n]
 // 0x0700 ~
-// 0x077f : Memory 'cfg_pulse_sequence_timer_offset_5' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_5[n]
+// 0x077f : Memory 'cfg_pulse_sequence_timer_offset_4' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_4[n]
 // 0x0780 ~
-// 0x07ff : Memory 'cfg_pulse_sequence_timer_offset_6' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_6[n]
+// 0x07ff : Memory 'cfg_pulse_sequence_timer_offset_5' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_5[n]
 // 0x0800 ~
-// 0x087f : Memory 'cfg_pulse_sequence_timer_offset_7' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_7[n]
+// 0x087f : Memory 'cfg_pulse_sequence_timer_offset_6' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_6[n]
 // 0x0880 ~
-// 0x08ff : Memory 'cfg_pulse_sequence_timer_width_0' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_0[n]
+// 0x08ff : Memory 'cfg_pulse_sequence_timer_offset_7' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_7[n]
 // 0x0900 ~
-// 0x097f : Memory 'cfg_pulse_sequence_timer_width_1' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_1[n]
+// 0x097f : Memory 'cfg_pulse_sequence_timer_width_0' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_0[n]
 // 0x0980 ~
-// 0x09ff : Memory 'cfg_pulse_sequence_timer_width_2' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_2[n]
+// 0x09ff : Memory 'cfg_pulse_sequence_timer_width_1' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_1[n]
 // 0x0a00 ~
-// 0x0a7f : Memory 'cfg_pulse_sequence_timer_width_3' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_3[n]
+// 0x0a7f : Memory 'cfg_pulse_sequence_timer_width_2' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_2[n]
 // 0x0a80 ~
-// 0x0aff : Memory 'cfg_pulse_sequence_timer_width_4' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_4[n]
+// 0x0aff : Memory 'cfg_pulse_sequence_timer_width_3' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_3[n]
 // 0x0b00 ~
-// 0x0b7f : Memory 'cfg_pulse_sequence_timer_width_5' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_5[n]
+// 0x0b7f : Memory 'cfg_pulse_sequence_timer_width_4' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_4[n]
 // 0x0b80 ~
-// 0x0bff : Memory 'cfg_pulse_sequence_timer_width_6' (32 * 32b)
-//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_6[n]
+// 0x0bff : Memory 'cfg_pulse_sequence_timer_width_5' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_5[n]
 // 0x0c00 ~
-// 0x0c7f : Memory 'cfg_pulse_sequence_timer_width_7' (32 * 32b)
+// 0x0c7f : Memory 'cfg_pulse_sequence_timer_width_6' (32 * 32b)
+//          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_6[n]
+// 0x0c80 ~
+// 0x0cff : Memory 'cfg_pulse_sequence_timer_width_7' (32 * 32b)
 //          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_7[n]
 // 0x1000 ~
-// 0x13ff : Memory 'cfg_filter_coefs_ch0' (192 * 32b)
+// 0x17ff : Memory 'cfg_filter_coefs_ch0' (384 * 32b)
 //          Word n : bit [31:0] - cfg_filter_coefs_ch0[n]
-// 0x1400 ~
-// 0x17ff : Memory 'cfg_filter_coefs_ch1' (192 * 32b)
-//          Word n : bit [31:0] - cfg_filter_coefs_ch1[n]
 // 0x1800 ~
-// 0x1bff : Memory 'cfg_filter_coefs_ch2' (192 * 32b)
+// 0x1fff : Memory 'cfg_filter_coefs_ch1' (384 * 32b)
+//          Word n : bit [31:0] - cfg_filter_coefs_ch1[n]
+// 0x2000 ~
+// 0x27ff : Memory 'cfg_filter_coefs_ch2' (384 * 32b)
 //          Word n : bit [31:0] - cfg_filter_coefs_ch2[n]
 // (SC = Self Clear, COR = Clear on Read, TOW = Toggle on Write, COH = Clear on Handshake)
 
 //------------------------Parameter----------------------
 localparam
-    ADDR_AP_CTRL                                   = 13'h0000,
-    ADDR_GIE                                       = 13'h0004,
-    ADDR_IER                                       = 13'h0008,
-    ADDR_ISR                                       = 13'h000c,
-    ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA_0     = 13'h0010,
-    ADDR_CFG_PULSE_SEQUENCE_START_INDEX_CTRL       = 13'h0014,
-    ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA_0          = 13'h0018,
-    ADDR_CFG_PULSE_SEQUENCE_LENGTH_CTRL            = 13'h001c,
-    ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0          = 13'h0020,
-    ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL            = 13'h0024,
-    ADDR_CFG_TOTAL_DECIMATION_DATA_0               = 13'h0028,
-    ADDR_CFG_TOTAL_DECIMATION_CTRL                 = 13'h002c,
-    ADDR_CFG_POST_DECIMATION_DATA_0                = 13'h0030,
-    ADDR_CFG_POST_DECIMATION_CTRL                  = 13'h0034,
-    ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            = 13'h0038,
-    ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              = 13'h003c,
-    ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         = 13'h0040,
-    ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           = 13'h0044,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE             = 13'h0080,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH             = 13'h00ff,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE             = 13'h0100,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_1_HIGH             = 13'h017f,
-    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE        = 13'h0180,
-    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_HIGH        = 13'h01ff,
-    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE   = 13'h0200,
-    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_HIGH   = 13'h027f,
-    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE     = 13'h0280,
-    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_HIGH     = 13'h02ff,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE = 13'h0300,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_HIGH = 13'h037f,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE = 13'h0380,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_HIGH = 13'h03ff,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE = 13'h0400,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_HIGH = 13'h047f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE    = 13'h0480,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_HIGH    = 13'h04ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE    = 13'h0500,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_HIGH    = 13'h057f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE    = 13'h0580,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_HIGH    = 13'h05ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_BASE    = 13'h0600,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_HIGH    = 13'h067f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_BASE    = 13'h0680,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_HIGH    = 13'h06ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_BASE    = 13'h0700,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_HIGH    = 13'h077f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_BASE    = 13'h0780,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_HIGH    = 13'h07ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_BASE    = 13'h0800,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_HIGH    = 13'h087f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_BASE     = 13'h0880,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_HIGH     = 13'h08ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_BASE     = 13'h0900,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_HIGH     = 13'h097f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_BASE     = 13'h0980,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_HIGH     = 13'h09ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_BASE     = 13'h0a00,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_HIGH     = 13'h0a7f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_BASE     = 13'h0a80,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_HIGH     = 13'h0aff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_BASE     = 13'h0b00,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_HIGH     = 13'h0b7f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_BASE     = 13'h0b80,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_HIGH     = 13'h0bff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE     = 13'h0c00,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_HIGH     = 13'h0c7f,
-    ADDR_CFG_FILTER_COEFS_CH0_BASE                 = 13'h1000,
-    ADDR_CFG_FILTER_COEFS_CH0_HIGH                 = 13'h13ff,
-    ADDR_CFG_FILTER_COEFS_CH1_BASE                 = 13'h1400,
-    ADDR_CFG_FILTER_COEFS_CH1_HIGH                 = 13'h17ff,
-    ADDR_CFG_FILTER_COEFS_CH2_BASE                 = 13'h1800,
-    ADDR_CFG_FILTER_COEFS_CH2_HIGH                 = 13'h1bff,
+    ADDR_AP_CTRL                                   = 14'h0000,
+    ADDR_GIE                                       = 14'h0004,
+    ADDR_IER                                       = 14'h0008,
+    ADDR_ISR                                       = 14'h000c,
+    ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA_0     = 14'h0010,
+    ADDR_CFG_PULSE_SEQUENCE_START_INDEX_CTRL       = 14'h0014,
+    ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA_0          = 14'h0018,
+    ADDR_CFG_PULSE_SEQUENCE_LENGTH_CTRL            = 14'h001c,
+    ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0          = 14'h0020,
+    ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL            = 14'h0024,
+    ADDR_CFG_TOTAL_DECIMATION_DATA_0               = 14'h0028,
+    ADDR_CFG_TOTAL_DECIMATION_CTRL                 = 14'h002c,
+    ADDR_CFG_POST_DECIMATION_DATA_0                = 14'h0030,
+    ADDR_CFG_POST_DECIMATION_CTRL                  = 14'h0034,
+    ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            = 14'h0038,
+    ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              = 14'h003c,
+    ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         = 14'h0040,
+    ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           = 14'h0044,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE             = 14'h0080,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH             = 14'h00ff,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE             = 14'h0100,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_1_HIGH             = 14'h017f,
+    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE        = 14'h0180,
+    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_HIGH        = 14'h01ff,
+    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE   = 14'h0200,
+    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_HIGH   = 14'h027f,
+    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE     = 14'h0280,
+    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_HIGH     = 14'h02ff,
+    ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE = 14'h0300,
+    ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH = 14'h037f,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE = 14'h0380,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_HIGH = 14'h03ff,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE = 14'h0400,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_HIGH = 14'h047f,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE = 14'h0480,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_HIGH = 14'h04ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE    = 14'h0500,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_HIGH    = 14'h057f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE    = 14'h0580,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_HIGH    = 14'h05ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE    = 14'h0600,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_HIGH    = 14'h067f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_BASE    = 14'h0680,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_HIGH    = 14'h06ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_BASE    = 14'h0700,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_HIGH    = 14'h077f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_BASE    = 14'h0780,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_HIGH    = 14'h07ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_BASE    = 14'h0800,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_HIGH    = 14'h087f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_BASE    = 14'h0880,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_HIGH    = 14'h08ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_BASE     = 14'h0900,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_HIGH     = 14'h097f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_BASE     = 14'h0980,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_HIGH     = 14'h09ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_BASE     = 14'h0a00,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_HIGH     = 14'h0a7f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_BASE     = 14'h0a80,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_HIGH     = 14'h0aff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_BASE     = 14'h0b00,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_HIGH     = 14'h0b7f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_BASE     = 14'h0b80,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_HIGH     = 14'h0bff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_BASE     = 14'h0c00,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_HIGH     = 14'h0c7f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE     = 14'h0c80,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_HIGH     = 14'h0cff,
+    ADDR_CFG_FILTER_COEFS_CH0_BASE                 = 14'h1000,
+    ADDR_CFG_FILTER_COEFS_CH0_HIGH                 = 14'h17ff,
+    ADDR_CFG_FILTER_COEFS_CH1_BASE                 = 14'h1800,
+    ADDR_CFG_FILTER_COEFS_CH1_HIGH                 = 14'h1fff,
+    ADDR_CFG_FILTER_COEFS_CH2_BASE                 = 14'h2000,
+    ADDR_CFG_FILTER_COEFS_CH2_HIGH                 = 14'h27ff,
     WRIDLE                                         = 2'd0,
     WRDATA                                         = 2'd1,
     WRRESP                                         = 2'd2,
@@ -328,7 +336,7 @@ localparam
     RDIDLE                                         = 2'd0,
     RDDATA                                         = 2'd1,
     RDRESET                                        = 2'd2,
-    ADDR_BITS         = 13;
+    ADDR_BITS         = 14;
 
 //------------------------Local signal-------------------
     reg  [1:0]                    wstate = WRRESET;
@@ -429,6 +437,20 @@ localparam
     wire [31:0]                   int_cfg_pulse_sequence_control_flags_q1;
     reg                           int_cfg_pulse_sequence_control_flags_read;
     reg                           int_cfg_pulse_sequence_control_flags_write;
+    wire [4:0]                    int_cfg_pulse_sequence_polarization_mode_address0;
+    wire                          int_cfg_pulse_sequence_polarization_mode_ce0;
+    wire                          int_cfg_pulse_sequence_polarization_mode_we0;
+    wire [3:0]                    int_cfg_pulse_sequence_polarization_mode_be0;
+    wire [31:0]                   int_cfg_pulse_sequence_polarization_mode_d0;
+    wire [31:0]                   int_cfg_pulse_sequence_polarization_mode_q0;
+    wire [4:0]                    int_cfg_pulse_sequence_polarization_mode_address1;
+    wire                          int_cfg_pulse_sequence_polarization_mode_ce1;
+    wire                          int_cfg_pulse_sequence_polarization_mode_we1;
+    wire [3:0]                    int_cfg_pulse_sequence_polarization_mode_be1;
+    wire [31:0]                   int_cfg_pulse_sequence_polarization_mode_d1;
+    wire [31:0]                   int_cfg_pulse_sequence_polarization_mode_q1;
+    reg                           int_cfg_pulse_sequence_polarization_mode_read;
+    reg                           int_cfg_pulse_sequence_polarization_mode_write;
     wire [4:0]                    int_cfg_pulse_sequence_filter_select_ch0_address0;
     wire                          int_cfg_pulse_sequence_filter_select_ch0_ce0;
     wire                          int_cfg_pulse_sequence_filter_select_ch0_we0;
@@ -695,13 +717,13 @@ localparam
     wire [31:0]                   int_cfg_pulse_sequence_timer_width_7_q1;
     reg                           int_cfg_pulse_sequence_timer_width_7_read;
     reg                           int_cfg_pulse_sequence_timer_width_7_write;
-    wire [7:0]                    int_cfg_filter_coefs_ch0_address0;
+    wire [8:0]                    int_cfg_filter_coefs_ch0_address0;
     wire                          int_cfg_filter_coefs_ch0_ce0;
     wire                          int_cfg_filter_coefs_ch0_we0;
     wire [3:0]                    int_cfg_filter_coefs_ch0_be0;
     wire [31:0]                   int_cfg_filter_coefs_ch0_d0;
     wire [31:0]                   int_cfg_filter_coefs_ch0_q0;
-    wire [7:0]                    int_cfg_filter_coefs_ch0_address1;
+    wire [8:0]                    int_cfg_filter_coefs_ch0_address1;
     wire                          int_cfg_filter_coefs_ch0_ce1;
     wire                          int_cfg_filter_coefs_ch0_we1;
     wire [3:0]                    int_cfg_filter_coefs_ch0_be1;
@@ -709,13 +731,13 @@ localparam
     wire [31:0]                   int_cfg_filter_coefs_ch0_q1;
     reg                           int_cfg_filter_coefs_ch0_read;
     reg                           int_cfg_filter_coefs_ch0_write;
-    wire [7:0]                    int_cfg_filter_coefs_ch1_address0;
+    wire [8:0]                    int_cfg_filter_coefs_ch1_address0;
     wire                          int_cfg_filter_coefs_ch1_ce0;
     wire                          int_cfg_filter_coefs_ch1_we0;
     wire [3:0]                    int_cfg_filter_coefs_ch1_be0;
     wire [31:0]                   int_cfg_filter_coefs_ch1_d0;
     wire [31:0]                   int_cfg_filter_coefs_ch1_q0;
-    wire [7:0]                    int_cfg_filter_coefs_ch1_address1;
+    wire [8:0]                    int_cfg_filter_coefs_ch1_address1;
     wire                          int_cfg_filter_coefs_ch1_ce1;
     wire                          int_cfg_filter_coefs_ch1_we1;
     wire [3:0]                    int_cfg_filter_coefs_ch1_be1;
@@ -723,13 +745,13 @@ localparam
     wire [31:0]                   int_cfg_filter_coefs_ch1_q1;
     reg                           int_cfg_filter_coefs_ch1_read;
     reg                           int_cfg_filter_coefs_ch1_write;
-    wire [7:0]                    int_cfg_filter_coefs_ch2_address0;
+    wire [8:0]                    int_cfg_filter_coefs_ch2_address0;
     wire                          int_cfg_filter_coefs_ch2_ce0;
     wire                          int_cfg_filter_coefs_ch2_we0;
     wire [3:0]                    int_cfg_filter_coefs_ch2_be0;
     wire [31:0]                   int_cfg_filter_coefs_ch2_d0;
     wire [31:0]                   int_cfg_filter_coefs_ch2_q0;
-    wire [7:0]                    int_cfg_filter_coefs_ch2_address1;
+    wire [8:0]                    int_cfg_filter_coefs_ch2_address1;
     wire                          int_cfg_filter_coefs_ch2_ce1;
     wire                          int_cfg_filter_coefs_ch2_we1;
     wire [3:0]                    int_cfg_filter_coefs_ch2_be1;
@@ -838,6 +860,26 @@ hcr_controller_cfg_bus_s_axi_ram #(
     .be1      ( int_cfg_pulse_sequence_control_flags_be1 ),
     .d1       ( int_cfg_pulse_sequence_control_flags_d1 ),
     .q1       ( int_cfg_pulse_sequence_control_flags_q1 )
+);
+// int_cfg_pulse_sequence_polarization_mode
+hcr_controller_cfg_bus_s_axi_ram #(
+    .BYTES    ( 4 ),
+    .DEPTH    ( 32 )
+) int_cfg_pulse_sequence_polarization_mode (
+    .clk0     ( ACLK ),
+    .address0 ( int_cfg_pulse_sequence_polarization_mode_address0 ),
+    .ce0      ( int_cfg_pulse_sequence_polarization_mode_ce0 ),
+    .we0      ( int_cfg_pulse_sequence_polarization_mode_we0 ),
+    .be0      ( int_cfg_pulse_sequence_polarization_mode_be0 ),
+    .d0       ( int_cfg_pulse_sequence_polarization_mode_d0 ),
+    .q0       ( int_cfg_pulse_sequence_polarization_mode_q0 ),
+    .clk1     ( ACLK ),
+    .address1 ( int_cfg_pulse_sequence_polarization_mode_address1 ),
+    .ce1      ( int_cfg_pulse_sequence_polarization_mode_ce1 ),
+    .we1      ( int_cfg_pulse_sequence_polarization_mode_we1 ),
+    .be1      ( int_cfg_pulse_sequence_polarization_mode_be1 ),
+    .d1       ( int_cfg_pulse_sequence_polarization_mode_d1 ),
+    .q1       ( int_cfg_pulse_sequence_polarization_mode_q1 )
 );
 // int_cfg_pulse_sequence_filter_select_ch0
 hcr_controller_cfg_bus_s_axi_ram #(
@@ -1222,7 +1264,7 @@ hcr_controller_cfg_bus_s_axi_ram #(
 // int_cfg_filter_coefs_ch0
 hcr_controller_cfg_bus_s_axi_ram #(
     .BYTES    ( 4 ),
-    .DEPTH    ( 192 )
+    .DEPTH    ( 384 )
 ) int_cfg_filter_coefs_ch0 (
     .clk0     ( ACLK ),
     .address0 ( int_cfg_filter_coefs_ch0_address0 ),
@@ -1242,7 +1284,7 @@ hcr_controller_cfg_bus_s_axi_ram #(
 // int_cfg_filter_coefs_ch1
 hcr_controller_cfg_bus_s_axi_ram #(
     .BYTES    ( 4 ),
-    .DEPTH    ( 192 )
+    .DEPTH    ( 384 )
 ) int_cfg_filter_coefs_ch1 (
     .clk0     ( ACLK ),
     .address0 ( int_cfg_filter_coefs_ch1_address0 ),
@@ -1262,7 +1304,7 @@ hcr_controller_cfg_bus_s_axi_ram #(
 // int_cfg_filter_coefs_ch2
 hcr_controller_cfg_bus_s_axi_ram #(
     .BYTES    ( 4 ),
-    .DEPTH    ( 192 )
+    .DEPTH    ( 384 )
 ) int_cfg_filter_coefs_ch2 (
     .clk0     ( ACLK ),
     .address0 ( int_cfg_filter_coefs_ch2_address0 ),
@@ -1332,7 +1374,7 @@ end
 assign ARREADY = (rstate == RDIDLE);
 assign RDATA   = rdata;
 assign RRESP   = 2'b00;  // OKAY
-assign RVALID  = (rstate == RDDATA) & !int_cfg_pulse_sequence_prt_0_read & !int_cfg_pulse_sequence_prt_1_read & !int_cfg_pulse_sequence_num_pulses_read & !int_cfg_pulse_sequence_block_post_time_read & !int_cfg_pulse_sequence_control_flags_read & !int_cfg_pulse_sequence_filter_select_ch0_read & !int_cfg_pulse_sequence_filter_select_ch1_read & !int_cfg_pulse_sequence_filter_select_ch2_read & !int_cfg_pulse_sequence_timer_offset_0_read & !int_cfg_pulse_sequence_timer_offset_1_read & !int_cfg_pulse_sequence_timer_offset_2_read & !int_cfg_pulse_sequence_timer_offset_3_read & !int_cfg_pulse_sequence_timer_offset_4_read & !int_cfg_pulse_sequence_timer_offset_5_read & !int_cfg_pulse_sequence_timer_offset_6_read & !int_cfg_pulse_sequence_timer_offset_7_read & !int_cfg_pulse_sequence_timer_width_0_read & !int_cfg_pulse_sequence_timer_width_1_read & !int_cfg_pulse_sequence_timer_width_2_read & !int_cfg_pulse_sequence_timer_width_3_read & !int_cfg_pulse_sequence_timer_width_4_read & !int_cfg_pulse_sequence_timer_width_5_read & !int_cfg_pulse_sequence_timer_width_6_read & !int_cfg_pulse_sequence_timer_width_7_read & !int_cfg_filter_coefs_ch0_read & !int_cfg_filter_coefs_ch1_read & !int_cfg_filter_coefs_ch2_read;
+assign RVALID  = (rstate == RDDATA) & !int_cfg_pulse_sequence_prt_0_read & !int_cfg_pulse_sequence_prt_1_read & !int_cfg_pulse_sequence_num_pulses_read & !int_cfg_pulse_sequence_block_post_time_read & !int_cfg_pulse_sequence_control_flags_read & !int_cfg_pulse_sequence_polarization_mode_read & !int_cfg_pulse_sequence_filter_select_ch0_read & !int_cfg_pulse_sequence_filter_select_ch1_read & !int_cfg_pulse_sequence_filter_select_ch2_read & !int_cfg_pulse_sequence_timer_offset_0_read & !int_cfg_pulse_sequence_timer_offset_1_read & !int_cfg_pulse_sequence_timer_offset_2_read & !int_cfg_pulse_sequence_timer_offset_3_read & !int_cfg_pulse_sequence_timer_offset_4_read & !int_cfg_pulse_sequence_timer_offset_5_read & !int_cfg_pulse_sequence_timer_offset_6_read & !int_cfg_pulse_sequence_timer_offset_7_read & !int_cfg_pulse_sequence_timer_width_0_read & !int_cfg_pulse_sequence_timer_width_1_read & !int_cfg_pulse_sequence_timer_width_2_read & !int_cfg_pulse_sequence_timer_width_3_read & !int_cfg_pulse_sequence_timer_width_4_read & !int_cfg_pulse_sequence_timer_width_5_read & !int_cfg_pulse_sequence_timer_width_6_read & !int_cfg_pulse_sequence_timer_width_7_read & !int_cfg_filter_coefs_ch0_read & !int_cfg_filter_coefs_ch1_read & !int_cfg_filter_coefs_ch2_read;
 assign ar_hs   = ARVALID & ARREADY;
 assign raddr   = ARADDR[ADDR_BITS-1:0];
 
@@ -1421,6 +1463,9 @@ always @(posedge ACLK) begin
         end
         else if (int_cfg_pulse_sequence_control_flags_read) begin
             rdata <= int_cfg_pulse_sequence_control_flags_q1;
+        end
+        else if (int_cfg_pulse_sequence_polarization_mode_read) begin
+            rdata <= int_cfg_pulse_sequence_polarization_mode_q1;
         end
         else if (int_cfg_pulse_sequence_filter_select_ch0_read) begin
             rdata <= int_cfg_pulse_sequence_filter_select_ch0_q1;
@@ -1730,6 +1775,18 @@ assign int_cfg_pulse_sequence_control_flags_ce1          = ar_hs | (int_cfg_puls
 assign int_cfg_pulse_sequence_control_flags_we1          = int_cfg_pulse_sequence_control_flags_write & WVALID;
 assign int_cfg_pulse_sequence_control_flags_be1          = WSTRB;
 assign int_cfg_pulse_sequence_control_flags_d1           = WDATA;
+// cfg_pulse_sequence_polarization_mode
+assign int_cfg_pulse_sequence_polarization_mode_address0 = cfg_pulse_sequence_polarization_mode_address0;
+assign int_cfg_pulse_sequence_polarization_mode_ce0      = cfg_pulse_sequence_polarization_mode_ce0;
+assign int_cfg_pulse_sequence_polarization_mode_we0      = 1'b0;
+assign int_cfg_pulse_sequence_polarization_mode_be0      = 1'b0;
+assign int_cfg_pulse_sequence_polarization_mode_d0       = 1'b0;
+assign cfg_pulse_sequence_polarization_mode_q0           = int_cfg_pulse_sequence_polarization_mode_q0;
+assign int_cfg_pulse_sequence_polarization_mode_address1 = ar_hs? raddr[6:2] : waddr[6:2];
+assign int_cfg_pulse_sequence_polarization_mode_ce1      = ar_hs | (int_cfg_pulse_sequence_polarization_mode_write & WVALID);
+assign int_cfg_pulse_sequence_polarization_mode_we1      = int_cfg_pulse_sequence_polarization_mode_write & WVALID;
+assign int_cfg_pulse_sequence_polarization_mode_be1      = WSTRB;
+assign int_cfg_pulse_sequence_polarization_mode_d1       = WDATA;
 // cfg_pulse_sequence_filter_select_ch0
 assign int_cfg_pulse_sequence_filter_select_ch0_address0 = cfg_pulse_sequence_filter_select_ch0_address0;
 assign int_cfg_pulse_sequence_filter_select_ch0_ce0      = cfg_pulse_sequence_filter_select_ch0_ce0;
@@ -1965,7 +2022,7 @@ assign int_cfg_filter_coefs_ch0_we0                      = 1'b0;
 assign int_cfg_filter_coefs_ch0_be0                      = 1'b0;
 assign int_cfg_filter_coefs_ch0_d0                       = 1'b0;
 assign cfg_filter_coefs_ch0_q0                           = int_cfg_filter_coefs_ch0_q0;
-assign int_cfg_filter_coefs_ch0_address1                 = ar_hs? raddr[9:2] : waddr[9:2];
+assign int_cfg_filter_coefs_ch0_address1                 = ar_hs? raddr[10:2] : waddr[10:2];
 assign int_cfg_filter_coefs_ch0_ce1                      = ar_hs | (int_cfg_filter_coefs_ch0_write & WVALID);
 assign int_cfg_filter_coefs_ch0_we1                      = int_cfg_filter_coefs_ch0_write & WVALID;
 assign int_cfg_filter_coefs_ch0_be1                      = WSTRB;
@@ -1977,7 +2034,7 @@ assign int_cfg_filter_coefs_ch1_we0                      = 1'b0;
 assign int_cfg_filter_coefs_ch1_be0                      = 1'b0;
 assign int_cfg_filter_coefs_ch1_d0                       = 1'b0;
 assign cfg_filter_coefs_ch1_q0                           = int_cfg_filter_coefs_ch1_q0;
-assign int_cfg_filter_coefs_ch1_address1                 = ar_hs? raddr[9:2] : waddr[9:2];
+assign int_cfg_filter_coefs_ch1_address1                 = ar_hs? raddr[10:2] : waddr[10:2];
 assign int_cfg_filter_coefs_ch1_ce1                      = ar_hs | (int_cfg_filter_coefs_ch1_write & WVALID);
 assign int_cfg_filter_coefs_ch1_we1                      = int_cfg_filter_coefs_ch1_write & WVALID;
 assign int_cfg_filter_coefs_ch1_be1                      = WSTRB;
@@ -1989,7 +2046,7 @@ assign int_cfg_filter_coefs_ch2_we0                      = 1'b0;
 assign int_cfg_filter_coefs_ch2_be0                      = 1'b0;
 assign int_cfg_filter_coefs_ch2_d0                       = 1'b0;
 assign cfg_filter_coefs_ch2_q0                           = int_cfg_filter_coefs_ch2_q0;
-assign int_cfg_filter_coefs_ch2_address1                 = ar_hs? raddr[9:2] : waddr[9:2];
+assign int_cfg_filter_coefs_ch2_address1                 = ar_hs? raddr[10:2] : waddr[10:2];
 assign int_cfg_filter_coefs_ch2_ce1                      = ar_hs | (int_cfg_filter_coefs_ch2_write & WVALID);
 assign int_cfg_filter_coefs_ch2_we1                      = int_cfg_filter_coefs_ch2_write & WVALID;
 assign int_cfg_filter_coefs_ch2_be1                      = WSTRB;
@@ -2111,6 +2168,30 @@ always @(posedge ACLK) begin
             int_cfg_pulse_sequence_control_flags_write <= 1'b1;
         else if (WVALID)
             int_cfg_pulse_sequence_control_flags_write <= 1'b0;
+    end
+end
+
+// int_cfg_pulse_sequence_polarization_mode_read
+always @(posedge ACLK) begin
+    if (ARESET)
+        int_cfg_pulse_sequence_polarization_mode_read <= 1'b0;
+    else if (ACLK_EN) begin
+        if (ar_hs && raddr >= ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE && raddr <= ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH)
+            int_cfg_pulse_sequence_polarization_mode_read <= 1'b1;
+        else
+            int_cfg_pulse_sequence_polarization_mode_read <= 1'b0;
+    end
+end
+
+// int_cfg_pulse_sequence_polarization_mode_write
+always @(posedge ACLK) begin
+    if (ARESET)
+        int_cfg_pulse_sequence_polarization_mode_write <= 1'b0;
+    else if (ACLK_EN) begin
+        if (aw_hs && AWADDR[ADDR_BITS-1:0] >= ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE && AWADDR[ADDR_BITS-1:0] <= ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH)
+            int_cfg_pulse_sequence_polarization_mode_write <= 1'b1;
+        else if (WVALID)
+            int_cfg_pulse_sequence_polarization_mode_write <= 1'b0;
     end
 end
 

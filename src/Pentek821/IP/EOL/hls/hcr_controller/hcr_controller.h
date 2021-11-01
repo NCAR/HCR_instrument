@@ -10,7 +10,7 @@
 
 #include "../hcr_hls_common.h"
 
-const int N_COEF_SETS = 4;
+const int N_COEF_SETS = 8;
 const int N_FILTER_TAPS = 48;
 
 typedef ap_int<24> coef_t;
@@ -33,9 +33,10 @@ void hcr_controller(
 		hls::stream<coef_t>& coef_ch2,
 		volatile ap_uint<N_TIMERS>* mt_pulse,   // MultiTimer outputs
 		volatile ap_uint<32>* control_flags,    // Control word for the pulse
-		volatile ap_uint<2>* filter_select_ch0, // Selects RX FIR
-		volatile ap_uint<2>* filter_select_ch1,
-		volatile ap_uint<2>* filter_select_ch2,
+		volatile bool* control_hvn,             // HV bit for the pulse
+		volatile ap_uint<3>* filter_select_ch0, // Selects RX FIR
+		volatile ap_uint<3>* filter_select_ch1,
+		volatile ap_uint<3>* filter_select_ch2,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch0,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch1,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch2,
@@ -70,9 +71,10 @@ void scheduler_cycle_exact(
 		hls::stream<pulse_exec_definition>& pulse_queue,
 		volatile ap_uint<N_TIMERS>* mt_pulse,
 		volatile ap_uint<32>* control_flags,
-		volatile ap_uint<2>* filter_select_ch0,
-		volatile ap_uint<2>* filter_select_ch1,
-		volatile ap_uint<2>* filter_select_ch2
+		volatile bool* control_hvn,
+		volatile ap_uint<3>* filter_select_ch0,
+		volatile ap_uint<3>* filter_select_ch1,
+		volatile ap_uint<3>* filter_select_ch2
 	);
 
 void output_fifo(

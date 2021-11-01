@@ -100,3 +100,97 @@ INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/puls
 Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.625ns.
+INFO: [HLS 200-10] Setting target device to 'xcku060-ffva1156-2-e'
+INFO: [HLS 200-435] Setting 'config_sdx -optimization_level' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+WARNING: [HLS 200-483] The 'config_sdx -optimization_level' command is deprecated and will be removed in a future release. Use 'config_export -vivado_optimization_level' as its replacement.
+INFO: [HLS 200-435] Setting 'config_sdx -optimization_level' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+WARNING: [HLS 200-484] The 'config_sdx -optimization_level' command is deprecated and will be removed in a future release.
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'hcr_metadata_injector/hcr_metadata_injector.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 967.203 ; gain = 529.223 ; free physical = 9861 ; free virtual = 470355
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 967.203 ; gain = 529.223 ; free physical = 9859 ; free virtual = 470353
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [XFORM 203-603] Inlining function '__assert_readable<ap_axiu<32, 128, 1, 1> >' into 'hcr_metadata_injector' (hcr_metadata_injector/hcr_metadata_injector.cpp:44).
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'handle_header' (hcr_metadata_injector/hcr_metadata_injector.cpp:121).
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 967.203 ; gain = 529.223 ; free physical = 8442 ; free virtual = 468938
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 967.203 ; gain = 529.223 ; free physical = 10647 ; free virtual = 471040
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata.V' (hcr_metadata_injector/hcr_metadata_injector.cpp:14) into a 853-bit variable.
+INFO: [XFORM 203-101] Partitioning array 'header' (hcr_metadata_injector/hcr_metadata_injector.cpp:163) in dimension 1 completely.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_metadata_injector/hcr_metadata_injector.cpp:71:4) to (hcr_metadata_injector/hcr_metadata_injector.cpp:83:4) in function 'hcr_metadata_injector'... converting 3 basic blocks.
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.8i32P.i3' into 'handle_header' (hcr_metadata_injector/hcr_metadata_injector.cpp:179).
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 967.203 ; gain = 529.223 ; free physical = 12680 ; free virtual = 473074
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 967.203 ; gain = 529.223 ; free physical = 12396 ; free virtual = 472790
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'hcr_metadata_injector' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'handle_header' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 2.
+INFO: [SCHED 204-61] Pipelining loop 'write_header'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 2.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 17.08 seconds; current allocated memory: 125.856 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.05 seconds; current allocated memory: 126.404 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'hcr_metadata_injector' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.08 seconds; current allocated memory: 126.811 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.04 seconds; current allocated memory: 127.245 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'handle_header' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'handle_header'.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 128.205 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'hcr_metadata_injector' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_data_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_keep_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_strb_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_user_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_last_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_id_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/i_data_V_dest_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_data_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_keep_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_strb_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_user_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_last_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_id_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/o_data_V_dest_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/pulse_metadata_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_metadata_injector/pos_enc_0' to 'ap_none'.
+INFO: [RTGEN 206-500]==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================

@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_controller"
 set Version     "1.0"
 set DisplayName "Hcr_controller"
-set Revision    "2104281247"
+set Revision    "2107092146"
 set Description "Controls the radar schedule"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -75,10 +75,10 @@ regslice_core
 regslice_core
 regslice_core
 regslice_core
-fifo_w821_d16_S
-fifo_w821_d16_S
-fifo_w821_d16_S
-fifo_w821_d1_A
+fifo_w853_d16_S
+fifo_w853_d16_S
+fifo_w853_d16_S
+fifo_w853_d1_A
 start_for_output_dEe
 start_for_output_eOg
 start_for_output_fYi
@@ -110,10 +110,10 @@ set Interfaces {
         mode "slave"
         port_prefix "s_axi_cfg_bus"
         param_prefix "C_S_AXI_CFG_BUS"
-        addr_bits "13"
-        port_width "AWADDR 13 WDATA 32 WSTRB 4 ARADDR 13 RDATA 32"
+        addr_bits "14"
+        port_width "AWADDR 14 WDATA 32 WSTRB 4 ARADDR 14 RDATA 32"
         registers {{0x00 CTRL       RW   0x0 "Control signals" {{ 0 1 AP_START RW 0 "Control signal Register for 'ap_start'." } { 1 1 AP_DONE R 0 "Control signal Register for 'ap_done'." } { 2 1 AP_IDLE R 0 "Control signal Register for 'ap_idle'." } { 3 1 AP_READY R 0 "Control signal Register for 'ap_ready'." } { 4 3 RESERVED_1 R 0 "Reserved.  0s on read." } { 7 1 AUTO_RESTART RW 0 "Control signal Register for 'auto_restart'." } { 8 24 RESERVED_2 R 0 "Reserved.  0s on read." }}} {0x04 GIER       RW   0x0 "Global Interrupt Enable Register" {{ 0 1 Enable RW 0 "Master enable for the device interrupt output to the system interrupt controller: 0 = Disabled, 1 = Enabled" } { 1 31 RESERVED R 0 "Reserved.  0s on read." }} } {0x08 IP_IER     RW   0x0 "IP Interrupt Enable Register" {{ 0 1 CHAN0_INT_EN RW 0 "Enable Channel 0 (ap_done) Interrupt.  0 = Disabled, 1 = Enabled." } { 1 1 CHAN1_INT_EN RW 0 "Enable Channel 1 (ap_ready) Interrupt.  0 = Disabled, 1 = Enabled." } { 2 30 RESERVED R 0 "Reserved.  0s on read." }}} {0x0c IP_ISR     RW   0x0 "IP Interrupt Status Register" {{ 0 1 CHAN0_INT_ST RTOW 0 "Channel 0 (ap_done) Interrupt Status. 0 = No Channel 0 input interrupt, 1 = Channel 0 input interrup" } { 1 1 CHAN1_INT_ST RTOW 0 "Channel 1 (ap_ready) Interrupt Status. 0 = No Channel 1 input interrupt, 1 = Channel 1 input interrup" } { 2 30 RESERVED R 0 "Reserved.  0s on read." }}} {0x10 cfg_pulse_sequence_start_index W 0x0 "Data signal of cfg_pulse_sequence_start_index" {{0 8 cfg_pulse_sequence_start_index W 0 "Bit 7 to 0 Data signal of cfg_pulse_sequence_start_index"} {8 24 RESERVED R 0 "Reserved.  0s on read."}}} {0x18 cfg_pulse_sequence_length W 0x0 "Data signal of cfg_pulse_sequence_length" {{0 8 cfg_pulse_sequence_length W 0 "Bit 7 to 0 Data signal of cfg_pulse_sequence_length"} {8 24 RESERVED R 0 "Reserved.  0s on read."}}} {0x20 cfg_num_pulses_to_execute W 0x0 "Data signal of cfg_num_pulses_to_execute" {{0 32 cfg_num_pulses_to_execute W 0 "Bit 31 to 0 Data signal of cfg_num_pulses_to_execute"}}} {0x28 cfg_total_decimation W 0x0 "Data signal of cfg_total_decimation" {{0 32 cfg_total_decimation W 0 "Bit 31 to 0 Data signal of cfg_total_decimation"}}} {0x30 cfg_post_decimation W 0x0 "Data signal of cfg_post_decimation" {{0 32 cfg_post_decimation W 0 "Bit 31 to 0 Data signal of cfg_post_decimation"}}} {0x38 cfg_num_pulses_per_xfer W 0x0 "Data signal of cfg_num_pulses_per_xfer" {{0 32 cfg_num_pulses_per_xfer W 0 "Bit 31 to 0 Data signal of cfg_num_pulses_per_xfer"}}} {0x40 cfg_enabled_channel_vector W 0x0 "Data signal of cfg_enabled_channel_vector" {{0 32 cfg_enabled_channel_vector W 0 "Bit 31 to 0 Data signal of cfg_enabled_channel_vector"}}}}
-        memories "cfg_pulse_sequence_prt_0 {base_address 128 range 128} cfg_pulse_sequence_prt_1 {base_address 256 range 128} cfg_pulse_sequence_num_pulses {base_address 384 range 128} cfg_pulse_sequence_block_post_time {base_address 512 range 128} cfg_pulse_sequence_control_flags {base_address 640 range 128} cfg_pulse_sequence_filter_select_ch0 {base_address 768 range 128} cfg_pulse_sequence_filter_select_ch1 {base_address 896 range 128} cfg_pulse_sequence_filter_select_ch2 {base_address 1024 range 128} cfg_pulse_sequence_timer_offset_0 {base_address 1152 range 128} cfg_pulse_sequence_timer_offset_1 {base_address 1280 range 128} cfg_pulse_sequence_timer_offset_2 {base_address 1408 range 128} cfg_pulse_sequence_timer_offset_3 {base_address 1536 range 128} cfg_pulse_sequence_timer_offset_4 {base_address 1664 range 128} cfg_pulse_sequence_timer_offset_5 {base_address 1792 range 128} cfg_pulse_sequence_timer_offset_6 {base_address 1920 range 128} cfg_pulse_sequence_timer_offset_7 {base_address 2048 range 128} cfg_pulse_sequence_timer_width_0 {base_address 2176 range 128} cfg_pulse_sequence_timer_width_1 {base_address 2304 range 128} cfg_pulse_sequence_timer_width_2 {base_address 2432 range 128} cfg_pulse_sequence_timer_width_3 {base_address 2560 range 128} cfg_pulse_sequence_timer_width_4 {base_address 2688 range 128} cfg_pulse_sequence_timer_width_5 {base_address 2816 range 128} cfg_pulse_sequence_timer_width_6 {base_address 2944 range 128} cfg_pulse_sequence_timer_width_7 {base_address 3072 range 128} cfg_filter_coefs_ch0 {base_address 4096 range 1024} cfg_filter_coefs_ch1 {base_address 5120 range 1024} cfg_filter_coefs_ch2 {base_address 6144 range 1024}"
+        memories "cfg_pulse_sequence_prt_0 {base_address 128 range 128} cfg_pulse_sequence_prt_1 {base_address 256 range 128} cfg_pulse_sequence_num_pulses {base_address 384 range 128} cfg_pulse_sequence_block_post_time {base_address 512 range 128} cfg_pulse_sequence_control_flags {base_address 640 range 128} cfg_pulse_sequence_polarization_mode {base_address 768 range 128} cfg_pulse_sequence_filter_select_ch0 {base_address 896 range 128} cfg_pulse_sequence_filter_select_ch1 {base_address 1024 range 128} cfg_pulse_sequence_filter_select_ch2 {base_address 1152 range 128} cfg_pulse_sequence_timer_offset_0 {base_address 1280 range 128} cfg_pulse_sequence_timer_offset_1 {base_address 1408 range 128} cfg_pulse_sequence_timer_offset_2 {base_address 1536 range 128} cfg_pulse_sequence_timer_offset_3 {base_address 1664 range 128} cfg_pulse_sequence_timer_offset_4 {base_address 1792 range 128} cfg_pulse_sequence_timer_offset_5 {base_address 1920 range 128} cfg_pulse_sequence_timer_offset_6 {base_address 2048 range 128} cfg_pulse_sequence_timer_offset_7 {base_address 2176 range 128} cfg_pulse_sequence_timer_width_0 {base_address 2304 range 128} cfg_pulse_sequence_timer_width_1 {base_address 2432 range 128} cfg_pulse_sequence_timer_width_2 {base_address 2560 range 128} cfg_pulse_sequence_timer_width_3 {base_address 2688 range 128} cfg_pulse_sequence_timer_width_4 {base_address 2816 range 128} cfg_pulse_sequence_timer_width_5 {base_address 2944 range 128} cfg_pulse_sequence_timer_width_6 {base_address 3072 range 128} cfg_pulse_sequence_timer_width_7 {base_address 3200 range 128} cfg_filter_coefs_ch0 {base_address 4096 range 2048} cfg_filter_coefs_ch1 {base_address 6144 range 2048} cfg_filter_coefs_ch2 {base_address 8192 range 2048}"
         ctype {
             AWVALID {
                 Type "bool"
@@ -177,8 +177,8 @@ set Interfaces {
             }
             AWADDR {
                 Type "integer unsigned"
-                Width "13"
-                Bits "13"
+                Width "14"
+                Bits "14"
             }
             WDATA {
                 Type "integer signed"
@@ -192,8 +192,8 @@ set Interfaces {
             }
             ARADDR {
                 Type "integer unsigned"
-                Width "13"
-                Bits "13"
+                Width "14"
+                Bits "14"
             }
             RDATA {
                 Type "integer signed"
@@ -338,39 +338,51 @@ set Interfaces {
             }
         }
     }
+    control_hvn {
+        type "data"
+        dir "out"
+        width ""
+        ctype {
+            DATA {
+                Type "null"
+                Width "1"
+                Bits "1"
+            }
+        }
+    }
     filter_select_ch0_V {
         type "data"
         dir "out"
-        width "2"
+        width "3"
         ctype {
             DATA {
                 Type "integer unsigned"
-                Width "2"
-                Bits "2"
+                Width "3"
+                Bits "3"
             }
         }
     }
     filter_select_ch1_V {
         type "data"
         dir "out"
-        width "2"
+        width "3"
         ctype {
             DATA {
                 Type "integer unsigned"
-                Width "2"
-                Bits "2"
+                Width "3"
+                Bits "3"
             }
         }
     }
     filter_select_ch2_V {
         type "data"
         dir "out"
-        width "2"
+        width "3"
         ctype {
             DATA {
                 Type "integer unsigned"
-                Width "2"
-                Bits "2"
+                Width "3"
+                Bits "3"
             }
         }
     }
@@ -380,18 +392,18 @@ set Interfaces {
         port_prefix "pulse_metadata_ch0_V"
         has_tready "1"
         ports {
-            TDATA 824
+            TDATA 856
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "824"
-                Bits "824"
+                Width "856"
+                Bits "856"
                 Fields {
                     def {
                         Type "struct"
-                        Width "768"
-                        Bits "768"
+                        Width "800"
+                        Bits "800"
                         Fields {
                             prt {
                                 Type "array"
@@ -415,6 +427,11 @@ set Interfaces {
                                 Bits "32"
                             }
                             control_flags {
+                                Type "integer unsigned"
+                                Width "32"
+                                Bits "32"
+                            }
+                            polarization_mode {
                                 Type "integer unsigned"
                                 Width "32"
                                 Bits "32"
@@ -518,18 +535,18 @@ set Interfaces {
         port_prefix "pulse_metadata_ch1_V"
         has_tready "1"
         ports {
-            TDATA 824
+            TDATA 856
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "824"
-                Bits "824"
+                Width "856"
+                Bits "856"
                 Fields {
                     def {
                         Type "struct"
-                        Width "768"
-                        Bits "768"
+                        Width "800"
+                        Bits "800"
                         Fields {
                             prt {
                                 Type "array"
@@ -553,6 +570,11 @@ set Interfaces {
                                 Bits "32"
                             }
                             control_flags {
+                                Type "integer unsigned"
+                                Width "32"
+                                Bits "32"
+                            }
+                            polarization_mode {
                                 Type "integer unsigned"
                                 Width "32"
                                 Bits "32"
@@ -656,18 +678,18 @@ set Interfaces {
         port_prefix "pulse_metadata_ch2_V"
         has_tready "1"
         ports {
-            TDATA 824
+            TDATA 856
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "824"
-                Bits "824"
+                Width "856"
+                Bits "856"
                 Fields {
                     def {
                         Type "struct"
-                        Width "768"
-                        Bits "768"
+                        Width "800"
+                        Bits "800"
                         Fields {
                             prt {
                                 Type "array"
@@ -691,6 +713,11 @@ set Interfaces {
                                 Bits "32"
                             }
                             control_flags {
+                                Type "integer unsigned"
+                                Width "32"
+                                Bits "32"
+                            }
+                            polarization_mode {
                                 Type "integer unsigned"
                                 Width "32"
                                 Bits "32"

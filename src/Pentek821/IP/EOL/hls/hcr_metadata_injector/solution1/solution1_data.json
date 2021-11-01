@@ -15,12 +15,12 @@
   "HlsSolution": {"Config": [
       "config_sdx -optimization_level=none",
       "config_sdx -target=none",
-      "config_export -vivado_optimization_level=2",
       "config_export -description {Adds metadata to a PDTI stream in front of each pulse}",
       "config_export -format=ip_catalog",
       "config_export -library=EOL",
       "config_export -rtl=vhdl",
-      "config_export -vendor=NCAR"
+      "config_export -vendor=NCAR",
+      "config_export -vivado_optimization_level=2"
     ]},
   "Args": {
     "i_data": {
@@ -133,26 +133,30 @@
                 "order": "3",
                 "dataType": "unsigned"
               },
-              "filter_select_ch0": {
+              "polarization_mode": {
                 "order": "4",
                 "dataType": "unsigned"
               },
-              "filter_select_ch1": {
+              "filter_select_ch0": {
                 "order": "5",
                 "dataType": "unsigned"
               },
-              "filter_select_ch2": {
+              "filter_select_ch1": {
                 "order": "6",
                 "dataType": "unsigned"
               },
-              "timer_offset": {
+              "filter_select_ch2": {
                 "order": "7",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "8",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
               },
               "timer_width": {
-                "order": "8",
+                "order": "9",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
@@ -231,7 +235,7 @@
     "IsCombLogic": "0",
     "II": "x",
     "Latency": "undef",
-    "Uncertainty": "2"
+    "Uncertainty": "0.625"
   },
   "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 5.000 [get_ports ap_clk]"]},
   "Ipx": {
@@ -428,11 +432,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "824",
+          "Width": "856",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "768",
+              "Width": "800",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -452,6 +456,10 @@
                   "Width": "32"
                 },
                 "control_flags": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "polarization_mode": {
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
@@ -525,7 +533,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "824"}
+      "port_width": {"TDATA": "856"}
     }
   },
   "RtlPorts": {
@@ -633,7 +641,7 @@
     },
     "pulse_metadata_V_TDATA": {
       "dir": "in",
-      "width": "824"
+      "width": "856"
     },
     "pulse_metadata_V_TVALID": {
       "dir": "in",
@@ -692,7 +700,7 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
+          "Uncertainty": "0.62",
           "Estimate": "1.955"
         },
         "Loops": [
@@ -712,7 +720,7 @@
           }
         ],
         "Area": {
-          "FF": "1172",
+          "FF": "1204",
           "LUT": "718",
           "BRAM_18K": "0",
           "DSP48E": "0",
@@ -730,7 +738,7 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
+          "Uncertainty": "0.62",
           "Estimate": "2.845"
         },
         "Loops": [{
@@ -741,7 +749,7 @@
             "PipelineDepth": ""
           }],
         "Area": {
-          "FF": "1599",
+          "FF": "1631",
           "LUT": "1132",
           "BRAM_18K": "0",
           "DSP48E": "0",
@@ -760,7 +768,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-04-28 12:50:41 GMT",
+    "Time": "2021-07-09 21:51:37 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

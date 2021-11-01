@@ -24,7 +24,11 @@ file copy $RUNDIR/p71821.mcs $ODIR/$ONAME.mcs
 file copy $RUNDIR/p71821.msk $ODIR/$ONAME.msk
 file copy $RUNDIR/p71821_utilization_placed.rpt $ODIR/${ONAME}_util.rpt
 file copy $RUNDIR/p71821_timing_summary_routed.rpt $ODIR/${ONAME}_time.rpt
-file copy $RUNDIR/p71821.ltx $ODIR/debug_nets_1.ltx
-file copy ../../debug.ltx $ODIR/debug_nets_2.ltx
+if { [file exists "$RUNDIR/p71821.ltx"] == 1} {               
+    file copy $RUNDIR/p71821.ltx $ODIR/debug_nets_1.ltx
+}
+if { [file exists "../../debug.ltx"] == 1} {               
+    file copy ../../debug.ltx $ODIR/debug_nets_2.ltx
+}
 
 puts "Copy complete"

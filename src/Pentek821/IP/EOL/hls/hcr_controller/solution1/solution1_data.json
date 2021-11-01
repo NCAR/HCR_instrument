@@ -13,14 +13,15 @@
     "Speed": "-2-e"
   },
   "HlsSolution": {"Config": [
-      "config_sdx -optimization_level=none",
       "config_sdx -target=none",
-      "config_export -vivado_optimization_level=2",
       "config_export -description {Controls the radar schedule}",
       "config_export -format=ip_catalog",
       "config_export -library=EOL",
       "config_export -rtl=vhdl",
-      "config_export -vendor=NCAR"
+      "config_export -vendor=NCAR",
+      "config_export -vivado_optimization_level=2",
+      "config_export -vivado_phys_opt=place",
+      "config_export -vivado_report_level=0"
     ]},
   "Args": {
     "cfg_pulse_sequence_start_index": {
@@ -135,8 +136,18 @@
             "structImpl": "field",
             "dataPack": true
           },
-          "filter_select_ch0": {
+          "polarization_mode": {
             "order": "4",
+            "dataType": "unsigned",
+            "dataWidth": "32",
+            "interfaceRef": "s_axi_cfg_bus",
+            "bitMap": "31:0",
+            "memoryRef": "cfg_pulse_sequence_polarization_mode",
+            "structImpl": "field",
+            "dataPack": true
+          },
+          "filter_select_ch0": {
+            "order": "5",
             "dataType": "unsigned",
             "dataWidth": "32",
             "interfaceRef": "s_axi_cfg_bus",
@@ -146,7 +157,7 @@
             "dataPack": true
           },
           "filter_select_ch1": {
-            "order": "5",
+            "order": "6",
             "dataType": "unsigned",
             "dataWidth": "32",
             "interfaceRef": "s_axi_cfg_bus",
@@ -156,7 +167,7 @@
             "dataPack": true
           },
           "filter_select_ch2": {
-            "order": "6",
+            "order": "7",
             "dataType": "unsigned",
             "dataWidth": "32",
             "interfaceRef": "s_axi_cfg_bus",
@@ -166,13 +177,13 @@
             "dataPack": true
           },
           "timer_offset": {
-            "order": "7",
+            "order": "8",
             "kinds": ["array"],
             "dataType": "unsigned",
             "arraySizes": ["8"]
           },
           "timer_width": {
-            "order": "8",
+            "order": "9",
             "kinds": ["array"],
             "dataType": "unsigned",
             "arraySizes": ["8"]
@@ -187,7 +198,7 @@
         "dataType": "int",
         "dataWidth": "32",
         "arraySizes": [
-          "4",
+          "8",
           "48"
         ],
         "interfaceRef": "s_axi_cfg_bus",
@@ -201,7 +212,7 @@
         "dataType": "int",
         "dataWidth": "32",
         "arraySizes": [
-          "4",
+          "8",
           "48"
         ],
         "interfaceRef": "s_axi_cfg_bus",
@@ -215,7 +226,7 @@
         "dataType": "int",
         "dataWidth": "32",
         "arraySizes": [
-          "4",
+          "8",
           "48"
         ],
         "interfaceRef": "s_axi_cfg_bus",
@@ -252,35 +263,44 @@
         "interfaceRef": "control_flags_V"
       }
     },
-    "filter_select_ch0": {
+    "control_hvn": {
       "index": "16",
       "type": {
         "kinds": ["pointer"],
-        "dataType": "ap_uint",
-        "dataWidth": "2",
-        "interfaceRef": "filter_select_ch0_V"
+        "dataType": "bool",
+        "dataWidth": "1",
+        "interfaceRef": "control_hvn"
       }
     },
-    "filter_select_ch1": {
+    "filter_select_ch0": {
       "index": "17",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
-        "dataWidth": "2",
-        "interfaceRef": "filter_select_ch1_V"
+        "dataWidth": "3",
+        "interfaceRef": "filter_select_ch0_V"
       }
     },
-    "filter_select_ch2": {
+    "filter_select_ch1": {
       "index": "18",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
-        "dataWidth": "2",
+        "dataWidth": "3",
+        "interfaceRef": "filter_select_ch1_V"
+      }
+    },
+    "filter_select_ch2": {
+      "index": "19",
+      "type": {
+        "kinds": ["pointer"],
+        "dataType": "ap_uint",
+        "dataWidth": "3",
         "interfaceRef": "filter_select_ch2_V"
       }
     },
     "pulse_metadata_ch0": {
-      "index": "19",
+      "index": "20",
       "type": {
         "kinds": ["struct"],
         "dataType": "pulse_exec_definition",
@@ -311,26 +331,30 @@
                 "order": "3",
                 "dataType": "unsigned"
               },
-              "filter_select_ch0": {
+              "polarization_mode": {
                 "order": "4",
                 "dataType": "unsigned"
               },
-              "filter_select_ch1": {
+              "filter_select_ch0": {
                 "order": "5",
                 "dataType": "unsigned"
               },
-              "filter_select_ch2": {
+              "filter_select_ch1": {
                 "order": "6",
                 "dataType": "unsigned"
               },
-              "timer_offset": {
+              "filter_select_ch2": {
                 "order": "7",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "8",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
               },
               "timer_width": {
-                "order": "8",
+                "order": "9",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
@@ -373,7 +397,7 @@
       }
     },
     "pulse_metadata_ch1": {
-      "index": "20",
+      "index": "21",
       "type": {
         "kinds": ["struct"],
         "dataType": "pulse_exec_definition",
@@ -404,26 +428,30 @@
                 "order": "3",
                 "dataType": "unsigned"
               },
-              "filter_select_ch0": {
+              "polarization_mode": {
                 "order": "4",
                 "dataType": "unsigned"
               },
-              "filter_select_ch1": {
+              "filter_select_ch0": {
                 "order": "5",
                 "dataType": "unsigned"
               },
-              "filter_select_ch2": {
+              "filter_select_ch1": {
                 "order": "6",
                 "dataType": "unsigned"
               },
-              "timer_offset": {
+              "filter_select_ch2": {
                 "order": "7",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "8",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
               },
               "timer_width": {
-                "order": "8",
+                "order": "9",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
@@ -466,7 +494,7 @@
       }
     },
     "pulse_metadata_ch2": {
-      "index": "21",
+      "index": "22",
       "type": {
         "kinds": ["struct"],
         "dataType": "pulse_exec_definition",
@@ -497,26 +525,30 @@
                 "order": "3",
                 "dataType": "unsigned"
               },
-              "filter_select_ch0": {
+              "polarization_mode": {
                 "order": "4",
                 "dataType": "unsigned"
               },
-              "filter_select_ch1": {
+              "filter_select_ch0": {
                 "order": "5",
                 "dataType": "unsigned"
               },
-              "filter_select_ch2": {
+              "filter_select_ch1": {
                 "order": "6",
                 "dataType": "unsigned"
               },
-              "timer_offset": {
+              "filter_select_ch2": {
                 "order": "7",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "8",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
               },
               "timer_width": {
-                "order": "8",
+                "order": "9",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
@@ -559,7 +591,7 @@
       }
     },
     "pps": {
-      "index": "22",
+      "index": "23",
       "type": {
         "kinds": ["array"],
         "dataType": "bool",
@@ -582,7 +614,7 @@
     "IsCombLogic": "0",
     "II": "x",
     "Latency": "undef",
-    "Uncertainty": "2"
+    "Uncertainty": "0.625"
   },
   "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 5.000 [get_ports ap_clk]"]},
   "Ipx": {
@@ -599,8 +631,8 @@
   "Files": {
     "CSource": ["..\/hcr_controller.cpp"],
     "Vhdl": [
-      "impl\/vhdl\/fifo_w821_d1_A.vhd",
-      "impl\/vhdl\/fifo_w821_d16_S.vhd",
+      "impl\/vhdl\/fifo_w853_d1_A.vhd",
+      "impl\/vhdl\/fifo_w853_d16_S.vhd",
       "impl\/vhdl\/hcr_controller_cfg_bus_s_axi.vhd",
       "impl\/vhdl\/hcr_controller_udcud.vhd",
       "impl\/vhdl\/output_fifo.vhd",
@@ -616,8 +648,8 @@
       "impl\/vhdl\/hcr_controller.vhd"
     ],
     "Verilog": [
-      "impl\/verilog\/fifo_w821_d1_A.v",
-      "impl\/verilog\/fifo_w821_d16_S.v",
+      "impl\/verilog\/fifo_w853_d1_A.v",
+      "impl\/verilog\/fifo_w853_d16_S.v",
       "impl\/verilog\/hcr_controller_cfg_bus_s_axi.v",
       "impl\/verilog\/hcr_controller_udcud.v",
       "impl\/verilog\/output_fifo.v",
@@ -724,13 +756,24 @@
       "bundle_name": "control_flags_V",
       "bundle_role": "default"
     },
+    "control_hvn": {
+      "type": "data",
+      "dir": "out",
+      "width": "1",
+      "ctype": {"DATA": {
+          "Type": "null",
+          "Width": "1"
+        }},
+      "bundle_name": "control_hvn",
+      "bundle_role": "default"
+    },
     "filter_select_ch0_V": {
       "type": "data",
       "dir": "out",
-      "width": "2",
+      "width": "3",
       "ctype": {"DATA": {
           "Type": "integer unsigned",
-          "Width": "2"
+          "Width": "3"
         }},
       "bundle_name": "filter_select_ch0_V",
       "bundle_role": "default"
@@ -738,10 +781,10 @@
     "filter_select_ch1_V": {
       "type": "data",
       "dir": "out",
-      "width": "2",
+      "width": "3",
       "ctype": {"DATA": {
           "Type": "integer unsigned",
-          "Width": "2"
+          "Width": "3"
         }},
       "bundle_name": "filter_select_ch1_V",
       "bundle_role": "default"
@@ -749,10 +792,10 @@
     "filter_select_ch2_V": {
       "type": "data",
       "dir": "out",
-      "width": "2",
+      "width": "3",
       "ctype": {"DATA": {
           "Type": "integer unsigned",
-          "Width": "2"
+          "Width": "3"
         }},
       "bundle_name": "filter_select_ch2_V",
       "bundle_role": "default"
@@ -815,11 +858,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "824",
+          "Width": "856",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "768",
+              "Width": "800",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -839,6 +882,10 @@
                   "Width": "32"
                 },
                 "control_flags": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "polarization_mode": {
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
@@ -912,7 +959,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "824"}
+      "port_width": {"TDATA": "856"}
     },
     "pulse_metadata_ch1_V": {
       "type": "axi4stream",
@@ -922,11 +969,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "824",
+          "Width": "856",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "768",
+              "Width": "800",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -946,6 +993,10 @@
                   "Width": "32"
                 },
                 "control_flags": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "polarization_mode": {
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
@@ -1019,7 +1070,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "824"}
+      "port_width": {"TDATA": "856"}
     },
     "pulse_metadata_ch2_V": {
       "type": "axi4stream",
@@ -1029,11 +1080,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "824",
+          "Width": "856",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "768",
+              "Width": "800",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -1053,6 +1104,10 @@
                   "Width": "32"
                 },
                 "control_flags": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "polarization_mode": {
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
@@ -1126,7 +1181,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "824"}
+      "port_width": {"TDATA": "856"}
     },
     "s_axi_cfg_bus": {
       "type": "axi4lite",
@@ -1134,7 +1189,7 @@
       "mode": "slave",
       "port_prefix": "s_axi_cfg_bus",
       "param_prefix": "C_S_AXI_CFG_BUS",
-      "addr_bits": "13",
+      "addr_bits": "14",
       "registers": [
         {
           "offset": "0x00",
@@ -1439,93 +1494,97 @@
           "offset": "640",
           "range": "128"
         },
-        "cfg_pulse_sequence_filter_select_ch0": {
+        "cfg_pulse_sequence_polarization_mode": {
           "offset": "768",
           "range": "128"
         },
-        "cfg_pulse_sequence_filter_select_ch1": {
+        "cfg_pulse_sequence_filter_select_ch0": {
           "offset": "896",
           "range": "128"
         },
-        "cfg_pulse_sequence_filter_select_ch2": {
+        "cfg_pulse_sequence_filter_select_ch1": {
           "offset": "1024",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_0": {
+        "cfg_pulse_sequence_filter_select_ch2": {
           "offset": "1152",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_1": {
+        "cfg_pulse_sequence_timer_offset_0": {
           "offset": "1280",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_2": {
+        "cfg_pulse_sequence_timer_offset_1": {
           "offset": "1408",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_3": {
+        "cfg_pulse_sequence_timer_offset_2": {
           "offset": "1536",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_4": {
+        "cfg_pulse_sequence_timer_offset_3": {
           "offset": "1664",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_5": {
+        "cfg_pulse_sequence_timer_offset_4": {
           "offset": "1792",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_6": {
+        "cfg_pulse_sequence_timer_offset_5": {
           "offset": "1920",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_7": {
+        "cfg_pulse_sequence_timer_offset_6": {
           "offset": "2048",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_0": {
+        "cfg_pulse_sequence_timer_offset_7": {
           "offset": "2176",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_1": {
+        "cfg_pulse_sequence_timer_width_0": {
           "offset": "2304",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_2": {
+        "cfg_pulse_sequence_timer_width_1": {
           "offset": "2432",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_3": {
+        "cfg_pulse_sequence_timer_width_2": {
           "offset": "2560",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_4": {
+        "cfg_pulse_sequence_timer_width_3": {
           "offset": "2688",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_5": {
+        "cfg_pulse_sequence_timer_width_4": {
           "offset": "2816",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_6": {
+        "cfg_pulse_sequence_timer_width_5": {
           "offset": "2944",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_7": {
+        "cfg_pulse_sequence_timer_width_6": {
           "offset": "3072",
+          "range": "128"
+        },
+        "cfg_pulse_sequence_timer_width_7": {
+          "offset": "3200",
           "range": "128"
         },
         "cfg_filter_coefs_ch0": {
           "offset": "4096",
-          "range": "1024"
+          "range": "2048"
         },
         "cfg_filter_coefs_ch1": {
-          "offset": "5120",
-          "range": "1024"
+          "offset": "6144",
+          "range": "2048"
         },
         "cfg_filter_coefs_ch2": {
-          "offset": "6144",
-          "range": "1024"
+          "offset": "8192",
+          "range": "2048"
         }
       },
       "ctype": {
@@ -1549,7 +1608,7 @@
         },
         "AWADDR": {
           "Type": "integer unsigned",
-          "Width": "13"
+          "Width": "14"
         },
         "WDATA": {
           "Type": "integer signed",
@@ -1561,7 +1620,7 @@
         },
         "ARADDR": {
           "Type": "integer unsigned",
-          "Width": "13"
+          "Width": "14"
         },
         "RDATA": {
           "Type": "integer signed",
@@ -1570,8 +1629,8 @@
       },
       "data_width": "32",
       "port_width": {
-        "ARADDR": "13",
-        "AWADDR": "13",
+        "ARADDR": "14",
+        "AWADDR": "14",
         "RDATA": "32",
         "WDATA": "32",
         "WSTRB": "4"
@@ -1589,7 +1648,7 @@
     },
     "s_axi_cfg_bus_AWADDR": {
       "dir": "in",
-      "width": "13"
+      "width": "14"
     },
     "s_axi_cfg_bus_WVALID": {
       "dir": "in",
@@ -1617,7 +1676,7 @@
     },
     "s_axi_cfg_bus_ARADDR": {
       "dir": "in",
-      "width": "13"
+      "width": "14"
     },
     "s_axi_cfg_bus_RVALID": {
       "dir": "out",
@@ -1712,9 +1771,17 @@
       "dir": "out",
       "width": "1"
     },
+    "control_hvn": {
+      "dir": "out",
+      "width": "1"
+    },
+    "control_hvn_ap_vld": {
+      "dir": "out",
+      "width": "1"
+    },
     "filter_select_ch0_V": {
       "dir": "out",
-      "width": "2"
+      "width": "3"
     },
     "filter_select_ch0_V_ap_vld": {
       "dir": "out",
@@ -1722,7 +1789,7 @@
     },
     "filter_select_ch1_V": {
       "dir": "out",
-      "width": "2"
+      "width": "3"
     },
     "filter_select_ch1_V_ap_vld": {
       "dir": "out",
@@ -1730,7 +1797,7 @@
     },
     "filter_select_ch2_V": {
       "dir": "out",
-      "width": "2"
+      "width": "3"
     },
     "filter_select_ch2_V_ap_vld": {
       "dir": "out",
@@ -1738,7 +1805,7 @@
     },
     "pulse_metadata_ch0_V_TDATA": {
       "dir": "out",
-      "width": "824"
+      "width": "856"
     },
     "pulse_metadata_ch0_V_TVALID": {
       "dir": "out",
@@ -1750,7 +1817,7 @@
     },
     "pulse_metadata_ch1_V_TDATA": {
       "dir": "out",
-      "width": "824"
+      "width": "856"
     },
     "pulse_metadata_ch1_V_TVALID": {
       "dir": "out",
@@ -1762,7 +1829,7 @@
     },
     "pulse_metadata_ch2_V_TDATA": {
       "dir": "out",
-      "width": "824"
+      "width": "856"
     },
     "pulse_metadata_ch2_V_TVALID": {
       "dir": "out",
@@ -1878,22 +1945,22 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
-          "Estimate": "2.892"
+          "Uncertainty": "0.62",
+          "Estimate": "4.002"
         },
         "Loops": [
           {
             "Name": "Loop 1",
-            "TripCount": "4",
-            "Latency": "780",
+            "TripCount": "8",
+            "Latency": "1176",
             "PipelineII": "",
-            "PipelineDepth": "195",
+            "PipelineDepth": "147",
             "Loops": [{
                 "Name": "Loop 1.1",
                 "TripCount": "48",
-                "Latency": "192",
+                "Latency": "144",
                 "PipelineII": "",
-                "PipelineDepth": "4"
+                "PipelineDepth": "3"
               }]
           },
           {
@@ -1907,14 +1974,14 @@
                 "TripCount": "",
                 "Latency": "",
                 "PipelineII": "",
-                "PipelineDepth": "41"
+                "PipelineDepth": "40"
               }]
           }
         ],
         "Area": {
           "BRAM_18K": "2",
-          "FF": "2671",
-          "LUT": "2402",
+          "FF": "2794",
+          "LUT": "2446",
           "URAM": "0",
           "DSP48E": "0"
         }
@@ -1930,7 +1997,7 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
+          "Uncertainty": "0.62",
           "Estimate": "5.041"
         },
         "Loops": [
@@ -1957,7 +2024,7 @@
           }
         ],
         "Area": {
-          "FF": "1081",
+          "FF": "1051",
           "LUT": "1216",
           "BRAM_18K": "0",
           "DSP48E": "0",
@@ -1975,8 +2042,8 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
-          "Estimate": "1.500"
+          "Uncertainty": "0.62",
+          "Estimate": "2.188"
         },
         "Loops": [{
             "Name": "Loop 1",
@@ -2004,8 +2071,8 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
-          "Estimate": "1.500"
+          "Uncertainty": "0.62",
+          "Estimate": "2.188"
         },
         "Loops": [{
             "Name": "Loop 1",
@@ -2033,8 +2100,8 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
-          "Estimate": "1.500"
+          "Uncertainty": "0.62",
+          "Estimate": "2.188"
         },
         "Loops": [{
             "Name": "Loop 1",
@@ -2062,13 +2129,13 @@
         },
         "Timing": {
           "Target": "5.00",
-          "Uncertainty": "2.00",
+          "Uncertainty": "0.62",
           "Estimate": "5.041"
         },
         "Area": {
-          "BRAM_18K": "102",
-          "FF": "7036",
-          "LUT": "9452",
+          "BRAM_18K": "106",
+          "FF": "7241",
+          "LUT": "9693",
           "URAM": "0",
           "DSP48E": "0"
         }
@@ -2085,7 +2152,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-04-28 12:47:38 GMT",
+    "Time": "2021-07-09 21:46:07 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

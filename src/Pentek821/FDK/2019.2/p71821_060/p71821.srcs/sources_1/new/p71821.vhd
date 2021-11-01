@@ -298,8 +298,8 @@ port (
    --******************************************************************
    --Uncomment these signals if your design will use the P14 interface 
    --******************************************************************
-   P14GPIO_P            : inout std_logic_vector(23 downto 0);
-   P14GPIO_N            : inout std_logic_vector(23 downto 0);
+   LVDS_P            : inout std_logic_vector(23 downto 0);
+   LVDS_N            : inout std_logic_vector(23 downto 0);
    ---------------------------------------------------------------------------
    -- DDR4
    ---------------------------------------------------------------------------
@@ -567,62 +567,61 @@ end component dataio_intrfc_wrapper;
 -- Block Design
 component  user_block1_wrapper
  port (
-   dac_sync_from_adc : out std_logic;
-   controller_PPS : out STD_LOGIC;
-   filter_select_ch0 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-   filter_select_ch1 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-   filter_select_ch2 : in STD_LOGIC_VECTOR ( 1 downto 0 );
-   mt_pulse : in STD_LOGIC_VECTOR ( 7 downto 0 );
-   m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
-   m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-   m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
-   m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
-   m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-   m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
-   m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
-   m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-   m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
-   m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-   m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-   m_axis_dac_pdti_tvalid : out STD_LOGIC;
-   s_axi_csr_aclk : in STD_LOGIC;
-   s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
-   s_axi_csr_aresetn : in STD_LOGIC;
-   s_axi_csr_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
-   s_axi_csr_arready : out STD_LOGIC;
-   s_axi_csr_arvalid : in STD_LOGIC;
-   s_axi_csr_awaddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
-   s_axi_csr_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
-   s_axi_csr_awready : out STD_LOGIC;
-   s_axi_csr_awvalid : in STD_LOGIC;
-   s_axi_csr_bready : in STD_LOGIC;
-   s_axi_csr_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
-   s_axi_csr_bvalid : out STD_LOGIC;
-   s_axi_csr_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-   s_axi_csr_rready : in STD_LOGIC;
-   s_axi_csr_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
-   s_axi_csr_rvalid : out STD_LOGIC;
-   s_axi_csr_wdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-   s_axi_csr_wready : out STD_LOGIC;
-   s_axi_csr_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
-   s_axi_csr_wvalid : in STD_LOGIC;
-   s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
-   s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-   s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
-   s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
-   s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-   s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
-   s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
-   s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-   s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
-   s_axis_adc_pdti_aclk : in STD_LOGIC;
-   s_axis_dac_pdti_aclk : in STD_LOGIC;
-   s_axis_dac_pdti_aresetn : in STD_LOGIC;
-   s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-   s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-   s_axis_dac_pdti_tvalid : in STD_LOGIC;
-   s_axis_adc_pdti_aresetn : in STD_LOGIC;
-   user1_irq : out STD_LOGIC_VECTOR ( 1 downto 0 )
+    dac_sync_from_adc : out STD_LOGIC;
+    filter_select_ch0 : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch1 : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch2 : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
+    m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
+    m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
+    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_dac_pdti_tvalid : out STD_LOGIC;
+    mt_pulse : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    s_axi_csr_aclk : in STD_LOGIC;
+    s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
+    s_axi_csr_aresetn : in STD_LOGIC;
+    s_axi_csr_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    s_axi_csr_arready : out STD_LOGIC;
+    s_axi_csr_arvalid : in STD_LOGIC;
+    s_axi_csr_awaddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
+    s_axi_csr_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    s_axi_csr_awready : out STD_LOGIC;
+    s_axi_csr_awvalid : in STD_LOGIC;
+    s_axi_csr_bready : in STD_LOGIC;
+    s_axi_csr_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    s_axi_csr_bvalid : out STD_LOGIC;
+    s_axi_csr_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axi_csr_rready : in STD_LOGIC;
+    s_axi_csr_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    s_axi_csr_rvalid : out STD_LOGIC;
+    s_axi_csr_wdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axi_csr_wready : out STD_LOGIC;
+    s_axi_csr_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    s_axi_csr_wvalid : in STD_LOGIC;
+    s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
+    s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
+    s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
+    s_axis_adc_pdti_aclk : in STD_LOGIC;
+    s_axis_adc_pdti_aresetn : in STD_LOGIC;
+    s_axis_dac_pdti_aclk : in STD_LOGIC;
+    s_axis_dac_pdti_aresetn : in STD_LOGIC;
+    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_dac_pdti_tvalid : in STD_LOGIC;
+    user1_irq : out STD_LOGIC_VECTOR ( 1 downto 0 )
  );
 end component user_block1_wrapper;
 
@@ -630,72 +629,79 @@ end component user_block1_wrapper;
 -- Block Design
 component user_block2_wrapper
   port (
-  filter_select_ch0 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-  filter_select_ch1 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-  filter_select_ch2 : out STD_LOGIC_VECTOR ( 1 downto 0 );
-  control_flags : out STD_LOGIC_VECTOR ( 31 downto 0 );
-  mt_pulse : out STD_LOGIC_VECTOR ( 7 downto 0 );
-  controller_PPS : in STD_LOGIC;
-  status_flags : in STD_LOGIC_VECTOR ( 15 downto 0 );
-  ROT_A   : in std_logic;
-  ROT_B   : in std_logic;
-  TILT_A  : in std_logic;
-  TILT_B  : in std_logic;
-  AZ_MOSI : in std_logic;
-  AZ_SCK  : in std_logic;
-  AZ_SSEL : in std_logic;
-  EL_MOSI : in std_logic;
-  EL_SCK  : in std_logic;
-  m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-  m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-  m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
-  m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-  m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-  m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
-  m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-  m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-  m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
-  m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-  m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-  m_axis_dac_pdti_tvalid : out STD_LOGIC;
-  s_axi_csr_aclk : in STD_LOGIC;
-  s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
-  s_axi_csr_aresetn : in STD_LOGIC;
-  s_axi_csr_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
-  s_axi_csr_arready : out STD_LOGIC;
-  s_axi_csr_arvalid : in STD_LOGIC;
-  s_axi_csr_awaddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
-  s_axi_csr_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
-  s_axi_csr_awready : out STD_LOGIC;
-  s_axi_csr_awvalid : in STD_LOGIC;
-  s_axi_csr_bready : in STD_LOGIC;
-  s_axi_csr_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
-  s_axi_csr_bvalid : out STD_LOGIC;
-  s_axi_csr_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-  s_axi_csr_rready : in STD_LOGIC;
-  s_axi_csr_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
-  s_axi_csr_rvalid : out STD_LOGIC;
-  s_axi_csr_wdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-  s_axi_csr_wready : out STD_LOGIC;
-  s_axi_csr_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
-  s_axi_csr_wvalid : in STD_LOGIC;
-  s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-  s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-  s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
-  s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-  s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-  s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
-  s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-  s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-  s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
-  s_axis_adc_pdti_aclk : in STD_LOGIC;
-  s_axis_adc_pdti_aresetn : in STD_LOGIC;
-  s_axis_dac_pdti_aclk : in STD_LOGIC;
-  s_axis_dac_pdti_aresetn : in STD_LOGIC;
-  s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-  s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-  s_axis_dac_pdti_tvalid : in STD_LOGIC;
-  user2_irq : out STD_LOGIC_VECTOR ( 1 downto 0 )
+    AZ_MOSI : in STD_LOGIC;
+    AZ_SCK : in STD_LOGIC;
+    AZ_SSEL : in STD_LOGIC;
+    EL_MOSI : in STD_LOGIC;
+    EL_SCK : in STD_LOGIC;
+    EL_SSEL : in STD_LOGIC;
+    PPS_to_controller : in STD_LOGIC;
+    ROT_A : in STD_LOGIC;
+    ROT_B : in STD_LOGIC;
+    TILT_A : in STD_LOGIC;
+    TILT_B : in STD_LOGIC;
+    control_flags : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    control_hvn : out  STD_LOGIC;
+    controller_running : out STD_LOGIC;
+    ctl3_out : out  STD_LOGIC_VECTOR ( 31 downto 0 );
+    filter_select_ch0 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch1 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    filter_select_ch2 : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
+    m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
+    m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
+    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_dac_pdti_tvalid : out STD_LOGIC;
+    mt_pulse : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    s_axi_csr_aclk : in STD_LOGIC;
+    s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
+    s_axi_csr_aresetn : in STD_LOGIC;
+    s_axi_csr_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    s_axi_csr_arready : out STD_LOGIC;
+    s_axi_csr_arvalid : in STD_LOGIC;
+    s_axi_csr_awaddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
+    s_axi_csr_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    s_axi_csr_awready : out STD_LOGIC;
+    s_axi_csr_awvalid : in STD_LOGIC;
+    s_axi_csr_bready : in STD_LOGIC;
+    s_axi_csr_bresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    s_axi_csr_bvalid : out STD_LOGIC;
+    s_axi_csr_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axi_csr_rready : in STD_LOGIC;
+    s_axi_csr_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
+    s_axi_csr_rvalid : out STD_LOGIC;
+    s_axi_csr_wdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axi_csr_wready : out STD_LOGIC;
+    s_axi_csr_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
+    s_axi_csr_wvalid : in STD_LOGIC;
+    s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_adc_ch0_pdti_tready : out STD_LOGIC;
+    s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
+    s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_adc_ch1_pdti_tready : out STD_LOGIC;
+    s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
+    s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_adc_ch2_pdti_tready : out STD_LOGIC;
+    s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
+    s_axis_adc_pdti_aclk : in STD_LOGIC;
+    s_axis_adc_pdti_aresetn : in STD_LOGIC;
+    s_axis_dac_pdti_aclk : in STD_LOGIC;
+    s_axis_dac_pdti_aresetn : in STD_LOGIC;
+    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_dac_pdti_tvalid : in STD_LOGIC;
+    status_flags : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    user2_irq : out STD_LOGIC_VECTOR ( 1 downto 0 )
 );
 end component user_block2_wrapper;
 
@@ -1150,22 +1156,30 @@ end component;
 
 component p14_gpio is
 port (
-    ADC_CLK         : in  STD_LOGIC;
-    P14GPIO_P       : inout STD_LOGIC_VECTOR( 23 downto 0 );
-    P14GPIO_N       : inout STD_LOGIC_VECTOR( 23 downto 0 );
-    CONTROL_FLAGS   : in  STD_LOGIC_VECTOR ( 31 downto 0 );
-    MT_PULSE        : in  STD_LOGIC_VECTOR ( 7 downto 0 );
-    PPS             : out STD_LOGIC;
-    STATUS_FLAGS    : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    ROT_A           : out STD_LOGIC;
-    ROT_B           : out STD_LOGIC;
-    TILT_A          : out STD_LOGIC;
-    TILT_B          : out STD_LOGIC;
-    AZ_MOSI         : out STD_LOGIC;
-    AZ_SCK          : out STD_LOGIC;
-    AZ_SSEL         : out STD_LOGIC;
-    EL_MOSI         : out STD_LOGIC;
-    EL_SCK          : out STD_LOGIC   
+    ADC_CLK                 : in  STD_LOGIC;
+    P14GPIO_P               : inout STD_LOGIC_VECTOR( 23 downto 0 ) := (others=>'Z');
+    P14GPIO_N               : inout STD_LOGIC_VECTOR( 23 downto 0 ) := (others=>'Z');
+    CONTROLLER_RUNNING      : in  STD_LOGIC;
+    CONTROL_FLAGS           : in  STD_LOGIC_VECTOR ( 31 downto 0 );
+    CONTROL_HVn             : in  STD_LOGIC;
+    PPS_TO_CONTROLLER_IN    : in  STD_LOGIC;
+    PPS_TO_CONTROLLER_OUT   : out STD_LOGIC;
+    MT_PULSE                : in  STD_LOGIC_VECTOR ( 7 downto 0 );
+    GPR_CTL3_OUT            : in  STD_LOGIC_VECTOR ( 31 downto 0 );
+    PPS_FROM_GPIO           : out STD_LOGIC := '0';
+    STATUS_FLAGS            : out STD_LOGIC_VECTOR ( 15 downto 0 ) := (others=>'0');
+    ROT_A                   : out STD_LOGIC := '0';
+    ROT_B                   : out STD_LOGIC := '0';
+    TILT_A                  : out STD_LOGIC := '0';
+    TILT_B                  : out STD_LOGIC := '0';
+    TILT_Z                  : out STD_LOGIC := '0';
+    SPARE_PENTEK2           : out STD_LOGIC := '0';
+    AZ_MOSI                 : out STD_LOGIC := '0';
+    AZ_SCK                  : out STD_LOGIC := '0';
+    AZ_SSEL                 : out STD_LOGIC := '0';
+    EL_MOSI                 : out STD_LOGIC := '0';
+    EL_SCK                  : out STD_LOGIC := '0';
+    EL_SSEL                 : out STD_LOGIC := '0'
 );
 end component;
 
@@ -1449,12 +1463,12 @@ signal startup_eos                                  : std_logic;
 signal ddr4_ui_rstn                                 : std_logic;
 signal ddr4_ui_clk_sync_rst                         : std_logic;
 
-signal filter_select_ch0    : std_logic_vector ( 1 downto 0 ) := (others=>'0');
-signal filter_select_ch1    : std_logic_vector ( 1 downto 0 ) := (others=>'0');
-signal filter_select_ch2    : std_logic_vector ( 1 downto 0 ) := (others=>'0');
+signal filter_select_ch0    : std_logic_vector ( 2 downto 0 ) := (others=>'0');
+signal filter_select_ch1    : std_logic_vector ( 2 downto 0 ) := (others=>'0');
+signal filter_select_ch2    : std_logic_vector ( 2 downto 0 ) := (others=>'0');
+signal control_hvn          : std_logic := '0';
 signal control_flags        : std_logic_vector ( 31 downto 0 ) := (others=>'0');
 signal mt_pulse             : std_logic_vector ( 7 downto 0 ) := (others=>'0');
-signal controller_pps       : std_logic := '0';
 signal status_flags         : std_logic_vector ( 15 downto 0 ) := (others=>'0');
 signal rot_a                : std_logic := '0';
 signal rot_b                : std_logic := '0';
@@ -1465,8 +1479,12 @@ signal az_sck               : std_logic := '0';
 signal az_ssel              : std_logic := '0';
 signal el_mosi              : std_logic := '0';
 signal el_sck               : std_logic := '0';
+signal el_ssel              : std_logic := '0';
 signal p14_gpio_pps         : std_logic := '0';
+signal PPS_to_controller    : std_logic := '0';
 signal dac_sync_from_adc    : std_logic := '0';
+signal controller_running   : std_logic := '0';
+signal gpr_ctl3_out         : std_logic_vector ( 31 downto 0 ) := (others=>'0');
 
 --------------------------------------------------------------------------------
 -- Constants
@@ -1675,7 +1693,6 @@ port map (
       filter_select_ch1 => filter_select_ch1,
       filter_select_ch2 => filter_select_ch2,
       mt_pulse          => mt_pulse,
-      controller_PPS    => controller_PPS,
       dac_sync_from_adc => dac_sync_from_adc,
       -- Input ADC AXI4-Stream Interfaces 
       s_axis_adc_pdti_aclk                      => axis_adc_pdti_aclk,
@@ -1796,8 +1813,11 @@ port map (
     filter_select_ch1                         => filter_select_ch1,
     filter_select_ch2                         => filter_select_ch2,
     control_flags                             => control_flags,
+    control_hvn                               => control_hvn,
     mt_pulse                                  => mt_pulse,
-    controller_PPS                            => controller_PPS,
+    PPS_to_controller                         => PPS_to_controller,
+    controller_running                        => controller_running,
+    ctl3_out                                  => gpr_ctl3_out,
     status_flags                              => status_flags,
     ROT_A                                     => ROT_A,
     ROT_B                                     => ROT_B,
@@ -1808,6 +1828,7 @@ port map (
     AZ_SSEL                                   => AZ_SSEL,
     EL_MOSI                                   => EL_MOSI,
     EL_SCK                                    => EL_SCK,
+    EL_SSEL                                   => EL_SSEL,
     -- IRQ
     user2_irq                                 => user2_irq,
     -- Input ADC AXI4-Stream Interfaces 
@@ -2431,22 +2452,29 @@ FOE_N    <= flash_foe_b;
 
 gpio_regs : component p14_gpio
 port map (
-    ADC_CLK         => axis_adc_pdti_aclk,
-    P14GPIO_P       => P14GPIO_P,
-    P14GPIO_N       => P14GPIO_N,
-    CONTROL_FLAGS   => CONTROL_FLAGS,
-    MT_PULSE        => MT_PULSE,
-    PPS             => p14_gpio_pps,
-    STATUS_FLAGS    => STATUS_FLAGS,
-    ROT_A           => ROT_A,
-    ROT_B           => ROT_B,
-    TILT_A          => TILT_A,
-    TILT_B          => TILT_B,
-    AZ_MOSI         => AZ_MOSI,
-    AZ_SCK          => AZ_SCK,
-    AZ_SSEL         => AZ_SSEL,
-    EL_MOSI         => EL_MOSI,
-    EL_SCK          => EL_SCK
+    ADC_CLK                 => axis_adc_pdti_aclk,
+    P14GPIO_P               => LVDS_P,
+    P14GPIO_N               => LVDS_N,
+    CONTROLLER_RUNNING      => CONTROLLER_RUNNING,
+    CONTROL_FLAGS           => CONTROL_FLAGS,
+    CONTROL_HVn             => control_hvn,
+    PPS_TO_CONTROLLER_IN    => axis_dataio_adc_ch0_pdti_tuser(80),
+    PPS_TO_CONTROLLER_OUT   => PPS_to_controller, --aligned to HMC clock
+    GPR_CTL3_OUT            => gpr_ctl3_out,
+    MT_PULSE                => MT_PULSE,
+    PPS_FROM_GPIO           => p14_gpio_pps,
+    STATUS_FLAGS            => STATUS_FLAGS,
+    SPARE_PENTEK2           => open,
+    ROT_A                   => ROT_A,
+    ROT_B                   => ROT_B,
+    TILT_A                  => TILT_A,
+    TILT_B                  => TILT_B,
+    AZ_MOSI                 => AZ_MOSI,
+    AZ_SCK                  => AZ_SCK,
+    AZ_SSEL                 => AZ_SSEL,
+    EL_MOSI                 => EL_MOSI,
+    EL_SCK                  => EL_SCK,
+    EL_SSEL                 => EL_SSEL
 );
 
 end Behavioral;

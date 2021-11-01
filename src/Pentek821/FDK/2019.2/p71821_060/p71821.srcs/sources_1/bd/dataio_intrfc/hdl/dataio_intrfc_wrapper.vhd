@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Tue Apr 27 02:43:39 2021
+--Date        : Wed Apr 28 20:06:36 2021
 --Host        : wind running 64-bit unknown
 --Command     : generate_target dataio_intrfc_wrapper.bd
 --Design      : dataio_intrfc_wrapper
@@ -100,6 +100,7 @@ entity dataio_intrfc_wrapper is
     dac_sdi : out STD_LOGIC;
     dac_sdo : in STD_LOGIC;
     dac_sync : out STD_LOGIC;
+    dac_sync_from_adc : in STD_LOGIC;
     dac_tx_en : out STD_LOGIC;
     dataio_irq : out STD_LOGIC_VECTOR ( 0 to 0 );
     gate_trig_ttl_in : in STD_LOGIC;
@@ -326,7 +327,8 @@ architecture STRUCTURE of dataio_intrfc_wrapper is
     clka_glbl_clk_p : in STD_LOGIC;
     clka_glbl_clk_n : in STD_LOGIC;
     m_axis_dac_pctl_tdata : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    m_axis_dac_pctl_tvalid : out STD_LOGIC_VECTOR ( 0 to 0 )
+    m_axis_dac_pctl_tvalid : out STD_LOGIC_VECTOR ( 0 to 0 );
+    dac_sync_from_adc : in STD_LOGIC
   );
   end component dataio_intrfc;
 begin
@@ -419,6 +421,7 @@ dataio_intrfc_i: component dataio_intrfc
       dac_sdi => dac_sdi,
       dac_sdo => dac_sdo,
       dac_sync => dac_sync,
+      dac_sync_from_adc => dac_sync_from_adc,
       dac_tx_en => dac_tx_en,
       dataio_irq(0) => dataio_irq(0),
       gate_trig_ttl_in => gate_trig_ttl_in,

@@ -22,9 +22,10 @@ int main()
 	bool sync_pulse = 1;
 	volatile ap_uint<N_TIMERS> mt_pulse;
 	volatile ap_uint<32> control_flags;
-	volatile ap_uint<2> filter_select_ch0;
-	volatile ap_uint<2> filter_select_ch1;
-	volatile ap_uint<2> filter_select_ch2;
+	volatile bool control_hvn;
+	volatile ap_uint<3> filter_select_ch0;
+	volatile ap_uint<3> filter_select_ch1;
+	volatile ap_uint<3> filter_select_ch2;
 	hls::stream<pdti_32> i_data("tb.i_data");
 	hls::stream<pdti_32> o_data("tb.o_data");
 	hls::stream<pulse_exec_definition> pulse_metadata_ch0("tb.meta_ch0");
@@ -43,6 +44,7 @@ int main()
 	cfg_pulse_sequence[0].num_pulses = 4;
 	cfg_pulse_sequence[0].prt[0] = 128;
 	cfg_pulse_sequence[0].block_post_time = 0;
+	cfg_pulse_sequence[0].polarization_mode = POL_MODE_H;
 	for(int t=0;t<N_TIMERS;++t)
 	{
 		cfg_pulse_sequence[0].timer_offset[t] = 0;
@@ -52,6 +54,7 @@ int main()
 	cfg_pulse_sequence[1].num_pulses = 2;
 	cfg_pulse_sequence[1].prt[0] = 100;
 	cfg_pulse_sequence[1].block_post_time = 10;
+	cfg_pulse_sequence[0].polarization_mode = POL_MODE_HHVV;
 	for(int t=0;t<N_TIMERS;++t)
 	{
 		cfg_pulse_sequence[1].timer_offset[t] = N_TIMERS-t;
@@ -103,6 +106,7 @@ int main()
 		coef_ch2,
 		&mt_pulse,
 		&control_flags,
+		&control_hvn,
 		&filter_select_ch0,
 		&filter_select_ch1,
 		&filter_select_ch2,

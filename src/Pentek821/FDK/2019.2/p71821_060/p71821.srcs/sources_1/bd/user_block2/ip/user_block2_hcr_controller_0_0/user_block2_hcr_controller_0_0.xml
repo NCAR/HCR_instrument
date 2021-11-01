@@ -153,7 +153,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>ADDR_WIDTH</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CFG_BUS.ADDR_WIDTH">13</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CFG_BUS.ADDR_WIDTH">14</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>DATA_WIDTH</spirit:name>
@@ -578,7 +578,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.COEF_CH0_V_V.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}} TDATA_WIDTH 24}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.COEF_CH0_V_V.LAYERED_METADATA"/>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -714,7 +714,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.COEF_CH1_V_V.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}} TDATA_WIDTH 24}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.COEF_CH1_V_V.LAYERED_METADATA"/>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -850,7 +850,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.COEF_CH2_V_V.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 24} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true}}}} TDATA_WIDTH 24}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.COEF_CH2_V_V.LAYERED_METADATA"/>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -999,6 +999,33 @@
       </spirit:parameters>
     </spirit:busInterface>
     <spirit:busInterface>
+      <spirit:name>control_hvn</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>DATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>control_hvn</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>LAYERED_METADATA</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.CONTROL_HVN.LAYERED_METADATA">undef</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
       <spirit:name>filter_select_ch0_V</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
@@ -1113,7 +1140,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.TDATA_NUM_BYTES">103</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.TDATA_NUM_BYTES">107</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1121,32 +1148,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 813} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_def {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value def} enabled {attribs {resolve_
-type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 768} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_prt {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} valu
-e prt} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 64} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate dependency {} format string mi
-nimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 2} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format 
-long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}} field_num_pulses {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_pulses} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {a
-ttribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 64} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_block_post_time {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value block_post_time} enabled {attribs {resolve_type immediate dependency {} form
-at bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 96} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_control_flags {name {attr
-ibs {resolve_type immediate dependency {} format string minimum {} maximum {}} value control_flags} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum 
-{}} value 128} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch0 {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch0} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {re
-solve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 160} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch1 {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch1} enabled {attribs {resolve_type immediate dependency {} format bo
-ol minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 192} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch2 {name {attr
-ibs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch2} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maxi
-mum {}} value 224} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_timer_offset {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value timer_offset} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_
-type automatic dependency {} format long minimum {} maximum {}} value 256} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 256} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {
-attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}} field_timer_width {name {attribs {resolve_type immediate dependency {} format string mini
-mum {} maximum {}} value timer_width} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 256} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 512} array_type {name {attribs {resolve_type immedi
-ate dependency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_ty
-pe immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}}}}} field_sequence_index {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value sequence_index} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string
- minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 768} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_num_samples {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_samples} enabled {attribs {reso
-lve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 776} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value fal
-se}}}} field_first_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type imme
-diate dependency {} format long minimum {} maximum {}} value 808}}} field_last_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {}
- maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 809}}} field_first_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {
-resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 810}}} field_last_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format st
-ring minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 811}}} field_terminate {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value terminate} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve
-_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 812}}}}}} TDATA_WIDTH 824}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.LAYERED_METADATA"/>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -1274,7 +1276,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.TDATA_NUM_BYTES">103</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.TDATA_NUM_BYTES">107</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1282,32 +1284,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 813} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_def {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value def} enabled {attribs {resolve_
-type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 768} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_prt {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} valu
-e prt} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 64} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate dependency {} format string mi
-nimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 2} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format 
-long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}} field_num_pulses {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_pulses} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {a
-ttribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 64} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_block_post_time {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value block_post_time} enabled {attribs {resolve_type immediate dependency {} form
-at bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 96} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_control_flags {name {attr
-ibs {resolve_type immediate dependency {} format string minimum {} maximum {}} value control_flags} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum 
-{}} value 128} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch0 {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch0} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {re
-solve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 160} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch1 {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch1} enabled {attribs {resolve_type immediate dependency {} format bo
-ol minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 192} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch2 {name {attr
-ibs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch2} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maxi
-mum {}} value 224} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_timer_offset {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value timer_offset} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_
-type automatic dependency {} format long minimum {} maximum {}} value 256} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 256} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {
-attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}} field_timer_width {name {attribs {resolve_type immediate dependency {} format string mini
-mum {} maximum {}} value timer_width} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 256} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 512} array_type {name {attribs {resolve_type immedi
-ate dependency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_ty
-pe immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}}}}} field_sequence_index {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value sequence_index} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string
- minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 768} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_num_samples {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_samples} enabled {attribs {reso
-lve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 776} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value fal
-se}}}} field_first_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type imme
-diate dependency {} format long minimum {} maximum {}} value 808}}} field_last_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {}
- maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 809}}} field_first_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {
-resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 810}}} field_last_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format st
-ring minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 811}}} field_terminate {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value terminate} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve
-_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 812}}}}}} TDATA_WIDTH 824}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.LAYERED_METADATA"/>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -1435,7 +1412,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.TDATA_NUM_BYTES">103</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.TDATA_NUM_BYTES">107</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1443,32 +1420,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>LAYERED_METADATA</spirit:name>
-          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.LAYERED_METADATA">xilinx.com:interface:datatypes:1.0 {TDATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 813} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_def {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value def} enabled {attribs {resolve_
-type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 768} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} struct {field_prt {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} valu
-e prt} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 64} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} array_type {name {attribs {resolve_type immediate dependency {} format string mi
-nimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 2} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format 
-long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}} field_num_pulses {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_pulses} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {a
-ttribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 64} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_block_post_time {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value block_post_time} enabled {attribs {resolve_type immediate dependency {} form
-at bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 96} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_control_flags {name {attr
-ibs {resolve_type immediate dependency {} format string minimum {} maximum {}} value control_flags} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum 
-{}} value 128} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch0 {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch0} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {re
-solve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 160} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch1 {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch1} enabled {attribs {resolve_type immediate dependency {} format bo
-ol minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 192} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_filter_select_ch2 {name {attr
-ibs {resolve_type immediate dependency {} format string minimum {} maximum {}} value filter_select_ch2} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maxi
-mum {}} value 224} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_timer_offset {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value timer_offset} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_
-type automatic dependency {} format long minimum {} maximum {}} value 256} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 256} array_type {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {
-attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}} field_timer_width {name {attribs {resolve_type immediate dependency {} format string mini
-mum {} maximum {}} value timer_width} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type automatic dependency {} format long minimum {} maximum {}} value 256} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 512} array_type {name {attribs {resolve_type immedi
-ate dependency {} format string minimum {} maximum {}} value {}} size {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} stride {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_ty
-pe immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}}}}}}} field_sequence_index {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value sequence_index} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string
- minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 768} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} field_num_samples {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value num_samples} enabled {attribs {reso
-lve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 32} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 776} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value fal
-se}}}} field_first_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type imme
-diate dependency {} format long minimum {} maximum {}} value 808}}} field_last_pulse_in_block {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_block} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {}
- maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 809}}} field_first_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value first_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {
-resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 810}}} field_last_pulse_in_xfer {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value last_pulse_in_xfer} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve_type immediate dependency {} format st
-ring minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 811}}} field_terminate {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value terminate} enabled {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value true} datatype {name {attribs {resolve
-_type immediate dependency {} format string minimum {} maximum {}} value {}} bitwidth {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 1} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 812}}}}}} TDATA_WIDTH 824}</spirit:value>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.LAYERED_METADATA"/>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -2148,10 +2100,21 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           </spirit:reset>
         </spirit:register>
         <spirit:register>
+          <spirit:name>Memory_cfg_pulse_sequence_polarization_mode</spirit:name>
+          <spirit:displayName>Memory_cfg_pulse_sequence_polarization_mode</spirit:displayName>
+          <spirit:description>Memory cfg_pulse_sequence_polarization_mode</spirit:description>
+          <spirit:addressOffset>768</spirit:addressOffset>
+          <spirit:size spirit:format="long">128</spirit:size>
+          <spirit:access>read-write</spirit:access>
+          <spirit:reset>
+            <spirit:value spirit:format="long">0</spirit:value>
+          </spirit:reset>
+        </spirit:register>
+        <spirit:register>
           <spirit:name>Memory_cfg_pulse_sequence_filter_select_ch0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_filter_select_ch0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_filter_select_ch0</spirit:description>
-          <spirit:addressOffset>768</spirit:addressOffset>
+          <spirit:addressOffset>896</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2162,7 +2125,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_filter_select_ch1</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_filter_select_ch1</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_filter_select_ch1</spirit:description>
-          <spirit:addressOffset>896</spirit:addressOffset>
+          <spirit:addressOffset>1024</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2173,7 +2136,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_filter_select_ch2</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_filter_select_ch2</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_filter_select_ch2</spirit:description>
-          <spirit:addressOffset>1024</spirit:addressOffset>
+          <spirit:addressOffset>1152</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2184,7 +2147,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_0</spirit:description>
-          <spirit:addressOffset>1152</spirit:addressOffset>
+          <spirit:addressOffset>1280</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2195,7 +2158,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_1</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_1</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_1</spirit:description>
-          <spirit:addressOffset>1280</spirit:addressOffset>
+          <spirit:addressOffset>1408</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2206,7 +2169,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_2</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_2</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_2</spirit:description>
-          <spirit:addressOffset>1408</spirit:addressOffset>
+          <spirit:addressOffset>1536</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2217,7 +2180,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_3</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_3</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_3</spirit:description>
-          <spirit:addressOffset>1536</spirit:addressOffset>
+          <spirit:addressOffset>1664</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2228,7 +2191,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_4</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_4</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_4</spirit:description>
-          <spirit:addressOffset>1664</spirit:addressOffset>
+          <spirit:addressOffset>1792</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2239,7 +2202,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_5</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_5</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_5</spirit:description>
-          <spirit:addressOffset>1792</spirit:addressOffset>
+          <spirit:addressOffset>1920</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2250,7 +2213,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_6</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_6</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_6</spirit:description>
-          <spirit:addressOffset>1920</spirit:addressOffset>
+          <spirit:addressOffset>2048</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2261,7 +2224,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_7</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_7</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_7</spirit:description>
-          <spirit:addressOffset>2048</spirit:addressOffset>
+          <spirit:addressOffset>2176</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2272,7 +2235,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_0</spirit:description>
-          <spirit:addressOffset>2176</spirit:addressOffset>
+          <spirit:addressOffset>2304</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2283,7 +2246,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_1</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_1</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_1</spirit:description>
-          <spirit:addressOffset>2304</spirit:addressOffset>
+          <spirit:addressOffset>2432</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2294,7 +2257,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_2</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_2</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_2</spirit:description>
-          <spirit:addressOffset>2432</spirit:addressOffset>
+          <spirit:addressOffset>2560</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2305,7 +2268,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_3</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_3</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_3</spirit:description>
-          <spirit:addressOffset>2560</spirit:addressOffset>
+          <spirit:addressOffset>2688</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2316,7 +2279,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_4</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_4</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_4</spirit:description>
-          <spirit:addressOffset>2688</spirit:addressOffset>
+          <spirit:addressOffset>2816</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2327,7 +2290,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_5</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_5</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_5</spirit:description>
-          <spirit:addressOffset>2816</spirit:addressOffset>
+          <spirit:addressOffset>2944</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2338,7 +2301,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_6</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_6</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_6</spirit:description>
-          <spirit:addressOffset>2944</spirit:addressOffset>
+          <spirit:addressOffset>3072</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2349,7 +2312,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_7</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_7</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_7</spirit:description>
-          <spirit:addressOffset>3072</spirit:addressOffset>
+          <spirit:addressOffset>3200</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2361,7 +2324,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:displayName>Memory_cfg_filter_coefs_ch0</spirit:displayName>
           <spirit:description>Memory cfg_filter_coefs_ch0</spirit:description>
           <spirit:addressOffset>4096</spirit:addressOffset>
-          <spirit:size spirit:format="long">1024</spirit:size>
+          <spirit:size spirit:format="long">2048</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
             <spirit:value spirit:format="long">0</spirit:value>
@@ -2371,8 +2334,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_filter_coefs_ch1</spirit:name>
           <spirit:displayName>Memory_cfg_filter_coefs_ch1</spirit:displayName>
           <spirit:description>Memory cfg_filter_coefs_ch1</spirit:description>
-          <spirit:addressOffset>5120</spirit:addressOffset>
-          <spirit:size spirit:format="long">1024</spirit:size>
+          <spirit:addressOffset>6144</spirit:addressOffset>
+          <spirit:size spirit:format="long">2048</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
             <spirit:value spirit:format="long">0</spirit:value>
@@ -2382,8 +2345,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:name>Memory_cfg_filter_coefs_ch2</spirit:name>
           <spirit:displayName>Memory_cfg_filter_coefs_ch2</spirit:displayName>
           <spirit:description>Memory cfg_filter_coefs_ch2</spirit:description>
-          <spirit:addressOffset>6144</spirit:addressOffset>
-          <spirit:size spirit:format="long">1024</spirit:size>
+          <spirit:addressOffset>8192</spirit:addressOffset>
+          <spirit:size spirit:format="long">2048</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
             <spirit:value spirit:format="long">0</spirit:value>
@@ -2393,6 +2356,117 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
     </spirit:memoryMap>
   </spirit:memoryMaps>
   <spirit:model>
+    <spirit:views>
+      <spirit:view>
+        <spirit:name>xilinx_vhdlsynthesis</spirit:name>
+        <spirit:displayName>VHDL Synthesis</spirit:displayName>
+        <spirit:envIdentifier>vhdlSource:vivado.xilinx.com:synthesis</spirit:envIdentifier>
+        <spirit:language>vhdl</spirit:language>
+        <spirit:modelName>hcr_controller</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_vhdlsynthesis_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:8b943773</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_synthesisconstraints</spirit:name>
+        <spirit:displayName>Synthesis Constraints</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:synthesis.constraints</spirit:envIdentifier>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:8b943773</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_vhdlsynthesiswrapper</spirit:name>
+        <spirit:displayName>VHDL Synthesis Wrapper</spirit:displayName>
+        <spirit:envIdentifier>vhdlSource:vivado.xilinx.com:synthesis.wrapper</spirit:envIdentifier>
+        <spirit:language>vhdl</spirit:language>
+        <spirit:modelName>user_block2_hcr_controller_0_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_vhdlsynthesiswrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:8b943773</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_vhdlbehavioralsimulation</spirit:name>
+        <spirit:displayName>VHDL Simulation</spirit:displayName>
+        <spirit:envIdentifier>vhdlSource:vivado.xilinx.com:simulation</spirit:envIdentifier>
+        <spirit:language>vhdl</spirit:language>
+        <spirit:modelName>hcr_controller</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:99175141</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_vhdlsimulationwrapper</spirit:name>
+        <spirit:displayName>VHDL Simulation Wrapper</spirit:displayName>
+        <spirit:envIdentifier>vhdlSource:vivado.xilinx.com:simulation.wrapper</spirit:envIdentifier>
+        <spirit:language>vhdl</spirit:language>
+        <spirit:modelName>user_block2_hcr_controller_0_0</spirit:modelName>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_vhdlsimulationwrapper_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:99175141</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
+        <spirit:name>xilinx_externalfiles</spirit:name>
+        <spirit:displayName>External Files</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:external.files</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_externalfiles_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Mon Jul 12 13:24:09 UTC 2021</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:8b943773</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+    </spirit:views>
     <spirit:ports>
       <spirit:port>
         <spirit:name>pps_ce0</spirit:name>
@@ -2401,7 +2475,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2413,7 +2488,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2425,7 +2501,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2437,7 +2514,21 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>control_hvn_ap_vld</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>STD_LOGIC</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2449,7 +2540,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2461,7 +2553,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2473,7 +2566,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2483,13 +2577,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">12</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">13</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2501,7 +2596,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2513,7 +2609,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2529,7 +2626,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2545,7 +2643,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2557,7 +2656,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2569,7 +2669,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2585,7 +2686,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2597,7 +2699,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2609,7 +2712,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2619,13 +2723,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">12</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">13</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2637,7 +2742,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2649,7 +2755,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2665,7 +2772,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2681,7 +2789,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2693,7 +2802,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2705,7 +2815,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2717,7 +2828,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2729,7 +2841,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2741,7 +2854,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2753,7 +2867,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2765,7 +2880,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2781,7 +2897,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2793,7 +2910,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2805,7 +2923,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2821,7 +2940,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2833,7 +2953,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2845,7 +2966,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2861,7 +2983,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2877,7 +3000,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2893,7 +3017,21 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>control_hvn</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2903,13 +3041,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:left spirit:format="long">2</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2919,13 +3058,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:left spirit:format="long">2</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2935,13 +3075,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:left spirit:format="long">2</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2953,7 +3094,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2965,7 +3107,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2975,13 +3118,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">823</spirit:left>
+            <spirit:left spirit:format="long">855</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -2993,7 +3137,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3005,7 +3150,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3015,13 +3161,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">823</spirit:left>
+            <spirit:left spirit:format="long">855</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3033,7 +3180,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3045,7 +3193,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3055,13 +3204,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">823</spirit:left>
+            <spirit:left spirit:format="long">855</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3077,7 +3227,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3093,7 +3244,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3109,7 +3261,8 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>dummy_view</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
         </spirit:wire>
@@ -3118,7 +3271,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
     <spirit:modelParameters>
       <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
         <spirit:name>C_S_AXI_CFG_BUS_ADDR_WIDTH</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH">13</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH">14</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>C_S_AXI_CFG_BUS_DATA_WIDTH</spirit:name>
@@ -3126,6 +3279,206 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
       </spirit:modelParameter>
     </spirit:modelParameters>
   </spirit:model>
+  <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_vhdlsynthesis_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>constraints/hcr_controller_ooc.xdc</spirit:name>
+        <spirit:userFileType>xdc</spirit:userFileType>
+        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo71.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_vhdlsynthesiswrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>synth/user_block2_hcr_controller_0_0.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo71.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_vhdlsimulationwrapper_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>sim/user_block2_hcr_controller_0_0.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>user_block2_hcr_controller_0_0.dcp</spirit:name>
+        <spirit:userFileType>dcp</spirit:userFileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>user_block2_hcr_controller_0_0_stub.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>user_block2_hcr_controller_0_0_stub.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>user_block2_hcr_controller_0_0_sim_netlist.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>user_block2_hcr_controller_0_0_sim_netlist.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
+  </spirit:fileSets>
   <spirit:description>Controls the radar schedule</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
@@ -3192,7 +3545,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
     <xilinx:coreExtensions>
       <xilinx:displayName>Hcr_controller</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2104281247</xilinx:coreRevision>
+      <xilinx:coreRevision>2107092146</xilinx:coreRevision>
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_BUSIF" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_RESET" xilinx:valuePermission="bd"/>
@@ -3206,7 +3559,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.LAYERED_METADATA" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.PHASE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH0_V_V.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
@@ -3218,7 +3571,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.LAYERED_METADATA" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.PHASE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH1_V_V.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
@@ -3230,13 +3583,14 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.LAYERED_METADATA" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.PHASE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.TID_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.COEF_CH2_V_V.TUSER_WIDTH" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.CONTROL_FLAGS_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.CONTROL_HVN.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.FILTER_SELECT_CH0_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.FILTER_SELECT_CH1_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.FILTER_SELECT_CH2_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
@@ -3252,7 +3606,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.LAYERED_METADATA" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.PHASE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
@@ -3264,7 +3618,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.LAYERED_METADATA" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.PHASE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
@@ -3276,7 +3630,7 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.HAS_TLAST" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.HAS_TREADY" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.HAS_TSTRB" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.LAYERED_METADATA" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.PHASE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.TDATA_NUM_BYTES" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.TDEST_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
@@ -3316,11 +3670,11 @@ _type immediate dependency {} format string minimum {} maximum {}} value {}} bit
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="ebb16ce6"/>
-      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="0e58ae2a"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="5185eebf"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="798b69a5"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="0810ea31"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="aeb44f79"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="b6a61f3b"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="057494a2"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="e4b4f9b1"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="c5dd319f"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="038d5923"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>

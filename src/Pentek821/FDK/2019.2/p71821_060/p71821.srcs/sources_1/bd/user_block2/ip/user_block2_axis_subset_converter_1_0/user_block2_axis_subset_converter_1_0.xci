@@ -83,7 +83,7 @@
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.TKEEP_REMAP">1&apos;b0</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.TLAST_REMAP">1&apos;b0</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.TSTRB_REMAP">1&apos;b0</spirit:configurableElementValue>
-        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.TUSER_REMAP">tuser[127:32],2&apos;b0,tuser[29:0]</spirit:configurableElementValue>
+        <spirit:configurableElementValue spirit:referenceId="PARAM_VALUE.TUSER_REMAP">tuser[127:32],3&apos;b0,tuser[28:0]</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PROJECT_PARAM.ARCHITECTURE">kintexu</spirit:configurableElementValue>
         <spirit:configurableElementValue spirit:referenceId="PROJECT_PARAM.BASE_BOARD_PART"/>
         <spirit:configurableElementValue spirit:referenceId="PROJECT_PARAM.BOARD_CONNECTIONS"/>

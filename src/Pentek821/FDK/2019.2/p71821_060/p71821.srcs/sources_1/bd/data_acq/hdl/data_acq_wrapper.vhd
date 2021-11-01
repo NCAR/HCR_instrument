@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Wed Apr 28 02:47:26 2021
+--Date        : Wed Apr 28 20:04:00 2021
 --Host        : wind running 64-bit unknown
 --Command     : generate_target data_acq_wrapper.bd
 --Design      : data_acq_wrapper
@@ -107,16 +107,16 @@ architecture STRUCTURE of data_acq_wrapper is
     adc1_fifo_full_stat : out STD_LOGIC;
     adc2_fifo_full_stat : out STD_LOGIC;
     ddr4_ui_clk : in STD_LOGIC;
-    s_axis_dac_pctl_tdata : in STD_LOGIC_VECTOR ( 7 downto 0 );
-    s_axis_dac_pctl_tvalid : in STD_LOGIC;
-    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_dac_pdti_tvalid : out STD_LOGIC;
     s_axis_wave_ddr_rsp_tid : in STD_LOGIC_VECTOR ( 7 downto 0 );
     s_axis_wave_ddr_rsp_tdata : in STD_LOGIC_VECTOR ( 511 downto 0 );
     s_axis_wave_ddr_rsp_tlast : in STD_LOGIC;
     s_axis_wave_ddr_rsp_tuser : in STD_LOGIC_VECTOR ( 255 downto 0 );
     s_axis_wave_ddr_rsp_tvalid : in STD_LOGIC;
+    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_dac_pdti_tvalid : out STD_LOGIC;
+    s_axis_dac_pctl_tdata : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    s_axis_dac_pctl_tvalid : in STD_LOGIC;
     s_axis_pcie_rc_tdata : in STD_LOGIC_VECTOR ( 255 downto 0 );
     s_axis_pcie_rc_tkeep : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_pcie_rc_tlast : in STD_LOGIC;

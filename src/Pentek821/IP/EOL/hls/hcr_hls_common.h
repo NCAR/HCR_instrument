@@ -37,9 +37,14 @@ const int PDTI_CHANNEL = 96;
 const int N_PULSE_DEFS = 32;
 const int N_TIMERS = 8;
 const int N_PRTS = 2;
+//Converts ADC channel number to multi-timer number
 const int CHANNEL_TO_MT[3] = {1,2,3};
 
-// An array of this structure definies the radar schedule.
+const int POL_MODE_V = 0;
+const int POL_MODE_H = 1;
+const int POL_MODE_HHVV = 2;
+
+// An array of this structure defines the radar schedule.
 // Each entry specifies a group of pulses. The pulses are identical, except for PRT which can
 // cycle through up to four values. After the pulses are executed, the scheduler moves
 // to the next entry in the array. After the final entry the scheduler may optionally loop back to the first.
@@ -51,6 +56,7 @@ struct pulse_definition
 	uint32_t num_pulses;                  // Generate this many pulses
 	uint32_t block_post_time;             // Time at the end of the group of pulses, in cycles
 	uint32_t control_flags;               // Set the CONTROL_FLAGS output to this value
+	uint32_t polarization_mode;           // Polarization mode
 	uint32_t filter_select_ch0;           // Select this filter for ADC channel 0
 	uint32_t filter_select_ch1;           // Select this filter for ADC channel 1
 	uint32_t filter_select_ch2;           // Select this filter for ADC channel 2

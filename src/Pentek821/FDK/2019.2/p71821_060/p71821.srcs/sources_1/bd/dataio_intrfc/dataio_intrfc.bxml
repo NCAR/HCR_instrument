@@ -2,11 +2,39 @@
 <Root MajorVersion="0" MinorVersion="39">
   <CompositeFile CompositeFileTopName="dataio_intrfc" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="RESET" Timestamp="1619624068"/>
-    <Generation Name="IMPLEMENTATION" State="RESET" Timestamp="1619624068"/>
-    <Generation Name="SIMULATION" State="RESET" Timestamp="1619624068"/>
-    <Generation Name="HW_HANDOFF" State="RESET" Timestamp="1619624068"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1619640416"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1619640416"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1619640416"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1619640416"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
+      <File Name="dataio_intrfc_sim_netlist.vhdl" Type="VHDL">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+        <UsedIn Val="SINGLE_LANGUAGE"/>
+      </File>
+      <File Name="dataio_intrfc_sim_netlist.v" Type="Verilog">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+        <UsedIn Val="SINGLE_LANGUAGE"/>
+      </File>
+      <File Name="dataio_intrfc_stub.vhdl" Type="VHDL">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTH_BLACKBOX_STUB"/>
+      </File>
+      <File Name="dataio_intrfc_stub.v" Type="Verilog">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTH_BLACKBOX_STUB"/>
+      </File>
+      <File Name="dataio_intrfc.dcp" Type="DCP">
+        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+      </File>
       <File Name="ip/dataio_intrfc_px_ads5485intrfc_0_0/dataio_intrfc_px_ads5485intrfc_0_0.xci" Type="IP">
         <Instance HierarchyPath="adc_inputs/px_ads5485intrfc_0"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -32,6 +60,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/dataio_intrfc_axi_interconnect_0_0/dataio_intrfc_axi_interconnect_0_0.xci" Type="IP">
+        <Instance HierarchyPath="adc_inputs/axi_interconnect_0"/>
         <Properties IsEditable="false" IsVisible="false" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -103,6 +132,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/dataio_intrfc_axi_interconnect_0_1/dataio_intrfc_axi_interconnect_0_1.xci" Type="IP">
+        <Instance HierarchyPath="stream_mux/axi_interconnect_0"/>
         <Properties IsEditable="false" IsVisible="false" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -214,6 +244,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/dataio_intrfc_axi_interconnect_0_2/dataio_intrfc_axi_interconnect_0_2.xci" Type="IP">
+        <Instance HierarchyPath="sample_clk_gen/axi_intercnct"/>
         <Properties IsEditable="false" IsVisible="false" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -221,6 +252,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/dataio_intrfc_axi_interconnect_0_3/dataio_intrfc_axi_interconnect_0_3.xci" Type="IP">
+        <Instance HierarchyPath="axi_intrcnct_0"/>
         <Properties IsEditable="false" IsVisible="false" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -340,6 +372,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/dataio_intrfc_axi_interconnect_0_4/dataio_intrfc_axi_interconnect_0_4.xci" Type="IP">
+        <Instance HierarchyPath="axi_intrcnct_1"/>
         <Properties IsEditable="false" IsVisible="false" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
@@ -490,7 +523,7 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/dataio_intrfc_s00_regslice_22/dataio_intrfc_s00_regslice_22.xci" Type="IP">
+      <File Name="ip/dataio_intrfc_s00_regslice_27/dataio_intrfc_s00_regslice_27.xci" Type="IP">
         <Instance HierarchyPath="adc_inputs/axi_interconnect_0/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
@@ -498,7 +531,7 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/dataio_intrfc_s00_regslice_23/dataio_intrfc_s00_regslice_23.xci" Type="IP">
+      <File Name="ip/dataio_intrfc_s00_regslice_28/dataio_intrfc_s00_regslice_28.xci" Type="IP">
         <Instance HierarchyPath="stream_mux/axi_interconnect_0/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
@@ -506,7 +539,7 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/dataio_intrfc_s00_regslice_24/dataio_intrfc_s00_regslice_24.xci" Type="IP">
+      <File Name="ip/dataio_intrfc_s00_regslice_29/dataio_intrfc_s00_regslice_29.xci" Type="IP">
         <Instance HierarchyPath="sample_clk_gen/axi_intercnct/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
@@ -514,7 +547,7 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/dataio_intrfc_s00_regslice_20/dataio_intrfc_s00_regslice_20.xci" Type="IP">
+      <File Name="ip/dataio_intrfc_s00_regslice_25/dataio_intrfc_s00_regslice_25.xci" Type="IP">
         <Instance HierarchyPath="axi_intrcnct_0/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
@@ -562,12 +595,49 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/dataio_intrfc_s00_regslice_21/dataio_intrfc_s00_regslice_21.xci" Type="IP">
+      <File Name="ip/dataio_intrfc_s00_regslice_26/dataio_intrfc_s00_regslice_26.xci" Type="IP">
         <Instance HierarchyPath="axi_intrcnct_1/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
         <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="synth/dataio_intrfc.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+      </File>
+      <File Name="sim/dataio_intrfc.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="dataio_intrfc_ooc.xdc" Type="XDC">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+        <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="OUT_OF_CONTEXT"/>
+      </File>
+      <File Name="hw_handoff/dataio_intrfc.hwh" Type="HwHandoff">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="HW_HANDOFF"/>
+      </File>
+      <File Name="hw_handoff/dataio_intrfc_bd.tcl">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="HW_HANDOFF"/>
+      </File>
+      <File Name="synth/dataio_intrfc.hwdef">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="HW_HANDOFF"/>
+      </File>
+      <File Name="sim/dataio_intrfc.protoinst">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
       </File>
     </FileCollection>

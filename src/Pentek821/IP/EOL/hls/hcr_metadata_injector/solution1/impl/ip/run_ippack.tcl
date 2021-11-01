@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2104281250"
+set Revision    "2107092151"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -266,18 +266,18 @@ set Interfaces {
         port_prefix "pulse_metadata_V"
         has_tready "1"
         ports {
-            TDATA 824
+            TDATA 856
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "824"
-                Bits "824"
+                Width "856"
+                Bits "856"
                 Fields {
                     def {
                         Type "struct"
-                        Width "768"
-                        Bits "768"
+                        Width "800"
+                        Bits "800"
                         Fields {
                             prt {
                                 Type "array"
@@ -301,6 +301,11 @@ set Interfaces {
                                 Bits "32"
                             }
                             control_flags {
+                                Type "integer unsigned"
+                                Width "32"
+                                Bits "32"
+                            }
+                            polarization_mode {
                                 Type "integer unsigned"
                                 Width "32"
                                 Bits "32"

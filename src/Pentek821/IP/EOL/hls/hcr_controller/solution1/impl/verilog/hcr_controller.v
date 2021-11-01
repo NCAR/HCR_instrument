@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=102,HLS_SYN_DSP=0,HLS_SYN_FF=7036,HLS_SYN_LUT=9452,HLS_VERSION=2019_2}" *)
+(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7241,HLS_SYN_LUT=9693,HLS_VERSION=2019_2}" *)
 
 module hcr_controller (
         s_axi_cfg_bus_AWVALID,
@@ -35,6 +35,7 @@ module hcr_controller (
         coef_ch2_V_V_TDATA,
         mt_pulse_V,
         control_flags_V,
+        control_hvn,
         filter_select_ch0_V,
         filter_select_ch1_V,
         filter_select_ch2_V,
@@ -54,6 +55,7 @@ module hcr_controller (
         coef_ch2_V_V_TREADY,
         mt_pulse_V_ap_vld,
         control_flags_V_ap_vld,
+        control_hvn_ap_vld,
         filter_select_ch0_V_ap_vld,
         filter_select_ch1_V_ap_vld,
         filter_select_ch2_V_ap_vld,
@@ -66,7 +68,7 @@ module hcr_controller (
 );
 
 parameter    C_S_AXI_CFG_BUS_DATA_WIDTH = 32;
-parameter    C_S_AXI_CFG_BUS_ADDR_WIDTH = 13;
+parameter    C_S_AXI_CFG_BUS_ADDR_WIDTH = 14;
 parameter    C_S_AXI_DATA_WIDTH = 32;
 parameter    C_S_AXI_ADDR_WIDTH = 32;
 
@@ -98,12 +100,13 @@ output  [23:0] coef_ch1_V_V_TDATA;
 output  [23:0] coef_ch2_V_V_TDATA;
 output  [7:0] mt_pulse_V;
 output  [31:0] control_flags_V;
-output  [1:0] filter_select_ch0_V;
-output  [1:0] filter_select_ch1_V;
-output  [1:0] filter_select_ch2_V;
-output  [823:0] pulse_metadata_ch0_V_TDATA;
-output  [823:0] pulse_metadata_ch1_V_TDATA;
-output  [823:0] pulse_metadata_ch2_V_TDATA;
+output   control_hvn;
+output  [2:0] filter_select_ch0_V;
+output  [2:0] filter_select_ch1_V;
+output  [2:0] filter_select_ch2_V;
+output  [855:0] pulse_metadata_ch0_V_TDATA;
+output  [855:0] pulse_metadata_ch1_V_TDATA;
+output  [855:0] pulse_metadata_ch2_V_TDATA;
 output  [0:0] pps_address0;
 output   pps_ce0;
 output  [0:0] pps_d0;
@@ -117,6 +120,7 @@ output   coef_ch2_V_V_TVALID;
 input   coef_ch2_V_V_TREADY;
 output   mt_pulse_V_ap_vld;
 output   control_flags_V_ap_vld;
+output   control_hvn_ap_vld;
 output   filter_select_ch0_V_ap_vld;
 output   filter_select_ch1_V_ap_vld;
 output   filter_select_ch2_V_ap_vld;
@@ -144,6 +148,7 @@ wire   [31:0] cfg_pulse_sequence_prt_1_q0;
 wire   [31:0] cfg_pulse_sequence_num_pulses_q0;
 wire   [31:0] cfg_pulse_sequence_block_post_time_q0;
 wire   [31:0] cfg_pulse_sequence_control_flags_q0;
+wire   [31:0] cfg_pulse_sequence_polarization_mode_q0;
 wire   [31:0] cfg_pulse_sequence_filter_select_ch0_q0;
 wire   [31:0] cfg_pulse_sequence_filter_select_ch1_q0;
 wire   [31:0] cfg_pulse_sequence_filter_select_ch2_q0;
@@ -176,14 +181,16 @@ wire    scheduler_parser_U0_start_out;
 wire    scheduler_parser_U0_start_write;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_p_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_p_ce0;
-wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_p_2_address0;
-wire    scheduler_parser_U0_cfg_pulse_sequence_p_2_ce0;
+wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_p_3_address0;
+wire    scheduler_parser_U0_cfg_pulse_sequence_p_3_ce0;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_n_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_n_ce0;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_b_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_b_ce0;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_c_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_c_ce0;
+wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_p_4_address0;
+wire    scheduler_parser_U0_cfg_pulse_sequence_p_4_ce0;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_f_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_f_ce0;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_f_3_address0;
@@ -222,11 +229,11 @@ wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_t_29_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_t_29_ce0;
 wire   [4:0] scheduler_parser_U0_cfg_pulse_sequence_t_30_address0;
 wire    scheduler_parser_U0_cfg_pulse_sequence_t_30_ce0;
-wire   [7:0] scheduler_parser_U0_cfg_filter_coefs_ch0_address0;
+wire   [8:0] scheduler_parser_U0_cfg_filter_coefs_ch0_address0;
 wire    scheduler_parser_U0_cfg_filter_coefs_ch0_ce0;
-wire   [7:0] scheduler_parser_U0_cfg_filter_coefs_ch1_address0;
+wire   [8:0] scheduler_parser_U0_cfg_filter_coefs_ch1_address0;
 wire    scheduler_parser_U0_cfg_filter_coefs_ch1_ce0;
-wire   [7:0] scheduler_parser_U0_cfg_filter_coefs_ch2_address0;
+wire   [8:0] scheduler_parser_U0_cfg_filter_coefs_ch2_address0;
 wire    scheduler_parser_U0_cfg_filter_coefs_ch2_ce0;
 wire   [23:0] scheduler_parser_U0_coef_ch0_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch0_V_V_TVALID;
@@ -234,13 +241,13 @@ wire   [23:0] scheduler_parser_U0_coef_ch1_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch1_V_V_TVALID;
 wire   [23:0] scheduler_parser_U0_coef_ch2_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch2_V_V_TVALID;
-wire   [820:0] scheduler_parser_U0_pulse_queue_0_V_din;
+wire   [852:0] scheduler_parser_U0_pulse_queue_0_V_din;
 wire    scheduler_parser_U0_pulse_queue_0_V_write;
-wire   [820:0] scheduler_parser_U0_pulse_queue_1_V_din;
+wire   [852:0] scheduler_parser_U0_pulse_queue_1_V_din;
 wire    scheduler_parser_U0_pulse_queue_1_V_write;
-wire   [820:0] scheduler_parser_U0_pulse_queue_2_V_din;
+wire   [852:0] scheduler_parser_U0_pulse_queue_2_V_din;
 wire    scheduler_parser_U0_pulse_queue_2_V_write;
-wire   [820:0] scheduler_parser_U0_pulse_queue_s_V_din;
+wire   [852:0] scheduler_parser_U0_pulse_queue_s_V_din;
 wire    scheduler_parser_U0_pulse_queue_s_V_write;
 wire    ap_sync_continue;
 wire    scheduler_cycle_exac_U0_ap_start;
@@ -255,11 +262,13 @@ wire   [7:0] scheduler_cycle_exac_U0_mt_pulse_V;
 wire    scheduler_cycle_exac_U0_mt_pulse_V_ap_vld;
 wire   [31:0] scheduler_cycle_exac_U0_control_flags_V;
 wire    scheduler_cycle_exac_U0_control_flags_V_ap_vld;
-wire   [1:0] scheduler_cycle_exac_U0_filter_select_ch0_V;
+wire    scheduler_cycle_exac_U0_control_hvn;
+wire    scheduler_cycle_exac_U0_control_hvn_ap_vld;
+wire   [2:0] scheduler_cycle_exac_U0_filter_select_ch0_V;
 wire    scheduler_cycle_exac_U0_filter_select_ch0_V_ap_vld;
-wire   [1:0] scheduler_cycle_exac_U0_filter_select_ch1_V;
+wire   [2:0] scheduler_cycle_exac_U0_filter_select_ch1_V;
 wire    scheduler_cycle_exac_U0_filter_select_ch1_V_ap_vld;
-wire   [1:0] scheduler_cycle_exac_U0_filter_select_ch2_V;
+wire   [2:0] scheduler_cycle_exac_U0_filter_select_ch2_V;
 wire    scheduler_cycle_exac_U0_filter_select_ch2_V_ap_vld;
 wire    output_fifo70_U0_ap_start;
 wire    output_fifo70_U0_ap_done;
@@ -267,7 +276,7 @@ wire    output_fifo70_U0_ap_continue;
 wire    output_fifo70_U0_ap_idle;
 wire    output_fifo70_U0_ap_ready;
 wire    output_fifo70_U0_pulse_queue_ch0_V_read;
-wire   [823:0] output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
+wire   [855:0] output_fifo70_U0_pulse_metadata_ch0_V_TDATA;
 wire    output_fifo70_U0_pulse_metadata_ch0_V_TVALID;
 wire    output_fifo71_U0_ap_start;
 wire    output_fifo71_U0_ap_done;
@@ -275,7 +284,7 @@ wire    output_fifo71_U0_ap_continue;
 wire    output_fifo71_U0_ap_idle;
 wire    output_fifo71_U0_ap_ready;
 wire    output_fifo71_U0_pulse_queue_ch0_V_read;
-wire   [823:0] output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
+wire   [855:0] output_fifo71_U0_pulse_metadata_ch0_V_TDATA;
 wire    output_fifo71_U0_pulse_metadata_ch0_V_TVALID;
 wire    output_fifo_U0_ap_start;
 wire    output_fifo_U0_ap_done;
@@ -283,19 +292,19 @@ wire    output_fifo_U0_ap_continue;
 wire    output_fifo_U0_ap_idle;
 wire    output_fifo_U0_ap_ready;
 wire    output_fifo_U0_in_V_read;
-wire   [823:0] output_fifo_U0_out_V_TDATA;
+wire   [855:0] output_fifo_U0_out_V_TDATA;
 wire    output_fifo_U0_out_V_TVALID;
 wire    pulse_queue_ch0_V_full_n;
-wire   [820:0] pulse_queue_ch0_V_dout;
+wire   [852:0] pulse_queue_ch0_V_dout;
 wire    pulse_queue_ch0_V_empty_n;
 wire    pulse_queue_ch1_V_full_n;
-wire   [820:0] pulse_queue_ch1_V_dout;
+wire   [852:0] pulse_queue_ch1_V_dout;
 wire    pulse_queue_ch1_V_empty_n;
 wire    pulse_queue_ch2_V_full_n;
-wire   [820:0] pulse_queue_ch2_V_dout;
+wire   [852:0] pulse_queue_ch2_V_dout;
 wire    pulse_queue_ch2_V_empty_n;
 wire    pulse_queue_schedule_1_full_n;
-wire   [820:0] pulse_queue_schedule_1_dout;
+wire   [852:0] pulse_queue_schedule_1_dout;
 wire    pulse_queue_schedule_1_empty_n;
 wire    ap_sync_done;
 wire    ap_sync_ready;
@@ -373,8 +382,8 @@ hcr_controller_cfg_bus_s_axi_U(
     .cfg_pulse_sequence_prt_0_address0(scheduler_parser_U0_cfg_pulse_sequence_p_address0),
     .cfg_pulse_sequence_prt_0_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_ce0),
     .cfg_pulse_sequence_prt_0_q0(cfg_pulse_sequence_prt_0_q0),
-    .cfg_pulse_sequence_prt_1_address0(scheduler_parser_U0_cfg_pulse_sequence_p_2_address0),
-    .cfg_pulse_sequence_prt_1_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_2_ce0),
+    .cfg_pulse_sequence_prt_1_address0(scheduler_parser_U0_cfg_pulse_sequence_p_3_address0),
+    .cfg_pulse_sequence_prt_1_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_3_ce0),
     .cfg_pulse_sequence_prt_1_q0(cfg_pulse_sequence_prt_1_q0),
     .cfg_pulse_sequence_num_pulses_address0(scheduler_parser_U0_cfg_pulse_sequence_n_address0),
     .cfg_pulse_sequence_num_pulses_ce0(scheduler_parser_U0_cfg_pulse_sequence_n_ce0),
@@ -385,6 +394,9 @@ hcr_controller_cfg_bus_s_axi_U(
     .cfg_pulse_sequence_control_flags_address0(scheduler_parser_U0_cfg_pulse_sequence_c_address0),
     .cfg_pulse_sequence_control_flags_ce0(scheduler_parser_U0_cfg_pulse_sequence_c_ce0),
     .cfg_pulse_sequence_control_flags_q0(cfg_pulse_sequence_control_flags_q0),
+    .cfg_pulse_sequence_polarization_mode_address0(scheduler_parser_U0_cfg_pulse_sequence_p_4_address0),
+    .cfg_pulse_sequence_polarization_mode_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_4_ce0),
+    .cfg_pulse_sequence_polarization_mode_q0(cfg_pulse_sequence_polarization_mode_q0),
     .cfg_pulse_sequence_filter_select_ch0_address0(scheduler_parser_U0_cfg_pulse_sequence_f_address0),
     .cfg_pulse_sequence_filter_select_ch0_ce0(scheduler_parser_U0_cfg_pulse_sequence_f_ce0),
     .cfg_pulse_sequence_filter_select_ch0_q0(cfg_pulse_sequence_filter_select_ch0_q0),
@@ -474,9 +486,9 @@ scheduler_parser scheduler_parser_U0(
     .cfg_pulse_sequence_p_address0(scheduler_parser_U0_cfg_pulse_sequence_p_address0),
     .cfg_pulse_sequence_p_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_ce0),
     .cfg_pulse_sequence_p_q0(cfg_pulse_sequence_prt_0_q0),
-    .cfg_pulse_sequence_p_2_address0(scheduler_parser_U0_cfg_pulse_sequence_p_2_address0),
-    .cfg_pulse_sequence_p_2_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_2_ce0),
-    .cfg_pulse_sequence_p_2_q0(cfg_pulse_sequence_prt_1_q0),
+    .cfg_pulse_sequence_p_3_address0(scheduler_parser_U0_cfg_pulse_sequence_p_3_address0),
+    .cfg_pulse_sequence_p_3_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_3_ce0),
+    .cfg_pulse_sequence_p_3_q0(cfg_pulse_sequence_prt_1_q0),
     .cfg_pulse_sequence_n_address0(scheduler_parser_U0_cfg_pulse_sequence_n_address0),
     .cfg_pulse_sequence_n_ce0(scheduler_parser_U0_cfg_pulse_sequence_n_ce0),
     .cfg_pulse_sequence_n_q0(cfg_pulse_sequence_num_pulses_q0),
@@ -486,6 +498,9 @@ scheduler_parser scheduler_parser_U0(
     .cfg_pulse_sequence_c_address0(scheduler_parser_U0_cfg_pulse_sequence_c_address0),
     .cfg_pulse_sequence_c_ce0(scheduler_parser_U0_cfg_pulse_sequence_c_ce0),
     .cfg_pulse_sequence_c_q0(cfg_pulse_sequence_control_flags_q0),
+    .cfg_pulse_sequence_p_4_address0(scheduler_parser_U0_cfg_pulse_sequence_p_4_address0),
+    .cfg_pulse_sequence_p_4_ce0(scheduler_parser_U0_cfg_pulse_sequence_p_4_ce0),
+    .cfg_pulse_sequence_p_4_q0(cfg_pulse_sequence_polarization_mode_q0),
     .cfg_pulse_sequence_f_address0(scheduler_parser_U0_cfg_pulse_sequence_f_address0),
     .cfg_pulse_sequence_f_ce0(scheduler_parser_U0_cfg_pulse_sequence_f_ce0),
     .cfg_pulse_sequence_f_q0(cfg_pulse_sequence_filter_select_ch0_q0),
@@ -593,6 +608,8 @@ scheduler_cycle_exac scheduler_cycle_exac_U0(
     .mt_pulse_V_ap_vld(scheduler_cycle_exac_U0_mt_pulse_V_ap_vld),
     .control_flags_V(scheduler_cycle_exac_U0_control_flags_V),
     .control_flags_V_ap_vld(scheduler_cycle_exac_U0_control_flags_V_ap_vld),
+    .control_hvn(scheduler_cycle_exac_U0_control_hvn),
+    .control_hvn_ap_vld(scheduler_cycle_exac_U0_control_hvn_ap_vld),
     .filter_select_ch0_V(scheduler_cycle_exac_U0_filter_select_ch0_V),
     .filter_select_ch0_V_ap_vld(scheduler_cycle_exac_U0_filter_select_ch0_V_ap_vld),
     .filter_select_ch1_V(scheduler_cycle_exac_U0_filter_select_ch1_V),
@@ -649,7 +666,7 @@ output_fifo output_fifo_U0(
     .out_V_TREADY(pulse_metadata_ch2_V_TREADY)
 );
 
-fifo_w821_d16_S pulse_queue_ch0_V_U(
+fifo_w853_d16_S pulse_queue_ch0_V_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -662,7 +679,7 @@ fifo_w821_d16_S pulse_queue_ch0_V_U(
     .if_read(output_fifo70_U0_pulse_queue_ch0_V_read)
 );
 
-fifo_w821_d16_S pulse_queue_ch1_V_U(
+fifo_w853_d16_S pulse_queue_ch1_V_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -675,7 +692,7 @@ fifo_w821_d16_S pulse_queue_ch1_V_U(
     .if_read(output_fifo71_U0_pulse_queue_ch0_V_read)
 );
 
-fifo_w821_d16_S pulse_queue_ch2_V_U(
+fifo_w853_d16_S pulse_queue_ch2_V_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -688,7 +705,7 @@ fifo_w821_d16_S pulse_queue_ch2_V_U(
     .if_read(output_fifo_U0_in_V_read)
 );
 
-fifo_w821_d1_A pulse_queue_schedule_1_U(
+fifo_w853_d1_A pulse_queue_schedule_1_U(
     .clk(ap_clk),
     .reset(ap_rst_n_inv),
     .if_read_ce(1'b1),
@@ -815,6 +832,10 @@ assign coef_ch2_V_V_TVALID = scheduler_parser_U0_coef_ch2_V_V_TVALID;
 assign control_flags_V = scheduler_cycle_exac_U0_control_flags_V;
 
 assign control_flags_V_ap_vld = scheduler_cycle_exac_U0_control_flags_V_ap_vld;
+
+assign control_hvn = scheduler_cycle_exac_U0_control_hvn;
+
+assign control_hvn_ap_vld = scheduler_cycle_exac_U0_control_hvn_ap_vld;
 
 assign filter_select_ch0_V = scheduler_cycle_exac_U0_filter_select_ch0_V;
 

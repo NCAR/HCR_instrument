@@ -17,7 +17,7 @@ port (
     ap_done : OUT STD_LOGIC;
     ap_idle : OUT STD_LOGIC;
     ap_ready : OUT STD_LOGIC;
-    pulse_metadata_V_TDATA : IN STD_LOGIC_VECTOR (823 downto 0);
+    pulse_metadata_V_TDATA : IN STD_LOGIC_VECTOR (855 downto 0);
     pulse_metadata_V_TVALID : IN STD_LOGIC;
     pulse_metadata_V_TREADY : OUT STD_LOGIC;
     data_word_data_V : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -80,16 +80,16 @@ architecture behav of handle_header is
     constant ap_const_lv32_98989898 : STD_LOGIC_VECTOR (31 downto 0) := "10011000100110001001100010011000";
     constant ap_const_lv32_40 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000001000000";
     constant ap_const_lv32_48 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000001001000";
-    constant ap_const_lv32_334 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100110100";
-    constant ap_const_lv32_332 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100110010";
-    constant ap_const_lv32_333 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100110011";
-    constant ap_const_lv32_308 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100001000";
-    constant ap_const_lv32_327 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100100111";
+    constant ap_const_lv32_354 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101010100";
+    constant ap_const_lv32_352 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101010010";
+    constant ap_const_lv32_353 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101010011";
     constant ap_const_lv32_328 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100101000";
-    constant ap_const_lv32_32F : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100101111";
-    constant ap_const_lv32_330 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100110000";
-    constant ap_const_lv32_300 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100000000";
-    constant ap_const_lv32_307 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100000111";
+    constant ap_const_lv32_347 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101000111";
+    constant ap_const_lv32_348 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101001000";
+    constant ap_const_lv32_34F : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101001111";
+    constant ap_const_lv32_350 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101010000";
+    constant ap_const_lv32_320 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100100000";
+    constant ap_const_lv32_327 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100100111";
     constant ap_const_lv4_8 : STD_LOGIC_VECTOR (3 downto 0) := "1000";
     constant ap_const_lv4_1 : STD_LOGIC_VECTOR (3 downto 0) := "0001";
     constant ap_const_lv3_1 : STD_LOGIC_VECTOR (2 downto 0) := "001";
@@ -129,7 +129,7 @@ architecture behav of handle_header is
     signal x_0_reg_301 : STD_LOGIC_VECTOR (31 downto 0);
     signal x1_0_reg_310 : STD_LOGIC_VECTOR (3 downto 0);
     signal ap_block_state1 : BOOLEAN;
-    signal pulse_metadata_V_rea_reg_808 : STD_LOGIC_VECTOR (823 downto 0);
+    signal pulse_metadata_V_rea_reg_808 : STD_LOGIC_VECTOR (855 downto 0);
     signal tmp_fu_412_p3 : STD_LOGIC_VECTOR (0 downto 0);
     signal icmp_ln126_fu_420_p2 : STD_LOGIC_VECTOR (0 downto 0);
     signal ap_block_state2_pp0_stage0_iter0 : BOOLEAN;
@@ -522,11 +522,11 @@ begin
     begin
         if (ap_clk'event and ap_clk = '1') then
             if (((ap_const_logic_1 = ap_CS_fsm_state4) and (ap_const_boolean_0 = ap_block_state4_io))) then
-                decimation_value_0_n_reg_846 <= pulse_metadata_V_rea_reg_808(815 downto 808);
+                decimation_value_0_n_reg_846 <= pulse_metadata_V_rea_reg_808(847 downto 840);
                     header_4_reg_856(7 downto 0) <= header_4_fu_508_p1(7 downto 0);
-                header_5_reg_840 <= pulse_metadata_V_rea_reg_808(807 downto 776);
+                header_5_reg_840 <= pulse_metadata_V_rea_reg_808(839 downto 808);
                 header_6_reg_861 <= header_6_fu_512_p1;
-                p_Repl2_2_reg_835 <= pulse_metadata_V_rea_reg_808(819 downto 819);
+                p_Repl2_2_reg_835 <= pulse_metadata_V_rea_reg_808(851 downto 851);
                 tmp_3_reg_851 <= tmp_3_fu_492_p3;
             end if;
         end if;
@@ -552,7 +552,7 @@ begin
         if (ap_clk'event and ap_clk = '1') then
             if ((not(((pulse_metadata_V_TVALID = ap_const_logic_0) or (ap_start = ap_const_logic_0))) and (ap_const_logic_1 = ap_CS_fsm_state1))) then
                 pulse_metadata_V_rea_reg_808 <= pulse_metadata_V_TDATA;
-                tmp_reg_819 <= pulse_metadata_V_TDATA(820 downto 820);
+                tmp_reg_819 <= pulse_metadata_V_TDATA(852 downto 852);
             end if;
         end if;
     end process;
@@ -986,7 +986,7 @@ begin
     or_ln193_1_fu_667_p2 <= (or_ln193_1_fu_667_p1 or ap_phi_mux_write_flag3_0_phi_fu_362_p4);
     or_ln193_fu_662_p1 <= (0=>in_a_pulse_read, others=>'-');
     or_ln193_fu_662_p2 <= (or_ln193_fu_662_p1 or ap_phi_mux_write_flag3_0_phi_fu_362_p4);
-    p_Repl2_s_fu_431_p3 <= pulse_metadata_V_rea_reg_808(818 downto 818);
+    p_Repl2_s_fu_431_p3 <= pulse_metadata_V_rea_reg_808(850 downto 850);
     
     p_Result_3_fu_438_p4_proc : process(data_word_user_V)
     begin
@@ -1046,13 +1046,13 @@ begin
     select_ln17_fu_573_p3 <= 
         ap_const_lv32_BA5EBA11 when (icmp_ln17_6_fu_567_p2(0) = '1') else 
         header_6_reg_861;
-    tmp_2_fu_483_p4 <= pulse_metadata_V_rea_reg_808(819 downto 816);
+    tmp_2_fu_483_p4 <= pulse_metadata_V_rea_reg_808(851 downto 848);
     tmp_3_fu_492_p3 <= (tmp_2_fu_483_p4 & flags);
     tmp_data_V_1_fu_643_p3 <= 
         select_ln17_4_fu_621_p3 when (or_ln17_3_fu_629_p2(0) = '1') else 
         select_ln17_5_fu_635_p3;
-    tmp_fu_412_p3 <= pulse_metadata_V_TDATA(820 downto 820);
-    tmp_sequence_index_l_fu_499_p4 <= pulse_metadata_V_rea_reg_808(775 downto 768);
+    tmp_fu_412_p3 <= pulse_metadata_V_TDATA(852 downto 852);
+    tmp_sequence_index_l_fu_499_p4 <= pulse_metadata_V_rea_reg_808(807 downto 800);
     trunc_ln179_fu_527_p1 <= x1_0_reg_310(3 - 1 downto 0);
     x_1_fu_521_p2 <= std_logic_vector(unsigned(x1_0_reg_310) + unsigned(ap_const_lv4_1));
     x_fu_425_p2 <= std_logic_vector(unsigned(x_0_reg_301) + unsigned(ap_const_lv32_1));

@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="hcr_metadata_injector,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xcku060-ffva1156-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=2.844500,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=1599,HLS_SYN_LUT=1132,HLS_VERSION=2019_2}" *)
+(* CORE_GENERATION_INFO="hcr_metadata_injector,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xcku060-ffva1156-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=2.844500,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=1631,HLS_SYN_LUT=1132,HLS_VERSION=2019_2}" *)
 
 module hcr_metadata_injector (
         ap_clk,
@@ -71,7 +71,7 @@ output  [127:0] o_data_TUSER;
 output  [0:0] o_data_TLAST;
 output  [0:0] o_data_TID;
 output  [0:0] o_data_TDEST;
-input  [823:0] pulse_metadata_V_TDATA;
+input  [855:0] pulse_metadata_V_TDATA;
 input   pulse_metadata_V_TVALID;
 output   pulse_metadata_V_TREADY;
 input  [31:0] pos_enc_0;
@@ -230,7 +230,7 @@ reg   [0:0] o_data_TDEST_int;
 wire    regslice_both_o_data_V_dest_V_U_ack_in_dummy;
 wire    regslice_both_o_data_V_dest_V_U_vld_out;
 wire    regslice_both_pulse_metadata_V_U_apdone_blk;
-wire   [823:0] pulse_metadata_V_TDATA_int;
+wire   [855:0] pulse_metadata_V_TDATA_int;
 wire    pulse_metadata_V_TVALID_int;
 reg    pulse_metadata_V_TREADY_int;
 wire    regslice_both_pulse_metadata_V_U_ack_in;
@@ -484,7 +484,7 @@ regslice_both_o_data_V_dest_V_U(
 );
 
 regslice_both #(
-    .DataWidth( 824 ))
+    .DataWidth( 856 ))
 regslice_both_pulse_metadata_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst_n_inv),

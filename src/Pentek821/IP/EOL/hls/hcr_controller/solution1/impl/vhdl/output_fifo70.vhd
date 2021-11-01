@@ -18,10 +18,10 @@ port (
     ap_continue : IN STD_LOGIC;
     ap_idle : OUT STD_LOGIC;
     ap_ready : OUT STD_LOGIC;
-    pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (820 downto 0);
+    pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (852 downto 0);
     pulse_queue_ch0_V_empty_n : IN STD_LOGIC;
     pulse_queue_ch0_V_read : OUT STD_LOGIC;
-    pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (823 downto 0);
+    pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (855 downto 0);
     pulse_metadata_ch0_V_TVALID : OUT STD_LOGIC;
     pulse_metadata_ch0_V_TREADY : IN STD_LOGIC );
 end;
@@ -38,7 +38,7 @@ architecture behav of output_fifo70 is
     constant ap_const_lv32_1 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000001";
     constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_lv32_2 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000010";
-    constant ap_const_lv32_334 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001100110100";
+    constant ap_const_lv32_354 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001101010100";
     constant ap_const_lv1_1 : STD_LOGIC_VECTOR (0 downto 0) := "1";
 
     signal ap_done_reg : STD_LOGIC := '0';
@@ -57,11 +57,11 @@ architecture behav of output_fifo70 is
     signal regslice_both_pulse_metadata_ch0_V_U_apdone_blk : STD_LOGIC;
     signal ap_block_state2 : BOOLEAN;
     signal ap_block_state2_io : BOOLEAN;
-    signal trunc_ln176_fu_73_p1 : STD_LOGIC_VECTOR (819 downto 0);
-    signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (820 downto 0);
+    signal trunc_ln176_fu_73_p1 : STD_LOGIC_VECTOR (851 downto 0);
+    signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (852 downto 0);
     signal ap_NS_fsm : STD_LOGIC_VECTOR (2 downto 0);
     signal ap_block_state1 : BOOLEAN;
-    signal pulse_metadata_ch0_V_TDATA_int : STD_LOGIC_VECTOR (823 downto 0);
+    signal pulse_metadata_ch0_V_TDATA_int : STD_LOGIC_VECTOR (855 downto 0);
     signal pulse_metadata_ch0_V_TVALID_int : STD_LOGIC;
     signal pulse_metadata_ch0_V_TREADY_int : STD_LOGIC;
     signal regslice_both_pulse_metadata_ch0_V_U_vld_out : STD_LOGIC;
@@ -86,7 +86,7 @@ architecture behav of output_fifo70 is
 begin
     regslice_both_pulse_metadata_ch0_V_U : component regslice_both
     generic map (
-        DataWidth => 824)
+        DataWidth => 856)
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst,
@@ -218,7 +218,7 @@ begin
         end if; 
     end process;
 
-        pulse_metadata_ch0_V_TDATA_int <= std_logic_vector(IEEE.numeric_std.resize(signed(tmp_1_fu_77_p3),824));
+        pulse_metadata_ch0_V_TDATA_int <= std_logic_vector(IEEE.numeric_std.resize(signed(tmp_1_fu_77_p3),856));
 
     pulse_metadata_ch0_V_TVALID <= regslice_both_pulse_metadata_ch0_V_U_vld_out;
 
@@ -251,7 +251,7 @@ begin
         end if; 
     end process;
 
-    pulse_terminate_fu_65_p3 <= pulse_queue_ch0_V_dout(820 downto 820);
+    pulse_terminate_fu_65_p3 <= pulse_queue_ch0_V_dout(852 downto 852);
     tmp_1_fu_77_p3 <= (ap_const_lv1_0 & trunc_ln176_fu_73_p1);
-    trunc_ln176_fu_73_p1 <= pulse_queue_ch0_V_dout(820 - 1 downto 0);
+    trunc_ln176_fu_73_p1 <= pulse_queue_ch0_V_dout(852 - 1 downto 0);
 end behav;
