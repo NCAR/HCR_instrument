@@ -6,11 +6,14 @@ import os
 tools = Split("""
     archive_xmlrpc_c
     boost_serialization
+    hcrpmc730client
     logx
     lrose
+    motioncontrol
     Pentek_xx821
     qt5
     qtcore
+    xmitdrpcclient
     xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
@@ -22,6 +25,9 @@ includeDir = tooldir
 sources = Split('''
 DrxStatus.cpp
 HcrdrxRpcClient.cpp
+''')
+headers = Split('''
+DrxStatus.h
 ''')
 lib = env.Library('hcrdrxrpcclient', sources)
     
