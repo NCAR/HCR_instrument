@@ -45,7 +45,6 @@
 #include <logx/Logging.h>
 
 #include "HCR_Pentek.h"
-#include "ChannelPulseData.h"
 
 #include <toolsa/pmu.h> // procmap registration
 
@@ -54,10 +53,8 @@ LOGGING("HCR_Pentek")
 // 32-bit all-ones bitmask
 static const uint32_t ALL_32_BITS = 0xffffffffUL;
 
-HCR_Pentek::HCR_Pentek(const HCR_Config & config,
-                         uint boardNum,
-                         IwrfPublisher * longPublisher,
-                         IwrfPublisher * shortPublisher) :
+HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
+                         uint boardNum) :
     QObject(),
     Pentek_xx821(boardNum),
     _controller(*this, CONTROLLER_BASE),
@@ -65,8 +62,7 @@ HCR_Pentek::HCR_Pentek(const HCR_Config & config,
     _radarStartSecond(0),
     _dmaPacketsDropped(_adcCount),
     _ddcEnable(true),
-    _longPublisher(longPublisher),
-    _shortPublisher(shortPublisher),
+    _exporter(NULL),
     _prevDmaPacketNum(_adcCount, -1),
     _nDroppedBeforeStartSig(_adcCount, 0),
     _unprocessedDma(_adcCount, 0),
@@ -80,6 +76,13 @@ HCR_Pentek::HCR_Pentek(const HCR_Config & config,
     qRegisterMetaType<QSharedPointer<NAV_DMA_ADC_META_DATA> >("QSharedPointer<NAV_DMA_ADC_META_DATA>");
 
     PMU_auto_register("HCR_Pentek constructor");
+
+    // Initialize
+    for (int chan = 0; chan < _adcCount; chan++) {
+        _chanType.push_back(IwrfExport::DataChannelType::H_CHANNEL);
+        _pulseData.push_back(new PulseData);
+        _pulseSeqNum.push_back(0);
+    }
 
     // Connect our newAdcData() signal to our _acceptAdcData() slot. This
     // may seem strange, but it's how we move data from the top-half interrupt
@@ -203,15 +206,15 @@ HCR_Pentek::_startRadar() {
 
     // Start the radar controller
     _controller.run(0,                              // sequenceStartIndex,
-                    _pulseBlockDefinitions.size(),       // sequenceLength,
+                    _pulseBlockDefinitions.size(),  // sequenceLength,
                     ddcDecimation(),                // ddcDcimation,
-                    2,                              // postDecimation,
+                    _config.final_decimation(),     // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
                     enabledChannelVector,           // enabledChannelVector,
                     _config.pulses_to_run() );      // numPulsesToExecute
 
     // Generate a fake PPS if desired
-    if(_config.use_debug_pps()) {
+    if ( !_config.start_on_1pps() ) {
         usleep(1000);
         writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Toggle debug PPS source 1");
         writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Toggle debug PPS source 0");
@@ -781,6 +784,19 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         // Check if done
         lastPulseInXfer = pulseHeader.statusFlags.lastPulseInXfer;
 
+        // Grab the polarization
+        PulseData::XmitPolarization_t xmitPol =
+            pulseHeader.statusFlags.HV ? PulseData::XMIT_POL_HORIZONTAL : PulseData::XMIT_POL_VERTICAL;
+
+        // Grab the sequence number
+        #warning update fpga to generate this
+        int64_t pulseSeqNum = _pulseSeqNum[chan]++;
+
+        // Grab the angle
+        #warning fix angle
+        float rotMotorAngle = pulseHeader.posEnc0 * 9999999.0;
+        float tiltMotorAngle = pulseHeader.posEnc1 * 9999999.0;
+
         // Check the size of the buffer
         if(dataBufOffsetBytes + nGates*sizeof(IQData) > metadata->validBytes) {
             ELOG << "Truncated pulse data chan " << std::dec << chan
@@ -789,53 +805,42 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         }
 
         // Extract the IQ data
-        const IQData* data(reinterpret_cast<const IQData*>(dataBuf+dataBufOffsetBytes));
-        dataBufOffsetBytes += nGates*sizeof(IQData);
+        const IQData* iqData(reinterpret_cast<const IQData*>(dataBuf+dataBufOffsetBytes));
+        dataBufOffsetBytes += nGates * sizeof(IQData);
 
-#warning publish the data
-//    // If we have a publisher, send it the new data for collating and publishing.
-//    if (_longPublisher) {
-//        // Copy the data into a new ChannelPulseData object and get a (smart)
-//        // shared_ptr to it. The new object will be automatically deleted when
-//        // the last reference to it falls out of scope (i.e., when both
-//        // _longPublisher and _shortPublisher are done with it).
-//        HCR_Beam beamConfig;
-//        std::shared_ptr<ChannelPulseData> chanData =
-//                std::make_shared<ChannelPulseData>(chan,
-//                                                   0xF00,
-//                                                   dataSec,
-//                                                   dataNanosec,
-//                                                   0xF00,
-//                                                   beamConfig,
-//                                                   nGates,
-//                                                   reinterpret_cast<const int32_t*>(data));
-//        switch (chan) {
-//        case 0:
-//            // Channel 0: long pulse data
-//            if (_longPublisher) {
-//                _longPublisher->addData(chanData);
-//            }
-//            break;
-//        case 1:
-//            // Channel 1: short pulse data
-//            if (_shortPublisher) {
-//                _shortPublisher->addData(chanData);
-//            }
-//            break;
-//        case 2:
-//            // Channel 2: multiplexed burst transmit sample with both long
-//            // and short pulse
-//            if (_longPublisher) {
-//                _longPublisher->addXmitSampleData(chanData);
-//            }
-//            if (_shortPublisher) {
-//                _shortPublisher->addXmitSampleData(chanData);
-//            }
-//            break;
-//        default:
-//            ELOG << "Skipping data from unknown channel " << chan;
-//        }
-//    }
+        // If we have a exporter, send it the new data for collating and publishing.
+        if (_exporter) {
+
+            // set data in pulse object
+            _pulseData[chan]->set(
+                pulseSeqNum,        // int64_t pulseSeqNum,
+                dataSec,            // time_t timeSecs,
+                dataNanosec,        // int nanoSecs,
+                chan,               // int channelId,
+                rotMotorAngle,      // float rotMotorAngle,
+                tiltMotorAngle,     // float tiltMotorAngle,
+                xmitPol,            // XmitPolarization_t xmitPol,
+                blockDef.prt[0],    // double prt1,
+                blockDef.prt[1],    // double prt2,
+                pulseHeader.prt,    // double currentPrt,
+                0,                  // double txPulseWidth,
+                0,                  // double sampleWidth,
+                nGates,             // int nGates,
+                iqData );           // const std::complex<int16_t> *iq)
+
+
+            // Write our current object into the merge queue, and get back another to use
+            switch (_chanType[chan]) {
+                case IwrfExport::DataChannelType::H_CHANNEL:
+                    _pulseData[chan] = _exporter->writePulseH(_pulseData[chan]);
+                    break;
+                case IwrfExport::DataChannelType::V_CHANNEL:
+                    _pulseData[chan] = _exporter->writePulseV(_pulseData[chan]);
+                    break;
+                default:
+                    ELOG << "Dropping pulse for channel type " << _chanType[chan];
+            }
+        }
     }
 }
 

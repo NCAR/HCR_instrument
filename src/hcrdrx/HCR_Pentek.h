@@ -32,10 +32,10 @@
 #ifndef HCR_PENTEK_H_
 #define HCR_PENTEK_H_
 
-#include "HCR_Config.h"
-#include "HCR_Beam.h"
-#include "IwrfPublisher.h"
+#include "HcrDrxConfig.h"
+#include "IwrfExport.h"
 #include "RadarController.h"
+#include "PulseData.h"
 #include <ctime>
 #include <vector>
 #include <complex>
@@ -53,21 +53,20 @@ public:
     /// @param config object containing the configuration information
     /// @param boardNum number of the xx821 board to open (1 = first board,
     /// 2 = second board, etc.)
-    /// @param longPublisher pointer to an IwrfPublisher object for publishing
-    /// long-pulse IWRF time series data (NULL if data will not be published)
-    /// @param shortPublisher pointer to an IwrfPublisher object for publishing
-    /// short-pulse IWRF time series data (NULL if data will not be published)
     /// @throws ConstructError on error in construction
-    HCR_Pentek(const HCR_Config & config,
-                uint boardNum,
-                IwrfPublisher * longPublisher,
-                IwrfPublisher * shortPublisher);
+    HCR_Pentek(const HcrDrxConfig & config,
+                uint boardNum);
     virtual ~HCR_Pentek();
 
     /// @brief Return a string with information about the board and
     /// configuration
     /// @return a string with information about the board and configuration
     virtual std::string boardInfoString() const;
+
+    /// @brief Register the IwrfExport instance
+    /// @param exporter pointer to an IwrfExport object for publishing
+    /// IWRF time series data (NULL if data will not be published)
+    void setExporter(IwrfExport * exporter) {_exporter = exporter;}
 
     /// @brief Return the sample frequency used for the ADCs
     /// @return the sample frequency used for the ADCs
@@ -179,10 +178,10 @@ private:
 
     typedef RadarController<HCR_Pentek> Controller;
     friend class RadarController<HCR_Pentek>;
-    
+
     /// @brief Instance of the radar controller FPGA object
     Controller _controller;
-    
+
     /// @brief Set up board basics for Navigator
     ///
     /// This method is only called from the constructor. It configures bus,
@@ -203,11 +202,11 @@ private:
     ///
     /// This method is only called from the constructor.
     void _setupTx();
-    
+
     /// @brief Set up the radar controller
     ///
     /// This method is only called from the constructor.
-    void _setupController();    
+    void _setupController();
 
     /// @brief Start the radar
     ///
@@ -252,27 +251,23 @@ private:
     bool _checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata);
 
     /// @brief HCR configuration
-    const HCR_Config & _config;
+    const HcrDrxConfig & _config;
 
     /// @brief Radar start time, seconds since 1970-01-01 00:00:00 UTC
     time_t _radarStartSecond;
 
     /// @brief Number dropped RX DMA packets
     std::vector<uint32_t> _dmaPacketsDropped;
-    
+
     /// @brief If true, enable the digital downconverter
     bool _ddcEnable;
-    
+
     /// @brief The pulse sequencer definitions that describe the radar timeline
     std::vector<Controller::PulseBlockDefinition> _pulseBlockDefinitions;
 
-    /// @brief IwrfPublisher instance for publishing long-pulse IWRF time
-    /// series data
-    IwrfPublisher * _longPublisher;
-
     /// @brief IwrfPublisher instance for publishing short-pulse IWRF time
     /// series data
-    IwrfPublisher * _shortPublisher;
+    IwrfExport * _exporter;
 
     /// @brief Continuous wave (CW) filter real coefficients by DDC channel
     std::map<uint, std::vector<int32_t> > _cwFilterCoefs;
@@ -296,6 +291,10 @@ private:
 
     /// @brief Number of pulses processed
     std::vector<int64_t> _processedPulses;
+
+    std::vector<IwrfExport::DataChannelType> _chanType;
+    std::vector<PulseData*> _pulseData;
+    std::vector<int64_t> _pulseSeqNum;
 
 };
 

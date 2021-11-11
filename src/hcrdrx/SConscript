@@ -1,12 +1,12 @@
 # -*- python -*-
 
 tools = Split("""
+    hcrdrxrpcclient
     hcrpmc730client
     cmigitsdaemonrpcclient
     boost_date_time
     boost_program_options
     doxygen
-    hcrdrxrpcclient
     logx
     lrose
     motioncontrol
@@ -14,31 +14,52 @@ tools = Split("""
     QFunctionWrapper
     qt5
     QXmlRpcServerAbyss
+    setuidprogram
     xmitdrpcclient
 """)
 env = Environment(tools = ['default'] + tools)
 
-# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp are compiled
-# via the hcrdrxrpcclient tool
+# Note that DrxStatus.cpp, HcrdrxRpcClient.cpp, and HcrPmc730.cpp (which live
+# in this directory) are compiled via a load of the SCons hcrdrxrpcclient tool
+# (also in this directory).
 sources = Split("""
     hcrdrx.cpp
-    HCR_Beam.cpp
-    HCR_Config.cpp
+    HcrDrxConfig.cpp
     HCR_Pentek.cpp
-    IwrfPublisher.cpp
-    PublishWorker.cpp
+    StatusGrabber.cpp
+    IwrfExport.cpp
+    IwrfExportInsPoller.cpp
+    PulseData.cpp
 """)
 
 headers = Split("""
-    HCR_Beam.h
-    HCR_Config.h
+    ChannelPulseData.h
+    CircBuffer.h
+    DrxStatus.h
+    HcrDrxConfig.h
     HCR_Pentek.h
-    HcrdrxRpcClient.h
-    IwrfPublisher.h
-    PublishWorker.h
+    IwrfExport.h
+    IwrfExportInsPoller.h
+    PulseData.h
+    RadarController.h
+    StatusGrabber.h
+    xhcr_controller_hw.h
 """)
 
 hcrdrx = env.Program('hcrdrx', sources)
 
 html = env.Apidocs(sources + headers)
 Default(hcrdrx, html)
+
+# Build setWinDriverIrqAffinity as a setuid program owned by root
+#
+# The program is not built by default. It must be built explicitly by root,
+# usually with the command:
+#
+#    $ sudo scons setWinDriverIrqAffinity
+#
+# Note that the program *is* removed by default when cleaning
+irqAffinityProg = env.SetuidProgram('setWinDriverIrqAffinity',
+                                    'setWinDriverIrqAffinity.cpp')
+if (GetOption("clean")):
+    env.Default(irqAffinityProg)

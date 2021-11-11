@@ -21,11 +21,12 @@
 // ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+#include "HCR_Pentek.h"
+#include "HcrDrxConfig.h"
+
 #include <csignal>
 #include <cstring>
 #include <fstream>
-#include <HCR_Pentek.h>
-#include <HCR_Config.h>
 #include <QFunctionWrapper.h>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
@@ -49,8 +50,7 @@ main(int argc, char * argv[]) {
     logx::ParseLogArgs(argc, argv);
 
     // Get the configuration
-    HCR_Config config;
-    config.parse(argc, argv);
+    HcrDrxConfig config(argc, argv);
 
     // check for usage
     bool printUsage = false;
@@ -67,7 +67,7 @@ main(int argc, char * argv[]) {
       std::cout << "Usage: hcrdrx [options]" << std::endl;
       std::cout << "  [-h, --h, --help]: print this usage message" << std::endl;
       std::cout << "  [--config_file ?]: specify config file" << std::endl;
-      config.printUsage(std::cout);
+      #warning config.printUsage(std::cout);
       exit(0);
     }
 
@@ -88,23 +88,28 @@ main(int argc, char * argv[]) {
       ILOG << "will register with procmap, instance: " << config.instance();
     }
 
-    // If requested, create IwrfPublisher-s to publish IWRF time series for
-    // both long- and short-pulse data
-    IwrfPublisher * longPulsePublisher = NULL;
-    IwrfPublisher * shortPulsePublisher = NULL;
-    if (config.publish_iwrf()) {
-        longPulsePublisher = new IwrfPublisher(IwrfPublisher::PULSE_LONG, config);
-        shortPulsePublisher = new IwrfPublisher(IwrfPublisher::PULSE_SHORT, config);
-    }
-
-    // Instantiate our HCR_Pentek instance and start our QCoreApplication
+    // Open the Pentek
     HCR_Pentek * hcrPentek = NULL;
     try {
         uint boardNum = 0;
-        hcrPentek = new HCR_Pentek(config, boardNum,
-                                     longPulsePublisher, shortPulsePublisher);
+        hcrPentek = new HCR_Pentek(config, boardNum);
         ILOG << "\n" << hcrPentek->boardInfoString();
+    } catch (std::runtime_error & e) {
+        ELOG << "Exiting on runtime error creating HCR_Pentek: " << e.what();
+    }
 
+    // Now that we have a Pentek, start up the StatusGrabber
+    StatusGrabber monitor(*hcrPentek,
+        "pmc730dHost", 0xbeef,
+        "xmitdHost", 0xbeef,
+        "motionControlHost", 0xbeef);
+
+    // If requested, create IwrfExport
+    IwrfExport * exporter = new IwrfExport(config, monitor);
+    hcrPentek->setExporter(exporter);
+    exporter->start();
+
+    try {
         // Start the QCoreApplication
         app.exec();
     } catch (std::runtime_error & e) {
@@ -113,8 +118,7 @@ main(int argc, char * argv[]) {
 
     PMU_auto_unregister();
     delete(hcrPentek);
-    delete(longPulsePublisher);
-    delete(shortPulsePublisher);
+    delete(exporter);
     ILOG << "hcrdrx finished at " <<
             QDateTime::currentDateTimeUtc().toString(Qt::ISODate).toStdString();
 }
