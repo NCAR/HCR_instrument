@@ -169,7 +169,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( calibration_file,                  "description",                                  "defaultCal.xml" )
         MEMBER_PROGOPT( iwrf_fmq_path,                     "description",                                  "/tmp/fmq/ts/wband/shmem_10000" )
         MEMBER_PROGOPT( use_internal_clock,                "description",                                  true )
-        MEMBER_PROGOPT( clock_mode_125,                    "description",                                  false )
+        MEMBER_PROGOPT( clock_mode_125,                    "description",                                  true )
         MEMBER_PROGOPT( refclk_frequency,                  "description",                                  10.0e6 )
         MEMBER_PROGOPT( rx_frequency,                      "description",                                  156.25e6 )
         MEMBER_PROGOPT( tx_frequency,                      "description",                                  156.25e6 )

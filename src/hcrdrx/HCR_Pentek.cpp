@@ -79,10 +79,12 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
 
     // Initialize
     for (int chan = 0; chan < _adcCount; chan++) {
-        _chanType.push_back(IwrfExport::DataChannelType::H_CHANNEL);
         _pulseData.push_back(new PulseData);
         _pulseSeqNum.push_back(0);
     }
+    _chanType.push_back(IwrfExport::DataChannelType::H_CHANNEL);
+    _chanType.push_back(IwrfExport::DataChannelType::V_CHANNEL);
+    _chanType.push_back(IwrfExport::DataChannelType::UNUSED_CHANNEL);
 
     // Connect our newAdcData() signal to our _acceptAdcData() slot. This
     // may seem strange, but it's how we move data from the top-half interrupt
@@ -545,6 +547,9 @@ HCR_Pentek::_setupDdc() {
     int32_t status;
 
     PMU_auto_register("HCR_Pentek::_setupDdc()");
+
+//    double truncPoint = adcFrequency() / ((1ULL<<32) / ducInterpolation());
+//    double adjustedFreq = std::floor(_config.rx_frequency() / truncPoint) * truncPoint;
 
     // Set up our DDCs
     if (_ddcEnable) {
@@ -1120,7 +1125,7 @@ HCR_Pentek::_setupController()
     block.timers[Controller::Timers::RX_0] = {4*ddcDecimation(), 1000000}; // rx offset <32 triggers a FPGA bug
     block.timers[Controller::Timers::RX_1] = {8*ddcDecimation(), 1000000};
     block.timers[Controller::Timers::RX_2] = {4*ddcDecimation(), 1000000};
-    block.timers[Controller::Timers::TX_PULSE] = {4*ddcDecimation(), 1000000};
+    block.timers[Controller::Timers::TX_PULSE] = {4*ddcDecimation(), 1000};
     block.timers[Controller::Timers::MOD_PULSE] = {4*ddcDecimation(), 1000000};
     block.timers[Controller::Timers::EMS_TRIG] = {4*ddcDecimation(), 1000000};
     block.timers[Controller::Timers::TIMER_7] = {4*ddcDecimation(), 1000000};

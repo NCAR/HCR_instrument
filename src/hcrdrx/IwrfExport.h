@@ -98,6 +98,7 @@ public:
     typedef enum {
         H_CHANNEL,
         V_CHANNEL,
+        UNUSED_CHANNEL,
         N_CHANNELS
     } DataChannelType;
 
