@@ -10,7 +10,7 @@ close $fp
 set RUNDIR [file normalize .]
 set OUID [clock format [file mtime $RUNDIR/p71821.bit] -format %d%H%M]
 set ONAME hcrdrx_20${ODATE}_${OTIME}_${OUID}
-set ODIR [file normalize $RUNDIR/../../../../../bitstreams/$ONAME]
+set ODIR /h/eol/karboski/builds/hcr_p71821/${ONAME}
 
 #Write the flash file
 write_cfgmem -format mcs -interface bpix16 -size 32 -loadbit "up 0x00000000 $RUNDIR/p71821.bit" -checksum -force -file $RUNDIR/p71821.mcs

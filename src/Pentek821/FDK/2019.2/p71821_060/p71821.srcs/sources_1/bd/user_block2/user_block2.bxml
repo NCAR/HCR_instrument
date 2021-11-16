@@ -2,10 +2,10 @@
 <Root MajorVersion="0" MinorVersion="39">
   <CompositeFile CompositeFileTopName="user_block2" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1627376005"/>
-    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1627376005"/>
-    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1627376005"/>
-    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1627376005"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1636761826"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1636761826"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1636761826"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1636761826"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ip/user_block2_irq_placeholder_0/user_block2_irq_placeholder_0.xci" Type="IP">
         <Instance HierarchyPath="irq_placeholder"/>
@@ -367,16 +367,6 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="synth/user_block2.vhd" Type="VHDL">
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-      </File>
-      <File Name="sim/user_block2.vhd" Type="VHDL">
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
       <File Name="ip/user_block2_s00_regslice_0/user_block2_s00_regslice_0.xci" Type="IP">
         <Instance HierarchyPath="csr/axi_interc/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -399,6 +389,16 @@
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
         <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="synth/user_block2.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+      </File>
+      <File Name="sim/user_block2.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="user_block2_ooc.xdc" Type="XDC">

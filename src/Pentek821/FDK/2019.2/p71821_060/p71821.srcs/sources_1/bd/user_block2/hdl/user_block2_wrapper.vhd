@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Tue Jul 27 08:53:24 2021
+--Date        : Sat Nov 13 00:03:45 2021
 --Host        : wind running 64-bit unknown
 --Command     : generate_target user_block2_wrapper.bd
 --Design      : user_block2_wrapper

@@ -32,6 +32,7 @@ void hcr_metadata_injector(
 	uint32_t num_samples = 0;
 	uint32_t sample_counter = 0;
 	uint8_t decimation_counter = 0;
+	uint64_t pulse_sequence_counter = 0;
 	bool terminate = 0;
 
 	pdti_32 data_word;
@@ -58,6 +59,7 @@ void hcr_metadata_injector(
 					sample_counter,
 					decimation_value,
 					decimation_counter,
+					pulse_sequence_counter,
 					o_data,
 					*pos_enc_0,
 					*pos_enc_1,
@@ -108,6 +110,7 @@ bool handle_header(
 		uint32_t& sample_counter,
 		uint8_t& decimation_value,
 		uint8_t& decimation_counter,
+		uint64_t& pulse_sequence_counter,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
@@ -160,7 +163,7 @@ bool handle_header(
 	std::cout << "blockFL: " << ext_flags[16] << ext_flags[17]
 		   << "  xferFL: " << ext_flags[18] << ext_flags[19] << "\n";
 
-	uint32_t header[8];
+	uint32_t header[16];
 	#pragma HLS ARRAY_PARTITION variable=header complete
 	header[0] = 0xba5eba11;
 	header[1] = ext_flags;
@@ -170,9 +173,17 @@ bool handle_header(
 	header[5] = pulse_info.num_samples;
 	header[6] = pulse_info.def.prt[0];
 	header[7] = 0;
+	header[8] = pulse_sequence_counter & 0xFFFFFFFFull;
+	header[9] = (pulse_sequence_counter >> 32) & 0xFFFFFFFFull;
+	header[10] = 0;
+	header[11] = 0;
+	header[12] = 0;
+	header[13] = 0;
+	header[14] = 0;
+	header[15] = 0;
 
 	//Write the pulse header
-	write_header : for(uint32_t x=0; x<8; ++x)
+	write_header : for(uint32_t x=0; x<16; ++x)
 	{
 		#pragma HLS pipeline ii=1
 		pdti_32 header_word = data_word;
@@ -188,6 +199,7 @@ bool handle_header(
 	o_data << data_word;
 	sample_counter = 1;
 	decimation_counter = 1;
+	pulse_sequence_counter ++;
 
 	return false;
 }

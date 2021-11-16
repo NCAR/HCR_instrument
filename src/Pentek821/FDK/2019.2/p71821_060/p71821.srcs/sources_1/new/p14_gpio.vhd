@@ -117,7 +117,7 @@ architecture p14_gpio of p14_gpio is
 begin
 
     --Registered in Pentek logic
-    PPS_FROM_GPIO   <= Pn4_2;
+    PPS_FROM_GPIO   <= P14GPIO_N(0); --Pn4_2
 
     --IOB registers
     --Don't do anything funny here, or it won't use the IOB flop
@@ -142,7 +142,7 @@ begin
             P14GPIO_N(23)   <= Pn4_29;
             P14GPIO_P(23)   <= Pn4_31;
 
-            --Pn4_2;          <= P14GPIO_N(0 );
+            --Pn4_2          <= P14GPIO_N(0 );
             Pn4_4           <= P14GPIO_P(0 );
             Pn4_6           <= P14GPIO_N(1 );
             Pn4_8           <= P14GPIO_P(1 );

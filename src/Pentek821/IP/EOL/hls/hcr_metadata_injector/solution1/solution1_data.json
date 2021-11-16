@@ -13,14 +13,15 @@
     "Speed": "-2-e"
   },
   "HlsSolution": {"Config": [
-      "config_sdx -optimization_level=none",
       "config_sdx -target=none",
       "config_export -description {Adds metadata to a PDTI stream in front of each pulse}",
       "config_export -format=ip_catalog",
       "config_export -library=EOL",
       "config_export -rtl=vhdl",
       "config_export -vendor=NCAR",
-      "config_export -vivado_optimization_level=2"
+      "config_export -vivado_optimization_level=2",
+      "config_export -vivado_phys_opt=place",
+      "config_export -vivado_report_level=0"
     ]},
   "Args": {
     "i_data": {
@@ -669,7 +670,7 @@
       "ModuleName": "hcr_metadata_injector",
       "Instances": [{
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_175"
+          "InstanceName": "grp_handle_header_fu_181"
         }]
     },
     "Info": {
@@ -701,7 +702,7 @@
         "Timing": {
           "Target": "5.00",
           "Uncertainty": "0.62",
-          "Estimate": "1.955"
+          "Estimate": "2.408"
         },
         "Loops": [
           {
@@ -713,15 +714,15 @@
           },
           {
             "Name": "write_header",
-            "TripCount": "8",
-            "Latency": "8",
+            "TripCount": "16",
+            "Latency": "16",
             "PipelineII": "1",
             "PipelineDepth": "2"
           }
         ],
         "Area": {
-          "FF": "1204",
-          "LUT": "718",
+          "FF": "1397",
+          "LUT": "586",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -739,7 +740,7 @@
         "Timing": {
           "Target": "5.00",
           "Uncertainty": "0.62",
-          "Estimate": "2.845"
+          "Estimate": "3.747"
         },
         "Loops": [{
             "Name": "sample_loop",
@@ -749,8 +750,8 @@
             "PipelineDepth": ""
           }],
         "Area": {
-          "FF": "1631",
-          "LUT": "1132",
+          "FF": "1888",
+          "LUT": "1009",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -768,7 +769,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-07-09 21:51:37 GMT",
+    "Time": "2021-11-12 23:59:51 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

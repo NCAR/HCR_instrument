@@ -29,6 +29,7 @@ bool handle_header(
 		uint32_t& sample_counter,
 		uint8_t& decimation_value,
 		uint8_t& decimation_counter,
+		uint64_t& pulse_sequence_counter,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
