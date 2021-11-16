@@ -1,8 +1,0 @@
-Version 0.01
-* Core Created
-Version 1.0
-First Release
-Version 1.1
-8/9/17 Updated User Guide
-Version 1.2 - 10/13/17 Fixed problem when tkeep is 0x0000000F and data is needed on next cycle. Problem fixed for
-        time packed mode but still exists in channel packed mode. Condition should rarely occur in practice. 

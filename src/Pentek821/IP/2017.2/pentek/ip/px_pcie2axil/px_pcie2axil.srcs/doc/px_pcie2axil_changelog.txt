@@ -1,6 +1,0 @@
-Version 0.01
-* Core Created
-Version 1.0
-First Release
-Version 1.1
-8/9/17 - Minor fix. Added missing rqst_len out signal to rx_engine component declaration

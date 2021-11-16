@@ -1,5 +1,0 @@
-# This file is automatically written.  Do not modify.
-proc gen_USERPARAMETER_num_sync_ff_ENABLEMENT {synchronize } {expr $synchronize == true}
-proc gen_USERPARAMETER_has_srst_ENABLEMENT {synchronize } {expr $synchronize == true}
-proc gen_USERPARAMETER_val_at_rst_low_ENABLEMENT {has_srst synchronize } {expr ($has_srst == true) && ($synchronize == true)}
-proc gen_USERPARAMETER_srst_active_high_ENABLEMENT {has_srst synchronize } {expr ($has_srst == true) && ($synchronize == true)}

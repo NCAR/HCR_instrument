@@ -1,4 +1,0 @@
-# This file is automatically written.  Do not modify.
-proc gen_USERPARAMETER_has_gate_trig_se_out_ENABLEMENT {is_single_ended_sig_master } {expr $is_single_ended_sig_master == true }
-proc gen_USERPARAMETER_has_sync_pps_se_out_ENABLEMENT {is_single_ended_sig_master } {expr $is_single_ended_sig_master == true }
-proc gen_USERPARAMETER_has_ssmc_gate_se_out_ENABLEMENT {is_single_ended_sig_master } {expr $is_single_ended_sig_master == true }

@@ -1,2 +1,0 @@
-# This file is automatically written.  Do not modify.
-proc gen_USERPARAMETER_read_latency_ENABLEMENT {has_fifo_read_intrfc } {expr $has_fifo_read_intrfc == true}

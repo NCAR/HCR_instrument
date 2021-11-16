@@ -1,2 +1,0 @@
-# This file is automatically written.  Do not modify.
-proc gen_USERPARAMETER_num_interrupt_src_ENABLEMENT {has_interrupt_regs } {expr $has_interrupt_regs == true}

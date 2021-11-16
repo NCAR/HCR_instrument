@@ -1,8 +1,0 @@
-Version 0.01
-* Core Created
-Version 1.0
-First Release
-Version 2.0
-3/27/17 Added Linked List driven Trigger generation functionality and additional interrupt sources
-Version 2.1
-8/9/17 Added User Guide
