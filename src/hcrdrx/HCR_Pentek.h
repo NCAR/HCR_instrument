@@ -294,7 +294,8 @@ private:
 
     std::vector<IwrfExport::DataChannelType> _chanType;
     std::vector<PulseData*> _pulseData;
-    std::vector<int64_t> _pulseSeqNum;
+    std::vector<uint64_t> _prevPulseSeq;
+    double _rxSampleWidth;
 
 };
 

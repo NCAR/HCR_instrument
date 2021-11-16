@@ -52,7 +52,14 @@ public:
         uint32_t pulseBlockDefinitionNumber;
         uint32_t numSamples;
         uint32_t prt;
-        uint32_t spare;
+        uint32_t spare7;
+        uint64_t pulseSequenceNumber;
+        uint32_t spare10;
+        uint32_t spare11;
+        uint32_t spare12;
+        uint32_t spare13;
+        uint32_t spare14;
+        uint32_t spare15;
     };
 
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
@@ -125,12 +132,12 @@ private :
     const FPGA& fpga;
     const uint32_t base;
 
-    auto write_(auto addr, auto val, auto action)
+    template<typename T> auto write_(uint32_t addr, T val, const std::string& action)
     {
         return fpga.writeLiteRegister_(base+addr, val, action);
     };
 
-    auto read_(auto addr, auto action)
+    auto read_(uint32_t addr, const std::string& action)
     {
         return fpga.readLiteRegister_(base+addr, action);
     };

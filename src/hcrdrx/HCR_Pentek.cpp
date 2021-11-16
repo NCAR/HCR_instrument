@@ -68,7 +68,9 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     _unprocessedDma(_adcCount, 0),
     _maxUnprocessedDma(_adcCount, 0),
     _processedPulses(_adcCount, 0),
-    _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read)
+    _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read),
+    _prevPulseSeq(_adcCount, -1ULL),
+    _rxSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency())
 {
     // Register needed types
     qRegisterMetaType<int32_t>("int32_t");
@@ -77,10 +79,9 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
 
     PMU_auto_register("HCR_Pentek constructor");
 
-    // Initialize
+    // Initialize exporter data structures
     for (int chan = 0; chan < _adcCount; chan++) {
         _pulseData.push_back(new PulseData);
-        _pulseSeqNum.push_back(0);
     }
     _chanType.push_back(IwrfExport::DataChannelType::H_CHANNEL);
     _chanType.push_back(IwrfExport::DataChannelType::V_CHANNEL);
@@ -764,6 +765,11 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
             return;
         }
 
+        if (_prevPulseSeq[chan] + 1 != pulseHeader.pulseSequenceNumber) {
+            ELOG << "Channel " << chan << " pulse sequence jump " << _prevPulseSeq[chan] << " -> " << pulseHeader.pulseSequenceNumber;
+        }
+        _prevPulseSeq[chan] = pulseHeader.pulseSequenceNumber;
+
         // Lookup the pulse definition
         const Controller::PulseBlockDefinition& blockDef = _pulseBlockDefinitions[pulseHeader.pulseBlockDefinitionNumber];
 
@@ -793,10 +799,6 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         PulseData::XmitPolarization_t xmitPol =
             pulseHeader.statusFlags.HV ? PulseData::XMIT_POL_HORIZONTAL : PulseData::XMIT_POL_VERTICAL;
 
-        // Grab the sequence number
-        #warning update fpga to generate this
-        int64_t pulseSeqNum = _pulseSeqNum[chan]++;
-
         // Grab the angle
         #warning fix angle
         float rotMotorAngle = pulseHeader.posEnc0 * 9999999.0;
@@ -818,7 +820,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
 
             // set data in pulse object
             _pulseData[chan]->set(
-                pulseSeqNum,        // int64_t pulseSeqNum,
+                pulseHeader.pulseSequenceNumber, // int64_t pulseSeqNum,
                 dataSec,            // time_t timeSecs,
                 dataNanosec,        // int nanoSecs,
                 chan,               // int channelId,
@@ -829,10 +831,9 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
                 blockDef.prt[1],    // double prt2,
                 pulseHeader.prt,    // double currentPrt,
                 0,                  // double txPulseWidth,
-                0,                  // double sampleWidth,
+                _rxSampleWidth,     // double sampleWidth,
                 nGates,             // int nGates,
                 iqData );           // const std::complex<int16_t> *iq)
-
 
             // Write our current object into the merge queue, and get back another to use
             switch (_chanType[chan]) {
