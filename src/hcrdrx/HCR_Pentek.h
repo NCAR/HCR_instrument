@@ -104,14 +104,6 @@ public:
         return(dacFrequency());
     }
 
-    /// @brief Return the digitizer sample width for the selected ADC channel, s
-    /// Not counting the post-decimation
-    /// @param adcChan the ADC channel of interest
-    /// @return the digitizer sample width for the selected ADC channel, s
-    double digitizer_sample_width(int adcChan) const {
-        return ddcDecimation() / adcFrequency();
-    }
-
 signals:
     /// @brief Signal emitted with data delivered for one of our ADC channels
     /// @param dmaStatus the Navigator status bitmap for the DMA transfer
@@ -250,6 +242,9 @@ private:
     /// @return True iff the metadata are usable
     bool _checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata);
 
+    /// @brief Convert seconds to scheduler counts
+    uint32_t _counts(double seconds) { return std::round(seconds * adcFrequency()); }
+
     /// @brief HCR configuration
     const HcrDrxConfig & _config;
 
@@ -295,7 +290,7 @@ private:
     std::vector<IwrfExport::DataChannelType> _chanType;
     std::vector<PulseData*> _pulseData;
     std::vector<uint64_t> _prevPulseSeq;
-    double _rxSampleWidth;
+    double _digitizerSampleWidth;
 
 };
 

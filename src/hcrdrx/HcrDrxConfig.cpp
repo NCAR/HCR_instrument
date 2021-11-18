@@ -168,6 +168,9 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( radar_id,                          "description",                                  "HCR" )
         MEMBER_PROGOPT( calibration_file,                  "description",                                  "defaultCal.xml" )
         MEMBER_PROGOPT( iwrf_fmq_path,                     "description",                                  "/tmp/fmq/ts/wband/shmem_10000" )
+        MEMBER_PROGOPT( tx_delay,                          "description",                                  336.e-9 )
+        MEMBER_PROGOPT( tx_mod_pulse_delay,                "description",                                  432.e-9 )
+        MEMBER_PROGOPT( rx_delay,                          "description",                                  256.e-9 )
         MEMBER_PROGOPT( use_internal_clock,                "description",                                  true )
         MEMBER_PROGOPT( clock_mode_125,                    "description",                                  true )
         MEMBER_PROGOPT( refclk_frequency,                  "description",                                  10.0e6 )
@@ -219,6 +222,9 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( radar_id );
     os << STREAM_OPT_AND_MEMBER( calibration_file );
     os << STREAM_OPT_AND_MEMBER( iwrf_fmq_path );
+    os << STREAM_OPT_AND_MEMBER( tx_delay );
+    os << STREAM_OPT_AND_MEMBER( tx_mod_pulse_delay );
+    os << STREAM_OPT_AND_MEMBER( rx_delay );
     os << STREAM_OPT_AND_MEMBER( use_internal_clock );
     os << STREAM_OPT_AND_MEMBER( clock_mode_125 );
     os << STREAM_OPT_AND_MEMBER( refclk_frequency );

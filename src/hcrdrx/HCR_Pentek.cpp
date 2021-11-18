@@ -70,7 +70,7 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     _processedPulses(_adcCount, 0),
     _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read),
     _prevPulseSeq(_adcCount, -1ULL),
-    _rxSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency())
+    _digitizerSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency())
 {
     // Register needed types
     qRegisterMetaType<int32_t>("int32_t");
@@ -831,7 +831,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
                 blockDef.prt[1],    // double prt2,
                 pulseHeader.prt,    // double currentPrt,
                 0,                  // double txPulseWidth,
-                _rxSampleWidth,     // double sampleWidth,
+                _digitizerSampleWidth,     // double sampleWidth,
                 nGates,             // int nGates,
                 iqData );           // const std::complex<int16_t> *iq)
 
@@ -1109,27 +1109,44 @@ void
 HCR_Pentek::_setupController()
 {
 
-    //Define block(s) and add them to the pulse definitions
+    double txPulseWidth = 256e-9;
+    int numRxGates = 10000;
+
+    // Define block(s) and add them to the pulse definitions
     Controller::PulseBlockDefinition block =
     {
         .prt = {1564*ddcDecimation(),0},
         .numPulses = 100,
         .blockPostTime = 0,
-        .controlFlags = 0xBEAF,
+        .controlFlags = 0x0,
         .polarizationMode = Controller::PolarizationModes::POL_MODE_H,
         .filterSelectCh0 = 0,
         .filterSelectCh1 = 0,
         .filterSelectCh2 = 0,
         .timers = {}
     };
-    block.timers[Controller::Timers::MASTER_SYNC] = {0, 8*ddcDecimation()};
-    block.timers[Controller::Timers::RX_0] = {4*ddcDecimation(), 1000000}; // rx offset <32 triggers a FPGA bug
-    block.timers[Controller::Timers::RX_1] = {8*ddcDecimation(), 1000000};
-    block.timers[Controller::Timers::RX_2] = {4*ddcDecimation(), 1000000};
-    block.timers[Controller::Timers::TX_PULSE] = {4*ddcDecimation(), 1000};
-    block.timers[Controller::Timers::MOD_PULSE] = {4*ddcDecimation(), 1000000};
-    block.timers[Controller::Timers::EMS_TRIG] = {4*ddcDecimation(), 1000000};
-    block.timers[Controller::Timers::TIMER_7] = {4*ddcDecimation(), 1000000};
+
+    // Master sync is 200 ns long so the PMC730 can't miss it
+    block.timers[Controller::Timers::MASTER_SYNC] = { 0, _counts(200.e-9) };
+
+    // The receive delay cancels out the pipeline delays and brings the burst to the beginning of the data.
+    block.timers[Controller::Timers::RX_0] =        { _counts(_config.rx_delay()), _counts(numRxGates * _digitizerSampleWidth) };
+    block.timers[Controller::Timers::RX_1] =        block.timers[Controller::Timers::RX_0];
+    block.timers[Controller::Timers::RX_2] =        block.timers[Controller::Timers::RX_0];
+
+    // Transmit pulse
+    block.timers[Controller::Timers::TX_PULSE] =    { _counts(_config.tx_delay()), _counts(txPulseWidth) };
+
+    // The width of the modulation pulse is 272 ns + transmit pulse width,
+    // where the 272 ns is the empirically measured rise time until full amplification is achieved.
+    block.timers[Controller::Timers::MOD_PULSE] =   { _counts(_config.tx_mod_pulse_delay()), _counts(272.e-9 + txPulseWidth) };
+
+    // EMS switch timing. Use 800 ns + transmit pulse width + transmit delay
+    block.timers[Controller::Timers::EMS_TRIG] =    { 0, _counts(800.e-9 + txPulseWidth + _config.tx_delay()) };
+
+    // Spare
+    block.timers[Controller::Timers::TIMER_7] =     { 0, 0 };
+
     _pulseBlockDefinitions.push_back(block);
 
     // Write the pulse definitions

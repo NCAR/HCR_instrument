@@ -75,6 +75,9 @@ private:
     OPT_AND_GETTER( std::string,  radar_id );
     OPT_AND_GETTER( std::string,  calibration_file );
     OPT_AND_GETTER( std::string,  iwrf_fmq_path );
+    OPT_AND_GETTER( double,       tx_delay );
+    OPT_AND_GETTER( double,       tx_mod_pulse_delay );
+    OPT_AND_GETTER( double,       rx_delay );
     OPT_AND_GETTER( bool,         use_internal_clock );
     OPT_AND_GETTER( bool,         clock_mode_125 );
     OPT_AND_GETTER( double,       refclk_frequency );
