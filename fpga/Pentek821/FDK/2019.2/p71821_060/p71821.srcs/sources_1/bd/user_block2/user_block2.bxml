@@ -2,10 +2,10 @@
 <Root MajorVersion="0" MinorVersion="39">
   <CompositeFile CompositeFileTopName="user_block2" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1636761826"/>
-    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1636761826"/>
-    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1636761826"/>
-    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1636761826"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1637356921"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1637356921"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1637356921"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1637356921"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ip/user_block2_irq_placeholder_0/user_block2_irq_placeholder_0.xci" Type="IP">
         <Instance HierarchyPath="irq_placeholder"/>
@@ -256,7 +256,7 @@
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="ip/user_block2_xlslice_0_1/user_block2_xlslice_0_1.xci" Type="IP">
-        <Instance HierarchyPath="csr/xlslice_1"/>
+        <Instance HierarchyPath="csr/fake_PPS"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>

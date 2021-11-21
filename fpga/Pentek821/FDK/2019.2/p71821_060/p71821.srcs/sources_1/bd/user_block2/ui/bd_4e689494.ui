@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.685057",
-   "Default View_TopLeft":"-104,-158",
+   "Default View_ScaleFactor":"0.842529",
+   "Default View_TopLeft":"-103,-249",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
 #  -string -flagsOSRD
@@ -17,14 +17,14 @@ preplace inst map_data -pg 1 -lvl 2 -x 570 -y 80 -defaultsOSRD
 preplace inst pulse_fir -pg 1 -lvl 3 -x 960 -y 200 -defaultsOSRD
 preplace netloc s_axis_adc_pdti_aclk_1 1 0 4 50 330 400 200 730 300 1170
 preplace netloc s_axis_adc_pdti_aresetn_1 1 0 4 40 340 410 360 750 310 1180
-preplace netloc axis_subset_converter_1_M_AXIS 1 2 1 730 80n
-preplace netloc coef_1 1 0 3 NJ 160 NJ 160 NJ
-preplace netloc axis_subset_converter_0_M_AXIS 1 2 1 740 200n
 preplace netloc axis_subset_converter_0_M_AXIS2 1 4 1 N 200
 preplace netloc axis_broadcaster_0_M00_AXIS 1 1 1 390 60n
-preplace netloc pulse_fir_0_M_AXIS_DATA 1 3 1 N 180
 preplace netloc axis_data_fifo_0_M_AXIS 1 0 1 NJ 230
+preplace netloc coef_1 1 0 3 NJ 160 NJ 160 NJ
+preplace netloc axis_subset_converter_0_M_AXIS 1 2 1 740 200n
+preplace netloc pulse_fir_0_M_AXIS_DATA 1 3 1 N 180
 preplace netloc axis_broadcaster_0_M01_AXIS 1 1 1 N 260
+preplace netloc axis_subset_converter_1_M_AXIS 1 2 1 730 80n
 levelinfo -pg 1 0 230 570 960 1340 1550
 pagesize -pg 1 -db -bbox -sgen -110 0 1650 370
 "

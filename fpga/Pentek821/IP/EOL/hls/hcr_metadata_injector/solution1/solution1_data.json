@@ -263,9 +263,9 @@
       "impl\/verilog\/hcr_metadata_injector.v"
     ],
     "Misc": ["impl\/misc\/logo.png"],
-    "DesignXml": "\/home\/karboski\/git\/HCR_instrument\/src\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.autopilot\/db\/hcr_metadata_injector.design.xml",
-    "DebugDir": "\/home\/karboski\/git\/HCR_instrument\/src\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.debug",
-    "ProtoInst": ["\/home\/karboski\/git\/HCR_instrument\/src\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.debug\/hcr_metadata_injector.protoinst"]
+    "DesignXml": "\/home\/karboski\/git\/HCR_instrument\/fpga\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.autopilot\/db\/hcr_metadata_injector.design.xml",
+    "DebugDir": "\/home\/karboski\/git\/HCR_instrument\/fpga\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.debug",
+    "ProtoInst": ["\/home\/karboski\/git\/HCR_instrument\/fpga\/Pentek821\/IP\/EOL\/hls\/hcr_metadata_injector\/solution1\/.debug\/hcr_metadata_injector.protoinst"]
   },
   "SubcoreInfo": {
     "HasXpmMemory": false,
@@ -670,7 +670,7 @@
       "ModuleName": "hcr_metadata_injector",
       "Instances": [{
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_181"
+          "InstanceName": "grp_handle_header_fu_335"
         }]
     },
     "Info": {
@@ -721,8 +721,8 @@
           }
         ],
         "Area": {
-          "FF": "1397",
-          "LUT": "586",
+          "FF": "1398",
+          "LUT": "595",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -740,18 +740,25 @@
         "Timing": {
           "Target": "5.00",
           "Uncertainty": "0.62",
-          "Estimate": "3.747"
+          "Estimate": "2.745"
         },
         "Loops": [{
-            "Name": "sample_loop",
+            "Name": "pulse_loop",
             "TripCount": "",
             "Latency": "",
             "PipelineII": "",
-            "PipelineDepth": ""
+            "PipelineDepth": "",
+            "Loops": [{
+                "Name": "sample_loop",
+                "TripCount": "",
+                "Latency": "",
+                "PipelineII": "1",
+                "PipelineDepth": "3"
+              }]
           }],
         "Area": {
-          "FF": "1888",
-          "LUT": "1009",
+          "FF": "1896",
+          "LUT": "1232",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -769,7 +776,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-11-12 23:59:51 GMT",
+    "Time": "2021-11-19 21:19:36 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

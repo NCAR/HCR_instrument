@@ -568,6 +568,7 @@ end component dataio_intrfc_wrapper;
 component  user_block1_wrapper
  port (
     dac_sync_from_adc : out STD_LOGIC;
+    controller_running : in STD_LOGIC;
     filter_select_ch0 : in STD_LOGIC_VECTOR ( 2 downto 0 );
     filter_select_ch1 : in STD_LOGIC_VECTOR ( 2 downto 0 );
     filter_select_ch2 : in STD_LOGIC_VECTOR ( 2 downto 0 );
@@ -1689,11 +1690,12 @@ port map (
 user_block1_i: user_block1_wrapper
 port map (
       user1_irq                                 => user1_irq,
-      filter_select_ch0 => filter_select_ch0,
-      filter_select_ch1 => filter_select_ch1,
-      filter_select_ch2 => filter_select_ch2,
-      mt_pulse          => mt_pulse,
-      dac_sync_from_adc => dac_sync_from_adc,
+      controller_running => controller_running,
+      filter_select_ch0  => filter_select_ch0,
+      filter_select_ch1  => filter_select_ch1,
+      filter_select_ch2  => filter_select_ch2,
+      mt_pulse           => mt_pulse,
+      dac_sync_from_adc  => dac_sync_from_adc,
       -- Input ADC AXI4-Stream Interfaces 
       s_axis_adc_pdti_aclk                      => axis_adc_pdti_aclk,
       s_axis_adc_pdti_aresetn                   => axis_adc_pdti_aresetn,

@@ -18,6 +18,7 @@ entity pdti_adc_tweak is
   port (
     ACLK                : in  std_logic;
     ARESETN             : in  std_logic;
+    SYNC_IN             : in  std_logic;
     MT_PULSE            : in  std_logic_vector(7 downto 0);
     FILTER_SELECT       : in  std_logic_vector(2 downto 0);
     S_AXIS_PDTI_TDATA   : in  std_logic_vector(tdata_width-1 downto 0);
@@ -33,11 +34,8 @@ entity pdti_adc_tweak is
 end entity;
 
 architecture pdti_adc_tweak of pdti_adc_tweak is
-    signal GATE_i   : std_logic := '0';
-    signal GATE_reg : std_logic := '0';
+    signal SYNC_IN_reg : std_logic := '0';
 begin
-
-    GATE_i <= MT_PULSE(mt_pulse_bit);
 
     OUTPUT : process(ACLK)
     begin
@@ -52,10 +50,10 @@ begin
             M_AXIS_PDTI_TVALID      <= S_AXIS_PDTI_TVALID;
 
             --Override gate and sync
-            GATE_reg                <= GATE_i;
+            SYNC_IN_reg             <= SYNC_IN;
             M_AXIS_PDTI_TUSER       <= S_AXIS_PDTI_TUSER;
-            M_AXIS_PDTI_TUSER(64)   <= GATE_i;
-            M_AXIS_PDTI_TUSER(72)   <= GATE_i and not GATE_reg; --Sync
+            M_AXIS_PDTI_TUSER(64)   <= MT_PULSE(mt_pulse_bit); --Gate
+            M_AXIS_PDTI_TUSER(72)   <= SYNC_IN and not SYNC_IN_reg; --Sync
             M_AXIS_PDTI_TUSER(31 downto 29) <= FILTER_SELECT;
             
         end if;

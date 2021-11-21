@@ -41,16 +41,16 @@ preplace netloc hcr_controller_0_filter_select_ch0_V 1 1 2 460J 760 820J
 preplace netloc hcr_controller_0_filter_select_ch1_V 1 1 2 450J 770 NJ
 preplace netloc hcr_controller_0_filter_select_ch2_V 1 1 2 470J 790 NJ
 preplace netloc control_hvn 1 1 2 480J 750 810J
+preplace netloc hcr_controller_0_pulse_metadata_ch0_V 1 1 2 NJ 440 NJ
 preplace netloc hcr_controller_0_coef_ch0_V_V 1 1 1 450 60n
+preplace netloc hcr_controller_0_coef_ch2_V_V 1 1 1 470 340n
 preplace netloc validate_kludge_2_M_AXIS 1 2 1 NJ 360
-preplace netloc axis_subset_converter_0_M_AXIS 1 2 1 NJ 80
+preplace netloc validate_kludge_1_M_AXIS 1 2 1 NJ 220
+preplace netloc pulse_metadata_1 1 1 2 460J 470 810J
+preplace netloc hcr_controller_0_pulse_metadata_ch2_V 1 1 2 480J 460 NJ
 preplace netloc hcr_controller_0_coef_ch1_V_V 1 1 1 460 200n
 preplace netloc Conn1 1 0 1 NJ 570
-preplace netloc pulse_metadata_1 1 1 2 460J 470 810J
-preplace netloc validate_kludge_1_M_AXIS 1 2 1 NJ 220
-preplace netloc hcr_controller_0_pulse_metadata_ch2_V 1 1 2 480J 460 NJ
-preplace netloc hcr_controller_0_coef_ch2_V_V 1 1 1 470 340n
-preplace netloc hcr_controller_0_pulse_metadata_ch0_V 1 1 2 NJ 440 NJ
+preplace netloc axis_subset_converter_0_M_AXIS 1 2 1 NJ 80
 levelinfo -pg 1 0 240 650 840
 pagesize -pg 1 -db -bbox -sgen -160 0 1040 880
 "
