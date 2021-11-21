@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2111122359"
+set Revision    "2111192119"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -66,7 +66,7 @@ set sdx_kernel_type ""
 set sdx_kernel_files {}
 set enable_xo_gen 0
 set sdaccel_dir [file join [pwd] .. kernel]
-set solution_dir "/home/karboski/git/HCR_instrument/src/Pentek821/IP/EOL/hls/hcr_metadata_injector/solution1"
+set solution_dir "/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector/solution1"
 set debug_dir [file join $solution_dir .debug]
 set xo_hls_files_dir ""
 set hdl_module_list {regslice_core

@@ -34,69 +34,80 @@ void hcr_metadata_injector(
 	uint8_t decimation_counter = 0;
 	uint64_t pulse_sequence_counter = 0;
 	bool terminate = 0;
-
+	bool previous_gate_bit = 0;
 	pdti_32 data_word;
 
-	//Note: This loop needs to have an iteration latency of 3 when
-	//it doesn't call handle_header.
-	sample_loop : while(!terminate)
+	// Loop forever
+	pulse_loop : while(!terminate)
 	{
 
-		assert_readable(i_data) >> data_word;
-
-		bool sync_bit = data_word.user[PDTI_SYNC];
-
-		//Handle the first sample of a pulse
-		if(sync_bit)
+		// Each iteration of this pipelined loop handles one sample. To keep the ii low,
+		// the loop only handles 'normal' samples. If it detects the start of the pulse,
+		// it bails out to the outer loop so that handle_header can be called.
+		sample_loop : while(true)
 		{
-			terminate = handle_header(
-					pulse_metadata,
-					data_word,
-					in_a_pulse,
-					in_a_xfer_bundle,
-					break_after_pulse,
-					num_samples,
-					sample_counter,
-					decimation_value,
-					decimation_counter,
-					pulse_sequence_counter,
-					o_data,
-					*pos_enc_0,
-					*pos_enc_1,
-					*flags
-				);
-		}
-		else
-		{
+		#pragma HLS pipeline ii=1
 
-			//Check if we are done with the pulse and/or group
-			if (sample_counter == num_samples)
+			assert_readable(i_data) >> data_word;
+
+			//If this is the start of the pulse, bail out and call handle_header.
+			//Pulse start is determined by edge-detecting the gate.
+			if(data_word.user[PDTI_GATE] && !previous_gate_bit) break;
+
+			handle_regular_sample :
 			{
-				in_a_pulse = 0;
-				if(break_after_pulse)
+
+				//Check if we are done with the pulse and/or group
+				if (sample_counter == num_samples)
 				{
-					in_a_xfer_bundle = 0;
+					in_a_pulse = 0;
+					if(break_after_pulse)
+					{
+						in_a_xfer_bundle = 0;
+					}
 				}
+
+				bool dec_keep = (decimation_counter == decimation_value);
+
+				//Write the word, omitting ungated samples inside a pulse bundle
+				if((in_a_pulse && dec_keep) || !in_a_xfer_bundle)
+				{
+					pdti_32 output_data_word = data_word;
+					output_data_word.user[PDTI_GATE] = in_a_pulse;
+					output_data_word.user[PDTI_SYNC] = 0;
+					o_data << output_data_word;
+					decimation_counter = 1;
+				}
+				else
+				{
+					decimation_counter++;
+				}
+
+				if(dec_keep) sample_counter++;
+
+				previous_gate_bit = data_word.user[PDTI_GATE];
 			}
-
-			bool dec_keep = (decimation_counter == decimation_value);
-
-			//Write the word, omitting ungated samples inside a pulse bundle
-			if((in_a_pulse && dec_keep) || !in_a_xfer_bundle)
-			{
-				data_word.user[PDTI_GATE] = in_a_pulse;
-				data_word.user[PDTI_SYNC] = 0;
-				decimation_counter = 1;
-				o_data << data_word;
-			}
-			else
-			{
-				decimation_counter++;
-			}
-
-			if(dec_keep) sample_counter++;
-
 		}
+
+		//If we bailed out of sample_loop, then we need to handle
+		//the special case of the first sample of a pulse.
+		terminate = handle_header(
+				pulse_metadata,
+				data_word,
+				in_a_pulse,
+				in_a_xfer_bundle,
+				break_after_pulse,
+				num_samples,
+				sample_counter,
+				decimation_value,
+				decimation_counter,
+				pulse_sequence_counter,
+				previous_gate_bit,
+				o_data,
+				*pos_enc_0,
+				*pos_enc_1,
+				*flags
+			);
 	}
 }
 
@@ -111,6 +122,7 @@ bool handle_header(
 		uint8_t& decimation_value,
 		uint8_t& decimation_counter,
 		uint64_t& pulse_sequence_counter,
+		bool& previous_gate_bit,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
@@ -150,6 +162,7 @@ bool handle_header(
 	//Update flags
 	in_a_pulse = 1;
 	in_a_xfer_bundle = 1;
+	previous_gate_bit = 1;
 	break_after_pulse = pulse_info.last_pulse_in_xfer;
 	num_samples = pulse_info.num_samples;
 	decimation_value = pulse_info.post_decimation;
@@ -203,3 +216,4 @@ bool handle_header(
 
 	return false;
 }
+

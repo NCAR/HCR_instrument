@@ -19,7 +19,7 @@ int main()
 	uint32_t cfg_num_pulses_per_xfer = 3;
 	uint32_t cfg_enabled_channel_vector = 7;
 	pulse_definition cfg_pulse_sequence[N_PULSE_DEFS] {};
-	bool sync_pulse = 1;
+	bool pps = 1;
 	volatile ap_uint<N_TIMERS> mt_pulse;
 	volatile ap_uint<32> control_flags;
 	volatile bool control_hvn;
@@ -70,6 +70,7 @@ int main()
 			adc_data.data = 256*65536 + x*256 + k;
 			adc_data.user++;
 			adc_data.user[PDTI_SYNC] = (k==0);
+			adc_data.user[PDTI_GATE] = (k<15);
 			i_data << adc_data;
 		}
 	}
@@ -77,6 +78,7 @@ int main()
 	//Add an extra sample to let the testbench finish
 	adc_data.user++;
 	adc_data.user[PDTI_SYNC] = 1;
+	adc_data.user[PDTI_GATE] = 1;
 	i_data << adc_data;
 
 	for(int set=0; set<N_COEF_SETS; ++set)
@@ -113,7 +115,7 @@ int main()
 		pulse_metadata_ch0,
 		pulse_metadata_ch1,
 		pulse_metadata_ch2,
-		&sync_pulse
+		&pps
 	);
 
 	pulse_exec_definition term;
@@ -130,10 +132,34 @@ int main()
 	);
 
 	std::cout << "\n";
+	int numSamples = 0;
+	bool fail = false;
 	while(!o_data.empty())
 	{
 		pdti_32 odata = o_data.read();
-		std::cout << std::hex << "user: " << odata.user << " data: " << odata.data << "\n";
+		if (odata.user[64]) {
+			if (odata.data != 0xba5eba11) { std::cout << "BAD HEADER!\n"; fail = true; break; }
+			std::cout << "\n\nPulse: " << std::hex << odata.data;
+			for(int x=1;x<16;x++) {
+				if(o_data.empty()) { std::cout << "INCOMPLETE HEADER!\n"; fail = true; break; }
+				pdti_32 odata = o_data.read();
+				if (!odata.user[64]) { std::cout << "INCOMPLETE HEADER!\n"; fail = true; break; }
+				std::cout << ", " << std::hex << odata.data;
+				if (x==5) numSamples = odata.data;
+			}
+			std::cout << "\n";
+			for(int x=0; x<numSamples; x++) {
+				if(o_data.empty()) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
+				if (!odata.user[64]) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
+				odata = o_data.read();
+				if(odata.data == 0x75757575) { std::cout << "BAD DATA!\n"; fail = true; break; }
+				//std::cout << std::hex << "user: " << odata.user << " data: " << odata.data << "\n";
+				std::cout << std::hex << odata.data << "\n";
+			}
+		}
+		else {
+			std::cout << "EOB ";
+		}
 	}
 
 	while(!coef_ch0.empty()) std::cout << coef_ch0.read() << " "; std::cout << "\n";
@@ -142,4 +168,8 @@ int main()
 
 	while(!pulse_metadata_ch1.empty()) pulse_metadata_ch1.read();
 	while(!pulse_metadata_ch2.empty()) pulse_metadata_ch2.read();
+
+	if(fail) return -1;
+
+	return 0;
 }

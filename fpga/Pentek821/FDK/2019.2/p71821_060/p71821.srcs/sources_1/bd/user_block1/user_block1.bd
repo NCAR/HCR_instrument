@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x789587E5DF667F6C",
+      "boundary_crc": "0xB38DE29180089E49",
       "device": "xcku060-ffva1156-2-e",
       "name": "user_block1",
       "synth_flow_mode": "Hierarchical",
@@ -16,11 +16,13 @@
         "px_scalar_reg_0": "",
         "px_scalar_reg_1": ""
       },
-      "axilite_place_holder": "",
-      "irq_placeholder": "",
       "pdti_adc_tweak_0": "",
       "pdti_adc_tweak_1": "",
-      "pdti_adc_tweak_2": ""
+      "pdti_adc_tweak_2": "",
+      "placeholder": {
+        "axilite_place_holder": "",
+        "irq_placeholder": ""
+      }
     },
     "interface_ports": {
       "s_axi_csr": {
@@ -688,6 +690,9 @@
       },
       "dac_sync_from_adc": {
         "direction": "O"
+      },
+      "controller_running": {
+        "direction": "I"
       }
     },
     "components": {
@@ -1007,7 +1012,12 @@
             "ports": [
               "mt_pulse",
               "xlslice_0/Din"
-            ]
+            ],
+            "hdl_attributes": {
+              "DEBUG": {
+                "value": "true"
+              }
+            }
           },
           "vio_0_probe_out0": {
             "ports": [
@@ -1032,27 +1042,6 @@
               "xlslice_0/Dout",
               "px_scalar_reg_0/d"
             ]
-          }
-        }
-      },
-      "axilite_place_holder": {
-        "vlnv": "pentek.com:px_ip:px_s_axil_plc_hldr:1.0",
-        "xci_name": "user_block1_px_s_axil_plc_hldr_0_0",
-        "parameters": {
-          "address_width": {
-            "value": "26"
-          }
-        }
-      },
-      "irq_placeholder": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "xci_name": "user_block1_xlconstant_0_0",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          },
-          "CONST_WIDTH": {
-            "value": "2"
           }
         }
       },
@@ -1230,6 +1219,9 @@
                 "value_src": "constant"
               }
             }
+          },
+          "SYNC_IN": {
+            "direction": "I"
           },
           "MT_PULSE": {
             "direction": "I",
@@ -1432,6 +1424,9 @@
               }
             }
           },
+          "SYNC_IN": {
+            "direction": "I"
+          },
           "MT_PULSE": {
             "direction": "I",
             "left": "7",
@@ -1633,6 +1628,9 @@
               }
             }
           },
+          "SYNC_IN": {
+            "direction": "I"
+          },
           "MT_PULSE": {
             "direction": "I",
             "left": "7",
@@ -1653,49 +1651,111 @@
             "direction": "O"
           }
         }
+      },
+      "placeholder": {
+        "interface_ports": {
+          "s_axi_csr": {
+            "mode": "Slave",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+          }
+        },
+        "ports": {
+          "s_axi_csr_aclk": {
+            "type": "clk",
+            "direction": "I"
+          },
+          "s_axi_csr_aresetn": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "user1_irq": {
+            "direction": "O",
+            "left": "1",
+            "right": "0"
+          }
+        },
+        "components": {
+          "axilite_place_holder": {
+            "vlnv": "pentek.com:px_ip:px_s_axil_plc_hldr:1.0",
+            "xci_name": "user_block1_px_s_axil_plc_hldr_0_0",
+            "parameters": {
+              "address_width": {
+                "value": "26"
+              }
+            }
+          },
+          "irq_placeholder": {
+            "vlnv": "xilinx.com:ip:xlconstant:1.1",
+            "xci_name": "user_block1_xlconstant_0_0",
+            "parameters": {
+              "CONST_VAL": {
+                "value": "0"
+              },
+              "CONST_WIDTH": {
+                "value": "2"
+              }
+            }
+          }
+        },
+        "interface_nets": {
+          "s_axi_csr_1": {
+            "interface_ports": [
+              "s_axi_csr",
+              "axilite_place_holder/s_axi_csr"
+            ]
+          }
+        },
+        "nets": {
+          "s_axi_csr_aclk_1": {
+            "ports": [
+              "s_axi_csr_aclk",
+              "axilite_place_holder/s_axi_csr_aclk"
+            ]
+          },
+          "s_axi_csr_aresetn_1": {
+            "ports": [
+              "s_axi_csr_aresetn",
+              "axilite_place_holder/s_axi_csr_aresetn"
+            ]
+          },
+          "xlconstant_0_dout": {
+            "ports": [
+              "irq_placeholder/dout",
+              "user1_irq"
+            ]
+          }
+        }
       }
     },
     "interface_nets": {
-      "pdti_adc_tweak_2_M_AXIS_PDTI": {
-        "interface_ports": [
-          "m_axis_adc_ch2_pdti",
-          "pdti_adc_tweak_2/M_AXIS_PDTI"
-        ]
-      },
       "s_axis_adc_ch0_pdti_1": {
         "interface_ports": [
           "s_axis_adc_ch0_pdti",
           "pdti_adc_tweak_0/S_AXIS_PDTI"
         ]
       },
-      "pdti_adc_tweak_0_M_AXIS_PDTI": {
+      "pdti_adc_tweak_2_M_AXIS_PDTI": {
         "interface_ports": [
-          "m_axis_adc_ch0_pdti",
-          "pdti_adc_tweak_0/M_AXIS_PDTI"
-        ]
-      },
-      "s_axis_adc_ch2_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch2_pdti",
-          "pdti_adc_tweak_2/S_AXIS_PDTI"
+          "m_axis_adc_ch2_pdti",
+          "pdti_adc_tweak_2/M_AXIS_PDTI"
         ]
       },
       "s_axi_csr_1": {
         "interface_ports": [
           "s_axi_csr",
-          "axilite_place_holder/s_axi_csr"
-        ]
-      },
-      "s_axis_dac_pdti_1": {
-        "interface_ports": [
-          "s_axis_dac_pdti",
-          "dac/s_axis_dac_pdti"
+          "placeholder/s_axi_csr"
         ]
       },
       "s_axis_adc_ch1_pdti_1": {
         "interface_ports": [
           "s_axis_adc_ch1_pdti",
           "pdti_adc_tweak_1/S_AXIS_PDTI"
+        ]
+      },
+      "s_axis_dac_pdti_1": {
+        "interface_ports": [
+          "s_axis_dac_pdti",
+          "dac/s_axis_dac_pdti"
         ]
       },
       "pdti_adc_tweak_1_M_AXIS_PDTI": {
@@ -1714,27 +1774,21 @@
             "value": "true"
           }
         }
+      },
+      "pdti_adc_tweak_0_M_AXIS_PDTI": {
+        "interface_ports": [
+          "m_axis_adc_ch0_pdti",
+          "pdti_adc_tweak_0/M_AXIS_PDTI"
+        ]
+      },
+      "s_axis_adc_ch2_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch2_pdti",
+          "pdti_adc_tweak_2/S_AXIS_PDTI"
+        ]
       }
     },
     "nets": {
-      "s_axi_csr_aclk_1": {
-        "ports": [
-          "s_axi_csr_aclk",
-          "axilite_place_holder/s_axi_csr_aclk"
-        ]
-      },
-      "s_axi_csr_aresetn_1": {
-        "ports": [
-          "s_axi_csr_aresetn",
-          "axilite_place_holder/s_axi_csr_aresetn"
-        ]
-      },
-      "xlconstant_0_dout": {
-        "ports": [
-          "irq_placeholder/dout",
-          "user1_irq"
-        ]
-      },
       "s_axis_adc_pdti_aclk_1": {
         "ports": [
           "s_axis_adc_pdti_aclk",
@@ -1751,7 +1805,15 @@
           "pdti_adc_tweak_0/MT_PULSE",
           "pdti_adc_tweak_1/MT_PULSE",
           "pdti_adc_tweak_2/MT_PULSE"
-        ]
+        ],
+        "hdl_attributes": {
+          "DEBUG": {
+            "value": "true"
+          },
+          "MARK_DEBUG": {
+            "value": "true"
+          }
+        }
       },
       "s_axis_adc_pdti_aresetn_1": {
         "ports": [
@@ -1795,6 +1857,48 @@
         "ports": [
           "pdti_adc_tweak_0/SYNC",
           "dac_sync_from_adc"
+        ],
+        "hdl_attributes": {
+          "DEBUG": {
+            "value": "true"
+          },
+          "MARK_DEBUG": {
+            "value": "true"
+          }
+        }
+      },
+      "controller_running": {
+        "ports": [
+          "controller_running",
+          "pdti_adc_tweak_0/SYNC_IN",
+          "pdti_adc_tweak_2/SYNC_IN",
+          "pdti_adc_tweak_1/SYNC_IN"
+        ],
+        "hdl_attributes": {
+          "DEBUG": {
+            "value": "true"
+          },
+          "MARK_DEBUG": {
+            "value": "true"
+          }
+        }
+      },
+      "xlconstant_0_dout": {
+        "ports": [
+          "placeholder/user1_irq",
+          "user1_irq"
+        ]
+      },
+      "s_axi_csr_aresetn_1": {
+        "ports": [
+          "s_axi_csr_aresetn",
+          "placeholder/s_axi_csr_aresetn"
+        ]
+      },
+      "s_axi_csr_aclk_1": {
+        "ports": [
+          "s_axi_csr_aclk",
+          "placeholder/s_axi_csr_aclk"
         ]
       }
     },
@@ -1805,8 +1909,8 @@
             "range": "64M",
             "width": "32",
             "segments": {
-              "SEG_px_s_axil_plc_hldr_0_reg0": {
-                "address_block": "/axilite_place_holder/s_axi_csr/reg0",
+              "SEG_axilite_place_holder_reg0": {
+                "address_block": "/placeholder/axilite_place_holder/s_axi_csr/reg0",
                 "offset": "0x3000000",
                 "range": "8M"
               }

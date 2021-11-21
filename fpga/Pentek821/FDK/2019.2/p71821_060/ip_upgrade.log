@@ -1,6 +1,195 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 21:21:09 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111191638) to (Rev. 2111192119)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 21:21:09 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111191638) to (Rev. 2111192119)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 21:21:09 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111191638) to (Rev. 2111192119)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 16:46:51 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111190033) to (Rev. 2111191638)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 16:46:51 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111190033) to (Rev. 2111191638)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 16:46:51 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111190033) to (Rev. 2111191638)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 00:34:52 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111122359) to (Rev. 2111190033)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 00:34:52 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111122359) to (Rev. 2111190033)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Fri Nov 19 00:34:52 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111122359) to (Rev. 2111190033)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 | Date         : Sat Nov 13 00:01:15 2021
 | Host         : wind running 64-bit unknown
 | Command      : upgrade_ip
