@@ -666,10 +666,10 @@ TransmitControl::_attenuatedModeAvailable() {
 HcrPmc730::HmcOperationMode
 TransmitControl::_EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode) {
     switch (mode) {
-    case HcrPmc730::HMC_MODE_H_HV:
+//    case HcrPmc730::HMC_MODE_H_HV:
     case HcrPmc730::HMC_MODE_H_HV_ATTENUATED:
         return(HcrPmc730::HMC_MODE_H_HV_ATTENUATED);
-    case HcrPmc730::HMC_MODE_V_HV:
+//    case HcrPmc730::HMC_MODE_V_HV:
     case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
         return(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
     case HcrPmc730::HMC_MODE_BENCH_TEST:

@@ -54,12 +54,12 @@ public:
 
     /// Enumerated type for HMC operation modes
     typedef enum _HmcOperationMode {
-        /// 0 = transmit H, receive H and V
-        HMC_MODE_H_HV = 0,
-        /// 1 = transmit V, receive H and V
-        HMC_MODE_V_HV = 1,
-        /// 2 = transmit alternating H and V, receive H and V
-        HMC_MODE_HV_HV = 2,
+        /// 0 = reset the HMC
+        HMC_MODE_RESET = 0,
+        /// 1 = unused
+        HMC_MODE_SPARE = 1,
+        /// 2 = transmit according to drx scheduler, receive H and V
+        HMC_MODE_TRANSMIT = 2,
         /// 3 = transmit H, receive H and V (attenuated)
         HMC_MODE_H_HV_ATTENUATED = 3,
         /// 4 = noise source calibration
@@ -68,8 +68,8 @@ public:
         HMC_MODE_V_HV_ATTENUATED = 5,
         /// 6 = bench test
         HMC_MODE_BENCH_TEST = 6,
-        /// 7 = unused
-        HMC_MODE_UNUSED_7 = 7,
+        /// 7 = transmit V, receive H and V, enable noise source
+        HMC_MODE_V_HV_ISOL_NOISE = 7,
         /// mode count (and a representation for an invalid mode)
         HMC_NMODES = 8,
         HMC_MODE_INVALID = HMC_NMODES

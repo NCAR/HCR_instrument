@@ -47,14 +47,14 @@ LOGGING("HcrPmc730");
 // HMC mode names (mapped to the HmcOperationMode enum)
 std::string
 HcrPmc730::HmcModeNames[] = {
-        "tx H, rx HV",
-        "tx V, rx HV",
-        "tx HV, rx HV",
+        "reset HMC",
+        "unused (1)",
+        "tx per schedule, rx HV",
         "tx H, rx HV (ATTENUATED)",
         "Noise Source Cal",
         "tx V, rx HV (ATTENUATED)",
         "Bench Test",
-        "unused (7)",
+        "tx V, isol, noise",
         "INVALID"
 };
 
