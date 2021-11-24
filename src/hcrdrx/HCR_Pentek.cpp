@@ -200,16 +200,13 @@ HCR_Pentek::_startRadar() {
     status = NAV_GlobalGateOpen(_boardHandle, NAV_CHANNEL_TYPE_DAC);
     _AbortCtorOnNavStatusError(status, "DAC NAV_GlobalGateOpen");
 
+    // Start the radar controller and run the default schedule
     uint32_t enabledChannelVector = 0;
-    for(int chan=0; chan<_adcCount; chan++) {
-        if (_config.enable_rx(chan)) {
-            enabledChannelVector |= (1<<chan);
-        }
-    }
+    for(int chan=0; chan<_adcCount; chan++)
+        enabledChannelVector |= ( (_config.enable_rx(chan)?1:0)<<chan );
 
-    // Start the radar controller
     _controller.run(0,                              // sequenceStartIndex,
-                    _pulseBlockDefinitions.size(),  // sequenceLength,
+                    0,                              // sequenceStopIndex,
                     ddcDecimation(),                // ddcDcimation,
                     _config.final_decimation(),     // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
@@ -219,8 +216,8 @@ HCR_Pentek::_startRadar() {
     // Generate a fake PPS if desired
     if ( !_config.start_on_1pps() ) {
         usleep(1000);
-        writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Toggle debug PPS source 1");
-        writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Toggle debug PPS source 0");
+        writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Override PPS to 1");
+        writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Clear override PPS");
     }
 
     ILOG << "Pentek start time: " << QDateTime::fromTime_t(_radarStartSecond)
@@ -403,7 +400,7 @@ HCR_Pentek::_setupBoard() const {
     writeLiteRegister_(BLOCK2_GPR_BASE+12, ddcDecimation(), "Setting HMC clock divider");
 
     //Clear the debug PPS
-    writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Clear debug PPS");
+    writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Clear override PPS");
 
     //Toggle the (negative-polarity) reset for user block 2
     writeLiteRegister_(BLOCK2_GPR_BASE, 0, "Resetting user block 2");
@@ -799,10 +796,13 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         PulseData::XmitPolarization_t xmitPol =
             pulseHeader.statusFlags.HV ? PulseData::XMIT_POL_HORIZONTAL : PulseData::XMIT_POL_VERTICAL;
 
-        // Grab the angle
-        #warning fix angle
-        float rotMotorAngle = pulseHeader.posEnc0 * 9999999.0;
-        float tiltMotorAngle = pulseHeader.posEnc1 * 9999999.0;
+        // Grab the angles
+        float rotMotorAngle = (360. / 400000) * pulseHeader.posEnc0;
+        float tiltMotorAngle = (360. / 480000) * pulseHeader.posEnc1;
+        // Move angle2 into range [-180,180]
+        if (tiltMotorAngle > 180.0) {
+            tiltMotorAngle -= 360.0;
+        }
 
         // Check the size of the buffer
         if(dataBufOffsetBytes + nGates*sizeof(IQData) > metadata->validBytes) {
@@ -1109,20 +1109,26 @@ void
 HCR_Pentek::_setupController()
 {
 
-    double txPulseWidth = 256e-9;
-    int numRxGates = 10000;
+    // The first three pulse blocks are defined by _config and define the basic transmit modes.
+    // Block zero is also used for the attenuated and calibration ops modes.
+    auto txPulseWidth   = _config.default_tx_pulse_width();
+    auto numRxGates     = _config.default_rx_gates();
+    auto numPulses      = _config.default_pulses();
+    auto prt1           = _config.default_prt1();
+    auto prt2           = _config.default_prt2();
+    auto blockPostTime  = _config.default_post_time();
+    auto filterSelect   = _config.default_filter();
 
     // Define block(s) and add them to the pulse definitions
     Controller::PulseBlockDefinition block =
     {
-        .prt = {1564*ddcDecimation(),0},
-        .numPulses = 100,
-        .blockPostTime = 0,
+        .prt = {_counts(prt1), _counts(prt2)},
+        .numPulses = numPulses,
+        .blockPostTime = _counts(blockPostTime),
         .controlFlags = 0x0,
-        .polarizationMode = Controller::PolarizationModes::POL_MODE_H,
-        .filterSelectCh0 = 0,
-        .filterSelectCh1 = 0,
-        .filterSelectCh2 = 0,
+        .filterSelectCh0 = filterSelect,
+        .filterSelectCh1 = filterSelect,
+        .filterSelectCh2 = filterSelect,
         .timers = {}
     };
 
@@ -1147,6 +1153,12 @@ HCR_Pentek::_setupController()
     // Spare
     block.timers[Controller::Timers::TIMER_7] =     { 0, 0 };
 
+    // Write the three default transmit modes
+    block.polarizationMode = Controller::PolarizationModes::POL_MODE_H,
+    _pulseBlockDefinitions.push_back(block);
+    block.polarizationMode = Controller::PolarizationModes::POL_MODE_V,
+    _pulseBlockDefinitions.push_back(block);
+    block.polarizationMode = Controller::PolarizationModes::POL_MODE_HHVV,
     _pulseBlockDefinitions.push_back(block);
 
     // Write the pulse definitions
@@ -1161,5 +1173,20 @@ HCR_Pentek::_setupController()
         ReadFilterCoefsFromFile(_config.pulse_filter_file(chan), coefs);
         _controller.writeFilterCoefs(coefs, chan);
     }
+}
+
+void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t scheduleStopIndex)
+{
+    _controller.changeSchedule(scheduleStartIndex, scheduleStopIndex);
+}
+
+void HCR_Pentek::zeroMotorCounts()
+{
+    ILOG << "Zeroing the motor counts.";
+
+    uint32_t originalVal = readLiteRegister_(BLOCK2_GPR_BASE+8, "Read GPR2");
+    uint32_t mask = 0x2;
+    writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal | mask, "Zero motor count");
+    writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal & (~mask), "Clear zeao motor count");
 }
 

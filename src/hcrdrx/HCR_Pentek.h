@@ -104,6 +104,14 @@ public:
         return(dacFrequency());
     }
 
+    /// @brief Change the schedule that the controller is running
+    /// @param scheduleStartIndex first pulse block definition in the schedule
+    /// @param scheduleStopIndex last pulse block definition in the schedule
+    void changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t scheduleStopIndex);
+
+    /// @brief Zero the rot/tilt motor counts
+    void zeroMotorCounts();
+
 signals:
     /// @brief Signal emitted with data delivered for one of our ADC channels
     /// @param dmaStatus the Navigator status bitmap for the DMA transfer

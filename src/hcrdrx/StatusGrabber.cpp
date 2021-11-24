@@ -29,6 +29,7 @@
  */
 
 #include "StatusGrabber.h"
+#include "HCR_Pentek.h"
 
 #include <HmcModeChange.h>
 #include <QDateTime>
@@ -46,7 +47,7 @@
 
 LOGGING("StatusGrabber")
 
-StatusGrabber::StatusGrabber(const HCR_Pentek & pentek,
+StatusGrabber::StatusGrabber(HCR_Pentek & pentek,
         std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort,
         std::string motionControlHost, int motionControlPort) :
@@ -122,6 +123,8 @@ StatusGrabber::run() {
 
 void
 StatusGrabber::_getStatus() {
+    ELOG << "RC ";
+    _pentek.changeControllerSchedule(1,1);
     _getPmc730Status();
     _getDrxStatus();
     _getXmitStatus();

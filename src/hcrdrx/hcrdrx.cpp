@@ -23,6 +23,7 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 #include "HCR_Pentek.h"
 #include "HcrDrxConfig.h"
+#include "../HcrSharedResources.h"
 
 #include <csignal>
 #include <cstring>
@@ -33,6 +34,8 @@
 #include <QtNetwork/QUdpSocket>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
+#include <xmlrpc-c/registry.hpp>
+#include <QXmlRpcServerAbyss.h>
 
 LOGGING("hcrdrx")
 
@@ -42,6 +45,42 @@ quitHandler(int signum) {
     ILOG << "Exiting on " << strsignal(signum) << " signal";
     QCoreApplication::instance()->quit();
 }
+
+/// xmlrpc_c::method to get status from the hcrdrx process.
+class GetStatusMethod : public xmlrpc_c::method {
+public:
+    GetStatusMethod(HCR_Pentek& hcrPentek)
+        : _hcrPentek(hcrPentek) {
+        this->_signature = "S:";
+        this->_help = "This method returns the latest status from hcrdrx.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        DLOG << "Received 'getStatus' command";
+        // Get the latest status from shared memory, and convert it to
+        // an xmlrpc_c::value_struct dictionary.
+        *retvalP = DrxStatus(_hcrPentek).toXmlRpcValue();
+    }
+private:
+    HCR_Pentek& _hcrPentek;
+};
+
+/// xmlrpc_c::method to zero the Pentek's position counts for the two reflector motors.
+class ZeroPentekMotorCountsMethod : public xmlrpc_c::method {
+public:
+    ZeroPentekMotorCountsMethod(HCR_Pentek& hcrPentek)
+        : _hcrPentek(hcrPentek) {
+        this->_signature = "n:";
+        this->_help = "This method causes the Pentek to zero its counts for the reflector drives.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        ILOG << "Received 'zeroPentekMotorCounts' command";
+        _hcrPentek.zeroMotorCounts();
+    }
+private:
+    HCR_Pentek& _hcrPentek;
+};
 
 int
 main(int argc, char * argv[]) {
@@ -88,37 +127,44 @@ main(int argc, char * argv[]) {
       ILOG << "will register with procmap, instance: " << config.instance();
     }
 
-    // Open the Pentek
-    HCR_Pentek * hcrPentek = NULL;
     try {
-        uint boardNum = 0;
-        hcrPentek = new HCR_Pentek(config, boardNum);
-        ILOG << "\n" << hcrPentek->boardInfoString();
-    } catch (std::runtime_error & e) {
-        ELOG << "Exiting on runtime error creating HCR_Pentek: " << e.what();
-    }
 
-    // Now that we have a Pentek, start up the StatusGrabber
-    StatusGrabber monitor(*hcrPentek,
-        "pmc730dHost", 0xbeef,
-        "xmitdHost", 0xbeef,
-        "motionControlHost", 0xbeef);
+        // Open the Pentek
+        HCR_Pentek hcrPentek(config, 0);
+        ILOG << "\n" << hcrPentek.boardInfoString();
 
-    // If requested, create IwrfExport
-    IwrfExport * exporter = new IwrfExport(config, monitor);
-    hcrPentek->setExporter(exporter);
-    exporter->start();
+        // Initialize our RPC server using port HCRDRX_PORT
+        xmlrpc_c::registry myRegistry;
+        myRegistry.addMethod("getStatus", new GetStatusMethod(hcrPentek));
+        myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod(hcrPentek));
+        QXmlRpcServerAbyss rpcServer(&myRegistry, HCRDRX_PORT);
 
-    try {
+        std::string xmitdHost("archiver");
+        std::string pmc730dHost("localhost");
+        std::string motionControlHost("localhost");
+
+        // Create and start the status grabber
+        StatusGrabber statusGrabber(hcrPentek,
+            pmc730dHost, HCRPMC730DAEMON_PORT,
+            xmitdHost, HCR_XMITD_PORT,
+            motionControlHost, MOTIONCONTROLDAEMON_PORT);
+        statusGrabber.start();
+        QObject::connect(&app, SIGNAL(aboutToQuit()), &statusGrabber, SLOT(quit()));
+
+        // Create and start the IwrfExport
+        IwrfExport exporter(config, statusGrabber);
+        hcrPentek.setExporter(&exporter);
+        exporter.start();
+
         // Start the QCoreApplication
         app.exec();
+
     } catch (std::runtime_error & e) {
         ELOG << "Exiting on runtime error: " << e.what();
     }
 
     PMU_auto_unregister();
-    delete(hcrPentek);
-    delete(exporter);
+
     ILOG << "hcrdrx finished at " <<
             QDateTime::currentDateTimeUtc().toString(Qt::ISODate).toStdString();
 }

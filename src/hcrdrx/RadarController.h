@@ -92,8 +92,7 @@ private :
         GIE                                     = XHCR_CONTROLLER_CFG_BUS_ADDR_GIE,
         IER                                     = XHCR_CONTROLLER_CFG_BUS_ADDR_IER,
         ISR                                     = XHCR_CONTROLLER_CFG_BUS_ADDR_ISR,
-        PULSE_SEQUENCE_START_INDEX              = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA,
-        PULSE_SEQUENCE_LENGTH                   = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA,
+        PULSE_SEQUENCE_START_STOP_INDEXES       = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA,
         NUM_PULSES_TO_EXECUTE                   = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA,
         TOTAL_DECIMATION                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_TOTAL_DECIMATION_DATA,
         POST_DECIMATION                         = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_POST_DECIMATION_DATA,
@@ -149,7 +148,7 @@ public:
         if (index>=NUM_PULSE_SEQUENCE_DEFINITIONS)
             throw std::runtime_error("Too many pulse definitions");
 
-	//These checks are HCR-specific. They avoid drifting relative to the 156.25MHz IF
+        //These checks are HCR-specific. They avoid drifting relative to the 156.25MHz IF
         if (blockDef.prt[0] % 8 != 0)
             throw std::runtime_error("PRT0 must be a multiple of 64ns");
 
@@ -218,8 +217,14 @@ public:
         }
     }
 
+    void changeSchedule(uint32_t sequenceStartIndex, uint32_t sequenceStopIndex)
+    {
+        // This will update the next time it loops throught the schedule
+        write_(PULSE_SEQUENCE_START_STOP_INDEXES, (sequenceStopIndex<<16)|sequenceStartIndex,  "Writing controller sched index");
+    }
+
     void run(   uint32_t sequenceStartIndex,
-                uint32_t sequenceLength,
+                uint32_t sequenceStopIndex,
                 uint32_t ddcDecimation,
                 uint32_t postDecimation,
                 uint32_t numPulsesPerXfer,
@@ -228,8 +233,7 @@ public:
             )
     {
         uint32_t totalDecimation = ddcDecimation * postDecimation;
-        write_(PULSE_SEQUENCE_START_INDEX, sequenceStartIndex,  "Writing controller start index");
-        write_(PULSE_SEQUENCE_LENGTH,      sequenceLength,      "Writing controller sequence length");
+        changeSchedule(sequenceStartIndex, sequenceStopIndex);
         write_(NUM_PULSES_TO_EXECUTE,      numPulsesToExecute,  "Writing num pulses to execute");
         write_(TOTAL_DECIMATION,           totalDecimation,     "Writing total decimation");
         write_(POST_DECIMATION,            postDecimation,      "Writing post decimation");
@@ -240,10 +244,14 @@ public:
 
     void halt()
     {
-        //If not running, this has no effect.
-        //If running, it will schedule at most one more pulse, check this limit, and finish.
+        // If not running, this has no effect.
+        // If running, it will schedule at most one more pulse, check this limit, and finish.
         write_(NUM_PULSES_TO_EXECUTE, 1, "Writing num pulses to execute");
+
+        // Spin until halted
+        while ( ! (read_(CTRL, "Poll ap_idle bit") & 0x4) ) usleep(100);
     };
+
 };
 
 #endif // RADAR_CONTROLLER_H_

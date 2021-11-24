@@ -170,7 +170,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( iwrf_fmq_path,                     "description",                                  "/tmp/fmq/ts/wband/shmem_10000" )
         MEMBER_PROGOPT( tx_delay,                          "description",                                  336.e-9 )
         MEMBER_PROGOPT( tx_mod_pulse_delay,                "description",                                  432.e-9 )
-        MEMBER_PROGOPT( rx_delay,                          "description",                                  256.e-9 )
+        MEMBER_PROGOPT( rx_delay,                          "description",                                  2304.e-9 )
         MEMBER_PROGOPT( use_internal_clock,                "description",                                  true )
         MEMBER_PROGOPT( clock_mode_125,                    "description",                                  true )
         MEMBER_PROGOPT( refclk_frequency,                  "description",                                  10.0e6 )
@@ -185,6 +185,13 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( enable_rx_ch_0,                    "description",                                  true )
         MEMBER_PROGOPT( enable_rx_ch_1,                    "description",                                  true )
         MEMBER_PROGOPT( enable_rx_ch_2,                    "description",                                  false )
+        MEMBER_PROGOPT( default_tx_pulse_width,            "description",                                  256e-9 )
+        MEMBER_PROGOPT( default_rx_gates,                  "description",                                  770 )
+        MEMBER_PROGOPT( default_pulses,                    "description",                                  100 )
+        MEMBER_PROGOPT( default_prt1,                      "description",                                  101.376e-6 )
+        MEMBER_PROGOPT( default_prt2,                      "description",                                  0.0 ) //300.0e-6 )
+        MEMBER_PROGOPT( default_post_time,                 "description",                                  0.0 )
+        MEMBER_PROGOPT( default_filter,                    "description",                                  0 )
         ;
 
     // Apply the command_line_parser with no arguments to initialize the
@@ -239,6 +246,13 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_0 );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_1 );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_2 );
+    os << STREAM_OPT_AND_MEMBER( default_tx_pulse_width );
+    os << STREAM_OPT_AND_MEMBER( default_rx_gates );
+    os << STREAM_OPT_AND_MEMBER( default_pulses );
+    os << STREAM_OPT_AND_MEMBER( default_prt1 );
+    os << STREAM_OPT_AND_MEMBER( default_prt2 );
+    os << STREAM_OPT_AND_MEMBER( default_post_time );
+    os << STREAM_OPT_AND_MEMBER( default_filter );
 
     return(os.str());
 }
