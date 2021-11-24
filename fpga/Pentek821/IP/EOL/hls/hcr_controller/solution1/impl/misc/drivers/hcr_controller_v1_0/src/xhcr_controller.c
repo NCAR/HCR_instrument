@@ -73,37 +73,20 @@ void XHcr_controller_DisableAutoRestart(XHcr_controller *InstancePtr) {
     XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_AP_CTRL, 0);
 }
 
-void XHcr_controller_Set_cfg_pulse_sequence_start_index(XHcr_controller *InstancePtr, u32 Data) {
+void XHcr_controller_Set_cfg_pulse_sequence_start_stop_indexes(XHcr_controller *InstancePtr, u32 Data) {
     Xil_AssertVoid(InstancePtr != NULL);
     Xil_AssertVoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
 
-    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA, Data);
+    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA, Data);
 }
 
-u32 XHcr_controller_Get_cfg_pulse_sequence_start_index(XHcr_controller *InstancePtr) {
+u32 XHcr_controller_Get_cfg_pulse_sequence_start_stop_indexes(XHcr_controller *InstancePtr) {
     u32 Data;
 
     Xil_AssertNonvoid(InstancePtr != NULL);
     Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
 
-    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA);
-    return Data;
-}
-
-void XHcr_controller_Set_cfg_pulse_sequence_length(XHcr_controller *InstancePtr, u32 Data) {
-    Xil_AssertVoid(InstancePtr != NULL);
-    Xil_AssertVoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
-
-    XHcr_controller_WriteReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA, Data);
-}
-
-u32 XHcr_controller_Get_cfg_pulse_sequence_length(XHcr_controller *InstancePtr) {
-    u32 Data;
-
-    Xil_AssertNonvoid(InstancePtr != NULL);
-    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
-
-    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA);
+    Data = XHcr_controller_ReadReg(InstancePtr->Cfg_bus_BaseAddress, XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA);
     return Data;
 }
 

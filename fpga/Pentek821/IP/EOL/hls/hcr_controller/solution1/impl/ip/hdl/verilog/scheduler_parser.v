@@ -19,7 +19,6 @@ module scheduler_parser (
         start_out,
         start_write,
         cfg_pulse_sequence_s,
-        cfg_pulse_sequence_l,
         cfg_num_pulses_to_ex,
         cfg_total_decimation,
         cfg_post_decimation,
@@ -132,55 +131,56 @@ module scheduler_parser (
         pulse_queue_s_V_write
 );
 
-parameter    ap_ST_fsm_state1 = 49'd1;
-parameter    ap_ST_fsm_state2 = 49'd2;
-parameter    ap_ST_fsm_state3 = 49'd4;
-parameter    ap_ST_fsm_state4 = 49'd8;
-parameter    ap_ST_fsm_state5 = 49'd16;
-parameter    ap_ST_fsm_state6 = 49'd32;
-parameter    ap_ST_fsm_state7 = 49'd64;
-parameter    ap_ST_fsm_state8 = 49'd128;
-parameter    ap_ST_fsm_state9 = 49'd256;
-parameter    ap_ST_fsm_state10 = 49'd512;
-parameter    ap_ST_fsm_state11 = 49'd1024;
-parameter    ap_ST_fsm_state12 = 49'd2048;
-parameter    ap_ST_fsm_state13 = 49'd4096;
-parameter    ap_ST_fsm_state14 = 49'd8192;
-parameter    ap_ST_fsm_state15 = 49'd16384;
-parameter    ap_ST_fsm_state16 = 49'd32768;
-parameter    ap_ST_fsm_state17 = 49'd65536;
-parameter    ap_ST_fsm_state18 = 49'd131072;
-parameter    ap_ST_fsm_state19 = 49'd262144;
-parameter    ap_ST_fsm_state20 = 49'd524288;
-parameter    ap_ST_fsm_state21 = 49'd1048576;
-parameter    ap_ST_fsm_state22 = 49'd2097152;
-parameter    ap_ST_fsm_state23 = 49'd4194304;
-parameter    ap_ST_fsm_state24 = 49'd8388608;
-parameter    ap_ST_fsm_state25 = 49'd16777216;
-parameter    ap_ST_fsm_state26 = 49'd33554432;
-parameter    ap_ST_fsm_state27 = 49'd67108864;
-parameter    ap_ST_fsm_state28 = 49'd134217728;
-parameter    ap_ST_fsm_state29 = 49'd268435456;
-parameter    ap_ST_fsm_state30 = 49'd536870912;
-parameter    ap_ST_fsm_state31 = 49'd1073741824;
-parameter    ap_ST_fsm_state32 = 49'd2147483648;
-parameter    ap_ST_fsm_state33 = 49'd4294967296;
-parameter    ap_ST_fsm_state34 = 49'd8589934592;
-parameter    ap_ST_fsm_state35 = 49'd17179869184;
-parameter    ap_ST_fsm_state36 = 49'd34359738368;
-parameter    ap_ST_fsm_state37 = 49'd68719476736;
-parameter    ap_ST_fsm_state38 = 49'd137438953472;
-parameter    ap_ST_fsm_state39 = 49'd274877906944;
-parameter    ap_ST_fsm_state40 = 49'd549755813888;
-parameter    ap_ST_fsm_state41 = 49'd1099511627776;
-parameter    ap_ST_fsm_state42 = 49'd2199023255552;
-parameter    ap_ST_fsm_state43 = 49'd4398046511104;
-parameter    ap_ST_fsm_state44 = 49'd8796093022208;
-parameter    ap_ST_fsm_state45 = 49'd17592186044416;
-parameter    ap_ST_fsm_state46 = 49'd35184372088832;
-parameter    ap_ST_fsm_state47 = 49'd70368744177664;
-parameter    ap_ST_fsm_state48 = 49'd140737488355328;
-parameter    ap_ST_fsm_state49 = 49'd281474976710656;
+parameter    ap_ST_fsm_state1 = 50'd1;
+parameter    ap_ST_fsm_state2 = 50'd2;
+parameter    ap_ST_fsm_state3 = 50'd4;
+parameter    ap_ST_fsm_state4 = 50'd8;
+parameter    ap_ST_fsm_state5 = 50'd16;
+parameter    ap_ST_fsm_state6 = 50'd32;
+parameter    ap_ST_fsm_state7 = 50'd64;
+parameter    ap_ST_fsm_state8 = 50'd128;
+parameter    ap_ST_fsm_state9 = 50'd256;
+parameter    ap_ST_fsm_state10 = 50'd512;
+parameter    ap_ST_fsm_state11 = 50'd1024;
+parameter    ap_ST_fsm_state12 = 50'd2048;
+parameter    ap_ST_fsm_state13 = 50'd4096;
+parameter    ap_ST_fsm_state14 = 50'd8192;
+parameter    ap_ST_fsm_state15 = 50'd16384;
+parameter    ap_ST_fsm_state16 = 50'd32768;
+parameter    ap_ST_fsm_state17 = 50'd65536;
+parameter    ap_ST_fsm_state18 = 50'd131072;
+parameter    ap_ST_fsm_state19 = 50'd262144;
+parameter    ap_ST_fsm_state20 = 50'd524288;
+parameter    ap_ST_fsm_state21 = 50'd1048576;
+parameter    ap_ST_fsm_state22 = 50'd2097152;
+parameter    ap_ST_fsm_state23 = 50'd4194304;
+parameter    ap_ST_fsm_state24 = 50'd8388608;
+parameter    ap_ST_fsm_state25 = 50'd16777216;
+parameter    ap_ST_fsm_state26 = 50'd33554432;
+parameter    ap_ST_fsm_state27 = 50'd67108864;
+parameter    ap_ST_fsm_state28 = 50'd134217728;
+parameter    ap_ST_fsm_state29 = 50'd268435456;
+parameter    ap_ST_fsm_state30 = 50'd536870912;
+parameter    ap_ST_fsm_state31 = 50'd1073741824;
+parameter    ap_ST_fsm_state32 = 50'd2147483648;
+parameter    ap_ST_fsm_state33 = 50'd4294967296;
+parameter    ap_ST_fsm_state34 = 50'd8589934592;
+parameter    ap_ST_fsm_state35 = 50'd17179869184;
+parameter    ap_ST_fsm_state36 = 50'd34359738368;
+parameter    ap_ST_fsm_state37 = 50'd68719476736;
+parameter    ap_ST_fsm_state38 = 50'd137438953472;
+parameter    ap_ST_fsm_state39 = 50'd274877906944;
+parameter    ap_ST_fsm_state40 = 50'd549755813888;
+parameter    ap_ST_fsm_state41 = 50'd1099511627776;
+parameter    ap_ST_fsm_state42 = 50'd2199023255552;
+parameter    ap_ST_fsm_state43 = 50'd4398046511104;
+parameter    ap_ST_fsm_state44 = 50'd8796093022208;
+parameter    ap_ST_fsm_state45 = 50'd17592186044416;
+parameter    ap_ST_fsm_state46 = 50'd35184372088832;
+parameter    ap_ST_fsm_state47 = 50'd70368744177664;
+parameter    ap_ST_fsm_state48 = 50'd140737488355328;
+parameter    ap_ST_fsm_state49 = 50'd281474976710656;
+parameter    ap_ST_fsm_state50 = 50'd562949953421312;
 
 input   ap_clk;
 input   ap_rst;
@@ -192,8 +192,7 @@ output   ap_idle;
 output   ap_ready;
 output   start_out;
 output   start_write;
-input  [7:0] cfg_pulse_sequence_s;
-input  [7:0] cfg_pulse_sequence_l;
+input  [31:0] cfg_pulse_sequence_s;
 input  [31:0] cfg_num_pulses_to_ex;
 input  [31:0] cfg_total_decimation;
 input  [31:0] cfg_post_decimation;
@@ -348,137 +347,136 @@ reg pulse_queue_s_V_write;
 reg    real_start;
 reg    start_once_reg;
 reg    ap_done_reg;
-(* fsm_encoding = "none" *) reg   [48:0] ap_CS_fsm;
+(* fsm_encoding = "none" *) reg   [49:0] ap_CS_fsm;
 wire    ap_CS_fsm_state1;
 reg    internal_ap_ready;
 reg    coef_ch0_V_V_TDATA_blk_n;
 wire    ap_CS_fsm_state2;
-wire   [0:0] icmp_ln151_fu_876_p2;
+wire   [0:0] icmp_ln147_fu_865_p2;
 wire    ap_CS_fsm_state3;
 wire    ap_CS_fsm_state5;
 wire    ap_CS_fsm_state6;
 reg    coef_ch1_V_V_TDATA_blk_n;
 reg    coef_ch2_V_V_TDATA_blk_n;
 reg    pulse_queue_0_V_blk_n;
-wire    ap_CS_fsm_state47;
-reg   [0:0] trunc_ln791_reg_1620;
-wire    ap_CS_fsm_state49;
-reg    pulse_queue_1_V_blk_n;
-reg   [0:0] tmp_reg_1624;
-reg    pulse_queue_2_V_blk_n;
-reg   [0:0] p_Result_s_reg_1628;
-reg    pulse_queue_s_V_blk_n;
-wire    ap_CS_fsm_state46;
-reg    ap_block_state1;
-wire   [31:0] cfg_pulse_sequence_l_1_fu_868_p1;
-reg   [31:0] cfg_pulse_sequence_l_1_reg_1550;
-wire   [31:0] cfg_pulse_sequence_s_1_fu_872_p1;
-reg   [31:0] cfg_pulse_sequence_s_1_reg_1555;
-wire   [3:0] set_fu_882_p2;
-reg   [3:0] set_reg_1563;
-reg    ap_block_state2_io;
-wire   [23:0] tmp_V_fu_888_p1;
-wire   [7:0] pulse_post_decimatio_fu_895_p1;
-reg   [7:0] pulse_post_decimatio_reg_1612;
-wire   [0:0] trunc_ln791_fu_898_p1;
-wire   [9:0] sub_ln158_1_fu_945_p2;
-reg   [9:0] sub_ln158_1_reg_1632;
-reg    ap_block_state3_io;
-wire   [5:0] coef_fu_957_p2;
-reg   [5:0] coef_reg_1640;
-wire    ap_CS_fsm_state4;
-wire   [0:0] icmp_ln156_fu_951_p2;
-wire   [23:0] tmp_V_1_fu_985_p1;
-reg    ap_block_state5_io;
-wire   [23:0] tmp_V_2_fu_990_p1;
-wire   [23:0] tmp_V_3_fu_995_p1;
-reg   [31:0] seq_idx_1_load_reg_1675;
-wire    ap_CS_fsm_state7;
-wire   [0:0] icmp_ln172_fu_1003_p2;
-reg   [0:0] icmp_ln172_reg_1681;
-reg   [31:0] cfg_pulse_sequence_p_8_reg_1810;
-wire    ap_CS_fsm_state8;
-reg   [31:0] pulse_definition_num_reg_1818;
-reg   [31:0] pulse_definition_blo_reg_1827;
-reg   [31:0] pulse_definition_con_reg_1832;
-reg   [31:0] pulse_definition_pol_reg_1840;
-reg   [31:0] pulse_definition_fil_reg_1845;
-reg   [31:0] pulse_definition_fil_1_reg_1853;
-reg   [31:0] pulse_definition_fil_2_reg_1861;
-reg   [31:0] pulse_definition_tim_reg_1869;
-reg   [31:0] pulse_definition_tim_1_reg_1877;
-reg   [31:0] pulse_definition_tim_2_reg_1886;
-reg   [31:0] pulse_definition_tim_3_reg_1895;
-reg   [31:0] pulse_definition_tim_4_reg_1904;
-reg   [31:0] pulse_definition_tim_5_reg_1912;
-reg   [31:0] pulse_definition_tim_6_reg_1920;
-reg   [31:0] pulse_definition_tim_7_reg_1928;
-reg   [31:0] pulse_definition_tim_8_reg_1936;
-reg   [31:0] pulse_definition_tim_9_reg_1944;
-reg   [31:0] pulse_definition_tim_10_reg_1952;
-reg   [31:0] pulse_definition_tim_11_reg_1960;
-reg   [31:0] pulse_definition_tim_12_reg_1968;
-reg   [31:0] pulse_definition_tim_13_reg_1976;
-reg   [31:0] pulse_definition_tim_14_reg_1984;
-reg   [31:0] pulse_definition_tim_15_reg_1992;
-wire   [7:0] pulse_sequence_index_fu_1045_p2;
-reg   [7:0] pulse_sequence_index_reg_2000;
-wire   [31:0] add_ln187_fu_1050_p2;
-reg   [31:0] add_ln187_reg_2008;
-wire   [0:0] icmp_ln198_fu_1056_p2;
-reg   [0:0] icmp_ln198_reg_2013;
-wire   [31:0] add_ln207_fu_1062_p2;
-reg   [31:0] add_ln207_reg_2017;
-wire   [31:0] add_ln207_1_fu_1068_p2;
-reg   [31:0] add_ln207_1_reg_2023;
-wire   [31:0] add_ln207_2_fu_1074_p2;
-reg   [31:0] add_ln207_2_reg_2029;
-wire   [31:0] pulse_rep_fu_1085_p2;
-reg   [31:0] pulse_rep_reg_2038;
-wire    ap_CS_fsm_state9;
-wire   [0:0] pulse_first_pulse_in_fu_1091_p2;
-reg   [0:0] pulse_first_pulse_in_reg_2043;
-wire   [0:0] icmp_ln180_fu_1080_p2;
-wire   [0:0] pulse_last_pulse_in_s_fu_1097_p2;
-reg   [0:0] pulse_last_pulse_in_s_reg_2051;
-wire   [31:0] tmp_def_block_post_t_fu_1117_p3;
-reg   [31:0] tmp_def_block_post_t_reg_2065;
-wire    ap_CS_fsm_state10;
-wire   [31:0] pulse_definition_prt_q0;
-reg   [31:0] pulse_definition_prt_4_reg_2073;
-wire   [31:0] pulse_def_polarizati_fu_1131_p1;
-wire   [31:0] sub_ln210_fu_1147_p2;
-reg   [31:0] sub_ln210_reg_2086;
-wire   [31:0] sub_ln210_1_fu_1164_p2;
-reg   [31:0] sub_ln210_1_reg_2091;
-wire   [31:0] sub_ln210_2_fu_1181_p2;
-reg   [31:0] sub_ln210_2_reg_2096;
-wire   [0:0] pulse_first_pulse_in_1_fu_1201_p2;
-reg   [0:0] pulse_first_pulse_in_1_reg_2101;
-wire    ap_CS_fsm_state45;
-wire   [31:0] num_pulses_scheduled_5_fu_1207_p2;
-reg   [31:0] num_pulses_scheduled_5_reg_2109;
-wire   [0:0] icmp_ln226_fu_1213_p2;
-reg   [0:0] icmp_ln226_reg_2114;
-wire   [31:0] pulse_num_samples_fu_1227_p3;
-reg   [31:0] pulse_num_samples_reg_2119;
-wire   [31:0] pulse_num_samples_1_fu_1241_p3;
-reg   [31:0] pulse_num_samples_1_reg_2124;
-wire   [31:0] pulse_num_samples_2_fu_1255_p3;
-reg   [31:0] pulse_num_samples_2_reg_2129;
-wire   [0:0] and_ln217_fu_1281_p2;
-reg   [0:0] and_ln217_reg_2135;
-wire   [0:0] pulse_last_pulse_in_1_fu_1287_p2;
-reg   [0:0] pulse_last_pulse_in_1_reg_2139;
-wire   [31:0] select_ln226_fu_1292_p3;
-reg   [31:0] select_ln226_reg_2146;
-wire   [1:0] hhvv_index_V_fu_1467_p2;
-reg   [1:0] hhvv_index_V_reg_2151;
-reg    ap_block_state47;
-wire   [7:0] staggered_prt_index_fu_1473_p2;
-reg   [7:0] staggered_prt_index_reg_2156;
-wire   [7:0] select_ln262_fu_1514_p3;
 wire    ap_CS_fsm_state48;
+reg   [0:0] trunc_ln791_reg_1593;
+wire    ap_CS_fsm_state50;
+reg    pulse_queue_1_V_blk_n;
+reg   [0:0] tmp_reg_1597;
+reg    pulse_queue_2_V_blk_n;
+reg   [0:0] p_Result_s_reg_1601;
+reg    pulse_queue_s_V_blk_n;
+wire    ap_CS_fsm_state47;
+reg    ap_block_state1;
+wire   [3:0] set_fu_871_p2;
+reg   [3:0] set_reg_1543;
+reg    ap_block_state2_io;
+wire   [23:0] tmp_V_fu_877_p1;
+wire   [7:0] pulse_post_decimatio_fu_884_p1;
+reg   [7:0] pulse_post_decimatio_reg_1585;
+wire   [0:0] trunc_ln791_fu_887_p1;
+wire   [9:0] sub_ln154_1_fu_934_p2;
+reg   [9:0] sub_ln154_1_reg_1605;
+reg    ap_block_state3_io;
+wire   [5:0] coef_fu_946_p2;
+reg   [5:0] coef_reg_1613;
+wire    ap_CS_fsm_state4;
+wire   [0:0] icmp_ln152_fu_940_p2;
+wire   [23:0] tmp_V_1_fu_974_p1;
+reg    ap_block_state5_io;
+wire   [23:0] tmp_V_2_fu_979_p1;
+wire   [23:0] tmp_V_3_fu_984_p1;
+wire   [16:0] zext_ln172_fu_1003_p1;
+wire    ap_CS_fsm_state7;
+wire   [16:0] zext_ln172_1_fu_1007_p1;
+reg   [16:0] zext_ln172_1_reg_1653;
+wire    ap_CS_fsm_state8;
+wire   [0:0] icmp_ln172_fu_1011_p2;
+reg   [31:0] cfg_pulse_sequence_p_8_reg_1786;
+wire    ap_CS_fsm_state9;
+reg   [31:0] pulse_definition_num_reg_1794;
+reg   [31:0] pulse_definition_blo_reg_1803;
+reg   [31:0] pulse_definition_con_reg_1808;
+reg   [31:0] pulse_definition_pol_reg_1816;
+reg   [31:0] pulse_definition_fil_reg_1821;
+reg   [31:0] pulse_definition_fil_1_reg_1829;
+reg   [31:0] pulse_definition_fil_2_reg_1837;
+reg   [31:0] pulse_definition_tim_reg_1845;
+reg   [31:0] pulse_definition_tim_1_reg_1853;
+reg   [31:0] pulse_definition_tim_2_reg_1862;
+reg   [31:0] pulse_definition_tim_3_reg_1871;
+reg   [31:0] pulse_definition_tim_4_reg_1880;
+reg   [31:0] pulse_definition_tim_5_reg_1888;
+reg   [31:0] pulse_definition_tim_6_reg_1896;
+reg   [31:0] pulse_definition_tim_7_reg_1904;
+reg   [31:0] pulse_definition_tim_8_reg_1912;
+reg   [31:0] pulse_definition_tim_9_reg_1920;
+reg   [31:0] pulse_definition_tim_10_reg_1928;
+reg   [31:0] pulse_definition_tim_11_reg_1936;
+reg   [31:0] pulse_definition_tim_12_reg_1944;
+reg   [31:0] pulse_definition_tim_13_reg_1952;
+reg   [31:0] pulse_definition_tim_14_reg_1960;
+reg   [31:0] pulse_definition_tim_15_reg_1968;
+wire   [7:0] pulse_sequence_index_fu_1045_p1;
+reg   [7:0] pulse_sequence_index_reg_1976;
+wire   [31:0] add_ln187_fu_1049_p2;
+reg   [31:0] add_ln187_reg_1984;
+wire   [0:0] icmp_ln198_fu_1055_p2;
+reg   [0:0] icmp_ln198_reg_1989;
+wire   [31:0] add_ln207_fu_1061_p2;
+reg   [31:0] add_ln207_reg_1993;
+wire   [31:0] add_ln207_1_fu_1067_p2;
+reg   [31:0] add_ln207_1_reg_1999;
+wire   [31:0] add_ln207_2_fu_1073_p2;
+reg   [31:0] add_ln207_2_reg_2005;
+wire   [31:0] pulse_rep_fu_1084_p2;
+reg   [31:0] pulse_rep_reg_2014;
+wire    ap_CS_fsm_state10;
+wire   [0:0] pulse_first_pulse_in_fu_1090_p2;
+reg   [0:0] pulse_first_pulse_in_reg_2019;
+wire   [0:0] icmp_ln180_fu_1079_p2;
+wire   [0:0] pulse_last_pulse_in_s_fu_1096_p2;
+reg   [0:0] pulse_last_pulse_in_s_reg_2027;
+wire   [16:0] seq_idx_fu_1106_p2;
+wire   [31:0] tmp_def_block_post_t_fu_1112_p3;
+reg   [31:0] tmp_def_block_post_t_reg_2046;
+wire    ap_CS_fsm_state11;
+wire   [31:0] pulse_definition_prt_q0;
+reg   [31:0] pulse_definition_prt_4_reg_2054;
+wire   [31:0] pulse_def_polarizati_fu_1126_p1;
+wire   [31:0] sub_ln210_fu_1142_p2;
+reg   [31:0] sub_ln210_reg_2067;
+wire   [31:0] sub_ln210_1_fu_1159_p2;
+reg   [31:0] sub_ln210_1_reg_2072;
+wire   [31:0] sub_ln210_2_fu_1176_p2;
+reg   [31:0] sub_ln210_2_reg_2077;
+wire   [0:0] pulse_first_pulse_in_1_fu_1196_p2;
+reg   [0:0] pulse_first_pulse_in_1_reg_2082;
+wire    ap_CS_fsm_state46;
+wire   [31:0] num_pulses_scheduled_5_fu_1202_p2;
+reg   [31:0] num_pulses_scheduled_5_reg_2090;
+wire   [0:0] icmp_ln226_fu_1208_p2;
+reg   [0:0] icmp_ln226_reg_2095;
+wire   [31:0] pulse_num_samples_fu_1222_p3;
+reg   [31:0] pulse_num_samples_reg_2100;
+wire   [31:0] pulse_num_samples_1_fu_1236_p3;
+reg   [31:0] pulse_num_samples_1_reg_2105;
+wire   [31:0] pulse_num_samples_2_fu_1250_p3;
+reg   [31:0] pulse_num_samples_2_reg_2110;
+wire   [0:0] and_ln217_fu_1276_p2;
+reg   [0:0] and_ln217_reg_2116;
+wire   [0:0] pulse_last_pulse_in_1_fu_1282_p2;
+reg   [0:0] pulse_last_pulse_in_1_reg_2120;
+wire   [31:0] select_ln226_fu_1287_p3;
+reg   [31:0] select_ln226_reg_2127;
+wire   [1:0] hhvv_index_V_fu_1462_p2;
+reg   [1:0] hhvv_index_V_reg_2132;
+reg    ap_block_state48;
+wire   [7:0] staggered_prt_index_fu_1468_p2;
+reg   [7:0] staggered_prt_index_reg_2137;
+wire   [7:0] select_ln262_fu_1509_p3;
+wire    ap_CS_fsm_state49;
 reg   [0:0] pulse_definition_prt_address0;
 reg    pulse_definition_prt_ce0;
 reg    pulse_definition_prt_we0;
@@ -486,69 +484,68 @@ reg   [0:0] pulse_definition_prt_address1;
 reg    pulse_definition_prt_ce1;
 reg    pulse_definition_prt_we1;
 wire   [31:0] pulse_definition_prt_q1;
-reg   [3:0] val_assign_reg_792;
-reg   [5:0] coef_0_i_reg_804;
+reg   [3:0] val_assign_reg_784;
+reg   [5:0] coef_0_i_reg_796;
 reg    ap_block_state6_io;
-reg   [1:0] p_Val2_s_reg_815;
-reg   [7:0] staggered_prt_index_s_reg_827;
-reg   [31:0] pulse_rep_0_i_reg_839;
-reg   [31:0] tmp_def_polarization_reg_850;
-wire  signed [63:0] sext_ln158_fu_978_p1;
-wire   [63:0] zext_ln175_fu_1013_p1;
-wire   [63:0] zext_ln195_fu_1102_p1;
-wire   [63:0] zext_ln262_fu_1479_p1;
-reg   [31:0] seq_idx_1_fu_278;
-wire   [31:0] seq_idx_fu_1107_p2;
-reg   [31:0] num_pulses_scheduled_2_fu_282;
-reg   [31:0] num_pulses_scheduled_1_fu_286;
-wire   [31:0] num_pulses_scheduled_fu_1461_p2;
-reg   [31:0] tmp_num_samples_fu_290;
-wire   [852:0] tmp_1_fu_1299_p34;
+reg   [16:0] seq_idx_0_i_reg_807;
+reg   [1:0] p_Val2_s_reg_817;
+reg   [7:0] staggered_prt_index_s_reg_829;
+reg   [31:0] pulse_rep_0_i_reg_841;
+reg   [31:0] tmp_def_polarization_reg_852;
+wire  signed [63:0] sext_ln154_fu_967_p1;
+wire   [63:0] zext_ln175_fu_1016_p1;
+wire   [63:0] zext_ln195_fu_1101_p1;
+wire   [63:0] zext_ln262_fu_1474_p1;
+reg   [31:0] num_pulses_scheduled_2_fu_280;
+reg   [31:0] num_pulses_scheduled_1_fu_284;
+wire   [31:0] num_pulses_scheduled_fu_1456_p2;
+reg   [31:0] tmp_num_samples_fu_288;
+wire   [852:0] tmp_1_fu_1294_p34;
 wire    regslice_both_coef_ch0_V_V_U_apdone_blk;
 wire    regslice_both_coef_ch1_V_V_U_apdone_blk;
 wire    regslice_both_coef_ch2_V_V_U_apdone_blk;
-reg    ap_block_state49;
-wire   [852:0] tmp_1_1_fu_1341_p34;
-wire   [852:0] tmp_2_1_fu_1381_p34;
-wire   [852:0] tmp_3_1_fu_1421_p34;
-wire   [7:0] tmp_9_fu_933_p3;
-wire   [9:0] tmp_8_fu_925_p3;
-wire   [9:0] zext_ln158_fu_941_p1;
-wire   [5:0] sub_ln158_fu_963_p2;
-wire   [9:0] zext_ln158_1_fu_969_p1;
-wire   [9:0] add_ln158_fu_973_p2;
-wire   [31:0] add_ln175_fu_1008_p2;
-wire   [7:0] trunc_ln175_fu_1042_p1;
-wire   [0:0] tmp_3_fu_1123_p3;
-wire   [0:0] icmp_ln208_fu_1135_p2;
-wire   [31:0] select_ln208_fu_1140_p3;
-wire   [0:0] icmp_ln208_1_fu_1152_p2;
-wire   [31:0] select_ln208_1_fu_1157_p3;
-wire   [0:0] icmp_ln208_2_fu_1169_p2;
-wire   [31:0] select_ln208_2_fu_1174_p3;
-wire    ap_CS_fsm_state11;
-wire   [31:0] grp_fu_1186_p2;
-wire   [0:0] icmp_ln211_fu_1221_p2;
-wire   [31:0] grp_fu_1190_p2;
-wire   [0:0] icmp_ln211_1_fu_1235_p2;
-wire   [31:0] grp_fu_1194_p2;
-wire   [0:0] icmp_ln211_2_fu_1249_p2;
-wire   [0:0] icmp_ln217_1_fu_1269_p2;
-wire   [0:0] xor_ln217_fu_1275_p2;
-wire   [0:0] icmp_ln217_fu_1263_p2;
-wire   [0:0] icmp_ln262_fu_1497_p2;
-wire   [0:0] icmp_ln262_1_fu_1502_p2;
-wire   [0:0] or_ln262_fu_1508_p2;
-reg    grp_fu_1186_ap_start;
-wire    grp_fu_1186_ap_done;
-reg    grp_fu_1186_ce;
-reg    grp_fu_1190_ap_start;
-wire    grp_fu_1190_ap_done;
-reg    grp_fu_1190_ce;
-reg    grp_fu_1194_ap_start;
-wire    grp_fu_1194_ap_done;
-reg    grp_fu_1194_ce;
-reg   [48:0] ap_NS_fsm;
+reg    ap_block_state50;
+wire   [852:0] tmp_1_1_fu_1336_p34;
+wire   [852:0] tmp_2_1_fu_1376_p34;
+wire   [852:0] tmp_3_1_fu_1416_p34;
+wire   [7:0] tmp_9_fu_922_p3;
+wire   [9:0] tmp_8_fu_914_p3;
+wire   [9:0] zext_ln154_fu_930_p1;
+wire   [5:0] sub_ln154_fu_952_p2;
+wire   [9:0] zext_ln154_1_fu_958_p1;
+wire   [9:0] add_ln154_fu_962_p2;
+wire   [15:0] start_index_fu_989_p1;
+wire   [15:0] stop_index_fu_993_p4;
+wire   [0:0] tmp_3_fu_1118_p3;
+wire   [0:0] icmp_ln208_fu_1130_p2;
+wire   [31:0] select_ln208_fu_1135_p3;
+wire   [0:0] icmp_ln208_1_fu_1147_p2;
+wire   [31:0] select_ln208_1_fu_1152_p3;
+wire   [0:0] icmp_ln208_2_fu_1164_p2;
+wire   [31:0] select_ln208_2_fu_1169_p3;
+wire    ap_CS_fsm_state12;
+wire   [31:0] grp_fu_1181_p2;
+wire   [0:0] icmp_ln211_fu_1216_p2;
+wire   [31:0] grp_fu_1185_p2;
+wire   [0:0] icmp_ln211_1_fu_1230_p2;
+wire   [31:0] grp_fu_1189_p2;
+wire   [0:0] icmp_ln211_2_fu_1244_p2;
+wire   [0:0] icmp_ln217_1_fu_1264_p2;
+wire   [0:0] xor_ln217_fu_1270_p2;
+wire   [0:0] icmp_ln217_fu_1258_p2;
+wire   [0:0] icmp_ln262_fu_1492_p2;
+wire   [0:0] icmp_ln262_1_fu_1497_p2;
+wire   [0:0] or_ln262_fu_1503_p2;
+reg    grp_fu_1181_ap_start;
+wire    grp_fu_1181_ap_done;
+reg    grp_fu_1181_ce;
+reg    grp_fu_1185_ap_start;
+wire    grp_fu_1185_ap_done;
+reg    grp_fu_1185_ce;
+reg    grp_fu_1189_ap_start;
+wire    grp_fu_1189_ap_done;
+reg    grp_fu_1189_ce;
+reg   [49:0] ap_NS_fsm;
 reg   [23:0] coef_ch0_V_V_TDATA_int;
 reg    coef_ch0_V_V_TVALID_int;
 wire    coef_ch0_V_V_TREADY_int;
@@ -566,7 +563,7 @@ wire    regslice_both_coef_ch2_V_V_U_vld_out;
 initial begin
 #0 start_once_reg = 1'b0;
 #0 ap_done_reg = 1'b0;
-#0 ap_CS_fsm = 49'd1;
+#0 ap_CS_fsm = 50'd1;
 end
 
 scheduler_parser_bkb #(
@@ -597,12 +594,12 @@ hcr_controller_udcud #(
 hcr_controller_udcud_U1(
     .clk(ap_clk),
     .reset(ap_rst),
-    .start(grp_fu_1186_ap_start),
-    .done(grp_fu_1186_ap_done),
-    .din0(sub_ln210_reg_2086),
+    .start(grp_fu_1181_ap_start),
+    .done(grp_fu_1181_ap_done),
+    .din0(sub_ln210_reg_2067),
     .din1(cfg_total_decimation),
-    .ce(grp_fu_1186_ce),
-    .dout(grp_fu_1186_p2)
+    .ce(grp_fu_1181_ce),
+    .dout(grp_fu_1181_p2)
 );
 
 hcr_controller_udcud #(
@@ -614,12 +611,12 @@ hcr_controller_udcud #(
 hcr_controller_udcud_U2(
     .clk(ap_clk),
     .reset(ap_rst),
-    .start(grp_fu_1190_ap_start),
-    .done(grp_fu_1190_ap_done),
-    .din0(sub_ln210_1_reg_2091),
+    .start(grp_fu_1185_ap_start),
+    .done(grp_fu_1185_ap_done),
+    .din0(sub_ln210_1_reg_2072),
     .din1(cfg_total_decimation),
-    .ce(grp_fu_1190_ce),
-    .dout(grp_fu_1190_p2)
+    .ce(grp_fu_1185_ce),
+    .dout(grp_fu_1185_p2)
 );
 
 hcr_controller_udcud #(
@@ -631,12 +628,12 @@ hcr_controller_udcud #(
 hcr_controller_udcud_U3(
     .clk(ap_clk),
     .reset(ap_rst),
-    .start(grp_fu_1194_ap_start),
-    .done(grp_fu_1194_ap_done),
-    .din0(sub_ln210_2_reg_2096),
+    .start(grp_fu_1189_ap_start),
+    .done(grp_fu_1189_ap_done),
+    .din0(sub_ln210_2_reg_2077),
     .din1(cfg_total_decimation),
-    .ce(grp_fu_1194_ce),
-    .dout(grp_fu_1194_p2)
+    .ce(grp_fu_1189_ce),
+    .dout(grp_fu_1189_p2)
 );
 
 regslice_both #(
@@ -695,7 +692,7 @@ always @ (posedge ap_clk) begin
     end else begin
         if ((ap_continue == 1'b1)) begin
             ap_done_reg <= 1'b0;
-        end else if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+        end else if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
             ap_done_reg <= 1'b1;
         end
     end
@@ -715,211 +712,203 @@ end
 
 always @ (posedge ap_clk) begin
     if (((1'b0 == ap_block_state6_io) & (1'b1 == ap_CS_fsm_state6))) begin
-        coef_0_i_reg_804 <= coef_reg_1640;
+        coef_0_i_reg_796 <= coef_reg_1613;
     end else if (((1'b0 == ap_block_state3_io) & (1'b1 == ap_CS_fsm_state3))) begin
-        coef_0_i_reg_804 <= 6'd0;
+        coef_0_i_reg_796 <= 6'd0;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'd0 == and_ln217_reg_2135) & (1'b1 == ap_CS_fsm_state47))) begin
-        num_pulses_scheduled_1_fu_286 <= num_pulses_scheduled_fu_1461_p2;
-    end else if (((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
-        num_pulses_scheduled_1_fu_286 <= 32'd0;
+    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'd0 == and_ln217_reg_2116) & (1'b1 == ap_CS_fsm_state48))) begin
+        num_pulses_scheduled_1_fu_284 <= num_pulses_scheduled_fu_1456_p2;
+    end else if (((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
+        num_pulses_scheduled_1_fu_284 <= 32'd0;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'd0 == and_ln217_reg_2135) & (1'b1 == ap_CS_fsm_state47))) begin
-        num_pulses_scheduled_2_fu_282 <= select_ln226_reg_2146;
-    end else if (((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
-        num_pulses_scheduled_2_fu_282 <= 32'd0;
+    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'd0 == and_ln217_reg_2116) & (1'b1 == ap_CS_fsm_state48))) begin
+        num_pulses_scheduled_2_fu_280 <= select_ln226_reg_2127;
+    end else if (((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
+        num_pulses_scheduled_2_fu_280 <= 32'd0;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state48)) begin
-        p_Val2_s_reg_815 <= hhvv_index_V_reg_2151;
-    end else if ((1'b1 == ap_CS_fsm_state8)) begin
-        p_Val2_s_reg_815 <= 2'd3;
+    if ((1'b1 == ap_CS_fsm_state49)) begin
+        p_Val2_s_reg_817 <= hhvv_index_V_reg_2132;
+    end else if ((1'b1 == ap_CS_fsm_state9)) begin
+        p_Val2_s_reg_817 <= 2'd3;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state48)) begin
-        pulse_rep_0_i_reg_839 <= pulse_rep_reg_2038;
-    end else if ((1'b1 == ap_CS_fsm_state8)) begin
-        pulse_rep_0_i_reg_839 <= 32'd0;
+    if ((1'b1 == ap_CS_fsm_state49)) begin
+        pulse_rep_0_i_reg_841 <= pulse_rep_reg_2014;
+    end else if ((1'b1 == ap_CS_fsm_state9)) begin
+        pulse_rep_0_i_reg_841 <= 32'd0;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if (((icmp_ln172_reg_1681 == 1'd1) & (icmp_ln180_fu_1080_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state9))) begin
-        seq_idx_1_fu_278 <= seq_idx_fu_1107_p2;
-    end else if ((((icmp_ln172_fu_1003_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state7)) | ((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2)))) begin
-        seq_idx_1_fu_278 <= 32'd0;
+    if (((icmp_ln180_fu_1079_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state10))) begin
+        seq_idx_0_i_reg_807 <= seq_idx_fu_1106_p2;
+    end else if ((1'b1 == ap_CS_fsm_state7)) begin
+        seq_idx_0_i_reg_807 <= zext_ln172_fu_1003_p1;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state48)) begin
-        staggered_prt_index_s_reg_827 <= select_ln262_fu_1514_p3;
-    end else if ((1'b1 == ap_CS_fsm_state8)) begin
-        staggered_prt_index_s_reg_827 <= 8'd0;
+    if ((1'b1 == ap_CS_fsm_state49)) begin
+        staggered_prt_index_s_reg_829 <= select_ln262_fu_1509_p3;
+    end else if ((1'b1 == ap_CS_fsm_state9)) begin
+        staggered_prt_index_s_reg_829 <= 8'd0;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state10)) begin
-        if ((icmp_ln198_reg_2013 == 1'd0)) begin
-            tmp_def_polarization_reg_850 <= pulse_definition_pol_reg_1840;
-        end else if ((icmp_ln198_reg_2013 == 1'd1)) begin
-            tmp_def_polarization_reg_850 <= pulse_def_polarizati_fu_1131_p1;
+    if ((1'b1 == ap_CS_fsm_state11)) begin
+        if ((icmp_ln198_reg_1989 == 1'd0)) begin
+            tmp_def_polarization_reg_852 <= pulse_definition_pol_reg_1816;
+        end else if ((icmp_ln198_reg_1989 == 1'd1)) begin
+            tmp_def_polarization_reg_852 <= pulse_def_polarizati_fu_1126_p1;
         end
     end
 end
 
 always @ (posedge ap_clk) begin
-    if (((icmp_ln156_fu_951_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
-        val_assign_reg_792 <= set_reg_1563;
+    if (((icmp_ln152_fu_940_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
+        val_assign_reg_784 <= set_reg_1543;
     end else if ((~((ap_done_reg == 1'b1) | (real_start == 1'b0)) & (1'b1 == ap_CS_fsm_state1))) begin
-        val_assign_reg_792 <= 4'd0;
+        val_assign_reg_784 <= 4'd0;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state8)) begin
-        add_ln187_reg_2008 <= add_ln187_fu_1050_p2;
-        add_ln207_1_reg_2023 <= add_ln207_1_fu_1068_p2;
-        add_ln207_2_reg_2029 <= add_ln207_2_fu_1074_p2;
-        add_ln207_reg_2017 <= add_ln207_fu_1062_p2;
-        cfg_pulse_sequence_p_8_reg_1810 <= cfg_pulse_sequence_p_3_q0;
-        icmp_ln198_reg_2013 <= icmp_ln198_fu_1056_p2;
-        pulse_definition_blo_reg_1827 <= cfg_pulse_sequence_b_q0;
-        pulse_definition_con_reg_1832 <= cfg_pulse_sequence_c_q0;
-        pulse_definition_fil_1_reg_1853 <= cfg_pulse_sequence_f_3_q0;
-        pulse_definition_fil_2_reg_1861 <= cfg_pulse_sequence_f_4_q0;
-        pulse_definition_fil_reg_1845 <= cfg_pulse_sequence_f_q0;
-        pulse_definition_num_reg_1818 <= cfg_pulse_sequence_n_q0;
-        pulse_definition_pol_reg_1840 <= cfg_pulse_sequence_p_4_q0;
-        pulse_definition_tim_10_reg_1952 <= cfg_pulse_sequence_t_25_q0;
-        pulse_definition_tim_11_reg_1960 <= cfg_pulse_sequence_t_26_q0;
-        pulse_definition_tim_12_reg_1968 <= cfg_pulse_sequence_t_27_q0;
-        pulse_definition_tim_13_reg_1976 <= cfg_pulse_sequence_t_28_q0;
-        pulse_definition_tim_14_reg_1984 <= cfg_pulse_sequence_t_29_q0;
-        pulse_definition_tim_15_reg_1992 <= cfg_pulse_sequence_t_30_q0;
-        pulse_definition_tim_1_reg_1877 <= cfg_pulse_sequence_t_16_q0;
-        pulse_definition_tim_2_reg_1886 <= cfg_pulse_sequence_t_17_q0;
-        pulse_definition_tim_3_reg_1895 <= cfg_pulse_sequence_t_18_q0;
-        pulse_definition_tim_4_reg_1904 <= cfg_pulse_sequence_t_19_q0;
-        pulse_definition_tim_5_reg_1912 <= cfg_pulse_sequence_t_20_q0;
-        pulse_definition_tim_6_reg_1920 <= cfg_pulse_sequence_t_21_q0;
-        pulse_definition_tim_7_reg_1928 <= cfg_pulse_sequence_t_22_q0;
-        pulse_definition_tim_8_reg_1936 <= cfg_pulse_sequence_t_23_q0;
-        pulse_definition_tim_9_reg_1944 <= cfg_pulse_sequence_t_24_q0;
-        pulse_definition_tim_reg_1869 <= cfg_pulse_sequence_t_q0;
-        pulse_sequence_index_reg_2000 <= pulse_sequence_index_fu_1045_p2;
+    if ((1'b1 == ap_CS_fsm_state9)) begin
+        add_ln187_reg_1984 <= add_ln187_fu_1049_p2;
+        add_ln207_1_reg_1999 <= add_ln207_1_fu_1067_p2;
+        add_ln207_2_reg_2005 <= add_ln207_2_fu_1073_p2;
+        add_ln207_reg_1993 <= add_ln207_fu_1061_p2;
+        cfg_pulse_sequence_p_8_reg_1786 <= cfg_pulse_sequence_p_3_q0;
+        icmp_ln198_reg_1989 <= icmp_ln198_fu_1055_p2;
+        pulse_definition_blo_reg_1803 <= cfg_pulse_sequence_b_q0;
+        pulse_definition_con_reg_1808 <= cfg_pulse_sequence_c_q0;
+        pulse_definition_fil_1_reg_1829 <= cfg_pulse_sequence_f_3_q0;
+        pulse_definition_fil_2_reg_1837 <= cfg_pulse_sequence_f_4_q0;
+        pulse_definition_fil_reg_1821 <= cfg_pulse_sequence_f_q0;
+        pulse_definition_num_reg_1794 <= cfg_pulse_sequence_n_q0;
+        pulse_definition_pol_reg_1816 <= cfg_pulse_sequence_p_4_q0;
+        pulse_definition_tim_10_reg_1928 <= cfg_pulse_sequence_t_25_q0;
+        pulse_definition_tim_11_reg_1936 <= cfg_pulse_sequence_t_26_q0;
+        pulse_definition_tim_12_reg_1944 <= cfg_pulse_sequence_t_27_q0;
+        pulse_definition_tim_13_reg_1952 <= cfg_pulse_sequence_t_28_q0;
+        pulse_definition_tim_14_reg_1960 <= cfg_pulse_sequence_t_29_q0;
+        pulse_definition_tim_15_reg_1968 <= cfg_pulse_sequence_t_30_q0;
+        pulse_definition_tim_1_reg_1853 <= cfg_pulse_sequence_t_16_q0;
+        pulse_definition_tim_2_reg_1862 <= cfg_pulse_sequence_t_17_q0;
+        pulse_definition_tim_3_reg_1871 <= cfg_pulse_sequence_t_18_q0;
+        pulse_definition_tim_4_reg_1880 <= cfg_pulse_sequence_t_19_q0;
+        pulse_definition_tim_5_reg_1888 <= cfg_pulse_sequence_t_20_q0;
+        pulse_definition_tim_6_reg_1896 <= cfg_pulse_sequence_t_21_q0;
+        pulse_definition_tim_7_reg_1904 <= cfg_pulse_sequence_t_22_q0;
+        pulse_definition_tim_8_reg_1912 <= cfg_pulse_sequence_t_23_q0;
+        pulse_definition_tim_9_reg_1920 <= cfg_pulse_sequence_t_24_q0;
+        pulse_definition_tim_reg_1845 <= cfg_pulse_sequence_t_q0;
+        pulse_sequence_index_reg_1976 <= pulse_sequence_index_fu_1045_p1;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if (((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state46))) begin
-        and_ln217_reg_2135 <= and_ln217_fu_1281_p2;
-        pulse_last_pulse_in_1_reg_2139 <= pulse_last_pulse_in_1_fu_1287_p2;
-        pulse_num_samples_1_reg_2124 <= pulse_num_samples_1_fu_1241_p3;
-        pulse_num_samples_2_reg_2129 <= pulse_num_samples_2_fu_1255_p3;
-        pulse_num_samples_reg_2119 <= pulse_num_samples_fu_1227_p3;
-        select_ln226_reg_2146 <= select_ln226_fu_1292_p3;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if ((~((ap_done_reg == 1'b1) | (real_start == 1'b0)) & (1'b1 == ap_CS_fsm_state1))) begin
-        cfg_pulse_sequence_l_1_reg_1550[7 : 0] <= cfg_pulse_sequence_l_1_fu_868_p1[7 : 0];
-        cfg_pulse_sequence_s_1_reg_1555[7 : 0] <= cfg_pulse_sequence_s_1_fu_872_p1[7 : 0];
+    if (((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state47))) begin
+        and_ln217_reg_2116 <= and_ln217_fu_1276_p2;
+        pulse_last_pulse_in_1_reg_2120 <= pulse_last_pulse_in_1_fu_1282_p2;
+        pulse_num_samples_1_reg_2105 <= pulse_num_samples_1_fu_1236_p3;
+        pulse_num_samples_2_reg_2110 <= pulse_num_samples_2_fu_1250_p3;
+        pulse_num_samples_reg_2100 <= pulse_num_samples_fu_1222_p3;
+        select_ln226_reg_2127 <= select_ln226_fu_1287_p3;
     end
 end
 
 always @ (posedge ap_clk) begin
     if ((1'b1 == ap_CS_fsm_state4)) begin
-        coef_reg_1640 <= coef_fu_957_p2;
+        coef_reg_1613 <= coef_fu_946_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'b1 == ap_CS_fsm_state47))) begin
-        hhvv_index_V_reg_2151 <= hhvv_index_V_fu_1467_p2;
+    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'b1 == ap_CS_fsm_state48))) begin
+        hhvv_index_V_reg_2132 <= hhvv_index_V_fu_1462_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
-        icmp_ln172_reg_1681 <= icmp_ln172_fu_1003_p2;
-        seq_idx_1_load_reg_1675 <= seq_idx_1_fu_278;
+    if ((1'b1 == ap_CS_fsm_state46)) begin
+        icmp_ln226_reg_2095 <= icmp_ln226_fu_1208_p2;
+        num_pulses_scheduled_5_reg_2090 <= num_pulses_scheduled_5_fu_1202_p2;
+        pulse_first_pulse_in_1_reg_2082 <= pulse_first_pulse_in_1_fu_1196_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_CS_fsm_state45)) begin
-        icmp_ln226_reg_2114 <= icmp_ln226_fu_1213_p2;
-        num_pulses_scheduled_5_reg_2109 <= num_pulses_scheduled_5_fu_1207_p2;
-        pulse_first_pulse_in_1_reg_2101 <= pulse_first_pulse_in_1_fu_1201_p2;
+    if (((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
+        p_Result_s_reg_1601 <= cfg_enabled_channel_vector[32'd2];
+        pulse_post_decimatio_reg_1585 <= pulse_post_decimatio_fu_884_p1;
+        tmp_reg_1597 <= cfg_enabled_channel_vector[32'd1];
+        trunc_ln791_reg_1593 <= trunc_ln791_fu_887_p1;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if (((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
-        p_Result_s_reg_1628 <= cfg_enabled_channel_vector[32'd2];
-        pulse_post_decimatio_reg_1612 <= pulse_post_decimatio_fu_895_p1;
-        tmp_reg_1624 <= cfg_enabled_channel_vector[32'd1];
-        trunc_ln791_reg_1620 <= trunc_ln791_fu_898_p1;
+    if ((1'b1 == ap_CS_fsm_state11)) begin
+        pulse_definition_prt_4_reg_2054 <= pulse_definition_prt_q0;
+        sub_ln210_1_reg_2072 <= sub_ln210_1_fu_1159_p2;
+        sub_ln210_2_reg_2077 <= sub_ln210_2_fu_1176_p2;
+        sub_ln210_reg_2067 <= sub_ln210_fu_1142_p2;
+        tmp_def_block_post_t_reg_2046 <= tmp_def_block_post_t_fu_1112_p3;
+    end
+end
+
+always @ (posedge ap_clk) begin
+    if (((icmp_ln180_fu_1079_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state10))) begin
+        pulse_first_pulse_in_reg_2019 <= pulse_first_pulse_in_fu_1090_p2;
+        pulse_last_pulse_in_s_reg_2027 <= pulse_last_pulse_in_s_fu_1096_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
     if ((1'b1 == ap_CS_fsm_state10)) begin
-        pulse_definition_prt_4_reg_2073 <= pulse_definition_prt_q0;
-        sub_ln210_1_reg_2091 <= sub_ln210_1_fu_1164_p2;
-        sub_ln210_2_reg_2096 <= sub_ln210_2_fu_1181_p2;
-        sub_ln210_reg_2086 <= sub_ln210_fu_1147_p2;
-        tmp_def_block_post_t_reg_2065 <= tmp_def_block_post_t_fu_1117_p3;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((icmp_ln180_fu_1080_p2 == 1'd1) & (icmp_ln172_reg_1681 == 1'd1) & (1'b1 == ap_CS_fsm_state9))) begin
-        pulse_first_pulse_in_reg_2043 <= pulse_first_pulse_in_fu_1091_p2;
-        pulse_last_pulse_in_s_reg_2051 <= pulse_last_pulse_in_s_fu_1097_p2;
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((icmp_ln172_reg_1681 == 1'd1) & (1'b1 == ap_CS_fsm_state9))) begin
-        pulse_rep_reg_2038 <= pulse_rep_fu_1085_p2;
+        pulse_rep_reg_2014 <= pulse_rep_fu_1084_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((1'b0 == ap_block_state2_io) & (1'b1 == ap_CS_fsm_state2))) begin
-        set_reg_1563 <= set_fu_882_p2;
+        set_reg_1543 <= set_fu_871_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
-    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'd0 == and_ln217_reg_2135) & (1'b1 == ap_CS_fsm_state47))) begin
-        staggered_prt_index_reg_2156 <= staggered_prt_index_fu_1473_p2;
-        tmp_num_samples_fu_290 <= pulse_num_samples_2_reg_2129;
+    if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'd0 == and_ln217_reg_2116) & (1'b1 == ap_CS_fsm_state48))) begin
+        staggered_prt_index_reg_2137 <= staggered_prt_index_fu_1468_p2;
+        tmp_num_samples_fu_288 <= pulse_num_samples_2_reg_2110;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((1'b0 == ap_block_state3_io) & (1'b1 == ap_CS_fsm_state3))) begin
-        sub_ln158_1_reg_1632[9 : 4] <= sub_ln158_1_fu_945_p2[9 : 4];
+        sub_ln154_1_reg_1605[9 : 4] <= sub_ln154_1_fu_934_p2[9 : 4];
+    end
+end
+
+always @ (posedge ap_clk) begin
+    if ((1'b1 == ap_CS_fsm_state7)) begin
+        zext_ln172_1_reg_1653[15 : 0] <= zext_ln172_1_fu_1007_p1[15 : 0];
     end
 end
 
 always @ (*) begin
-    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
         ap_done = 1'b1;
     end else begin
         ap_done = ap_done_reg;
@@ -959,7 +948,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_b_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_b_ce0 = 1'b0;
@@ -967,7 +956,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_c_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_c_ce0 = 1'b0;
@@ -975,7 +964,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_f_3_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_f_3_ce0 = 1'b0;
@@ -983,7 +972,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_f_4_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_f_4_ce0 = 1'b0;
@@ -991,7 +980,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_f_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_f_ce0 = 1'b0;
@@ -999,7 +988,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_n_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_n_ce0 = 1'b0;
@@ -1007,7 +996,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_p_3_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_p_3_ce0 = 1'b0;
@@ -1015,7 +1004,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_p_4_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_p_4_ce0 = 1'b0;
@@ -1023,7 +1012,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_p_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_p_ce0 = 1'b0;
@@ -1031,7 +1020,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_16_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_16_ce0 = 1'b0;
@@ -1039,7 +1028,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_17_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_17_ce0 = 1'b0;
@@ -1047,7 +1036,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_18_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_18_ce0 = 1'b0;
@@ -1055,7 +1044,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_19_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_19_ce0 = 1'b0;
@@ -1063,7 +1052,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_20_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_20_ce0 = 1'b0;
@@ -1071,7 +1060,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_21_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_21_ce0 = 1'b0;
@@ -1079,7 +1068,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_22_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_22_ce0 = 1'b0;
@@ -1087,7 +1076,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_23_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_23_ce0 = 1'b0;
@@ -1095,7 +1084,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_24_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_24_ce0 = 1'b0;
@@ -1103,7 +1092,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_25_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_25_ce0 = 1'b0;
@@ -1111,7 +1100,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_26_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_26_ce0 = 1'b0;
@@ -1119,7 +1108,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_27_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_27_ce0 = 1'b0;
@@ -1127,7 +1116,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_28_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_28_ce0 = 1'b0;
@@ -1135,7 +1124,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_29_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_29_ce0 = 1'b0;
@@ -1143,7 +1132,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_30_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_30_ce0 = 1'b0;
@@ -1151,7 +1140,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state7)) begin
+    if ((1'b1 == ap_CS_fsm_state8)) begin
         cfg_pulse_sequence_t_ce0 = 1'b1;
     end else begin
         cfg_pulse_sequence_t_ce0 = 1'b0;
@@ -1159,7 +1148,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | ((icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
+    if (((1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | ((icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
         coef_ch0_V_V_TDATA_blk_n = coef_ch0_V_V_TREADY_int;
     end else begin
         coef_ch0_V_V_TDATA_blk_n = 1'b1;
@@ -1168,16 +1157,16 @@ end
 
 always @ (*) begin
     if ((1'b1 == ap_CS_fsm_state5)) begin
-        coef_ch0_V_V_TDATA_int = tmp_V_1_fu_985_p1;
-    end else if (((icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
-        coef_ch0_V_V_TDATA_int = tmp_V_fu_888_p1;
+        coef_ch0_V_V_TDATA_int = tmp_V_1_fu_974_p1;
+    end else if (((icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
+        coef_ch0_V_V_TDATA_int = tmp_V_fu_877_p1;
     end else begin
         coef_ch0_V_V_TDATA_int = 'bx;
     end
 end
 
 always @ (*) begin
-    if ((((1'b0 == ap_block_state5_io) & (1'b1 == ap_CS_fsm_state5)) | ((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
+    if ((((1'b0 == ap_block_state5_io) & (1'b1 == ap_CS_fsm_state5)) | ((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
         coef_ch0_V_V_TVALID_int = 1'b1;
     end else begin
         coef_ch0_V_V_TVALID_int = 1'b0;
@@ -1185,7 +1174,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | ((icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
+    if (((1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | ((icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
         coef_ch1_V_V_TDATA_blk_n = coef_ch1_V_V_TREADY_int;
     end else begin
         coef_ch1_V_V_TDATA_blk_n = 1'b1;
@@ -1194,16 +1183,16 @@ end
 
 always @ (*) begin
     if ((1'b1 == ap_CS_fsm_state5)) begin
-        coef_ch1_V_V_TDATA_int = tmp_V_2_fu_990_p1;
-    end else if (((icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
-        coef_ch1_V_V_TDATA_int = tmp_V_fu_888_p1;
+        coef_ch1_V_V_TDATA_int = tmp_V_2_fu_979_p1;
+    end else if (((icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
+        coef_ch1_V_V_TDATA_int = tmp_V_fu_877_p1;
     end else begin
         coef_ch1_V_V_TDATA_int = 'bx;
     end
 end
 
 always @ (*) begin
-    if ((((1'b0 == ap_block_state5_io) & (1'b1 == ap_CS_fsm_state5)) | ((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
+    if ((((1'b0 == ap_block_state5_io) & (1'b1 == ap_CS_fsm_state5)) | ((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
         coef_ch1_V_V_TVALID_int = 1'b1;
     end else begin
         coef_ch1_V_V_TVALID_int = 1'b0;
@@ -1211,7 +1200,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | ((icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
+    if (((1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | ((icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
         coef_ch2_V_V_TDATA_blk_n = coef_ch2_V_V_TREADY_int;
     end else begin
         coef_ch2_V_V_TDATA_blk_n = 1'b1;
@@ -1220,16 +1209,16 @@ end
 
 always @ (*) begin
     if ((1'b1 == ap_CS_fsm_state5)) begin
-        coef_ch2_V_V_TDATA_int = tmp_V_3_fu_995_p1;
-    end else if (((icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
-        coef_ch2_V_V_TDATA_int = tmp_V_fu_888_p1;
+        coef_ch2_V_V_TDATA_int = tmp_V_3_fu_984_p1;
+    end else if (((icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
+        coef_ch2_V_V_TDATA_int = tmp_V_fu_877_p1;
     end else begin
         coef_ch2_V_V_TDATA_int = 'bx;
     end
 end
 
 always @ (*) begin
-    if ((((1'b0 == ap_block_state5_io) & (1'b1 == ap_CS_fsm_state5)) | ((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
+    if ((((1'b0 == ap_block_state5_io) & (1'b1 == ap_CS_fsm_state5)) | ((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2)))) begin
         coef_ch2_V_V_TVALID_int = 1'b1;
     end else begin
         coef_ch2_V_V_TVALID_int = 1'b0;
@@ -1237,55 +1226,55 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state11)) begin
-        grp_fu_1186_ap_start = 1'b1;
+    if ((1'b1 == ap_CS_fsm_state12)) begin
+        grp_fu_1181_ap_start = 1'b1;
     end else begin
-        grp_fu_1186_ap_start = 1'b0;
+        grp_fu_1181_ap_start = 1'b0;
     end
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state1) | (1'b1 == ap_CS_fsm_state48) | (1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8) | (1'b1 == ap_CS_fsm_state7) | (1'b1 == ap_CS_fsm_state4) | (1'b1 == ap_CS_fsm_state49) | (1'b1 == ap_CS_fsm_state47) | (1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | (1'b1 == ap_CS_fsm_state2))) begin
-        grp_fu_1186_ce = 1'b0;
+    if (((1'b1 == ap_CS_fsm_state1) | (1'b1 == ap_CS_fsm_state49) | (1'b1 == ap_CS_fsm_state11) | (1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8) | (1'b1 == ap_CS_fsm_state7) | (1'b1 == ap_CS_fsm_state4) | (1'b1 == ap_CS_fsm_state50) | (1'b1 == ap_CS_fsm_state48) | (1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | (1'b1 == ap_CS_fsm_state2))) begin
+        grp_fu_1181_ce = 1'b0;
     end else begin
-        grp_fu_1186_ce = 1'b1;
+        grp_fu_1181_ce = 1'b1;
     end
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state11)) begin
-        grp_fu_1190_ap_start = 1'b1;
+    if ((1'b1 == ap_CS_fsm_state12)) begin
+        grp_fu_1185_ap_start = 1'b1;
     end else begin
-        grp_fu_1190_ap_start = 1'b0;
+        grp_fu_1185_ap_start = 1'b0;
     end
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state1) | (1'b1 == ap_CS_fsm_state48) | (1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8) | (1'b1 == ap_CS_fsm_state7) | (1'b1 == ap_CS_fsm_state4) | (1'b1 == ap_CS_fsm_state49) | (1'b1 == ap_CS_fsm_state47) | (1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | (1'b1 == ap_CS_fsm_state2))) begin
-        grp_fu_1190_ce = 1'b0;
+    if (((1'b1 == ap_CS_fsm_state1) | (1'b1 == ap_CS_fsm_state49) | (1'b1 == ap_CS_fsm_state11) | (1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8) | (1'b1 == ap_CS_fsm_state7) | (1'b1 == ap_CS_fsm_state4) | (1'b1 == ap_CS_fsm_state50) | (1'b1 == ap_CS_fsm_state48) | (1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | (1'b1 == ap_CS_fsm_state2))) begin
+        grp_fu_1185_ce = 1'b0;
     end else begin
-        grp_fu_1190_ce = 1'b1;
+        grp_fu_1185_ce = 1'b1;
     end
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state11)) begin
-        grp_fu_1194_ap_start = 1'b1;
+    if ((1'b1 == ap_CS_fsm_state12)) begin
+        grp_fu_1189_ap_start = 1'b1;
     end else begin
-        grp_fu_1194_ap_start = 1'b0;
+        grp_fu_1189_ap_start = 1'b0;
     end
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state1) | (1'b1 == ap_CS_fsm_state48) | (1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8) | (1'b1 == ap_CS_fsm_state7) | (1'b1 == ap_CS_fsm_state4) | (1'b1 == ap_CS_fsm_state49) | (1'b1 == ap_CS_fsm_state47) | (1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | (1'b1 == ap_CS_fsm_state2))) begin
-        grp_fu_1194_ce = 1'b0;
+    if (((1'b1 == ap_CS_fsm_state1) | (1'b1 == ap_CS_fsm_state49) | (1'b1 == ap_CS_fsm_state11) | (1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8) | (1'b1 == ap_CS_fsm_state7) | (1'b1 == ap_CS_fsm_state4) | (1'b1 == ap_CS_fsm_state50) | (1'b1 == ap_CS_fsm_state48) | (1'b1 == ap_CS_fsm_state6) | (1'b1 == ap_CS_fsm_state5) | (1'b1 == ap_CS_fsm_state3) | (1'b1 == ap_CS_fsm_state2))) begin
+        grp_fu_1189_ce = 1'b0;
     end else begin
-        grp_fu_1194_ce = 1'b1;
+        grp_fu_1189_ce = 1'b1;
     end
 end
 
 always @ (*) begin
-    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
         internal_ap_ready = 1'b1;
     end else begin
         internal_ap_ready = 1'b0;
@@ -1293,9 +1282,9 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state9)) begin
-        pulse_definition_prt_address0 = zext_ln195_fu_1102_p1;
-    end else if ((1'b1 == ap_CS_fsm_state8)) begin
+    if ((1'b1 == ap_CS_fsm_state10)) begin
+        pulse_definition_prt_address0 = zext_ln195_fu_1101_p1;
+    end else if ((1'b1 == ap_CS_fsm_state9)) begin
         pulse_definition_prt_address0 = 64'd0;
     end else begin
         pulse_definition_prt_address0 = 'bx;
@@ -1303,9 +1292,9 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state47)) begin
-        pulse_definition_prt_address1 = zext_ln262_fu_1479_p1;
-    end else if ((1'b1 == ap_CS_fsm_state8)) begin
+    if ((1'b1 == ap_CS_fsm_state48)) begin
+        pulse_definition_prt_address1 = zext_ln262_fu_1474_p1;
+    end else if ((1'b1 == ap_CS_fsm_state9)) begin
         pulse_definition_prt_address1 = 64'd1;
     end else begin
         pulse_definition_prt_address1 = 'bx;
@@ -1313,7 +1302,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state9) | (1'b1 == ap_CS_fsm_state8))) begin
+    if (((1'b1 == ap_CS_fsm_state10) | (1'b1 == ap_CS_fsm_state9))) begin
         pulse_definition_prt_ce0 = 1'b1;
     end else begin
         pulse_definition_prt_ce0 = 1'b0;
@@ -1321,7 +1310,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state8) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((1'b1 == ap_CS_fsm_state9) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_definition_prt_ce1 = 1'b1;
     end else begin
         pulse_definition_prt_ce1 = 1'b0;
@@ -1329,7 +1318,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state8)) begin
+    if ((1'b1 == ap_CS_fsm_state9)) begin
         pulse_definition_prt_we0 = 1'b1;
     end else begin
         pulse_definition_prt_we0 = 1'b0;
@@ -1337,7 +1326,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((1'b1 == ap_CS_fsm_state8)) begin
+    if ((1'b1 == ap_CS_fsm_state9)) begin
         pulse_definition_prt_we1 = 1'b1;
     end else begin
         pulse_definition_prt_we1 = 1'b0;
@@ -1345,7 +1334,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state49) | ((trunc_ln791_reg_1620 == 1'd1) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((1'b1 == ap_CS_fsm_state50) | ((trunc_ln791_reg_1593 == 1'd1) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_queue_0_V_blk_n = pulse_queue_0_V_full_n;
     end else begin
         pulse_queue_0_V_blk_n = 1'b1;
@@ -1353,17 +1342,17 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
         pulse_queue_0_V_din = 853'd30030067315218800919884630782037027445247038374198014146711597563050526250476926831789640794321325523394216076738821850476730762665208973047045843626559620640158907690363610309346513399556581649279919071671610504617321356178738468477058455548958390664298496;
-    end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (trunc_ln791_reg_1620 == 1'd1) & (1'b1 == ap_CS_fsm_state47))) begin
-        pulse_queue_0_V_din = tmp_1_1_fu_1341_p34;
+    end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (trunc_ln791_reg_1593 == 1'd1) & (1'b1 == ap_CS_fsm_state48))) begin
+        pulse_queue_0_V_din = tmp_1_1_fu_1336_p34;
     end else begin
         pulse_queue_0_V_din = 'bx;
     end
 end
 
 always @ (*) begin
-    if (((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49)) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (trunc_ln791_reg_1620 == 1'd1) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50)) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (trunc_ln791_reg_1593 == 1'd1) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_queue_0_V_write = 1'b1;
     end else begin
         pulse_queue_0_V_write = 1'b0;
@@ -1371,7 +1360,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state49) | ((tmp_reg_1624 == 1'd1) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((1'b1 == ap_CS_fsm_state50) | ((tmp_reg_1597 == 1'd1) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_queue_1_V_blk_n = pulse_queue_1_V_full_n;
     end else begin
         pulse_queue_1_V_blk_n = 1'b1;
@@ -1379,17 +1368,17 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
         pulse_queue_1_V_din = 853'd30030067315218800919884630782037027445247038374198014146711597563050526250476926831789640794321325523394216076738821850476730762665208973047045843626559620640158907690363610309346513399556581649279919071671610504617321356178738468477058455548958390664298496;
-    end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (tmp_reg_1624 == 1'd1) & (1'b1 == ap_CS_fsm_state47))) begin
-        pulse_queue_1_V_din = tmp_2_1_fu_1381_p34;
+    end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (tmp_reg_1597 == 1'd1) & (1'b1 == ap_CS_fsm_state48))) begin
+        pulse_queue_1_V_din = tmp_2_1_fu_1376_p34;
     end else begin
         pulse_queue_1_V_din = 'bx;
     end
 end
 
 always @ (*) begin
-    if (((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49)) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (tmp_reg_1624 == 1'd1) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50)) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (tmp_reg_1597 == 1'd1) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_queue_1_V_write = 1'b1;
     end else begin
         pulse_queue_1_V_write = 1'b0;
@@ -1397,7 +1386,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state49) | ((p_Result_s_reg_1628 == 1'd1) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((1'b1 == ap_CS_fsm_state50) | ((p_Result_s_reg_1601 == 1'd1) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_queue_2_V_blk_n = pulse_queue_2_V_full_n;
     end else begin
         pulse_queue_2_V_blk_n = 1'b1;
@@ -1405,17 +1394,17 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
         pulse_queue_2_V_din = 853'd30030067315218800919884630782037027445247038374198014146711597563050526250476926831789640794321325523394216076738821850476730762665208973047045843626559620640158907690363610309346513399556581649279919071671610504617321356178738468477058455548958390664298496;
-    end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (p_Result_s_reg_1628 == 1'd1) & (1'b1 == ap_CS_fsm_state47))) begin
-        pulse_queue_2_V_din = tmp_3_1_fu_1421_p34;
+    end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (p_Result_s_reg_1601 == 1'd1) & (1'b1 == ap_CS_fsm_state48))) begin
+        pulse_queue_2_V_din = tmp_3_1_fu_1416_p34;
     end else begin
         pulse_queue_2_V_din = 'bx;
     end
 end
 
 always @ (*) begin
-    if (((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49)) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (p_Result_s_reg_1628 == 1'd1) & (1'b1 == ap_CS_fsm_state47)))) begin
+    if (((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50)) | (~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (p_Result_s_reg_1601 == 1'd1) & (1'b1 == ap_CS_fsm_state48)))) begin
         pulse_queue_2_V_write = 1'b1;
     end else begin
         pulse_queue_2_V_write = 1'b0;
@@ -1423,7 +1412,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b1 == ap_CS_fsm_state46) | (1'b1 == ap_CS_fsm_state49))) begin
+    if (((1'b1 == ap_CS_fsm_state47) | (1'b1 == ap_CS_fsm_state50))) begin
         pulse_queue_s_V_blk_n = pulse_queue_s_V_full_n;
     end else begin
         pulse_queue_s_V_blk_n = 1'b1;
@@ -1431,17 +1420,17 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+    if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
         pulse_queue_s_V_din = 853'd30030067315218800919884630782037027445247038374198014146711597563050526250476926831789640794321325523394216076738821850476730762665208973047045843626559620640158907690363610309346513399556581649279919071671610504617321356178738468477058455548958390664298496;
-    end else if (((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state46))) begin
-        pulse_queue_s_V_din = tmp_1_fu_1299_p34;
+    end else if (((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state47))) begin
+        pulse_queue_s_V_din = tmp_1_fu_1294_p34;
     end else begin
         pulse_queue_s_V_din = 'bx;
     end
 end
 
 always @ (*) begin
-    if ((((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state46)) | (~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49)))) begin
+    if ((((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state47)) | (~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50)))) begin
         pulse_queue_s_V_write = 1'b1;
     end else begin
         pulse_queue_s_V_write = 1'b0;
@@ -1474,9 +1463,9 @@ always @ (*) begin
             end
         end
         ap_ST_fsm_state2 : begin
-            if (((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
+            if (((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state2))) begin
                 ap_NS_fsm = ap_ST_fsm_state7;
-            end else if (((1'b0 == ap_block_state2_io) & (icmp_ln151_fu_876_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
+            end else if (((1'b0 == ap_block_state2_io) & (icmp_ln147_fu_865_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state2))) begin
                 ap_NS_fsm = ap_ST_fsm_state3;
             end else begin
                 ap_NS_fsm = ap_ST_fsm_state2;
@@ -1490,7 +1479,7 @@ always @ (*) begin
             end
         end
         ap_ST_fsm_state4 : begin
-            if (((icmp_ln156_fu_951_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
+            if (((icmp_ln152_fu_940_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state4))) begin
                 ap_NS_fsm = ap_ST_fsm_state2;
             end else begin
                 ap_NS_fsm = ap_ST_fsm_state5;
@@ -1511,24 +1500,24 @@ always @ (*) begin
             end
         end
         ap_ST_fsm_state7 : begin
-            if (((icmp_ln172_fu_1003_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state7))) begin
-                ap_NS_fsm = ap_ST_fsm_state9;
-            end else begin
-                ap_NS_fsm = ap_ST_fsm_state8;
-            end
+            ap_NS_fsm = ap_ST_fsm_state8;
         end
         ap_ST_fsm_state8 : begin
-            ap_NS_fsm = ap_ST_fsm_state9;
-        end
-        ap_ST_fsm_state9 : begin
-            if (((1'b1 == ap_CS_fsm_state9) & ((icmp_ln180_fu_1080_p2 == 1'd0) | (icmp_ln172_reg_1681 == 1'd0)))) begin
+            if (((icmp_ln172_fu_1011_p2 == 1'd1) & (1'b1 == ap_CS_fsm_state8))) begin
                 ap_NS_fsm = ap_ST_fsm_state7;
             end else begin
-                ap_NS_fsm = ap_ST_fsm_state10;
+                ap_NS_fsm = ap_ST_fsm_state9;
             end
         end
+        ap_ST_fsm_state9 : begin
+            ap_NS_fsm = ap_ST_fsm_state10;
+        end
         ap_ST_fsm_state10 : begin
-            ap_NS_fsm = ap_ST_fsm_state11;
+            if (((icmp_ln180_fu_1079_p2 == 1'd0) & (1'b1 == ap_CS_fsm_state10))) begin
+                ap_NS_fsm = ap_ST_fsm_state8;
+            end else begin
+                ap_NS_fsm = ap_ST_fsm_state11;
+            end
         end
         ap_ST_fsm_state11 : begin
             ap_NS_fsm = ap_ST_fsm_state12;
@@ -1636,29 +1625,32 @@ always @ (*) begin
             ap_NS_fsm = ap_ST_fsm_state46;
         end
         ap_ST_fsm_state46 : begin
-            if (((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state46))) begin
-                ap_NS_fsm = ap_ST_fsm_state47;
-            end else begin
-                ap_NS_fsm = ap_ST_fsm_state46;
-            end
+            ap_NS_fsm = ap_ST_fsm_state47;
         end
         ap_ST_fsm_state47 : begin
-            if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'd1 == and_ln217_reg_2135) & (1'b1 == ap_CS_fsm_state47))) begin
-                ap_NS_fsm = ap_ST_fsm_state49;
-            end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1))) & (1'd0 == and_ln217_reg_2135) & (1'b1 == ap_CS_fsm_state47))) begin
+            if (((pulse_queue_s_V_full_n == 1'b1) & (1'b1 == ap_CS_fsm_state47))) begin
                 ap_NS_fsm = ap_ST_fsm_state48;
             end else begin
                 ap_NS_fsm = ap_ST_fsm_state47;
             end
         end
         ap_ST_fsm_state48 : begin
-            ap_NS_fsm = ap_ST_fsm_state9;
+            if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'd1 == and_ln217_reg_2116) & (1'b1 == ap_CS_fsm_state48))) begin
+                ap_NS_fsm = ap_ST_fsm_state50;
+            end else if ((~(((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1))) & (1'd0 == and_ln217_reg_2116) & (1'b1 == ap_CS_fsm_state48))) begin
+                ap_NS_fsm = ap_ST_fsm_state49;
+            end else begin
+                ap_NS_fsm = ap_ST_fsm_state48;
+            end
         end
         ap_ST_fsm_state49 : begin
-            if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state49))) begin
+            ap_NS_fsm = ap_ST_fsm_state10;
+        end
+        ap_ST_fsm_state50 : begin
+            if ((~((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1)) & (1'b1 == ap_CS_fsm_state50))) begin
                 ap_NS_fsm = ap_ST_fsm_state1;
             end else begin
-                ap_NS_fsm = ap_ST_fsm_state49;
+                ap_NS_fsm = ap_ST_fsm_state50;
             end
         end
         default : begin
@@ -1667,19 +1659,17 @@ always @ (*) begin
     endcase
 end
 
-assign add_ln158_fu_973_p2 = (sub_ln158_1_reg_1632 + zext_ln158_1_fu_969_p1);
+assign add_ln154_fu_962_p2 = (sub_ln154_1_reg_1605 + zext_ln154_1_fu_958_p1);
 
-assign add_ln175_fu_1008_p2 = (seq_idx_1_fu_278 + cfg_pulse_sequence_s_1_reg_1555);
+assign add_ln187_fu_1049_p2 = ($signed(32'd4294967295) + $signed(cfg_pulse_sequence_n_q0));
 
-assign add_ln187_fu_1050_p2 = ($signed(32'd4294967295) + $signed(cfg_pulse_sequence_n_q0));
+assign add_ln207_1_fu_1067_p2 = (cfg_pulse_sequence_t_17_q0 + cfg_pulse_sequence_t_25_q0);
 
-assign add_ln207_1_fu_1068_p2 = (cfg_pulse_sequence_t_17_q0 + cfg_pulse_sequence_t_25_q0);
+assign add_ln207_2_fu_1073_p2 = (cfg_pulse_sequence_t_18_q0 + cfg_pulse_sequence_t_26_q0);
 
-assign add_ln207_2_fu_1074_p2 = (cfg_pulse_sequence_t_18_q0 + cfg_pulse_sequence_t_26_q0);
+assign add_ln207_fu_1061_p2 = (cfg_pulse_sequence_t_16_q0 + cfg_pulse_sequence_t_24_q0);
 
-assign add_ln207_fu_1062_p2 = (cfg_pulse_sequence_t_16_q0 + cfg_pulse_sequence_t_24_q0);
-
-assign and_ln217_fu_1281_p2 = (xor_ln217_fu_1275_p2 & icmp_ln217_fu_1263_p2);
+assign and_ln217_fu_1276_p2 = (xor_ln217_fu_1270_p2 & icmp_ln217_fu_1258_p2);
 
 assign ap_CS_fsm_state1 = ap_CS_fsm[32'd0];
 
@@ -1687,13 +1677,13 @@ assign ap_CS_fsm_state10 = ap_CS_fsm[32'd9];
 
 assign ap_CS_fsm_state11 = ap_CS_fsm[32'd10];
 
+assign ap_CS_fsm_state12 = ap_CS_fsm[32'd11];
+
 assign ap_CS_fsm_state2 = ap_CS_fsm[32'd1];
 
 assign ap_CS_fsm_state3 = ap_CS_fsm[32'd2];
 
 assign ap_CS_fsm_state4 = ap_CS_fsm[32'd3];
-
-assign ap_CS_fsm_state45 = ap_CS_fsm[32'd44];
 
 assign ap_CS_fsm_state46 = ap_CS_fsm[32'd45];
 
@@ -1704,6 +1694,8 @@ assign ap_CS_fsm_state48 = ap_CS_fsm[32'd47];
 assign ap_CS_fsm_state49 = ap_CS_fsm[32'd48];
 
 assign ap_CS_fsm_state5 = ap_CS_fsm[32'd4];
+
+assign ap_CS_fsm_state50 = ap_CS_fsm[32'd49];
 
 assign ap_CS_fsm_state6 = ap_CS_fsm[32'd5];
 
@@ -1718,7 +1710,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    ap_block_state2_io = (((coef_ch2_V_V_TREADY_int == 1'b0) & (icmp_ln151_fu_876_p2 == 1'd0)) | ((coef_ch1_V_V_TREADY_int == 1'b0) & (icmp_ln151_fu_876_p2 == 1'd0)) | ((coef_ch0_V_V_TREADY_int == 1'b0) & (icmp_ln151_fu_876_p2 == 1'd0)));
+    ap_block_state2_io = (((coef_ch2_V_V_TREADY_int == 1'b0) & (icmp_ln147_fu_865_p2 == 1'd0)) | ((coef_ch1_V_V_TREADY_int == 1'b0) & (icmp_ln147_fu_865_p2 == 1'd0)) | ((coef_ch0_V_V_TREADY_int == 1'b0) & (icmp_ln147_fu_865_p2 == 1'd0)));
 end
 
 always @ (*) begin
@@ -1726,11 +1718,11 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    ap_block_state47 = (((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1628 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1624 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1620 == 1'd1)));
+    ap_block_state48 = (((pulse_queue_2_V_full_n == 1'b0) & (p_Result_s_reg_1601 == 1'd1)) | ((pulse_queue_1_V_full_n == 1'b0) & (tmp_reg_1597 == 1'd1)) | ((pulse_queue_0_V_full_n == 1'b0) & (trunc_ln791_reg_1593 == 1'd1)));
 end
 
 always @ (*) begin
-    ap_block_state49 = ((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1));
+    ap_block_state50 = ((pulse_queue_s_V_full_n == 1'b0) | (pulse_queue_2_V_full_n == 1'b0) | (pulse_queue_1_V_full_n == 1'b0) | (pulse_queue_0_V_full_n == 1'b0) | (regslice_both_coef_ch2_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch1_V_V_U_apdone_blk == 1'b1) | (regslice_both_coef_ch0_V_V_U_apdone_blk == 1'b1));
 end
 
 always @ (*) begin
@@ -1743,65 +1735,61 @@ end
 
 assign ap_ready = internal_ap_ready;
 
-assign cfg_filter_coefs_ch0_address0 = sext_ln158_fu_978_p1;
+assign cfg_filter_coefs_ch0_address0 = sext_ln154_fu_967_p1;
 
-assign cfg_filter_coefs_ch1_address0 = sext_ln158_fu_978_p1;
+assign cfg_filter_coefs_ch1_address0 = sext_ln154_fu_967_p1;
 
-assign cfg_filter_coefs_ch2_address0 = sext_ln158_fu_978_p1;
+assign cfg_filter_coefs_ch2_address0 = sext_ln154_fu_967_p1;
 
-assign cfg_pulse_sequence_b_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_b_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_c_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_c_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_f_3_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_f_3_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_f_4_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_f_4_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_f_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_f_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_l_1_fu_868_p1 = cfg_pulse_sequence_l;
+assign cfg_pulse_sequence_n_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_n_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_p_3_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_p_3_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_p_4_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_p_4_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_p_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_p_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_16_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_s_1_fu_872_p1 = cfg_pulse_sequence_s;
+assign cfg_pulse_sequence_t_17_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_16_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_18_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_17_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_19_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_18_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_20_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_19_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_21_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_20_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_22_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_21_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_23_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_22_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_24_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_23_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_25_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_24_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_26_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_25_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_27_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_26_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_28_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_27_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_29_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_28_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_30_address0 = zext_ln175_fu_1016_p1;
 
-assign cfg_pulse_sequence_t_29_address0 = zext_ln175_fu_1013_p1;
-
-assign cfg_pulse_sequence_t_30_address0 = zext_ln175_fu_1013_p1;
-
-assign cfg_pulse_sequence_t_address0 = zext_ln175_fu_1013_p1;
+assign cfg_pulse_sequence_t_address0 = zext_ln175_fu_1016_p1;
 
 assign coef_ch0_V_V_TVALID = regslice_both_coef_ch0_V_V_U_vld_out;
 
@@ -1809,144 +1797,149 @@ assign coef_ch1_V_V_TVALID = regslice_both_coef_ch1_V_V_U_vld_out;
 
 assign coef_ch2_V_V_TVALID = regslice_both_coef_ch2_V_V_U_vld_out;
 
-assign coef_fu_957_p2 = (coef_0_i_reg_804 + 6'd1);
+assign coef_fu_946_p2 = (coef_0_i_reg_796 + 6'd1);
 
-assign hhvv_index_V_fu_1467_p2 = (p_Val2_s_reg_815 + 2'd1);
+assign hhvv_index_V_fu_1462_p2 = (p_Val2_s_reg_817 + 2'd1);
 
-assign icmp_ln151_fu_876_p2 = ((val_assign_reg_792 == 4'd8) ? 1'b1 : 1'b0);
+assign icmp_ln147_fu_865_p2 = ((val_assign_reg_784 == 4'd8) ? 1'b1 : 1'b0);
 
-assign icmp_ln156_fu_951_p2 = ((coef_0_i_reg_804 == 6'd48) ? 1'b1 : 1'b0);
+assign icmp_ln152_fu_940_p2 = ((coef_0_i_reg_796 == 6'd48) ? 1'b1 : 1'b0);
 
-assign icmp_ln172_fu_1003_p2 = ((seq_idx_1_fu_278 < cfg_pulse_sequence_l_1_reg_1550) ? 1'b1 : 1'b0);
+assign icmp_ln172_fu_1011_p2 = ((seq_idx_0_i_reg_807 > zext_ln172_1_reg_1653) ? 1'b1 : 1'b0);
 
-assign icmp_ln180_fu_1080_p2 = ((pulse_rep_0_i_reg_839 < pulse_definition_num_reg_1818) ? 1'b1 : 1'b0);
+assign icmp_ln180_fu_1079_p2 = ((pulse_rep_0_i_reg_841 < pulse_definition_num_reg_1794) ? 1'b1 : 1'b0);
 
-assign icmp_ln198_fu_1056_p2 = ((cfg_pulse_sequence_p_4_q0 == 32'd2) ? 1'b1 : 1'b0);
+assign icmp_ln198_fu_1055_p2 = ((cfg_pulse_sequence_p_4_q0 == 32'd2) ? 1'b1 : 1'b0);
 
-assign icmp_ln208_1_fu_1152_p2 = ((pulse_definition_prt_q0 < add_ln207_1_reg_2023) ? 1'b1 : 1'b0);
+assign icmp_ln208_1_fu_1147_p2 = ((pulse_definition_prt_q0 < add_ln207_1_reg_1999) ? 1'b1 : 1'b0);
 
-assign icmp_ln208_2_fu_1169_p2 = ((pulse_definition_prt_q0 < add_ln207_2_reg_2029) ? 1'b1 : 1'b0);
+assign icmp_ln208_2_fu_1164_p2 = ((pulse_definition_prt_q0 < add_ln207_2_reg_2005) ? 1'b1 : 1'b0);
 
-assign icmp_ln208_fu_1135_p2 = ((pulse_definition_prt_q0 < add_ln207_reg_2017) ? 1'b1 : 1'b0);
+assign icmp_ln208_fu_1130_p2 = ((pulse_definition_prt_q0 < add_ln207_reg_1993) ? 1'b1 : 1'b0);
 
-assign icmp_ln211_1_fu_1235_p2 = ((grp_fu_1190_p2 == 32'd0) ? 1'b1 : 1'b0);
+assign icmp_ln211_1_fu_1230_p2 = ((grp_fu_1185_p2 == 32'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln211_2_fu_1249_p2 = ((grp_fu_1194_p2 == 32'd0) ? 1'b1 : 1'b0);
+assign icmp_ln211_2_fu_1244_p2 = ((grp_fu_1189_p2 == 32'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln211_fu_1221_p2 = ((grp_fu_1186_p2 == 32'd0) ? 1'b1 : 1'b0);
+assign icmp_ln211_fu_1216_p2 = ((grp_fu_1181_p2 == 32'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln217_1_fu_1269_p2 = ((num_pulses_scheduled_1_fu_286 < cfg_num_pulses_to_ex) ? 1'b1 : 1'b0);
+assign icmp_ln217_1_fu_1264_p2 = ((num_pulses_scheduled_1_fu_284 < cfg_num_pulses_to_ex) ? 1'b1 : 1'b0);
 
-assign icmp_ln217_fu_1263_p2 = ((cfg_num_pulses_to_ex != 32'd0) ? 1'b1 : 1'b0);
+assign icmp_ln217_fu_1258_p2 = ((cfg_num_pulses_to_ex != 32'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln226_fu_1213_p2 = ((num_pulses_scheduled_5_fu_1207_p2 == cfg_num_pulses_per_x) ? 1'b1 : 1'b0);
+assign icmp_ln226_fu_1208_p2 = ((num_pulses_scheduled_5_fu_1202_p2 == cfg_num_pulses_per_x) ? 1'b1 : 1'b0);
 
-assign icmp_ln262_1_fu_1502_p2 = ((pulse_definition_prt_q1 == 32'd0) ? 1'b1 : 1'b0);
+assign icmp_ln262_1_fu_1497_p2 = ((pulse_definition_prt_q1 == 32'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln262_fu_1497_p2 = ((staggered_prt_index_reg_2156 == 8'd2) ? 1'b1 : 1'b0);
+assign icmp_ln262_fu_1492_p2 = ((staggered_prt_index_reg_2137 == 8'd2) ? 1'b1 : 1'b0);
 
-assign num_pulses_scheduled_5_fu_1207_p2 = (num_pulses_scheduled_2_fu_282 + 32'd1);
+assign num_pulses_scheduled_5_fu_1202_p2 = (num_pulses_scheduled_2_fu_280 + 32'd1);
 
-assign num_pulses_scheduled_fu_1461_p2 = (num_pulses_scheduled_1_fu_286 + 32'd1);
+assign num_pulses_scheduled_fu_1456_p2 = (num_pulses_scheduled_1_fu_284 + 32'd1);
 
-assign or_ln262_fu_1508_p2 = (icmp_ln262_fu_1497_p2 | icmp_ln262_1_fu_1502_p2);
+assign or_ln262_fu_1503_p2 = (icmp_ln262_fu_1492_p2 | icmp_ln262_1_fu_1497_p2);
 
-assign pulse_def_polarizati_fu_1131_p1 = tmp_3_fu_1123_p3;
+assign pulse_def_polarizati_fu_1126_p1 = tmp_3_fu_1118_p3;
 
-assign pulse_first_pulse_in_1_fu_1201_p2 = ((num_pulses_scheduled_2_fu_282 == 32'd0) ? 1'b1 : 1'b0);
+assign pulse_first_pulse_in_1_fu_1196_p2 = ((num_pulses_scheduled_2_fu_280 == 32'd0) ? 1'b1 : 1'b0);
 
-assign pulse_first_pulse_in_fu_1091_p2 = ((pulse_rep_0_i_reg_839 == 32'd0) ? 1'b1 : 1'b0);
+assign pulse_first_pulse_in_fu_1090_p2 = ((pulse_rep_0_i_reg_841 == 32'd0) ? 1'b1 : 1'b0);
 
-assign pulse_last_pulse_in_1_fu_1287_p2 = (icmp_ln226_reg_2114 | and_ln217_fu_1281_p2);
+assign pulse_last_pulse_in_1_fu_1282_p2 = (icmp_ln226_reg_2095 | and_ln217_fu_1276_p2);
 
-assign pulse_last_pulse_in_s_fu_1097_p2 = ((pulse_rep_0_i_reg_839 == add_ln187_reg_2008) ? 1'b1 : 1'b0);
+assign pulse_last_pulse_in_s_fu_1096_p2 = ((pulse_rep_0_i_reg_841 == add_ln187_reg_1984) ? 1'b1 : 1'b0);
 
-assign pulse_num_samples_1_fu_1241_p3 = ((icmp_ln211_1_fu_1235_p2[0:0] === 1'b1) ? 32'd1 : grp_fu_1190_p2);
+assign pulse_num_samples_1_fu_1236_p3 = ((icmp_ln211_1_fu_1230_p2[0:0] === 1'b1) ? 32'd1 : grp_fu_1185_p2);
 
-assign pulse_num_samples_2_fu_1255_p3 = ((icmp_ln211_2_fu_1249_p2[0:0] === 1'b1) ? 32'd1 : grp_fu_1194_p2);
+assign pulse_num_samples_2_fu_1250_p3 = ((icmp_ln211_2_fu_1244_p2[0:0] === 1'b1) ? 32'd1 : grp_fu_1189_p2);
 
-assign pulse_num_samples_fu_1227_p3 = ((icmp_ln211_fu_1221_p2[0:0] === 1'b1) ? 32'd1 : grp_fu_1186_p2);
+assign pulse_num_samples_fu_1222_p3 = ((icmp_ln211_fu_1216_p2[0:0] === 1'b1) ? 32'd1 : grp_fu_1181_p2);
 
-assign pulse_post_decimatio_fu_895_p1 = cfg_post_decimation[7:0];
+assign pulse_post_decimatio_fu_884_p1 = cfg_post_decimation[7:0];
 
-assign pulse_rep_fu_1085_p2 = (pulse_rep_0_i_reg_839 + 32'd1);
+assign pulse_rep_fu_1084_p2 = (pulse_rep_0_i_reg_841 + 32'd1);
 
-assign pulse_sequence_index_fu_1045_p2 = (cfg_pulse_sequence_s + trunc_ln175_fu_1042_p1);
+assign pulse_sequence_index_fu_1045_p1 = seq_idx_0_i_reg_807[7:0];
 
-assign select_ln208_1_fu_1157_p3 = ((icmp_ln208_1_fu_1152_p2[0:0] === 1'b1) ? pulse_definition_prt_q0 : add_ln207_1_reg_2023);
+assign select_ln208_1_fu_1152_p3 = ((icmp_ln208_1_fu_1147_p2[0:0] === 1'b1) ? pulse_definition_prt_q0 : add_ln207_1_reg_1999);
 
-assign select_ln208_2_fu_1174_p3 = ((icmp_ln208_2_fu_1169_p2[0:0] === 1'b1) ? pulse_definition_prt_q0 : add_ln207_2_reg_2029);
+assign select_ln208_2_fu_1169_p3 = ((icmp_ln208_2_fu_1164_p2[0:0] === 1'b1) ? pulse_definition_prt_q0 : add_ln207_2_reg_2005);
 
-assign select_ln208_fu_1140_p3 = ((icmp_ln208_fu_1135_p2[0:0] === 1'b1) ? pulse_definition_prt_q0 : add_ln207_reg_2017);
+assign select_ln208_fu_1135_p3 = ((icmp_ln208_fu_1130_p2[0:0] === 1'b1) ? pulse_definition_prt_q0 : add_ln207_reg_1993);
 
-assign select_ln226_fu_1292_p3 = ((pulse_last_pulse_in_1_fu_1287_p2[0:0] === 1'b1) ? 32'd0 : num_pulses_scheduled_5_reg_2109);
+assign select_ln226_fu_1287_p3 = ((pulse_last_pulse_in_1_fu_1282_p2[0:0] === 1'b1) ? 32'd0 : num_pulses_scheduled_5_reg_2090);
 
-assign select_ln262_fu_1514_p3 = ((or_ln262_fu_1508_p2[0:0] === 1'b1) ? 8'd0 : staggered_prt_index_reg_2156);
+assign select_ln262_fu_1509_p3 = ((or_ln262_fu_1503_p2[0:0] === 1'b1) ? 8'd0 : staggered_prt_index_reg_2137);
 
-assign seq_idx_fu_1107_p2 = (seq_idx_1_load_reg_1675 + 32'd1);
+assign seq_idx_fu_1106_p2 = (seq_idx_0_i_reg_807 + 17'd1);
 
-assign set_fu_882_p2 = (val_assign_reg_792 + 4'd1);
+assign set_fu_871_p2 = (val_assign_reg_784 + 4'd1);
 
-assign sext_ln158_fu_978_p1 = $signed(add_ln158_fu_973_p2);
+assign sext_ln154_fu_967_p1 = $signed(add_ln154_fu_962_p2);
 
-assign staggered_prt_index_fu_1473_p2 = (staggered_prt_index_s_reg_827 + 8'd1);
+assign staggered_prt_index_fu_1468_p2 = (staggered_prt_index_s_reg_829 + 8'd1);
+
+assign start_index_fu_989_p1 = cfg_pulse_sequence_s[15:0];
 
 assign start_out = real_start;
 
-assign sub_ln158_1_fu_945_p2 = (tmp_8_fu_925_p3 - zext_ln158_fu_941_p1);
+assign stop_index_fu_993_p4 = {{cfg_pulse_sequence_s[31:16]}};
 
-assign sub_ln158_fu_963_p2 = ($signed(6'd47) - $signed(coef_0_i_reg_804));
+assign sub_ln154_1_fu_934_p2 = (tmp_8_fu_914_p3 - zext_ln154_fu_930_p1);
 
-assign sub_ln210_1_fu_1164_p2 = (select_ln208_1_fu_1157_p3 - pulse_definition_tim_2_reg_1886);
+assign sub_ln154_fu_952_p2 = ($signed(6'd47) - $signed(coef_0_i_reg_796));
 
-assign sub_ln210_2_fu_1181_p2 = (select_ln208_2_fu_1174_p3 - pulse_definition_tim_3_reg_1895);
+assign sub_ln210_1_fu_1159_p2 = (select_ln208_1_fu_1152_p3 - pulse_definition_tim_2_reg_1862);
 
-assign sub_ln210_fu_1147_p2 = (select_ln208_fu_1140_p3 - pulse_definition_tim_1_reg_1877);
+assign sub_ln210_2_fu_1176_p2 = (select_ln208_2_fu_1169_p3 - pulse_definition_tim_3_reg_1871);
 
-assign tmp_1_1_fu_1341_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_reg_2139}}}, {pulse_first_pulse_in_1_reg_2101}}}, {pulse_last_pulse_in_s_reg_2051}}}, {pulse_first_pulse_in_reg_2043}}}, {pulse_post_decimatio_reg_1612}}}, {pulse_num_samples_reg_2119}}}, {pulse_sequence_index_reg_2000}}}, {pulse_definition_tim_15_reg_1992}}}, {pulse_definition_tim_14_reg_1984}}}, {pulse_definition_tim_13_reg_1976}}}, {pulse_definition_tim_12_reg_1968}}}, {pulse_definition_tim_11_reg_1960}}}, {pulse_definition_tim_10_reg_1952}}}, {pulse_definition_tim_9_reg_1944}}}, {pulse_definition_tim_8_reg_1936}}}, {pulse_definition_tim_7_reg_1928}}}, {pulse_definition_tim_6_reg_1920}}}, {pulse_definition_tim_5_reg_1912}}}, {pulse_definition_tim_4_reg_1904}}}, {pulse_definition_tim_3_reg_1895}}}, {pulse_definition_tim_2_reg_1886}}}, {pulse_definition_tim_1_reg_1877}}}, {pulse_definition_tim_reg_1869}}}, {pulse_definition_fil_2_reg_1861}}}, {pulse_definition_fil_1_reg_1853}}}, {pulse_definition_fil_reg_1845}}}, {tmp_def_polarization_reg_850}}}, {pulse_definition_con_reg_1832}}}, {tmp_def_block_post_t_reg_2065}}}, {pulse_definition_num_reg_1818}}}, {cfg_pulse_sequence_p_8_reg_1810}}}, {pulse_definition_prt_4_reg_2073}};
+assign sub_ln210_fu_1142_p2 = (select_ln208_fu_1135_p3 - pulse_definition_tim_1_reg_1853);
 
-assign tmp_1_fu_1299_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_fu_1287_p2}}}, {pulse_first_pulse_in_1_reg_2101}}}, {pulse_last_pulse_in_s_reg_2051}}}, {pulse_first_pulse_in_reg_2043}}}, {pulse_post_decimatio_reg_1612}}}, {tmp_num_samples_fu_290}}}, {pulse_sequence_index_reg_2000}}}, {pulse_definition_tim_15_reg_1992}}}, {pulse_definition_tim_14_reg_1984}}}, {pulse_definition_tim_13_reg_1976}}}, {pulse_definition_tim_12_reg_1968}}}, {pulse_definition_tim_11_reg_1960}}}, {pulse_definition_tim_10_reg_1952}}}, {pulse_definition_tim_9_reg_1944}}}, {pulse_definition_tim_8_reg_1936}}}, {pulse_definition_tim_7_reg_1928}}}, {pulse_definition_tim_6_reg_1920}}}, {pulse_definition_tim_5_reg_1912}}}, {pulse_definition_tim_4_reg_1904}}}, {pulse_definition_tim_3_reg_1895}}}, {pulse_definition_tim_2_reg_1886}}}, {pulse_definition_tim_1_reg_1877}}}, {pulse_definition_tim_reg_1869}}}, {pulse_definition_fil_2_reg_1861}}}, {pulse_definition_fil_1_reg_1853}}}, {pulse_definition_fil_reg_1845}}}, {tmp_def_polarization_reg_850}}}, {pulse_definition_con_reg_1832}}}, {tmp_def_block_post_t_reg_2065}}}, {pulse_definition_num_reg_1818}}}, {cfg_pulse_sequence_p_8_reg_1810}}}, {pulse_definition_prt_4_reg_2073}};
+assign tmp_1_1_fu_1336_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_reg_2120}}}, {pulse_first_pulse_in_1_reg_2082}}}, {pulse_last_pulse_in_s_reg_2027}}}, {pulse_first_pulse_in_reg_2019}}}, {pulse_post_decimatio_reg_1585}}}, {pulse_num_samples_reg_2100}}}, {pulse_sequence_index_reg_1976}}}, {pulse_definition_tim_15_reg_1968}}}, {pulse_definition_tim_14_reg_1960}}}, {pulse_definition_tim_13_reg_1952}}}, {pulse_definition_tim_12_reg_1944}}}, {pulse_definition_tim_11_reg_1936}}}, {pulse_definition_tim_10_reg_1928}}}, {pulse_definition_tim_9_reg_1920}}}, {pulse_definition_tim_8_reg_1912}}}, {pulse_definition_tim_7_reg_1904}}}, {pulse_definition_tim_6_reg_1896}}}, {pulse_definition_tim_5_reg_1888}}}, {pulse_definition_tim_4_reg_1880}}}, {pulse_definition_tim_3_reg_1871}}}, {pulse_definition_tim_2_reg_1862}}}, {pulse_definition_tim_1_reg_1853}}}, {pulse_definition_tim_reg_1845}}}, {pulse_definition_fil_2_reg_1837}}}, {pulse_definition_fil_1_reg_1829}}}, {pulse_definition_fil_reg_1821}}}, {tmp_def_polarization_reg_852}}}, {pulse_definition_con_reg_1808}}}, {tmp_def_block_post_t_reg_2046}}}, {pulse_definition_num_reg_1794}}}, {cfg_pulse_sequence_p_8_reg_1786}}}, {pulse_definition_prt_4_reg_2054}};
 
-assign tmp_2_1_fu_1381_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_reg_2139}}}, {pulse_first_pulse_in_1_reg_2101}}}, {pulse_last_pulse_in_s_reg_2051}}}, {pulse_first_pulse_in_reg_2043}}}, {pulse_post_decimatio_reg_1612}}}, {pulse_num_samples_1_reg_2124}}}, {pulse_sequence_index_reg_2000}}}, {pulse_definition_tim_15_reg_1992}}}, {pulse_definition_tim_14_reg_1984}}}, {pulse_definition_tim_13_reg_1976}}}, {pulse_definition_tim_12_reg_1968}}}, {pulse_definition_tim_11_reg_1960}}}, {pulse_definition_tim_10_reg_1952}}}, {pulse_definition_tim_9_reg_1944}}}, {pulse_definition_tim_8_reg_1936}}}, {pulse_definition_tim_7_reg_1928}}}, {pulse_definition_tim_6_reg_1920}}}, {pulse_definition_tim_5_reg_1912}}}, {pulse_definition_tim_4_reg_1904}}}, {pulse_definition_tim_3_reg_1895}}}, {pulse_definition_tim_2_reg_1886}}}, {pulse_definition_tim_1_reg_1877}}}, {pulse_definition_tim_reg_1869}}}, {pulse_definition_fil_2_reg_1861}}}, {pulse_definition_fil_1_reg_1853}}}, {pulse_definition_fil_reg_1845}}}, {tmp_def_polarization_reg_850}}}, {pulse_definition_con_reg_1832}}}, {tmp_def_block_post_t_reg_2065}}}, {pulse_definition_num_reg_1818}}}, {cfg_pulse_sequence_p_8_reg_1810}}}, {pulse_definition_prt_4_reg_2073}};
+assign tmp_1_fu_1294_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_fu_1282_p2}}}, {pulse_first_pulse_in_1_reg_2082}}}, {pulse_last_pulse_in_s_reg_2027}}}, {pulse_first_pulse_in_reg_2019}}}, {pulse_post_decimatio_reg_1585}}}, {tmp_num_samples_fu_288}}}, {pulse_sequence_index_reg_1976}}}, {pulse_definition_tim_15_reg_1968}}}, {pulse_definition_tim_14_reg_1960}}}, {pulse_definition_tim_13_reg_1952}}}, {pulse_definition_tim_12_reg_1944}}}, {pulse_definition_tim_11_reg_1936}}}, {pulse_definition_tim_10_reg_1928}}}, {pulse_definition_tim_9_reg_1920}}}, {pulse_definition_tim_8_reg_1912}}}, {pulse_definition_tim_7_reg_1904}}}, {pulse_definition_tim_6_reg_1896}}}, {pulse_definition_tim_5_reg_1888}}}, {pulse_definition_tim_4_reg_1880}}}, {pulse_definition_tim_3_reg_1871}}}, {pulse_definition_tim_2_reg_1862}}}, {pulse_definition_tim_1_reg_1853}}}, {pulse_definition_tim_reg_1845}}}, {pulse_definition_fil_2_reg_1837}}}, {pulse_definition_fil_1_reg_1829}}}, {pulse_definition_fil_reg_1821}}}, {tmp_def_polarization_reg_852}}}, {pulse_definition_con_reg_1808}}}, {tmp_def_block_post_t_reg_2046}}}, {pulse_definition_num_reg_1794}}}, {cfg_pulse_sequence_p_8_reg_1786}}}, {pulse_definition_prt_4_reg_2054}};
 
-assign tmp_3_1_fu_1421_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_reg_2139}}}, {pulse_first_pulse_in_1_reg_2101}}}, {pulse_last_pulse_in_s_reg_2051}}}, {pulse_first_pulse_in_reg_2043}}}, {pulse_post_decimatio_reg_1612}}}, {pulse_num_samples_2_reg_2129}}}, {pulse_sequence_index_reg_2000}}}, {pulse_definition_tim_15_reg_1992}}}, {pulse_definition_tim_14_reg_1984}}}, {pulse_definition_tim_13_reg_1976}}}, {pulse_definition_tim_12_reg_1968}}}, {pulse_definition_tim_11_reg_1960}}}, {pulse_definition_tim_10_reg_1952}}}, {pulse_definition_tim_9_reg_1944}}}, {pulse_definition_tim_8_reg_1936}}}, {pulse_definition_tim_7_reg_1928}}}, {pulse_definition_tim_6_reg_1920}}}, {pulse_definition_tim_5_reg_1912}}}, {pulse_definition_tim_4_reg_1904}}}, {pulse_definition_tim_3_reg_1895}}}, {pulse_definition_tim_2_reg_1886}}}, {pulse_definition_tim_1_reg_1877}}}, {pulse_definition_tim_reg_1869}}}, {pulse_definition_fil_2_reg_1861}}}, {pulse_definition_fil_1_reg_1853}}}, {pulse_definition_fil_reg_1845}}}, {tmp_def_polarization_reg_850}}}, {pulse_definition_con_reg_1832}}}, {tmp_def_block_post_t_reg_2065}}}, {pulse_definition_num_reg_1818}}}, {cfg_pulse_sequence_p_8_reg_1810}}}, {pulse_definition_prt_4_reg_2073}};
+assign tmp_2_1_fu_1376_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_reg_2120}}}, {pulse_first_pulse_in_1_reg_2082}}}, {pulse_last_pulse_in_s_reg_2027}}}, {pulse_first_pulse_in_reg_2019}}}, {pulse_post_decimatio_reg_1585}}}, {pulse_num_samples_1_reg_2105}}}, {pulse_sequence_index_reg_1976}}}, {pulse_definition_tim_15_reg_1968}}}, {pulse_definition_tim_14_reg_1960}}}, {pulse_definition_tim_13_reg_1952}}}, {pulse_definition_tim_12_reg_1944}}}, {pulse_definition_tim_11_reg_1936}}}, {pulse_definition_tim_10_reg_1928}}}, {pulse_definition_tim_9_reg_1920}}}, {pulse_definition_tim_8_reg_1912}}}, {pulse_definition_tim_7_reg_1904}}}, {pulse_definition_tim_6_reg_1896}}}, {pulse_definition_tim_5_reg_1888}}}, {pulse_definition_tim_4_reg_1880}}}, {pulse_definition_tim_3_reg_1871}}}, {pulse_definition_tim_2_reg_1862}}}, {pulse_definition_tim_1_reg_1853}}}, {pulse_definition_tim_reg_1845}}}, {pulse_definition_fil_2_reg_1837}}}, {pulse_definition_fil_1_reg_1829}}}, {pulse_definition_fil_reg_1821}}}, {tmp_def_polarization_reg_852}}}, {pulse_definition_con_reg_1808}}}, {tmp_def_block_post_t_reg_2046}}}, {pulse_definition_num_reg_1794}}}, {cfg_pulse_sequence_p_8_reg_1786}}}, {pulse_definition_prt_4_reg_2054}};
 
-assign tmp_3_fu_1123_p3 = p_Val2_s_reg_815[32'd1];
+assign tmp_3_1_fu_1416_p34 = {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{1'd0}, {pulse_last_pulse_in_1_reg_2120}}}, {pulse_first_pulse_in_1_reg_2082}}}, {pulse_last_pulse_in_s_reg_2027}}}, {pulse_first_pulse_in_reg_2019}}}, {pulse_post_decimatio_reg_1585}}}, {pulse_num_samples_2_reg_2110}}}, {pulse_sequence_index_reg_1976}}}, {pulse_definition_tim_15_reg_1968}}}, {pulse_definition_tim_14_reg_1960}}}, {pulse_definition_tim_13_reg_1952}}}, {pulse_definition_tim_12_reg_1944}}}, {pulse_definition_tim_11_reg_1936}}}, {pulse_definition_tim_10_reg_1928}}}, {pulse_definition_tim_9_reg_1920}}}, {pulse_definition_tim_8_reg_1912}}}, {pulse_definition_tim_7_reg_1904}}}, {pulse_definition_tim_6_reg_1896}}}, {pulse_definition_tim_5_reg_1888}}}, {pulse_definition_tim_4_reg_1880}}}, {pulse_definition_tim_3_reg_1871}}}, {pulse_definition_tim_2_reg_1862}}}, {pulse_definition_tim_1_reg_1853}}}, {pulse_definition_tim_reg_1845}}}, {pulse_definition_fil_2_reg_1837}}}, {pulse_definition_fil_1_reg_1829}}}, {pulse_definition_fil_reg_1821}}}, {tmp_def_polarization_reg_852}}}, {pulse_definition_con_reg_1808}}}, {tmp_def_block_post_t_reg_2046}}}, {pulse_definition_num_reg_1794}}}, {cfg_pulse_sequence_p_8_reg_1786}}}, {pulse_definition_prt_4_reg_2054}};
 
-assign tmp_8_fu_925_p3 = {{val_assign_reg_792}, {6'd0}};
+assign tmp_3_fu_1118_p3 = p_Val2_s_reg_817[32'd1];
 
-assign tmp_9_fu_933_p3 = {{val_assign_reg_792}, {4'd0}};
+assign tmp_8_fu_914_p3 = {{val_assign_reg_784}, {6'd0}};
 
-assign tmp_V_1_fu_985_p1 = cfg_filter_coefs_ch0_q0[23:0];
+assign tmp_9_fu_922_p3 = {{val_assign_reg_784}, {4'd0}};
 
-assign tmp_V_2_fu_990_p1 = cfg_filter_coefs_ch1_q0[23:0];
+assign tmp_V_1_fu_974_p1 = cfg_filter_coefs_ch0_q0[23:0];
 
-assign tmp_V_3_fu_995_p1 = cfg_filter_coefs_ch2_q0[23:0];
+assign tmp_V_2_fu_979_p1 = cfg_filter_coefs_ch1_q0[23:0];
 
-assign tmp_V_fu_888_p1 = val_assign_reg_792;
+assign tmp_V_3_fu_984_p1 = cfg_filter_coefs_ch2_q0[23:0];
 
-assign tmp_def_block_post_t_fu_1117_p3 = ((pulse_last_pulse_in_s_reg_2051[0:0] === 1'b1) ? pulse_definition_blo_reg_1827 : 32'd0);
+assign tmp_V_fu_877_p1 = val_assign_reg_784;
 
-assign trunc_ln175_fu_1042_p1 = seq_idx_1_load_reg_1675[7:0];
+assign tmp_def_block_post_t_fu_1112_p3 = ((pulse_last_pulse_in_s_reg_2027[0:0] === 1'b1) ? pulse_definition_blo_reg_1803 : 32'd0);
 
-assign trunc_ln791_fu_898_p1 = cfg_enabled_channel_vector[0:0];
+assign trunc_ln791_fu_887_p1 = cfg_enabled_channel_vector[0:0];
 
-assign xor_ln217_fu_1275_p2 = (icmp_ln217_1_fu_1269_p2 ^ 1'd1);
+assign xor_ln217_fu_1270_p2 = (icmp_ln217_1_fu_1264_p2 ^ 1'd1);
 
-assign zext_ln158_1_fu_969_p1 = sub_ln158_fu_963_p2;
+assign zext_ln154_1_fu_958_p1 = sub_ln154_fu_952_p2;
 
-assign zext_ln158_fu_941_p1 = tmp_9_fu_933_p3;
+assign zext_ln154_fu_930_p1 = tmp_9_fu_922_p3;
 
-assign zext_ln175_fu_1013_p1 = add_ln175_fu_1008_p2;
+assign zext_ln172_1_fu_1007_p1 = stop_index_fu_993_p4;
 
-assign zext_ln195_fu_1102_p1 = staggered_prt_index_s_reg_827;
+assign zext_ln172_fu_1003_p1 = start_index_fu_989_p1;
 
-assign zext_ln262_fu_1479_p1 = staggered_prt_index_fu_1473_p2;
+assign zext_ln175_fu_1016_p1 = seq_idx_0_i_reg_807;
+
+assign zext_ln195_fu_1101_p1 = staggered_prt_index_s_reg_829;
+
+assign zext_ln262_fu_1474_p1 = staggered_prt_index_fu_1468_p2;
 
 always @ (posedge ap_clk) begin
-    cfg_pulse_sequence_l_1_reg_1550[31:8] <= 24'b000000000000000000000000;
-    cfg_pulse_sequence_s_1_reg_1555[31:8] <= 24'b000000000000000000000000;
-    sub_ln158_1_reg_1632[3:0] <= 4'b0000;
+    sub_ln154_1_reg_1605[3:0] <= 4'b0000;
+    zext_ln172_1_reg_1653[16] <= 1'b0;
 end
 
 endmodule //scheduler_parser

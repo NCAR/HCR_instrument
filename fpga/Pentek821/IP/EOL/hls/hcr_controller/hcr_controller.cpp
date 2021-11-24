@@ -9,8 +9,7 @@
 
 // Schedules pulses for the HCR radar
 void hcr_controller(
-		uint8_t cfg_pulse_sequence_start_index,
-		uint8_t cfg_pulse_sequence_length,
+		volatile uint32_t* cfg_pulse_sequence_start_stop_indexes,
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_total_decimation,
 		uint32_t cfg_post_decimation,
@@ -38,8 +37,7 @@ void hcr_controller(
 
 	// AXI Config Ports
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=return
-	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence_start_index
-	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence_length
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence_start_stop_indexes
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_to_execute
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_total_decimation
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_post_decimation
@@ -88,8 +86,7 @@ void hcr_controller(
 	#pragma HLS dataflow
 
 	scheduler_parser(
-			cfg_pulse_sequence_start_index,
-			cfg_pulse_sequence_length,
+			cfg_pulse_sequence_start_stop_indexes,
 			cfg_num_pulses_to_execute,
 			cfg_total_decimation,
 			cfg_post_decimation,
@@ -126,8 +123,7 @@ void hcr_controller(
 
 // Generates a stream of pulses to execute
 void scheduler_parser(
-		uint32_t cfg_pulse_sequence_start_index,
-		uint32_t cfg_pulse_sequence_length,
+		volatile uint32_t* cfg_pulse_sequence_start_stop_indexes,
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_total_decimation,
 		uint32_t cfg_post_decimation,
@@ -168,11 +164,15 @@ void scheduler_parser(
 	//Run until the specified number of pulses is hit
 	while(true)
 	{
+		uint32_t start_stop_indexes = *cfg_pulse_sequence_start_stop_indexes;
+		uint16_t start_index = start_stop_indexes & 0xFFFF;
+		uint16_t stop_index = start_stop_indexes >> 16;
+
 		//Iterate through the pulse sequence table
-		for(uint32_t seq_idx = 0; seq_idx < cfg_pulse_sequence_length; ++seq_idx )
+		for(uint32_t seq_idx = start_index; seq_idx <= stop_index; ++seq_idx )
 		{
 			//Retrieve the current definition in the pulse sequence
-			pulse_definition pulse_definition = cfg_pulse_sequence[cfg_pulse_sequence_start_index + seq_idx];
+			pulse_definition pulse_definition = cfg_pulse_sequence[seq_idx];
 
 			//Add the specified number of repetitions to the queue of pulses to execute
 			uint8_t staggered_prt_index = 0;
@@ -182,7 +182,7 @@ void scheduler_parser(
 				pulse_exec_definition pulse;
 				pulse.def = pulse_definition;
 				pulse.terminate = false;
-				pulse.sequence_index = cfg_pulse_sequence_start_index + seq_idx;
+				pulse.sequence_index = seq_idx;
 				pulse.first_pulse_in_block = (pulse_rep == 0);
 				pulse.last_pulse_in_block = (pulse_rep == (pulse_definition.num_pulses-1));
 				pulse.post_decimation = cfg_post_decimation;

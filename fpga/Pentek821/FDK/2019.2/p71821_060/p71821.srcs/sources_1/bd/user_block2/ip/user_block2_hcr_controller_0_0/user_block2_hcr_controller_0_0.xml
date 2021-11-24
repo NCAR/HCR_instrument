@@ -1858,9 +1858,9 @@
           </spirit:field>
         </spirit:register>
         <spirit:register>
-          <spirit:name>cfg_pulse_sequence_start_index</spirit:name>
-          <spirit:displayName>cfg_pulse_sequence_start_index</spirit:displayName>
-          <spirit:description>Data signal of cfg_pulse_sequence_start_index</spirit:description>
+          <spirit:name>cfg_pulse_sequence_start_stop_indexes</spirit:name>
+          <spirit:displayName>cfg_pulse_sequence_start_stop_indexes</spirit:displayName>
+          <spirit:description>Data signal of cfg_pulse_sequence_start_stop_indexes</spirit:description>
           <spirit:addressOffset>16</spirit:addressOffset>
           <spirit:size spirit:format="long">32</spirit:size>
           <spirit:access>write-only</spirit:access>
@@ -1868,64 +1868,15 @@
             <spirit:value spirit:format="long">0</spirit:value>
           </spirit:reset>
           <spirit:field>
-            <spirit:name>cfg_pulse_sequence_start_index</spirit:name>
-            <spirit:description>Bit 7 to 0 Data signal of cfg_pulse_sequence_start_index</spirit:description>
+            <spirit:name>cfg_pulse_sequence_start_stop_indexes</spirit:name>
+            <spirit:description>Bit 31 to 0 Data signal of cfg_pulse_sequence_start_stop_indexes</spirit:description>
             <spirit:bitOffset>0</spirit:bitOffset>
-            <spirit:bitWidth spirit:format="long">8</spirit:bitWidth>
+            <spirit:bitWidth spirit:format="long">32</spirit:bitWidth>
             <spirit:access>write-only</spirit:access>
             <spirit:writeValueConstraint>
               <spirit:minimum>0</spirit:minimum>
               <spirit:maximum>0</spirit:maximum>
             </spirit:writeValueConstraint>
-            <spirit:testable spirit:testConstraint="unconstrained">false</spirit:testable>
-          </spirit:field>
-          <spirit:field>
-            <spirit:name>RESERVED</spirit:name>
-            <spirit:description>Reserved.  0s on read.</spirit:description>
-            <spirit:bitOffset>8</spirit:bitOffset>
-            <spirit:bitWidth spirit:format="long">24</spirit:bitWidth>
-            <spirit:access>read-only</spirit:access>
-            <spirit:writeValueConstraint>
-              <spirit:minimum>0</spirit:minimum>
-              <spirit:maximum>0</spirit:maximum>
-            </spirit:writeValueConstraint>
-            <spirit:readAction>modify</spirit:readAction>
-            <spirit:testable spirit:testConstraint="unconstrained">false</spirit:testable>
-          </spirit:field>
-        </spirit:register>
-        <spirit:register>
-          <spirit:name>cfg_pulse_sequence_length</spirit:name>
-          <spirit:displayName>cfg_pulse_sequence_length</spirit:displayName>
-          <spirit:description>Data signal of cfg_pulse_sequence_length</spirit:description>
-          <spirit:addressOffset>24</spirit:addressOffset>
-          <spirit:size spirit:format="long">32</spirit:size>
-          <spirit:access>write-only</spirit:access>
-          <spirit:reset>
-            <spirit:value spirit:format="long">0</spirit:value>
-          </spirit:reset>
-          <spirit:field>
-            <spirit:name>cfg_pulse_sequence_length</spirit:name>
-            <spirit:description>Bit 7 to 0 Data signal of cfg_pulse_sequence_length</spirit:description>
-            <spirit:bitOffset>0</spirit:bitOffset>
-            <spirit:bitWidth spirit:format="long">8</spirit:bitWidth>
-            <spirit:access>write-only</spirit:access>
-            <spirit:writeValueConstraint>
-              <spirit:minimum>0</spirit:minimum>
-              <spirit:maximum>0</spirit:maximum>
-            </spirit:writeValueConstraint>
-            <spirit:testable spirit:testConstraint="unconstrained">false</spirit:testable>
-          </spirit:field>
-          <spirit:field>
-            <spirit:name>RESERVED</spirit:name>
-            <spirit:description>Reserved.  0s on read.</spirit:description>
-            <spirit:bitOffset>8</spirit:bitOffset>
-            <spirit:bitWidth spirit:format="long">24</spirit:bitWidth>
-            <spirit:access>read-only</spirit:access>
-            <spirit:writeValueConstraint>
-              <spirit:minimum>0</spirit:minimum>
-              <spirit:maximum>0</spirit:maximum>
-            </spirit:writeValueConstraint>
-            <spirit:readAction>modify</spirit:readAction>
             <spirit:testable spirit:testConstraint="unconstrained">false</spirit:testable>
           </spirit:field>
         </spirit:register>
@@ -1933,7 +1884,7 @@
           <spirit:name>cfg_num_pulses_to_execute</spirit:name>
           <spirit:displayName>cfg_num_pulses_to_execute</spirit:displayName>
           <spirit:description>Data signal of cfg_num_pulses_to_execute</spirit:description>
-          <spirit:addressOffset>32</spirit:addressOffset>
+          <spirit:addressOffset>24</spirit:addressOffset>
           <spirit:size spirit:format="long">32</spirit:size>
           <spirit:access>write-only</spirit:access>
           <spirit:reset>
@@ -1956,7 +1907,7 @@
           <spirit:name>cfg_total_decimation</spirit:name>
           <spirit:displayName>cfg_total_decimation</spirit:displayName>
           <spirit:description>Data signal of cfg_total_decimation</spirit:description>
-          <spirit:addressOffset>40</spirit:addressOffset>
+          <spirit:addressOffset>32</spirit:addressOffset>
           <spirit:size spirit:format="long">32</spirit:size>
           <spirit:access>write-only</spirit:access>
           <spirit:reset>
@@ -1979,7 +1930,7 @@
           <spirit:name>cfg_post_decimation</spirit:name>
           <spirit:displayName>cfg_post_decimation</spirit:displayName>
           <spirit:description>Data signal of cfg_post_decimation</spirit:description>
-          <spirit:addressOffset>48</spirit:addressOffset>
+          <spirit:addressOffset>40</spirit:addressOffset>
           <spirit:size spirit:format="long">32</spirit:size>
           <spirit:access>write-only</spirit:access>
           <spirit:reset>
@@ -2002,7 +1953,7 @@
           <spirit:name>cfg_num_pulses_per_xfer</spirit:name>
           <spirit:displayName>cfg_num_pulses_per_xfer</spirit:displayName>
           <spirit:description>Data signal of cfg_num_pulses_per_xfer</spirit:description>
-          <spirit:addressOffset>56</spirit:addressOffset>
+          <spirit:addressOffset>48</spirit:addressOffset>
           <spirit:size spirit:format="long">32</spirit:size>
           <spirit:access>write-only</spirit:access>
           <spirit:reset>
@@ -2025,7 +1976,7 @@
           <spirit:name>cfg_enabled_channel_vector</spirit:name>
           <spirit:displayName>cfg_enabled_channel_vector</spirit:displayName>
           <spirit:description>Data signal of cfg_enabled_channel_vector</spirit:description>
-          <spirit:addressOffset>64</spirit:addressOffset>
+          <spirit:addressOffset>56</spirit:addressOffset>
           <spirit:size spirit:format="long">32</spirit:size>
           <spirit:access>write-only</spirit:access>
           <spirit:reset>
@@ -2369,11 +2320,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+            <spirit:value>Wed Nov 24 00:24:26 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:8b943773</spirit:value>
+            <spirit:value>9:955704f0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2384,7 +2335,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:8b943773</spirit:value>
+            <spirit:value>9:955704f0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2400,11 +2351,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+            <spirit:value>Wed Nov 24 00:24:26 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:8b943773</spirit:value>
+            <spirit:value>9:955704f0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2420,11 +2371,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+            <spirit:value>Wed Nov 24 00:24:26 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:99175141</spirit:value>
+            <spirit:value>9:87d462c2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2440,11 +2391,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jul 12 13:19:55 UTC 2021</spirit:value>
+            <spirit:value>Wed Nov 24 00:24:26 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:99175141</spirit:value>
+            <spirit:value>9:87d462c2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2458,11 +2409,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Nov 12 23:51:24 UTC 2021</spirit:value>
+            <spirit:value>Wed Nov 24 00:28:06 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:8b943773</spirit:value>
+            <spirit:value>9:955704f0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3288,63 +3239,63 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/output_fifo.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/output_fifo70.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo71.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/output_fifo71.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/regslice_core.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/scheduler_parser.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
     </spirit:fileSet>
@@ -3359,77 +3310,77 @@
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/output_fifo.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/output_fifo70.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/output_fifo71.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/output_fifo71.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/regslice_core.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/scheduler_parser.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/b500/hdl/vhdl/hcr_controller.vhd</spirit:name>
+        <spirit:name>../../ipshared/3086/hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -3545,7 +3496,7 @@
     <xilinx:coreExtensions>
       <xilinx:displayName>Hcr_controller</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2107092146</xilinx:coreRevision>
+      <xilinx:coreRevision>2111240020</xilinx:coreRevision>
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_BUSIF" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_RESET" xilinx:valuePermission="bd"/>
@@ -3671,8 +3622,8 @@
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="aeb44f79"/>
-      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="b6a61f3b"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="057494a2"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="6ee85cf2"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="d275a8e1"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="e4b4f9b1"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="c5dd319f"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="038d5923"/>

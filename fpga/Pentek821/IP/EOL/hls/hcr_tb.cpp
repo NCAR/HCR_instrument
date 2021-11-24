@@ -11,8 +11,8 @@
 int main()
 {
 
-	uint32_t cfg_pulse_sequence_start_index = 0;
-	uint32_t cfg_pulse_sequence_length = 2;
+	uint32_t start = 0, stop = 1;
+	uint32_t cfg_pulse_sequence_start_stop_indexes = stop<<16 | start;
 	uint32_t cfg_num_pulses_to_execute = 24;
 	uint32_t cfg_total_decimation = 16;
 	uint32_t cfg_post_decimation = 2;
@@ -92,8 +92,7 @@ int main()
 	}
 
 	hcr_controller(
-		cfg_pulse_sequence_start_index,
-		cfg_pulse_sequence_length,
+		&cfg_pulse_sequence_start_stop_indexes,
 		&cfg_num_pulses_to_execute,
 		cfg_total_decimation,
 		cfg_post_decimation,

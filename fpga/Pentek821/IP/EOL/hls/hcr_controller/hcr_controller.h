@@ -17,8 +17,7 @@ typedef ap_int<24> coef_t;
 
 // Schedules pulses for the HCR radar
 void hcr_controller(
-		uint8_t cfg_pulse_sequence_start_index,
-		uint8_t cfg_pulse_sequence_length,
+		volatile uint32_t* cfg_pulse_sequence_start_stop_indexes,
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_total_decimation,
 		uint32_t cfg_post_decimation,
@@ -45,8 +44,7 @@ void hcr_controller(
 
 // Generates a stream of pulses to execute
 void scheduler_parser(
-		uint32_t cfg_pulse_sequence_start_index,
-		uint32_t cfg_pulse_sequence_length,
+		volatile uint32_t* cfg_pulse_sequence_start_stop_indexes,
 		volatile uint32_t* cfg_num_pulses_to_execute,
 		uint32_t cfg_total_decimation,
 		uint32_t cfg_post_decimation,

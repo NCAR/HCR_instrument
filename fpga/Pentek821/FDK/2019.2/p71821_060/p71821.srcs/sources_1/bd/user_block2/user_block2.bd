@@ -1182,24 +1182,6 @@
                   "trim_data/S_AXIS"
                 ]
               },
-              "axis_broadcaster_0_M01_AXIS": {
-                "interface_ports": [
-                  "map_fsel/S_AXIS",
-                  "bcast/M01_AXIS"
-                ]
-              },
-              "axis_subset_converter_1_M_AXIS": {
-                "interface_ports": [
-                  "map_data/M_AXIS",
-                  "pulse_fir/S_AXIS_DATA"
-                ]
-              },
-              "axis_subset_converter_0_M_AXIS": {
-                "interface_ports": [
-                  "map_fsel/M_AXIS",
-                  "pulse_fir/S_AXIS_CONFIG"
-                ]
-              },
               "axis_subset_converter_0_M_AXIS2": {
                 "interface_ports": [
                   "o_data",
@@ -1213,6 +1195,12 @@
                     "value": "true"
                   }
                 }
+              },
+              "axis_subset_converter_0_M_AXIS": {
+                "interface_ports": [
+                  "map_fsel/M_AXIS",
+                  "pulse_fir/S_AXIS_CONFIG"
+                ]
               },
               "coef_1": {
                 "interface_ports": [
@@ -1239,6 +1227,18 @@
                     "value": "true"
                   }
                 }
+              },
+              "axis_subset_converter_1_M_AXIS": {
+                "interface_ports": [
+                  "map_data/M_AXIS",
+                  "pulse_fir/S_AXIS_DATA"
+                ]
+              },
+              "axis_broadcaster_0_M01_AXIS": {
+                "interface_ports": [
+                  "map_fsel/S_AXIS",
+                  "bcast/M01_AXIS"
+                ]
               }
             },
             "nets": {
@@ -1325,6 +1325,12 @@
               "metadata_injector/pulse_metadata_V"
             ]
           },
+          "metadata_injector_o_data": {
+            "interface_ports": [
+              "metadata_injector/o_data",
+              "remove_unused_sigs/S_AXIS"
+            ]
+          },
           "axis_subset_converter_0_M_AXIS2": {
             "interface_ports": [
               "fir/o_data",
@@ -1335,12 +1341,6 @@
                 "value": "true"
               }
             }
-          },
-          "metadata_injector_o_data": {
-            "interface_ports": [
-              "metadata_injector/o_data",
-              "remove_unused_sigs/S_AXIS"
-            ]
           },
           "s_axis_adc_ch0_pdti_1": {
             "interface_ports": [
@@ -1745,16 +1745,34 @@
               }
             },
             "interface_nets": {
-              "coef_1": {
+              "axis_broadcaster_0_M01_AXIS": {
                 "interface_ports": [
-                  "coef",
-                  "pulse_fir/S_AXIS_RELOAD"
+                  "map_fsel/S_AXIS",
+                  "bcast/M01_AXIS"
+                ]
+              },
+              "axis_data_fifo_0_M_AXIS": {
+                "interface_ports": [
+                  "i_data",
+                  "bcast/S_AXIS"
+                ]
+              },
+              "axis_broadcaster_0_M00_AXIS": {
+                "interface_ports": [
+                  "bcast/M00_AXIS",
+                  "map_data/S_AXIS"
                 ]
               },
               "axis_subset_converter_0_M_AXIS2": {
                 "interface_ports": [
                   "o_data",
                   "trim_data/M_AXIS"
+                ]
+              },
+              "coef_1": {
+                "interface_ports": [
+                  "coef",
+                  "pulse_fir/S_AXIS_RELOAD"
                 ]
               },
               "axis_subset_converter_0_M_AXIS": {
@@ -1773,24 +1791,6 @@
                 "interface_ports": [
                   "pulse_fir/M_AXIS_DATA",
                   "trim_data/S_AXIS"
-                ]
-              },
-              "axis_broadcaster_0_M01_AXIS": {
-                "interface_ports": [
-                  "map_fsel/S_AXIS",
-                  "bcast/M01_AXIS"
-                ]
-              },
-              "axis_data_fifo_0_M_AXIS": {
-                "interface_ports": [
-                  "i_data",
-                  "bcast/S_AXIS"
-                ]
-              },
-              "axis_broadcaster_0_M00_AXIS": {
-                "interface_ports": [
-                  "bcast/M00_AXIS",
-                  "map_data/S_AXIS"
                 ]
               }
             },
@@ -1872,16 +1872,10 @@
           }
         },
         "interface_nets": {
-          "axis_subset_converter_0_M_AXIS1": {
+          "s_axis_adc_ch0_pdti_1": {
             "interface_ports": [
-              "out_pdti",
-              "remove_unused_sigs/M_AXIS"
-            ]
-          },
-          "coef_1": {
-            "interface_ports": [
-              "coef",
-              "fir/coef"
+              "in_pdti",
+              "fifo/S_AXIS"
             ]
           },
           "axis_subset_converter_0_M_AXIS2": {
@@ -1890,10 +1884,16 @@
               "metadata_injector/i_data"
             ]
           },
-          "metadata_injector_o_data": {
+          "coef_1": {
             "interface_ports": [
-              "metadata_injector/o_data",
-              "remove_unused_sigs/S_AXIS"
+              "coef",
+              "fir/coef"
+            ]
+          },
+          "axis_data_fifo_0_M_AXIS": {
+            "interface_ports": [
+              "fifo/M_AXIS",
+              "fir/i_data"
             ]
           },
           "Conn1": {
@@ -1902,16 +1902,16 @@
               "metadata_injector/pulse_metadata_V"
             ]
           },
-          "s_axis_adc_ch0_pdti_1": {
+          "metadata_injector_o_data": {
             "interface_ports": [
-              "in_pdti",
-              "fifo/S_AXIS"
+              "metadata_injector/o_data",
+              "remove_unused_sigs/S_AXIS"
             ]
           },
-          "axis_data_fifo_0_M_AXIS": {
+          "axis_subset_converter_0_M_AXIS1": {
             "interface_ports": [
-              "fifo/M_AXIS",
-              "fir/i_data"
+              "out_pdti",
+              "remove_unused_sigs/M_AXIS"
             ]
           }
         },
@@ -2140,22 +2140,10 @@
           }
         },
         "interface_nets": {
-          "pulse_metadata_1": {
+          "validate_kludge_1_M_AXIS": {
             "interface_ports": [
-              "pulse_metadata_ch1",
-              "hcr_controller_0/pulse_metadata_ch1_V"
-            ]
-          },
-          "axis_subset_converter_0_M_AXIS": {
-            "interface_ports": [
-              "coef_ch0",
-              "validate_kludge_0/M_AXIS"
-            ]
-          },
-          "hcr_controller_0_pulse_metadata_ch0_V": {
-            "interface_ports": [
-              "pulse_metadata_ch0",
-              "hcr_controller_0/pulse_metadata_ch0_V"
+              "coef_ch1",
+              "validate_kludge_1/M_AXIS"
             ]
           },
           "hcr_controller_0_pulse_metadata_ch2_V": {
@@ -2170,16 +2158,10 @@
               "hcr_controller_0/coef_ch1_V_V"
             ]
           },
-          "hcr_controller_0_coef_ch2_V_V": {
+          "hcr_controller_0_coef_ch0_V_V": {
             "interface_ports": [
-              "validate_kludge_2/S_AXIS",
-              "hcr_controller_0/coef_ch2_V_V"
-            ]
-          },
-          "validate_kludge_2_M_AXIS": {
-            "interface_ports": [
-              "coef_ch2",
-              "validate_kludge_2/M_AXIS"
+              "hcr_controller_0/coef_ch0_V_V",
+              "validate_kludge_0/S_AXIS"
             ]
           },
           "Conn1": {
@@ -2188,16 +2170,34 @@
               "hcr_controller_0/s_axi_cfg_bus"
             ]
           },
-          "hcr_controller_0_coef_ch0_V_V": {
+          "validate_kludge_2_M_AXIS": {
             "interface_ports": [
-              "hcr_controller_0/coef_ch0_V_V",
-              "validate_kludge_0/S_AXIS"
+              "coef_ch2",
+              "validate_kludge_2/M_AXIS"
             ]
           },
-          "validate_kludge_1_M_AXIS": {
+          "hcr_controller_0_coef_ch2_V_V": {
             "interface_ports": [
-              "coef_ch1",
-              "validate_kludge_1/M_AXIS"
+              "validate_kludge_2/S_AXIS",
+              "hcr_controller_0/coef_ch2_V_V"
+            ]
+          },
+          "hcr_controller_0_pulse_metadata_ch0_V": {
+            "interface_ports": [
+              "pulse_metadata_ch0",
+              "hcr_controller_0/pulse_metadata_ch0_V"
+            ]
+          },
+          "axis_subset_converter_0_M_AXIS": {
+            "interface_ports": [
+              "coef_ch0",
+              "validate_kludge_0/M_AXIS"
+            ]
+          },
+          "pulse_metadata_1": {
+            "interface_ports": [
+              "pulse_metadata_ch1",
+              "hcr_controller_0/pulse_metadata_ch1_V"
             ]
           }
         },
@@ -2604,16 +2604,16 @@
                   }
                 },
                 "interface_nets": {
-                  "m00_couplers_to_auto_cc": {
-                    "interface_ports": [
-                      "S_AXI",
-                      "auto_cc/S_AXI"
-                    ]
-                  },
                   "auto_cc_to_m00_couplers": {
                     "interface_ports": [
                       "M_AXI",
                       "auto_cc/M_AXI"
+                    ]
+                  },
+                  "m00_couplers_to_auto_cc": {
+                    "interface_ports": [
+                      "S_AXI",
+                      "auto_cc/S_AXI"
                     ]
                   }
                 },
@@ -2696,16 +2696,16 @@
                   }
                 },
                 "interface_nets": {
-                  "auto_cc_to_m01_couplers": {
-                    "interface_ports": [
-                      "M_AXI",
-                      "auto_cc/M_AXI"
-                    ]
-                  },
                   "m01_couplers_to_auto_cc": {
                     "interface_ports": [
                       "S_AXI",
                       "auto_cc/S_AXI"
+                    ]
+                  },
+                  "auto_cc_to_m01_couplers": {
+                    "interface_ports": [
+                      "M_AXI",
+                      "auto_cc/M_AXI"
                     ]
                   }
                 },
@@ -2738,16 +2738,16 @@
               }
             },
             "interface_nets": {
-              "m00_couplers_to_axi_interc": {
-                "interface_ports": [
-                  "M00_AXI",
-                  "m00_couplers/M_AXI"
-                ]
-              },
               "m01_couplers_to_axi_interc": {
                 "interface_ports": [
                   "M01_AXI",
                   "m01_couplers/M_AXI"
+                ]
+              },
+              "xbar_to_m01_couplers": {
+                "interface_ports": [
+                  "xbar/M01_AXI",
+                  "m01_couplers/S_AXI"
                 ]
               },
               "xbar_to_m00_couplers": {
@@ -2756,22 +2756,22 @@
                   "m00_couplers/S_AXI"
                 ]
               },
-              "s00_couplers_to_xbar": {
-                "interface_ports": [
-                  "s00_couplers/M_AXI",
-                  "xbar/S00_AXI"
-                ]
-              },
               "axi_interc_to_s00_couplers": {
                 "interface_ports": [
                   "S00_AXI",
                   "s00_couplers/S_AXI"
                 ]
               },
-              "xbar_to_m01_couplers": {
+              "m00_couplers_to_axi_interc": {
                 "interface_ports": [
-                  "xbar/M01_AXI",
-                  "m01_couplers/S_AXI"
+                  "M00_AXI",
+                  "m00_couplers/M_AXI"
+                ]
+              },
+              "s00_couplers_to_xbar": {
+                "interface_ports": [
+                  "s00_couplers/M_AXI",
+                  "xbar/S00_AXI"
                 ]
               }
             },
@@ -2887,10 +2887,10 @@
           }
         },
         "interface_nets": {
-          "s_axi_csr_1": {
+          "axi_interc_M01_AXI": {
             "interface_ports": [
-              "s_axi_csr",
-              "axi_interc/S00_AXI"
+              "adc_csr",
+              "axi_interc/M01_AXI"
             ]
           },
           "axi_interc_M00_AXI": {
@@ -2899,10 +2899,10 @@
               "axi_interc/M00_AXI"
             ]
           },
-          "axi_interc_M01_AXI": {
+          "s_axi_csr_1": {
             "interface_ports": [
-              "adc_csr",
-              "axi_interc/M01_AXI"
+              "s_axi_csr",
+              "axi_interc/S00_AXI"
             ]
           }
         },
@@ -3420,16 +3420,16 @@
               }
             },
             "interface_nets": {
-              "axis_broadcaster_0_M00_AXIS": {
+              "axis_subset_converter_1_M_AXIS": {
                 "interface_ports": [
-                  "bcast/M00_AXIS",
-                  "map_data/S_AXIS"
+                  "map_data/M_AXIS",
+                  "pulse_fir/S_AXIS_DATA"
                 ]
               },
-              "axis_data_fifo_0_M_AXIS": {
+              "axis_broadcaster_0_M01_AXIS": {
                 "interface_ports": [
-                  "i_data",
-                  "bcast/S_AXIS"
+                  "map_fsel/S_AXIS",
+                  "bcast/M01_AXIS"
                 ]
               },
               "coef_1": {
@@ -3450,16 +3450,16 @@
                   "trim_data/S_AXIS"
                 ]
               },
-              "axis_broadcaster_0_M01_AXIS": {
+              "axis_broadcaster_0_M00_AXIS": {
                 "interface_ports": [
-                  "map_fsel/S_AXIS",
-                  "bcast/M01_AXIS"
+                  "bcast/M00_AXIS",
+                  "map_data/S_AXIS"
                 ]
               },
-              "axis_subset_converter_1_M_AXIS": {
+              "axis_data_fifo_0_M_AXIS": {
                 "interface_ports": [
-                  "map_data/M_AXIS",
-                  "pulse_fir/S_AXIS_DATA"
+                  "i_data",
+                  "bcast/S_AXIS"
                 ]
               },
               "axis_subset_converter_0_M_AXIS": {
@@ -3547,22 +3547,16 @@
           }
         },
         "interface_nets": {
+          "Conn1": {
+            "interface_ports": [
+              "pulse_metadata",
+              "metadata_injector/pulse_metadata_V"
+            ]
+          },
           "s_axis_adc_ch0_pdti_1": {
             "interface_ports": [
               "in_pdti",
               "fifo/S_AXIS"
-            ]
-          },
-          "axis_subset_converter_0_M_AXIS1": {
-            "interface_ports": [
-              "out_pdti",
-              "remove_unused_sigs/M_AXIS"
-            ]
-          },
-          "coef_1": {
-            "interface_ports": [
-              "coef",
-              "fir/coef"
             ]
           },
           "axis_subset_converter_0_M_AXIS2": {
@@ -3571,22 +3565,28 @@
               "metadata_injector/i_data"
             ]
           },
-          "axis_data_fifo_0_M_AXIS": {
-            "interface_ports": [
-              "fifo/M_AXIS",
-              "fir/i_data"
-            ]
-          },
           "metadata_injector_o_data": {
             "interface_ports": [
               "metadata_injector/o_data",
               "remove_unused_sigs/S_AXIS"
             ]
           },
-          "Conn1": {
+          "coef_1": {
             "interface_ports": [
-              "pulse_metadata",
-              "metadata_injector/pulse_metadata_V"
+              "coef",
+              "fir/coef"
+            ]
+          },
+          "axis_data_fifo_0_M_AXIS": {
+            "interface_ports": [
+              "fifo/M_AXIS",
+              "fir/i_data"
+            ]
+          },
+          "axis_subset_converter_0_M_AXIS1": {
+            "interface_ports": [
+              "out_pdti",
+              "remove_unused_sigs/M_AXIS"
             ]
           }
         },
@@ -3653,58 +3653,10 @@
       }
     },
     "interface_nets": {
-      "hcr_metadata_injector_0_o_data": {
+      "hcr_controller_0_pulse_metadata_ch0_V": {
         "interface_ports": [
-          "m_axis_adc_ch0_pdti",
-          "dsp_ch0/out_pdti"
-        ]
-      },
-      "pulse_metadata_1": {
-        "interface_ports": [
-          "dsp_ch1/pulse_metadata",
-          "controller/pulse_metadata_ch1"
-        ]
-      },
-      "s_axi_csr_1": {
-        "interface_ports": [
-          "s_axi_csr",
-          "csr/s_axi_csr"
-        ]
-      },
-      "axis_register_slice_0_M_AXIS": {
-        "interface_ports": [
-          "m_axis_dac_pdti",
-          "axis_register_slice_0/M_AXIS"
-        ]
-      },
-      "dsp_ch2_out_pdti": {
-        "interface_ports": [
-          "m_axis_adc_ch2_pdti",
-          "dsp_ch2/out_pdti"
-        ]
-      },
-      "s_axis_adc_ch1_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch1_pdti",
-          "dsp_ch1/in_pdti"
-        ]
-      },
-      "hcr_controller_0_coef_ch2_V_V": {
-        "interface_ports": [
-          "controller/coef_ch2",
-          "dsp_ch2/coef"
-        ]
-      },
-      "hcr_controller_0_pulse_metadata_ch2_V": {
-        "interface_ports": [
-          "controller/pulse_metadata_ch2",
-          "dsp_ch2/pulse_metadata"
-        ]
-      },
-      "s_axis_dac_pdti_1": {
-        "interface_ports": [
-          "s_axis_dac_pdti",
-          "axis_register_slice_0/S_AXIS"
+          "controller/pulse_metadata_ch0",
+          "dsp_ch0/pulse_metadata"
         ]
       },
       "s_axis_adc_ch2_pdti_1": {
@@ -3743,10 +3695,58 @@
           "dsp_ch0/coef"
         ]
       },
-      "hcr_controller_0_pulse_metadata_ch0_V": {
+      "hcr_controller_0_coef_ch2_V_V": {
         "interface_ports": [
-          "controller/pulse_metadata_ch0",
-          "dsp_ch0/pulse_metadata"
+          "controller/coef_ch2",
+          "dsp_ch2/coef"
+        ]
+      },
+      "axis_register_slice_0_M_AXIS": {
+        "interface_ports": [
+          "m_axis_dac_pdti",
+          "axis_register_slice_0/M_AXIS"
+        ]
+      },
+      "s_axis_dac_pdti_1": {
+        "interface_ports": [
+          "s_axis_dac_pdti",
+          "axis_register_slice_0/S_AXIS"
+        ]
+      },
+      "hcr_metadata_injector_0_o_data": {
+        "interface_ports": [
+          "m_axis_adc_ch0_pdti",
+          "dsp_ch0/out_pdti"
+        ]
+      },
+      "pulse_metadata_1": {
+        "interface_ports": [
+          "dsp_ch1/pulse_metadata",
+          "controller/pulse_metadata_ch1"
+        ]
+      },
+      "s_axis_adc_ch1_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch1_pdti",
+          "dsp_ch1/in_pdti"
+        ]
+      },
+      "hcr_controller_0_pulse_metadata_ch2_V": {
+        "interface_ports": [
+          "controller/pulse_metadata_ch2",
+          "dsp_ch2/pulse_metadata"
+        ]
+      },
+      "dsp_ch2_out_pdti": {
+        "interface_ports": [
+          "m_axis_adc_ch2_pdti",
+          "dsp_ch2/out_pdti"
+        ]
+      },
+      "s_axi_csr_1": {
+        "interface_ports": [
+          "s_axi_csr",
+          "csr/s_axi_csr"
         ]
       }
     },

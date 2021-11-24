@@ -33,8 +33,7 @@ module hcr_controller_cfg_bus_s_axi
     input  wire                          ap_done,
     input  wire                          ap_ready,
     input  wire                          ap_idle,
-    output wire [7:0]                    cfg_pulse_sequence_start_index,
-    output wire [7:0]                    cfg_pulse_sequence_length,
+    output wire [31:0]                   cfg_pulse_sequence_start_stop_indexes,
     output wire [31:0]                   cfg_num_pulses_to_execute,
     output wire [31:0]                   cfg_total_decimation,
     output wire [31:0]                   cfg_post_decimation,
@@ -144,29 +143,24 @@ module hcr_controller_cfg_bus_s_axi
 //          bit 0  - Channel 0 (ap_done)
 //          bit 1  - Channel 1 (ap_ready)
 //          others - reserved
-// 0x0010 : Data signal of cfg_pulse_sequence_start_index
-//          bit 7~0 - cfg_pulse_sequence_start_index[7:0] (Read/Write)
-//          others  - reserved
+// 0x0010 : Data signal of cfg_pulse_sequence_start_stop_indexes
+//          bit 31~0 - cfg_pulse_sequence_start_stop_indexes[31:0] (Read/Write)
 // 0x0014 : reserved
-// 0x0018 : Data signal of cfg_pulse_sequence_length
-//          bit 7~0 - cfg_pulse_sequence_length[7:0] (Read/Write)
-//          others  - reserved
-// 0x001c : reserved
-// 0x0020 : Data signal of cfg_num_pulses_to_execute
+// 0x0018 : Data signal of cfg_num_pulses_to_execute
 //          bit 31~0 - cfg_num_pulses_to_execute[31:0] (Read/Write)
-// 0x0024 : reserved
-// 0x0028 : Data signal of cfg_total_decimation
+// 0x001c : reserved
+// 0x0020 : Data signal of cfg_total_decimation
 //          bit 31~0 - cfg_total_decimation[31:0] (Read/Write)
-// 0x002c : reserved
-// 0x0030 : Data signal of cfg_post_decimation
+// 0x0024 : reserved
+// 0x0028 : Data signal of cfg_post_decimation
 //          bit 31~0 - cfg_post_decimation[31:0] (Read/Write)
-// 0x0034 : reserved
-// 0x0038 : Data signal of cfg_num_pulses_per_xfer
+// 0x002c : reserved
+// 0x0030 : Data signal of cfg_num_pulses_per_xfer
 //          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
-// 0x003c : reserved
-// 0x0040 : Data signal of cfg_enabled_channel_vector
+// 0x0034 : reserved
+// 0x0038 : Data signal of cfg_enabled_channel_vector
 //          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
-// 0x0044 : reserved
+// 0x003c : reserved
 // 0x0080 ~
 // 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 //          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -255,87 +249,85 @@ module hcr_controller_cfg_bus_s_axi
 
 //------------------------Parameter----------------------
 localparam
-    ADDR_AP_CTRL                                   = 14'h0000,
-    ADDR_GIE                                       = 14'h0004,
-    ADDR_IER                                       = 14'h0008,
-    ADDR_ISR                                       = 14'h000c,
-    ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA_0     = 14'h0010,
-    ADDR_CFG_PULSE_SEQUENCE_START_INDEX_CTRL       = 14'h0014,
-    ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA_0          = 14'h0018,
-    ADDR_CFG_PULSE_SEQUENCE_LENGTH_CTRL            = 14'h001c,
-    ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0          = 14'h0020,
-    ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL            = 14'h0024,
-    ADDR_CFG_TOTAL_DECIMATION_DATA_0               = 14'h0028,
-    ADDR_CFG_TOTAL_DECIMATION_CTRL                 = 14'h002c,
-    ADDR_CFG_POST_DECIMATION_DATA_0                = 14'h0030,
-    ADDR_CFG_POST_DECIMATION_CTRL                  = 14'h0034,
-    ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0            = 14'h0038,
-    ADDR_CFG_NUM_PULSES_PER_XFER_CTRL              = 14'h003c,
-    ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0         = 14'h0040,
-    ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL           = 14'h0044,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE             = 14'h0080,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH             = 14'h00ff,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE             = 14'h0100,
-    ADDR_CFG_PULSE_SEQUENCE_PRT_1_HIGH             = 14'h017f,
-    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE        = 14'h0180,
-    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_HIGH        = 14'h01ff,
-    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE   = 14'h0200,
-    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_HIGH   = 14'h027f,
-    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE     = 14'h0280,
-    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_HIGH     = 14'h02ff,
-    ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE = 14'h0300,
-    ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH = 14'h037f,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE = 14'h0380,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_HIGH = 14'h03ff,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE = 14'h0400,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_HIGH = 14'h047f,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE = 14'h0480,
-    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_HIGH = 14'h04ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE    = 14'h0500,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_HIGH    = 14'h057f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE    = 14'h0580,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_HIGH    = 14'h05ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE    = 14'h0600,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_HIGH    = 14'h067f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_BASE    = 14'h0680,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_HIGH    = 14'h06ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_BASE    = 14'h0700,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_HIGH    = 14'h077f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_BASE    = 14'h0780,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_HIGH    = 14'h07ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_BASE    = 14'h0800,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_HIGH    = 14'h087f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_BASE    = 14'h0880,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_HIGH    = 14'h08ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_BASE     = 14'h0900,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_HIGH     = 14'h097f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_BASE     = 14'h0980,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_HIGH     = 14'h09ff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_BASE     = 14'h0a00,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_HIGH     = 14'h0a7f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_BASE     = 14'h0a80,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_HIGH     = 14'h0aff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_BASE     = 14'h0b00,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_HIGH     = 14'h0b7f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_BASE     = 14'h0b80,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_HIGH     = 14'h0bff,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_BASE     = 14'h0c00,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_HIGH     = 14'h0c7f,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE     = 14'h0c80,
-    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_HIGH     = 14'h0cff,
-    ADDR_CFG_FILTER_COEFS_CH0_BASE                 = 14'h1000,
-    ADDR_CFG_FILTER_COEFS_CH0_HIGH                 = 14'h17ff,
-    ADDR_CFG_FILTER_COEFS_CH1_BASE                 = 14'h1800,
-    ADDR_CFG_FILTER_COEFS_CH1_HIGH                 = 14'h1fff,
-    ADDR_CFG_FILTER_COEFS_CH2_BASE                 = 14'h2000,
-    ADDR_CFG_FILTER_COEFS_CH2_HIGH                 = 14'h27ff,
-    WRIDLE                                         = 2'd0,
-    WRDATA                                         = 2'd1,
-    WRRESP                                         = 2'd2,
-    WRRESET                                        = 2'd3,
-    RDIDLE                                         = 2'd0,
-    RDDATA                                         = 2'd1,
-    RDRESET                                        = 2'd2,
+    ADDR_AP_CTRL                                      = 14'h0000,
+    ADDR_GIE                                          = 14'h0004,
+    ADDR_IER                                          = 14'h0008,
+    ADDR_ISR                                          = 14'h000c,
+    ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA_0 = 14'h0010,
+    ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_CTRL   = 14'h0014,
+    ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0             = 14'h0018,
+    ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL               = 14'h001c,
+    ADDR_CFG_TOTAL_DECIMATION_DATA_0                  = 14'h0020,
+    ADDR_CFG_TOTAL_DECIMATION_CTRL                    = 14'h0024,
+    ADDR_CFG_POST_DECIMATION_DATA_0                   = 14'h0028,
+    ADDR_CFG_POST_DECIMATION_CTRL                     = 14'h002c,
+    ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0               = 14'h0030,
+    ADDR_CFG_NUM_PULSES_PER_XFER_CTRL                 = 14'h0034,
+    ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0            = 14'h0038,
+    ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL              = 14'h003c,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE                = 14'h0080,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH                = 14'h00ff,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE                = 14'h0100,
+    ADDR_CFG_PULSE_SEQUENCE_PRT_1_HIGH                = 14'h017f,
+    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE           = 14'h0180,
+    ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_HIGH           = 14'h01ff,
+    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE      = 14'h0200,
+    ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_HIGH      = 14'h027f,
+    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE        = 14'h0280,
+    ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_HIGH        = 14'h02ff,
+    ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE    = 14'h0300,
+    ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH    = 14'h037f,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE    = 14'h0380,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_HIGH    = 14'h03ff,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE    = 14'h0400,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_HIGH    = 14'h047f,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE    = 14'h0480,
+    ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_HIGH    = 14'h04ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE       = 14'h0500,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_HIGH       = 14'h057f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE       = 14'h0580,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_HIGH       = 14'h05ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE       = 14'h0600,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_HIGH       = 14'h067f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_BASE       = 14'h0680,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_HIGH       = 14'h06ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_BASE       = 14'h0700,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_HIGH       = 14'h077f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_BASE       = 14'h0780,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_HIGH       = 14'h07ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_BASE       = 14'h0800,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_HIGH       = 14'h087f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_BASE       = 14'h0880,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_HIGH       = 14'h08ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_BASE        = 14'h0900,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_HIGH        = 14'h097f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_BASE        = 14'h0980,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_HIGH        = 14'h09ff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_BASE        = 14'h0a00,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_HIGH        = 14'h0a7f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_BASE        = 14'h0a80,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_HIGH        = 14'h0aff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_BASE        = 14'h0b00,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_HIGH        = 14'h0b7f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_BASE        = 14'h0b80,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_HIGH        = 14'h0bff,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_BASE        = 14'h0c00,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_HIGH        = 14'h0c7f,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE        = 14'h0c80,
+    ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_HIGH        = 14'h0cff,
+    ADDR_CFG_FILTER_COEFS_CH0_BASE                    = 14'h1000,
+    ADDR_CFG_FILTER_COEFS_CH0_HIGH                    = 14'h17ff,
+    ADDR_CFG_FILTER_COEFS_CH1_BASE                    = 14'h1800,
+    ADDR_CFG_FILTER_COEFS_CH1_HIGH                    = 14'h1fff,
+    ADDR_CFG_FILTER_COEFS_CH2_BASE                    = 14'h2000,
+    ADDR_CFG_FILTER_COEFS_CH2_HIGH                    = 14'h27ff,
+    WRIDLE                                            = 2'd0,
+    WRDATA                                            = 2'd1,
+    WRRESP                                            = 2'd2,
+    WRRESET                                           = 2'd3,
+    RDIDLE                                            = 2'd0,
+    RDDATA                                            = 2'd1,
+    RDRESET                                           = 2'd2,
     ADDR_BITS         = 14;
 
 //------------------------Local signal-------------------
@@ -359,8 +351,7 @@ localparam
     reg                           int_gie = 1'b0;
     reg  [1:0]                    int_ier = 2'b0;
     reg  [1:0]                    int_isr = 2'b0;
-    reg  [7:0]                    int_cfg_pulse_sequence_start_index = 'b0;
-    reg  [7:0]                    int_cfg_pulse_sequence_length = 'b0;
+    reg  [31:0]                   int_cfg_pulse_sequence_start_stop_indexes = 'b0;
     reg  [31:0]                   int_cfg_num_pulses_to_execute = 'b0;
     reg  [31:0]                   int_cfg_total_decimation = 'b0;
     reg  [31:0]                   int_cfg_post_decimation = 'b0;
@@ -1426,11 +1417,8 @@ always @(posedge ACLK) begin
                 ADDR_ISR: begin
                     rdata <= int_isr;
                 end
-                ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA_0: begin
-                    rdata <= int_cfg_pulse_sequence_start_index[7:0];
-                end
-                ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA_0: begin
-                    rdata <= int_cfg_pulse_sequence_length[7:0];
+                ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA_0: begin
+                    rdata <= int_cfg_pulse_sequence_start_stop_indexes[31:0];
                 end
                 ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0: begin
                     rdata <= int_cfg_num_pulses_to_execute[31:0];
@@ -1538,15 +1526,14 @@ end
 
 
 //------------------------Register logic-----------------
-assign interrupt                      = int_gie & (|int_isr);
-assign ap_start                       = int_ap_start;
-assign cfg_pulse_sequence_start_index = int_cfg_pulse_sequence_start_index;
-assign cfg_pulse_sequence_length      = int_cfg_pulse_sequence_length;
-assign cfg_num_pulses_to_execute      = int_cfg_num_pulses_to_execute;
-assign cfg_total_decimation           = int_cfg_total_decimation;
-assign cfg_post_decimation            = int_cfg_post_decimation;
-assign cfg_num_pulses_per_xfer        = int_cfg_num_pulses_per_xfer;
-assign cfg_enabled_channel_vector     = int_cfg_enabled_channel_vector;
+assign interrupt                             = int_gie & (|int_isr);
+assign ap_start                              = int_ap_start;
+assign cfg_pulse_sequence_start_stop_indexes = int_cfg_pulse_sequence_start_stop_indexes;
+assign cfg_num_pulses_to_execute             = int_cfg_num_pulses_to_execute;
+assign cfg_total_decimation                  = int_cfg_total_decimation;
+assign cfg_post_decimation                   = int_cfg_post_decimation;
+assign cfg_num_pulses_per_xfer               = int_cfg_num_pulses_per_xfer;
+assign cfg_enabled_channel_vector            = int_cfg_enabled_channel_vector;
 // int_ap_start
 always @(posedge ACLK) begin
     if (ARESET)
@@ -1643,23 +1630,13 @@ always @(posedge ACLK) begin
     end
 end
 
-// int_cfg_pulse_sequence_start_index[7:0]
+// int_cfg_pulse_sequence_start_stop_indexes[31:0]
 always @(posedge ACLK) begin
     if (ARESET)
-        int_cfg_pulse_sequence_start_index[7:0] <= 0;
+        int_cfg_pulse_sequence_start_stop_indexes[31:0] <= 0;
     else if (ACLK_EN) begin
-        if (w_hs && waddr == ADDR_CFG_PULSE_SEQUENCE_START_INDEX_DATA_0)
-            int_cfg_pulse_sequence_start_index[7:0] <= (WDATA[31:0] & wmask) | (int_cfg_pulse_sequence_start_index[7:0] & ~wmask);
-    end
-end
-
-// int_cfg_pulse_sequence_length[7:0]
-always @(posedge ACLK) begin
-    if (ARESET)
-        int_cfg_pulse_sequence_length[7:0] <= 0;
-    else if (ACLK_EN) begin
-        if (w_hs && waddr == ADDR_CFG_PULSE_SEQUENCE_LENGTH_DATA_0)
-            int_cfg_pulse_sequence_length[7:0] <= (WDATA[31:0] & wmask) | (int_cfg_pulse_sequence_length[7:0] & ~wmask);
+        if (w_hs && waddr == ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA_0)
+            int_cfg_pulse_sequence_start_stop_indexes[31:0] <= (WDATA[31:0] & wmask) | (int_cfg_pulse_sequence_start_stop_indexes[31:0] & ~wmask);
     end
 end
 

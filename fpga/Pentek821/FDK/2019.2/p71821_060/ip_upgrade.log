@@ -1,6 +1,27 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Nov 24 00:23:59 2021
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2107092146) to (Rev. 2111240020)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 | Date         : Fri Nov 19 21:21:09 2021
 | Host         : wind running 64-bit unknown
 | Command      : upgrade_ip

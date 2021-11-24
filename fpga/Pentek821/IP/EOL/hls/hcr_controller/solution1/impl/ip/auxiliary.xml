@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="hcr_controller" xd:componentRef="hcr_controller" xd:initiationInterval="x" xd:clockPeriod="5.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:type="generic_axi_lite" xd:offset="0x0"/>
-  <xd:arg xd:name="cfg_pulse_sequence_start_index" xd:originalName="cfg_pulse_sequence_start_index" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x10" xd:handshakeRef="ap_none" xd:dataWidth="8"/>
-  <xd:arg xd:name="cfg_pulse_sequence_length" xd:originalName="cfg_pulse_sequence_length" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x18" xd:handshakeRef="ap_none" xd:dataWidth="8"/>
-  <xd:arg xd:name="*(cfg_num_pulses_to_execute)" xd:originalName="cfg_num_pulses_to_execute" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x20" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
-  <xd:arg xd:name="cfg_total_decimation" xd:originalName="cfg_total_decimation" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x28" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
-  <xd:arg xd:name="cfg_post_decimation" xd:originalName="cfg_post_decimation" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x30" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
-  <xd:arg xd:name="cfg_num_pulses_per_xfer" xd:originalName="cfg_num_pulses_per_xfer" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x38" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
-  <xd:arg xd:name="cfg_enabled_channel_vector" xd:originalName="cfg_enabled_channel_vector" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x40" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="*(cfg_pulse_sequence_start_stop_indexes)" xd:originalName="cfg_pulse_sequence_start_stop_indexes" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x10" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="*(cfg_num_pulses_to_execute)" xd:originalName="cfg_num_pulses_to_execute" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x18" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="cfg_total_decimation" xd:originalName="cfg_total_decimation" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x20" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="cfg_post_decimation" xd:originalName="cfg_post_decimation" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x28" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="cfg_num_pulses_per_xfer" xd:originalName="cfg_num_pulses_per_xfer" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x30" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="cfg_enabled_channel_vector" xd:originalName="cfg_enabled_channel_vector" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x38" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].prt[0]" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x80" xd:arraySize="32" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].prt[1]" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x100" xd:arraySize="32" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].num_pulses" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x180" xd:arraySize="32" xd:dataWidth="32"/>
@@ -147,5 +146,5 @@
   <xd:arg xd:name="pps_d0" xd:originalName="pps_d0" xd:direction="out" xd:interfaceRef="pps_d0" xd:busTypeRef="ap_memory" xd:arraySize="1" xd:dataWidth="1"/>
   <xd:arg xd:name="pps_q0" xd:originalName="pps_q0" xd:direction="in" xd:interfaceRef="pps_q0" xd:busTypeRef="ap_memory" xd:arraySize="1" xd:dataWidth="1"/>
   <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
-  <xd:resourceEstimates xd:LUT="9693" xd:FF="7241" xd:BRAM="106" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="9660" xd:FF="7204" xd:BRAM="106" xd:DSP="0"/>
 </xd:acceleratorMap>

@@ -84,10 +84,8 @@ u32 XHcr_controller_IsReady(XHcr_controller *InstancePtr);
 void XHcr_controller_EnableAutoRestart(XHcr_controller *InstancePtr);
 void XHcr_controller_DisableAutoRestart(XHcr_controller *InstancePtr);
 
-void XHcr_controller_Set_cfg_pulse_sequence_start_index(XHcr_controller *InstancePtr, u32 Data);
-u32 XHcr_controller_Get_cfg_pulse_sequence_start_index(XHcr_controller *InstancePtr);
-void XHcr_controller_Set_cfg_pulse_sequence_length(XHcr_controller *InstancePtr, u32 Data);
-u32 XHcr_controller_Get_cfg_pulse_sequence_length(XHcr_controller *InstancePtr);
+void XHcr_controller_Set_cfg_pulse_sequence_start_stop_indexes(XHcr_controller *InstancePtr, u32 Data);
+u32 XHcr_controller_Get_cfg_pulse_sequence_start_stop_indexes(XHcr_controller *InstancePtr);
 void XHcr_controller_Set_cfg_num_pulses_to_execute(XHcr_controller *InstancePtr, u32 Data);
 u32 XHcr_controller_Get_cfg_num_pulses_to_execute(XHcr_controller *InstancePtr);
 void XHcr_controller_Set_cfg_total_decimation(XHcr_controller *InstancePtr, u32 Data);

@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7241,HLS_SYN_LUT=9693,HLS_VERSION=2019_2}" *)
+(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7204,HLS_SYN_LUT=9660,HLS_VERSION=2019_2}" *)
 
 module hcr_controller (
         s_axi_cfg_bus_AWVALID,
@@ -136,8 +136,7 @@ wire    ap_start;
 wire    ap_ready;
 wire    ap_done;
 wire    ap_idle;
-wire   [7:0] cfg_pulse_sequence_start_index;
-wire   [7:0] cfg_pulse_sequence_length;
+wire   [31:0] cfg_pulse_sequence_start_stop_indexes;
 wire   [31:0] cfg_num_pulses_to_execute;
 wire   [31:0] cfg_total_decimation;
 wire   [31:0] cfg_post_decimation;
@@ -372,8 +371,7 @@ hcr_controller_cfg_bus_s_axi_U(
     .ap_ready(ap_ready),
     .ap_done(ap_done),
     .ap_idle(ap_idle),
-    .cfg_pulse_sequence_start_index(cfg_pulse_sequence_start_index),
-    .cfg_pulse_sequence_length(cfg_pulse_sequence_length),
+    .cfg_pulse_sequence_start_stop_indexes(cfg_pulse_sequence_start_stop_indexes),
     .cfg_num_pulses_to_execute(cfg_num_pulses_to_execute),
     .cfg_total_decimation(cfg_total_decimation),
     .cfg_post_decimation(cfg_post_decimation),
@@ -476,8 +474,7 @@ scheduler_parser scheduler_parser_U0(
     .ap_ready(scheduler_parser_U0_ap_ready),
     .start_out(scheduler_parser_U0_start_out),
     .start_write(scheduler_parser_U0_start_write),
-    .cfg_pulse_sequence_s(cfg_pulse_sequence_start_index),
-    .cfg_pulse_sequence_l(cfg_pulse_sequence_length),
+    .cfg_pulse_sequence_s(cfg_pulse_sequence_start_stop_indexes),
     .cfg_num_pulses_to_ex(cfg_num_pulses_to_execute),
     .cfg_total_decimation(cfg_total_decimation),
     .cfg_post_decimation(cfg_post_decimation),

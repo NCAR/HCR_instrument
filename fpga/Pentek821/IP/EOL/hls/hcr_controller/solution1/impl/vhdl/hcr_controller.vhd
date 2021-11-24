@@ -75,7 +75,7 @@ end;
 architecture behav of hcr_controller is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7241,HLS_SYN_LUT=9693,HLS_VERSION=2019_2}";
+    "hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7204,HLS_SYN_LUT=9660,HLS_VERSION=2019_2}";
     constant C_S_AXI_DATA_WIDTH : INTEGER range 63 downto 0 := 20;
     constant C_S_AXI_WSTRB_WIDTH : INTEGER range 63 downto 0 := 4;
     constant C_S_AXI_ADDR_WIDTH : INTEGER range 63 downto 0 := 20;
@@ -96,8 +96,7 @@ architecture behav of hcr_controller is
     signal ap_ready : STD_LOGIC;
     signal ap_done : STD_LOGIC;
     signal ap_idle : STD_LOGIC;
-    signal cfg_pulse_sequence_start_index : STD_LOGIC_VECTOR (7 downto 0);
-    signal cfg_pulse_sequence_length : STD_LOGIC_VECTOR (7 downto 0);
+    signal cfg_pulse_sequence_start_stop_indexes : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_num_pulses_to_execute : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_total_decimation : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_post_decimation : STD_LOGIC_VECTOR (31 downto 0);
@@ -307,8 +306,7 @@ architecture behav of hcr_controller is
         ap_ready : OUT STD_LOGIC;
         start_out : OUT STD_LOGIC;
         start_write : OUT STD_LOGIC;
-        cfg_pulse_sequence_s : IN STD_LOGIC_VECTOR (7 downto 0);
-        cfg_pulse_sequence_l : IN STD_LOGIC_VECTOR (7 downto 0);
+        cfg_pulse_sequence_s : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_num_pulses_to_ex : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_total_decimation : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_post_decimation : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -611,8 +609,7 @@ architecture behav of hcr_controller is
         ap_ready : IN STD_LOGIC;
         ap_done : IN STD_LOGIC;
         ap_idle : IN STD_LOGIC;
-        cfg_pulse_sequence_start_index : OUT STD_LOGIC_VECTOR (7 downto 0);
-        cfg_pulse_sequence_length : OUT STD_LOGIC_VECTOR (7 downto 0);
+        cfg_pulse_sequence_start_stop_indexes : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_num_pulses_to_execute : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_total_decimation : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_post_decimation : OUT STD_LOGIC_VECTOR (31 downto 0);
@@ -737,8 +734,7 @@ begin
         ap_ready => ap_ready,
         ap_done => ap_done,
         ap_idle => ap_idle,
-        cfg_pulse_sequence_start_index => cfg_pulse_sequence_start_index,
-        cfg_pulse_sequence_length => cfg_pulse_sequence_length,
+        cfg_pulse_sequence_start_stop_indexes => cfg_pulse_sequence_start_stop_indexes,
         cfg_num_pulses_to_execute => cfg_num_pulses_to_execute,
         cfg_total_decimation => cfg_total_decimation,
         cfg_post_decimation => cfg_post_decimation,
@@ -841,8 +837,7 @@ begin
         ap_ready => scheduler_parser_U0_ap_ready,
         start_out => scheduler_parser_U0_start_out,
         start_write => scheduler_parser_U0_start_write,
-        cfg_pulse_sequence_s => cfg_pulse_sequence_start_index,
-        cfg_pulse_sequence_l => cfg_pulse_sequence_length,
+        cfg_pulse_sequence_s => cfg_pulse_sequence_start_stop_indexes,
         cfg_num_pulses_to_ex => cfg_num_pulses_to_execute,
         cfg_total_decimation => cfg_total_decimation,
         cfg_post_decimation => cfg_post_decimation,
