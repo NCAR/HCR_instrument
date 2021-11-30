@@ -198,6 +198,8 @@ architecture x_HMC_src of x_HMC_src is
     signal dcm_locked           : std_logic := '0';
     signal resetn               : std_logic := '0';
     signal ext_clk_buf          : std_logic := '0';
+    signal watchdog             : unsigned(7 downto 0) := (others=>'0');
+    signal watchdog_reg          : unsigned(7 downto 0) := (others=>'0');
 
 begin
 
@@ -230,21 +232,36 @@ begin
     GEN_DCM_RESET : process (EXT_CLK_buf, RESETN_CPCI)
     begin
         if (rising_edge (EXT_CLK_buf)) then
-            OPS_MODE_730_reg   <= OPS_MODE_730;
-            OPS_MODE_730_reg2  <= OPS_MODE_730_reg;
-            OPS_MODE_730_reg3  <= OPS_MODE_730_reg2;
+            OPS_MODE_730_reg    <= OPS_MODE_730;
+            OPS_MODE_730_reg2   <= OPS_MODE_730_reg;
+            OPS_MODE_730_reg3   <= OPS_MODE_730_reg2;
 
             if OPS_MODE_730_reg = "000" and OPS_MODE_730_reg2 = "000" and OPS_MODE_730_reg3 = "000" then
-                dcm_reset      <= '1';
+                dcm_reset       <= '1';
             else
-                dcm_reset      <= '0';
+                dcm_reset       <= '0';
             end if;
+
+            -- Also reset the dcm if the counter has stalled
+            if dcm_locked = '1' and watchdog_reg = watchdog then
+                dcm_reset       <= '1';
+            end if;
+
+            watchdog_reg        <= watchdog;
         end if;
         if RESETN_CPCI = '0' then
-            dcm_reset          <= '1';
-            OPS_MODE_730_reg   <= "000";
-            OPS_MODE_730_reg2  <= "000";
-            OPS_MODE_730_reg3  <= "000";				
+            dcm_reset           <= '1';
+            OPS_MODE_730_reg    <= "000";
+            OPS_MODE_730_reg2   <= "000";
+            OPS_MODE_730_reg3   <= "000";				
+        end if;
+    end process;
+
+    -- Detect if the clock from the DCM has stopped
+    DCM_WATCHDOG : process(CLK)
+    begin
+        if rising_edge(clk) then
+            watchdog            <= watchdog + 1;
         end if;
     end process;
 
