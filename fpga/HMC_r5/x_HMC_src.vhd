@@ -19,7 +19,10 @@ use unisim.vcomponents.all;
 
 entity x_HMC_src is
     generic (
-        TESTBENCH_MODE      : boolean := false
+        C_EMS_DELAY         : integer := 20;
+        C_U6_DELAY          : integer := 62500000;
+        C_HV_DELAY          : integer := 62500000;
+        C_WG_DELAY          : integer := 6250000
     );
     port (
 
@@ -85,7 +88,7 @@ entity x_HMC_src is
         SPARE_STATUS1       : out std_logic;
 
         --            U6 Output Enable control, allows Pentek to be discovered on PCI bus
-        U6_OE               : out std_logic;
+        U6_OEn              : out std_logic;
 
         --            Route spare connector (P3)
         SPARE2              : out std_logic;
@@ -97,7 +100,10 @@ architecture x_HMC_src of x_HMC_src is
 
     component HMC_src is
     generic (
-        TESTBENCH_MODE          : boolean := false
+        C_EMS_DELAY             : integer;
+        C_U6_DELAY              : integer;
+        C_HV_DELAY              : integer;
+        C_WG_DELAY              : integer
     );
     port (
         RESETn                  : in  std_logic;
@@ -138,7 +144,7 @@ architecture x_HMC_src of x_HMC_src is
         TEST_BIT_1              : in  std_logic;
         SPARE_STATUS0           : out std_logic;
         SPARE_STATUS1           : out std_logic;
-        U6_OE                   : out std_logic;
+        U6_OEn                  : out std_logic;
         SPARE2                  : out std_logic;
         SPARE3                  : out std_logic
     );
@@ -154,9 +160,9 @@ architecture x_HMC_src of x_HMC_src is
     signal HV_ON_730_i          : std_logic := '0';
     signal FIL_ON_730_i         : std_logic := '0';
     signal OPS_MODE_730_i       : std_logic_vector(2 downto 0) := (others=>'0');
-	 signal OPS_MODE_730_reg     : std_logic_vector(2 downto 0) := (others=>'0');
-	 signal OPS_MODE_730_reg2    : std_logic_vector(2 downto 0) := (others=>'0');
-	 signal OPS_MODE_730_reg3    : std_logic_vector(2 downto 0) := (others=>'0');
+    signal OPS_MODE_730_reg     : std_logic_vector(2 downto 0) := (others=>'0');
+    signal OPS_MODE_730_reg2    : std_logic_vector(2 downto 0) := (others=>'0');
+    signal OPS_MODE_730_reg3    : std_logic_vector(2 downto 0) := (others=>'0');
     signal STATUS_ACK_i         : std_logic := '0';
     signal BIT_EMS_i            : std_logic_vector(7 downto 1) := (others=>'0');
     signal WG_SW_TERMn_i        : std_logic := '0';
@@ -183,7 +189,7 @@ architecture x_HMC_src of x_HMC_src is
     signal EMS_ERROR_EVENT_o    : std_logic := '0';
     signal SPARE_STATUS0_o      : std_logic := '0';
     signal SPARE_STATUS1_o      : std_logic := '0';
-    signal U6_OE_o              : std_logic := '0';
+    signal U6_OEn_o             : std_logic := '0';
     signal SPARE2_o             : std_logic := '0';
     signal SPARE3_o             : std_logic := '0';    
     
@@ -221,7 +227,7 @@ begin
     );
 
     -- Latch OPS_MODE and generate dcm_reset if zero
-    GEN_DCM_RESET : process (EXT_CLK_buf)
+    GEN_DCM_RESET : process (EXT_CLK_buf, RESETN_CPCI)
     begin
         if (rising_edge (EXT_CLK_buf)) then
             OPS_MODE_730_reg   <= OPS_MODE_730;
@@ -242,7 +248,7 @@ begin
         end if;
     end process;
 
-    LATCH_INPUTS : process(CLK)
+    LATCH_INPUTS : process(CLK, dcm_locked)
     begin
         if rising_edge(clk) then
             T0_i                <= T0;
@@ -280,7 +286,7 @@ begin
             EMS_ERROR_EVENT     <= EMS_ERROR_EVENT_o;     
             SPARE_STATUS0       <= SPARE_STATUS0_o;       
             SPARE_STATUS1       <= SPARE_STATUS1_o;       
-            U6_OE               <= U6_OE_o;               
+            U6_OEn              <= U6_OEn_o;               
             SPARE2              <= SPARE2_o;              
             SPARE3              <= SPARE3_o;
             resetn              <= dcm_locked;
@@ -292,7 +298,10 @@ begin
 
     HMC : HMC_SRC
     generic map (
-        TESTBENCH_MODE          => TESTBENCH_MODE
+        C_EMS_DELAY             => C_EMS_DELAY,
+        C_U6_DELAY              => C_U6_DELAY,
+        C_HV_DELAY              => C_HV_DELAY,
+        C_WG_DELAY              => C_WG_DELAY
     )
     port map (
         RESETn                  => resetn,
@@ -332,7 +341,7 @@ begin
         TEST_BIT_1              => TEST_BIT_1_i,
         SPARE_STATUS0           => SPARE_STATUS0_o,
         SPARE_STATUS1           => SPARE_STATUS1_o,
-        U6_OE                   => U6_OE_o,
+        U6_OEn                  => U6_OEn_o,
         SPARE2                  => SPARE2_o,
         SPARE3                  => SPARE3_o
     );

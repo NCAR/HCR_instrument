@@ -19,7 +19,10 @@ use unisim.vcomponents.all;
 
 entity HMC_src is
     generic (
-        TESTBENCH_MODE      : boolean := false
+        C_EMS_DELAY         : integer;
+        C_U6_DELAY          : integer;
+        C_HV_DELAY          : integer;
+        C_WG_DELAY          : integer
     );
     port (
 
@@ -85,7 +88,7 @@ entity HMC_src is
         SPARE_STATUS1       : out std_logic;
 
         --            U6 Output Enable control, allows Pentek to be discovered on PCI bus
-        U6_OE               : out std_logic;
+        U6_OEn              : out std_logic;
 
         --            Route spare connector (P3)
         SPARE2              : out std_logic;
@@ -166,19 +169,13 @@ architecture Behavioral of HMC_src is
         others                  => '0'
     );
 
-    constant C_1S_DELAY         : integer := 62500000;
-    constant C_100MS_DELAY      : integer := 6250000;
-    constant C_TESTBENCH_DELAY  : integer := 6248;
-    constant C_EMS_DELAY        : integer := 20;
-    signal   C_U6_DELAY         : integer; --set later
-    signal   C_HV_DELAY         : integer;
-    signal   C_WG_DELAY         : integer;
-
     --   Signal declarations
 
     signal ems_pwr_ok           : std_logic;
+    signal ems_pwr_error_reg    : std_logic;
     signal hv_powerup_dly       : std_logic;
     signal hv_count             : unsigned(27 downto 0);
+    signal hv_on_debounce       : std_logic_vector(7 downto 0);
     signal count_enable         : std_logic;
     signal U6_count             : unsigned(27 downto 0);
     signal U6_dly               : std_logic;
@@ -222,8 +219,6 @@ architecture Behavioral of HMC_src is
     signal l_tx_ems_switch_dly  : std_logic;
     signal l_rx_ems_switch_dly  : std_logic;
     signal l_rx_gate            : std_logic;
-    signal ops_mode_730_reg     : std_logic_vector(2 downto 0) := "000";
-    signal ops_mode_730_reg2    : std_logic_vector(2 downto 0) := "000";
     signal pulse_mode           : integer range 0 to NUM_PULSE_MODES-1 := PULSE_MODE_TEST;
     signal cmd_wg_sw_pos        : std_logic; -- commanded waveguide switch position
     signal T0_reg               : std_logic;
@@ -236,11 +231,6 @@ architecture Behavioral of HMC_src is
 
 begin
 
-    -- Shorten delay counters for simulation
-    C_U6_DELAY <= C_TESTBENCH_DELAY when TESTBENCH_MODE else C_1S_DELAY;
-    C_HV_DELAY <= C_TESTBENCH_DELAY when TESTBENCH_MODE else C_1S_DELAY;
-    C_WG_DELAY <= C_TESTBENCH_DELAY when TESTBENCH_MODE else C_100MS_DELAY;
-
     state_code <= "00" when state = s0 else
                   "01" when state = s1 else
                   "10" when state = s2 else
@@ -252,7 +242,7 @@ begin
     SYNC_PULSE_HMC  <= SYNC_PULSE_CLK;
 
     -- Check key power supply voltages
-    ems_pwr_ok      <= not EMS_PWR_ERROR;
+    ems_pwr_ok      <= not (EMS_PWR_ERROR and ems_pwr_error_reg); --debounce
 
     -- Assign test signals to SPARE outputs for debug
     SPARE2          <= state_code(0);
@@ -393,6 +383,7 @@ begin
 
             mod_pulse_error <= (not (ems_pwr_ok and not ems_tx_error) or mod_pulse_error) and not STATUS_ACK;
 
+            ems_pwr_error_reg <= EMS_PWR_ERROR;
         end if; --RE CLK
         if (RESETn = '0') then
             ems_tx_ok       <= '1';
@@ -432,7 +423,8 @@ begin
     DELAY_1SEC : process (CLK, RESETn)
     begin
         if (rising_edge (CLK)) then
-            if (HV_ON_730 = '0') then
+            hv_on_debounce <= hv_on_debounce(6 downto 0) & HV_ON_730;
+            if (hv_on_debounce = x"00") then
                 if (hv_count = C_HV_DELAY) then -- 1 second
                     hv_count        <= (others=>'0');
                     count_enable    <= '0';
@@ -440,13 +432,14 @@ begin
                 elsif (count_enable = '1') then
                     hv_count <= hv_count + 1;
                 end if;
-            else
+            elsif (hv_on_debounce = x"FF") then
                 hv_count            <= (others=>'0');
                 hv_powerup_dly      <= '0';
                 count_enable        <= '1';
             end if;
         end if; --RE CLK
         if (RESETn = '0') then
+            hv_on_debounce          <= (others=>'1');
             hv_count                <= (others=>'0');
             hv_powerup_dly          <= '0';
             count_enable            <= '1';
@@ -477,7 +470,7 @@ begin
         end if;
     end process;
 
-    U6_OE <= not U6_dly;
+    U6_OEn <= not U6_dly;
 
     -- Generate registered EMS_TRIG
     LATCH_EMS_TRIG : process (CLK, RESETn)
@@ -703,7 +696,7 @@ begin
             WG_SW_CTRL_NOISEn           <= '1';
             NOISE_SOURCE_EN             <= '0';
             cmd_wg_sw_pos               <= '0';
-            HVn_flag                    <= '0';
+            HVn_flag                     <= '0';
             prev_state                  <= s0;
         end if;
     end process;

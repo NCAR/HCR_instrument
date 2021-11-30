@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.ncd
-OUTFILE=/home/karboski/git/HCR_instrument/src/HMC_Redesign/x_HMC_src.bit
-FAMILY=Spartan3A and Spartan3AN
-PART=xc3s50a-5vq100
-WORKINGDIR=/home/karboski/git/HCR_instrument/src/HMC_Redesign
-LICENSE=ISE
-USER_INFO=174147939_1777536501_0_926
