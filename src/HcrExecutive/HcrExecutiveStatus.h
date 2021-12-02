@@ -126,7 +126,7 @@ public:
 
     /// @brief Return the requested HMC mode.
     /// @return the requested HMC mode.
-    HcrPmc730::HmcOperationMode requestedHmcMode() const { return(_requestedHmcMode); }
+    HcrPmc730::OperationMode requestedHmcMode() const { return(_requestedHmcMode); }
 
     /// @brief Return true iff a user has requested that high voltage be 
     /// turned on.
@@ -257,7 +257,7 @@ private:
     double _meanMaxPower;
 
     /// @brief Requested HMC mode
-    HcrPmc730::HmcOperationMode _requestedHmcMode;
+    HcrPmc730::OperationMode _requestedHmcMode;
 
     /// @brief Has a user requested that transmitter high voltage be turned on?
     bool _hvRequested;

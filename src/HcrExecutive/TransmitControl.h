@@ -108,7 +108,7 @@ public:
 
     /// @brief Set the requested HMC mode
     /// @param mode the requested HMC mode
-    void setRequestedHmcMode(HcrPmc730::HmcOperationMode mode);
+    void setRequestedHmcMode(HcrPmc730::OperationMode& mode);
 
     /// @brief Set the requested high voltage on state
     /// @param hvRequested true if HV on is desired, false if HV off is desired
@@ -137,7 +137,7 @@ private slots:
     /// @param mode the new HMC operation mode
     /// @param modeChangeTime the time at which the mode was changed, double
     /// precision seconds since 1970-01-01 00:00:00 UTC
-    void _recordHmcModeChange(HcrPmc730::HmcOperationMode mode,
+    void _recordHmcModeChange(const HcrPmc730::OperationMode& mode,
                                double modeChangeTime);
 
     /// @brief Accept a new status from MotionControlDaemon and react if necessary
@@ -281,24 +281,11 @@ private:
     /// near-nadir angles.
     bool _anyNearNadirPointing();
 
-    /// @brief Return true iff the given HMC mode is an attenuated mode.
-    /// @param mode the mode to be tested
-    /// @return true iff the given HMC mode is an attenuated mode.
-    static bool _HmcModeIsAttenuated(HcrPmc730::HmcOperationMode mode);
-
     /// @brief Return true iff the requested HMC mode is attenuated or has a
     /// matching attenuated mode.
     /// @return true iff the requested HMC mode is attenuated or has a
     /// matching attenuated mode.
     bool _attenuatedModeAvailable();
-
-    /// @brief Return the attenuated version of the given mode if it exists,
-    /// otherwise HcrPmc730::HMC_MODE_INVALID. If the given mode is already
-    /// attenuated (or a non-transmitting mode), the same mode is returned.
-    /// @param mode the mode to be tested
-    /// @return the attenuated version of the given mode if it exists,
-    /// otherwise HcrPmc730::HMC_MODE_INVALID.
-    static HcrPmc730::HmcOperationMode _EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode);
 
     /// @brief Return true iff the HMC was using attenuated receive mode during
     /// the entire period from startTime to endTime.
@@ -316,13 +303,13 @@ private:
 
     /// @brief Set the HMC mode on HcrPmc730Daemon
     /// @param mode the HMC mode to use
-    void _setHmcMode(HcrPmc730::HmcOperationMode mode);
+    void _setHmcMode(HcrPmc730::OperationMode& mode);
 
     /// @brief Return the current HMC mode. We return our local value for
     /// current mode rather than _hcrPmc730Status.hmcMode() because we may
     /// have changed the mode but not yet gotten a new status from
     /// HcrPmc730Daemon.
-    HcrPmc730::HmcOperationMode _currentHmcMode() const {
+    HcrPmc730::OperationMode _currentHmcMode() const {
         // Current mode is the last entry in our HMC mode map
         return(_hmcModeMap.rbegin()->second);
     }
@@ -331,7 +318,7 @@ private:
     void _clearHmcModeMap();
 
     /// @brief Append a mode to our mode map, starting at the current time
-    void _appendToModeMap(HcrPmc730::HmcOperationMode mode);
+    void _appendToModeMap(HcrPmc730::OperationMode& mode);
 
     /// @brief How frequently will we poll the INS FMQ for new data?
     static constexpr int _INS_POLL_INTERVAL_MS = 1000;
@@ -427,7 +414,7 @@ private:
     bool _hvRequested;
 
     /// @brief User's intended HMC mode
-    HcrPmc730::HmcOperationMode _requestedHmcMode;
+    HcrPmc730::OperationMode _requestedHmcMode;
 
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
@@ -435,7 +422,7 @@ private:
 
     /// @brief map of HMC mode change times (seconds since 1970-01-01 00:00:00
     /// UTC) to mode
-    std::map<double, HcrPmc730::HmcOperationMode> _hmcModeMap;
+    std::map<double, HcrPmc730::OperationMode> _hmcModeMap;
 
     /// @brief Time high voltage was last forced off because of high max power,
     /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been forced off.

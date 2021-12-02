@@ -67,7 +67,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _aglAltitude(0.0),
     _overWater(false),
     _hvRequested(false),
-    _requestedHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST),
+    _requestedHmcMode(),
     _xmitTestStatus(NOXMIT_UNSPECIFIED),
     _hmcModeMap(),
     _timeOfLastHvOffForHighPower(0),
@@ -86,9 +86,9 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     
     // Call _recordHmcModeChange when we get a mode change signal
     connect(&hcrPmc730StatusThread, 
-            SIGNAL(hmcModeChange(HcrPmc730::HmcOperationMode, double)),
+            SIGNAL(hmcModeChange(HcrPmc730::OperationMode, double)),
             this, 
-            SLOT(_recordHmcModeChange(HcrPmc730::HmcOperationMode, double)));
+            SLOT(_recordHmcModeChange(HcrPmc730::OperationMode, double)));
     
     // Call _updateMotionControlStatus when new status from MotionControlDaemon 
     // arrives
@@ -126,7 +126,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
 
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting HMC mode to Bench Test";
-    _setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST);
+    #warning    _setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST, 0);
 }
 
 void
@@ -138,9 +138,9 @@ TransmitControl::_updateHcrPmc730Status(HcrPmc730Status status) {
     // get our state back in sync with HcrPmc730Daemon.
     if (_hcrPmc730Status.hmcMode() != _currentHmcMode()) {
         WLOG << "HcrPmc730Daemon reports HMC mode '" <<
-                HcrPmc730::HmcModeNames[_hcrPmc730Status.hmcMode()] <<
+                _hcrPmc730Status.hmcMode().name() <<
                 "' instead of expected mode '" <<
-                HcrPmc730::HmcModeNames[_currentHmcMode()] << "'";
+                _currentHmcMode().name() << "'";
         // Log the unexpected mode change as having happened now
         struct timeval tv;
         gettimeofday(&tv, NULL);
@@ -163,10 +163,10 @@ TransmitControl::_updateHcrPmc730Responsive(bool responding, QString msg) {
 }
 
 void
-TransmitControl::_recordHmcModeChange(HcrPmc730::HmcOperationMode mode,
+TransmitControl::_recordHmcModeChange(const HcrPmc730::OperationMode& mode,
                                        double modeChangeTime) {
     // Append this mode change to _hmcModeMap
-    ILOG << "HMC mode changed to '" << HcrPmc730::HmcModeNames[mode] << 
+    ILOG << "HMC mode changed to '" << mode.name() << 
             "' at " << QDateTime::fromTime_t(time_t(modeChangeTime))
                        .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
                        .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
@@ -365,7 +365,7 @@ TransmitControl::_runTransmitTests() {
                     (_maxPowerReport.attenuated ? "" : "un") << "attenuated " <<
                     "max power of " << _maxPowerReport.meanMaxPower <<
                     " dBm with current HMC mode: " <<
-                    HcrPmc730::HmcModeNames[_currentHmcMode()];
+                    _currentHmcMode().name();
             WLOG << oss.str();
             _hvRequested = false;
             // Save time and details about the hard shutoff of high voltage
@@ -457,7 +457,7 @@ TransmitControl::_xmitTestStatusText() const {
         (_maxPowerReport.attenuated ? "" : "un") << "attenuated " <<
         "max power of " << _maxPowerReport.meanMaxPower <<
         " dBm with current HMC mode '" <<
-        HcrPmc730::HmcModeNames[_currentHmcMode()] << "'";
+        _currentHmcMode().name() << "'";
         return(oss.str());
     case NOXMIT_ATTENUATE_BUG:
         return("BUG: Attenuated mode is required but is not available.");
@@ -475,12 +475,12 @@ TransmitControl::_updateControlState() {
     
     // Figure out the HMC mode to use if attenuation is required and the 
     // requested HMC mode is not attenuated.
-    HcrPmc730::HmcOperationMode newHmcMode = attenuationRequired() ? 
-            _EquivalentAttenuatedMode(_requestedHmcMode) : _requestedHmcMode;
+    HcrPmc730::OperationMode newHmcMode = attenuationRequired() ? 
+            _requestedHmcMode.equivalentAttenuatedMode() : _requestedHmcMode;
 
     // We should have a valid HMC mode now. If not, it's a bug and
     // we'll have to disable transmit...
-    if (newHmcMode == HcrPmc730::HMC_MODE_INVALID) {
+    if (newHmcMode.hmcMode == HcrPmc730::HMC_MODE_INVALID) {
         newHmcMode = _requestedHmcMode;
         _setXmitTestStatus(NOXMIT_ATTENUATE_BUG);
         ELOG << _xmitTestStatusText();
@@ -653,37 +653,13 @@ TransmitControl::_allNearZenithPointing() {
 }
 
 bool
-TransmitControl::_HmcModeIsAttenuated(HcrPmc730::HmcOperationMode mode) {
-    return(mode == HcrPmc730::HMC_MODE_H_HV_ATTENUATED ||
-            mode == HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
-}
-
-bool
 TransmitControl::_attenuatedModeAvailable() {
-    return(_EquivalentAttenuatedMode(_requestedHmcMode) != HcrPmc730::HMC_MODE_INVALID);
-}
-
-HcrPmc730::HmcOperationMode
-TransmitControl::_EquivalentAttenuatedMode(HcrPmc730::HmcOperationMode mode) {
-    switch (mode) {
-//    case HcrPmc730::HMC_MODE_H_HV:
-    case HcrPmc730::HMC_MODE_H_HV_ATTENUATED:
-        return(HcrPmc730::HMC_MODE_H_HV_ATTENUATED);
-//    case HcrPmc730::HMC_MODE_V_HV:
-    case HcrPmc730::HMC_MODE_V_HV_ATTENUATED:
-        return(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
-    case HcrPmc730::HMC_MODE_BENCH_TEST:
-        return(HcrPmc730::HMC_MODE_BENCH_TEST);
-    case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
-        return(HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL);
-    default:
-        return(HcrPmc730::HMC_MODE_INVALID);
-    }
+    return _requestedHmcMode.equivalentAttenuatedMode().hmcMode != HcrPmc730::HMC_MODE_INVALID;
 }
 
 void
-TransmitControl::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
-    ILOG << "Setting requested HMC mode to " << mode;
+TransmitControl::setRequestedHmcMode(HcrPmc730::OperationMode& mode) {
+    ILOG << "Setting requested HMC mode to " << mode.name();
     _requestedHmcMode = mode;
     _updateControlState();
 }
@@ -724,17 +700,17 @@ TransmitControl::_xmitHvOff() {
 }
 
 void
-TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
+TransmitControl::_setHmcMode(HcrPmc730::OperationMode& mode) {
     // Bail out now if we're not changing mode
     if (_currentHmcMode() == mode) {
         return;
     } else {
-        ILOG << "Changing HMC mode to '" << HcrPmc730::HmcModeNames[mode] << "'";
+        ILOG << "Changing HMC mode to '" << mode.name() << "'";
     }
     try {
         _hcrPmc730Client.setHmcMode(mode);
     } catch (std::exception & e) {
-        ELOG << "XML-RPC call to HcrPmc730Daemon setHmcMode(" << mode << 
+        ELOG << "XML-RPC call to HcrPmc730Daemon setHmcMode(" << mode.name() << 
                 ") failed: " << e.what();
     }
 }
@@ -742,18 +718,18 @@ TransmitControl::_setHmcMode(HcrPmc730::HmcOperationMode mode) {
 bool
 TransmitControl::_timePeriodWasAttenuated(double startTime,
         double endTime) const {
-    std::map<double, HcrPmc730::HmcOperationMode>::const_reverse_iterator rit;
+    std::map<double, HcrPmc730::OperationMode>::const_reverse_iterator rit;
     // Loop backward through the map of HMC modes looking at all modes which
     // were used during the given period.
     for (rit = _hmcModeMap.rbegin(); rit != _hmcModeMap.rend(); rit++) {
         double modeStartTime = rit->first;
-        HcrPmc730::HmcOperationMode mode = rit->second;
+        HcrPmc730::OperationMode mode = rit->second;
         // If this mode started after the end time, move to the previous mode
         if (modeStartTime >= endTime)
             continue;
         // If we find any unattenuated mode was used during the period, return
         // false immediately
-        if (! _HmcModeIsAttenuated(mode)) {
+        if (! mode.isAttenuated()) {
             return(false);
         }
         // If this mode started before the start time, we're done
@@ -778,5 +754,7 @@ void
 TransmitControl::_clearHmcModeMap() {
     _hmcModeMap.clear();
     // Initialize as having run in "Bench Test" mode since the beginning of time
-    _hmcModeMap[0] = HcrPmc730::HMC_MODE_BENCH_TEST;
+    HcrPmc730::OperationMode m;
+    m.hmcMode = HcrPmc730::HMC_MODE_BENCH_TEST;
+    _hmcModeMap[0] = m;
 }

@@ -68,10 +68,7 @@ StatusGrabber::StatusGrabber(HCR_Pentek & pentek,
 StatusGrabber::~StatusGrabber() {
     // Exit the event loop to stop the thread
     quit();
-    // Wait a bit for it to complete.
-    if (! wait(1000)) {
-        ELOG << "StatusGrabber thread failed to quit in destructor. Exiting anyway.";
-    }
+    wait();
 }
 
 XmitStatus
@@ -124,7 +121,7 @@ StatusGrabber::run() {
 void
 StatusGrabber::_getStatus() {
     ELOG << "RC ";
-    _pentek.changeControllerSchedule(1,1);
+    _pentek.changeControllerSchedule(2,2);
     _getPmc730Status();
     _getDrxStatus();
     _getXmitStatus();
@@ -218,7 +215,7 @@ StatusGrabber::_readHmcModeChangeSocket() {
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
     ILOG << "New HMC mode '" << 
-            HcrPmc730::HmcModeNames[_pmc730Status.hmcMode()] << "' " <<
+            _pmc730Status.hmcMode().name() << "' " <<
             "with start time " << QDateTime::fromTime_t(time_t(modeChangeTime))
                 .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
                 .toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<

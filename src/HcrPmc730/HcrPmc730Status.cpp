@@ -87,7 +87,7 @@ HcrPmc730Status::HcrPmc730Status() :
     _emsError3(false),
     _emsError4Or5(false),
     _emsError6Or7(false),
-    _hmcMode(HcrPmc730::HMC_MODE_INVALID) {}
+    _hmcMode() {}
 
 HcrPmc730Status::~HcrPmc730Status() {}
 

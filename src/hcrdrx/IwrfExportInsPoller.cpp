@@ -76,9 +76,7 @@ IwrfExportInsPoller::~IwrfExportInsPoller() {
     if (_workThread.isRunning()) {
         DLOG << "Stopping thread";
         _workThread.quit();
-        if (! _workThread.wait(100)) {
-            WLOG << "Work thread did not finish promptly in destructor.";
-        }
+        _workThread.wait();
     }
 }
 

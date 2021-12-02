@@ -173,14 +173,9 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        paramList.verifyEnd(1);
-        // Get the requested mode
-        const int iMode(paramList.getInt(0));
-        HcrPmc730::HmcOperationMode hmcMode =
-                static_cast<HcrPmc730::HmcOperationMode>(iMode);
-
-        ILOG << "Received 'setRequestedHmcMode(" << iMode << ")' command";
-        TheTransmitControl->setRequestedHmcMode(hmcMode);
+        HcrPmc730::OperationMode mode(paramList);
+        ILOG << "Received 'setRequestedHmcMode(" << mode.name() << ")' command";
+        TheTransmitControl->setRequestedHmcMode(mode);
         *retvalP = xmlrpc_c::value_nil();
     }
 };

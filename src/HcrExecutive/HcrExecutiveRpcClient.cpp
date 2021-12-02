@@ -79,11 +79,11 @@ HcrExecutiveRpcClient::setApsValveControl(ApsControl::ValveControlState state) {
 }
 
 void
-HcrExecutiveRpcClient::setRequestedHmcMode(HcrPmc730::HmcOperationMode mode) {
-    ILOG << "Setting requested HMC mode to " << mode;
+HcrExecutiveRpcClient::setRequestedHmcMode(HcrPmc730::OperationMode& mode) {
+    ILOG << "Setting requested HMC mode to " << mode.name();
 
     xmlrpc_c::paramList params;
-    params.add(xmlrpc_c::value_int(mode));
+    mode.write(params);
     _execXmlRpcCall("setRequestedHmcMode", params);
 }
 

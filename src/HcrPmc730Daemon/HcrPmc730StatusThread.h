@@ -84,7 +84,7 @@ signals:
     /// @param mode the new HMC operation mode
     /// @param modeChangeTime the time of the mode change, double precision
     /// seconds since 1970-01-01 00:00:00 UTC
-    void hmcModeChange(HcrPmc730::HmcOperationMode mode, double modeChangeTime);
+    void hmcModeChange(HcrPmc730::OperationMode mode, double modeChangeTime);
 
 private slots:
     /// @brief Try to get latest status from HcrPmc730Daemon, and emit a newStatus()

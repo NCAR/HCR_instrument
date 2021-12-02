@@ -177,13 +177,11 @@ public:
         // We get a single parameter: the integer form of the desired HMC
         // mode.
         ILOG << "Received XML-RPC call to setHmcMode()...";
-        paramList.verifyEnd(1);
-        
+
         // Cast the int into HcrPmc730::HmcOperationMode
-        HcrPmc730::HmcOperationMode hmcMode =
-                static_cast<HcrPmc730::HmcOperationMode>(paramList.getInt(0));
+        HcrPmc730::OperationMode hmcMode(paramList);
         ILOG << "...with requested HMC mode " << 
-                "'" << HcrPmc730::HmcModeNames[hmcMode] << "'";
+                "'" << hmcMode.name() << "'";
         *retvalP = xmlrpc_c::value_nil();
         
         // If requested mode is the current mode, just return now
@@ -193,7 +191,7 @@ public:
         }
         
         // Change to the requested mode
-        HcrPmc730::SetHmcOperationMode(hmcMode);
+        HcrPmc730::SetOperationMode(hmcMode);
         
         // Broadcast a datagram to indicate the new mode and the time of the
         // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
@@ -332,7 +330,8 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
-    HcrPmc730::SetHmcOperationMode(HcrPmc730::HMC_MODE_V_HV_ATTENUATED);
+    HcrPmc730::OperationMode mode;
+    HcrPmc730::SetOperationMode(mode);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");

@@ -67,7 +67,7 @@ Pmc730Details::updateStatus(bool daemonResponding,
     _errState = false;
     
     // HMC mode
-    _ui.hmcModeValue->setText(HcrPmc730::HmcModeNames[status.hmcMode()].c_str());
+    _ui.hmcModeValue->setText(status.hmcMode().name().c_str());
     
     // temperatures
     _ui.ploTempValue->setText(QString::number(status.ploTemp(), 'f', 1));

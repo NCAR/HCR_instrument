@@ -44,7 +44,7 @@ static const uint16_t HMC_MODE_BROADCAST_PORT = 56565;
 
 /// The struct which is broadcast upon HMC operation mode change
 typedef struct {
-    HcrPmc730::HmcOperationMode mode;   // the new HMC mode
+    HcrPmc730::OperationMode mode;      // the new HMC mode
     double modeChangeTime;              // double precision time of the mode change,
                                         // seconds since 1970-01-01 00:00 UTC 
 } HmcModeChangeStruct;

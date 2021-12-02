@@ -48,7 +48,7 @@ HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost,
     // We need to register HcrPmc730Status and HmcOperationMode as metatypes, 
     // since we'll be passing them as arguments in signals.
     qRegisterMetaType<HcrPmc730Status>("HcrPmc730Status");
-    qRegisterMetaType<HcrPmc730::HmcOperationMode>("HcrPmc730::HmcOperationMode");
+    qRegisterMetaType<HcrPmc730::OperationMode>("HcrPmc730::OperationMode");
     
     // Set thread affinity to self, so that signals connected to our slot(s)
     // will execute the slots in this thread, and not our parent's.
@@ -130,7 +130,7 @@ HcrPmc730StatusThread::_readHmcModeChangeSocket() {
 
         // Emit our hmcModeChange() signal
         DLOG << "HMC mode changed to '" << 
-                HcrPmc730::HmcModeNames[mcStruct.mode] << "' at " <<
+                mcStruct.mode.name() << "' at " <<
                 QDateTime::fromTime_t(time_t(mcStruct.modeChangeTime))
                     .addMSecs(int(fmod(mcStruct.modeChangeTime, 1.0) * 1000))
                     .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();

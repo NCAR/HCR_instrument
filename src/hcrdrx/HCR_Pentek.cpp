@@ -1187,6 +1187,6 @@ void HCR_Pentek::zeroMotorCounts()
     uint32_t originalVal = readLiteRegister_(BLOCK2_GPR_BASE+8, "Read GPR2");
     uint32_t mask = 0x2;
     writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal | mask, "Zero motor count");
-    writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal & (~mask), "Clear zeao motor count");
+    writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal & (~mask), "Clear zero motor count");
 }
 

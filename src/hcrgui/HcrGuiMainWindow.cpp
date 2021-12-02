@@ -248,7 +248,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _updateTimer.start(1000);
     
     // Populate the HMC mode combo box
-    for (int i = 0; i < HcrPmc730::HMC_NMODES; i++) {
+    for (int i = 0; i < 73; i++) {
         _ui.requestedModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i);
     }
 
@@ -796,14 +796,25 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
 /// Set HMC mode via HcrExecutive
 void
 HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
+    
+    HcrPmc730::OperationMode mode;
+    if(index < 8) {
+        mode.hmcMode = static_cast<HcrPmc730::HmcModes>(index);
+        mode.scheduleStartIndex = 0;
+        mode.scheduleStopIndex = 0;
+    }
+    else {
+        mode.hmcMode = HcrPmc730::HMC_MODE_TRANSMIT;
+        mode.scheduleStartIndex = index - 9;
+        mode.scheduleStopIndex = index - 9; //These do not have to be the same, GUI limitation only        
+    }
+    
     // Set a new requested HMC mode on HcrExecutive
-    HcrPmc730::HmcOperationMode mode =
-            static_cast<HcrPmc730::HmcOperationMode>(index);
     try {
-        ILOG << "Requesting HMC mode " << mode;
+        ILOG << "Requesting HMC mode " << mode.name();
         _hcrExecutiveStatusThread.rpcClient().setRequestedHmcMode(mode);
     } catch (std::exception & e) {
-        WLOG << "Could not tell HcrExecutive to request HMC mode " << mode;
+        WLOG << "Could not tell HcrExecutive to request HMC mode " << mode.name();
     }
 }
 
@@ -954,8 +965,14 @@ HcrGuiMainWindow::_update() {
     }
 
     // HMC mode
-    _ui.requestedModeCombo->setCurrentIndex(_hcrExecutiveStatus.requestedHmcMode());
-    std::string modeText = HcrPmc730::HmcModeNames[_pmcStatus.hmcMode()];
+    auto reqMode = _hcrExecutiveStatus.requestedHmcMode();
+    if(reqMode.hmcMode == HcrPmc730::HMC_MODE_TRANSMIT) {
+        _ui.requestedModeCombo->setCurrentIndex(reqMode.scheduleStartIndex+9);
+    }
+    else {
+        _ui.requestedModeCombo->setCurrentIndex(reqMode.hmcMode);
+    }
+    std::string modeText = _pmcStatus.hmcMode().name();
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
     // INS1 status light:

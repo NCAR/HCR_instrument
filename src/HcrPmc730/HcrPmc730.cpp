@@ -44,19 +44,97 @@ extern "C" {
 
 LOGGING("HcrPmc730");
 
-// HMC mode names (mapped to the HmcOperationMode enum)
+// HMC mode names (mapped to the OperationMode enum)
 std::string
 HcrPmc730::HmcModeNames[] = {
         "reset HMC",
         "unused (1)",
-        "tx per schedule, rx HV",
+        "INVALID",
         "tx H, rx HV (ATTENUATED)",
         "Noise Source Cal",
         "tx V, rx HV (ATTENUATED)",
         "Bench Test",
         "tx V, isol, noise",
-        "INVALID"
+        "INVALID",
+        "schedule 0 (tx H), rx HV",
+        "schedule 1 (tx V), rx HV",
+        "schedule 2 (tx HHVV), rx HV",
+        "schedule 3",
+        "schedule 4",
+        "schedule 5",
+        "schedule 6",
+        "schedule 7",
+        "schedule 8",
+        "schedule 9",
+        "schedule 10",
+        "schedule 11",
+        "schedule 12",
+        "schedule 13",
+        "schedule 14",
+        "schedule 15",
+        "schedule 16",
+        "schedule 17",
+        "schedule 18",
+        "schedule 19",
+        "schedule 20",
+        "schedule 21",
+        "schedule 22",
+        "schedule 23",
+        "schedule 24",
+        "schedule 25",
+        "schedule 26",
+        "schedule 27",
+        "schedule 28",
+        "schedule 29",
+        "schedule 30",
+        "schedule 31",
+        "schedule 32",
+        "schedule 33",
+        "schedule 34",
+        "schedule 35",
+        "schedule 36",
+        "schedule 37",
+        "schedule 38",
+        "schedule 39",
+        "schedule 40",
+        "schedule 41",
+        "schedule 42",
+        "schedule 43",
+        "schedule 44",
+        "schedule 45",
+        "schedule 46",
+        "schedule 47",
+        "schedule 48",
+        "schedule 49",
+        "schedule 50",
+        "schedule 51",
+        "schedule 52",
+        "schedule 53",
+        "schedule 54",
+        "schedule 55",
+        "schedule 56",
+        "schedule 57",
+        "schedule 58",
+        "schedule 59",
+        "schedule 60",
+        "schedule 61",
+        "schedule 62",
+        "schedule 63" 
 };
+
+const std::string HcrPmc730::OperationMode::name() const
+{
+    std::string s;
+    if (hmcMode != HMC_MODE_TRANSMIT) {
+        s = HcrPmc730::HmcModeNames[hmcMode];
+    }
+    else {
+        s = HcrPmc730::HmcModeNames[scheduleStartIndex+9];
+        s += ":";
+        s = HcrPmc730::HmcModeNames[scheduleStopIndex+9];
+    }
+    return s;
+}
 
 // Static to tell whether the singleton is created as a simulated PMC-730
 bool HcrPmc730::_DoSimulate = false;
@@ -140,7 +218,7 @@ HcrPmc730::TheHcrPmc730() {
 
 // static
 void
-HcrPmc730::SetHmcOperationMode(HmcOperationMode mode) {
+HcrPmc730::SetOperationMode(OperationMode& mode) {
     // Set the HMC mode bits on our digital out lines. This method works
     // atomically, setting all three bits at once rather than changing one 
     // at a time.
@@ -155,17 +233,17 @@ HcrPmc730::SetHmcOperationMode(HmcOperationMode mode) {
     uint8_t new8_15 = TheHcrPmc730().getDio8_15();
 
     // set the bits for the three lines which set the mode
-    uint8_t modeBit0 = (mode >> 0) & 0x01;
+    uint8_t modeBit0 = (mode.hmcMode >> 0) & 0x01;
     new8_15 = modeBit0 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
 
-    uint8_t modeBit1 = (mode >> 1) & 0x01;
+    uint8_t modeBit1 = (mode.hmcMode >> 1) & 0x01;
     new8_15 = modeBit1 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
 
-    uint8_t modeBit2 = (mode >> 2) & 0x01;
+    uint8_t modeBit2 = (mode.hmcMode >> 2) & 0x01;
     new8_15 = modeBit2 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);

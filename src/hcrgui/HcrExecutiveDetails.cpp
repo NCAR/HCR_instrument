@@ -111,13 +111,11 @@ HcrExecutiveDetails::updateStatus(bool daemonResponding,
     // Requested and current HMC modes. Note that current HMC mode comes from
     // HcrPmc730Status and not from HcrExecutiveStatus. Use emphasis background 
     // color if current mode differs from requested mode.
-    HcrPmc730::HmcOperationMode requestedMode = hcrExecutiveStatus.requestedHmcMode();
-    std::string requestedModeName = HcrPmc730::HmcModeNames[requestedMode];
-    _ui.requestedModeValue->setText(QString::fromStdString(requestedModeName));
+    auto requestedMode = hcrExecutiveStatus.requestedHmcMode();
+    _ui.requestedModeValue->setText(QString::fromStdString(requestedMode.name()));
     
-    HcrPmc730::HmcOperationMode currentMode = hcrPmc730Status.hmcMode();
-    std::string currentModeName = HcrPmc730::HmcModeNames[currentMode];
-    _ui.currentModeValue->setText(currentModeName.c_str());
+    auto currentMode = hcrPmc730Status.hmcMode();
+    _ui.currentModeValue->setText(currentMode.name().c_str());
 
     std::string styleSheet = (currentMode == requestedMode) ? 
             "" : "background-color: #FFFFD0";
