@@ -58,15 +58,15 @@ public:
         /// 0 = reset the HMC
         HMC_MODE_RESET = 0,
         /// 1 = unused
-        HMC_MODE_SPARE = 1,
-        /// 2 = transmit according to drx scheduler, receive H and V
-        HMC_MODE_TRANSMIT = 2,
-        /// 3 = transmit H, receive H and V (attenuated)
-        HMC_MODE_H_HV_ATTENUATED = 3,
-        /// 4 = noise source calibration
-        HMC_MODE_NOISE_SOURCE_CAL = 4,
-        /// 5 = transmit V, receive H and V (attenuated)
-        HMC_MODE_V_HV_ATTENUATED = 5,
+        HMC_MODE_SPARE_1 = 1,
+        /// 2 = unused
+        HMC_MODE_SPARE_2 = 2,
+        /// 3 = transmit according to drx scheduler, receive H and V
+        HMC_MODE_TRANSMIT = 3,
+        /// 4 = transmit according to drx scheduler, receive H and V (attenuated)
+        HMC_MODE_TRANSMIT_ATTENUATED = 4,
+        /// 5 = noise source calibration
+        HMC_MODE_NOISE_SOURCE_CAL = 5,
         /// 6 = bench test
         HMC_MODE_BENCH_TEST = 6,
         /// 7 = transmit V, receive H and V, enable noise source
@@ -111,19 +111,16 @@ public:
         template<typename T> void serialize(T& ar, unsigned int v) { };
 
         bool isAttenuated() {
-            return hmcMode == HmcModes::HMC_MODE_H_HV_ATTENUATED
-                || hmcMode == HmcModes::HMC_MODE_V_HV_ATTENUATED;
+            return hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
         };
 
         OperationMode equivalentAttenuatedMode() {
             HcrPmc730::OperationMode m = *this;
             switch (hmcMode) {
-                //    case HcrPmc730::HMC_MODE_H_HV:
-                case HmcModes::HMC_MODE_H_HV_ATTENUATED:
-                    m.hmcMode = HmcModes::HMC_MODE_H_HV_ATTENUATED;
-                //    case HcrPmc730::HMC_MODE_V_HV:
-                case HmcModes::HMC_MODE_V_HV_ATTENUATED:
-                    m.hmcMode = HmcModes::HMC_MODE_V_HV_ATTENUATED;
+                case HmcModes::HMC_MODE_TRANSMIT:
+                    m.hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+                case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
+                    m.hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
                 case HmcModes::HMC_MODE_BENCH_TEST:
                     m.hmcMode = HmcModes::HMC_MODE_BENCH_TEST;
                 case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:

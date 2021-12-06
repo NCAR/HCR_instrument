@@ -126,7 +126,9 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
 
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting HMC mode to Bench Test";
-    #warning    _setHmcMode(HcrPmc730::HMC_MODE_BENCH_TEST, 0);
+    HcrPmc730::OperationMode mode;
+    mode.hmcMode = HcrPmc730::HMC_MODE_BENCH_TEST;
+    _setHmcMode(mode);
 }
 
 void
