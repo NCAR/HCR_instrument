@@ -15,7 +15,7 @@ template<typename FPGA> class RadarController {
 
 public:
 
-    RadarController(const FPGA& fpgaInstance, uint32_t baseAddr) : fpga(fpgaInstance), base(baseAddr) {};
+    RadarController(const FPGA& fpgaInstance, uint32_t baseAddr) : fpga(fpgaInstance), base(baseAddr), watchdogCount(0) {};
 
     struct PulseBlockDefinition
     {
@@ -98,6 +98,7 @@ private :
         POST_DECIMATION                         = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_POST_DECIMATION_DATA,
         NUM_PULSES_PER_XFER                     = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_PER_XFER_DATA,
         ENABLED_CHANNEL_VECTOR                  = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA,
+        WATCHDOG                                = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_WATCHDOG_DATA,
         PULSE_SEQUENCE_PRT_0                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE,
         PULSE_SEQUENCE_PRT_1                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE,
         PULSE_SEQUENCE_NUM_PULSES               = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE,
@@ -130,6 +131,7 @@ private :
 
     const FPGA& fpga;
     const uint32_t base;
+    uint32_t watchdogCount;
 
     template<typename T> auto write_(uint32_t addr, T val, const std::string& action)
     {
@@ -215,6 +217,12 @@ public:
             int32_t intCoef = round(coefs[index]*0x400000);
             write_(index*sizeof(uint32_t) + base, intCoef, "Writing pulse coef");
         }
+    }
+
+    void bumpWatchdog()
+    {
+        // Any edit to this register will reset the scheduler keepalive count
+        write_(WATCHDOG, ++watchdogCount, "Resetting watchdog timer");
     }
 
     void changeSchedule(uint32_t sequenceStartIndex, uint32_t sequenceStopIndex)
