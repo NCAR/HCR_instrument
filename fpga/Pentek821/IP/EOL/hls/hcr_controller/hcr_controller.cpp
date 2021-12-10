@@ -15,6 +15,7 @@ void hcr_controller(
 		uint32_t cfg_post_decimation,
 		uint32_t cfg_num_pulses_per_xfer,
 		uint32_t cfg_enabled_channel_vector,
+		volatile uint32_t* cfg_watchdog,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -43,6 +44,7 @@ void hcr_controller(
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_post_decimation
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_per_xfer
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_enabled_channel_vector
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_watchdog
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->prt complete
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->timer_offset complete
@@ -92,6 +94,7 @@ void hcr_controller(
 			cfg_post_decimation,
 			cfg_num_pulses_per_xfer,
 			cfg_enabled_channel_vector,
+			cfg_watchdog,
 			cfg_pulse_sequence,
 			cfg_filter_coefs_ch0,
 			cfg_filter_coefs_ch1,
@@ -129,6 +132,7 @@ void scheduler_parser(
 		uint32_t cfg_post_decimation,
 		uint32_t cfg_num_pulses_per_xfer,
 		ap_uint<3> cfg_enabled_channel_vector,
+		volatile uint32_t* cfg_watchdog,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -160,6 +164,8 @@ void scheduler_parser(
 	uint32_t num_pulses_scheduled = 0;
 	uint32_t num_pulses_scheduled_this_xfer = 0;
 	bool pulses_to_execute_reached = false;
+	uint32_t watchdog_prev = 0;
+	uint16_t watchdog_count = 5000;
 
 	//Run until the specified number of pulses is hit
 	while(true)
@@ -244,7 +250,7 @@ void scheduler_parser(
 				num_pulses_scheduled++;
 				hhvv_index++;
 
-				if(pulses_to_execute_reached)
+				if(pulses_to_execute_reached || watchdog_count == 0)
 				{
 					pulse_exec_definition term;
 					term.terminate = true;
@@ -263,6 +269,15 @@ void scheduler_parser(
 				{
 					staggered_prt_index = 0;
 				}
+
+				//Decrement watchdog counter, or reset if cfg_watchdog has changed
+				uint32_t watchdog_cur = *cfg_watchdog;
+				if ( watchdog_cur != watchdog_prev )
+					watchdog_count = 5000;
+				else
+					watchdog_count--;
+				std::cout << watchdog_count << " w\n";
+				watchdog_prev = watchdog_cur;
 			}
 		}
 	}

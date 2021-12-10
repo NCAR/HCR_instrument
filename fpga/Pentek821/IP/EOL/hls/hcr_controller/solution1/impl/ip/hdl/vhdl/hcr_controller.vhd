@@ -75,7 +75,7 @@ end;
 architecture behav of hcr_controller is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=5.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7204,HLS_SYN_LUT=9660,HLS_VERSION=2019_2}";
+    "hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7290,HLS_SYN_LUT=9816,HLS_VERSION=2019_2}";
     constant C_S_AXI_DATA_WIDTH : INTEGER range 63 downto 0 := 20;
     constant C_S_AXI_WSTRB_WIDTH : INTEGER range 63 downto 0 := 4;
     constant C_S_AXI_ADDR_WIDTH : INTEGER range 63 downto 0 := 20;
@@ -102,6 +102,7 @@ architecture behav of hcr_controller is
     signal cfg_post_decimation : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_num_pulses_per_xfer : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_enabled_channel_vector : STD_LOGIC_VECTOR (31 downto 0);
+    signal cfg_watchdog : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_prt_0_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_prt_1_q0 : STD_LOGIC_VECTOR (31 downto 0);
     signal cfg_pulse_sequence_num_pulses_q0 : STD_LOGIC_VECTOR (31 downto 0);
@@ -312,6 +313,7 @@ architecture behav of hcr_controller is
         cfg_post_decimation : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_num_pulses_per_x : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_enabled_channel_vector : IN STD_LOGIC_VECTOR (31 downto 0);
+        cfg_watchdog : IN STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_p_address0 : OUT STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_p_ce0 : OUT STD_LOGIC;
         cfg_pulse_sequence_p_q0 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -615,6 +617,7 @@ architecture behav of hcr_controller is
         cfg_post_decimation : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_num_pulses_per_xfer : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_enabled_channel_vector : OUT STD_LOGIC_VECTOR (31 downto 0);
+        cfg_watchdog : OUT STD_LOGIC_VECTOR (31 downto 0);
         cfg_pulse_sequence_prt_0_address0 : IN STD_LOGIC_VECTOR (4 downto 0);
         cfg_pulse_sequence_prt_0_ce0 : IN STD_LOGIC;
         cfg_pulse_sequence_prt_0_q0 : OUT STD_LOGIC_VECTOR (31 downto 0);
@@ -740,6 +743,7 @@ begin
         cfg_post_decimation => cfg_post_decimation,
         cfg_num_pulses_per_xfer => cfg_num_pulses_per_xfer,
         cfg_enabled_channel_vector => cfg_enabled_channel_vector,
+        cfg_watchdog => cfg_watchdog,
         cfg_pulse_sequence_prt_0_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_prt_0_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_prt_0_q0 => cfg_pulse_sequence_prt_0_q0,
@@ -843,6 +847,7 @@ begin
         cfg_post_decimation => cfg_post_decimation,
         cfg_num_pulses_per_x => cfg_num_pulses_per_xfer,
         cfg_enabled_channel_vector => cfg_enabled_channel_vector,
+        cfg_watchdog => cfg_watchdog,
         cfg_pulse_sequence_p_address0 => scheduler_parser_U0_cfg_pulse_sequence_p_address0,
         cfg_pulse_sequence_p_ce0 => scheduler_parser_U0_cfg_pulse_sequence_p_ce0,
         cfg_pulse_sequence_p_q0 => cfg_pulse_sequence_prt_0_q0,

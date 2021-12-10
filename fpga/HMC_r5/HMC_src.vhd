@@ -46,8 +46,8 @@ entity HMC_src is
         EMS_PWR_ERROR       : in  std_logic;
 
         --            PMC730 Commands
-        HV_ON_730           : in  std_logic; -- High voltage cmd from PMC730
-        FIL_ON_730          : in  std_logic; -- Filament on cmd from PMC730
+        HV_ON_730n          : in  std_logic; -- High voltage cmd from PMC730
+        FIL_ON_730n         : in  std_logic; -- Filament on cmd from PMC730
         OPS_MODE_730        : in  std_logic_vector(2 downto 0); -- Operationsl mode cmd from PMC730
         STATUS_ACK          : in  std_logic; -- Status receipt acknowledgement
 
@@ -60,8 +60,8 @@ entity HMC_src is
         --            Modulator timing and control signals
         MOD_PULSE_HMC       : out std_logic;
         SYNC_PULSE_HMC      : out std_logic;
-        HV_ON_HMC           : out std_logic;
-        FIL_ON_HMC          : out std_logic;
+        HV_ON_HMCn          : out std_logic;
+        FIL_ON_HMCn         : out std_logic;
 
         --            Noise source calibration control
 
@@ -102,11 +102,11 @@ architecture Behavioral of HMC_src is
 
     -- Enumeration of OPS_MODE_730
     constant OPS_730_RESET          : std_logic_vector(2 downto 0) := o"0"; -- Reset mode
-    constant OPS_730_SPARE          : std_logic_vector(2 downto 0) := o"1"; -- Spare mode
-    constant OPS_730_TRANSMIT       : std_logic_vector(2 downto 0) := o"2"; -- Transmit X, receive both. X is determined by Pentek scheduler
-    constant OPS_730_CREF_H         : std_logic_vector(2 downto 0) := o"3"; -- Corner reflector horizontal transmit, receive both
-    constant OPS_730_NOISE          : std_logic_vector(2 downto 0) := o"4"; -- Noise source cal, no tx
-    constant OPS_730_CREF_V         : std_logic_vector(2 downto 0) := o"5"; -- Corner reflector cal, vertical tx w/increased NF
+    constant OPS_730_SPARE1         : std_logic_vector(2 downto 0) := o"1"; -- Spare mode
+    constant OPS_730_SPARE2         : std_logic_vector(2 downto 0) := o"2"; -- Spare mode
+    constant OPS_730_TRANSMIT       : std_logic_vector(2 downto 0) := o"3"; -- Transmit HV?, receive H and V. HV? is determined by Pentek scheduler
+    constant OPS_730_ATTENUATED     : std_logic_vector(2 downto 0) := o"4"; -- Corner reflector transmit HV?, receive H and V.
+    constant OPS_730_NOISE          : std_logic_vector(2 downto 0) := o"5"; -- Noise source cal, no tx
     constant OPS_730_TEST           : std_logic_vector(2 downto 0) := o"6"; -- Test Mode, no tx
     constant OPS_730_ISOL_NOISE     : std_logic_vector(2 downto 0) := o"7"; -- vertical transmit, receive both, but enable noise source for testing
 
@@ -237,8 +237,8 @@ begin
                   "11";
 
     -- Tx Control
-    HV_ON_HMC       <= HV_ON_730;
-    FIL_ON_HMC      <= FIL_ON_730;
+    HV_ON_HMCn       <= HV_ON_730n;
+    FIL_ON_HMCn      <= FIL_ON_730n;
     SYNC_PULSE_HMC  <= SYNC_PULSE_CLK;
 
     -- Check key power supply voltages
@@ -423,7 +423,7 @@ begin
     DELAY_1SEC : process (CLK, RESETn)
     begin
         if (rising_edge (CLK)) then
-            hv_on_debounce <= hv_on_debounce(6 downto 0) & HV_ON_730;
+            hv_on_debounce <= hv_on_debounce(6 downto 0) & HV_ON_730n;
             if (hv_on_debounce = x"00") then
                 if (hv_count = C_HV_DELAY) then -- 1 second
                     hv_count        <= (others=>'0');
@@ -573,9 +573,13 @@ begin
                     else
                         next_pulse_mode_v   := PULSE_MODE_V_TX;
                     end if;
-                when OPS_730_CREF_H         =>  next_pulse_mode_v := PULSE_MODE_CREF_H;
+                when OPS_730_ATTENUATED =>
+                    if HVn_CMD_PENTEK = '1' then
+                        next_pulse_mode_v   := PULSE_MODE_CREF_H;
+                    else
+                        next_pulse_mode_v   := PULSE_MODE_CREF_V;
+                    end if;
                 when OPS_730_NOISE          =>  next_pulse_mode_v := PULSE_MODE_NOISE;
-                when OPS_730_CREF_V         =>  next_pulse_mode_v := PULSE_MODE_CREF_V;
                 when OPS_730_TEST           =>  next_pulse_mode_v := PULSE_MODE_TEST;
                 when OPS_730_ISOL_NOISE     =>  next_pulse_mode_v := PULSE_MODE_ISOL_NOISE;
                 when others                 =>  next_pulse_mode_v := PULSE_MODE_TEST;

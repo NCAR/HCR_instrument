@@ -42,6 +42,7 @@ port (
     cfg_post_decimation   :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_num_pulses_per_xfer :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_enabled_channel_vector :out  STD_LOGIC_VECTOR(31 downto 0);
+    cfg_watchdog          :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_pulse_sequence_prt_0_address0 :in   STD_LOGIC_VECTOR(4 downto 0);
     cfg_pulse_sequence_prt_0_ce0 :in   STD_LOGIC;
     cfg_pulse_sequence_prt_0_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
@@ -166,6 +167,9 @@ end entity hcr_controller_cfg_bus_s_axi;
 -- 0x0038 : Data signal of cfg_enabled_channel_vector
 --          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
 -- 0x003c : reserved
+-- 0x0040 : Data signal of cfg_watchdog
+--          bit 31~0 - cfg_watchdog[31:0] (Read/Write)
+-- 0x0044 : reserved
 -- 0x0080 ~
 -- 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 --          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -273,6 +277,8 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     constant ADDR_CFG_NUM_PULSES_PER_XFER_CTRL                 : INTEGER := 16#0034#;
     constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0            : INTEGER := 16#0038#;
     constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL              : INTEGER := 16#003c#;
+    constant ADDR_CFG_WATCHDOG_DATA_0                          : INTEGER := 16#0040#;
+    constant ADDR_CFG_WATCHDOG_CTRL                            : INTEGER := 16#0044#;
     constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE                : INTEGER := 16#0080#;
     constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH                : INTEGER := 16#00ff#;
     constant ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE                : INTEGER := 16#0100#;
@@ -357,6 +363,7 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     signal int_cfg_post_decimation : UNSIGNED(31 downto 0) := (others => '0');
     signal int_cfg_num_pulses_per_xfer : UNSIGNED(31 downto 0) := (others => '0');
     signal int_cfg_enabled_channel_vector : UNSIGNED(31 downto 0) := (others => '0');
+    signal int_cfg_watchdog    : UNSIGNED(31 downto 0) := (others => '0');
     -- memory signals
     signal int_cfg_pulse_sequence_prt_0_address0 : UNSIGNED(4 downto 0);
     signal int_cfg_pulse_sequence_prt_0_ce0 : STD_LOGIC;
@@ -1504,6 +1511,8 @@ port map (
                         rdata_data <= RESIZE(int_cfg_num_pulses_per_xfer(31 downto 0), 32);
                     when ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0 =>
                         rdata_data <= RESIZE(int_cfg_enabled_channel_vector(31 downto 0), 32);
+                    when ADDR_CFG_WATCHDOG_DATA_0 =>
+                        rdata_data <= RESIZE(int_cfg_watchdog(31 downto 0), 32);
                     when others =>
                         rdata_data <= (others => '0');
                     end case;
@@ -1577,6 +1586,7 @@ port map (
     cfg_post_decimation  <= STD_LOGIC_VECTOR(int_cfg_post_decimation);
     cfg_num_pulses_per_xfer <= STD_LOGIC_VECTOR(int_cfg_num_pulses_per_xfer);
     cfg_enabled_channel_vector <= STD_LOGIC_VECTOR(int_cfg_enabled_channel_vector);
+    cfg_watchdog         <= STD_LOGIC_VECTOR(int_cfg_watchdog);
 
     process (ACLK)
     begin
@@ -1764,6 +1774,17 @@ port map (
             if (ACLK_EN = '1') then
                 if (w_hs = '1' and waddr = ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0) then
                     int_cfg_enabled_channel_vector(31 downto 0) <= (UNSIGNED(WDATA(31 downto 0)) and wmask(31 downto 0)) or ((not wmask(31 downto 0)) and int_cfg_enabled_channel_vector(31 downto 0));
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ACLK_EN = '1') then
+                if (w_hs = '1' and waddr = ADDR_CFG_WATCHDOG_DATA_0) then
+                    int_cfg_watchdog(31 downto 0) <= (UNSIGNED(WDATA(31 downto 0)) and wmask(31 downto 0)) or ((not wmask(31 downto 0)) and int_cfg_watchdog(31 downto 0));
                 end if;
             end if;
         end if;

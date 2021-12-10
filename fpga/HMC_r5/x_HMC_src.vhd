@@ -46,8 +46,8 @@ entity x_HMC_src is
         EMS_PWR_ERROR       : in  std_logic;
 
         --            PMC730 Commands
-        HV_ON_730           : in  std_logic; -- High voltage cmd from PMC730
-        FIL_ON_730          : in  std_logic; -- Filament on cmd from PMC730
+        HV_ON_730n          : in  std_logic; -- High voltage cmd from PMC730
+        FIL_ON_730n         : in  std_logic; -- Filament on cmd from PMC730
         OPS_MODE_730        : in  std_logic_vector(2 downto 0); -- Operationsl mode cmd from PMC730
         STATUS_ACK          : in  std_logic; -- Status receipt acknowledgement
 
@@ -60,8 +60,8 @@ entity x_HMC_src is
         --            Modulator timing and control signals
         MOD_PULSE_HMC       : out std_logic;
         SYNC_PULSE_HMC      : out std_logic;
-        HV_ON_HMC           : out std_logic;
-        FIL_ON_HMC          : out std_logic;
+        HV_ON_HMCn          : out std_logic;
+        FIL_ON_HMCn         : out std_logic;
 
         --            Noise source calibration control
 
@@ -117,16 +117,16 @@ architecture x_HMC_src of x_HMC_src is
         HVn_FLAG                : out std_logic;
         --ONE_PPS                 : in  std_logic;
         EMS_PWR_ERROR           : in  std_logic;
-        HV_ON_730               : in  std_logic;
-        FIL_ON_730              : in  std_logic;
+        HV_ON_730n              : in  std_logic;
+        FIL_ON_730n             : in  std_logic;
         OPS_MODE_730            : in  std_logic_vector(2 downto 0);
         STATUS_ACK              : in  std_logic;
         BIT_EMS                 : in  std_logic_vector(7 downto 1);
         EMS_OUT                 : out std_logic_vector(7 downto 1);
         MOD_PULSE_HMC           : out std_logic;
         SYNC_PULSE_HMC          : out std_logic;
-        HV_ON_HMC               : out std_logic;
-        FIL_ON_HMC              : out std_logic;
+        HV_ON_HMCn              : out std_logic;
+        FIL_ON_HMCn             : out std_logic;
         WG_SW_TERMn             : in  std_logic;
         WG_SW_NOISEn            : in  std_logic;
         WG_SW_CTRL_TERMn        : out std_logic;
@@ -157,8 +157,8 @@ architecture x_HMC_src of x_HMC_src is
     signal HVn_CMD_PENTEK_i     : std_logic := '0';
     signal SYNC_PULSE_CLK_i     : std_logic := '0';
     signal EMS_PWR_ERROR_i      : std_logic := '0';
-    signal HV_ON_730_i          : std_logic := '0';
-    signal FIL_ON_730_i         : std_logic := '0';
+    signal HV_ON_730n_i         : std_logic := '0';
+    signal FIL_ON_730n_i        : std_logic := '0';
     signal OPS_MODE_730_i       : std_logic_vector(2 downto 0) := (others=>'0');
     signal OPS_MODE_730_reg     : std_logic_vector(2 downto 0) := (others=>'0');
     signal OPS_MODE_730_reg2    : std_logic_vector(2 downto 0) := (others=>'0');
@@ -174,8 +174,8 @@ architecture x_HMC_src of x_HMC_src is
     signal EMS_OUT_o            : std_logic_vector(7 downto 1) := (others=>'0');
     signal MOD_PULSE_HMC_o      : std_logic := '0';
     signal SYNC_PULSE_HMC_o     : std_logic := '0';
-    signal HV_ON_HMC_o          : std_logic := '0';
-    signal FIL_ON_HMC_o         : std_logic := '0';
+    signal HV_ON_HMCn_o         : std_logic := '0';
+    signal FIL_ON_HMCn_o        : std_logic := '0';
     signal WG_SW_CTRL_TERMn_o   : std_logic := '0';
     signal WG_SW_CTRL_NOISEn_o  : std_logic := '0';
     signal NOISE_SOURCE_EN_o    : std_logic := '0';
@@ -199,7 +199,7 @@ architecture x_HMC_src of x_HMC_src is
     signal resetn               : std_logic := '0';
     signal ext_clk_buf          : std_logic := '0';
     signal watchdog             : unsigned(7 downto 0) := (others=>'0');
-    signal watchdog_reg          : unsigned(7 downto 0) := (others=>'0');
+    signal watchdog_reg         : unsigned(7 downto 0) := (others=>'0');
 
 begin
 
@@ -275,8 +275,8 @@ begin
             HVn_CMD_PENTEK_i    <= HVn_CMD_PENTEK;
             SYNC_PULSE_CLK_i    <= SYNC_PULSE_CLK;
             EMS_PWR_ERROR_i     <= EMS_PWR_ERROR;
-            HV_ON_730_i         <= HV_ON_730;
-            FIL_ON_730_i        <= FIL_ON_730;
+            HV_ON_730n_i        <= HV_ON_730n;
+            FIL_ON_730n_i       <= FIL_ON_730n;
             OPS_MODE_730_i      <= OPS_MODE_730_reg;
             STATUS_ACK_i        <= STATUS_ACK;
             BIT_EMS_i           <= BIT_EMS;
@@ -288,8 +288,8 @@ begin
             EMS_OUT             <= EMS_OUT_o;             
             MOD_PULSE_HMC       <= MOD_PULSE_HMC_o;     
             SYNC_PULSE_HMC      <= SYNC_PULSE_HMC_o;      
-            HV_ON_HMC           <= HV_ON_HMC_o;           
-            FIL_ON_HMC          <= FIL_ON_HMC_o;          
+            HV_ON_HMCn          <= HV_ON_HMCn_o;           
+            FIL_ON_HMCn         <= FIL_ON_HMCn_o;          
             WG_SW_CTRL_TERMn    <= WG_SW_CTRL_TERMn_o;    
             WG_SW_CTRL_NOISEn   <= WG_SW_CTRL_NOISEn_o;   
             NOISE_SOURCE_EN     <= NOISE_SOURCE_EN_o;     
@@ -331,16 +331,16 @@ begin
         SYNC_PULSE_CLK          => SYNC_PULSE_CLK_i,
         HVn_FLAG                => HVn_FLAG_o,
         EMS_PWR_ERROR           => EMS_PWR_ERROR_i,
-        HV_ON_730               => HV_ON_730_i,
-        FIL_ON_730              => FIL_ON_730_i,
+        HV_ON_730n              => HV_ON_730n_i,
+        FIL_ON_730n             => FIL_ON_730n_i,
         OPS_MODE_730            => OPS_MODE_730_i,
         STATUS_ACK              => STATUS_ACK_i,
         BIT_EMS                 => BIT_EMS_i,
         EMS_OUT                 => EMS_OUT_o,
         MOD_PULSE_HMC           => MOD_PULSE_HMC_o,
         SYNC_PULSE_HMC          => SYNC_PULSE_HMC_o,
-        HV_ON_HMC               => HV_ON_HMC_o,
-        FIL_ON_HMC              => FIL_ON_HMC_o,
+        HV_ON_HMCn              => HV_ON_HMCn_o,
+        FIL_ON_HMCn             => FIL_ON_HMCn_o,
         WG_SW_TERMn             => WG_SW_TERMn_i,
         WG_SW_NOISEn            => WG_SW_NOISEn_i,
         WG_SW_CTRL_TERMn        => WG_SW_CTRL_TERMn_o,

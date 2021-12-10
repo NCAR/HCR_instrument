@@ -18,6 +18,7 @@ int main()
 	uint32_t cfg_post_decimation = 2;
 	uint32_t cfg_num_pulses_per_xfer = 3;
 	uint32_t cfg_enabled_channel_vector = 7;
+	uint32_t cfg_watchdog = 1;
 	pulse_definition cfg_pulse_sequence[N_PULSE_DEFS] {};
 	bool pps = 1;
 	volatile ap_uint<N_TIMERS> mt_pulse;
@@ -98,6 +99,7 @@ int main()
 		cfg_post_decimation,
 		cfg_num_pulses_per_xfer,
 		cfg_enabled_channel_vector,
+		&cfg_watchdog,
 		cfg_pulse_sequence,
 		cfg_filter_coefs_ch0,
 		cfg_filter_coefs_ch1,

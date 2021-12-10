@@ -39,6 +39,9 @@
 // 0x0038 : Data signal of cfg_enabled_channel_vector
 //          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
 // 0x003c : reserved
+// 0x0040 : Data signal of cfg_watchdog
+//          bit 31~0 - cfg_watchdog[31:0] (Read/Write)
+// 0x0044 : reserved
 // 0x0080 ~
 // 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 //          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -141,6 +144,8 @@
 #define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_NUM_PULSES_PER_XFER_DATA               32
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA            0x0038
 #define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_ENABLED_CHANNEL_VECTOR_DATA            32
+#define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_WATCHDOG_DATA                          0x0040
+#define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_WATCHDOG_DATA                          32
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE              0x0080
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH              0x00ff
 #define XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PULSE_SEQUENCE_PRT_0                  32
