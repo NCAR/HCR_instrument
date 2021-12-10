@@ -730,6 +730,10 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
 
     // ILOG << "_acceptAdcData " << chan << "\n";
 
+    // Periodically refresh the watchdog timer. Without this,
+    // the controller will time out after a few thousand pulses and halt.
+    _controller.bumpWatchdog();
+
     if (! _checkDmaMetadata(chan, metadata)) {
         return;
     }
