@@ -248,7 +248,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _updateTimer.start(1000);
     
     // Populate the HMC mode combo box
-    for (int i = 0; i < 73; i++) {
+    for (int i = 0; i < 137; i++) {
         _ui.requestedModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i);
     }
 
@@ -798,15 +798,20 @@ void
 HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
     
     HcrPmc730::OperationMode mode;
-    if(index < 8) {
+    if(index < 9) {
         mode.hmcMode = static_cast<HcrPmc730::HmcModes>(index);
         mode.scheduleStartIndex = 0;
         mode.scheduleStopIndex = 0;
     }
-    else {
+    else if(index < 73) {
         mode.hmcMode = HcrPmc730::HMC_MODE_TRANSMIT;
         mode.scheduleStartIndex = index - 9;
-        mode.scheduleStopIndex = index - 9; //These do not have to be the same, GUI limitation only        
+        mode.scheduleStopIndex = index - 9; //These do not have to be the same, GUI limitation only
+    }
+    else {
+        mode.hmcMode = HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED;
+        mode.scheduleStartIndex = index - 73;
+        mode.scheduleStopIndex = index - 73; //These do not have to be the same, GUI limitation only
     }
     
     // Set a new requested HMC mode on HcrExecutive
@@ -968,6 +973,9 @@ HcrGuiMainWindow::_update() {
     auto reqMode = _hcrExecutiveStatus.requestedHmcMode();
     if(reqMode.hmcMode == HcrPmc730::HMC_MODE_TRANSMIT) {
         _ui.requestedModeCombo->setCurrentIndex(reqMode.scheduleStartIndex+9);
+    }
+    else if(reqMode.hmcMode == HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED) {
+        _ui.requestedModeCombo->setCurrentIndex(reqMode.scheduleStartIndex+73);
     }
     else {
         _ui.requestedModeCombo->setCurrentIndex(reqMode.hmcMode);

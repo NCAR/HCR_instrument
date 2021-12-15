@@ -68,7 +68,9 @@ StatusGrabber::StatusGrabber(HCR_Pentek & pentek,
 StatusGrabber::~StatusGrabber() {
     // Exit the event loop to stop the thread
     quit();
-    wait();
+    if (! wait(1000)) {
+        ELOG << "StatusGrabber thread failed to quit in destructor. Exiting anyway.";
+    }
 }
 
 XmitStatus
@@ -120,8 +122,6 @@ StatusGrabber::run() {
 
 void
 StatusGrabber::_getStatus() {
-    ELOG << "RC ";
-    _pentek.changeControllerSchedule(2,2);
     _getPmc730Status();
     _getDrxStatus();
     _getXmitStatus();
