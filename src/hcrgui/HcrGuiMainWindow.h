@@ -247,6 +247,7 @@ private:
     QPixmap _amberLED;
     QPixmap _greenLED;
     QPixmap _greenLED_off;
+    QPixmap _notRespondingLED;
     
     /// Last status read from the transmitter
     XmitStatus _xmitStatus;

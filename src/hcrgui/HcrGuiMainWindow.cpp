@@ -84,6 +84,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _amberLED(":/amberLED.png"),
     _greenLED(":/greenLED.png"),
     _greenLED_off(":/greenLED_off.png"),
+    _notRespondingLED(":/redLED_Q.png"),
     _xmitStatus(),
     _rdsXmitControl(true),
     _fireflydStatus(),
@@ -142,15 +143,15 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     memset(&_dmapStatus, 0, sizeof(_dmapStatus));
 
     // No status from any daemons yet
-    _ui.ins1StatusIcon->setPixmap(_redLED);
-    _ui.ins2StatusIcon->setPixmap(_redLED);
-    _ui.fireflydStatusIcon->setPixmap(_redLED);
-    _ui.hcrdrxStatusIcon->setPixmap(_redLED);
-    _ui.hcrExecutiveStatusIcon->setPixmap(_redLED);
-    _ui.mcStatusIcon->setPixmap(_redLED);
-    _ui.pmc730StatusIcon->setPixmap(_redLED);
-//    _ui.spectracomStatusIcon->setPixmap(_redLED);
-    _ui.xmitterStatusIcon->setPixmap(_redLED);
+    _ui.ins1StatusIcon->setPixmap(_notRespondingLED);
+    _ui.ins2StatusIcon->setPixmap(_notRespondingLED);
+    _ui.fireflydStatusIcon->setPixmap(_notRespondingLED);
+    _ui.hcrdrxStatusIcon->setPixmap(_notRespondingLED);
+    _ui.hcrExecutiveStatusIcon->setPixmap(_notRespondingLED);
+    _ui.mcStatusIcon->setPixmap(_notRespondingLED);
+    _ui.pmc730StatusIcon->setPixmap(_notRespondingLED);
+//    _ui.spectracomStatusIcon->setPixmap(_notRespondingLED);
+    _ui.xmitterStatusIcon->setPixmap(_notRespondingLED);
 
     // Disable Spectracom widgets
     _ui.spectracomStatusIcon->setEnabled(false);
@@ -963,7 +964,10 @@ HcrGuiMainWindow::_update() {
     faultCount += _xmitStatus.eikInterlockFault() ? 1 : 0;
 
     // Set the overall transmitter status LED
-    if (! _xmitStatus.serialConnected() || (faultCount > 0)) {
+    if (!_xmitdStatusThread.serverIsResponding()) {
+        _ui.xmitterStatusIcon->setPixmap(_notRespondingLED);
+    }
+    else if (! _xmitStatus.serialConnected() || (faultCount > 0)) {
         _ui.xmitterStatusIcon->setPixmap(_redLED);
     } else {
         _ui.xmitterStatusIcon->setPixmap(_greenLED);
@@ -988,14 +992,18 @@ HcrGuiMainWindow::_update() {
     // more than 5 satellites in the current solution.
     // Amber light if we have both INS and GPS
     // Red light otherwise
-    uint16_t mode = _ins1Status.currentMode();
-    if ((mode == 7 || mode == 8) && _ins1Status.nSats() > 5) {
-        light = _greenLED;
-    } else if (_ins1Status.insAvailable() &&
-               _ins1Status.gpsAvailable()) {
-        light = _amberLED;
+    if (! _ins1StatusThread.serverIsResponding()) {
+        light = _notRespondingLED;
     } else {
-        light = _redLED;
+        uint16_t mode = _ins1Status.currentMode();
+        if ((mode == 7 || mode == 8) && _ins1Status.nSats() > 5) {
+            light = _greenLED;
+        } else if (_ins1Status.insAvailable() &&
+                   _ins1Status.gpsAvailable()) {
+            light = _amberLED;
+        } else {
+            light = _redLED;
+        }
     }
     _ui.ins1StatusIcon->setPixmap(light);
 
@@ -1007,14 +1015,18 @@ HcrGuiMainWindow::_update() {
     // more than 5 satellites in the current solution.
     // Amber light if we have both INS and GPS
     // Red light otherwise
-    mode = _ins2Status.currentMode();
-    if ((mode == 7 || mode == 8) && _ins2Status.nSats() > 5) {
-        light = _greenLED;
-    } else if (_ins2Status.insAvailable() &&
-               _ins2Status.gpsAvailable()) {
-        light = _amberLED;
+    if (! _ins2StatusThread.serverIsResponding()) {
+        light = _notRespondingLED;
     } else {
-        light = _redLED;
+        uint16_t mode = _ins2Status.currentMode();
+        if ((mode == 7 || mode == 8) && _ins2Status.nSats() > 5) {
+            light = _greenLED;
+        } else if (_ins2Status.insAvailable() &&
+                   _ins2Status.gpsAvailable()) {
+            light = _amberLED;
+        } else {
+            light = _redLED;
+        }
     }
     _ui.ins2StatusIcon->setPixmap(light);
 
@@ -1022,8 +1034,9 @@ HcrGuiMainWindow::_update() {
     _ui.ins2StatusLabel->setEnabled(_mcStatus.insInUse == 2);
 
     // MotionControl status LED
-    if (! _mcStatusThread.serverIsResponding() ||
-            _motionControlDetails.errorDetected()) {
+    if (! _mcStatusThread.serverIsResponding()) {
+        _ui.mcStatusIcon->setPixmap(_notRespondingLED);
+    } else if (_motionControlDetails.errorDetected()) {
         _ui.mcStatusIcon->setPixmap(_redLED);
     } else if (_motionControlDetails.warningDetected()) {
         _ui.mcStatusIcon->setPixmap(_amberLED);
@@ -1078,7 +1091,7 @@ HcrGuiMainWindow::_update() {
     light = _greenLED;
     if (! _hcrdrxStatusThread.serverIsResponding()) {
         // Red light if hcrdrx is not responding
-        light = _redLED;
+        light = _notRespondingLED;
     } else if (! _drxStatus.motorZeroPositionSet()) {
         // Amber light if motor zero position has not been set
         light = _amberLED;
@@ -1087,7 +1100,9 @@ HcrGuiMainWindow::_update() {
     
     // HcrPmc730Daemon status LED
     light = _greenLED;
-    if (! _pmcStatusThread.serverIsResponding() || _pmc730Details.errState()) {
+    if (! _pmcStatusThread.serverIsResponding()) {
+        light = _notRespondingLED;
+    } else if (_pmc730Details.errState()) {
         light = _redLED;
     } else if (_pmc730Details.warnState()) {
         light = _amberLED;
@@ -1096,7 +1111,7 @@ HcrGuiMainWindow::_update() {
     
     // fireflyd status LED
     if (! _fireflydStatusThread.serverIsResponding()) {
-        light = _redLED;
+        light = _notRespondingLED;
     } else {
         // If we have a good status, use its overallStatus() value
         switch (_fireflydStatus.overallStatus()) {
@@ -1136,7 +1151,7 @@ HcrGuiMainWindow::_update() {
 
     // HcrExecutive status LED
     if (! _hcrExecutiveStatusThread.serverIsResponding()) {
-        light = _redLED;
+        light = _notRespondingLED;
     } else {
         // If normal transmit is allowed use green light, otherwise amber
         light = (_hcrExecutiveStatus.xmitAllowedStatus() == TransmitControl::XMIT_ALLOWED) ?
@@ -1146,7 +1161,7 @@ HcrGuiMainWindow::_update() {
 
     // DataMapper status LED and current write rate
     _ui.dmStatusIcon->setPixmap(_dataMapperStatusThread.serverIsResponding() ?
-            _greenLED : _redLED);
+            _greenLED : _notRespondingLED);
     _ui.dataRateIcon->setPixmap(_dmapWriteRate > 0 ? _greenLED : _amberLED);
     _ui.writeRateValue->setText(QString::number(_dmapWriteRate, 'f', 0));
 
