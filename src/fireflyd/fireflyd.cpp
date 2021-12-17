@@ -72,6 +72,8 @@ updateRegistration() {
 
 void
 logStatus() {
+    if (!Firefly) return;
+
     FireFlyStatus status = Firefly->getStatus();
     if (status.deviceResponding()) {
         ILOG << "PLL " << (status.pllLocked() ? "locked" : "NOT LOCKED") <<
@@ -125,9 +127,16 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Received 'getStatus' command";
-        // Get the latest status from shared memory, and convert it to
-        // an xmlrpc_c::value_struct dictionary.
-        *retvalP = Firefly->getStatus().toXmlRpcValue();
+        if (Firefly) {
+            // Get the latest status from shared memory, and convert it to
+            // an xmlrpc_c::value_struct dictionary.
+            *retvalP = Firefly->getStatus().toXmlRpcValue();
+        }
+        else {
+            // Return empty status
+            FireFlyStatus status;
+            *retvalP = status.toXmlRpcValue();
+        }
     }
 };
 
@@ -153,6 +162,7 @@ main(int argc, char *argv[]) {
                 "instance name for procmap connection")
         ("devName,d", po::value<std::string>(&devName)->default_value("/dev/ttyS2"),
                 "tty device name for FireFly-IIA connection")
+        ("doNothing", "respond to status requests but take no further action")
         ;
     bool argError = false;
     po::variables_map vm;
@@ -183,8 +193,10 @@ main(int argc, char *argv[]) {
 
     // Instantiate a FireFly communication thread, using the given serial port
     PMU_auto_register("instantiating FireFly");
-    Firefly = new FireFly(devName);
-    
+    if (!vm.count("doNothing")) {
+        Firefly = new FireFly(devName);
+    }
+
     // Initialize our RPC server
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);

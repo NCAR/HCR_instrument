@@ -75,6 +75,8 @@ float RotBeamAngleCorrection = 0.0;
 // positive.
 float TiltBeamAngleCorrection = 0.0;
 
+bool DoNothing = false;
+
 /////////////////////////////////////////////////////////////////////
 // Shutdown handler for for SIGINT and SIGTERM signals.
 void
@@ -113,7 +115,7 @@ public:
 
         // Home the drives and set the appropriate count values for
         // their home positions.
-        Control->homeDrive(rotDriveHomeCounts, tiltDriveHomeCounts);
+        if(Control) Control->homeDrive(rotDriveHomeCounts, tiltDriveHomeCounts);
 
         *retvalP = xmlrpc_c::value_int(0);
     }
@@ -135,7 +137,7 @@ public:
         double const angle(paramList.getDouble(0));
         paramList.verifyEnd(1);
 
-        Control->point(angle);
+        if(Control) Control->point(angle);
 
         *retvalP = xmlrpc_c::value_int(0);
     }
@@ -162,7 +164,7 @@ public:
         paramList.verifyEnd(4);
 
         try {
-            Control->scan(ccwLimit, cwLimit, scanRate, beamTilt);
+            if(Control) Control->scan(ccwLimit, cwLimit, scanRate, beamTilt);
             *retvalP = xmlrpc_c::value_int(0);
         } catch (const std::runtime_error & e) {
             ELOG << "XML-RPC 'scan' method failed: " << e.what();
@@ -186,10 +188,17 @@ public:
     {
         paramList.verifyEnd(0);
 
-        // Return current status of our MotionControl an xmlrpc_c::value which
-        // can be used to construct MotionControl::Status again on the other
-        // side.
-        *retvalP = Control->status().toXmlRpcValue();
+        if(Control) {
+            // Return current status of our MotionControl an xmlrpc_c::value which
+            // can be used to construct MotionControl::Status again on the other
+            // side.            
+            *retvalP = Control->status().toXmlRpcValue();
+        }
+        else {
+            // Return empty status
+            MotionControl::Status s;
+            *retvalP = s.toXmlRpcValue();
+        }
     }
 };
 
@@ -209,7 +218,7 @@ public:
         bool const enabled(paramList.getBoolean(0));
         paramList.verifyEnd(1);
 
-        Control->setCorrectionEnabled(enabled);
+        if(Control) Control->setCorrectionEnabled(enabled);
 
         *retvalP = xmlrpc_c::value_int(0);
     }
@@ -232,7 +241,7 @@ public:
         int const newInsInUse(paramList.getInt(0));
         paramList.verifyEnd(1);
 
-        Control->setInsInUse(newInsInUse);
+        if(Control) Control->setInsInUse(newInsInUse);
 
         *retvalP = xmlrpc_c::value_int(0);
     }
@@ -255,7 +264,12 @@ public:
 
         // Get current status of our MotionControl, pack it into an
         // xmlrpc_c::value_struct, and return the struct.
-        *retvalP = xmlrpc_c::value_boolean(Control->homingInProgress());
+        if(Control) {
+            *retvalP = xmlrpc_c::value_boolean(Control->homingInProgress());
+        }
+        else {
+            *retvalP = xmlrpc_c::value_boolean(false);
+        }
     }
 };
 
@@ -289,6 +303,8 @@ parseOptions(int & argc, char** argv)
             ("tiltBeamAngleCorrection",
                 po::value<float>(&TiltBeamAngleCorrection), 
                 "Tilt beam angle correction, degrees")
+            ("doNothing",
+                "respond to status requests but take no further action")                
             ;
 
     po::variables_map vm;
@@ -298,6 +314,7 @@ parseOptions(int & argc, char** argv)
         po::parsed_options parsedOpts = parser.run();
         po::store(parsedOpts, vm);
         po::notify(vm);
+        DoNothing = vm.count("doNothing");
     } catch (std::exception & ex) {
         usage(argv[0]);
         exit(1);
@@ -336,13 +353,16 @@ main(int argc, char** argv)
 
     // Create the Qt application and our drive connection
     App = new QCoreApplication(argc, argv);
-    Control = new MotionControl();
 
-    // Create a periodic timer to apply attitude corrections on a regular basis
-    QTimer correctionTimer;
-    correctionTimer.setInterval(50);    // 50 ms -> 20 Hz
-    QObject::connect(&correctionTimer, SIGNAL(timeout()), Control, SLOT(correctForAttitude()));
-    correctionTimer.start();
+    if (!DoNothing) {
+        Control = new MotionControl();
+
+        // Create a periodic timer to apply attitude corrections on a regular basis
+        QTimer correctionTimer;
+        correctionTimer.setInterval(50);    // 50 ms -> 20 Hz
+        QObject::connect(&correctionTimer, SIGNAL(timeout()), Control, SLOT(correctForAttitude()));
+        correctionTimer.start();
+    }
 
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("Home", new DriveHomeMethod);

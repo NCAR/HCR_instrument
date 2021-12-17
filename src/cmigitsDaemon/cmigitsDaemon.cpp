@@ -82,9 +82,16 @@ public:
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         DLOG << "Executing XML-RPC call to getStatus()";
-        // Get the latest status from the shared memory FMQ, and convert it to
-        // an xmlrpc_c::value_struct dictionary.
-        *retvalP = CmigitsStatus::StatusFromFmq(Cm->fmqUrl()).toXmlRpcValue();
+        if(Cm) {
+            // Get the latest status from the shared memory FMQ, and convert it to
+            // an xmlrpc_c::value_struct dictionary.
+            *retvalP = CmigitsStatus::StatusFromFmq(Cm->fmqUrl()).toXmlRpcValue();
+        }
+        else {
+            // Return empty status
+            CmigitsStatus c;
+            *retvalP = c.toXmlRpcValue();
+        }
     }
 };
 
@@ -144,7 +151,8 @@ main(int argc, char *argv[]) {
                               "the GPS antenna, in cm")
             ("1", "run as INS1")
             ("2", "run as INS2 (different XML-RPC port and FMQ URL)")
-            ("playback", "play back from listed file(s)");
+            ("playback", "play back from listed file(s)")
+            ("doNothing", "respond to status requests but take no further action");
 
     // All options includes the above, plus a "patharg" option which we
     // will hide when showing usage, but need for use as a marker for
@@ -193,6 +201,7 @@ main(int argc, char *argv[]) {
 
     // Are we running in playback mode?
     bool playback = vm.count("playback");
+    bool doNothing = vm.count("doNothing");
 
     // If not playback, we require --antennaOffset to provide antenna offset
     // in body coordinates from the INS to the GPS antenna, x,y,z in integer
@@ -200,7 +209,7 @@ main(int argc, char *argv[]) {
     int16_t antennaOffsetX = 0;
     int16_t antennaOffsetY = 0;
     int16_t antennaOffsetZ = 0;
-    if (! playback) {
+    if (!playback && !doNothing) {
         // Verify we got exactly one --antennaOffset argument
         if (vm.count("antennaOffset") != 1) {
             std::cerr << "If not playback, one '--antennaOffset <x,y,z>' is required!" << std::endl;
@@ -232,29 +241,29 @@ main(int argc, char *argv[]) {
         // Get paths from the command line as a vector of strings
         pathArgs = vm["patharg"].as<std::vector<std::string> >();
     }
-    if (! playback) {
-        if (pathArgs.size() != 1) {
-            std::cerr << "Exactly one TTY device file is required on the " <<
-                         "command line!" << std::endl;
-            std::cerr << std::endl;
-            usage(visible_opts);
-            exit(1);
-        }
-    } else {
-        if (pathArgs.size() == 0) {
-            std::cerr << "No files for playback were given on the " <<
-                         "command line!" << std::endl;
-            std::cerr << std::endl;
-            usage(visible_opts);
-            exit(1);
+
+    if (! doNothing) {
+        if (! playback) {
+            if (pathArgs.size() != 1) {
+                std::cerr << "Exactly one TTY device file is required on the " <<
+                             "command line!" << std::endl;
+                std::cerr << std::endl;
+                usage(visible_opts);
+                exit(1);
+            }
+        } else {
+            if (pathArgs.size() == 0) {
+                std::cerr << "No files for playback were given on the " <<
+                             "command line!" << std::endl;
+                std::cerr << std::endl;
+                usage(visible_opts);
+                exit(1);
+            }
         }
     }
 
     ILOG << "Started " << ((insNum == 1) ? "INS1" : "INS2") <<
             " cmigitsDaemon (" << getpid() << ")";
-    if (playback) {
-    } else {
-    }
 
     // set up registration with procmap if instance is specified
     PMU_auto_init("cmigitsDaemon", pmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
@@ -271,7 +280,7 @@ main(int argc, char *argv[]) {
 
         // Stop the application when the reader thread is done
         QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
-    } else {
+    } else if (! doNothing) {
         PMU_auto_register("creating Cmigits instance");
         std::string devName = pathArgs[0];
         ILOG << "Communicating on device " << devName;
