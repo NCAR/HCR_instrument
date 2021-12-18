@@ -314,6 +314,9 @@ HcrPmc730::SetOperationMode(OperationMode& mode) {
 
     // ship out the new state
     TheHcrPmc730().setDio8_15(new8_15);
+
+    // store the mode in the singleton
+    TheHcrPmc730()._theMode = mode;
 }
 
 bool

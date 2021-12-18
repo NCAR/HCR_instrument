@@ -178,8 +178,9 @@ public:
         // mode.
         ILOG << "Received XML-RPC call to setHmcMode()...";
 
-        // Cast the int into HcrPmc730::HmcOperationMode
-        HcrPmc730::OperationMode hmcMode(paramList);
+        XmlrpcSerializable<HcrPmc730::OperationMode> hmcMode(paramList[0]);
+        paramList.verifyEnd(1);
+
         ILOG << "...with requested HMC mode " << 
                 "'" << hmcMode.name() << "'";
         *retvalP = xmlrpc_c::value_nil();
@@ -331,6 +332,9 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
     HcrPmc730::OperationMode mode;
+    mode.hmcMode = HcrPmc730::HMC_MODE_RESET;
+    HcrPmc730::SetOperationMode(mode);
+    mode.hmcMode = HcrPmc730::HMC_MODE_BENCH_TEST;
     HcrPmc730::SetOperationMode(mode);
 
     // Create our XML-RPC method registry and server instance

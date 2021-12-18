@@ -84,14 +84,7 @@ public:
         uint scheduleStartIndex;
         uint scheduleStopIndex;
 
-        OperationMode() : hmcMode(HMC_MODE_INVALID), scheduleStartIndex(0), scheduleStopIndex() { };
-
-        OperationMode(const xmlrpc_c::paramList & paramList) {
-            paramList.verifyEnd(3);
-            hmcMode = static_cast<HmcModes>(paramList.getInt(0));
-            scheduleStartIndex = paramList.getInt(1);
-            scheduleStopIndex = paramList.getInt(2);
-        }
+        OperationMode() : hmcMode(HMC_MODE_INVALID), scheduleStartIndex(0), scheduleStopIndex(0) { };
 
         const std::string name() const;
 
@@ -102,13 +95,13 @@ public:
 
         bool operator!=(const OperationMode& rhs) {return ! (*this == rhs); };
 
-        void write(xmlrpc_c::paramList& p) {
-            p.add(xmlrpc_c::value_int(hmcMode));
-            p.add(xmlrpc_c::value_int(scheduleStartIndex));
-            p.add(xmlrpc_c::value_int(scheduleStopIndex));
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int version) {
+            using boost::serialization::make_nvp;
+            ar & BOOST_SERIALIZATION_NVP(hmcMode);
+            ar & BOOST_SERIALIZATION_NVP(scheduleStartIndex);
+            ar & BOOST_SERIALIZATION_NVP(scheduleStopIndex);
         }
-
-        template<typename T> void serialize(T& ar, unsigned int v) { };
 
         bool isAttenuated() {
             return hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
@@ -464,10 +457,11 @@ public:
         int iMode = TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT2) << 2 |
                 TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1 |
                 TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
-        OperationMode mode;
+
+        // Retrieve the schedule from _theMode and combine with the DIO
+        OperationMode mode = TheHcrPmc730()._theMode;
         mode.hmcMode = static_cast<HmcModes>(iMode);
-        mode.scheduleStartIndex = 44;
-        mode.scheduleStopIndex = 44;
+
         return mode;
     }
 
@@ -743,9 +737,14 @@ private:
     ///
     /// We need this because for unknown reasons, the pressure transducers
     /// appear to be damaged and consistently read lower than actual pressure.
-    /// @brief The singleton instance of HcrPmc730.
     double _pvPresCorrection;
 
+    /// @brief We can get the opsmode bits from the 730 itself,
+    /// but we need to store the scheduler data to have a complete Mode.
+    /// We will store it here in the singleton.
+    OperationMode _theMode;
+
+    /// @brief The singleton instance of HcrPmc730.
     static HcrPmc730 * _TheHcrPmc730;
 };
 

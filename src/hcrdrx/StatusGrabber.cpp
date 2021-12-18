@@ -150,7 +150,17 @@ StatusGrabber::_getPmc730Status() {
     }
 
     QMutexLocker locker(&_mutex);
-    _pmc730Status = status;
+
+    // If the 730 is reporting a new mode, then we have to set ourselves up to match it.
+    if (_pmc730Status.hmcMode() != status.hmcMode()) {
+        uint32_t scheduleStartIndex = status.hmcMode().scheduleStartIndex;
+        uint32_t scheduleStopIndex = status.hmcMode().scheduleStopIndex;
+
+        ILOG << "Changing controller schedule to " << scheduleStartIndex << ":" << scheduleStopIndex;
+        _pentek.changeControllerSchedule(scheduleStartIndex, scheduleStopIndex);
+
+        _pmc730Status = status;
+    }
 }
 
 void

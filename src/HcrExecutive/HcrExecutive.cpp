@@ -173,7 +173,9 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        HcrPmc730::OperationMode mode(paramList);
+        XmlrpcSerializable<HcrPmc730::OperationMode> mode(paramList[0]);
+        paramList.verifyEnd(1);
+
         ILOG << "Received 'setRequestedHmcMode(" << mode.name() << ")' command";
         TheTransmitControl->setRequestedHmcMode(mode);
         *retvalP = xmlrpc_c::value_nil();

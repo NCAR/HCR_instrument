@@ -83,7 +83,7 @@ HcrExecutiveRpcClient::setRequestedHmcMode(HcrPmc730::OperationMode& mode) {
     ILOG << "Setting requested HMC mode to " << mode.name();
 
     xmlrpc_c::paramList params;
-    mode.write(params);
+    params.add(XmlrpcSerializable<HcrPmc730::OperationMode>(mode));
     _execXmlRpcCall("setRequestedHmcMode", params);
 }
 
