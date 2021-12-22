@@ -1109,31 +1109,30 @@ HCR_Pentek::_dmaTimeoutHandler(int32_t chan) {
     }
 }
 
-void
-HCR_Pentek::_setupController()
+HCR_Pentek::Controller::PulseBlockDefinition
+HCR_Pentek::_definePulseBlock(
+        double  txPulseWidth,
+        uint    numRxGates,
+        uint    numPulses,
+        double  prt1,
+        double  prt2,
+        double  blockPostTime,
+        uint    filterSelect,
+        Controller::PolarizationModes polMode
+    )
 {
 
-    // The first three pulse blocks are defined by _config and define the basic transmit modes.
-    // Block zero is also used for the attenuated and calibration ops modes.
-    auto txPulseWidth   = _config.default_tx_pulse_width();
-    auto numRxGates     = _config.default_rx_gates();
-    auto numPulses      = _config.default_pulses();
-    auto prt1           = _config.default_prt1();
-    auto prt2           = _config.default_prt2();
-    auto blockPostTime  = _config.default_post_time();
-    auto filterSelect   = _config.default_filter();
-
-    // Define block(s) and add them to the pulse definitions
     Controller::PulseBlockDefinition block =
     {
-        .prt = {_counts(prt1), _counts(prt2)},
-        .numPulses = numPulses,
-        .blockPostTime = _counts(blockPostTime),
-        .controlFlags = 0x0,
-        .filterSelectCh0 = filterSelect,
-        .filterSelectCh1 = filterSelect,
-        .filterSelectCh2 = filterSelect,
-        .timers = {}
+        .prt              = {_counts(prt1), _counts(prt2)},
+        .numPulses        = numPulses,
+        .blockPostTime    = _counts(blockPostTime),
+        .controlFlags     = 0x0,
+        .polarizationMode = polMode,
+        .filterSelectCh0  = filterSelect,
+        .filterSelectCh1  = filterSelect,
+        .filterSelectCh2  = filterSelect,
+        .timers           = {}
     };
 
     // Master sync is 200 ns long so the PMC730 can't miss it
@@ -1157,17 +1156,12 @@ HCR_Pentek::_setupController()
     // Spare
     block.timers[Controller::Timers::TIMER_7] =     { 0, 0 };
 
-    // Write the three default transmit modes
-    block.polarizationMode = Controller::PolarizationModes::POL_MODE_H,
-    _pulseBlockDefinitions.push_back(block);
-    block.polarizationMode = Controller::PolarizationModes::POL_MODE_V,
-    _pulseBlockDefinitions.push_back(block);
-    block.polarizationMode = Controller::PolarizationModes::POL_MODE_HHVV,
-    _pulseBlockDefinitions.push_back(block);
+    return block;
+}
 
-    // Write the pulse definitions
-    _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
-
+void
+HCR_Pentek::_setupController()
+{
     // Write the coefficients that the controller will use to populate the pulse filters
     for(int chan=0; chan<_adcCount; chan++)
     {
@@ -1177,6 +1171,52 @@ HCR_Pentek::_setupController()
         ReadFilterCoefsFromFile(_config.pulse_filter_file(chan), coefs);
         _controller.writeFilterCoefs(coefs, chan);
     }
+
+    // The first three pulse blocks are defined by _config and define the basic transmit modes.
+    // Block zero is also used for the calibration ops modes.
+    auto txPulseWidth   = _config.default_tx_pulse_width();
+    auto numRxGates     = _config.default_rx_gates();
+    auto numPulses      = _config.default_pulses();
+    auto prt1           = _config.default_prt1();
+    auto prt2           = _config.default_prt2();
+    auto blockPostTime  = _config.default_post_time();
+    auto filterSelect   = _config.default_filter();
+
+    // Define the 'legacy mode' blocks and add them to the pulse definitions
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
+            Controller::PolarizationModes::POL_MODE_H
+        ));
+
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
+            Controller::PolarizationModes::POL_MODE_V
+        ));
+
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
+            Controller::PolarizationModes::POL_MODE_HHVV
+        ));
+
+    // Define additional blocks for demonstration purposes
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, 0,
+            Controller::PolarizationModes::POL_MODE_H
+        ));
+
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            txPulseWidth*2, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
+            Controller::PolarizationModes::POL_MODE_HHVV
+        ));
+
+    // Write the pulse definitions
+    _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
+
 }
 
 void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t scheduleStopIndex)

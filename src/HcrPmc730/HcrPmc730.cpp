@@ -44,7 +44,7 @@ extern "C" {
 
 LOGGING("HcrPmc730");
 
-// HMC mode names (mapped to the OperationMode enum)
+// Operation mode names (mapped to the OperationMode enum)
 std::string
 HcrPmc730::HmcModeNames[] = {
         "Reset HMC",
@@ -56,146 +56,87 @@ HcrPmc730::HmcModeNames[] = {
         "Bench Test",
         "TX V with noise source",
         "Invalid (8)",
-        "schedule 0 (tx H), rx HV",
-        "schedule 1 (tx V), rx HV",
-        "schedule 2 (tx HHVV), rx HV",
-        "schedule 3",
-        "schedule 4",
-        "schedule 5",
-        "schedule 6",
-        "schedule 7",
-        "schedule 8",
-        "schedule 9",
-        "schedule 10",
-        "schedule 11",
-        "schedule 12",
-        "schedule 13",
-        "schedule 14",
-        "schedule 15",
-        "schedule 16",
-        "schedule 17",
-        "schedule 18",
-        "schedule 19",
-        "schedule 20",
-        "schedule 21",
-        "schedule 22",
-        "schedule 23",
-        "schedule 24",
-        "schedule 25",
-        "schedule 26",
-        "schedule 27",
-        "schedule 28",
-        "schedule 29",
-        "schedule 30",
-        "schedule 31",
-        "schedule 32",
-        "schedule 33",
-        "schedule 34",
-        "schedule 35",
-        "schedule 36",
-        "schedule 37",
-        "schedule 38",
-        "schedule 39",
-        "schedule 40",
-        "schedule 41",
-        "schedule 42",
-        "schedule 43",
-        "schedule 44",
-        "schedule 45",
-        "schedule 46",
-        "schedule 47",
-        "schedule 48",
-        "schedule 49",
-        "schedule 50",
-        "schedule 51",
-        "schedule 52",
-        "schedule 53",
-        "schedule 54",
-        "schedule 55",
-        "schedule 56",
-        "schedule 57",
-        "schedule 58",
-        "schedule 59",
-        "schedule 60",
-        "schedule 61",
-        "schedule 62",
-        "schedule 63",
-        "attenuated 0 (tx H), rx HV",
-        "attenuated 1 (tx V), rx HV",
-        "attenuated 2 (tx HHVV), rx HV",
-        "attenuated 3",
-        "attenuated 4",
-        "attenuated 5",
-        "attenuated 6",
-        "attenuated 7",
-        "attenuated 8",
-        "attenuated 9",
-        "attenuated 10",
-        "attenuated 11",
-        "attenuated 12",
-        "attenuated 13",
-        "attenuated 14",
-        "attenuated 15",
-        "attenuated 16",
-        "attenuated 17",
-        "attenuated 18",
-        "attenuated 19",
-        "attenuated 20",
-        "attenuated 21",
-        "attenuated 22",
-        "attenuated 23",
-        "attenuated 24",
-        "attenuated 25",
-        "attenuated 26",
-        "attenuated 27",
-        "attenuated 28",
-        "attenuated 29",
-        "attenuated 30",
-        "attenuated 31",
-        "attenuated 32",
-        "attenuated 33",
-        "attenuated 34",
-        "attenuated 35",
-        "attenuated 36",
-        "attenuated 37",
-        "attenuated 38",
-        "attenuated 39",
-        "attenuated 40",
-        "attenuated 41",
-        "attenuated 42",
-        "attenuated 43",
-        "attenuated 44",
-        "attenuated 45",
-        "attenuated 46",
-        "attenuated 47",
-        "attenuated 48",
-        "attenuated 49",
-        "attenuated 50",
-        "attenuated 51",
-        "attenuated 52",
-        "attenuated 53",
-        "attenuated 54",
-        "attenuated 55",
-        "attenuated 56",
-        "attenuated 57",
-        "attenuated 58",
-        "attenuated 59",
-        "attenuated 60",
-        "attenuated 61",
-        "attenuated 62",
-        "attenuated 63"
+        "block 0 (tx H), rx HV",
+        "block 1 (tx V), rx HV",
+        "block 2 (tx HHVV), rx HV",
+        "block 3",
+        "block 4",
+        "block 5",
+        "block 6",
+        "block 7",
+        "block 8",
+        "block 9",
+        "block 10",
+        "block 11",
+        "block 12",
+        "block 13",
+        "block 14",
+        "block 15",
+        "block 16",
+        "block 17",
+        "block 18",
+        "block 19",
+        "block 20",
+        "block 21",
+        "block 22",
+        "block 23",
+        "block 24",
+        "block 25",
+        "block 26",
+        "block 27",
+        "block 28",
+        "block 29",
+        "block 30",
+        "block 31",
+        "block 32",
+        "block 33",
+        "block 34",
+        "block 35",
+        "block 36",
+        "block 37",
+        "block 38",
+        "block 39",
+        "block 40",
+        "block 41",
+        "block 42",
+        "block 43",
+        "block 44",
+        "block 45",
+        "block 46",
+        "block 47",
+        "block 48",
+        "block 49",
+        "block 50",
+        "block 51",
+        "block 52",
+        "block 53",
+        "block 54",
+        "block 55",
+        "block 56",
+        "block 57",
+        "block 58",
+        "block 59",
+        "block 60",
+        "block 61",
+        "block 62",
+        "block 63"
 };
 
 const std::string HcrPmc730::OperationMode::name() const
 {
     std::string s;
-    if (hmcMode != HMC_MODE_TRANSMIT && hmcMode != HMC_MODE_TRANSMIT_ATTENUATED) {
-        s = HcrPmc730::HmcModeNames[hmcMode];
+    if (_hmcMode == HMC_MODE_TRANSMIT || _hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {
+        s = HcrPmc730::HmcModeNames[_scheduleStartIndex+9];
+        if(_scheduleStartIndex != _scheduleStopIndex) {
+            s += " : ";
+            s += HcrPmc730::HmcModeNames[_scheduleStopIndex+9];
+        }
+        if (_hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {
+            s += " attenuated";
+        }
     }
     else {
-        s = HcrPmc730::HmcModeNames[scheduleStartIndex+9];
-        s += ":";
-        s = HcrPmc730::HmcModeNames[scheduleStopIndex+9];
+        s = HcrPmc730::HmcModeNames[_hmcMode];
     }
     return s;
 }
@@ -282,7 +223,7 @@ HcrPmc730::TheHcrPmc730() {
 
 // static
 void
-HcrPmc730::SetOperationMode(OperationMode& mode) {
+HcrPmc730::SetOperationMode(const OperationMode& mode) {
     // Set the HMC mode bits on our digital out lines. This method works
     // atomically, setting all three bits at once rather than changing one 
     // at a time.
@@ -297,17 +238,17 @@ HcrPmc730::SetOperationMode(OperationMode& mode) {
     uint8_t new8_15 = TheHcrPmc730().getDio8_15();
 
     // set the bits for the three lines which set the mode
-    uint8_t modeBit0 = (mode.hmcMode >> 0) & 0x01;
+    uint8_t modeBit0 = (mode._hmcMode >> 0) & 0x01;
     new8_15 = modeBit0 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
 
-    uint8_t modeBit1 = (mode.hmcMode >> 1) & 0x01;
+    uint8_t modeBit1 = (mode._hmcMode >> 1) & 0x01;
     new8_15 = modeBit1 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
 
-    uint8_t modeBit2 = (mode.hmcMode >> 2) & 0x01;
+    uint8_t modeBit2 = (mode._hmcMode >> 2) & 0x01;
     new8_15 = modeBit2 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);

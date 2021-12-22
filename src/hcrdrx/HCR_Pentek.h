@@ -203,6 +203,18 @@ private:
     /// This method is only called from the constructor.
     void _setupTx();
 
+    /// @brief Helper function to define a pulse block from radar parameters
+    Controller::PulseBlockDefinition _definePulseBlock(
+        double  txPulseWidth,
+        uint    numRxGates,
+        uint    numPulses,
+        double  prt1,
+        double  prt2,
+        double  blockPostTime,
+        uint    filterSelect,
+        Controller::PolarizationModes polMode
+    );
+        
     /// @brief Set up the radar controller
     ///
     /// This method is only called from the constructor.

@@ -108,13 +108,13 @@ HcrExecutiveDetails::updateStatus(bool daemonResponding,
     bool hvOn = hcrPmc730Status.rdsXmitterHvOn();
     _ui.hvOnIcon->setPixmap(hvOn ? _greenLED : _greenLED_off);
     
-    // Requested and current HMC modes. Note that current HMC mode comes from
+    // Requested and current Operation modes. Note that current Operation mode comes from
     // HcrPmc730Status and not from HcrExecutiveStatus. Use emphasis background 
     // color if current mode differs from requested mode.
-    auto requestedMode = hcrExecutiveStatus.requestedHmcMode();
+    auto requestedMode = hcrExecutiveStatus.requestedOperationMode();
     _ui.requestedModeValue->setText(QString::fromStdString(requestedMode.name()));
     
-    auto currentMode = hcrPmc730Status.hmcMode();
+    auto currentMode = hcrPmc730Status.operationMode();
     _ui.currentModeValue->setText(currentMode.name().c_str());
 
     std::string styleSheet = (currentMode == requestedMode) ? 

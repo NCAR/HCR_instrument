@@ -1164,7 +1164,7 @@ EMS Errors</string>
             </sizepolicy>
            </property>
            <property name="text">
-            <string>&lt;b&gt;HMC Mode:&lt;/b&gt;</string>
+            <string>&lt;b&gt;Ops Mode:&lt;/b&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

@@ -49,7 +49,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _fmqAccessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
-        _hmcMode(),
+        _operationMode(),
         _antennaMode(MotionControl::MODE_UNDEFINED),
         _ins1WatchThread(*this, 1),
         _ins2WatchThread(*this, 2),
@@ -278,9 +278,9 @@ void IwrfExport::run()
       sendMeta = true;
       _nGates = nGates;
     }
-    if (_monitor.pmc730Status().hmcMode() != _hmcMode) {
+    if (_monitor.pmc730Status().operationMode() != _operationMode) {
       sendMeta = true;
-      _hmcMode = _monitor.pmc730Status().hmcMode();
+      _operationMode = _monitor.pmc730Status().operationMode();
     }
     if (_monitor.motionControlStatus().antennaMode != _antennaMode) {
       sendMeta = true;
@@ -475,7 +475,7 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.time_nano_secs = _nanoSecs;
 
   // set our polarization and calibration modes for processing
-  switch (_hmcMode.hmcMode) {
+  switch (_operationMode.hmcMode()) {
     case HcrPmc730::HMC_MODE_TRANSMIT:
     case HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED:
         _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
@@ -499,7 +499,7 @@ int IwrfExport::_sendIwrfMetaData()
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
         break;
     default:
-        WLOG << "Unhandled/unknown _hmcMode: " << _hmcMode.name();
+        WLOG << "Unhandled/unknown _operationMode: " << _operationMode.name();
         _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
         _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
@@ -744,7 +744,7 @@ string IwrfExport::_assembleStatusXml()
 
   // ints
   xml += TaXml::writeInt
-    ("HmcMode", 2, pmc730Status.hmcMode().hmcMode);
+    ("HmcMode", 2, pmc730Status.operationMode().hmcMode());
 
   xml += TaXml::writeInt
     ("EmsErrorCount", 2, pmc730Status.emsErrorCount());

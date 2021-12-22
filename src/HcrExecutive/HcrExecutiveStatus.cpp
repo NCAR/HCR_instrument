@@ -52,7 +52,7 @@ HcrExecutiveStatus::HcrExecutiveStatus() :
         _aglAltitude(NAN),
         _overWater(false),
         _meanMaxPower(-999.9),
-        _requestedHmcMode(),
+        _requestedOperationMode(),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _transmitAllowed(false),
@@ -76,7 +76,7 @@ HcrExecutiveStatus::HcrExecutiveStatus(const ApsControl & apsControl,
         _aglAltitude(0.0),
         _overWater(false),
         _meanMaxPower(-999.9),
-        _requestedHmcMode(),
+        _requestedOperationMode(),
         _hvRequested(false),
         _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
         _transmitAllowed(false),
@@ -97,7 +97,7 @@ HcrExecutiveStatus::HcrExecutiveStatus(const ApsControl & apsControl,
     _aglAltitude = transmitControl._aglAltitude;
     _overWater = transmitControl._overWater;
     _meanMaxPower = transmitControl._maxPowerReport.meanMaxPower;
-    _requestedHmcMode = transmitControl._requestedHmcMode;
+    _requestedOperationMode = transmitControl._requestedOperationMode;
     _hvRequested = transmitControl._hvRequested;
     _xmitTestStatus = transmitControl._xmitTestStatus;
     _xmitTestStatusText = transmitControl._xmitTestStatusText();
@@ -119,7 +119,7 @@ HcrExecutiveStatus::HcrExecutiveStatus(xmlrpc_c::value_struct & statusDict) :
     _aglAltitude(0.0),
     _overWater(false),
     _meanMaxPower(-999.9),
-    _requestedHmcMode(),
+    _requestedOperationMode(),
     _hvRequested(false),
     _xmitTestStatus(TransmitControl::NOXMIT_UNSPECIFIED),
     _transmitAllowed(false),

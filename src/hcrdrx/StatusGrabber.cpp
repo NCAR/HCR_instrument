@@ -105,7 +105,7 @@ StatusGrabber::run() {
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(_getStatus()));
     updateTimer.start();
     
-    // Open the UDP socket to receive HMC mode change broadcasts, which we
+    // Open the UDP socket to receive Operation mode change broadcasts, which we
     // use to force an update of _pmc730Status separate from the 1 Hz timer
     // above.
     _hmcModeChangeSocket = new QUdpSocket();
@@ -152,9 +152,9 @@ StatusGrabber::_getPmc730Status() {
     QMutexLocker locker(&_mutex);
 
     // If the 730 is reporting a new mode, then we have to set ourselves up to match it.
-    if (_pmc730Status.hmcMode() != status.hmcMode()) {
-        uint32_t scheduleStartIndex = status.hmcMode().scheduleStartIndex;
-        uint32_t scheduleStopIndex = status.hmcMode().scheduleStopIndex;
+    if (_pmc730Status.operationMode() != status.operationMode()) {
+        uint32_t scheduleStartIndex = status.operationMode().scheduleStartIndex();
+        uint32_t scheduleStopIndex = status.operationMode().scheduleStopIndex();
 
         ILOG << "Changing controller schedule to " << scheduleStartIndex << ":" << scheduleStopIndex;
         _pentek.changeControllerSchedule(scheduleStartIndex, scheduleStopIndex);
@@ -195,7 +195,7 @@ StatusGrabber::_readHmcModeChangeSocket() {
         // If incoming datagram is not the expected size, just read it and 
         // discard it.
         if (datagramSize != sizeof(HmcModeChangeStruct)) {
-            ELOG << "HMC mode change datagram is " << datagramSize << 
+            ELOG << "Operation mode change datagram is " << datagramSize << 
                     " bytes when expecting " << sizeof(HmcModeChangeStruct) <<
                     ", discarding it";
             char trash[datagramSize];
@@ -218,14 +218,14 @@ StatusGrabber::_readHmcModeChangeSocket() {
     }
     // OK, now just get full current status from HcrPmc730 via XML-RPC. This
     // may cost us a handful of milliseconds, but gets complete and self-
-    // consistent HcrPmc730Status with the new HMC mode.
+    // consistent HcrPmc730Status with the new Operation mode.
     _getPmc730Status();
     
     
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
-    ILOG << "New HMC mode '" << 
-            _pmc730Status.hmcMode().name() << "' " <<
+    ILOG << "New ops mode '" << 
+            _pmc730Status.operationMode().name() << "' " <<
             "with start time " << QDateTime::fromTime_t(time_t(modeChangeTime))
                 .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
                 .toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<

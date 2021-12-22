@@ -78,51 +78,74 @@ public:
 
 
     class OperationMode {
+    private:
+
+        HmcModes _hmcMode;
+        uint _scheduleStartIndex;
+        uint _scheduleStopIndex;
+
     public:
+        OperationMode() : _hmcMode(HMC_MODE_INVALID), _scheduleStartIndex(0), _scheduleStopIndex(0) { };
 
-        HmcModes hmcMode;
-        uint scheduleStartIndex;
-        uint scheduleStopIndex;
+        OperationMode(const HmcModes &mode,
+            uint startIndex,
+            uint stopIndex)
+            : _hmcMode(mode), _scheduleStartIndex(startIndex), _scheduleStopIndex(stopIndex) { };
 
-        OperationMode() : hmcMode(HMC_MODE_INVALID), scheduleStartIndex(0), scheduleStopIndex(0) { };
+        OperationMode(const HmcModes &mode)
+            : _hmcMode(mode), _scheduleStartIndex(0), _scheduleStopIndex(0) { };                 
 
         const std::string name() const;
 
         bool operator==(const OperationMode& rhs){
-            return hmcMode == rhs.hmcMode
-            && scheduleStartIndex == rhs.scheduleStartIndex
-            && scheduleStopIndex == rhs.scheduleStopIndex; }
+            return _hmcMode == rhs._hmcMode
+            && _scheduleStartIndex == rhs._scheduleStartIndex
+            && _scheduleStopIndex == rhs._scheduleStopIndex; }
 
         bool operator!=(const OperationMode& rhs) {return ! (*this == rhs); };
 
         template<class Archive>
         void serialize(Archive & ar, const unsigned int version) {
             using boost::serialization::make_nvp;
-            ar & BOOST_SERIALIZATION_NVP(hmcMode);
-            ar & BOOST_SERIALIZATION_NVP(scheduleStartIndex);
-            ar & BOOST_SERIALIZATION_NVP(scheduleStopIndex);
+            ar & BOOST_SERIALIZATION_NVP(_hmcMode);
+            ar & BOOST_SERIALIZATION_NVP(_scheduleStartIndex);
+            ar & BOOST_SERIALIZATION_NVP(_scheduleStopIndex);
         }
 
         bool isAttenuated() {
-            return hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+            return _hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+        };
+
+        bool isValid() {
+            return _hmcMode != HmcModes::HMC_MODE_INVALID;
         };
 
         OperationMode equivalentAttenuatedMode() {
             HcrPmc730::OperationMode m = *this;
-            switch (hmcMode) {
+            switch (_hmcMode) {
                 case HmcModes::HMC_MODE_TRANSMIT:
-                    m.hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+                    m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+                    break;
                 case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
-                    m.hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+                    m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+                    break;
                 case HmcModes::HMC_MODE_BENCH_TEST:
-                    m.hmcMode = HmcModes::HMC_MODE_BENCH_TEST;
+                    m._hmcMode = HmcModes::HMC_MODE_BENCH_TEST;
+                    break;
                 case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:
-                    m.hmcMode = HmcModes::HMC_MODE_NOISE_SOURCE_CAL;
+                    m._hmcMode = HmcModes::HMC_MODE_NOISE_SOURCE_CAL;
+                    break;
                 default:
-                    m.hmcMode = HmcModes::HMC_MODE_INVALID;
+                    m._hmcMode = HmcModes::HMC_MODE_INVALID;
             }
             return m;
         };
+
+        HmcModes hmcMode() { return _hmcMode; };
+        uint scheduleStartIndex() { return _scheduleStartIndex; };
+        uint scheduleStopIndex() { return _scheduleStopIndex; };
+
+        friend class HcrPmc730;
     };
 
     /// Mode name strings mapped to the OperationMode enum
@@ -460,7 +483,7 @@ public:
 
         // Retrieve the schedule from _theMode and combine with the DIO
         OperationMode mode = TheHcrPmc730()._theMode;
-        mode.hmcMode = static_cast<HmcModes>(iMode);
+        mode._hmcMode = static_cast<HmcModes>(iMode);
 
         return mode;
     }
@@ -494,7 +517,7 @@ public:
     }
 
     /// @brief Set the HMC operation mode
-    static void SetOperationMode(OperationMode& mode);
+    static void SetOperationMode(const OperationMode& mode);
 
     /// @brief Update and return the current count of EMS errors.
     static uint32_t EmsErrorCount() {
