@@ -106,9 +106,9 @@ public:
                 _xmitTestStatus < BEGIN_NOXMIT_MODES);
     }
 
-    /// @brief Set the requested HMC mode
-    /// @param mode the requested HMC mode
-    void setRequestedHmcMode(HcrPmc730::OperationMode& mode);
+    /// @brief Set the requested Operation mode
+    /// @param mode the requested Operation mode
+    void setRequestedOperationMode(HcrPmc730::OperationMode& mode);
 
     /// @brief Set the requested high voltage on state
     /// @param hvRequested true if HV on is desired, false if HV off is desired
@@ -137,7 +137,7 @@ private slots:
     /// @param mode the new HMC operation mode
     /// @param modeChangeTime the time at which the mode was changed, double
     /// precision seconds since 1970-01-01 00:00:00 UTC
-    void _recordHmcModeChange(const HcrPmc730::OperationMode& mode,
+    void _recordOperationModeChange(const HcrPmc730::OperationMode& mode,
                                double modeChangeTime);
 
     /// @brief Accept a new status from MotionControlDaemon and react if necessary
@@ -281,9 +281,9 @@ private:
     /// near-nadir angles.
     bool _anyNearNadirPointing();
 
-    /// @brief Return true iff the requested HMC mode is attenuated or has a
+    /// @brief Return true iff the requested Operation mode is attenuated or has a
     /// matching attenuated mode.
-    /// @return true iff the requested HMC mode is attenuated or has a
+    /// @return true iff the requested Operation mode is attenuated or has a
     /// matching attenuated mode.
     bool _attenuatedModeAvailable();
 
@@ -301,21 +301,21 @@ private:
     /// @brief Tell HcrPmc730Daemon to turn off transmitter HV
     void _xmitHvOff();
 
-    /// @brief Set the HMC mode on HcrPmc730Daemon
-    /// @param mode the HMC mode to use
-    void _setHmcMode(HcrPmc730::OperationMode& mode);
+    /// @brief Set the Operation mode on HcrPmc730Daemon
+    /// @param mode the Operation mode to use
+    void _setOperationMode(const HcrPmc730::OperationMode& mode);
 
-    /// @brief Return the current HMC mode. We return our local value for
-    /// current mode rather than _hcrPmc730Status.hmcMode() because we may
+    /// @brief Return the current Operation mode. We return our local value for
+    /// current mode rather than _hcrPmc730Status.operationMode() because we may
     /// have changed the mode but not yet gotten a new status from
     /// HcrPmc730Daemon.
-    HcrPmc730::OperationMode _currentHmcMode() const {
-        // Current mode is the last entry in our HMC mode map
-        return(_hmcModeMap.rbegin()->second);
+    HcrPmc730::OperationMode _currentOperationMode() const {
+        // Current mode is the last entry in our Operation mode map
+        return(_operationModeMap.rbegin()->second);
     }
 
-    /// @brief Clear the map of times to HMC modes
-    void _clearHmcModeMap();
+    /// @brief Clear the map of times to Operation modes
+    void _clearOperationModeMap();
 
     /// @brief Append a mode to our mode map, starting at the current time
     void _appendToModeMap(HcrPmc730::OperationMode& mode);
@@ -413,16 +413,16 @@ private:
     /// @brief User's intended state for transmitter high voltage
     bool _hvRequested;
 
-    /// @brief User's intended HMC mode
-    HcrPmc730::OperationMode _requestedHmcMode;
+    /// @brief User's intended Operation mode
+    HcrPmc730::OperationMode _requestedOperationMode;
 
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
     XmitTestStatus _xmitTestStatus;
 
-    /// @brief map of HMC mode change times (seconds since 1970-01-01 00:00:00
+    /// @brief map of Operation mode change times (seconds since 1970-01-01 00:00:00
     /// UTC) to mode
-    std::map<double, HcrPmc730::OperationMode> _hmcModeMap;
+    std::map<double, HcrPmc730::OperationMode> _operationModeMap;
 
     /// @brief Time high voltage was last forced off because of high max power,
     /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been forced off.

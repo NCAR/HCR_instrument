@@ -58,7 +58,7 @@ namespace po = boost::program_options;
 QCoreApplication *App = 0;
 
 /// UDP socket on which we broadcast HMC operation mode changes.
-QUdpSocket HmcModeBroadcastSocket;
+QUdpSocket OperationModeBroadcastSocket;
 
 /// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
 /// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds. 
@@ -164,35 +164,35 @@ public:
     }
 };
 
-// XML-RPC method to set HMC mode
-class SetHmcModeMethod : public xmlrpc_c::method {
+// XML-RPC method to set Operation mode
+class SetOperationModeMethod : public xmlrpc_c::method {
 public:
-    SetHmcModeMethod() {
+    SetOperationModeMethod() {
         // Method take an integer argument (the mode), and returns nil
         this->_signature = "n:i";
-        this->_help = "This method sets HMC mode.";
+        this->_help = "This method sets Operation mode.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         // We get a single parameter: the integer form of the desired HMC
         // mode.
-        ILOG << "Received XML-RPC call to setHmcMode()...";
+        ILOG << "Received XML-RPC call to setOperationMode()...";
 
-        XmlrpcSerializable<HcrPmc730::OperationMode> hmcMode(paramList[0]);
+        XmlrpcSerializable<HcrPmc730::OperationMode> OperationMode(paramList[0]);
         paramList.verifyEnd(1);
 
-        ILOG << "...with requested HMC mode " << 
-                "'" << hmcMode.name() << "'";
+        ILOG << "...with requested Operation mode " << 
+                "'" << OperationMode.name() << "'";
         *retvalP = xmlrpc_c::value_nil();
         
         // If requested mode is the current mode, just return now
-        if (hmcMode == HcrPmc730::HmcMode()) {
-            DLOG << "Requested HMC mode is same as current mode; returning now.";
+        if (OperationMode == HcrPmc730::OperationMode()) {
+            DLOG << "Requested Operation mode is same as current mode; returning now.";
             return;
         }
         
         // Change to the requested mode
-        HcrPmc730::SetOperationMode(hmcMode);
+        HcrPmc730::SetOperationMode(OperationMode);
         
         // Broadcast a datagram to indicate the new mode and the time of the
         // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
@@ -200,14 +200,14 @@ public:
         gettimeofday(&nowTimeval, NULL);
         double modeChangeTime = 
                 nowTimeval.tv_sec + 1.0e-6 * nowTimeval.tv_usec; // seconds since epoch
-        HmcModeChangeStruct changeStruct = { hmcMode, modeChangeTime };
-        int result = HmcModeBroadcastSocket.writeDatagram(
+        HmcModeChangeStruct changeStruct = { OperationMode, modeChangeTime };
+        int result = OperationModeBroadcastSocket.writeDatagram(
                 reinterpret_cast<char*>(&changeStruct), 
                 sizeof(changeStruct), QHostAddress::Broadcast, 
                 HMC_MODE_BROADCAST_PORT);
         if (result == -1) {
-            ELOG << "HMC mode change UDP write gave QAbstractSocket::SocketError " << 
-                    HmcModeBroadcastSocket.error();
+            ELOG << "Operation mode change UDP write gave QAbstractSocket::SocketError " << 
+                    OperationModeBroadcastSocket.error();
         }
     }
 };
@@ -331,11 +331,8 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
-    HcrPmc730::OperationMode mode;
-    mode.hmcMode = HcrPmc730::HMC_MODE_RESET;
-    HcrPmc730::SetOperationMode(mode);
-    mode.hmcMode = HcrPmc730::HMC_MODE_BENCH_TEST;
-    HcrPmc730::SetOperationMode(mode);
+    HcrPmc730::SetOperationMode(HcrPmc730::HMC_MODE_RESET);
+    HcrPmc730::SetOperationMode(HcrPmc730::HMC_MODE_BENCH_TEST);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
@@ -344,7 +341,7 @@ main(int argc, char * argv[]) {
     myRegistry.addMethod("xmitFilamentOff", new XmitFilamentOffMethod);
     myRegistry.addMethod("xmitHvOn", new XmitHvOnMethod);
     myRegistry.addMethod("xmitHvOff", new XmitHvOffMethod);
-    myRegistry.addMethod("setHmcMode", new SetHmcModeMethod);
+    myRegistry.addMethod("setOperationMode", new SetOperationModeMethod);
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("openApsValve", new OpenApsValveMethod);
     myRegistry.addMethod("closeApsValve", new CloseApsValveMethod);

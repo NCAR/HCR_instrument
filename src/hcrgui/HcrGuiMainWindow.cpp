@@ -50,6 +50,7 @@ static inline double MetersToFeet(double m) {
     return(3.28084 * m);
 }
 
+Q_DECLARE_METATYPE(HcrPmc730::OperationMode)
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, int spectracomPort,
@@ -248,10 +249,23 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
     
-    // Populate the HMC mode combo box
-    for (int i = 0; i < 137; i++) {
-        _ui.requestedModeCombo->insertItem(i, HcrPmc730::HmcModeNames[i].c_str(), i);
+    // Populate the Operation mode combo box
+    for (auto i = 0; i < 8; ++i) {
+        if (i == 0 || i > 4) {
+            HcrPmc730::OperationMode mode(static_cast<HcrPmc730::HmcModes>(i), 0, 0);
+            _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
+        }
     }
+    for (auto i = 0; i < 5; ++i) {
+        HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, i, i);
+        auto modeAtt = mode.equivalentAttenuatedMode();
+        _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
+        _ui.requestedModeCombo->addItem(modeAtt.name().c_str(), QVariant::fromValue(modeAtt));
+    }
+    HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, 3, 4);
+    auto modeAtt = mode.equivalentAttenuatedMode();
+    _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));        
+    _ui.requestedModeCombo->addItem(modeAtt.name().c_str(), QVariant::fromValue(modeAtt));
 
     // Start with angle display cleared
     _clearAngleDisplay();
@@ -794,33 +808,18 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
     _hcrdrxDetails.show();
 }
 
-/// Set HMC mode via HcrExecutive
+/// Set Operation mode via HcrExecutive
 void
 HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
     
-    HcrPmc730::OperationMode mode;
-    if(index < 9) {
-        mode.hmcMode = static_cast<HcrPmc730::HmcModes>(index);
-        mode.scheduleStartIndex = 0;
-        mode.scheduleStopIndex = 0;
-    }
-    else if(index < 73) {
-        mode.hmcMode = HcrPmc730::HMC_MODE_TRANSMIT;
-        mode.scheduleStartIndex = index - 9;
-        mode.scheduleStopIndex = index - 9; //These do not have to be the same, GUI limitation only
-    }
-    else {
-        mode.hmcMode = HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED;
-        mode.scheduleStartIndex = index - 73;
-        mode.scheduleStopIndex = index - 73; //These do not have to be the same, GUI limitation only
-    }
-    
-    // Set a new requested HMC mode on HcrExecutive
+    auto mode = _ui.requestedModeCombo->itemData(index).value<HcrPmc730::OperationMode>();
+
+    // Set a new requested Operation mode on HcrExecutive
     try {
-        ILOG << "Requesting HMC mode " << mode.name();
-        _hcrExecutiveStatusThread.rpcClient().setRequestedHmcMode(mode);
+        ILOG << "Requesting Operation mode " << mode.name();
+        _hcrExecutiveStatusThread.rpcClient().setRequestedOperationMode(mode);
     } catch (std::exception & e) {
-        WLOG << "Could not tell HcrExecutive to request HMC mode " << mode.name();
+        WLOG << "Could not tell HcrExecutive to request Operation mode " << mode.name();
     }
 }
 
@@ -973,18 +972,17 @@ HcrGuiMainWindow::_update() {
         _ui.xmitterStatusIcon->setPixmap(_greenLED);
     }
 
-    // HMC mode
-    auto reqMode = _hcrExecutiveStatus.requestedHmcMode();
-    if(reqMode.hmcMode == HcrPmc730::HMC_MODE_TRANSMIT) {
-        _ui.requestedModeCombo->setCurrentIndex(reqMode.scheduleStartIndex+9);
+    // Operation mode
+    _ui.requestedModeCombo->setCurrentIndex(0);
+    auto reqMode = _hcrExecutiveStatus.requestedOperationMode();
+    for(auto i = 0; i < _ui.requestedModeCombo->count(); ++i) {
+        auto itemMode = _ui.requestedModeCombo->itemData(i).value<HcrPmc730::OperationMode>();
+        if(reqMode == itemMode) {
+            _ui.requestedModeCombo->setCurrentIndex(i);
+        }
     }
-    else if(reqMode.hmcMode == HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED) {
-        _ui.requestedModeCombo->setCurrentIndex(reqMode.scheduleStartIndex+73);
-    }
-    else {
-        _ui.requestedModeCombo->setCurrentIndex(reqMode.hmcMode);
-    }
-    std::string modeText = _pmcStatus.hmcMode().name();
+
+    std::string modeText = _pmcStatus.operationMode().name();
     _ui.hmcModeValue->setText(QString::fromStdString(modeText));
 
     // INS1 status light:

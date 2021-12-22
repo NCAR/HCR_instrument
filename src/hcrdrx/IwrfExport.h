@@ -182,7 +182,7 @@ private:
     bool _firstFmqMessage;
 
     /// @brief current HMC operation mode
-    HcrPmc730::OperationMode _hmcMode;
+    HcrPmc730::OperationMode _operationMode;
 
     /// @brief current MotionControlDaemon antenna mode
     MotionControl::AntennaMode _antennaMode;

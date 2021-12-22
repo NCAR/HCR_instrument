@@ -124,9 +124,9 @@ public:
     /// @return the maximum received power, dBm
     double meanMaxPower() const { return(_meanMaxPower); }
 
-    /// @brief Return the requested HMC mode.
-    /// @return the requested HMC mode.
-    HcrPmc730::OperationMode requestedHmcMode() const { return(_requestedHmcMode); }
+    /// @brief Return the requested Operation mode.
+    /// @return the requested Operation mode.
+    HcrPmc730::OperationMode requestedOperationMode() const { return(_requestedOperationMode); }
 
     /// @brief Return true iff a user has requested that high voltage be 
     /// turned on.
@@ -207,7 +207,7 @@ private:
         ar & BOOST_SERIALIZATION_NVP(_aglAltitude);
         ar & BOOST_SERIALIZATION_NVP(_overWater);
         ar & BOOST_SERIALIZATION_NVP(_meanMaxPower);
-        ar & BOOST_SERIALIZATION_NVP(_requestedHmcMode);
+        ar & BOOST_SERIALIZATION_NVP(_requestedOperationMode);
         ar & BOOST_SERIALIZATION_NVP(_hvRequested);
         ar & BOOST_SERIALIZATION_NVP(_xmitTestStatus);
         ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
@@ -256,8 +256,8 @@ private:
     /// @brief Max received power, dBm
     double _meanMaxPower;
 
-    /// @brief Requested HMC mode
-    HcrPmc730::OperationMode _requestedHmcMode;
+    /// @brief Requested Operation mode
+    HcrPmc730::OperationMode _requestedOperationMode;
 
     /// @brief Has a user requested that transmitter high voltage be turned on?
     bool _hvRequested;
