@@ -1182,6 +1182,9 @@ HCR_Pentek::_setupController()
     auto blockPostTime  = _config.default_post_time();
     auto filterSelect   = _config.default_filter();
 
+    // The gaussian filters in the default file are:
+    //   Passthrough, 256ns, 384ns, 512ns, 640ns, 768ns, 896ns, 1024ns.
+
     // Define the 'legacy mode' blocks and add them to the pulse definitions
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
@@ -1204,13 +1207,13 @@ HCR_Pentek::_setupController()
     // Define additional blocks for demonstration purposes
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
-            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, 0,
+            256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
             Controller::PolarizationModes::POL_MODE_H
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
-            txPulseWidth*2, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
+            512e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 3,
             Controller::PolarizationModes::POL_MODE_HHVV
         ));
 
