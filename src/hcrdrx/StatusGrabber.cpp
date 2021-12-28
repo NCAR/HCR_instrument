@@ -68,7 +68,7 @@ StatusGrabber::StatusGrabber(HCR_Pentek & pentek,
 StatusGrabber::~StatusGrabber() {
     // Exit the event loop to stop the thread
     quit();
-    if (! wait(1000)) {
+    if (! wait()) {
         ELOG << "StatusGrabber thread failed to quit in destructor. Exiting anyway.";
     }
 }

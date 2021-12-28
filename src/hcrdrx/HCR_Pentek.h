@@ -168,6 +168,11 @@ private slots:
     /// @param chan the ADC channel associated with the DMA timeout
     void _dmaTimeoutHandler(int32_t chan);
 
+public slots:
+
+    /// @brief Halt and close the Pentek
+    void quit();
+
 private:
 
     /// @brief AXI base address for the general purpose registers in user block 2
@@ -311,6 +316,7 @@ private:
     std::vector<PulseData*> _pulseData;
     std::vector<uint64_t> _prevPulseSeq;
     double _digitizerSampleWidth;
+    bool _done;
 
 };
 

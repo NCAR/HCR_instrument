@@ -106,7 +106,6 @@ main(int argc, char * argv[]) {
       std::cout << "Usage: hcrdrx [options]" << std::endl;
       std::cout << "  [-h, --h, --help]: print this usage message" << std::endl;
       std::cout << "  [--config_file ?]: specify config file" << std::endl;
-      #warning config.printUsage(std::cout);
       exit(0);
     }
 
@@ -149,6 +148,7 @@ main(int argc, char * argv[]) {
             xmitdHost, HCR_XMITD_PORT,
             motionControlHost, MOTIONCONTROLDAEMON_PORT);
         statusGrabber.start();
+        QObject::connect(&app, SIGNAL(aboutToQuit()), &hcrPentek, SLOT(quit()));
         QObject::connect(&app, SIGNAL(aboutToQuit()), &statusGrabber, SLOT(quit()));
 
         // Create and start the IwrfExport

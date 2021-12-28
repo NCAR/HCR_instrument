@@ -70,7 +70,8 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     _processedPulses(_adcCount, 0),
     _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read),
     _prevPulseSeq(_adcCount, -1ULL),
-    _digitizerSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency())
+    _digitizerSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency()),
+    _done(false)
 {
     // Register needed types
     qRegisterMetaType<int32_t>("int32_t");
@@ -226,7 +227,10 @@ HCR_Pentek::_startRadar() {
 }
 
 HCR_Pentek::~HCR_Pentek() {
+    if (!_done) quit();
+}
 
+void HCR_Pentek::quit(){
     // Shut down Navigator
     int32_t status;
 
@@ -278,6 +282,8 @@ HCR_Pentek::~HCR_Pentek() {
     // Disable interrupts  for clock loss events
     status = NAV_InterruptDisable(_boardHandle, NAV_INTR_DATA_IO_CLOCK_A, 0);
     status = NAV_InterruptDisable(_boardHandle, NAV_INTR_DATA_IO_CLOCK_B, 0);
+
+    _done = true;
 }
 
 void
@@ -1213,7 +1219,7 @@ HCR_Pentek::_setupController()
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
-            512e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 3,
+            512e-9, numRxGates, numPulses, prt1*2, prt2, blockPostTime, 3,
             Controller::PolarizationModes::POL_MODE_HHVV
         ));
 
