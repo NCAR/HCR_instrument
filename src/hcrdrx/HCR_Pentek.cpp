@@ -581,6 +581,14 @@ HCR_Pentek::_setupDdc() {
             }
             _AbortCtorOnNavStatusError(status, ddcPrefix + "NAV_DdcSetup");
 
+            // Tweak the default Pentek DDC gain
+            auto firBase = static_cast<NAV_BOARD_RESRC*>(_boardHandle)->ipBaseAddr.ddc[ddcNum].ddcSt3Filter;
+            uint32_t stageGain;
+            status = NAVip_FDecFir32_Gain_GetGain(firBase, &stageGain);
+            _AbortCtorOnNavStatusError(status, ddcPrefix + "NAVip_FDecFir32_Gain_GetGain");
+            status = NAVip_FDecFir32_Gain_SetGain(firBase, std::round(stageGain * _config.extra_ddc_gain()));
+            _AbortCtorOnNavStatusError(status, ddcPrefix + "NAVip_FDecFir32_Gain_SetGain");
+
             // Set the DDC to wait for a sync
             status = NAV_SetDdcSyncState(_boardHandle,
                     ddcNum,
@@ -1145,7 +1153,8 @@ HCR_Pentek::_definePulseBlock(
     block.timers[Controller::Timers::MASTER_SYNC] = { 0, _counts(200.e-9) };
 
     // The receive delay cancels out the pipeline delays and brings the burst to the beginning of the data.
-    block.timers[Controller::Timers::RX_0] =        { _counts(_config.rx_delay()), _counts(numRxGates * _digitizerSampleWidth) };
+    // Add half the pulse width so that the center of the burst is always in the same gate.
+    block.timers[Controller::Timers::RX_0] =        { _counts(_config.rx_delay() + txPulseWidth/2), _counts(numRxGates * _digitizerSampleWidth) };
     block.timers[Controller::Timers::RX_1] =        block.timers[Controller::Timers::RX_0];
     block.timers[Controller::Timers::RX_2] =        block.timers[Controller::Timers::RX_0];
 
@@ -1220,6 +1229,12 @@ HCR_Pentek::_setupController()
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             512e-9, numRxGates, numPulses, prt1*2, prt2, blockPostTime, 3,
+            Controller::PolarizationModes::POL_MODE_HHVV
+        ));
+
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            1024e-9, numRxGates, numPulses, prt1*2, prt2, blockPostTime, 7,
             Controller::PolarizationModes::POL_MODE_HHVV
         ));
 

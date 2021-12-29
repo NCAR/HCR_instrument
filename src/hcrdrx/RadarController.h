@@ -214,7 +214,7 @@ public:
 
         for(uint32_t index=0; index<NUM_TOTAL_FILTER_COEFS; index++)
         {
-            int32_t intCoef = round(coefs[index]*0x400000);
+            int32_t intCoef = round(coefs[index]*0x80000);
             write_(index*sizeof(uint32_t) + base, intCoef, "Writing pulse coef");
         }
     }

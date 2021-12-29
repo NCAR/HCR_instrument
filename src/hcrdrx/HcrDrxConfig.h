@@ -51,14 +51,15 @@ private:
 
     // Below are the user-settable radar configuration variables
 
-    OPT_AND_GETTER( double,       range_to_gate0_m );
     OPT_AND_GETTER( double,       latitude );
     OPT_AND_GETTER( double,       longitude );
     OPT_AND_GETTER( double,       altitude );
     OPT_AND_GETTER( double,       iqcount_scale_for_mw );
+    OPT_AND_GETTER( bool,         simulate_antenna_angles );
     OPT_AND_GETTER( double,       sim_start_elev );
     OPT_AND_GETTER( double,       sim_delta_elev );
     OPT_AND_GETTER( double,       sim_az_rate );
+    OPT_AND_GETTER( uint,         sim_n_elev );
     OPT_AND_GETTER( uint,         merge_queue_size );
     OPT_AND_GETTER( uint,         iwrf_fmq_nslots );
     OPT_AND_GETTER( uint,         iwrf_fmq_bufsize );
@@ -66,15 +67,13 @@ private:
     OPT_AND_GETTER( uint,         iwrf_fmq_npackets_per_message );
     OPT_AND_GETTER( uint,         iwrf_server_tcp_port );
     OPT_AND_GETTER( uint,         pulse_interval_per_iwrf_meta_data );
-    OPT_AND_GETTER( uint,         sim_n_elev );
     OPT_AND_GETTER( bool,         export_iwrf_via_fmq );
-    OPT_AND_GETTER( bool,         simulate_antenna_angles );
-    OPT_AND_GETTER( bool,         simulate_pmc730 );
-    OPT_AND_GETTER( bool,         start_on_1pps );
     OPT_AND_GETTER( std::string,  instance );
     OPT_AND_GETTER( std::string,  radar_id );
     OPT_AND_GETTER( std::string,  calibration_file );
     OPT_AND_GETTER( std::string,  iwrf_fmq_path );
+    OPT_AND_GETTER( double,       range_to_gate0_m );
+    OPT_AND_GETTER( bool,         start_on_1pps );
     OPT_AND_GETTER( double,       tx_delay );
     OPT_AND_GETTER( double,       tx_mod_pulse_delay );
     OPT_AND_GETTER( double,       rx_delay );
@@ -83,6 +82,7 @@ private:
     OPT_AND_GETTER( double,       refclk_frequency );
     OPT_AND_GETTER( double,       rx_frequency );
     OPT_AND_GETTER( double,       tx_frequency );
+    OPT_AND_GETTER( double,       extra_ddc_gain );
     OPT_AND_GETTER( uint,         final_decimation );
     OPT_AND_GETTER( double,       pulses_to_run );
     OPT_AND_GETTER( uint,         pulses_per_xfer );

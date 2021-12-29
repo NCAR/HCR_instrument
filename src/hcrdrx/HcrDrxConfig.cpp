@@ -144,14 +144,15 @@ HcrDrxConfig::HcrDrxConfig() :
     // Assemble command line / configuration file options for each of our
     // configuration variables
     configVarsDesc_.add_options()
-        MEMBER_PROGOPT( range_to_gate0_m,                  "description",                                  -198.0 )
         MEMBER_PROGOPT( latitude,                          "description",                                  40.03794 )
         MEMBER_PROGOPT( longitude,                         "description",                                  -105.24127 )
         MEMBER_PROGOPT( altitude,                          "description",                                  1609 )
         MEMBER_PROGOPT( iqcount_scale_for_mw,              "description",                                  8200 )
+        MEMBER_PROGOPT( simulate_antenna_angles,           "description",                                  false )
         MEMBER_PROGOPT( sim_start_elev,                    "description",                                  0.0 )
         MEMBER_PROGOPT( sim_delta_elev,                    "description",                                  0.0 )
         MEMBER_PROGOPT( sim_az_rate,                       "description",                                  0.0 )
+        MEMBER_PROGOPT( sim_n_elev,                        "description",                                  0 )
         MEMBER_PROGOPT( merge_queue_size,                  "description",                                  100000 )
         MEMBER_PROGOPT( iwrf_fmq_nslots,                   "description",                                  100 )
         MEMBER_PROGOPT( iwrf_fmq_bufsize,                  "description",                                  1000000000 )
@@ -159,39 +160,38 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( iwrf_fmq_npackets_per_message,     "description",                                  1000 )
         MEMBER_PROGOPT( iwrf_server_tcp_port,              "description",                                  12000 )
         MEMBER_PROGOPT( pulse_interval_per_iwrf_meta_data, "description",                                  5000 )
-        MEMBER_PROGOPT( sim_n_elev,                        "description",                                  0 )
         MEMBER_PROGOPT( export_iwrf_via_fmq,               "description",                                  true )
-        MEMBER_PROGOPT( simulate_antenna_angles,           "description",                                  false )
-        MEMBER_PROGOPT( simulate_pmc730,                   "description",                                  false )
-        MEMBER_PROGOPT( start_on_1pps,                     "description",                                  true )
         MEMBER_PROGOPT( instance,                          "description",                                  "ops" )
         MEMBER_PROGOPT( radar_id,                          "description",                                  "HCR" )
         MEMBER_PROGOPT( calibration_file,                  "description",                                  "defaultCal.xml" )
         MEMBER_PROGOPT( iwrf_fmq_path,                     "description",                                  "/tmp/fmq/ts/wband/shmem_10000" )
-        MEMBER_PROGOPT( tx_delay,                          "description",                                  336.e-9 )
-        MEMBER_PROGOPT( tx_mod_pulse_delay,                "description",                                  432.e-9 )
-        MEMBER_PROGOPT( rx_delay,                          "description",                                  2304.e-9 )
-        MEMBER_PROGOPT( use_internal_clock,                "description",                                  true )
-        MEMBER_PROGOPT( clock_mode_125,                    "description",                                  true )
-        MEMBER_PROGOPT( refclk_frequency,                  "description",                                  10.0e6 )
-        MEMBER_PROGOPT( rx_frequency,                      "description",                                  156.25e6 )
-        MEMBER_PROGOPT( tx_frequency,                      "description",                                  156.25e6 )
-        MEMBER_PROGOPT( final_decimation,                  "description",                                  2 )
-        MEMBER_PROGOPT( pulses_to_run,                     "description",                                  INFINITY )
-        MEMBER_PROGOPT( pulses_per_xfer,                   "description",                                  50 )
-        MEMBER_PROGOPT( pulse_filter_file_ch_0,            "description",                                  "default_gaussian_filters.csv" )
-        MEMBER_PROGOPT( pulse_filter_file_ch_1,            "description",                                  "default_gaussian_filters.csv" )
-        MEMBER_PROGOPT( pulse_filter_file_ch_2,            "description",                                  "default_gaussian_filters.csv" )
-        MEMBER_PROGOPT( enable_rx_ch_0,                    "description",                                  true )
-        MEMBER_PROGOPT( enable_rx_ch_1,                    "description",                                  true )
-        MEMBER_PROGOPT( enable_rx_ch_2,                    "description",                                  false )
-        MEMBER_PROGOPT( default_tx_pulse_width,            "description",                                  256e-9 )
-        MEMBER_PROGOPT( default_rx_gates,                  "description",                                  770 )
-        MEMBER_PROGOPT( default_pulses,                    "description",                                  100 )
-        MEMBER_PROGOPT( default_prt1,                      "description",                                  101.376e-6 )
-        MEMBER_PROGOPT( default_prt2,                      "description",                                  0.0 ) //300.0e-6 )
-        MEMBER_PROGOPT( default_post_time,                 "description",                                  0.0 )
-        MEMBER_PROGOPT( default_filter,                    "description",                                  0 )
+        MEMBER_PROGOPT( range_to_gate0_m,                  "distance to the 0th range cell",               -198.0 )
+        MEMBER_PROGOPT( start_on_1pps,                     "wait for timing pulse to start",               true )
+        MEMBER_PROGOPT( tx_delay,                          "transmit delay from t0",                       336.e-9 )
+        MEMBER_PROGOPT( tx_mod_pulse_delay,                "modulator pulse delay from t0",                432.e-9 )
+        MEMBER_PROGOPT( rx_delay,                          "sample collection delay from t0",              2176.e-9 )
+        MEMBER_PROGOPT( use_internal_clock,                "synthesize internal clock from reference",     true )
+        MEMBER_PROGOPT( clock_mode_125,                    "false = experimental",                         true )
+        MEMBER_PROGOPT( refclk_frequency,                  "frequency of external reference clock",        10.0e6 )
+        MEMBER_PROGOPT( rx_frequency,                      "ddc center (IF) frequency, rx",                156.25e6 )
+        MEMBER_PROGOPT( tx_frequency,                      "ddc center (IF) frequency, tx",                156.25e6 )
+        MEMBER_PROGOPT( extra_ddc_gain,                    "adjustment to default ddc filter gain",        1.0 )
+        MEMBER_PROGOPT( final_decimation,                  "decimation after the last rx filter",          1 )
+        MEMBER_PROGOPT( pulses_to_run,                     "number of pulses to schedule before exiting",  INFINITY )
+        MEMBER_PROGOPT( pulses_per_xfer,                   "ratio of pulses to interrupts",                50 )
+        MEMBER_PROGOPT( pulse_filter_file_ch_0,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( pulse_filter_file_ch_1,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( pulse_filter_file_ch_2,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( enable_rx_ch_0,                    "enable ADC channel",                           true )
+        MEMBER_PROGOPT( enable_rx_ch_1,                    "enable ADC channel",                           true )
+        MEMBER_PROGOPT( enable_rx_ch_2,                    "enable ADC channel",                           false )
+        MEMBER_PROGOPT( default_tx_pulse_width,            "legacy mode pulse definition",                 256e-9 )
+        MEMBER_PROGOPT( default_rx_gates,                  "legacy mode pulse definition",                 770 )
+        MEMBER_PROGOPT( default_pulses,                    "legacy mode pulse definition",                 100 )
+        MEMBER_PROGOPT( default_prt1,                      "legacy mode pulse definition",                 101.376e-6 )
+        MEMBER_PROGOPT( default_prt2,                      "legacy mode pulse definition",                 0.0 ) //300.0e-6 )
+        MEMBER_PROGOPT( default_post_time,                 "legacy mode pulse definition",                 0.0 )
+        MEMBER_PROGOPT( default_filter,                    "legacy mode pulse definition",                 1 )
         ;
 
     // Apply the command_line_parser with no arguments to initialize the
@@ -205,14 +205,15 @@ HcrDrxConfig::HcrDrxConfig() :
 std::string
 HcrDrxConfig::configString() const {
     std::ostringstream os;
-    os << STREAM_OPT_AND_MEMBER( range_to_gate0_m );
     os << STREAM_OPT_AND_MEMBER( latitude );
     os << STREAM_OPT_AND_MEMBER( longitude );
     os << STREAM_OPT_AND_MEMBER( altitude );
     os << STREAM_OPT_AND_MEMBER( iqcount_scale_for_mw );
+    os << STREAM_OPT_AND_MEMBER( simulate_antenna_angles );
     os << STREAM_OPT_AND_MEMBER( sim_start_elev );
     os << STREAM_OPT_AND_MEMBER( sim_delta_elev );
     os << STREAM_OPT_AND_MEMBER( sim_az_rate );
+    os << STREAM_OPT_AND_MEMBER( sim_n_elev );
     os << STREAM_OPT_AND_MEMBER( merge_queue_size );
     os << STREAM_OPT_AND_MEMBER( iwrf_fmq_nslots );
     os << STREAM_OPT_AND_MEMBER( iwrf_fmq_bufsize );
@@ -220,15 +221,13 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( iwrf_fmq_npackets_per_message );
     os << STREAM_OPT_AND_MEMBER( iwrf_server_tcp_port );
     os << STREAM_OPT_AND_MEMBER( pulse_interval_per_iwrf_meta_data );
-    os << STREAM_OPT_AND_MEMBER( sim_n_elev );
     os << STREAM_OPT_AND_MEMBER( export_iwrf_via_fmq );
-    os << STREAM_OPT_AND_MEMBER( simulate_antenna_angles );
-    os << STREAM_OPT_AND_MEMBER( simulate_pmc730 );
-    os << STREAM_OPT_AND_MEMBER( start_on_1pps );
     os << STREAM_OPT_AND_MEMBER( instance );
     os << STREAM_OPT_AND_MEMBER( radar_id );
     os << STREAM_OPT_AND_MEMBER( calibration_file );
     os << STREAM_OPT_AND_MEMBER( iwrf_fmq_path );
+    os << STREAM_OPT_AND_MEMBER( range_to_gate0_m );
+    os << STREAM_OPT_AND_MEMBER( start_on_1pps );
     os << STREAM_OPT_AND_MEMBER( tx_delay );
     os << STREAM_OPT_AND_MEMBER( tx_mod_pulse_delay );
     os << STREAM_OPT_AND_MEMBER( rx_delay );
@@ -237,6 +236,7 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( refclk_frequency );
     os << STREAM_OPT_AND_MEMBER( rx_frequency );
     os << STREAM_OPT_AND_MEMBER( tx_frequency );
+    os << STREAM_OPT_AND_MEMBER( extra_ddc_gain );
     os << STREAM_OPT_AND_MEMBER( final_decimation );
     os << STREAM_OPT_AND_MEMBER( pulses_to_run );
     os << STREAM_OPT_AND_MEMBER( pulses_per_xfer );

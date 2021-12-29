@@ -256,13 +256,13 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
         }
     }
-    for (auto i = 0; i < 5; ++i) {
+    for (auto i = 0; i < 6; ++i) {
         HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, i, i);
         auto modeAtt = mode.equivalentAttenuatedMode();
         _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
         _ui.requestedModeCombo->addItem(modeAtt.name().c_str(), QVariant::fromValue(modeAtt));
     }
-    HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, 3, 4);
+    HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, 3, 5);
     auto modeAtt = mode.equivalentAttenuatedMode();
     _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));        
     _ui.requestedModeCombo->addItem(modeAtt.name().c_str(), QVariant::fromValue(modeAtt));
