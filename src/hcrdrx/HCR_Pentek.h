@@ -270,6 +270,9 @@ private:
     /// @brief Convert seconds to scheduler counts
     uint32_t _counts(double seconds) { return std::round(seconds * adcFrequency()); }
 
+    /// @brief Convert scheduler counts to seconds
+    double _fromCounts(double counts) { return counts / adcFrequency(); }
+
     /// @brief HCR configuration
     const HcrDrxConfig & _config;
 
