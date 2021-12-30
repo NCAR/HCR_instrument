@@ -478,8 +478,8 @@ int IwrfExport::_sendIwrfMetaData()
   switch (_operationMode.hmcMode()) {
     case HcrPmc730::HMC_MODE_TRANSMIT:
     case HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED:
-        _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
-        _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
+        _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
     case HcrPmc730::HMC_MODE_BENCH_TEST:
@@ -488,11 +488,6 @@ int IwrfExport::_sendIwrfMetaData()
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-//    case HcrPmc730::HMC_MODE_HV_HV:
-//        _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
-//        _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
-//        _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
-//        break;
     case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
