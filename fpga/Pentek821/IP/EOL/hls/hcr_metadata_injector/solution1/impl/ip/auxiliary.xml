@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="hcr_metadata_injector" xd:componentRef="hcr_metadata_injector" xd:initiationInterval="x" xd:clockPeriod="5.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
-  <xd:arg xd:name="i_data.data" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="32"/>
-  <xd:arg xd:name="i_data.keep" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="4"/>
-  <xd:arg xd:name="i_data.strb" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="4"/>
+  <xd:arg xd:name="i_data.data" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="64"/>
+  <xd:arg xd:name="i_data.keep" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="8"/>
+  <xd:arg xd:name="i_data.strb" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="8"/>
   <xd:arg xd:name="i_data.user" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="128"/>
   <xd:arg xd:name="i_data.last" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
   <xd:arg xd:name="i_data.id" xd:originalName="i_data" xd:direction="in" xd:interfaceRef="i_data" xd:busTypeRef="axis" xd:dataWidth="1"/>
@@ -52,5 +52,5 @@
   <xd:arg xd:name="*(pos_enc_1)" xd:originalName="pos_enc_1" xd:direction="in" xd:interfaceRef="pos_enc_1" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="32" xd:firstOut="2"/>
   <xd:arg xd:name="*(flags)" xd:originalName="flags" xd:direction="in" xd:interfaceRef="flags" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16" xd:firstOut="2"/>
   <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
-  <xd:resourceEstimates xd:LUT="1232" xd:FF="1896" xd:BRAM="0" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="1381" xd:FF="2446" xd:BRAM="0" xd:DSP="0"/>
 </xd:acceleratorMap>

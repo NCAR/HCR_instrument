@@ -36,9 +36,9 @@
   <xd:arg xd:name="cfg_filter_coefs_ch0[][]" xd:originalName="cfg_filter_coefs_ch0" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x1000" xd:arraySize="384" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_filter_coefs_ch1[][]" xd:originalName="cfg_filter_coefs_ch1" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x1800" xd:arraySize="384" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_filter_coefs_ch2[][]" xd:originalName="cfg_filter_coefs_ch2" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x2000" xd:arraySize="384" xd:dataWidth="32"/>
-  <xd:arg xd:name="coef_ch0" xd:originalName="coef_ch0" xd:direction="out" xd:interfaceRef="coef_ch0_V_V" xd:busTypeRef="axis" xd:dataWidth="24"/>
-  <xd:arg xd:name="coef_ch1" xd:originalName="coef_ch1" xd:direction="out" xd:interfaceRef="coef_ch1_V_V" xd:busTypeRef="axis" xd:dataWidth="24"/>
-  <xd:arg xd:name="coef_ch2" xd:originalName="coef_ch2" xd:direction="out" xd:interfaceRef="coef_ch2_V_V" xd:busTypeRef="axis" xd:dataWidth="24"/>
+  <xd:arg xd:name="coef_ch0" xd:originalName="coef_ch0" xd:direction="out" xd:interfaceRef="coef_ch0_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:arg xd:name="coef_ch1" xd:originalName="coef_ch1" xd:direction="out" xd:interfaceRef="coef_ch1_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
+  <xd:arg xd:name="coef_ch2" xd:originalName="coef_ch2" xd:direction="out" xd:interfaceRef="coef_ch2_V_V" xd:busTypeRef="axis" xd:dataWidth="32"/>
   <xd:arg xd:name="*(mt_pulse)" xd:originalName="mt_pulse" xd:direction="out" xd:interfaceRef="mt_pulse_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="8" xd:firstOut="6"/>
   <xd:arg xd:name="*(control_flags)" xd:originalName="control_flags" xd:direction="out" xd:interfaceRef="control_flags_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="32" xd:firstOut="6"/>
   <xd:arg xd:name="*(control_hvn)" xd:originalName="control_hvn" xd:direction="out" xd:interfaceRef="control_hvn" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="1" xd:firstOut="6"/>

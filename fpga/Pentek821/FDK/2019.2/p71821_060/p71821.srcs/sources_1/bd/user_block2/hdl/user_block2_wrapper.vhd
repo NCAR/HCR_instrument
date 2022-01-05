@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Wed Dec 29 17:10:29 2021
+--Date        : Wed Jan  5 17:07:14 2022
 --Host        : wind running 64-bit unknown
 --Command     : generate_target user_block2_wrapper.bd
 --Design      : user_block2_wrapper
@@ -119,9 +119,9 @@ architecture STRUCTURE of user_block2_wrapper is
     ctl3_out : out STD_LOGIC_VECTOR ( 31 downto 0 );
     controller_running : out STD_LOGIC;
     control_hvn : out STD_LOGIC;
-    m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
+    m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
     s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
     s_axi_csr_arprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
     s_axi_csr_arready : out STD_LOGIC;
@@ -141,18 +141,6 @@ architecture STRUCTURE of user_block2_wrapper is
     s_axi_csr_wready : out STD_LOGIC;
     s_axi_csr_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
     s_axi_csr_wvalid : in STD_LOGIC;
-    s_axis_dac_pdti_tvalid : in STD_LOGIC;
-    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
-    m_axis_dac_pdti_tvalid : out STD_LOGIC;
-    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
     s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_adc_ch1_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
@@ -161,10 +149,22 @@ architecture STRUCTURE of user_block2_wrapper is
     s_axis_adc_ch2_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
+    m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
+    m_axis_dac_pdti_tvalid : out STD_LOGIC;
+    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_dac_pdti_tvalid : in STD_LOGIC;
+    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axis_adc_ch0_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC
+    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
+    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC
   );
   end component user_block2;
 begin

@@ -28,7 +28,7 @@
       "index": "0",
       "type": {
         "kinds": ["struct"],
-        "dataType": "ap_axiu<32, 128, 1, 1>",
+        "dataType": "ap_axiu<64, 128, 1, 1>",
         "structImpl": "flat-field",
         "dataPack": true,
         "fields": {
@@ -317,7 +317,7 @@
       "ctype": {
         "TDATA": {
           "Type": "integer unsigned",
-          "Width": "32"
+          "Width": "64"
         },
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"},
@@ -327,11 +327,11 @@
         },
         "TKEEP": {
           "Type": "integer unsigned",
-          "Width": "4"
+          "Width": "8"
         },
         "TSTRB": {
           "Type": "integer unsigned",
-          "Width": "4"
+          "Width": "8"
         },
         "TUSER": {
           "Type": "integer unsigned",
@@ -347,12 +347,12 @@
         }
       },
       "port_width": {
-        "TDATA": "32",
+        "TDATA": "64",
         "TDEST": "1",
         "TID": "1",
-        "TKEEP": "4",
+        "TKEEP": "8",
         "TLAST": "1",
-        "TSTRB": "4",
+        "TSTRB": "8",
         "TUSER": "128"
       }
     },
@@ -564,7 +564,7 @@
     },
     "i_data_TDATA": {
       "dir": "in",
-      "width": "32"
+      "width": "64"
     },
     "i_data_TVALID": {
       "dir": "in",
@@ -581,11 +581,11 @@
     },
     "i_data_TKEEP": {
       "dir": "in",
-      "width": "4"
+      "width": "8"
     },
     "i_data_TSTRB": {
       "dir": "in",
-      "width": "4"
+      "width": "8"
     },
     "i_data_TUSER": {
       "dir": "in",
@@ -670,7 +670,7 @@
       "ModuleName": "hcr_metadata_injector",
       "Instances": [{
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_335"
+          "InstanceName": "grp_handle_header_fu_360"
         }]
     },
     "Info": {
@@ -709,8 +709,8 @@
             "Name": "Loop 1",
             "TripCount": "",
             "Latency": "",
-            "PipelineII": "1",
-            "PipelineDepth": "2"
+            "PipelineII": "2",
+            "PipelineDepth": "3"
           },
           {
             "Name": "write_header",
@@ -721,8 +721,8 @@
           }
         ],
         "Area": {
-          "FF": "1398",
-          "LUT": "595",
+          "FF": "1730",
+          "LUT": "721",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -752,13 +752,13 @@
                 "Name": "sample_loop",
                 "TripCount": "",
                 "Latency": "",
-                "PipelineII": "1",
-                "PipelineDepth": "3"
+                "PipelineII": "2",
+                "PipelineDepth": "4"
               }]
           }],
         "Area": {
-          "FF": "1896",
-          "LUT": "1232",
+          "FF": "2446",
+          "LUT": "1381",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -776,7 +776,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-11-19 21:19:36 GMT",
+    "Time": "2021-01-05 16:52:33 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

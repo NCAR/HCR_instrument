@@ -2,10 +2,10 @@
 <Root MajorVersion="0" MinorVersion="39">
   <CompositeFile CompositeFileTopName="user_block2" CanBeSetAsTop="false" CanDisplayChildGraph="true">
     <Description>Composite Fileset</Description>
-    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1640797830"/>
-    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1640797830"/>
-    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1640797830"/>
-    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1640797830"/>
+    <Generation Name="SYNTHESIS" State="GENERATED" Timestamp="1641402435"/>
+    <Generation Name="IMPLEMENTATION" State="GENERATED" Timestamp="1641402435"/>
+    <Generation Name="SIMULATION" State="GENERATED" Timestamp="1641402435"/>
+    <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1641402435"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ip/user_block2_irq_placeholder_0/user_block2_irq_placeholder_0.xci" Type="IP">
         <Instance HierarchyPath="irq_placeholder"/>
@@ -199,30 +199,6 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/user_block2_axis_subset_converter_0_2/user_block2_axis_subset_converter_0_2.xci" Type="IP">
-        <Instance HierarchyPath="controller/validate_kludge_0"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
-      <File Name="ip/user_block2_validate_kludge_0_0/user_block2_validate_kludge_0_0.xci" Type="IP">
-        <Instance HierarchyPath="controller/validate_kludge_1"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
-      <File Name="ip/user_block2_validate_kludge_1_0/user_block2_validate_kludge_1_0.xci" Type="IP">
-        <Instance HierarchyPath="controller/validate_kludge_2"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
       <File Name="ip/user_block2_px_axil_csr_0_0/user_block2_px_axil_csr_0_0.xci" Type="IP">
         <Instance HierarchyPath="csr/general_purpose_reg_0"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -311,30 +287,6 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="ip/user_block2_axis_subset_converter_0_6/user_block2_axis_subset_converter_0_6.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch1/fir/trim_data"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
-      <File Name="ip/user_block2_axis_subset_converter_0_7/user_block2_axis_subset_converter_0_7.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch2/fir/trim_data"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
-      <File Name="ip/user_block2_axis_subset_converter_0_5/user_block2_axis_subset_converter_0_5.xci" Type="IP">
-        <Instance HierarchyPath="dsp_ch0/fir/trim_data"/>
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-        <UsedIn Val="IMPLEMENTATION"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
       <File Name="ip/user_block2_enable_mux_0_2/user_block2_enable_mux_0_2.xci" Type="IP">
         <Instance HierarchyPath="controller/enable_mux_0"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -367,16 +319,6 @@
         <UsedIn Val="IMPLEMENTATION"/>
         <UsedIn Val="SIMULATION"/>
       </File>
-      <File Name="synth/user_block2.vhd" Type="VHDL">
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SYNTHESIS"/>
-      </File>
-      <File Name="sim/user_block2.vhd" Type="VHDL">
-        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
-        <Library Name="xil_defaultlib"/>
-        <UsedIn Val="SIMULATION"/>
-      </File>
       <File Name="ip/user_block2_s00_regslice_0/user_block2_s00_regslice_0.xci" Type="IP">
         <Instance HierarchyPath="csr/axi_interc/s00_couplers/s00_regslice"/>
         <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="true"/>
@@ -399,6 +341,16 @@
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
         <UsedIn Val="IMPLEMENTATION"/>
+        <UsedIn Val="SIMULATION"/>
+      </File>
+      <File Name="synth/user_block2.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
+        <UsedIn Val="SYNTHESIS"/>
+      </File>
+      <File Name="sim/user_block2.vhd" Type="VHDL">
+        <Properties IsEditable="false" IsVisible="true" Timestamp="0" IsTrackable="false" IsStatusTracked="false"/>
+        <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
       </File>
       <File Name="user_block2_ooc.xdc" Type="XDC">

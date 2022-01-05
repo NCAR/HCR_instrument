@@ -27,7 +27,7 @@ int main()
 	volatile ap_uint<3> filter_select_ch0;
 	volatile ap_uint<3> filter_select_ch1;
 	volatile ap_uint<3> filter_select_ch2;
-	hls::stream<pdti_32> i_data("tb.i_data");
+	hls::stream<pdti_64> i_data("tb.i_data");
 	hls::stream<pdti_32> o_data("tb.o_data");
 	hls::stream<pulse_exec_definition> pulse_metadata_ch0("tb.meta_ch0");
 	hls::stream<pulse_exec_definition> pulse_metadata_ch1("tb.meta_ch1");
@@ -62,13 +62,13 @@ int main()
 		cfg_pulse_sequence[1].timer_width[t] = 63;
 	}
 
-	pdti_32 adc_data;
+	pdti_64 adc_data;
 	for(int x=0; x<cfg_num_pulses_to_execute+1; ++x)
 	{
 
-		for(int k=0; k<16;k++)
+		for(uint64_t k=0; k<16;k++)
 		{
-			adc_data.data = 256*65536 + x*256 + k;
+			adc_data.data = (k<<32) + 256*65536 + x*256 + k;
 			adc_data.user++;
 			adc_data.user[PDTI_SYNC] = (k==0);
 			adc_data.user[PDTI_GATE] = (k<15);
@@ -149,7 +149,7 @@ int main()
 				if (x==5) numSamples = odata.data;
 			}
 			std::cout << "\n";
-			for(int x=0; x<numSamples; x++) {
+			for(int x=0; x<numSamples*2; x++) {
 				if(o_data.empty()) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
 				if (!odata.user[64]) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
 				odata = o_data.read();

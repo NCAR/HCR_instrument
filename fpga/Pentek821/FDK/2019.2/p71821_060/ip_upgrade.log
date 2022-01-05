@@ -1,6 +1,150 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 17:04:04 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_controller_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_controller_0_0 (NCAR:EOL:hcr_controller:1.0) from (Rev. 2112011610) to (Rev. 2101051703)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_controller_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'coef_ch0_V_V_TDATA' width 32 differs from original width 24
+
+-Upgraded port 'coef_ch1_V_V_TDATA' width 32 differs from original width 24
+
+-Upgraded port 'coef_ch2_V_V_TDATA' width 32 differs from original width 24
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 16:55:29 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111192119) to (Rev. 2101051652)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_2'. These changes may impact your design.
+
+
+-Upgraded port 'i_data_TDATA' width 64 differs from original width 32
+
+-Upgraded port 'i_data_TKEEP' width 8 differs from original width 4
+
+-Upgraded port 'i_data_TSTRB' width 8 differs from original width 4
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 16:55:29 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111192119) to (Rev. 2101051652)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_1'. These changes may impact your design.
+
+
+-Upgraded port 'i_data_TDATA' width 64 differs from original width 32
+
+-Upgraded port 'i_data_TKEEP' width 8 differs from original width 4
+
+-Upgraded port 'i_data_TSTRB' width 8 differs from original width 4
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Wed Jan  5 16:55:29 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2111192119) to (Rev. 2101051652)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'user_block2_hcr_metadata_injector_0_0'. These changes may impact your design.
+
+
+-Upgraded port 'i_data_TDATA' width 64 differs from original width 32
+
+-Upgraded port 'i_data_TKEEP' width 8 differs from original width 4
+
+-Upgraded port 'i_data_TSTRB' width 8 differs from original width 4
+
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 | Date         : Wed Dec  1 16:13:29 2021
 | Host         : wind running 64-bit unknown
 | Command      : upgrade_ip

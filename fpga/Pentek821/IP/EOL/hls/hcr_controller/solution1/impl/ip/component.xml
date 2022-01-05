@@ -273,7 +273,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.COEF_CH0_V_V.TDATA_NUM_BYTES">3</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.COEF_CH0_V_V.TDATA_NUM_BYTES">4</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -319,7 +319,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.COEF_CH1_V_V.TDATA_NUM_BYTES">3</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.COEF_CH1_V_V.TDATA_NUM_BYTES">4</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -365,7 +365,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.COEF_CH2_V_V.TDATA_NUM_BYTES">3</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.COEF_CH2_V_V.TDATA_NUM_BYTES">4</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1407,7 +1407,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>2491dfda</spirit:value>
+            <spirit:value>70b88b42</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1423,7 +1423,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>1cd8f8b0</spirit:value>
+            <spirit:value>4413460b</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1439,7 +1439,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>0bc9348f</spirit:value>
+            <spirit:value>c95b40fa</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1455,7 +1455,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e2f2f5df</spirit:value>
+            <spirit:value>ee8b0b10</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1962,7 +1962,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">23</spirit:left>
+            <spirit:left spirit:format="long">31</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -2005,7 +2005,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">23</spirit:left>
+            <spirit:left spirit:format="long">31</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -2048,7 +2048,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">23</spirit:left>
+            <spirit:left spirit:format="long">31</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -2563,7 +2563,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_2157762e</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_1922a9ff</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -2755,15 +2755,15 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Hcr_controller</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2112011610</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-12-01T16:10:12Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2101051703</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-01-05T17:03:22Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="aeb44f79"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="06ebbca5"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="caf69335"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="f5f34c58"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="e4b4f9b1"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="5f1c5544"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="d3877b78"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="c5dd319f"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="255a0b25"/>
     </xilinx:packagingInfo>

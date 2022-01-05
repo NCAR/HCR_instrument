@@ -9,7 +9,7 @@
 
 // Injects pulse metadata into the PDTI bus bus
 void hcr_metadata_injector(
-		hls::stream<pdti_32>& i_data,
+		hls::stream<pdti_64>& i_data,
 		hls::stream<pdti_32>& o_data,
 		hls::stream<pulse_exec_definition>& pulse_metadata,
 		volatile uint32_t* pos_enc_0,
@@ -35,7 +35,7 @@ void hcr_metadata_injector(
 	uint64_t pulse_sequence_counter = 0;
 	bool terminate = 0;
 	bool previous_gate_bit = 0;
-	pdti_32 data_word;
+	pdti_64 data_word;
 
 	// Loop forever
 	pulse_loop : while(!terminate)
@@ -46,7 +46,7 @@ void hcr_metadata_injector(
 		// it bails out to the outer loop so that handle_header can be called.
 		sample_loop : while(true)
 		{
-		#pragma HLS pipeline ii=1
+		#pragma HLS pipeline ii=2
 
 			assert_readable(i_data) >> data_word;
 
@@ -72,10 +72,10 @@ void hcr_metadata_injector(
 				//Write the word, omitting ungated samples inside a pulse bundle
 				if((in_a_pulse && dec_keep) || !in_a_xfer_bundle)
 				{
-					pdti_32 output_data_word = data_word;
+					pdti_64 output_data_word = data_word;
 					output_data_word.user[PDTI_GATE] = in_a_pulse;
 					output_data_word.user[PDTI_SYNC] = 0;
-					o_data << output_data_word;
+					write_split(o_data, output_data_word);
 					decimation_counter = 1;
 				}
 				else
@@ -113,7 +113,7 @@ void hcr_metadata_injector(
 
 bool handle_header(
 		hls::stream<pulse_exec_definition>& pulse_metadata,
-		pdti_32 data_word,
+		pdti_64 data_word,
 		bool& in_a_pulse,
 		bool& in_a_xfer_bundle,
 		bool& break_after_pulse,
@@ -141,22 +141,22 @@ bool handle_header(
 	for(uint32_t x=sample_counter; x<num_samples; ++x)
 	{
 		#pragma HLS pipeline ii=1
-		pdti_32 pad_sample = data_word;
-		pad_sample.data = 0x75757575;
+		pdti_64 pad_sample = data_word;
+		pad_sample.data = 0x7474747475757575ull;
 		pad_sample.user[PDTI_GATE] = 1;
 		pad_sample.user[PDTI_SYNC] = 0;
-		o_data << pad_sample;
+		write_split(o_data, pad_sample);
 	}
 
 	//If collecting continuously, we need to add a "break sample"
 	//so the DMA engine knows where to end the transfer.
 	if(pulse_info.first_pulse_in_xfer)
 	{
-		pdti_32 spacer_sample = data_word;
-		spacer_sample.data = 0x98989898;
+		pdti_64 spacer_sample = data_word;
+		spacer_sample.data = 0x9797979798989898ull;
 		spacer_sample.user[PDTI_GATE] = 0;
 		spacer_sample.user[PDTI_SYNC] = 0;
-		o_data << spacer_sample;
+		write_split(o_data, spacer_sample);
 	}
 
 	//Update flags
@@ -199,7 +199,7 @@ bool handle_header(
 	write_header : for(uint32_t x=0; x<16; ++x)
 	{
 		#pragma HLS pipeline ii=1
-		pdti_32 header_word = data_word;
+		pdti_32 header_word = split(data_word, false);
 		header_word.data = header[x];
 		header_word.user[PDTI_GATE] = 1;
 		header_word.user[PDTI_SYNC] = 1;
@@ -209,7 +209,7 @@ bool handle_header(
 	//Write the original word
 	data_word.user[PDTI_GATE] = 1;
 	data_word.user[PDTI_SYNC] = 0;
-	o_data << data_word;
+	write_split(o_data, data_word);
 	sample_counter = 1;
 	decimation_counter = 1;
 	pulse_sequence_counter ++;

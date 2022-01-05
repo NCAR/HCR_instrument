@@ -6,8 +6,8 @@
 open_project hcr_controller
 set_top hcr_controller
 add_files hcr_controller/hcr_controller.cpp
-add_files -tb hcr_tb.cpp -cflags "-Wno-unknown-pragmas" -csimflags "-Wno-unknown-pragmas"
 add_files -tb hcr_metadata_injector/hcr_metadata_injector.cpp -cflags "-Wno-unknown-pragmas" -csimflags "-Wno-unknown-pragmas"
+add_files -tb hcr_tb.cpp -cflags "-Wno-unknown-pragmas" -csimflags "-Wno-unknown-pragmas"
 open_solution "solution1"
 set_part {xcku060-ffva1517-2-e}
 create_clock -period 4 -name default
