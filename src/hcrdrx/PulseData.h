@@ -36,6 +36,9 @@ class PulseData {
 
 public:
 
+    // Used by HCRPentek and IwrfExport to set data size
+    typedef std::complex<int32_t> IQData; 
+
     /// Constructor.
     PulseData();
 
@@ -71,7 +74,7 @@ public:
              double txPulseWidth,
              double sampleWidth,
              int nGates,
-             const std::complex<int16_t> *iq);
+             const IQData *iq);
 
     // get methods
 
@@ -83,8 +86,8 @@ public:
     inline float getTiltMotorAngle() const { return _tiltMotorAngle; }
     inline XmitPolarization_t getXmitPolarization() const { return _xmitPolarization; }
     inline int getNGates() const { return _nGates; }
-    inline const int16_t *getIq() const { return _iq; }
-    inline int16_t *getIq() { return _iq; }
+    inline const IQData *getIq() const { return _iq; }
+    inline IQData *getIq() { return _iq; }
     inline double getPrt1() const { return _prt1; }
     inline double getPrt2() const { return _prt2; }
     inline double getCurrentPrt() const { return _currentPrt; }
@@ -121,7 +124,7 @@ private:
     double _sampleWidth;
 
     /// IQ data
-    int16_t *_iq;
+    IQData *_iq;
 
     // functions
 

@@ -741,7 +741,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     size_t clockOffsetCount = 0;
     size_t dataBufOffsetBytes = 0;
     bool lastPulseInXfer = false;
-    using IQData = std::complex<int16_t>;
+    using IQData = PulseData::IQData;
 
     // ILOG << "_acceptAdcData " << chan << "\n";
 
@@ -857,7 +857,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
                 _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width), // double txPulseWidth,
                 _digitizerSampleWidth, // double sampleWidth,
                 nGates,             // int nGates,
-                iqData );           // const std::complex<int16_t> *iq)
+                iqData );           // const IQData *iq)
 
             // Write our current object into the merge queue, and get back another to use
             switch (_chanType[chan]) {
@@ -918,7 +918,9 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
         return(false);
     }
 
-    // For publishing, we only handle 16-bit complex (i.e., IQ) data, with I in the first sample.
+    // For publishing, we only handle complex (i.e., IQ) data, with I in the first sample.
+    //
+    // PulseData::IQData can be 16 or 32 bit, it just has to match what comes out of the FPGA.
     //
     // Navigator definitions used on the FPGA side do not agree with the
     // NAV_IP_DMA_PPKT2PCIE_METADATA_* macros on the our side.
@@ -927,7 +929,8 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
     //      metaData->dataFormat: 0 = 8-bit, 1 = 16-bit, 2 = 24-bit(?), 3 = 32-bit
     //              ->dataType: 0 = real, 1 = complex (IQ)
     //              ->firstSamplePhase: 0 = I first, 1 = Q first
-    if (!(metadata->dataFormat == 1 && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
+    auto iqSize = (1+metadata->dataFormat) * 2;
+    if (!(iqSize == sizeof(PulseData::IQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
         ELOG << "Chan " << chan <<
                 ": data unpublishable w/format: " << metadata->dataFormat <<
                 ", type: " << metadata->dataType <<
@@ -1190,6 +1193,7 @@ HCR_Pentek::_setupController()
 
         std::vector<double> coefs;
         ReadFilterCoefsFromFile(_config.pulse_filter_file(chan), coefs);
+        //for(auto&& c: coefs) c*=4;
         _controller.writeFilterCoefs(coefs, chan);
     }
 

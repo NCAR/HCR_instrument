@@ -67,6 +67,8 @@ class IwrfExport : public QThread {
 
 public:
 
+    using IQData = PulseData::IQData;
+
     /**
     * Constructor.
     * @param config HcrDrxConfig defining the desired configuration.
@@ -132,7 +134,7 @@ private:
     static const int NCHANNELS = 2;
     int _nGates;
     int _pulseIntervalPerIwrfMetaData;
-    int16_t *_iq;
+    IQData *_iq;
     char *_pulseBuf;
     int _pulseBufLen;
     int _pulseMsgLen;

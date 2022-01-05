@@ -558,10 +558,9 @@ void IwrfExport::_assembleIwrfPulsePacket()
   _allocPulseBuf();
 
   // load up IQ data
-  memcpy(_iq, _pulseH->getIq(), _pulseH->getNGates() * 2 * sizeof(int16_t));
+  memcpy(_iq, _pulseH->getIq(), _pulseH->getNGates() * sizeof(IQData));
 
-  memcpy(_iq + (_nGates * 2),
-         _pulseV->getIq(), _pulseV->getNGates() * 2 * sizeof(int16_t));
+  memcpy(_iq + _nGates, _pulseV->getIq(), _pulseV->getNGates() * sizeof(IQData));
 
   // pulse header
   _pulseHdr.packet.len_bytes = _pulseMsgLen;
@@ -574,7 +573,15 @@ void IwrfExport::_assembleIwrfPulsePacket()
 
   _pulseHdr.n_gates = _nGates;
   _pulseHdr.n_channels = NCHANNELS;
-  _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI16;
+  if ( std::is_same<IQData, std::complex<int16_t>>::value ) {
+    _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI16;
+  }
+  else if ( std::is_same<IQData, std::complex<int32_t>>::value ) {
+    _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI32;
+  }
+  else {
+    _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_NOT_SET;
+  }
   // Pulse transmit polarization should be the same in both the H and V
   // receiver data. We just get it from _pulseH receiver data.
   _pulseHdr.hv_flag =
@@ -663,7 +670,7 @@ void IwrfExport::_allocPulseBuf()
 {
 
   _pulseMsgLen =
-    sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * 2 * sizeof(int16_t));
+    sizeof(iwrf_pulse_header) + (_nGates * NCHANNELS * sizeof(IQData));
 
   if (_pulseMsgLen > _pulseBufLen) {
 
@@ -673,11 +680,11 @@ void IwrfExport::_allocPulseBuf()
 
     _pulseBufLen = _pulseMsgLen;
     _pulseBuf = new char[_pulseBufLen];
-    _iq = reinterpret_cast<int16_t *>(_pulseBuf + sizeof(iwrf_pulse_header));
+    _iq = reinterpret_cast<IQData *>(_pulseBuf + sizeof(iwrf_pulse_header));
 
   }
 
-  memset(_iq, 0, _nGates * NCHANNELS * 2 * sizeof(int16_t));
+  memset(_iq, 0, _nGates * NCHANNELS * sizeof(IQData));
 
 }
 

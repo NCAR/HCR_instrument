@@ -72,7 +72,7 @@ void PulseData::set(int64_t pulseSeqNum,
                     double txPulseWidth,
                     double sampleWidth,
                     int nGates,
-                    const std::complex<int16_t> *iq)
+                    const IQData *iq)
 {
 
   _pulseSeqNum = pulseSeqNum;
@@ -90,7 +90,7 @@ void PulseData::set(int64_t pulseSeqNum,
   _sampleWidth = sampleWidth;
 
   _allocIq();
-  memcpy(_iq, iq, _nGates * sizeof(std::complex<int16_t>));
+  memcpy(_iq, iq, _nGates * sizeof(IQData));
 
 }
 
@@ -109,7 +109,7 @@ void PulseData::_allocIq()
     delete[] _iq;
   }
 
-  _iq = new int16_t[_nGates * 2];
+  _iq = new IQData[_nGates];
 
 }
 
