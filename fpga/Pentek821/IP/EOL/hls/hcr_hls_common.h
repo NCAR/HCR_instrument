@@ -19,18 +19,21 @@
 // tuser [71:64] = Gate Positions
 // tuser [79:72] = Sync Positions
 // tuser [87:80] = PPS Positions
-// tuser [92:88] = Samples/Cycle (1,2,4,8,16)
+// tuser [91:88] = Samples/Cycle (1,2,4,8,16)
+// tuser [92] = Is Q Sample
 // tuser [94:93] = Data Format 0 = 8-bit, 1= 16 bit, 2 = 24-bit, 3 = 32-bit
 // tuser [95] = Data Type 0 = Real 1 = I/Q
 // tuser [103:96] = Channel [7:0]
 // tuser [127:104] = Reserved
 typedef ap_axiu<32,128,1,1> pdti_32;
+typedef ap_axiu<64,128,1,1> pdti_64;
 const int PDTI_GATE = 64;
 const int PDTI_SYNC = 72;
 const int PDTI_PPS = 80;
 const int PDTI_NUM_SAMPLES = 88;
+const int PDTI_IS_Q_SAMPLE = 92;
 const int PDTI_FORMAT = 93;
-const int PDTI_IS_IQ = 95;
+const int PDTI_IS_IQ_FORMAT = 95;
 const int PDTI_CHANNEL = 96;
 
 //Radar scheduler parameters

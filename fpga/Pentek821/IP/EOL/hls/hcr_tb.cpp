@@ -27,7 +27,7 @@ int main()
 	volatile ap_uint<3> filter_select_ch0;
 	volatile ap_uint<3> filter_select_ch1;
 	volatile ap_uint<3> filter_select_ch2;
-	hls::stream<pdti_32> i_data("tb.i_data");
+	hls::stream<pdti_64> i_data("tb.i_data");
 	hls::stream<pdti_32> o_data("tb.o_data");
 	hls::stream<pulse_exec_definition> pulse_metadata_ch0("tb.meta_ch0");
 	hls::stream<pulse_exec_definition> pulse_metadata_ch1("tb.meta_ch1");
@@ -62,13 +62,13 @@ int main()
 		cfg_pulse_sequence[1].timer_width[t] = 63;
 	}
 
-	pdti_32 adc_data;
+	pdti_64 adc_data;
 	for(int x=0; x<cfg_num_pulses_to_execute+1; ++x)
 	{
 
-		for(int k=0; k<16;k++)
+		for(uint64_t k=0; k<16;k++)
 		{
-			adc_data.data = 256*65536 + x*256 + k;
+			adc_data.data = (k<<32) + 256*65536 + x*256 + k;
 			adc_data.user++;
 			adc_data.user[PDTI_SYNC] = (k==0);
 			adc_data.user[PDTI_GATE] = (k<15);
@@ -135,6 +135,11 @@ int main()
 	std::cout << "\n";
 	int numSamples = 0;
 	bool fail = false;
+//	while(!o_data.empty())
+//	{
+//		pdti_32 odata = o_data.read();
+//		std::cout << std::hex << odata.user[PDTI_GATE] << ", " << odata.data << "\n";
+//	}
 	while(!o_data.empty())
 	{
 		pdti_32 odata = o_data.read();
@@ -149,13 +154,21 @@ int main()
 				if (x==5) numSamples = odata.data;
 			}
 			std::cout << "\n";
-			for(int x=0; x<numSamples; x++) {
+			ap_uint<96> accum;
+			for(int x=0; x<(numSamples*3/2); x++) {
 				if(o_data.empty()) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
 				if (!odata.user[64]) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
 				odata = o_data.read();
 				if(odata.data == 0x75757575) { std::cout << "BAD DATA!\n"; fail = true; break; }
 				//std::cout << std::hex << "user: " << odata.user << " data: " << odata.data << "\n";
-				std::cout << std::hex << odata.data << "\n";
+				accum = accum >> 32;
+				accum(95,64) = odata.data;
+				if(x%3 == 2) {
+					std::cout << std::hex << std::setw(12) << std::setfill('0')
+						<< std::noshowbase << uint64_t(accum(47,0)) << "\n";
+					std::cout << std::hex << std::setw(12) << std::setfill('0')
+						<< std::noshowbase << uint64_t(accum(95,48)) << "\n";
+				}
 			}
 		}
 		else {
@@ -171,6 +184,30 @@ int main()
 	while(!pulse_metadata_ch2.empty()) pulse_metadata_ch2.read();
 
 	if(fail) return -1;
+
+//	// Bias test the squasher algorithm
+//	std::cout << std::dec << "Bias test for squasher...";
+//	pdti_64 xx;
+//	for(int x=0; x<1048576; ++x)
+//	{
+//
+//		xx.data = 0;
+//		xx.data(31,0) = x;
+//		xx.data(63,32) = (rand() & 0xFFFFFF) - 0x7FFFFF;
+//		int s1 = squash(xx).data;
+//		int I1 = s1 << 14 >> 18 << (s1&15);
+//		int Q1 = s1 >> 18 << (s1&15);
+//
+//		xx.data(31,0) = -x;
+//		int s2 = squash(xx).data;
+//		int I2 = s2 << 14 >> 18 << (s2&15);
+//		int Q2 = s2 >> 18 << (s2&15);
+//		if(I1 != -I2 || Q1 != Q2) {
+//			std::cout << x << ":" << I1 << " " << (-x) << ":" << I2 << " " << int(xx.data(63,32)) << ":" << Q1 << ":" << Q2 << std::endl;
+//			return 1;
+//		}
+//	}
+//	std::cout << " done.\n";
 
 	return 0;
 }

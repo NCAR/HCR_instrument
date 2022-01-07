@@ -2,8 +2,8 @@
 # Vivado v2019.2 (64-bit)
 # SW Build 2708876 on Wed Nov  6 21:39:14 MST 2019
 # IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
-# Start of session at: Wed Dec  1 16:10:02 2021
-# Process ID: 1344950
+# Start of session at: Thu Jan  7 15:30:09 2021
+# Process ID: 2700414
 # Current directory: /home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip
 # Command line: vivado -notrace -mode batch -source run_ippack.tcl
 # Log file: /home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_controller/solution1/impl/ip/vivado.log

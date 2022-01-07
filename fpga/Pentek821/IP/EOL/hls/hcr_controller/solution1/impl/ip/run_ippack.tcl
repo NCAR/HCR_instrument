@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_controller"
 set Version     "1.0"
 set DisplayName "Hcr_controller"
-set Revision    "2112011610"
+set Revision    "2101071530"
 set Description "Controls the radar schedule"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -242,13 +242,13 @@ set Interfaces {
         port_prefix "coef_ch0_V_V"
         has_tready "1"
         ports {
-            TDATA 24
+            TDATA 32
         }
         ctype {
             TDATA {
                 Type "integer signed"
-                Width "24"
-                Bits "24"
+                Width "32"
+                Bits "32"
             }
             TVALID {
                 Type "bool"
@@ -268,13 +268,13 @@ set Interfaces {
         port_prefix "coef_ch1_V_V"
         has_tready "1"
         ports {
-            TDATA 24
+            TDATA 32
         }
         ctype {
             TDATA {
                 Type "integer signed"
-                Width "24"
-                Bits "24"
+                Width "32"
+                Bits "32"
             }
             TVALID {
                 Type "bool"
@@ -294,13 +294,13 @@ set Interfaces {
         port_prefix "coef_ch2_V_V"
         has_tready "1"
         ports {
-            TDATA 24
+            TDATA 32
         }
         ctype {
             TDATA {
                 Type "integer signed"
-                Width "24"
-                Bits "24"
+                Width "32"
+                Bits "32"
             }
             TVALID {
                 Type "bool"
@@ -2319,7 +2319,7 @@ if {![regexp -nocase {2014\.3.*} $vivado_ver match]} {
 ipx::create_xgui_files -logo_file misc/logo.png $core
 
 ## System Info
-set user_parameters_list {clk_period 4 machine 64 combinational 0 latency undef II x}
+set user_parameters_list {clk_period 3 machine 64 combinational 0 latency undef II x}
 foreach {user_para value} $user_parameters_list {
     incr user_parameter_order
     set user_para_value [ipx::add_user_parameter $user_para $core]

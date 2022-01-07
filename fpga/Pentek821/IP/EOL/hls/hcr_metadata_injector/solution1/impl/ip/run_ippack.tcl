@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2111192119"
+set Revision    "2101071829"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -142,10 +142,10 @@ set Interfaces {
         port_prefix "i_data"
         has_tready "1"
         ports {
-            TDATA 32
+            TDATA 64
             TDEST 1
-            TKEEP 4
-            TSTRB 4
+            TKEEP 8
+            TSTRB 8
             TUSER 128
             TLAST 1
             TID 1
@@ -153,8 +153,8 @@ set Interfaces {
         ctype {
             TDATA {
                 Type "integer unsigned"
-                Width "32"
-                Bits "32"
+                Width "64"
+                Bits "64"
             }
             TVALID {
                 Type "bool"
@@ -173,13 +173,13 @@ set Interfaces {
             }
             TKEEP {
                 Type "integer unsigned"
-                Width "4"
-                Bits "4"
+                Width "8"
+                Bits "8"
             }
             TSTRB {
                 Type "integer unsigned"
-                Width "4"
-                Bits "4"
+                Width "8"
+                Bits "8"
             }
             TUSER {
                 Type "integer unsigned"
@@ -1907,7 +1907,7 @@ if {![regexp -nocase {2014\.3.*} $vivado_ver match]} {
 ipx::create_xgui_files -logo_file misc/logo.png $core
 
 ## System Info
-set user_parameters_list {clk_period 5 machine 64 combinational 0 latency undef II x}
+set user_parameters_list {clk_period 3 machine 64 combinational 0 latency undef II x}
 foreach {user_para value} $user_parameters_list {
     incr user_parameter_order
     set user_para_value [ipx::add_user_parameter $user_para $core]

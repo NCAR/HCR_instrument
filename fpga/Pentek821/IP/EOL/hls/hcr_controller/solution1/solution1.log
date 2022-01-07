@@ -3580,3 +3580,711 @@ INFO: [RTGEN 206-100] Bundling port 'return', 'cfg_pulse_sequence_start_stop_ind
 Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.5ns.
+INFO: [HLS 200-10] Setting target device to 'xcku060-ffva1517-2-e'
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'hcr_controller/hcr_controller.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 31476 ; free virtual = 511245
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 31476 ; free virtual = 511245
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'scheduler_cycle_exact' (hcr_controller/hcr_controller.cpp:328).
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'output_fifo' (hcr_controller/hcr_controller.cpp:379).
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:15 ; elapsed = 00:00:17 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 31467 ; free virtual = 511237
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] hcr_controller/hcr_controller.cpp:337: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 31460 ; free virtual = 511231
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch0.V' (hcr_controller/hcr_controller.cpp:32) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch1.V' (hcr_controller/hcr_controller.cpp:33) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch2.V' (hcr_controller/hcr_controller.cpp:34) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_scheduler.V' (hcr_controller/hcr_controller.cpp:69) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch0.V' (hcr_controller/hcr_controller.cpp:74) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch1.V' (hcr_controller/hcr_controller.cpp:78) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch2.V' (hcr_controller/hcr_controller.cpp:82) into a 853-bit variable.
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'run' (hcr_controller/hcr_controller.cpp:322) in function 'scheduler_cycle_exact' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-3.1' (hcr_controller/hcr_controller.cpp:335) in function 'scheduler_cycle_exact' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1.1.1' (hcr_controller/hcr_controller.cpp:209) in function 'scheduler_parser' completely with a factor of 3.
+INFO: [XFORM 203-102] Partitioning array 'pulse_definition.timer_offset' (hcr_controller/hcr_controller.cpp:181) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse_definition.timer_width' (hcr_controller/hcr_controller.cpp:181) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.prt' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_offset' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_width' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'num_samples' (hcr_controller/hcr_controller.cpp:208) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.prt' (hcr_controller/hcr_controller.cpp:300) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_offset' (hcr_controller/hcr_controller.cpp:300) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_width' (hcr_controller/hcr_controller.cpp:300) automatically.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.prt' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.timer_offset' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.timer_width' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+WARNING: [XFORM 203-713] Reading dataflow channel 'pps' in the middle of dataflow may stall the dataflow pipeline:
+WARNING: [XFORM 203-713] Argument 'pps' has read operations in process function 'scheduler_cycle_exact'.
+INFO: [XFORM 203-712] Applying dataflow to function 'hcr_controller', detected/extracted 5 process function(s): 
+	 'scheduler_parser'
+	 'scheduler_cycle_exact'
+	 'output_fifo70'
+	 'output_fifo71'
+	 'output_fifo'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_controller/hcr_controller.cpp:267:5) to (hcr_controller/hcr_controller.cpp:186:73) in function 'scheduler_parser'... converting 4 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_controller/hcr_controller.cpp:337:4) to (hcr_controller/hcr_controller.cpp:368:2) in function 'scheduler_cycle_exact'... converting 33 basic blocks.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 31431 ; free virtual = 511203
+WARNING: [XFORM 203-631] Renaming function 'scheduler_cycle_exact' to 'scheduler_cycle_exac' (hcr_controller/hcr_controller.cpp:290)
+INFO: [HLS 200-472] Inferring partial write operation for 'pulse_definition.prt' (hcr_controller/hcr_controller.cpp:181:67)
+INFO: [XFORM 203-603] Evaluating the output(s) of a call to function '_ssdm_op_BitSet.i853.i853.i32.i1' (hcr_controller/hcr_controller.cpp:257:6) in function 'scheduler_parser' and propagating its result(s) since all actual argument(s) to the function are constants.
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 31477 ; free virtual = 511249
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'hcr_controller' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scheduler_parser' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 20.13 seconds; current allocated memory: 174.376 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.22 seconds; current allocated memory: 175.951 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scheduler_cycle_exac' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'wait_for_pps'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 2.
+INFO: [SCHED 204-61] Pipelining loop 'run'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+WARNING: [SCHED 204-21] Estimated clock period (5.041ns) exceeds the target (target clock period: 4ns, clock uncertainty: 0.5ns, effective delay budget: 3.5ns).
+WARNING: [SCHED 204-21] The critical path in module 'scheduler_cycle_exac' consists of the following:
+	multiplexor before 'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:363) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:363) [119]  (0.835 ns)
+	'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:363) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:363) [119]  (0 ns)
+	'add' operation ('prt_clock', hcr_controller/hcr_controller.cpp:354) [213]  (1.49 ns)
+	'icmp' operation ('icmp_ln363', hcr_controller/hcr_controller.cpp:363) [217]  (1.14 ns)
+	'select' operation ('prt_clock', hcr_controller/hcr_controller.cpp:363) [218]  (0.44 ns)
+	'phi' operation ('prt_clock') with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:363) [59]  (0 ns)
+	'icmp' operation ('icmp_ln326', hcr_controller/hcr_controller.cpp:326) [63]  (1.14 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.35 seconds; current allocated memory: 176.677 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 177.604 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo70' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.11 seconds; current allocated memory: 177.737 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 177.817 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo71' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 177.892 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 177.980 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 178.070 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 178.157 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'hcr_controller' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+WARNING: [SCHED 204-21] Estimated clock period (4.704ns) exceeds the target (target clock period: 4ns, clock uncertainty: 0.5ns, effective delay budget: 3.5ns).
+WARNING: [SCHED 204-21] The critical path in module 'hcr_controller' consists of the following:
+	'call' operation ('_ln0') to 'scheduler_cycle_exac' [166]  (4.7 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 178.410 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.23 seconds; current allocated memory: 179.091 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scheduler_parser' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'scheduler_parser_pulse_definition_prt' to 'scheduler_parser_bkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'hcr_controller_udiv_32ns_32ns_32_36_seq_1' to 'hcr_controller_udcud' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'hcr_controller_udcud': 3 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scheduler_parser'.
+INFO: [HLS 200-111]  Elapsed time: 0.21 seconds; current allocated memory: 181.491 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scheduler_cycle_exac' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scheduler_cycle_exac'.
+INFO: [HLS 200-111]  Elapsed time: 0.5 seconds; current allocated memory: 187.041 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo70' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo70'.
+INFO: [HLS 200-111]  Elapsed time: 0.29 seconds; current allocated memory: 190.478 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo71' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo71'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 191.100 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo'.
+INFO: [HLS 200-111]  Elapsed time: 0.06 seconds; current allocated memory: 191.569 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'hcr_controller' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_start_stop_indexes' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_num_pulses_to_execute' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_total_decimation' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_post_decimation' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_num_pulses_per_xfer' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_enabled_channel_vector' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_watchdog' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_prt_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_prt_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_num_pulses' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_block_post_time' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_control_flags' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_polarization_mode' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_3' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_4' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_5' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_6' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_7' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_3' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_4' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_5' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_6' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_7' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch0_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch1_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch2_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/mt_pulse_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/control_flags_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/control_hvn' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch0_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch1_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch2_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch0_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch1_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch2_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pps' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'hcr_controller' to 's_axilite & ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Bundling port 'return', 'cfg_pulse_sequence_start_stop_indexes', 'cfg_num_pulses_to_execute', 'cfg_total_decimation', 'cfg_post_decimation', 'cfg_num_pulses_per_xfer', 'cfg_enabled_channel_vector', 'cfg_pulse_sequence_prt_0', 'cfg_pulse_sequence_prt_1', 'cfg_pulse_sequence_num_pulses', 'cfg_pulse_sequence_block_post_time', 'cfg_pulse_sequence_control_flags', 'cfg_pulse_sequence_polarization_mode', 'cfg_pulse_sequence_filter_select_ch0', 'cfg_pulse_sequence_filter_select_ch1', 'cfg_pulse_sequence_filter_select_ch2', 'cfg_pulse_sequence_timer_offset_0', 'cfg_pulse_sequence_timer_offset_1', 'cfg_pulse_sequence_timer_offset_2', 'cfg_pulse_sequence_timer_offset_3', 'cfg_pulse_sequence_timer_offset_4', 'cfg_pulse_sequence_timer_offset_5', 'cfg_pulse_sequence_timer_offset_6', 'cfg_pulse_sequence_timer_offset_7', 'cfg_pulse_sequence_timer_width_0', 'cfg_pulse_sequence_timer_width_1', 'cfg_pulse_sequence_timer_width_2', 'cfg_pulse_sequence_timer_width_3', 'cfg_pulse_sequence_timer_width_4', 'cfg_pulse_sequence_timer_width_5', 'cfg_pulse_sequence_timer_width_6', 'cfg_pulse_sequence_timer_width_7', 'cfg_filter_coefs_ch0', 'cfg_filter_coefs_ch1' and 'cfg_filter_coefs_ch2' to AXI-Lite port cfg_bus.
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.5ns.
+INFO: [HLS 200-10] Setting target device to 'xcku060-ffva1517-2-e'
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'hcr_controller/hcr_controller.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 2183 ; free virtual = 362614
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 2181 ; free virtual = 362612
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'scheduler_cycle_exact' (hcr_controller/hcr_controller.cpp:329).
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'output_fifo' (hcr_controller/hcr_controller.cpp:380).
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 2211 ; free virtual = 361121
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] hcr_controller/hcr_controller.cpp:338: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 2149 ; free virtual = 360020
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch0.V' (hcr_controller/hcr_controller.cpp:32) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch1.V' (hcr_controller/hcr_controller.cpp:33) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch2.V' (hcr_controller/hcr_controller.cpp:34) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_scheduler.V' (hcr_controller/hcr_controller.cpp:69) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch0.V' (hcr_controller/hcr_controller.cpp:74) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch1.V' (hcr_controller/hcr_controller.cpp:78) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch2.V' (hcr_controller/hcr_controller.cpp:82) into a 853-bit variable.
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'run' (hcr_controller/hcr_controller.cpp:323) in function 'scheduler_cycle_exact' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-3.1' (hcr_controller/hcr_controller.cpp:336) in function 'scheduler_cycle_exact' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1.1.1' (hcr_controller/hcr_controller.cpp:209) in function 'scheduler_parser' completely with a factor of 3.
+INFO: [XFORM 203-102] Partitioning array 'pulse_definition.timer_offset' (hcr_controller/hcr_controller.cpp:181) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse_definition.timer_width' (hcr_controller/hcr_controller.cpp:181) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.prt' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_offset' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_width' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'num_samples' (hcr_controller/hcr_controller.cpp:208) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.prt' (hcr_controller/hcr_controller.cpp:301) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_offset' (hcr_controller/hcr_controller.cpp:301) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_width' (hcr_controller/hcr_controller.cpp:301) automatically.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.prt' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.timer_offset' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.timer_width' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+WARNING: [XFORM 203-713] Reading dataflow channel 'pps' in the middle of dataflow may stall the dataflow pipeline:
+WARNING: [XFORM 203-713] Argument 'pps' has read operations in process function 'scheduler_cycle_exact'.
+INFO: [XFORM 203-712] Applying dataflow to function 'hcr_controller', detected/extracted 5 process function(s): 
+	 'scheduler_parser'
+	 'scheduler_cycle_exact'
+	 'output_fifo70'
+	 'output_fifo71'
+	 'output_fifo'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_controller/hcr_controller.cpp:268:5) to (hcr_controller/hcr_controller.cpp:186:73) in function 'scheduler_parser'... converting 4 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_controller/hcr_controller.cpp:338:4) to (hcr_controller/hcr_controller.cpp:369:2) in function 'scheduler_cycle_exact'... converting 33 basic blocks.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 3681 ; free virtual = 359679
+WARNING: [XFORM 203-631] Renaming function 'scheduler_cycle_exact' to 'scheduler_cycle_exac' (hcr_controller/hcr_controller.cpp:291)
+INFO: [HLS 200-472] Inferring partial write operation for 'pulse_definition.prt' (hcr_controller/hcr_controller.cpp:181:67)
+INFO: [XFORM 203-603] Evaluating the output(s) of a call to function '_ssdm_op_BitSet.i853.i853.i32.i1' (hcr_controller/hcr_controller.cpp:258:6) in function 'scheduler_parser' and propagating its result(s) since all actual argument(s) to the function are constants.
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 7419 ; free virtual = 363417
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'hcr_controller' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scheduler_parser' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 19.96 seconds; current allocated memory: 174.493 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.22 seconds; current allocated memory: 176.060 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scheduler_cycle_exac' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'wait_for_pps'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 2.
+INFO: [SCHED 204-61] Pipelining loop 'run'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+WARNING: [SCHED 204-21] Estimated clock period (5.041ns) exceeds the target (target clock period: 4ns, clock uncertainty: 0.5ns, effective delay budget: 3.5ns).
+WARNING: [SCHED 204-21] The critical path in module 'scheduler_cycle_exac' consists of the following:
+	multiplexor before 'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:364) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:364) [119]  (0.835 ns)
+	'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:364) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:364) [119]  (0 ns)
+	'add' operation ('prt_clock', hcr_controller/hcr_controller.cpp:355) [213]  (1.49 ns)
+	'icmp' operation ('icmp_ln364', hcr_controller/hcr_controller.cpp:364) [217]  (1.14 ns)
+	'select' operation ('prt_clock', hcr_controller/hcr_controller.cpp:364) [218]  (0.44 ns)
+	'phi' operation ('prt_clock') with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:364) [59]  (0 ns)
+	'icmp' operation ('icmp_ln327', hcr_controller/hcr_controller.cpp:327) [63]  (1.14 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.35 seconds; current allocated memory: 176.833 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 177.763 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo70' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.11 seconds; current allocated memory: 177.892 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0 seconds; current allocated memory: 177.974 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo71' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 178.034 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 178.121 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 178.183 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 178.271 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'hcr_controller' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+WARNING: [SCHED 204-21] Estimated clock period (4.704ns) exceeds the target (target clock period: 4ns, clock uncertainty: 0.5ns, effective delay budget: 3.5ns).
+WARNING: [SCHED 204-21] The critical path in module 'hcr_controller' consists of the following:
+	'call' operation ('_ln0') to 'scheduler_cycle_exac' [166]  (4.7 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 178.555 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.22 seconds; current allocated memory: 179.219 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scheduler_parser' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'scheduler_parser_pulse_definition_prt' to 'scheduler_parser_bkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'hcr_controller_udiv_32ns_32ns_32_36_seq_1' to 'hcr_controller_udcud' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'hcr_controller_udcud': 3 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scheduler_parser'.
+INFO: [HLS 200-111]  Elapsed time: 0.21 seconds; current allocated memory: 181.711 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scheduler_cycle_exac' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scheduler_cycle_exac'.
+INFO: [HLS 200-111]  Elapsed time: 0.48 seconds; current allocated memory: 187.298 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo70' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo70'.
+INFO: [HLS 200-111]  Elapsed time: 0.29 seconds; current allocated memory: 190.753 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo71' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo71'.
+INFO: [HLS 200-111]  Elapsed time: 0.06 seconds; current allocated memory: 191.420 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 191.858 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'hcr_controller' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_start_stop_indexes' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_num_pulses_to_execute' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_total_decimation' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_post_decimation' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_num_pulses_per_xfer' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_enabled_channel_vector' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_watchdog' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_prt_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_prt_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_num_pulses' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_block_post_time' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_control_flags' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_polarization_mode' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_3' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_4' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_5' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_6' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_7' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_3' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_4' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_5' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_6' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_7' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch0_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch1_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch2_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/mt_pulse_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/control_flags_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/control_hvn' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch0_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch1_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch2_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch0_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch1_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch2_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pps' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'hcr_controller' to 's_axilite & ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Bundling port 'return', 'cfg_pulse_sequence_start_stop_indexes', 'cfg_num_pulses_to_execute', 'cfg_total_decimation', 'cfg_post_decimation', 'cfg_num_pulses_per_xfer', 'cfg_enabled_channel_vector', 'cfg_pulse_sequence_prt_0', 'cfg_pulse_sequence_prt_1', 'cfg_pulse_sequence_num_pulses', 'cfg_pulse_sequence_block_post_time', 'cfg_pulse_sequence_control_flags', 'cfg_pulse_sequence_polarization_mode', 'cfg_pulse_sequence_filter_select_ch0', 'cfg_pulse_sequence_filter_select_ch1', 'cfg_pulse_sequence_filter_select_ch2', 'cfg_pulse_sequence_timer_offset_0', 'cfg_pulse_sequence_timer_offset_1', 'cfg_pulse_sequence_timer_offset_2', 'cfg_pulse_sequence_timer_offset_3', 'cfg_pulse_sequence_timer_offset_4', 'cfg_pulse_sequence_timer_offset_5', 'cfg_pulse_sequence_timer_offset_6', 'cfg_pulse_sequence_timer_offset_7', 'cfg_pulse_sequence_timer_width_0', 'cfg_pulse_sequence_timer_width_1', 'cfg_pulse_sequence_timer_width_2', 'cfg_pulse_sequence_timer_width_3', 'cfg_pulse_sequence_timer_width_4', 'cfg_pulse_sequence_timer_width_5', 'cfg_pulse_sequence_timer_width_6', 'cfg_pulse_sequence_timer_width_7', 'cfg_filter_coefs_ch0', 'cfg_filter_coefs_ch1' and 'cfg_filter_coefs_ch2' to AXI-Lite port cfg_bus.
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.375ns.
+INFO: [HLS 200-10] Setting target device to 'xcku060-ffva1517-2-e'
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3ns.
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
+INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'hcr_controller/hcr_controller.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 6200 ; free virtual = 350936
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 6238 ; free virtual = 350974
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'scheduler_cycle_exact' (hcr_controller/hcr_controller.cpp:329).
+INFO: [XFORM 203-603] Inlining function '__assert_readable<pulse_exec_definition>' into 'output_fifo' (hcr_controller/hcr_controller.cpp:380).
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 18316 ; free virtual = 363054
+INFO: [HLS 200-10] Checking synthesizability ...
+WARNING: [SYNCHK 200-23] hcr_controller/hcr_controller.cpp:338: variable-indexed range selection may cause suboptimal QoR.
+INFO: [SYNCHK 200-10] 0 error(s), 1 warning(s).
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 17415 ; free virtual = 362154
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch0.V' (hcr_controller/hcr_controller.cpp:32) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch1.V' (hcr_controller/hcr_controller.cpp:33) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_metadata_ch2.V' (hcr_controller/hcr_controller.cpp:34) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_scheduler.V' (hcr_controller/hcr_controller.cpp:69) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch0.V' (hcr_controller/hcr_controller.cpp:74) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch1.V' (hcr_controller/hcr_controller.cpp:78) into a 853-bit variable.
+INFO: [XFORM 203-1101] Packing variable 'pulse_queue_ch2.V' (hcr_controller/hcr_controller.cpp:82) into a 853-bit variable.
+INFO: [XFORM 203-502] Unrolling all sub-loops inside loop 'run' (hcr_controller/hcr_controller.cpp:323) in function 'scheduler_cycle_exact' for pipelining.
+INFO: [HLS 200-489] Unrolling loop 'Loop-3.1' (hcr_controller/hcr_controller.cpp:336) in function 'scheduler_cycle_exact' completely with a factor of 8.
+INFO: [HLS 200-489] Unrolling loop 'Loop-2.1.1.1' (hcr_controller/hcr_controller.cpp:209) in function 'scheduler_parser' completely with a factor of 3.
+INFO: [XFORM 203-102] Partitioning array 'pulse_definition.timer_offset' (hcr_controller/hcr_controller.cpp:181) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse_definition.timer_width' (hcr_controller/hcr_controller.cpp:181) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.prt' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_offset' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_width' (hcr_controller/hcr_controller.cpp:188) automatically.
+INFO: [XFORM 203-102] Partitioning array 'num_samples' (hcr_controller/hcr_controller.cpp:208) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.prt' (hcr_controller/hcr_controller.cpp:301) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_offset' (hcr_controller/hcr_controller.cpp:301) automatically.
+INFO: [XFORM 203-102] Partitioning array 'pulse.def.timer_width' (hcr_controller/hcr_controller.cpp:301) automatically.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.prt' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.timer_offset' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+INFO: [XFORM 203-101] Partitioning array 'cfg_pulse_sequence.timer_width' (hcr_controller/hcr_controller.cpp:19) in dimension 2 completely.
+WARNING: [XFORM 203-713] Reading dataflow channel 'pps' in the middle of dataflow may stall the dataflow pipeline:
+WARNING: [XFORM 203-713] Argument 'pps' has read operations in process function 'scheduler_cycle_exact'.
+INFO: [XFORM 203-712] Applying dataflow to function 'hcr_controller', detected/extracted 5 process function(s): 
+	 'scheduler_parser'
+	 'scheduler_cycle_exact'
+	 'output_fifo70'
+	 'output_fifo71'
+	 'output_fifo'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_controller/hcr_controller.cpp:268:5) to (hcr_controller/hcr_controller.cpp:186:73) in function 'scheduler_parser'... converting 4 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (hcr_controller/hcr_controller.cpp:338:4) to (hcr_controller/hcr_controller.cpp:369:2) in function 'scheduler_cycle_exact'... converting 33 basic blocks.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 15518 ; free virtual = 360258
+WARNING: [XFORM 203-631] Renaming function 'scheduler_cycle_exact' to 'scheduler_cycle_exac' (hcr_controller/hcr_controller.cpp:291)
+INFO: [HLS 200-472] Inferring partial write operation for 'pulse_definition.prt' (hcr_controller/hcr_controller.cpp:181:67)
+INFO: [XFORM 203-603] Evaluating the output(s) of a call to function '_ssdm_op_BitSet.i853.i853.i32.i1' (hcr_controller/hcr_controller.cpp:258:6) in function 'scheduler_parser' and propagating its result(s) since all actual argument(s) to the function are constants.
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 969.445 ; gain = 532.195 ; free physical = 14494 ; free virtual = 359234
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'hcr_controller' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scheduler_parser' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 20.05 seconds; current allocated memory: 174.375 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.23 seconds; current allocated memory: 175.971 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'scheduler_cycle_exac' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'wait_for_pps'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 2.
+INFO: [SCHED 204-61] Pipelining loop 'run'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 3.
+WARNING: [SCHED 204-21] Estimated clock period (5.041ns) exceeds the target (target clock period: 3ns, clock uncertainty: 0.375ns, effective delay budget: 2.625ns).
+WARNING: [SCHED 204-21] The critical path in module 'scheduler_cycle_exac' consists of the following:
+	multiplexor before 'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:364) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:364) [119]  (0.835 ns)
+	'phi' operation ('prt_clock_1', hcr_controller/hcr_controller.cpp:364) with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:364) [119]  (0 ns)
+	'add' operation ('prt_clock', hcr_controller/hcr_controller.cpp:355) [213]  (1.49 ns)
+	'icmp' operation ('icmp_ln364', hcr_controller/hcr_controller.cpp:364) [217]  (1.14 ns)
+	'select' operation ('prt_clock', hcr_controller/hcr_controller.cpp:364) [218]  (0.44 ns)
+	'phi' operation ('prt_clock') with incoming values : ('prt_clock', hcr_controller/hcr_controller.cpp:364) [59]  (0 ns)
+	'icmp' operation ('icmp_ln327', hcr_controller/hcr_controller.cpp:327) [63]  (1.14 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.36 seconds; current allocated memory: 176.699 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 177.629 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo70' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.12 seconds; current allocated memory: 177.761 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 177.845 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo71' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 177.905 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 177.992 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'output_fifo' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 178.081 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.01 seconds; current allocated memory: 178.168 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'hcr_controller' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+WARNING: [SCHED 204-21] Estimated clock period (4.704ns) exceeds the target (target clock period: 3ns, clock uncertainty: 0.375ns, effective delay budget: 2.625ns).
+WARNING: [SCHED 204-21] The critical path in module 'hcr_controller' consists of the following:
+	'call' operation ('_ln0') to 'scheduler_cycle_exac' [166]  (4.7 ns)
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 178.396 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.23 seconds; current allocated memory: 179.075 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scheduler_parser' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'scheduler_parser_pulse_definition_prt' to 'scheduler_parser_bkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'hcr_controller_udiv_32ns_32ns_32_36_seq_1' to 'hcr_controller_udcud' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'hcr_controller_udcud': 3 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scheduler_parser'.
+INFO: [HLS 200-111]  Elapsed time: 0.22 seconds; current allocated memory: 181.562 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'scheduler_cycle_exac' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'scheduler_cycle_exac'.
+INFO: [HLS 200-111]  Elapsed time: 0.5 seconds; current allocated memory: 187.222 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo70' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo70'.
+INFO: [HLS 200-111]  Elapsed time: 0.3 seconds; current allocated memory: 190.627 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo71' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo71'.
+INFO: [HLS 200-111]  Elapsed time: 0.06 seconds; current allocated memory: 191.302 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'output_fifo' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'output_fifo'.
+INFO: [HLS 200-111]  Elapsed time: 0.07 seconds; current allocated memory: 191.770 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'hcr_controller' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_start_stop_indexes' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_num_pulses_to_execute' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_total_decimation' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_post_decimation' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_num_pulses_per_xfer' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_enabled_channel_vector' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_watchdog' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_prt_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_prt_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_num_pulses' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_block_post_time' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_control_flags' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_polarization_mode' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_filter_select_ch2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_3' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_4' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_5' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_6' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_offset_7' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_3' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_4' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_5' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_6' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_pulse_sequence_timer_width_7' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch0' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch1' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/cfg_filter_coefs_ch2' to 's_axilite & ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch0_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch1_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/coef_ch2_V_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/mt_pulse_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/control_flags_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/control_hvn' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch0_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch1_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/filter_select_ch2_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch0_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch1_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pulse_metadata_ch2_V' to 'axis' (register, both mode).
+INFO: [RTGEN 206-500] Setting interface mode on port 'hcr_controller/pps' to 'ap_memory'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'hcr_controller' to 's_axilite & ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Bundling port 'return', 'cfg_pulse_sequence_start_stop_indexes', 'cfg_num_pulses_to_execute', 'cfg_total_decimation', 'cfg_post_decimation', 'cfg_num_pulses_per_xfer', 'cfg_enabled_channel_vector', 'cfg_pulse_sequence_prt_0', 'cfg_pulse_sequence_prt_1', 'cfg_pulse_sequence_num_pulses', 'cfg_pulse_sequence_block_post_time', 'cfg_pulse_sequence_control_flags', 'cfg_pulse_sequence_polarization_mode', 'cfg_pulse_sequence_filter_select_ch0', 'cfg_pulse_sequence_filter_select_ch1', 'cfg_pulse_sequence_filter_select_ch2', 'cfg_pulse_sequence_timer_offset_0', 'cfg_pulse_sequence_timer_offset_1', 'cfg_pulse_sequence_timer_offset_2', 'cfg_pulse_sequence_timer_offset_3', 'cfg_pulse_sequence_timer_offset_4', 'cfg_pulse_sequence_timer_offset_5', 'cfg_pulse_sequence_timer_offset_6', 'cfg_pulse_sequence_timer_offset_7', 'cfg_pulse_sequence_timer_width_0', 'cfg_pulse_sequence_timer_width_1', 'cfg_pulse_sequence_timer_width_2', 'cfg_pulse_sequence_timer_width_3', 'cfg_pulse_sequence_timer_width_4', 'cfg_pulse_sequence_timer_width_5', 'cfg_pulse_sequence_timer_width_6', 'cfg_pulse_sequence_timer_width_7', 'cfg_filter_coefs_ch0', 'cfg_filter_coefs_ch1' and 'cfg_filter_coefs_ch2' to AXI-Lite port cfg_bus.
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================

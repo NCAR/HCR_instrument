@@ -28,7 +28,7 @@
       "index": "0",
       "type": {
         "kinds": ["struct"],
-        "dataType": "ap_axiu<32, 128, 1, 1>",
+        "dataType": "ap_axiu<64, 128, 1, 1>",
         "structImpl": "flat-field",
         "dataPack": true,
         "fields": {
@@ -232,13 +232,13 @@
   },
   "ClockInfo": {
     "ClockName": "ap_clk",
-    "ClockPeriod": "5",
+    "ClockPeriod": "3",
     "IsCombLogic": "0",
     "II": "x",
     "Latency": "undef",
-    "Uncertainty": "0.625"
+    "Uncertainty": "0.375"
   },
-  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 5.000 [get_ports ap_clk]"]},
+  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 3.000 [get_ports ap_clk]"]},
   "Ipx": {
     "Vendor": "NCAR",
     "Library": "EOL",
@@ -317,7 +317,7 @@
       "ctype": {
         "TDATA": {
           "Type": "integer unsigned",
-          "Width": "32"
+          "Width": "64"
         },
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"},
@@ -327,11 +327,11 @@
         },
         "TKEEP": {
           "Type": "integer unsigned",
-          "Width": "4"
+          "Width": "8"
         },
         "TSTRB": {
           "Type": "integer unsigned",
-          "Width": "4"
+          "Width": "8"
         },
         "TUSER": {
           "Type": "integer unsigned",
@@ -347,12 +347,12 @@
         }
       },
       "port_width": {
-        "TDATA": "32",
+        "TDATA": "64",
         "TDEST": "1",
         "TID": "1",
-        "TKEEP": "4",
+        "TKEEP": "8",
         "TLAST": "1",
-        "TSTRB": "4",
+        "TSTRB": "8",
         "TUSER": "128"
       }
     },
@@ -564,7 +564,7 @@
     },
     "i_data_TDATA": {
       "dir": "in",
-      "width": "32"
+      "width": "64"
     },
     "i_data_TVALID": {
       "dir": "in",
@@ -581,11 +581,11 @@
     },
     "i_data_TKEEP": {
       "dir": "in",
-      "width": "4"
+      "width": "8"
     },
     "i_data_TSTRB": {
       "dir": "in",
-      "width": "4"
+      "width": "8"
     },
     "i_data_TUSER": {
       "dir": "in",
@@ -670,7 +670,7 @@
       "ModuleName": "hcr_metadata_injector",
       "Instances": [{
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_335"
+          "InstanceName": "grp_handle_header_fu_618"
         }]
     },
     "Info": {
@@ -700,17 +700,17 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "5.00",
-          "Uncertainty": "0.62",
-          "Estimate": "2.408"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "1.573"
         },
         "Loops": [
           {
-            "Name": "Loop 1",
+            "Name": "pad",
             "TripCount": "",
             "Latency": "",
-            "PipelineII": "1",
-            "PipelineDepth": "2"
+            "PipelineII": "3",
+            "PipelineDepth": "4"
           },
           {
             "Name": "write_header",
@@ -721,8 +721,8 @@
           }
         ],
         "Area": {
-          "FF": "1398",
-          "LUT": "595",
+          "FF": "1699",
+          "LUT": "571",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -738,9 +738,9 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "5.00",
-          "Uncertainty": "0.62",
-          "Estimate": "2.745"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.488"
         },
         "Loops": [{
             "Name": "pulse_loop",
@@ -752,13 +752,13 @@
                 "Name": "sample_loop",
                 "TripCount": "",
                 "Latency": "",
-                "PipelineII": "1",
-                "PipelineDepth": "3"
+                "PipelineII": "3",
+                "PipelineDepth": "5"
               }]
           }],
         "Area": {
-          "FF": "1896",
-          "LUT": "1232",
+          "FF": "3325",
+          "LUT": "1417",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -776,7 +776,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-11-19 21:19:36 GMT",
+    "Time": "2021-01-07 18:29:14 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=4.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7290,HLS_SYN_LUT=9816,HLS_VERSION=2019_2}" *)
+(* CORE_GENERATION_INFO="hcr_controller,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku060-ffva1517-2-e,HLS_INPUT_CLOCK=3.000000,HLS_INPUT_ARCH=dataflow,HLS_SYN_CLOCK=5.041000,HLS_SYN_LAT=-1,HLS_SYN_TPT=-1,HLS_SYN_MEM=106,HLS_SYN_DSP=0,HLS_SYN_FF=7692,HLS_SYN_LUT=9837,HLS_VERSION=2019_2}" *)
 
 module hcr_controller (
         s_axi_cfg_bus_AWVALID,
@@ -95,9 +95,9 @@ output  [1:0] s_axi_cfg_bus_BRESP;
 input   ap_clk;
 input   ap_rst_n;
 output   interrupt;
-output  [23:0] coef_ch0_V_V_TDATA;
-output  [23:0] coef_ch1_V_V_TDATA;
-output  [23:0] coef_ch2_V_V_TDATA;
+output  [31:0] coef_ch0_V_V_TDATA;
+output  [31:0] coef_ch1_V_V_TDATA;
+output  [31:0] coef_ch2_V_V_TDATA;
 output  [7:0] mt_pulse_V;
 output  [31:0] control_flags_V;
 output   control_hvn;
@@ -235,11 +235,11 @@ wire   [8:0] scheduler_parser_U0_cfg_filter_coefs_ch1_address0;
 wire    scheduler_parser_U0_cfg_filter_coefs_ch1_ce0;
 wire   [8:0] scheduler_parser_U0_cfg_filter_coefs_ch2_address0;
 wire    scheduler_parser_U0_cfg_filter_coefs_ch2_ce0;
-wire   [23:0] scheduler_parser_U0_coef_ch0_V_V_TDATA;
+wire   [31:0] scheduler_parser_U0_coef_ch0_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch0_V_V_TVALID;
-wire   [23:0] scheduler_parser_U0_coef_ch1_V_V_TDATA;
+wire   [31:0] scheduler_parser_U0_coef_ch1_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch1_V_V_TVALID;
-wire   [23:0] scheduler_parser_U0_coef_ch2_V_V_TDATA;
+wire   [31:0] scheduler_parser_U0_coef_ch2_V_V_TDATA;
 wire    scheduler_parser_U0_coef_ch2_V_V_TVALID;
 wire   [852:0] scheduler_parser_U0_pulse_queue_0_V_din;
 wire    scheduler_parser_U0_pulse_queue_0_V_write;

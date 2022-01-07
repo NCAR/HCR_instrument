@@ -1,12 +1,12 @@
 INFO: [HLS 200-10] Running '/home/karboski/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/vivado_hls'
-INFO: [HLS 200-10] For user 'karboski' on host 'wind.eol.ucar.edu' (Linux_x86_64 version 4.18.0-277.el8.x86_64) on Wed Dec 01 16:09:58 GMT 2021
+INFO: [HLS 200-10] For user 'karboski' on host 'wind.eol.ucar.edu' (Linux_x86_64 version 4.18.0-277.el8.x86_64) on Thu Jan 07 18:29:12 GMT 2021
 INFO: [HLS 200-10] In directory '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls'
-Sourcing Tcl script '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_controller/solution1/export.tcl'
-INFO: [HLS 200-10] Opening project '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_controller'.
-INFO: [HLS 200-10] Opening solution '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_controller/solution1'.
-INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
-INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.5ns.
-INFO: [HLS 200-10] Setting target device to 'xcku060-ffva1517-2-e'
+Sourcing Tcl script '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector/solution1/export.tcl'
+INFO: [HLS 200-10] Opening project '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector'.
+INFO: [HLS 200-10] Opening solution '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector/solution1'.
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3ns.
+INFO: [SYN 201-201] Setting up clock 'default' with an uncertainty of 0.375ns.
+INFO: [HLS 200-10] Setting target device to 'xcku060-ffva1156-2-e'
 INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: config_export -vivado_optimization_level=2
 INFO: [HLS 200-435] Setting 'config_sdx -target' configuration: set_clock_uncertainty default
 INFO: [IMPL 213-8] Exporting RTL as a Vivado IP.
@@ -20,4 +20,4 @@ source run_ippack.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/karboski/Xilinx/Vivado/2019.2/data/ip'.
-INFO: [Common 17-206] Exiting Vivado at Wed Dec  1 16:10:12 2021...
+INFO: [Common 17-206] Exiting Vivado at Thu Jan  7 18:29:25 2021...

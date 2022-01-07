@@ -175,7 +175,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.I_DATA.TDATA_NUM_BYTES">4</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.I_DATA.TDATA_NUM_BYTES">8</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TDEST_WIDTH</spirit:name>
@@ -406,7 +406,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>45f5e8fe</spirit:value>
+            <spirit:value>0ad7867a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -422,7 +422,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>dc1ee711</spirit:value>
+            <spirit:value>28175994</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -438,7 +438,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>1811e593</spirit:value>
+            <spirit:value>a7df2426</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -454,7 +454,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>38b431ea</spirit:value>
+            <spirit:value>370e8589</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -633,7 +633,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:left spirit:format="long">63</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -670,7 +670,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:left spirit:format="long">7</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -681,7 +681,7 @@
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
           <spirit:driver>
-            <spirit:defaultValue spirit:format="long">15</spirit:defaultValue>
+            <spirit:defaultValue spirit:format="long">255</spirit:defaultValue>
           </spirit:driver>
         </spirit:wire>
       </spirit:port>
@@ -690,7 +690,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">3</spirit:left>
+            <spirit:left spirit:format="long">7</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -701,7 +701,7 @@
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
           <spirit:driver>
-            <spirit:defaultValue spirit:format="long">15</spirit:defaultValue>
+            <spirit:defaultValue spirit:format="long">255</spirit:defaultValue>
           </spirit:driver>
         </spirit:wire>
       </spirit:port>
@@ -1063,7 +1063,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_75a59148</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_26996d8b</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1131,7 +1131,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>clk_period</spirit:name>
-      <spirit:value spirit:id="PARAM_VALUE.clk_period" spirit:order="2">5</spirit:value>
+      <spirit:value spirit:id="PARAM_VALUE.clk_period" spirit:order="2">3</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>machine</spirit:name>
@@ -1160,15 +1160,15 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Hcr_metadata_injector</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2111192119</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-11-19T21:19:46Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2101071829</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-01-07T18:29:25Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="530c849d"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="9301bdbd"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="22372c8a"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="ccb8edb2"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="93e97e05"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="9ecbf7e1"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="c3706221"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="1a4b01a6"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

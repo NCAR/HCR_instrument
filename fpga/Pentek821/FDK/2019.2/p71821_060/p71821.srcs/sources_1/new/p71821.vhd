@@ -303,22 +303,22 @@ port (
    ---------------------------------------------------------------------------
    -- DDR4
    ---------------------------------------------------------------------------
-   C0_SYS_CLK_P      : in  std_logic;                  
-   C0_SYS_CLK_N      : in  std_logic;                  
-   C0_DDR4_ADR       : out std_logic_vector(16 downto 0);
-   C0_DDR4_BA        : out std_logic_vector(1 downto 0);
-   C0_DDR4_CKE       : out std_logic_vector(0 downto 0);
-   C0_DDR4_CS_N      : out std_logic_vector(0 downto 0);
-   C0_DDR4_DM_DBI_N  : inout std_logic_vector(9 downto 0);
-   C0_DDR4_DQ        : inout std_logic_vector(79 downto 0);
-   C0_DDR4_DQS_C     : inout std_logic_vector(9 downto 0);
-   C0_DDR4_DQS_T     : inout std_logic_vector(9 downto 0);
-   C0_DDR4_ODT       : out std_logic_vector(0 downto 0);
-   C0_DDR4_BG        : out std_logic_vector(0 downto 0);
-   C0_DDR4_RESET_N   : out std_logic;                 
-   C0_DDR4_ACT_N     : out std_logic;                 
-   C0_DDR4_CK_C      : out std_logic_vector(0 downto 0);
-   C0_DDR4_CK_T      : out std_logic_vector(0 downto 0);
+--   C0_SYS_CLK_P      : in  std_logic;                  
+--   C0_SYS_CLK_N      : in  std_logic;                  
+--   C0_DDR4_ADR       : out std_logic_vector(16 downto 0);
+--   C0_DDR4_BA        : out std_logic_vector(1 downto 0);
+--   C0_DDR4_CKE       : out std_logic_vector(0 downto 0);
+--   C0_DDR4_CS_N      : out std_logic_vector(0 downto 0);
+--   C0_DDR4_DM_DBI_N  : inout std_logic_vector(9 downto 0);
+--   C0_DDR4_DQ        : inout std_logic_vector(79 downto 0);
+--   C0_DDR4_DQS_C     : inout std_logic_vector(9 downto 0);
+--   C0_DDR4_DQS_T     : inout std_logic_vector(9 downto 0);
+--   C0_DDR4_ODT       : out std_logic_vector(0 downto 0);
+--   C0_DDR4_BG        : out std_logic_vector(0 downto 0);
+--   C0_DDR4_RESET_N   : out std_logic;                 
+--   C0_DDR4_ACT_N     : out std_logic;                 
+--   C0_DDR4_CK_C      : out std_logic_vector(0 downto 0);
+--   C0_DDR4_CK_T      : out std_logic_vector(0 downto 0);
    ----------------------------------------------------------------------------
    -- CDC Control and Status
    ----------------------------------------------------------------------------
@@ -2302,44 +2302,49 @@ ddr4_intrfc_wrapper_i: ddr4_intrfc_wrapper
     s_axis_dac_ddr_rqst_tvalid   => axis_dac_ddr_rqst_tvalid
   );
 
-ddr4_ctlr_inst: ddr4_80_ctlr
-port map (
-   c0_init_calib_complete   => init_calib_complete,
-   c0_sys_clk_p             => C0_SYS_CLK_P,   
-   c0_sys_clk_n             => C0_SYS_CLK_N,   
-   c0_ddr4_adr              => C0_DDR4_ADR,    
-   c0_ddr4_ba               => C0_DDR4_BA,     
-   c0_ddr4_cke              => C0_DDR4_CKE,    
-   c0_ddr4_cs_n             => C0_DDR4_CS_N,   
-   c0_ddr4_dm_dbi_n         => C0_DDR4_DM_DBI_N,
-   c0_ddr4_dq               => C0_DDR4_DQ,     
-   c0_ddr4_dqs_c            => C0_DDR4_DQS_C,  
-   c0_ddr4_dqs_t            => C0_DDR4_DQS_T,  
-   c0_ddr4_odt              => C0_DDR4_ODT,    
-   c0_ddr4_bg               => C0_DDR4_BG,     
-   c0_ddr4_reset_n          => C0_DDR4_RESET_N,
-   c0_ddr4_act_n            => C0_DDR4_ACT_N,  
-   c0_ddr4_ck_c             => C0_DDR4_CK_C,   
-   c0_ddr4_ck_t             => C0_DDR4_CK_T,   
-   c0_ddr4_ui_clk           => ddr4_ui_clk,
-   c0_ddr4_ui_clk_sync_rst  => ddr4_ui_clk_sync_rst,
-   c0_ddr4_app_en           => ddr4_ui_app_en, 
-   c0_ddr4_app_hi_pri       => ddr4_ui_app_hi_pri, 
-   c0_ddr4_app_wdf_end      => ddr4_ui_app_wdf_end, 
-   c0_ddr4_app_wdf_wren     => ddr4_ui_app_wdf_wren,
-   c0_ddr4_app_rd_data_end  => ddr4_ui_app_rd_data_end,  
-   c0_ddr4_app_rd_data_valid=> ddr4_ui_app_rd_data_valid,      
-   c0_ddr4_app_rdy          => ddr4_ui_app_rdy,
-   c0_ddr4_app_wdf_rdy      => ddr4_ui_app_wdf_rdy,
-   c0_ddr4_app_addr         => ddr4_ui_app_addr(28 downto 0), 
-   c0_ddr4_app_cmd          => ddr4_ui_app_cmd, 
-   c0_ddr4_app_wdf_data     => ddr4_ui_app_wdf_data,
-   c0_ddr4_app_wdf_mask     => ddr4_ui_app_wdf_mask,
-   c0_ddr4_app_rd_data      => ddr4_ui_app_rd_data, 
-   sys_rst                  => ddr4_sys_rst
-); 
+--Disable DDR and tie off signals
+ddr4_ui_clk <= axi_csr_aclk;
+ddr4_ui_rstn <= axi_csr_aresetn;                   
+init_calib_complete <= '0';
 
-ddr4_ui_rstn <= not ddr4_ui_clk_sync_rst;
+--ddr4_ctlr_inst: ddr4_80_ctlr
+--port map (
+--   c0_init_calib_complete   => init_calib_complete,
+--   c0_sys_clk_p             => C0_SYS_CLK_P,   
+--   c0_sys_clk_n             => C0_SYS_CLK_N,   
+--   c0_ddr4_adr              => C0_DDR4_ADR,    
+--   c0_ddr4_ba               => C0_DDR4_BA,     
+--   c0_ddr4_cke              => C0_DDR4_CKE,    
+--   c0_ddr4_cs_n             => C0_DDR4_CS_N,   
+--   c0_ddr4_dm_dbi_n         => C0_DDR4_DM_DBI_N,
+--   c0_ddr4_dq               => C0_DDR4_DQ,     
+--   c0_ddr4_dqs_c            => C0_DDR4_DQS_C,  
+--   c0_ddr4_dqs_t            => C0_DDR4_DQS_T,  
+--   c0_ddr4_odt              => C0_DDR4_ODT,    
+--   c0_ddr4_bg               => C0_DDR4_BG,     
+--   c0_ddr4_reset_n          => C0_DDR4_RESET_N,
+--   c0_ddr4_act_n            => C0_DDR4_ACT_N,  
+--   c0_ddr4_ck_c             => C0_DDR4_CK_C,   
+--   c0_ddr4_ck_t             => C0_DDR4_CK_T,   
+--   c0_ddr4_ui_clk           => ddr4_ui_clk,
+--   c0_ddr4_ui_clk_sync_rst  => ddr4_ui_clk_sync_rst,
+--   c0_ddr4_app_en           => ddr4_ui_app_en, 
+--   c0_ddr4_app_hi_pri       => ddr4_ui_app_hi_pri, 
+--   c0_ddr4_app_wdf_end      => ddr4_ui_app_wdf_end, 
+--   c0_ddr4_app_wdf_wren     => ddr4_ui_app_wdf_wren,
+--   c0_ddr4_app_rd_data_end  => ddr4_ui_app_rd_data_end,  
+--   c0_ddr4_app_rd_data_valid=> ddr4_ui_app_rd_data_valid,      
+--   c0_ddr4_app_rdy          => ddr4_ui_app_rdy,
+--   c0_ddr4_app_wdf_rdy      => ddr4_ui_app_wdf_rdy,
+--   c0_ddr4_app_addr         => ddr4_ui_app_addr(28 downto 0), 
+--   c0_ddr4_app_cmd          => ddr4_ui_app_cmd, 
+--   c0_ddr4_app_wdf_data     => ddr4_ui_app_wdf_data,
+--   c0_ddr4_app_wdf_mask     => ddr4_ui_app_wdf_mask,
+--   c0_ddr4_app_rd_data      => ddr4_ui_app_rd_data, 
+--   sys_rst                  => ddr4_sys_rst
+--); 
+--
+--ddr4_ui_rstn <= not ddr4_ui_clk_sync_rst;
 
 --------------------------------------------------------------------------------
 -- PCIe System Clocks

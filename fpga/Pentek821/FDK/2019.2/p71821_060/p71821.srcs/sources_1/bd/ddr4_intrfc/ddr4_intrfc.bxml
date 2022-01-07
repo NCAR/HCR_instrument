@@ -8,29 +8,29 @@
     <Generation Name="HW_HANDOFF" State="GENERATED" Timestamp="1619640218"/>
     <FileCollection Name="SOURCES" Type="SOURCES">
       <File Name="ddr4_intrfc_sim_netlist.vhdl" Type="VHDL">
-        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Properties IsEditable="true" IsVisible="true" Timestamp="1636761038" IsTrackable="true" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
         <UsedIn Val="SINGLE_LANGUAGE"/>
       </File>
       <File Name="ddr4_intrfc_sim_netlist.v" Type="Verilog">
-        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Properties IsEditable="true" IsVisible="true" Timestamp="1636761037" IsTrackable="true" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SIMULATION"/>
         <UsedIn Val="SINGLE_LANGUAGE"/>
       </File>
       <File Name="ddr4_intrfc_stub.vhdl" Type="VHDL">
-        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Properties IsEditable="true" IsVisible="true" Timestamp="1636761036" IsTrackable="true" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTH_BLACKBOX_STUB"/>
       </File>
       <File Name="ddr4_intrfc_stub.v" Type="Verilog">
-        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Properties IsEditable="true" IsVisible="true" Timestamp="1636761036" IsTrackable="true" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTH_BLACKBOX_STUB"/>
       </File>
       <File Name="ddr4_intrfc.dcp" Type="DCP">
-        <Properties IsEditable="true" IsVisible="true" Timestamp="0" IsTrackable="true" IsStatusTracked="false"/>
+        <Properties IsEditable="true" IsVisible="true" Timestamp="1636761036" IsTrackable="true" IsStatusTracked="false"/>
         <Library Name="xil_defaultlib"/>
         <UsedIn Val="SYNTHESIS"/>
         <UsedIn Val="IMPLEMENTATION"/>
