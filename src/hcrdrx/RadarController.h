@@ -62,6 +62,13 @@ public:
         uint32_t spare15;
     };
 
+    struct PackedDataSample
+    {
+        unsigned int exponent   : 4;
+        int I                   : 14;
+        int Q                   : 14;
+    };
+
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
     static constexpr uint32_t NUM_TOTAL_FILTER_COEFS                  = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_FILTER_COEFS_CH0;
     static constexpr uint32_t NUM_FILTER_COEF_SETS                    = 8;

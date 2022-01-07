@@ -742,6 +742,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     size_t dataBufOffsetBytes = 0;
     bool lastPulseInXfer = false;
     using IQData = PulseData::IQData;
+    using PackedIQData = Controller::PackedDataSample;
 
     // ILOG << "_acceptAdcData " << chan << "\n";
 
@@ -824,15 +825,28 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         }
 
         // Check the size of the buffer
-        if(dataBufOffsetBytes + nGates*sizeof(IQData) > metadata->validBytes) {
+        if(dataBufOffsetBytes + nGates*sizeof(PackedIQData) > metadata->validBytes) {
             ELOG << "Truncated pulse data chan " << std::dec << chan
                  << " after pulse " << numPulsesProcessed;
             return;
         }
 
         // Extract the IQ data
-        const IQData* iqData(reinterpret_cast<const IQData*>(dataBuf+dataBufOffsetBytes));
-        dataBufOffsetBytes += nGates * sizeof(IQData);
+        const PackedIQData* packedIqData(reinterpret_cast<const PackedIQData*>(dataBuf+dataBufOffsetBytes));
+        dataBufOffsetBytes += nGates * sizeof(PackedIQData);
+
+        // Unpack the IQ data from pseudo-floating-point
+        IQData iqData[nGates];
+        for(auto k=0; k<nGates; ++k) {
+            //PackedIQData s = packedIqData[k];
+            //PackedIQData exponent = s & 0xF;
+            //iqData[k] = {
+            //    s << 14 >> 18 << exponent,
+            //    s >> 18 << exponent
+            //};
+            auto s = packedIqData[k];
+            iqData[k] = { s.I << s.exponent, s.Q << s.exponent };
+        }
 
         // Update info for status()
         _prevXmitPulseWidth = _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width);
@@ -918,9 +932,8 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
         return(false);
     }
 
-    // For publishing, we only handle complex (i.e., IQ) data, with I in the first sample.
-    //
-    // PulseData::IQData can be 16 or 32 bit, it just has to match what comes out of the FPGA.
+    // For HCR there is a custom format, but it's the same size as
+    // dataFormat 1, and reported as such.
     //
     // Navigator definitions used on the FPGA side do not agree with the
     // NAV_IP_DMA_PPKT2PCIE_METADATA_* macros on the our side.
@@ -929,8 +942,7 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
     //      metaData->dataFormat: 0 = 8-bit, 1 = 16-bit, 2 = 24-bit(?), 3 = 32-bit
     //              ->dataType: 0 = real, 1 = complex (IQ)
     //              ->firstSamplePhase: 0 = I first, 1 = Q first
-    auto iqSize = (1+metadata->dataFormat) * 2;
-    if (!(iqSize == sizeof(PulseData::IQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
+    if (!(metadata->dataFormat == 1 && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
         ELOG << "Chan " << chan <<
                 ": data unpublishable w/format: " << metadata->dataFormat <<
                 ", type: " << metadata->dataType <<
