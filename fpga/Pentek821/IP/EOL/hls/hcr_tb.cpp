@@ -149,7 +149,7 @@ int main()
 				if (x==5) numSamples = odata.data;
 			}
 			std::cout << "\n";
-			for(int x=0; x<numSamples*2; x++) {
+			for(int x=0; x<numSamples; x++) {
 				if(o_data.empty()) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
 				if (!odata.user[64]) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
 				odata = o_data.read();
@@ -172,5 +172,28 @@ int main()
 
 	if(fail) return -1;
 
+	// Bias test the squasher algorithm
+	std::cout << std::dec << "Bias test for squasher...";
+	pdti_64 xx;
+	for(int x=0; x<1048576; ++x)
+	{
+
+		xx.data = 0;
+		xx.data(31,0) = x;
+		xx.data(63,32) = (rand() & 0xFFFFFF) - 0x7FFFFF;
+		int s1 = squash(xx).data;
+		int I1 = s1 << 14 >> 18 << (s1&15);
+		int Q1 = s1 >> 18 << (s1&15);
+
+		xx.data(31,0) = -x;
+		int s2 = squash(xx).data;
+		int I2 = s2 << 14 >> 18 << (s2&15);
+		int Q2 = s2 >> 18 << (s2&15);
+		if(I1 != -I2 || Q1 != Q2) {
+			std::cout << x << ":" << I1 << " " << (-x) << ":" << I2 << " " << int(xx.data(63,32)) << ":" << Q1 << ":" << Q2 << std::endl;
+			return 1;
+		}
+	}
+	std::cout << " done.\n";
 	return 0;
 }

@@ -1,6 +1,69 @@
 Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Jan  6 18:02:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_2'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_2 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101051652) to (Rev. 2101061755)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Jan  6 18:02:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_1'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_1 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101051652) to (Rev. 2101061755)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
+| Date         : Thu Jan  6 18:02:08 2022
+| Host         : wind running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xcku060-ffva1156-2-e
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'user_block2_hcr_metadata_injector_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of user_block2_hcr_metadata_injector_0_0 (NCAR:EOL:hcr_metadata_injector:1.0) from (Rev. 2101051652) to (Rev. 2101061755)
+
+
+
+
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
 | Date         : Wed Jan  5 17:04:04 2022
 | Host         : wind running 64-bit unknown
 | Command      : upgrade_ip

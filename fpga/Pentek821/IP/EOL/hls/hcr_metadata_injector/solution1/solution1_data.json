@@ -232,13 +232,13 @@
   },
   "ClockInfo": {
     "ClockName": "ap_clk",
-    "ClockPeriod": "5",
+    "ClockPeriod": "3",
     "IsCombLogic": "0",
     "II": "x",
     "Latency": "undef",
-    "Uncertainty": "0.625"
+    "Uncertainty": "0.375"
   },
-  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 5.000 [get_ports ap_clk]"]},
+  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 3.000 [get_ports ap_clk]"]},
   "Ipx": {
     "Vendor": "NCAR",
     "Library": "EOL",
@@ -670,7 +670,7 @@
       "ModuleName": "hcr_metadata_injector",
       "Instances": [{
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_360"
+          "InstanceName": "grp_handle_header_fu_361"
         }]
     },
     "Info": {
@@ -700,17 +700,17 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "5.00",
-          "Uncertainty": "0.62",
-          "Estimate": "2.408"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.142"
         },
         "Loops": [
           {
             "Name": "Loop 1",
             "TripCount": "",
             "Latency": "",
-            "PipelineII": "2",
-            "PipelineDepth": "3"
+            "PipelineII": "1",
+            "PipelineDepth": "2"
           },
           {
             "Name": "write_header",
@@ -721,8 +721,8 @@
           }
         ],
         "Area": {
-          "FF": "1730",
-          "LUT": "721",
+          "FF": "1815",
+          "LUT": "1287",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -738,9 +738,9 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "5.00",
-          "Uncertainty": "0.62",
-          "Estimate": "2.745"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "3.000"
         },
         "Loops": [{
             "Name": "pulse_loop",
@@ -752,14 +752,14 @@
                 "Name": "sample_loop",
                 "TripCount": "",
                 "Latency": "",
-                "PipelineII": "2",
-                "PipelineDepth": "4"
+                "PipelineII": "1",
+                "PipelineDepth": "6"
               }]
           }],
         "Area": {
-          "FF": "2446",
-          "LUT": "1381",
-          "BRAM_18K": "0",
+          "BRAM_18K": "4",
+          "FF": "2841",
+          "LUT": "2646",
           "DSP48E": "0",
           "URAM": "0"
         }
@@ -776,7 +776,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-01-05 16:52:33 GMT",
+    "Time": "2021-01-06 17:55:58 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

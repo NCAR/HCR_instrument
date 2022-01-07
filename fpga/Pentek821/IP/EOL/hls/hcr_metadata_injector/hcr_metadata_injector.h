@@ -37,27 +37,41 @@ bool handle_header(
 		uint16_t flags
 	);
 
-inline pdti_32 split(pdti_64 x, bool q)
+// Create a pseudo-float output of the format
+// [ 14 bit 2's comp Q][ 14 bit 2's comp I][4 bit exponent]
+// To convert back to integers:
+// int I = s << 14 >> 18 << (s & 15);
+// int Q = s >> 18 << (s & 15);
+inline pdti_32 squash(pdti_64 x)
 {
 #pragma HLS inline
+	ap_int<32> I = x.data(31,0);
+	ap_int<32> Q = x.data(63,32);
+
+	// Get the least number of sign bits
+	uint8_t signsI = (I<0) ? __builtin_clz(~I) : __builtin_clz(I);
+	uint8_t signsQ = (Q<0) ? __builtin_clz(~Q) : __builtin_clz(Q);
+	uint8_t signs = (signsI<signsQ) ? signsI : signsQ;
+
+	// If the number is too large, compute the right shift
+	uint8_t shift = (signs>19) ? 0 : (19-signs);
+
+	// Round towards zero to prevent bias (important!)
+	if(I<0) I += ((1<<shift)-1);
+	if(Q<0) Q += ((1<<shift)-1);
+
+	// Assign output
 	pdti_32 y;
-	y.data = q ? x.data(63,32) : x.data(31,0);
+	y.data(3,0) = shift;
+	y.data(17,4) = I >> shift;
+	y.data(31,18) = Q >> shift;
 	y.dest = x.dest;
 	y.id = x.id;
-	y.keep = q ? x.keep(7,4) : x.keep(3,0);
+	y.keep = x.keep;
 	y.last = x.last;
-	y.strb = q ? x.strb(7,4) : x.strb(3,0);
+	y.strb = x.strb;
 	y.user = x.user;
-	y.user[PDTI_IS_Q_SAMPLE] = q ? 1 : 0;
-	y.user(PDTI_FORMAT+1,PDTI_FORMAT) = 3;
 	return y;
-};
-
-inline void write_split(hls::stream<pdti_32>& o_data, pdti_64 x)
-{
-#pragma HLS inline
-	o_data << split(x,false);
-	o_data << split(x,true);
 };
 
 #endif // __HCR_METADATA_INJ_H__

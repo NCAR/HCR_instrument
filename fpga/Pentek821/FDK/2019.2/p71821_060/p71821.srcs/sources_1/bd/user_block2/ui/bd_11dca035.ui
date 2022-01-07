@@ -1,39 +1,39 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"0.585882",
-   "Default View_TopLeft":"-732,0",
+   "Default View_TopLeft":"-722,3",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
 #  -string -flagsOSRD
-preplace port coef_ch0 -pg 1 -lvl 2 -x 510 -y 60 -defaultsOSRD
-preplace port coef_ch1 -pg 1 -lvl 2 -x 510 -y 80 -defaultsOSRD
-preplace port coef_ch2 -pg 1 -lvl 2 -x 510 -y 100 -defaultsOSRD
-preplace port pulse_metadata_ch0 -pg 1 -lvl 2 -x 510 -y 120 -defaultsOSRD
-preplace port pulse_metadata_ch1 -pg 1 -lvl 2 -x 510 -y 140 -defaultsOSRD
-preplace port pulse_metadata_ch2 -pg 1 -lvl 2 -x 510 -y 160 -defaultsOSRD
-preplace port s_axi_cfg_bus -pg 1 -lvl 0 -x -10 -y 250 -defaultsOSRD
-preplace port adc_aclk -pg 1 -lvl 0 -x -10 -y 270 -defaultsOSRD
-preplace port controller_PPS -pg 1 -lvl 0 -x -10 -y 310 -defaultsOSRD
-preplace port aresetn -pg 1 -lvl 0 -x -10 -y 290 -defaultsOSRD
-preplace port controller_running -pg 1 -lvl 2 -x 510 -y 220 -defaultsOSRD
-preplace port control_hvn -pg 1 -lvl 2 -x 510 -y 400 -defaultsOSRD
-preplace portBus mt_pulse -pg 1 -lvl 2 -x 510 -y 780 -defaultsOSRD
-preplace portBus control_flags -pg 1 -lvl 2 -x 510 -y 660 -defaultsOSRD
-preplace portBus filter_select_ch0 -pg 1 -lvl 2 -x 510 -y 420 -defaultsOSRD
-preplace portBus filter_select_ch1 -pg 1 -lvl 2 -x 510 -y 440 -defaultsOSRD
-preplace portBus filter_select_ch2 -pg 1 -lvl 2 -x 510 -y 460 -defaultsOSRD
-preplace inst enable_mux_0 -pg 1 -lvl 1 -x 250 -y 780 -defaultsOSRD
-preplace inst enable_mux_1 -pg 1 -lvl 1 -x 250 -y 660 -defaultsOSRD
-preplace inst hcr_controller_0 -pg 1 -lvl 1 -x 250 -y 280 -defaultsOSRD
+preplace port coef_ch0 -pg 1 -lvl 2 -x 520 -y 60 -defaultsOSRD
+preplace port coef_ch1 -pg 1 -lvl 2 -x 520 -y 80 -defaultsOSRD
+preplace port coef_ch2 -pg 1 -lvl 2 -x 520 -y 100 -defaultsOSRD
+preplace port pulse_metadata_ch0 -pg 1 -lvl 2 -x 520 -y 120 -defaultsOSRD
+preplace port pulse_metadata_ch1 -pg 1 -lvl 2 -x 520 -y 140 -defaultsOSRD
+preplace port pulse_metadata_ch2 -pg 1 -lvl 2 -x 520 -y 160 -defaultsOSRD
+preplace port s_axi_cfg_bus -pg 1 -lvl 0 -x 0 -y 250 -defaultsOSRD
+preplace port adc_aclk -pg 1 -lvl 0 -x 0 -y 270 -defaultsOSRD
+preplace port controller_PPS -pg 1 -lvl 0 -x 0 -y 310 -defaultsOSRD
+preplace port aresetn -pg 1 -lvl 0 -x 0 -y 290 -defaultsOSRD
+preplace port controller_running -pg 1 -lvl 2 -x 520 -y 220 -defaultsOSRD
+preplace port control_hvn -pg 1 -lvl 2 -x 520 -y 400 -defaultsOSRD
+preplace portBus mt_pulse -pg 1 -lvl 2 -x 520 -y 780 -defaultsOSRD
+preplace portBus control_flags -pg 1 -lvl 2 -x 520 -y 660 -defaultsOSRD
+preplace portBus filter_select_ch0 -pg 1 -lvl 2 -x 520 -y 420 -defaultsOSRD
+preplace portBus filter_select_ch1 -pg 1 -lvl 2 -x 520 -y 440 -defaultsOSRD
+preplace portBus filter_select_ch2 -pg 1 -lvl 2 -x 520 -y 460 -defaultsOSRD
+preplace inst enable_mux_0 -pg 1 -lvl 1 -x 260 -y 780 -defaultsOSRD
+preplace inst enable_mux_1 -pg 1 -lvl 1 -x 260 -y 660 -defaultsOSRD
+preplace inst hcr_controller_0 -pg 1 -lvl 1 -x 260 -y 280 -defaultsOSRD
 preplace netloc s_axis_adc_pdti_aclk_1 1 0 1 NJ 270
 preplace netloc reset_reg_aresetn 1 0 1 NJ 290
 preplace netloc sync_pulse_1 1 0 1 NJ 310
 preplace netloc enable_mux_0_O 1 1 1 NJ 780
-preplace netloc hcr_controller_0_mt_pulse_V 1 0 2 20 590 480
-preplace netloc controller_running 1 0 2 10 560 490
+preplace netloc hcr_controller_0_mt_pulse_V 1 0 2 30 590 490
+preplace netloc controller_running 1 0 2 20 560 500
 preplace netloc enable_mux_1_O 1 1 1 NJ 660
-preplace netloc hcr_controller_0_control_flags_V 1 0 2 40 580 460
-preplace netloc hcr_controller_0_control_flags_V_ap_vld 1 0 2 30 570 470
+preplace netloc hcr_controller_0_control_flags_V 1 0 2 50 580 470
+preplace netloc hcr_controller_0_control_flags_V_ap_vld 1 0 2 40 570 480
 preplace netloc hcr_controller_0_filter_select_ch0_V 1 1 1 NJ 420
 preplace netloc hcr_controller_0_filter_select_ch1_V 1 1 1 NJ 440
 preplace netloc hcr_controller_0_filter_select_ch2_V 1 1 1 NJ 460
@@ -45,8 +45,8 @@ preplace netloc pulse_metadata_1 1 1 1 NJ 140
 preplace netloc hcr_controller_0_coef_ch0_V_V 1 1 1 NJ 60
 preplace netloc hcr_controller_0_coef_ch1_V_V 1 1 1 NJ 80
 preplace netloc hcr_controller_0_coef_ch2_V_V 1 1 1 NJ 100
-levelinfo -pg 1 -10 250 510
-pagesize -pg 1 -db -bbox -sgen -170 0 710 910
+levelinfo -pg 1 0 260 520
+pagesize -pg 1 -db -bbox -sgen -160 0 720 850
 "
 }
 0
