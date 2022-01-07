@@ -459,8 +459,8 @@ HCR_Pentek::_setupAdc() {
         status = NAV_DmaSetup(_boardHandle,
                               NAV_CHANNEL_TYPE_ADC,     // channel type
                               adcChan,                  // channel number
-                              128,                      // number of xfer buffers to allocate
-                              262144,                   // buffer size in bytes
+                              256,                      // number of xfer buffers to allocate
+                              1048576,                  // buffer size in bytes
                               NAV_DMA_METADATA_ENABLE,  // enable metadata
                               NAV_DMA_RUN_MODE_CONTINUOUS_LOOP, // continuous sampling
                               NAV_SYS_WAIT_STATE_MILSEC(2000),  // DMA timeout, ms
@@ -742,7 +742,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     size_t dataBufOffsetBytes = 0;
     bool lastPulseInXfer = false;
     using IQData = PulseData::IQData;
-    using PackedIQData = Controller::PackedDataSample;
+    using PackedIQData = Controller::PackedIQData;
 
     // ILOG << "_acceptAdcData " << chan << "\n";
 
@@ -793,8 +793,9 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         // Number of data values
         uint32_t nGates = pulseHeader.numSamples;
         //if(!chan) {
-        //    ILOG << "k " << pulseHeader.pulseBlockDefinitionNumber << " gates " << nGates << " nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt
-        //    << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
+        //    ILOG << "k " << pulseHeader.pulseBlockDefinitionNumber << " gates " << nGates << " validbytes " << metadata->validBytes << " lastpulse " << lastPulseInXfer;
+        //    ///" nexg " << (metadata->validBytes-sizeof(Controller::PulseHeader))/4 << " prt " << pulseHeader.prt;
+        //    //    << " extra " << 0.25*(metadata->validBytes - (dataBufOffsetBytes + nGates*sizeof(IQData)));
         //}
 
         // Calculate the timestamp
@@ -825,7 +826,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         }
 
         // Check the size of the buffer
-        if(dataBufOffsetBytes + nGates*sizeof(PackedIQData) > metadata->validBytes) {
+        if(dataBufOffsetBytes + nGates * sizeof(PackedIQData) > metadata->validBytes) {
             ELOG << "Truncated pulse data chan " << std::dec << chan
                  << " after pulse " << numPulsesProcessed;
             return;
@@ -835,17 +836,10 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         const PackedIQData* packedIqData(reinterpret_cast<const PackedIQData*>(dataBuf+dataBufOffsetBytes));
         dataBufOffsetBytes += nGates * sizeof(PackedIQData);
 
-        // Unpack the IQ data from pseudo-floating-point
+        // Unpack the 24-bit IQ data
         IQData iqData[nGates];
-        for(auto k=0; k<nGates; ++k) {
-            //PackedIQData s = packedIqData[k];
-            //PackedIQData exponent = s & 0xF;
-            //iqData[k] = {
-            //    s << 14 >> 18 << exponent,
-            //    s >> 18 << exponent
-            //};
-            auto s = packedIqData[k];
-            iqData[k] = { s.I << s.exponent, s.Q << s.exponent };
+        for(auto k=0ul; k<nGates; ++k) {
+            iqData[k] = { packedIqData[k].I, packedIqData[k].Q };
         }
 
         // Update info for status()
@@ -932,8 +926,7 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
         return(false);
     }
 
-    // For HCR there is a custom format, but it's the same size as
-    // dataFormat 1, and reported as such.
+    // For HCR there is a custom format, but it's reported as format 1.
     //
     // Navigator definitions used on the FPGA side do not agree with the
     // NAV_IP_DMA_PPKT2PCIE_METADATA_* macros on the our side.

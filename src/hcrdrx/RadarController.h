@@ -17,7 +17,7 @@ public:
 
     RadarController(const FPGA& fpgaInstance, uint32_t baseAddr) : fpga(fpgaInstance), base(baseAddr), watchdogCount(0) {};
 
-    struct PulseBlockDefinition
+    struct __attribute__((packed)) PulseBlockDefinition
     {
         uint32_t prt[2];            // Pulse repetition time(s) in cycles. Set unused PRTs to 0
         uint32_t numPulses;         // Generate this many pulses
@@ -34,7 +34,7 @@ public:
         } timers[8];
     };
 
-    struct PulseHeader
+    struct __attribute__((packed)) PulseHeader
     {
         uint32_t magic;
         struct
@@ -62,11 +62,10 @@ public:
         uint32_t spare15;
     };
 
-    struct PackedDataSample
+    struct __attribute__((packed)) PackedIQData
     {
-        unsigned int exponent   : 4;
-        int I                   : 14;
-        int Q                   : 14;
+        int I : 24;
+        int Q : 24;
     };
 
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
