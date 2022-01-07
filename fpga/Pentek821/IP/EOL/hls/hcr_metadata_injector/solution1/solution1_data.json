@@ -670,7 +670,7 @@
       "ModuleName": "hcr_metadata_injector",
       "Instances": [{
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_361"
+          "InstanceName": "grp_handle_header_fu_618"
         }]
     },
     "Info": {
@@ -702,15 +702,15 @@
         "Timing": {
           "Target": "3.00",
           "Uncertainty": "0.38",
-          "Estimate": "2.142"
+          "Estimate": "1.573"
         },
         "Loops": [
           {
-            "Name": "Loop 1",
+            "Name": "pad",
             "TripCount": "",
             "Latency": "",
-            "PipelineII": "1",
-            "PipelineDepth": "2"
+            "PipelineII": "3",
+            "PipelineDepth": "4"
           },
           {
             "Name": "write_header",
@@ -721,8 +721,8 @@
           }
         ],
         "Area": {
-          "FF": "1815",
-          "LUT": "1287",
+          "FF": "1699",
+          "LUT": "571",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -740,7 +740,7 @@
         "Timing": {
           "Target": "3.00",
           "Uncertainty": "0.38",
-          "Estimate": "3.000"
+          "Estimate": "2.488"
         },
         "Loops": [{
             "Name": "pulse_loop",
@@ -752,14 +752,14 @@
                 "Name": "sample_loop",
                 "TripCount": "",
                 "Latency": "",
-                "PipelineII": "1",
-                "PipelineDepth": "6"
+                "PipelineII": "3",
+                "PipelineDepth": "5"
               }]
           }],
         "Area": {
-          "BRAM_18K": "4",
-          "FF": "2841",
-          "LUT": "2646",
+          "FF": "3325",
+          "LUT": "1417",
+          "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
         }
@@ -776,7 +776,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-01-06 17:55:58 GMT",
+    "Time": "2021-01-07 18:29:14 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

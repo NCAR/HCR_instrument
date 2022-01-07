@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="hcr_controller" xd:componentRef="hcr_controller" xd:initiationInterval="x" xd:clockPeriod="4.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="hcr_controller" xd:componentRef="hcr_controller" xd:initiationInterval="x" xd:clockPeriod="3.000" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:type="generic_axi_lite" xd:offset="0x0"/>
   <xd:arg xd:name="*(cfg_pulse_sequence_start_stop_indexes)" xd:originalName="cfg_pulse_sequence_start_stop_indexes" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x10" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="*(cfg_num_pulses_to_execute)" xd:originalName="cfg_num_pulses_to_execute" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x18" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
@@ -147,5 +147,5 @@
   <xd:arg xd:name="pps_d0" xd:originalName="pps_d0" xd:direction="out" xd:interfaceRef="pps_d0" xd:busTypeRef="ap_memory" xd:arraySize="1" xd:dataWidth="1"/>
   <xd:arg xd:name="pps_q0" xd:originalName="pps_q0" xd:direction="in" xd:interfaceRef="pps_q0" xd:busTypeRef="ap_memory" xd:arraySize="1" xd:dataWidth="1"/>
   <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
-  <xd:resourceEstimates xd:LUT="9816" xd:FF="7290" xd:BRAM="106" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="9837" xd:FF="7692" xd:BRAM="106" xd:DSP="0"/>
 </xd:acceleratorMap>

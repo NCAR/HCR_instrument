@@ -214,7 +214,8 @@ void scheduler_parser(
 					if(pulse.def.prt[0]<totalTime) totalTime = pulse.def.prt[0];
 					uint32_t startTime = pulse.def.timer_offset[timer_index];
 					uint32_t n_samp = (totalTime-startTime) / cfg_total_decimation;
-					if(n_samp==0) n_samp=1;
+					n_samp = n_samp & ~1ul; //24-bit sample mode requires an even number
+					if(n_samp==0) n_samp=2;
 					num_samples[ch] = n_samp;
 				}
 

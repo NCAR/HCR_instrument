@@ -7,4 +7,4 @@ Family       : kintexu
 Device       : xcku060
 Package      : -ffva1517
 Speed Grade  : -2-e
-Clock Period : 4.000 ns
+Clock Period : 3.000 ns

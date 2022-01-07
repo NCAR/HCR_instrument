@@ -37,6 +37,41 @@ bool handle_header(
 		uint16_t flags
 	);
 
+// Copy a pdti's metadata
+inline pdti_32 copy_meta(pdti_64 x)
+{
+#pragma HLS inline
+	pdti_32 y;
+	y.data = 0;
+	y.dest = x.dest;
+	y.id = x.id;
+	y.keep = x.keep;
+	y.last = x.last;
+	y.strb = x.strb;
+	y.user = x.user;
+	return y;
+};
+
+// Write 2 24-bit IQs into 3 32-bit words
+inline void write_pair(hls::stream<pdti_32>& o, pdti_64 s1, pdti_64 s2)
+{
+#pragma HLS inline
+	pdti_32 y = copy_meta(s1);
+	ap_uint<24> I1 = s1.data(23,0);
+	ap_uint<24> Q1 = s1.data(55,32);
+	ap_uint<24> I2 = s2.data(23,0);
+	ap_uint<24> Q2 = s2.data(55,32);
+	y.data(23,0)  = I1;
+	y.data(31,24) = Q1(7,0);
+	o << y;
+	y.data(15,0)  = Q1(23,8);
+	y.data(31,16) = I2(15,0);
+	o << y;
+	y.data(7,0)   = I2(23,16);
+	y.data(31,8)  = Q2;
+	o << y;
+}
+
 // Create a pseudo-float output of the format
 // [ 14 bit 2's comp Q][ 14 bit 2's comp I][4 bit exponent]
 // To convert back to integers:
@@ -61,16 +96,10 @@ inline pdti_32 squash(pdti_64 x)
 	if(Q<0) Q += ((1<<shift)-1);
 
 	// Assign output
-	pdti_32 y;
+	pdti_32 y = copy_meta(x);
 	y.data(3,0) = shift;
 	y.data(17,4) = I >> shift;
 	y.data(31,18) = Q >> shift;
-	y.dest = x.dest;
-	y.id = x.id;
-	y.keep = x.keep;
-	y.last = x.last;
-	y.strb = x.strb;
-	y.user = x.user;
 	return y;
 };
 

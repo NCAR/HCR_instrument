@@ -612,13 +612,13 @@
   },
   "ClockInfo": {
     "ClockName": "ap_clk",
-    "ClockPeriod": "4",
+    "ClockPeriod": "3",
     "IsCombLogic": "0",
     "II": "x",
     "Latency": "undef",
-    "Uncertainty": "0.5"
+    "Uncertainty": "0.375"
   },
-  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 4.000 [get_ports ap_clk]"]},
+  "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 3.000 [get_ports ap_clk]"]},
   "Ipx": {
     "Vendor": "NCAR",
     "Library": "EOL",
@@ -1926,23 +1926,23 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "4.00",
-          "Uncertainty": "0.50",
-          "Estimate": "3.332"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.434"
         },
         "Loops": [
           {
             "Name": "Loop 1",
             "TripCount": "8",
-            "Latency": "1176",
+            "Latency": "1560",
             "PipelineII": "",
-            "PipelineDepth": "147",
+            "PipelineDepth": "195",
             "Loops": [{
                 "Name": "Loop 1.1",
                 "TripCount": "48",
-                "Latency": "144",
+                "Latency": "192",
                 "PipelineII": "",
-                "PipelineDepth": "3"
+                "PipelineDepth": "4"
               }]
           },
           {
@@ -1962,15 +1962,15 @@
                     "TripCount": "",
                     "Latency": "",
                     "PipelineII": "",
-                    "PipelineDepth": "40"
+                    "PipelineDepth": "42"
                   }]
               }]
           }
         ],
         "Area": {
           "BRAM_18K": "2",
-          "FF": "2795",
-          "LUT": "2473",
+          "FF": "2916",
+          "LUT": "2485",
           "URAM": "0",
           "DSP48E": "0"
         }
@@ -1985,8 +1985,8 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "4.00",
-          "Uncertainty": "0.50",
+          "Target": "3.00",
+          "Uncertainty": "0.38",
           "Estimate": "5.041"
         },
         "Loops": [
@@ -2013,8 +2013,8 @@
           }
         ],
         "Area": {
-          "FF": "1051",
-          "LUT": "1216",
+          "FF": "1332",
+          "LUT": "1225",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -2030,9 +2030,9 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "4.00",
-          "Uncertainty": "0.50",
-          "Estimate": "1.750"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "1.312"
         },
         "Loops": [{
             "Name": "Loop 1",
@@ -2059,9 +2059,9 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "4.00",
-          "Uncertainty": "0.50",
-          "Estimate": "1.750"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "1.312"
         },
         "Loops": [{
             "Name": "Loop 1",
@@ -2088,9 +2088,9 @@
           "PipelineType": "none"
         },
         "Timing": {
-          "Target": "4.00",
-          "Uncertainty": "0.50",
-          "Estimate": "1.750"
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "1.312"
         },
         "Loops": [{
             "Name": "Loop 1",
@@ -2117,14 +2117,14 @@
           "PipelineType": "dataflow"
         },
         "Timing": {
-          "Target": "4.00",
-          "Uncertainty": "0.50",
+          "Target": "3.00",
+          "Uncertainty": "0.38",
           "Estimate": "5.041"
         },
         "Area": {
           "BRAM_18K": "106",
-          "FF": "7290",
-          "LUT": "9816",
+          "FF": "7692",
+          "LUT": "9837",
           "URAM": "0",
           "DSP48E": "0"
         }
@@ -2141,7 +2141,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-01-05 17:03:11 GMT",
+    "Time": "2021-01-07 15:30:07 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }
