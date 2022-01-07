@@ -620,6 +620,7 @@
     <FileSet Name="ddr4_80_ctlr" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ddr4_80_ctlr">
       <File Path="$PSRCDIR/sources_1/ip/ddr4_80_ctlr/ddr4_80_ctlr.xci">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
