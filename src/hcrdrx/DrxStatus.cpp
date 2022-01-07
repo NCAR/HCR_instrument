@@ -46,16 +46,6 @@ DrxStatus::DrxStatus() :
     _motorZeroPositionSet(false) {
 }
 
-DrxStatus::DrxStatus(const HCR_Pentek& pentek) : DrxStatus() {
-//    _pentekFpgaTemp = pentek.fpgaTemp();
-//    _pentekBoardTemp = pentek.circuitBoardTemp();
-//    _nGates = pentek.gates();
-//    _prt = pentek.prt();
-//    _xmitPulseWidth = pentek.txPulseWidth();
-//    _gateSpacing = downconverter ? downconverter->gateSpacing() : 0;
-//    _motorZeroPositionSet = pentek.motorZeroPositionSet();
-}
-
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
     _pentekFpgaTemp(-99),
     _pentekBoardTemp(-99),

@@ -39,18 +39,28 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 
-class HCR_Pentek;
-
 /// @brief Class to represent HCR digital receiver/remote data system status.
 class DrxStatus {
 public:
     /// @brief Default constructor. Integer fields are set to -99.
     DrxStatus();
 
-    /// @brief Construct a DrxStatus using data from the given HCR_Pentek
-    /// object.
-    /// @param pentek the HCR_Pentek object from which to get status
-    DrxStatus(const HCR_Pentek & pentek);
+    /// @brief Construct a DrxStatus using data from the given data.
+    DrxStatus(
+        int pentekFpgaTemp,
+        int pentekBoardTemp,
+        double xmitPulseWidth,
+        double prt,
+        uint16_t nGates,
+        double gateSpacing,
+        bool motorZeroPositionSet
+    ) : _pentekFpgaTemp(pentekFpgaTemp),
+        _pentekBoardTemp(pentekBoardTemp),
+        _xmitPulseWidth(xmitPulseWidth),
+        _prt(prt),
+        _nGates(nGates),
+        _gateSpacing(gateSpacing),
+        _motorZeroPositionSet(motorZeroPositionSet) {}; 
 
     /// @brief Construct from an xmlrpc_c::value_struct dictionary as returned
     /// by a call to the DrxStatus::toXmlRpcValue() method.

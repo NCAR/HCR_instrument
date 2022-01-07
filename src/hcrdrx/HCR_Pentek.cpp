@@ -71,7 +71,8 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read),
     _prevPulseSeq(_adcCount, -1ULL),
     _digitizerSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency()),
-    _done(false)
+    _done(false),
+    _motorZeroPositionSet(false)
 {
     // Register needed types
     qRegisterMetaType<int32_t>("int32_t");
@@ -833,6 +834,11 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         const IQData* iqData(reinterpret_cast<const IQData*>(dataBuf+dataBufOffsetBytes));
         dataBufOffsetBytes += nGates * sizeof(IQData);
 
+        // Update info for status()
+        _prevXmitPulseWidth = _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width);
+        _prevPrt = _fromCounts(pulseHeader.prt);
+        _prevnGates = nGates;
+
         // If we have a exporter, send it the new data for collating and publishing.
         if (_exporter) {
 
@@ -845,11 +851,11 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
                 rotMotorAngle,      // float rotMotorAngle,
                 tiltMotorAngle,     // float tiltMotorAngle,
                 xmitPol,            // XmitPolarization_t xmitPol,
-                double(blockDef.prt[0]) / double(adcFrequency()), // double prt1,
-                double(blockDef.prt[1]) / double(adcFrequency()), // double prt2,
-                double(pulseHeader.prt) / double(adcFrequency()), // double currentPrt,
-                0,                  // double txPulseWidth,
-                _digitizerSampleWidth,     // double sampleWidth,
+                _fromCounts(blockDef.prt[0]), // double prt1,
+                _fromCounts(blockDef.prt[1]), // double prt2,
+                _fromCounts(pulseHeader.prt), // double currentPrt,
+                _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width), // double txPulseWidth,
+                _digitizerSampleWidth, // double sampleWidth,
                 nGates,             // int nGates,
                 iqData );           // const std::complex<int16_t> *iq)
 
@@ -1228,13 +1234,13 @@ HCR_Pentek::_setupController()
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
-            512e-9, numRxGates, numPulses, prt1*2, prt2, blockPostTime, 3,
+            512e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 3,
             Controller::PolarizationModes::POL_MODE_HHVV
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
-            1024e-9, numRxGates, numPulses, prt1*2, prt2, blockPostTime, 7,
+            1024e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 7,
             Controller::PolarizationModes::POL_MODE_HHVV
         ));
 
@@ -1256,5 +1262,34 @@ void HCR_Pentek::zeroMotorCounts()
     uint32_t mask = 0x2;
     writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal | mask, "Zero motor count");
     writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal & (~mask), "Clear zero motor count");
+
+    _motorZeroPositionSet = true;
 }
 
+DrxStatus HCR_Pentek::status()
+{
+    volatile uint32_t  *i2cPort = static_cast<NAV_BOARD_RESRC*>(_boardHandle)->ipBaseAddr.i2cPort[0];
+    LM95234_VALUES      lm95234Values;
+    double              localTemp = -99;
+    double              fpgaTemp = -99;
+
+    int32_t status = NAVdev_LM95234GetValues(i2cPort, NAV_DEV_LM95234_MAIN_PCB_ADDR, &lm95234Values);
+    _LogNavigatorError(status, "Temp Sensor NAVdev_LM95234GetValues");
+
+    if (status == NAV_STAT_OK)
+    {
+        localTemp = (double)(lm95234Values.localTemp) / 256.0;
+        fpgaTemp = (double)(lm95234Values.D1Temp) / 256.0;
+    }
+
+    DrxStatus drxStatus(
+        fpgaTemp,
+        localTemp,
+        _prevXmitPulseWidth,
+        _prevPrt,
+        _prevnGates,
+        _digitizerSampleWidth * 2.99792458e8 / 2.0,
+        _motorZeroPositionSet
+    );
+    return drxStatus;
+}

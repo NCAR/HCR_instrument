@@ -36,6 +36,7 @@
 #include "IwrfExport.h"
 #include "RadarController.h"
 #include "PulseData.h"
+#include "DrxStatus.h"
 #include <ctime>
 #include <vector>
 #include <complex>
@@ -111,6 +112,9 @@ public:
 
     /// @brief Zero the rot/tilt motor counts
     void zeroMotorCounts();
+
+    /// @brief Return the current status
+    DrxStatus status();
 
 signals:
     /// @brief Signal emitted with data delivered for one of our ADC channels
@@ -270,6 +274,9 @@ private:
     /// @brief Convert seconds to scheduler counts
     uint32_t _counts(double seconds) { return std::round(seconds * adcFrequency()); }
 
+    /// @brief Convert scheduler counts to seconds
+    double _fromCounts(double counts) { return counts / adcFrequency(); }
+
     /// @brief HCR configuration
     const HcrDrxConfig & _config;
 
@@ -318,6 +325,10 @@ private:
     double _digitizerSampleWidth;
     bool _done;
 
+    double _prevXmitPulseWidth;
+    double _prevPrt;
+    uint16_t _prevnGates;
+    bool _motorZeroPositionSet;
 };
 
 

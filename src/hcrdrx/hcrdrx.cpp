@@ -59,7 +59,7 @@ public:
         DLOG << "Received 'getStatus' command";
         // Get the latest status from shared memory, and convert it to
         // an xmlrpc_c::value_struct dictionary.
-        *retvalP = DrxStatus(_hcrPentek).toXmlRpcValue();
+        *retvalP = _hcrPentek.status().toXmlRpcValue();
     }
 private:
     HCR_Pentek& _hcrPentek;

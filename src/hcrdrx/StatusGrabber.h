@@ -45,6 +45,8 @@
 
 #include "DrxStatus.h"
 
+class HCR_Pentek;
+
 class QUdpSocket;
 
 /// @brief QThread object which regularly polls for status from HcrPmc730Daemon,
