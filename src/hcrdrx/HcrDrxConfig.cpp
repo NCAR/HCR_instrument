@@ -147,7 +147,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( latitude,                          "description",                                  40.03794 )
         MEMBER_PROGOPT( longitude,                         "description",                                  -105.24127 )
         MEMBER_PROGOPT( altitude,                          "description",                                  1609 )
-        MEMBER_PROGOPT( iqcount_scale_for_mw,              "description",                                  8200 )
+        MEMBER_PROGOPT( iqcount_scale_for_mw,              "description",                                  390223 )
         MEMBER_PROGOPT( simulate_antenna_angles,           "description",                                  false )
         MEMBER_PROGOPT( sim_start_elev,                    "description",                                  0.0 )
         MEMBER_PROGOPT( sim_delta_elev,                    "description",                                  0.0 )
@@ -176,6 +176,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( rx_frequency,                      "ddc center (IF) frequency, rx",                156.25e6 )
         MEMBER_PROGOPT( tx_frequency,                      "ddc center (IF) frequency, tx",                156.25e6 )
         MEMBER_PROGOPT( extra_ddc_gain,                    "adjustment to default ddc filter gain",        1.0 )
+        MEMBER_PROGOPT( extra_pulse_gain,                  "adjustment to default gaussian filter gain",   32.0 )
         MEMBER_PROGOPT( final_decimation,                  "decimation after the last rx filter",          1 )
         MEMBER_PROGOPT( pulses_to_run,                     "number of pulses to schedule before exiting",  INFINITY )
         MEMBER_PROGOPT( pulses_per_xfer,                   "ratio of pulses to interrupts",                200 )
@@ -237,6 +238,7 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( rx_frequency );
     os << STREAM_OPT_AND_MEMBER( tx_frequency );
     os << STREAM_OPT_AND_MEMBER( extra_ddc_gain );
+    os << STREAM_OPT_AND_MEMBER( extra_pulse_gain );
     os << STREAM_OPT_AND_MEMBER( final_decimation );
     os << STREAM_OPT_AND_MEMBER( pulses_to_run );
     os << STREAM_OPT_AND_MEMBER( pulses_per_xfer );

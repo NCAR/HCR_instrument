@@ -83,6 +83,7 @@ private:
     OPT_AND_GETTER( double,       rx_frequency );
     OPT_AND_GETTER( double,       tx_frequency );
     OPT_AND_GETTER( double,       extra_ddc_gain );
+    OPT_AND_GETTER( double,       extra_pulse_gain );
     OPT_AND_GETTER( uint,         final_decimation );
     OPT_AND_GETTER( double,       pulses_to_run );
     OPT_AND_GETTER( uint,         pulses_per_xfer );

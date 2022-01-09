@@ -1198,8 +1198,7 @@ HCR_Pentek::_setupController()
 
         std::vector<double> coefs;
         ReadFilterCoefsFromFile(_config.pulse_filter_file(chan), coefs);
-        //for(auto&& c: coefs) c*=4;
-        _controller.writeFilterCoefs(coefs, chan);
+        _controller.writeFilterCoefs(coefs, _config.extra_pulse_gain(), chan);
     }
 
     // The first three pulse blocks are defined by _config and define the basic transmit modes.

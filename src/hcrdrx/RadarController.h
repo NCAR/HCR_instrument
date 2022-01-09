@@ -199,7 +199,7 @@ public:
         for (auto&& def : blockDefs) writePulseBlockDefinition(def, startIndex++);
     }
 
-    void writeFilterCoefs(const std::vector<double>& coefs, int chan)
+    void writeFilterCoefs(const std::vector<double>& coefs, double extraGain, int chan)
     {
         uint32_t base;
         switch (chan)
@@ -220,7 +220,8 @@ public:
 
         for(uint32_t index=0; index<NUM_TOTAL_FILTER_COEFS; index++)
         {
-            int32_t intCoef = round(coefs[index]*0x80000);
+            //Coefficients are 24 bit, 8 int + 16 frac
+            int32_t intCoef = round(coefs[index] * 65536 * extraGain);
             write_(index*sizeof(uint32_t) + base, intCoef, "Writing pulse coef");
         }
     }
