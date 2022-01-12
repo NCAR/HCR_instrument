@@ -19,7 +19,6 @@ use unisim.vcomponents.all;
 
 entity x_HMC_src is
     generic (
-        C_EMS_DELAY         : integer := 20;
         C_U6_DELAY          : integer := 62500000;
         C_HV_DELAY          : integer := 62500000;
         C_WG_DELAY          : integer := 6250000
@@ -315,7 +314,7 @@ begin
 
     HMC : HMC_SRC
     generic map (
-        C_EMS_DELAY             => C_EMS_DELAY,
+        C_EMS_DELAY             => 20,
         C_U6_DELAY              => C_U6_DELAY,
         C_HV_DELAY              => C_HV_DELAY,
         C_WG_DELAY              => C_WG_DELAY

@@ -1,1 +1,1 @@
--intstyle "ise" -incremental -o "/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_isim_beh.exe" -prj "/home/karboski/git/HCR_instrument/src/HMC_Redesign/HMC_tb_beh.prj" "work.HMC_tb" 
+-intstyle "ise" -incremental -o "/home/karboski/git/HCR_instrument/fpga/HMC_r5/HMC_tb_isim_beh.exe" -prj "/home/karboski/git/HCR_instrument/fpga/HMC_r5/HMC_tb_beh.prj" "work.HMC_tb" 

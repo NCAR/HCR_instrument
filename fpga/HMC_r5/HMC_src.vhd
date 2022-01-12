@@ -448,6 +448,7 @@ begin
 
     -- Delay for 1 second while Pentek initializes, then enable U6; ohterwise, Pentek isn't discovered on PCI bus!
     -- This is a mystery, but haven't sufficient documentation on Pentek to sort it out.
+    -- May not be true for P71821 Pentek; haven't tested removing it.
     DELAY_U6_ENABLE : process (CLK, RESETn)
     begin
         if (rising_edge (CLK)) then
@@ -588,15 +589,20 @@ begin
             case state is
                 when s0 => -- Idle state
 
-                    if EMS_TRIG = '1' and T0_reg = '1' -- Triggered by scheduler
-                        and tx_ems_switch_dly = '0' -- Haven't timed out yet
-                        and rx_ems_switch_dly = '0' -- Haven't timed out yet
-                        and ems_pwr_ok = '1'        -- Power is ok
-                        and wg_stat_ok = '1'        -- Waveguide is ok
-                                                    -- Either high voltage is on OR we are in a opsmode that doesn't need hv
-                        and (hv_powerup_dly = '1' or C_ALLOW_MOD_PULSE(next_pulse_mode_v) = '0') then
-                            pulse_mode  <= next_pulse_mode_v;
-                            state       <= s1;
+                    if EMS_TRIG = '1' and T0_reg = '1' then -- Triggered by scheduler
+
+                        pulse_mode  <= next_pulse_mode_v;
+
+                        if tx_ems_switch_dly = '0'      -- Haven't timed out yet
+                            and rx_ems_switch_dly = '0' -- Haven't timed out yet
+                            and ems_pwr_ok = '1'        -- Power is ok
+                            and wg_stat_ok = '1'        -- Waveguide is ok
+                                                        -- Either high voltage is on OR we are in a opsmode that doesn't need hv
+                            and (hv_powerup_dly = '1' or C_ALLOW_MOD_PULSE(next_pulse_mode_v) = '0') then
+
+                                state       <= s1;
+
+                        end if;
                     end if;
 
                 when s1 => -- Configure for transmit
