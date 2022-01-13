@@ -43,7 +43,8 @@ DrxStatus::DrxStatus() :
     _prt(0.0),
     _nGates(0),
     _gateSpacing(0.0),
-    _motorZeroPositionSet(false) {
+    _motorZeroPositionSet(false),
+    _supportedOpsModes() {
 }
 
 DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
@@ -53,7 +54,8 @@ DrxStatus::DrxStatus(xmlrpc_c::value_struct & statusDict) :
     _prt(0.0),
     _nGates(0),
     _gateSpacing(0.0),
-    _motorZeroPositionSet(false) {
+    _motorZeroPositionSet(false),
+    _supportedOpsModes() {
     // Create an input archiver wrapper around the xmlrpc_c::value_struct
     // dictionary, and use serialize() to populate our members from its content.
     Iarchive_xmlrpc_c iar(statusDict);

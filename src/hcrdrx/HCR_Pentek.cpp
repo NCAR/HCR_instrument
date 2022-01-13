@@ -1236,6 +1236,12 @@ HCR_Pentek::_setupController()
     // Define additional blocks for demonstration purposes
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
+            256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 0,
+            Controller::PolarizationModes::POL_MODE_H
+        ));
+
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
             256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
             Controller::PolarizationModes::POL_MODE_H
         ));
@@ -1254,6 +1260,30 @@ HCR_Pentek::_setupController()
 
     // Write the pulse definitions
     _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
+
+
+    // Define some schedules based on the pulse definitions
+
+    // Legacy modes
+    using M = HcrPmc730::HmcModes;
+    _supportedOpsModes.push_back({M::HMC_MODE_RESET, 0, 0});
+    _supportedOpsModes.push_back({M::HMC_MODE_NOISE_SOURCE_CAL, 0, 0});
+    _supportedOpsModes.push_back({M::HMC_MODE_BENCH_TEST, 0, 0});
+    _supportedOpsModes.push_back({M::HMC_MODE_V_HV_ISOL_NOISE, 0, 0});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 0, 0});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 1, 1});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 2, 2});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 0, 0});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 1, 1});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 2, 2});
+
+    // TODO be configurable here (these are demo schedules)
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 3, 3, "256ns H, no gauss"});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 4, "256ns H"});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 5, 5, "512ns HHVV"});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 6, 6, "1024ns HHVV"});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 6, "256-512-1024"});
+    for(auto k=10; k<15; ++k) _supportedOpsModes.push_back(_supportedOpsModes[k].equivalentAttenuatedMode());
 
 }
 
@@ -1297,7 +1327,8 @@ DrxStatus HCR_Pentek::status()
         _prevPrt,
         _prevnGates,
         _digitizerSampleWidth * 2.99792458e8 / 2.0,
-        _motorZeroPositionSet
+        _motorZeroPositionSet,
+        _supportedOpsModes
     );
     return drxStatus;
 }

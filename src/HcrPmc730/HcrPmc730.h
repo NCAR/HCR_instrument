@@ -83,26 +83,33 @@ public:
         HmcModes _hmcMode;
         uint _scheduleStartIndex;
         uint _scheduleStopIndex;
+        char _nickname[128];
 
     public:
-        OperationMode() : _hmcMode(HMC_MODE_INVALID), _scheduleStartIndex(0), _scheduleStopIndex(0) { };
+        OperationMode();
 
         OperationMode(const HmcModes &mode,
-            uint startIndex,
-            uint stopIndex)
-            : _hmcMode(mode), _scheduleStartIndex(startIndex), _scheduleStopIndex(stopIndex) { };
-
-        OperationMode(const HmcModes &mode)
-            : _hmcMode(mode), _scheduleStartIndex(0), _scheduleStopIndex(0) { };                 
+                      uint startIndex = 0,
+                      uint stopIndex = 0,
+                      const std::string& nickname = "");
 
         const std::string name() const;
 
-        bool operator==(const OperationMode& rhs){
-            return _hmcMode == rhs._hmcMode
-            && _scheduleStartIndex == rhs._scheduleStartIndex
-            && _scheduleStopIndex == rhs._scheduleStopIndex; }
+        bool operator==(const OperationMode& rhs);
 
-        bool operator!=(const OperationMode& rhs) {return ! (*this == rhs); };
+        bool operator!=(const OperationMode& rhs);
+
+        bool isAttenuated();
+
+        bool isValid();
+
+        OperationMode equivalentAttenuatedMode();
+
+        HmcModes hmcMode() { return _hmcMode; };
+
+        uint scheduleStartIndex() { return _scheduleStartIndex; };
+
+        uint scheduleStopIndex() { return _scheduleStopIndex; };
 
         template<class Archive>
         void serialize(Archive & ar, const unsigned int version) {
@@ -110,40 +117,10 @@ public:
             ar & BOOST_SERIALIZATION_NVP(_hmcMode);
             ar & BOOST_SERIALIZATION_NVP(_scheduleStartIndex);
             ar & BOOST_SERIALIZATION_NVP(_scheduleStopIndex);
+            std::string nickname = _nickname;
+            ar & BOOST_SERIALIZATION_NVP(nickname);
+            snprintf(_nickname, sizeof(_nickname), "%s", nickname.c_str());
         }
-
-        bool isAttenuated() {
-            return _hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-        };
-
-        bool isValid() {
-            return _hmcMode != HmcModes::HMC_MODE_INVALID;
-        };
-
-        OperationMode equivalentAttenuatedMode() {
-            HcrPmc730::OperationMode m = *this;
-            switch (_hmcMode) {
-                case HmcModes::HMC_MODE_TRANSMIT:
-                    m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-                    break;
-                case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
-                    m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-                    break;
-                case HmcModes::HMC_MODE_BENCH_TEST:
-                    m._hmcMode = HmcModes::HMC_MODE_BENCH_TEST;
-                    break;
-                case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:
-                    m._hmcMode = HmcModes::HMC_MODE_NOISE_SOURCE_CAL;
-                    break;
-                default:
-                    m._hmcMode = HmcModes::HMC_MODE_INVALID;
-            }
-            return m;
-        };
-
-        HmcModes hmcMode() { return _hmcMode; };
-        uint scheduleStartIndex() { return _scheduleStartIndex; };
-        uint scheduleStopIndex() { return _scheduleStopIndex; };
 
         friend class HcrPmc730;
     };

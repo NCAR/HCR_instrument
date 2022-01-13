@@ -248,24 +248,6 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     // Update GUI every second
     connect(& _updateTimer, SIGNAL(timeout()), this, SLOT(_update()));
     _updateTimer.start(1000);
-    
-    // Populate the Operation mode combo box
-    for (auto i = 0; i < 8; ++i) {
-        if (i == 0 || i > 4) {
-            HcrPmc730::OperationMode mode(static_cast<HcrPmc730::HmcModes>(i), 0, 0);
-            _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
-        }
-    }
-    for (auto i = 0; i < 6; ++i) {
-        HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, i, i);
-        auto modeAtt = mode.equivalentAttenuatedMode();
-        _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
-        _ui.requestedModeCombo->addItem(modeAtt.name().c_str(), QVariant::fromValue(modeAtt));
-    }
-    HcrPmc730::OperationMode mode(HcrPmc730::HmcModes::HMC_MODE_TRANSMIT, 3, 5);
-    auto modeAtt = mode.equivalentAttenuatedMode();
-    _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));        
-    _ui.requestedModeCombo->addItem(modeAtt.name().c_str(), QVariant::fromValue(modeAtt));
 
     // Start with angle display cleared
     _clearAngleDisplay();
@@ -973,13 +955,25 @@ HcrGuiMainWindow::_update() {
     }
 
     // Operation mode
-    _ui.requestedModeCombo->setCurrentIndex(0);
-    auto reqMode = _hcrExecutiveStatus.requestedOperationMode();
-    for(auto i = 0; i < _ui.requestedModeCombo->count(); ++i) {
-        auto itemMode = _ui.requestedModeCombo->itemData(i).value<HcrPmc730::OperationMode>();
-        if(reqMode == itemMode) {
-            _ui.requestedModeCombo->setCurrentIndex(i);
+    if (_hcrdrxStatusThread.serverIsResponding()) {
+        if(! _ui.requestedModeCombo->count()) {
+            for(auto&& mode: _drxStatus.supportedOpsModes()) {
+                _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
+            }
         }
+        _ui.requestedModeCombo->setPlaceholderText("");
+        _ui.requestedModeCombo->setCurrentIndex(-1);
+        auto reqMode = _hcrExecutiveStatus.requestedOperationMode();
+        for(auto i = 0; i < _ui.requestedModeCombo->count(); ++i) {
+            auto itemMode = _ui.requestedModeCombo->itemData(i).value<HcrPmc730::OperationMode>();
+            if(reqMode == itemMode) {
+                _ui.requestedModeCombo->setCurrentIndex(i);
+            }
+        }
+    }
+    else {
+        _ui.requestedModeCombo->clear();        
+        _ui.requestedModeCombo->setPlaceholderText("[No DRX]");
     }
 
     std::string modeText = _pmcStatus.operationMode().name();
@@ -1095,7 +1089,7 @@ HcrGuiMainWindow::_update() {
         light = _amberLED;
     }
     _ui.hcrdrxStatusIcon->setPixmap(light);
-    
+
     // HcrPmc730Daemon status LED
     light = _greenLED;
     if (! _pmcStatusThread.serverIsResponding()) {

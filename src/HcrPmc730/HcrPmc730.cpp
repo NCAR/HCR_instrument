@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * HcrPmc730.cpp
  *
@@ -56,81 +56,86 @@ HcrPmc730::HmcModeNames[] = {
         "Bench Test",
         "TX V with noise source",
         "Invalid (8)",
-        "block 0 (tx H), rx HV",
-        "block 1 (tx V), rx HV",
-        "block 2 (tx HHVV), rx HV",
-        "block 3",
-        "block 4",
-        "block 5",
-        "block 6",
-        "block 7",
-        "block 8",
-        "block 9",
-        "block 10",
-        "block 11",
-        "block 12",
-        "block 13",
-        "block 14",
-        "block 15",
-        "block 16",
-        "block 17",
-        "block 18",
-        "block 19",
-        "block 20",
-        "block 21",
-        "block 22",
-        "block 23",
-        "block 24",
-        "block 25",
-        "block 26",
-        "block 27",
-        "block 28",
-        "block 29",
-        "block 30",
-        "block 31",
-        "block 32",
-        "block 33",
-        "block 34",
-        "block 35",
-        "block 36",
-        "block 37",
-        "block 38",
-        "block 39",
-        "block 40",
-        "block 41",
-        "block 42",
-        "block 43",
-        "block 44",
-        "block 45",
-        "block 46",
-        "block 47",
-        "block 48",
-        "block 49",
-        "block 50",
-        "block 51",
-        "block 52",
-        "block 53",
-        "block 54",
-        "block 55",
-        "block 56",
-        "block 57",
-        "block 58",
-        "block 59",
-        "block 60",
-        "block 61",
-        "block 62",
-        "block 63"
+        "Tx H",
+        "Tx V",
+        "Tx HHVV"
 };
+
+HcrPmc730::OperationMode::OperationMode()
+  : _hmcMode(HMC_MODE_INVALID),
+    _scheduleStartIndex(0),
+    _scheduleStopIndex(0),
+    _nickname{0} { };
+
+HcrPmc730::OperationMode::OperationMode(
+    const HcrPmc730::HmcModes &mode,
+    uint startIndex,
+    uint stopIndex,
+    const std::string& nickname)
+      : _hmcMode(mode),
+        _scheduleStartIndex(startIndex),
+        _scheduleStopIndex(stopIndex)
+{
+    snprintf(_nickname, sizeof(_nickname), "%s", nickname.c_str());
+};
+
+bool HcrPmc730::OperationMode::operator==(const OperationMode& rhs){
+    return _hmcMode == rhs._hmcMode
+    && _scheduleStartIndex == rhs._scheduleStartIndex
+    && _scheduleStopIndex == rhs._scheduleStopIndex;
+}
+
+bool HcrPmc730::OperationMode::operator!=(const OperationMode& rhs) {
+    return ! (*this == rhs);
+}
+
+bool HcrPmc730::OperationMode::isAttenuated() {
+    return _hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+}
+
+bool HcrPmc730::OperationMode::isValid() {
+    return _hmcMode != HmcModes::HMC_MODE_INVALID;
+}
+
+HcrPmc730::OperationMode HcrPmc730::OperationMode::equivalentAttenuatedMode() {
+    auto m = *this;
+    switch (_hmcMode) {
+        case HmcModes::HMC_MODE_TRANSMIT:
+            m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+            if(strlen(_nickname)) {
+                std::string newNickname(_nickname);
+                newNickname += ", atten";
+                snprintf(m._nickname, sizeof(m._nickname), "%s", newNickname.c_str());
+            }
+            break;
+        case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
+            m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
+            break;
+        case HmcModes::HMC_MODE_BENCH_TEST:
+            m._hmcMode = HmcModes::HMC_MODE_BENCH_TEST;
+            break;
+        case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:
+            m._hmcMode = HmcModes::HMC_MODE_NOISE_SOURCE_CAL;
+            break;
+        default:
+            m._hmcMode = HmcModes::HMC_MODE_INVALID;
+    }
+    return m;
+}
 
 const std::string HcrPmc730::OperationMode::name() const
 {
+    if(strlen(_nickname)) return std::string(_nickname);
+
     std::string s;
     if (_hmcMode == HMC_MODE_TRANSMIT || _hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {
-        s = HcrPmc730::HmcModeNames[_scheduleStartIndex+9];
-        if(_scheduleStartIndex != _scheduleStopIndex) {
-            s += " : ";
-            s += HcrPmc730::HmcModeNames[_scheduleStopIndex+9];
+        if(_scheduleStartIndex == _scheduleStopIndex && _scheduleStartIndex < 3) {
+            s = HcrPmc730::HmcModeNames[_scheduleStartIndex+9];
         }
+        else {
+            s = "Blocks " + std::to_string(_scheduleStartIndex) + ":" + std::to_string(_scheduleStopIndex);
+        }
+
         if (_hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {
             s += " attenuated";
         }
@@ -147,7 +152,7 @@ bool HcrPmc730::_DoSimulate = false;
 // Our singleton instance
 HcrPmc730 * HcrPmc730::_TheHcrPmc730 = 0;
 
-HcrPmc730::HcrPmc730() : 
+HcrPmc730::HcrPmc730() :
         Pmc730(_DoSimulate ? -1 : 0),
         _analogValues(),
         _pvPresCorrection(0.0) {
@@ -166,7 +171,7 @@ HcrPmc730::HcrPmc730() :
         ELOG << __PRETTY_FUNCTION__ << ": Hcr PMC-730 DIO lines " <<
                 _HCR_DIN_UNUSED_0 << ", " <<
                 _HCR_DIN_UNUSED_1 << ", " <<
-                _HCR_DIN_EMS_ERROR_EVENT << ", " << 
+                _HCR_DIN_EMS_ERROR_EVENT << ", " <<
                 _HCR_DIN_UNUSED_3 << ", " <<
                 _HCR_DIN_UNUSED_4 << ", " <<
                 _HCR_DIN_SPARE_PENTEK_1 << ", " <<
@@ -189,7 +194,7 @@ HcrPmc730::HcrPmc730() :
                 _HCR_DOUT_HMC_OPS_MODE_BIT2 << ", " <<
                 _HCR_DOUT_TX_FILAMENT_OFF << ", " <<
                 _HCR_DOUT_HMC_OPS_MODE_BIT0 << ", " <<
-                _HCR_DOUT_TX_HV_OFF << ", and " << 
+                _HCR_DOUT_TX_HV_OFF << ", and " <<
                 _HCR_DOUT_HMC_OPS_MODE_BIT1 << " are not all set for output!";
         abort();
     }
@@ -225,7 +230,7 @@ HcrPmc730::TheHcrPmc730() {
 void
 HcrPmc730::SetOperationMode(const OperationMode& mode) {
     // Set the HMC mode bits on our digital out lines. This method works
-    // atomically, setting all three bits at once rather than changing one 
+    // atomically, setting all three bits at once rather than changing one
     // at a time.
 
     // As written, this only works if the output lines we're setting are in
@@ -424,7 +429,7 @@ HcrPmc730::_MillitechDET10Power(double voltage) {
     // voltage is outside the calibrated range, we set indices to extrapolate
     // using the closest two points.
     int indexLow = 0;
-    while ((indexLow < CalTableLen - 1) && 
+    while ((indexLow < CalTableLen - 1) &&
             (voltage > CalTable[indexLow + 1].volts)) {
         indexLow++;
     }
@@ -526,7 +531,7 @@ HcrPmc730::_30PSI_A_4V_Pres(double sensorVolts) {
  * @brief Briefly raise the HMC's 'status_ack' line to reset its sense-and-hold
  * values.
  */
-void 
+void
 HcrPmc730::_ackHmcStatus() {
     if (_simulate)
         return;
@@ -546,7 +551,7 @@ HcrPmc730::_initEventCounter() {
     // - input polarity high
     // - software trigger to start counting
     // - disable counter interrupts
-    
+
     // set up as an event (pulse) counter
     if (SetMode(&_card, InEvent) != Success) {
         ELOG << __PRETTY_FUNCTION__ << ": setting PMC730 to count pulses";
@@ -576,9 +581,9 @@ HcrPmc730::_initEventCounter() {
     }
     // Now enable this configuration.
     ConfigureCounterTimer(&_card);
-    
+
     // Send the software trigger to start the counter.
-    StartCounter(&_card);    
+    StartCounter(&_card);
 }
 
 uint32_t
@@ -589,7 +594,7 @@ HcrPmc730::_emsErrorCount() const {
     }
 
     // Get the current event count from the counter readback register.
-    int32_t signedCount = input_long(_card.nHandle, 
+    int32_t signedCount = input_long(_card.nHandle,
         (long*)&_card.brd_ptr->CounterReadBack);
 
     // We got a *signed* 32-bit value from input_long, but the real value is
