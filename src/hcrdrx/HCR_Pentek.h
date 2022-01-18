@@ -72,19 +72,19 @@ public:
     /// @brief Return the sample frequency used for the ADCs
     /// @return the sample frequency used for the ADCs
     double adcFrequency() const {
-        return _config.clock_mode_125() ? 125e6 : 187.5e6;
+        return _config.clock_mode_125() ? 125e6 : 140.625e6;
     }
 
     /// @brief Return the frequency of samples emitted by the DACs
     /// @return the frequency of samples emitted by the DACs
     double dacFrequency() const {
-        return _config.clock_mode_125() ? 500e6 : 750e6;
+        return _config.clock_mode_125() ? 500e6 : 562.5e6;
     }
 
     /// @brief Return the amount of DDC decimation
     /// @return the amount of DDC decimation
     int ddcDecimation() const {
-        return _config.clock_mode_125() ? 8 : 12;
+        return _config.clock_mode_125() ? 8 : 9;
     }
 
     /// @brief Return the amount of DUC interpolation
