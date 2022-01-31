@@ -710,12 +710,12 @@
       "ctype": {
         "TDATA": {
           "Type": "integer signed",
-          "Width": "32"
+          "Width": "24"
         },
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "32"}
+      "port_width": {"TDATA": "24"}
     },
     "coef_ch1_V_V": {
       "type": "axi4stream",
@@ -725,12 +725,12 @@
       "ctype": {
         "TDATA": {
           "Type": "integer signed",
-          "Width": "32"
+          "Width": "24"
         },
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "32"}
+      "port_width": {"TDATA": "24"}
     },
     "coef_ch2_V_V": {
       "type": "axi4stream",
@@ -740,12 +740,12 @@
       "ctype": {
         "TDATA": {
           "Type": "integer signed",
-          "Width": "32"
+          "Width": "24"
         },
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "32"}
+      "port_width": {"TDATA": "24"}
     },
     "control_flags_V": {
       "type": "data",
@@ -1703,7 +1703,7 @@
     },
     "coef_ch0_V_V_TDATA": {
       "dir": "out",
-      "width": "32"
+      "width": "24"
     },
     "coef_ch0_V_V_TVALID": {
       "dir": "out",
@@ -1715,7 +1715,7 @@
     },
     "coef_ch1_V_V_TDATA": {
       "dir": "out",
-      "width": "32"
+      "width": "24"
     },
     "coef_ch1_V_V_TVALID": {
       "dir": "out",
@@ -1727,7 +1727,7 @@
     },
     "coef_ch2_V_V_TDATA": {
       "dir": "out",
-      "width": "32"
+      "width": "24"
     },
     "coef_ch2_V_V_TVALID": {
       "dir": "out",
@@ -2141,7 +2141,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-01-07 15:30:07 GMT",
+    "Time": "2021-01-31 15:49:56 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

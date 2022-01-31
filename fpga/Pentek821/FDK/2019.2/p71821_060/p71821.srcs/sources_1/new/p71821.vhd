@@ -683,15 +683,12 @@ component user_block2_wrapper
     s_axi_csr_wstrb : in STD_LOGIC_VECTOR ( 3 downto 0 );
     s_axi_csr_wvalid : in STD_LOGIC;
     s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_adc_ch0_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
     s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_adc_ch1_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
     s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_adc_ch2_pdti_tready : out STD_LOGIC;
     s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
     s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
     s_axis_adc_pdti_aclk : in STD_LOGIC;

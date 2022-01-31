@@ -13,6 +13,7 @@
     <UIConfigurations>
         <UIAutosynConf hideTrivialOp="true" isBasedOnBoard="false" isSolutionDirty="false" isStopAskAgain="false" showDetailDesignViewer="false">
             <Platform>xilinx/kintexu/kintexu</Platform>
+            <Platform>xilinx/kintexu/kintexu_fpv7</Platform>
             <customLibs/>
         </UIAutosynConf>
         <UIIPPackagerConf AskAgain="true" DescriptionButton="false" LibraryButton="false" RTLLanguage="verilog" UseNetList="none" VendorButton="false" VersionButton="false" evaluateRTL="false" setup="false">
@@ -66,7 +67,7 @@
     </targetInfo>
     <libraryList>
         <library name="DefaultPlatform" value="xilinx/kintexu/kintexu"/>
-        <library value="xilinx/kintexu/kintexu_fpv7" name="DefaultPlatform"/>
+        <library name="DefaultPlatform" value="xilinx/kintexu/kintexu_fpv7"/>
     </libraryList>
     <clockList>
         <clock name="default" uncertainty="12.5%" period="3"/>

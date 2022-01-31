@@ -13,7 +13,7 @@
 const int N_COEF_SETS = 8;
 const int N_FILTER_TAPS = 48;
 
-typedef ap_int<32> coef_t;
+typedef ap_int<24> coef_t;
 
 // Schedules pulses for the HCR radar
 void hcr_controller(

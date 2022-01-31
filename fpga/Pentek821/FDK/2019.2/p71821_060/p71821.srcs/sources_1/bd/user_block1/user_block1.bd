@@ -926,7 +926,7 @@
                 "value": "2"
               },
               "C_PROBE_OUT0_INIT_VAL": {
-                "value": "0x00007FFF"
+                "value": "0x3fff3fff"
               },
               "C_PROBE_OUT0_WIDTH": {
                 "value": "32"
@@ -964,12 +964,6 @@
           }
         },
         "interface_nets": {
-          "s_axis_dac_pdti_1": {
-            "interface_ports": [
-              "s_axis_dac_pdti",
-              "pdti_dac_pulse_0/S_AXIS_PDTI"
-            ]
-          },
           "Conn1": {
             "interface_ports": [
               "m_axis_dac_pdti",
@@ -983,6 +977,12 @@
                 "value": "true"
               }
             }
+          },
+          "s_axis_dac_pdti_1": {
+            "interface_ports": [
+              "s_axis_dac_pdti",
+              "pdti_dac_pulse_0/S_AXIS_PDTI"
+            ]
           }
         },
         "nets": {
@@ -1728,10 +1728,27 @@
       }
     },
     "interface_nets": {
-      "s_axis_adc_ch0_pdti_1": {
+      "dac_M_AXIS_PDTI": {
         "interface_ports": [
-          "s_axis_adc_ch0_pdti",
-          "pdti_adc_tweak_0/S_AXIS_PDTI"
+          "m_axis_dac_pdti",
+          "dac/m_axis_dac_pdti"
+        ],
+        "hdl_attributes": {
+          "DEBUG": {
+            "value": "true"
+          }
+        }
+      },
+      "s_axis_adc_ch2_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch2_pdti",
+          "pdti_adc_tweak_2/S_AXIS_PDTI"
+        ]
+      },
+      "pdti_adc_tweak_1_M_AXIS_PDTI": {
+        "interface_ports": [
+          "m_axis_adc_ch1_pdti",
+          "pdti_adc_tweak_1/M_AXIS_PDTI"
         ]
       },
       "pdti_adc_tweak_2_M_AXIS_PDTI": {
@@ -1740,10 +1757,16 @@
           "pdti_adc_tweak_2/M_AXIS_PDTI"
         ]
       },
-      "s_axi_csr_1": {
+      "s_axis_adc_ch0_pdti_1": {
         "interface_ports": [
-          "s_axi_csr",
-          "placeholder/s_axi_csr"
+          "s_axis_adc_ch0_pdti",
+          "pdti_adc_tweak_0/S_AXIS_PDTI"
+        ]
+      },
+      "pdti_adc_tweak_0_M_AXIS_PDTI": {
+        "interface_ports": [
+          "m_axis_adc_ch0_pdti",
+          "pdti_adc_tweak_0/M_AXIS_PDTI"
         ]
       },
       "s_axis_adc_ch1_pdti_1": {
@@ -1758,33 +1781,10 @@
           "dac/s_axis_dac_pdti"
         ]
       },
-      "pdti_adc_tweak_1_M_AXIS_PDTI": {
+      "s_axi_csr_1": {
         "interface_ports": [
-          "m_axis_adc_ch1_pdti",
-          "pdti_adc_tweak_1/M_AXIS_PDTI"
-        ]
-      },
-      "dac_M_AXIS_PDTI": {
-        "interface_ports": [
-          "m_axis_dac_pdti",
-          "dac/m_axis_dac_pdti"
-        ],
-        "hdl_attributes": {
-          "DEBUG": {
-            "value": "true"
-          }
-        }
-      },
-      "pdti_adc_tweak_0_M_AXIS_PDTI": {
-        "interface_ports": [
-          "m_axis_adc_ch0_pdti",
-          "pdti_adc_tweak_0/M_AXIS_PDTI"
-        ]
-      },
-      "s_axis_adc_ch2_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch2_pdti",
-          "pdti_adc_tweak_2/S_AXIS_PDTI"
+          "s_axi_csr",
+          "placeholder/s_axi_csr"
         ]
       }
     },

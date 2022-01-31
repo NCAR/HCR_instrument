@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"0.780851",
-   "Default View_TopLeft":"-704,0",
+   "Default View_TopLeft":"-704,337",
    "ExpandedHierarchyInLayout":"",
    "PinnedBlocks":"/dac|/placeholder|/pdti_adc_tweak_1|/pdti_adc_tweak_2|/pdti_adc_tweak_0|",
    "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
@@ -46,15 +46,15 @@ preplace netloc controller_running 1 0 1 40 120n
 preplace netloc xlconstant_0_dout 1 1 1 N 870
 preplace netloc s_axi_csr_aresetn_1 1 0 1 NJ 890
 preplace netloc s_axi_csr_aclk_1 1 0 1 NJ 870
-preplace netloc pdti_adc_tweak_2_M_AXIS_PDTI 1 1 1 NJ 500
 preplace netloc s_axis_adc_ch0_pdti_1 1 0 1 NJ 60
-preplace netloc pdti_adc_tweak_0_M_AXIS_PDTI 1 1 1 NJ 80
-preplace netloc s_axis_adc_ch2_pdti_1 1 0 1 NJ 480
-preplace netloc s_axis_dac_pdti_1 1 0 1 NJ 680
+preplace netloc pdti_adc_tweak_2_M_AXIS_PDTI 1 1 1 NJ 500
+preplace netloc s_axi_csr_1 1 0 1 NJ 850
 preplace netloc s_axis_adc_ch1_pdti_1 1 0 1 NJ 270
+preplace netloc s_axis_dac_pdti_1 1 0 1 NJ 680
 preplace netloc pdti_adc_tweak_1_M_AXIS_PDTI 1 1 1 NJ 290
 preplace netloc dac_M_AXIS_PDTI 1 1 1 NJ 720
-preplace netloc s_axi_csr_1 1 0 1 NJ 850
+preplace netloc pdti_adc_tweak_0_M_AXIS_PDTI 1 1 1 NJ 80
+preplace netloc s_axis_adc_ch2_pdti_1 1 0 1 NJ 480
 levelinfo -pg 1 0 250 490
 pagesize -pg 1 -db -bbox -sgen -230 0 690 940
 "

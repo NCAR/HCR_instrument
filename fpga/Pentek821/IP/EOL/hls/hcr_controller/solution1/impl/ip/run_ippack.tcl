@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_controller"
 set Version     "1.0"
 set DisplayName "Hcr_controller"
-set Revision    "2101071530"
+set Revision    "2101311549"
 set Description "Controls the radar schedule"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -242,13 +242,13 @@ set Interfaces {
         port_prefix "coef_ch0_V_V"
         has_tready "1"
         ports {
-            TDATA 32
+            TDATA 24
         }
         ctype {
             TDATA {
                 Type "integer signed"
-                Width "32"
-                Bits "32"
+                Width "24"
+                Bits "24"
             }
             TVALID {
                 Type "bool"
@@ -268,13 +268,13 @@ set Interfaces {
         port_prefix "coef_ch1_V_V"
         has_tready "1"
         ports {
-            TDATA 32
+            TDATA 24
         }
         ctype {
             TDATA {
                 Type "integer signed"
-                Width "32"
-                Bits "32"
+                Width "24"
+                Bits "24"
             }
             TVALID {
                 Type "bool"
@@ -294,13 +294,13 @@ set Interfaces {
         port_prefix "coef_ch2_V_V"
         has_tready "1"
         ports {
-            TDATA 32
+            TDATA 24
         }
         ctype {
             TDATA {
                 Type "integer signed"
-                Width "32"
-                Bits "32"
+                Width "24"
+                Bits "24"
             }
             TVALID {
                 Type "bool"
