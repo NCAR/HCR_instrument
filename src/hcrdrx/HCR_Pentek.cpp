@@ -67,8 +67,8 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     _nDroppedBeforeStartSig(_adcCount, 0),
     _unprocessedDma(_adcCount, 0),
     _maxUnprocessedDma(_adcCount, 0),
-    _processedPulses(_adcCount, 0),
     _consoleNotifier(STDIN_FILENO, QSocketNotifier::Read),
+    _processedPulses(_adcCount, 0),
     _prevPulseSeq(_adcCount, -1ULL),
     _digitizerSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency()),
     _done(false),
@@ -116,12 +116,6 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     connect(this, SIGNAL(adcDmaTimeout(int32_t)),
             this, SLOT(_dmaTimeoutHandler(int32_t)));
 
-    // The _consoleNotifier emits its activated() signal each time a
-    // newline is seen on stdin. If we're firing a single element, we use that
-    // signal to increment the number of the element to fire
-    //connect(&_consoleNotifier, SIGNAL(activated(int)),
-    //        this, SLOT(_incFiringElement()));
-
     // Verify that we're running HCR firmware. The Board Info "User Word"
     // register in HCR firmware should contain "HCRX" in ASCII characters.
     int32_t status;
@@ -142,6 +136,25 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
         os << "Expected 'HCRX' (0x" << std::hex << expectCharsIntVal <<
               ") in the board's user word, but found 0x" << userWord;
         _AbortConstruction(os.str());
+    }
+
+    // Verify the HCR firmware date
+    uint32_t revDate;
+    uint32_t revHour;
+    NAVip_BrdInfoRegs_FpgaRevDateStat_GetRevDate(_boardInfoRegBase(), &revDate);
+    NAVip_BrdInfoRegs_FpgaRevStat_GetRevNum(_boardInfoRegBase(), &revHour);
+    uint32_t revDateTime = (revDate << 8) | revHour;
+    uint32_t expectedDateTime = (COMPATIBLE_FIRMWARE_DATE << 8) | COMPATIBLE_FIRMWARE_HOUR;
+    if (revDateTime != expectedDateTime) {
+        std::ostringstream oss;
+        oss << "\n    This software is compatible with: hcrdrx_" << std::setfill('0') << std::hex
+            << std::setw(8) << COMPATIBLE_FIRMWARE_DATE << "_"
+            << std::setw(2) << COMPATIBLE_FIRMWARE_HOUR << "_xxxxxxxx\n"
+            <<   "    but the FPGA is running:          hcrdrx_20"
+            << std::setw(6) << revDate << "_"
+            << std::setw(2) << revHour << "_xxxxxxxx.\n"
+            << "Please upgrade the " << ((revDateTime > expectedDateTime) ? "hcrdrx software." : "DRX FPGA bitstream.");
+        _AbortConstruction(oss.str());
     }
 
     // Low-level Navigator board setup (bus, clock, sync, gate, PPS source)

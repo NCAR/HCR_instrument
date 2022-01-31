@@ -332,6 +332,11 @@ private:
     double _prevPrt;
     uint16_t _prevnGates;
     bool _motorZeroPositionSet;
+
+    /// @brief Firmware build to check for.
+    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20220107;
+    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x18;
+
 };
 
 
