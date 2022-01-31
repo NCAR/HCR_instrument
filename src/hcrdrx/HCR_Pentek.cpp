@@ -446,7 +446,7 @@ HCR_Pentek::_setupAdc() {
         // ADC channel setup
         int32_t adcDataFormat;
         if (_ddcEnable) {
-            adcDataFormat = NAV_ADC_FORMAT_16BIT_IQ_PACKED;
+            adcDataFormat = NAV_ADC_FORMAT_24BIT_IQ_UNPACKED;
         }
         else {
             adcDataFormat = NAV_ADC_FORMAT_16BIT_REAL_PACKED;
@@ -581,7 +581,7 @@ HCR_Pentek::_setupDdc() {
                                   ddcNum,
                                   ddcDecimation(),
                                   _config.rx_frequency(),
-                                  NAV_DDC_PACKMODE_PACKED,
+                                  NAV_DDC_PACKMODE_UNPACKED,
                                   NAV_DDC_SPECTRUM_INVERT_DISABLE,
                                   NAV_DDC_SPECTRUM_OFFSET_DISABLE,
                                   NAV_OPTIONS_NONE);
@@ -939,16 +939,14 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
         return(false);
     }
 
-    // For HCR there is a custom format, but it's reported as format 1.
-    //
     // Navigator definitions used on the FPGA side do not agree with the
     // NAV_IP_DMA_PPKT2PCIE_METADATA_* macros on the our side.
     //
     // Here's what we'll actually see:
-    //      metaData->dataFormat: 0 = 8-bit, 1 = 16-bit, 2 = 24-bit(?), 3 = 32-bit
+    //      metaData->dataFormat: 0 = 8-bit, 1 = 16-bit, 2 = 24-bit, 3 = 32-bit
     //              ->dataType: 0 = real, 1 = complex (IQ)
     //              ->firstSamplePhase: 0 = I first, 1 = Q first
-    if (!(metadata->dataFormat == 1 && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
+    if (!( (metadata->dataFormat+1)*2 == sizeof(Controller::PackedIQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
         ELOG << "Chan " << chan <<
                 ": data unpublishable w/format: " << metadata->dataFormat <<
                 ", type: " << metadata->dataType <<
