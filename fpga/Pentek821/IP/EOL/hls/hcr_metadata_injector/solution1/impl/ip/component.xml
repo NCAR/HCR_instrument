@@ -331,7 +331,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_V.TDATA_NUM_BYTES">107</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_V.TDATA_NUM_BYTES">119</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -406,7 +406,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>0ad7867a</spirit:value>
+            <spirit:value>d54caea6</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -422,7 +422,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>28175994</spirit:value>
+            <spirit:value>6f4bbe43</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -438,7 +438,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a7df2426</spirit:value>
+            <spirit:value>5fac3667</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -454,7 +454,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>370e8589</spirit:value>
+            <spirit:value>662feb7f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -941,7 +941,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">855</spirit:left>
+            <spirit:left spirit:format="long">951</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -1063,7 +1063,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_26996d8b</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_ba9bcbb1</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -1160,14 +1160,14 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Hcr_metadata_injector</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2101071829</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-01-07T18:29:25Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2104112215</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-04-11T22:15:13Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="93e97e05"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="9ecbf7e1"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="c3706221"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="4d51d6df"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="156c8e47"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="ede811db"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="1a4b01a6"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>

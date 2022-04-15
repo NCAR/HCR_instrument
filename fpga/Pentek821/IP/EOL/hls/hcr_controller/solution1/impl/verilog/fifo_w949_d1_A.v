@@ -5,14 +5,14 @@
 
 `timescale 1 ns / 1 ps
 
-module fifo_w853_d1_A_shiftReg (
+module fifo_w949_d1_A_shiftReg (
     clk,
     data,
     ce,
     a,
     q);
 
-parameter DATA_WIDTH = 32'd853;
+parameter DATA_WIDTH = 32'd949;
 parameter ADDR_WIDTH = 32'd1;
 parameter DEPTH = 2'd1;
 
@@ -39,7 +39,7 @@ assign q = SRL_SIG[a];
 
 endmodule
 
-module fifo_w853_d1_A (
+module fifo_w949_d1_A (
     clk,
     reset,
     if_empty_n,
@@ -52,7 +52,7 @@ module fifo_w853_d1_A (
     if_din);
 
 parameter MEM_STYLE   = "auto";
-parameter DATA_WIDTH  = 32'd853;
+parameter DATA_WIDTH  = 32'd949;
 parameter ADDR_WIDTH  = 32'd1;
 parameter DEPTH       = 2'd1;
 
@@ -109,12 +109,12 @@ end
 assign shiftReg_addr = mOutPtr[ADDR_WIDTH] == 1'b0 ? mOutPtr[ADDR_WIDTH-1:0]:{ADDR_WIDTH{1'b0}};
 assign shiftReg_ce = (if_write & if_write_ce) & internal_full_n;
 
-fifo_w853_d1_A_shiftReg 
+fifo_w949_d1_A_shiftReg 
 #(
     .DATA_WIDTH(DATA_WIDTH),
     .ADDR_WIDTH(ADDR_WIDTH),
     .DEPTH(DEPTH))
-U_fifo_w853_d1_A_ram (
+U_fifo_w949_d1_A_ram (
     .clk(clk),
     .data(shiftReg_data),
     .ce(shiftReg_ce),

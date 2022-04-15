@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xB38DE29180089E49",
+      "boundary_crc": "0xD8D1347F76A07321",
       "device": "xcku060-ffva1156-2-e",
       "name": "user_block1",
       "synth_flow_mode": "Hierarchical",
@@ -693,6 +693,11 @@
       },
       "controller_running": {
         "direction": "I"
+      },
+      "phase_sample": {
+        "direction": "I",
+        "left": "31",
+        "right": "0"
       }
     },
     "components": {
@@ -723,6 +728,11 @@
           "mt_pulse": {
             "direction": "I",
             "left": "7",
+            "right": "0"
+          },
+          "phase_sample": {
+            "direction": "I",
+            "left": "31",
             "right": "0"
           }
         },
@@ -923,13 +933,13 @@
                 "value": "1"
               },
               "C_NUM_PROBE_OUT": {
-                "value": "2"
+                "value": "1"
               },
               "C_PROBE_OUT0_INIT_VAL": {
-                "value": "0x3fff3fff"
+                "value": "1"
               },
               "C_PROBE_OUT0_WIDTH": {
-                "value": "32"
+                "value": "1"
               },
               "C_PROBE_OUT1_INIT_VAL": {
                 "value": "0x1"
@@ -1019,18 +1029,6 @@
               }
             }
           },
-          "vio_0_probe_out0": {
-            "ports": [
-              "vio_0/probe_out0",
-              "pdti_dac_pulse_0/MOD_VAL"
-            ]
-          },
-          "vio_0_probe_out1": {
-            "ports": [
-              "vio_0/probe_out1",
-              "pdti_dac_pulse_0/DO_SYNC"
-            ]
-          },
           "px_scalar_reg_0_q": {
             "ports": [
               "px_scalar_reg_0/q",
@@ -1041,6 +1039,18 @@
             "ports": [
               "xlslice_0/Dout",
               "px_scalar_reg_0/d"
+            ]
+          },
+          "phase_sample": {
+            "ports": [
+              "phase_sample",
+              "pdti_dac_pulse_0/MOD_VAL"
+            ]
+          },
+          "vio_0_probe_out0": {
+            "ports": [
+              "vio_0/probe_out0",
+              "pdti_dac_pulse_0/DO_SYNC"
             ]
           }
         }
@@ -1728,6 +1738,42 @@
       }
     },
     "interface_nets": {
+      "s_axi_csr_1": {
+        "interface_ports": [
+          "s_axi_csr",
+          "placeholder/s_axi_csr"
+        ]
+      },
+      "s_axis_adc_ch1_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch1_pdti",
+          "pdti_adc_tweak_1/S_AXIS_PDTI"
+        ]
+      },
+      "s_axis_adc_ch2_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch2_pdti",
+          "pdti_adc_tweak_2/S_AXIS_PDTI"
+        ]
+      },
+      "pdti_adc_tweak_0_M_AXIS_PDTI": {
+        "interface_ports": [
+          "m_axis_adc_ch0_pdti",
+          "pdti_adc_tweak_0/M_AXIS_PDTI"
+        ]
+      },
+      "s_axis_dac_pdti_1": {
+        "interface_ports": [
+          "s_axis_dac_pdti",
+          "dac/s_axis_dac_pdti"
+        ]
+      },
+      "s_axis_adc_ch0_pdti_1": {
+        "interface_ports": [
+          "s_axis_adc_ch0_pdti",
+          "pdti_adc_tweak_0/S_AXIS_PDTI"
+        ]
+      },
       "dac_M_AXIS_PDTI": {
         "interface_ports": [
           "m_axis_dac_pdti",
@@ -1739,12 +1785,6 @@
           }
         }
       },
-      "s_axis_adc_ch2_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch2_pdti",
-          "pdti_adc_tweak_2/S_AXIS_PDTI"
-        ]
-      },
       "pdti_adc_tweak_1_M_AXIS_PDTI": {
         "interface_ports": [
           "m_axis_adc_ch1_pdti",
@@ -1755,36 +1795,6 @@
         "interface_ports": [
           "m_axis_adc_ch2_pdti",
           "pdti_adc_tweak_2/M_AXIS_PDTI"
-        ]
-      },
-      "s_axis_adc_ch0_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch0_pdti",
-          "pdti_adc_tweak_0/S_AXIS_PDTI"
-        ]
-      },
-      "pdti_adc_tweak_0_M_AXIS_PDTI": {
-        "interface_ports": [
-          "m_axis_adc_ch0_pdti",
-          "pdti_adc_tweak_0/M_AXIS_PDTI"
-        ]
-      },
-      "s_axis_adc_ch1_pdti_1": {
-        "interface_ports": [
-          "s_axis_adc_ch1_pdti",
-          "pdti_adc_tweak_1/S_AXIS_PDTI"
-        ]
-      },
-      "s_axis_dac_pdti_1": {
-        "interface_ports": [
-          "s_axis_dac_pdti",
-          "dac/s_axis_dac_pdti"
-        ]
-      },
-      "s_axi_csr_1": {
-        "interface_ports": [
-          "s_axi_csr",
-          "placeholder/s_axi_csr"
         ]
       }
     },
@@ -1899,6 +1909,12 @@
         "ports": [
           "s_axi_csr_aclk",
           "placeholder/s_axi_csr_aclk"
+        ]
+      },
+      "MOD_VAL_0_1": {
+        "ports": [
+          "phase_sample",
+          "dac/phase_sample"
         ]
       }
     },

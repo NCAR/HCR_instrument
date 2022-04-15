@@ -150,14 +150,22 @@
                 "order": "7",
                 "dataType": "unsigned"
               },
-              "timer_offset": {
+              "phase_table_begin": {
                 "order": "8",
+                "dataType": "unsigned"
+              },
+              "phase_table_end": {
+                "order": "9",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "10",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
               },
               "timer_width": {
-                "order": "9",
+                "order": "11",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
@@ -176,24 +184,28 @@
             "order": "3",
             "dataType": "unsigned"
           },
-          "first_pulse_in_block": {
+          "phase_sample": {
             "order": "4",
-            "dataType": "bool"
+            "dataType": "unsigned"
           },
-          "last_pulse_in_block": {
+          "first_pulse_in_block": {
             "order": "5",
             "dataType": "bool"
           },
-          "first_pulse_in_xfer": {
+          "last_pulse_in_block": {
             "order": "6",
             "dataType": "bool"
           },
-          "last_pulse_in_xfer": {
+          "first_pulse_in_xfer": {
             "order": "7",
             "dataType": "bool"
           },
-          "terminate": {
+          "last_pulse_in_xfer": {
             "order": "8",
+            "dataType": "bool"
+          },
+          "terminate": {
+            "order": "9",
             "dataType": "bool"
           }
         }
@@ -433,11 +445,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "856",
+          "Width": "952",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "800",
+              "Width": "864",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -476,6 +488,14 @@
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
+                "phase_table_begin": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "phase_table_end": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
                 "timer_offset": {
                   "Type": "array",
                   "Width": "256",
@@ -508,6 +528,10 @@
               "Type": "integer unsigned",
               "Width": "8"
             },
+            "phase_sample": {
+              "Type": "integer unsigned",
+              "Width": "32"
+            },
             "first_pulse_in_block": {
               "Type": "null",
               "Width": "1"
@@ -534,7 +558,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "856"}
+      "port_width": {"TDATA": "952"}
     }
   },
   "RtlPorts": {
@@ -642,7 +666,7 @@
     },
     "pulse_metadata_V_TDATA": {
       "dir": "in",
-      "width": "856"
+      "width": "952"
     },
     "pulse_metadata_V_TVALID": {
       "dir": "in",
@@ -721,8 +745,8 @@
           }
         ],
         "Area": {
-          "FF": "1699",
-          "LUT": "571",
+          "FF": "1827",
+          "LUT": "574",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -757,8 +781,8 @@
               }]
           }],
         "Area": {
-          "FF": "3325",
-          "LUT": "1417",
+          "FF": "3453",
+          "LUT": "1420",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -776,7 +800,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-01-07 18:29:14 GMT",
+    "Time": "2021-04-11 22:15:03 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2101071829"
+set Revision    "2104112215"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -266,18 +266,18 @@ set Interfaces {
         port_prefix "pulse_metadata_V"
         has_tready "1"
         ports {
-            TDATA 856
+            TDATA 952
         }
         ctype {
             TDATA {
                 Type "struct"
-                Width "856"
-                Bits "856"
+                Width "952"
+                Bits "952"
                 Fields {
                     def {
                         Type "struct"
-                        Width "800"
-                        Bits "800"
+                        Width "864"
+                        Bits "864"
                         Fields {
                             prt {
                                 Type "array"
@@ -325,6 +325,16 @@ set Interfaces {
                                 Width "32"
                                 Bits "32"
                             }
+                            phase_table_begin {
+                                Type "integer unsigned"
+                                Width "32"
+                                Bits "32"
+                            }
+                            phase_table_end {
+                                Type "integer unsigned"
+                                Width "32"
+                                Bits "32"
+                            }
                             timer_offset {
                                 Type "array"
                                 Width "256"
@@ -363,6 +373,11 @@ set Interfaces {
                         Type "integer unsigned"
                         Width "8"
                         Bits "8"
+                    }
+                    phase_sample {
+                        Type "integer unsigned"
+                        Width "32"
+                        Bits "32"
                     }
                     first_pulse_in_block {
                         Type "null"

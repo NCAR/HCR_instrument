@@ -196,7 +196,7 @@ bool handle_header(
 	header[4] = pulse_info.sequence_index;
 	header[5] = pulse_info.num_samples;
 	header[6] = pulse_info.def.prt[0];
-	header[7] = 0;
+	header[7] = pulse_info.phase_sample;
 	header[8] = pulse_sequence_counter & 0xFFFFFFFFull;
 	header[9] = (pulse_sequence_counter >> 32) & 0xFFFFFFFFull;
 	header[10] = 0;

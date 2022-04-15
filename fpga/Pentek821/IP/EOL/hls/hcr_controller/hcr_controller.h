@@ -12,6 +12,7 @@
 
 const int N_COEF_SETS = 8;
 const int N_FILTER_TAPS = 48;
+const int N_PHASE_SAMPLES = 65536;
 
 typedef ap_int<24> coef_t;
 
@@ -28,6 +29,7 @@ void hcr_controller(
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch2[N_COEF_SETS][N_FILTER_TAPS],
+		uint32_t cfg_phase_samples[N_PHASE_SAMPLES],
 		hls::stream<coef_t>& coef_ch0,
 		hls::stream<coef_t>& coef_ch1,
 		hls::stream<coef_t>& coef_ch2,
@@ -37,6 +39,7 @@ void hcr_controller(
 		volatile ap_uint<3>* filter_select_ch0, // Selects RX FIR
 		volatile ap_uint<3>* filter_select_ch1,
 		volatile ap_uint<3>* filter_select_ch2,
+		volatile ap_uint<32>* phase_sample,     // IQ sample for phase coding
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch0,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch1,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch2,
@@ -52,6 +55,7 @@ void scheduler_parser(
 		uint32_t cfg_num_pulses_per_xfer,
 		ap_uint<3> cfg_enabled_channel_vector,
 		volatile uint32_t* cfg_watchdog,
+		uint32_t cfg_phase_samples[N_PHASE_SAMPLES],
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -74,7 +78,8 @@ void scheduler_cycle_exact(
 		volatile bool* control_hvn,
 		volatile ap_uint<3>* filter_select_ch0,
 		volatile ap_uint<3>* filter_select_ch1,
-		volatile ap_uint<3>* filter_select_ch2
+		volatile ap_uint<3>* filter_select_ch2,
+		volatile ap_uint<32>* phase_sample
 	);
 
 void output_fifo(

@@ -178,14 +178,34 @@
             "structImpl": "field",
             "dataPack": true
           },
-          "timer_offset": {
+          "phase_table_begin": {
             "order": "8",
+            "dataType": "unsigned",
+            "dataWidth": "32",
+            "interfaceRef": "s_axi_cfg_bus",
+            "bitMap": "31:0",
+            "memoryRef": "cfg_pulse_sequence_phase_table_begin",
+            "structImpl": "field",
+            "dataPack": true
+          },
+          "phase_table_end": {
+            "order": "9",
+            "dataType": "unsigned",
+            "dataWidth": "32",
+            "interfaceRef": "s_axi_cfg_bus",
+            "bitMap": "31:0",
+            "memoryRef": "cfg_pulse_sequence_phase_table_end",
+            "structImpl": "field",
+            "dataPack": true
+          },
+          "timer_offset": {
+            "order": "10",
             "kinds": ["array"],
             "dataType": "unsigned",
             "arraySizes": ["8"]
           },
           "timer_width": {
-            "order": "9",
+            "order": "11",
             "kinds": ["array"],
             "dataType": "unsigned",
             "arraySizes": ["8"]
@@ -235,20 +255,31 @@
         "memoryRef": "cfg_filter_coefs_ch2"
       }
     },
-    "coef_ch0": {
+    "cfg_phase_samples": {
       "index": "11",
-      "type": {"dataType": "ap_int"}
+      "type": {
+        "kinds": ["array"],
+        "dataType": "unsigned",
+        "dataWidth": "32",
+        "arraySizes": ["65536"],
+        "interfaceRef": "s_axi_cfg_bus",
+        "memoryRef": "cfg_phase_samples"
+      }
     },
-    "coef_ch1": {
+    "coef_ch0": {
       "index": "12",
       "type": {"dataType": "ap_int"}
     },
-    "coef_ch2": {
+    "coef_ch1": {
       "index": "13",
       "type": {"dataType": "ap_int"}
     },
-    "mt_pulse": {
+    "coef_ch2": {
       "index": "14",
+      "type": {"dataType": "ap_int"}
+    },
+    "mt_pulse": {
+      "index": "15",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
@@ -257,7 +288,7 @@
       }
     },
     "control_flags": {
-      "index": "15",
+      "index": "16",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
@@ -266,7 +297,7 @@
       }
     },
     "control_hvn": {
-      "index": "16",
+      "index": "17",
       "type": {
         "kinds": ["pointer"],
         "dataType": "bool",
@@ -275,7 +306,7 @@
       }
     },
     "filter_select_ch0": {
-      "index": "17",
+      "index": "18",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
@@ -284,7 +315,7 @@
       }
     },
     "filter_select_ch1": {
-      "index": "18",
+      "index": "19",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
@@ -293,7 +324,7 @@
       }
     },
     "filter_select_ch2": {
-      "index": "19",
+      "index": "20",
       "type": {
         "kinds": ["pointer"],
         "dataType": "ap_uint",
@@ -301,201 +332,16 @@
         "interfaceRef": "filter_select_ch2_V"
       }
     },
-    "pulse_metadata_ch0": {
-      "index": "20",
-      "type": {
-        "kinds": ["struct"],
-        "dataType": "pulse_exec_definition",
-        "portRef": "TDATA",
-        "structImpl": "interface",
-        "dataPack": true,
-        "fields": {
-          "def": {
-            "order": "0",
-            "kinds": ["struct"],
-            "dataType": "pulse_definition",
-            "fields": {
-              "prt": {
-                "order": "0",
-                "kinds": ["array"],
-                "dataType": "unsigned",
-                "arraySizes": ["2"]
-              },
-              "num_pulses": {
-                "order": "1",
-                "dataType": "unsigned"
-              },
-              "block_post_time": {
-                "order": "2",
-                "dataType": "unsigned"
-              },
-              "control_flags": {
-                "order": "3",
-                "dataType": "unsigned"
-              },
-              "polarization_mode": {
-                "order": "4",
-                "dataType": "unsigned"
-              },
-              "filter_select_ch0": {
-                "order": "5",
-                "dataType": "unsigned"
-              },
-              "filter_select_ch1": {
-                "order": "6",
-                "dataType": "unsigned"
-              },
-              "filter_select_ch2": {
-                "order": "7",
-                "dataType": "unsigned"
-              },
-              "timer_offset": {
-                "order": "8",
-                "kinds": ["array"],
-                "dataType": "unsigned",
-                "arraySizes": ["8"]
-              },
-              "timer_width": {
-                "order": "9",
-                "kinds": ["array"],
-                "dataType": "unsigned",
-                "arraySizes": ["8"]
-              }
-            }
-          },
-          "sequence_index": {
-            "order": "1",
-            "dataType": "unsigned"
-          },
-          "num_samples": {
-            "order": "2",
-            "dataType": "unsigned"
-          },
-          "post_decimation": {
-            "order": "3",
-            "dataType": "unsigned"
-          },
-          "first_pulse_in_block": {
-            "order": "4",
-            "dataType": "bool"
-          },
-          "last_pulse_in_block": {
-            "order": "5",
-            "dataType": "bool"
-          },
-          "first_pulse_in_xfer": {
-            "order": "6",
-            "dataType": "bool"
-          },
-          "last_pulse_in_xfer": {
-            "order": "7",
-            "dataType": "bool"
-          },
-          "terminate": {
-            "order": "8",
-            "dataType": "bool"
-          }
-        }
-      }
-    },
-    "pulse_metadata_ch1": {
+    "phase_sample": {
       "index": "21",
       "type": {
-        "kinds": ["struct"],
-        "dataType": "pulse_exec_definition",
-        "portRef": "TDATA",
-        "structImpl": "interface",
-        "dataPack": true,
-        "fields": {
-          "def": {
-            "order": "0",
-            "kinds": ["struct"],
-            "dataType": "pulse_definition",
-            "fields": {
-              "prt": {
-                "order": "0",
-                "kinds": ["array"],
-                "dataType": "unsigned",
-                "arraySizes": ["2"]
-              },
-              "num_pulses": {
-                "order": "1",
-                "dataType": "unsigned"
-              },
-              "block_post_time": {
-                "order": "2",
-                "dataType": "unsigned"
-              },
-              "control_flags": {
-                "order": "3",
-                "dataType": "unsigned"
-              },
-              "polarization_mode": {
-                "order": "4",
-                "dataType": "unsigned"
-              },
-              "filter_select_ch0": {
-                "order": "5",
-                "dataType": "unsigned"
-              },
-              "filter_select_ch1": {
-                "order": "6",
-                "dataType": "unsigned"
-              },
-              "filter_select_ch2": {
-                "order": "7",
-                "dataType": "unsigned"
-              },
-              "timer_offset": {
-                "order": "8",
-                "kinds": ["array"],
-                "dataType": "unsigned",
-                "arraySizes": ["8"]
-              },
-              "timer_width": {
-                "order": "9",
-                "kinds": ["array"],
-                "dataType": "unsigned",
-                "arraySizes": ["8"]
-              }
-            }
-          },
-          "sequence_index": {
-            "order": "1",
-            "dataType": "unsigned"
-          },
-          "num_samples": {
-            "order": "2",
-            "dataType": "unsigned"
-          },
-          "post_decimation": {
-            "order": "3",
-            "dataType": "unsigned"
-          },
-          "first_pulse_in_block": {
-            "order": "4",
-            "dataType": "bool"
-          },
-          "last_pulse_in_block": {
-            "order": "5",
-            "dataType": "bool"
-          },
-          "first_pulse_in_xfer": {
-            "order": "6",
-            "dataType": "bool"
-          },
-          "last_pulse_in_xfer": {
-            "order": "7",
-            "dataType": "bool"
-          },
-          "terminate": {
-            "order": "8",
-            "dataType": "bool"
-          }
-        }
+        "kinds": ["pointer"],
+        "dataType": "ap_uint",
+        "dataWidth": "32",
+        "interfaceRef": "phase_sample_V"
       }
     },
-    "pulse_metadata_ch2": {
+    "pulse_metadata_ch0": {
       "index": "22",
       "type": {
         "kinds": ["struct"],
@@ -543,14 +389,22 @@
                 "order": "7",
                 "dataType": "unsigned"
               },
-              "timer_offset": {
+              "phase_table_begin": {
                 "order": "8",
+                "dataType": "unsigned"
+              },
+              "phase_table_end": {
+                "order": "9",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "10",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
               },
               "timer_width": {
-                "order": "9",
+                "order": "11",
                 "kinds": ["array"],
                 "dataType": "unsigned",
                 "arraySizes": ["8"]
@@ -569,31 +423,253 @@
             "order": "3",
             "dataType": "unsigned"
           },
-          "first_pulse_in_block": {
+          "phase_sample": {
             "order": "4",
-            "dataType": "bool"
+            "dataType": "unsigned"
           },
-          "last_pulse_in_block": {
+          "first_pulse_in_block": {
             "order": "5",
             "dataType": "bool"
           },
-          "first_pulse_in_xfer": {
+          "last_pulse_in_block": {
             "order": "6",
             "dataType": "bool"
           },
-          "last_pulse_in_xfer": {
+          "first_pulse_in_xfer": {
             "order": "7",
             "dataType": "bool"
           },
-          "terminate": {
+          "last_pulse_in_xfer": {
             "order": "8",
+            "dataType": "bool"
+          },
+          "terminate": {
+            "order": "9",
+            "dataType": "bool"
+          }
+        }
+      }
+    },
+    "pulse_metadata_ch1": {
+      "index": "23",
+      "type": {
+        "kinds": ["struct"],
+        "dataType": "pulse_exec_definition",
+        "portRef": "TDATA",
+        "structImpl": "interface",
+        "dataPack": true,
+        "fields": {
+          "def": {
+            "order": "0",
+            "kinds": ["struct"],
+            "dataType": "pulse_definition",
+            "fields": {
+              "prt": {
+                "order": "0",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["2"]
+              },
+              "num_pulses": {
+                "order": "1",
+                "dataType": "unsigned"
+              },
+              "block_post_time": {
+                "order": "2",
+                "dataType": "unsigned"
+              },
+              "control_flags": {
+                "order": "3",
+                "dataType": "unsigned"
+              },
+              "polarization_mode": {
+                "order": "4",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch0": {
+                "order": "5",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch1": {
+                "order": "6",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch2": {
+                "order": "7",
+                "dataType": "unsigned"
+              },
+              "phase_table_begin": {
+                "order": "8",
+                "dataType": "unsigned"
+              },
+              "phase_table_end": {
+                "order": "9",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "10",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["8"]
+              },
+              "timer_width": {
+                "order": "11",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["8"]
+              }
+            }
+          },
+          "sequence_index": {
+            "order": "1",
+            "dataType": "unsigned"
+          },
+          "num_samples": {
+            "order": "2",
+            "dataType": "unsigned"
+          },
+          "post_decimation": {
+            "order": "3",
+            "dataType": "unsigned"
+          },
+          "phase_sample": {
+            "order": "4",
+            "dataType": "unsigned"
+          },
+          "first_pulse_in_block": {
+            "order": "5",
+            "dataType": "bool"
+          },
+          "last_pulse_in_block": {
+            "order": "6",
+            "dataType": "bool"
+          },
+          "first_pulse_in_xfer": {
+            "order": "7",
+            "dataType": "bool"
+          },
+          "last_pulse_in_xfer": {
+            "order": "8",
+            "dataType": "bool"
+          },
+          "terminate": {
+            "order": "9",
+            "dataType": "bool"
+          }
+        }
+      }
+    },
+    "pulse_metadata_ch2": {
+      "index": "24",
+      "type": {
+        "kinds": ["struct"],
+        "dataType": "pulse_exec_definition",
+        "portRef": "TDATA",
+        "structImpl": "interface",
+        "dataPack": true,
+        "fields": {
+          "def": {
+            "order": "0",
+            "kinds": ["struct"],
+            "dataType": "pulse_definition",
+            "fields": {
+              "prt": {
+                "order": "0",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["2"]
+              },
+              "num_pulses": {
+                "order": "1",
+                "dataType": "unsigned"
+              },
+              "block_post_time": {
+                "order": "2",
+                "dataType": "unsigned"
+              },
+              "control_flags": {
+                "order": "3",
+                "dataType": "unsigned"
+              },
+              "polarization_mode": {
+                "order": "4",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch0": {
+                "order": "5",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch1": {
+                "order": "6",
+                "dataType": "unsigned"
+              },
+              "filter_select_ch2": {
+                "order": "7",
+                "dataType": "unsigned"
+              },
+              "phase_table_begin": {
+                "order": "8",
+                "dataType": "unsigned"
+              },
+              "phase_table_end": {
+                "order": "9",
+                "dataType": "unsigned"
+              },
+              "timer_offset": {
+                "order": "10",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["8"]
+              },
+              "timer_width": {
+                "order": "11",
+                "kinds": ["array"],
+                "dataType": "unsigned",
+                "arraySizes": ["8"]
+              }
+            }
+          },
+          "sequence_index": {
+            "order": "1",
+            "dataType": "unsigned"
+          },
+          "num_samples": {
+            "order": "2",
+            "dataType": "unsigned"
+          },
+          "post_decimation": {
+            "order": "3",
+            "dataType": "unsigned"
+          },
+          "phase_sample": {
+            "order": "4",
+            "dataType": "unsigned"
+          },
+          "first_pulse_in_block": {
+            "order": "5",
+            "dataType": "bool"
+          },
+          "last_pulse_in_block": {
+            "order": "6",
+            "dataType": "bool"
+          },
+          "first_pulse_in_xfer": {
+            "order": "7",
+            "dataType": "bool"
+          },
+          "last_pulse_in_xfer": {
+            "order": "8",
+            "dataType": "bool"
+          },
+          "terminate": {
+            "order": "9",
             "dataType": "bool"
           }
         }
       }
     },
     "pps": {
-      "index": "23",
+      "index": "25",
       "type": {
         "kinds": ["array"],
         "dataType": "bool",
@@ -633,8 +709,8 @@
   "Files": {
     "CSource": ["..\/hcr_controller.cpp"],
     "Vhdl": [
-      "impl\/vhdl\/fifo_w853_d1_A.vhd",
-      "impl\/vhdl\/fifo_w853_d16_S.vhd",
+      "impl\/vhdl\/fifo_w949_d1_A.vhd",
+      "impl\/vhdl\/fifo_w949_d16_S.vhd",
       "impl\/vhdl\/hcr_controller_cfg_bus_s_axi.vhd",
       "impl\/vhdl\/hcr_controller_udcud.vhd",
       "impl\/vhdl\/output_fifo.vhd",
@@ -650,8 +726,8 @@
       "impl\/vhdl\/hcr_controller.vhd"
     ],
     "Verilog": [
-      "impl\/verilog\/fifo_w853_d1_A.v",
-      "impl\/verilog\/fifo_w853_d16_S.v",
+      "impl\/verilog\/fifo_w949_d1_A.v",
+      "impl\/verilog\/fifo_w949_d16_S.v",
       "impl\/verilog\/hcr_controller_cfg_bus_s_axi.v",
       "impl\/verilog\/hcr_controller_udcud.v",
       "impl\/verilog\/output_fifo.v",
@@ -819,6 +895,17 @@
       "bundle_name": "mt_pulse_V",
       "bundle_role": "default"
     },
+    "phase_sample_V": {
+      "type": "data",
+      "dir": "out",
+      "width": "32",
+      "ctype": {"DATA": {
+          "Type": "integer unsigned",
+          "Width": "32"
+        }},
+      "bundle_name": "phase_sample_V",
+      "bundle_role": "default"
+    },
     "pps_address0": {
       "type": "data",
       "dir": "out",
@@ -860,11 +947,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "856",
+          "Width": "952",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "800",
+              "Width": "864",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -903,6 +990,14 @@
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
+                "phase_table_begin": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "phase_table_end": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
                 "timer_offset": {
                   "Type": "array",
                   "Width": "256",
@@ -935,6 +1030,10 @@
               "Type": "integer unsigned",
               "Width": "8"
             },
+            "phase_sample": {
+              "Type": "integer unsigned",
+              "Width": "32"
+            },
             "first_pulse_in_block": {
               "Type": "null",
               "Width": "1"
@@ -961,7 +1060,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "856"}
+      "port_width": {"TDATA": "952"}
     },
     "pulse_metadata_ch1_V": {
       "type": "axi4stream",
@@ -971,11 +1070,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "856",
+          "Width": "952",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "800",
+              "Width": "864",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -1014,6 +1113,14 @@
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
+                "phase_table_begin": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "phase_table_end": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
                 "timer_offset": {
                   "Type": "array",
                   "Width": "256",
@@ -1046,6 +1153,10 @@
               "Type": "integer unsigned",
               "Width": "8"
             },
+            "phase_sample": {
+              "Type": "integer unsigned",
+              "Width": "32"
+            },
             "first_pulse_in_block": {
               "Type": "null",
               "Width": "1"
@@ -1072,7 +1183,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "856"}
+      "port_width": {"TDATA": "952"}
     },
     "pulse_metadata_ch2_V": {
       "type": "axi4stream",
@@ -1082,11 +1193,11 @@
       "ctype": {
         "TDATA": {
           "Type": "struct",
-          "Width": "856",
+          "Width": "952",
           "Fields": {
             "def": {
               "Type": "struct",
-              "Width": "800",
+              "Width": "864",
               "Fields": {
                 "prt": {
                   "Type": "array",
@@ -1125,6 +1236,14 @@
                   "Type": "integer unsigned",
                   "Width": "32"
                 },
+                "phase_table_begin": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
+                "phase_table_end": {
+                  "Type": "integer unsigned",
+                  "Width": "32"
+                },
                 "timer_offset": {
                   "Type": "array",
                   "Width": "256",
@@ -1157,6 +1276,10 @@
               "Type": "integer unsigned",
               "Width": "8"
             },
+            "phase_sample": {
+              "Type": "integer unsigned",
+              "Width": "32"
+            },
             "first_pulse_in_block": {
               "Type": "null",
               "Width": "1"
@@ -1183,7 +1306,7 @@
         "TVALID": {"Type": "bool"},
         "TREADY": {"Type": "bool"}
       },
-      "port_width": {"TDATA": "856"}
+      "port_width": {"TDATA": "952"}
     },
     "s_axi_cfg_bus": {
       "type": "axi4lite",
@@ -1191,7 +1314,7 @@
       "mode": "slave",
       "port_prefix": "s_axi_cfg_bus",
       "param_prefix": "C_S_AXI_CFG_BUS",
-      "addr_bits": "14",
+      "addr_bits": "19",
       "registers": [
         {
           "offset": "0x00",
@@ -1492,68 +1615,76 @@
           "offset": "1152",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_0": {
+        "cfg_pulse_sequence_phase_table_begin": {
           "offset": "1280",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_1": {
+        "cfg_pulse_sequence_phase_table_end": {
           "offset": "1408",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_2": {
+        "cfg_pulse_sequence_timer_offset_0": {
           "offset": "1536",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_3": {
+        "cfg_pulse_sequence_timer_offset_1": {
           "offset": "1664",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_4": {
+        "cfg_pulse_sequence_timer_offset_2": {
           "offset": "1792",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_5": {
+        "cfg_pulse_sequence_timer_offset_3": {
           "offset": "1920",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_6": {
+        "cfg_pulse_sequence_timer_offset_4": {
           "offset": "2048",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_offset_7": {
+        "cfg_pulse_sequence_timer_offset_5": {
           "offset": "2176",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_0": {
+        "cfg_pulse_sequence_timer_offset_6": {
           "offset": "2304",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_1": {
+        "cfg_pulse_sequence_timer_offset_7": {
           "offset": "2432",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_2": {
+        "cfg_pulse_sequence_timer_width_0": {
           "offset": "2560",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_3": {
+        "cfg_pulse_sequence_timer_width_1": {
           "offset": "2688",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_4": {
+        "cfg_pulse_sequence_timer_width_2": {
           "offset": "2816",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_5": {
+        "cfg_pulse_sequence_timer_width_3": {
           "offset": "2944",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_6": {
+        "cfg_pulse_sequence_timer_width_4": {
           "offset": "3072",
           "range": "128"
         },
-        "cfg_pulse_sequence_timer_width_7": {
+        "cfg_pulse_sequence_timer_width_5": {
           "offset": "3200",
+          "range": "128"
+        },
+        "cfg_pulse_sequence_timer_width_6": {
+          "offset": "3328",
+          "range": "128"
+        },
+        "cfg_pulse_sequence_timer_width_7": {
+          "offset": "3456",
           "range": "128"
         },
         "cfg_filter_coefs_ch0": {
@@ -1567,6 +1698,10 @@
         "cfg_filter_coefs_ch2": {
           "offset": "8192",
           "range": "2048"
+        },
+        "cfg_phase_samples": {
+          "offset": "262144",
+          "range": "262144"
         }
       },
       "ctype": {
@@ -1590,10 +1725,10 @@
         },
         "AWADDR": {
           "Type": "integer unsigned",
-          "Width": "14"
+          "Width": "19"
         },
         "WDATA": {
-          "Type": "integer signed",
+          "Type": "integer unsigned",
           "Width": "32"
         },
         "WSTRB": {
@@ -1602,17 +1737,17 @@
         },
         "ARADDR": {
           "Type": "integer unsigned",
-          "Width": "14"
+          "Width": "19"
         },
         "RDATA": {
-          "Type": "integer signed",
+          "Type": "integer unsigned",
           "Width": "32"
         }
       },
       "data_width": "32",
       "port_width": {
-        "ARADDR": "14",
-        "AWADDR": "14",
+        "ARADDR": "19",
+        "AWADDR": "19",
         "RDATA": "32",
         "WDATA": "32",
         "WSTRB": "4"
@@ -1630,7 +1765,7 @@
     },
     "s_axi_cfg_bus_AWADDR": {
       "dir": "in",
-      "width": "14"
+      "width": "19"
     },
     "s_axi_cfg_bus_WVALID": {
       "dir": "in",
@@ -1658,7 +1793,7 @@
     },
     "s_axi_cfg_bus_ARADDR": {
       "dir": "in",
-      "width": "14"
+      "width": "19"
     },
     "s_axi_cfg_bus_RVALID": {
       "dir": "out",
@@ -1785,9 +1920,17 @@
       "dir": "out",
       "width": "1"
     },
+    "phase_sample_V": {
+      "dir": "out",
+      "width": "32"
+    },
+    "phase_sample_V_ap_vld": {
+      "dir": "out",
+      "width": "1"
+    },
     "pulse_metadata_ch0_V_TDATA": {
       "dir": "out",
-      "width": "856"
+      "width": "952"
     },
     "pulse_metadata_ch0_V_TVALID": {
       "dir": "out",
@@ -1799,7 +1942,7 @@
     },
     "pulse_metadata_ch1_V_TDATA": {
       "dir": "out",
-      "width": "856"
+      "width": "952"
     },
     "pulse_metadata_ch1_V_TVALID": {
       "dir": "out",
@@ -1811,7 +1954,7 @@
     },
     "pulse_metadata_ch2_V_TDATA": {
       "dir": "out",
-      "width": "856"
+      "width": "952"
     },
     "pulse_metadata_ch2_V_TVALID": {
       "dir": "out",
@@ -1969,8 +2112,8 @@
         ],
         "Area": {
           "BRAM_18K": "2",
-          "FF": "2916",
-          "LUT": "2485",
+          "FF": "3060",
+          "LUT": "2553",
           "URAM": "0",
           "DSP48E": "0"
         }
@@ -2013,7 +2156,7 @@
           }
         ],
         "Area": {
-          "FF": "1332",
+          "FF": "1396",
           "LUT": "1225",
           "BRAM_18K": "0",
           "DSP48E": "0",
@@ -2122,9 +2265,9 @@
           "Estimate": "5.041"
         },
         "Area": {
-          "BRAM_18K": "106",
-          "FF": "7692",
-          "LUT": "9837",
+          "BRAM_18K": "243",
+          "FF": "8236",
+          "LUT": "10496",
           "URAM": "0",
           "DSP48E": "0"
         }
@@ -2141,7 +2284,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-01-31 15:49:56 GMT",
+    "Time": "2021-04-11 22:10:12 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

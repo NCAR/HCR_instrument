@@ -153,7 +153,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>ADDR_WIDTH</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CFG_BUS.ADDR_WIDTH">14</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S_AXI_CFG_BUS.ADDR_WIDTH">19</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>DATA_WIDTH</spirit:name>
@@ -1107,6 +1107,33 @@
       </spirit:parameters>
     </spirit:busInterface>
     <spirit:busInterface>
+      <spirit:name>phase_sample_V</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>DATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>phase_sample_V</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>LAYERED_METADATA</spirit:name>
+          <spirit:value spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.PHASE_SAMPLE_V.LAYERED_METADATA">undef</spirit:value>
+          <spirit:vendorExtensions>
+            <xilinx:parameterInfo>
+              <xilinx:parameterUsage>none</xilinx:parameterUsage>
+            </xilinx:parameterInfo>
+          </spirit:vendorExtensions>
+        </spirit:parameter>
+      </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
       <spirit:name>pulse_metadata_ch0_V</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
@@ -1140,7 +1167,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.TDATA_NUM_BYTES">107</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH0_V.TDATA_NUM_BYTES">119</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1276,7 +1303,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.TDATA_NUM_BYTES">107</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH1_V.TDATA_NUM_BYTES">119</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1412,7 +1439,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>TDATA_NUM_BYTES</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.TDATA_NUM_BYTES">107</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.PULSE_METADATA_CH2_V.TDATA_NUM_BYTES">119</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>TUSER_WIDTH</spirit:name>
@@ -1602,7 +1629,7 @@
       <spirit:addressBlock>
         <spirit:name>Reg</spirit:name>
         <spirit:baseAddress spirit:format="long">0</spirit:baseAddress>
-        <spirit:range spirit:format="long" spirit:resolve="generated">65536</spirit:range>
+        <spirit:range spirit:format="long" spirit:resolve="generated">524288</spirit:range>
         <spirit:width spirit:format="long">32</spirit:width>
         <spirit:usage>register</spirit:usage>
         <spirit:access>read-write</spirit:access>
@@ -2118,10 +2145,32 @@
           </spirit:reset>
         </spirit:register>
         <spirit:register>
+          <spirit:name>Memory_cfg_pulse_sequence_phase_table_begin</spirit:name>
+          <spirit:displayName>Memory_cfg_pulse_sequence_phase_table_begin</spirit:displayName>
+          <spirit:description>Memory cfg_pulse_sequence_phase_table_begin</spirit:description>
+          <spirit:addressOffset>1280</spirit:addressOffset>
+          <spirit:size spirit:format="long">128</spirit:size>
+          <spirit:access>read-write</spirit:access>
+          <spirit:reset>
+            <spirit:value spirit:format="long">0</spirit:value>
+          </spirit:reset>
+        </spirit:register>
+        <spirit:register>
+          <spirit:name>Memory_cfg_pulse_sequence_phase_table_end</spirit:name>
+          <spirit:displayName>Memory_cfg_pulse_sequence_phase_table_end</spirit:displayName>
+          <spirit:description>Memory cfg_pulse_sequence_phase_table_end</spirit:description>
+          <spirit:addressOffset>1408</spirit:addressOffset>
+          <spirit:size spirit:format="long">128</spirit:size>
+          <spirit:access>read-write</spirit:access>
+          <spirit:reset>
+            <spirit:value spirit:format="long">0</spirit:value>
+          </spirit:reset>
+        </spirit:register>
+        <spirit:register>
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_0</spirit:description>
-          <spirit:addressOffset>1280</spirit:addressOffset>
+          <spirit:addressOffset>1536</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2132,7 +2181,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_1</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_1</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_1</spirit:description>
-          <spirit:addressOffset>1408</spirit:addressOffset>
+          <spirit:addressOffset>1664</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2143,7 +2192,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_2</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_2</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_2</spirit:description>
-          <spirit:addressOffset>1536</spirit:addressOffset>
+          <spirit:addressOffset>1792</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2154,7 +2203,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_3</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_3</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_3</spirit:description>
-          <spirit:addressOffset>1664</spirit:addressOffset>
+          <spirit:addressOffset>1920</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2165,7 +2214,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_4</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_4</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_4</spirit:description>
-          <spirit:addressOffset>1792</spirit:addressOffset>
+          <spirit:addressOffset>2048</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2176,7 +2225,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_5</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_5</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_5</spirit:description>
-          <spirit:addressOffset>1920</spirit:addressOffset>
+          <spirit:addressOffset>2176</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2187,7 +2236,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_6</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_6</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_6</spirit:description>
-          <spirit:addressOffset>2048</spirit:addressOffset>
+          <spirit:addressOffset>2304</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2198,7 +2247,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_offset_7</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_offset_7</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_offset_7</spirit:description>
-          <spirit:addressOffset>2176</spirit:addressOffset>
+          <spirit:addressOffset>2432</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2209,7 +2258,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_0</spirit:description>
-          <spirit:addressOffset>2304</spirit:addressOffset>
+          <spirit:addressOffset>2560</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2220,7 +2269,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_1</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_1</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_1</spirit:description>
-          <spirit:addressOffset>2432</spirit:addressOffset>
+          <spirit:addressOffset>2688</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2231,7 +2280,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_2</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_2</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_2</spirit:description>
-          <spirit:addressOffset>2560</spirit:addressOffset>
+          <spirit:addressOffset>2816</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2242,7 +2291,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_3</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_3</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_3</spirit:description>
-          <spirit:addressOffset>2688</spirit:addressOffset>
+          <spirit:addressOffset>2944</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2253,7 +2302,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_4</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_4</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_4</spirit:description>
-          <spirit:addressOffset>2816</spirit:addressOffset>
+          <spirit:addressOffset>3072</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2264,7 +2313,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_5</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_5</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_5</spirit:description>
-          <spirit:addressOffset>2944</spirit:addressOffset>
+          <spirit:addressOffset>3200</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2275,7 +2324,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_6</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_6</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_6</spirit:description>
-          <spirit:addressOffset>3072</spirit:addressOffset>
+          <spirit:addressOffset>3328</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2286,7 +2335,7 @@
           <spirit:name>Memory_cfg_pulse_sequence_timer_width_7</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_timer_width_7</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_timer_width_7</spirit:description>
-          <spirit:addressOffset>3200</spirit:addressOffset>
+          <spirit:addressOffset>3456</spirit:addressOffset>
           <spirit:size spirit:format="long">128</spirit:size>
           <spirit:access>read-write</spirit:access>
           <spirit:reset>
@@ -2326,6 +2375,17 @@
             <spirit:value spirit:format="long">0</spirit:value>
           </spirit:reset>
         </spirit:register>
+        <spirit:register>
+          <spirit:name>Memory_cfg_phase_samples</spirit:name>
+          <spirit:displayName>Memory_cfg_phase_samples</spirit:displayName>
+          <spirit:description>Memory cfg_phase_samples</spirit:description>
+          <spirit:addressOffset>262144</spirit:addressOffset>
+          <spirit:size spirit:format="long">262144</spirit:size>
+          <spirit:access>read-write</spirit:access>
+          <spirit:reset>
+            <spirit:value spirit:format="long">0</spirit:value>
+          </spirit:reset>
+        </spirit:register>
       </spirit:addressBlock>
     </spirit:memoryMap>
   </spirit:memoryMaps>
@@ -2343,11 +2403,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 15:51:52 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:433cb9b1</spirit:value>
+            <spirit:value>9:16b37821</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2358,7 +2418,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:433cb9b1</spirit:value>
+            <spirit:value>9:16b37821</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2374,11 +2434,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 15:51:52 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:433cb9b1</spirit:value>
+            <spirit:value>9:16b37821</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2394,11 +2454,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 15:51:52 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:22174bf0</spirit:value>
+            <spirit:value>9:889a0386</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2414,11 +2474,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 15:51:52 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:22174bf0</spirit:value>
+            <spirit:value>9:889a0386</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2432,11 +2492,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 15:55:18 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 11 22:34:31 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:433cb9b1</spirit:value>
+            <spirit:value>9:16b37821</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2547,11 +2607,24 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
+        <spirit:name>phase_sample_V_ap_vld</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>STD_LOGIC</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
         <spirit:name>s_axi_cfg_bus_AWADDR</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">13</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">18</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -2697,7 +2770,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">13</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH&apos;)) - 1)">18</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -3062,6 +3135,23 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
+        <spirit:name>phase_sample_V</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_vhdlsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_vhdlbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
         <spirit:name>pulse_metadata_ch0_V_TVALID</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
@@ -3092,7 +3182,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">855</spirit:left>
+            <spirit:left spirit:format="long">951</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -3135,7 +3225,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">855</spirit:left>
+            <spirit:left spirit:format="long">951</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -3178,7 +3268,7 @@
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">855</spirit:left>
+            <spirit:left spirit:format="long">951</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -3245,7 +3335,7 @@
     <spirit:modelParameters>
       <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="integer">
         <spirit:name>C_S_AXI_CFG_BUS_ADDR_WIDTH</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH">14</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_S_AXI_CFG_BUS_ADDR_WIDTH">19</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>C_S_AXI_CFG_BUS_DATA_WIDTH</spirit:name>
@@ -3262,63 +3352,63 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/fifo_w949_d1_A.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/fifo_w949_d16_S.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/output_fifo.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/output_fifo.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/output_fifo70.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/output_fifo71.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/output_fifo71.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/regslice_core.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/scheduler_parser.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/scheduler_parser.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/hcr_controller.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
     </spirit:fileSet>
@@ -3333,77 +3423,77 @@
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/fifo_w853_d1_A.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/fifo_w949_d1_A.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/fifo_w853_d16_S.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/fifo_w949_d16_S.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/hcr_controller_cfg_bus_s_axi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/hcr_controller_udcud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/output_fifo.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/output_fifo.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/output_fifo70.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/output_fifo70.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/output_fifo71.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/output_fifo71.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/regslice_core.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/scheduler_cycle_exac.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/scheduler_parser.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/scheduler_parser.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/scheduler_parser_bkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/start_for_output_dEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/start_for_output_eOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/start_for_output_fYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/10b5/hdl/vhdl/hcr_controller.vhd</spirit:name>
+        <spirit:name>../../ipshared/0072/hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -3519,7 +3609,7 @@
     <xilinx:coreExtensions>
       <xilinx:displayName>Hcr_controller</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2101311549</xilinx:coreRevision>
+      <xilinx:coreRevision>2104112210</xilinx:coreRevision>
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_BUSIF" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_RESET" xilinx:valuePermission="bd"/>
@@ -3571,6 +3661,7 @@
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.INTERRUPT.PortWidth" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.INTERRUPT.SENSITIVITY" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.MT_PULSE_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PHASE_SAMPLE_V.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PPS_ADDRESS0.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PPS_D0.LAYERED_METADATA" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.PPS_Q0.LAYERED_METADATA" xilinx:valuePermission="bd"/>
@@ -3644,11 +3735,11 @@
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="aeb44f79"/>
-      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="caf69335"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="0abf568d"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="e4b4f9b1"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="c5dd319f"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="0aa7fe49"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="ba3ce50f"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="24814aa1"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="3f22e59a"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="7e662092"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="d57eb537"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>

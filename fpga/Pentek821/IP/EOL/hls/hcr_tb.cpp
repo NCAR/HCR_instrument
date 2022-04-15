@@ -27,6 +27,7 @@ int main()
 	volatile ap_uint<3> filter_select_ch0;
 	volatile ap_uint<3> filter_select_ch1;
 	volatile ap_uint<3> filter_select_ch2;
+	volatile ap_uint<32> phase_sample;
 	hls::stream<pdti_64> i_data("tb.i_data");
 	hls::stream<pdti_32> o_data("tb.o_data");
 	hls::stream<pulse_exec_definition> pulse_metadata_ch0("tb.meta_ch0");
@@ -35,6 +36,7 @@ int main()
 	int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS] {};
 	int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS] {};
 	int32_t cfg_filter_coefs_ch2[N_COEF_SETS][N_FILTER_TAPS] {};
+	uint32_t cfg_phase_samples[N_PHASE_SAMPLES] {0xFA5E00, 0xFA5E01, 0xFA5E02, 0xFA5E03, 0xFA5E04, 0};
 	hls::stream<coef_t> coef_ch0;
 	hls::stream<coef_t> coef_ch1;
 	hls::stream<coef_t> coef_ch2;
@@ -46,6 +48,8 @@ int main()
 	cfg_pulse_sequence[0].prt[0] = 128;
 	cfg_pulse_sequence[0].block_post_time = 0;
 	cfg_pulse_sequence[0].polarization_mode = POL_MODE_H;
+	cfg_pulse_sequence[0].phase_table_begin = 1;
+	cfg_pulse_sequence[0].phase_table_end = 2;
 	for(int t=0;t<N_TIMERS;++t)
 	{
 		cfg_pulse_sequence[0].timer_offset[t] = 0;
@@ -55,7 +59,9 @@ int main()
 	cfg_pulse_sequence[1].num_pulses = 2;
 	cfg_pulse_sequence[1].prt[0] = 100;
 	cfg_pulse_sequence[1].block_post_time = 10;
-	cfg_pulse_sequence[0].polarization_mode = POL_MODE_HHVV;
+	cfg_pulse_sequence[1].polarization_mode = POL_MODE_HHVV;
+	cfg_pulse_sequence[1].phase_table_begin = 0;
+	cfg_pulse_sequence[1].phase_table_end = 0;
 	for(int t=0;t<N_TIMERS;++t)
 	{
 		cfg_pulse_sequence[1].timer_offset[t] = N_TIMERS-t;
@@ -104,6 +110,7 @@ int main()
 		cfg_filter_coefs_ch0,
 		cfg_filter_coefs_ch1,
 		cfg_filter_coefs_ch2,
+		cfg_phase_samples,
 		coef_ch0,
 		coef_ch1,
 		coef_ch2,
@@ -113,6 +120,7 @@ int main()
 		&filter_select_ch0,
 		&filter_select_ch1,
 		&filter_select_ch2,
+		&phase_sample,
 		pulse_metadata_ch0,
 		pulse_metadata_ch1,
 		pulse_metadata_ch2,

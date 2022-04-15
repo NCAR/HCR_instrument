@@ -35,7 +35,7 @@ port (
     o_data_TLAST : OUT STD_LOGIC_VECTOR (0 downto 0);
     o_data_TID : OUT STD_LOGIC_VECTOR (0 downto 0);
     o_data_TDEST : OUT STD_LOGIC_VECTOR (0 downto 0);
-    pulse_metadata_V_TDATA : IN STD_LOGIC_VECTOR (855 downto 0);
+    pulse_metadata_V_TDATA : IN STD_LOGIC_VECTOR (951 downto 0);
     pulse_metadata_V_TVALID : IN STD_LOGIC;
     pulse_metadata_V_TREADY : OUT STD_LOGIC;
     pos_enc_0 : IN STD_LOGIC_VECTOR (31 downto 0);
@@ -47,7 +47,7 @@ end;
 architecture behav of hcr_metadata_injector is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "hcr_metadata_injector,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xcku060-ffva1156-2-e,HLS_INPUT_CLOCK=3.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=2.488000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=3325,HLS_SYN_LUT=1417,HLS_VERSION=2019_2}";
+    "hcr_metadata_injector,hls_ip_2019_2,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=0,HLS_INPUT_PART=xcku060-ffva1156-2-e,HLS_INPUT_CLOCK=3.000000,HLS_INPUT_ARCH=others,HLS_SYN_CLOCK=2.488000,HLS_SYN_LAT=-1,HLS_SYN_TPT=none,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=3453,HLS_SYN_LUT=1420,HLS_VERSION=2019_2}";
     constant ap_const_logic_1 : STD_LOGIC := '1';
     constant ap_const_logic_0 : STD_LOGIC := '0';
     constant ap_ST_fsm_state1 : STD_LOGIC_VECTOR (7 downto 0) := "00000001";
@@ -342,7 +342,7 @@ architecture behav of hcr_metadata_injector is
     signal regslice_both_o_data_V_dest_V_U_ack_in_dummy : STD_LOGIC;
     signal regslice_both_o_data_V_dest_V_U_vld_out : STD_LOGIC;
     signal regslice_both_pulse_metadata_V_U_apdone_blk : STD_LOGIC;
-    signal pulse_metadata_V_TDATA_int : STD_LOGIC_VECTOR (855 downto 0);
+    signal pulse_metadata_V_TDATA_int : STD_LOGIC_VECTOR (951 downto 0);
     signal pulse_metadata_V_TVALID_int : STD_LOGIC;
     signal pulse_metadata_V_TREADY_int : STD_LOGIC;
     signal regslice_both_pulse_metadata_V_U_ack_in : STD_LOGIC;
@@ -356,7 +356,7 @@ architecture behav of hcr_metadata_injector is
         ap_done : OUT STD_LOGIC;
         ap_idle : OUT STD_LOGIC;
         ap_ready : OUT STD_LOGIC;
-        pulse_metadata_V_TDATA : IN STD_LOGIC_VECTOR (855 downto 0);
+        pulse_metadata_V_TDATA : IN STD_LOGIC_VECTOR (951 downto 0);
         pulse_metadata_V_TVALID : IN STD_LOGIC;
         pulse_metadata_V_TREADY : OUT STD_LOGIC;
         data_word_keep_V : IN STD_LOGIC_VECTOR (7 downto 0);
@@ -662,7 +662,7 @@ begin
 
     regslice_both_pulse_metadata_V_U : component regslice_both
     generic map (
-        DataWidth => 856)
+        DataWidth => 952)
     port map (
         ap_clk => ap_clk,
         ap_rst => ap_rst_n_inv,

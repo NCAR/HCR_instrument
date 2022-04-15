@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"0.780851",
-   "Default View_TopLeft":"-704,337",
+   "Default View_TopLeft":"-704,339",
    "ExpandedHierarchyInLayout":"",
    "PinnedBlocks":"/dac|/placeholder|/pdti_adc_tweak_1|/pdti_adc_tweak_2|/pdti_adc_tweak_0|",
    "guistr":"# # String gsaved with Nlview 7.0.21  2019-05-29 bk=1.5064 VDI=41 GEI=36 GUI=JA:9.0 TLS
@@ -28,11 +28,12 @@ preplace portBus mt_pulse -pg 1 -lvl 0 -x 0 -y 530 -defaultsOSRD
 preplace portBus filter_select_ch0 -pg 1 -lvl 0 -x 0 -y 160 -defaultsOSRD
 preplace portBus filter_select_ch1 -pg 1 -lvl 0 -x 0 -y 370 -defaultsOSRD
 preplace portBus filter_select_ch2 -pg 1 -lvl 0 -x 0 -y 580 -defaultsOSRD
-preplace inst dac -pg 1 -lvl 1 -x 250 -y 720 -defaultsOSRD
+preplace portBus phase_sample -pg 1 -lvl 0 -x 0 -y 780 -defaultsOSRD
+preplace inst dac -pg 1 -lvl 1 -x 250 -y 730 -defaultsOSRD
 preplace inst pdti_adc_tweak_0 -pg 1 -lvl 1 -x 250 -y 110 -defaultsOSRD
 preplace inst pdti_adc_tweak_1 -pg 1 -lvl 1 -x 250 -y 320 -defaultsOSRD -resize 296 190
 preplace inst pdti_adc_tweak_2 -pg 1 -lvl 1 -x 250 -y 530 -defaultsOSRD
-preplace inst placeholder -pg 1 -lvl 1 -x 250 -y 870 -defaultsOSRD
+preplace inst placeholder -pg 1 -lvl 1 -x 250 -y 890 -defaultsOSRD
 preplace netloc s_axis_adc_pdti_aclk_1 1 0 1 50 80n
 preplace netloc mt_pulse_1 1 0 1 60 140n
 preplace netloc s_axis_adc_pdti_aresetn_1 1 0 1 70 100n
@@ -43,20 +44,21 @@ preplace netloc filter_select_ch1_1 1 0 1 NJ 370
 preplace netloc filter_select_ch2_1 1 0 1 NJ 580
 preplace netloc pdti_adc_tweak_0_SYNC 1 1 1 NJ 120
 preplace netloc controller_running 1 0 1 40 120n
-preplace netloc xlconstant_0_dout 1 1 1 N 870
-preplace netloc s_axi_csr_aresetn_1 1 0 1 NJ 890
-preplace netloc s_axi_csr_aclk_1 1 0 1 NJ 870
-preplace netloc s_axis_adc_ch0_pdti_1 1 0 1 NJ 60
+preplace netloc xlconstant_0_dout 1 1 1 430 870n
+preplace netloc s_axi_csr_aresetn_1 1 0 1 40J 890n
+preplace netloc s_axi_csr_aclk_1 1 0 1 60J 870n
+preplace netloc MOD_VAL_0_1 1 0 1 N 780
+preplace netloc dac_M_AXIS_PDTI 1 1 1 430J 720n
+preplace netloc s_axis_adc_ch2_pdti_1 1 0 1 NJ 480
+preplace netloc pdti_adc_tweak_1_M_AXIS_PDTI 1 1 1 NJ 290
 preplace netloc pdti_adc_tweak_2_M_AXIS_PDTI 1 1 1 NJ 500
-preplace netloc s_axi_csr_1 1 0 1 NJ 850
+preplace netloc s_axis_adc_ch0_pdti_1 1 0 1 NJ 60
+preplace netloc pdti_adc_tweak_0_M_AXIS_PDTI 1 1 1 NJ 80
 preplace netloc s_axis_adc_ch1_pdti_1 1 0 1 NJ 270
 preplace netloc s_axis_dac_pdti_1 1 0 1 NJ 680
-preplace netloc pdti_adc_tweak_1_M_AXIS_PDTI 1 1 1 NJ 290
-preplace netloc dac_M_AXIS_PDTI 1 1 1 NJ 720
-preplace netloc pdti_adc_tweak_0_M_AXIS_PDTI 1 1 1 NJ 80
-preplace netloc s_axis_adc_ch2_pdti_1 1 0 1 NJ 480
+preplace netloc s_axi_csr_1 1 0 1 70J 850n
 levelinfo -pg 1 0 250 490
-pagesize -pg 1 -db -bbox -sgen -230 0 690 940
+pagesize -pg 1 -db -bbox -sgen -230 0 690 960
 "
 }
 0

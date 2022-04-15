@@ -34,10 +34,10 @@ output   ap_done;
 input   ap_continue;
 output   ap_idle;
 output   ap_ready;
-input  [852:0] pulse_queue_ch0_V_dout;
+input  [948:0] pulse_queue_ch0_V_dout;
 input   pulse_queue_ch0_V_empty_n;
 output   pulse_queue_ch0_V_read;
-output  [855:0] pulse_metadata_ch0_V_TDATA;
+output  [951:0] pulse_metadata_ch0_V_TDATA;
 output   pulse_metadata_ch0_V_TVALID;
 input   pulse_metadata_ch0_V_TREADY;
 
@@ -57,11 +57,11 @@ wire    ap_CS_fsm_state3;
 wire    regslice_both_pulse_metadata_ch0_V_U_apdone_blk;
 reg    ap_block_state2;
 reg    ap_block_state2_io;
-wire   [851:0] trunc_ln176_fu_73_p1;
-wire   [852:0] tmp_1_fu_77_p3;
+wire   [947:0] trunc_ln176_fu_73_p1;
+wire   [948:0] tmp_1_fu_77_p3;
 reg   [2:0] ap_NS_fsm;
 reg    ap_block_state1;
-wire   [855:0] pulse_metadata_ch0_V_TDATA_int;
+wire   [951:0] pulse_metadata_ch0_V_TDATA_int;
 reg    pulse_metadata_ch0_V_TVALID_int;
 wire    pulse_metadata_ch0_V_TREADY_int;
 wire    regslice_both_pulse_metadata_ch0_V_U_vld_out;
@@ -73,7 +73,7 @@ initial begin
 end
 
 regslice_both #(
-    .DataWidth( 856 ))
+    .DataWidth( 952 ))
 regslice_both_pulse_metadata_ch0_V_U(
     .ap_clk(ap_clk),
     .ap_rst(ap_rst),
@@ -215,10 +215,10 @@ assign pulse_metadata_ch0_V_TDATA_int = $signed(tmp_1_fu_77_p3);
 
 assign pulse_metadata_ch0_V_TVALID = regslice_both_pulse_metadata_ch0_V_U_vld_out;
 
-assign pulse_terminate_fu_65_p3 = pulse_queue_ch0_V_dout[32'd852];
+assign pulse_terminate_fu_65_p3 = pulse_queue_ch0_V_dout[32'd948];
 
 assign tmp_1_fu_77_p3 = {{1'd0}, {trunc_ln176_fu_73_p1}};
 
-assign trunc_ln176_fu_73_p1 = pulse_queue_ch0_V_dout[851:0];
+assign trunc_ln176_fu_73_p1 = pulse_queue_ch0_V_dout[947:0];
 
 endmodule //output_fifo71

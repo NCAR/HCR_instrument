@@ -8,7 +8,7 @@ use IEEE.NUMERIC_STD.all;
 
 entity hcr_controller_cfg_bus_s_axi is
 generic (
-    C_S_AXI_ADDR_WIDTH    : INTEGER := 14;
+    C_S_AXI_ADDR_WIDTH    : INTEGER := 19;
     C_S_AXI_DATA_WIDTH    : INTEGER := 32);
 port (
     ACLK                  :in   STD_LOGIC;
@@ -70,6 +70,12 @@ port (
     cfg_pulse_sequence_filter_select_ch2_address0 :in   STD_LOGIC_VECTOR(4 downto 0);
     cfg_pulse_sequence_filter_select_ch2_ce0 :in   STD_LOGIC;
     cfg_pulse_sequence_filter_select_ch2_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
+    cfg_pulse_sequence_phase_table_begin_address0 :in   STD_LOGIC_VECTOR(4 downto 0);
+    cfg_pulse_sequence_phase_table_begin_ce0 :in   STD_LOGIC;
+    cfg_pulse_sequence_phase_table_begin_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
+    cfg_pulse_sequence_phase_table_end_address0 :in   STD_LOGIC_VECTOR(4 downto 0);
+    cfg_pulse_sequence_phase_table_end_ce0 :in   STD_LOGIC;
+    cfg_pulse_sequence_phase_table_end_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_pulse_sequence_timer_offset_0_address0 :in   STD_LOGIC_VECTOR(4 downto 0);
     cfg_pulse_sequence_timer_offset_0_ce0 :in   STD_LOGIC;
     cfg_pulse_sequence_timer_offset_0_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
@@ -126,134 +132,146 @@ port (
     cfg_filter_coefs_ch1_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
     cfg_filter_coefs_ch2_address0 :in   STD_LOGIC_VECTOR(8 downto 0);
     cfg_filter_coefs_ch2_ce0 :in   STD_LOGIC;
-    cfg_filter_coefs_ch2_q0 :out  STD_LOGIC_VECTOR(31 downto 0)
+    cfg_filter_coefs_ch2_q0 :out  STD_LOGIC_VECTOR(31 downto 0);
+    cfg_phase_samples_address0 :in   STD_LOGIC_VECTOR(15 downto 0);
+    cfg_phase_samples_ce0 :in   STD_LOGIC;
+    cfg_phase_samples_q0  :out  STD_LOGIC_VECTOR(31 downto 0)
 );
 end entity hcr_controller_cfg_bus_s_axi;
 
 -- ------------------------Address Info-------------------
--- 0x0000 : Control signals
---          bit 0  - ap_start (Read/Write/COH)
---          bit 1  - ap_done (Read/COR)
---          bit 2  - ap_idle (Read)
---          bit 3  - ap_ready (Read)
---          bit 7  - auto_restart (Read/Write)
---          others - reserved
--- 0x0004 : Global Interrupt Enable Register
---          bit 0  - Global Interrupt Enable (Read/Write)
---          others - reserved
--- 0x0008 : IP Interrupt Enable Register (Read/Write)
---          bit 0  - Channel 0 (ap_done)
---          bit 1  - Channel 1 (ap_ready)
---          others - reserved
--- 0x000c : IP Interrupt Status Register (Read/TOW)
---          bit 0  - Channel 0 (ap_done)
---          bit 1  - Channel 1 (ap_ready)
---          others - reserved
--- 0x0010 : Data signal of cfg_pulse_sequence_start_stop_indexes
---          bit 31~0 - cfg_pulse_sequence_start_stop_indexes[31:0] (Read/Write)
--- 0x0014 : reserved
--- 0x0018 : Data signal of cfg_num_pulses_to_execute
---          bit 31~0 - cfg_num_pulses_to_execute[31:0] (Read/Write)
--- 0x001c : reserved
--- 0x0020 : Data signal of cfg_total_decimation
---          bit 31~0 - cfg_total_decimation[31:0] (Read/Write)
--- 0x0024 : reserved
--- 0x0028 : Data signal of cfg_post_decimation
---          bit 31~0 - cfg_post_decimation[31:0] (Read/Write)
--- 0x002c : reserved
--- 0x0030 : Data signal of cfg_num_pulses_per_xfer
---          bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
--- 0x0034 : reserved
--- 0x0038 : Data signal of cfg_enabled_channel_vector
---          bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
--- 0x003c : reserved
--- 0x0040 : Data signal of cfg_watchdog
---          bit 31~0 - cfg_watchdog[31:0] (Read/Write)
--- 0x0044 : reserved
--- 0x0080 ~
--- 0x00ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
--- 0x0100 ~
--- 0x017f : Memory 'cfg_pulse_sequence_prt_1' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_prt_1[n]
--- 0x0180 ~
--- 0x01ff : Memory 'cfg_pulse_sequence_num_pulses' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_num_pulses[n]
--- 0x0200 ~
--- 0x027f : Memory 'cfg_pulse_sequence_block_post_time' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_block_post_time[n]
--- 0x0280 ~
--- 0x02ff : Memory 'cfg_pulse_sequence_control_flags' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_control_flags[n]
--- 0x0300 ~
--- 0x037f : Memory 'cfg_pulse_sequence_polarization_mode' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_polarization_mode[n]
--- 0x0380 ~
--- 0x03ff : Memory 'cfg_pulse_sequence_filter_select_ch0' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch0[n]
--- 0x0400 ~
--- 0x047f : Memory 'cfg_pulse_sequence_filter_select_ch1' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch1[n]
--- 0x0480 ~
--- 0x04ff : Memory 'cfg_pulse_sequence_filter_select_ch2' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch2[n]
--- 0x0500 ~
--- 0x057f : Memory 'cfg_pulse_sequence_timer_offset_0' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_0[n]
--- 0x0580 ~
--- 0x05ff : Memory 'cfg_pulse_sequence_timer_offset_1' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_1[n]
--- 0x0600 ~
--- 0x067f : Memory 'cfg_pulse_sequence_timer_offset_2' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_2[n]
--- 0x0680 ~
--- 0x06ff : Memory 'cfg_pulse_sequence_timer_offset_3' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_3[n]
--- 0x0700 ~
--- 0x077f : Memory 'cfg_pulse_sequence_timer_offset_4' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_4[n]
--- 0x0780 ~
--- 0x07ff : Memory 'cfg_pulse_sequence_timer_offset_5' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_5[n]
--- 0x0800 ~
--- 0x087f : Memory 'cfg_pulse_sequence_timer_offset_6' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_6[n]
--- 0x0880 ~
--- 0x08ff : Memory 'cfg_pulse_sequence_timer_offset_7' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_7[n]
--- 0x0900 ~
--- 0x097f : Memory 'cfg_pulse_sequence_timer_width_0' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_0[n]
--- 0x0980 ~
--- 0x09ff : Memory 'cfg_pulse_sequence_timer_width_1' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_1[n]
--- 0x0a00 ~
--- 0x0a7f : Memory 'cfg_pulse_sequence_timer_width_2' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_2[n]
--- 0x0a80 ~
--- 0x0aff : Memory 'cfg_pulse_sequence_timer_width_3' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_3[n]
--- 0x0b00 ~
--- 0x0b7f : Memory 'cfg_pulse_sequence_timer_width_4' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_4[n]
--- 0x0b80 ~
--- 0x0bff : Memory 'cfg_pulse_sequence_timer_width_5' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_5[n]
--- 0x0c00 ~
--- 0x0c7f : Memory 'cfg_pulse_sequence_timer_width_6' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_6[n]
--- 0x0c80 ~
--- 0x0cff : Memory 'cfg_pulse_sequence_timer_width_7' (32 * 32b)
---          Word n : bit [31:0] - cfg_pulse_sequence_timer_width_7[n]
--- 0x1000 ~
--- 0x17ff : Memory 'cfg_filter_coefs_ch0' (384 * 32b)
---          Word n : bit [31:0] - cfg_filter_coefs_ch0[n]
--- 0x1800 ~
--- 0x1fff : Memory 'cfg_filter_coefs_ch1' (384 * 32b)
---          Word n : bit [31:0] - cfg_filter_coefs_ch1[n]
--- 0x2000 ~
--- 0x27ff : Memory 'cfg_filter_coefs_ch2' (384 * 32b)
---          Word n : bit [31:0] - cfg_filter_coefs_ch2[n]
+-- 0x00000 : Control signals
+--           bit 0  - ap_start (Read/Write/COH)
+--           bit 1  - ap_done (Read/COR)
+--           bit 2  - ap_idle (Read)
+--           bit 3  - ap_ready (Read)
+--           bit 7  - auto_restart (Read/Write)
+--           others - reserved
+-- 0x00004 : Global Interrupt Enable Register
+--           bit 0  - Global Interrupt Enable (Read/Write)
+--           others - reserved
+-- 0x00008 : IP Interrupt Enable Register (Read/Write)
+--           bit 0  - Channel 0 (ap_done)
+--           bit 1  - Channel 1 (ap_ready)
+--           others - reserved
+-- 0x0000c : IP Interrupt Status Register (Read/TOW)
+--           bit 0  - Channel 0 (ap_done)
+--           bit 1  - Channel 1 (ap_ready)
+--           others - reserved
+-- 0x00010 : Data signal of cfg_pulse_sequence_start_stop_indexes
+--           bit 31~0 - cfg_pulse_sequence_start_stop_indexes[31:0] (Read/Write)
+-- 0x00014 : reserved
+-- 0x00018 : Data signal of cfg_num_pulses_to_execute
+--           bit 31~0 - cfg_num_pulses_to_execute[31:0] (Read/Write)
+-- 0x0001c : reserved
+-- 0x00020 : Data signal of cfg_total_decimation
+--           bit 31~0 - cfg_total_decimation[31:0] (Read/Write)
+-- 0x00024 : reserved
+-- 0x00028 : Data signal of cfg_post_decimation
+--           bit 31~0 - cfg_post_decimation[31:0] (Read/Write)
+-- 0x0002c : reserved
+-- 0x00030 : Data signal of cfg_num_pulses_per_xfer
+--           bit 31~0 - cfg_num_pulses_per_xfer[31:0] (Read/Write)
+-- 0x00034 : reserved
+-- 0x00038 : Data signal of cfg_enabled_channel_vector
+--           bit 31~0 - cfg_enabled_channel_vector[31:0] (Read/Write)
+-- 0x0003c : reserved
+-- 0x00040 : Data signal of cfg_watchdog
+--           bit 31~0 - cfg_watchdog[31:0] (Read/Write)
+-- 0x00044 : reserved
+-- 0x00080 ~
+-- 0x000ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
+-- 0x00100 ~
+-- 0x0017f : Memory 'cfg_pulse_sequence_prt_1' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_prt_1[n]
+-- 0x00180 ~
+-- 0x001ff : Memory 'cfg_pulse_sequence_num_pulses' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_num_pulses[n]
+-- 0x00200 ~
+-- 0x0027f : Memory 'cfg_pulse_sequence_block_post_time' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_block_post_time[n]
+-- 0x00280 ~
+-- 0x002ff : Memory 'cfg_pulse_sequence_control_flags' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_control_flags[n]
+-- 0x00300 ~
+-- 0x0037f : Memory 'cfg_pulse_sequence_polarization_mode' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_polarization_mode[n]
+-- 0x00380 ~
+-- 0x003ff : Memory 'cfg_pulse_sequence_filter_select_ch0' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch0[n]
+-- 0x00400 ~
+-- 0x0047f : Memory 'cfg_pulse_sequence_filter_select_ch1' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch1[n]
+-- 0x00480 ~
+-- 0x004ff : Memory 'cfg_pulse_sequence_filter_select_ch2' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_filter_select_ch2[n]
+-- 0x00500 ~
+-- 0x0057f : Memory 'cfg_pulse_sequence_phase_table_begin' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_phase_table_begin[n]
+-- 0x00580 ~
+-- 0x005ff : Memory 'cfg_pulse_sequence_phase_table_end' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_phase_table_end[n]
+-- 0x00600 ~
+-- 0x0067f : Memory 'cfg_pulse_sequence_timer_offset_0' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_0[n]
+-- 0x00680 ~
+-- 0x006ff : Memory 'cfg_pulse_sequence_timer_offset_1' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_1[n]
+-- 0x00700 ~
+-- 0x0077f : Memory 'cfg_pulse_sequence_timer_offset_2' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_2[n]
+-- 0x00780 ~
+-- 0x007ff : Memory 'cfg_pulse_sequence_timer_offset_3' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_3[n]
+-- 0x00800 ~
+-- 0x0087f : Memory 'cfg_pulse_sequence_timer_offset_4' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_4[n]
+-- 0x00880 ~
+-- 0x008ff : Memory 'cfg_pulse_sequence_timer_offset_5' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_5[n]
+-- 0x00900 ~
+-- 0x0097f : Memory 'cfg_pulse_sequence_timer_offset_6' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_6[n]
+-- 0x00980 ~
+-- 0x009ff : Memory 'cfg_pulse_sequence_timer_offset_7' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_offset_7[n]
+-- 0x00a00 ~
+-- 0x00a7f : Memory 'cfg_pulse_sequence_timer_width_0' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_0[n]
+-- 0x00a80 ~
+-- 0x00aff : Memory 'cfg_pulse_sequence_timer_width_1' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_1[n]
+-- 0x00b00 ~
+-- 0x00b7f : Memory 'cfg_pulse_sequence_timer_width_2' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_2[n]
+-- 0x00b80 ~
+-- 0x00bff : Memory 'cfg_pulse_sequence_timer_width_3' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_3[n]
+-- 0x00c00 ~
+-- 0x00c7f : Memory 'cfg_pulse_sequence_timer_width_4' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_4[n]
+-- 0x00c80 ~
+-- 0x00cff : Memory 'cfg_pulse_sequence_timer_width_5' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_5[n]
+-- 0x00d00 ~
+-- 0x00d7f : Memory 'cfg_pulse_sequence_timer_width_6' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_6[n]
+-- 0x00d80 ~
+-- 0x00dff : Memory 'cfg_pulse_sequence_timer_width_7' (32 * 32b)
+--           Word n : bit [31:0] - cfg_pulse_sequence_timer_width_7[n]
+-- 0x01000 ~
+-- 0x017ff : Memory 'cfg_filter_coefs_ch0' (384 * 32b)
+--           Word n : bit [31:0] - cfg_filter_coefs_ch0[n]
+-- 0x01800 ~
+-- 0x01fff : Memory 'cfg_filter_coefs_ch1' (384 * 32b)
+--           Word n : bit [31:0] - cfg_filter_coefs_ch1[n]
+-- 0x02000 ~
+-- 0x027ff : Memory 'cfg_filter_coefs_ch2' (384 * 32b)
+--           Word n : bit [31:0] - cfg_filter_coefs_ch2[n]
+-- 0x40000 ~
+-- 0x7ffff : Memory 'cfg_phase_samples' (65536 * 32b)
+--           Word n : bit [31:0] - cfg_phase_samples[n]
 -- (SC = Self Clear, COR = Clear on Read, TOW = Toggle on Write, COH = Clear on Handshake)
 
 architecture behave of hcr_controller_cfg_bus_s_axi is
@@ -261,81 +279,87 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     signal wstate  : states := wrreset;
     signal rstate  : states := rdreset;
     signal wnext, rnext: states;
-    constant ADDR_AP_CTRL                                      : INTEGER := 16#0000#;
-    constant ADDR_GIE                                          : INTEGER := 16#0004#;
-    constant ADDR_IER                                          : INTEGER := 16#0008#;
-    constant ADDR_ISR                                          : INTEGER := 16#000c#;
-    constant ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA_0 : INTEGER := 16#0010#;
-    constant ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_CTRL   : INTEGER := 16#0014#;
-    constant ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0             : INTEGER := 16#0018#;
-    constant ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL               : INTEGER := 16#001c#;
-    constant ADDR_CFG_TOTAL_DECIMATION_DATA_0                  : INTEGER := 16#0020#;
-    constant ADDR_CFG_TOTAL_DECIMATION_CTRL                    : INTEGER := 16#0024#;
-    constant ADDR_CFG_POST_DECIMATION_DATA_0                   : INTEGER := 16#0028#;
-    constant ADDR_CFG_POST_DECIMATION_CTRL                     : INTEGER := 16#002c#;
-    constant ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0               : INTEGER := 16#0030#;
-    constant ADDR_CFG_NUM_PULSES_PER_XFER_CTRL                 : INTEGER := 16#0034#;
-    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0            : INTEGER := 16#0038#;
-    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL              : INTEGER := 16#003c#;
-    constant ADDR_CFG_WATCHDOG_DATA_0                          : INTEGER := 16#0040#;
-    constant ADDR_CFG_WATCHDOG_CTRL                            : INTEGER := 16#0044#;
-    constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE                : INTEGER := 16#0080#;
-    constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH                : INTEGER := 16#00ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE                : INTEGER := 16#0100#;
-    constant ADDR_CFG_PULSE_SEQUENCE_PRT_1_HIGH                : INTEGER := 16#017f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE           : INTEGER := 16#0180#;
-    constant ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_HIGH           : INTEGER := 16#01ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE      : INTEGER := 16#0200#;
-    constant ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_HIGH      : INTEGER := 16#027f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE        : INTEGER := 16#0280#;
-    constant ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_HIGH        : INTEGER := 16#02ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE    : INTEGER := 16#0300#;
-    constant ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH    : INTEGER := 16#037f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE    : INTEGER := 16#0380#;
-    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_HIGH    : INTEGER := 16#03ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE    : INTEGER := 16#0400#;
-    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_HIGH    : INTEGER := 16#047f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE    : INTEGER := 16#0480#;
-    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_HIGH    : INTEGER := 16#04ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE       : INTEGER := 16#0500#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_HIGH       : INTEGER := 16#057f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE       : INTEGER := 16#0580#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_HIGH       : INTEGER := 16#05ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE       : INTEGER := 16#0600#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_HIGH       : INTEGER := 16#067f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_BASE       : INTEGER := 16#0680#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_HIGH       : INTEGER := 16#06ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_BASE       : INTEGER := 16#0700#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_HIGH       : INTEGER := 16#077f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_BASE       : INTEGER := 16#0780#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_HIGH       : INTEGER := 16#07ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_BASE       : INTEGER := 16#0800#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_HIGH       : INTEGER := 16#087f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_BASE       : INTEGER := 16#0880#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_HIGH       : INTEGER := 16#08ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_BASE        : INTEGER := 16#0900#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_HIGH        : INTEGER := 16#097f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_BASE        : INTEGER := 16#0980#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_HIGH        : INTEGER := 16#09ff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_BASE        : INTEGER := 16#0a00#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_HIGH        : INTEGER := 16#0a7f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_BASE        : INTEGER := 16#0a80#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_HIGH        : INTEGER := 16#0aff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_BASE        : INTEGER := 16#0b00#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_HIGH        : INTEGER := 16#0b7f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_BASE        : INTEGER := 16#0b80#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_HIGH        : INTEGER := 16#0bff#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_BASE        : INTEGER := 16#0c00#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_HIGH        : INTEGER := 16#0c7f#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE        : INTEGER := 16#0c80#;
-    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_HIGH        : INTEGER := 16#0cff#;
-    constant ADDR_CFG_FILTER_COEFS_CH0_BASE                    : INTEGER := 16#1000#;
-    constant ADDR_CFG_FILTER_COEFS_CH0_HIGH                    : INTEGER := 16#17ff#;
-    constant ADDR_CFG_FILTER_COEFS_CH1_BASE                    : INTEGER := 16#1800#;
-    constant ADDR_CFG_FILTER_COEFS_CH1_HIGH                    : INTEGER := 16#1fff#;
-    constant ADDR_CFG_FILTER_COEFS_CH2_BASE                    : INTEGER := 16#2000#;
-    constant ADDR_CFG_FILTER_COEFS_CH2_HIGH                    : INTEGER := 16#27ff#;
-    constant ADDR_BITS         : INTEGER := 14;
+    constant ADDR_AP_CTRL                                      : INTEGER := 16#00000#;
+    constant ADDR_GIE                                          : INTEGER := 16#00004#;
+    constant ADDR_IER                                          : INTEGER := 16#00008#;
+    constant ADDR_ISR                                          : INTEGER := 16#0000c#;
+    constant ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_DATA_0 : INTEGER := 16#00010#;
+    constant ADDR_CFG_PULSE_SEQUENCE_START_STOP_INDEXES_CTRL   : INTEGER := 16#00014#;
+    constant ADDR_CFG_NUM_PULSES_TO_EXECUTE_DATA_0             : INTEGER := 16#00018#;
+    constant ADDR_CFG_NUM_PULSES_TO_EXECUTE_CTRL               : INTEGER := 16#0001c#;
+    constant ADDR_CFG_TOTAL_DECIMATION_DATA_0                  : INTEGER := 16#00020#;
+    constant ADDR_CFG_TOTAL_DECIMATION_CTRL                    : INTEGER := 16#00024#;
+    constant ADDR_CFG_POST_DECIMATION_DATA_0                   : INTEGER := 16#00028#;
+    constant ADDR_CFG_POST_DECIMATION_CTRL                     : INTEGER := 16#0002c#;
+    constant ADDR_CFG_NUM_PULSES_PER_XFER_DATA_0               : INTEGER := 16#00030#;
+    constant ADDR_CFG_NUM_PULSES_PER_XFER_CTRL                 : INTEGER := 16#00034#;
+    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA_0            : INTEGER := 16#00038#;
+    constant ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL              : INTEGER := 16#0003c#;
+    constant ADDR_CFG_WATCHDOG_DATA_0                          : INTEGER := 16#00040#;
+    constant ADDR_CFG_WATCHDOG_CTRL                            : INTEGER := 16#00044#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE                : INTEGER := 16#00080#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH                : INTEGER := 16#000ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE                : INTEGER := 16#00100#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PRT_1_HIGH                : INTEGER := 16#0017f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE           : INTEGER := 16#00180#;
+    constant ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_HIGH           : INTEGER := 16#001ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_BASE      : INTEGER := 16#00200#;
+    constant ADDR_CFG_PULSE_SEQUENCE_BLOCK_POST_TIME_HIGH      : INTEGER := 16#0027f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_BASE        : INTEGER := 16#00280#;
+    constant ADDR_CFG_PULSE_SEQUENCE_CONTROL_FLAGS_HIGH        : INTEGER := 16#002ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_BASE    : INTEGER := 16#00300#;
+    constant ADDR_CFG_PULSE_SEQUENCE_POLARIZATION_MODE_HIGH    : INTEGER := 16#0037f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE    : INTEGER := 16#00380#;
+    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_HIGH    : INTEGER := 16#003ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE    : INTEGER := 16#00400#;
+    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_HIGH    : INTEGER := 16#0047f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE    : INTEGER := 16#00480#;
+    constant ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_HIGH    : INTEGER := 16#004ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE    : INTEGER := 16#00500#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH    : INTEGER := 16#0057f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE      : INTEGER := 16#00580#;
+    constant ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH      : INTEGER := 16#005ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE       : INTEGER := 16#00600#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_HIGH       : INTEGER := 16#0067f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE       : INTEGER := 16#00680#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_HIGH       : INTEGER := 16#006ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE       : INTEGER := 16#00700#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_HIGH       : INTEGER := 16#0077f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_BASE       : INTEGER := 16#00780#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_3_HIGH       : INTEGER := 16#007ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_BASE       : INTEGER := 16#00800#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_4_HIGH       : INTEGER := 16#0087f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_BASE       : INTEGER := 16#00880#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_5_HIGH       : INTEGER := 16#008ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_BASE       : INTEGER := 16#00900#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_6_HIGH       : INTEGER := 16#0097f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_BASE       : INTEGER := 16#00980#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_7_HIGH       : INTEGER := 16#009ff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_BASE        : INTEGER := 16#00a00#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_0_HIGH        : INTEGER := 16#00a7f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_BASE        : INTEGER := 16#00a80#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_1_HIGH        : INTEGER := 16#00aff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_BASE        : INTEGER := 16#00b00#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_2_HIGH        : INTEGER := 16#00b7f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_BASE        : INTEGER := 16#00b80#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_3_HIGH        : INTEGER := 16#00bff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_BASE        : INTEGER := 16#00c00#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_4_HIGH        : INTEGER := 16#00c7f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_BASE        : INTEGER := 16#00c80#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_5_HIGH        : INTEGER := 16#00cff#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_BASE        : INTEGER := 16#00d00#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_6_HIGH        : INTEGER := 16#00d7f#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE        : INTEGER := 16#00d80#;
+    constant ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_HIGH        : INTEGER := 16#00dff#;
+    constant ADDR_CFG_FILTER_COEFS_CH0_BASE                    : INTEGER := 16#01000#;
+    constant ADDR_CFG_FILTER_COEFS_CH0_HIGH                    : INTEGER := 16#017ff#;
+    constant ADDR_CFG_FILTER_COEFS_CH1_BASE                    : INTEGER := 16#01800#;
+    constant ADDR_CFG_FILTER_COEFS_CH1_HIGH                    : INTEGER := 16#01fff#;
+    constant ADDR_CFG_FILTER_COEFS_CH2_BASE                    : INTEGER := 16#02000#;
+    constant ADDR_CFG_FILTER_COEFS_CH2_HIGH                    : INTEGER := 16#027ff#;
+    constant ADDR_CFG_PHASE_SAMPLES_BASE                       : INTEGER := 16#40000#;
+    constant ADDR_CFG_PHASE_SAMPLES_HIGH                       : INTEGER := 16#7ffff#;
+    constant ADDR_BITS         : INTEGER := 19;
 
     signal waddr               : UNSIGNED(ADDR_BITS-1 downto 0);
     signal wmask               : UNSIGNED(31 downto 0);
@@ -491,6 +515,34 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     signal int_cfg_pulse_sequence_filter_select_ch2_q1 : UNSIGNED(31 downto 0);
     signal int_cfg_pulse_sequence_filter_select_ch2_read : STD_LOGIC;
     signal int_cfg_pulse_sequence_filter_select_ch2_write : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_begin_address0 : UNSIGNED(4 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_ce0 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_begin_we0 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_begin_be0 : UNSIGNED(3 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_d0 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_q0 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_address1 : UNSIGNED(4 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_ce1 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_begin_we1 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_begin_be1 : UNSIGNED(3 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_d1 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_q1 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_begin_read : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_begin_write : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_end_address0 : UNSIGNED(4 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_ce0 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_end_we0 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_end_be0 : UNSIGNED(3 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_d0 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_q0 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_address1 : UNSIGNED(4 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_ce1 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_end_we1 : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_end_be1 : UNSIGNED(3 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_d1 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_q1 : UNSIGNED(31 downto 0);
+    signal int_cfg_pulse_sequence_phase_table_end_read : STD_LOGIC;
+    signal int_cfg_pulse_sequence_phase_table_end_write : STD_LOGIC;
     signal int_cfg_pulse_sequence_timer_offset_0_address0 : UNSIGNED(4 downto 0);
     signal int_cfg_pulse_sequence_timer_offset_0_ce0 : STD_LOGIC;
     signal int_cfg_pulse_sequence_timer_offset_0_we0 : STD_LOGIC;
@@ -757,6 +809,20 @@ architecture behave of hcr_controller_cfg_bus_s_axi is
     signal int_cfg_filter_coefs_ch2_q1 : UNSIGNED(31 downto 0);
     signal int_cfg_filter_coefs_ch2_read : STD_LOGIC;
     signal int_cfg_filter_coefs_ch2_write : STD_LOGIC;
+    signal int_cfg_phase_samples_address0 : UNSIGNED(15 downto 0);
+    signal int_cfg_phase_samples_ce0 : STD_LOGIC;
+    signal int_cfg_phase_samples_we0 : STD_LOGIC;
+    signal int_cfg_phase_samples_be0 : UNSIGNED(3 downto 0);
+    signal int_cfg_phase_samples_d0 : UNSIGNED(31 downto 0);
+    signal int_cfg_phase_samples_q0 : UNSIGNED(31 downto 0);
+    signal int_cfg_phase_samples_address1 : UNSIGNED(15 downto 0);
+    signal int_cfg_phase_samples_ce1 : STD_LOGIC;
+    signal int_cfg_phase_samples_we1 : STD_LOGIC;
+    signal int_cfg_phase_samples_be1 : UNSIGNED(3 downto 0);
+    signal int_cfg_phase_samples_d1 : UNSIGNED(31 downto 0);
+    signal int_cfg_phase_samples_q1 : UNSIGNED(31 downto 0);
+    signal int_cfg_phase_samples_read : STD_LOGIC;
+    signal int_cfg_phase_samples_write : STD_LOGIC;
 
     component hcr_controller_cfg_bus_s_axi_ram is
         generic (
@@ -983,6 +1049,48 @@ port map (
      be1      => int_cfg_pulse_sequence_filter_select_ch2_be1,
      d1       => int_cfg_pulse_sequence_filter_select_ch2_d1,
      q1       => int_cfg_pulse_sequence_filter_select_ch2_q1);
+-- int_cfg_pulse_sequence_phase_table_begin
+int_cfg_pulse_sequence_phase_table_begin : hcr_controller_cfg_bus_s_axi_ram
+generic map (
+     BYTES    => 4,
+     DEPTH    => 32,
+     AWIDTH   => log2(32))
+port map (
+     clk0     => ACLK,
+     address0 => int_cfg_pulse_sequence_phase_table_begin_address0,
+     ce0      => int_cfg_pulse_sequence_phase_table_begin_ce0,
+     we0      => int_cfg_pulse_sequence_phase_table_begin_we0,
+     be0      => int_cfg_pulse_sequence_phase_table_begin_be0,
+     d0       => int_cfg_pulse_sequence_phase_table_begin_d0,
+     q0       => int_cfg_pulse_sequence_phase_table_begin_q0,
+     clk1     => ACLK,
+     address1 => int_cfg_pulse_sequence_phase_table_begin_address1,
+     ce1      => int_cfg_pulse_sequence_phase_table_begin_ce1,
+     we1      => int_cfg_pulse_sequence_phase_table_begin_we1,
+     be1      => int_cfg_pulse_sequence_phase_table_begin_be1,
+     d1       => int_cfg_pulse_sequence_phase_table_begin_d1,
+     q1       => int_cfg_pulse_sequence_phase_table_begin_q1);
+-- int_cfg_pulse_sequence_phase_table_end
+int_cfg_pulse_sequence_phase_table_end : hcr_controller_cfg_bus_s_axi_ram
+generic map (
+     BYTES    => 4,
+     DEPTH    => 32,
+     AWIDTH   => log2(32))
+port map (
+     clk0     => ACLK,
+     address0 => int_cfg_pulse_sequence_phase_table_end_address0,
+     ce0      => int_cfg_pulse_sequence_phase_table_end_ce0,
+     we0      => int_cfg_pulse_sequence_phase_table_end_we0,
+     be0      => int_cfg_pulse_sequence_phase_table_end_be0,
+     d0       => int_cfg_pulse_sequence_phase_table_end_d0,
+     q0       => int_cfg_pulse_sequence_phase_table_end_q0,
+     clk1     => ACLK,
+     address1 => int_cfg_pulse_sequence_phase_table_end_address1,
+     ce1      => int_cfg_pulse_sequence_phase_table_end_ce1,
+     we1      => int_cfg_pulse_sequence_phase_table_end_we1,
+     be1      => int_cfg_pulse_sequence_phase_table_end_be1,
+     d1       => int_cfg_pulse_sequence_phase_table_end_d1,
+     q1       => int_cfg_pulse_sequence_phase_table_end_q1);
 -- int_cfg_pulse_sequence_timer_offset_0
 int_cfg_pulse_sequence_timer_offset_0 : hcr_controller_cfg_bus_s_axi_ram
 generic map (
@@ -1382,6 +1490,27 @@ port map (
      be1      => int_cfg_filter_coefs_ch2_be1,
      d1       => int_cfg_filter_coefs_ch2_d1,
      q1       => int_cfg_filter_coefs_ch2_q1);
+-- int_cfg_phase_samples
+int_cfg_phase_samples : hcr_controller_cfg_bus_s_axi_ram
+generic map (
+     BYTES    => 4,
+     DEPTH    => 65536,
+     AWIDTH   => log2(65536))
+port map (
+     clk0     => ACLK,
+     address0 => int_cfg_phase_samples_address0,
+     ce0      => int_cfg_phase_samples_ce0,
+     we0      => int_cfg_phase_samples_we0,
+     be0      => int_cfg_phase_samples_be0,
+     d0       => int_cfg_phase_samples_d0,
+     q0       => int_cfg_phase_samples_q0,
+     clk1     => ACLK,
+     address1 => int_cfg_phase_samples_address1,
+     ce1      => int_cfg_phase_samples_ce1,
+     we1      => int_cfg_phase_samples_we1,
+     be1      => int_cfg_phase_samples_be1,
+     d1       => int_cfg_phase_samples_d1,
+     q1       => int_cfg_phase_samples_q1);
 
 -- ----------------------- AXI WRITE ---------------------
     AWREADY_t <=  '1' when wstate = wridle else '0';
@@ -1448,7 +1577,7 @@ port map (
     ARREADY <= ARREADY_t;
     RDATA   <= STD_LOGIC_VECTOR(rdata_data);
     RRESP   <= "00";  -- OKAY
-    RVALID_t  <= '1' when (rstate = rddata) and (int_cfg_pulse_sequence_prt_0_read = '0') and (int_cfg_pulse_sequence_prt_1_read = '0') and (int_cfg_pulse_sequence_num_pulses_read = '0') and (int_cfg_pulse_sequence_block_post_time_read = '0') and (int_cfg_pulse_sequence_control_flags_read = '0') and (int_cfg_pulse_sequence_polarization_mode_read = '0') and (int_cfg_pulse_sequence_filter_select_ch0_read = '0') and (int_cfg_pulse_sequence_filter_select_ch1_read = '0') and (int_cfg_pulse_sequence_filter_select_ch2_read = '0') and (int_cfg_pulse_sequence_timer_offset_0_read = '0') and (int_cfg_pulse_sequence_timer_offset_1_read = '0') and (int_cfg_pulse_sequence_timer_offset_2_read = '0') and (int_cfg_pulse_sequence_timer_offset_3_read = '0') and (int_cfg_pulse_sequence_timer_offset_4_read = '0') and (int_cfg_pulse_sequence_timer_offset_5_read = '0') and (int_cfg_pulse_sequence_timer_offset_6_read = '0') and (int_cfg_pulse_sequence_timer_offset_7_read = '0') and (int_cfg_pulse_sequence_timer_width_0_read = '0') and (int_cfg_pulse_sequence_timer_width_1_read = '0') and (int_cfg_pulse_sequence_timer_width_2_read = '0') and (int_cfg_pulse_sequence_timer_width_3_read = '0') and (int_cfg_pulse_sequence_timer_width_4_read = '0') and (int_cfg_pulse_sequence_timer_width_5_read = '0') and (int_cfg_pulse_sequence_timer_width_6_read = '0') and (int_cfg_pulse_sequence_timer_width_7_read = '0') and (int_cfg_filter_coefs_ch0_read = '0') and (int_cfg_filter_coefs_ch1_read = '0') and (int_cfg_filter_coefs_ch2_read = '0') else '0';
+    RVALID_t  <= '1' when (rstate = rddata) and (int_cfg_pulse_sequence_prt_0_read = '0') and (int_cfg_pulse_sequence_prt_1_read = '0') and (int_cfg_pulse_sequence_num_pulses_read = '0') and (int_cfg_pulse_sequence_block_post_time_read = '0') and (int_cfg_pulse_sequence_control_flags_read = '0') and (int_cfg_pulse_sequence_polarization_mode_read = '0') and (int_cfg_pulse_sequence_filter_select_ch0_read = '0') and (int_cfg_pulse_sequence_filter_select_ch1_read = '0') and (int_cfg_pulse_sequence_filter_select_ch2_read = '0') and (int_cfg_pulse_sequence_phase_table_begin_read = '0') and (int_cfg_pulse_sequence_phase_table_end_read = '0') and (int_cfg_pulse_sequence_timer_offset_0_read = '0') and (int_cfg_pulse_sequence_timer_offset_1_read = '0') and (int_cfg_pulse_sequence_timer_offset_2_read = '0') and (int_cfg_pulse_sequence_timer_offset_3_read = '0') and (int_cfg_pulse_sequence_timer_offset_4_read = '0') and (int_cfg_pulse_sequence_timer_offset_5_read = '0') and (int_cfg_pulse_sequence_timer_offset_6_read = '0') and (int_cfg_pulse_sequence_timer_offset_7_read = '0') and (int_cfg_pulse_sequence_timer_width_0_read = '0') and (int_cfg_pulse_sequence_timer_width_1_read = '0') and (int_cfg_pulse_sequence_timer_width_2_read = '0') and (int_cfg_pulse_sequence_timer_width_3_read = '0') and (int_cfg_pulse_sequence_timer_width_4_read = '0') and (int_cfg_pulse_sequence_timer_width_5_read = '0') and (int_cfg_pulse_sequence_timer_width_6_read = '0') and (int_cfg_pulse_sequence_timer_width_7_read = '0') and (int_cfg_filter_coefs_ch0_read = '0') and (int_cfg_filter_coefs_ch1_read = '0') and (int_cfg_filter_coefs_ch2_read = '0') and (int_cfg_phase_samples_read = '0') else '0';
     RVALID    <= RVALID_t;
     ar_hs   <= ARVALID and ARREADY_t;
     raddr   <= UNSIGNED(ARADDR(ADDR_BITS-1 downto 0));
@@ -1534,6 +1663,10 @@ port map (
                     rdata_data <= int_cfg_pulse_sequence_filter_select_ch1_q1;
                 elsif (int_cfg_pulse_sequence_filter_select_ch2_read = '1') then
                     rdata_data <= int_cfg_pulse_sequence_filter_select_ch2_q1;
+                elsif (int_cfg_pulse_sequence_phase_table_begin_read = '1') then
+                    rdata_data <= int_cfg_pulse_sequence_phase_table_begin_q1;
+                elsif (int_cfg_pulse_sequence_phase_table_end_read = '1') then
+                    rdata_data <= int_cfg_pulse_sequence_phase_table_end_q1;
                 elsif (int_cfg_pulse_sequence_timer_offset_0_read = '1') then
                     rdata_data <= int_cfg_pulse_sequence_timer_offset_0_q1;
                 elsif (int_cfg_pulse_sequence_timer_offset_1_read = '1') then
@@ -1572,6 +1705,8 @@ port map (
                     rdata_data <= int_cfg_filter_coefs_ch1_q1;
                 elsif (int_cfg_filter_coefs_ch2_read = '1') then
                     rdata_data <= int_cfg_filter_coefs_ch2_q1;
+                elsif (int_cfg_phase_samples_read = '1') then
+                    rdata_data <= int_cfg_phase_samples_q1;
                 end if;
             end if;
         end if;
@@ -1900,6 +2035,30 @@ port map (
     int_cfg_pulse_sequence_filter_select_ch2_we1 <= '1' when int_cfg_pulse_sequence_filter_select_ch2_write = '1' and WVALID = '1' else '0';
     int_cfg_pulse_sequence_filter_select_ch2_be1 <= UNSIGNED(WSTRB);
     int_cfg_pulse_sequence_filter_select_ch2_d1 <= UNSIGNED(WDATA);
+    -- cfg_pulse_sequence_phase_table_begin
+    int_cfg_pulse_sequence_phase_table_begin_address0 <= UNSIGNED(cfg_pulse_sequence_phase_table_begin_address0);
+    int_cfg_pulse_sequence_phase_table_begin_ce0 <= cfg_pulse_sequence_phase_table_begin_ce0;
+    int_cfg_pulse_sequence_phase_table_begin_we0 <= '0';
+    int_cfg_pulse_sequence_phase_table_begin_be0 <= (others => '0');
+    int_cfg_pulse_sequence_phase_table_begin_d0 <= (others => '0');
+    cfg_pulse_sequence_phase_table_begin_q0 <= STD_LOGIC_VECTOR(RESIZE(int_cfg_pulse_sequence_phase_table_begin_q0, 32));
+    int_cfg_pulse_sequence_phase_table_begin_address1 <= raddr(6 downto 2) when ar_hs = '1' else waddr(6 downto 2);
+    int_cfg_pulse_sequence_phase_table_begin_ce1 <= '1' when ar_hs = '1' or (int_cfg_pulse_sequence_phase_table_begin_write = '1' and WVALID  = '1') else '0';
+    int_cfg_pulse_sequence_phase_table_begin_we1 <= '1' when int_cfg_pulse_sequence_phase_table_begin_write = '1' and WVALID = '1' else '0';
+    int_cfg_pulse_sequence_phase_table_begin_be1 <= UNSIGNED(WSTRB);
+    int_cfg_pulse_sequence_phase_table_begin_d1 <= UNSIGNED(WDATA);
+    -- cfg_pulse_sequence_phase_table_end
+    int_cfg_pulse_sequence_phase_table_end_address0 <= UNSIGNED(cfg_pulse_sequence_phase_table_end_address0);
+    int_cfg_pulse_sequence_phase_table_end_ce0 <= cfg_pulse_sequence_phase_table_end_ce0;
+    int_cfg_pulse_sequence_phase_table_end_we0 <= '0';
+    int_cfg_pulse_sequence_phase_table_end_be0 <= (others => '0');
+    int_cfg_pulse_sequence_phase_table_end_d0 <= (others => '0');
+    cfg_pulse_sequence_phase_table_end_q0 <= STD_LOGIC_VECTOR(RESIZE(int_cfg_pulse_sequence_phase_table_end_q0, 32));
+    int_cfg_pulse_sequence_phase_table_end_address1 <= raddr(6 downto 2) when ar_hs = '1' else waddr(6 downto 2);
+    int_cfg_pulse_sequence_phase_table_end_ce1 <= '1' when ar_hs = '1' or (int_cfg_pulse_sequence_phase_table_end_write = '1' and WVALID  = '1') else '0';
+    int_cfg_pulse_sequence_phase_table_end_we1 <= '1' when int_cfg_pulse_sequence_phase_table_end_write = '1' and WVALID = '1' else '0';
+    int_cfg_pulse_sequence_phase_table_end_be1 <= UNSIGNED(WSTRB);
+    int_cfg_pulse_sequence_phase_table_end_d1 <= UNSIGNED(WDATA);
     -- cfg_pulse_sequence_timer_offset_0
     int_cfg_pulse_sequence_timer_offset_0_address0 <= UNSIGNED(cfg_pulse_sequence_timer_offset_0_address0);
     int_cfg_pulse_sequence_timer_offset_0_ce0 <= cfg_pulse_sequence_timer_offset_0_ce0;
@@ -2128,6 +2287,18 @@ port map (
     int_cfg_filter_coefs_ch2_we1 <= '1' when int_cfg_filter_coefs_ch2_write = '1' and WVALID = '1' else '0';
     int_cfg_filter_coefs_ch2_be1 <= UNSIGNED(WSTRB);
     int_cfg_filter_coefs_ch2_d1 <= UNSIGNED(WDATA);
+    -- cfg_phase_samples
+    int_cfg_phase_samples_address0 <= UNSIGNED(cfg_phase_samples_address0);
+    int_cfg_phase_samples_ce0 <= cfg_phase_samples_ce0;
+    int_cfg_phase_samples_we0 <= '0';
+    int_cfg_phase_samples_be0 <= (others => '0');
+    int_cfg_phase_samples_d0 <= (others => '0');
+    cfg_phase_samples_q0 <= STD_LOGIC_VECTOR(RESIZE(int_cfg_phase_samples_q0, 32));
+    int_cfg_phase_samples_address1 <= raddr(17 downto 2) when ar_hs = '1' else waddr(17 downto 2);
+    int_cfg_phase_samples_ce1 <= '1' when ar_hs = '1' or (int_cfg_phase_samples_write = '1' and WVALID  = '1') else '0';
+    int_cfg_phase_samples_we1 <= '1' when int_cfg_phase_samples_write = '1' and WVALID = '1' else '0';
+    int_cfg_phase_samples_be1 <= UNSIGNED(WSTRB);
+    int_cfg_phase_samples_d1 <= UNSIGNED(WDATA);
 
     process (ACLK)
     begin
@@ -2394,6 +2565,66 @@ port map (
                     int_cfg_pulse_sequence_filter_select_ch2_write <= '1';
                 elsif (WVALID = '1') then
                     int_cfg_pulse_sequence_filter_select_ch2_write <= '0';
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ARESET = '1') then
+                int_cfg_pulse_sequence_phase_table_begin_read <= '0';
+            elsif (ACLK_EN = '1') then
+                if (ar_hs = '1' and raddr >= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE and raddr <= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH) then
+                    int_cfg_pulse_sequence_phase_table_begin_read <= '1';
+                else
+                    int_cfg_pulse_sequence_phase_table_begin_read <= '0';
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ARESET = '1') then
+                int_cfg_pulse_sequence_phase_table_begin_write <= '0';
+            elsif (ACLK_EN = '1') then
+                if (aw_hs = '1' and UNSIGNED(AWADDR(ADDR_BITS-1 downto 0)) >= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE and UNSIGNED(AWADDR(ADDR_BITS-1 downto 0)) <= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH) then
+                    int_cfg_pulse_sequence_phase_table_begin_write <= '1';
+                elsif (WVALID = '1') then
+                    int_cfg_pulse_sequence_phase_table_begin_write <= '0';
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ARESET = '1') then
+                int_cfg_pulse_sequence_phase_table_end_read <= '0';
+            elsif (ACLK_EN = '1') then
+                if (ar_hs = '1' and raddr >= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE and raddr <= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH) then
+                    int_cfg_pulse_sequence_phase_table_end_read <= '1';
+                else
+                    int_cfg_pulse_sequence_phase_table_end_read <= '0';
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ARESET = '1') then
+                int_cfg_pulse_sequence_phase_table_end_write <= '0';
+            elsif (ACLK_EN = '1') then
+                if (aw_hs = '1' and UNSIGNED(AWADDR(ADDR_BITS-1 downto 0)) >= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE and UNSIGNED(AWADDR(ADDR_BITS-1 downto 0)) <= ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH) then
+                    int_cfg_pulse_sequence_phase_table_end_write <= '1';
+                elsif (WVALID = '1') then
+                    int_cfg_pulse_sequence_phase_table_end_write <= '0';
                 end if;
             end if;
         end if;
@@ -2964,6 +3195,36 @@ port map (
                     int_cfg_filter_coefs_ch2_write <= '1';
                 elsif (WVALID = '1') then
                     int_cfg_filter_coefs_ch2_write <= '0';
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ARESET = '1') then
+                int_cfg_phase_samples_read <= '0';
+            elsif (ACLK_EN = '1') then
+                if (ar_hs = '1' and raddr >= ADDR_CFG_PHASE_SAMPLES_BASE and raddr <= ADDR_CFG_PHASE_SAMPLES_HIGH) then
+                    int_cfg_phase_samples_read <= '1';
+                else
+                    int_cfg_phase_samples_read <= '0';
+                end if;
+            end if;
+        end if;
+    end process;
+
+    process (ACLK)
+    begin
+        if (ACLK'event and ACLK = '1') then
+            if (ARESET = '1') then
+                int_cfg_phase_samples_write <= '0';
+            elsif (ACLK_EN = '1') then
+                if (aw_hs = '1' and UNSIGNED(AWADDR(ADDR_BITS-1 downto 0)) >= ADDR_CFG_PHASE_SAMPLES_BASE and UNSIGNED(AWADDR(ADDR_BITS-1 downto 0)) <= ADDR_CFG_PHASE_SAMPLES_HIGH) then
+                    int_cfg_phase_samples_write <= '1';
+                elsif (WVALID = '1') then
+                    int_cfg_phase_samples_write <= '0';
                 end if;
             end if;
         end if;

@@ -7,20 +7,20 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
 
-entity fifo_w853_d16_S_shiftReg is
+entity fifo_w949_d1_A_shiftReg is
     generic (
-        DATA_WIDTH : integer := 853;
-        ADDR_WIDTH : integer := 4;
-        DEPTH : integer := 16);
+        DATA_WIDTH : integer := 949;
+        ADDR_WIDTH : integer := 1;
+        DEPTH : integer := 1);
     port (
         clk : in std_logic;
         data : in std_logic_vector(DATA_WIDTH-1 downto 0);
         ce : in std_logic;
         a : in std_logic_vector(ADDR_WIDTH-1 downto 0);
         q : out std_logic_vector(DATA_WIDTH-1 downto 0));
-end fifo_w853_d16_S_shiftReg;
+end fifo_w949_d1_A_shiftReg;
 
-architecture rtl of fifo_w853_d16_S_shiftReg is
+architecture rtl of fifo_w949_d1_A_shiftReg is
 --constant DEPTH_WIDTH: integer := 16;
 type SRL_ARRAY is array (0 to DEPTH-1) of std_logic_vector(DATA_WIDTH-1 downto 0);
 signal SRL_SIG : SRL_ARRAY;
@@ -44,12 +44,12 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use ieee.std_logic_arith.all;
 
-entity fifo_w853_d16_S is 
+entity fifo_w949_d1_A is 
     generic (
-        MEM_STYLE  : string := "shiftreg"; 
-        DATA_WIDTH : integer := 853;
-        ADDR_WIDTH : integer := 4;
-        DEPTH : integer := 16);
+        MEM_STYLE  : string := "auto"; 
+        DATA_WIDTH : integer := 949;
+        ADDR_WIDTH : integer := 1;
+        DEPTH : integer := 1);
     port (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
@@ -63,13 +63,13 @@ entity fifo_w853_d16_S is
         if_din : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 downto 0));
 end entity;
 
-architecture rtl of fifo_w853_d16_S is
+architecture rtl of fifo_w949_d1_A is
 
-    component fifo_w853_d16_S_shiftReg is
+    component fifo_w949_d1_A_shiftReg is
     generic (
-        DATA_WIDTH : integer := 853;
-        ADDR_WIDTH : integer := 4;
-        DEPTH : integer := 16);
+        DATA_WIDTH : integer := 949;
+        ADDR_WIDTH : integer := 1;
+        DEPTH : integer := 1);
     port (
         clk : in std_logic;
         data : in std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -101,16 +101,16 @@ begin
             else
                 if ((if_read and if_read_ce) = '1' and internal_empty_n = '1') and 
                    ((if_write and if_write_ce) = '0' or internal_full_n = '0') then
-                    mOutPtr <= mOutPtr - conv_std_logic_vector(1, 5);
-                    if (mOutPtr = conv_std_logic_vector(0, 5)) then 
+                    mOutPtr <= mOutPtr - conv_std_logic_vector(1, 2);
+                    if (mOutPtr = conv_std_logic_vector(0, 2)) then 
                         internal_empty_n <= '0';
                     end if;
                     internal_full_n <= '1';
                 elsif ((if_read and if_read_ce) = '0' or internal_empty_n = '0') and 
                    ((if_write and if_write_ce) = '1' and internal_full_n = '1') then
-                    mOutPtr <= mOutPtr + conv_std_logic_vector(1, 5);
+                    mOutPtr <= mOutPtr + conv_std_logic_vector(1, 2);
                     internal_empty_n <= '1';
-                    if (mOutPtr = conv_std_logic_vector(DEPTH, 5) - conv_std_logic_vector(2, 5)) then 
+                    if (mOutPtr = conv_std_logic_vector(DEPTH, 2) - conv_std_logic_vector(2, 2)) then 
                         internal_full_n <= '0';
                     end if;
                 end if;
@@ -121,7 +121,7 @@ begin
     shiftReg_addr <= (others => '0') when mOutPtr(ADDR_WIDTH) = '1' else mOutPtr(ADDR_WIDTH-1 downto 0);
     shiftReg_ce <= (if_write and if_write_ce) and internal_full_n;
 
-    U_fifo_w853_d16_S_shiftReg : fifo_w853_d16_S_shiftReg
+    U_fifo_w949_d1_A_shiftReg : fifo_w949_d1_A_shiftReg
     generic map (
         DATA_WIDTH => DATA_WIDTH,
         ADDR_WIDTH => ADDR_WIDTH,

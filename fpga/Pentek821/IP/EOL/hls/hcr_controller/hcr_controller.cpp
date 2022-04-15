@@ -20,6 +20,7 @@ void hcr_controller(
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch2[N_COEF_SETS][N_FILTER_TAPS],
+		uint32_t cfg_phase_samples[N_PHASE_SAMPLES],
 		hls::stream<coef_t>& coef_ch0,
 		hls::stream<coef_t>& coef_ch1,
 		hls::stream<coef_t>& coef_ch2,
@@ -29,6 +30,7 @@ void hcr_controller(
 		volatile ap_uint<3>* filter_select_ch0, // Selects RX FIR
 		volatile ap_uint<3>* filter_select_ch1,
 		volatile ap_uint<3>* filter_select_ch2,
+		volatile ap_uint<32>* phase_sample,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch0,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch1,
 		hls::stream<pulse_exec_definition>& pulse_metadata_ch2,
@@ -52,6 +54,7 @@ void hcr_controller(
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_filter_coefs_ch0
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_filter_coefs_ch1
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_filter_coefs_ch2
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_phase_samples
 
 	// Data ports
 	#pragma HLS RESOURCE variable=pps core=RAM_1P //Less buggy than a plain volatile.
@@ -95,6 +98,7 @@ void hcr_controller(
 			cfg_num_pulses_per_xfer,
 			cfg_enabled_channel_vector,
 			cfg_watchdog,
+			cfg_phase_samples,
 			cfg_pulse_sequence,
 			cfg_filter_coefs_ch0,
 			cfg_filter_coefs_ch1,
@@ -116,7 +120,8 @@ void hcr_controller(
 			control_hvn,
 			filter_select_ch0,
 			filter_select_ch1,
-			filter_select_ch2
+			filter_select_ch2,
+			phase_sample
 		);
 
 	output_fifo(pulse_queue_ch0, pulse_metadata_ch0);
@@ -133,6 +138,7 @@ void scheduler_parser(
 		uint32_t cfg_num_pulses_per_xfer,
 		ap_uint<3> cfg_enabled_channel_vector,
 		volatile uint32_t* cfg_watchdog,
+		uint32_t cfg_phase_samples[N_PHASE_SAMPLES],
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -182,6 +188,7 @@ void scheduler_parser(
 
 			//Add the specified number of repetitions to the queue of pulses to execute
 			uint8_t staggered_prt_index = 0;
+			uint16_t phase_table_index = pulse_definition.phase_table_begin;
 			ap_uint<2> hhvv_index = 3;
 			for(uint32_t pulse_rep = 0; pulse_rep < pulse_definition.num_pulses; ++pulse_rep)
 			{
@@ -192,6 +199,7 @@ void scheduler_parser(
 				pulse.first_pulse_in_block = (pulse_rep == 0);
 				pulse.last_pulse_in_block = (pulse_rep == (pulse_definition.num_pulses-1));
 				pulse.post_decimation = cfg_post_decimation;
+				pulse.phase_sample = cfg_phase_samples[phase_table_index];
 
 				//Only execute the post time on the final pulse in the block
 				if(!pulse.last_pulse_in_block)
@@ -271,6 +279,16 @@ void scheduler_parser(
 					staggered_prt_index = 0;
 				}
 
+				//Move to the next index in the phase table
+				if(phase_table_index == pulse_definition.phase_table_end)
+				{
+					phase_table_index = pulse_definition.phase_table_begin;
+				}
+				else
+				{
+					phase_table_index++;
+				}
+
 				//Decrement watchdog counter, or reset if cfg_watchdog has changed
 				uint32_t watchdog_cur = *cfg_watchdog;
 				if ( watchdog_cur != watchdog_prev )
@@ -294,7 +312,8 @@ void scheduler_cycle_exact(
 		volatile bool* control_hvn,
 		volatile ap_uint<3>* filter_select_ch0,
 		volatile ap_uint<3>* filter_select_ch1,
-		volatile ap_uint<3>* filter_select_ch2
+		volatile ap_uint<3>* filter_select_ch2,
+		volatile ap_uint<32>* phase_sample
 	)
 {
 
@@ -349,6 +368,7 @@ void scheduler_cycle_exact(
 			*filter_select_ch0 = pulse.def.filter_select_ch0;
 			*filter_select_ch1 = pulse.def.filter_select_ch1;
 			*filter_select_ch2 = pulse.def.filter_select_ch2;
+			*phase_sample = pulse.phase_sample;
 		}
 
 		//Increment the cycle counter

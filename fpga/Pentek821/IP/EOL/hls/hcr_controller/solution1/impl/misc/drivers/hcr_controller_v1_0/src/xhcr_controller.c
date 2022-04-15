@@ -1047,6 +1047,196 @@ u32 XHcr_controller_Read_cfg_pulse_sequence_filter_select_ch2_Bytes(XHcr_control
     return length;
 }
 
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_begin_BaseAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_begin_HighAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_begin_TotalBytes(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + 1);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_begin_BitWidth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN;
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_begin_Depth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN;
+}
+
+u32 XHcr_controller_Write_cfg_pulse_sequence_phase_table_begin_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + (offset + i)*4) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_pulse_sequence_phase_table_begin_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + (offset + i)*4);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Write_cfg_pulse_sequence_phase_table_begin_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + offset + i) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_pulse_sequence_phase_table_begin_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE + offset + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_end_BaseAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_end_HighAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_end_TotalBytes(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + 1);
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_end_BitWidth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PULSE_SEQUENCE_PHASE_TABLE_END;
+}
+
+u32 XHcr_controller_Get_cfg_pulse_sequence_phase_table_end_Depth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PHASE_TABLE_END;
+}
+
+u32 XHcr_controller_Write_cfg_pulse_sequence_phase_table_end_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + (offset + i)*4) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_pulse_sequence_phase_table_end_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + (offset + i)*4);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Write_cfg_pulse_sequence_phase_table_end_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + offset + i) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_pulse_sequence_phase_table_end_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE + offset + i);
+    }
+    return length;
+}
+
 u32 XHcr_controller_Get_cfg_pulse_sequence_timer_offset_0_BaseAddress(XHcr_controller *InstancePtr) {
     Xil_AssertNonvoid(InstancePtr != NULL);
     Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
@@ -2848,6 +3038,101 @@ u32 XHcr_controller_Read_cfg_filter_coefs_ch2_Bytes(XHcr_controller *InstancePtr
 
     for (i = 0; i < length; i++) {
         *(data + i) = *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH2_BASE + offset + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Get_cfg_phase_samples_BaseAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE);
+}
+
+u32 XHcr_controller_Get_cfg_phase_samples_HighAddress(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_HIGH);
+}
+
+u32 XHcr_controller_Get_cfg_phase_samples_TotalBytes(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + 1);
+}
+
+u32 XHcr_controller_Get_cfg_phase_samples_BitWidth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PHASE_SAMPLES;
+}
+
+u32 XHcr_controller_Get_cfg_phase_samples_Depth(XHcr_controller *InstancePtr) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr->IsReady == XIL_COMPONENT_IS_READY);
+
+    return XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PHASE_SAMPLES;
+}
+
+u32 XHcr_controller_Write_cfg_phase_samples_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + (offset + i)*4) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_phase_samples_Words(XHcr_controller *InstancePtr, int offset, int *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length)*4 > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(int *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + (offset + i)*4);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Write_cfg_phase_samples_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + offset + i) = *(data + i);
+    }
+    return length;
+}
+
+u32 XHcr_controller_Read_cfg_phase_samples_Bytes(XHcr_controller *InstancePtr, int offset, char *data, int length) {
+    Xil_AssertNonvoid(InstancePtr != NULL);
+    Xil_AssertNonvoid(InstancePtr -> IsReady == XIL_COMPONENT_IS_READY);
+
+    int i;
+
+    if ((offset + length) > (XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_HIGH - XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + 1))
+        return 0;
+
+    for (i = 0; i < length; i++) {
+        *(data + i) = *(char *)(InstancePtr->Cfg_bus_BaseAddress + XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE + offset + i);
     }
     return length;
 }

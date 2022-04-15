@@ -1,7 +1,7 @@
 --Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2019.2 (lin64) Build 2708876 Wed Nov  6 21:39:14 MST 2019
---Date        : Fri Jan 28 08:47:41 2022
+--Date        : Mon Apr 11 22:29:16 2022
 --Host        : wind running 64-bit unknown
 --Command     : generate_target user_block1_wrapper.bd
 --Design      : user_block1_wrapper
@@ -31,6 +31,7 @@ entity user_block1_wrapper is
     m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_dac_pdti_tvalid : out STD_LOGIC;
     mt_pulse : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    phase_sample : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axi_csr_aclk : in STD_LOGIC;
     s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
     s_axi_csr_aresetn : in STD_LOGIC;
@@ -88,12 +89,30 @@ architecture STRUCTURE of user_block1_wrapper is
     filter_select_ch2 : in STD_LOGIC_VECTOR ( 2 downto 0 );
     dac_sync_from_adc : out STD_LOGIC;
     controller_running : in STD_LOGIC;
-    s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
+    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_dac_pdti_tvalid : out STD_LOGIC;
+    s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC;
+    m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
     m_axis_adc_ch2_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
     m_axis_adc_ch2_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_adc_ch2_pdti_tvalid : out STD_LOGIC;
+    s_axis_adc_ch0_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    s_axis_adc_ch0_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch0_pdti_tvalid : in STD_LOGIC;
+    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
+    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
+    s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
+    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
+    s_axis_dac_pdti_tvalid : in STD_LOGIC;
     s_axi_csr_awaddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
     s_axi_csr_awprot : in STD_LOGIC_VECTOR ( 2 downto 0 );
     s_axi_csr_awvalid : in STD_LOGIC;
@@ -113,24 +132,7 @@ architecture STRUCTURE of user_block1_wrapper is
     s_axi_csr_rresp : out STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axi_csr_rvalid : out STD_LOGIC;
     s_axi_csr_rready : in STD_LOGIC;
-    s_axis_adc_ch1_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    s_axis_adc_ch1_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_adc_ch1_pdti_tvalid : in STD_LOGIC;
-    s_axis_dac_pdti_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_dac_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_dac_pdti_tvalid : in STD_LOGIC;
-    m_axis_adc_ch1_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    m_axis_adc_ch1_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch1_pdti_tvalid : out STD_LOGIC;
-    m_axis_dac_pdti_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
-    m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_dac_pdti_tvalid : out STD_LOGIC;
-    m_axis_adc_ch0_pdti_tdata : out STD_LOGIC_VECTOR ( 15 downto 0 );
-    m_axis_adc_ch0_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
-    m_axis_adc_ch0_pdti_tvalid : out STD_LOGIC;
-    s_axis_adc_ch2_pdti_tdata : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    s_axis_adc_ch2_pdti_tuser : in STD_LOGIC_VECTOR ( 127 downto 0 );
-    s_axis_adc_ch2_pdti_tvalid : in STD_LOGIC
+    phase_sample : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
   end component user_block1;
 begin
@@ -154,6 +156,7 @@ user_block1_i: component user_block1
       m_axis_dac_pdti_tuser(127 downto 0) => m_axis_dac_pdti_tuser(127 downto 0),
       m_axis_dac_pdti_tvalid => m_axis_dac_pdti_tvalid,
       mt_pulse(7 downto 0) => mt_pulse(7 downto 0),
+      phase_sample(31 downto 0) => phase_sample(31 downto 0),
       s_axi_csr_aclk => s_axi_csr_aclk,
       s_axi_csr_araddr(25 downto 0) => s_axi_csr_araddr(25 downto 0),
       s_axi_csr_aresetn => s_axi_csr_aresetn,

@@ -63,6 +63,8 @@ struct pulse_definition
 	uint32_t filter_select_ch0;           // Select this filter for ADC channel 0
 	uint32_t filter_select_ch1;           // Select this filter for ADC channel 1
 	uint32_t filter_select_ch2;           // Select this filter for ADC channel 2
+	uint32_t phase_table_begin;           // First index into the phase coding table
+	uint32_t phase_table_end;             // Last index into the phase coding table
 	uint32_t timer_offset[N_TIMERS];      // First, wait this many cycles before setting MT_PULSE[n]
 	uint32_t timer_width[N_TIMERS];       // Then, wait this many cycles before clearing MT_PULSE[n]
 };
@@ -74,6 +76,7 @@ struct pulse_exec_definition
 	uint8_t sequence_index;
 	uint32_t num_samples;
 	uint8_t post_decimation;
+	uint32_t phase_sample;
 	bool first_pulse_in_block;
 	bool last_pulse_in_block;
 	bool first_pulse_in_xfer;

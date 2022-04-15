@@ -585,6 +585,7 @@ component  user_block1_wrapper
     m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_dac_pdti_tvalid : out STD_LOGIC;
     mt_pulse : in STD_LOGIC_VECTOR ( 7 downto 0 );
+    phase_sample : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axi_csr_aclk : in STD_LOGIC;
     s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
     s_axi_csr_aresetn : in STD_LOGIC;
@@ -661,6 +662,7 @@ component user_block2_wrapper
     m_axis_dac_pdti_tuser : out STD_LOGIC_VECTOR ( 127 downto 0 );
     m_axis_dac_pdti_tvalid : out STD_LOGIC;
     mt_pulse : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    phase_sample : out STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axi_csr_aclk : in STD_LOGIC;
     s_axi_csr_araddr : in STD_LOGIC_VECTOR ( 25 downto 0 );
     s_axi_csr_aresetn : in STD_LOGIC;
@@ -1467,6 +1469,7 @@ signal filter_select_ch2    : std_logic_vector ( 2 downto 0 ) := (others=>'0');
 signal control_hvn          : std_logic := '0';
 signal control_flags        : std_logic_vector ( 31 downto 0 ) := (others=>'0');
 signal mt_pulse             : std_logic_vector ( 7 downto 0 ) := (others=>'0');
+signal phase_sample         : std_logic_vector ( 31 downto 0 ) := (others=>'0');
 signal status_flags         : std_logic_vector ( 15 downto 0 ) := (others=>'0');
 signal rot_a                : std_logic := '0';
 signal rot_b                : std_logic := '0';
@@ -1692,6 +1695,7 @@ port map (
       filter_select_ch1  => filter_select_ch1,
       filter_select_ch2  => filter_select_ch2,
       mt_pulse           => mt_pulse,
+      phase_sample       => phase_sample,
       dac_sync_from_adc  => dac_sync_from_adc,
       -- Input ADC AXI4-Stream Interfaces 
       s_axis_adc_pdti_aclk                      => axis_adc_pdti_aclk,
@@ -1814,6 +1818,7 @@ port map (
     control_flags                             => control_flags,
     control_hvn                               => control_hvn,
     mt_pulse                                  => mt_pulse,
+    phase_sample                              => phase_sample,
     PPS_to_controller                         => PPS_to_controller,
     controller_running                        => controller_running,
     ctl3_out                                  => gpr_ctl3_out,
