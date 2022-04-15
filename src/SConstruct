@@ -15,6 +15,10 @@ def HcrSetup(env):
     # Headers which apply system-wide to HCR can be kept here in the
     # top-level directory
     env.AppendUnique(CPPPATH = topDir)
+
+    # We use Qt4
+    env['QT_VERSION']=4
+
 ## The next two lines will build with profiling
 #    env.AppendUnique(CCFLAGS = ['-pg'])
 #    env.AppendUnique(LINKFLAGS = ['-pg'])
