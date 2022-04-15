@@ -90,6 +90,7 @@ private:
     OPT_AND_GETTER( std::string,  pulse_filter_file_ch_0 );
     OPT_AND_GETTER( std::string,  pulse_filter_file_ch_1 );
     OPT_AND_GETTER( std::string,  pulse_filter_file_ch_2 );
+    OPT_AND_GETTER( std::string,  phase_code_file );
     OPT_AND_GETTER( bool,         enable_rx_ch_0 );
     OPT_AND_GETTER( bool,         enable_rx_ch_1 );
     OPT_AND_GETTER( bool,         enable_rx_ch_2 );

@@ -183,6 +183,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( pulse_filter_file_ch_0,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
         MEMBER_PROGOPT( pulse_filter_file_ch_1,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
         MEMBER_PROGOPT( pulse_filter_file_ch_2,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
+        MEMBER_PROGOPT( phase_code_file,                   "phase coding coefs",                           "default_phase_codes.csv" )
         MEMBER_PROGOPT( enable_rx_ch_0,                    "enable ADC channel",                           true )
         MEMBER_PROGOPT( enable_rx_ch_1,                    "enable ADC channel",                           true )
         MEMBER_PROGOPT( enable_rx_ch_2,                    "enable ADC channel",                           false )
@@ -245,6 +246,7 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( pulse_filter_file_ch_0 );
     os << STREAM_OPT_AND_MEMBER( pulse_filter_file_ch_1 );
     os << STREAM_OPT_AND_MEMBER( pulse_filter_file_ch_2 );
+    os << STREAM_OPT_AND_MEMBER( phase_code_file );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_0 );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_1 );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_2 );

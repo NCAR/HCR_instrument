@@ -221,9 +221,11 @@ private:
         double  prt2,
         double  blockPostTime,
         uint    filterSelect,
-        Controller::PolarizationModes polMode
+        Controller::PolarizationModes polMode,
+        uint    phaseTableBegin,
+        uint    phaseTableEnd
     );
-        
+
     /// @brief Set up the radar controller
     ///
     /// This method is only called from the constructor.
@@ -244,6 +246,13 @@ private:
     /// @param coefs the vector to be loaded with the coefficients
     static void ReadFilterCoefsFromFile(std::string path,
                                         std::vector<double> & coefs);
+
+    /// @brief Load coefficients from the named file into
+    /// the given coefficient vector.
+    /// @param path the name of the coefficients file
+    /// @param coefs the vector to be loaded with the coefficients
+    static void ReadComplexCoefsFromFile(std::string path,
+                                         std::vector<std::complex<int16_t>> & coefs);
 
     /// @brief Static function for DMA transfer callbacks from Navigator with
     /// ADC data.
@@ -334,8 +343,8 @@ private:
     bool _motorZeroPositionSet;
 
     /// @brief Firmware build to check for.
-    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20220131;
-    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x15;
+    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20220412;
+    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x13;
 
 };
 

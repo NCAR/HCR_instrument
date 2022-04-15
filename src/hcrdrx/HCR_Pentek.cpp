@@ -360,6 +360,61 @@ HCR_Pentek::ReadFilterCoefsFromFile(std::string filename,
 }
 
 void
+HCR_Pentek::ReadComplexCoefsFromFile(std::string path,
+                                     std::vector<std::complex<int16_t>> & coefs) {
+
+    // Load complex coefficients. Each line in the coefficients file
+    // should have two integer coefficient values containing the real and
+    // imaginary parts.
+    //
+    // Blank lines are ignored and '#' and any trailing characters on a line
+    // are treated as comments.
+    std::ifstream ifs(path);
+    if (ifs.fail()) {
+        std::ostringstream os;
+        os << "Failed to open filter file '" << path << "'";
+        throw(std::runtime_error(os.str()));
+    }
+
+    std::string line;
+    int lineNum = 0;
+    while (std::getline(ifs, line)) {
+        lineNum++;
+
+        // Remove comments: strip anything from the line including and
+        // after the first '#'
+        std::string content = line.substr(0, line.find_first_of('#'));
+
+        // Trim leading and trailing whitespace from the remaining content
+        boost::trim(content);
+
+        // If nothing is left, move to the next line
+        if (content.size() == 0) {
+            continue;
+        }
+
+        // Parse the real and imaginary integer coefficients from the content.
+        int realCoef;
+        int imagCoef;
+        char remainder[2];
+        int nread = sscanf(content.c_str(), "%d,%d%1s", &realCoef, &imagCoef,
+                           remainder);
+        if (nread == 2) {
+            // Success! We get here only if we parsed two integer values and no
+            // extra character after that.
+            coefs.push_back({int16_t(realCoef), int16_t(imagCoef)});
+        } else {
+            // We get here if we did not parse two integers or if content
+            // continued beyond the parsed integers.
+            std::ostringstream os;
+            os << "PC filter file " << path << ": bad line " <<
+                  lineNum << ": '" << line << "'";
+            throw(std::runtime_error(os.str()));
+        }
+    }
+}
+
+void
 HCR_Pentek::_setupBoard() const {
     int32_t status;
 
@@ -1157,7 +1212,9 @@ HCR_Pentek::_definePulseBlock(
         double  prt2,
         double  blockPostTime,
         uint    filterSelect,
-        Controller::PolarizationModes polMode
+        Controller::PolarizationModes polMode,
+        uint    phaseTableBegin,
+        uint    phaseTableEnd
     )
 {
 
@@ -1171,6 +1228,8 @@ HCR_Pentek::_definePulseBlock(
         .filterSelectCh0  = filterSelect,
         .filterSelectCh1  = filterSelect,
         .filterSelectCh2  = filterSelect,
+        .phaseTableBegin  = phaseTableBegin,
+        .phaseTableEnd    = phaseTableEnd,
         .timers           = {}
     };
 
@@ -1212,6 +1271,11 @@ HCR_Pentek::_setupController()
         _controller.writeFilterCoefs(coefs, _config.extra_pulse_gain(), chan);
     }
 
+    // Write the phase coding table
+    std::vector<std::complex<int16_t>> phaseCoefs;
+    ReadComplexCoefsFromFile(_config.phase_code_file(), phaseCoefs);
+    _controller.writePhaseCodingTable(phaseCoefs);
+
     // The first three pulse blocks are defined by _config and define the basic transmit modes.
     // Block zero is also used for the calibration ops modes.
     auto txPulseWidth   = _config.default_tx_pulse_width();
@@ -1229,44 +1293,50 @@ HCR_Pentek::_setupController()
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
-            Controller::PolarizationModes::POL_MODE_H
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
-            Controller::PolarizationModes::POL_MODE_V
+            Controller::PolarizationModes::POL_MODE_V, 0, 0
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
-            Controller::PolarizationModes::POL_MODE_HHVV
+            Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
         ));
 
     // Define additional blocks for demonstration purposes
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 0,
-            Controller::PolarizationModes::POL_MODE_H
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
-            Controller::PolarizationModes::POL_MODE_H
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             512e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 3,
-            Controller::PolarizationModes::POL_MODE_HHVV
+            Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
         ));
 
     _pulseBlockDefinitions.push_back(
         _definePulseBlock(
             1024e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 7,
-            Controller::PolarizationModes::POL_MODE_HHVV
+            Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
+        ));
+
+    _pulseBlockDefinitions.push_back(
+        _definePulseBlock(
+            256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
+            Controller::PolarizationModes::POL_MODE_H, 0, 3
         ));
 
     // Write the pulse definitions
@@ -1294,7 +1364,8 @@ HCR_Pentek::_setupController()
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 5, 5, "512ns HHVV"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 6, 6, "1024ns HHVV"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 6, "256-512-1024"});
-    for(auto k=10; k<15; ++k) _supportedOpsModes.push_back(_supportedOpsModes[k].equivalentAttenuatedMode());
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 7, 7, "phase code demo"});
+    for(auto k=10; k<16; ++k) _supportedOpsModes.push_back(_supportedOpsModes[k].equivalentAttenuatedMode());
 
 }
 

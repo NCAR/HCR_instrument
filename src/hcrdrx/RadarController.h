@@ -27,6 +27,8 @@ public:
         uint32_t filterSelectCh0;   // Select this filter for ADC channel 0
         uint32_t filterSelectCh1;   // Select this filter for ADC channel 1
         uint32_t filterSelectCh2;   // Select this filter for ADC channel 2
+        uint32_t phaseTableBegin;   // Beginning index into the pulse coding phase table (inclusive)
+        uint32_t phaseTableEnd;     // Ending index into the pulse coding phase table (inclusive)
         struct
         {
             uint32_t offset;        // First, wait this many cycles before setting MT_PULSE[n]
@@ -52,7 +54,7 @@ public:
         uint32_t pulseBlockDefinitionNumber;
         uint32_t numSamples;
         uint32_t prt;
-        uint32_t spare7;
+        uint32_t phaseSample;
         uint64_t pulseSequenceNumber;
         uint32_t spare10;
         uint32_t spare11;
@@ -70,6 +72,7 @@ public:
 
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
     static constexpr uint32_t NUM_TOTAL_FILTER_COEFS                  = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_FILTER_COEFS_CH0;
+    static constexpr uint32_t NUM_PHASE_CODING_SAMPLES                = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PHASE_SAMPLES;
     static constexpr uint32_t NUM_FILTER_COEF_SETS                    = 8;
     static constexpr uint32_t INFINITE_PULSES                         = 0;
     static constexpr uint32_t HEADER_MAGIC                            = 0xba5eba11;
@@ -114,6 +117,8 @@ private :
         PULSE_SEQUENCE_FILTER_SELECT_CH0        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH0_BASE,
         PULSE_SEQUENCE_FILTER_SELECT_CH1        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH1_BASE,
         PULSE_SEQUENCE_FILTER_SELECT_CH2        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_FILTER_SELECT_CH2_BASE,
+        PULSE_SEQUENCE_PHASE_TABLE_BEGIN        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_BEGIN_BASE,
+        PULSE_SEQUENCE_PHASE_TABLE_END          = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PHASE_TABLE_END_BASE,
         PULSE_SEQUENCE_TIMER_OFFSET_0           = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_0_BASE,
         PULSE_SEQUENCE_TIMER_OFFSET_1           = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_1_BASE,
         PULSE_SEQUENCE_TIMER_OFFSET_2           = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_TIMER_OFFSET_2_BASE,
@@ -132,7 +137,8 @@ private :
         PULSE_SEQUENCE_TIMER_WIDTH_7            = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_TIMER_WIDTH_7_BASE,
         FILTER_COEFS_CH0                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH0_BASE,
         FILTER_COEFS_CH1                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH1_BASE,
-        FILTER_COEFS_CH2                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH2_BASE
+        FILTER_COEFS_CH2                        = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_FILTER_COEFS_CH2_BASE,
+        PHASE_SAMPLES                           = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PHASE_SAMPLES_BASE
     };
 
     const FPGA& fpga;
@@ -166,6 +172,10 @@ public:
         if (blockDef.blockPostTime % 8 != 0)
             throw std::runtime_error("Post-time must be a multiple of 64ns");
 
+        if (blockDef.phaseTableBegin >= NUM_PHASE_CODING_SAMPLES
+            || blockDef.phaseTableEnd >= NUM_PHASE_CODING_SAMPLES)
+            throw std::runtime_error("Bad phase table bounds");
+
         const std::string action = "Writing pulse definition";
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_0             , blockDef.prt[0],           action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_1             , blockDef.prt[1],           action);
@@ -176,6 +186,8 @@ public:
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH0 , blockDef.filterSelectCh0,  action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH1 , blockDef.filterSelectCh1,  action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_FILTER_SELECT_CH2 , blockDef.filterSelectCh2,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PHASE_TABLE_BEGIN , blockDef.phaseTableBegin,  action);
+        write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PHASE_TABLE_END   , blockDef.phaseTableEnd,    action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_0    , blockDef.timers[0].offset, action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_1    , blockDef.timers[1].offset, action);
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_TIMER_OFFSET_2    , blockDef.timers[2].offset, action);
@@ -224,6 +236,24 @@ public:
             int32_t intCoef = round(coefs[index] * 65536 * extraGain);
             write_(index*sizeof(uint32_t) + base, intCoef, "Writing pulse coef");
         }
+    }
+
+    void writePhaseCodingTable(const std::vector<std::complex<int16_t>>& coefs)
+    {
+
+        if(coefs.size() > NUM_PHASE_CODING_SAMPLES)
+        {
+            std::ostringstream os;
+            os << "Writing phase samples: need <= " << NUM_PHASE_CODING_SAMPLES << " coefs, have " << coefs.size();
+            throw(std::runtime_error(os.str()));
+        }
+
+        for(uint32_t index=0; index<NUM_PHASE_CODING_SAMPLES; index++)
+        {
+            auto sample = (index < coefs.size()) ? coefs[index] : std::complex<int16_t>{0, 0};
+            uint32_t sampleU = (uint32_t(sample.imag()) << 16) | (uint32_t(sample.real()) & 0xFFFF); 
+            write_(index*sizeof(uint32_t) + PHASE_SAMPLES, sampleU, "Writing phase sample");
+        }   
     }
 
     void bumpWatchdog()
