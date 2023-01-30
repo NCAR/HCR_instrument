@@ -120,6 +120,16 @@ main(int argc, char * argv[]) {
 
     QCoreApplication app(argc, argv);
 
+    // Log the config in use
+    ILOG << "==== HCR DRX config in use:";
+    std::istringstream is(config.configString());
+    std::string line;
+    while (std::getline(is, line))
+    {
+        ILOG << "    " << line;
+    }
+    ILOG << "==== end of config";
+
     // set up registration with procmap if instance is specified
     if (config.instance().size() > 0) {
       PMU_auto_init("hcrdrx", config.instance().c_str(), PROCMAP_REGISTER_INTERVAL);
