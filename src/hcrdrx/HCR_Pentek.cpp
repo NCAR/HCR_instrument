@@ -1249,8 +1249,9 @@ HCR_Pentek::_definePulseBlock(
     // where the 272 ns is the empirically measured rise time until full amplification is achieved.
     block.timers[Controller::Timers::MOD_PULSE] =   { _counts(_config.tx_mod_pulse_delay()), _counts(272.e-9 + txPulseWidth) };
 
-    // EMS switch timing. Use 800 ns + transmit pulse width + transmit delay
-    block.timers[Controller::Timers::EMS_TRIG] =    { 0, _counts(800.e-9 + txPulseWidth + _config.tx_delay()) };
+    // EMS switch timing. Use 3300 ns + transmit pulse width + transmit delay
+    // (We require about 4 us total width to accomodate slow-responding circulators)
+    block.timers[Controller::Timers::EMS_TRIG] =    { 0, _counts(3300.e-9 + txPulseWidth + _config.tx_delay()) };
 
     // Spare
     block.timers[Controller::Timers::TIMER_7] =     { 0, 0 };
