@@ -314,7 +314,7 @@ begin
 
     HMC : HMC_SRC
     generic map (
-        C_EMS_DELAY             => 20,
+        C_EMS_DELAY             => 30,
         C_U6_DELAY              => C_U6_DELAY,
         C_HV_DELAY              => C_HV_DELAY,
         C_WG_DELAY              => C_WG_DELAY
