@@ -811,6 +811,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     bool lastPulseInXfer = false;
     using IQData = PulseData::IQData;
     using PackedIQData = Controller::PackedIQData;
+    QUdpSocket angleSocket;
 
     // ILOG << "_acceptAdcData " << chan << "\n";
 
@@ -914,6 +915,16 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         _prevXmitPulseWidth = _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width);
         _prevPrt = _fromCounts(pulseHeader.prt);
         _prevnGates = nGates;
+
+        // Publish angles from channel 0 every 100 pulses.
+	if (chan == 0 && (pulseHeader.pulseSequenceNumber % 100) == 0)
+	{
+	    // Put together a datagram containing rotation and tilt motor angles as IEEE 4-byte floats.
+            QByteArray datagram;
+            datagram.append(reinterpret_cast<char*>(&rotMotorAngle), sizeof(float));
+            datagram.append(reinterpret_cast<char*>(&tiltMotorAngle), sizeof(float));
+            angleSocket.writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
+        }
 
         // If we have a exporter, send it the new data for collating and publishing.
         if (_exporter) {
