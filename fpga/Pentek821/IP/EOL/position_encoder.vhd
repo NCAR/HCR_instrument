@@ -72,7 +72,7 @@ signal el_pos   : std_logic_vector(31 downto 0) := (others=>'0');
 
 begin
 
-    RESET <= aresetn;
+    RESET <= not aresetn;
     
     pos_enc_0 <= rot_pos when CTL_REG(0) = '0' else az_pos;
     pos_enc_1 <= tilt_pos when CTL_REG(0) = '0' else el_pos;

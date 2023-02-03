@@ -47,13 +47,13 @@ preplace netloc control_hvn 1 1 1 NJ 420
 preplace netloc hcr_controller_0_phase_sample_V 1 0 2 50 900 480
 preplace netloc hcr_controller_0_phase_sample_V_ap_vld 1 0 2 40 890 510
 preplace netloc phase_sample 1 1 1 N 970
-preplace netloc hcr_controller_0_pulse_metadata_ch0_V 1 1 1 NJ 120
-preplace netloc pulse_metadata_1 1 1 1 NJ 140
-preplace netloc Conn1 1 0 1 NJ 270
-preplace netloc hcr_controller_0_coef_ch0_V_V 1 1 1 NJ 60
 preplace netloc hcr_controller_0_coef_ch1_V_V 1 1 1 NJ 80
+preplace netloc pulse_metadata_1 1 1 1 NJ 140
 preplace netloc hcr_controller_0_coef_ch2_V_V 1 1 1 NJ 100
 preplace netloc hcr_controller_0_pulse_metadata_ch2_V 1 1 1 NJ 160
+preplace netloc hcr_controller_0_coef_ch0_V_V 1 1 1 NJ 60
+preplace netloc hcr_controller_0_pulse_metadata_ch0_V 1 1 1 NJ 120
+preplace netloc Conn1 1 0 1 NJ 270
 levelinfo -pg 1 0 260 540
 pagesize -pg 1 -db -bbox -sgen -160 0 740 1040
 "

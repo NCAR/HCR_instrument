@@ -36,7 +36,7 @@
                                 "portIndex": 0,
                                 "nets": [
                                     {
-                                        "name": "user_block1_i/user_block1_i/dac/px_lvl_trans_xclk_0_out_sig_1",
+                                        "name": "user_block1_i/user_block1_i/dac/px_lvl_trans_xclk_0_out_sig",
                                         "isBus": false
                                     }
                                 ]
@@ -77,108 +77,18 @@
                                 "direction": "IN",
                                 "isVector": true,
                                 "leftIndex": 0,
-                                "rightIndex": 31,
+                                "rightIndex": 1,
                                 "portIndex": 0,
                                 "nets": [
                                     {
-                                        "name": "phase_sample",
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/ctl_reg",
                                         "isBus": true,
                                         "subnets": [
                                             {
-                                                "name": "phase_sample[31]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/ctl_reg[1]"
                                             },
                                             {
-                                                "name": "phase_sample[30]"
-                                            },
-                                            {
-                                                "name": "phase_sample[29]"
-                                            },
-                                            {
-                                                "name": "phase_sample[28]"
-                                            },
-                                            {
-                                                "name": "phase_sample[27]"
-                                            },
-                                            {
-                                                "name": "phase_sample[26]"
-                                            },
-                                            {
-                                                "name": "phase_sample[25]"
-                                            },
-                                            {
-                                                "name": "phase_sample[24]"
-                                            },
-                                            {
-                                                "name": "phase_sample[23]"
-                                            },
-                                            {
-                                                "name": "phase_sample[22]"
-                                            },
-                                            {
-                                                "name": "phase_sample[21]"
-                                            },
-                                            {
-                                                "name": "phase_sample[20]"
-                                            },
-                                            {
-                                                "name": "phase_sample[19]"
-                                            },
-                                            {
-                                                "name": "phase_sample[18]"
-                                            },
-                                            {
-                                                "name": "phase_sample[17]"
-                                            },
-                                            {
-                                                "name": "phase_sample[16]"
-                                            },
-                                            {
-                                                "name": "phase_sample[15]"
-                                            },
-                                            {
-                                                "name": "phase_sample[14]"
-                                            },
-                                            {
-                                                "name": "phase_sample[13]"
-                                            },
-                                            {
-                                                "name": "phase_sample[12]"
-                                            },
-                                            {
-                                                "name": "phase_sample[11]"
-                                            },
-                                            {
-                                                "name": "phase_sample[10]"
-                                            },
-                                            {
-                                                "name": "phase_sample[9]"
-                                            },
-                                            {
-                                                "name": "phase_sample[8]"
-                                            },
-                                            {
-                                                "name": "phase_sample[7]"
-                                            },
-                                            {
-                                                "name": "phase_sample[6]"
-                                            },
-                                            {
-                                                "name": "phase_sample[5]"
-                                            },
-                                            {
-                                                "name": "phase_sample[4]"
-                                            },
-                                            {
-                                                "name": "phase_sample[3]"
-                                            },
-                                            {
-                                                "name": "phase_sample[2]"
-                                            },
-                                            {
-                                                "name": "phase_sample[1]"
-                                            },
-                                            {
-                                                "name": "phase_sample[0]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/ctl_reg[0]"
                                             }
                                         ]
                                     }
@@ -189,10 +99,31 @@
                                 "id": 3,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/status_flags",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "gpio_regs/status_flags[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
                                 "isVector": true,
                                 "leftIndex": 0,
                                 "rightIndex": 7,
-                                "portIndex": 1,
+                                "portIndex": 2,
                                 "nets": [
                                     {
                                         "name": "mt_pulse",
@@ -227,516 +158,75 @@
                                 ]
                             },
                             {
-                                "name": "probe2",
-                                "id": 4,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": true,
-                                "leftIndex": 0,
-                                "rightIndex": 127,
-                                "portIndex": 2,
-                                "nets": [
-                                    {
-                                        "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[127]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[126]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[125]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[124]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[123]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[122]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[121]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[120]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[119]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[118]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[117]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[116]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[115]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[114]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[113]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[112]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[111]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[110]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[109]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[108]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[107]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[106]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[105]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[104]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[103]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[102]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[101]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[100]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[99]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[98]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[97]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[96]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[95]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[94]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[93]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[92]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[91]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[90]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[89]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[88]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[87]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[86]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[85]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[84]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[83]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[82]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[81]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[80]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[79]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[78]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[77]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[76]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[75]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[74]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[73]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[72]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[71]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[70]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[69]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[68]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[67]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[66]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[65]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[64]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[63]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[62]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[61]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[60]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[59]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[58]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[57]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[56]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[55]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[54]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[53]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[52]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[51]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[50]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[49]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[48]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[47]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[46]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[45]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[44]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[43]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[42]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[41]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[40]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[39]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[38]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[37]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[36]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[35]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[34]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[33]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[32]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[31]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[30]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[29]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[28]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[27]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[26]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[25]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[24]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[23]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[22]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[21]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[20]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[19]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[18]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[17]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[16]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[15]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[14]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[13]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[12]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[11]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[10]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[9]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[8]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[7]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[6]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[5]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[4]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[3]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[2]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[1]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TUSER[0]"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
                                 "name": "probe3",
                                 "id": 5,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": true,
                                 "leftIndex": 0,
-                                "rightIndex": 31,
+                                "rightIndex": 18,
                                 "portIndex": 3,
                                 "nets": [
                                     {
-                                        "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA",
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0",
                                         "isBus": true,
                                         "subnets": [
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[31]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[18]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[30]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[17]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[29]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[16]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[28]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[15]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[27]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[14]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[26]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[13]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[25]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[12]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[24]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[11]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[23]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[10]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[22]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[9]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[21]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[8]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[20]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[7]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[19]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[6]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[18]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[5]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[17]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[4]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[16]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[3]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[15]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[2]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[14]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[1]"
                                             },
                                             {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[13]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[12]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[11]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[10]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[9]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[8]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[7]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[6]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[5]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[4]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[3]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[2]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[1]"
-                                            },
-                                            {
-                                                "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TDATA[0]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_0[0]"
                                             }
                                         ]
                                     }
@@ -747,17 +237,71 @@
                                 "id": 6,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
-                                "isVector": false,
+                                "isVector": true,
                                 "leftIndex": 0,
-                                "rightIndex": 0,
+                                "rightIndex": 18,
                                 "portIndex": 4,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/status_flags",
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1",
                                         "isBus": true,
                                         "subnets": [
                                             {
-                                                "name": "gpio_regs/status_flags[0]"
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[18]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[17]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[16]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[15]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[14]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[13]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[12]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[11]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[10]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[9]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[8]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[7]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[6]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[5]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[4]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[3]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[2]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[1]"
+                                            },
+                                            {
+                                                "name": "user_block2_i/user_block2_i/position_encoder_0/pos_enc_1[0]"
                                             }
                                         ]
                                     }
@@ -774,7 +318,7 @@
                                 "portIndex": 5,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/control_hvn",
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/aresetn",
                                         "isBus": false
                                     }
                                 ]
@@ -790,7 +334,7 @@
                                 "portIndex": 6,
                                 "nets": [
                                     {
-                                        "name": "user_block1_i/user_block1_i/controller_running",
+                                        "name": "gpio_regs/control_hvn",
                                         "isBus": false
                                     }
                                 ]
@@ -806,7 +350,7 @@
                                 "portIndex": 7,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/ext_clk",
+                                        "name": "user_block1_i/user_block1_i/controller_running",
                                         "isBus": false
                                     }
                                 ]
@@ -822,7 +366,7 @@
                                 "portIndex": 8,
                                 "nets": [
                                     {
-                                        "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TVALID",
+                                        "name": "gpio_regs/ext_clk",
                                         "isBus": false
                                     }
                                 ]
@@ -838,7 +382,7 @@
                                 "portIndex": 9,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/pps_edge",
+                                        "name": "user_block2_i/user_block2_i/dsp_ch0/in_pdti_1_TVALID",
                                         "isBus": false
                                     }
                                 ]
@@ -854,7 +398,7 @@
                                 "portIndex": 10,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/PPS_TO_CONTROLLER_OUT_i_1_n_0",
+                                        "name": "gpio_regs/pps_edge",
                                         "isBus": false
                                     }
                                 ]
@@ -870,7 +414,7 @@
                                 "portIndex": 11,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/sync_pulse_clk",
+                                        "name": "gpio_regs/PPS_TO_CONTROLLER_OUT_i_1_n_0",
                                         "isBus": false
                                     }
                                 ]
@@ -886,7 +430,7 @@
                                 "portIndex": 12,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/TILT_A",
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/ROT_A",
                                         "isBus": false
                                     }
                                 ]
@@ -902,150 +446,87 @@
                                 "portIndex": 13,
                                 "nets": [
                                     {
-                                        "name": "gpio_regs/TILT_B",
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/ROT_B",
                                         "isBus": false
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "ILA_V3",
-                        "name": "u_ila_1",
-                        "spec": "labtools_ila_v6",
-                        "core_location": {
-                            "user_chain": 1,
-                            "slave_index": 2,
-                            "bscan_switch_index": 0
-                        },
-                        "uuid": "3b505a030738513c98471d25f5b1f848",
-                        "pins": [
-                            {
-                                "name": "probe0",
-                                "id": 16,
-                                "type": "DATA_TRIGGER",
-                                "direction": "IN",
-                                "isVector": true,
-                                "leftIndex": 0,
-                                "rightIndex": 31,
-                                "portIndex": 0,
-                                "nets": [
-                                    {
-                                        "name": "user_block1_i/m_axis_dac_pdti_tdata",
-                                        "isBus": true,
-                                        "subnets": [
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[31]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[30]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[29]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[28]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[27]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[26]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[25]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[24]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[23]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[22]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[21]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[20]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[19]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[18]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[17]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[16]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[15]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[14]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[13]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[12]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[11]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[10]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[9]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[8]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[7]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[6]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[5]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[4]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[3]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[2]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[1]"
-                                            },
-                                            {
-                                                "name": "user_block1_i/m_axis_dac_pdti_tdata[0]"
-                                            }
-                                        ]
                                     }
                                 ]
                             },
                             {
-                                "name": "probe1",
+                                "name": "probe14",
+                                "id": 16,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/sync_pulse_clk",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
                                 "id": 17,
                                 "type": "DATA_TRIGGER",
                                 "direction": "IN",
                                 "isVector": false,
                                 "leftIndex": 0,
                                 "rightIndex": 0,
-                                "portIndex": 1,
+                                "portIndex": 15,
                                 "nets": [
                                     {
-                                        "name": "user_block1_i/user_block1_i/dac/px_lvl_trans_xclk_0_out_sig",
+                                        "name": "gpio_regs/TILT_A",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 18,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/TILT_A",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 19,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "user_block2_i/user_block2_i/position_encoder_0/TILT_B",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe18",
+                                "id": 20,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 18,
+                                "nets": [
+                                    {
+                                        "name": "gpio_regs/TILT_B",
                                         "isBus": false
                                     }
                                 ]
