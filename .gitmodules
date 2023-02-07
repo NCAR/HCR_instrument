@@ -5,7 +5,7 @@
 	path = src/qttoolbox
 	url = git@github.com:ncareol/qttoolbox.git
 [submodule "src/site_scons"]
-	path = src/site_scons/eol_scons
+	path = src/site_scons
 	url = git@github.com:ncareol/eol_scons.git
 [submodule "src/ascope"]
 	path = src/ascope
