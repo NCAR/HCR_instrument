@@ -111,7 +111,7 @@ architecture Behavioral of HMC_src is
     constant OPS_730_ISOL_NOISE     : std_logic_vector(2 downto 0) := o"7"; -- vertical transmit, receive both, but enable noise source for testing
 
     -- Enumeration of pulse_mode. These are used internally and don't correspond to the 730 modes.
-    constant NUM_PULSE_MODES        : integer := 7;
+    constant NUM_PULSE_MODES        : integer := 9;
     constant PULSE_MODE_H_TX        : integer := 0;  -- horizontal transmit, receive both
     constant PULSE_MODE_V_TX        : integer := 1;  -- vertical transmit, receive both
     constant PULSE_MODE_CREF_H      : integer := 2;  -- Corner reflector horizontal transmit, receive both
@@ -119,6 +119,8 @@ architecture Behavioral of HMC_src is
     constant PULSE_MODE_NOISE       : integer := 4;  -- Noise source cal, no tx
     constant PULSE_MODE_ISOL_NOISE  : integer := 5;  -- vertical transmit, receive both, but enable noise source for testing
     constant PULSE_MODE_TEST        : integer := 6;  -- Test Mode, no tx
+    constant PULSE_MODE_EMS_RESET   : integer := 7;  -- Toggles all of the EMS lines, no tx
+    constant PULSE_MODE_EMS_RESET_NS: integer := 8;  -- Toggles all of the EMS lines, no tx, noise on
 
     type ems_type   is array(0 to NUM_PULSE_MODES-1) of std_logic_vector(7 downto 1);
 
@@ -131,6 +133,8 @@ architecture Behavioral of HMC_src is
         PULSE_MODE_NOISE        => "0101101",
         PULSE_MODE_ISOL_NOISE   => "0101110",
         PULSE_MODE_TEST         => "0101110",
+        PULSE_MODE_EMS_RESET    => "0101101",
+        PULSE_MODE_EMS_RESET_NS => "0101101",
         others                  => "0000000"
     );
 
@@ -143,6 +147,8 @@ architecture Behavioral of HMC_src is
         PULSE_MODE_NOISE        => "0101101",
         PULSE_MODE_ISOL_NOISE   => "1010011",
         PULSE_MODE_TEST         => "1010011",
+        PULSE_MODE_EMS_RESET    => "1010010",
+        PULSE_MODE_EMS_RESET_NS => "1010010",        
         others                  => "0000000"
     );
 
@@ -166,6 +172,7 @@ architecture Behavioral of HMC_src is
     constant C_NOISE_EN : std_logic_vector(NUM_PULSE_MODES-1 downto 0) := (
         PULSE_MODE_NOISE        => '1',
         PULSE_MODE_ISOL_NOISE   => '1',
+        PULSE_MODE_EMS_RESET_NS => '1',
         others                  => '0'
     );
 
@@ -216,6 +223,7 @@ architecture Behavioral of HMC_src is
     signal mod_pulse_error      : std_logic;
     signal ems_error_prt        : std_logic;
     signal ems_out_i            : std_logic_vector(7 downto 1); -- signal EMS_OUT
+    signal handle_ems_fault     : std_logic;
     signal l_tx_ems_switch_dly  : std_logic;
     signal l_rx_ems_switch_dly  : std_logic;
     signal l_rx_gate            : std_logic;
@@ -223,7 +231,7 @@ architecture Behavioral of HMC_src is
     signal cmd_wg_sw_pos        : std_logic; -- commanded waveguide switch position
     signal T0_reg               : std_logic;
     signal state_code           : std_logic_vector(1 downto 0); -- for debugging state machine
- 
+
     -- State machine declarations
     type state_type is (s0, s1, s2, s3);
     signal state                : state_type;
@@ -253,34 +261,31 @@ begin
 
     -- Check wavequide switch position. Account for switch delay (~100 msec) before reporting status
     CHECK_WG : process (CLK, RESETn)
-        variable v_wg_sw_pos : std_logic;
     begin
         if rising_edge(CLK) then
             if (wg_dly = '1') then
-                if C_NOISE_EN(pulse_mode) = '1' then -- Noise source cal or isolation test mode
+                if cmd_wg_sw_pos = '1' then -- Noise source cal or isolation test mode
                     if (WG_SW_TERMn = '1' and WG_SW_NOISEn = '0') then
                         WG_SW_ERROR <= '0';
                         wg_stat_ok  <= '1'; -- good status
-                        v_wg_sw_pos := '1';
                     else
                         WG_SW_ERROR <= '1';
                         wg_stat_ok  <= '0'; -- bad status
-                        v_wg_sw_pos := '0';
                     end if;
                 else
                     if (WG_SW_TERMn = '0' and WG_SW_NOISEn = '1') then
                         WG_SW_ERROR <= '0';
-                        v_wg_sw_pos := '0';
                         wg_stat_ok  <= '1'; -- good status
                     else
                         WG_SW_ERROR <= '1';
                         wg_stat_ok  <= '0'; -- bad status
-                        v_wg_sw_pos := '1';
                     end if;
                 end if;
 
-                if v_wg_sw_pos /= cmd_wg_sw_pos then
+                if C_NOISE_EN(pulse_mode) /= cmd_wg_sw_pos then
                     wg_dly          <= '0'; -- Change commanded, enter transition state
+                    wg_stat_ok      <= '0';
+                    WG_SW_ERROR     <= '0';
                 end if;
                 wg_count            <= (others=>'0');
 
@@ -309,11 +314,11 @@ begin
     CHECK_BITE : process (CLK, RESETn)
     begin
         if rising_edge(CLK) then
-            if wg_dly = '1' then -- Waveguide switch is not in transition
+            if wg_dly = '1' and state /= S0 then -- Waveguide switch is not in transition
                 ems_tx_error_vector     <= BIT_EMS xor C_TX_EMS_SWITCH_VAL(pulse_mode);
                 ems_rx_error_vector     <= BIT_EMS xor C_RX_EMS_SWITCH_VAL(pulse_mode);
             else
-                -- report good status for all ems switches during waveguide switch transition
+                -- report good status for all ems switches during S0 or during waveguide switch transition
                 ems_tx_error_vector     <= (others=>'0');
                 ems_rx_error_vector     <= (others=>'0');
             end if;
@@ -325,8 +330,8 @@ begin
     end process;
 
     -- If there are no bits set in the error vector, then set a 1 to say we are ok
-    ems_tx_stat <= '1' when ems_tx_error_vector = "0000000" else '0';
-    ems_rx_stat <= '1' when ems_rx_error_vector = "0000000" else '0';
+    ems_tx_stat <= '1' when ems_tx_error_vector = "0000000" and ems_pwr_ok = '1' else '0';
+    ems_rx_stat <= '1' when ems_rx_error_vector = "0000000" and ems_pwr_ok = '1' else '0';
 
     -- Break out the error vector into individual error flags
     ems_1_tx_stat  <= ems_tx_error_vector(1);
@@ -399,10 +404,7 @@ begin
     end process;
 
     MOD_PULSE_DISABLE <=
-        '1' when pulse_mode = PULSE_MODE_TEST
-              or pulse_mode = PULSE_MODE_NOISE
-              or pulse_mode = PULSE_MODE_ISOL_NOISE
-              or mod_pulse_error = '1'
+        '1' when C_ALLOW_MOD_PULSE(pulse_mode) = '0' or mod_pulse_error = '1' or wg_stat_ok = '0'
         else '0';
 
     EMS_PRT : process (CLK, RESETn)
@@ -554,17 +556,15 @@ begin
         end if;
     end process;
 
-    ------------------------ End Sychronous Processes ----------------------------------------------------
-
     ------------------------ State Machine ----------------------------------------------------------------
 
     STATE_MACHINE : process (CLK, RESETn)
         variable next_pulse_mode_v : integer range 0 to NUM_PULSE_MODES-1 := PULSE_MODE_TEST;
     begin
         if (rising_edge (CLK)) then
-        
+
             T0_reg  <= T0; -- Delay so that HVn_CMD_PENTEK switches first
-            
+
             --Determine the next pulse mode
             case OPS_MODE_730 is
                 --when OPS_730_SPARE =>
@@ -584,19 +584,28 @@ begin
                 when OPS_730_TEST           =>  next_pulse_mode_v := PULSE_MODE_TEST;
                 when OPS_730_ISOL_NOISE     =>  next_pulse_mode_v := PULSE_MODE_ISOL_NOISE;
                 when others                 =>  next_pulse_mode_v := PULSE_MODE_TEST;
-            end case;            
+            end case;
+
+            if handle_ems_fault = '1' then
+                -- Toggle the ems lines. There are two modes because
+                -- we don't want this to toggle the waveguide switch.
+                if C_NOISE_EN(pulse_mode) = '1' then
+                    next_pulse_mode_v           := PULSE_MODE_EMS_RESET_NS;
+                else
+                    next_pulse_mode_v           := PULSE_MODE_EMS_RESET;
+                end if;
+            end if;
 
             case state is
                 when s0 => -- Idle state
 
                     if EMS_TRIG = '1' and T0_reg = '1' then -- Triggered by scheduler
 
-                        pulse_mode  <= next_pulse_mode_v;
+                        pulse_mode          <= next_pulse_mode_v;
 
                         if tx_ems_switch_dly = '0'      -- Haven't timed out yet
                             and rx_ems_switch_dly = '0' -- Haven't timed out yet
-                            and ems_pwr_ok = '1'        -- Power is ok
-                            and wg_stat_ok = '1'        -- Waveguide is ok
+                            and (wg_stat_ok = '1' and cmd_wg_sw_pos = C_NOISE_EN(next_pulse_mode_v)) -- Waveguide is ok
                                                         -- Either high voltage is on OR we are in a opsmode that doesn't need hv
                             and (hv_powerup_dly = '1' or C_ALLOW_MOD_PULSE(next_pulse_mode_v) = '0') then
 
@@ -608,52 +617,63 @@ begin
                 when s1 => -- Configure for transmit
 
                     if ems_tx_ok = '1'              -- EMS is good
-                        and ems_pwr_ok = '1'        -- Power is still good
                                                     -- Either high voltage is on OR we are in a opsmode that doesn't need hv
                         and ( hv_powerup_dly = '1'  or C_ALLOW_MOD_PULSE(pulse_mode) = '0') then
 
-                            state <= s2;
+                            state           <= s2;
                     end if;
 
-                    -- Cancel if the state doesn't become good by the timeout
+                    -- Cancel if TX is over and we never became good
                     if rx_ems_switch_dly = '1' then
-                        state <= s0;
+                        handle_ems_fault    <= '1';
+                        state               <= s0;
+                        -- If in EMS reset mode, proceed anyway as toggling the lines
+                        -- will hopefully clear the fault. This is a non-transmitting mode.
+                        if pulse_mode = PULSE_MODE_EMS_RESET or pulse_mode = PULSE_MODE_EMS_RESET_NS then
+                            state           <= s2;
+                        end if;
                     end if;
 
-                when s2 => -- Transmit (if in a transmitting mode) or continue (if not)
+                when s2 => -- Transmit
 
-                    if (C_ALLOW_MOD_PULSE(pulse_mode) = '0') then
-                        -- The non-transmitting opmodes can skip right to RX after the switch delay
-                        if tx_ems_switch_dly = '1' then
-                            state <= s3;
-                        end if;
-                        -- Cancel if power is lost
-                        if ems_pwr_ok = '0' then
-                            state <= s0;
-                        end if;
-                    else -- TX modes
-                        -- When TX is done, proceed to RX
-                        if rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' then
-                            state <= s3;
-                        end if;
-                        --Cancel if high voltage or ems power is lost
-                        if hv_powerup_dly = '0' or ems_pwr_ok = '0' then
-                            state <= s0;
-                        end if;
+                    -- When TX is done, proceed to RX
+                    if rx_ems_switch_dly = '1' and tx_ems_switch_dly = '1' then
+                        state               <= s3;
+                    end if;
+
+                    --Cancel if high voltage is lost
+                    if C_ALLOW_MOD_PULSE(pulse_mode) = '1' and hv_powerup_dly = '0' then
+                        handle_ems_fault    <= '1';
+                        state               <= s0;
                     end if;
 
                 when s3 => -- Receive
-                    if RX_GATE = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '0' then
-                        state <= s0;
+
+                    if ems_error_prt = '1' then
+                        handle_ems_fault    <= '1';
+                        state               <= s0;
                     end if;
+
+                    if RX_GATE = '0' and rx_ems_switch_dly = '0' and tx_ems_switch_dly = '0' then
+                        handle_ems_fault    <= '0'; -- Successful cycle; clear fault.
+                        state               <= s0;
+                    end if;
+
                 when others =>
                     state <= s0;
             end case;
 
+            --In ANY state, cancel if ems power is lost
+            if ems_pwr_ok = '0' then
+                handle_ems_fault            <= '1';
+                state                       <= s0;
+            end if;
+
         end if; --RE CLK
         if (RESETn = '0') then
-            state <= s0;
-            T0_reg <= '0';
+            state                           <= s0;
+            T0_reg                          <= '0';
+            handle_ems_fault                <= '1';
         end if;
     end process;
 
@@ -668,16 +688,11 @@ begin
             NOISE_SOURCE_EN             <= C_NOISE_EN(pulse_mode);
             cmd_wg_sw_pos               <= C_NOISE_EN(pulse_mode);
 
-            if state = S0 then
-                -- On the first cycle of S0, invert all the EMS pins to
-                -- ensure at least one transition per PRT.
-                if prev_state /= state then
-                    EMS_OUT_i           <= not EMS_OUT_i;
-                end if;
-            else
+            -- Set HVn according to the mode
+            HVn_FLAG                <= C_HVn_FLAG(pulse_mode);
 
-                -- Set HVn according to the mode
-                HVn_FLAG                <= C_HVn_FLAG(pulse_mode);
+            -- EMS datasheet says not to operate the switches unless power is good
+            if state /= S0 and ems_pwr_ok = '1' then
 
                 -- Set EMS according to the mode
                 if EMS_TRIG = '1' then
@@ -699,14 +714,13 @@ begin
 
         end if; --RE CLK
         if (RESETn = '0') then
-            cmd_wg_sw_pos               <= '0';
             MOD_PULSE_HMC               <= '0';
             EMS_OUT_i                   <= "0000000";
             WG_SW_CTRL_TERMn            <= '0';
             WG_SW_CTRL_NOISEn           <= '1';
             NOISE_SOURCE_EN             <= '0';
             cmd_wg_sw_pos               <= '0';
-            HVn_flag                     <= '0';
+            HVn_flag                    <= '0';
             prev_state                  <= s0;
         end if;
     end process;

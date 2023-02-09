@@ -45,7 +45,7 @@ ARCHITECTURE behavior OF HMC_tb IS
         RX_GATE           : in  std_logic;
         HVn_CMD_PENTEK    : in  std_logic; -- HV command from the Pentek. Was TX_GATE
         EXT_CLK           : in  std_logic; -- 15.625 MHz clock;    125 MHz/8
-        SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 MHz clock; 125 MHz/8/72
+        SYNC_PULSE_CLK    : in  std_logic; -- 217.01389 kHz clock; 125 MHz/8/72
         HVn_FLAG          : out std_logic;
         --ONE_PPS           : in  std_logic;
         EMS_PWR_ERROR     : in  std_logic;
@@ -134,6 +134,48 @@ ARCHITECTURE behavior OF HMC_tb IS
 
     signal testbench_state : integer := 0;
 
+    signal count : integer := 0;
+    
+    signal force_ems_error_vector : std_logic_vector(7 downto 1) := (others => '0');
+    signal force_wg_error : std_logic := '0';
+
+
+    -- Enumeration of OPS_MODE_730
+    constant OPS_730_RESET          : std_logic_vector(2 downto 0) := o"0"; -- Reset mode
+    constant OPS_730_SPARE1         : std_logic_vector(2 downto 0) := o"1"; -- Spare mode
+    constant OPS_730_SPARE2         : std_logic_vector(2 downto 0) := o"2"; -- Spare mode
+    constant OPS_730_TRANSMIT       : std_logic_vector(2 downto 0) := o"3"; -- Transmit HV?, receive H and V. HV? is determined by Pentek scheduler
+    constant OPS_730_ATTENUATED     : std_logic_vector(2 downto 0) := o"4"; -- Corner reflector transmit HV?, receive H and V.
+    constant OPS_730_NOISE          : std_logic_vector(2 downto 0) := o"5"; -- Noise source cal, no tx
+    constant OPS_730_TEST           : std_logic_vector(2 downto 0) := o"6"; -- Test Mode, no tx
+    constant OPS_730_ISOL_NOISE     : std_logic_vector(2 downto 0) := o"7"; -- vertical transmit, receive both, but enable noise source for testing
+
+    -- Enumeration of pulse_mode. These are used internally and don't correspond to the 730 modes.
+    constant NUM_PULSE_MODES        : integer := 8;
+    constant PULSE_MODE_H_TX        : integer := 0;  -- horizontal transmit, receive both
+    constant PULSE_MODE_V_TX        : integer := 1;  -- vertical transmit, receive both
+    constant PULSE_MODE_CREF_H      : integer := 2;  -- Corner reflector horizontal transmit, receive both
+    constant PULSE_MODE_CREF_V      : integer := 3;  -- Corner reflector cal, vertical tx w/increased NF
+    constant PULSE_MODE_NOISE       : integer := 4;  -- Noise source cal, no tx
+    constant PULSE_MODE_ISOL_NOISE  : integer := 5;  -- vertical transmit, receive both, but enable noise source for testing
+    constant PULSE_MODE_TEST        : integer := 6;  -- Test Mode, no tx
+    constant PULSE_MODE_EMS_RESET   : integer := 7;  -- Toggles all of the EMS lines, no tx
+
+    type ems_type   is array(0 to NUM_PULSE_MODES-1) of std_logic_vector(7 downto 1);
+
+    --Switch values for when EMS_TRIG = 0
+    constant C_RX_EMS_SWITCH_VAL : ems_type := (
+        PULSE_MODE_H_TX         => "1010010",
+        PULSE_MODE_V_TX         => "1010011",
+        PULSE_MODE_CREF_H       => "0000010",
+        PULSE_MODE_CREF_V       => "0000011",
+        PULSE_MODE_NOISE        => "0101101",
+        PULSE_MODE_ISOL_NOISE   => "1010011",
+        PULSE_MODE_TEST         => "1010011",
+        PULSE_MODE_EMS_RESET    => "1010010",
+        others                  => "0000000"
+    );
+
 BEGIN
     -- Instantiate the Unit Under Test (UUT)
     uut: x_HMC_src
@@ -207,10 +249,8 @@ BEGIN
     begin
         wait for 100 ns;
         RESET <= '0'; -- reset firmware
-        wait for 500 ns; -- turn HV_ON, Filament on
-        HV_ON_730n <= '0';
+        wait for 500 ns;
         FIL_ON_730n <= '0';
-        EMS_PWR_ERROR <= '0';      -- good status
         RESET <= '1';             -- take out of reset state!
         wait;             -- wait forever; i.e. don't cycle
     end process;
@@ -231,6 +271,23 @@ BEGIN
         wait for 97280 ns;  -- 380 gates @ 256 ns/gate
         RX_GATE <= '0';
         wait for 2928 ns;
+        --slightly different timing, in case it matters somehow
+        T0 <= '1';
+        wait for 64 ns;
+        EMS_TRIG <= '1';
+        wait for 64ns;
+        T0 <= '0';
+        wait for 272 ns;
+        MOD_PULSE <= '1';
+        wait for 512 ns;
+        MOD_PULSE <= '0';
+        wait for 256 ns;
+        EMS_TRIG <= '0';
+        wait for 128ns;
+        RX_GATE <= '1';
+        wait for 97152 ns;  -- 380 gates @ 256 ns/gate
+        RX_GATE <= '0';
+        wait for 2928 ns;        
     end process;
 
     SYNC_CLK: process   -- Generate 217 kHz sync clock
@@ -241,199 +298,117 @@ BEGIN
         wait for 2304 ns;
     end process;
 
-    EMS_BIT: process -- Generate EMS BIT response; Ops mode will use previous state for current cycle
+    BIT_EMS <= (EMS_OUT xor force_ems_error_vector) after EXT_CLK_period*3;
+    WG_SW_TERMn <= (WG_SW_CTRL_TERMn xor force_wg_error) after EXT_CLK_period*1000;
+    WG_SW_NOISEn <= (WG_SW_CTRL_NOISEn xor force_wg_error) after EXT_CLK_period*1000;
+
+    EMS_BIT: process
         variable CNT : integer range 0 to 1024;
         variable err : std_logic  := '0';
     begin
 
-        WG_SW_NOISEn <= '1';  -- update switch status
-        WG_SW_TERMn <= '0';
-        wait for 320 ns;  -- 320 ns is max delay measured
--- Vertical transmit receive both
-        OPS_MODE_730 <= "100";   -- Next cycle ops mode is noise source
-        BIT_EMS <= "0101110";
-        wait for 1168 ns;
-        BIT_EMS <= "1010011";
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
+        OPS_MODE_730 <= OPS_730_RESET;
+        wait until RX_GATE = '1';
+        wait until RX_GATE = '0';
+        HV_ON_730n <= '0';
 
-        testbench_state <= 1;
-        -- Loop for 50 PRTs
-        CNT := 0;
-        while (CNT <= 50) loop
-            wait for 320 ns;  -- 320 ns is max delay measured
--- Noise source cal
-                if (CNT = 20) then
-                    WG_SW_NOISEn <= '0';  -- update switch status
-                    WG_SW_TERMn <= '1';
-                    testbench_state <= 2;
-                elsif (CNT = 50) then
-                    OPS_MODE_730 <= o"3";
-                    HVn_CMD_PENTEK <= '0';  -- Next ops mode is vertical tx, simultaneous receive
-                    testbench_state <= 3;
-                else
-                    OPS_MODE_730 <= o"5"; -- keep in Noise source cal mode
-                end if;
-            BIT_EMS <= "0101101";
-            if (CNT > 25) then
-                assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
-            end if;
-            case CNT is --Trigger the error logic
-                when 31 => BIT_EMS(1) <= '0';
-                when 32 => BIT_EMS(2) <= '1';
-                when 33 => BIT_EMS(3) <= '0';
-                when 34 => BIT_EMS(4) <= '0';
-                when 35 => BIT_EMS(5) <= '1';
-                when 36 => BIT_EMS(6) <= '0';
-                when 37 => BIT_EMS(7) <= '1';
+        OPS_MODE_730 <= OPS_730_NOISE;
+        for k in 1 to 40 loop
+            wait until RX_GATE = '1';
+            wait until RX_GATE = '0';
+        end loop;
+        
+        OPS_MODE_730 <= OPS_730_TRANSMIT;
+        for k in 1 to 100 loop
+        
+            -- test transmit EMS errors
+            force_ems_error_vector <= "0000000";
+            EMS_PWR_ERROR <= '0';
+            case k is
+                when 30 => force_ems_error_vector <= "0000001";
+                when 33 => force_ems_error_vector <= "0000010";
+                when 36 => force_ems_error_vector <= "0000100";
+                when 39 => force_ems_error_vector <= "0001000";
+                when 42 => force_ems_error_vector <= "0010000";
+                when 45 => force_ems_error_vector <= "0100000";
+                when 48 => force_ems_error_vector <= "1000000";
+                when 51 => EMS_PWR_ERROR <= '1';
+                when 82 => EMS_PWR_ERROR <= '1';
                 when others =>
             end case;
-            wait for 1168 ns;
-            BIT_EMS <= "0101101";
-            if (CNT > 25) then
-                assert EMS_OUT = "0101101" report "Bad EMS_OUT at 0101101" severity failure;
+
+            wait until RX_GATE = '1';
+            if force_ems_error_vector /= "0000000" or ems_pwr_error /= '0' then
+                assert MOD_PULSE_DISABLE = '1' report "Undetected TX EMS error at count " & integer'image(k) severity failure;
             end if;
-            case CNT is
-                when 38 => BIT_EMS(1) <= '0';
-                when 39 => BIT_EMS(2) <= '1';
-                when 40 => BIT_EMS(3) <= '0';
-                when 41 => BIT_EMS(4) <= '0';
-                when 42 => BIT_EMS(5) <= '1';
-                when 43 => BIT_EMS(6) <= '0';
-                when 44 => BIT_EMS(7) <= '1';
+
+            -- test receive EMS errors
+            force_ems_error_vector <= "0000000";
+            EMS_PWR_ERROR <= '0';
+            HV_ON_730n <= '0';
+            case k is
+                when 60 => force_ems_error_vector <= "0000001";
+                when 63 => force_ems_error_vector <= "0000010";
+                when 66 => force_ems_error_vector <= "0000100";
+                when 69 => force_ems_error_vector <= "0001000";
+                when 72 => force_ems_error_vector <= "0010000";
+                when 75 => force_ems_error_vector <= "0100000";
+                when 78 => force_ems_error_vector <= "1000000";
+                when 81 => EMS_PWR_ERROR <= '1';
+                when 82 => EMS_PWR_ERROR <= '1';
+                when 85 => HV_ON_730n <= '1';
                 when others =>
             end case;
-            wait for 99788 ns;
-            err := EMS_ERROR_1 or EMS_ERROR_2 or EMS_ERROR_3 or EMS_ERROR_45 or EMS_ERROR_67;
-            if (CNT < 31 or CNT > 44) then
-                assert err = '0' report "Unexpected EMS error" severity failure;
-            else
-                assert err = '1' report "EMS error not detected" severity failure;
+            
+            wait for EXT_CLK_period*1000;
+
+            if force_ems_error_vector /= "0000000" or ems_pwr_error /= '0' then
+                assert EMS_ERROR_EVENT = '1' report "Undetected RX EMS error at count " & integer'image(k) severity failure;
             end if;
-            STATUS_ACK <= '1';  -- clear status every PRT for testing
-            wait for 100 ns;
+            
+            STATUS_ACK <= '1';
+            wait for EXT_CLK_period*2;
+            HVn_CMD_PENTEK <= not HVn_CMD_PENTEK;
             STATUS_ACK <= '0';
-            CNT := CNT + 1;
-    end loop;
+            wait until RX_GATE = '0';
+        end loop;
+        
+        OPS_MODE_730 <= OPS_730_ATTENUATED;
+        for k in 1 to 20 loop
+            wait until RX_GATE = '1';
+            wait until RX_GATE = '0';
+        end loop;
+        
+        OPS_MODE_730 <= OPS_730_TEST;
+        for k in 1 to 20 loop
+            wait until RX_GATE = '1';
+            wait until RX_GATE = '0';
+        end loop;        
+        
+        OPS_MODE_730 <= OPS_730_ISOL_NOISE;
+        for k in 1 to 20 loop
+            wait until RX_GATE = '1';
+            wait until RX_GATE = '0';
+        end loop;
 
-testbench_state <= 4;
+        OPS_MODE_730 <= OPS_730_TRANSMIT;
+        force_wg_error <= '1';
+        for k in 1 to 40 loop
 
-    CNT := 0;
-    while (CNT < 8) loop
-        wait for 320 ns;  -- 320 ns is max delay measured
-        if (CNT = 2) then
-                WG_SW_NOISEn <= '1';  -- update switch status;
-                WG_SW_TERMn <= '0';
-        end if;
--- Vertical Tx, simultaneous receive
-        OPS_MODE_730 <= o"4";
-        HVn_CMD_PENTEK <= '0';        -- Next ops mode is corner reflector cal, vertical tx
-        BIT_EMS <= "0101110";
-        assert EMS_OUT = "0101110" or cnt < 3 report "Bad EMS_OUT at 0101110" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010011";
-        assert EMS_OUT = "1010011" or cnt < 3 report "Bad EMS_OUT at 1010011" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
-        testbench_state <= 5;
--- Corner reflector cal, vertical tx w/reduced power on receive
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"6"; -- Next ops mode is Test Mode, no tx
-        BIT_EMS <= "0101110";
-        assert EMS_OUT = "0101110" or cnt < 3 report "Bad EMS_OUT at 0101110" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "0000011";
-        assert EMS_OUT = "0000011" or cnt < 3 report "Bad EMS_OUT at 0000011" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
-        testbench_state <= 6;
--- Test Mode, no tx
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"3";
-        HVn_CMD_PENTEK <= '1';  -- Next ops mode is horizontal tx, simultaneous receive
-        BIT_EMS <= "0101110";
-        assert EMS_OUT = "0101110" or cnt < 3 report "Bad EMS_OUT at 0101110" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010011";
-        assert EMS_OUT = "1010011" or cnt < 3 report "Bad EMS_OUT at 1010011" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
--- Transmit Mode, horizontal tx
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"3";
-        HVn_CMD_PENTEK <= '0';  -- Next ops mode is HHVV V tx, simultaneous receive
-        BIT_EMS <= "0101001";
-        assert EMS_OUT = "0101001" or cnt < 3 report "Bad EMS_OUT at 0101001" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010010";
-        assert EMS_OUT = "1010010" or cnt < 3 report "Bad EMS_OUT at 1010010" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
--- Transmit Mode, HHVV
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"3";
-        HVn_CMD_PENTEK <= '1';  -- Next ops mode is HHVV H tx, simultaneous receive
-        BIT_EMS <= "0101110";
-        assert EMS_OUT = "0101110" or cnt < 3 report "Bad EMS_OUT at 0101110" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010011";
-        assert EMS_OUT = "1010011" or cnt < 3 report "Bad EMS_OUT at 1010011" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
+            wait until RX_GATE = '1';
+            wait for EXT_CLK_period*1000;
+            STATUS_ACK <= '1';
+            wait for EXT_CLK_period*2;
+            STATUS_ACK <= '0';
+            wait until RX_GATE = '0';
+            if k = 20 then 
+                force_wg_error <= '0';
+            end if;
+        end loop;
 
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"3";
-        HVn_CMD_PENTEK <= '1';  -- Next ops mode is HHVV H tx, simultaneous receive
-        BIT_EMS <= "0101001";
-        assert EMS_OUT = "0101001" or cnt < 3 report "Bad EMS_OUT at 0101001" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010010";
-        assert EMS_OUT = "1010010" or cnt < 3 report "Bad EMS_OUT at 1010010" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
+        assert false report "Simulation completed successfully" severity failure;
+        wait;
 
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"3";
-        HVn_CMD_PENTEK <= '0';  -- Next ops mode is HHVV V tx, simultaneous receive
-        BIT_EMS <= "0101001";
-        assert EMS_OUT = "0101001" or cnt < 3 report "Bad EMS_OUT at 0101001" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010010";
-        assert EMS_OUT = "1010010" or cnt < 3 report "Bad EMS_OUT at 1010010" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
-
-        wait for 320 ns;  -- 320 ns is max delay measured
-        OPS_MODE_730 <= o"3";
-        HVn_CMD_PENTEK <= '0';  -- Next ops mode is vertical tx, simultaneous receive
-        BIT_EMS <= "0101110";
-        assert EMS_OUT = "0101110" or cnt < 3 report "Bad EMS_OUT at 0101110" severity failure;
-        wait for 1168 ns;
-        BIT_EMS <= "1010011";
-        assert EMS_OUT = "1010011" or cnt < 3 report "Bad EMS_OUT at 1010011" severity failure;
-        wait for 99788 ns;
-        STATUS_ACK <= '1';  -- clear status every PRT for testing
-        wait for 100 ns;
-        STATUS_ACK <= '0';
-        CNT := CNT + 1;
-    end loop;
-        assert false report "(NO ERROR) End of stimulus" severity failure;
     end process;
 END;
 

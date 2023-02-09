@@ -4,6 +4,10 @@
 /iseconfig
 /isim
 /xst
+/vivado_sim/vivado_sim.sim
+/vivado_sim/vivado_sim.cache
+/vivado_sim/vivado_sim.hw
+*.log
 *.xml
 *.xwbt
 *.bgn
