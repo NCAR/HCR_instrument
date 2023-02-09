@@ -1245,7 +1245,7 @@ HCR_Pentek::_definePulseBlock(
     };
 
     // The width of the modulation pulse is transmit pulse width plus an empirically measured rise time until full amplification is achieved.
-    double modPulseWidth = txPulseWidth + 272e-9;
+    auto modPulseWidth = txPulseWidth + 272e-9;
 
     // Master sync is 200 ns long so the PMC730 can't miss it
     block.timers[Controller::Timers::MASTER_SYNC] = { 0, _counts(200.e-9) };
@@ -1261,7 +1261,20 @@ HCR_Pentek::_definePulseBlock(
 
     // The receive delay cancels out the pipeline delays and brings the burst to the beginning of the data.
     // Subtract half as much time as the other timers, so that the *center* of the burst is always in the same gate.
-    block.timers[Controller::Timers::RX_0] =        { _counts(_config.ems_pulse_width() + _config.rx_offset() - txPulseWidth/2), _counts(numRxGates * _digitizerSampleWidth) };
+    auto rxOffsetCounts = _counts(_config.ems_pulse_width() + _config.rx_offset() - txPulseWidth/2);
+    auto rxWidthCounts = _counts(numRxGates * _digitizerSampleWidth);
+
+    // There needs to be a falling edge on this signal for the HMC to work properly.
+    auto leastPrtCounts = (_counts(prt2) == 0) ? _counts(prt1) : min(_counts(prt1), _counts(prt2));
+    auto minWidthCounts = leastPrtCounts - rxOffsetCounts - _counts(128.e-9);
+    //ILOG << "rxOffsetCounts " << rxOffsetCounts << " rxWidthCounts " << rxWidthCounts << " leastPrtCounts " << leastPrtCounts << " minWidthCounts " << minWidthCounts;
+    if ( rxWidthCounts > minWidthCounts )
+    {
+        WLOG << "Truncating RX gates from " << rxWidthCounts/_counts(_digitizerSampleWidth) << " to " << minWidthCounts/_counts(_digitizerSampleWidth);
+        rxWidthCounts = minWidthCounts;
+    }
+
+    block.timers[Controller::Timers::RX_0] =        { rxOffsetCounts, rxWidthCounts };
     block.timers[Controller::Timers::RX_1] =        block.timers[Controller::Timers::RX_0];
     block.timers[Controller::Timers::RX_2] =        block.timers[Controller::Timers::RX_0];
 
@@ -1401,6 +1414,7 @@ void HCR_Pentek::zeroMotorCounts()
 
 DrxStatus HCR_Pentek::status()
 {
+
     volatile uint32_t  *i2cPort = static_cast<NAV_BOARD_RESRC*>(_boardHandle)->ipBaseAddr.i2cPort[0];
     LM95234_VALUES      lm95234Values;
     double              localTemp = -99;
