@@ -343,8 +343,8 @@ private:
     bool _motorZeroPositionSet;
 
     /// @brief Firmware build to check for.
-    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20220412;
-    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x13;
+    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20230202;
+    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x19;
 
 };
 

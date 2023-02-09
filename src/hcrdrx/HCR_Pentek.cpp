@@ -811,6 +811,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     bool lastPulseInXfer = false;
     using IQData = PulseData::IQData;
     using PackedIQData = Controller::PackedIQData;
+    QUdpSocket angleSocket;
 
     // ILOG << "_acceptAdcData " << chan << "\n";
 
@@ -914,6 +915,16 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         _prevXmitPulseWidth = _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width);
         _prevPrt = _fromCounts(pulseHeader.prt);
         _prevnGates = nGates;
+
+        // Publish angles from channel 0 every 100 pulses.
+	if (chan == 0 && (pulseHeader.pulseSequenceNumber % 100) == 0)
+	{
+	    // Put together a datagram containing rotation and tilt motor angles as IEEE 4-byte floats.
+            QByteArray datagram;
+            datagram.append(reinterpret_cast<char*>(&rotMotorAngle), sizeof(float));
+            datagram.append(reinterpret_cast<char*>(&tiltMotorAngle), sizeof(float));
+            angleSocket.writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
+        }
 
         // If we have a exporter, send it the new data for collating and publishing.
         if (_exporter) {
@@ -1233,24 +1244,26 @@ HCR_Pentek::_definePulseBlock(
         .timers           = {}
     };
 
+    // The width of the modulation pulse is transmit pulse width plus an empirically measured rise time until full amplification is achieved.
+    double modPulseWidth = txPulseWidth + 272e-9;
+
     // Master sync is 200 ns long so the PMC730 can't miss it
     block.timers[Controller::Timers::MASTER_SYNC] = { 0, _counts(200.e-9) };
 
+    // Transmit pulse. Always ends at the same time regardless of pulse width.
+    block.timers[Controller::Timers::TX_PULSE] =    { _counts(_config.ems_pulse_width() + _config.tx_pulse_offset() - txPulseWidth), _counts(txPulseWidth) };
+
+    // Mod pulse.  Always ends at the same time regardless of pulse width.
+    block.timers[Controller::Timers::MOD_PULSE] =   { _counts(_config.ems_pulse_width() + _config.mod_pulse_offset() - modPulseWidth), _counts(modPulseWidth) };
+
+    // EMS switch timing.  The switches have a minimum switching interval.
+    block.timers[Controller::Timers::EMS_TRIG] =    { 0, _counts(_config.ems_pulse_width()) };
+
     // The receive delay cancels out the pipeline delays and brings the burst to the beginning of the data.
-    // Add half the pulse width so that the center of the burst is always in the same gate.
-    block.timers[Controller::Timers::RX_0] =        { _counts(_config.rx_delay() + txPulseWidth/2), _counts(numRxGates * _digitizerSampleWidth) };
+    // Subtract half as much time as the other timers, so that the *center* of the burst is always in the same gate.
+    block.timers[Controller::Timers::RX_0] =        { _counts(_config.ems_pulse_width() + _config.rx_offset() - txPulseWidth/2), _counts(numRxGates * _digitizerSampleWidth) };
     block.timers[Controller::Timers::RX_1] =        block.timers[Controller::Timers::RX_0];
     block.timers[Controller::Timers::RX_2] =        block.timers[Controller::Timers::RX_0];
-
-    // Transmit pulse
-    block.timers[Controller::Timers::TX_PULSE] =    { _counts(_config.tx_delay()), _counts(txPulseWidth) };
-
-    // The width of the modulation pulse is 272 ns + transmit pulse width,
-    // where the 272 ns is the empirically measured rise time until full amplification is achieved.
-    block.timers[Controller::Timers::MOD_PULSE] =   { _counts(_config.tx_mod_pulse_delay()), _counts(272.e-9 + txPulseWidth) };
-
-    // EMS switch timing. Use 800 ns + transmit pulse width + transmit delay
-    block.timers[Controller::Timers::EMS_TRIG] =    { 0, _counts(800.e-9 + txPulseWidth + _config.tx_delay()) };
 
     // Spare
     block.timers[Controller::Timers::TIMER_7] =     { 0, 0 };

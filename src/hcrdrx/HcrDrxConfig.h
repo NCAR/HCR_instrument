@@ -74,9 +74,10 @@ private:
     OPT_AND_GETTER( std::string,  iwrf_fmq_path );
     OPT_AND_GETTER( double,       range_to_gate0_m );
     OPT_AND_GETTER( bool,         start_on_1pps );
-    OPT_AND_GETTER( double,       tx_delay );
-    OPT_AND_GETTER( double,       tx_mod_pulse_delay );
-    OPT_AND_GETTER( double,       rx_delay );
+    OPT_AND_GETTER( double,       ems_pulse_width );
+    OPT_AND_GETTER( double,       tx_pulse_offset );
+    OPT_AND_GETTER( double,       mod_pulse_offset );
+    OPT_AND_GETTER( double,       rx_offset );
     OPT_AND_GETTER( bool,         use_internal_clock );
     OPT_AND_GETTER( bool,         clock_mode_125 );
     OPT_AND_GETTER( double,       refclk_frequency );

@@ -167,9 +167,10 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( iwrf_fmq_path,                     "description",                                  "/tmp/fmq/ts/wband/shmem_10000" )
         MEMBER_PROGOPT( range_to_gate0_m,                  "distance to the 0th range cell",               -198.0 )
         MEMBER_PROGOPT( start_on_1pps,                     "wait for timing pulse to start",               true )
-        MEMBER_PROGOPT( tx_delay,                          "transmit delay from t0",                       336.e-9 )
-        MEMBER_PROGOPT( tx_mod_pulse_delay,                "modulator pulse delay from t0",                432.e-9 )
-        MEMBER_PROGOPT( rx_delay,                          "sample collection delay from t0",              2176.e-9 )
+        MEMBER_PROGOPT( ems_pulse_width,                   "time that the T/R switch is set to T",         4160e-9 )
+        MEMBER_PROGOPT( tx_pulse_offset,                   "transmit pulse delay/advance",                 -486e-9 )
+        MEMBER_PROGOPT( mod_pulse_offset,                  "modulator pulse delay/advance",                0 )
+        MEMBER_PROGOPT( rx_offset,                         "sample collection delay/advance",              0 )
         MEMBER_PROGOPT( use_internal_clock,                "synthesize internal clock from reference",     true )
         MEMBER_PROGOPT( clock_mode_125,                    "false = experimental",                         true )
         MEMBER_PROGOPT( refclk_frequency,                  "frequency of external reference clock",        10.0e6 )
@@ -230,9 +231,10 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( iwrf_fmq_path );
     os << STREAM_OPT_AND_MEMBER( range_to_gate0_m );
     os << STREAM_OPT_AND_MEMBER( start_on_1pps );
-    os << STREAM_OPT_AND_MEMBER( tx_delay );
-    os << STREAM_OPT_AND_MEMBER( tx_mod_pulse_delay );
-    os << STREAM_OPT_AND_MEMBER( rx_delay );
+    os << STREAM_OPT_AND_MEMBER( ems_pulse_width );
+    os << STREAM_OPT_AND_MEMBER( tx_pulse_offset );
+    os << STREAM_OPT_AND_MEMBER( mod_pulse_offset );
+    os << STREAM_OPT_AND_MEMBER( rx_offset );
     os << STREAM_OPT_AND_MEMBER( use_internal_clock );
     os << STREAM_OPT_AND_MEMBER( clock_mode_125 );
     os << STREAM_OPT_AND_MEMBER( refclk_frequency );
