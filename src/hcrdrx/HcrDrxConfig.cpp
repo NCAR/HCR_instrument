@@ -180,7 +180,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( extra_pulse_gain,                  "adjustment to default gaussian filter gain",   16.0 )
         MEMBER_PROGOPT( final_decimation,                  "decimation after the last rx filter",          2 )
         MEMBER_PROGOPT( pulses_to_run,                     "number of pulses to schedule before exiting",  INFINITY )
-        MEMBER_PROGOPT( pulses_per_xfer,                   "ratio of pulses to interrupts",                200 )
+        MEMBER_PROGOPT( pulses_per_xfer,                   "ratio of pulses to interrupts",                150 )
         MEMBER_PROGOPT( pulse_filter_file_ch_0,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
         MEMBER_PROGOPT( pulse_filter_file_ch_1,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )
         MEMBER_PROGOPT( pulse_filter_file_ch_2,            "gaussian filter coefs",                        "default_gaussian_filters.csv" )

@@ -1352,54 +1352,82 @@ HCR_Pentek::_setupController()
     //   Passthrough, 256ns, 384ns, 512ns, 640ns, 768ns, 896ns, 1024ns.
 
     // Define the 'legacy mode' blocks and add them to the pulse definitions
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 0
         _definePulseBlock(
             txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
             Controller::PolarizationModes::POL_MODE_H, 0, 0
         ));
 
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 1
         _definePulseBlock(
             txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
             Controller::PolarizationModes::POL_MODE_V, 0, 0
         ));
 
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 2
         _definePulseBlock(
             txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
             Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
         ));
 
     // Define additional blocks for demonstration purposes
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 3
         _definePulseBlock(
             256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 0,
             Controller::PolarizationModes::POL_MODE_H, 0, 0
         ));
 
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 4
         _definePulseBlock(
             256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
             Controller::PolarizationModes::POL_MODE_H, 0, 0
         ));
 
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 5
         _definePulseBlock(
             512e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 3,
             Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
         ));
 
-    _pulseBlockDefinitions.push_back(
+    _pulseBlockDefinitions.push_back( // 6
         _definePulseBlock(
             1024e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 7,
             Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
         ));
 
-    _pulseBlockDefinitions.push_back(
+    // Phase coding test
+    _pulseBlockDefinitions.push_back( // 7
         _definePulseBlock(
             256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
             Controller::PolarizationModes::POL_MODE_H, 0, 3
         ));
+
+    // Mike's stagger
+    _pulseBlockDefinitions.push_back( // 8
+        _definePulseBlock(
+            256e-9, 5000, 100, 101.376e-6, 0, blockPostTime, 1,
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
+        ));
+
+    _pulseBlockDefinitions.push_back( // 9
+        _definePulseBlock(
+            512e-9, 5000, 66, 152.064e-6, 0, blockPostTime, 3,
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
+        ));
+
+    // Mike's stagger 10%
+    _pulseBlockDefinitions.push_back( // 10
+        _definePulseBlock(
+            256e-9, 5000, 100, 111.488e-6, 0, blockPostTime, 1,
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
+        ));
+
+    _pulseBlockDefinitions.push_back( // 11
+        _definePulseBlock(
+            512e-9, 5000, 66, 167.232e-6, 0, blockPostTime, 3,
+            Controller::PolarizationModes::POL_MODE_H, 0, 0
+        ));
+
 
     // Write the pulse definitions
     _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
@@ -1421,13 +1449,15 @@ HCR_Pentek::_setupController()
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 2, 2});
 
     // TODO be configurable here (these are demo schedules)
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 8, 9, "Mike's stagger"});
+    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 10, 11, "Mike's stagger +10%"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 3, 3, "256ns H, no gauss"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 4, "256ns H"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 5, 5, "512ns HHVV"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 6, 6, "1024ns HHVV"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 6, "256-512-1024"});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 7, 7, "phase code demo"});
-    for(auto k=10; k<16; ++k) _supportedOpsModes.push_back(_supportedOpsModes[k].equivalentAttenuatedMode());
+    for(auto k=10; k<18; ++k) _supportedOpsModes.push_back(_supportedOpsModes[k].equivalentAttenuatedMode());
 
 }
 
