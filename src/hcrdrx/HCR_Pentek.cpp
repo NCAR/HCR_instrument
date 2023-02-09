@@ -72,7 +72,9 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
     _prevPulseSeq(_adcCount, -1ULL),
     _digitizerSampleWidth(ddcDecimation() * _config.final_decimation() / adcFrequency()),
     _done(false),
-    _motorZeroPositionSet(false)
+    _motorZeroPositionSet(false),
+    _fpgaTemp(-99),
+    _localTemp(-99)
 {
     // Register needed types
     qRegisterMetaType<int32_t>("int32_t");
@@ -917,13 +919,47 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         _prevnGates = nGates;
 
         // Publish angles from channel 0 every 100 pulses.
-	if (chan == 0 && (pulseHeader.pulseSequenceNumber % 100) == 0)
-	{
-	    // Put together a datagram containing rotation and tilt motor angles as IEEE 4-byte floats.
+        if (chan == 0 && (pulseHeader.pulseSequenceNumber % 100) == 0)
+        {
+            // Put together a datagram containing rotation and tilt motor angles as IEEE 4-byte floats.
             QByteArray datagram;
             datagram.append(reinterpret_cast<char*>(&rotMotorAngle), sizeof(float));
             datagram.append(reinterpret_cast<char*>(&tiltMotorAngle), sizeof(float));
             angleSocket.writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
+        }
+
+        // Measure the temperature every 50000 pulses.
+        // More than once a second seems to corrupt the readings.
+        if (chan == 0 && (pulseHeader.pulseSequenceNumber % 50000) == 0)
+        {
+            volatile uint32_t  *i2cPort = static_cast<NAV_BOARD_RESRC*>(_boardHandle)->ipBaseAddr.i2cPort[0];
+            LM95234_VALUES      lm95234Values;
+            double              localTemp = -99;
+            double              fpgaTemp  = -99;
+            double              coreTemp  = -99;
+            double              otherTemp = -99;
+            double              clockTemp = -99;
+
+            int32_t status = NAVdev_LM95234GetValues(i2cPort, NAV_DEV_LM95234_MAIN_PCB_ADDR, &lm95234Values);
+            _LogNavigatorError(status, "Temp Sensor NAVdev_LM95234GetValues");
+
+            if (status == NAV_STAT_OK)
+            {
+                localTemp = lm95234Values.localTemp / 256.0;
+                fpgaTemp  = lm95234Values.D1Temp / 256.0;
+                coreTemp  = lm95234Values.D2Temp / 256.0;
+                otherTemp = lm95234Values.D3Temp / 256.0;
+                clockTemp = lm95234Values.D4Temp / 256.0;
+                ILOG << "Board temperature sensors, deg C : "
+                     << "  Local: " << int(localTemp)
+                     << "  FPGA: " << int(fpgaTemp)
+                     << "  Core: " << int(coreTemp)
+                     << "  Other: " << int(otherTemp)
+                     << "  Clock: " << int(clockTemp);
+            }
+
+            _localTemp = localTemp;
+            _fpgaTemp = fpgaTemp;
         }
 
         // If we have a exporter, send it the new data for collating and publishing.
@@ -1414,24 +1450,9 @@ void HCR_Pentek::zeroMotorCounts()
 
 DrxStatus HCR_Pentek::status()
 {
-
-    volatile uint32_t  *i2cPort = static_cast<NAV_BOARD_RESRC*>(_boardHandle)->ipBaseAddr.i2cPort[0];
-    LM95234_VALUES      lm95234Values;
-    double              localTemp = -99;
-    double              fpgaTemp = -99;
-
-    int32_t status = NAVdev_LM95234GetValues(i2cPort, NAV_DEV_LM95234_MAIN_PCB_ADDR, &lm95234Values);
-    _LogNavigatorError(status, "Temp Sensor NAVdev_LM95234GetValues");
-
-    if (status == NAV_STAT_OK)
-    {
-        localTemp = (double)(lm95234Values.localTemp) / 256.0;
-        fpgaTemp = (double)(lm95234Values.D1Temp) / 256.0;
-    }
-
     DrxStatus drxStatus(
-        fpgaTemp,
-        localTemp,
+        _fpgaTemp,
+        _localTemp,
         _prevXmitPulseWidth,
         _prevPrt,
         _prevnGates,

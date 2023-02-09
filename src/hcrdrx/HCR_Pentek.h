@@ -341,6 +341,8 @@ private:
     double _prevPrt;
     uint16_t _prevnGates;
     bool _motorZeroPositionSet;
+    double _fpgaTemp;
+    double _localTemp;
 
     /// @brief Firmware build to check for.
     const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20230202;
