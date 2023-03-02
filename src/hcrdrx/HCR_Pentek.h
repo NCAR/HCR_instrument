@@ -226,6 +226,12 @@ private:
         uint    phaseTableEnd
     );
 
+    /// @brief Helper function to define a pulse block from a QJsonObject
+    Controller::PulseBlockDefinition _definePulseBlock(
+        const QJsonObject& pulseBlockDef,
+        const QJsonObject& defaultDef = {}
+    );
+
     /// @brief Set up the radar controller
     ///
     /// This method is only called from the constructor.

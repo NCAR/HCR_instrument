@@ -41,6 +41,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QMetaType>
+#include <QtCore/QJsonDocument>
 
 #include <logx/Logging.h>
 
@@ -52,6 +53,11 @@ LOGGING("HCR_Pentek")
 
 // 32-bit all-ones bitmask
 static const uint32_t ALL_32_BITS = 0xffffffffUL;
+
+#define CHECKTYPE(OBJ, VAR, TYPE) { \
+    if (OBJ VAR.isUndefined()) throw(std::runtime_error("Missing parameter " #VAR )); \
+    if (!OBJ VAR.is##TYPE()) throw(std::runtime_error("Type error: expected " #TYPE " for " #VAR )); \
+    }
 
 HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
                          uint boardNum) :
@@ -1306,7 +1312,7 @@ HCR_Pentek::_definePulseBlock(
     //ILOG << "rxOffsetCounts " << rxOffsetCounts << " rxWidthCounts " << rxWidthCounts << " leastPrtCounts " << leastPrtCounts << " minWidthCounts " << minWidthCounts;
     if ( rxWidthCounts > minWidthCounts )
     {
-        WLOG << "Truncating RX gates from " << rxWidthCounts/_counts(_digitizerSampleWidth) << " to " << minWidthCounts/_counts(_digitizerSampleWidth);
+        WLOG << "   Truncating RX gates from " << rxWidthCounts/_counts(_digitizerSampleWidth) << " to " << minWidthCounts/_counts(_digitizerSampleWidth);
         rxWidthCounts = minWidthCounts;
     }
 
@@ -1318,6 +1324,109 @@ HCR_Pentek::_definePulseBlock(
     block.timers[Controller::Timers::TIMER_7] =     { 0, 0 };
 
     return block;
+}
+
+HCR_Pentek::Controller::PulseBlockDefinition
+HCR_Pentek::_definePulseBlock(
+    const QJsonObject& pulseBlockDef,
+    const QJsonObject& defaultDef )
+{
+
+    // Substitute any "Default"s
+    QJsonObject mergedDef = pulseBlockDef;
+    for(auto it = mergedDef.begin(); it != mergedDef.end(); ++it)
+    {
+        if ( (*it).toString() == "Default")
+        {
+            (*it) = defaultDef[it.key()];
+        }
+    }
+
+    CHECKTYPE(mergedDef, ["TxPulseWidth"], Double);    
+    double txPulseWidth = mergedDef["TxPulseWidth"].toDouble();
+
+    CHECKTYPE(mergedDef, ["NumRxGates"], Double);    
+    uint numRxGates = mergedDef["NumRxGates"].toInt();
+    
+    CHECKTYPE(mergedDef, ["NumPulses"], Double);    
+    double numPulses = mergedDef["NumPulses"].toDouble();
+    
+    CHECKTYPE(mergedDef, ["PRT1"], Double);    
+    double prt1 = mergedDef["PRT1"].toDouble();
+    
+    CHECKTYPE(mergedDef, ["PRT2"], Double);    
+    double prt2 = mergedDef["PRT2"].toDouble();
+    
+    CHECKTYPE(mergedDef, ["BlockPostTime"], Double);    
+    uint blockPostTime = mergedDef["BlockPostTime"].toInt();
+
+    CHECKTYPE(mergedDef, ["PhaseTableBegin"], Double);    
+    uint phaseTableBegin = mergedDef["PhaseTableBegin"].toInt();
+    
+    CHECKTYPE(mergedDef, ["PhaseTableEnd"], Double);    
+    uint phaseTableEnd = mergedDef["PhaseTableEnd"].toInt();
+
+    uint filterSelect = 0;
+    if ( mergedDef["FilterSelect"].isDouble() ) {
+        filterSelect = mergedDef["FilterSelect"].toInt();
+    }
+    else {
+        
+        CHECKTYPE(mergedDef, ["FilterSelect"], String); 
+        auto selS = mergedDef["FilterSelect"].toString().toStdString();
+        std::vector<std::string> filters
+            {"Passthrough", "256ns", "384ns", "512ns", "640ns", 
+            "768ns", "896ns", "1024ns" };
+
+        for (size_t k = 0; k <= filters.size(); k++)
+        {
+            if (k == filters.size()) {
+                std::ostringstream os;
+                os << "Unrecognized filter '" << selS << "'";
+                throw std::runtime_error(os.str());
+            }
+            if (filters[k] == selS) {
+                filterSelect = k;
+                break;
+            }
+        }
+    }
+
+    CHECKTYPE(mergedDef, ["PolarizationMode"], String);    
+    std::string polModeS = mergedDef["PolarizationMode"].toString().toStdString();
+    Controller::PolarizationModes polMode;
+    if ( polModeS == "H" ) {
+        polMode = Controller::PolarizationModes::POL_MODE_H;
+    }
+    else if ( polModeS == "V" ) {
+        polMode = Controller::PolarizationModes::POL_MODE_V;
+    }
+    else if ( polModeS == "HHVV" ) {
+        polMode = Controller::PolarizationModes::POL_MODE_HHVV;
+    }
+    else {
+        std::ostringstream os;
+        os << "Unrecognized polarization mode '" << polModeS << "'";
+        throw std::runtime_error(os.str());
+    }
+
+    ILOG << "   PW:" << txPulseWidth << " Gates:" << numRxGates << " Pulses:" << numPulses 
+         << " PRT:" << prt1 << "," << prt2 << " Post:" << blockPostTime
+         << " Filter:" << filterSelect << " Pol:" << polModeS
+         << " Phase:" << phaseTableBegin << "-" << phaseTableEnd;
+
+    return _definePulseBlock(
+            txPulseWidth,
+            numRxGates,
+            numPulses,
+            prt1,
+            prt2,
+            blockPostTime,
+            filterSelect,
+            polMode,
+            phaseTableBegin,
+            phaseTableEnd
+        );
 }
 
 void
@@ -1338,104 +1447,46 @@ HCR_Pentek::_setupController()
     ReadComplexCoefsFromFile(_config.phase_code_file(), phaseCoefs);
     _controller.writePhaseCodingTable(phaseCoefs);
 
-    // The first three pulse blocks are defined by _config and define the basic transmit modes.
-    // Block zero is also used for the calibration ops modes.
-    auto txPulseWidth   = _config.default_tx_pulse_width();
-    auto numRxGates     = _config.default_rx_gates();
-    auto numPulses      = _config.default_pulses();
-    auto prt1           = _config.default_prt1();
-    auto prt2           = _config.default_prt2();
-    auto blockPostTime  = _config.default_post_time();
-    auto filterSelect   = _config.default_filter();
+    QFile file( _config.mode_definition_file().c_str() );
+    if ( ! file.open(QFile::ReadOnly) ) {
+        throw std::runtime_error("Error opening mode definition file");
+    }
 
-    // The gaussian filters in the default file are:
-    //   Passthrough, 256ns, 384ns, 512ns, 640ns, 768ns, 896ns, 1024ns.
+    QJsonParseError parseError;
+    const auto text = file.readAll();
+    const auto document = QJsonDocument::fromJson(text, &parseError);
+    if ( parseError.error != QJsonParseError::NoError ) {
+        std::ostringstream os;
+        os << "in schedule file at line "
+           << text.left(parseError.offset).count('\n') << ": "
+           << parseError.errorString().toStdString();
+        throw std::runtime_error(os.str());
+    }
 
-    // Define the 'legacy mode' blocks and add them to the pulse definitions
-    _pulseBlockDefinitions.push_back( // 0
-        _definePulseBlock(
-            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
+    ILOG << "Mode definition is:\n\n" << document.toJson(QJsonDocument::Compact).toStdString() << "\n";
 
-    _pulseBlockDefinitions.push_back( // 1
-        _definePulseBlock(
-            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
-            Controller::PolarizationModes::POL_MODE_V, 0, 0
-        ));
+    if( ! document.isObject() ) {
+        throw std::runtime_error("Mode definition document must begin with '{'");
+    }
+    const auto json = document.object();
 
-    _pulseBlockDefinitions.push_back( // 2
-        _definePulseBlock(
-            txPulseWidth, numRxGates, numPulses, prt1, prt2, blockPostTime, filterSelect,
-            Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
-        ));
+    ILOG << "Processing mode definition defaults (blocks 0:2)";
+    CHECKTYPE(json, ["Defaults"], Object);
+    const auto defaultBlockDef = json["Defaults"].toObject();
+    const auto defaultBlock = _definePulseBlock(defaultBlockDef);
 
-    // Define additional blocks for demonstration purposes
-    _pulseBlockDefinitions.push_back( // 3
-        _definePulseBlock(
-            256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 0,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
+    // Define the 'default mode' blocks and add them to the pulse definitions
+    auto tmp = defaultBlock;
+    tmp.polarizationMode = Controller::PolarizationModes::POL_MODE_H;
+    _pulseBlockDefinitions.push_back(tmp);
 
-    _pulseBlockDefinitions.push_back( // 4
-        _definePulseBlock(
-            256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
+    tmp.polarizationMode = Controller::PolarizationModes::POL_MODE_V;
+    _pulseBlockDefinitions.push_back(tmp);
 
-    _pulseBlockDefinitions.push_back( // 5
-        _definePulseBlock(
-            512e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 3,
-            Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
-        ));
+    tmp.polarizationMode = Controller::PolarizationModes::POL_MODE_HHVV;
+    _pulseBlockDefinitions.push_back(tmp);
 
-    _pulseBlockDefinitions.push_back( // 6
-        _definePulseBlock(
-            1024e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 7,
-            Controller::PolarizationModes::POL_MODE_HHVV, 0, 0
-        ));
-
-    // Phase coding test
-    _pulseBlockDefinitions.push_back( // 7
-        _definePulseBlock(
-            256e-9, numRxGates, numPulses, prt1, prt2, blockPostTime, 1,
-            Controller::PolarizationModes::POL_MODE_H, 0, 3
-        ));
-
-    // Mike's stagger
-    _pulseBlockDefinitions.push_back( // 8
-        _definePulseBlock(
-            256e-9, 5000, 100, 101.376e-6, 0, blockPostTime, 1,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
-
-    _pulseBlockDefinitions.push_back( // 9
-        _definePulseBlock(
-            512e-9, 5000, 66, 152.064e-6, 0, blockPostTime, 3,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
-
-    // Mike's stagger 10%
-    _pulseBlockDefinitions.push_back( // 10
-        _definePulseBlock(
-            256e-9, 5000, 100, 111.488e-6, 0, blockPostTime, 1,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
-
-    _pulseBlockDefinitions.push_back( // 11
-        _definePulseBlock(
-            512e-9, 5000, 66, 167.232e-6, 0, blockPostTime, 3,
-            Controller::PolarizationModes::POL_MODE_H, 0, 0
-        ));
-
-
-    // Write the pulse definitions
-    _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
-
-
-    // Define some schedules based on the pulse definitions
-
-    // Legacy modes
+    // Default modes
     using M = HcrPmc730::HmcModes;
     _supportedOpsModes.push_back({M::HMC_MODE_RESET, 0, 0});
     _supportedOpsModes.push_back({M::HMC_MODE_NOISE_SOURCE_CAL, 0, 0});
@@ -1448,17 +1499,41 @@ HCR_Pentek::_setupController()
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 1, 1});
     _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 2, 2});
 
-    // TODO be configurable here (these are demo schedules)
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 8, 9, "Mike's stagger"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 10, 11, "Mike's stagger +10%"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 3, 3, "256ns H, no gauss"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 4, "256ns H"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 5, 5, "512ns HHVV"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 6, 6, "1024ns HHVV"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 4, 6, "256-512-1024"});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 7, 7, "phase code demo"});
-    for(auto k=10; k<18; ++k) _supportedOpsModes.push_back(_supportedOpsModes[k].equivalentAttenuatedMode());
+    ILOG << "Processing extra mode definitions";
+    CHECKTYPE(json, ["CustomModes"], Object);
+    const auto modes = json["CustomModes"].toObject();    
+    for ( auto modeIt = modes.begin(); modeIt != modes.end(); ++modeIt)
+    {
+        const auto&& modeName = modeIt.key().toStdString();
+        ILOG << "Processing mode " << modeName << ":";
+        const auto&& mode = modeIt.value();
+        CHECKTYPE(, mode, Object);
+        const auto&& modeObj = mode.toObject();
 
+        CHECKTYPE(modeObj, ["Enabled"], Bool);
+        bool enabled = modeObj["Enabled"].toBool();
+        if (enabled) {
+
+            CHECKTYPE(modeObj, ["Blocks"], Array);  
+            uint startIndex = _pulseBlockDefinitions.size();
+            for ( const auto&& BlockDefinition : modeObj["Blocks"].toArray() )
+            {
+                CHECKTYPE(, BlockDefinition, Object);
+                const auto block = _definePulseBlock(BlockDefinition.toObject(), defaultBlockDef);
+                _pulseBlockDefinitions.push_back(block);
+            }
+            uint endIndex = _pulseBlockDefinitions.size() - 1;
+
+            ILOG << "   Adding mode as blocks " << startIndex << ":" << endIndex;;
+            _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, startIndex, endIndex, modeName});
+            _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+        }
+        else
+        {
+            ILOG << "   Not enabled; skipping.";
+        }
+    }
+    ILOG << "End of mode definitions.";
 }
 
 void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t scheduleStopIndex)

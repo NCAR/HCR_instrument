@@ -19,20 +19,20 @@ public:
 
     struct __attribute__((packed)) PulseBlockDefinition
     {
-        uint32_t prt[2];            // Pulse repetition time(s) in cycles. Set unused PRTs to 0
-        uint32_t numPulses;         // Generate this many pulses
-        uint32_t blockPostTime;     // Time at the end of the group of pulses, in cycles
-        uint32_t controlFlags;      // Set the CONTROL_FLAGS output to this value
-        uint32_t polarizationMode;  // Set the polarization mode
-        uint32_t filterSelectCh0;   // Select this filter for ADC channel 0
-        uint32_t filterSelectCh1;   // Select this filter for ADC channel 1
-        uint32_t filterSelectCh2;   // Select this filter for ADC channel 2
-        uint32_t phaseTableBegin;   // Beginning index into the pulse coding phase table (inclusive)
-        uint32_t phaseTableEnd;     // Ending index into the pulse coding phase table (inclusive)
+        uint32_t prt[2]{};            // Pulse repetition time(s) in cycles. Set unused PRTs to 0
+        uint32_t numPulses{};         // Generate this many pulses
+        uint32_t blockPostTime{};     // Time at the end of the group of pulses, in cycles
+        uint32_t controlFlags{};      // Set the CONTROL_FLAGS output to this value
+        uint32_t polarizationMode{};  // Set the polarization mode
+        uint32_t filterSelectCh0{};   // Select this filter for ADC channel 0
+        uint32_t filterSelectCh1{};   // Select this filter for ADC channel 1
+        uint32_t filterSelectCh2{};   // Select this filter for ADC channel 2
+        uint32_t phaseTableBegin{};   // Beginning index into the pulse coding phase table (inclusive)
+        uint32_t phaseTableEnd{};     // Ending index into the pulse coding phase table (inclusive)
         struct
         {
-            uint32_t offset;        // First, wait this many cycles before setting MT_PULSE[n]
-            uint32_t width;         // Then, wait this many cycles before clearing MT_PULSE[n]
+            uint32_t offset{};        // First, wait this many cycles before setting MT_PULSE[n]
+            uint32_t width{};         // Then, wait this many cycles before clearing MT_PULSE[n]
         } timers[8];
     };
 
@@ -160,7 +160,12 @@ public:
     void writePulseBlockDefinition(const PulseBlockDefinition& blockDef, size_t index)
     {
         if (index>=NUM_PULSE_SEQUENCE_DEFINITIONS)
-            throw std::runtime_error("Too many pulse definitions");
+        {
+            std::ostringstream os;
+            os << "Too many pulse definitions. There are "
+               << index << " blocks defined of a maximum " << NUM_PULSE_SEQUENCE_DEFINITIONS;
+            throw std::runtime_error(os.str());
+        }
 
         //These checks are HCR-specific. They avoid drifting relative to the 156.25MHz IF
         if (blockDef.prt[0] % 8 != 0)

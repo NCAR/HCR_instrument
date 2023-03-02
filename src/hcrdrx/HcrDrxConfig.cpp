@@ -188,13 +188,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( enable_rx_ch_0,                    "enable ADC channel",                           true )
         MEMBER_PROGOPT( enable_rx_ch_1,                    "enable ADC channel",                           true )
         MEMBER_PROGOPT( enable_rx_ch_2,                    "enable ADC channel",                           false )
-        MEMBER_PROGOPT( default_tx_pulse_width,            "legacy mode pulse definition",                 256e-9 )
-        MEMBER_PROGOPT( default_rx_gates,                  "legacy mode pulse definition",                 758 )
-        MEMBER_PROGOPT( default_pulses,                    "legacy mode pulse definition",                 100 )
-        MEMBER_PROGOPT( default_prt1,                      "legacy mode pulse definition",                 101.376e-6 )
-        MEMBER_PROGOPT( default_prt2,                      "legacy mode pulse definition",                 0.0 ) //300.0e-6 )
-        MEMBER_PROGOPT( default_post_time,                 "legacy mode pulse definition",                 0.0 )
-        MEMBER_PROGOPT( default_filter,                    "legacy mode pulse definition",                 1 )
+        MEMBER_PROGOPT( mode_definition_file,              "file containing mode definitions",             "modes.json" )
         ;
 
     // Apply the command_line_parser with no arguments to initialize the
@@ -252,13 +246,7 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_0 );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_1 );
     os << STREAM_OPT_AND_MEMBER( enable_rx_ch_2 );
-    os << STREAM_OPT_AND_MEMBER( default_tx_pulse_width );
-    os << STREAM_OPT_AND_MEMBER( default_rx_gates );
-    os << STREAM_OPT_AND_MEMBER( default_pulses );
-    os << STREAM_OPT_AND_MEMBER( default_prt1 );
-    os << STREAM_OPT_AND_MEMBER( default_prt2 );
-    os << STREAM_OPT_AND_MEMBER( default_post_time );
-    os << STREAM_OPT_AND_MEMBER( default_filter );
+    os << STREAM_OPT_AND_MEMBER( mode_definition_file );
 
     return(os.str());
 }

@@ -1,0 +1,84 @@
+{
+
+    "Defaults": {
+        "Comment":[" These values are used for the built-in opsmodes, ",
+                   " as well as anywhere below where Default is specified. ",
+                   " FilterSelects: Passthrough 256ns 384ns 512ns 640ns 768ns 896ns 1024ns ",
+                   " Polarizations: H V HHVV ",
+                   " Setting NumRxGates too long is allowed, it will be truncated. "],
+        "TxPulseWidth"     : 256e-9,
+        "FilterSelect"     : "256ns",
+        "NumRxGates"       : 800,
+        "NumPulses"        : 100,
+        "PRT1"             : 101.376e-6,
+        "PRT2"             : 0,
+        "BlockPostTime"    : 0,
+        "PolarizationMode" : "H",
+        "PhaseTableBegin"  : 0,
+        "PhaseTableEnd"    : 0
+    },
+
+    "CustomModes": {
+
+        "Demo": {
+            "Enabled": true,
+            "Comment": "Here is an example schedule composed of three blocks.",
+            "Blocks": [
+                {
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
+                    "PolarizationMode": "H",
+                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
+                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default"
+                },
+                {
+                    "TxPulseWidth": 512e-9,
+                    "FilterSelect": "512ns",
+                    "PolarizationMode": "V",
+                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
+                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default"
+                },
+                {
+                    "TxPulseWidth": 1024e-9,
+                    "FilterSelect": "1024ns",
+                    "PolarizationMode": "HHVV",
+                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
+                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default"
+                }
+            ]
+        },
+
+        "Test": {
+            "Enabled": false,
+            "Comment": "",
+            "Blocks": [
+                {
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": 0,
+                    "NumRxGates": 800,
+                    "NumPulses": 100,
+                    "PRT1": 101.376e-6,
+                    "PRT2": 0,
+                    "BlockPostTime": 0,
+                    "PolarizationMode": "H",
+                    "PhaseTableBegin": 0,
+                    "PhaseTableEnd": 0
+                },
+                {
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": 0,
+                    "NumRxGates": 800,
+                    "NumPulses": 100,
+                    "PRT1": 101.376e-6,
+                    "PRT2": 0,
+                    "BlockPostTime": 0,
+                    "PolarizationMode": "H",
+                    "PhaseTableBegin": 0,
+                    "PhaseTableEnd": 0
+                }
+            ]
+        }
+    }
+
+}
+

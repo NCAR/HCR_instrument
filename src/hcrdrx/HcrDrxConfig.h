@@ -95,13 +95,7 @@ private:
     OPT_AND_GETTER( bool,         enable_rx_ch_0 );
     OPT_AND_GETTER( bool,         enable_rx_ch_1 );
     OPT_AND_GETTER( bool,         enable_rx_ch_2 );
-    OPT_AND_GETTER( double,       default_tx_pulse_width );
-    OPT_AND_GETTER( uint,         default_rx_gates );
-    OPT_AND_GETTER( uint,         default_pulses );
-    OPT_AND_GETTER( double,       default_prt1 );
-    OPT_AND_GETTER( double,       default_prt2 );
-    OPT_AND_GETTER( double,       default_post_time );
-    OPT_AND_GETTER( uint,         default_filter );
+    OPT_AND_GETTER( std::string,  mode_definition_file );
 
 public:
 
