@@ -107,6 +107,7 @@ void MotionControl::correctForAttitude()
         insFmq.getLatest3512Data(
                 dataTime, pitch, roll, heading, velNorth, velEast, velUp
         );
+
         // Get drift
         drift = insFmq.getEstimatedDriftAngle();
     }
@@ -240,6 +241,7 @@ MotionControl::setInsInUse(int newInsInUse) {
         if (newInsInUse != _insInUse) {
             // We're changing the INS in use, so do an immediate attitude
             // correction with the new INS.
+	    ILOG << "Switching from INS " << _insInUse << " to INS " << newInsInUse;
             _insInUse = newInsInUse;
             correctForAttitude();
         }

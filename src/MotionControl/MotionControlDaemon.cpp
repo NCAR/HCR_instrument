@@ -103,14 +103,14 @@ public:
         // Calculate the home position count for the rotation drive from the
         // beam angle correction.
         int rotDriveHomeCounts = int(-RotBeamAngleCorrection / 360.0 *
-            RotServoDrive::ROT_DRIVE_COUNTS_PER_CIRCLE);
+            RotServoDrive::COUNTS_PER_CIRCLE);
         ILOG << "Rotation drive home counts: " << rotDriveHomeCounts;
         // Calculate the home position count for the tilt drive from the
         // beam angle correction. NOTE: For tilt, there's an extra factor of
         // 0.5 applied because of reflection, i.e., delta(reflectorAngle) =
         // 0.5 * delta(beamAngle).
         int tiltDriveHomeCounts = int((TiltBeamAngleCorrection * 0.5) / 360.0 *
-            TiltServoDrive::TILT_DRIVE_COUNTS_PER_CIRCLE);
+            TiltServoDrive::COUNTS_PER_CIRCLE);
         ILOG << "Tilt drive home counts: " << tiltDriveHomeCounts;
 
         // Home the drives and set the appropriate count values for
@@ -354,11 +354,11 @@ main(int argc, char** argv)
     // Create the Qt application and our drive connection
     App = new QCoreApplication(argc, argv);
 
+    QTimer correctionTimer;
     if (!DoNothing) {
         Control = new MotionControl();
 
-        // Create a periodic timer to apply attitude corrections on a regular basis
-        QTimer correctionTimer;
+        // Set up correctionTimer to apply attitude corrections on a regular basis
         correctionTimer.setInterval(50);    // 50 ms -> 20 Hz
         QObject::connect(&correctionTimer, SIGNAL(timeout()), Control, SLOT(correctForAttitude()));
         correctionTimer.start();

@@ -33,26 +33,30 @@
 #include "ElmoServoDrive.h"
 
 /// @brief Class to connect to and control a tilt servo drive at a given
-/// CANopen node ID. This is a very thin wrapper around the ElmoServoDrive 
+/// CANopen node ID. This is a very thin wrapper around the ElmoServoDrive
 /// class.
 class TiltServoDrive : public ElmoServoDrive {
 public:
     /// Our tilt motor has 480000 encoder counts per full circle
-    static const uint32_t TILT_DRIVE_COUNTS_PER_CIRCLE = 480000;
-    
-    /// Instantiate a connection to the HCR tilt servo drive via the given 
+    static const uint32_t COUNTS_PER_CIRCLE = 480000;
+
+    /// Our aft and forward reflector motion limits w.r.t. the home position.
+    static constexpr float MIN_LIMIT_DEG = -4.0;
+    static constexpr float MAX_LIMIT_DEG = 4.0;
+
+    /// Instantiate a connection to the HCR tilt servo drive via the given
     /// CANopen node ID. The drive's nickname will be set to "tilt".
     /// @param nodeId the CANopen node ID of the servo drive
     TiltServoDrive(uint8_t nodeId) :
-        ElmoServoDrive(nodeId, "tilt", TILT_DRIVE_COUNTS_PER_CIRCLE, 
-                -4.0, 4.0) {}
-    
-    /// Instantiate a serial port connection to the HCR tilt servo drive via 
+        ElmoServoDrive(nodeId, "tilt", COUNTS_PER_CIRCLE,
+                       MIN_LIMIT_DEG, MAX_LIMIT_DEG) {}
+
+    /// Instantiate a serial port connection to the HCR tilt servo drive via
     /// the given serial device. The drive's nickname will be set to "tilt".
     /// @param ttyDev the serial device name for the servo drive
     TiltServoDrive(std::string ttyDev) :
-        ElmoServoDrive(ttyDev, "tilt", TILT_DRIVE_COUNTS_PER_CIRCLE, 
-                -4.0, 4.0) {}
+        ElmoServoDrive(ttyDev, "tilt", COUNTS_PER_CIRCLE,
+                       MIN_LIMIT_DEG, MAX_LIMIT_DEG) {}
 
     virtual ~TiltServoDrive() {}
 private:
