@@ -239,6 +239,7 @@ private:
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrExecutiveStatusThread _hcrExecutiveStatusThread;
     MotionControlStatusThread _mcStatusThread;
+    QThread _pmcStatusThread;
     HcrPmc730StatusWorker _pmcStatusWorker;
     XmitdStatusThread _xmitdStatusThread;
     

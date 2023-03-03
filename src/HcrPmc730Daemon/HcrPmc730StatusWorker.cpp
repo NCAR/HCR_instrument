@@ -39,49 +39,52 @@
 LOGGING("HcrPmc730StatusWorker")
 
 HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
-        int daemonPort) :
-    _responsive(false),
+        int daemonPort, QThread* workThread) :
     _daemonHost(daemonHost),
     _daemonPort(daemonPort),
+    _workThread(workThread),
+    _responsive(false),
     _client(0),
-    _hmcModeChangeSocket(NULL) {
-    // We need to register HcrPmc730Status and HmcOperationMode as metatypes,
+    _hmcModeChangeSocket(NULL),
+    _getStatusTimer(NULL)
+{
+    // We need to register HcrPmc730Status and HmcOperationMode as metatypes, 
     // since we'll be passing them as arguments in signals.
     qRegisterMetaType<HcrPmc730Status>("HcrPmc730Status");
     qRegisterMetaType<HcrPmc730::OperationMode>("HcrPmc730::OperationMode");
 
-    // Set thread affinity to self, so that signals connected to our slot(s)
-    // will execute the slots in this thread, and not our parent's.
-    moveToThread(this);
+    // Initiate our work when the work thread is started, and continue until
+    // the thread is stopped or destroyed.
+    connect(workThread, &QThread::started, this, &HcrPmc730StatusWorker::_beginWork);
+    connect(workThread, &QThread::finished, this, &QObject::deleteLater);
 }
 
 HcrPmc730StatusWorker::~HcrPmc730StatusWorker() {
-    // Stop the thread, and wait up to 1 second for the thread to finish.
-    quit();
-    wait(1000);
+    delete(_getStatusTimer);
     delete(_hmcModeChangeSocket);
 }
 
 void
-HcrPmc730StatusWorker::run() {
+HcrPmc730StatusWorker::_beginWork() {
+    // Set our thread affinity to the work thread we were given at construction
+    // time, so that signals/slots for this object will now execute in the work
+    // thread.
+    moveToThread(_workThread);
+
     // Instantiate the HcrPmc730Client
     _client = new HcrPmc730Client(_daemonHost, _daemonPort);
-
-    // Set up a 1 s timer to call _getStatus()
-    QTimer timer;
-    connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
-    timer.start(1000);
-
+    
+    // Instantiate and set up our periodic timer to call _getStatus()
+    _getStatusTimer = new QTimer();
+    connect(_getStatusTimer, &QTimer::timeout, this, &HcrPmc730StatusWorker::_getStatus);
+    _getStatusTimer->start(1000);    /// 1000 ms
+    
     // Open the UDP socket to receive HMC mode change broadcasts, and
     // connect it to our reader slot.
     _hmcModeChangeSocket = new QUdpSocket();
     _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
-    connect(_hmcModeChangeSocket, SIGNAL(readyRead()),
-            this, SLOT(_readHmcModeChangeSocket()));
-
-    // Start the event loop
-    exec();
-    return;
+    connect(_hmcModeChangeSocket, &QUdpSocket::readyRead,
+            this, &HcrPmc730StatusWorker::_readHmcModeChangeSocket);
 }
 
 void

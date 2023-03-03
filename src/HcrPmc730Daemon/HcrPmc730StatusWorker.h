@@ -1,5 +1,5 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
+// ** Copyright UCAR (c) 1990 - 2023
 // ** University Corporation for Atmospheric Research (UCAR)                 
 // ** National Center for Atmospheric Research (NCAR)                        
 // ** Boulder, Colorado, USA                                                 
@@ -25,19 +25,23 @@
  * HcrPmc730StatusWorker.h
  *
  *  Created on: Sep 10, 2012
- *      Author: burghart
+ *      Author: Chris Burghart <burghart@ucar.edu>
  */
 
 #ifndef HCRPMC730STATUSWORKER_H_
 #define HCRPMC730STATUSWORKER_H_
 
 #include <QThread>
+#include <QTimer>
 #include "HcrPmc730Client.h"
 
 class QUdpSocket;
 
-/// @brief Class providing a thread which gets HcrPmc730Daemon status on a
-/// regular basis.
+/// @brief Worker class which gets HcrPmc730Daemon status on a regular basis.
+///
+/// The object performs most of its work within a thread provided at construction
+/// time, starting its work when the thread is started and running until the
+/// thread is stopped or destroyed.
 ///
 /// This class uses an HcrPmc730RpcClient connection to regularly query status
 /// from HcrPmc730Daemon on a ~1 Hz basis (when connected). When new status is
@@ -45,7 +49,7 @@ class QUdpSocket;
 /// also reports the state of the connection to the HcrPmc730Daemon RPC server,
 /// via serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
-class HcrPmc730StatusWorker : public QThread {
+class HcrPmc730StatusWorker : public QObject {
     Q_OBJECT
 
 public:
@@ -53,7 +57,10 @@ public:
     /// HcrPmc730Daemon XML-RPC server.
     /// @param daemonHost the host on which HcrPmc730Daemon is running
     /// @param daemonPort the port number HcrPmc730Daemon is using for XML-RPC
-    HcrPmc730StatusWorker(std::string daemonHost, int daemonPort);
+	/// @param workThread the thread in which we should perform our work
+    HcrPmc730StatusWorker(std::string daemonHost, int daemonPort, QThread* workThread);
+
+    /// @brief Destructor
     virtual ~HcrPmc730StatusWorker();
 
     void run();
@@ -87,6 +94,9 @@ signals:
     void hmcModeChange(HcrPmc730::OperationMode mode, double modeChangeTime);
 
 private slots:
+    /// @brief Slot which initiates work
+    void _beginWork();
+
     /// @brief Try to get latest status from HcrPmc730Daemon, and emit a newStatus()
     /// signal if successful.
     void _getStatus();
@@ -95,19 +105,29 @@ private slots:
     void _readHmcModeChangeSocket();
     
 private:
+    /// @brief the host on which HcrPmc730Daemon is running
+    std::string _daemonHost;
+
+    /// @brief HcrPmc730Daemon's XML-RPC server port
+    int _daemonPort;
+
+    /// @brief Pointer to the QThread in which we should perform our work
+    QThread* _workThread;
+
     /// True iff the client had a successful connection with the HcrPmc730Daemon
     /// XML-RPC server on the last XML-RPC method call.
     bool _responsive;
 
-    std::string _daemonHost;
-    int _daemonPort;
-
     /// The HcrPmc730Client object handling the XML-RPC connection
-    HcrPmc730Client * _client;
+    HcrPmc730Client* _client;
     
     /// QUdpSocket used to read broadcast messages of HMC operation mode 
     /// changes.
-    QUdpSocket * _hmcModeChangeSocket;
+    QUdpSocket* _hmcModeChangeSocket;
+
+    /// @brief Periodic timer to get new status from HcrPmc730Daemon
+    QTimer* _getStatusTimer;
+
 };
 
 #endif /* HCRPMC730STATUSWORKER_H_ */

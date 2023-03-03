@@ -79,7 +79,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _hcrdrxStatusThread(rdsHost, drxPort),
     _hcrExecutiveStatusThread(rdsHost, hcrExecutivePort),
     _mcStatusThread(rdsHost, motionControlPort),
-    _pmcStatusWorker(rdsHost, pmcPort),
+    _pmcStatusThread(),
+    _pmcStatusWorker(rdsHost, pmcPort, &_pmcStatusThread),
     _xmitdStatusThread(archiverHost, xmitterPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
@@ -202,11 +203,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _hcrExecutiveStatusThread.start();
 
     // Connect signals from our HcrPmc730StatusThread object and start the thread.
-    connect(& _pmcStatusWorker, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_pmcResponsivenessChange(bool, QString)));
-    connect(& _pmcStatusWorker, SIGNAL(newStatus(HcrPmc730Status)),
-            this, SLOT(_setPmcStatus(HcrPmc730Status)));
-    _pmcStatusWorker.start();
+    connect(&_pmcStatusWorker, &HcrPmc730StatusWorker::serverResponsive,
+            this, &HcrGuiMainWindow::_pmcResponsivenessChange);
+    connect(&_pmcStatusWorker, &HcrPmc730StatusWorker::newStatus,
+            this, &HcrGuiMainWindow::_setPmcStatus);
+    _pmcStatusThread.start();
 
     // Connect signals from our XmitdStatusThread object and start the thread.
     connect(& _xmitdStatusThread, SIGNAL(serverResponsive(bool)),

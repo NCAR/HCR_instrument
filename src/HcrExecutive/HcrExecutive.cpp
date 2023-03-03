@@ -263,12 +263,16 @@ main(int argc, char *argv[]) {
     myRegistry.addMethod("setHvRequested", new SetHvRequestedMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
-    // Start a thread to get HcrPmc730Daemon status on a regular basis.
+    // Create a thread and attach a HcrPmc730StatusWorker to it so that we get
+    // periodic status from the HcrPmc730Daemon
+    QThread hcrPmc730StatusThread;
+    QObject::connect(App, &QCoreApplication::aboutToQuit,
+                     &hcrPmc730StatusThread, &QThread::quit);
+
     HcrPmc730StatusWorker hcrPmc730StatusWorker("localhost",
-                                                HCRPMC730DAEMON_PORT);
-    QObject::connect(App, SIGNAL(aboutToQuit()),
-                     &hcrPmc730StatusWorker, SLOT(quit()));
-    hcrPmc730StatusWorker.start();
+                                                HCRPMC730DAEMON_PORT,
+                                                &hcrPmc730StatusThread);
+    hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
     MotionControlStatusThread mcStatusThread("localhost",
@@ -332,9 +336,6 @@ main(int argc, char *argv[]) {
     QDateTime giveUpTime(QDateTime::currentDateTime().addMSecs(maxWaitMsecs));
     if (! mcStatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
         WLOG << "mcStatusThread is still running at exit";
-    }
-    if (! hcrPmc730StatusWorker.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
-        WLOG << "hcrPmc730StatusWorker is still running at exit";
     }
 
     ILOG << "HcrExecutive (" << getpid() << ") exiting";
