@@ -69,7 +69,7 @@ Cmigits * Cm = 0;
 // Handler for SIGINT and SIGTERM signals.
 void
 exitHandler(int signal) {
-    ILOG << "cmigitsDaemon (" << getpid() << ") stopping on signal " << signal;
+    ILOG << "cmigitsDaemon (" << getpid() << ") stopping on signal " << strsignal(signal);
     App->quit();
 }
 
@@ -269,35 +269,12 @@ main(int argc, char *argv[]) {
     PMU_auto_init("cmigitsDaemon", pmuInstance.c_str(), PROCMAP_REGISTER_INTERVAL);
     ILOG << "procmap instance '" << pmuInstance << "'";
 
-    // Open connection to the C-MIGITS device (or a Ts2CmigitsFmqThread for
-    // time-series file playback)
-    Ts2CmigitsFmqThread * playbackThread = NULL;
-    if (playback) {
-        ILOG << "Playback mode";
-        PMU_auto_register("creating Ts2CmigitsShmThread for playback");
-        // Create the Ts2CmigitsFmqThread, which begins working immediately.
-        playbackThread = new Ts2CmigitsFmqThread(pathArgs, fmqUrl);
-
-        // Stop the application when the reader thread is done
-        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
-    } else if (! doNothing) {
-        PMU_auto_register("creating Cmigits instance");
-        std::string devName = pathArgs[0];
-        ILOG << "Communicating on device " << devName;
-        ILOG << "Using INS-to-antenna x,y,z offset (" <<
-                antennaOffsetX << " cm, " << antennaOffsetY << " cm, " <<
-                antennaOffsetZ << " cm)";
-        Cm = new Cmigits(devName,
-                         antennaOffsetX, antennaOffsetY, antennaOffsetZ,
-                         fmqUrl, csvFilePath);
-    }
-
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     QXmlRpcServerAbyss xmlrpcServer(&myRegistry, xmlrpcPort);
-        
+
     // Create a QFunctionWrapper around the updatePMURegistration() function,
     // as well as a QTimer, and use them to cause a call to the function on
     // a periodic basis so that PMU knows we're still alive.
@@ -308,14 +285,59 @@ main(int argc, char *argv[]) {
             &registrationWrapper, SLOT(callFunction()));
     registrationTimer.start();
 
+    // We will instantiate one of these two threads to handle the heavy lifting
+    Ts2CmigitsFmqThread * playbackThread = NULL;
+    QThread* workThread(NULL);
+
+    // Open connection to the C-MIGITS device (or a Ts2CmigitsFmqThread for
+    // time-series file playback)
+    if (playback) {
+        ILOG << "Playback mode";
+        PMU_auto_register("creating Ts2CmigitsShmThread for playback");
+        // Create the Ts2CmigitsFmqThread, which begins working immediately.
+        playbackThread = new Ts2CmigitsFmqThread(pathArgs, fmqUrl);
+
+        // Stop the application when the reader thread is done
+        QObject::connect(playbackThread, SIGNAL(finished()), App, SLOT(quit()));
+    } else if (doNothing) {
+        // yep, do nothing
+    } else {
+        // Instantiate a Cmigits instance to actually communicate with a
+        // C-MIGITS device
+        PMU_auto_register("creating Cmigits instance");
+        std::string devName = pathArgs[0];
+        ILOG << "Communicating on device " << devName;
+        ILOG << "Using INS-to-antenna x,y,z offset (" <<
+                antennaOffsetX << " cm, " << antennaOffsetY << " cm, " <<
+                antennaOffsetZ << " cm)";
+
+        // Create a QThread in which a Cmigits instance can do its real work,
+        // instantiate the Cmigits, and start the thread.
+        workThread = new QThread();
+
+        Cm = new Cmigits(devName, workThread,
+                         antennaOffsetX, antennaOffsetY, antennaOffsetZ,
+                         fmqUrl, csvFilePath);
+
+        workThread->start();
+    }
+
     // Fire up the Qt event loop
     App->exec();
-    
+
+    if (workThread) {
+        workThread->quit();
+        if (! workThread->wait(1000)) {
+            ELOG << __PRETTY_FUNCTION__ << ": wait for workThread termination timed out!";
+        }
+    }
+
     // Tell procmap we're done
     PMU_auto_unregister();
     
     delete(Cm);
     delete(playbackThread);
+    delete(workThread);
 
     return 0;
 }
