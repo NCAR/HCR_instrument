@@ -59,6 +59,11 @@ public:
     /// @param rotMotorAngle angle of the rotation motor, deg
     /// @param tiltMotorAngle angle of the tilt motor, deg
     /// @param xmitPol transmit polarization for the pulse
+    /// @param prt1 first pulse repetition time (PRT), seconds
+    /// @param prt2 second PRT (if using two PRTs), seconds
+    /// @param currentPrt PRT in use for this pulse
+    /// @param txPulseWidth transmit pulse width, seconds
+    /// @param sampleWidth sample width, seconds
     /// @param nGates number of gates in the pulse data
     /// @param iq I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
     void set(int64_t pulseSeqNum,
