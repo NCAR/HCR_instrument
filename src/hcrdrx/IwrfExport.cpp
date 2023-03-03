@@ -1533,7 +1533,7 @@ int IwrfExport::_writeToOutputFmq(bool force)
 {
 
   // if the message is large enough, write to the FMQ
-  int nParts = _outputMsg.getNParts();
+  uint nParts = _outputMsg.getNParts();
   // DLOG << "==>> WriteToOutputFmq, nparts: " << nParts;
   if (!force && nParts < _config.iwrf_fmq_npackets_per_message()) {
     return 0;
