@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * HcrPmc730StatusThread.cpp
  *
@@ -38,18 +38,18 @@
 
 LOGGING("HcrPmc730StatusThread")
 
-HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost, 
+HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost,
         int daemonPort) :
     _responsive(false),
     _daemonHost(daemonHost),
     _daemonPort(daemonPort),
     _client(0),
     _hmcModeChangeSocket(NULL) {
-    // We need to register HcrPmc730Status and HmcOperationMode as metatypes, 
+    // We need to register HcrPmc730Status and HmcOperationMode as metatypes,
     // since we'll be passing them as arguments in signals.
     qRegisterMetaType<HcrPmc730Status>("HcrPmc730Status");
     qRegisterMetaType<HcrPmc730::OperationMode>("HcrPmc730::OperationMode");
-    
+
     // Set thread affinity to self, so that signals connected to our slot(s)
     // will execute the slots in this thread, and not our parent's.
     moveToThread(this);
@@ -66,19 +66,19 @@ void
 HcrPmc730StatusThread::run() {
     // Instantiate the HcrPmc730Client
     _client = new HcrPmc730Client(_daemonHost, _daemonPort);
-    
+
     // Set up a 1 s timer to call _getStatus()
     QTimer timer;
     connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
     timer.start(1000);
-    
-    // Open the UDP socket to receive HMC mode change broadcasts, and 
+
+    // Open the UDP socket to receive HMC mode change broadcasts, and
     // connect it to our reader slot.
     _hmcModeChangeSocket = new QUdpSocket();
     _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
-    connect(_hmcModeChangeSocket, SIGNAL(readyRead()), 
+    connect(_hmcModeChangeSocket, SIGNAL(readyRead()),
             this, SLOT(_readHmcModeChangeSocket()));
-    
+
     // Start the event loop
     exec();
     return;
@@ -110,30 +110,24 @@ HcrPmc730StatusThread::_getStatus() {
 
 void
 HcrPmc730StatusThread::_readHmcModeChangeSocket() {
-    while (_hmcModeChangeSocket->bytesAvailable()) {
-        int datagramSize = _hmcModeChangeSocket->pendingDatagramSize();
 
-        // If incoming datagram is not the expected size, just read it and 
-        // discard it.
-        if (datagramSize != sizeof(HmcModeChangeStruct)) {
-            ELOG << "HMC mode change datagram is " << datagramSize << 
-                    " bytes when expecting " << sizeof(HmcModeChangeStruct) <<
-                    ", discarding it";
-            char trash[datagramSize];
-            _hmcModeChangeSocket->readDatagram(trash, sizeof(trash));
-        }
-        
-        // Read the datagram into an HmcModeChangeStruct
-        HmcModeChangeStruct mcStruct;
-        _hmcModeChangeSocket->readDatagram(reinterpret_cast<char *>(&mcStruct), 
-                sizeof(mcStruct));
+    auto result = ListenForModeChange(*_hmcModeChangeSocket);
+    auto mode = result.first;
+    auto modeChangeTime = result.second;
 
-        // Emit our hmcModeChange() signal
-        DLOG << "HMC mode changed to '" << 
-                mcStruct.mode.name() << "' at " <<
-                QDateTime::fromTime_t(time_t(mcStruct.modeChangeTime))
-                    .addMSecs(int(fmod(mcStruct.modeChangeTime, 1.0) * 1000))
-                    .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
-        emit hmcModeChange(mcStruct.mode, mcStruct.modeChangeTime);
+    if (modeChangeTime == 0.0) {
+        WLOG << "_readHmcModeChangeSocket() called, but no good mode change " <<
+                "packet was seen.";
+        return;
     }
+
+    // Emit our hmcModeChange() signal
+    DLOG << "HMC mode changed to '" <<
+            mode.name() << "' at " <<
+            QDateTime::fromTime_t(time_t(modeChangeTime))
+                .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
+                .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
+
+    emit hmcModeChange(mode, modeChangeTime);
+
 }

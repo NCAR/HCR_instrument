@@ -65,7 +65,7 @@ HcrPmc730::OperationMode::OperationMode()
   : _hmcMode(HMC_MODE_INVALID),
     _scheduleStartIndex(0),
     _scheduleStopIndex(0),
-    _nickname{0} { };
+    _nickname() {};
 
 HcrPmc730::OperationMode::OperationMode(
     const HcrPmc730::HmcModes &mode,
@@ -74,10 +74,8 @@ HcrPmc730::OperationMode::OperationMode(
     const std::string& nickname)
       : _hmcMode(mode),
         _scheduleStartIndex(startIndex),
-        _scheduleStopIndex(stopIndex)
-{
-    snprintf(_nickname, sizeof(_nickname), "%s", nickname.c_str());
-};
+        _scheduleStopIndex(stopIndex),
+        _nickname(nickname) {};
 
 bool HcrPmc730::OperationMode::operator==(const OperationMode& rhs){
     return _hmcMode == rhs._hmcMode
@@ -102,10 +100,8 @@ HcrPmc730::OperationMode HcrPmc730::OperationMode::equivalentAttenuatedMode() {
     switch (_hmcMode) {
         case HmcModes::HMC_MODE_TRANSMIT:
             m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-            if(strlen(_nickname)) {
-                std::string newNickname(_nickname);
-                newNickname += ", atten";
-                snprintf(m._nickname, sizeof(m._nickname), "%s", newNickname.c_str());
+            if(_nickname.size()) {
+                _nickname += ", atten";
             }
             break;
         case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
@@ -125,7 +121,7 @@ HcrPmc730::OperationMode HcrPmc730::OperationMode::equivalentAttenuatedMode() {
 
 const std::string HcrPmc730::OperationMode::name() const
 {
-    if(strlen(_nickname)) return std::string(_nickname);
+    if(_nickname.size()) return _nickname;
 
     std::string s;
     if (_hmcMode == HMC_MODE_TRANSMIT || _hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {

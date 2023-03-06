@@ -1,26 +1,26 @@
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
-// ** University Corporation for Atmospheric Research (UCAR)                 
-// ** National Center for Atmospheric Research (NCAR)                        
-// ** Boulder, Colorado, USA                                                 
-// ** BSD licence applies - redistribution and use in source and binary      
-// ** forms, with or without modification, are permitted provided that       
-// ** the following conditions are met:                                      
-// ** 1) If the software is modified to produce derivative works,            
-// ** such modified software should be clearly marked, so as not             
-// ** to confuse it with the version available from UCAR.                    
-// ** 2) Redistributions of source code must retain the above copyright      
-// ** notice, this list of conditions and the following disclaimer.          
-// ** 3) Redistributions in binary form must reproduce the above copyright   
-// ** notice, this list of conditions and the following disclaimer in the    
-// ** documentation and/or other materials provided with the distribution.   
-// ** 4) Neither the name of UCAR nor the names of its contributors,         
-// ** if any, may be used to endorse or promote products derived from        
-// ** this software without specific prior written permission.               
-// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS  
-// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED      
-// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
-// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1990 - 2016
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Boulder, Colorado, USA
+// ** BSD licence applies - redistribution and use in source and binary
+// ** forms, with or without modification, are permitted provided that
+// ** the following conditions are met:
+// ** 1) If the software is modified to produce derivative works,
+// ** such modified software should be clearly marked, so as not
+// ** to confuse it with the version available from UCAR.
+// ** 2) Redistributions of source code must retain the above copyright
+// ** notice, this list of conditions and the following disclaimer.
+// ** 3) Redistributions in binary form must reproduce the above copyright
+// ** notice, this list of conditions and the following disclaimer in the
+// ** documentation and/or other materials provided with the distribution.
+// ** 4) Neither the name of UCAR nor the names of its contributors,
+// ** if any, may be used to endorse or promote products derived from
+// ** this software without specific prior written permission.
+// ** DISCLAIMER: THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS
+// ** OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+// ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
  * StatusGrabber.cpp
  *
@@ -104,18 +104,18 @@ StatusGrabber::run() {
     updateTimer.setInterval(1000);  // 1 Hz updates
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(_getStatus()));
     updateTimer.start();
-    
+
     // Open the UDP socket to receive Operation mode change broadcasts, which we
     // use to force an update of _pmc730Status separate from the 1 Hz timer
     // above.
     _hmcModeChangeSocket = new QUdpSocket();
     _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
-    connect(_hmcModeChangeSocket, SIGNAL(readyRead()), 
+    connect(_hmcModeChangeSocket, SIGNAL(readyRead()),
             this, SLOT(_readHmcModeChangeSocket()));
-    
+
     // Now just start our event loop
     exec();
-    
+
     _hmcModeChangeSocket->close();
     delete(_hmcModeChangeSocket);
 }
@@ -186,45 +186,25 @@ StatusGrabber::_getMotionControlStatus() {
 
 void
 StatusGrabber::_readHmcModeChangeSocket() {
-    // Read all datagrams available (there should really always be just one),
-    // and note the mode change time from the last one.
-    double modeChangeTime = 0.0;
-    while (_hmcModeChangeSocket->bytesAvailable()) {
-        int datagramSize = _hmcModeChangeSocket->pendingDatagramSize();
 
-        // If incoming datagram is not the expected size, just read it and 
-        // discard it.
-        if (datagramSize != sizeof(HmcModeChangeStruct)) {
-            ELOG << "Operation mode change datagram is " << datagramSize << 
-                    " bytes when expecting " << sizeof(HmcModeChangeStruct) <<
-                    ", discarding it";
-            char trash[datagramSize];
-            _hmcModeChangeSocket->readDatagram(trash, sizeof(trash));
-        }
-        
-        // Read the datagram into an HmcModeChangeStruct
-        HmcModeChangeStruct mcStruct;
-        _hmcModeChangeSocket->readDatagram(reinterpret_cast<char *>(&mcStruct), 
-                sizeof(mcStruct));
+    auto result = ListenForModeChange(*_hmcModeChangeSocket);
+    //auto mode = result.first;
+    auto modeChangeTime = result.second;
 
-        // Keep the last mode change time
-        modeChangeTime = mcStruct.modeChangeTime;
-    }
-    
     if (modeChangeTime == 0.0) {
         WLOG << "_readHmcModeChangeSocket() called, but no good mode change " <<
                 "packet was seen.";
         return;
     }
+
     // OK, now just get full current status from HcrPmc730 via XML-RPC. This
     // may cost us a handful of milliseconds, but gets complete and self-
     // consistent HcrPmc730Status with the new Operation mode.
     _getPmc730Status();
-    
-    
+
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
-    ILOG << "New ops mode '" << 
+    ILOG << "New ops mode '" <<
             _pmc730Status.operationMode().name() << "' " <<
             "with start time " << QDateTime::fromTime_t(time_t(modeChangeTime))
                 .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
@@ -232,5 +212,5 @@ StatusGrabber::_readHmcModeChangeSocket() {
             " is being noted at " <<
             QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000)
                 .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
-                    
+
 }

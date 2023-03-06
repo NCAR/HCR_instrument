@@ -83,7 +83,7 @@ public:
         HmcModes _hmcMode;
         uint _scheduleStartIndex;
         uint _scheduleStopIndex;
-        char _nickname[128];
+        std::string _nickname;
 
     public:
         OperationMode();
@@ -117,9 +117,7 @@ public:
             ar & BOOST_SERIALIZATION_NVP(_hmcMode);
             ar & BOOST_SERIALIZATION_NVP(_scheduleStartIndex);
             ar & BOOST_SERIALIZATION_NVP(_scheduleStopIndex);
-            std::string nickname = _nickname;
-            ar & BOOST_SERIALIZATION_NVP(nickname);
-            snprintf(_nickname, sizeof(_nickname), "%s", nickname.c_str());
+            ar & BOOST_SERIALIZATION_NVP(_nickname);
         }
 
         friend class HcrPmc730;
