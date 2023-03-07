@@ -79,7 +79,7 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _hcrdrxStatusThread(rdsHost, drxPort),
     _hcrExecutiveStatusThread(rdsHost, hcrExecutivePort),
     _mcStatusThread(rdsHost, motionControlPort),
-    _pmcStatusThread(rdsHost, pmcPort),
+    _pmcStatusWorker(rdsHost, pmcPort),
     _xmitdStatusThread(archiverHost, xmitterPort),
     _redLED(":/redLED.png"),
     _amberLED(":/amberLED.png"),
@@ -202,11 +202,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _hcrExecutiveStatusThread.start();
 
     // Connect signals from our HcrPmc730StatusThread object and start the thread.
-    connect(& _pmcStatusThread, SIGNAL(serverResponsive(bool, QString)),
+    connect(& _pmcStatusWorker, SIGNAL(serverResponsive(bool, QString)),
             this, SLOT(_pmcResponsivenessChange(bool, QString)));
-    connect(& _pmcStatusThread, SIGNAL(newStatus(HcrPmc730Status)),
+    connect(& _pmcStatusWorker, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_setPmcStatus(HcrPmc730Status)));
-    _pmcStatusThread.start();
+    _pmcStatusWorker.start();
 
     // Connect signals from our XmitdStatusThread object and start the thread.
     connect(& _xmitdStatusThread, SIGNAL(serverResponsive(bool)),
@@ -355,8 +355,8 @@ HcrGuiMainWindow::_pmcResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "HcrPmc730Daemon @ " <<
-            _pmcStatusThread.rpcClient().getDaemonHost() << ":" <<
-            _pmcStatusThread.rpcClient().getDaemonPort() <<
+            _pmcStatusWorker.rpcClient().getDaemonHost() << ":" <<
+            _pmcStatusWorker.rpcClient().getDaemonPort() <<
             (responding ? " is " : " is not ") <<
             "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
@@ -372,7 +372,7 @@ void
 HcrGuiMainWindow::_setPmcStatus(const HcrPmc730Status & status) {
     _pmcStatus = status;
     // Update the details dialog
-    _pmc730Details.updateStatus(_pmcStatusThread.serverIsResponding(),
+    _pmc730Details.updateStatus(_pmcStatusWorker.serverIsResponding(),
             _pmcStatus);
     // Update the main GUI
     _update();
@@ -772,13 +772,13 @@ HcrGuiMainWindow::on_filamentButton_clicked() {
     // both cases.
     if (_pmcStatus.rdsXmitterFilamentOn()) {
         try {
-            _pmcStatusThread.rpcClient().xmitFilamentOff();
+            _pmcStatusWorker.rpcClient().xmitFilamentOff();
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrPmc730Daemon to turn off filament";
         }
     } else {
         try {
-            _pmcStatusThread.rpcClient().xmitFilamentOn();
+            _pmcStatusWorker.rpcClient().xmitFilamentOn();
         } catch (std::exception & e) {
             WLOG << "Could not tell HcrPmc730Daemon to turn on filament";
         }
@@ -1092,7 +1092,7 @@ HcrGuiMainWindow::_update() {
 
     // HcrPmc730Daemon status LED
     light = _greenLED;
-    if (! _pmcStatusThread.serverIsResponding()) {
+    if (! _pmcStatusWorker.serverIsResponding()) {
         light = _notRespondingLED;
     } else if (_pmc730Details.errState()) {
         light = _redLED;

@@ -41,7 +41,7 @@
 #include <QTimer>
 #include <xmlrpc-c/client_simple.hpp>
 
-class HcrPmc730StatusThread;
+class HcrPmc730StatusWorker;
 class MaxPowerFmqClient;
 
 /// Class providing implementation for handling the transmitter high voltage
@@ -53,15 +53,15 @@ class TransmitControl : public QObject {
     // Give HcrExecutiveStatus direct access to our members
     friend class HcrExecutiveStatus;
 public:
-    /// @brief Instantiate using the given HcrPmc730StatusThread as the source
+    /// @brief Instantiate using the given HcrPmc730StatusWorker as the source
     /// of status from HcrPmc730Daemon.
-    /// @param hcrPmc730StatusThread the HcrPmc730StatusThread which will
+    /// @param hcrPmc730StatusWorker the HcrPmc730StatusWorker which will
     /// provide status from HcrPmc730Daemon
     /// @param mcStatusThread the MotionControlStatusThread which will provide
     /// status from MotionControlDaemon
     /// @param maxPowerClient the MaxPowerFmqClient which will provide
     /// updates on maximum received power
-    TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
+    TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
                     MotionControlStatusThread & mcStatusThread,
                     MaxPowerFmqClient & maxPowerClient);
     virtual ~TransmitControl();

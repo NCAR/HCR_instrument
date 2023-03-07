@@ -40,7 +40,7 @@
 #include <QUdpSocket>
 
 #include <CmigitsStatusThread.h>
-#include <HcrPmc730StatusThread.h>
+#include <HcrPmc730StatusWorker.h>
 #include <HcrExecutiveStatusThread.h>
 #include <MotionControlStatusThread.h>
 
@@ -239,7 +239,7 @@ private:
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrExecutiveStatusThread _hcrExecutiveStatusThread;
     MotionControlStatusThread _mcStatusThread;
-    HcrPmc730StatusThread _pmcStatusThread;
+    HcrPmc730StatusWorker _pmcStatusWorker;
     XmitdStatusThread _xmitdStatusThread;
     
     // LED pixmaps

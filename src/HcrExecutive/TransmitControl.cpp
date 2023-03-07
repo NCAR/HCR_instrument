@@ -37,7 +37,7 @@
 
 #include <logx/Logging.h>
 #include <HcrSharedResources.h>
-#include <HcrPmc730StatusThread.h>
+#include <HcrPmc730StatusWorker.h>
 
 LOGGING("TransmitControl")
 
@@ -50,11 +50,11 @@ static inline double HpaToPsi(double pres_hpa) {
 const std::string TERRAIN_HT_SERVER_URL = "http://archiver:9090/RPC2";
 
 
-TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
+TransmitControl::TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
         MotionControlStatusThread & mcStatusThread,
         MaxPowerFmqClient & maxPowerClient) :
     _xmlrpcClient(),
-    _hcrPmc730Client(hcrPmc730StatusThread.rpcClient()),
+    _hcrPmc730Client(hcrPmc730StatusWorker.rpcClient()),
     _hcrPmc730Responsive(false),
     _hcrPmc730Status(),
     _motionControlResponsive(false),
@@ -77,18 +77,16 @@ TransmitControl::TransmitControl(HcrPmc730StatusThread & hcrPmc730StatusThread,
     _clearOperationModeMap();
 
     // Call _updateHcrPmc730Status when new status from HcrPmc730Daemon arrives
-    connect(&hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
-            this, SLOT(_updateHcrPmc730Status(HcrPmc730Status)));
+    connect(&hcrPmc730StatusWorker, &HcrPmc730StatusWorker::newStatus,
+            this, &TransmitControl::_updateHcrPmc730Status);
     
     // Call _updateHcrPmc730Responsive when we get a responsiveness change signal
-    connect(&hcrPmc730StatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_updateHcrPmc730Responsive(bool, QString)));
+    connect(&hcrPmc730StatusWorker, &HcrPmc730StatusWorker::serverResponsive,
+            this, &TransmitControl::_updateHcrPmc730Responsive);
     
     // Call _recordOperationModeChange when we get a mode change signal
-    connect(&hcrPmc730StatusThread, 
-            SIGNAL(operationModeChange(HcrPmc730::OperationMode, double)),
-            this, 
-            SLOT(_recordOperationModeChange(HcrPmc730::OperationMode, double)));
+    connect(&hcrPmc730StatusWorker, &HcrPmc730StatusWorker::hmcModeChange,
+            this, &TransmitControl::_recordOperationModeChange);
     
     // Call _updateMotionControlStatus when new status from MotionControlDaemon 
     // arrives

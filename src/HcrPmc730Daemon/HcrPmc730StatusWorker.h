@@ -22,14 +22,14 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * HcrPmc730StatusThread.h
+ * HcrPmc730StatusWorker.h
  *
  *  Created on: Sep 10, 2012
  *      Author: burghart
  */
 
-#ifndef HCRPMC730STATUSTHREAD_H_
-#define HCRPMC730STATUSTHREAD_H_
+#ifndef HCRPMC730STATUSWORKER_H_
+#define HCRPMC730STATUSWORKER_H_
 
 #include <QThread>
 #include "HcrPmc730Client.h"
@@ -45,7 +45,7 @@ class QUdpSocket;
 /// also reports the state of the connection to the HcrPmc730Daemon RPC server,
 /// via serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
-class HcrPmc730StatusThread : public QThread {
+class HcrPmc730StatusWorker : public QThread {
     Q_OBJECT
 
 public:
@@ -53,8 +53,8 @@ public:
     /// HcrPmc730Daemon XML-RPC server.
     /// @param daemonHost the host on which HcrPmc730Daemon is running
     /// @param daemonPort the port number HcrPmc730Daemon is using for XML-RPC
-    HcrPmc730StatusThread(std::string daemonHost, int daemonPort);
-    virtual ~HcrPmc730StatusThread();
+    HcrPmc730StatusWorker(std::string daemonHost, int daemonPort);
+    virtual ~HcrPmc730StatusWorker();
 
     void run();
 
@@ -110,4 +110,4 @@ private:
     QUdpSocket * _hmcModeChangeSocket;
 };
 
-#endif /* HCRPMC730STATUSTHREAD_H_ */
+#endif /* HCRPMC730STATUSWORKER_H_ */

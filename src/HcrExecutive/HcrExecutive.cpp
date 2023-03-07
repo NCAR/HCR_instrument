@@ -46,7 +46,7 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-#include <HcrPmc730StatusThread.h>
+#include <HcrPmc730StatusWorker.h>
 #include <logx/Logging.h>
 #include <MotionControlStatusThread.h>
 #include <QFunctionWrapper.h>
@@ -264,11 +264,11 @@ main(int argc, char *argv[]) {
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);
     
     // Start a thread to get HcrPmc730Daemon status on a regular basis.
-    HcrPmc730StatusThread hcrPmc730StatusThread("localhost",
+    HcrPmc730StatusWorker hcrPmc730StatusWorker("localhost",
                                                 HCRPMC730DAEMON_PORT);
     QObject::connect(App, SIGNAL(aboutToQuit()),
-                     &hcrPmc730StatusThread, SLOT(quit()));
-    hcrPmc730StatusThread.start();
+                     &hcrPmc730StatusWorker, SLOT(quit()));
+    hcrPmc730StatusWorker.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
     MotionControlStatusThread mcStatusThread("localhost",
@@ -282,11 +282,11 @@ main(int argc, char *argv[]) {
     
     // Instantiate the object which will monitor pressure and control the
     // Active Pressurization System (APS)
-    TheApsControl = new ApsControl(hcrPmc730StatusThread);
+    TheApsControl = new ApsControl(hcrPmc730StatusWorker);
     
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
-    TheTransmitControl = new TransmitControl(hcrPmc730StatusThread, 
+    TheTransmitControl = new TransmitControl(hcrPmc730StatusWorker,
                                              mcStatusThread,
                                              maxPowerClient);
     
@@ -333,8 +333,8 @@ main(int argc, char *argv[]) {
     if (! mcStatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
         WLOG << "mcStatusThread is still running at exit";
     }
-    if (! hcrPmc730StatusThread.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
-        WLOG << "hcrPmc730StatusThread is still running at exit";
+    if (! hcrPmc730StatusWorker.wait(QDateTime::currentDateTime().msecsTo(giveUpTime))) {
+        WLOG << "hcrPmc730StatusWorker is still running at exit";
     }
 
     ILOG << "HcrExecutive (" << getpid() << ") exiting";

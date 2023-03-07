@@ -19,12 +19,12 @@ includeDir = tooldir
 
 sources = Split('''
 HcrPmc730Client.cpp
-HcrPmc730StatusThread.cpp
+HcrPmc730StatusWorker.cpp
 ''')
 
 headers = Split('''
 HcrPmc730Client.h
-HcrPmc730StatusThread.h
+HcrPmc730StatusWorker.h
 HmcModeChange.h
 ''')
 lib = env.Library('hcrpmc730client', sources)

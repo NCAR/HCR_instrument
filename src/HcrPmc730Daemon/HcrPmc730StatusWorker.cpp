@@ -22,13 +22,13 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 /*
- * HcrPmc730StatusThread.cpp
+ * HcrPmc730StatusWorker.cpp
  *
  *  Created on: Sep 10, 2012
  *      Author: burghart
  */
 
-#include "HcrPmc730StatusThread.h"
+#include "HcrPmc730StatusWorker.h"
 #include "HmcModeChange.h"
 #include <QDateTime>
 #include <QMetaType>
@@ -36,9 +36,9 @@
 #include <QUdpSocket>
 #include <logx/Logging.h>
 
-LOGGING("HcrPmc730StatusThread")
+LOGGING("HcrPmc730StatusWorker")
 
-HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost,
+HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
         int daemonPort) :
     _responsive(false),
     _daemonHost(daemonHost),
@@ -55,7 +55,7 @@ HcrPmc730StatusThread::HcrPmc730StatusThread(std::string daemonHost,
     moveToThread(this);
 }
 
-HcrPmc730StatusThread::~HcrPmc730StatusThread() {
+HcrPmc730StatusWorker::~HcrPmc730StatusWorker() {
     // Stop the thread, and wait up to 1 second for the thread to finish.
     quit();
     wait(1000);
@@ -63,7 +63,7 @@ HcrPmc730StatusThread::~HcrPmc730StatusThread() {
 }
 
 void
-HcrPmc730StatusThread::run() {
+HcrPmc730StatusWorker::run() {
     // Instantiate the HcrPmc730Client
     _client = new HcrPmc730Client(_daemonHost, _daemonPort);
 
@@ -85,7 +85,7 @@ HcrPmc730StatusThread::run() {
 }
 
 void
-HcrPmc730StatusThread::_getStatus() {
+HcrPmc730StatusWorker::_getStatus() {
     try {
         HcrPmc730Status status = _client->getStatus();
         // We got a response, so emit serverResponsive(true) if the server was
@@ -109,8 +109,7 @@ HcrPmc730StatusThread::_getStatus() {
 }
 
 void
-HcrPmc730StatusThread::_readHmcModeChangeSocket() {
-
+HcrPmc730StatusWorker::_readHmcModeChangeSocket() {
     auto result = ListenForModeChange(*_hmcModeChangeSocket);
     auto mode = result.first;
     auto modeChangeTime = result.second;

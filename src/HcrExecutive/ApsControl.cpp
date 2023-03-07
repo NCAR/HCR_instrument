@@ -30,7 +30,7 @@
 
 #include "ApsControl.h"
 #include "../HcrSharedResources.h"
-#include <HcrPmc730StatusThread.h>
+#include <HcrPmc730StatusWorker.h>
 #include <logx/Logging.h>
 
 LOGGING("ApsControl")
@@ -50,11 +50,11 @@ ApsControl::ValveControlStateNames[] = {
 };
 
 
-ApsControl::ApsControl(HcrPmc730StatusThread & hcrPmc730StatusThread) :
+ApsControl::ApsControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker) :
     _pmc730Client("localhost", HCRPMC730DAEMON_PORT),
     _valveControlState(VALVE_AUTOMATIC) {
     // Call _checkPvPressure() when new status from HcrPmc730Daemon arrives
-    connect(& hcrPmc730StatusThread, SIGNAL(newStatus(HcrPmc730Status)),
+    connect(& hcrPmc730StatusWorker, SIGNAL(newStatus(HcrPmc730Status)),
             this, SLOT(_checkPvPressure(HcrPmc730Status)));
 }
 
