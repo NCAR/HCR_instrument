@@ -69,7 +69,7 @@ public:
     /// HcrPmc730Daemon.
     /// @return the HcrPmc730Client instance being used to talk to 
     /// HcrPmc730Daemon.
-    HcrPmc730Client & rpcClient() { return *_client; }
+    HcrPmc730Client & rpcClient() { return _client; }
 
     /// @brief Return true iff the HcrPmc730Daemon is responding
     /// @return true iff the HcrPmc730Daemon is responding
@@ -119,7 +119,7 @@ private:
     bool _responsive;
 
     /// The HcrPmc730Client object handling the XML-RPC connection
-    HcrPmc730Client* _client;
+    HcrPmc730Client _client;
     
     /// QUdpSocket used to read broadcast messages of HMC operation mode 
     /// changes.

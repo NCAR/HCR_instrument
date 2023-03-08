@@ -44,7 +44,7 @@ HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
     _daemonPort(daemonPort),
     _workThread(workThread),
     _responsive(false),
-    _client(0),
+    _client(daemonHost, daemonPort),
     _hmcModeChangeSocket(NULL),
     _getStatusTimer(NULL)
 {
@@ -71,9 +71,6 @@ HcrPmc730StatusWorker::_beginWork() {
     // thread.
     moveToThread(_workThread);
 
-    // Instantiate the HcrPmc730Client
-    _client = new HcrPmc730Client(_daemonHost, _daemonPort);
-    
     // Instantiate and set up our periodic timer to call _getStatus()
     _getStatusTimer = new QTimer();
     connect(_getStatusTimer, &QTimer::timeout, this, &HcrPmc730StatusWorker::_getStatus);
@@ -90,7 +87,7 @@ HcrPmc730StatusWorker::_beginWork() {
 void
 HcrPmc730StatusWorker::_getStatus() {
     try {
-        HcrPmc730Status status = _client->getStatus();
+        HcrPmc730Status status = _client.getStatus();
         // We got a response, so emit serverResponsive(true) if the server was
         // not previously responding.
         if (! _responsive) {
