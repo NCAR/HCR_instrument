@@ -1534,6 +1534,10 @@ HCR_Pentek::_setupController()
         }
     }
     ILOG << "End of mode definitions.";
+
+    // Write the pulse definitions
+    _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
+
 }
 
 void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t scheduleStopIndex)
