@@ -50,15 +50,12 @@ HcrPmc730::HmcModeNames[] = {
         "Reset HMC",
         "Spare (1)",
         "Spare (2)",
-        "Invalid (3)",
-        "Invalid (4)",
+        "Transmit",
+        "Transmit (attenuated)",
         "Noise Source Cal",
         "Bench Test",
         "TX V with noise source",
-        "Invalid (8)",
-        "Tx H",
-        "Tx V",
-        "Tx HHVV"
+        "Invalid HMC mode"
 };
 
 HcrPmc730::OperationMode::OperationMode()
