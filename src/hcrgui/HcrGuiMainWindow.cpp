@@ -544,9 +544,12 @@ HcrGuiMainWindow::_drxResponsivenessChange(bool responding) {
             "responding";
     _logMessage(ss.str().c_str());
 
+    // Enable the dataBox widget iff hcrdrx is responsive
+    _ui.dataBox->setEnabled(responding);
+
+    // If hcrdrx is not responding, create a default (bad) DrxStatus, and set it
+    // as the last status received.
     if (! responding) {
-        // Create a default (bad) DrxStatus, and set it as the last status
-        // received.
         _setDrxStatus(DrxStatus());
     }
 }
