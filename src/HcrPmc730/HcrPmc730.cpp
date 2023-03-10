@@ -44,62 +44,78 @@ extern "C" {
 
 LOGGING("HcrPmc730");
 
-// Operation mode names (mapped to the OperationMode enum)
-std::string
-HcrPmc730::HmcModeNames[] = {
+const std::string toString(const HmcModes& mode) {
+    static const std::string names[] = {
         "Reset HMC",
         "Spare (1)",
         "Spare (2)",
         "Transmit",
-        "Transmit (attenuated)",
+        "Transmit (Attenuated)",
         "Noise Source Cal",
         "Bench Test",
         "TX V with noise source",
-        "Invalid HMC mode"
-};
+        "Invalid (8)"
+    };
+    if (mode > HMC_MODE_INVALID) {
+        return "Enumeration out of bounds";
+    }
+    return names[mode];
+}
 
-HcrPmc730::OperationMode::OperationMode()
+OperationMode::OperationMode()
   : _hmcMode(HMC_MODE_INVALID),
     _scheduleStartIndex(0),
     _scheduleStopIndex(0),
-    _nickname() {};
+    _name() {};
 
-HcrPmc730::OperationMode::OperationMode(
-    const HcrPmc730::HmcModes &mode,
+OperationMode::OperationMode(
+    const HmcModes &mode,
     uint startIndex,
     uint stopIndex,
-    const std::string& nickname)
+    const std::string& name)
       : _hmcMode(mode),
         _scheduleStartIndex(startIndex),
         _scheduleStopIndex(stopIndex),
-        _nickname(nickname) {};
+        _name(name)
+{
+    if (!name.size()) {
+        if ( startIndex ==  0 && stopIndex == 0) {
+            // If the schedule is the default 0:0 then just name it after the HmcMode
+            _name = toString(_hmcMode);
+        }
+        else {
+            // This shouldn't happen so give it a weird name
+            _name = "?BUG? " + std::to_string(_scheduleStartIndex)
+                + ":" + std::to_string(_scheduleStopIndex);
+                + " " + toString(_hmcMode);
+        }
+    }
+};
 
-bool HcrPmc730::OperationMode::operator==(const OperationMode& rhs){
+bool OperationMode::operator==(const OperationMode& rhs) const {
     return _hmcMode == rhs._hmcMode
     && _scheduleStartIndex == rhs._scheduleStartIndex
     && _scheduleStopIndex == rhs._scheduleStopIndex;
 }
 
-bool HcrPmc730::OperationMode::operator!=(const OperationMode& rhs) {
+bool OperationMode::operator!=(const OperationMode& rhs) const {
     return ! (*this == rhs);
 }
 
-bool HcrPmc730::OperationMode::isAttenuated() {
+bool OperationMode::isAttenuated() const {
     return _hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
 }
 
-bool HcrPmc730::OperationMode::isValid() {
+bool OperationMode::isValid() const {
     return _hmcMode != HmcModes::HMC_MODE_INVALID;
 }
 
-HcrPmc730::OperationMode HcrPmc730::OperationMode::equivalentAttenuatedMode() {
+OperationMode OperationMode::equivalentAttenuatedMode() const {
     auto m = *this;
     switch (_hmcMode) {
         case HmcModes::HMC_MODE_TRANSMIT:
             m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-            if(_nickname.size()) {
-                _nickname += ", atten";
-            }
+            m._name += ", atten";
             break;
         case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
             m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
@@ -114,29 +130,6 @@ HcrPmc730::OperationMode HcrPmc730::OperationMode::equivalentAttenuatedMode() {
             m._hmcMode = HmcModes::HMC_MODE_INVALID;
     }
     return m;
-}
-
-const std::string HcrPmc730::OperationMode::name() const
-{
-    if(_nickname.size()) return _nickname;
-
-    std::string s;
-    if (_hmcMode == HMC_MODE_TRANSMIT || _hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {
-        if(_scheduleStartIndex == _scheduleStopIndex && _scheduleStartIndex < 3) {
-            s = HcrPmc730::HmcModeNames[_scheduleStartIndex+9];
-        }
-        else {
-            s = "Blocks " + std::to_string(_scheduleStartIndex) + ":" + std::to_string(_scheduleStopIndex);
-        }
-
-        if (_hmcMode == HMC_MODE_TRANSMIT_ATTENUATED) {
-            s += " attenuated";
-        }
-    }
-    else {
-        s = HcrPmc730::HmcModeNames[_hmcMode];
-    }
-    return s;
 }
 
 // Static to tell whether the singleton is created as a simulated PMC-730
@@ -236,17 +229,17 @@ HcrPmc730::SetOperationMode(const OperationMode& mode) {
     uint8_t new8_15 = TheHcrPmc730().getDio8_15();
 
     // set the bits for the three lines which set the mode
-    uint8_t modeBit0 = (mode._hmcMode >> 0) & 0x01;
+    uint8_t modeBit0 = (mode.hmcMode() >> 0) & 0x01;
     new8_15 = modeBit0 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
 
-    uint8_t modeBit1 = (mode._hmcMode >> 1) & 0x01;
+    uint8_t modeBit1 = (mode.hmcMode() >> 1) & 0x01;
     new8_15 = modeBit1 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
 
-    uint8_t modeBit2 = (mode._hmcMode >> 2) & 0x01;
+    uint8_t modeBit2 = (mode.hmcMode() >> 2) & 0x01;
     new8_15 = modeBit2 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);

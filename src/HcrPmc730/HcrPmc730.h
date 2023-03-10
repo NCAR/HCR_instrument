@@ -35,6 +35,73 @@
 #include <Archive_xmlrpc_c.h>
 #include <exception>
 
+/// Enumerated type for HMC operation modes
+typedef enum _HmcModes {
+    /// 0 = reset the HMC
+    HMC_MODE_RESET = 0,
+    /// 1 = unused
+    HMC_MODE_SPARE_1 = 1,
+    /// 2 = unused
+    HMC_MODE_SPARE_2 = 2,
+    /// 3 = transmit according to drx scheduler, receive H and V
+    HMC_MODE_TRANSMIT = 3,
+    /// 4 = transmit according to drx scheduler, receive H and V (attenuated)
+    HMC_MODE_TRANSMIT_ATTENUATED = 4,
+    /// 5 = noise source calibration
+    HMC_MODE_NOISE_SOURCE_CAL = 5,
+    /// 6 = bench test
+    HMC_MODE_BENCH_TEST = 6,
+    /// 7 = transmit V, receive H and V, enable noise source
+    HMC_MODE_V_HV_ISOL_NOISE = 7,
+    /// mode count (and a representation for an invalid mode)
+    HMC_NMODES = 8,
+    HMC_MODE_INVALID = HMC_NMODES
+} HmcModes;
+
+class OperationMode {
+public:
+    OperationMode();
+
+    OperationMode(const HmcModes &mode,
+                  uint startIndex = 0,
+                  uint stopIndex = 0,
+                  const std::string& name = "");
+
+    bool operator==(const OperationMode& rhs) const;
+
+    bool operator!=(const OperationMode& rhs) const;
+
+    bool isAttenuated() const;
+
+    bool isValid() const;
+
+    OperationMode equivalentAttenuatedMode() const;
+
+    HmcModes hmcMode() const { return _hmcMode; };
+
+    uint scheduleStartIndex() const { return _scheduleStartIndex; };
+
+    uint scheduleStopIndex() const { return _scheduleStopIndex; };
+
+    const std::string name() const { return _name; };
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) {
+        using boost::serialization::make_nvp;
+        ar & BOOST_SERIALIZATION_NVP(_hmcMode);
+        ar & BOOST_SERIALIZATION_NVP(_scheduleStartIndex);
+        ar & BOOST_SERIALIZATION_NVP(_scheduleStopIndex);
+        ar & BOOST_SERIALIZATION_NVP(_name);
+    }
+
+private:
+
+    HmcModes _hmcMode;
+    uint _scheduleStartIndex;
+    uint _scheduleStopIndex;
+    std::string _name;
+};
+
 /// Control a singleton instance of Pmc730 for the one PMC730 card on the
 /// HCR DRX machine.
 class HcrPmc730 : public Pmc730 {
@@ -52,79 +119,6 @@ public:
     private:
         std::string _desc;
     };
-
-    /// Enumerated type for HMC operation modes
-    typedef enum _HmcModes{
-        /// 0 = reset the HMC
-        HMC_MODE_RESET = 0,
-        /// 1 = unused
-        HMC_MODE_SPARE_1 = 1,
-        /// 2 = unused
-        HMC_MODE_SPARE_2 = 2,
-        /// 3 = transmit according to drx scheduler, receive H and V
-        HMC_MODE_TRANSMIT = 3,
-        /// 4 = transmit according to drx scheduler, receive H and V (attenuated)
-        HMC_MODE_TRANSMIT_ATTENUATED = 4,
-        /// 5 = noise source calibration
-        HMC_MODE_NOISE_SOURCE_CAL = 5,
-        /// 6 = bench test
-        HMC_MODE_BENCH_TEST = 6,
-        /// 7 = transmit V, receive H and V, enable noise source
-        HMC_MODE_V_HV_ISOL_NOISE = 7,
-        /// mode count (and a representation for an invalid mode)
-        HMC_NMODES = 8,
-        HMC_MODE_INVALID = HMC_NMODES
-    } HmcModes;
-
-
-    class OperationMode {
-    private:
-
-        HmcModes _hmcMode;
-        uint _scheduleStartIndex;
-        uint _scheduleStopIndex;
-        std::string _nickname;
-
-    public:
-        OperationMode();
-
-        OperationMode(const HmcModes &mode,
-                      uint startIndex = 0,
-                      uint stopIndex = 0,
-                      const std::string& nickname = "");
-
-        const std::string name() const;
-
-        bool operator==(const OperationMode& rhs);
-
-        bool operator!=(const OperationMode& rhs);
-
-        bool isAttenuated();
-
-        bool isValid();
-
-        OperationMode equivalentAttenuatedMode();
-
-        HmcModes hmcMode() { return _hmcMode; };
-
-        uint scheduleStartIndex() { return _scheduleStartIndex; };
-
-        uint scheduleStopIndex() { return _scheduleStopIndex; };
-
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) {
-            using boost::serialization::make_nvp;
-            ar & BOOST_SERIALIZATION_NVP(_hmcMode);
-            ar & BOOST_SERIALIZATION_NVP(_scheduleStartIndex);
-            ar & BOOST_SERIALIZATION_NVP(_scheduleStopIndex);
-            ar & BOOST_SERIALIZATION_NVP(_nickname);
-        }
-
-        friend class HcrPmc730;
-    };
-
-    /// Mode name strings mapped to the OperationMode enum
-    static std::string HmcModeNames[];
 
     /// @brief Static method to change whether the singleton instance will be created
     /// as a simulated PMC-730. This must be called before the singleton is
@@ -457,9 +451,11 @@ public:
                 TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
 
         // Retrieve the schedule from _theMode and combine with the DIO
-        OperationMode mode = TheHcrPmc730()._theMode;
-        mode._hmcMode = static_cast<HmcModes>(iMode);
-
+        auto&& theMode = TheHcrPmc730()._theMode;
+        OperationMode mode( static_cast<HmcModes>(iMode),
+                            theMode.scheduleStartIndex(),
+                            theMode.scheduleStopIndex(),
+                            theMode.name() );
         return mode;
     }
 

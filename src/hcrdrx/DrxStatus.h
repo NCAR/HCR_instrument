@@ -60,7 +60,7 @@ public:
         uint16_t nGates,
         double gateSpacing,
         bool motorZeroPositionSet,
-        std::vector<HcrPmc730::OperationMode>& supportedOpsModes
+        std::vector<OperationMode>& supportedOpsModes
     ) : _pentekFpgaTemp(pentekFpgaTemp),
         _pentekBoardTemp(pentekBoardTemp),
         _xmitPulseWidth(xmitPulseWidth),
@@ -118,7 +118,7 @@ public:
     /// @return true iff the zero position for motor counts has been set
     bool motorZeroPositionSet() const { return(_motorZeroPositionSet); }
 
-    const std::vector<HcrPmc730::OperationMode>& supportedOpsModes() const { return(_supportedOpsModes); }
+    const std::vector<OperationMode>& supportedOpsModes() const { return(_supportedOpsModes); }
 
 private:
     friend class boost::serialization::access;
@@ -182,7 +182,7 @@ private:
     bool _motorZeroPositionSet;
 
     /// List of available OperationModes
-    std::vector<HcrPmc730::OperationMode> _supportedOpsModes;
+    std::vector<OperationMode> _supportedOpsModes;
 };
 
 // Increment this class version number when member variables are changed.

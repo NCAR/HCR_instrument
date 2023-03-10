@@ -56,7 +56,7 @@ public:
     /// @brief Set the requested Operation mode
     /// @param mode the requested OperationMode
     /// @throws std::exception if there's a problem in the XML-RPC call.
-    void setRequestedOperationMode(HcrPmc730::OperationMode& mode);
+    void setRequestedOperationMode(OperationMode& mode);
     
     /// @brief Set the requested state for transmitter high voltage
     /// @param hvRequested true if high voltage is desired, false otherwise

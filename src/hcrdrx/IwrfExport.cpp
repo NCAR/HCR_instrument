@@ -476,19 +476,19 @@ int IwrfExport::_sendIwrfMetaData()
 
   // set our polarization and calibration modes for processing
   switch (_operationMode.hmcMode()) {
-    case HcrPmc730::HMC_MODE_TRANSMIT:
-    case HcrPmc730::HMC_MODE_TRANSMIT_ATTENUATED:
+    case HmcModes::HMC_MODE_TRANSMIT:
+    case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
         _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_MODE_BENCH_TEST:
-    case HcrPmc730::HMC_MODE_V_HV_ISOL_NOISE:
+    case HmcModes::HMC_MODE_BENCH_TEST:
+    case HmcModes::HMC_MODE_V_HV_ISOL_NOISE:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HcrPmc730::HMC_MODE_NOISE_SOURCE_CAL:
+    case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;

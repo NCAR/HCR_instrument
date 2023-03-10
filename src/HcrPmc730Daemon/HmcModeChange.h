@@ -45,7 +45,7 @@ static const uint16_t HMC_MODE_BROADCAST_PORT = 56565;
 
 /// @brief Broadcast a datagram to indicate the new mode and the time of the
 /// mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
-auto BroadcastModeChange(QUdpSocket& socket, HcrPmc730::OperationMode& mode)
+auto BroadcastModeChange(QUdpSocket& socket, OperationMode& mode)
 {
     struct timeval nowTimeval;
     gettimeofday(&nowTimeval, NULL);
@@ -71,7 +71,7 @@ auto ListenForModeChange(QUdpSocket& socket)
 {
 
     double modeChangeTime = 0.0;
-    HcrPmc730::OperationMode mode;
+    OperationMode mode;
 
     while (socket.hasPendingDatagrams()) {
 
@@ -81,7 +81,7 @@ auto ListenForModeChange(QUdpSocket& socket)
         ia >> mode;
         ia >> modeChangeTime;
     }
-    return std::pair<HcrPmc730::OperationMode, double>(mode, modeChangeTime);
+    return std::pair<OperationMode, double>(mode, modeChangeTime);
 }
 
 #endif /* HMCMODECHANGE_H_ */

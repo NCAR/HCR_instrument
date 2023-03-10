@@ -1487,17 +1487,16 @@ HCR_Pentek::_setupController()
     _pulseBlockDefinitions.push_back(tmp);
 
     // Default modes
-    using M = HcrPmc730::HmcModes;
-    _supportedOpsModes.push_back({M::HMC_MODE_RESET, 0, 0});
-    _supportedOpsModes.push_back({M::HMC_MODE_NOISE_SOURCE_CAL, 0, 0});
-    _supportedOpsModes.push_back({M::HMC_MODE_BENCH_TEST, 0, 0});
-    _supportedOpsModes.push_back({M::HMC_MODE_V_HV_ISOL_NOISE, 0, 0});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 0, 0});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 1, 1});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, 2, 2});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 0, 0});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 1, 1});
-    _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT_ATTENUATED, 2, 2});
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_RESET});
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_NOISE_SOURCE_CAL});
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_BENCH_TEST});
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_V_HV_ISOL_NOISE});
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_TRANSMIT, 0, 0, "Transmit H"});
+    _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_TRANSMIT, 1, 1, "Transmit V"});
+    _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+    _supportedOpsModes.push_back({HmcModes::HMC_MODE_TRANSMIT, 2, 2, "Transmit HHVV"});
+    _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
 
     ILOG << "Processing extra mode definitions";
     CHECKTYPE(json, ["CustomModes"], Object);
@@ -1525,7 +1524,7 @@ HCR_Pentek::_setupController()
             uint endIndex = _pulseBlockDefinitions.size() - 1;
 
             ILOG << "   Adding mode as blocks " << startIndex << ":" << endIndex;;
-            _supportedOpsModes.push_back({M::HMC_MODE_TRANSMIT, startIndex, endIndex, modeName});
+            _supportedOpsModes.push_back({HmcModes::HMC_MODE_TRANSMIT, startIndex, endIndex, modeName});
             _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
         }
         else

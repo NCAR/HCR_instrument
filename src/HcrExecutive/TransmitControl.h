@@ -108,7 +108,7 @@ public:
 
     /// @brief Set the requested Operation mode
     /// @param mode the requested Operation mode
-    void setRequestedOperationMode(HcrPmc730::OperationMode& mode);
+    void setRequestedOperationMode(OperationMode& mode);
 
     /// @brief Set the requested high voltage on state
     /// @param hvRequested true if HV on is desired, false if HV off is desired
@@ -137,7 +137,7 @@ private slots:
     /// @param mode the new HMC operation mode
     /// @param modeChangeTime the time at which the mode was changed, double
     /// precision seconds since 1970-01-01 00:00:00 UTC
-    void _recordOperationModeChange(const HcrPmc730::OperationMode& mode,
+    void _recordOperationModeChange(const OperationMode& mode,
                                double modeChangeTime);
 
     /// @brief Accept a new status from MotionControlDaemon and react if necessary
@@ -303,13 +303,13 @@ private:
 
     /// @brief Set the Operation mode on HcrPmc730Daemon
     /// @param mode the Operation mode to use
-    void _setOperationMode(const HcrPmc730::OperationMode& mode);
+    void _setOperationMode(const OperationMode& mode);
 
     /// @brief Return the current Operation mode. We return our local value for
     /// current mode rather than _hcrPmc730Status.operationMode() because we may
     /// have changed the mode but not yet gotten a new status from
     /// HcrPmc730Daemon.
-    HcrPmc730::OperationMode _currentOperationMode() const {
+    OperationMode _currentOperationMode() const {
         // Current mode is the last entry in our Operation mode map
         return(_operationModeMap.rbegin()->second);
     }
@@ -318,7 +318,7 @@ private:
     void _clearOperationModeMap();
 
     /// @brief Append a mode to our mode map, starting at the current time
-    void _appendToModeMap(HcrPmc730::OperationMode& mode);
+    void _appendToModeMap(OperationMode& mode);
 
     /// @brief How frequently will we poll the INS FMQ for new data?
     static constexpr int _INS_POLL_INTERVAL_MS = 1000;
@@ -414,7 +414,7 @@ private:
     bool _hvRequested;
 
     /// @brief User's intended Operation mode
-    HcrPmc730::OperationMode _requestedOperationMode;
+    OperationMode _requestedOperationMode;
 
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
@@ -422,7 +422,7 @@ private:
 
     /// @brief map of Operation mode change times (seconds since 1970-01-01 00:00:00
     /// UTC) to mode
-    std::map<double, HcrPmc730::OperationMode> _operationModeMap;
+    std::map<double, OperationMode> _operationModeMap;
 
     /// @brief Time high voltage was last forced off because of high max power,
     /// seconds since 1970-01-01 00:00:00 UTC, or zero if HV has not been forced off.

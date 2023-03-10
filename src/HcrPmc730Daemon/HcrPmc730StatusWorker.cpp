@@ -51,7 +51,7 @@ HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
     // We need to register HcrPmc730Status and HmcOperationMode as metatypes, 
     // since we'll be passing them as arguments in signals.
     qRegisterMetaType<HcrPmc730Status>("HcrPmc730Status");
-    qRegisterMetaType<HcrPmc730::OperationMode>("HcrPmc730::OperationMode");
+    qRegisterMetaType<OperationMode>("OperationMode");
 
     // Initiate our work when the work thread is started, and continue until
     // the thread is stopped or destroyed.

@@ -50,7 +50,7 @@ static inline double MetersToFeet(double m) {
     return(3.28084 * m);
 }
 
-Q_DECLARE_METATYPE(HcrPmc730::OperationMode)
+Q_DECLARE_METATYPE(OperationMode)
 
 HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     int xmitterPort, int fireflydPort, int spectracomPort,
@@ -798,7 +798,7 @@ HcrGuiMainWindow::on_hcrdrxDetailsButton_clicked() {
 void
 HcrGuiMainWindow::on_requestedModeCombo_activated(int index) {
     
-    auto mode = _ui.requestedModeCombo->itemData(index).value<HcrPmc730::OperationMode>();
+    auto mode = _ui.requestedModeCombo->itemData(index).value<OperationMode>();
 
     // Set a new requested Operation mode on HcrExecutive
     try {
@@ -969,7 +969,7 @@ HcrGuiMainWindow::_update() {
         _ui.requestedModeCombo->setCurrentIndex(-1);
         auto reqMode = _hcrExecutiveStatus.requestedOperationMode();
         for(auto i = 0; i < _ui.requestedModeCombo->count(); ++i) {
-            auto itemMode = _ui.requestedModeCombo->itemData(i).value<HcrPmc730::OperationMode>();
+            auto itemMode = _ui.requestedModeCombo->itemData(i).value<OperationMode>();
             if(reqMode == itemMode) {
                 _ui.requestedModeCombo->setCurrentIndex(i);
             }

@@ -335,7 +335,7 @@ private:
     std::vector<int64_t> _processedPulses;
 
     /// @brief List of schedules that have been defined for use
-    std::vector<HcrPmc730::OperationMode> _supportedOpsModes;
+    std::vector<OperationMode> _supportedOpsModes;
 
     std::vector<IwrfExport::DataChannelType> _chanType;
     std::vector<PulseData*> _pulseData;

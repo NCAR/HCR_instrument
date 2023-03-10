@@ -124,7 +124,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
 
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting Operation mode to Bench Test";
-    _setOperationMode(HcrPmc730::HMC_MODE_BENCH_TEST);
+    _setOperationMode(HmcModes::HMC_MODE_BENCH_TEST);
 }
 
 void
@@ -161,7 +161,7 @@ TransmitControl::_updateHcrPmc730Responsive(bool responding, QString msg) {
 }
 
 void
-TransmitControl::_recordOperationModeChange(const HcrPmc730::OperationMode& mode,
+TransmitControl::_recordOperationModeChange(const OperationMode& mode,
                                        double modeChangeTime) {
     // Append this mode change to _operationModeMap
     ILOG << "Operation mode changed to '" << mode.name() << 
@@ -473,7 +473,7 @@ TransmitControl::_updateControlState() {
     
     // Figure out the Operation mode to use if attenuation is required and the 
     // requested Operation mode is not attenuated.
-    HcrPmc730::OperationMode newOperationMode = attenuationRequired() ? 
+    OperationMode newOperationMode = attenuationRequired() ? 
             _requestedOperationMode.equivalentAttenuatedMode() : _requestedOperationMode;
 
     // We should have a valid Operation mode now. If not, it's a bug and
@@ -656,7 +656,7 @@ TransmitControl::_attenuatedModeAvailable() {
 }
 
 void
-TransmitControl::setRequestedOperationMode(HcrPmc730::OperationMode& mode) {
+TransmitControl::setRequestedOperationMode(OperationMode& mode) {
     ILOG << "Setting requested Operation mode to " << mode.name();
     _requestedOperationMode = mode;
     _updateControlState();
@@ -698,7 +698,7 @@ TransmitControl::_xmitHvOff() {
 }
 
 void
-TransmitControl::_setOperationMode(const HcrPmc730::OperationMode& mode) {
+TransmitControl::_setOperationMode(const OperationMode& mode) {
     // Bail out now if we're not changing mode
     if (_currentOperationMode() == mode) {
         return;
@@ -716,12 +716,12 @@ TransmitControl::_setOperationMode(const HcrPmc730::OperationMode& mode) {
 bool
 TransmitControl::_timePeriodWasAttenuated(double startTime,
         double endTime) const {
-    std::map<double, HcrPmc730::OperationMode>::const_reverse_iterator rit;
+    std::map<double, OperationMode>::const_reverse_iterator rit;
     // Loop backward through the map of Operation modes looking at all modes which
     // were used during the given period.
     for (rit = _operationModeMap.rbegin(); rit != _operationModeMap.rend(); rit++) {
         double modeStartTime = rit->first;
-        HcrPmc730::OperationMode mode = rit->second;
+        OperationMode mode = rit->second;
         // If this mode started after the end time, move to the previous mode
         if (modeStartTime >= endTime)
             continue;
@@ -752,5 +752,5 @@ void
 TransmitControl::_clearOperationModeMap() {
     _operationModeMap.clear();
     // Initialize as having run in "Bench Test" mode since the beginning of time
-    _operationModeMap[0] = HcrPmc730::HMC_MODE_BENCH_TEST;
+    _operationModeMap[0] = OperationMode{ HmcModes::HMC_MODE_BENCH_TEST };
 }

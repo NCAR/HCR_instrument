@@ -178,7 +178,7 @@ public:
         // mode.
         ILOG << "Received XML-RPC call to setOperationMode()...";
 
-        XmlrpcSerializable<HcrPmc730::OperationMode> operationMode(paramList[0]);
+        XmlrpcSerializable<OperationMode> operationMode(paramList[0]);
         paramList.verifyEnd(1);
 
         ILOG << "...with requested Operation mode " <<
@@ -186,7 +186,7 @@ public:
         *retvalP = xmlrpc_c::value_nil();
 
         // If requested mode is the current mode, just return now
-        if (operationMode == HcrPmc730::OperationMode()) {
+        if (operationMode == HcrPmc730::HmcMode()) {
             DLOG << "Requested Operation mode is same as current mode; returning now.";
             return;
         }
@@ -323,8 +323,8 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
-    HcrPmc730::SetOperationMode(HcrPmc730::HMC_MODE_RESET);
-    HcrPmc730::SetOperationMode(HcrPmc730::HMC_MODE_BENCH_TEST);
+    HcrPmc730::SetOperationMode( OperationMode{HmcModes::HMC_MODE_RESET} );
+    HcrPmc730::SetOperationMode( OperationMode{HmcModes::HMC_MODE_BENCH_TEST} );
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");

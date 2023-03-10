@@ -126,7 +126,7 @@ public:
 
     /// @brief Return the requested Operation mode.
     /// @return the requested Operation mode.
-    HcrPmc730::OperationMode requestedOperationMode() const { return(_requestedOperationMode); }
+    OperationMode requestedOperationMode() const { return(_requestedOperationMode); }
 
     /// @brief Return true iff a user has requested that high voltage be 
     /// turned on.
@@ -257,7 +257,7 @@ private:
     double _meanMaxPower;
 
     /// @brief Requested Operation mode
-    HcrPmc730::OperationMode _requestedOperationMode;
+    OperationMode _requestedOperationMode;
 
     /// @brief Has a user requested that transmitter high voltage be turned on?
     bool _hvRequested;

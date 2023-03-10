@@ -217,8 +217,8 @@ public:
     bool waveguideSwitchError() const { return(_waveguideSwitchError); }
 
     /// @brief Return the HMC operating mode.
-    /// @see HcrPmc730::OperationMode for a description of the values.
-    HcrPmc730::OperationMode operationMode() const { return(_operationMode); }
+    /// @see OperationMode for a description of the values.
+    OperationMode operationMode() const { return(_operationMode); }
 
     /// @brief cast to xmlrpc_c::value
     operator xmlrpc_c::value() const;
@@ -456,7 +456,7 @@ private:
     bool _emsError6Or7;
 
     /// HMC operating mode
-    HcrPmc730::OperationMode _operationMode;
+    OperationMode _operationMode;
 };
 
 // Increment this class version number when member variables are changed.

@@ -72,7 +72,7 @@ public:
     /// @brief Send "setOperationMode" command to HcrPmc730Daemon
     /// @param mode the desired OperationMode
     /// @throws exception on XML-RPC error
-    void setOperationMode(HcrPmc730::OperationMode mode);
+    void setOperationMode(OperationMode mode);
     
     /// @brief Open the Active Pressurization System solenoid valve
     void openApsValve();
