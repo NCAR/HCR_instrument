@@ -47,7 +47,7 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
-#include "HmcModeChange.h"
+#include "OperationModeChange.h"
 #include "../HcrSharedResources.h"
 
 LOGGING("HcrPmc730Daemon")
@@ -57,7 +57,7 @@ namespace po = boost::program_options;
 /// Our Qt application
 QCoreApplication *App = 0;
 
-/// UDP socket on which we broadcast HMC operation mode changes.
+/// UDP socket on which we broadcast operation mode changes.
 QUdpSocket OperationModeBroadcastSocket;
 
 /// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
@@ -174,8 +174,7 @@ public:
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
-        // We get a single parameter: the integer form of the desired HMC
-        // mode.
+        // We get a single parameter: the index of the requested operation mode.
         ILOG << "Received XML-RPC call to setOperationMode()...";
 
         XmlrpcSerializable<OperationMode> operationMode(paramList[0]);
@@ -318,8 +317,8 @@ main(int argc, char * argv[]) {
     HcrPmc730::TheHcrPmc730();
 
     // Initialize output lines: Active Pressurization System valve closed,
-    // transmitter filament off, transmitter HV off, HMC in
-    // "txV rxHV (attenuated)" mode.
+    // transmitter filament off, transmitter HV off, bare "Bench Test"
+    // operation mode.
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);

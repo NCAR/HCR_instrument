@@ -31,7 +31,7 @@
 #include "StatusGrabber.h"
 #include "HCR_Pentek.h"
 
-#include <HmcModeChange.h>
+#include <OperationModeChange.h>
 #include <QDateTime>
 #include <QMutexLocker>
 #include <QTimer>
@@ -109,7 +109,7 @@ StatusGrabber::run() {
     // use to force an update of _pmc730Status separate from the 1 Hz timer
     // above.
     _hmcModeChangeSocket = new QUdpSocket();
-    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
+    _hmcModeChangeSocket->bind(OPERATION_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
     connect(_hmcModeChangeSocket, SIGNAL(readyRead()),
             this, SLOT(_readHmcModeChangeSocket()));
 

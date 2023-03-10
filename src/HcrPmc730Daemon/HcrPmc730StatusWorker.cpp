@@ -29,7 +29,7 @@
  */
 
 #include "HcrPmc730StatusWorker.h"
-#include "HmcModeChange.h"
+#include "OperationModeChange.h"
 #include <QDateTime>
 #include <QMetaType>
 #include <QTimer>
@@ -79,7 +79,7 @@ HcrPmc730StatusWorker::_beginWork() {
     // Open the UDP socket to receive HMC mode change broadcasts, and
     // connect it to our reader slot.
     _hmcModeChangeSocket = new QUdpSocket();
-    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
+    _hmcModeChangeSocket->bind(OPERATION_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
     connect(_hmcModeChangeSocket, &QUdpSocket::readyRead,
             this, &HcrPmc730StatusWorker::_readHmcModeChangeSocket);
 }

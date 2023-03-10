@@ -24,14 +24,14 @@
 /*
  * HmcModeChange.h
  *
- * Port number and struct used when broadcasting HMC operation mode changes.
+ * Port number and struct used when broadcasting operation mode changes.
  *
  *  Created on: Dec 2, 2014
  *      Author: burghart
  */
 
-#ifndef HMCMODECHANGE_H_
-#define HMCMODECHANGE_H_
+#ifndef OPERATIONMODECHANGE_H_
+#define OPERATIONMODECHANGE_H_
 
 #include <HcrPmc730.h>
 
@@ -40,8 +40,8 @@
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 
-/// UDP port on which HMC operation mode changes are broadcast.
-static const uint16_t HMC_MODE_BROADCAST_PORT = 56565;
+/// UDP port on which operation mode changes are broadcast.
+static const uint16_t OPERATION_MODE_BROADCAST_PORT = 56565;
 
 /// @brief Broadcast a datagram to indicate the new mode and the time of the
 /// mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
@@ -60,7 +60,7 @@ auto BroadcastModeChange(QUdpSocket& socket, OperationMode& mode)
     int result = socket.writeDatagram(
             os.str().data(),
             os.str().size(), QHostAddress::Broadcast,
-            HMC_MODE_BROADCAST_PORT);
+            OPERATION_MODE_BROADCAST_PORT);
 
     return result;
 }
@@ -84,4 +84,4 @@ auto ListenForModeChange(QUdpSocket& socket)
     return std::pair<OperationMode, double>(mode, modeChangeTime);
 }
 
-#endif /* HMCMODECHANGE_H_ */
+#endif /* OPERATIONMODECHANGE_H_ */
