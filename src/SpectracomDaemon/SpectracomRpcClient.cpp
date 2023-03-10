@@ -37,9 +37,9 @@ LOGGING("SpectracomRpcClient")
 
 SpectracomRpcClient::SpectracomRpcClient(std::string daemonHost,
         int daemonPort) :
+    xmlrpc_c::clientSimple(),
     _daemonHost(daemonHost),
-    _daemonPort(daemonPort),
-    _client() {
+    _daemonPort(daemonPort) {
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
     ss << "http://" << _daemonHost << ":" << _daemonPort << "/RPC2";
@@ -54,7 +54,7 @@ bool
 SpectracomRpcClient::getStatus(SpectracomStatus & status) {
     xmlrpc_c::value result;
     try {
-        _client.call(_daemonUrl, "getStatus", "", &result);
+        call(_daemonUrl, "getStatus", "", &result);
     } catch (std::exception & e) {
         WLOG << "Error on XML-RPC getStatus() call: " << e.what();
         return(false);

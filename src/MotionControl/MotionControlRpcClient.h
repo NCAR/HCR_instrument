@@ -37,7 +37,7 @@
 
 /// MotionControlRpcClient encapsulates an XML-RPC connection
 /// to a MotionControlDaemon process.
-class MotionControlRpcClient
+class MotionControlRpcClient : private xmlrpc_c::clientSimple
 {
 public:
     /// @brief Instantiate MotionControlRpcClient to communicate with a
@@ -103,7 +103,6 @@ private:
     
 	bool _daemonResponding;
 	std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* MOTIONCONTROLRPCCLIENT_H_ */

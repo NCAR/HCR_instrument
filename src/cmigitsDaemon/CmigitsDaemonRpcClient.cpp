@@ -39,9 +39,9 @@ LOGGING("CmigitsDaemonRpcClient")
 
 CmigitsDaemonRpcClient::CmigitsDaemonRpcClient(std::string daemonHost,
         int daemonPort) :
+    xmlrpc_c::clientSimple(),
     _daemonHost(daemonHost),
-    _daemonPort(daemonPort),
-    _client() {
+    _daemonPort(daemonPort) {
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
     ss << "http://" << _daemonHost << ":" << _daemonPort << "/RPC2";
@@ -58,7 +58,7 @@ CmigitsDaemonRpcClient::getStatus() {
         xmlrpc_c::value result;
         // _client.call() may throw a girerr::error exception (a subclass
         // of std::exception). If so, we allow it to move up the chain.
-        _client.call(_daemonUrl, "getStatus", "", &result);
+        call(_daemonUrl, "getStatus", "", &result);
         // The getStatus() XML-RPC method returns xmlrpc_c::value_struct, 
         // which we can use to (re)construct the CmigitsStatus.
         xmlrpc_c::value_struct dict(result);

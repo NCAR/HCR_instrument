@@ -39,7 +39,7 @@
  * fireflydRpcClient encapsulates an XML-RPC connection to a fireflyd
  * process.
  */
-class fireflydRpcClient {
+class fireflydRpcClient : private xmlrpc_c::clientSimple {
 public:
     /// Instantiate fireflydRpcClient to communicate with a fireflyd process
     /// running
@@ -76,7 +76,6 @@ private:
     std::string _fireflydHost;
     int _fireflydPort;
     std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* FIREFLYDRPCCLIENT_H_ */

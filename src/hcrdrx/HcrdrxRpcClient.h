@@ -39,7 +39,7 @@
  * HcrdrxRpcClient encapsulates an XML-RPC connection to an hcrdrx
  * process.
  */
-class HcrdrxRpcClient {
+class HcrdrxRpcClient : private xmlrpc_c::clientSimple {
 public:
     /**
      * Instantiate HcrdrxRpcClient to communicate with an hcrdrx process
@@ -90,7 +90,6 @@ private:
     std::string _hcrdrxHost;
     int _hcrdrxPort;
     std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* HCRDRXRPCCLIENT_H_ */

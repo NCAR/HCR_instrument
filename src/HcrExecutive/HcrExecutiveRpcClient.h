@@ -37,7 +37,7 @@
 
 /// HcrExecutiveRpcClient encapsulates an XML-RPC connection to an HcrExecutive 
 /// process.
-class HcrExecutiveRpcClient
+class HcrExecutiveRpcClient : private xmlrpc_c::clientSimple
 {
 public:
     /// @brief Instantiate HcrExecutiveRpcClient to communicate with an
@@ -87,7 +87,6 @@ private:
     
 	bool _daemonResponding;
 	std::string _daemonUrl;
-    xmlrpc_c::clientSimple _client;
 };
 
 #endif /* HCREXECUTIVERPCCLIENT_H_ */

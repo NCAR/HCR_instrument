@@ -40,8 +40,8 @@ LOGGING("HcrExecutiveRpcClient")
 HcrExecutiveRpcClient::HcrExecutiveRpcClient(
 		std::string daemonHost,
         int daemonPort) :
-        _daemonResponding(false),
-        _client() {
+        xmlrpc_c::clientSimple(),
+        _daemonResponding(false) {
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
     ss << "http://" << daemonHost << ":" << daemonPort << "/RPC2";
@@ -58,7 +58,7 @@ HcrExecutiveRpcClient::_execXmlRpcCall(std::string methodName,
 {
     try {
         xmlrpc_c::value result;
-        _client.call(_daemonUrl, methodName, params, &result);
+        call(_daemonUrl, methodName, params, &result);
         _daemonResponding = true;
         return(result);
     }

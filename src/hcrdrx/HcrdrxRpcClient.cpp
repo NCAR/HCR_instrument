@@ -36,9 +36,9 @@
 LOGGING("HcrdrxRpcClient")
 
 HcrdrxRpcClient::HcrdrxRpcClient(std::string hcrdrxHost, int hcrdrxPort) :
+    xmlrpc_c::clientSimple(),
     _hcrdrxHost(hcrdrxHost),
-    _hcrdrxPort(hcrdrxPort),
-    _client() {
+    _hcrdrxPort(hcrdrxPort) {
     // build _daemonUrl: "http://<_daemonHost>:<_daemonPort>/RPC2"
     std::ostringstream ss;
     ss << "http://" << _hcrdrxHost << ":" << _hcrdrxPort << "/RPC2";
@@ -53,7 +53,7 @@ bool
 HcrdrxRpcClient::_execXmlRpcCall(std::string methodName, 
         xmlrpc_c::value & result) {
     try {
-        _client.call(_daemonUrl, methodName, "", &result);
+        call(_daemonUrl, methodName, "", &result);
     } catch (std::exception & e) {
         WLOG << "Error on XML-RPC " << methodName << "() call: " << e.what();
         return(false);

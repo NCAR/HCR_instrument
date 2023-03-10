@@ -39,6 +39,7 @@
 LOGGING("XmitdRpcClient")
 
 XmitdRpcClient::XmitdRpcClient(std::string xmitdHost, int xmitdPort) :
+    xmlrpc_c::clientSimple(),
     _xmitdHost(xmitdHost),
     _xmitdPort(xmitdPort) {
     // Build the URL for hcr_xmitd, of the form:
