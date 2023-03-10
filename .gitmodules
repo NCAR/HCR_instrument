@@ -30,7 +30,7 @@
 	url = git@github.com:NCAR/Pmc730.git
 [submodule "src/cmigits"]
 	path = src/cmigits
-	url = http://gitlab.eol.ucar.edu/ITAR/cmigits-hcr.git
+	url = git@gitlab.eol.ucar.edu:ITAR/cmigits-hcr.git
 [submodule "src/ReadyFlow7142_428_WinDriver1150"]
 	path = src/ReadyFlow7142_428_WinDriver1150
-	url = http://gitlab.eol.ucar.edu/vendor/ReadyFlow7142_428_WinDriver1150.git
+	url = git@gitlab.eol.ucar.edu:vendor/ReadyFlow7142_428_WinDriver1150.git
