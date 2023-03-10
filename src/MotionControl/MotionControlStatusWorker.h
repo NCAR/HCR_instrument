@@ -22,14 +22,14 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * MotionControlStatusThread.h
+ * MotionControlStatusWorker.h
  *
  *  Created on: Oct 22, 2014
  *      Author: burghart
  */
 
-#ifndef MOTIONCONTROLSTATUSTHREAD_H_
-#define MOTIONCONTROLSTATUSTHREAD_H_
+#ifndef MOTIONCONTROLSTATUSWORKER_H_
+#define MOTIONCONTROLSTATUSWORKER_H_
 
 #include <QThread>
 #include "MotionControlRpcClient.h"
@@ -43,14 +43,14 @@
 /// way to test for good connection to the hcrdrx RPC server, via
 /// serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
-class MotionControlStatusThread : public QThread {
+class MotionControlStatusWorker : public QThread {
     Q_OBJECT
 
 public:
     /// @brief Instantiate, creating a MotionControlRpcClient connection to the
     /// MotionControlDaemon XML-RPC server.
-    MotionControlStatusThread(std::string mcdHost, int mcdPort);
-    virtual ~MotionControlStatusThread();
+    MotionControlStatusWorker(std::string mcdHost, int mcdPort);
+    virtual ~MotionControlStatusWorker();
 
     void run();
 
@@ -93,4 +93,4 @@ private:
     MotionControlRpcClient * _client;
 };
 
-#endif /* MOTIONCONTROLSTATUSTHREAD_H_ */
+#endif /* MOTIONCONTROLSTATUSWORKER_H_ */

@@ -48,7 +48,7 @@
 
 #include <HcrPmc730StatusWorker.h>
 #include <logx/Logging.h>
-#include <MotionControlStatusThread.h>
+#include <MotionControlStatusWorker.h>
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 #include <toolsa/pmu.h>
@@ -275,7 +275,7 @@ main(int argc, char *argv[]) {
     hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
-    MotionControlStatusThread mcStatusThread("localhost",
+    MotionControlStatusWorker mcStatusThread("localhost",
                                              MOTIONCONTROLDAEMON_PORT);
     QObject::connect(App, SIGNAL(aboutToQuit()), &mcStatusThread, SLOT(quit()));
     mcStatusThread.start();

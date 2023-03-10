@@ -22,20 +22,20 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * MotionControlStatusThread.cpp
+ * MotionControlStatusWorker.cpp
  *
  *  Created on: Oct 22, 2014
  *      Author: burghart
  */
 
-#include "MotionControlStatusThread.h"
 #include <QMetaType>
 #include <QTimer>
 #include <logx/Logging.h>
+#include <MotionControl/MotionControlStatusWorker.h>
 
-LOGGING("MotionControlStatusThread")
+LOGGING("MotionControlStatusWorker")
 
-MotionControlStatusThread::MotionControlStatusThread(std::string mcdHost, 
+MotionControlStatusWorker::MotionControlStatusWorker(std::string mcdHost, 
         int mcdPort) :
     _daemonAlive(false),
     _mcdHost(mcdHost),
@@ -49,14 +49,14 @@ MotionControlStatusThread::MotionControlStatusThread(std::string mcdHost,
     moveToThread(this);
 }
 
-MotionControlStatusThread::~MotionControlStatusThread() {
+MotionControlStatusWorker::~MotionControlStatusWorker() {
     // Stop the thread, and wait up to 1 second for the thread to finish.
     quit();
     wait(1000);
 }
 
 void
-MotionControlStatusThread::run() {
+MotionControlStatusWorker::run() {
     // Instantiate the MotionControlRpcClient
     _client = new MotionControlRpcClient(_mcdHost, _mcdPort);
     // Set up a 1 s timer to call _getStatus()
@@ -69,7 +69,7 @@ MotionControlStatusThread::run() {
 }
 
 void
-MotionControlStatusThread::_getStatus() {
+MotionControlStatusWorker::_getStatus() {
     MotionControl::Status status = _client->status();
 
     // If daemon responsiveness changed, log the change and emit a

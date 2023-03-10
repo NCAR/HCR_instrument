@@ -51,7 +51,7 @@ const std::string TERRAIN_HT_SERVER_URL = "http://archiver:9090/RPC2";
 
 
 TransmitControl::TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
-        MotionControlStatusThread & mcStatusThread,
+        MotionControlStatusWorker & mcStatusThread,
         MaxPowerFmqClient & maxPowerClient) :
     _xmlrpcClient(),
     _hcrPmc730Client(hcrPmc730StatusWorker.rpcClient()),

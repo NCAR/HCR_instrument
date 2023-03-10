@@ -42,8 +42,7 @@
 #include <CmigitsStatusThread.h>
 #include <HcrPmc730StatusWorker.h>
 #include <HcrExecutiveStatusThread.h>
-#include <MotionControlStatusThread.h>
-
+#include <MotionControlStatusWorker.h>
 #include "DataMapperStatusThread.h"
 #include "FireflydStatusThread.h"
 #include "HcrdrxStatusThread.h"
@@ -238,7 +237,7 @@ private:
 //    SpectracomStatusThread _spectracomStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrExecutiveStatusThread _hcrExecutiveStatusThread;
-    MotionControlStatusThread _mcStatusThread;
+    MotionControlStatusWorker _mcStatusThread;
     QThread _pmcStatusThread;
     HcrPmc730StatusWorker _pmcStatusWorker;
     XmitdStatusThread _xmitdStatusThread;

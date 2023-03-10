@@ -35,7 +35,7 @@
 
 #include <CmigitsFmqWatcher.h>
 #include <HcrPmc730Client.h>
-#include <MotionControlStatusThread.h>
+#include <MotionControlStatusWorker.h>
 #include <QDateTime>
 #include <QObject>
 #include <QTimer>
@@ -62,7 +62,7 @@ public:
     /// @param maxPowerClient the MaxPowerFmqClient which will provide
     /// updates on maximum received power
     TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
-                    MotionControlStatusThread & mcStatusThread,
+                    MotionControlStatusWorker & mcStatusThread,
                     MaxPowerFmqClient & maxPowerClient);
     virtual ~TransmitControl();
 

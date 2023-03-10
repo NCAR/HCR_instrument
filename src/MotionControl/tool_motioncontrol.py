@@ -26,7 +26,7 @@ sources = Split('''
     ElmoServoDrive.cpp
     MotionControl.cpp
     MotionControlRpcClient.cpp
-    MotionControlStatusThread.cpp
+    MotionControlStatusWorker.cpp
     TtyElmoConnection.cpp
 ''')
 
@@ -37,7 +37,7 @@ headers = Split('''
     ElmoServoDrive.h
     MotionControl.h
     MotionControlRpcClient.h
-    MotionControlStatusThread.h
+    MotionControlStatusWorker.h
     RotServoDrive.h
     TiltServoDrive.h
     TtyElmoConnection.h
