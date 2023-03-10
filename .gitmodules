@@ -22,9 +22,6 @@
 [submodule "src/QFunctionWrapper"]
 	path = src/QFunctionWrapper
 	url = git@github.com:NCAR/QFunctionWrapper.git
-[submodule "src/Pentek7142"]
-	path = src/Pentek7142
-	url = git@github.com:NCAR/Pentek7142.git
 [submodule "src/Pmc730"]
 	path = src/Pmc730
 	url = git@github.com:NCAR/Pmc730.git
