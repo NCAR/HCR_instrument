@@ -35,47 +35,50 @@
 
 LOGGING("MotionControlStatusWorker")
 
-MotionControlStatusWorker::MotionControlStatusWorker(std::string mcdHost, 
-        int mcdPort) :
+MotionControlStatusWorker::MotionControlStatusWorker(std::string mcdHost, int mcdPort,
+                                                     QThread* workThread) :
+    QObject(),
+    MotionControlRpcClient(mcdHost, mcdPort),
     _daemonAlive(false),
     _mcdHost(mcdHost),
     _mcdPort(mcdPort),
-    _client(0) {
+    _workThread(workThread),
+    _getStatusTimer(NULL) {
     // We need to register MotionControl::Status as a metatype, since we'll be 
     // passing it as an argument in a signal.
     qRegisterMetaType<MotionControl::Status>("MotionControl::Status");
-    // Set thread affinity to self, so that signals connected to our slot(s)
-    // will execute the slots in this thread, and not our parent's.
-    moveToThread(this);
+
+    // Initiate our work when the work thread is started, and continue until
+    // the thread is stopped or destroyed.
+    connect(_workThread, &QThread::started, this, &MotionControlStatusWorker::_beginWork);
+    connect(_workThread, &QThread::finished, this, &MotionControlStatusWorker::deleteLater);
 }
 
 MotionControlStatusWorker::~MotionControlStatusWorker() {
-    // Stop the thread, and wait up to 1 second for the thread to finish.
-    quit();
-    wait(1000);
 }
 
 void
-MotionControlStatusWorker::run() {
-    // Instantiate the MotionControlRpcClient
-    _client = new MotionControlRpcClient(_mcdHost, _mcdPort);
-    // Set up a 1 s timer to call _getStatus()
-    QTimer timer;
-    connect(&timer, SIGNAL(timeout()), this, SLOT(_getStatus()));
-    timer.start(1000);
-    // Start the event loop
-    exec();
-    return;
+MotionControlStatusWorker::_beginWork() {
+    // Set our thread affinity to the work thread we were given at construction
+    // time, so that signals/slots for this object will now execute in the work
+    // thread.
+    moveToThread(_workThread);
+
+    // Instantiate and set up our periodic timer to call _getStatus()
+    _getStatusTimer = new QTimer();
+    connect(_getStatusTimer, &QTimer::timeout, this, &MotionControlStatusWorker::_collectStatus);
+    connect(_workThread, &QThread::finished, _getStatusTimer, &QTimer::deleteLater);
+    _getStatusTimer->start(1000);    /// 1000 ms
 }
 
 void
-MotionControlStatusWorker::_getStatus() {
-    MotionControl::Status status = _client->status();
+MotionControlStatusWorker::_collectStatus() {
+    auto currentStatus = status();
 
     // If daemon responsiveness changed, log the change and emit a
     // serverResponsive signal
     bool previouslyAlive = _daemonAlive;
-    _daemonAlive = _client->daemonResponding();
+    _daemonAlive = daemonResponding();
     if (_daemonAlive != previouslyAlive) {
         std::ostringstream os;
         os << "Motion control is" << (_daemonAlive ? "" : " NOT") << " responding";
@@ -83,5 +86,5 @@ MotionControlStatusWorker::_getStatus() {
     }
 
     // Emit the new status
-    emit newStatus(status);
+    emit newStatus(currentStatus);
 }

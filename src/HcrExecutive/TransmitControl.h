@@ -57,12 +57,12 @@ public:
     /// of status from HcrPmc730Daemon.
     /// @param hcrPmc730StatusWorker the HcrPmc730StatusWorker which will
     /// provide status from HcrPmc730Daemon
-    /// @param mcStatusThread the MotionControlStatusThread which will provide
+    /// @param mcStatusWorker the MotionControlStatusWorker which will provide
     /// status from MotionControlDaemon
     /// @param maxPowerClient the MaxPowerFmqClient which will provide
     /// updates on maximum received power
     TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
-                    MotionControlStatusWorker & mcStatusThread,
+                    MotionControlStatusWorker & mcStatusWorker,
                     MaxPowerFmqClient & maxPowerClient);
     virtual ~TransmitControl();
 

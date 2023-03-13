@@ -237,7 +237,8 @@ private:
 //    SpectracomStatusThread _spectracomStatusThread;
     HcrdrxStatusThread _hcrdrxStatusThread;
     HcrExecutiveStatusThread _hcrExecutiveStatusThread;
-    MotionControlStatusWorker _mcStatusThread;
+    QThread _mcStatusThread;
+    MotionControlStatusWorker _mcStatusWorker;
     QThread _pmcStatusThread;
     HcrPmc730StatusWorker _pmcStatusWorker;
     XmitdStatusThread _xmitdStatusThread;

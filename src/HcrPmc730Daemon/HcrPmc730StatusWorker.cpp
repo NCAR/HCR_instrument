@@ -56,7 +56,7 @@ HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
     // Initiate our work when the work thread is started, and continue until
     // the thread is stopped or destroyed.
     connect(workThread, &QThread::started, this, &HcrPmc730StatusWorker::_beginWork);
-    connect(workThread, &QThread::finished, this, &QObject::deleteLater);
+    connect(workThread, &QThread::finished, this, &HcrPmc730StatusWorker::deleteLater);
 }
 
 HcrPmc730StatusWorker::~HcrPmc730StatusWorker() {
@@ -74,6 +74,7 @@ HcrPmc730StatusWorker::_beginWork() {
     // Instantiate and set up our periodic timer to call _getStatus()
     _getStatusTimer = new QTimer();
     connect(_getStatusTimer, &QTimer::timeout, this, &HcrPmc730StatusWorker::_getStatus);
+    connect(_workThread, &QThread::finished, _getStatusTimer, &QTimer::deleteLater);
     _getStatusTimer->start(1000);    /// 1000 ms
     
     // Open the UDP socket to receive HMC mode change broadcasts, and

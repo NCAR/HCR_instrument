@@ -35,9 +35,11 @@
 #include <fstream>
 #include <sstream>
 #include <unistd.h>
+#include <vector>
 
 #include <QDateTime>
 #include <QMessageBox>
+#include <QThread>
 
 #include <logx/Logging.h>
 
@@ -78,7 +80,8 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
 //    _spectracomStatusThread(archiverHost, spectracomPort),
     _hcrdrxStatusThread(rdsHost, drxPort),
     _hcrExecutiveStatusThread(rdsHost, hcrExecutivePort),
-    _mcStatusThread(rdsHost, motionControlPort),
+    _mcStatusThread(),
+    _mcStatusWorker(rdsHost, motionControlPort, &_mcStatusThread),
     _pmcStatusThread(),
     _pmcStatusWorker(rdsHost, pmcPort, &_pmcStatusThread),
     _xmitdStatusThread(archiverHost, xmitterPort),
@@ -160,6 +163,25 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
     _ui.spectracomStatusLabel->setEnabled(false);
     _ui.spectracomDetailsButton->setEnabled(false);
 
+    // Set up to stop each of our threads when the QApplication quits
+    std::vector<QThread*> myThreads {
+        &_ins1StatusThread,
+        &_ins2StatusThread,
+        &_dataMapperStatusThread,
+        &_fireflydStatusThread,
+//        &_spectracomStatusThread,
+        &_hcrdrxStatusThread,
+        &_hcrExecutiveStatusThread,
+        &_mcStatusThread,
+        &_pmcStatusThread
+    };
+
+    for (auto thread: myThreads)
+    {
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+                thread, &QThread::quit);
+    }
+
     // Connect InsOverview's requestNewInsInUse(int) signal to our
     // _setMotionControlInsInUse(int) slot
     connect(&_insOverview, SIGNAL(requestNewInsInUse(int)),
@@ -179,11 +201,11 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_setIns2Status(CmigitsStatus)));
     _ins2StatusThread.start();
 
-    // Connect and start the MotionControlStatusThread
-    connect(& _mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_mcResponsivenessChange(bool, QString)));
-    connect(& _mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
-            this, SLOT(_setMotionControlStatus(MotionControl::Status)));
+    // Connect MotionControlStatusWorker's signals and start its QThread
+    connect(& _mcStatusWorker, &MotionControlStatusWorker::serverResponsive,
+            this, &HcrGuiMainWindow::_mcResponsivenessChange);
+    connect(& _mcStatusWorker, &MotionControlStatusWorker::newStatus,
+            this, &HcrGuiMainWindow::_setMotionControlStatus);
     _mcStatusThread.start();
 
     // Connect signals from our HcrdrxStatusThread object and start the thread.
@@ -202,7 +224,9 @@ HcrGuiMainWindow::HcrGuiMainWindow(std::string archiverHost,
             this, SLOT(_reportHvForcedOff(QString)));
     _hcrExecutiveStatusThread.start();
 
-    // Connect signals from our HcrPmc730StatusThread object and start the thread.
+    // Connect signals from our HcrPmc730StatusWorker and its QThread and start the thread.
+    connect(QCoreApplication::instance(), &QApplication::aboutToQuit,
+            &_pmcStatusThread, &QThread::quit);
     connect(&_pmcStatusWorker, &HcrPmc730StatusWorker::serverResponsive,
             this, &HcrGuiMainWindow::_pmcResponsivenessChange);
     connect(&_pmcStatusWorker, &HcrPmc730StatusWorker::newStatus,
@@ -329,7 +353,7 @@ HcrGuiMainWindow::_mcResponsivenessChange(bool responding, QString msg) {
     // log the responsiveness change
     std::ostringstream ss;
     ss << "MotionControlDaemon " <<
-            _mcStatusThread.rpcClient().daemonUrl() <<
+            _mcStatusWorker.daemonUrl() <<
             (responding ? " is " : " is not ") <<
             "responding (" << msg.toStdString() << ")";
     _logMessage(ss.str().c_str());
@@ -345,8 +369,7 @@ void
 HcrGuiMainWindow::_setMotionControlStatus(const MotionControl::Status & status) {
     _mcStatus = status;
     // Update the details dialog
-    _motionControlDetails.updateStatus(_mcStatusThread.serverIsResponding(),
-            _mcStatus);
+    _motionControlDetails.updateStatus(_mcStatusWorker.daemonResponding(), _mcStatus);
     // Update the main GUI
     _update();
 }
@@ -657,7 +680,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
             float angle;
             _antennaModeDialog.getPointingAngle(angle);
             // Point the antenna to the angle
-            _mcStatusThread.rpcClient().point(angle);
+            _mcStatusWorker.point(angle);
         }
         else if (_antennaModeDialog.getMode() == AntennaModeDialog::SCANNING) {
             float ccwLimit, cwLimit, scanRate, beamTilt;
@@ -677,7 +700,7 @@ HcrGuiMainWindow::on_antennaModeButton_clicked() {
                 }
             }
             // Start scanning
-            _mcStatusThread.rpcClient().scan(ccwLimit, cwLimit, scanRate, beamTilt);
+            _mcStatusWorker.scan(ccwLimit, cwLimit, scanRate, beamTilt);
         }
     }
 }
@@ -688,7 +711,7 @@ HcrGuiMainWindow::on_attitudeCorrectionButton_clicked() {
     // Toggle the current state of attitude correction
     bool correction = _mcStatus.attitudeCorrectionEnabled;
     ILOG << "Correction is currently " << (correction ? "enabled": "disabled");
-    _mcStatusThread.rpcClient().setCorrectionEnabled(! correction);
+    _mcStatusWorker.setCorrectionEnabled(! correction);
 }
 
 void
@@ -725,15 +748,15 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     // zero-count positions after homing long enough for us to also zero the
     // motor counts on the Pentek.
     bool savedState = _mcStatus.attitudeCorrectionEnabled;
-    _mcStatusThread.rpcClient().setCorrectionEnabled(false);
+    _mcStatusWorker.setCorrectionEnabled(false);
 
     // Start the drive homing program.
-    _mcStatusThread.rpcClient().homeDrive();
+    _mcStatusWorker.homeDrive();
 
     // Poll until homing is complete
     ILOG << "Waiting for servo drives to complete homing";
     while (true) {
-        if (! _mcStatusThread.rpcClient().homingInProgress()) {
+        if (! _mcStatusWorker.homingInProgress()) {
             break;
         }
         // Let other things run for up to 200 ms
@@ -742,7 +765,7 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     
     // Update motion control status and verify drives actually got homed. Pop up
     // a warning box if homing failed.
-    _mcStatus = _mcStatusThread.rpcClient().status();
+    _mcStatus = _mcStatusWorker.status();
     if (! _mcStatus.rotDriveHomed || ! _mcStatus.tiltDriveHomed) {
         WLOG << "Homing failed";
         // Let the user know that homing failed
@@ -763,7 +786,7 @@ HcrGuiMainWindow::on_driveHomeButton_clicked() {
     usleep(100000);
 
 done:
-    _mcStatusThread.rpcClient().setCorrectionEnabled(savedState);
+    _mcStatusWorker.setCorrectionEnabled(savedState);
 }
 
 /// Toggle the current on/off state of the transmitter klystron filament
@@ -1030,7 +1053,7 @@ HcrGuiMainWindow::_update() {
     _ui.ins2StatusLabel->setEnabled(_mcStatus.insInUse == 2);
 
     // MotionControl status LED
-    if (! _mcStatusThread.serverIsResponding()) {
+    if (! _mcStatusWorker.daemonResponding()) {
         _ui.mcStatusIcon->setPixmap(_notRespondingLED);
     } else if (_motionControlDetails.errorDetected()) {
         _ui.mcStatusIcon->setPixmap(_redLED);
@@ -1040,7 +1063,7 @@ HcrGuiMainWindow::_update() {
         _ui.mcStatusIcon->setPixmap(_greenLED);
     }
 
-    if (_mcStatusThread.serverIsResponding()) {
+    if (_mcStatusWorker.daemonResponding()) {
         // Reflector mode
         std::ostringstream ss;
         switch (_mcStatus.antennaMode) {
@@ -1373,6 +1396,6 @@ HcrGuiMainWindow::_setMotionControlInsInUse(int requestedIns) {
     // Set MotionControlDaemon's 'INS in use'
     ILOG << "Requesting MotionControlDaemon to change INS in use from " <<
             _mcStatus.insInUse << " to " << requestedIns;
-    _mcStatusThread.rpcClient().setInsInUse(requestedIns);
+    _mcStatusWorker.setInsInUse(requestedIns);
 }
 

@@ -50,9 +50,9 @@ static inline double HpaToPsi(double pres_hpa) {
 const std::string TERRAIN_HT_SERVER_URL = "http://archiver:9090/RPC2";
 
 
-TransmitControl::TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
-        MotionControlStatusWorker & mcStatusThread,
-        MaxPowerFmqClient & maxPowerClient) :
+TransmitControl::TransmitControl(HcrPmc730StatusWorker& hcrPmc730StatusWorker,
+                                 MotionControlStatusWorker& mcStatusWorker,
+                                 MaxPowerFmqClient & maxPowerClient) :
     _xmlrpcClient(),
     _hcrPmc730Client(hcrPmc730StatusWorker.rpcClient()),
     _hcrPmc730Responsive(false),
@@ -90,12 +90,12 @@ TransmitControl::TransmitControl(HcrPmc730StatusWorker & hcrPmc730StatusWorker,
     
     // Call _updateMotionControlStatus when new status from MotionControlDaemon 
     // arrives
-    connect(&mcStatusThread, SIGNAL(newStatus(MotionControl::Status)),
-            this, SLOT(_updateMotionControlStatus(MotionControl::Status)));
+    connect(&mcStatusWorker, &MotionControlStatusWorker::newStatus,
+            this, &TransmitControl::_updateMotionControlStatus);
     
     // Call _setMotionControlResponding when we get a responsiveness change signal
-    connect(&mcStatusThread, SIGNAL(serverResponsive(bool, QString)),
-            this, SLOT(_updateMotionControlResponsive(bool, QString)));
+    connect(&mcStatusWorker, &MotionControlStatusWorker::serverResponsive,
+            this, &TransmitControl::_updateMotionControlResponsive);
     
     // Call _updateMaxPower when new max powers arrive from the TsPrint max
     // power server
@@ -545,8 +545,7 @@ TransmitControl::_updateAglAltitude(CmigitsFmq::MsgStruct cmigitsData) {
         }
 
         // The value returned should be a dictionary
-        std::map<std::string, xmlrpc_c::value> dict =
-                static_cast<std::map<std::string, xmlrpc_c::value> >(xmlrpc_c::value_struct(result));
+        auto dict = static_cast<std::map<std::string, xmlrpc_c::value>>(xmlrpc_c::value_struct(result));
 
         // First see if TerrainHtServer reported an error
         if (xmlrpc_c::value_boolean(dict["isError"])) {

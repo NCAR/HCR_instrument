@@ -266,6 +266,7 @@ main(int argc, char *argv[]) {
     // Create a thread and attach a HcrPmc730StatusWorker to it so that we get
     // periodic status from the HcrPmc730Daemon
     QThread hcrPmc730StatusThread;
+    hcrPmc730StatusThread.setObjectName("HCRExec-PmcStatus"); // thread name shown by 'top'
     QObject::connect(App, &QCoreApplication::aboutToQuit,
                      &hcrPmc730StatusThread, &QThread::quit);
 
@@ -275,9 +276,11 @@ main(int argc, char *argv[]) {
     hcrPmc730StatusThread.start();
     
     // Start a thread to get MotionControlDaemon status on a regular basis
-    MotionControlStatusWorker mcStatusThread("localhost",
-                                             MOTIONCONTROLDAEMON_PORT);
-    QObject::connect(App, SIGNAL(aboutToQuit()), &mcStatusThread, SLOT(quit()));
+    QThread mcStatusThread;
+    mcStatusThread.setObjectName("HCRExec-MCStatus"); // thread name shown by 'top'
+    MotionControlStatusWorker mcStatusWorker("localhost", MOTIONCONTROLDAEMON_PORT, &mcStatusThread);
+    QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
+                     &mcStatusThread, &QThread::quit);
     mcStatusThread.start();
     
     // MaxPowerFmqClient instance
@@ -291,7 +294,7 @@ main(int argc, char *argv[]) {
     // Instantiate the object which will implement safety monitoring for the
     // transmitter
     TheTransmitControl = new TransmitControl(hcrPmc730StatusWorker,
-                                             mcStatusThread,
+                                             mcStatusWorker,
                                              maxPowerClient);
     
     // catch a control-C or kill to shut down cleanly

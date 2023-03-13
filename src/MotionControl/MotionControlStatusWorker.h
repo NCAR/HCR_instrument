@@ -31,7 +31,7 @@
 #ifndef MOTIONCONTROLSTATUSWORKER_H_
 #define MOTIONCONTROLSTATUSWORKER_H_
 
-#include <QThread>
+#include <QObject>
 #include "MotionControlRpcClient.h"
 
 /// @brief Class providing a thread which gets hcrdrx status on a regular
@@ -43,26 +43,18 @@
 /// way to test for good connection to the hcrdrx RPC server, via
 /// serverResponsive(bool) signals emitted when connection/disconnection is
 /// detected.
-class MotionControlStatusWorker : public QThread {
+class MotionControlStatusWorker : public QObject, public MotionControlRpcClient {
     Q_OBJECT
 
 public:
     /// @brief Instantiate, creating a MotionControlRpcClient connection to the
     /// MotionControlDaemon XML-RPC server.
-    MotionControlStatusWorker(std::string mcdHost, int mcdPort);
+    /// @param mcdHost name of the host on which MotionControlDaemon is running
+    /// @param mcdPort port for MotionControlDaemon's XML-RPC
+    /// @param workThread pointer to the thread in which this worker should do
+    /// most of its work.
+    MotionControlStatusWorker(std::string mcdHost, int mcdPort, QThread* workThread);
     virtual ~MotionControlStatusWorker();
-
-    void run();
-
-    /// @brief Return the MotionControlRpcClient instance being used to talk to
-    /// MotionControlDaemon.
-    /// @return the MotionControlRpcClient instance being used to talk to
-    /// MotionControlDaemon.
-    MotionControlRpcClient & rpcClient() { return *_client; }
-
-    /// @brief Return true iff the MotionControlDaemon is responding
-    /// @return true iff the MotionControlDaemon is responding
-    bool serverIsResponding() { return _daemonAlive; }
 
 signals:
     /// @brief Signal emitted when the XML-RPC client connection to the server
@@ -78,9 +70,13 @@ signals:
     void newStatus(MotionControl::Status status);
 
 private slots:
+    /// @brief Slot which initiates our work, which will continue until our
+    /// work thread is stopped.
+    void _beginWork();
+
     /// @brief Try to get latest status from hcrdrx, and emit a newStatus()
     /// signal if successful.
-    void _getStatus();
+    void _collectStatus();
 private:
     /// True iff the client had a successful connection with the hcrdrx
     /// XML-RPC server on the last XML-RPC method call.
@@ -89,8 +85,10 @@ private:
     std::string _mcdHost;
     int _mcdPort;
 
-    /// The MotionControlRpcClient object handling the XML-RPC connection
-    MotionControlRpcClient * _client;
+    /// @brief The thread in which most of our work should be performed
+    QThread* _workThread;
+
+    QTimer* _getStatusTimer;
 };
 
 #endif /* MOTIONCONTROLSTATUSWORKER_H_ */
