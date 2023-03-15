@@ -5,7 +5,7 @@ import os
 
 tools = Split("""
     logx
-    FireFly
+    FireFlyWorker
     xmlrpc_client++
     boost_serialization
 """)

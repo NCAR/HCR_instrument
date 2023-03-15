@@ -1,5 +1,5 @@
 #
-# Rules to build FireFly and FireFlyStatus classes and export them (and 
+# Rules to build FireFlyWorker and FireFlyStatus classes and export them (and 
 # their headers) as a tool
 #
 import os
@@ -19,15 +19,15 @@ tooldir = env.Dir('.').srcnode().abspath    # this directory
 includeDir = tooldir
 
 sources = Split('''
-FireFly.cpp
+FireFlyWorker.cpp
 FireFlyStatus.cpp
 ''')
 
 headers = Split('''
-FireFly.h
+FireFlyWorker.h
 FireFlyStatus.h
 ''')
-lib = env.Library('firefly', sources)
+lib = env.Library('fireflyworker', sources)
 
 dox = env.Apidocs(sources + headers)
 Default(dox)
@@ -36,10 +36,10 @@ Default(dox)
 # named the same as this one.
 doxdir = os.path.basename(tooldir)
     
-def FireFly(env):
+def FireFlyWorker(env):
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
     env.AppendDoxref(doxdir)
     env.Require(tools)
 
-Export('FireFly')
+Export('FireFlyWorker')

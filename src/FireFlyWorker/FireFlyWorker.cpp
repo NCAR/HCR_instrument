@@ -22,13 +22,13 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * FireFly.cpp
+ * FireFlyWorker.cpp
  *
  *  Created on: Mar 26, 2014
  *      Author: burghart
  */
 
-#include "FireFly.h"
+#include "FireFlyWorker.h"
 
 #include <cerrno>
 #include <cstdlib>
@@ -40,18 +40,18 @@
 #include <boost/algorithm/string/split.hpp>
 #include <logx/Logging.h>
 
-LOGGING("FireFly")
+LOGGING("FireFlyWorker")
 
 // The prompt string returned from the FireFly
-const std::string FireFly::_FIREFLY_PROMPT("scpi > ");
+const std::string FireFlyWorker::_FIREFLY_PROMPT("scpi > ");
 
 // The reply returned on command error
-const std::string FireFly::_FIREFLY_CMD_ERR_REPLY("Command Error\r\n");
+const std::string FireFlyWorker::_FIREFLY_CMD_ERR_REPLY("Command Error\r\n");
 
 // Command to get sync info
-const std::string FireFly::_SYNC_INFO_CMD("SYNC?");
+const std::string FireFlyWorker::_SYNC_INFO_CMD("SYNC?");
 
-FireFly::FireFly(std::string ttyDev) :
+FireFlyWorker::FireFlyWorker(std::string ttyDev) :
         _ttyDev(ttyDev),
         _fd(-1),
         _deviceResponding(false),
@@ -75,7 +75,7 @@ FireFly::FireFly(std::string ttyDev) :
     start();
 }
 
-FireFly::~FireFly() {
+FireFlyWorker::~FireFlyWorker() {
     quit();
     if (! wait(1000)) {
         WLOG << "FireFly thread did not quit in 1 second. Exiting anyway.";
@@ -83,7 +83,7 @@ FireFly::~FireFly() {
 }
 
 void
-FireFly::run() {
+FireFlyWorker::run() {
     // Set up a timer to queue up status query commands on a regular basis.
     QTimer * statusQueryTimer = new QTimer();
     statusQueryTimer->setInterval(2000);  // 1/2 Hz
@@ -124,7 +124,7 @@ FireFly::run() {
 }
 
 void
-FireFly::_tryRead()
+FireFlyWorker::_tryRead()
 {
     uint16_t timeoutMsecs = 100;    // Wait up to 0.1 second for available input
 
@@ -168,7 +168,7 @@ FireFly::_tryRead()
 }
 
 void
-FireFly::_doRead() {
+FireFlyWorker::_doRead() {
     // Read what's available on the serial port and append it to our _rawReply
     // buffer.
     int maxRead = _REPLY_BUFFER_SIZE - _rawReplyLen;
@@ -256,7 +256,7 @@ FireFly::_doRead() {
 }
 
 void
-FireFly::_handleReply(bool cmdError, std::string reply) {
+FireFlyWorker::_handleReply(bool cmdError, std::string reply) {
     if (! _awaitingReply) {
         WLOG << "Dropping unexpected reply (could have arrived after timeout)";
     } else if (cmdError){
@@ -308,7 +308,7 @@ FireFly::_handleReply(bool cmdError, std::string reply) {
 }
 
 void
-FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
+FireFlyWorker::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
     // Have we detected an error in FireFly-IIA configuration?
     bool configError = false;
 
@@ -439,7 +439,7 @@ FireFly::_parseSyncInfoReply(const std::vector<std::string> & replyLines) {
 }
 
 void
-FireFly::_queueCommand(const std::string & cmd) {
+FireFlyWorker::_queueCommand(const std::string & cmd) {
     // Queue this command
     DLOG << "Queuing command '" << cmd << "'";
     _commandQueue.push(cmd);
@@ -452,7 +452,7 @@ FireFly::_queueCommand(const std::string & cmd) {
 }
 
 void
-FireFly::_sendNextCommand() {
+FireFlyWorker::_sendNextCommand() {
     // If the queue is empty, just return
     if (_commandQueue.empty()) {
         DLOG << "_sendNextCommand() exiting with no commands queued";
@@ -482,7 +482,7 @@ FireFly::_sendNextCommand() {
 }
 
 void
-FireFly::_openTty() {
+FireFlyWorker::_openTty() {
     DLOG << "Opening " << _ttyDev;
     if ((_fd = open(_ttyDev.c_str(), O_RDWR)) == -1) {
         ELOG << __PRETTY_FUNCTION__ << ": error opening " << _ttyDev << ": " <<
@@ -520,20 +520,20 @@ FireFly::_openTty() {
 }
 
 void
-FireFly::_replyTimedOut() {
+FireFlyWorker::_replyTimedOut() {
     WLOG << "Timeout waiting for reply to command '" << _lastCommandSent << "'";
     _awaitingReply = false;
     _sendNextCommand();
 }
 
 void
-FireFly::_queueStatusQuery() {
+FireFlyWorker::_queueStatusQuery() {
     // Send the "SYNC?" command to get synchronization status
     _queueCommand(_SYNC_INFO_CMD);
 }
 
 void
-FireFly::_deviceNotResponding() {
+FireFlyWorker::_deviceNotResponding() {
     WLOG << "Device is " << (_deviceResponding ? "no longer" : "not") << " responding!";
     _deviceResponding = false;
     // Set the latest status to a default bad/not-responding status

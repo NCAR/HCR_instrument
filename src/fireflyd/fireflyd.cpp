@@ -42,15 +42,15 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
-#include "FireFly.h"
+#include <FireFlyWorker.h>
 #include "../HcrSharedResources.h"
 
 LOGGING("fireflyd")
 
 namespace po = boost::program_options;
 
-/// Our FireFly
-FireFly *Firefly = 0;
+/// Our FireFlyWorker
+FireFlyWorker *Firefly = 0;
 
 /// Our QApplication
 QCoreApplication *App = 0;
@@ -191,10 +191,10 @@ main(int argc, char *argv[]) {
 
     ILOG << "fireflyd (" << getpid() << ") started";
 
-    // Instantiate a FireFly communication thread, using the given serial port
-    PMU_auto_register("instantiating FireFly");
+    // Instantiate a FireFly communication worker, using the given serial port
+    PMU_auto_register("instantiating FireFlyWorker");
     if (!vm.count("doNothing")) {
-        Firefly = new FireFly(devName);
+        Firefly = new FireFlyWorker(devName);
     }
 
     // Initialize our RPC server

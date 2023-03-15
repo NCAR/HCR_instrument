@@ -22,14 +22,14 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.    
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 /*
- * FireFly.h
+ * FireFlyWorker.h
  *
  *  Created on: Mar 26, 2014
  *      Author: burghart
  */
 
-#ifndef FIREFLY_H_
-#define FIREFLY_H_
+#ifndef FIREFLYWORKER_H_
+#define FIREFLYWORKER_H_
 
 #include <queue>
 #include <string>
@@ -42,13 +42,13 @@
 
 /// @brief Class providing serial port access to a Jackson Labs FireFly-IIA
 /// 10 MHz GPS-disciplined oscillator.
-class FireFly : public QThread {
+class FireFlyWorker : public QThread {
     Q_OBJECT
 public:
-    /// @brief Construct a FireFly providing serial port access to a Jackson Labs
+    /// @brief Construct a FireFlyWorker providing serial port access to a Jackson Labs
     /// FireFly-IIA 10 MHz GPS-disciplined oscillator.
-    FireFly(std::string ttyDev);
-    virtual ~FireFly();
+    FireFlyWorker(std::string ttyDev);
+    virtual ~FireFlyWorker();
     
     /**
      * @brief Get current status values from the FireFly.
@@ -154,4 +154,4 @@ private:
     uint16_t _rawReplyLen;
 };
 
-#endif /* FIREFLY_H_ */
+#endif /* FIREFLYWORKER_H_ */

@@ -3,7 +3,7 @@
 tools = Split("""
 boost_program_options
 doxygen
-FireFly
+FireFlyWorker
 logx
 lrose
 qt5
