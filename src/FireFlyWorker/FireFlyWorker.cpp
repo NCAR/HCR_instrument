@@ -1,5 +1,5 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
-// ** Copyright UCAR (c) 1990 - 2016                                         
+// ** Copyright UCAR (c) 1990 - 2023
 // ** University Corporation for Atmospheric Research (UCAR)                 
 // ** National Center for Atmospheric Research (NCAR)                        
 // ** Boulder, Colorado, USA                                                 
@@ -25,7 +25,7 @@
  * FireFlyWorker.cpp
  *
  *  Created on: Mar 26, 2014
- *      Author: burghart
+ *      Author: Chris Burghart <burghart@ucar.edu>
  */
 
 #include "FireFlyWorker.h"
@@ -36,6 +36,8 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <QMetaType>
+#include <QSocketNotifier>
+#include <QThread>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <logx/Logging.h>
@@ -51,7 +53,7 @@ const std::string FireFlyWorker::_FIREFLY_CMD_ERR_REPLY("Command Error\r\n");
 // Command to get sync info
 const std::string FireFlyWorker::_SYNC_INFO_CMD("SYNC?");
 
-FireFlyWorker::FireFlyWorker(std::string ttyDev) :
+FireFlyWorker::FireFlyWorker(std::string ttyDev, QThread* workThread) :
         _ttyDev(ttyDev),
         _fd(-1),
         _deviceResponding(false),
@@ -59,6 +61,7 @@ FireFlyWorker::FireFlyWorker(std::string ttyDev) :
         _awaitingReply(false),
         _commandQueue(),
         _replyTimeoutTimer(NULL),
+        _deviceRespondingTimer(NULL),
         _status(),
         _rawReplyLen(0) {
     ILOG << "FireFly on device " << _ttyDev;
@@ -68,103 +71,58 @@ FireFlyWorker::FireFlyWorker(std::string ttyDev) :
     // We send std::string in signals, so register it as a QMetaType
     qRegisterMetaType<std::string>("std::string");
 
-    // Upon thread start, call _tryRead()
-    connect(this, SIGNAL(started()), this, SLOT(_tryRead()));
+    // Shift our thread affinity to the work thread, so our slots will execute
+    // there by default.
+    moveToThread(workThread);
 
-    // Start our thread
-    start();
+    // Upon thread start, call _beginWork().
+    connect(workThread, &QThread::started, this, &FireFlyWorker::_beginWork);
 }
 
 FireFlyWorker::~FireFlyWorker() {
-    quit();
-    if (! wait(1000)) {
-        WLOG << "FireFly thread did not quit in 1 second. Exiting anyway.";
-    }
 }
 
 void
-FireFlyWorker::run() {
-    // Set up a timer to queue up status query commands on a regular basis.
-    QTimer * statusQueryTimer = new QTimer();
-    statusQueryTimer->setInterval(2000);  // 1/2 Hz
-    connect(statusQueryTimer, SIGNAL(timeout()), this, SLOT(_queueStatusQuery()));
-    statusQueryTimer->start();
+FireFlyWorker::_beginWork() {
+    // THIS SLOT EXECUTES IN OUR WORK THREAD
 
-    // Create a timer used to make sure replies from the FireFly arrive
+    // Create our timer used to make sure replies from the FireFly arrive
     // in a reasonable time. The timer is started when we send a command, and
     // stopped when a complete reply is received. If not stopped before it
     // expires, a call to _replyTimedOut() is initiated.
     _replyTimeoutTimer = new QTimer();
+    connect(thread(), &QThread::finished, _replyTimeoutTimer, &QTimer::deleteLater);
     _replyTimeoutTimer->setInterval(250);   // allow up to 250 ms for a reply
     _replyTimeoutTimer->setSingleShot(true);
-    connect(_replyTimeoutTimer, SIGNAL(timeout()), this, SLOT(_replyTimedOut()));
+    connect(_replyTimeoutTimer, &QTimer::timeout, this, &FireFlyWorker::_replyTimedOut);
 
-    // Create a timer which will mark the device as unresponsive if we get no
+    // Create our timer which will mark the device as unresponsive if we get no
     // replies at all for a while. The timer is restarted whenever a response
     // is received from the device.
     _deviceRespondingTimer = new QTimer();
-    _deviceRespondingTimer->setInterval(10000);     // 10 s
-    connect(_deviceRespondingTimer, SIGNAL(timeout()),
-            this, SLOT(_deviceNotResponding()));
+    connect(thread(), &QThread::finished, _deviceRespondingTimer, &QTimer::deleteLater);
+    _deviceRespondingTimer->setInterval(10000);        // 10 s
+    connect(_deviceRespondingTimer, &QTimer::timeout, this, &FireFlyWorker::_deviceNotResponding);
     _deviceRespondingTimer->start();
+
+    // Create a timer to queue up status query commands on a regular basis.
+    // This timer will run continuously until the work thread quits.
+    auto statusQueryTimer = new QTimer();
+    connect(thread(), &QThread::finished, statusQueryTimer, &QObject::deleteLater);
+    connect(statusQueryTimer, &QTimer::timeout, this, &FireFlyWorker::_queueStatusQuery);
+    statusQueryTimer->start(2000);    // 2 s
+
+    // Create and enable a QSocketNotifier to call our _doRead() method when data
+    // are available on the serial port.
+    // This notifier will operate until the work thread quits.
+    auto notifier = new QSocketNotifier(_fd, QSocketNotifier::Read, this);
+    connect(thread(), &QThread::finished, notifier, &QSocketNotifier::deleteLater);
+    connect(notifier, &QSocketNotifier::activated, this, &FireFlyWorker::_doRead);
+    notifier->setEnabled(true);
 
     // Queue our first sync status request immediately
     _queueCommand(_SYNC_INFO_CMD);
 
-    // Set up a single shot timer to make the first call to _tryRead().
-    QTimer::singleShot(0, this, SLOT(_tryRead()));
-
-    // Start the event loop, which generally runs until our destructor is
-    // called.
-    exec();
-
-	delete(_deviceRespondingTimer);
-    delete(_replyTimeoutTimer);
-    delete(statusQueryTimer);
-}
-
-void
-FireFlyWorker::_tryRead()
-{
-    uint16_t timeoutMsecs = 100;    // Wait up to 0.1 second for available input
-
-    // select for read on _fd file descriptor
-    fd_set readFds;
-    FD_ZERO(&readFds);
-    FD_SET(_fd, &readFds);
-
-    // Looping only occurs here if we get an EINTR error from select, in which
-    // case we come back and try again.
-    while (true) {
-        /*
-         * set timeval structure
-         */
-        struct timeval timeout;
-        timeout.tv_sec = timeoutMsecs / 1000;
-        timeout.tv_usec = (timeoutMsecs % 1000) * 1000;
-
-        int nready = select(_fd + 1, &readFds, NULL, NULL, &timeout);
-        if (nready == 1) {
-            // Something's available. Go read it.
-            _doRead();
-            break;
-        } else if (nready == 0) {
-            break;  // select() timed out
-        } else {
-            if (errno == EINTR) // system call was interrupted
-                continue;   // go back and try again
-
-            ELOG << "select error: " << strerror(errno);
-
-            break;
-        }
-    }
-
-    // Set a zero-interval single shot timer to call back here after any
-    // pending event processing occurs.
-    QTimer::singleShot(0, this, SLOT(_tryRead()));
-
-    return;
 }
 
 void

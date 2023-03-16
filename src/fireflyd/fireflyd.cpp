@@ -33,6 +33,7 @@
 #include <sstream>
 #include <boost/program_options.hpp>
 #include <QCoreApplication>
+#include <QThread>
 #include <QTimer>
 
 #include <toolsa/pmu.h>
@@ -193,8 +194,12 @@ main(int argc, char *argv[]) {
 
     // Instantiate a FireFly communication worker, using the given serial port
     PMU_auto_register("instantiating FireFlyWorker");
+    QThread* workThread(NULL);
     if (!vm.count("doNothing")) {
-        Firefly = new FireFlyWorker(devName);
+        workThread = new QThread();
+        QObject::connect(App, &QCoreApplication::aboutToQuit, workThread, &QThread::quit);
+        Firefly = new FireFlyWorker(devName, workThread);
+        workThread->start();
     }
 
     // Initialize our RPC server
@@ -236,6 +241,8 @@ main(int argc, char *argv[]) {
     PMU_auto_unregister();
 
     // Clean up before exit
+    workThread->wait(1000);	// wait up to a second for workThread to finish
+    delete(workThread);
     delete(Firefly);
     ILOG << "fireflyd (" << getpid() << ") exiting";
     return 0;

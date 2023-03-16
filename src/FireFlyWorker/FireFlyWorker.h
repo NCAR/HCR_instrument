@@ -35,39 +35,34 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
-#include <QMutex>
-#include <QThread>
+#include <QObject>
 #include <QTimer>
 #include "FireFlyStatus.h"
 
 /// @brief Class providing serial port access to a Jackson Labs FireFly-IIA
 /// 10 MHz GPS-disciplined oscillator.
-class FireFlyWorker : public QThread {
+class FireFlyWorker : public QObject {
     Q_OBJECT
 public:
     /// @brief Construct a FireFlyWorker providing serial port access to a Jackson Labs
     /// FireFly-IIA 10 MHz GPS-disciplined oscillator.
-    FireFlyWorker(std::string ttyDev);
+    /// @param ttyDev the serial device attached to the FireFly-IIA
+    /// @param workThread the QThread in which we will perform most of our work
+    FireFlyWorker(std::string ttyDev, QThread* workThread);
     virtual ~FireFlyWorker();
     
-    /**
-     * @brief Get current status values from the FireFly.
-     */
-    FireFlyStatus getStatus() const {
-        QMutexLocker locker(& _mutex);
-        return(_status);
-    }
+    /// @brief Get current status values from the FireFly.
+    FireFlyStatus getStatus() const { return(_status); }
     
-private Q_SLOTS:
+private slots:
+    /// @brief Slot to initiate operation, called when our work thread is started.
+    void _beginWork();
+
     /// @brief Slot called when a reply has not arrived in the expected time.
     void _replyTimedOut();
 
     /// @brief Queue a status query
     void _queueStatusQuery();
-
-    /// @brief Wait briefly for input to be available on our file descriptor
-    /// and call _doRead if something comes along before we time out.
-    void _tryRead();
 
     /// @brief Handle a reply from the FireFly
     /// @param cmdError true iff a command error was indicated
@@ -84,9 +79,6 @@ private:
     /// @brief Open and configure our tty connection to the FireFly
     void _openTty();
     
-    /// @brief Our QThread run() method.
-    void run();
-
     /// @brief Read and process input from the FireFly.
     void _doRead();
 
@@ -114,7 +106,7 @@ private:
 
     /// @brief Our serial port device name (may be SIM_DEVICE)
     std::string _ttyDev;
-    
+
     /// @brief File descriptor for the open serial port
     int _fd;
 
@@ -132,15 +124,11 @@ private:
 
     /// @brief Single shot timer started when we send a command to assure that
     /// we get a reply in a reasonably short time.
-    QTimer * _replyTimeoutTimer;
+    QTimer* _replyTimeoutTimer;
 
     /// @brief Timer used to mark the device as unresponsive after a period with no
     /// responses.
-    QTimer * _deviceRespondingTimer;
-
-    /// @brief Mutex for thread-safe access to _status. We make it
-    /// mutable so that we can acquire the mutex in const methods.
-    mutable QMutex _mutex;
+    QTimer* _deviceRespondingTimer;
 
     /// @brief Latest status
     FireFlyStatus _status;
