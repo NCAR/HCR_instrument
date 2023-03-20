@@ -25,25 +25,27 @@
             "Comment": "Here is an example schedule composed of three blocks.",
             "Blocks": [
                 {
+                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
+                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default",
                     "TxPulseWidth": 256e-9,
                     "FilterSelect": "256ns",
-                    "PolarizationMode": "H",
-                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
-                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default"
+                    "PolarizationMode": "H"
                 },
                 {
+                    "NumRxGates":"Default","NumPulses":"Default","PRT2":"Default",
+                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default",
+                    "PRT1": 163.840e-6,
                     "TxPulseWidth": 512e-9,
                     "FilterSelect": "512ns",
-                    "PolarizationMode": "V",
-                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
-                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default"
+                    "PolarizationMode": "V"
                 },
                 {
+                    "NumRxGates":"Default","NumPulses":"Default","PRT2":"Default",
+                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default",
+                    "PRT1": 163.840e-6,
                     "TxPulseWidth": 1024e-9,
                     "FilterSelect": "1024ns",
-                    "PolarizationMode": "HHVV",
-                    "NumRxGates":"Default","NumPulses":"Default","PRT1":"Default","PRT2":"Default",
-                    "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default"
+                    "PolarizationMode": "HHVV"
                 }
             ]
         },
@@ -77,7 +79,70 @@
                     "PhaseTableEnd": 0
                 }
             ]
+        },
+
+        "Mike's Alternating PRT": {
+            "Enabled": true,
+            "Comment": "256/512 pulses",
+            "Blocks": [
+                {
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
+                    "NumRxGates": 2000,
+                    "NumPulses": 100,
+                    "PRT1": 101.376e-6,
+                    "PRT2": 0,
+                    "BlockPostTime": 0,
+                    "PolarizationMode": "H",
+                    "PhaseTableBegin": 0,
+                    "PhaseTableEnd": 0
+                },
+                {
+                    "TxPulseWidth": 512e-9,
+                    "FilterSelect": "512ns",
+                    "NumRxGates": 2000,
+                    "NumPulses": 66,
+                    "PRT1": 152.064e-6,
+                    "PRT2": 0,
+                    "BlockPostTime": 0,
+                    "PolarizationMode": "H",
+                    "PhaseTableBegin": 0,
+                    "PhaseTableEnd": 0
+                }
+            ]
+        },
+
+        "Mike's Alt. PRT +10%": {
+            "Enabled": true,
+            "Comment": "256/512 pulses, longer PRTs",
+            "Blocks": [
+                {
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
+                    "NumRxGates": 2000,
+                    "NumPulses": 100,
+                    "PRT1": 111.488e-6,
+                    "PRT2": 0,
+                    "BlockPostTime": 0,
+                    "PolarizationMode": "H",
+                    "PhaseTableBegin": 0,
+                    "PhaseTableEnd": 0
+                },
+                {
+                    "TxPulseWidth": 512e-9,
+                    "FilterSelect": "512ns",
+                    "NumRxGates": 2000,
+                    "NumPulses": 66,
+                    "PRT1": 167.232e-6,
+                    "PRT2": 0,
+                    "BlockPostTime": 0,
+                    "PolarizationMode": "H",
+                    "PhaseTableBegin": 0,
+                    "PhaseTableEnd": 0
+                }
+            ]
         }
+
     }
 
 }

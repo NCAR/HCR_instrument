@@ -167,19 +167,42 @@ public:
             throw std::runtime_error(os.str());
         }
 
+        //Enforce HCR maximum duty cycle
+        const double MAX_DUTY_CYCLE = 0.00625;
+        if ( blockDef.timers[TX_PULSE].width * (1.0 / MAX_DUTY_CYCLE) > blockDef.prt[0] )
+        {
+            std::ostringstream os;
+            os << "Transmit duty cycle exceeded for block " << index << ". TX * " << (1.0 / MAX_DUTY_CYCLE) << " > PRT1";
+            throw std::runtime_error(os.str());
+        }
+        if ( ( blockDef.prt[1] != 0 ) && ( blockDef.timers[TX_PULSE].width * (1.0 / MAX_DUTY_CYCLE) > blockDef.prt[1] ) )
+        {
+            std::ostringstream os;
+            os << "Transmit duty cycle exceeded for block " << index << ". TX * " << (1.0 / MAX_DUTY_CYCLE) << " > PRT2";
+            throw std::runtime_error(os.str());
+        }
+
         //These checks are HCR-specific. They avoid drifting relative to the 156.25MHz IF
         if (blockDef.prt[0] % 8 != 0)
+        {
             throw std::runtime_error("PRT0 must be a multiple of 64ns");
+        }
 
         if (blockDef.prt[1] % 8 != 0)
+        {
             throw std::runtime_error("PRT1 must be a multiple of 64ns");
+        }
 
         if (blockDef.blockPostTime % 8 != 0)
+        {
             throw std::runtime_error("Post-time must be a multiple of 64ns");
+        }
 
         if (blockDef.phaseTableBegin >= NUM_PHASE_CODING_SAMPLES
             || blockDef.phaseTableEnd >= NUM_PHASE_CODING_SAMPLES)
+        {
             throw std::runtime_error("Bad phase table bounds");
+        }
 
         const std::string action = "Writing pulse definition";
         write_(index*sizeof(uint32_t) + PULSE_SEQUENCE_PRT_0             , blockDef.prt[0],           action);
