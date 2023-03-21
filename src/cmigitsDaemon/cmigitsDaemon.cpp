@@ -54,7 +54,6 @@
 #include <toolsa/pmu.h>
 #include <logx/Logging.h>
 
-#include "../HcrSharedResources.h"
 #include "Ts2CmigitsFmqThread.h"
 LOGGING("cmigitsDaemon")
 

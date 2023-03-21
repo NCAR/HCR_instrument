@@ -29,7 +29,7 @@
  */
 
 #include "Ts2CmigitsFmqThread.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 #include <cstring>
 #include <iomanip>
 #include <logx/Logging.h>

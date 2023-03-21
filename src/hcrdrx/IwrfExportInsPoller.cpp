@@ -23,7 +23,7 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* 
 #include "IwrfExportInsPoller.h"
 #include "IwrfExport.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 
 #include <exception>
 #include <sstream>

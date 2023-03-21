@@ -29,7 +29,7 @@
  */
 
 #include "ApsControl.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 #include <HcrPmc730StatusWorker.h>
 #include <logx/Logging.h>
 

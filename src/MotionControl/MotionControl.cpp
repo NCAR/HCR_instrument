@@ -29,7 +29,7 @@
  */
 
 #include "MotionControl.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 #include <unistd.h>
 #include <iostream>
 #include <Archive_xmlrpc_c.h>

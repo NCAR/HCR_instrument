@@ -40,8 +40,8 @@
 #include <QFunctionWrapper.h>
 #include <QXmlRpcServerAbyss.h>
 
+#include <HcrSharedResources.h>
 #include "MotionControl.h"
-#include "../HcrSharedResources.h"
 
 namespace po = boost::program_options;
 

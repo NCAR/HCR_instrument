@@ -44,7 +44,7 @@
 #include <QXmlRpcServerAbyss.h>
 
 #include <FireFlyWorker.h>
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 
 LOGGING("fireflyd")
 

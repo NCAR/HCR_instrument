@@ -55,7 +55,7 @@
 #include <xmlrpc-c/client_simple.hpp>
 #include <xmlrpc-c/registry.hpp>
 
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 #include "ApsControl.h"
 #include "HcrExecutiveStatus.h"
 #include "MaxPowerFmqClient.h"

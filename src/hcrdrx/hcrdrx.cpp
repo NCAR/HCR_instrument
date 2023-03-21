@@ -23,7 +23,7 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 #include "HCR_Pentek.h"
 #include "HcrDrxConfig.h"
-#include "../HcrSharedResources.h"
+#include <HcrSharedResources.h>
 
 #include <csignal>
 #include <cstring>

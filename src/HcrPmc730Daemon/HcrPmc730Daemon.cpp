@@ -47,8 +47,8 @@
 #include <xmlrpc-c/registry.hpp>
 #include <QXmlRpcServerAbyss.h>
 
+#include <HcrSharedResources.h>
 #include "OperationModeChange.h"
-#include "../HcrSharedResources.h"
 
 LOGGING("HcrPmc730Daemon")
 
