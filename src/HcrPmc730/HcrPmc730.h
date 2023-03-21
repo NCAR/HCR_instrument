@@ -67,9 +67,19 @@ public:
         OperationMode(HMC_MODE_INVALID, 0, 0, "");
     }
 
-    OperationMode(const HmcModes &mode) {
-        OperationMode(mode, 0, 0, "");
+    static const OperationMode DefaultReset() {
+        return OperationMode(HMC_MODE_RESET, 0, 0, "");
     }
+
+    static const OperationMode DefaultBenchTest() {
+        return OperationMode(HMC_MODE_BENCH_TEST, 0, 0, "");
+    }
+
+    static const std::vector<OperationMode> DefaultModeList() {
+        return { DefaultReset(), DefaultBenchTest() };
+    }
+
+    friend class HcrPmc730;
 
     bool operator==(const OperationMode& rhs) const;
 
@@ -101,8 +111,8 @@ public:
 private:
 
     OperationMode(const HmcModes &mode,
-                  uint startIndex,
-                  uint stopIndex,
+                  uint startIndex = 0,
+                  uint stopIndex = 0,
                   const std::string& name = "");
 
     HmcModes _hmcMode;

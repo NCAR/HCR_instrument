@@ -322,8 +322,8 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
-    HcrPmc730::SetOperationMode( OperationMode{HmcModes::HMC_MODE_RESET} );
-    HcrPmc730::SetOperationMode( OperationMode{HmcModes::HMC_MODE_BENCH_TEST} );
+    HcrPmc730::SetOperationMode( OperationMode::DefaultReset() );
+    HcrPmc730::SetOperationMode( OperationMode::DefaultBenchTest() );
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");

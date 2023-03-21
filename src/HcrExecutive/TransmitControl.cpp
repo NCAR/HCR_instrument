@@ -124,7 +124,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusWorker& hcrPmc730StatusWorker,
 
 TransmitControl::~TransmitControl() {
     ILOG << "TransmitControl destructor setting Operation mode to Bench Test";
-    _setOperationMode(HmcModes::HMC_MODE_BENCH_TEST);
+    _setOperationMode( OperationMode::DefaultBenchTest() );
 }
 
 void
@@ -751,5 +751,5 @@ void
 TransmitControl::_clearOperationModeMap() {
     _operationModeMap.clear();
     // Initialize as having run in "Bench Test" mode since the beginning of time
-    _operationModeMap[0] = OperationMode{ HmcModes::HMC_MODE_BENCH_TEST };
+    _operationModeMap[0] = OperationMode::DefaultBenchTest();
 }
