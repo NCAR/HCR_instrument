@@ -62,12 +62,6 @@ const std::string toString(const HmcModes& mode) {
     return names[mode];
 }
 
-OperationMode::OperationMode()
-  : _hmcMode(HMC_MODE_INVALID),
-    _scheduleStartIndex(0),
-    _scheduleStopIndex(0),
-    _name() {};
-
 OperationMode::OperationMode(
     const HmcModes &mode,
     uint startIndex,

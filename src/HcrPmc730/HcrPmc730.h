@@ -60,12 +60,16 @@ typedef enum _HmcModes {
 
 class OperationMode {
 public:
-    OperationMode();
 
-    OperationMode(const HmcModes &mode,
-                  uint startIndex = 0,
-                  uint stopIndex = 0,
-                  const std::string& name = "");
+    // Public constructors use the default schedule.
+    // Modes containing any other schedule must be created by apardrx.
+    OperationMode() {
+        OperationMode(HMC_MODE_INVALID, 0, 0, "");
+    }
+
+    OperationMode(const HmcModes &mode) {
+        OperationMode(mode, 0, 0, "");
+    }
 
     bool operator==(const OperationMode& rhs) const;
 
@@ -96,10 +100,19 @@ public:
 
 private:
 
+    OperationMode(const HmcModes &mode,
+                  uint startIndex,
+                  uint stopIndex,
+                  const std::string& name = "");
+
     HmcModes _hmcMode;
     uint _scheduleStartIndex;
     uint _scheduleStopIndex;
     std::string _name;
+
+friend class HcrPmc730;
+friend class HCR_Pentek;
+
 };
 
 /// Control a singleton instance of Pmc730 for the one PMC730 card on the
