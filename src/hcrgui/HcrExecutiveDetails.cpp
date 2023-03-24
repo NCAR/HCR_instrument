@@ -66,6 +66,7 @@ void
 HcrExecutiveDetails::updateStatus(bool daemonResponding,
         const HcrExecutiveStatus & hcrExecutiveStatus, 
         const HcrPmc730Status & hcrPmc730Status) {
+
     // Based on whether the daemon is responding, set the "responding" label, 
     // and set the enabled state for the rest of the contents.
     _ui.contentFrame->setEnabled(daemonResponding);
@@ -108,17 +109,15 @@ HcrExecutiveDetails::updateStatus(bool daemonResponding,
     bool hvOn = hcrPmc730Status.rdsXmitterHvOn();
     _ui.hvOnIcon->setPixmap(hvOn ? _greenLED : _greenLED_off);
     
-    // Requested and current Operation modes. Note that current Operation mode comes from
-    // HcrPmc730Status and not from HcrExecutiveStatus. Use emphasis background 
-    // color if current mode differs from requested mode.
-    auto requestedMode = hcrExecutiveStatus.requestedOperationMode();
-    _ui.requestedModeValue->setText(QString::fromStdString(requestedMode.name()));
-    
-    auto currentMode = hcrPmc730Status.operationMode();
-    _ui.currentModeValue->setText(currentMode.name().c_str());
+    // Requested and current OperationMode-s.
+    auto requestedOpsMode = hcrExecutiveStatus.requestedOperationMode();
+    _ui.requestedModeValue->setText(requestedOpsMode.name().c_str());
 
-    std::string styleSheet = (currentMode == requestedMode) ? 
-            "" : "background-color: #FFFFD0";
+    auto currentOpsMode = hcrExecutiveStatus.currentOperationMode();
+    _ui.currentModeValue->setText(currentOpsMode.name().c_str());
+
+    // If requested and current modes differ, apply a warning emphasis background color.
+    std::string styleSheet = (currentOpsMode == requestedOpsMode) ? "" : "background-color: #FFFFD0";
     _ui.requestedModeValue->setStyleSheet(styleSheet.c_str());
     _ui.currentModeValue->setStyleSheet(styleSheet.c_str());
     

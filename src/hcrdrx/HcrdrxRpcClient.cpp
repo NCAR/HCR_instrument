@@ -27,11 +27,11 @@
  *  Created on: August 13, 2012
  *      Author: burghart
  */
-
 #include "HcrdrxRpcClient.h"
 
 #include <cstdlib>
 #include <logx/Logging.h>
+#include <OperationMode.h>
 
 LOGGING("HcrdrxRpcClient")
 
@@ -51,9 +51,9 @@ HcrdrxRpcClient::~HcrdrxRpcClient() {
 
 bool
 HcrdrxRpcClient::_execXmlRpcCall(std::string methodName, 
-        xmlrpc_c::value & result) {
+        xmlrpc_c::value& result, const xmlrpc_c::paramList& params) {
     try {
-        call(_daemonUrl, methodName, "", &result);
+        call(_daemonUrl, methodName, params, &result);
     } catch (std::exception & e) {
         WLOG << "Error on XML-RPC " << methodName << "() call: " << e.what();
         return(false);
@@ -65,6 +65,14 @@ bool
 HcrdrxRpcClient::zeroPentekMotorCounts() {
     xmlrpc_c::value result;
     return(_execXmlRpcCall("zeroPentekMotorCounts", result));
+}
+
+bool
+HcrdrxRpcClient::_useOperationMode(const OperationMode& opMode) {
+    xmlrpc_c::value result;
+    xmlrpc_c::paramList params;
+    params.add(XmlrpcSerializable<OperationMode>(opMode));
+    return(_execXmlRpcCall("setControllerSchedule", result, params));
 }
 
 bool

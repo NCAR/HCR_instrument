@@ -120,6 +120,9 @@ public:
 
     const std::vector<OperationMode>& supportedOpsModes() const { return(_supportedOpsModes); }
 
+    /// @brief Return the current OperationMode
+    const OperationMode& currentOpsMode() const { return(_currentOpsMode); }
+
 private:
     friend class boost::serialization::access;
     /// @brief Serialize our members to a boost save (output) archive or populate
@@ -183,6 +186,9 @@ private:
 
     /// List of available OperationModes
     std::vector<OperationMode> _supportedOpsModes;
+
+    /// @brief The current OperatingMode
+    OperationMode _currentOpsMode;
 };
 
 // Increment this class version number when member variables are changed.

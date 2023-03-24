@@ -2,9 +2,11 @@
 # Rules to build libhcrexecutive.a and export it as a SCons tool
 #
 tools = Split('''
+hcrdrxrpcclient
 hcrpmc730client
 doxygen
 motioncontrol
+operationmode
 qt5
 xmlrpc_client++
 ''')

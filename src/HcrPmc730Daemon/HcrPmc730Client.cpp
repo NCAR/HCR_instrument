@@ -83,10 +83,10 @@ HcrPmc730Client::xmitHvOff() {
 }
 
 void
-HcrPmc730Client::setOperationMode(OperationMode mode) {
+HcrPmc730Client::setHmcMode(HmcMode mode) {
     xmlrpc_c::paramList params;
-    params.add(XmlrpcSerializable<OperationMode>(mode));
-    _execXmlRpcCall("setOperationMode", params);
+    params.add(xmlrpc_c::value_int(mode));
+    _execXmlRpcCall("setHmcMode", params);
 }
 
 HcrPmc730Status

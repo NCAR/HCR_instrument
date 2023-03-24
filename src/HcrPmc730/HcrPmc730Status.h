@@ -217,8 +217,8 @@ public:
     bool waveguideSwitchError() const { return(_waveguideSwitchError); }
 
     /// @brief Return the HMC operating mode.
-    /// @see OperationMode for a description of the values.
-    OperationMode operationMode() const { return(_operationMode); }
+    /// @see HmcMode for a description of the values.
+    HmcMode hmcMode() const { return(_hmcMode); }
 
     /// @brief cast to xmlrpc_c::value
     operator xmlrpc_c::value() const;
@@ -289,7 +289,7 @@ private:
             ar & BOOST_SERIALIZATION_NVP(_emsErrorCount);
             ar & BOOST_SERIALIZATION_NVP(_emsPowerError);
             ar & BOOST_SERIALIZATION_NVP(_hLnaTemp);
-            ar & BOOST_SERIALIZATION_NVP(_operationMode);
+            ar & BOOST_SERIALIZATION_NVP(_hmcMode);
             ar & BOOST_SERIALIZATION_NVP(_insTemp);
             ar & BOOST_SERIALIZATION_NVP(_locked1250MHzPLO);
             ar & BOOST_SERIALIZATION_NVP(_locked125MHzPLO);
@@ -456,7 +456,7 @@ private:
     bool _emsError6Or7;
 
     /// HMC operating mode
-    OperationMode _operationMode;
+    HmcMode _hmcMode;
 };
 
 // Increment this class version number when member variables are changed.

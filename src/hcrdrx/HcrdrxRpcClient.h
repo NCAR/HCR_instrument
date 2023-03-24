@@ -31,8 +31,9 @@
 #ifndef HCRDRXRPCCLIENT_H_
 #define HCRDRXRPCCLIENT_H_
 
-#include <xmlrpc-c/client_simple.hpp>
 #include <string>
+#include <xmlrpc-c/client_simple.hpp>
+#include <OperationMode.h>
 #include "DrxStatus.h"
 
 /**
@@ -41,12 +42,9 @@
  */
 class HcrdrxRpcClient : private xmlrpc_c::clientSimple {
 public:
-    /**
-     * Instantiate HcrdrxRpcClient to communicate with an hcrdrx process
-     * running on host hcrdrxHost and using port hcrdrxPort.
-     * @param hcrdrxHost the name of the host on which hcrdrx is running
-     * @param hcrdrxPort the port number being used by hcrdrx
-     */
+    /// @brief Instantiate HcrdrxRpcClient to communicate with an hcrdrx process
+    /// @param hcrdrxHost the name of the host on which hcrdrx is running
+    /// @param hcrdrxPort the port number being used by hcrdrx
     HcrdrxRpcClient(std::string hcrdrxHost, int hcrdrxPort);
     virtual ~HcrdrxRpcClient();
     
@@ -79,17 +77,31 @@ public:
     std::string getHcrdrxHost() { return(_hcrdrxHost); }
     
 private:
+    /// @brief Set the Pentek's controller schedule start and stop indices
+    /// based on the given OperationMode
+    ///
+    /// This XML-RPC method should only be called by HcrExecutive's
+    /// TransmitControl instance. That class has access to this private method since
+    /// it is specified as a friend below.
+    /// @param opMode the desired OperationMode to apply
+    bool _useOperationMode(const OperationMode& opMode);
+
     /// @brief Execute an XML-RPC method call and return the result.
     /// @param[in] methodName the name of the XML-RPC method to execute
     /// @param[out] result if the call is successful, the returned value is
     /// written in result
+    /// @param[in] the list of parameters to pass to the XML-RPC method
     /// @return true and write the returned value in result iff the XML-RPC 
     /// call was successful
-    bool _execXmlRpcCall(std::string methodName, xmlrpc_c::value & result);
+    bool _execXmlRpcCall(std::string methodName, xmlrpc_c::value& result,
+                         const xmlrpc_c::paramList& params = xmlrpc_c::paramList());
     
     std::string _hcrdrxHost;
     int _hcrdrxPort;
     std::string _daemonUrl;
+
+    // Allow TransmitControl to call private method _useOperationMode()
+    friend class TransmitControl;
 };
 
 #endif /* HCRDRXRPCCLIENT_H_ */

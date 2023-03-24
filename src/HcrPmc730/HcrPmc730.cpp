@@ -44,88 +44,6 @@ extern "C" {
 
 LOGGING("HcrPmc730");
 
-const std::string toString(const HmcModes& mode) {
-    static const std::string names[] = {
-        "Reset HMC",
-        "Spare (1)",
-        "Spare (2)",
-        "Transmit",
-        "Transmit (Attenuated)",
-        "Noise Source Cal",
-        "Bench Test",
-        "TX V with noise source",
-        "Invalid (8)"
-    };
-    if (mode > HMC_MODE_INVALID) {
-        return "Enumeration out of bounds";
-    }
-    return names[mode];
-}
-
-OperationMode::OperationMode(
-    const HmcModes &mode,
-    uint startIndex,
-    uint stopIndex,
-    const std::string& name)
-      : _hmcMode(mode),
-        _scheduleStartIndex(startIndex),
-        _scheduleStopIndex(stopIndex),
-        _name(name)
-{
-    if (!name.size()) {
-        if ( startIndex ==  0 && stopIndex == 0) {
-            // If the schedule is the default 0:0 then just name it after the HmcMode
-            _name = toString(_hmcMode);
-        }
-        else {
-            // This shouldn't happen so give it a weird name
-            _name = "?BUG? " + std::to_string(_scheduleStartIndex)
-                + ":" + std::to_string(_scheduleStopIndex);
-                + " " + toString(_hmcMode);
-        }
-    }
-};
-
-bool OperationMode::operator==(const OperationMode& rhs) const {
-    return _hmcMode == rhs._hmcMode
-    && _scheduleStartIndex == rhs._scheduleStartIndex
-    && _scheduleStopIndex == rhs._scheduleStopIndex;
-}
-
-bool OperationMode::operator!=(const OperationMode& rhs) const {
-    return ! (*this == rhs);
-}
-
-bool OperationMode::isAttenuated() const {
-    return _hmcMode == HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-}
-
-bool OperationMode::isValid() const {
-    return _hmcMode != HmcModes::HMC_MODE_INVALID;
-}
-
-OperationMode OperationMode::equivalentAttenuatedMode() const {
-    auto m = *this;
-    switch (_hmcMode) {
-        case HmcModes::HMC_MODE_TRANSMIT:
-            m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-            m._name += ", atten";
-            break;
-        case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
-            m._hmcMode = HmcModes::HMC_MODE_TRANSMIT_ATTENUATED;
-            break;
-        case HmcModes::HMC_MODE_BENCH_TEST:
-            m._hmcMode = HmcModes::HMC_MODE_BENCH_TEST;
-            break;
-        case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:
-            m._hmcMode = HmcModes::HMC_MODE_NOISE_SOURCE_CAL;
-            break;
-        default:
-            m._hmcMode = HmcModes::HMC_MODE_INVALID;
-    }
-    return m;
-}
-
 // Static to tell whether the singleton is created as a simulated PMC-730
 bool HcrPmc730::_DoSimulate = false;
 
@@ -208,7 +126,7 @@ HcrPmc730::TheHcrPmc730() {
 
 // static
 void
-HcrPmc730::SetOperationMode(const OperationMode& mode) {
+HcrPmc730::SetHmcMode(const HmcMode& mode) {
     // Set the HMC mode bits on our digital out lines. This method works
     // atomically, setting all three bits at once rather than changing one
     // at a time.
@@ -223,26 +141,23 @@ HcrPmc730::SetOperationMode(const OperationMode& mode) {
     uint8_t new8_15 = TheHcrPmc730().getDio8_15();
 
     // set the bits for the three lines which set the mode
-    uint8_t modeBit0 = (mode.hmcMode() >> 0) & 0x01;
+    uint8_t modeBit0 = (mode >> 0) & 0x01;
     new8_15 = modeBit0 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT0 - 8);
 
-    uint8_t modeBit1 = (mode.hmcMode() >> 1) & 0x01;
+    uint8_t modeBit1 = (mode >> 1) & 0x01;
     new8_15 = modeBit1 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT1 - 8);
 
-    uint8_t modeBit2 = (mode.hmcMode() >> 2) & 0x01;
+    uint8_t modeBit2 = (mode >> 2) & 0x01;
     new8_15 = modeBit2 ?
             _TurnBitOn(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8) :
             _TurnBitOff(new8_15, _HCR_DOUT_HMC_OPS_MODE_BIT2 - 8);
 
     // ship out the new state
     TheHcrPmc730().setDio8_15(new8_15);
-
-    // store the mode in the singleton
-    TheHcrPmc730()._theMode = mode;
 }
 
 bool

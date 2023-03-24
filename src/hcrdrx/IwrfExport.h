@@ -33,6 +33,7 @@
 #include "PulseData.h"
 
 #include <HcrPmc730.h>
+#include <OperationMode.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
 #include <toolsa/ServerSocket.hh>
@@ -184,7 +185,7 @@ private:
     bool _firstFmqMessage;
 
     /// @brief current HMC operation mode
-    OperationMode _operationMode;
+    HmcMode _hmcMode;
 
     /// @brief current MotionControlDaemon antenna mode
     MotionControl::AntennaMode _antennaMode;

@@ -3,7 +3,7 @@
 tools = Split("""
 boost_program_options
 doxygen
-hcrpmc730client
+hcrpmc730
 logx
 lrose
 qt5

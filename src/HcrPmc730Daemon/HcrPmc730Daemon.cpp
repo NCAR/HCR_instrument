@@ -48,7 +48,7 @@
 #include <QXmlRpcServerAbyss.h>
 
 #include <HcrSharedResources.h>
-#include "OperationModeChange.h"
+#include "HmcModeChange.h"
 
 LOGGING("HcrPmc730Daemon")
 
@@ -58,7 +58,7 @@ namespace po = boost::program_options;
 QCoreApplication *App = 0;
 
 /// UDP socket on which we broadcast operation mode changes.
-QUdpSocket OperationModeBroadcastSocket;
+QUdpSocket HmcModeBroadcastSocket;
 
 /// Transmitter "HV on" requires a heartbeat signal. Time out if a new request
 /// does not come in MAXIMUM_HVON_HEARTBEAT_INTERVAL_MS milliseconds.
@@ -164,41 +164,38 @@ public:
     }
 };
 
-// XML-RPC method to set Operation mode
-class SetOperationModeMethod : public xmlrpc_c::method {
+// XML-RPC method to set HMC mode
+class SetHmcModeMethod : public xmlrpc_c::method {
 public:
-    SetOperationModeMethod() {
+    SetHmcModeMethod() {
         // Method take an integer argument (the mode), and returns nil
         this->_signature = "n:i";
-        this->_help = "This method sets Operation mode.";
+        this->_help = "This method sets the HMC mode.";
     }
     void
     execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
         // We get a single parameter: the index of the requested operation mode.
-        ILOG << "Received XML-RPC call to setOperationMode()...";
-
-        XmlrpcSerializable<OperationMode> operationMode(paramList[0]);
+        HmcMode hmcMode = static_cast<HmcMode>(paramList.getInt(0));
         paramList.verifyEnd(1);
 
-        ILOG << "...with requested Operation mode " <<
-                "'" << operationMode.name() << "'";
+        ILOG << "Received XML-RPC call: setHmcMode('" << hmcMode << "')";
         *retvalP = xmlrpc_c::value_nil();
 
         // If requested mode is the current mode, just return now
-        if (operationMode == HcrPmc730::HmcMode()) {
+        if (hmcMode == HcrPmc730::GetHmcMode()) {
             DLOG << "Requested Operation mode is same as current mode; returning now.";
             return;
         }
 
         // Change to the requested mode
-        HcrPmc730::SetOperationMode(operationMode);
+        HcrPmc730::SetHmcMode(hmcMode);
 
         // Broadcast a datagram to indicate the new mode and the time of the
         // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
-        int result = BroadcastModeChange(OperationModeBroadcastSocket, operationMode);
+        int result = BroadcastModeChange(HmcModeBroadcastSocket, hmcMode);
         if (result == -1) {
             ELOG << "Operation mode change UDP write gave QAbstractSocket::SocketError " <<
-                    OperationModeBroadcastSocket.error();
+                    HmcModeBroadcastSocket.error();
         }
     }
 };
@@ -322,8 +319,8 @@ main(int argc, char * argv[]) {
     HcrPmc730::SetApsValveOpen(false);
     HcrPmc730::SetXmitterFilamentOn(false);
     HcrPmc730::SetXmitterHvOn(false);
-    HcrPmc730::SetOperationMode( OperationMode::DefaultReset() );
-    HcrPmc730::SetOperationMode( OperationMode::DefaultBenchTest() );
+    HcrPmc730::SetHmcMode(HmcMode::RESET);
+    HcrPmc730::SetHmcMode(HmcMode::BENCH_TEST);
 
     // Create our XML-RPC method registry and server instance
     PMU_auto_register("instantiating XML-RPC server");
@@ -332,7 +329,7 @@ main(int argc, char * argv[]) {
     myRegistry.addMethod("xmitFilamentOff", new XmitFilamentOffMethod);
     myRegistry.addMethod("xmitHvOn", new XmitHvOnMethod);
     myRegistry.addMethod("xmitHvOff", new XmitHvOffMethod);
-    myRegistry.addMethod("setOperationMode", new SetOperationModeMethod);
+    myRegistry.addMethod("setHmcMode", new SetHmcModeMethod);
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("openApsValve", new OpenApsValveMethod);
     myRegistry.addMethod("closeApsValve", new CloseApsValveMethod);

@@ -5,7 +5,9 @@ import os
 
 tools = Split("""
     archive_xmlrpc_c
+    boost_serialization
     logx
+    operationmode
     pmc730
 """)
 env = Environment(tools=['default'] + tools)

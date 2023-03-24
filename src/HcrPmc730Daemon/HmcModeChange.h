@@ -24,28 +24,29 @@
 /*
  * HmcModeChange.h
  *
- * Port number and struct used when broadcasting operation mode changes.
+ * Port number and struct used when broadcasting HMC mode changes.
  *
  *  Created on: Dec 2, 2014
  *      Author: burghart
  */
 
-#ifndef OPERATIONMODECHANGE_H_
-#define OPERATIONMODECHANGE_H_
+#ifndef HMCMODECHANGE_H_
+#define HMCMODECHANGE_H_
 
 #include <HcrPmc730.h>
 
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <OperationMode.h>
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 
-/// UDP port on which operation mode changes are broadcast.
-static const uint16_t OPERATION_MODE_BROADCAST_PORT = 56565;
+/// UDP port on which MHC mode changes are broadcast.
+static const uint16_t HMC_MODE_BROADCAST_PORT = 56565;
 
 /// @brief Broadcast a datagram to indicate the new mode and the time of the
 /// mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
-auto BroadcastModeChange(QUdpSocket& socket, OperationMode& mode)
+auto BroadcastModeChange(QUdpSocket& socket, HmcMode& mode)
 {
     struct timeval nowTimeval;
     gettimeofday(&nowTimeval, NULL);
@@ -60,7 +61,7 @@ auto BroadcastModeChange(QUdpSocket& socket, OperationMode& mode)
     int result = socket.writeDatagram(
             os.str().data(),
             os.str().size(), QHostAddress::Broadcast,
-            OPERATION_MODE_BROADCAST_PORT);
+            HMC_MODE_BROADCAST_PORT);
 
     return result;
 }
@@ -71,7 +72,7 @@ auto ListenForModeChange(QUdpSocket& socket)
 {
 
     double modeChangeTime = 0.0;
-    OperationMode mode;
+    HmcMode mode(HmcMode::INVALID);
 
     while (socket.hasPendingDatagrams()) {
 
@@ -81,7 +82,7 @@ auto ListenForModeChange(QUdpSocket& socket)
         ia >> mode;
         ia >> modeChangeTime;
     }
-    return std::pair<OperationMode, double>(mode, modeChangeTime);
+    return std::pair<HmcMode, double>(mode, modeChangeTime);
 }
 
-#endif /* OPERATIONMODECHANGE_H_ */
+#endif /* HMCMODECHANGE_H_ */

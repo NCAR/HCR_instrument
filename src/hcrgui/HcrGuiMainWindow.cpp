@@ -1003,8 +1003,8 @@ HcrGuiMainWindow::_update() {
         _ui.requestedModeCombo->setPlaceholderText("[No DRX]");
     }
 
-    std::string modeText = _pmcStatus.operationMode().name();
-    _ui.hmcModeValue->setText(QString::fromStdString(modeText));
+    std::string modeText = _drxStatus.currentOpsMode().name();
+    _ui.opsModeValue->setText(QString::fromStdString(modeText));
 
     // INS1 status light:
     // Green light if mode is "Air Navigation" or "Land Navigation" and we have

@@ -31,7 +31,7 @@
 #include "StatusGrabber.h"
 #include "HCR_Pentek.h"
 
-#include <OperationModeChange.h>
+#include <HmcModeChange.h>
 #include <QDateTime>
 #include <QMutexLocker>
 #include <QTimer>
@@ -109,7 +109,7 @@ StatusGrabber::run() {
     // use to force an update of _pmc730Status separate from the 1 Hz timer
     // above.
     _hmcModeChangeSocket = new QUdpSocket();
-    _hmcModeChangeSocket->bind(OPERATION_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
+    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
     connect(_hmcModeChangeSocket, SIGNAL(readyRead()),
             this, SLOT(_readHmcModeChangeSocket()));
 
@@ -150,17 +150,7 @@ StatusGrabber::_getPmc730Status() {
     }
 
     QMutexLocker locker(&_mutex);
-
-    // If the 730 is reporting a new mode, then we have to set ourselves up to match it.
-    if (_pmc730Status.operationMode() != status.operationMode()) {
-        uint32_t scheduleStartIndex = status.operationMode().scheduleStartIndex();
-        uint32_t scheduleStopIndex = status.operationMode().scheduleStopIndex();
-
-        ILOG << "Changing controller schedule to " << scheduleStartIndex << ":" << scheduleStopIndex;
-        _pentek.changeControllerSchedule(scheduleStartIndex, scheduleStopIndex);
-
-        _pmc730Status = status;
-    }
+    _pmc730Status = status;
 }
 
 void
@@ -204,13 +194,11 @@ StatusGrabber::_readHmcModeChangeSocket() {
 
     struct timeval tvNow;
     gettimeofday(&tvNow, NULL);
-    ILOG << "New ops mode '" <<
-            _pmc730Status.operationMode().name() << "' " <<
+    ILOG << "New HMC mode '" << _pmc730Status.hmcMode() << "' " <<
             "with start time " << QDateTime::fromTime_t(time_t(modeChangeTime))
                 .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
                 .toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<
             " is being noted at " <<
             QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000)
                 .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
-
 }

@@ -35,7 +35,9 @@
 
 #include <CmigitsFmqWatcher.h>
 #include <HcrPmc730Client.h>
+#include <HcrdrxRpcClient.h>
 #include <MotionControlStatusWorker.h>
+#include <OperationMode.h>
 #include <QDateTime>
 #include <QObject>
 #include <QTimer>
@@ -108,7 +110,7 @@ public:
 
     /// @brief Set the requested Operation mode
     /// @param mode the requested Operation mode
-    void setRequestedOperationMode(OperationMode& mode);
+    void setRequestedOperationMode(const OperationMode& mode);
 
     /// @brief Set the requested high voltage on state
     /// @param hvRequested true if HV on is desired, false if HV off is desired
@@ -133,12 +135,11 @@ private slots:
     /// @param msg a string describing the responsiveness change
     void _updateHcrPmc730Responsive(bool responding, QString msg);
 
-    /// @brief Deal with a change in HMC operation mode.
-    /// @param mode the new HMC operation mode
+    /// @brief Deal with a change in HMC mode.
+    /// @param mode the new HMC mode
     /// @param modeChangeTime the time at which the mode was changed, double
     /// precision seconds since 1970-01-01 00:00:00 UTC
-    void _recordOperationModeChange(const OperationMode& mode,
-                               double modeChangeTime);
+    void _handleHmcModeChange(const HmcMode mode, double modeChangeTime);
 
     /// @brief Accept a new status from MotionControlDaemon and react if necessary
     /// @param status the new status from MotionControlDaemon
@@ -301,18 +302,12 @@ private:
     /// @brief Tell HcrPmc730Daemon to turn off transmitter HV
     void _xmitHvOff();
 
-    /// @brief Set the Operation mode on HcrPmc730Daemon
-    /// @param mode the Operation mode to use
+    /// @brief Set the OperationMode in use
+    ///
+    /// This involves setting the HMC's mode (via HcrPmc730Daemon) and then
+    /// setting the pulse scheduling on the Pentek (via hcrdrx)
+    /// @param mode the OperationMode to use
     void _setOperationMode(const OperationMode& mode);
-
-    /// @brief Return the current Operation mode. We return our local value for
-    /// current mode rather than _hcrPmc730Status.operationMode() because we may
-    /// have changed the mode but not yet gotten a new status from
-    /// HcrPmc730Daemon.
-    OperationMode _currentOperationMode() const {
-        // Current mode is the last entry in our Operation mode map
-        return(_operationModeMap.rbegin()->second);
-    }
 
     /// @brief Clear the map of times to Operation modes
     void _clearOperationModeMap();
@@ -367,6 +362,9 @@ private:
     /// @brief Basic XML-RPC client instance used for TerrainHtServer
     xmlrpc_c::clientSimple _xmlrpcClient;
 
+    /// @brief XML-RPC client for hcrdrx
+    HcrdrxRpcClient _hcrdrxClient;
+
     /// @brief HcrPmc730Client instance
     HcrPmc730Client & _hcrPmc730Client;
 
@@ -413,14 +411,17 @@ private:
     /// @brief User's intended state for transmitter high voltage
     bool _hvRequested;
 
-    /// @brief User's intended Operation mode
+    /// @brief User's intended OperationMode
     OperationMode _requestedOperationMode;
+
+    /// @brief Current OperationMode
+    OperationMode _currentOperationMode;
 
     /// @brief Current reason for disabling transmit (XMIT_ALLOWED if transmit
     /// is currently allowed)
     XmitTestStatus _xmitTestStatus;
 
-    /// @brief map of Operation mode change times (seconds since 1970-01-01 00:00:00
+    /// @brief map of Operation mode change time (seconds since 1970-01-01 00:00:00
     /// UTC) to mode
     std::map<double, OperationMode> _operationModeMap;
 

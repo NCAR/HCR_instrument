@@ -32,98 +32,9 @@
 #define HCRPMC730_H_
 
 #include "Pmc730.h"
+#include <OperationMode.h>
 #include <Archive_xmlrpc_c.h>
 #include <exception>
-
-/// Enumerated type for HMC operation modes
-typedef enum _HmcModes {
-    /// 0 = reset the HMC
-    HMC_MODE_RESET = 0,
-    /// 1 = unused
-    HMC_MODE_SPARE_1 = 1,
-    /// 2 = unused
-    HMC_MODE_SPARE_2 = 2,
-    /// 3 = transmit according to drx scheduler, receive H and V
-    HMC_MODE_TRANSMIT = 3,
-    /// 4 = transmit according to drx scheduler, receive H and V (attenuated)
-    HMC_MODE_TRANSMIT_ATTENUATED = 4,
-    /// 5 = noise source calibration
-    HMC_MODE_NOISE_SOURCE_CAL = 5,
-    /// 6 = bench test
-    HMC_MODE_BENCH_TEST = 6,
-    /// 7 = transmit V, receive H and V, enable noise source
-    HMC_MODE_V_HV_ISOL_NOISE = 7,
-    /// mode count (and a representation for an invalid mode)
-    HMC_NMODES = 8,
-    HMC_MODE_INVALID = HMC_NMODES
-} HmcModes;
-
-class OperationMode {
-public:
-
-    // Public constructors use the default schedule.
-    // Modes containing any other schedule must be created by apardrx.
-    OperationMode() {
-        OperationMode(HMC_MODE_INVALID, 0, 0, "");
-    }
-
-    static const OperationMode DefaultReset() {
-        return OperationMode(HMC_MODE_RESET, 0, 0, "");
-    }
-
-    static const OperationMode DefaultBenchTest() {
-        return OperationMode(HMC_MODE_BENCH_TEST, 0, 0, "");
-    }
-
-    static const std::vector<OperationMode> DefaultModeList() {
-        return { DefaultReset(), DefaultBenchTest() };
-    }
-
-    friend class HcrPmc730;
-
-    bool operator==(const OperationMode& rhs) const;
-
-    bool operator!=(const OperationMode& rhs) const;
-
-    bool isAttenuated() const;
-
-    bool isValid() const;
-
-    OperationMode equivalentAttenuatedMode() const;
-
-    HmcModes hmcMode() const { return _hmcMode; };
-
-    uint scheduleStartIndex() const { return _scheduleStartIndex; };
-
-    uint scheduleStopIndex() const { return _scheduleStopIndex; };
-
-    const std::string name() const { return _name; };
-
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-        using boost::serialization::make_nvp;
-        ar & BOOST_SERIALIZATION_NVP(_hmcMode);
-        ar & BOOST_SERIALIZATION_NVP(_scheduleStartIndex);
-        ar & BOOST_SERIALIZATION_NVP(_scheduleStopIndex);
-        ar & BOOST_SERIALIZATION_NVP(_name);
-    }
-
-private:
-
-    OperationMode(const HmcModes &mode,
-                  uint startIndex = 0,
-                  uint stopIndex = 0,
-                  const std::string& name = "");
-
-    HmcModes _hmcMode;
-    uint _scheduleStartIndex;
-    uint _scheduleStopIndex;
-    std::string _name;
-
-friend class HcrPmc730;
-friend class HCR_Pentek;
-
-};
 
 /// Control a singleton instance of Pmc730 for the one PMC730 card on the
 /// HCR DRX machine.
@@ -464,22 +375,15 @@ public:
         return(! TheHcrPmc730().getDioLine(_HCR_DOUT_TX_HV_OFF));
     }
 
-    /// @brief Return the current HMC operating mode as a value from the
-    /// OperationMode enumerated type.
+    /// @brief Return the current 3-bit HMC mode
     /// @return the current HMC operating mode as a value from the
     /// OperationMode enum.
-    static OperationMode HmcMode() {
+    static HmcMode GetHmcMode() {
         int iMode = TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT2) << 2 |
-                TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1 |
-                TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
+                    TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT1) << 1 |
+                    TheHcrPmc730().getDioLine(_HCR_DOUT_HMC_OPS_MODE_BIT0) << 0;
 
-        // Retrieve the schedule from _theMode and combine with the DIO
-        auto&& theMode = TheHcrPmc730()._theMode;
-        OperationMode mode( static_cast<HmcModes>(iMode),
-                            theMode.scheduleStartIndex(),
-                            theMode.scheduleStopIndex(),
-                            theMode.name() );
-        return mode;
+        return static_cast<HmcMode>(iMode);
     }
 
     /// @brief Set the state Active Pressurization System valve.
@@ -510,8 +414,8 @@ public:
         TheHcrPmc730()._ackHmcStatus();
     }
 
-    /// @brief Set the HMC operation mode
-    static void SetOperationMode(const OperationMode& mode);
+    /// @brief Set the HMC mode
+    static void SetHmcMode(const HmcMode& mode);
 
     /// @brief Update and return the current count of EMS errors.
     static uint32_t EmsErrorCount() {
@@ -755,11 +659,6 @@ private:
     /// We need this because for unknown reasons, the pressure transducers
     /// appear to be damaged and consistently read lower than actual pressure.
     double _pvPresCorrection;
-
-    /// @brief We can get the opsmode bits from the 730 itself,
-    /// but we need to store the scheduler data to have a complete Mode.
-    /// We will store it here in the singleton.
-    OperationMode _theMode;
 
     /// @brief The singleton instance of HcrPmc730.
     static HcrPmc730 * _TheHcrPmc730;

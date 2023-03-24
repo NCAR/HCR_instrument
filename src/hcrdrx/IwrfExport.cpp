@@ -49,7 +49,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _fmqAccessLock(QReadWriteLock::NonRecursive),
         _config(config),
         _monitor(monitor),
-        _operationMode(),
+        _hmcMode(),
         _antennaMode(MotionControl::MODE_UNDEFINED),
         _ins1WatchThread(*this, 1),
         _ins2WatchThread(*this, 2),
@@ -278,9 +278,9 @@ void IwrfExport::run()
       sendMeta = true;
       _nGates = nGates;
     }
-    if (_monitor.pmc730Status().operationMode() != _operationMode) {
+    if (_monitor.pmc730Status().hmcMode() != _hmcMode) {
       sendMeta = true;
-      _operationMode = _monitor.pmc730Status().operationMode();
+      _hmcMode = _monitor.pmc730Status().hmcMode();
     }
     if (_monitor.motionControlStatus().antennaMode != _antennaMode) {
       sendMeta = true;
@@ -475,26 +475,26 @@ int IwrfExport::_sendIwrfMetaData()
   _tsProc.packet.time_nano_secs = _nanoSecs;
 
   // set our polarization and calibration modes for processing
-  switch (_operationMode.hmcMode()) {
-    case HmcModes::HMC_MODE_TRANSMIT:
-    case HmcModes::HMC_MODE_TRANSMIT_ATTENUATED:
+  switch (_hmcMode) {
+    case HmcMode::TRANSMIT:
+    case HmcMode::TRANSMIT_ATTENUATED:
         _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HmcModes::HMC_MODE_BENCH_TEST:
-    case HmcModes::HMC_MODE_V_HV_ISOL_NOISE:
+    case HmcMode::BENCH_TEST:
+    case HmcMode::V_HV_ISOL_NOISE:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
-    case HmcModes::HMC_MODE_NOISE_SOURCE_CAL:
+    case HmcMode::NOISE_SOURCE_CAL:
         _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
         _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOISE_SOURCE_V;
         break;
     default:
-        WLOG << "Unhandled/unknown _operationMode: " << _operationMode.name();
+        WLOG << "Unhandled/unknown _hmcMode: " << _hmcMode;
         _tsProc.xmit_rcv_mode = IWRF_XMIT_RCV_MODE_NOT_SET;
         _tsProc.pol_mode = IWRF_POL_MODE_NOT_SET;
         _tsProc.cal_type = IWRF_CAL_TYPE_NOT_SET;
@@ -746,7 +746,7 @@ string IwrfExport::_assembleStatusXml()
 
   // ints
   xml += TaXml::writeInt
-    ("HmcMode", 2, pmc730Status.operationMode().hmcMode());
+    ("HmcMode", 2, pmc730Status.hmcMode());
 
   xml += TaXml::writeInt
     ("EmsErrorCount", 2, pmc730Status.emsErrorCount());
@@ -1124,15 +1124,15 @@ void IwrfExport::_doIwrfGeorefsBeforePulse() {
       iwrf_platform_georef_init(_radarGeoref);
 
       // Time tag the georef packet with the C-MIGITS 3512 message time
-      if ((earliest.time3512 % 1000) / 10 == 0) {
-          DLOG << "New georef tagged " << (earliest.time3512 / 1000) % 60 <<
+      if (fmod(earliest.time3512, 1000) / 10 == 0) {
+          DLOG << "New georef tagged " << fmod(earliest.time3512 / 1000, 60) <<
                   "." << std::setw(3) << std::setfill('0') <<
-                  earliest.time3512 % 1000 << " for pulse tagged " <<
+                  fmod(earliest.time3512, 1000) << " for pulse tagged " <<
                   _timeSecs % 60 << std::setw(3) << std::setfill('0') <<
                   _nanoSecs / 1000000;
       }
       _radarGeoref.packet.time_secs_utc = earliest.time3512 / 1000;
-      _radarGeoref.packet.time_nano_secs = (earliest.time3512 % 1000) * 1000000;
+      _radarGeoref.packet.time_nano_secs = fmod(earliest.time3512, 1000) * 1000000;
 
       // The unit_num member is kind of funky: unit_num = 0 indicates that this
       // is the "primary" INS (i.e., the one used by MotionControlDaemon), and

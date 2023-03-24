@@ -128,6 +128,10 @@ public:
     /// @return the requested Operation mode.
     OperationMode requestedOperationMode() const { return(_requestedOperationMode); }
 
+    /// @brief Return the requested Operation mode.
+    /// @return the requested Operation mode.
+    OperationMode currentOperationMode() const { return(_currentOperationMode); }
+
     /// @brief Return true iff a user has requested that high voltage be 
     /// turned on.
     /// @return true iff a user has requested that high voltage be 
@@ -208,6 +212,7 @@ private:
         ar & BOOST_SERIALIZATION_NVP(_overWater);
         ar & BOOST_SERIALIZATION_NVP(_meanMaxPower);
         ar & BOOST_SERIALIZATION_NVP(_requestedOperationMode);
+        ar & BOOST_SERIALIZATION_NVP(_currentOperationMode);
         ar & BOOST_SERIALIZATION_NVP(_hvRequested);
         ar & BOOST_SERIALIZATION_NVP(_xmitTestStatus);
         ar & BOOST_SERIALIZATION_NVP(_xmitTestStatusText);
@@ -256,9 +261,13 @@ private:
     /// @brief Max received power, dBm
     double _meanMaxPower;
 
-    /// @brief Requested Operation mode
+    /// @brief Requested operation mode
     OperationMode _requestedOperationMode;
 
+    /// @brief Current operation mode
+    OperationMode _currentOperationMode;
+
+    /// @brief Current operation mode
     /// @brief Has a user requested that transmitter high voltage be turned on?
     bool _hvRequested;
 

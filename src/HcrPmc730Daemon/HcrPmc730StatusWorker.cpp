@@ -29,7 +29,7 @@
  */
 
 #include "HcrPmc730StatusWorker.h"
-#include "OperationModeChange.h"
+#include "HmcModeChange.h"
 #include <QDateTime>
 #include <QMetaType>
 #include <QTimer>
@@ -48,10 +48,10 @@ HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
     _hmcModeChangeSocket(NULL),
     _getStatusTimer(NULL)
 {
-    // We need to register HcrPmc730Status and HmcOperationMode as metatypes, 
+    // We need to register HcrPmc730Status and HmcMode as metatypes,
     // since we'll be passing them as arguments in signals.
     qRegisterMetaType<HcrPmc730Status>("HcrPmc730Status");
-    qRegisterMetaType<OperationMode>("OperationMode");
+    qRegisterMetaType<HmcMode>("HmcMode");
 
     // Initiate our work when the work thread is started, and continue until
     // the thread is stopped or destroyed.
@@ -80,7 +80,7 @@ HcrPmc730StatusWorker::_beginWork() {
     // Open the UDP socket to receive HMC mode change broadcasts, and
     // connect it to our reader slot.
     _hmcModeChangeSocket = new QUdpSocket();
-    _hmcModeChangeSocket->bind(OPERATION_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
+    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
     connect(_hmcModeChangeSocket, &QUdpSocket::readyRead,
             this, &HcrPmc730StatusWorker::_readHmcModeChangeSocket);
 }
@@ -112,7 +112,7 @@ HcrPmc730StatusWorker::_getStatus() {
 void
 HcrPmc730StatusWorker::_readHmcModeChangeSocket() {
     auto result = ListenForModeChange(*_hmcModeChangeSocket);
-    auto mode = result.first;
+    HmcMode mode = result.first;
     auto modeChangeTime = result.second;
 
     if (modeChangeTime == 0.0) {
@@ -122,8 +122,7 @@ HcrPmc730StatusWorker::_readHmcModeChangeSocket() {
     }
 
     // Emit our hmcModeChange() signal
-    DLOG << "HMC mode changed to '" <<
-            mode.name() << "' at " <<
+    DLOG << "HMC mode changed to '" << mode << "' at " <<
             QDateTime::fromTime_t(time_t(modeChangeTime))
                 .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
                 .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();

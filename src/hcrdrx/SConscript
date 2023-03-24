@@ -10,6 +10,7 @@ tools = Split("""
     logx
     lrose
     motioncontrol
+    operationmode
     Pentek_xx821
     QFunctionWrapper
     qt5

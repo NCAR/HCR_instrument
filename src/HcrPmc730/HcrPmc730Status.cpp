@@ -87,7 +87,7 @@ HcrPmc730Status::HcrPmc730Status() :
     _emsError3(false),
     _emsError4Or5(false),
     _emsError6Or7(false),
-    _operationMode() {}
+    _hmcMode() {}
 
 HcrPmc730Status::~HcrPmc730Status() {}
 
@@ -158,7 +158,7 @@ HcrPmc730Status::_getMultiIoValues() {
     _apsValveOpen = HcrPmc730::ApsValveOpen();
     _rdsXmitterFilamentOn = HcrPmc730::XmitterFilamentOn();
     _rdsXmitterHvOn = HcrPmc730::XmitterHvOn();
-    _operationMode = HcrPmc730::HmcMode();
+    _hmcMode = HcrPmc730::GetHmcMode();
     
     // Raise the 'status_ack' line on the HMC briefly so that it will reset
     // status values for which it does sense-and-hold.

@@ -1,21 +1,11 @@
 #
-# Build HcrdrxRpcClient class and export it (and its header) as a tool
+# Build OperationMode class and export it (and its header) as a tool
 #
 import os
 
 tools = Split("""
     archive_xmlrpc_c
     boost_serialization
-    hcrpmc730client
-    logx
-    lrose
-    motioncontrol
-    operationmode
-    Pentek_xx821
-    qt5
-    qtcore
-    xmitdrpcclient
-    xmlrpc_client++
 """)
 env = Environment(tools=['default'] + tools)
 
@@ -24,17 +14,16 @@ tooldir = env.Dir('.').srcnode().abspath    # this directory
 includeDir = tooldir
 
 sources = Split('''
-DrxStatus.cpp
-HcrdrxRpcClient.cpp
+OperationMode.cpp
 ''')
 headers = Split('''
-DrxStatus.h
+OperationMode.h
 ''')
-lib = env.Library('hcrdrxrpcclient', sources)
+lib = env.Library('operationmode', sources)
     
-def hcrdrxrpcclient(env):
+def operationmode(env):
     env.AppendUnique(CPPPATH = [includeDir])
     env.AppendUnique(LIBS = [lib])
     env.Require(tools)
 
-Export('hcrdrxrpcclient')
+Export('operationmode')

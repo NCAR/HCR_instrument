@@ -82,6 +82,29 @@ private:
     HCR_Pentek& _hcrPentek;
 };
 
+/// xmlrpc_c::method to set the Pentek's controller schedule start and stop indices
+class SetControllerScheduleMethod : public xmlrpc_c::method {
+public:
+    SetControllerScheduleMethod(HCR_Pentek& hcrPentek)
+        : _hcrPentek(hcrPentek) {
+        this->_signature = "n:";
+        this->_help = "This method sets the Pentek controller schedule start and stop indices.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        XmlrpcSerializable<OperationMode> opMode(paramList[0]);
+        paramList.verifyEnd(1);
+        ILOG << "XML-RPC call to setControllerSchedule(" << opMode.hmcMode() << ", "
+             << opMode.scheduleStartIndex() << ", " << opMode.scheduleStopIndex()
+             << ", '" << opMode.name() << "')";
+        _hcrPentek.changeControllerSchedule(opMode.scheduleStartIndex(),
+                                            opMode.scheduleStopIndex());
+        *retvalP = xmlrpc_c::value_nil();
+    }
+private:
+    HCR_Pentek& _hcrPentek;
+};
+
 int
 main(int argc, char * argv[]) {
 
@@ -146,6 +169,7 @@ main(int argc, char * argv[]) {
         xmlrpc_c::registry myRegistry;
         myRegistry.addMethod("getStatus", new GetStatusMethod(hcrPentek));
         myRegistry.addMethod("zeroPentekMotorCounts", new ZeroPentekMotorCountsMethod(hcrPentek));
+        myRegistry.addMethod("setControllerSchedule", new SetControllerScheduleMethod(hcrPentek));
         QXmlRpcServerAbyss rpcServer(&myRegistry, HCRDRX_PORT);
 
         std::string xmitdHost("archiver");

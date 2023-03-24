@@ -7,6 +7,7 @@ tools = Split("""
     hcrpmc730
     logx
     boost_serialization
+    operationmode
     qtcore
     qtnetwork
     xmlrpc_client++
@@ -25,7 +26,6 @@ HcrPmc730StatusWorker.cpp
 headers = Split('''
 HcrPmc730Client.h
 HcrPmc730StatusWorker.h
-HmcModeChange.h
 ''')
 lib = env.Library('hcrpmc730client', sources)
 

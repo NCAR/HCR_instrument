@@ -69,10 +69,10 @@ public:
     /// @throws exception on XML-RPC error
     void xmitHvOff();
 
-    /// @brief Send "setOperationMode" command to HcrPmc730Daemon
-    /// @param mode the desired OperationMode
+    /// @brief Send "setHmcMode" command to HcrPmc730Daemon
+    /// @param mode the desired HmcMode
     /// @throws exception on XML-RPC error
-    void setOperationMode(OperationMode mode);
+    void setHmcMode(HmcMode mode);
     
     /// @brief Open the Active Pressurization System solenoid valve
     void openApsValve();
