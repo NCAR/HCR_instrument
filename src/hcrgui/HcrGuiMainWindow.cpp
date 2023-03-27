@@ -1003,7 +1003,7 @@ HcrGuiMainWindow::_update() {
         _ui.requestedModeCombo->setPlaceholderText("[No DRX]");
     }
 
-    std::string modeText = _drxStatus.currentOpsMode().name();
+    std::string modeText = _hcrExecutiveStatus.currentOperationMode().name();
     _ui.opsModeValue->setText(QString::fromStdString(modeText));
 
     // INS1 status light:
