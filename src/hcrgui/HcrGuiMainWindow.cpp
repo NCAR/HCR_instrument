@@ -981,30 +981,30 @@ HcrGuiMainWindow::_update() {
         _ui.xmitterStatusIcon->setPixmap(_greenLED);
     }
 
-    // Operation mode
-    if (_hcrdrxStatusThread.serverIsResponding()) {
-        if(! _ui.requestedModeCombo->count()) {
-            for(auto&& mode: _drxStatus.supportedOpsModes()) {
-                _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
-            }
+    // If supported OperationMode-s have changed, update the choices in the
+    // requestedOperationMode combo box
+    if (_drxStatus.supportedOpsModes() != _requestedModeComboItems) {
+        // Populate the combo box with the new mode list
+        _ui.requestedModeCombo->clear();
+        _requestedModeComboItems = _drxStatus.supportedOpsModes();
+        for (auto&& mode: _requestedModeComboItems) {
+            _ui.requestedModeCombo->addItem(mode.name().c_str(), QVariant::fromValue(mode));
         }
-        _ui.requestedModeCombo->setPlaceholderText("");
+
+        // Find our requested operating mode in the mode list and mark its index
+        // as the current selection.
         _ui.requestedModeCombo->setCurrentIndex(-1);
         auto reqMode = _hcrExecutiveStatus.requestedOperationMode();
-        for(auto i = 0; i < _ui.requestedModeCombo->count(); ++i) {
-            auto itemMode = _ui.requestedModeCombo->itemData(i).value<OperationMode>();
-            if(reqMode == itemMode) {
+        for(uint i = 0; i < _requestedModeComboItems.size(); ++i) {
+            if(reqMode == _requestedModeComboItems[i]) {
                 _ui.requestedModeCombo->setCurrentIndex(i);
+                break;
             }
         }
-    }
-    else {
-        _ui.requestedModeCombo->clear();        
-        _ui.requestedModeCombo->setPlaceholderText("[No DRX]");
     }
 
     std::string modeText = _hcrExecutiveStatus.currentOperationMode().name();
-    _ui.opsModeValue->setText(QString::fromStdString(modeText));
+    _ui.opsModeValue->setText(modeText.c_str());
 
     // INS1 status light:
     // Green light if mode is "Air Navigation" or "Land Navigation" and we have

@@ -268,6 +268,8 @@ private:
     CmigitsStatus _ins2Status;
     /// Last status from hcrdrx
     DrxStatus _drxStatus;
+    /// OperationMode-s currently shown in the mode combo box
+    std::vector<OperationMode> _requestedModeComboItems;
     /// Last status from DataMapper
     DMAP_info_t _dmapStatus;
     /// Last status from HcrExecutive
