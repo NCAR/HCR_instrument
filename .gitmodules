@@ -27,12 +27,10 @@
 	url = git@github.com:NCAR/Pmc730.git
 [submodule "src/cmigits"]
 	path = src/cmigits
-	url = git@gitlab.eol.ucar.edu:ITAR/cmigits-hcr.git
+	url = git@gitlab.eol.ucar.edu:ITAR/cmigits.git
 [submodule "src/Navigator_xx821"]
 	path = src/Navigator_xx821
 	url = git@gitlab.eol.ucar.edu:vendor/Navigator_xx821
 [submodule "src/Pentek_xx821"]
 	path = src/Pentek_xx821
 	url = git@github.com:/NCAR/Pentek_xx821
-[submodule "cmigits"]
-	url = git@gitlab.eol.ucar.edu:ITAR/cmigits
