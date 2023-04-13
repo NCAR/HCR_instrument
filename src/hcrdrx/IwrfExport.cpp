@@ -75,7 +75,7 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _qH = new CircBuffer<PulseData>(_queueSize);
   _qV = new CircBuffer<PulseData>(_queueSize);
 
-  // pulse and burst data for reading from queues
+  // received H and V data for a given pulse
   _pulseH = new PulseData;
   _pulseV = new PulseData;
 
