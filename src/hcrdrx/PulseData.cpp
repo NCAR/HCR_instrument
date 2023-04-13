@@ -22,8 +22,11 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 #include "PulseData.h"
+#include <logx/Logging.h>
 #include <cstdio>
 #include <cstring>
+
+LOGGING("PulseData")
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -110,6 +113,7 @@ void PulseData::_allocIq()
   }
 
   _iq = new IQData[_nGates];
+  _nGatesAlloc = _nGates;
 
 }
 
