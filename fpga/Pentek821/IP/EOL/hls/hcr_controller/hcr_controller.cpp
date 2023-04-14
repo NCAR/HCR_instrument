@@ -16,6 +16,7 @@ void hcr_controller(
 		uint32_t cfg_num_pulses_per_xfer,
 		uint32_t cfg_enabled_channel_vector,
 		volatile uint32_t* cfg_watchdog,
+		uint32_t cfg_use_mag_phase,
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
 		int32_t cfg_filter_coefs_ch1[N_COEF_SETS][N_FILTER_TAPS],
@@ -47,6 +48,7 @@ void hcr_controller(
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_num_pulses_per_xfer
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_enabled_channel_vector
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_watchdog
+	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_use_mag_phase
 	#pragma HLS INTERFACE s_axilite bundle=cfg_bus port=cfg_pulse_sequence
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->prt complete
 	#pragma HLS ARRAY_PARTITION variable=cfg_pulse_sequence->timer_offset complete
@@ -98,6 +100,7 @@ void hcr_controller(
 			cfg_num_pulses_per_xfer,
 			cfg_enabled_channel_vector,
 			cfg_watchdog,
+			cfg_use_mag_phase,
 			cfg_phase_samples,
 			cfg_pulse_sequence,
 			cfg_filter_coefs_ch0,
@@ -138,6 +141,7 @@ void scheduler_parser(
 		uint32_t cfg_num_pulses_per_xfer,
 		ap_uint<3> cfg_enabled_channel_vector,
 		volatile uint32_t* cfg_watchdog,
+		uint32_t cfg_use_mag_phase,
 		uint32_t cfg_phase_samples[N_PHASE_SAMPLES],
 		pulse_definition cfg_pulse_sequence[N_PULSE_DEFS],
 		int32_t cfg_filter_coefs_ch0[N_COEF_SETS][N_FILTER_TAPS],
@@ -200,6 +204,7 @@ void scheduler_parser(
 				pulse.last_pulse_in_block = (pulse_rep == (pulse_definition.num_pulses-1));
 				pulse.post_decimation = cfg_post_decimation;
 				pulse.phase_sample = cfg_phase_samples[phase_table_index];
+				pulse.use_mag_phase = cfg_use_mag_phase;
 
 				//Only execute the post time on the final pulse in the block
 				if(!pulse.last_pulse_in_block)

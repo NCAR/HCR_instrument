@@ -81,6 +81,7 @@ struct pulse_exec_definition
 	bool last_pulse_in_block;
 	bool first_pulse_in_xfer;
 	bool last_pulse_in_xfer;
+	bool use_mag_phase;
 	bool terminate;
 };
 

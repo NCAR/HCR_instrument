@@ -35,6 +35,7 @@ void hcr_metadata_injector(
 	uint64_t pulse_sequence_counter = 0;
 	bool terminate = 0;
 	bool previous_gate_bit = 0;
+	bool use_mag_phase = 0;
 	pdti_64 data_word;
 	pdti_64 cached_data_word;
 
@@ -80,8 +81,16 @@ void hcr_metadata_injector(
 					output_data_word.user[PDTI_SYNC] = 0;
 					if(sample_counter & 1)
 					{
-						//Write pairs of samples at a time since they take up 1.5 output words
-						write_pair(o_data, cached_data_word, output_data_word);
+						if(use_mag_phase)
+						{
+							write_16M16P(o_data, cached_data_word);
+							write_16M16P(o_data, output_data_word);
+						}
+						else
+						{
+							write_16I16Q(o_data, cached_data_word);
+							write_16I16Q(o_data, output_data_word);
+						}
 					}
 					cached_data_word = output_data_word;
 					decimation_counter = 1;
@@ -111,6 +120,7 @@ void hcr_metadata_injector(
 				decimation_counter,
 				pulse_sequence_counter,
 				previous_gate_bit,
+				use_mag_phase,
 				o_data,
 				*pos_enc_0,
 				*pos_enc_1,
@@ -134,6 +144,7 @@ bool handle_header(
 		uint8_t& decimation_counter,
 		uint64_t& pulse_sequence_counter,
 		bool& previous_gate_bit,
+		bool& use_mag_phase,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
@@ -153,10 +164,10 @@ bool handle_header(
 	{
 		#pragma HLS pipeline ii=3
 		pdti_64 pad_sample = data_word;
-		pad_sample.data = 0x7474747475757575;
+		pad_sample.data = 0;
 		pad_sample.user[PDTI_GATE] = 1;
 		pad_sample.user[PDTI_SYNC] = 0;
-		write_pair(o_data, pad_sample, pad_sample);
+		write_16I16Q(o_data, pad_sample);
 	}
 
 	//If collecting continuously, we need to add a "break sample"
@@ -164,10 +175,10 @@ bool handle_header(
 	if(pulse_info.first_pulse_in_xfer)
 	{
 		pdti_64 spacer_sample = data_word;
-		spacer_sample.data = 0x9797979798989898;
+		spacer_sample.data = 0;
 		spacer_sample.user[PDTI_GATE] = 0;
 		spacer_sample.user[PDTI_SYNC] = 0;
-		write_pair(o_data, spacer_sample, spacer_sample);
+		write_16I16Q(o_data, spacer_sample);
 	}
 
 	//Update flags
@@ -177,15 +188,22 @@ bool handle_header(
 	break_after_pulse = pulse_info.last_pulse_in_xfer;
 	num_samples = pulse_info.num_samples;
 	decimation_value = pulse_info.post_decimation;
+	use_mag_phase = pulse_info.use_mag_phase;
 
 	ap_uint<32> ext_flags = flags;
 	ext_flags[16] = pulse_info.first_pulse_in_block;
 	ext_flags[17] = pulse_info.last_pulse_in_block;
 	ext_flags[18] = pulse_info.first_pulse_in_xfer;
 	ext_flags[19] = pulse_info.last_pulse_in_xfer;
+	ext_flags[20] = pulse_info.use_mag_phase;
 
 	std::cout << "blockFL: " << ext_flags[16] << ext_flags[17]
 		   << "  xferFL: " << ext_flags[18] << ext_flags[19] << "\n";
+
+	union { float f; uint32_t i; } scale;
+	union { float f; uint32_t i; } offset;
+	scale.f = pulse_info.use_mag_phase ? powerScale : 1.0;
+	offset.f = pulse_info.use_mag_phase ? powerOffset : 0.0;
 
 	uint32_t header[16];
 	#pragma HLS ARRAY_PARTITION variable=header complete
@@ -199,8 +217,8 @@ bool handle_header(
 	header[7] = pulse_info.phase_sample;
 	header[8] = pulse_sequence_counter & 0xFFFFFFFFull;
 	header[9] = (pulse_sequence_counter >> 32) & 0xFFFFFFFFull;
-	header[10] = 0;
-	header[11] = 0;
+	header[10] = scale.i;
+	header[11] = offset.i;
 	header[12] = 0;
 	header[13] = 0;
 	header[14] = 0;

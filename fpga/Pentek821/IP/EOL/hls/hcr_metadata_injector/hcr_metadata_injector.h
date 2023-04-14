@@ -1,5 +1,5 @@
 //
-// hcr_controller.h
+// hcr_metadata_injector.h
 //    Author: Adam Karboski <karboski@ucar.edu>
 //
 // Copyright (c) 2021 University Corporation for Atmospheric Research
@@ -9,6 +9,7 @@
 #define __HCR_METADATA_INJ_H__
 
 #include "../hcr_hls_common.h"
+#include <hls_math.h>
 
 void hcr_metadata_injector(
 		hls::stream<pdti_64>& i_data,
@@ -31,6 +32,7 @@ bool handle_header(
 		uint8_t& decimation_counter,
 		uint64_t& pulse_sequence_counter,
 		bool& last_gate_bit,
+		bool& use_mag_phase,
 		hls::stream<pdti_32>& o_data,
 		uint32_t pos_enc_0,
 		uint32_t pos_enc_1,
@@ -53,7 +55,7 @@ inline pdti_32 copy_meta(pdti_64 x)
 };
 
 // Write 2 24-bit IQs into 3 32-bit words
-inline void write_pair(hls::stream<pdti_32>& o, pdti_64 s1, pdti_64 s2)
+inline void write_pair_24I24Q(hls::stream<pdti_32>& o, pdti_64 s1, pdti_64 s2)
 {
 #pragma HLS inline
 	pdti_32 y = copy_meta(s1);
@@ -69,6 +71,71 @@ inline void write_pair(hls::stream<pdti_32>& o, pdti_64 s1, pdti_64 s2)
 	o << y;
 	y.data(7,0)   = I2(23,16);
 	y.data(31,8)  = Q2;
+	o << y;
+}
+
+const float maxPowerFpga = log10( pow(2.0, 23.5) );
+const float minPowerFpga = log10( pow(2.0, -0.5) );
+const float powerRangeFpga = maxPowerFpga - minPowerFpga;
+typedef ap_fixed<39,25> mpfix;
+typedef ap_fixed<24,24> mpfix_atan;
+const mpfix powerScaleFpga = 65535.0 / powerRangeFpga;
+const mpfix powerOffsetFpga = (maxPowerFpga + minPowerFpga) / 2;
+const mpfix phaseScaleFpga = 32767.0 / M_PI;
+const float fpgaFactor = 20;
+const float powerScale = fpgaFactor / float(powerScaleFpga);
+const float powerOffset = fpgaFactor * float(powerOffsetFpga);
+
+// Write a 16-bit dbmag and 16-bit phase into 1 32-bit word
+inline void write_16M16P(hls::stream<pdti_32>& o, pdti_64 s)
+{
+#pragma HLS inline
+	pdti_32 y = copy_meta(s);
+	ap_int<24> I = s.data(23,0);
+	ap_int<24> Q = s.data(55,32);
+	mpfix If = I;
+	mpfix Qf = Q;
+	ap_int<16> packedPower;
+	ap_int<16> packedPhase;
+
+	mpfix amplitude = hls::hypot(If, Qf);
+	mpfix logPower = hls::log10(amplitude);
+	packedPower = (logPower - powerOffsetFpga) * powerScaleFpga;
+	// cordic gets worse close to the origin
+	if ( ap_int<12>(I) == I && ap_int<12>(Q) == Q) {
+		I = I << 12;
+		Q = Q << 12;
+	}
+	mpfix phase = hls::atan2(mpfix_atan(Q), mpfix_atan(I)) * phaseScaleFpga;
+	if (phase < -32767) packedPhase = -32767;
+	else if (phase > 32767) packedPhase = 32767;
+	else packedPhase = phase;
+
+	if ( amplitude != 0 )
+	{
+		y.data(15,0)  = packedPower;
+		y.data(31,16) = packedPhase;
+	}
+	else
+	{
+		y.data(15,0)  = ap_int<16>(-32768);
+		y.data(31,16) = 0;
+	}
+	o << y;
+}
+
+// Write a 16-bit I and Q into 1 32-bit word
+inline void write_16I16Q(hls::stream<pdti_32>& o, pdti_64 s)
+{
+#pragma HLS inline
+	pdti_32 y = copy_meta(s);
+	ap_int<24> I = s.data(23,0);
+	ap_int<24> Q = s.data(55,32);
+	ap_fixed<16, 16, AP_RND, AP_SAT_SYM> If = I;
+	ap_fixed<16, 16, AP_RND, AP_SAT_SYM> Qf = Q;
+
+	y.data(15,0)  = If;
+	y.data(31,16) = Qf;
 	o << y;
 }
 

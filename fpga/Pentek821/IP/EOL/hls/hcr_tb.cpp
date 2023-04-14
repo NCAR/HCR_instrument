@@ -8,6 +8,31 @@
 #include "hcr_controller/hcr_controller.h"
 #include "hcr_metadata_injector/hcr_metadata_injector.h"
 
+//mag phase algo in double precision for comparison to fixed-point
+void MPdouble(double I, double Q, int16_t& packedPower, int16_t& packedPhase)
+{
+	packedPower = -32768;
+	packedPhase = 0;
+
+	const float max = 10 * log10( pow(2.0, 47) );
+	const float min = 10 * log10( pow(2.0, -1) );
+	const float range = max - min;
+	const float scale = 65535.0 / range;
+	const float offset = (max + min) / 2;
+	const float phasescale = 32767.0 / M_PI;
+
+	double power = I*I+Q*Q;
+	if (power != 0)
+	{
+		double logPower = 10*log10(power);
+		packedPower = floor((logPower - offset) * scale + 0.5);
+		double phase = floor(atan2(Q, I) * phasescale + 0.5);
+		if (phase < -32767) packedPhase = -32767;
+		else if (phase > 32767) packedPhase = 32767;
+		else packedPhase = phase;
+	}
+}
+
 int main()
 {
 
@@ -19,6 +44,7 @@ int main()
 	uint32_t cfg_num_pulses_per_xfer = 3;
 	uint32_t cfg_enabled_channel_vector = 7;
 	uint32_t cfg_watchdog = 1;
+	uint32_t cfg_use_mag_phase = 1;
 	pulse_definition cfg_pulse_sequence[N_PULSE_DEFS] {};
 	bool pps = 1;
 	volatile ap_uint<N_TIMERS> mt_pulse;
@@ -106,6 +132,7 @@ int main()
 		cfg_num_pulses_per_xfer,
 		cfg_enabled_channel_vector,
 		&cfg_watchdog,
+		cfg_use_mag_phase,
 		cfg_pulse_sequence,
 		cfg_filter_coefs_ch0,
 		cfg_filter_coefs_ch1,
@@ -162,6 +189,7 @@ int main()
 				if (x==5) numSamples = odata.data;
 			}
 			std::cout << "\n";
+#ifdef FMT_24_BIT
 			ap_uint<96> accum;
 			for(int x=0; x<(numSamples*3/2); x++) {
 				if(o_data.empty()) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
@@ -178,6 +206,16 @@ int main()
 						<< std::noshowbase << uint64_t(accum(95,48)) << "\n";
 				}
 			}
+#else
+			for(int x=0; x<numSamples; ++x) {
+				if(o_data.empty()) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
+				if (!odata.user[64]) { std::cout << "INCOMPLETE DATA!\n"; fail = true; break; }
+				odata = o_data.read();
+				if(odata.data == 0x75757575) { std::cout << "BAD DATA!\n"; fail = true; break; }
+				std::cout << std::hex << std::setw(8) << std::setfill('0')
+						  << std::noshowbase << uint64_t(odata.data) << "\n";
+			}
+#endif
 		}
 		else {
 			std::cout << "EOB ";
@@ -192,6 +230,57 @@ int main()
 	while(!pulse_metadata_ch2.empty()) pulse_metadata_ch2.read();
 
 	if(fail) return -1;
+
+	std::cout << std::dec;
+
+	// Test mag/phase packing algorithm
+	pdti_64 xx;
+	hls::stream<pdti_32> o;
+	double maxErrorMag = 0;
+	double sumErrorMag = 0;
+	double maxErrorPhase = 0;
+	double sumErrorPhase = 0;
+	for(int x=0; x<1000; ++x)
+	{
+		int scaledown = rand() % 24;
+		int I = (rand() & 0xFFFFFF) - 0x7FFFFF;
+		int Q = (rand() & 0xFFFFFF) - 0x7FFFFF;
+		I = I >> scaledown;
+		Q = Q >> scaledown;
+		xx.data = 0;
+		xx.data(31,0) = I;
+		xx.data(63,32) = Q;
+		write_16M16P(o, xx);
+		pdti_32 packed = o.read();
+		int16_t packedMag = int16_t(packed.data(15,0));
+		int16_t packedPhase = int16_t(packed.data(31,16));
+
+		double PHASE_MULT = 180.0 / 32767.0;
+		double DEG_TO_RAD = M_PI / 180.0;
+		double powerDbm = packedMag * powerScale + powerOffset;
+		double power = pow(10.0, powerDbm / 10.0);
+		double phaseDeg = packedPhase * PHASE_MULT;
+		double sinPhase = sin(phaseDeg * DEG_TO_RAD);
+		double cosPhase = cos(phaseDeg * DEG_TO_RAD);
+		double mag = sqrt(power);
+		if (mag == 0.0) {
+			mag = 1.0e-20;
+		}
+		double Io = mag * cosPhase;
+		double Qo = mag * sinPhase;
+//		std::cout << (I-Io)/I*100 << " " << (Q-Qo)/Q*100 << std::endl;
+		int16_t m;
+		int16_t p;
+		MPdouble(I, Q, m, p);
+//		std::cout << I << "," << Q << "," << packedMag-m << "," << packedPhase-p << "\n";
+		maxErrorMag = std::max(maxErrorMag, abs(double(packedMag-m)));
+		maxErrorPhase = std::max(maxErrorPhase, abs(double(packedPhase-p)));
+		sumErrorMag += (packedMag-m);
+		sumErrorPhase += (packedPhase-p);
+	}
+	std::cout << "\nMagPhase errors: " << maxErrorMag << " " << maxErrorPhase << " " << sumErrorMag/1000.0 << " " << sumErrorPhase/1000.0 << std::endl;
+
+	if (maxErrorMag > 1 || maxErrorPhase >1) return -50;
 
 //	// Bias test the squasher algorithm
 //	std::cout << std::dec << "Bias test for squasher...";
