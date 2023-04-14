@@ -47,7 +47,8 @@ public:
             unsigned int lastPulseInBlock   : 1;
             unsigned int firstPulseInXfer   : 1;
             unsigned int lastPulseInXfer    : 1;
-            unsigned int spare1             : 12;
+            unsigned int magPhaseFormat     : 1;
+            unsigned int spare1             : 11;
         } statusFlags;
         uint32_t posEnc0;
         uint32_t posEnc1;
@@ -56,18 +57,12 @@ public:
         uint32_t prt;
         uint32_t phaseSample;
         uint64_t pulseSequenceNumber;
-        uint32_t spare10;
-        uint32_t spare11;
+        float    sampleScale;
+        float    sampleOffset;
         uint32_t spare12;
         uint32_t spare13;
         uint32_t spare14;
         uint32_t spare15;
-    };
-
-    struct __attribute__((packed)) PackedIQData
-    {
-        int I : 24;
-        int Q : 24;
     };
 
     static constexpr uint32_t NUM_PULSE_SEQUENCE_DEFINITIONS          = XHCR_CONTROLLER_CFG_BUS_DEPTH_CFG_PULSE_SEQUENCE_PRT_0;
@@ -108,6 +103,7 @@ private :
         NUM_PULSES_PER_XFER                     = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_NUM_PULSES_PER_XFER_DATA,
         ENABLED_CHANNEL_VECTOR                  = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_ENABLED_CHANNEL_VECTOR_DATA,
         WATCHDOG                                = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_WATCHDOG_DATA,
+        USE_MAG_PHASE                           = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_USE_MAG_PHASE_DATA,
         PULSE_SEQUENCE_PRT_0                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE,
         PULSE_SEQUENCE_PRT_1                    = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE,
         PULSE_SEQUENCE_NUM_PULSES               = XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_NUM_PULSES_BASE,
@@ -302,6 +298,7 @@ public:
                 uint32_t postDecimation,
                 uint32_t numPulsesPerXfer,
                 uint32_t enabledChannelVector,
+                uint32_t useMagPhaseFormat,
                 uint32_t numPulsesToExecute
             )
     {
@@ -312,6 +309,7 @@ public:
         write_(POST_DECIMATION,            postDecimation,      "Writing post decimation");
         write_(NUM_PULSES_PER_XFER,        numPulsesPerXfer,    "Writing num pulses per xfer");
         write_(ENABLED_CHANNEL_VECTOR,     enabledChannelVector,"Writing enabled channel vector");
+        write_(USE_MAG_PHASE,              useMagPhaseFormat,   "Writing use mag phase");
         write_(CTRL,                       1,                   "Starting controller");
     };
 

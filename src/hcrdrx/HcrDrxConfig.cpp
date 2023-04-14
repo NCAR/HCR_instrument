@@ -176,6 +176,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( refclk_frequency,                  "frequency of external reference clock",        125.0e6 )
         MEMBER_PROGOPT( rx_frequency,                      "ddc center (IF) frequency, rx",                156.25e6 )
         MEMBER_PROGOPT( tx_frequency,                      "ddc center (IF) frequency, tx",                156.25e6 )
+        MEMBER_PROGOPT( use_mag_phase,                     "output data in dB mag / phase format",         1 )
         MEMBER_PROGOPT( extra_ddc_gain,                    "adjustment to default ddc filter gain",        0.015625 )
         MEMBER_PROGOPT( extra_pulse_gain,                  "adjustment to default gaussian filter gain",   16.0 )
         MEMBER_PROGOPT( final_decimation,                  "decimation after the last rx filter",          2 )
@@ -234,6 +235,7 @@ HcrDrxConfig::configString() const {
     os << STREAM_OPT_AND_MEMBER( refclk_frequency );
     os << STREAM_OPT_AND_MEMBER( rx_frequency );
     os << STREAM_OPT_AND_MEMBER( tx_frequency );
+    os << STREAM_OPT_AND_MEMBER( use_mag_phase );
     os << STREAM_OPT_AND_MEMBER( extra_ddc_gain );
     os << STREAM_OPT_AND_MEMBER( extra_pulse_gain );
     os << STREAM_OPT_AND_MEMBER( final_decimation );

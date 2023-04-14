@@ -83,6 +83,7 @@ private:
     OPT_AND_GETTER( double,       refclk_frequency );
     OPT_AND_GETTER( double,       rx_frequency );
     OPT_AND_GETTER( double,       tx_frequency );
+    OPT_AND_GETTER( bool,         use_mag_phase );
     OPT_AND_GETTER( double,       extra_ddc_gain );
     OPT_AND_GETTER( double,       extra_pulse_gain );
     OPT_AND_GETTER( uint,         final_decimation );

@@ -28,6 +28,8 @@
 ///
 /// These are used to transfer data from a HCRPentek to IwrfExport
 
+#include <radar/iwrf_data.h>
+
 #include <sys/time.h>
 #include <sys/types.h>
 #include <complex>
@@ -37,7 +39,7 @@ class PulseData {
 public:
 
     // Used by HCRPentek and IwrfExport to set data size
-    typedef std::complex<int32_t> IQData; 
+    typedef std::complex<int16_t> IQData;
 
     /// Constructor.
     PulseData();
@@ -64,6 +66,9 @@ public:
     /// @param currentPrt PRT in use for this pulse
     /// @param txPulseWidth transmit pulse width, seconds
     /// @param sampleWidth sample width, seconds
+    /// @param sampleOffset sample offset
+    /// @param sampleScale sample scale
+    /// @param encoding sample encoding
     /// @param nGates number of gates in the pulse data
     /// @param iq I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
     void set(int64_t pulseSeqNum,
@@ -78,6 +83,9 @@ public:
              double currentPrt,
              double txPulseWidth,
              double sampleWidth,
+             double sampleOffset,
+             double sampleScale,
+             iwrf_iq_encoding_t encoding,
              int nGates,
              const IQData *iq);
 
@@ -98,6 +106,9 @@ public:
     inline double getCurrentPrt() const { return _currentPrt; }
     inline double getTxPulseWidth() const { return _txPulseWidth; }
     inline double getSampleWidth() const { return _sampleWidth; }
+    inline double getOffset() const { return _offset; }
+    inline double getScale() const { return _scale; }
+    inline iwrf_iq_encoding_t getEncoding() const { return _encoding; }
 
 private:
 
@@ -127,6 +138,12 @@ private:
     double _txPulseWidth;
     /// Sample width
     double _sampleWidth;
+    /// Sample offset
+    double _offset;
+    /// Sample scale
+    double _scale;
+    /// Sample encoding
+    iwrf_iq_encoding_t _encoding;
 
     /// IQ data
     IQData *_iq;

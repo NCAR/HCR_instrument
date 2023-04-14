@@ -140,10 +140,6 @@ private:
     int _pulseBufLen;
     int _pulseMsgLen;
 
-    /// I and Q count scaling factor to get power in mW easily:
-    /// mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
-    double _iqScaleForMw;
-
     /// Status XML
     int _xmlLen;
     char *_statusBuf;

@@ -234,6 +234,7 @@ HCR_Pentek::_startRadar() {
                     _config.final_decimation(),     // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
                     enabledChannelVector,           // enabledChannelVector,
+                    _config.use_mag_phase(),        // useMagPhaseFormat,
                     _config.pulses_to_run() );      // numPulsesToExecute
 
     // Generate a fake PPS if desired
@@ -818,7 +819,6 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
     size_t dataBufOffsetBytes = 0;
     bool lastPulseInXfer = false;
     using IQData = PulseData::IQData;
-    using PackedIQData = Controller::PackedIQData;
     QUdpSocket angleSocket;
 
     // ILOG << "_acceptAdcData " << chan << "\n";
@@ -903,20 +903,29 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         }
 
         // Check the size of the buffer
-        if(dataBufOffsetBytes + nGates * sizeof(PackedIQData) > metadata->validBytes) {
+        if(dataBufOffsetBytes + nGates * sizeof(IQData) > metadata->validBytes) {
             ELOG << "Truncated pulse data chan " << std::dec << chan
                  << " after pulse " << numPulsesProcessed;
             return;
         }
 
         // Extract the IQ data
-        const PackedIQData* packedIqData(reinterpret_cast<const PackedIQData*>(dataBuf+dataBufOffsetBytes));
-        dataBufOffsetBytes += nGates * sizeof(PackedIQData);
+        const IQData* iqData(reinterpret_cast<const IQData*>(dataBuf+dataBufOffsetBytes));
+        dataBufOffsetBytes += nGates * sizeof(IQData);
 
-        // Unpack the 24-bit IQ data
-        IQData iqData[nGates];
-        for(auto k=0ul; k<nGates; ++k) {
-            iqData[k] = { packedIqData[k].I, packedIqData[k].Q };
+        // I and Q count scaling factor to get power in mW:
+        // mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
+        double sampleScale = pulseHeader.sampleScale / _config.iqcount_scale_for_mw();
+        double sampleOffset = 0.0;
+        iwrf_iq_encoding_t sampleEncoding = IWRF_IQ_ENCODING_SCALED_SI16;
+
+        if ( pulseHeader.statusFlags.magPhaseFormat )
+        {
+            // Scale the packed logmag to proper decibels
+            sampleScale = pulseHeader.sampleScale;
+            // Offset dB-packed --> dB-counts --> dB-mW
+            sampleOffset = pulseHeader.sampleOffset - 20*log10(_config.iqcount_scale_for_mw());
+            sampleEncoding = IWRF_IQ_ENCODING_DBM_PHASE_SI16;
         }
 
         // Update info for status()
@@ -985,6 +994,9 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
                 _fromCounts(pulseHeader.prt), // double currentPrt,
                 _fromCounts(blockDef.timers[Controller::Timers::TX_PULSE].width), // double txPulseWidth,
                 _digitizerSampleWidth, // double sampleWidth,
+                sampleOffset,       // double sampleOffset,
+                sampleScale,        // double sampleScale,
+                sampleEncoding,     // iwrf_iq_encoding_t encoding,
                 nGates,             // int nGates,
                 iqData );           // const IQData *iq)
 
@@ -1054,13 +1066,13 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
     //      metaData->dataFormat: 0 = 8-bit, 1 = 16-bit, 2 = 24-bit, 3 = 32-bit
     //              ->dataType: 0 = real, 1 = complex (IQ)
     //              ->firstSamplePhase: 0 = I first, 1 = Q first
-    if (!( (metadata->dataFormat+1)*2 == sizeof(Controller::PackedIQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
-        ELOG << "Chan " << chan <<
-                ": data unpublishable w/format: " << metadata->dataFormat <<
-                ", type: " << metadata->dataType <<
-                ", first sample phase: " << metadata->firstSamplePhase;
-        return(false);
-    }
+//    if (!( (metadata->dataFormat+1)*2 == sizeof(PulseData::IQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
+//        ELOG << "Chan " << chan <<
+//                ": data unpublishable w/format: " << metadata->dataFormat <<
+//                ", type: " << metadata->dataType <<
+//                ", first sample phase: " << metadata->firstSamplePhase;
+//        return(false);
+//    }
 
     return(true);
 }

@@ -93,10 +93,6 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
   _statusBufLen = 0;
   _statusMsgLen = 0;
 
-  // I and Q count scaling factor to get power in mW easily:
-  // mW = (I_count / _iqScaleForMw)^2 + (Q_count / _iqScaleForMw)^2
-  _iqScaleForMw = _config.iqcount_scale_for_mw();
-
   // pulse seq num and times
   _pulseSeqNum = -1;
   _timeSecs = 0;
@@ -573,15 +569,7 @@ void IwrfExport::_assembleIwrfPulsePacket()
 
   _pulseHdr.n_gates = _nGates;
   _pulseHdr.n_channels = NCHANNELS;
-  if ( std::is_same<IQData, std::complex<int16_t>>::value ) {
-    _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI16;
-  }
-  else if ( std::is_same<IQData, std::complex<int32_t>>::value ) {
-    _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_SCALED_SI32;
-  }
-  else {
-    _pulseHdr.iq_encoding = IWRF_IQ_ENCODING_NOT_SET;
-  }
+  _pulseHdr.iq_encoding = _pulseH->getEncoding();
   // Pulse transmit polarization should be the same in both the H and V
   // receiver data. We just get it from _pulseH receiver data.
   _pulseHdr.hv_flag =
@@ -591,8 +579,8 @@ void IwrfExport::_assembleIwrfPulsePacket()
   _pulseHdr.iq_offset[0] = 0;
   _pulseHdr.iq_offset[1] = _nGates * 2;
   _pulseHdr.iq_offset[2] = _nGates * 4;
-  _pulseHdr.scale = 1.0 / _iqScaleForMw;
-  _pulseHdr.offset = 0.0;
+  _pulseHdr.scale = _pulseH->getScale();
+  _pulseHdr.offset = _pulseH->getOffset();
   _pulseHdr.n_gates_burst = 0;
   _pulseHdr.start_range_m = _tsProc.start_range_m;
   const double SpeedOfLight = 2.99792458e8; // m/s

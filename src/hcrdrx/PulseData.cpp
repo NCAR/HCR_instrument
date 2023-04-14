@@ -42,6 +42,9 @@ PulseData::PulseData() :
     _currentPrt(0.0),
     _txPulseWidth(0.0),
     _sampleWidth(0.0),
+    _offset(0.0),
+    _scale(1.0),
+    _encoding(IWRF_IQ_ENCODING_NOT_SET),
     _iq(NULL)
 {}
 
@@ -71,6 +74,9 @@ void PulseData::set(int64_t pulseSeqNum,
                     double currentPrt,
                     double txPulseWidth,
                     double sampleWidth,
+                    double sampleOffset,
+                    double sampleScale,
+                    iwrf_iq_encoding_t encoding,
                     int nGates,
                     const IQData *iq)
 {
@@ -88,6 +94,9 @@ void PulseData::set(int64_t pulseSeqNum,
   _currentPrt = currentPrt;
   _txPulseWidth = txPulseWidth;
   _sampleWidth = sampleWidth;
+  _offset = sampleOffset;
+  _scale = sampleScale;
+  _encoding = encoding;
 
   _allocIq();
   memcpy(_iq, iq, _nGates * sizeof(IQData));
