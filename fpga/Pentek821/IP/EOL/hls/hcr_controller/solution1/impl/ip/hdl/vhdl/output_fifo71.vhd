@@ -18,7 +18,7 @@ port (
     ap_continue : IN STD_LOGIC;
     ap_idle : OUT STD_LOGIC;
     ap_ready : OUT STD_LOGIC;
-    pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (948 downto 0);
+    pulse_queue_ch0_V_dout : IN STD_LOGIC_VECTOR (949 downto 0);
     pulse_queue_ch0_V_empty_n : IN STD_LOGIC;
     pulse_queue_ch0_V_read : OUT STD_LOGIC;
     pulse_metadata_ch0_V_TDATA : OUT STD_LOGIC_VECTOR (951 downto 0);
@@ -38,7 +38,7 @@ architecture behav of output_fifo71 is
     constant ap_const_lv32_1 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000001";
     constant ap_const_lv1_0 : STD_LOGIC_VECTOR (0 downto 0) := "0";
     constant ap_const_lv32_2 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000000000000010";
-    constant ap_const_lv32_3B4 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001110110100";
+    constant ap_const_lv32_3B5 : STD_LOGIC_VECTOR (31 downto 0) := "00000000000000000000001110110101";
     constant ap_const_lv1_1 : STD_LOGIC_VECTOR (0 downto 0) := "1";
 
     signal ap_done_reg : STD_LOGIC := '0';
@@ -57,8 +57,8 @@ architecture behav of output_fifo71 is
     signal regslice_both_pulse_metadata_ch0_V_U_apdone_blk : STD_LOGIC;
     signal ap_block_state2 : BOOLEAN;
     signal ap_block_state2_io : BOOLEAN;
-    signal trunc_ln176_fu_73_p1 : STD_LOGIC_VECTOR (947 downto 0);
-    signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (948 downto 0);
+    signal trunc_ln176_fu_73_p1 : STD_LOGIC_VECTOR (948 downto 0);
+    signal tmp_1_fu_77_p3 : STD_LOGIC_VECTOR (949 downto 0);
     signal ap_NS_fsm : STD_LOGIC_VECTOR (2 downto 0);
     signal ap_block_state1 : BOOLEAN;
     signal pulse_metadata_ch0_V_TDATA_int : STD_LOGIC_VECTOR (951 downto 0);
@@ -251,7 +251,7 @@ begin
         end if; 
     end process;
 
-    pulse_terminate_fu_65_p3 <= pulse_queue_ch0_V_dout(948 downto 948);
+    pulse_terminate_fu_65_p3 <= pulse_queue_ch0_V_dout(949 downto 949);
     tmp_1_fu_77_p3 <= (ap_const_lv1_0 & trunc_ln176_fu_73_p1);
-    trunc_ln176_fu_73_p1 <= pulse_queue_ch0_V_dout(948 - 1 downto 0);
+    trunc_ln176_fu_73_p1 <= pulse_queue_ch0_V_dout(949 - 1 downto 0);
 end behav;

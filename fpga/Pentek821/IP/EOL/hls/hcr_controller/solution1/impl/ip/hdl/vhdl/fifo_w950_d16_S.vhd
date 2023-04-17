@@ -7,9 +7,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
 
-entity fifo_w949_d16_S_shiftReg is
+entity fifo_w950_d16_S_shiftReg is
     generic (
-        DATA_WIDTH : integer := 949;
+        DATA_WIDTH : integer := 950;
         ADDR_WIDTH : integer := 4;
         DEPTH : integer := 16);
     port (
@@ -18,9 +18,9 @@ entity fifo_w949_d16_S_shiftReg is
         ce : in std_logic;
         a : in std_logic_vector(ADDR_WIDTH-1 downto 0);
         q : out std_logic_vector(DATA_WIDTH-1 downto 0));
-end fifo_w949_d16_S_shiftReg;
+end fifo_w950_d16_S_shiftReg;
 
-architecture rtl of fifo_w949_d16_S_shiftReg is
+architecture rtl of fifo_w950_d16_S_shiftReg is
 --constant DEPTH_WIDTH: integer := 16;
 type SRL_ARRAY is array (0 to DEPTH-1) of std_logic_vector(DATA_WIDTH-1 downto 0);
 signal SRL_SIG : SRL_ARRAY;
@@ -44,10 +44,10 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use ieee.std_logic_arith.all;
 
-entity fifo_w949_d16_S is 
+entity fifo_w950_d16_S is 
     generic (
         MEM_STYLE  : string := "shiftreg"; 
-        DATA_WIDTH : integer := 949;
+        DATA_WIDTH : integer := 950;
         ADDR_WIDTH : integer := 4;
         DEPTH : integer := 16);
     port (
@@ -63,11 +63,11 @@ entity fifo_w949_d16_S is
         if_din : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 downto 0));
 end entity;
 
-architecture rtl of fifo_w949_d16_S is
+architecture rtl of fifo_w950_d16_S is
 
-    component fifo_w949_d16_S_shiftReg is
+    component fifo_w950_d16_S_shiftReg is
     generic (
-        DATA_WIDTH : integer := 949;
+        DATA_WIDTH : integer := 950;
         ADDR_WIDTH : integer := 4;
         DEPTH : integer := 16);
     port (
@@ -121,7 +121,7 @@ begin
     shiftReg_addr <= (others => '0') when mOutPtr(ADDR_WIDTH) = '1' else mOutPtr(ADDR_WIDTH-1 downto 0);
     shiftReg_ce <= (if_write and if_write_ce) and internal_full_n;
 
-    U_fifo_w949_d16_S_shiftReg : fifo_w949_d16_S_shiftReg
+    U_fifo_w950_d16_S_shiftReg : fifo_w950_d16_S_shiftReg
     generic map (
         DATA_WIDTH => DATA_WIDTH,
         ADDR_WIDTH => ADDR_WIDTH,

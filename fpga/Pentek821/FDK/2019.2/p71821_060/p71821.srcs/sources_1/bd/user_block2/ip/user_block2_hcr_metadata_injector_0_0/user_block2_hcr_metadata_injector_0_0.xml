@@ -726,11 +726,11 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 17 10:41:55 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1022153c</spirit:value>
+            <spirit:value>9:1db8808e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -741,7 +741,7 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1022153c</spirit:value>
+            <spirit:value>9:1db8808e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -757,11 +757,11 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 17 10:41:55 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1022153c</spirit:value>
+            <spirit:value>9:1db8808e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -777,11 +777,11 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 17 10:41:55 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:3e427f90</spirit:value>
+            <spirit:value>9:33d8ea22</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -797,11 +797,11 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Apr 11 22:29:15 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 17 10:41:55 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:3e427f90</spirit:value>
+            <spirit:value>9:33d8ea22</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -815,11 +815,11 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Apr 11 22:32:19 UTC 2022</spirit:value>
+            <spirit:value>Mon Apr 17 10:47:01 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:1022153c</spirit:value>
+            <spirit:value>9:1db8808e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1316,15 +1316,71 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/7d8a/hdl/vhdl/handle_header.vhd</spirit:name>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/cordic_circ_apfixed.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/7d8a/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/generic_atan2.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/7d8a/hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/handle_header.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injebkb.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injefYi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injeg8j.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injehbi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injeibs.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injejbC.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injekbM.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hypot_fixed_39_25_s.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s_logcud.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s_logdEe.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s_logeOg.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1339,17 +1395,87 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>../../ipshared/7d8a/hdl/vhdl/handle_header.vhd</spirit:name>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/cordic_circ_apfixed.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/7d8a/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/generic_atan2.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>../../ipshared/7d8a/hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/handle_header.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injebkb.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injefYi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injeg8j.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injehbi.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injeibs.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injejbC.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injekbM.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hypot_fixed_39_25_s.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s_logcud.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s_logdEe.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/log10_39_25_s_logeOg.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/regslice_core.vhd</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>../../ipshared/fda1/hdl/vhdl/hcr_metadata_injector.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -1465,7 +1591,7 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
     <xilinx:coreExtensions>
       <xilinx:displayName>Hcr_metadata_injector</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2104112215</xilinx:coreRevision>
+      <xilinx:coreRevision>2112991218</xilinx:coreRevision>
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_BUSIF" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.AP_CLK.ASSOCIATED_RESET" xilinx:valuePermission="bd"/>
@@ -1517,7 +1643,7 @@ g minimum {} maximum {}} value 0}}}}}} TUSER_WIDTH 128}</spirit:value>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="4d51d6df"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="156c8e47"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="42c4e27c"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="ede811db"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="1a4b01a6"/>
     </xilinx:packagingInfo>

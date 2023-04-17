@@ -40,6 +40,7 @@ module hcr_controller_cfg_bus_s_axi
     output wire [31:0]                   cfg_num_pulses_per_xfer,
     output wire [31:0]                   cfg_enabled_channel_vector,
     output wire [31:0]                   cfg_watchdog,
+    output wire [31:0]                   cfg_use_mag_phase,
     input  wire [4:0]                    cfg_pulse_sequence_prt_0_address0,
     input  wire                          cfg_pulse_sequence_prt_0_ce0,
     output wire [31:0]                   cfg_pulse_sequence_prt_0_q0,
@@ -174,6 +175,9 @@ module hcr_controller_cfg_bus_s_axi
 // 0x00040 : Data signal of cfg_watchdog
 //           bit 31~0 - cfg_watchdog[31:0] (Read/Write)
 // 0x00044 : reserved
+// 0x00048 : Data signal of cfg_use_mag_phase
+//           bit 31~0 - cfg_use_mag_phase[31:0] (Read/Write)
+// 0x0004c : reserved
 // 0x00080 ~
 // 0x000ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 //           Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -289,6 +293,8 @@ localparam
     ADDR_CFG_ENABLED_CHANNEL_VECTOR_CTRL              = 19'h0003c,
     ADDR_CFG_WATCHDOG_DATA_0                          = 19'h00040,
     ADDR_CFG_WATCHDOG_CTRL                            = 19'h00044,
+    ADDR_CFG_USE_MAG_PHASE_DATA_0                     = 19'h00048,
+    ADDR_CFG_USE_MAG_PHASE_CTRL                       = 19'h0004c,
     ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE                = 19'h00080,
     ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH                = 19'h000ff,
     ADDR_CFG_PULSE_SEQUENCE_PRT_1_BASE                = 19'h00100,
@@ -388,6 +394,7 @@ localparam
     reg  [31:0]                   int_cfg_num_pulses_per_xfer = 'b0;
     reg  [31:0]                   int_cfg_enabled_channel_vector = 'b0;
     reg  [31:0]                   int_cfg_watchdog = 'b0;
+    reg  [31:0]                   int_cfg_use_mag_phase = 'b0;
     // memory signals
     wire [4:0]                    int_cfg_pulse_sequence_prt_0_address0;
     wire                          int_cfg_pulse_sequence_prt_0_ce0;
@@ -1571,6 +1578,9 @@ always @(posedge ACLK) begin
                 ADDR_CFG_WATCHDOG_DATA_0: begin
                     rdata <= int_cfg_watchdog[31:0];
                 end
+                ADDR_CFG_USE_MAG_PHASE_DATA_0: begin
+                    rdata <= int_cfg_use_mag_phase[31:0];
+                end
             endcase
         end
         else if (int_cfg_pulse_sequence_prt_0_read) begin
@@ -1680,6 +1690,7 @@ assign cfg_post_decimation                   = int_cfg_post_decimation;
 assign cfg_num_pulses_per_xfer               = int_cfg_num_pulses_per_xfer;
 assign cfg_enabled_channel_vector            = int_cfg_enabled_channel_vector;
 assign cfg_watchdog                          = int_cfg_watchdog;
+assign cfg_use_mag_phase                     = int_cfg_use_mag_phase;
 // int_ap_start
 always @(posedge ACLK) begin
     if (ARESET)
@@ -1843,6 +1854,16 @@ always @(posedge ACLK) begin
     else if (ACLK_EN) begin
         if (w_hs && waddr == ADDR_CFG_WATCHDOG_DATA_0)
             int_cfg_watchdog[31:0] <= (WDATA[31:0] & wmask) | (int_cfg_watchdog[31:0] & ~wmask);
+    end
+end
+
+// int_cfg_use_mag_phase[31:0]
+always @(posedge ACLK) begin
+    if (ARESET)
+        int_cfg_use_mag_phase[31:0] <= 0;
+    else if (ACLK_EN) begin
+        if (w_hs && waddr == ADDR_CFG_USE_MAG_PHASE_DATA_0)
+            int_cfg_use_mag_phase[31:0] <= (WDATA[31:0] & wmask) | (int_cfg_use_mag_phase[31:0] & ~wmask);
     end
 end
 

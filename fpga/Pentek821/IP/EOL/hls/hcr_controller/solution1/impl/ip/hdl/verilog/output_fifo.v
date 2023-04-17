@@ -34,7 +34,7 @@ output   ap_done;
 input   ap_continue;
 output   ap_idle;
 output   ap_ready;
-input  [948:0] in_V_dout;
+input  [949:0] in_V_dout;
 input   in_V_empty_n;
 output   in_V_read;
 output  [951:0] out_V_TDATA;
@@ -57,8 +57,8 @@ wire    ap_CS_fsm_state3;
 wire    regslice_both_out_V_U_apdone_blk;
 reg    ap_block_state2;
 reg    ap_block_state2_io;
-wire   [947:0] trunc_ln176_fu_73_p1;
-wire   [948:0] tmp_1_fu_77_p3;
+wire   [948:0] trunc_ln176_fu_73_p1;
+wire   [949:0] tmp_1_fu_77_p3;
 reg   [2:0] ap_NS_fsm;
 reg    ap_block_state1;
 wire   [951:0] out_V_TDATA_int;
@@ -215,10 +215,10 @@ assign out_V_TDATA_int = $signed(tmp_1_fu_77_p3);
 
 assign out_V_TVALID = regslice_both_out_V_U_vld_out;
 
-assign pulse_terminate_fu_65_p3 = in_V_dout[32'd948];
+assign pulse_terminate_fu_65_p3 = in_V_dout[32'd949];
 
 assign tmp_1_fu_77_p3 = {{1'd0}, {trunc_ln176_fu_73_p1}};
 
-assign trunc_ln176_fu_73_p1 = in_V_dout[947:0];
+assign trunc_ln176_fu_73_p1 = in_V_dout[948:0];
 
 endmodule //output_fifo

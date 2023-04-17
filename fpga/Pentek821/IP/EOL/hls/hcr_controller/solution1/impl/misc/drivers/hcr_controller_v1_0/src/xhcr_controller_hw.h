@@ -42,6 +42,9 @@
 // 0x00040 : Data signal of cfg_watchdog
 //           bit 31~0 - cfg_watchdog[31:0] (Read/Write)
 // 0x00044 : reserved
+// 0x00048 : Data signal of cfg_use_mag_phase
+//           bit 31~0 - cfg_use_mag_phase[31:0] (Read/Write)
+// 0x0004c : reserved
 // 0x00080 ~
 // 0x000ff : Memory 'cfg_pulse_sequence_prt_0' (32 * 32b)
 //           Word n : bit [31:0] - cfg_pulse_sequence_prt_0[n]
@@ -155,6 +158,8 @@
 #define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_ENABLED_CHANNEL_VECTOR_DATA            32
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_WATCHDOG_DATA                          0x00040
 #define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_WATCHDOG_DATA                          32
+#define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_USE_MAG_PHASE_DATA                     0x00048
+#define XHCR_CONTROLLER_CFG_BUS_BITS_CFG_USE_MAG_PHASE_DATA                     32
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_BASE              0x00080
 #define XHCR_CONTROLLER_CFG_BUS_ADDR_CFG_PULSE_SEQUENCE_PRT_0_HIGH              0x000ff
 #define XHCR_CONTROLLER_CFG_BUS_WIDTH_CFG_PULSE_SEQUENCE_PRT_0                  32

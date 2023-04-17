@@ -70,7 +70,7 @@
         <library name="DefaultPlatform" value="xilinx/kintexu/kintexu_fpv7"/>
     </libraryList>
     <clockList>
-        <clock name="default" uncertainty="12.5%" period="3"/>
+        <clock name="default" default="false" uncertainty="12.5%" period="3"/>
     </clockList>
 </solution>
 

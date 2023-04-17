@@ -1099,6 +1099,29 @@
           </spirit:field>
         </spirit:register>
         <spirit:register>
+          <spirit:name>cfg_use_mag_phase</spirit:name>
+          <spirit:displayName>cfg_use_mag_phase</spirit:displayName>
+          <spirit:description>Data signal of cfg_use_mag_phase</spirit:description>
+          <spirit:addressOffset>72</spirit:addressOffset>
+          <spirit:size spirit:format="long">32</spirit:size>
+          <spirit:access>write-only</spirit:access>
+          <spirit:reset>
+            <spirit:value spirit:format="long">0</spirit:value>
+          </spirit:reset>
+          <spirit:field>
+            <spirit:name>cfg_use_mag_phase</spirit:name>
+            <spirit:description>Bit 31 to 0 Data signal of cfg_use_mag_phase</spirit:description>
+            <spirit:bitOffset>0</spirit:bitOffset>
+            <spirit:bitWidth spirit:format="long">32</spirit:bitWidth>
+            <spirit:access>write-only</spirit:access>
+            <spirit:writeValueConstraint>
+              <spirit:minimum>0</spirit:minimum>
+              <spirit:maximum>0</spirit:maximum>
+            </spirit:writeValueConstraint>
+            <spirit:testable spirit:testConstraint="unconstrained">false</spirit:testable>
+          </spirit:field>
+        </spirit:register>
+        <spirit:register>
           <spirit:name>Memory_cfg_pulse_sequence_prt_0</spirit:name>
           <spirit:displayName>Memory_cfg_pulse_sequence_prt_0</spirit:displayName>
           <spirit:description>Memory cfg_pulse_sequence_prt_0</spirit:description>
@@ -1456,7 +1479,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>5d9ad6e7</spirit:value>
+            <spirit:value>1dda493a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1472,7 +1495,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e1477747</spirit:value>
+            <spirit:value>1b182be6</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1488,7 +1511,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>952a760c</spirit:value>
+            <spirit:value>65d96653</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1504,7 +1527,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a3f4e07d</spirit:value>
+            <spirit:value>74876f61</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1518,7 +1541,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>4949cef5</spirit:value>
+            <spirit:value>a7cb7104</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2438,11 +2461,11 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/fifo_w949_d1_A.v</spirit:name>
+        <spirit:name>hdl/verilog/fifo_w950_d1_A.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/fifo_w949_d16_S.v</spirit:name>
+        <spirit:name>hdl/verilog/fifo_w950_d16_S.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -2501,12 +2524,12 @@
     <spirit:fileSet>
       <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/verilog/fifo_w949_d1_A.v</spirit:name>
+        <spirit:name>hdl/verilog/fifo_w950_d1_A.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/fifo_w949_d16_S.v</spirit:name>
+        <spirit:name>hdl/verilog/fifo_w950_d16_S.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -2584,11 +2607,11 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/fifo_w949_d1_A.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/fifo_w950_d1_A.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/fifo_w949_d16_S.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/fifo_w950_d16_S.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -2642,18 +2665,18 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/hcr_controller.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_09321a4d</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_ac1d7152</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/vhdl/fifo_w949_d1_A.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/fifo_w950_d1_A.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/fifo_w949_d16_S.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/fifo_w950_d16_S.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -2834,14 +2857,14 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Hcr_controller</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2104112210</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-04-11T22:10:26Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2112986862</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2023-04-14T09:42:44Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="0aa7fe49"/>
-      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="ba3ce50f"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="24814aa1"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="d05ce78e"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="6ecc09b9"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="3f22e59a"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="7e662092"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="d57eb537"/>

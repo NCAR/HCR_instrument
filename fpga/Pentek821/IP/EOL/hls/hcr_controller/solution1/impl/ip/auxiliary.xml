@@ -8,6 +8,7 @@
   <xd:arg xd:name="cfg_num_pulses_per_xfer" xd:originalName="cfg_num_pulses_per_xfer" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x30" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_enabled_channel_vector" xd:originalName="cfg_enabled_channel_vector" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x38" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="*(cfg_watchdog)" xd:originalName="cfg_watchdog" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x40" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
+  <xd:arg xd:name="cfg_use_mag_phase" xd:originalName="cfg_use_mag_phase" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x48" xd:handshakeRef="ap_none" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].prt[0]" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x80" xd:arraySize="32" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].prt[1]" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x100" xd:arraySize="32" xd:dataWidth="32"/>
   <xd:arg xd:name="cfg_pulse_sequence[].num_pulses" xd:originalName="cfg_pulse_sequence" xd:direction="in" xd:interfaceRef="s_axi_cfg_bus" xd:busTypeRef="axilite" xd:offset="0x180" xd:arraySize="32" xd:dataWidth="32"/>
@@ -84,7 +85,8 @@
   <xd:arg xd:name="pulse_metadata_ch0.last_pulse_in_block" xd:originalName="pulse_metadata_ch0" xd:direction="out" xd:interfaceRef="pulse_metadata_ch0_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="945:945" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch0.first_pulse_in_xfer" xd:originalName="pulse_metadata_ch0" xd:direction="out" xd:interfaceRef="pulse_metadata_ch0_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="946:946" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch0.last_pulse_in_xfer" xd:originalName="pulse_metadata_ch0" xd:direction="out" xd:interfaceRef="pulse_metadata_ch0_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="947:947" xd:dataWidth="1"/>
-  <xd:arg xd:name="pulse_metadata_ch0.terminate" xd:originalName="pulse_metadata_ch0" xd:direction="out" xd:interfaceRef="pulse_metadata_ch0_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata_ch0.use_mag_phase" xd:originalName="pulse_metadata_ch0" xd:direction="out" xd:interfaceRef="pulse_metadata_ch0_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata_ch0.terminate" xd:originalName="pulse_metadata_ch0" xd:direction="out" xd:interfaceRef="pulse_metadata_ch0_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="949:949" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch1.def.prt[0]" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="31:0" xd:dataWidth="32"/>
   <xd:arg xd:name="pulse_metadata_ch1.def.prt[1]" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="63:32" xd:dataWidth="32"/>
   <xd:arg xd:name="pulse_metadata_ch1.def.num_pulses" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="95:64" xd:dataWidth="32"/>
@@ -120,7 +122,8 @@
   <xd:arg xd:name="pulse_metadata_ch1.last_pulse_in_block" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="945:945" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch1.first_pulse_in_xfer" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="946:946" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch1.last_pulse_in_xfer" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="947:947" xd:dataWidth="1"/>
-  <xd:arg xd:name="pulse_metadata_ch1.terminate" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata_ch1.use_mag_phase" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata_ch1.terminate" xd:originalName="pulse_metadata_ch1" xd:direction="out" xd:interfaceRef="pulse_metadata_ch1_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="949:949" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch2.def.prt[0]" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="31:0" xd:dataWidth="32"/>
   <xd:arg xd:name="pulse_metadata_ch2.def.prt[1]" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="63:32" xd:dataWidth="32"/>
   <xd:arg xd:name="pulse_metadata_ch2.def.num_pulses" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="95:64" xd:dataWidth="32"/>
@@ -156,9 +159,10 @@
   <xd:arg xd:name="pulse_metadata_ch2.last_pulse_in_block" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="945:945" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch2.first_pulse_in_xfer" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="946:946" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata_ch2.last_pulse_in_xfer" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="947:947" xd:dataWidth="1"/>
-  <xd:arg xd:name="pulse_metadata_ch2.terminate" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata_ch2.use_mag_phase" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata_ch2.terminate" xd:originalName="pulse_metadata_ch2" xd:direction="out" xd:interfaceRef="pulse_metadata_ch2_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="949:949" xd:dataWidth="1"/>
   <xd:arg xd:name="pps_d0" xd:originalName="pps_d0" xd:direction="out" xd:interfaceRef="pps_d0" xd:busTypeRef="ap_memory" xd:arraySize="1" xd:dataWidth="1"/>
   <xd:arg xd:name="pps_q0" xd:originalName="pps_q0" xd:direction="in" xd:interfaceRef="pps_q0" xd:busTypeRef="ap_memory" xd:arraySize="1" xd:dataWidth="1"/>
   <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
-  <xd:resourceEstimates xd:LUT="10496" xd:FF="8236" xd:BRAM="243" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="10584" xd:FF="8276" xd:BRAM="243" xd:DSP="0"/>
 </xd:acceleratorMap>

@@ -50,10 +50,11 @@
   <xd:arg xd:name="pulse_metadata.last_pulse_in_block" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="945:945" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata.first_pulse_in_xfer" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="946:946" xd:dataWidth="1"/>
   <xd:arg xd:name="pulse_metadata.last_pulse_in_xfer" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="947:947" xd:dataWidth="1"/>
-  <xd:arg xd:name="pulse_metadata.terminate" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.use_mag_phase" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="948:948" xd:dataWidth="1"/>
+  <xd:arg xd:name="pulse_metadata.terminate" xd:originalName="pulse_metadata" xd:direction="in" xd:interfaceRef="pulse_metadata_V" xd:busTypeRef="axis" xd:dataPack="true" xd:bitMapping="949:949" xd:dataWidth="1"/>
   <xd:arg xd:name="*(pos_enc_0)" xd:originalName="pos_enc_0" xd:direction="in" xd:interfaceRef="pos_enc_0" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="32" xd:firstOut="2"/>
   <xd:arg xd:name="*(pos_enc_1)" xd:originalName="pos_enc_1" xd:direction="in" xd:interfaceRef="pos_enc_1" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="32" xd:firstOut="2"/>
   <xd:arg xd:name="*(flags)" xd:originalName="flags" xd:direction="in" xd:interfaceRef="flags" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="16" xd:firstOut="2"/>
   <xd:latencyEstimates xd:best-case="undef" xd:worst-case="undef" xd:average-case="undef"/>
-  <xd:resourceEstimates xd:LUT="1420" xd:FF="3453" xd:BRAM="0" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="20366" xd:FF="17540" xd:BRAM="13" xd:DSP="23"/>
 </xd:acceleratorMap>

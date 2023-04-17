@@ -53,7 +53,7 @@ set Library     "EOL"
 set IPName      "hcr_metadata_injector"
 set Version     "1.0"
 set DisplayName "Hcr_metadata_injector"
-set Revision    "2104112215"
+set Revision    "2112991218"
 set Description "Adds metadata to a PDTI stream in front of each pulse"
 set Device      "kintexu"
 set AutoFamily  ""
@@ -69,7 +69,21 @@ set sdaccel_dir [file join [pwd] .. kernel]
 set solution_dir "/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector/solution1"
 set debug_dir [file join $solution_dir .debug]
 set xo_hls_files_dir ""
-set hdl_module_list {regslice_core
+set hdl_module_list {hcr_metadata_injebkb
+hcr_metadata_injefYi
+hcr_metadata_injeg8j
+hcr_metadata_injehbi
+hcr_metadata_injeibs
+log10_39_25_s_logcud
+log10_39_25_s_logdEe
+log10_39_25_s_logeOg
+hcr_metadata_injejbC
+hcr_metadata_injekbM
+regslice_core
+hypot_fixed_39_25_s
+log10_39_25_s
+cordic_circ_apfixed
+generic_atan2
 handle_header
 hcr_metadata_injector
 }
@@ -399,10 +413,15 @@ set Interfaces {
                         Width "1"
                         Bits "1"
                     }
+                    use_mag_phase {
+                        Type "null"
+                        Width "1"
+                        Bits "1"
+                    }
                     terminate {
                         Type "null"
                         Width "1"
-                        Bits "4"
+                        Bits "3"
                     }
                 }
             }

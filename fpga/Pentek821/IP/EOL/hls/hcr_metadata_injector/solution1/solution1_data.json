@@ -204,8 +204,12 @@
             "order": "8",
             "dataType": "bool"
           },
-          "terminate": {
+          "use_mag_phase": {
             "order": "9",
+            "dataType": "bool"
+          },
+          "terminate": {
+            "order": "10",
             "dataType": "bool"
           }
         }
@@ -265,12 +269,43 @@
   "Files": {
     "CSource": ["..\/hcr_metadata_injector.cpp"],
     "Vhdl": [
+      "impl\/vhdl\/cordic_circ_apfixed.vhd",
+      "impl\/vhdl\/generic_atan2.vhd",
       "impl\/vhdl\/handle_header.vhd",
+      "impl\/vhdl\/hcr_metadata_injebkb.vhd",
+      "impl\/vhdl\/hcr_metadata_injefYi.vhd",
+      "impl\/vhdl\/hcr_metadata_injeg8j.vhd",
+      "impl\/vhdl\/hcr_metadata_injehbi.vhd",
+      "impl\/vhdl\/hcr_metadata_injeibs.vhd",
+      "impl\/vhdl\/hcr_metadata_injejbC.vhd",
+      "impl\/vhdl\/hcr_metadata_injekbM.vhd",
+      "impl\/vhdl\/hypot_fixed_39_25_s.vhd",
+      "impl\/vhdl\/log10_39_25_s.vhd",
+      "impl\/vhdl\/log10_39_25_s_logcud.vhd",
+      "impl\/vhdl\/log10_39_25_s_logdEe.vhd",
+      "impl\/vhdl\/log10_39_25_s_logeOg.vhd",
       "impl\/vhdl\/regslice_core.vhd",
       "impl\/vhdl\/hcr_metadata_injector.vhd"
     ],
     "Verilog": [
+      "impl\/verilog\/cordic_circ_apfixed.v",
+      "impl\/verilog\/generic_atan2.v",
       "impl\/verilog\/handle_header.v",
+      "impl\/verilog\/hcr_metadata_injebkb.v",
+      "impl\/verilog\/hcr_metadata_injefYi.v",
+      "impl\/verilog\/hcr_metadata_injeg8j.v",
+      "impl\/verilog\/hcr_metadata_injehbi.v",
+      "impl\/verilog\/hcr_metadata_injeibs.v",
+      "impl\/verilog\/hcr_metadata_injejbC.v",
+      "impl\/verilog\/hcr_metadata_injekbM.v",
+      "impl\/verilog\/hypot_fixed_39_25_s.v",
+      "impl\/verilog\/log10_39_25_s.v",
+      "impl\/verilog\/log10_39_25_s_logcud.v",
+      "impl\/verilog\/log10_39_25_s_logcud_rom.dat",
+      "impl\/verilog\/log10_39_25_s_logdEe.v",
+      "impl\/verilog\/log10_39_25_s_logdEe_rom.dat",
+      "impl\/verilog\/log10_39_25_s_logeOg.v",
+      "impl\/verilog\/log10_39_25_s_logeOg_rom.dat",
       "impl\/verilog\/regslice_core.v",
       "impl\/verilog\/hcr_metadata_injector.v"
     ],
@@ -548,10 +583,14 @@
               "Type": "null",
               "Width": "1"
             },
+            "use_mag_phase": {
+              "Type": "null",
+              "Width": "1"
+            },
             "terminate": {
               "Type": "null",
               "Width": "1",
-              "Bits": "4"
+              "Bits": "3"
             }
           }
         },
@@ -692,12 +731,58 @@
   "ModuleInfo": {
     "Hierarchy": {
       "ModuleName": "hcr_metadata_injector",
-      "Instances": [{
+      "Instances": [
+        {
+          "ModuleName": "hypot_fixed_39_25_s",
+          "InstanceName": "grp_hypot_fixed_39_25_s_fu_704"
+        },
+        {
+          "ModuleName": "generic_atan2",
+          "InstanceName": "grp_generic_atan2_fu_710",
+          "Instances": [{
+              "ModuleName": "cordic_circ_apfixed",
+              "InstanceName": "grp_cordic_circ_apfixed_fu_93"
+            }]
+        },
+        {
+          "ModuleName": "log10_39_25_s",
+          "InstanceName": "grp_log10_39_25_s_fu_716"
+        },
+        {
           "ModuleName": "handle_header",
-          "InstanceName": "grp_handle_header_fu_618"
-        }]
+          "InstanceName": "grp_handle_header_fu_727"
+        }
+      ]
     },
     "Info": {
+      "hypot_fixed_39_25_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "1",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "log10_39_25_s": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "1",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "cordic_circ_apfixed": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "1",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
+      "generic_atan2": {
+        "FunctionProtocol": "ap_ctrl_hs",
+        "isTaskLevelControl": "1",
+        "isPipelined": "1",
+        "isCombinational": "0",
+        "isOneStateSeq": "0"
+      },
       "handle_header": {
         "FunctionProtocol": "ap_ctrl_hs",
         "isTaskLevelControl": "1",
@@ -714,6 +799,94 @@
       }
     },
     "Metrics": {
+      "hypot_fixed_39_25_s": {
+        "Latency": {
+          "LatencyBest": "60",
+          "LatencyAvg": "60",
+          "LatencyWorst": "60",
+          "PipelineII": "1",
+          "PipelineDepth": "61",
+          "PipelineType": "function"
+        },
+        "Timing": {
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.702"
+        },
+        "Area": {
+          "BRAM_18K": "4",
+          "DSP48E": "8",
+          "FF": "6304",
+          "LUT": "8467",
+          "URAM": "0"
+        }
+      },
+      "log10_39_25_s": {
+        "Latency": {
+          "LatencyBest": "19",
+          "LatencyAvg": "19",
+          "LatencyWorst": "19",
+          "PipelineII": "1",
+          "PipelineDepth": "20",
+          "PipelineType": "function"
+        },
+        "Timing": {
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.643"
+        },
+        "Area": {
+          "BRAM_18K": "1",
+          "DSP48E": "7",
+          "FF": "1949",
+          "LUT": "1272",
+          "URAM": "0"
+        }
+      },
+      "cordic_circ_apfixed": {
+        "Latency": {
+          "LatencyBest": "28",
+          "LatencyAvg": "28",
+          "LatencyWorst": "28",
+          "PipelineII": "1",
+          "PipelineDepth": "29",
+          "PipelineType": "function"
+        },
+        "Timing": {
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.598"
+        },
+        "Area": {
+          "BRAM_18K": "0",
+          "FF": "3148",
+          "LUT": "6938",
+          "DSP48E": "0",
+          "URAM": "0"
+        }
+      },
+      "generic_atan2": {
+        "Latency": {
+          "LatencyBest": "34",
+          "LatencyAvg": "34",
+          "LatencyWorst": "34",
+          "PipelineII": "1",
+          "PipelineDepth": "35",
+          "PipelineType": "function"
+        },
+        "Timing": {
+          "Target": "3.00",
+          "Uncertainty": "0.38",
+          "Estimate": "2.598"
+        },
+        "Area": {
+          "BRAM_18K": "0",
+          "FF": "4333",
+          "LUT": "7605",
+          "DSP48E": "0",
+          "URAM": "0"
+        }
+      },
       "handle_header": {
         "Latency": {
           "LatencyBest": "",
@@ -733,8 +906,8 @@
             "Name": "pad",
             "TripCount": "",
             "Latency": "",
-            "PipelineII": "3",
-            "PipelineDepth": "4"
+            "PipelineII": "2",
+            "PipelineDepth": "2"
           },
           {
             "Name": "write_header",
@@ -745,8 +918,8 @@
           }
         ],
         "Area": {
-          "FF": "1827",
-          "LUT": "574",
+          "FF": "1554",
+          "LUT": "582",
           "BRAM_18K": "0",
           "DSP48E": "0",
           "URAM": "0"
@@ -764,7 +937,7 @@
         "Timing": {
           "Target": "3.00",
           "Uncertainty": "0.38",
-          "Estimate": "2.488"
+          "Estimate": "2.702"
         },
         "Loops": [{
             "Name": "pulse_loop",
@@ -777,14 +950,14 @@
                 "TripCount": "",
                 "Latency": "",
                 "PipelineII": "3",
-                "PipelineDepth": "5"
+                "PipelineDepth": "92"
               }]
           }],
         "Area": {
-          "FF": "3453",
-          "LUT": "1420",
-          "BRAM_18K": "0",
-          "DSP48E": "0",
+          "BRAM_18K": "13",
+          "DSP48E": "23",
+          "FF": "17540",
+          "LUT": "20366",
           "URAM": "0"
         }
       }
@@ -800,7 +973,7 @@
   },
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2021-04-11 22:15:03 GMT",
+    "Time": "2023-04-17 10:18:15 GMT",
     "ToolName": "vivado_hls",
     "ToolVersion": "2019.2"
   }

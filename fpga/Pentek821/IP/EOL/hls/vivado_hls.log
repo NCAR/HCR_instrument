@@ -1,6 +1,6 @@
 INFO: Applying HLS Y2K22 patch v1.2 for IP revision
 INFO: [HLS 200-10] Running '/home/karboski/Xilinx/Vivado/2019.2/bin/unwrapped/lnx64.o/vivado_hls'
-INFO: [HLS 200-10] For user 'karboski' on host 'wind.eol.ucar.edu' (Linux_x86_64 version 4.18.0-277.el8.x86_64) on Sun Apr 11 22:15:01 GMT 2021
+INFO: [HLS 200-10] For user 'karboski' on host 'wind.eol.ucar.edu' (Linux_x86_64 version 4.18.0-408.el8.x86_64) on Mon Apr 17 10:18:13 GMT 2023
 INFO: [HLS 200-10] In directory '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls'
 Sourcing Tcl script '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector/solution1/export.tcl'
 INFO: [HLS 200-10] Opening project '/home/karboski/git/HCR_instrument/fpga/Pentek821/IP/EOL/hls/hcr_metadata_injector'.
@@ -21,4 +21,4 @@ source run_ippack.tcl -notrace
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/karboski/Xilinx/Vivado/2019.2/data/ip'.
-INFO: [Common 17-206] Exiting Vivado at Sun Apr 11 22:15:13 2021...
+INFO: [Common 17-206] Exiting Vivado at Mon Apr 17 10:18:27 2023...
