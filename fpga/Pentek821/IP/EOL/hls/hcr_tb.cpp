@@ -13,20 +13,12 @@ void MPdouble(double I, double Q, int16_t& packedPower, int16_t& packedPhase)
 {
 	packedPower = -32768;
 	packedPhase = 0;
-
-	const float max = 10 * log10( pow(2.0, 47) );
-	const float min = 10 * log10( pow(2.0, -1) );
-	const float range = max - min;
-	const float scale = 65535.0 / range;
-	const float offset = (max + min) / 2;
-	const float phasescale = 32767.0 / M_PI;
-
 	double power = I*I+Q*Q;
 	if (power != 0)
 	{
 		double logPower = 10*log10(power);
-		packedPower = floor((logPower - offset) * scale + 0.5);
-		double phase = floor(atan2(Q, I) * phasescale + 0.5);
+		packedPower = floor((logPower - powerOffset) / powerScale + 0.5);
+		double phase = floor(atan2(Q, I) * phaseScale + 0.5);
 		if (phase < -32767) packedPhase = -32767;
 		else if (phase > 32767) packedPhase = 32767;
 		else packedPhase = phase;
@@ -240,6 +232,7 @@ int main()
 	double sumErrorMag = 0;
 	double maxErrorPhase = 0;
 	double sumErrorPhase = 0;
+	std::cout << powerScale << " " << powerOffset << std::endl;
 	for(int x=0; x<1000; ++x)
 	{
 		int scaledown = rand() % 24;
@@ -272,7 +265,7 @@ int main()
 		int16_t m;
 		int16_t p;
 		MPdouble(I, Q, m, p);
-//		std::cout << I << "," << Q << "," << packedMag-m << "," << packedPhase-p << "\n";
+//		std::cout << I << "," << Q << "," << Io << "," << Qo << "," << packedMag << "," << m << "," << packedMag-m << "," << packedPhase-p << "\n";
 		maxErrorMag = std::max(maxErrorMag, abs(double(packedMag-m)));
 		maxErrorPhase = std::max(maxErrorPhase, abs(double(packedPhase-p)));
 		sumErrorMag += (packedMag-m);

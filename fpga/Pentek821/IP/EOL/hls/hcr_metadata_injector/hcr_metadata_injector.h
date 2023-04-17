@@ -74,14 +74,12 @@ inline void write_pair_24I24Q(hls::stream<pdti_32>& o, pdti_64 s1, pdti_64 s2)
 	o << y;
 }
 
-const float maxPowerFpga = log10( pow(2.0, 23.5) );
-const float minPowerFpga = log10( pow(2.0, -0.5) );
-const float powerRangeFpga = maxPowerFpga - minPowerFpga;
 typedef ap_fixed<39,25> mpfix;
 typedef ap_fixed<24,24> mpfix_atan;
-const mpfix powerScaleFpga = 65535.0 / powerRangeFpga;
-const mpfix powerOffsetFpga = (maxPowerFpga + minPowerFpga) / 2;
-const mpfix phaseScaleFpga = 32767.0 / M_PI;
+const ap_int<16> powerScaleFpga = 8000;
+const ap_int<4> powerOffsetFpga = 3;
+const float phaseScale = 32767.0 / M_PI;
+const mpfix phaseScaleFpga = phaseScale;
 const float fpgaFactor = 20;
 const float powerScale = fpgaFactor / float(powerScaleFpga);
 const float powerOffset = fpgaFactor * float(powerOffsetFpga);

@@ -52,8 +52,8 @@ begin
                     M_AXIS_FSEL_TDATA(2 downto 0)       <= S_AXIS_PDTI_TUSER(31 downto 29);
                     M_AXIS_DATA_TUSER                   <= S_AXIS_PDTI_TUSER;
                     M_AXIS_DATA_TUSER(31 downto 29)     <= "000";
-                    --Mark the data format (24 bit)
-                    M_AXIS_DATA_TUSER(94 downto 92)     <= "100";
+                    --Mark the data format (16 bit)
+                    M_AXIS_DATA_TUSER(94 downto 92)     <= "010";
                     -- Output
                     M_AXIS_DATA_TVALID                  <= '1';
                     M_AXIS_FSEL_TVALID                  <= '1'; 
