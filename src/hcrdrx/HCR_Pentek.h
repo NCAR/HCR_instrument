@@ -351,8 +351,8 @@ private:
     double _localTemp;
 
     /// @brief Firmware build to check for.
-    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20230414;
-    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x09;
+    const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20230417;
+    const uint16_t COMPATIBLE_FIRMWARE_HOUR = 0x10;
 
 };
 

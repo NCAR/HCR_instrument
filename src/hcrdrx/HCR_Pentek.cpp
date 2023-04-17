@@ -1066,13 +1066,13 @@ HCR_Pentek::_checkDmaMetadata(int chan, const NAV_DMA_ADC_META_DATA * metadata)
     //      metaData->dataFormat: 0 = 8-bit, 1 = 16-bit, 2 = 24-bit, 3 = 32-bit
     //              ->dataType: 0 = real, 1 = complex (IQ)
     //              ->firstSamplePhase: 0 = I first, 1 = Q first
-//    if (!( (metadata->dataFormat+1)*2 == sizeof(PulseData::IQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
-//        ELOG << "Chan " << chan <<
-//                ": data unpublishable w/format: " << metadata->dataFormat <<
-//                ", type: " << metadata->dataType <<
-//                ", first sample phase: " << metadata->firstSamplePhase;
-//        return(false);
-//    }
+    if (!( (metadata->dataFormat+1)*2 == sizeof(PulseData::IQData) && metadata->dataType == 1 && metadata->firstSamplePhase == 0)) {
+        ELOG << "Chan " << chan <<
+                ": data unpublishable w/format: " << metadata->dataFormat <<
+                ", type: " << metadata->dataType <<
+                ", first sample phase: " << metadata->firstSamplePhase;
+        return(false);
+    }
 
     return(true);
 }
