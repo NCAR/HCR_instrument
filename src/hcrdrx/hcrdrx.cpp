@@ -26,7 +26,7 @@
 #include <HcrSharedResources.h>
 
 #include <csignal>
-#include <cstring>
+#include <cstdio>
 #include <fstream>
 #include <QFunctionWrapper.h>
 #include <QtCore/QCoreApplication>
@@ -134,6 +134,15 @@ main(int argc, char * argv[]) {
 
     ILOG << "hcrdrx started at " <<
             QDateTime::currentDateTimeUtc().toString(Qt::ISODate).toStdString();
+
+    // Close stdin; we don't expect any input on stdin anyway.
+    //
+    // Closing it is important because this keeps (some Qt-based component?)
+    // from setting up a read poll on stdin, then spinning the main thread at
+    // 100% CPU because stdin constantly triggers with zero bytes to read,
+    // indicating it's at EOF.
+    WLOG << "Closing stdin to avoid 'spinning stdin poll() when backgrounded' issue...";
+    fclose(stdin);
 
     // Initiate exit on receiving INT or TERM signals. INT is the signal
     // sent when ^C is typed at the keyboard, and TERM is the default signal
