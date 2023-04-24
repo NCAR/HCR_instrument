@@ -164,7 +164,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( instance,                          "description",                                  "ops" )
         MEMBER_PROGOPT( radar_id,                          "description",                                  "HCR" )
         MEMBER_PROGOPT( calibration_file,                  "description",                                  "defaultCal.xml" )
-        MEMBER_PROGOPT( iwrf_fmq_path,                     "URL for the time series FMQ",                  "/tmp/fmq/ts/wband/shmem_10000" )
+        MEMBER_PROGOPT( iwrf_fmq_path,                     "URL for the time series FMQ",                  "fmqp:://archiver::/tmp/fmq/ts/wband/shmem_10000" )
         MEMBER_PROGOPT( range_to_gate0_m,                  "distance to the 0th range cell",               -198.0 )
         MEMBER_PROGOPT( start_on_1pps,                     "wait for timing pulse to start",               true )
         MEMBER_PROGOPT( ems_pulse_width,                   "time that the T/R switch is set to T",         4160e-9 )
