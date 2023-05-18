@@ -3,7 +3,7 @@
 
 echo "Removing driver..."
 
-rmmod KP_718X windrvr1411
+rmmod KP_718X windrvr1511
 
 echo "Reprogram FPGA now (if desired) and hit enter:"
 read
@@ -52,10 +52,13 @@ echo 1 > "/sys/bus/pci/devices/$port/rescan"
 
 sleep 1
 
-/home/hcr/git/HCR_instrument/src/Navigator_xx821/Driver_14.11/redist/wdreg windrvr1411 auto
-chmod 666 /dev/windrvr1411
-
+/home/hcr/git/HCR_instrument/src/Navigator_xx821/Driver_15.11/redist/wdreg windrvr1511 auto
+chmod 666 /dev/windrvr1511
 modprobe KP_718X
+
+# The following is a recommended setting when using the KP_718X module
+echo 2048 > /proc/sys/fs/mqueue/msg_max
+
 
 sleep 1
 
