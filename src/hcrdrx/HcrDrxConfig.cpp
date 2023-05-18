@@ -173,7 +173,7 @@ HcrDrxConfig::HcrDrxConfig() :
         MEMBER_PROGOPT( rx_offset,                         "sample collection delay/advance from TR",      0 )
         MEMBER_PROGOPT( use_internal_clock,                "use internal synth (w/ external reference)",   true )
         MEMBER_PROGOPT( clock_mode_125,                    "false = experimental",                         true )
-        MEMBER_PROGOPT( refclk_frequency,                  "frequency of external reference clock",        125.0e6 )
+        MEMBER_PROGOPT( refclk_frequency,                  "frequency of external reference clock",        10.0e6 )
         MEMBER_PROGOPT( rx_frequency,                      "ddc center (IF) frequency, rx",                156.25e6 )
         MEMBER_PROGOPT( tx_frequency,                      "ddc center (IF) frequency, tx",                156.25e6 )
         MEMBER_PROGOPT( use_mag_phase,                     "output data in dB mag / phase format",         1 )
