@@ -13,7 +13,7 @@
         "PRT1"             : 101.376e-6,
         "PRT2"             : 0,
         "BlockPostTime"    : 0,
-        "PolarizationMode" : "H",
+        "PolarizationMode" : "V",
         "PhaseTableBegin"  : 0,
         "PhaseTableEnd"    : 0
     },
@@ -43,8 +43,8 @@
                     "NumRxGates":"Default","NumPulses":"Default","PRT2":"Default",
                     "BlockPostTime":"Default","PhaseTableBegin":"Default","PhaseTableEnd":"Default",
                     "PRT1": 163.840e-6,
-                    "TxPulseWidth": 1024e-9,
-                    "FilterSelect": "1024ns",
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
                     "PolarizationMode": "HHVV"
                 }
             ]
@@ -62,7 +62,7 @@
                     "PRT1": 101.376e-6,
                     "PRT2": 0,
                     "BlockPostTime": 0,
-                    "PolarizationMode": "H",
+                    "PolarizationMode": "V",
                     "PhaseTableBegin": 0,
                     "PhaseTableEnd": 0
                 },
@@ -74,7 +74,7 @@
                     "PRT1": 101.376e-6,
                     "PRT2": 0,
                     "BlockPostTime": 0,
-                    "PolarizationMode": "H",
+                    "PolarizationMode": "V",
                     "PhaseTableBegin": 0,
                     "PhaseTableEnd": 0
                 }
@@ -93,7 +93,7 @@
                     "PRT1": 101.376e-6,
                     "PRT2": 0,
                     "BlockPostTime": 0,
-                    "PolarizationMode": "H",
+                    "PolarizationMode": "V",
                     "PhaseTableBegin": 0,
                     "PhaseTableEnd": 0
                 },
@@ -105,7 +105,7 @@
                     "PRT1": 152.064e-6,
                     "PRT2": 0,
                     "BlockPostTime": 0,
-                    "PolarizationMode": "H",
+                    "PolarizationMode": "V",
                     "PhaseTableBegin": 0,
                     "PhaseTableEnd": 0
                 }
@@ -124,7 +124,7 @@
                     "PRT1": 111.488e-6,
                     "PRT2": 0,
                     "BlockPostTime": 0,
-                    "PolarizationMode": "H",
+                    "PolarizationMode": "V",
                     "PhaseTableBegin": 0,
                     "PhaseTableEnd": 0
                 },
@@ -136,13 +136,50 @@
                     "PRT1": 167.232e-6,
                     "PRT2": 0,
                     "BlockPostTime": 0,
-                    "PolarizationMode": "H",
+                    "PolarizationMode": "V",
                     "PhaseTableBegin": 0,
                     "PhaseTableEnd": 0
                 }
             ]
-        }
+        },
 
+        "Calibration-256": {
+            "Enabled": true,
+            "Comment": "Calibrate 256 us",
+            "Blocks": [
+                {
+                    "NumRxGates":"Default",
+                    "NumPulses":"Default",
+                    "PRT1":"Default",
+                    "PRT2":"Default",
+                    "BlockPostTime":"Default",
+                    "PhaseTableBegin":"Default",
+                    "PhaseTableEnd":"Default",
+                    "TxPulseWidth": 256e-9,
+                    "FilterSelect": "256ns",
+                    "PolarizationMode": "V"
+                }
+            ]
+        },
+        
+        "Calibration-512": {
+            "Enabled": true,
+            "Comment": "Calibrate 512 us",
+            "Blocks": [
+                {
+                    "NumRxGates":"Default",
+                    "NumPulses":"Default",
+                    "PRT1":163.840e-6,
+                    "PRT2":"Default",
+                    "BlockPostTime":"Default",
+                    "PhaseTableBegin":"Default",
+                    "PhaseTableEnd":"Default",
+                    "TxPulseWidth": 512e-9,
+                    "FilterSelect": "512ns",
+                    "PolarizationMode": "V"
+                }
+            ]
+        }
     }
 
 }
