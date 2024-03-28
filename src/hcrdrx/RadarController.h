@@ -165,13 +165,13 @@ public:
 
         //Enforce HCR maximum duty cycle
         const double MAX_DUTY_CYCLE = 0.00625;
-        if ( blockDef.timers[TX_PULSE].width * (1.0 / MAX_DUTY_CYCLE) > blockDef.prt[0] )
+        if ( blockDef.timers[MOD_PULSE].width * (1.0 / MAX_DUTY_CYCLE) > blockDef.prt[0] )
         {
             std::ostringstream os;
             os << "Transmit duty cycle exceeded for block " << index << ". TX * " << (1.0 / MAX_DUTY_CYCLE) << " > PRT1";
             throw std::runtime_error(os.str());
         }
-        if ( ( blockDef.prt[1] != 0 ) && ( blockDef.timers[TX_PULSE].width * (1.0 / MAX_DUTY_CYCLE) > blockDef.prt[1] ) )
+        if ( ( blockDef.prt[1] != 0 ) && ( blockDef.timers[MOD_PULSE].width * (1.0 / MAX_DUTY_CYCLE) > blockDef.prt[1] ) )
         {
             std::ostringstream os;
             os << "Transmit duty cycle exceeded for block " << index << ". TX * " << (1.0 / MAX_DUTY_CYCLE) << " > PRT2";
