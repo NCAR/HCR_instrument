@@ -36,14 +36,13 @@
 #include <numeric>
 #include <iostream>
 #include <stdint.h>
+#include <OperationMode.h>
 #include <xmlrpc-c/base.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-
-#include "HcrPmc730.h"
 
 /// @brief Class to represent HCR digital receiver/remote data system status.
 class DrxStatus {
