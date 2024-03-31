@@ -22,6 +22,7 @@
 // ** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 #include "IwrfExport.h"
+#include "StatusGrabber.h"
 #include <logx/Logging.h>
 #include <sys/timeb.h>
 #include <cmath>

@@ -29,10 +29,11 @@
 
 #include "CircBuffer.h"
 #include "HcrDrxConfig.h"
-#include "StatusGrabber.h"
 #include "PulseData.h"
 
+#include <CmigitsFmq.h>
 #include <HcrPmc730.h>
+#include <MotionControl.h>
 #include <OperationMode.h>
 #include <radar/iwrf_data.h>
 #include <radar/IwrfCalib.hh>
@@ -45,7 +46,8 @@
 
 #include "IwrfExportInsPoller.h"
 
-class IwrfExportInsPoller;
+// Forward for StatusGrabber, which is used only by reference in this header
+class StatusGrabber;
 
 /// IwrfExport merges data from the H and V channels,
 /// converts to IWRF time series format and writes the IWRF data to a client
