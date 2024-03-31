@@ -31,6 +31,7 @@
 
 #include <cstdlib>
 #include <logx/Logging.h>
+#include <Archive_xmlrpc_c.h>
 #include <OperationMode.h>
 
 LOGGING("HcrdrxRpcClient")
