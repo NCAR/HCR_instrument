@@ -4,10 +4,10 @@
 #
 
 tools = Split('''
-hcrpmc730client
 boost_program_options
 doxygen
-hcrexecutive
+hcrexecutiveclient
+hcrpmc730client
 lrose
 motioncontrol
 qt5

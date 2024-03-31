@@ -7,7 +7,7 @@ cmigitsdaemonrpcclient
 doxygen
 fireflydRpcClient
 hcrdrxrpcclient
-hcrexecutive
+hcrexecutiveclient
 logx
 lrose
 motioncontrol

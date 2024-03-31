@@ -1,6 +1,7 @@
 #
-# Rules to build libhcrexecutive.a and export it as a SCons tool
-#
+# Rules to build libhcrexecutiveclient.a containing stuff used by both
+# HcrExecutive and its RPC clients, and export it as a SCons tool
+
 tools = Split('''
 hcrdrxrpcclient
 hcrpmc730client
@@ -8,13 +9,13 @@ doxygen
 motioncontrol
 operationmode
 qt5
-xmlrpc_client++
 ''')
-hcrExecutiveDir = Dir('.').abspath
+
+toolDir = Dir('.').abspath
 
 env = Environment(tools=['default'] + tools)
 
-# Create the CanFestival object dictionary implementation files ElmoMasterNode.c 
+# Create the CanFestival object dictionary implementation files ElmoMasterNode.c
 # and ElmoMasterNode.h from ElmoMasterNode.od
 env.canfestivalObjdictImpl('ElmoMasterNode.od')
 
@@ -34,16 +35,16 @@ headers = Split('''
     TransmitControl.h
 ''')
 
-lib = env.Library('hcrexecutive', sources)
+lib = env.Library('hcrexecutiveclient', sources)
 Default(lib)
 
-env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "HcrExecutive library" })
+env['DOXYFILE_DICT'].update({ "PROJECT_NAME" : "HcrExecutive client library" })
 doxref = env.Apidocs(sources + headers)
 
-def hcrexecutive(env):
-    env.AppendUnique(CPPPATH = hcrExecutiveDir)
+def hcrexecutiveclient(env):
+    env.AppendUnique(CPPPATH = toolDir)
     env.Append(LIBS=[lib])
     env.AppendDoxref(doxref[0])
     env.Require(tools)
 
-Export('hcrexecutive')
+Export('hcrexecutiveclient')

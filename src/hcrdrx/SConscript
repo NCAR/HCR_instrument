@@ -1,12 +1,13 @@
 # -*- python -*-
 
 tools = Split("""
-    hcrdrxrpcclient
-    hcrpmc730client
-    cmigitsdaemonrpcclient
     boost_date_time
     boost_program_options
+    cmigitsdaemonrpcclient
     doxygen
+    drxstatus
+    hcrexecutiveclient
+    hcrpmc730client
     logx
     lrose
     motioncontrol

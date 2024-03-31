@@ -24,6 +24,7 @@
 #include "HCR_Pentek.h"
 #include "HcrDrxConfig.h"
 #include <HcrSharedResources.h>
+#include "StatusGrabber.h"
 
 #include <csignal>
 #include <cstdio>
