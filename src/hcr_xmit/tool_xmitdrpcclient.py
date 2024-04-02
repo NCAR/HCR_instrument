@@ -14,7 +14,7 @@ lib = env.Library('xmitdrpcclient', ['XmitdRpcClient.cpp', 'XmitStatus.o'])
     
 def xmitdrpcclient(env):
     env.AppendUnique(CPPPATH = [includeDir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
     env.Require(tools)
 
 Export('xmitdrpcclient')

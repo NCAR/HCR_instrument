@@ -22,7 +22,7 @@ lib = env.Library('fireflydrpcclient', sources)
     
 def fireflydRpcClient(env):
     env.AppendUnique(CPPPATH = [includeDir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
     env.Require(tools)
 
 Export('fireflydRpcClient')

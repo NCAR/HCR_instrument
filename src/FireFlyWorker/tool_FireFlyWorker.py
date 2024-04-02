@@ -38,7 +38,7 @@ doxdir = os.path.basename(tooldir)
     
 def FireFlyWorker(env):
     env.AppendUnique(CPPPATH = [includeDir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
     env.AppendDoxref(doxdir)
     env.Require(tools)
 

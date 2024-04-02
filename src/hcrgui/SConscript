@@ -5,6 +5,7 @@ boost_date_time
 hcrpmc730client
 cmigitsdaemonrpcclient
 doxygen
+drxstatus
 fireflydRpcClient
 hcrdrxrpcclient
 hcrexecutiveclient

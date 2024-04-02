@@ -28,7 +28,7 @@ lib = env.Library('drxstatus', sources)
     
 def drxstatus(env):
     env.AppendUnique(CPPPATH = [tooldir])
-    env.AppendUnique(LIBS = [lib])
+    env.Append(LIBS = [lib])
     env.Require(tools)
 
 Export('drxstatus')
