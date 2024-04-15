@@ -329,7 +329,8 @@ private:
 
     /// @brief Minimum pressure vessel pressure for allowing high voltage in the
     /// transmitter.
-    static constexpr float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+//  static constexpr float _PV_MINIMUM_PRESSURE_PSI = 11.0;
+    static constexpr float _PV_MINIMUM_PRESSURE_PSI = 10.0; // needed for the lab 2024/04/02
 
     /// @brief Received power threshold at which we shift to attenuated mode
     /// or disallow transmit, dBm

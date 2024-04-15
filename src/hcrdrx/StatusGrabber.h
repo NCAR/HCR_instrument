@@ -42,6 +42,7 @@
 #include <HcrPmc730Client.h>
 #include <XmitdRpcClient.h>
 #include <MotionControlRpcClient.h>
+#include <HcrExecutiveRpcClient.h>
 
 #include "DrxStatus.h"
 
@@ -71,7 +72,8 @@ public:
     StatusGrabber(HCR_Pentek & pentek,
             std::string pmc730dHost, int pmc730dPort,
             std::string xmitdHost, int xmitdPort,
-            std::string motionControlHost, int motionControlPort);
+            std::string motionControlHost, int motionControlPort,
+            std::string executiveHost, int executivePort);
     
     virtual ~StatusGrabber();
     
@@ -105,15 +107,17 @@ private slots:
     /// @brief Get current status from all sources
     void _getStatus();
 
-    /// @brief Read an incoming broadcast packet on the HMC mode change socket
-    void _readHmcModeChangeSocket();
-
 private:
 
     /**
      * @brief Get status from the Pentek
      */
     void _getDrxStatus();
+
+    /**
+     * @brief Get status from the Executive
+     */
+    void _getExecutiveStatus();
 
     /**
      * @brief Get status from the multi-IO card
@@ -135,6 +139,9 @@ private:
 
     /// Last DrxStatus we obtained
     DrxStatus _drxStatus;
+
+    /// XML-RPC access to executive for its status
+    HcrExecutiveRpcClient _hcrExecutiveClient;
 
     /// XML-RPC access to HcrPmc730Daemon for status it provides
     HcrPmc730Client _pmc730Client;
@@ -158,9 +165,7 @@ private:
      * methods)
      */
     mutable QMutex _mutex;
-    
-    /// Socket to receive HMC mode change broadcasts
-    QUdpSocket * _hmcModeChangeSocket;
+
 };
 
 

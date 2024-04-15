@@ -185,12 +185,14 @@ main(int argc, char * argv[]) {
         std::string xmitdHost("archiver");
         std::string pmc730dHost("localhost");
         std::string motionControlHost("localhost");
+        std::string executiveHost("localhost");
 
         // Create and start the status grabber
         StatusGrabber statusGrabber(hcrPentek,
             pmc730dHost, HCRPMC730DAEMON_PORT,
             xmitdHost, HCR_XMITD_PORT,
-            motionControlHost, MOTIONCONTROLDAEMON_PORT);
+            motionControlHost, MOTIONCONTROLDAEMON_PORT,
+            executiveHost, HCREXECUTIVE_PORT);
         statusGrabber.start();
         QObject::connect(&app, SIGNAL(aboutToQuit()), &hcrPentek, SLOT(quit()));
         QObject::connect(&app, SIGNAL(aboutToQuit()), &statusGrabber, SLOT(quit()));
@@ -199,6 +201,9 @@ main(int argc, char * argv[]) {
         IwrfExport exporter(config, statusGrabber);
         hcrPentek.setExporter(&exporter);
         exporter.start();
+
+        // Start the Pentek
+        hcrPentek.startRadar();
 
         // Start the QCoreApplication
         app.exec();

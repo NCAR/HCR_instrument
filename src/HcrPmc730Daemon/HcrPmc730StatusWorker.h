@@ -101,9 +101,6 @@ private slots:
     /// signal if successful.
     void _getStatus();
     
-    /// @brief Read HMC operation mode change info
-    void _readHmcModeChangeSocket();
-    
 private:
     /// @brief the host on which HcrPmc730Daemon is running
     std::string _daemonHost;
@@ -121,10 +118,6 @@ private:
     /// The HcrPmc730Client object handling the XML-RPC connection
     HcrPmc730Client _client;
     
-    /// QUdpSocket used to read broadcast messages of HMC operation mode 
-    /// changes.
-    QUdpSocket* _hmcModeChangeSocket;
-
     /// @brief Periodic timer to get new status from HcrPmc730Daemon
     QTimer* _getStatusTimer;
 

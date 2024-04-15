@@ -286,15 +286,13 @@ public:
         write_(WATCHDOG, ++watchdogCount, "Resetting watchdog timer");
     }
 
-    void changeSchedule(uint32_t sequenceStartIndex, uint32_t sequenceStopIndex)
+    void setSchedule(uint32_t sequenceStartIndex, uint32_t sequenceStopIndex)
     {
         // This will update the next time it loops throught the schedule
         write_(PULSE_SEQUENCE_START_STOP_INDEXES, (sequenceStopIndex<<16)|sequenceStartIndex,  "Writing controller sched index");
     }
 
-    void run(   uint32_t sequenceStartIndex,
-                uint32_t sequenceStopIndex,
-                uint32_t ddcDecimation,
+    void run(   uint32_t ddcDecimation,
                 uint32_t postDecimation,
                 uint32_t numPulsesPerXfer,
                 uint32_t enabledChannelVector,
@@ -303,7 +301,6 @@ public:
             )
     {
         uint32_t totalDecimation = ddcDecimation * postDecimation;
-        changeSchedule(sequenceStartIndex, sequenceStopIndex);
         write_(NUM_PULSES_TO_EXECUTE,      numPulsesToExecute,  "Writing num pulses to execute");
         write_(TOTAL_DECIMATION,           totalDecimation,     "Writing total decimation");
         write_(POST_DECIMATION,            postDecimation,      "Writing post decimation");

@@ -29,7 +29,6 @@
  */
 
 #include "HcrPmc730StatusWorker.h"
-#include "HmcModeChange.h"
 #include <QDateTime>
 #include <QMetaType>
 #include <QTimer>
@@ -45,7 +44,6 @@ HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
     _workThread(workThread),
     _responsive(false),
     _client(daemonHost, daemonPort),
-    _hmcModeChangeSocket(NULL),
     _getStatusTimer(NULL)
 {
     // We need to register HcrPmc730Status and HmcMode as metatypes,
@@ -61,7 +59,6 @@ HcrPmc730StatusWorker::HcrPmc730StatusWorker(std::string daemonHost,
 
 HcrPmc730StatusWorker::~HcrPmc730StatusWorker() {
     delete(_getStatusTimer);
-    delete(_hmcModeChangeSocket);
 }
 
 void
@@ -77,12 +74,6 @@ HcrPmc730StatusWorker::_beginWork() {
     connect(_workThread, &QThread::finished, _getStatusTimer, &QTimer::deleteLater);
     _getStatusTimer->start(1000);    /// 1000 ms
     
-    // Open the UDP socket to receive HMC mode change broadcasts, and
-    // connect it to our reader slot.
-    _hmcModeChangeSocket = new QUdpSocket();
-    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
-    connect(_hmcModeChangeSocket, &QUdpSocket::readyRead,
-            this, &HcrPmc730StatusWorker::_readHmcModeChangeSocket);
 }
 
 void
@@ -109,24 +100,3 @@ HcrPmc730StatusWorker::_getStatus() {
     }
 }
 
-void
-HcrPmc730StatusWorker::_readHmcModeChangeSocket() {
-    auto result = ListenForModeChange(*_hmcModeChangeSocket);
-    HmcMode mode = result.first;
-    auto modeChangeTime = result.second;
-
-    if (modeChangeTime == 0.0) {
-        WLOG << "_readHmcModeChangeSocket() called, but no good mode change " <<
-                "packet was seen.";
-        return;
-    }
-
-    // Emit our hmcModeChange() signal
-    DLOG << "HMC mode changed to '" << mode << "' at " <<
-            QDateTime::fromTime_t(time_t(modeChangeTime))
-                .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
-                .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
-
-    emit hmcModeChange(mode, modeChangeTime);
-
-}

@@ -116,6 +116,9 @@ public:
     /// @brief Return the current status
     DrxStatus status();
 
+    /// @brief Start the radar
+    void startRadar();
+
 signals:
     /// @brief Signal emitted with data delivered for one of our ADC channels
     /// @param dmaStatus the Navigator status bitmap for the DMA transfer
@@ -237,11 +240,6 @@ private:
     /// This method is only called from the constructor.
     void _setupController();
 
-    /// @brief Start the radar
-    ///
-    /// This method is only called from the constructor.
-    void _startRadar();
-
     /// @brief Log differences between current clock configuration and the
     /// clock frequency values to be loaded.
     void _logClockConfigDiffs() const;
@@ -349,6 +347,7 @@ private:
     bool _motorZeroPositionSet;
     double _fpgaTemp;
     double _localTemp;
+    bool _haveOpMode = false;
 
     /// @brief Firmware build to check for.
     const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20230417;

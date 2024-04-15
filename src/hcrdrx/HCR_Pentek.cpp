@@ -179,16 +179,22 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
 
     // Radar controller
     _setupController();
-
-    // Start the radar
-    _startRadar();
 }
 
 void
-HCR_Pentek::_startRadar() {
+HCR_Pentek::startRadar() {
     int32_t status;
 
     PMU_auto_register("HCR_Pentek::_startRadar()");
+
+// It would be nice if this worked, however, this func gets called before app.exec(),
+// so this just hangs. Regardless, the correct schedule will be picked up within one second.
+//
+//    // Spin until the schedule is picked up by either an RPC push or by StatusGrabber
+//    while(!_haveOpMode) {
+//        ILOG << "Waiting for Operation Mode from the Executive...";
+//        usleep(1e6);
+//    }
 
     // Get the current system time
     // TODO: check that an NTP client is running, and query it to verify that
@@ -228,9 +234,7 @@ HCR_Pentek::_startRadar() {
     for(int chan=0; chan<_adcCount; chan++)
         enabledChannelVector |= ( (_config.enable_rx(chan)?1:0)<<chan );
 
-    _controller.run(0,                              // sequenceStartIndex,
-                    0,                              // sequenceStopIndex,
-                    ddcDecimation(),                // ddcDcimation,
+    _controller.run(ddcDecimation(),                // ddcDcimation,
                     _config.final_decimation(),     // postDecimation,
                     _config.pulses_per_xfer(),      // numPulsesPerXfer,
                     enabledChannelVector,           // enabledChannelVector,
@@ -1549,11 +1553,16 @@ HCR_Pentek::_setupController()
     // Write the pulse definitions
     _controller.writePulseBlockDefinitions(_pulseBlockDefinitions);
 
+    // Default schedule
+    _controller.setSchedule(0, 0);
+
 }
 
 void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t scheduleStopIndex)
 {
-    _controller.changeSchedule(scheduleStartIndex, scheduleStopIndex);
+    DLOG << "Setting schedule to " << scheduleStartIndex << ":" << scheduleStopIndex;
+    _controller.setSchedule(scheduleStartIndex, scheduleStopIndex);
+    _haveOpMode = true;
 }
 
 void HCR_Pentek::zeroMotorCounts()

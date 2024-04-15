@@ -31,7 +31,6 @@
 #include "StatusGrabber.h"
 #include "HCR_Pentek.h"
 
-#include <HmcModeChange.h>
 #include <QDateTime>
 #include <QMutexLocker>
 #include <QTimer>
@@ -50,18 +49,19 @@ LOGGING("StatusGrabber")
 StatusGrabber::StatusGrabber(HCR_Pentek & pentek,
         std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort,
-        std::string motionControlHost, int motionControlPort) :
+        std::string motionControlHost, int motionControlPort,
+        std::string executiveHost, int executivePort) :
     QThread(),
     _pentek(pentek),
     _drxStatus(),
+    _hcrExecutiveClient(executiveHost, executivePort),
     _pmc730Client(pmc730dHost, pmc730dPort),
     _pmc730Status(),	// empty/bad status
     _xmitClient(xmitdHost, xmitdPort),
     _xmitStatus(),
     _motionControlClient(motionControlHost, motionControlPort),
     _motionControlStatus(),
-    _mutex(QMutex::Recursive),
-    _hmcModeChangeSocket(NULL) {
+    _mutex(QMutex::Recursive) {
     moveToThread(this);
 }
 
@@ -105,19 +105,8 @@ StatusGrabber::run() {
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(_getStatus()));
     updateTimer.start();
 
-    // Open the UDP socket to receive Operation mode change broadcasts, which we
-    // use to force an update of _pmc730Status separate from the 1 Hz timer
-    // above.
-    _hmcModeChangeSocket = new QUdpSocket();
-    _hmcModeChangeSocket->bind(HMC_MODE_BROADCAST_PORT, QUdpSocket::ShareAddress);
-    connect(_hmcModeChangeSocket, SIGNAL(readyRead()),
-            this, SLOT(_readHmcModeChangeSocket()));
-
     // Now just start our event loop
     exec();
-
-    _hmcModeChangeSocket->close();
-    delete(_hmcModeChangeSocket);
 }
 
 void
@@ -126,6 +115,7 @@ StatusGrabber::_getStatus() {
     _getDrxStatus();
     _getXmitStatus();
     _getMotionControlStatus();
+    _getExecutiveStatus();
 }
 
 void
@@ -136,6 +126,13 @@ StatusGrabber::_getDrxStatus() {
 
     QMutexLocker locker(&_mutex);
     _drxStatus = drxStatus;
+}
+
+void
+StatusGrabber::_getExecutiveStatus() {
+    // Grab the current operation mode and update HCR_Pentek
+    auto currentOpMode = _hcrExecutiveClient.status().currentOperationMode();
+    _pentek.changeControllerSchedule(currentOpMode.scheduleStartIndex(), currentOpMode.scheduleStopIndex());
 }
 
 void
@@ -172,33 +169,4 @@ StatusGrabber::_getMotionControlStatus() {
 
     QMutexLocker locker(&_mutex);
     _motionControlStatus = mcStatus;
-}
-
-void
-StatusGrabber::_readHmcModeChangeSocket() {
-
-    auto result = ListenForModeChange(*_hmcModeChangeSocket);
-    //auto mode = result.first;
-    auto modeChangeTime = result.second;
-
-    if (modeChangeTime == 0.0) {
-        WLOG << "_readHmcModeChangeSocket() called, but no good mode change " <<
-                "packet was seen.";
-        return;
-    }
-
-    // OK, now just get full current status from HcrPmc730 via XML-RPC. This
-    // may cost us a handful of milliseconds, but gets complete and self-
-    // consistent HcrPmc730Status with the new Operation mode.
-    _getPmc730Status();
-
-    struct timeval tvNow;
-    gettimeofday(&tvNow, NULL);
-    ILOG << "New HMC mode '" << _pmc730Status.hmcMode() << "' " <<
-            "with start time " << QDateTime::fromTime_t(time_t(modeChangeTime))
-                .addMSecs(int(fmod(modeChangeTime, 1.0) * 1000))
-                .toString("yyyyMMdd hh:mm:ss.zzz").toStdString() <<
-            " is being noted at " <<
-            QDateTime::fromTime_t(tvNow.tv_sec).addMSecs(tvNow.tv_usec / 1000)
-                .toString("yyyyMMdd hh:mm:ss.zzz").toStdString();
 }

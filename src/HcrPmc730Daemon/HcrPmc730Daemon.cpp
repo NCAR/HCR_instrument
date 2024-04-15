@@ -48,7 +48,6 @@
 #include <QXmlRpcServerAbyss.h>
 
 #include <HcrSharedResources.h>
-#include "HmcModeChange.h"
 
 LOGGING("HcrPmc730Daemon")
 
@@ -189,14 +188,6 @@ public:
 
         // Change to the requested mode
         HcrPmc730::SetHmcMode(hmcMode);
-
-        // Broadcast a datagram to indicate the new mode and the time of the
-        // mode change (double precision seconds since 1970-01-01 00:00:00 UTC)
-        int result = BroadcastModeChange(HmcModeBroadcastSocket, hmcMode);
-        if (result == -1) {
-            ELOG << "Operation mode change UDP write gave QAbstractSocket::SocketError " <<
-                    HmcModeBroadcastSocket.error();
-        }
     }
 };
 
