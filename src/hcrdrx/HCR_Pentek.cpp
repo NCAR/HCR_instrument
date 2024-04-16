@@ -984,6 +984,22 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         // If we have a exporter, send it the new data for collating and publishing.
         if (_exporter) {
 
+            iwrf_pol_mode polMode = IWRF_POL_MODE_NOT_SET;
+            iwrf_xmit_rcv_mode xmitRcvMode = IWRF_XMIT_RCV_MODE_NOT_SET;
+
+            if (blockDef.polarizationMode == Controller::PolarizationModes::POL_MODE_H ) {
+                polMode = IWRF_POL_MODE_H;
+                xmitRcvMode = IWRF_H_ONLY_FIXED_HV;
+            }
+            else if ( blockDef.polarizationMode == Controller::PolarizationModes::POL_MODE_V ) {
+                polMode = IWRF_POL_MODE_V;
+                xmitRcvMode = IWRF_V_ONLY_FIXED_HV;
+            }
+            else if ( blockDef.polarizationMode == Controller::PolarizationModes::POL_MODE_HHVV ) {
+                polMode = IWRF_POL_MODE_HHVV_ALT;
+                xmitRcvMode = IWRF_ALT_HHVV_FIXED_HV;
+            }
+
             // set data in pulse object
             _pulseData[chan]->set(
                 pulseHeader.pulseSequenceNumber, // int64_t pulseSeqNum,
@@ -1001,6 +1017,8 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
                 sampleOffset,       // double sampleOffset,
                 sampleScale,        // double sampleScale,
                 sampleEncoding,     // iwrf_iq_encoding_t encoding,
+                polMode,
+                xmitRcvMode,
                 nGates,             // int nGates,
                 iqData );           // const IQData *iq)
 

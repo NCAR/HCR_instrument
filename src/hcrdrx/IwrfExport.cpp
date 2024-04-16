@@ -65,7 +65,9 @@ IwrfExport::IwrfExport(const HcrDrxConfig& config, const StatusGrabber& monitor)
         _vPulseCount(0),
         _ins1Count(0),
         _ins2Count(0),
-        _lastGeorefTime(0)
+        _lastGeorefTime(0),
+        _polMode(IWRF_POL_MODE_NOT_SET),
+        _xmitRcvMode(IWRF_XMIT_RCV_MODE_NOT_SET)
 {
 
   // initialize
@@ -279,6 +281,11 @@ void IwrfExport::run()
       sendMeta = true;
       _hmcMode = _monitor.pmc730Status().hmcMode();
     }
+    if (_pulseH->getPolMode() != _polMode || _pulseH->getXmitRcvMode() != _xmitRcvMode) {
+      sendMeta = true;
+      _polMode =_pulseH->getPolMode();
+      _xmitRcvMode = _pulseH->getXmitRcvMode();
+    }
     if (_monitor.motionControlStatus().antennaMode != _antennaMode) {
       sendMeta = true;
       _antennaMode = _monitor.motionControlStatus().antennaMode;
@@ -475,8 +482,8 @@ int IwrfExport::_sendIwrfMetaData()
   switch (_hmcMode) {
     case HmcMode::TRANSMIT:
     case HmcMode::TRANSMIT_ATTENUATED:
-        _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
-        _tsProc.pol_mode = IWRF_POL_MODE_V;
+        _tsProc.xmit_rcv_mode = _xmitRcvMode;
+        _tsProc.pol_mode = _polMode;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
     case HmcMode::BENCH_TEST:

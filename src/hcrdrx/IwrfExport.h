@@ -248,6 +248,12 @@ private:
     /// 00:00:00 UTC
     uint64_t _lastGeorefTime;
 
+    /// Pol Mode
+    iwrf_pol_mode _polMode;
+
+    /// Xmit Rcv Mode
+    iwrf_xmit_rcv_mode _xmitRcvMode;
+
     /// methods
 
     void _readNextPulse();

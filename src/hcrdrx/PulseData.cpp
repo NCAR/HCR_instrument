@@ -48,6 +48,8 @@ PulseData::PulseData() :
     _offset(0.0),
     _scale(1.0),
     _encoding(IWRF_IQ_ENCODING_NOT_SET),
+    _polMode(IWRF_POL_MODE_NOT_SET),
+    _xmitRcvMode(IWRF_XMIT_RCV_MODE_NOT_SET),
     _iq(NULL)
 {}
 
@@ -80,6 +82,8 @@ void PulseData::set(int64_t pulseSeqNum,
                     double sampleOffset,
                     double sampleScale,
                     iwrf_iq_encoding_t encoding,
+                    iwrf_pol_mode polMode,
+                    iwrf_xmit_rcv_mode xmitRcvMode,
                     int nGates,
                     const IQData *iq)
 {
@@ -100,6 +104,8 @@ void PulseData::set(int64_t pulseSeqNum,
   _offset = sampleOffset;
   _scale = sampleScale;
   _encoding = encoding;
+  _polMode = polMode;
+  _xmitRcvMode = xmitRcvMode;
 
   _allocIq();
   memcpy(_iq, iq, _nGates * sizeof(IQData));

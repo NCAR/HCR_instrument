@@ -69,6 +69,8 @@ public:
     /// @param sampleOffset sample offset
     /// @param sampleScale sample scale
     /// @param encoding sample encoding
+    /// @param polMode pol mode
+    /// @param xmitRcvMode xmit rcv mode
     /// @param nGates number of gates in the pulse data
     /// @param iq I and Q data array for the pulse: I[0], Q[0], I[1], Q[1], ..., Q[nGates -1]
     void set(int64_t pulseSeqNum,
@@ -86,6 +88,8 @@ public:
              double sampleOffset,
              double sampleScale,
              iwrf_iq_encoding_t encoding,
+             iwrf_pol_mode polMode,
+             iwrf_xmit_rcv_mode xmitRcvMode,
              int nGates,
              const IQData *iq);
 
@@ -108,6 +112,8 @@ public:
     inline double getSampleWidth() const { return _sampleWidth; }
     inline double getOffset() const { return _offset; }
     inline double getScale() const { return _scale; }
+    inline iwrf_pol_mode getPolMode() const { return _polMode; }
+    inline iwrf_xmit_rcv_mode getXmitRcvMode() const { return _xmitRcvMode; }
     inline iwrf_iq_encoding_t getEncoding() const { return _encoding; }
 
 private:
@@ -144,7 +150,10 @@ private:
     double _scale;
     /// Sample encoding
     iwrf_iq_encoding_t _encoding;
-
+    /// Pol Mode
+    iwrf_pol_mode _polMode;
+    /// Xmit Rcv Mode
+    iwrf_xmit_rcv_mode _xmitRcvMode;
     /// IQ data
     IQData *_iq;
 
