@@ -475,8 +475,8 @@ int IwrfExport::_sendIwrfMetaData()
   switch (_hmcMode) {
     case HmcMode::TRANSMIT:
     case HmcMode::TRANSMIT_ATTENUATED:
-        _tsProc.xmit_rcv_mode = IWRF_ALT_HV_FIXED_HV;
-        _tsProc.pol_mode = IWRF_POL_MODE_HV_ALT;
+        _tsProc.xmit_rcv_mode = IWRF_V_ONLY_FIXED_HV;
+        _tsProc.pol_mode = IWRF_POL_MODE_V;
         _tsProc.cal_type = IWRF_CAL_TYPE_NONE;
         break;
     case HmcMode::BENCH_TEST:
