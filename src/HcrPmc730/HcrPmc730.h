@@ -115,7 +115,7 @@ public:
     /// to updateAnalogValues().
     static double PvAftPressure() {
         double voltage = TheHcrPmc730()._analogValues[_HCR_AIN_PV_AFT_PRESSURE];
-        return(_30PSI_A_4V_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
+        return(_Honeywell_030PA_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
     }
 
     /// @brief Return the pressure vessel fore sensor pressure in hPa at the last
@@ -124,7 +124,7 @@ public:
     /// to updateAnalogValues().
     static double PvForePressure() {
         double voltage = TheHcrPmc730()._analogValues[_HCR_AIN_PV_FORE_PRESSURE];
-        return(_30PSI_A_4V_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
+        return(_Honeywell_030PA_Pres(voltage) + TheHcrPmc730()._pvPresCorrection);
     }
 
     /// @brief Convert pressure in PSI to hPa
@@ -612,6 +612,12 @@ private:
     /// @return the pressure at the 30PSI-A-4V-MIL sensor
     static double _30PSI_A_4V_Pres(double sensorVolts);
 
+    /// @brief Calculate the pressure based on the voltage from a
+    /// Honeywell SSCSNBN030PAAA5 sensor.
+    /// @param sensorVolts the potential across the sensor, V
+    /// @return the pressure at the SSCSNBN030PAAA5 sensor in hPa
+    static double _Honeywell_030PA_Pres(double sensorVolts);
+
     /// @brief Convert the given voltage to measured RF power from
     /// Mi-Wave 950W RF detector.
     /// @param voltage the voltage measured at the Mi-Wave 950W detector
@@ -656,8 +662,9 @@ private:
     /// calculated pressure from the associated A/D voltage + the
     /// correction value.
     ///
-    /// We need this because for unknown reasons, the pressure transducers
-    /// appear to be damaged and consistently read lower than actual pressure.
+    /// We need this to compensate for absolute pressure transducers
+    /// damaged during helium purging of the pressure vessel and
+    // reading lower than actual pressure.
     double _pvPresCorrection;
 
     /// @brief The singleton instance of HcrPmc730.

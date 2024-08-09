@@ -422,6 +422,19 @@ HcrPmc730::_30PSI_A_4V_Pres(double sensorVolts) {
     return(hPaPerVolt * (sensorVolts - zeroPresOffsetVolts));
 }
 
+double
+HcrPmc730::_Honeywell_030PA_Pres(double sensorVolts) {
+    // Actual sensor supply voltage
+    const double v_in = Ps5vVoltage();
+
+    // Nominal from device spec: 0.1 * V_in @ zero pressure
+    const double zeroPresOffsetVolts = 0.1 * v_in;
+
+    // Nominal from device spec: 0.8 * V_in output span over 30 PSI
+    const double psiPerVolt = 30 / (0.8 * v_in);
+    return(PsiToHpa(psiPerVolt * (sensorVolts - zeroPresOffsetVolts)));
+}
+
 /**
  * @brief Briefly raise the HMC's 'status_ack' line to reset its sense-and-hold
  * values.
