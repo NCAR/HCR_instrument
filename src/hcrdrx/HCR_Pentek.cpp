@@ -196,27 +196,43 @@ HCR_Pentek::startRadar() {
 //        usleep(1e6);
 //    }
 
-    // Get the current system time
-    // TODO: check that an NTP client is running, and query it to verify that
-    // our system clock offset is small (must be < 0.5 s)
-    struct timespec nowTimespec;
-    clock_gettime(CLOCK_REALTIME, &nowTimespec);
-
-    // Calculate sleep time until the next mid-second mark. Radar "start second"
-    // will be the second in which we awaken and zero the Pentek's PPS counter.
-    uint32_t nowUsecs = nowTimespec.tv_nsec / 1000;
-    int32_t sleepUsecs;
-    if (nowUsecs <= 500000) {
-        _radarStartSecond = nowTimespec.tv_sec;
-        sleepUsecs = 500000 - nowUsecs;
-    } else {
-        _radarStartSecond = nowTimespec.tv_sec + 1;
-        sleepUsecs = 1500000 - nowUsecs;
+    // Check with chrony to verify that our system clock is currently NTP
+    // synchronized to within 0.1s. If not, exit now with an error.
+    std::cout << "chronyc sync status: ";
+    std::cout.flush();
+    auto retval = system("chronyc waitsync 1 0.1"); // check once to see if sync is within 0.1 s
+    if (retval != 0) {
+            ELOG << "Exiting from startRadar(): system clock is not NTP sync'ed";
+            raise(SIGINT);  // Trigger the program's ^C handler
     }
 
-    // Sleep until the next mid-second mark
-    DLOG << "Sleeping " << sleepUsecs << " us before zeroing the Pentek PPS count";
-    usleep(sleepUsecs);
+    // Get the current system time
+    auto now = QDateTime::currentDateTime();
+
+    // Calculate sleep time until the system clock's next mid-second
+    // mark. The radar will start on next 1PPS signal after that. Waiting for
+    // the system clock's mid-second mark assures that we will assign the correct
+    // time for the starting 1 PPS as long as the system time offset w.r.t. GPS
+    // time is within the interval (-0.5s, 0.5s), and this was verified above.
+    auto nowMillisecs = now.time().msec();    // milliseconds into current second
+    uint sleepMillisecs;
+    if (nowMillisecs <= 500) {
+        _radarStartSecond = now.toTime_t() + 1;   // we'll start on the next PPS
+        sleepMillisecs = 500 - nowMillisecs;    // msecs until the upcoming mid-second
+    } else {
+        // We're already past mid-second, so sleep through the next 1PPS and
+        // start the radar on the one after that.
+        _radarStartSecond = now.toTime_t() + 2;
+        sleepMillisecs = 1500 - nowMillisecs;
+    }
+
+    ILOG << "Current time is " << now.time().toString("hh:mm:ss.zzz").toStdString();
+    ILOG << "Pentek will be started on 1PPS signal at: "
+         << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
+
+    // Now sleep until the next system clock mid-second mark.
+    DLOG << "Sleeping " << sleepMillisecs << " us before zeroing the Pentek PPS count";
+    usleep(1000 * sleepMillisecs);
 
     // Zero the Pentek's PPS counter
     status = NAV_TimestampGenSetup(_boardHandle, 0);
@@ -243,14 +259,11 @@ HCR_Pentek::startRadar() {
 
     // Generate a fake PPS if desired
     if ( !_config.start_on_1pps() ) {
+        WLOG << "STARTING ON FAKE 1 PPS!";
         usleep(1000);
         writeLiteRegister_(BLOCK2_GPR_BASE+4, 1, "Override PPS to 1");
         writeLiteRegister_(BLOCK2_GPR_BASE+4, 0, "Clear override PPS");
     }
-
-    ILOG << "Pentek start time: " << QDateTime::fromTime_t(_radarStartSecond)
-                       .toString("yyyy-MM-dd hh:mm:ss").toStdString();
-
 }
 
 HCR_Pentek::~HCR_Pentek() {
@@ -1142,9 +1155,6 @@ HCR_Pentek::AdcDmaCallbackHandler(int32_t chan, int32_t dmaStatus,
         dmaError = true;
     }
     if (dmaStatus & NAV_STAT_DMA_TIMEOUT) {
-        std::string adcPrefix = std::string("ADC chan ") +
-                std::to_string(chan) + ": ";
-
         // ELOG << "ADC DMA timeout on board " << instance->_boardNum << " chan " << chan;
 
         // Have the associated HCR_Pentek instance emit signal
