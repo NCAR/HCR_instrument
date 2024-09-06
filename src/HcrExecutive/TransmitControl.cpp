@@ -728,10 +728,13 @@ TransmitControl::_setOperationMode(const OperationMode& mode) {
         return;
     }
 
-    if (! _hcrdrxClient._useOperationMode(mode)) return;
-
-    // Success! Update _currentOperationMode
-    _currentOperationMode = mode;
+    if (_hcrdrxClient._useOperationMode(mode)) {
+        DLOG << "Sucessfully set hcrdrx OperationMode to " << mode.name();
+        // Success! Update current operation mode
+        _currentOperationMode = mode;
+    } else {
+        DLOG << "Failed to set hcrdrx OperationMode to " << mode.name();
+    };
 }
 
 bool
