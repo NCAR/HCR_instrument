@@ -128,8 +128,8 @@ public:
     /// @return the requested Operation mode.
     OperationMode requestedOperationMode() const { return(_requestedOperationMode); }
 
-    /// @brief Return the requested Operation mode.
-    /// @return the requested Operation mode.
+    /// @brief Return the current Operation mode.
+    /// @return the current Operation mode.
     OperationMode currentOperationMode() const { return(_currentOperationMode); }
 
     /// @brief Return true iff a user has requested that high voltage be 
