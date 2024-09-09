@@ -185,22 +185,18 @@ void
 HCR_Pentek::startRadar() {
     int32_t status;
 
-    PMU_auto_register("HCR_Pentek::_startRadar()");
-
-// It would be nice if this worked, however, this func gets called before app.exec(),
-// so this just hangs. Regardless, the correct schedule will be picked up within one second.
-//
-//    // Spin until the schedule is picked up by either an RPC push or by StatusGrabber
-//    while(!_haveOpMode) {
-//        ILOG << "Waiting for Operation Mode from the Executive...";
-//        usleep(1e6);
-//    }
+    PMU_auto_register("HCR_Pentek::startRadar()");
 
     // Check with chrony to verify that our system clock is currently NTP
     // synchronized to within 0.1s. If not, exit now with an error.
-    std::cout << "chronyc sync status: ";
-    std::cout.flush();
-    auto retval = system("chronyc waitsync 1 0.1"); // check once to see if sync is within 0.1 s
+    std::string waitsyncCmd("chronyc waitsync 1 0.1");; // check once to see if sync is within 0.1 s
+    ILOG << "=========";
+    ILOG << "System clock status reported by command \"" << waitsyncCmd << "\" is:";
+    std::cout << "        ";
+    std::flush(std::cout);
+    auto retval = system(waitsyncCmd.c_str());
+    ILOG << "=========";
+
     if (retval != 0) {
             ELOG << "Exiting from startRadar(): system clock is not NTP sync'ed";
             raise(SIGINT);  // Trigger the program's ^C handler
@@ -213,7 +209,7 @@ HCR_Pentek::startRadar() {
     // mark. The radar will start on next 1PPS signal after that. Waiting for
     // the system clock's mid-second mark assures that we will assign the correct
     // time for the starting 1 PPS as long as the system time offset w.r.t. GPS
-    // time is within the interval (-0.5s, 0.5s), and this was verified above.
+    // time is within +/-0.5s, and this was verified above.
     auto nowMillisecs = now.time().msec();    // milliseconds into current second
     uint sleepMillisecs;
     if (nowMillisecs <= 500) {
@@ -226,7 +222,7 @@ HCR_Pentek::startRadar() {
         sleepMillisecs = 1500 - nowMillisecs;
     }
 
-    ILOG << "Current time is " << now.time().toString("hh:mm:ss.zzz").toStdString();
+    ILOG << "Current system clock time is " << now.time().toString("hh:mm:ss.zzz").toStdString();
     ILOG << "Pentek will be started on 1PPS signal at: "
          << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
 
