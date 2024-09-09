@@ -32,6 +32,7 @@
 #include <QFunctionWrapper.h>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
+#include <QtCore/QTimer>
 #include <QtNetwork/QUdpSocket>
 #include <logx/Logging.h>
 #include <toolsa/pmu.h>
@@ -202,8 +203,9 @@ main(int argc, char * argv[]) {
         hcrPentek.setExporter(&exporter);
         exporter.start();
 
-        // Start the Pentek
-        hcrPentek.startRadar();
+        // Create a timer which will call hcrPentek.startRadar() from our
+        // QApplication's event loop immediately when it's executed.
+        QTimer::singleShot(0, &hcrPentek, &HCR_Pentek::startRadar);
 
         // Start the QCoreApplication
         app.exec();
