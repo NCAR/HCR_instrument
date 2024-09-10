@@ -819,6 +819,8 @@ HCR_Pentek::_logClockConfigDiffs() const {
          << ", DAC: " << (dacFrequency()*1e-6) << " MHz (x" << ducInterpolation() << ")";
 }
 
+static bool FirstPulse(true);
+
 void
 HCR_Pentek::_acceptAdcData(int32_t chan,
                             int32_t dmaStatus,
@@ -889,8 +891,16 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         //}
 
         // Calculate the timestamp
-        time_t dataSec = _radarStartSecond + metadata->timestampPpsCount;
+        time_t dataSec = _radarStartSecond + (metadata->timestampPpsCount - 1); // PPS count goes to 1 at radar start!
         uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/adcFrequency());
+
+        // Log time tag of the first pulse we receive
+        if (FirstPulse) {
+            ILOG << "FIRST PULSE (received at " << QDateTime::currentDateTimeUtc().toString("HH:mm:ss.zzz").toStdString()
+                 << ") has time tag " << QDateTime::fromSecsSinceEpoch(dataSec, QTimeZone::utc()).toString("HH:mm::ss").toStdString()
+                 << " + " << dataNanosec << " ns";
+            FirstPulse = false;
+        }
 
         // Add the PRT to get the offset for the next pulse
         clockOffsetCount += pulseHeader.prt;
