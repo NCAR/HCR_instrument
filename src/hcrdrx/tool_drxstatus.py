@@ -6,12 +6,13 @@ import os
 tools = Split("""
     boost_serialization
     cmigits
-    hcrpmc730
+    hcrpmc730client
     logx
     lrose
     motioncontrol
     operationmode
     Pentek_xx821
+    xmitdrpcclient
 """)
 env = Environment(tools=['default'] + tools)
 

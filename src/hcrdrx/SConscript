@@ -7,7 +7,6 @@ tools = Split("""
     doxygen
     drxstatus
     hcrdrxrpcclient
-    hcrexecutiveclient
     hcrpmc730client
     logx
     lrose

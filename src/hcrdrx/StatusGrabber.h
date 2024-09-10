@@ -28,8 +28,8 @@
  *      Author: burghart
  */
 
-#ifndef HCR_MONITOR_H_
-#define HCR_MONITOR_H_
+#ifndef STATUSGRABBER_H_
+#define STATUSGRABBER_H_
 
 #include <deque>
 #include <numeric>
@@ -42,7 +42,6 @@
 #include <HcrPmc730Client.h>
 #include <XmitdRpcClient.h>
 #include <MotionControlRpcClient.h>
-#include <HcrExecutiveRpcClient.h>
 
 #include "DrxStatus.h"
 
@@ -72,8 +71,7 @@ public:
     StatusGrabber(HCR_Pentek & pentek,
             std::string pmc730dHost, int pmc730dPort,
             std::string xmitdHost, int xmitdPort,
-            std::string motionControlHost, int motionControlPort,
-            std::string executiveHost, int executivePort);
+            std::string motionControlHost, int motionControlPort);
     
     virtual ~StatusGrabber();
     
@@ -115,11 +113,6 @@ private:
     void _getDrxStatus();
 
     /**
-     * @brief Get status from the Executive
-     */
-    void _getExecutiveStatus();
-
-    /**
      * @brief Get status from the multi-IO card
      */
     void _getPmc730Status();
@@ -140,9 +133,6 @@ private:
     /// Last DrxStatus we obtained
     DrxStatus _drxStatus;
 
-    /// XML-RPC access to executive for its status
-    HcrExecutiveRpcClient _hcrExecutiveClient;
-
     /// XML-RPC access to HcrPmc730Daemon for status it provides
     HcrPmc730Client _pmc730Client;
 
@@ -160,6 +150,7 @@ private:
 
     /// Last MotionControlDaemon status we obtained
     MotionControl::Status _motionControlStatus;
+
     /**
      * Thread access mutex (mutable so we can lock the mutex even in const
      * methods)
@@ -169,4 +160,4 @@ private:
 };
 
 
-#endif /* HCR_MONITOR_H_ */
+#endif /* STATUSGRABBER_H_ */

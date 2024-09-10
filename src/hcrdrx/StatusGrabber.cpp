@@ -49,12 +49,10 @@ LOGGING("StatusGrabber")
 StatusGrabber::StatusGrabber(HCR_Pentek & pentek,
         std::string pmc730dHost, int pmc730dPort,
         std::string xmitdHost, int xmitdPort,
-        std::string motionControlHost, int motionControlPort,
-        std::string executiveHost, int executivePort) :
+        std::string motionControlHost, int motionControlPort) :
     QThread(),
     _pentek(pentek),
     _drxStatus(),
-    _hcrExecutiveClient(executiveHost, executivePort),
     _pmc730Client(pmc730dHost, pmc730dPort),
     _pmc730Status(),	// empty/bad status
     _xmitClient(xmitdHost, xmitdPort),
@@ -115,7 +113,6 @@ StatusGrabber::_getStatus() {
     _getDrxStatus();
     _getXmitStatus();
     _getMotionControlStatus();
-    _getExecutiveStatus();
 }
 
 void
@@ -126,13 +123,6 @@ StatusGrabber::_getDrxStatus() {
 
     QMutexLocker locker(&_mutex);
     _drxStatus = drxStatus;
-}
-
-void
-StatusGrabber::_getExecutiveStatus() {
-    // Grab the current operation mode and update HCR_Pentek
-    auto currentOpMode = _hcrExecutiveClient.status().currentOperationMode();
-    _pentek.changeControllerSchedule(currentOpMode.scheduleStartIndex(), currentOpMode.scheduleStopIndex());
 }
 
 void
