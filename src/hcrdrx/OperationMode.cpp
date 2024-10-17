@@ -18,7 +18,7 @@ const std::string toString(HmcMode mode)
         "Transmit",
         "Transmit (Attenuated)",
         "Noise Source Cal",
-        "Bench Test",
+        "Idle (Bench Test)",
         "TX V with noise source",
         "Invalid"
     };

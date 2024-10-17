@@ -1545,19 +1545,7 @@ HCR_Pentek::_setupController()
     tmp.polarizationMode = Controller::PolarizationModes::POL_MODE_HHVV;
     _pulseBlockDefinitions.push_back(tmp);
 
-    // Default modes
-    _supportedOpsModes.push_back({HmcMode::RESET});
-    _supportedOpsModes.push_back({HmcMode::NOISE_SOURCE_CAL});
-    _supportedOpsModes.push_back({HmcMode::BENCH_TEST});
-    _supportedOpsModes.push_back({HmcMode::V_HV_ISOL_NOISE});
-    _supportedOpsModes.push_back({HmcMode::TRANSMIT, 0, 0, "Transmit H"});
-    _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
-    _supportedOpsModes.push_back({HmcMode::TRANSMIT, 1, 1, "Transmit V"});
-    _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
-    _supportedOpsModes.push_back({HmcMode::TRANSMIT, 2, 2, "Transmit HHVV"});
-    _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
-
-    ILOG << "Processing extra mode definitions";
+    ILOG << "Processing custom mode definitions";
     CHECKTYPE(json, ["CustomModes"], Object);
     const auto modes = json["CustomModes"].toObject();    
     for ( auto modeIt = modes.begin(); modeIt != modes.end(); ++modeIt)
@@ -1591,6 +1579,20 @@ HCR_Pentek::_setupController()
             ILOG << "   Not enabled; skipping.";
         }
     }
+    
+    // Default modes
+    ILOG << "Processing default mode definitions";
+    _supportedOpsModes.push_back({HmcMode::RESET});
+    _supportedOpsModes.push_back({HmcMode::NOISE_SOURCE_CAL});
+    _supportedOpsModes.push_back({HmcMode::BENCH_TEST});
+    _supportedOpsModes.push_back({HmcMode::V_HV_ISOL_NOISE});
+    // _supportedOpsModes.push_back({HmcMode::TRANSMIT, 0, 0, "Transmit H"});
+    // _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+    // _supportedOpsModes.push_back({HmcMode::TRANSMIT, 1, 1, "Transmit V"});
+    // _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+    // _supportedOpsModes.push_back({HmcMode::TRANSMIT, 2, 2, "Transmit HHVV"});
+    // _supportedOpsModes.push_back(_supportedOpsModes.back().equivalentAttenuatedMode());
+
     ILOG << "End of mode definitions.";
 
     // Write the pulse definitions

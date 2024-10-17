@@ -21,7 +21,7 @@
     "CustomModes": {
 
         "Demo": {
-            "Enabled": true,
+            "Enabled": false,
             "Comment": "Here is an example schedule composed of three blocks.",
             "Blocks": [
                 {
