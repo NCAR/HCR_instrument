@@ -9,6 +9,7 @@ use UNISIM.VComponents.all;
 entity p14_gpio is
 port (
     ADC_CLK                 : in  STD_LOGIC;
+    CSR_CLK                 : in  STD_LOGIC;
     P14GPIO_P               : inout STD_LOGIC_VECTOR( 23 downto 0 ) := (others=>'Z');
     P14GPIO_N               : inout STD_LOGIC_VECTOR( 23 downto 0 ) := (others=>'Z');
     CONTROLLER_RUNNING      : in  STD_LOGIC;
@@ -144,15 +145,15 @@ begin
 
             --Pn4_2          <= P14GPIO_N(0 );
             Pn4_4           <= P14GPIO_P(0 );
-            Pn4_6           <= P14GPIO_N(1 );
+--            Pn4_6           <= P14GPIO_N(1 );
             Pn4_8           <= P14GPIO_P(1 );
-            Pn4_10          <= P14GPIO_N(2 );
+--            Pn4_10          <= P14GPIO_N(2 );
             Pn4_12          <= P14GPIO_P(2 );
             Pn4_14          <= P14GPIO_N(3 );
             Pn4_16          <= P14GPIO_P(3 );
-            Pn4_18          <= P14GPIO_N(4 );
+--            Pn4_18          <= P14GPIO_N(4 );
             Pn4_20          <= P14GPIO_P(4 );
-            Pn4_22          <= P14GPIO_N(5 );
+--            Pn4_22          <= P14GPIO_N(5 );
             Pn4_24          <= P14GPIO_P(5 );
             Pn4_26          <= P14GPIO_N(6 );
             Pn4_28          <= P14GPIO_P(6 );
@@ -186,11 +187,11 @@ begin
                 when RADAR_TYPE_HCR =>
 
                     --Register inputs                       -- Schematic name --
-                    ROT_A           <= Pn4_6;
-                    ROT_B           <= Pn4_10;
+                    --ROT_A           <= Pn4_6;
+                    --ROT_B           <= Pn4_10;
                     STATUS_FLAGS(0) <= Pn4_14;              -- HV_FLAG (old ROTZ)
-                    TILT_A          <= Pn4_18;
-                    TILT_B          <= Pn4_22;
+                    --TILT_A          <= Pn4_18;
+                    --TILT_B          <= Pn4_22;
                     TILT_Z          <= Pn4_26;
                     SPARE_PENTEK2   <= Pn4_30;
 
@@ -215,6 +216,20 @@ begin
 
         end if;
     end process RADAR_SPECIFIC_REGS;
+    
+    ROT_REGS : process(CSR_CLK)
+    begin
+        if rising_edge(CSR_CLK) then
+            Pn4_6           <= P14GPIO_N(1 );
+            Pn4_10          <= P14GPIO_N(2 );
+            Pn4_18          <= P14GPIO_N(4 );
+            Pn4_22          <= P14GPIO_N(5 );
+            ROT_A           <= Pn4_6;
+            ROT_B           <= Pn4_10;
+            TILT_A          <= Pn4_18;
+            TILT_B          <= Pn4_22;
+        end if;
+    end process;
     
     --Generate ext_clk and sync_pulse_clk
     CLK_GENS : process(ADC_CLK)    

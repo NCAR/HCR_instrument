@@ -64,12 +64,6 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../IP/EOL/ser2bin.vhd">
-        <FileInfo>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
       <File Path="$PPRDIR/../../../IP/EOL/position_encoder.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -106,17 +100,38 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_metadata_injector_0/user_block2_metadata_injector_0.xci">
-          <Proxy FileSetName="user_block2_metadata_injector_0"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_data_fifo_0_0/user_block2_axis_data_fifo_0_0.xci">
+          <Proxy FileSetName="user_block2_axis_data_fifo_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pulse_fir_1/user_block2_pulse_fir_1.xci">
-          <Proxy FileSetName="user_block2_pulse_fir_1"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fir_compiler_0_0/user_block2_fir_compiler_0_0.xci">
+          <Proxy FileSetName="user_block2_fir_compiler_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pdti_fir_tweak_1/user_block2_pdti_fir_tweak_1.xci">
-          <Proxy FileSetName="user_block2_pdti_fir_tweak_1"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_controller_0_0/user_block2_hcr_controller_0_0.xci">
+          <Proxy FileSetName="user_block2_hcr_controller_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_1/user_block2_axis_subset_converter_0_1.xci">
+          <Proxy FileSetName="user_block2_axis_subset_converter_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_0_2/user_block2_enable_mux_0_2.xci">
+          <Proxy FileSetName="user_block2_enable_mux_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_metadata_injector_1/user_block2_metadata_injector_1.xci">
+          <Proxy FileSetName="user_block2_metadata_injector_1"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo_2/user_block2_fifo_2.xci">
           <Proxy FileSetName="user_block2_fifo_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_vctr2scalar_0_1/user_block2_px_vctr2scalar_0_1.xci">
+          <Proxy FileSetName="user_block2_px_vctr2scalar_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_1_0/user_block2_enable_mux_1_0.xci">
+          <Proxy FileSetName="user_block2_enable_mux_1_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_util_vector_logic_0_0/user_block2_util_vector_logic_0_0.xci">
+          <Proxy FileSetName="user_block2_util_vector_logic_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_remove_unused_sigs_0/user_block2_remove_unused_sigs_0.xci">
+          <Proxy FileSetName="user_block2_remove_unused_sigs_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo1_0/user_block2_fifo1_0.xci">
           <Proxy FileSetName="user_block2_fifo1_0"/>
@@ -124,41 +139,47 @@
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_remove_unused_sigs_1/user_block2_remove_unused_sigs_1.xci">
           <Proxy FileSetName="user_block2_remove_unused_sigs_1"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_metadata_injector_1/user_block2_metadata_injector_1.xci">
-          <Proxy FileSetName="user_block2_metadata_injector_1"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_register_slice_0_0/user_block2_axis_register_slice_0_0.xci">
+          <Proxy FileSetName="user_block2_axis_register_slice_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pulse_fir_2/user_block2_pulse_fir_2.xci">
-          <Proxy FileSetName="user_block2_pulse_fir_2"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_metadata_injector_0/user_block2_metadata_injector_0.xci">
+          <Proxy FileSetName="user_block2_metadata_injector_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pdti_fir_tweak_2/user_block2_pdti_fir_tweak_2.xci">
           <Proxy FileSetName="user_block2_pdti_fir_tweak_2"/>
         </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pulse_fir_2/user_block2_pulse_fir_2.xci">
+          <Proxy FileSetName="user_block2_pulse_fir_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_position_encoder_0_0/user_block2_position_encoder_0_0.xci">
+          <Proxy FileSetName="user_block2_position_encoder_0_0"/>
+        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo_3/user_block2_fifo_3.xci">
           <Proxy FileSetName="user_block2_fifo_3"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo1_1/user_block2_fifo1_1.xci">
-          <Proxy FileSetName="user_block2_fifo1_1"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_1_0/user_block2_enable_mux_1_0.xci">
-          <Proxy FileSetName="user_block2_enable_mux_1_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_remove_unused_sigs_0/user_block2_remove_unused_sigs_0.xci">
-          <Proxy FileSetName="user_block2_remove_unused_sigs_0"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pdti_fir_tweak_0_0/user_block2_pdti_fir_tweak_0_0.xci">
+          <Proxy FileSetName="user_block2_pdti_fir_tweak_0_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo_1/user_block2_fifo_1.xci">
           <Proxy FileSetName="user_block2_fifo_1"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_vctr2scalar_0_1/user_block2_px_vctr2scalar_0_1.xci">
-          <Proxy FileSetName="user_block2_px_vctr2scalar_0_1"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pulse_fir_1/user_block2_pulse_fir_1.xci">
+          <Proxy FileSetName="user_block2_pulse_fir_1"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_util_vector_logic_0_0/user_block2_util_vector_logic_0_0.xci">
-          <Proxy FileSetName="user_block2_util_vector_logic_0_0"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fifo1_1/user_block2_fifo1_1.xci">
+          <Proxy FileSetName="user_block2_fifo1_1"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_subset_converter_0_1/user_block2_axis_subset_converter_0_1.xci">
-          <Proxy FileSetName="user_block2_axis_subset_converter_0_1"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pdti_fir_tweak_1/user_block2_pdti_fir_tweak_1.xci">
+          <Proxy FileSetName="user_block2_pdti_fir_tweak_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_0_3/user_block2_enable_mux_0_3.xci">
+          <Proxy FileSetName="user_block2_enable_mux_0_3"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_vctr2scalar_0_0/user_block2_px_vctr2scalar_0_0.xci">
           <Proxy FileSetName="user_block2_px_vctr2scalar_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xbar_0/user_block2_xbar_0.xci">
+          <Proxy FileSetName="user_block2_xbar_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_px_axil_csr_0_0/user_block2_px_axil_csr_0_0.xci">
           <Proxy FileSetName="user_block2_px_axil_csr_0_0"/>
@@ -166,41 +187,14 @@
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_metadata_injector_0_0/user_block2_hcr_metadata_injector_0_0.xci">
           <Proxy FileSetName="user_block2_hcr_metadata_injector_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_hcr_controller_0_0/user_block2_hcr_controller_0_0.xci">
-          <Proxy FileSetName="user_block2_hcr_controller_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_data_fifo_0_0/user_block2_axis_data_fifo_0_0.xci">
-          <Proxy FileSetName="user_block2_axis_data_fifo_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_fir_compiler_0_0/user_block2_fir_compiler_0_0.xci">
-          <Proxy FileSetName="user_block2_fir_compiler_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_position_encoder_0_0/user_block2_position_encoder_0_0.xci">
-          <Proxy FileSetName="user_block2_position_encoder_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_0_2/user_block2_enable_mux_0_2.xci">
-          <Proxy FileSetName="user_block2_enable_mux_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_enable_mux_0_3/user_block2_enable_mux_0_3.xci">
-          <Proxy FileSetName="user_block2_enable_mux_0_3"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_axis_register_slice_0_0/user_block2_axis_register_slice_0_0.xci">
-          <Proxy FileSetName="user_block2_axis_register_slice_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_xbar_0/user_block2_xbar_0.xci">
-          <Proxy FileSetName="user_block2_xbar_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_pdti_fir_tweak_0_0/user_block2_pdti_fir_tweak_0_0.xci">
-          <Proxy FileSetName="user_block2_pdti_fir_tweak_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_s00_regslice_0/user_block2_s00_regslice_0.xci">
-          <Proxy FileSetName="user_block2_s00_regslice_0"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_auto_cc_1/user_block2_auto_cc_1.xci">
+          <Proxy FileSetName="user_block2_auto_cc_1"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_auto_cc_0/user_block2_auto_cc_0.xci">
           <Proxy FileSetName="user_block2_auto_cc_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_auto_cc_1/user_block2_auto_cc_1.xci">
-          <Proxy FileSetName="user_block2_auto_cc_1"/>
+        <CompFileExtendedInfo CompFileName="user_block2.bd" FileRelPathName="ip/user_block2_s00_regslice_0/user_block2_s00_regslice_0.xci">
+          <Proxy FileSetName="user_block2_s00_regslice_0"/>
         </CompFileExtendedInfo>
       </File>
       <File Path="$PSRCDIR/sources_1/bd/user_block1/user_block1.bd">
@@ -284,6 +278,13 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/p71821.vhd">
         <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../IP/EOL/ser2bin.vhd">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -698,14 +699,6 @@
         <Generic Name="rev" Val="8&apos;h11"/>
       </Config>
     </FileSet>
-    <FileSet Name="user_block2_position_encoder_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_position_encoder_0_0">
-      <Config>
-        <Option Name="TopModule" Val="user_block2_position_encoder_0_0"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-        <Generic Name="rev_date" Val="24&apos;h180423"/>
-        <Generic Name="rev" Val="8&apos;h11"/>
-      </Config>
-    </FileSet>
     <FileSet Name="user_block2_hcr_controller_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_hcr_controller_0_0">
       <Config>
         <Option Name="TopModule" Val="user_block2_hcr_controller_0_0"/>
@@ -762,9 +755,17 @@
         <Generic Name="rev" Val="8&apos;h11"/>
       </Config>
     </FileSet>
-    <FileSet Name="user_block2_s00_regslice_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_s00_regslice_0">
+    <FileSet Name="user_block2_position_encoder_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_position_encoder_0_0">
       <Config>
-        <Option Name="TopModule" Val="user_block2_s00_regslice_0"/>
+        <Option Name="TopModule" Val="user_block2_position_encoder_0_0"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+        <Generic Name="rev_date" Val="24&apos;h180423"/>
+        <Generic Name="rev" Val="8&apos;h11"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="user_block2_auto_cc_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_auto_cc_1">
+      <Config>
+        <Option Name="TopModule" Val="user_block2_auto_cc_1"/>
         <Option Name="UseBlackboxStub" Val="1"/>
         <Generic Name="rev_date" Val="24&apos;h180423"/>
         <Generic Name="rev" Val="8&apos;h11"/>
@@ -778,9 +779,9 @@
         <Generic Name="rev" Val="8&apos;h11"/>
       </Config>
     </FileSet>
-    <FileSet Name="user_block2_auto_cc_1" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_auto_cc_1">
+    <FileSet Name="user_block2_s00_regslice_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/user_block2_s00_regslice_0">
       <Config>
-        <Option Name="TopModule" Val="user_block2_auto_cc_1"/>
+        <Option Name="TopModule" Val="user_block2_s00_regslice_0"/>
         <Option Name="UseBlackboxStub" Val="1"/>
         <Generic Name="rev_date" Val="24&apos;h180423"/>
         <Generic Name="rev" Val="8&apos;h11"/>
@@ -1172,16 +1173,6 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="user_block2_position_encoder_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_position_encoder_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_position_encoder_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_position_encoder_0_0_synth_1" IncludeInArchive="true">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
     <Run Id="user_block2_hcr_controller_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_hcr_controller_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_controller_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_hcr_controller_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
@@ -1194,9 +1185,7 @@
     </Run>
     <Run Id="user_block2_metadata_injector_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_metadata_injector_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_metadata_injector_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_metadata_injector_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1206,9 +1195,7 @@
     </Run>
     <Run Id="user_block2_pdti_fir_tweak_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_pdti_fir_tweak_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pdti_fir_tweak_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_pdti_fir_tweak_1_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1218,9 +1205,7 @@
     </Run>
     <Run Id="user_block2_metadata_injector_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_metadata_injector_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_metadata_injector_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_metadata_injector_1_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1230,9 +1215,7 @@
     </Run>
     <Run Id="user_block2_pdti_fir_tweak_2_synth_1" Type="Ft3:Synth" SrcSet="user_block2_pdti_fir_tweak_2" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pdti_fir_tweak_2" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_pdti_fir_tweak_2_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1242,9 +1225,7 @@
     </Run>
     <Run Id="user_block2_hcr_metadata_injector_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_hcr_metadata_injector_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_hcr_metadata_injector_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1253,6 +1234,16 @@
       <RQSFiles/>
     </Run>
     <Run Id="user_block2_pdti_fir_tweak_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_pdti_fir_tweak_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pdti_fir_tweak_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_pdti_fir_tweak_0_0_synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="user_block2_position_encoder_0_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_position_encoder_0_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_position_encoder_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_position_encoder_0_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
           <Desc>Vivado Synthesis Defaults</Desc>
@@ -1264,7 +1255,7 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="user_block2_s00_regslice_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_s00_regslice_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_s00_regslice_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_s00_regslice_0_synth_1" IncludeInArchive="true">
+    <Run Id="user_block2_auto_cc_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_auto_cc_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_auto_cc_1_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
           <Desc>Vivado Synthesis Defaults</Desc>
@@ -1288,7 +1279,7 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="user_block2_auto_cc_1_synth_1" Type="Ft3:Synth" SrcSet="user_block2_auto_cc_1" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_auto_cc_1_synth_1" IncludeInArchive="true">
+    <Run Id="user_block2_s00_regslice_0_synth_1" Type="Ft3:Synth" SrcSet="user_block2_s00_regslice_0" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_s00_regslice_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/user_block2_s00_regslice_0_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019">
           <Desc>Vivado Synthesis Defaults</Desc>
@@ -1923,23 +1914,6 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="user_block2_position_encoder_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_position_encoder_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_position_encoder_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design" EnableStepBool="1"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2019"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
     <Run Id="user_block2_hcr_controller_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_controller_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_hcr_controller_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
@@ -1959,9 +1933,7 @@
     </Run>
     <Run Id="user_block2_metadata_injector_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_metadata_injector_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_metadata_injector_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -1978,9 +1950,7 @@
     </Run>
     <Run Id="user_block2_pdti_fir_tweak_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pdti_fir_tweak_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_pdti_fir_tweak_1_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -1997,9 +1967,7 @@
     </Run>
     <Run Id="user_block2_metadata_injector_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_metadata_injector_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_metadata_injector_1_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -2016,9 +1984,7 @@
     </Run>
     <Run Id="user_block2_pdti_fir_tweak_2_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pdti_fir_tweak_2" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_pdti_fir_tweak_2_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -2035,9 +2001,7 @@
     </Run>
     <Run Id="user_block2_hcr_metadata_injector_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_hcr_metadata_injector_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_hcr_metadata_injector_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -2053,6 +2017,23 @@
       <RQSFiles/>
     </Run>
     <Run Id="user_block2_pdti_fir_tweak_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_pdti_fir_tweak_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_pdti_fir_tweak_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design" EnableStepBool="1"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2019"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="user_block2_position_encoder_0_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_position_encoder_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_position_encoder_0_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
           <Desc>Default settings for Implementation.</Desc>
@@ -2071,7 +2052,7 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="user_block2_s00_regslice_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_s00_regslice_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_s00_regslice_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
+    <Run Id="user_block2_auto_cc_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_auto_cc_1_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
           <Desc>Default settings for Implementation.</Desc>
@@ -2109,7 +2090,7 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="user_block2_auto_cc_1_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_auto_cc_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_auto_cc_1_synth_1" IncludeInArchive="false" GenFullBitstream="true">
+    <Run Id="user_block2_s00_regslice_0_impl_1" Type="Ft2:EntireDesign" Part="xcku060-ffva1156-2-e" ConstrsSet="user_block2_s00_regslice_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="user_block2_s00_regslice_0_synth_1" IncludeInArchive="false" GenFullBitstream="true">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019">
           <Desc>Default settings for Implementation.</Desc>

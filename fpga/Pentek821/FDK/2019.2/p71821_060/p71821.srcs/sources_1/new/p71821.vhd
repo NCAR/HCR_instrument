@@ -1157,6 +1157,7 @@ end component;
 component p14_gpio is
 port (
     ADC_CLK                 : in  STD_LOGIC;
+    CSR_CLK                 : in  STD_LOGIC;
     P14GPIO_P               : inout STD_LOGIC_VECTOR( 23 downto 0 ) := (others=>'Z');
     P14GPIO_N               : inout STD_LOGIC_VECTOR( 23 downto 0 ) := (others=>'Z');
     CONTROLLER_RUNNING      : in  STD_LOGIC;
@@ -2462,6 +2463,7 @@ FOE_N    <= flash_foe_b;
 gpio_regs : component p14_gpio
 port map (
     ADC_CLK                 => axis_adc_pdti_aclk,
+    CSR_CLK                 => axi_csr_aclk,
     P14GPIO_P               => LVDS_P,
     P14GPIO_N               => LVDS_N,
     CONTROLLER_RUNNING      => CONTROLLER_RUNNING,

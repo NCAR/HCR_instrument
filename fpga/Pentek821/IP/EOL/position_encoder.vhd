@@ -15,7 +15,9 @@ entity position_encoder is
 	port (
         aclk    : in std_logic;
         aresetn : in std_logic;
+        out_clk    : in std_logic;
         ctl_reg : in std_logic_vector(31 downto 0); --bit0: 0=r/t,1=az/el. bit1:r/t Zero
+        stat_reg : out std_logic_vector(31 downto 0); --bit0 r/t has been zeroed
         ROT_A   : in std_logic;
         ROT_B   : in std_logic;
         TILT_A  : in std_logic;
@@ -69,16 +71,40 @@ signal rot_pos  : std_logic_vector(31 downto 0) := (others=>'0');
 signal tilt_pos : std_logic_vector(31 downto 0) := (others=>'0');
 signal az_pos   : std_logic_vector(31 downto 0) := (others=>'0');
 signal el_pos   : std_logic_vector(31 downto 0) := (others=>'0');
+signal status   : std_logic_vector(31 downto 0) := (others=>'0');
 
 begin
 
     RESET <= not aresetn;
     
-    pos_enc_0 <= rot_pos when CTL_REG(0) = '0' else az_pos;
-    pos_enc_1 <= tilt_pos when CTL_REG(0) = '0' else el_pos;
+    --pos_enc_0 <= rot_pos when CTL_REG(0) = '0' else az_pos;
+    --pos_enc_1 <= tilt_pos when CTL_REG(0) = '0' else el_pos;
+    
+    status_proc : process(aclk)
+    begin
+        if (rising_edge (aclk)) then
+        
+            if CTL_REG(1) = '1' then
+                status(0) <= '1'; -- counts have been zeroed
+            end if;
+            
+        end if;
+    end process;
+    
+    stat_reg <= status;
+    
+    out_reg_proc : process(out_clk)
+    begin
+        if (rising_edge (out_clk)) then
+
+            pos_enc_0 <= rot_pos;
+            pos_enc_1 <= tilt_pos;
+
+        end if;
+    end process;
 
 	Q2B: QUAD2BIN
-	PORT MAP (  RESET       => RESET,
+	PORT MAP (  RESET       => CTL_REG(1), --RESET  10/15/24 only reset when commanded
 				CLK         => aclk,
 				ROT_A       => ROT_A,
 				ROT_B       => ROT_B,
@@ -91,18 +117,18 @@ begin
 				TILT_POS    => tilt_pos
 	);
 
-	S2B: SER2BIN
-	PORT MAP (  RESET       => RESET,
-				CLK         => aclk,
-				AZ_MOSI     => AZ_MOSI,
-				AZ_SCK      => AZ_SCK,
-				AZ_SSEL     => AZ_SSEL,
-				EL_MOSI     => EL_MOSI,
-				EL_SCK      => EL_SCK,
-				EL_SSEL     => EL_SSEL,
-				DATA_STROBE => '1',
-				AZ_POS      => az_pos,
-				EL_POS      => el_pos				  
-	);
+--	S2B: SER2BIN
+--	PORT MAP (  RESET       => RESET,
+--				CLK         => aclk,
+--				AZ_MOSI     => AZ_MOSI,
+--				AZ_SCK      => AZ_SCK,
+--				AZ_SSEL     => AZ_SSEL,
+--				EL_MOSI     => EL_MOSI,
+--				EL_SCK      => EL_SCK,
+--				EL_SSEL     => EL_SSEL,
+--				DATA_STROBE => '1',
+--				AZ_POS      => az_pos,
+--				EL_POS      => el_pos				  
+--	);
 
 end architecture position_encoder;

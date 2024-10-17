@@ -610,7 +610,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:efb131be</spirit:value>
+            <spirit:value>9:bb2f6dfc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -621,7 +621,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:efb131be</spirit:value>
+            <spirit:value>9:bb2f6dfc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -637,11 +637,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jun 23 16:51:06 UTC 2021</spirit:value>
+            <spirit:value>Tue Oct 15 15:44:56 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:efb131be</spirit:value>
+            <spirit:value>9:bb2f6dfc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -660,7 +660,7 @@
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:486cc925</spirit:value>
+            <spirit:value>9:4e1a68f2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -676,11 +676,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jun 23 16:51:06 UTC 2021</spirit:value>
+            <spirit:value>Tue Oct 15 15:44:56 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:486cc925</spirit:value>
+            <spirit:value>9:4e1a68f2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -694,11 +694,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Nov 12 23:43:52 UTC 2021</spirit:value>
+            <spirit:value>Tue Oct 15 15:46:53 UTC 2024</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:efb131be</spirit:value>
+            <spirit:value>9:bb2f6dfc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1473,7 +1473,7 @@
         <spirit:vendorExtensions>
           <xilinx:portInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.stat0_in" xilinx:dependency="spirit:decode(id(&apos;MODELPARAM_VALUE.num_stat_regs&apos;)) > 0">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.stat0_in" xilinx:dependency="spirit:decode(id(&apos;MODELPARAM_VALUE.num_stat_regs&apos;)) > 0">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:portInfo>
         </spirit:vendorExtensions>
@@ -1724,7 +1724,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>num_stat_regs</spirit:name>
         <spirit:displayName>Num Stat Regs</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.num_stat_regs">0</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.num_stat_regs">1</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="boolean">
         <spirit:name>has_interrupt_regs</spirit:name>
@@ -1838,7 +1838,7 @@
     <spirit:parameter>
       <spirit:name>num_stat_regs</spirit:name>
       <spirit:displayName>Number of Status Registers</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.num_stat_regs" spirit:minimum="0" spirit:maximum="8" spirit:rangeType="long">0</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.num_stat_regs" spirit:minimum="0" spirit:maximum="8" spirit:rangeType="long">1</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>has_interrupt_regs</spirit:name>
