@@ -179,6 +179,15 @@ HCR_Pentek::HCR_Pentek(const HcrDrxConfig & config,
 
     // Radar controller
     _setupController();
+
+    // Read if the motor zero position has already been set since the FPGA was powered on
+    _motorZeroPositionSet = 0x1 & readLiteRegister_(BLOCK2_GPR_BASE + 16, "Read motor zeroed flag");
+    if (_motorZeroPositionSet) {
+        ILOG << "Motor position has been previously set";
+    }
+    else {
+        ILOG << "Motor position is not initialized";
+    }
 }
 
 void
@@ -1609,6 +1618,7 @@ void HCR_Pentek::zeroMotorCounts()
     writeLiteRegister_(BLOCK2_GPR_BASE+8, originalVal & (~mask), "Clear zero motor count");
 
     _motorZeroPositionSet = true;
+
 }
 
 DrxStatus HCR_Pentek::status()
