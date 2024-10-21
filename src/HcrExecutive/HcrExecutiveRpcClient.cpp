@@ -33,6 +33,7 @@
 #include <sstream>
 #include <math.h>
 #include <logx/Logging.h>
+#include <Archive_xmlrpc_c.h>
 #include "HcrExecutiveRpcClient.h"
 
 LOGGING("HcrExecutiveRpcClient")
@@ -85,6 +86,14 @@ HcrExecutiveRpcClient::setRequestedOperationMode(OperationMode& mode) {
     xmlrpc_c::paramList params;
     params.add(XmlrpcSerializable<OperationMode>(mode));
     _execXmlRpcCall("setRequestedOperationMode", params);
+}
+
+OperationMode
+HcrExecutiveRpcClient::getCurrentOperationMode() {
+    DLOG << "Getting current operation mode";
+
+    XmlrpcSerializable<OperationMode> mode(_execXmlRpcCall("getCurrentOperationMode"));
+    return(mode);
 }
 
 void

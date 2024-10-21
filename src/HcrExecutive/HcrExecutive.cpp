@@ -182,6 +182,21 @@ public:
     }
 };
 
+/// @brief xmlrpc_c::method to get the current Operation mode
+class GetCurrentOperationModeMethod : public xmlrpc_c::method {
+public:
+    GetCurrentOperationModeMethod() {
+        this->_help = "This method gets the current Operation mode.";
+    }
+    void
+    execute(const xmlrpc_c::paramList & paramList, xmlrpc_c::value* retvalP) {
+        paramList.verifyEnd(0);
+
+        ILOG << "Received 'getCurrentOperationMode()' command";
+        *retvalP = XmlrpcSerializable<OperationMode>(TheTransmitControl->getCurrentOperationMode());
+    }
+};
+
 /// @brief xmlrpc_c::method to set whether transmitter high voltage is requested
 class SetHvRequestedMethod : public xmlrpc_c::method {
 public:
@@ -259,6 +274,7 @@ main(int argc, char *argv[]) {
     xmlrpc_c::registry myRegistry;
     myRegistry.addMethod("getStatus", new GetStatusMethod);
     myRegistry.addMethod("setApsValveControl", new SetApsValveControlMethod);
+    myRegistry.addMethod("getCurrentOperationMode", new GetCurrentOperationModeMethod);
     myRegistry.addMethod("setRequestedOperationMode", new SetRequestedOperationModeMethod);
     myRegistry.addMethod("setHvRequested", new SetHvRequestedMethod);
     QXmlRpcServerAbyss rpcServer(&myRegistry, xmlrpcPortNum);

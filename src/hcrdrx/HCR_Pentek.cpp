@@ -31,6 +31,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <regex>
 #include <sstream>
@@ -38,6 +39,9 @@
 #include <unistd.h>
 #include <boost/algorithm/string.hpp>   // for boost::trim()
 #include <sys/syscall.h>
+
+#include <HcrSharedResources.h>
+#include <HcrExecutiveRpcClient.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QMetaType>
@@ -196,6 +200,14 @@ HCR_Pentek::startRadar() {
 
     PMU_auto_register("HCR_Pentek::startRadar()");
 
+    // Get current operation mode from HcrExecutive and apply the associated
+    // schedule
+    HcrExecutiveRpcClient hcrExecRpcClient("rds", HCREXECUTIVE_PORT);
+    OperationMode mode = hcrExecRpcClient.getCurrentOperationMode();
+    ILOG << "Starting in mode '" << mode.name()
+         << "' (" << mode.scheduleStartIndex() << " -> " << mode.scheduleStopIndex() << ")";
+    changeControllerSchedule(mode.scheduleStartIndex(), mode.scheduleStopIndex());
+
     // Check with chrony to verify that our system clock is currently NTP
     // synchronized to within 0.1s. If not, exit now with an error.
     std::string waitsyncCmd("chronyc waitsync 1 0.1");; // check once to see if sync is within 0.1 s
@@ -218,7 +230,7 @@ HCR_Pentek::startRadar() {
     // mark. The radar will start on next 1PPS signal after that. Waiting for
     // the system clock's mid-second mark assures that we will assign the correct
     // time for the starting 1 PPS as long as the system time offset w.r.t. GPS
-    // time is within +/-0.5s, and this was verified above.
+    // time is within +/-0.5s (and this was verified above).
     auto nowMillisecs = now.time().msec();    // milliseconds into current second
     uint sleepMillisecs;
     if (nowMillisecs <= 500) {
@@ -1170,7 +1182,8 @@ HCR_Pentek::AdcDmaCallbackHandler(int32_t chan, int32_t dmaStatus,
         dmaError = true;
     }
     if (dmaStatus & NAV_STAT_DMA_TIMEOUT) {
-        // ELOG << "ADC DMA timeout on board " << instance->_boardNum << " chan " << chan;
+        ELOG << "in AdcDmaCallbackHandler on thread " << QThread::currentThreadId()
+             << ": ADC DMA timeout seen on board " << instance->_boardNum << " chan " << chan;
 
         // Have the associated HCR_Pentek instance emit signal
         // adcDmaTimeout(). This will queue execution of _dmaTimeoutHandler in
@@ -1607,7 +1620,6 @@ void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t 
 {
     DLOG << "Setting schedule to " << scheduleStartIndex << ":" << scheduleStopIndex;
     _controller.setSchedule(scheduleStartIndex, scheduleStopIndex);
-    _haveOpMode = true;
 }
 
 void HCR_Pentek::zeroMotorCounts()

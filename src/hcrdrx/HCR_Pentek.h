@@ -347,7 +347,6 @@ private:
     bool _motorZeroPositionSet;
     double _fpgaTemp;
     double _localTemp;
-    bool _haveOpMode = false;
 
     /// @brief Firmware build to check for.
     const uint32_t COMPATIBLE_FIRMWARE_DATE = 0x20241017;
