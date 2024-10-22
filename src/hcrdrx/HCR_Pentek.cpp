@@ -929,9 +929,8 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
             // XML-RPC request while startRadar() was executing).
             auto firstPulseDeltaMsecs = pulseTime.msecsTo(now);
             if (abs(firstPulseDeltaMsecs) > 500) {
-                ELOG << "Time tag of the first pulse does not match the expected radar start time of "
-                     << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
-                ELOG << "Exiting on timetagging error!";
+                ELOG << "TIMETAG BUG: first pulse timetag does not closely match its system clock arrival time!";
+                ELOG << "Raising SIGINT on timetagging error";
                 raise(SIGINT);  // Trigger the program's ^C handler
             }
 
