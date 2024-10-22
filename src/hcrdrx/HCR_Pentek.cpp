@@ -840,7 +840,7 @@ HCR_Pentek::_logClockConfigDiffs() const {
          << ", DAC: " << (dacFrequency()*1e-6) << " MHz (x" << ducInterpolation() << ")";
 }
 
-static bool FirstPulse(true);
+static bool AwaitingFirstPulse(true);
 
 void
 HCR_Pentek::_acceptAdcData(int32_t chan,
@@ -916,11 +916,27 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/adcFrequency());
 
         // Log time tag of the first pulse we receive
-        if (FirstPulse) {
-            ILOG << "FIRST PULSE (received at " << QDateTime::currentDateTimeUtc().toString("HH:mm:ss.zzz").toStdString()
-                 << ") has time tag " << QDateTime::fromSecsSinceEpoch(dataSec, QTimeZone::utc()).toString("HH:mm::ss").toStdString()
-                 << " + " << dataNanosec << " ns";
-            FirstPulse = false;
+        if (AwaitingFirstPulse) {
+            QDateTime now(QDateTime::currentDateTimeUtc());
+            QDateTime pulseTime = QDateTime::fromSecsSinceEpoch(dataSec).toUTC().addMSecs(dataNanosec / 1000000);
+
+            ILOG << "FIRST PULSE (received at " << now.toString("HH:mm:ss.zzz").toStdString()
+                 << ") has time tag " << pulseTime.toString("HH:mm::ss.zzz").toStdString();
+
+            // Sanity check that the time tag of the first pulse is within 500 ms of our
+            // current system time. If not, data sampling most likely did not start on the
+            // expected 1 PPS. (In the past, this has happened if e.g., hcrdrx handled an
+            // XML-RPC request while startRadar() was executing).
+            auto firstPulseDeltaMsecs = pulseTime.msecsTo(now);
+            if (abs(firstPulseDeltaMsecs) > 500) {
+                ELOG << "Time tag of the first pulse does not match the expected radar start time of "
+                     << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
+                ELOG << "Exiting on timetagging error!";
+                raise(SIGINT);  // Trigger the program's ^C handler
+            }
+
+            // Done with first pulse sanity check
+            AwaitingFirstPulse = false;
         }
 
         // Add the PRT to get the offset for the next pulse
