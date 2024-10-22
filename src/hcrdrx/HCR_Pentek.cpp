@@ -237,22 +237,22 @@ HCR_Pentek::startRadar() {
         _radarStartSecond = now.toTime_t() + 1;   // we'll start on the next PPS
         sleepMillisecs = 500 - nowMillisecs;    // msecs until the upcoming mid-second
     } else {
-        // We're already past mid-second, so sleep through the next 1PPS and
+        // We're already past mid-second, so sleep through the next PPS and
         // start the radar on the one after that.
         _radarStartSecond = now.toTime_t() + 2;
         sleepMillisecs = 1500 - nowMillisecs;
     }
 
     ILOG << "Current system clock time is " << now.time().toString("hh:mm:ss.zzz").toStdString();
-    ILOG << "Pentek will be started on 1PPS signal at: "
+    ILOG << "Pentek will be started on PPS signal at: "
          << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
 
     // Now sleep until the next system clock mid-second mark.
-    DLOG << "Sleeping " << sleepMillisecs << " us before zeroing the Pentek PPS count";
+    DLOG << "Sleeping " << sleepMillisecs << " us before resetting the Pentek PPS count";
     usleep(1000 * sleepMillisecs);
 
-    // Zero the Pentek's PPS counter
-    status = NAV_TimestampGenSetup(_boardHandle, 0);
+    // Set the Pentek's PPS counter to its max value, so the next PPS will roll it over to zero.
+    status = NAV_TimestampGenSetup(_boardHandle, 0xFFFFFFFF);
     _AbortCtorOnNavStatusError(status, "NAV_TimestampGenSetup");
 
     // Open the global gates to start ADC and DAC data flow
@@ -912,7 +912,7 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         //}
 
         // Calculate the timestamp
-        time_t dataSec = _radarStartSecond + (metadata->timestampPpsCount - 1); // PPS count goes to 1 at radar start!
+        time_t dataSec = _radarStartSecond + (metadata->timestampPpsCount); // PPS count goes to 0 at radar start!
         uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/adcFrequency());
 
         // Log time tag of the first pulse we receive
