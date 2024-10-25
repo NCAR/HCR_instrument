@@ -53,16 +53,3 @@ hcrdrx = env.Program('hcrdrx', sources)
 
 html = env.Apidocs(sources + headers)
 Default(hcrdrx, html)
-
-# Build setWinDriverIrqAffinity as a setuid program owned by root
-#
-# The program is not built by default. It must be built explicitly by root,
-# usually with the command:
-#
-#    $ sudo scons setWinDriverIrqAffinity
-#
-# Note that the program *is* removed by default when cleaning
-irqAffinityProg = env.SetuidProgram('setWinDriverIrqAffinity',
-                                    'setWinDriverIrqAffinity.cpp')
-if (GetOption("clean")):
-    env.Default(irqAffinityProg)

@@ -602,68 +602,6 @@ HCR_Pentek::_setupAdc() {
                               NAV_OPTIONS_NONE);
         _AbortCtorOnNavStatusError(status, adcPrefix + "NAV_DmaSetup");
 
-        // After the first call to NAV_DmaStart, we can set the CPU affinity
-        // of the newly created DMA IRQ. We bind to a single dedicated
-        // processor, since that allows WinDriver to support higher interrupt
-        // rates without suffering from DMA overruns.
-        //
-        // The setWinDriverIrqAffinity program must be owned by root, and
-        // must have the setuid permission bit set.
-        if (adcChan == 0) {
-            ILOG << "Setting CPU affinity the new DMA IRQ";
-
-            int irqCpu = 3;    // Fixed affinity
-
-            //Check for isolcpus. If you isolate more than once CPU,
-            //this check may need to be more clever.
-            std::ifstream kernelCmdFile("/proc/cmdline");
-            std::string kernelCmd;
-            std::getline(kernelCmdFile, kernelCmd);
-            std::string strToFind = "isolcpus=" + std::to_string(irqCpu);
-            std::size_t found = kernelCmd.find(strToFind);
-
-            if (found == std::string::npos) {
-                    WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
-                    WLOG << "";
-                    WLOG << "Couldn't find '" << strToFind << "' in /proc/cmdline";
-                    WLOG << "DMA overruns are likely!";
-                    WLOG << "";
-                    WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
-            }
-
-            // Set up the setWinDriverIrqAffinity command
-            std::ostringstream oss;
-            oss << "./setWinDriverIrqAffinity " << std::to_string(irqCpu) <<
-                   " 2>&1";
-            ILOG << "Command: " << oss.str();
-
-            // Open a pipe executing the command
-            FILE * pipe = popen(oss.str().c_str(), "r");
-            if (pipe) {
-                // Read and log the output
-                ILOG << "Output: ";
-                char line[128];
-                while (fgets(line, sizeof(line), pipe)) {
-                    // Trim trailing newline
-                    line[strlen(line) - 1] = '\0';
-                    ILOG << "    " << line;
-                }
-                // Get command status from pclose, and warn if the command
-                // failed
-                int cmdStatus = pclose(pipe);
-                if (cmdStatus == 0) {
-                    ILOG << "IRQ affinity is set";
-                } else {
-                    WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
-                    WLOG << "";
-                    WLOG << "Failed to set WinDriver IRQ CPU affinity";
-                    WLOG << "DMA overruns are likely!";
-                    WLOG << "";
-                    WLOG << "XXXXXXXXXXXXXXXXXXXXXXXXX";
-                }
-            }
-        }
-
         _dmaPacketsDropped[adcChan] = 0;
     }
 
