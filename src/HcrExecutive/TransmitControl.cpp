@@ -86,7 +86,7 @@ TransmitControl::TransmitControl(HcrPmc730StatusWorker& hcrPmc730StatusWorker,
     connect(&hcrPmc730StatusWorker, &HcrPmc730StatusWorker::serverResponsive,
             this, &TransmitControl::_updateHcrPmc730Responsive);
     
-    // Call _recordHmcModeChange when we get a mode change signal
+    // Call _handleHmcModeChange when we get a mode change signal
     connect(&hcrPmc730StatusWorker, &HcrPmc730StatusWorker::hmcModeChange,
             this, &TransmitControl::_handleHmcModeChange);
     

@@ -31,6 +31,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <regex>
 #include <sstream>
@@ -38,6 +39,9 @@
 #include <unistd.h>
 #include <boost/algorithm/string.hpp>   // for boost::trim()
 #include <sys/syscall.h>
+
+#include <HcrSharedResources.h>
+#include <HcrExecutiveRpcClient.h>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QMetaType>
@@ -196,6 +200,14 @@ HCR_Pentek::startRadar() {
 
     PMU_auto_register("HCR_Pentek::startRadar()");
 
+    // Get current operation mode from HcrExecutive and apply the associated
+    // schedule
+    HcrExecutiveRpcClient hcrExecRpcClient("rds", HCREXECUTIVE_PORT);
+    OperationMode mode = hcrExecRpcClient.getCurrentOperationMode();
+    ILOG << "Starting in mode '" << mode.name()
+         << "' (" << mode.scheduleStartIndex() << " -> " << mode.scheduleStopIndex() << ")";
+    changeControllerSchedule(mode.scheduleStartIndex(), mode.scheduleStopIndex());
+
     // Check with chrony to verify that our system clock is currently NTP
     // synchronized to within 0.1s. If not, exit now with an error.
     std::string waitsyncCmd("chronyc waitsync 1 0.1");; // check once to see if sync is within 0.1 s
@@ -214,36 +226,58 @@ HCR_Pentek::startRadar() {
     // Get the current system time
     auto now = QDateTime::currentDateTime();
 
-    // Calculate sleep time until the system clock's next mid-second
-    // mark. The radar will start on next 1PPS signal after that. Waiting for
-    // the system clock's mid-second mark assures that we will assign the correct
-    // time for the starting 1 PPS as long as the system time offset w.r.t. GPS
-    // time is within +/-0.5s, and this was verified above.
-    auto nowMillisecs = now.time().msec();    // milliseconds into current second
-    uint sleepMillisecs;
+    // Calculate sleep time until the system clock's next mid-second mark. The
+    // radar will start on next 1PPS signal after that. Waiting for the system
+    // clock's mid-second mark assures that we will assign the correct time for
+    // the starting 1 PPS as long as the system time offset w.r.t. GPS time is
+    // within +/-0.5s (and this was verified above with the chrony check).
+    auto nowMillisecs = now.time().msec();    // msecs into current second
+    uint millisecsToMidSec; // msecs until the next mid-second
     if (nowMillisecs <= 500) {
-        _radarStartSecond = now.toTime_t() + 1;   // we'll start on the next PPS
-        sleepMillisecs = 500 - nowMillisecs;    // msecs until the upcoming mid-second
+        _radarStartSecond = now.toTime_t() + 1;     // we'll start on the next PPS
+        millisecsToMidSec = 500 - nowMillisecs;
     } else {
-        // We're already past mid-second, so sleep through the next 1PPS and
-        // start the radar on the one after that.
-        _radarStartSecond = now.toTime_t() + 2;
-        sleepMillisecs = 1500 - nowMillisecs;
+        // We're already past mid-second, so sleep through the next PPS to the
+        // next mid-second.
+        _radarStartSecond = now.toTime_t() + 2;     // we'll start on the 2nd PPS from now
+        millisecsToMidSec = 1500 - nowMillisecs;
     }
 
     ILOG << "Current system clock time is " << now.time().toString("hh:mm:ss.zzz").toStdString();
-    ILOG << "Pentek will be started on 1PPS signal at: "
-         << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
 
     // Now sleep until the next system clock mid-second mark.
-    DLOG << "Sleeping " << sleepMillisecs << " us before zeroing the Pentek PPS count";
-    usleep(1000 * sleepMillisecs);
+    ILOG << "Sleeping " << millisecsToMidSec << " ms to next mid-second mark";
+    ILOG << "Data collection will start on PPS signal at: "
+         << QDateTime::fromTime_t(_radarStartSecond).toString("yyyy-MM-dd hh:mm:ss").toStdString();
+    usleep(1000 * millisecsToMidSec);
 
-    // Zero the Pentek's PPS counter
-    status = NAV_TimestampGenSetup(_boardHandle, 0);
+
+    // Set the Pentek's PPS counter to its max value, so the next PPS will roll it over to zero
+    // The counter then always holds elapsed whole seconds since radar start.
+    status = NAV_TimestampGenSetup(_boardHandle, 0xFFFFFFFF);
     _AbortCtorOnNavStatusError(status, "NAV_TimestampGenSetup");
 
-    // Open the global gates to start ADC and DAC data flow
+    // For each enabled ADC channel:
+    //   - arm the trigger so the channel will start data collection on the next 1PPS
+    //   - start the DMA thread for the channel
+    for (int32_t adcChan = 0; adcChan < _adcCount; adcChan++) {
+
+        if(!_config.enable_rx(adcChan)) continue;
+
+        // Build a prefix string of the form "ADC chan <chanNum> "
+        std::string adcPrefix =
+                std::string("ADC chan ") + std::to_string(adcChan) + " ";
+
+        // Start the DMA thread for the ADC channel
+        status = NAV_DmaStart(_boardHandle, NAV_CHANNEL_TYPE_ADC, adcChan);
+        _AbortCtorOnNavStatusError(status, adcPrefix + "NAV_DmaStart");
+
+        // Arm the trigger so we start data collection on the next 1PPS
+        status = NAV_TrigArm(_boardHandle, NAV_CHANNEL_TYPE_ADC, adcChan);
+        _AbortCtorOnNavStatusError(status, adcPrefix + "NAV_TrigArm");
+    }
+
+    // Open the global gates to enable ADC and DAC data flow
     status = NAV_GlobalGateOpen(_boardHandle, NAV_CHANNEL_TYPE_ADC);
     _AbortCtorOnNavStatusError(status, "ADC NAV_GlobalGateOpen");
 
@@ -262,7 +296,7 @@ HCR_Pentek::startRadar() {
                     _config.use_mag_phase(),        // useMagPhaseFormat,
                     _config.pulses_to_run() );      // numPulsesToExecute
 
-    // Generate a fake PPS if desired
+    // Generate a fake PPS if needed to start data collection
     if ( !_config.start_on_1pps() ) {
         WLOG << "STARTING ON FAKE 1 PPS!";
         usleep(1000);
@@ -568,10 +602,6 @@ HCR_Pentek::_setupAdc() {
                               NAV_OPTIONS_NONE);
         _AbortCtorOnNavStatusError(status, adcPrefix + "NAV_DmaSetup");
 
-        // Start the DMA thread for the ADC channel
-        status = NAV_DmaStart(_boardHandle, NAV_CHANNEL_TYPE_ADC, adcChan);
-        _AbortCtorOnNavStatusError(status, adcPrefix + "NAV_DmaStart");
-
         // After the first call to NAV_DmaStart, we can set the CPU affinity
         // of the newly created DMA IRQ. We bind to a single dedicated
         // processor, since that allows WinDriver to support higher interrupt
@@ -633,13 +663,6 @@ HCR_Pentek::_setupAdc() {
                 }
             }
         }
-
-        // Arm the dataflow control core
-        //
-        // This must be done after starting up the DMA core but before a
-        // gate/trigger event occurs.
-        status = NAV_TrigArm(_boardHandle, NAV_CHANNEL_TYPE_ADC, adcChan);
-        _AbortCtorOnNavStatusError(status, adcPrefix + "NAV_TrigArm");
 
         _dmaPacketsDropped[adcChan] = 0;
     }
@@ -828,7 +851,7 @@ HCR_Pentek::_logClockConfigDiffs() const {
          << ", DAC: " << (dacFrequency()*1e-6) << " MHz (x" << ducInterpolation() << ")";
 }
 
-static bool FirstPulse(true);
+static bool AwaitingFirstPulse(true);
 
 void
 HCR_Pentek::_acceptAdcData(int32_t chan,
@@ -900,15 +923,30 @@ HCR_Pentek::_acceptAdcData(int32_t chan,
         //}
 
         // Calculate the timestamp
-        time_t dataSec = _radarStartSecond + (metadata->timestampPpsCount - 1); // PPS count goes to 1 at radar start!
+        time_t dataSec = _radarStartSecond + (metadata->timestampPpsCount); // PPS count goes to 0 at radar start!
         uint32_t dataNanosec = (metadata->timestampClockCount + clockOffsetCount) * (1e9/adcFrequency());
 
         // Log time tag of the first pulse we receive
-        if (FirstPulse) {
-            ILOG << "FIRST PULSE (received at " << QDateTime::currentDateTimeUtc().toString("HH:mm:ss.zzz").toStdString()
-                 << ") has time tag " << QDateTime::fromSecsSinceEpoch(dataSec, QTimeZone::utc()).toString("HH:mm::ss").toStdString()
-                 << " + " << dataNanosec << " ns";
-            FirstPulse = false;
+        if (AwaitingFirstPulse) {
+            QDateTime now(QDateTime::currentDateTimeUtc());
+            QDateTime pulseTime = QDateTime::fromSecsSinceEpoch(dataSec).toUTC().addMSecs(dataNanosec / 1000000);
+
+            ILOG << "FIRST PULSE (received at " << now.toString("HH:mm:ss.zzz").toStdString()
+                 << ") has time tag " << pulseTime.toString("HH:mm::ss.zzz").toStdString();
+
+            // Sanity check that the time tag of the first pulse is within 500 ms of our
+            // current system time. If not, data sampling most likely did not start on the
+            // expected 1 PPS. (In the past, this has happened if e.g., hcrdrx handled an
+            // XML-RPC request while startRadar() was executing).
+            auto firstPulseDeltaMsecs = pulseTime.msecsTo(now);
+            if (abs(firstPulseDeltaMsecs) > 500) {
+                ELOG << "TIMETAG BUG: first pulse timetag does not closely match its system clock arrival time!";
+                ELOG << "Raising SIGINT on timetagging error";
+                raise(SIGINT);  // Trigger the program's ^C handler
+            }
+
+            // Done with first pulse sanity check
+            AwaitingFirstPulse = false;
         }
 
         // Add the PRT to get the offset for the next pulse
@@ -1170,7 +1208,8 @@ HCR_Pentek::AdcDmaCallbackHandler(int32_t chan, int32_t dmaStatus,
         dmaError = true;
     }
     if (dmaStatus & NAV_STAT_DMA_TIMEOUT) {
-        // ELOG << "ADC DMA timeout on board " << instance->_boardNum << " chan " << chan;
+        ELOG << "in AdcDmaCallbackHandler on thread " << QThread::currentThreadId()
+             << ": ADC DMA timeout seen on board " << instance->_boardNum << " chan " << chan;
 
         // Have the associated HCR_Pentek instance emit signal
         // adcDmaTimeout(). This will queue execution of _dmaTimeoutHandler in
@@ -1607,7 +1646,6 @@ void HCR_Pentek::changeControllerSchedule(uint32_t scheduleStartIndex, uint32_t 
 {
     DLOG << "Setting schedule to " << scheduleStartIndex << ":" << scheduleStopIndex;
     _controller.setSchedule(scheduleStartIndex, scheduleStopIndex);
-    _haveOpMode = true;
 }
 
 void HCR_Pentek::zeroMotorCounts()

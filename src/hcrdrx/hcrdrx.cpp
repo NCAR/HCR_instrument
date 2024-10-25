@@ -201,8 +201,8 @@ main(int argc, char * argv[]) {
         hcrPentek.setExporter(&exporter);
         exporter.start();
 
-        // Create a timer which will call hcrPentek.startRadar() from our
-        // QApplication's event loop immediately when it's executed.
+        // Create a one-shot timer which will call hcrPentek.startRadar() from
+        // our QApplication's event loop as soon as it's started below.
         QTimer::singleShot(0, &hcrPentek, &HCR_Pentek::startRadar);
 
         // Start the QCoreApplication

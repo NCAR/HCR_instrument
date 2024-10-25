@@ -112,6 +112,10 @@ public:
     /// @param mode the requested Operation mode
     void setRequestedOperationMode(const OperationMode& mode);
 
+    /// @brief Get the current operation mode
+    /// @return the current operation mode
+    OperationMode getCurrentOperationMode() const { return(_currentOperationMode); };
+
     /// @brief Set the requested high voltage on state
     /// @param hvRequested true if HV on is desired, false if HV off is desired
     void setHvRequested(bool hvRequested);

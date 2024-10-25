@@ -58,12 +58,18 @@ public:
     /// @throws std::exception if there's a problem in the XML-RPC call.
     void setRequestedOperationMode(OperationMode& mode);
     
+    /// @brief Get the current operation mode
+    /// @param mode reference in which to store the current operation mode
+    /// @return current OperationMode
+    /// @throws std::exception if there's a problem in the XML-RPC call.
+    OperationMode getCurrentOperationMode();
+
     /// @brief Set the requested state for transmitter high voltage
     /// @param hvRequested true if high voltage is desired, false otherwise
     /// @throws std::exception if there's a problem in the XML-RPC call.
     void setHvRequested(bool hvRequested);
 
-    /// @brief Get motion control status
+    /// @brief Get current HcrExecutive status
     /// @return a HcrExecutiveStatus object
     /// @throws std::exception if there's a problem in the XML-RPC call.
     HcrExecutiveStatus status();
