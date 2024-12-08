@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PMC-730 Details</string>
+   <string>PMC-730 Monitoring Details</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
